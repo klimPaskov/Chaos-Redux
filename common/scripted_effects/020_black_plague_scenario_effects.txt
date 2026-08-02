@@ -782,10 +782,14 @@ black_plague_triggerable_scenario_launch = {
 				}
 				check_variable = {
 					var = global.black_plague_scenario_internal_broods_created
-					value = constant:black_plague_scenario.minimum_internal_brood_target
+					value = global.black_plague_scenario_internal_brood_target
 					compare = greater_than_or_equals
 				}
-				check_variable = { global.black_plague_scenario_king_states_transferred > constant:black_plague_value.zero }
+				check_variable = {
+					var = global.black_plague_scenario_king_states_transferred
+					value = global.black_plague_scenario_king_state_target
+					compare = greater_than_or_equals
+				}
 				RTA = {
 					check_variable = {
 						var = black_plague_rat_division_count
@@ -805,26 +809,6 @@ black_plague_triggerable_scenario_launch = {
 			black_plague_scenario_record_history = yes
 			set_global_flag = black_plague_scenario_shortcut_disqualifier
 			set_global_flag = black_plague_triggerable_scenario_launched
-			if = {
-				limit = {
-					check_variable = {
-						var = global.black_plague_scenario_internal_broods_created
-						value = global.black_plague_scenario_internal_brood_target
-						compare = less_than
-					}
-				}
-				set_variable = { global.black_plague_scenario_internal_brood_target = global.black_plague_scenario_internal_broods_created }
-			}
-			if = {
-				limit = {
-					check_variable = {
-						var = global.black_plague_scenario_king_states_transferred
-						value = global.black_plague_scenario_king_state_target
-						compare = less_than
-					}
-				}
-				set_variable = { global.black_plague_scenario_king_state_target = global.black_plague_scenario_king_states_transferred }
-			}
 			if = {
 				limit = { NOT = { has_global_flag = black_plague_scenario_report_emitted } }
 				news_event = { id = chaosx.nr20.90 }

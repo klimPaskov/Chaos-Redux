@@ -1,5 +1,7 @@
 # Event 20 Rat King depth handoff
 
+> Historical depth handoff, superseded for current documentation facts by the 2026-08-02 reconciliation: the body records the earlier expansion from 50 to 70 focus nodes. Current runtime documentation records 71 RTX nodes, and the dedicated weapon-delivery icon plus source-frame Rat King/seal packages are promoted. No bespoke 3D models are required or planned. Retain this handoff for its route implementation history and unresolved live-validation findings.
+
 ## Scope
 
 This parent-owned tranche deepens `RTX` without adding a third rat tag, a new disease category, human manpower, normal equipment, or 3D models. The separate Rat King route remains compatible with the existing two-tag architecture: `RTA` is the reusable base carrier and `RTX` is the sentient Royal Basin.

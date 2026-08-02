@@ -18,7 +18,7 @@ The start activates `black_plague_shared_last_response_refuge_mission` for 120 d
 
 Both start decisions and missions are registered in `common/decisions/020_black_plague_shared_response_decisions.txt`. Their costs come from `common/script_constants/020_black_plague_terminal_response_constants.txt`; country gates and cancellation triggers are in `common/scripted_triggers/020_black_plague_terminal_response_triggers.txt`; payment, progress, outcomes, reports, and teardown are in `common/scripted_effects/020_black_plague_terminal_response_effects.txt`. The seven-day response pulse calls the progress effect, while terminal takeover removes both missions idempotently.
 
-The player-facing decision and mission text is in `localisation/english/020_black_plague_response_l_english.yml`; outcome reports `.66` through `.69` are in `localisation/english/020_black_plague_reports_l_english.yml` and `events/020_black_death.txt`. The existing disease interface displays the projects alongside the rest of the shared category.
+Both mission blocks are native `activate_mission`/`days_mission_timeout` declarations in `common/decisions/020_black_plague_shared_response_decisions.txt`; the event-owned pulse supplies progress and the terminal cleanup removes them idempotently. The player-facing decision and mission text is in `localisation/english/020_black_plague_response_l_english.yml`; outcome reports `.66` through `.69` are in `localisation/english/020_black_plague_reports_l_english.yml` and `events/020_black_death.txt`. The existing disease interface displays the projects alongside the rest of the shared category.
 
 ## Future extension
 

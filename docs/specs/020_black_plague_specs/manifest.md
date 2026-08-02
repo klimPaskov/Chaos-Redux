@@ -1,5 +1,7 @@
 # Package Manifest
 
+> Documentation reconciliation, 2026-08-02: this manifest retains the original planning-package inventory and integrity snapshot. The current static runtime facts below supersede the former blanket "not implemented in this environment" line; the integrity table is historical until the package is regenerated. See `docs/plans/020_black_plague_plans/subagent_handoffs/2026-08-02_event20_documentation_reconciliation_handoff.md` for the evidence and remaining blockers.
+
 ## Package summary
 
 - Event: 20 Black Plague
@@ -8,9 +10,14 @@
 - Total words excluding this manifest: **67,242**
 - Total bytes excluding this manifest: **440,452**
 - Goal prompt length: **3,998 characters before its final newline**
-- Planning status: revised complete design handoff
+- Planning status: revised complete design handoff with current static-runtime reconciliation
 - Incorporated corrections: instant triggerable scenario, Black Plague-specific decisions inside the shared disease category, and black mapmode fill for established Black Plague states
-- Gameplay, assets, audio, workbook, and in-game validation status: not implemented in this environment
+- Runtime identity: exactly two Rat tags, reusable `RTA` and separate `RTX`; no additional Rat country tags are permitted
+- Focus surfaces: 51 RTA focus nodes and 71 RTX focus nodes are the current documented runtime counts
+- Native last-response missions: `Hold the Line` and `Secure the Refuge` use native `activate_mission` and `days_mission_timeout` declarations
+- Promoted visual/audio evidence: the dedicated weapon-delivery icon, source-frame Rat King portrait, source-frame Royal Burrows seal, and three 44.1 kHz Event 020 WAVs are wired or registered in their owning runtime surfaces
+- Model boundary: no bespoke 3D models are required or planned; the registered infantry entity remains the accepted Rat visual consumer
+- In-game validation: not run in this documentation pass; live playback, scenario, mission, balance, and release-attribution checks remain parent/user-owned
 
 ## Contents
 
