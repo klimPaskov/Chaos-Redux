@@ -10,7 +10,7 @@ It is not battlefield dissemination. Battlefield delivery remains in `common/rai
 
 1. Complete the matching biological-agent project and establish an authenticated CBRN program.
 2. Reach Operational Chemical Readiness and adopt a use policy that authorizes the selected foreign controller.
-3. Choose the exact-state covert sabotage decision family. It selects the combined public network in one state and remains the lower-profile espionage route; strategic and battlefield biological delivery continue to use their own raid surfaces.
+3. Choose the exact-state covert sabotage decision family. It selects the combined public network in one state and remains the lower-profile espionage route. Strategic and battlefield biological delivery continue to use their own raid surfaces.
 4. Select one mutually exclusive timed preparation posture for the current doctrine posture. The decision reserves the exact agent payload model and required support equipment before preparation and allocates Command Power.
 5. Maintain the exact actor, victim controller, selected state, policy, readiness, route, and agent context until the chosen surface resolves.
 6. Resolve failure, limited success, success, or critical success. Limited and full releases enter `bio_lifecycle_dispatch_seed` through `bio_lifecycle_route.food_water_medical_sabotage`.

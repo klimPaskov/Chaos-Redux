@@ -13,7 +13,7 @@ The registered clusters are:
 - **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): repeated Event 013 disaster seasons that grow from local incidents into varied, regional, and abnormal sequences as chaos rises.
 - **Formables** (`constant:event_cluster_id.formables = 6`): negotiated restoration and union projects. Africa Is One is its required Severe member: a protection-first Charter League can grow through aid, guarantees, liberation recognition, consent, constitutional routes, and rival settlements without instant annexation or continent-wide cores. The repeatable cluster can accept later formable members without changing Event 12's Fire-Once identity.
 - **Economy (pos)** (`constant:event_cluster_id.economy_positive = 7`): beneficial economic shocks with persistent development choices, represented by the repeatable Resources Found field system.
-- **Diseases** (`constant:event_cluster_id.diseases = 8`): severe disease outbreaks with public state conditions, transport and occupation spread, and response work that must be contained rather than removed instantly. Event 020, Black Plague, is the first required member.
+- **Diseases** (`constant:event_cluster_id.diseases = 8`): severe disease outbreaks with public state conditions, transport and occupation spread, and response work that requires sustained containment. Event 020, Black Plague, is the first required member.
 
 ## Runtime Flow
 
@@ -85,15 +85,15 @@ Current membership:
 | Natural Disasters | Event 13, Wider Disaster Seasons varied season | Medium | 60% optional participation from Gathering Storm, tier 1 |
 | Natural Disasters | Event 13, Regional Cascades season | High | 60% optional participation from Rising Chaos, tier 2 |
 | Natural Disasters | Event 13, Abnormal Paths season | Severe | 35% optional participation from Chaos, tier 3 |
-| Formables | Event 12, Africa Is One | Severe | Required member at Chaos Tier 4; the repeatable cluster unlocks at Chaos Tier 3 |
+| Formables | Event 12, Africa Is One | Severe | Required member at Chaos Tier 4. The repeatable cluster unlocks at Chaos Tier 3 |
 | Economy (pos) | Event 18, Resources Found | Medium | Required repeatable member |
-| Diseases | Event 20, Black Plague | Severe | Required one-time member; uses the shared disease response category and state-targeted containment loop |
+| Diseases | Event 20, Black Plague | Severe | Required one-time member. Uses the shared disease response category and state-targeted containment loop |
 
 When Event 17 is queued as a Diplomatic Panic member, its normal pre-fire helper builds the weighted eligible-minor pool and saves its own `random_faction_target_country`. The cluster route does not prefer the current player or reuse another member's actor as the Event 17 target.
 
 The Natural Disasters rows are logical Event 013 season slots. They are not Event 046, 051, 099, 043, or 120 members. When Event 013 is the selected trigger event, only the first matching slot is promoted to required status. Later duplicate slots keep their optional participation rolls. Every slot that fires calls the Event 013 public API and creates one Event 013 history row for that genuine season. The cluster itself retains one separate cluster history row and uses the first prepared affected country as its actor. Each logical slot persists its exact target state and country, evolution, severity, presentation policies, and scaling context before it enters the pending queue, so overlapping cluster launches cannot borrow another slot's disaster context.
 
-Resources Found is the single Economy (pos) member. The cluster uses the same Event 018 pre-fire preparation as ordinary automatic firing, so it chooses one valid owner and exact owned/controlled state before dispatch. A fresh discovery and a repeat enrichment are both valid outcomes. The cluster remains Medium danger even when an enabled evolution later deepens that field, because cluster danger classifies the beneficial economic entry rather than revealing its hidden escalation paths.
+Resources Found is the single Economy (pos) member. The cluster uses the same Event 018 pre-fire preparation as ordinary automatic firing, so it chooses one valid owner and exact owned/controlled state before dispatch. A fresh discovery and a repeat enrichment are both valid outcomes. The cluster remains Medium danger even when an enabled evolution later deepens that field. Cluster danger classifies the beneficial economic entry and does not reveal its hidden escalation paths.
 
 ## Member Order And Cooldown
 
@@ -130,7 +130,7 @@ Cluster history is stored separately from normal event history:
 - Cluster rows and details include a checkbox that enables or disables automatic cluster firing. The trigger button in cluster details force-fires the selected cluster.
 - The Event Logs footer checkbox switches to cluster mode while the Clusters tab is active, enabling or disabling every registered cluster without changing individual event enablement.
 
-The cluster log records the cluster even though member events still appear in normal history. This lets the player see both the broad incident and each event's own fired/log state, while pacing remains attached to the cluster firing.
+The cluster log records the broad incident. Member events still appear in normal history, and pacing remains attached to the cluster firing.
 
 ## Settings Integration
 

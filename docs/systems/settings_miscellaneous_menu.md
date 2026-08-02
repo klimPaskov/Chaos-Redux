@@ -37,7 +37,7 @@ The shared pressure helpers live in:
 - `common/script_constants/crisis_pressure_constants.txt`
 - `common/scripted_effects/chaosx_crisis_pressure_effects.txt`
 
-Communist spread now uses the setting when a player-controlled country has active communist state control, intervention targets, emergency pressure, or a communist rebel war. While active, spread, escalation, and sabotage receive higher chance weights and shorter cooldowns; AI-only crisis fronts continue to use normal tuning.
+Communist spread now uses the setting when a player-controlled country has active communist state control, intervention targets, emergency pressure, or a communist rebel war. While active, spread, escalation, and sabotage receive higher chance weights and shorter cooldowns. AI-only crisis fronts continue to use normal tuning.
 
 ## Super-event audio behavior
 Super-event playback is routed through the settings-aware sound helper in:
@@ -158,7 +158,7 @@ Important note:
 This change also includes:
 - Tooltip added for the Timer System `Disable Event System` checkbox.
 - `All continents` display changed to simply `All`.
-- Random-event button label updated to reflect ID selection rather than immediate firing.
+- Random-event button label names the selected event ID and does not imply immediate firing.
 
 ## Files touched
 - `common/script_constants/settings_constants.txt`

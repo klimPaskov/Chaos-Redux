@@ -55,7 +55,7 @@ The trigger button opens a separate confirmation window. Confirming reads the st
 
 The Zombie Apocalypse scenario launches hostile outbreaks according to the selected type. Diverse outbreaks always include at least one standard zombie outbreak so the normal cure path remains available, then guarantee coverage of the special zombie profiles, including Wendigo at maximum intensity. Random outbreaks roll profiles independently. Single-profile types use the selected profile everywhere. Connected outbreak creates one concentrated front.
 
-Scenario-created weaponized outbreaks are live special zombie types, but they do not create reviewable weaponization profiles. Profile review decisions are reserved for outbreaks that were designed by a country through the weaponized-zombie project chain.
+Scenario-created weaponized outbreaks are live special zombie types. They do not create reviewable weaponization profiles. Profile review decisions are reserved for outbreaks designed by a country through the weaponized-zombie project chain.
 
 Intensity changes outbreak count, initial affected states, spawned divisions, and starting pressure.
 
@@ -75,9 +75,9 @@ Intensity adds an extra one-time army package after all breakaways exist. Each b
 
 ### SCN-004: Final Silence
 
-The Final Silence scenario starts the Event 003 terminal world-end branch immediately from the current player country. The launcher becomes the surviving Realm-side authority for the strike sequence, sets `world_end` and `world_end_final_silence`, displays the matching Final Silence super event, locks global air contamination at `100%`, sends witness popups to other countries, applies the first strike wave, and schedules the existing follow-up wave event until the world-end branch completes. The shared wave logic queues visible `launch_nuke` effects for every state in the world while lethal population and wasteland processing remains on the non-Realm target states.
+The Final Silence scenario starts the Event 003 terminal world-end branch immediately from the current player country. The launcher becomes the surviving Realm-side authority for the strike sequence, sets `world_end` and `world_end_final_silence`, displays the matching Final Silence super event, locks global air contamination at `100%`, sends witness popups to other countries, applies the first strike wave, and schedules the existing follow-up wave event until the world-end branch completes. The shared wave logic queues visible `launch_nuke` effects for every state in the world. Lethal population and wasteland processing remains on the non-Realm target states.
 
-The nuclear type uses the normal Final Silence payload and removes `75%` of affected non-Realm state population. The thermonuclear type sets `world_end_final_silence_thermonuclear`, uses the thermonuclear super-event/audio ID, launches thermonuclear visual strikes, and removes `95%` of affected non-Realm state population while applying the stronger thermonuclear fallout values already defined by the Holy Realm system. Intensity does not change this scenario. It keeps the canonical four-wave Final Silence sequence intact.
+The nuclear type uses the normal Final Silence payload and removes `75%` of affected non-Realm state population. The thermonuclear type sets `world_end_final_silence_thermonuclear`, uses the thermonuclear super-event/audio ID, launches thermonuclear visual strikes, and removes `95%` of affected non-Realm state population. It also applies the stronger thermonuclear fallout values already defined by the Holy Realm system. Intensity does not change this scenario. It keeps the canonical four-wave Final Silence sequence intact.
 
 ### SCN-005: The World in Fury
 
@@ -85,7 +85,7 @@ The World in Fury scenario seeds dispersed Fury actors through the existing Fury
 
 ### SCN-006: Death
 
-The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death, but it has only one setup type: Instant Outbreak. It consumes a hidden island origin, intensity-scaled extra islands, and at least one mainland reveal state immediately. This bypass does not set the Chaos Meter, record natural evolution stages by shortcut, or start the Death world-end branch.
+The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death. It has one setup type: Instant Outbreak. It consumes a hidden island origin, intensity-scaled extra islands, and at least one mainland reveal state immediately. This bypass does not set the Chaos Meter, record natural evolution stages by shortcut, or start the Death world-end branch.
 
 Intensity controls the starting footprint and starting ghost hosts. Low creates one weak passive host, Medium creates two weak passive hosts, High creates two stronger hosts, and Maximum creates four stronger hosts. After launch, Death escalates through the same natural pulses, deaths, focus gates, evolution records, and world-end requirements as a normal Death crisis.
 
@@ -95,13 +95,13 @@ Disaster Barrage starts one Event 013 season in the launching country through `c
 
 The five types select Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue. Low starts a varied local season. Medium uses regional severity and full aftermath work. High uses catastrophic severity and emergency aftermath work. Maximum temporarily opens abnormal family access for the launch, uses abnormal severity and abnormal follow-up paths, then removes the temporary access flag. Full Catalogue uses major-only news policy to control global reporting.
 
-The scenario stores one Event 013 history row through `natural_disaster_log_mode.scenario_history`. It never sets `world_end` or another terminal flag. Launch is unavailable when a terminal world-end state is active or the selected crisis type has no physically compatible controlled state. After weighted family draws, Event 013 exhausts only that selected type's valid family pool; a same-chain rejection receives an explicit Barrage notice. It does not use a periodic world on-action.
+The scenario stores one Event 013 history row through `natural_disaster_log_mode.scenario_history`. It never sets `world_end` or another terminal flag. Launch is unavailable when a terminal world-end state is active or the selected crisis type has no physically compatible controlled state. After weighted family draws, Event 013 exhausts only that selected type's valid family pool. A same-chain rejection receives an explicit Barrage notice. It does not use a periodic world on-action.
 
 ### SCN-008: Every Banner Rises
 
-Every Banner Rises launches Event 006 through the shared frozen Liberation transaction. The allocator audit exposes 149 publishers, of which 138 selectable country packages are current-map-bound and 13 are non-selectable vanilla route overlays; all four intensities attempt the same 138 country rows, while 55 selectable identities without a unique accepted state remain disabled and appear separately in the frozen result. Living tags, unready playable packages, invalid scopes, protected host remnants, reservation-group conflicts, Event 005 collisions, and failed live validation are rejected before ownership changes.
+Every Banner Rises launches Event 006 through the shared frozen Liberation transaction. The allocator audit exposes 149 publishers. Of those, 138 selectable country packages are current-map-bound and 13 are non-selectable vanilla route overlays. All four intensities attempt the same 138 country rows. Fifty-five selectable identities without a unique accepted state remain disabled and appear separately in the frozen result. Living tags, unready playable packages, invalid scopes, protected host remnants, reservation-group conflicts, Event 005 collisions, and failed live validation are rejected before ownership changes.
 
-Low, Medium, High, and Maximum select anchor, compact, extended, and extended territory packages while scaling forces, stocks, institutions, ambitions, and route access. Great Partition advances territory by one additional tier before reservation, capped at the accepted non-overlapping extension. Six numeric type families back eight player-facing modes because Universal Belligerence exposes three independently selectable rules. The 32-cell runtime acceptance matrix covers each mode at all four intensities. The result event reports releases, hosts, wars, league membership, territory, forces, and transaction proof; its decision ledger exposes every blocked package and exact rejection reason.
+Low, Medium, High, and Maximum select anchor, compact, extended, and extended territory packages while scaling forces, stocks, institutions, ambitions, and route access. Great Partition advances territory by one additional tier before reservation, capped at the accepted non-overlapping extension. Six numeric type families back eight player-facing modes because Universal Belligerence exposes three independently selectable rules. The 32-cell runtime acceptance matrix covers each mode at all four intensities. The result event reports releases, hosts, wars, league membership, territory, forces, and transaction proof. Its decision ledger exposes every blocked package and exact rejection reason.
 
 The implementation contract, files, assets, and test matrix are documented in `docs/events/006_independence_wave/systems/triggerable_scenario.md`.
 
@@ -149,28 +149,10 @@ The catalog workbook records SCN-010 at `Scenarios!A10:F10`. Its public name, fi
 
 The Unbidden Muster launches Event 019 as an immediate military crisis without requiring the ordinary event, evolution, chaos, or date progression. The Barracks Overflow creates conventional formation revolts, The Arsenal Draw distributes uneven specialist materiel, The Generals' Muster places random formations under claimant commands, and The Impossible Host creates parent-isolated nonhuman derivatives from eligible registered families.
 
-Event 019's source proposal used `SCN-008`, but Every Banner Rises already owns
-that ID. IDs 1 through 11 are occupied and Event 020 reserves raw ID 12, so the
-live collision-free identity is `SCN-013`. The dedicated runtime contract is
-documented in `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`.
+Event 019's source proposal used `SCN-008`, but Every Banner Rises already owns that ID. IDs 1 through 11 are occupied and Event 020 reserves raw ID 12, so the live collision-free identity is `SCN-013`. The dedicated runtime contract is documented in `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`.
 
-Low, Medium, High, and Maximum intensity scale the share of countries processed, connected revolt-region coverage, formation lots, front count, additional adjacent wars, and actor manpower. One-state and all-island countries use a same-tag military takeover instead of losing their only state. Every dynamic actor receives a connected noncapital region, new Event 019 formations, and an immediate former-parent war. Maximum is an ongoing global crisis and never sets `world_end`.
+Low, Medium, High, and Maximum intensity scale the share of countries processed, connected revolt-region coverage, formation lots, front count, additional adjacent wars, and actor manpower. One-state and all-island countries use a same-tag military takeover that retains their only state. Every dynamic actor receives a connected noncapital region, new Event 019 formations, and an immediate former-parent war. Maximum is an ongoing global crisis and never sets `world_end`.
 
-The shared window stores the type and intensity until confirmation. Its pure eligibility bridge checks those persistent selectors and the same host, terminal, setup, and duplicate-launch conditions as direct Event 019 callers without writing temporary variables. Confirmation alone copies the live selectors into the raw Event 019 launch effect, so the shared path shows exactly one confirmation. The row sorts at name value `5.75`, after The Hunger Lines and before The World in Fury, while its stable numeric identity is `SCN-013`.
+The shared window stores the type and intensity until confirmation. Its pure eligibility bridge checks those persistent selectors and the same host, terminal, setup, and duplicate-launch conditions as direct Event 019 callers without writing temporary variables. Confirmation alone copies the live selectors into the raw Event 019 launch effect, so the shared path shows exactly one confirmation. The row sorts at name value `5.75`, after The Hunger Lines and before The World in Fury. Its stable numeric identity is `SCN-013`.
 
-The current registry/scenario specialist reaudit and live-final AI, balance,
-performance, isolation, scenario-safety, and exploit reaudit are clean with zero
-P0, P1, or P2 findings. Every gameplay specialist gate is closed. The catalog
-workbook marks SCN-013 and Event 19 `Fully Functional`. The 7/18 regional flag
-package has 91 separate full-flag ImageGen raws, 91
-deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs.
-Visual and runtime rows pass, and the independent remediation re-audit handoff
-`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-is PASS, clearing the regional asset gate for parent-owned package promotion.
-The machine JSON retains its immutable literal
-`candidate_requires_independent_visual_review` processor-state value. Parent
-workbook/catalog export and reconciliation are complete, SCN-013 and Event 19
-now read `Fully Functional`, and package inventory is complete at 33/33 current
-files. The final completion audit is PASS with P0/P1/P2 = 0, so no closure gate
-remains. The old `regional_variants/` seven-motif
-composite pipeline and its 7/16 validation records are archival evidence only.
+The current registry/scenario specialist reaudit and live-final AI, balance, performance, isolation, scenario-safety, and exploit reaudit are clean with zero P0, P1, or P2 findings. Every gameplay specialist gate is closed. The catalog workbook marks SCN-013 and Event 19 `Fully Functional`. The 7/18 regional flag package has 91 separate full-flag ImageGen raws, 91 deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs. Visual and runtime rows pass, and the independent remediation re-audit handoff `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS, clearing the regional asset gate for parent-owned package promotion. The machine JSON retains its immutable literal `candidate_requires_independent_visual_review` processor-state value. Parent workbook/catalog export and reconciliation are complete, SCN-013 and Event 19 now read `Fully Functional`, and package inventory is complete at 33/33 current files. The final completion audit is PASS with P0/P1/P2 = 0, so no closure gate remains. The old `regional_variants/` seven-motif composite pipeline and its 7/16 validation records are archival evidence only.
