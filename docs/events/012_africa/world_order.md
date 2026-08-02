@@ -11,7 +11,7 @@ No response grants African membership, integration, annexation, or cores. The fo
 ## State flow
 
 1. `chaosx.nr12.309` calls `africa_initialize_scramble_and_world_packages` once.
-2. One explicit post-unification census registers foreign majors, faction leaders, and governments with African holdings. No recurring daily, weekly, or monthly world scan exists.
+2. One explicit post-unification census registers foreign majors, faction leaders, and governments with African holdings. Its first bounded sweep prioritises eligible non-African majors, faction leaders, and current African-state owners that pass the shared expedition material-readiness gate; a second bounded sweep fills any remaining roster slots from the same registration pool. No recurring daily, weekly, or monthly world scan exists.
 3. Each participant explicitly chooses recognition, conditional recognition, sanctions, or an ultimatum in `africa_world_order.1`.
 4. Four timed phases track diplomatic shock, coalition formation, intervention or settlement, and aftermath.
 5. Intervention can produce a real war. Pairwise on-actions record war, capitulation, and peace without periodic country iteration.
@@ -36,17 +36,17 @@ When no external candidate carries the reviewed `africa_world_package_implementa
 
 ### Scramble interest census and response roster
 
-The one-time participant census is bounded at `constant:africa_scramble_response.participant_census_cap` and writes explicit host-owned arrays for former colonial relationships, ideological rivals, resource-nationalisation exposure, fear of a complete external continental unifier, and South Africa or Allied relationships. These arrays are frozen when `africa_scramble_interest_census_complete` is set and are never rebuilt by a recurring on-action.
+The one-time participant census is bounded at `constant:africa_scramble_response.participant_census_cap` and writes explicit host-owned arrays for former colonial relationships, ideological rivals, resource-nationalisation exposure, fear of a complete external continental unifier, and South Africa or Allied relationships. The first bounded sweep admits candidates that pass `africa_ai_scramble_expedition_materially_ready`; the second bounded sweep fills remaining capacity without changing the cap or registration kernel. These arrays are frozen when `africa_scramble_interest_census_complete` is set and are never rebuilt by a recurring on-action.
 
 `africa_scramble_enlist_coalition_member` and `africa_scramble_remove_coalition_member` keep the participant flag, the host counter, and `africa_scramble_coalition_members` in lockstep under the six-member cap. Recognition leaves the coalition, sanctions enlist a bounded member, and ultimatum issuers enlist as expedition planners.
 
 Recognition, conditional recognition, sanctions, ultimatums, expedition launches, and aftermath closure now carry material equipment, convoy, political-power, stability, and war-support consequences from `africa_scramble_response` constants. `africa_scramble_apply_class_response_consequences` records host pressure and integration burden for every accepted interest class, while `africa_world_order.8` reports the multi-member expedition response.
 
-The expedition launch iterates only the frozen coalition array and gives every eligible planner a war role and expedition matériel before declaring the existing treaty-enforcement war. `africa_scramble_cleanup_response_roster` clears transient participant and class state, arrays, and class counters after the settlement or defeat log is queued while preserving the host's outcome summary flags.
+The expedition launch iterates only the frozen coalition array and gives every eligible planner a war role and expedition matériel after rechecking the shared material-readiness predicate, before declaring the existing treaty-enforcement war. `africa_scramble_cleanup_response_roster` clears transient participant and class state, arrays, and class counters after the settlement or defeat log is queued while preserving the host's outcome summary flags.
 
 ## AI policy binding
 
-The exact 64-profile registry now controls the Scramble and world-order campaign instead of remaining a read-only scoring table. Static registration is complete, but two evidence blockers remain: the Scramble classifier does not itself prove material readiness, and the strategy-plan probability adapter returned no usable surface. No campaign simulation or balance completion claim follows from the registry.
+The exact 64-profile registry now controls the Scramble and world-order campaign instead of remaining a read-only scoring table. The Scramble classifier and the frozen-census first sweep share `africa_ai_scramble_expedition_materially_ready`, and final coalition launch checks the same predicate again before assigning expedition materiel or declaring war. Static registration is complete, but the strategy-plan probability adapter returned no usable surface and no campaign simulation or balance completion claim follows from the registry.
 
 - `africa_ai_run_profiled_late_action_cycle` is an AI-only host decision with a fourteen-day re-enable period. It runs only for the current Event 12 host and reads the maintained Scramble participant, package candidate, package actor, and relationship arrays. It performs no country census.
 - The host refresh composes its regional overlay, constitution, and full-host playbook. A selected target then contributes its relationship, foreign-power, high-chaos, or continent profile before final approval.
