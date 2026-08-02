@@ -6,6 +6,8 @@ The sovereignty board is the final hosted Directorate crisis. It does not select
 
 The board is decision-led and remains inside the host's existing national-focus tree. It opens after the fourth and final logged evolution, `Sovereign Science`, unless the disabled-evolution safety route has already concluded the chain through the regional compact.
 
+The deadline and outcome reports also resolve a scripted policy clause from the recorded Evolution IV choice. The clause names a supervised compact, binding charter, concession, military seizure, foreign containment, or refusal before the outcome text, with an unrecorded safety line for migrated or malformed state. It is presentation only: the existing containment resolver remains responsible for authority, dependence, independent capacity, grievance, project history, territory, character ownership, and Kruger State formation.
+
 ## Sequence
 
 1. Evolution IV records one response: charter, concession, military seizure, foreign containment, or refusal. Concession is offered only after institutional capture is already proven.
