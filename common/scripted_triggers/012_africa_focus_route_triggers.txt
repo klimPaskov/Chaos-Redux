@@ -96,6 +96,25 @@ africa_focus_ai_route_pressure = {
 	}
 }
 
+# COUNTRY scope. Compact hosts prioritize their two proof nodes while their
+# viability, access, overlap, or opening obligations remain unresolved. This
+# keeps the 29 compact playbooks from inheriting only the generic constitutional
+# focus pressure used by full hosts.
+africa_focus_ai_compact_host_pressure = {
+	africa_is_compact_host_playbook_country = yes
+	OR = {
+		NOT = { has_country_flag = africa_compact_distinct_role }
+		NOT = { has_country_flag = africa_compact_host_viability_proven }
+		NOT = { has_country_flag = africa_first_obligation_proved }
+		has_country_flag = africa_overlap_dispute_active
+		has_country_flag = africa_project_access_damaged
+		AND = {
+			has_variable = africa_current_phase
+			check_variable = { africa_current_phase < constant:africa_action_phase.regional }
+		}
+	}
+}
+
 africa_focus_has_grounded_origin = {
 	OR = {
 		has_country_flag = africa_origin_route_federal_union
