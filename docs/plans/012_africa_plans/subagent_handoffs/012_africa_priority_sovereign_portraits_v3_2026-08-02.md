@@ -35,7 +35,7 @@ The source masters, processed PNGs, DDS conversion inputs, decoded DDS review im
 
 ## Runtime source boundary
 
-The 16 DDS files remain stable asset registrations, but the parent-owned character effects now require an independently reviewed source-locked portrait before adding a country-leader role. Kanem-Bornu, Harar, Kongo, and Merina satisfy that gate. Held historical rows remain role-dormant despite their installed review assets; those ImageGen outputs are not treated as sourced historical people and cannot silently fill a source gap.
+The 16 DDS files remain stable asset registrations, but the parent-owned character effects now require an independently reviewed source-locked portrait before adding a country-leader role. Kanem-Bornu, Harar, Kongo, Merina, and Zulu as Dinuzulu kaCetshwayo satisfy that gate. Held historical rows remain role-dormant despite their installed review assets; those ImageGen outputs are not treated as sourced historical people and cannot silently fill a source gap.
 
 ## Remaining boundaries
 
