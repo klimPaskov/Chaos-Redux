@@ -1233,6 +1233,7 @@ independence_wave_scenario_freeze_summary = {
 				compare = equals
 			}
 			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+			has_global_flag = independence_wave_scenario_committed
 		}
 		for_each_loop = {
 			array = global.independence_wave_plan_selected_package_ids
@@ -1250,6 +1251,31 @@ independence_wave_scenario_freeze_summary = {
 			add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = independence_wave_scenario_summary_reason }
 		}
 		set_variable = { global.independence_wave_scenario_host_count = global.liberation_plan_hosts^num }
+	}
+	else = {
+		# A plan that failed before or after the ownership barrier is not a
+		# release. Keep the selected rows visible as failed/blocked rows so the
+		# summary cannot report countries that were rolled back or never created.
+		for_each_loop = {
+			array = global.independence_wave_plan_selected_package_ids
+			value = independence_wave_scenario_summary_package_id
+			add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = independence_wave_scenario_summary_package_id }
+		}
+		for_each_loop = {
+			array = global.independence_wave_plan_selected_package_ids
+			value = independence_wave_scenario_summary_package_id
+			add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = global.independence_wave_scenario_last_failure }
+		}
+		for_each_loop = {
+			array = global.liberation_plan_rejected_package_ids
+			value = independence_wave_scenario_summary_package_id
+			add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = independence_wave_scenario_summary_package_id }
+		}
+		for_each_loop = {
+			array = global.liberation_plan_rejection_reasons
+			value = independence_wave_scenario_summary_reason
+			add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = independence_wave_scenario_summary_reason }
+		}
 	}
 	set_variable = { global.independence_wave_scenario_released_count = global.independence_wave_scenario_released_package_ids^num }
 	set_variable = { global.independence_wave_scenario_bound_blocked_count = global.independence_wave_scenario_blocked_package_ids^num }

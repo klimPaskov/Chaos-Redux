@@ -27,6 +27,41 @@ def require(condition: bool, message: str, errors: list[str]) -> None:
 		errors.append(message)
 
 
+def extract_script_block(text: str, name: str) -> str:
+	match = re.search(rf"(?m)^{re.escape(name)}\s*=\s*\{{", text)
+	if match is None:
+		raise ValueError(f"missing scripted block {name}")
+	depth = 0
+	quoted = False
+	escaped = False
+	comment = False
+	for index in range(match.end() - 1, len(text)):
+		char = text[index]
+		if comment:
+			if char in "\r\n":
+				comment = False
+			continue
+		if quoted:
+			if escaped:
+				escaped = False
+			elif char == "\\":
+				escaped = True
+			elif char == '"':
+				quoted = False
+			continue
+		if char == "#":
+			comment = True
+		elif char == '"':
+			quoted = True
+		elif char == "{":
+			depth += 1
+		elif char == "}":
+			depth -= 1
+			if depth == 0:
+				return text[match.start() : index + 1]
+	raise ValueError(f"unterminated scripted block {name}")
+
+
 def main() -> int:
 	errors: list[str] = []
 	matrix = MATRIX.read_text(encoding="utf-8-sig")
@@ -39,6 +74,11 @@ def main() -> int:
 	joint = read("common/scripted_effects/005_006_liberations_collision_effects.txt")
 	dispatch = read("common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt")
 	decisions = read("common/decisions/006_independence_wave_scenario_decisions.txt")
+	try:
+		scenario_summary = extract_script_block(scenario, "independence_wave_scenario_freeze_summary")
+	except ValueError as exc:
+		errors.append(str(exc))
+		scenario_summary = ""
 
 	cell_ids = re.findall(r"`(SCN-008/[^`]+)`", matrix)
 	require(len(cell_ids) == 32 and len(set(cell_ids)) == 32, f"expected 32 unique SCN-008 cells, found {len(set(cell_ids))}", errors)
@@ -88,6 +128,21 @@ def main() -> int:
 			f"missing static witness: {label} ({needle})",
 			errors,
 		)
+	committed_gate = scenario_summary.find("has_global_flag = independence_wave_scenario_committed")
+	released_append = scenario_summary.find(
+		"add_to_array = { array = global.independence_wave_scenario_released_package_ids"
+	)
+	require(
+		committed_gate >= 0 and released_append > committed_gate,
+		"failed SCN-008 summary can publish selected rows as released without the committed flag",
+		errors,
+	)
+	require(
+		"add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = independence_wave_scenario_summary_package_id }" in scenario_summary
+		and "add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = global.independence_wave_scenario_last_failure }" in scenario_summary,
+		"failed SCN-008 summary does not retain selected rows and failure reason in blocked arrays",
+		errors,
+	)
 
 	# Target selection must clear marks both before target selection and after the
 	# rule-specific dispatch. This is the source-level repeated-launch guarantee.

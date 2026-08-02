@@ -563,11 +563,13 @@ def main() -> int:
 		former_host_type = extract_script_block(scenario, "independence_wave_scenario_start_universal_belligerence")
 		separation_type = extract_script_block(scenario, "independence_wave_scenario_apply_type")
 		host_war = extract_script_block(scenario, "independence_wave_scenario_start_host_war")
+		scenario_summary = extract_script_block(scenario, "independence_wave_scenario_freeze_summary")
 	except ValueError as exc:
 		errors.append(str(exc))
 		former_host_type = ""
 		separation_type = ""
 		host_war = ""
+		scenario_summary = ""
 	# Universal Former Hosts consumes a distinct-host ledger, but Wars of
 	# Separation deliberately keeps one viable host war per release. Guard this
 	# boundary so a future refactor cannot leak the temporary uniqueness policy
@@ -592,6 +594,21 @@ def main() -> int:
 		and "global.independence_wave_scenario_belligerence_targets" in host_war
 		and "remove_from_array = { array = global.independence_wave_scenario_belligerence_targets" in host_war,
 		"SCN-008 host-war helper lacks bounded former-host target reservation/rollback",
+		errors,
+	)
+	committed_gate = scenario_summary.find("has_global_flag = independence_wave_scenario_committed")
+	released_append = scenario_summary.find(
+		"add_to_array = { array = global.independence_wave_scenario_released_package_ids"
+	)
+	require(
+		committed_gate >= 0 and released_append > committed_gate,
+		"SCN-008 summary can publish selected rows as released without the committed flag",
+		errors,
+	)
+	require(
+		"add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = independence_wave_scenario_summary_package_id }" in scenario_summary
+		and "add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = global.independence_wave_scenario_last_failure }" in scenario_summary,
+		"SCN-008 failed summary does not preserve selected rows as blocked with the failure reason",
 		errors,
 	)
 

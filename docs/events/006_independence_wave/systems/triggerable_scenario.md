@@ -23,7 +23,7 @@ The scenario does not bypass living-tag protection, Event 005 origin ownership, 
 6. The allocator changes its expected release count to the number that actually passed every reservation proof.
 7. The ordinary Event 006 lock, host-capital preparation, country creation, state transfer, package initialization, history commit, and Liberation commit execute once.
 8. Only a committed release receives intensity and type setup.
-9. The summary event freezes release, host, war, league, territory, force, and blocked-candidate values.
+9. The summary event freezes release, host, war, league, territory, force, and blocked-candidate values. It copies selected rows into the released ledger only when the committed flag is present; a failed or rolled-back plan keeps those rows in the blocked ledger with the transaction failure reason.
 
 The global plan arrays remain authoritative until the summary is frozen. Type-specific wars, patron channels, and league setup occur only after the ownership transaction commits.
 
