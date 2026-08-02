@@ -69,7 +69,7 @@ The actual capitulation or annexation victor becomes the global aftermath custod
 
 The custodian receives four categories: treaty, inspection, reconstruction, and project remnants.
 
-The archive, regional-settlement, and each project-remnant hearing append a custodian-policy clause selected from the current government. Democratic custodians are asked to publish evidence and hear affected communities; communist custodians frame the inheritance as a public industrial trust; fascist custodians prioritize classification and command; non-aligned and unusual custodians must negotiate a doctrine while the settlement is still being built. The clause is descriptive only and does not replace the existing ideology-weighted AI, decision gates, legal outcomes, or remnant receipts.
+The archive, regional-settlement, and each project-remnant hearing append a custodian-policy clause selected from the current government. Democratic custodians are asked to publish evidence and hear affected communities; communist custodians frame the inheritance as a public industrial trust; fascist custodians prioritize classification and command; non-aligned and unusual custodians must negotiate a doctrine while the settlement is still being built. The containment settlement reports additionally retain the host-archetype clause beside the recorded sovereignty policy, so each resolved `.31` outcome keeps its institutional context. The clauses are descriptive only and do not replace the existing ideology-weighted AI, decision gates, legal outcomes, or remnant receipts.
 
 All twenty-two decisions use event-owned icons, political costs, exact factory occupancy, equipment where relevant, and bounded durations.
 
