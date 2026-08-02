@@ -191,7 +191,7 @@ Opening losses are recorded once in the shared Deaths system and Event 20 total.
 
 ## RTA carrier and internal broods
 
-The scenario uses exactly one non-sentient Rat Nation country, RTA. Several independent broods appear during launch as state-scoped RTA basin markers, strength pools, and army allocations. They are not visual placeholders and they are not temporary event armies, but they do not consume additional country tags.
+The scenario uses exactly one non-sentient Rat Nation country, `RTA`. Several separate internal broods appear during launch as state-scoped RTA basin markers, strength pools, and army allocations. They are not visual placeholders and they are not temporary event armies, but they do not consume additional country tags.
 
 Each scenario brood receives:
 
@@ -214,14 +214,14 @@ If the map cannot support the target number of valid broods, the scenario scales
 
 The Rat King appears immediately as a separate country with the Evolution IV package.
 
-The scenario uses a Royal Basin that is separate from the initial independent Rat Nation basins. The Royal Basin is selected from the strongest remaining plague cluster, with preference for:
+The scenario uses a Royal Basin that is separate from the initial internal RTA brood basins. The Royal Basin is selected from the strongest remaining plague cluster, with preference for:
 
 - high connected infected population
 - at least one defensible capital state
 - rail, port, or major urban value
 - high Rat Infestation
 - enough surrounding plague territory to support royal supply
-- distance from at least some independent broods so the map begins with several visible rat actors
+- distance from at least some internal RTA broods so the map begins with several visible rat actors
 
 The Rat King receives:
 
@@ -234,7 +234,7 @@ The Rat King receives:
 - the deep Rat King focus tree through the coronation and government opening
 - claims or scripted authority over the other broods through the normal royal unification system
 
-The scenario does not transfer every RTA brood to the King during bootstrap. That would erase the requested immediate coexistence of RTA broods and the Rat King. Independent broods remain on the map for an initial royal-consolidation grace period. After that period, normal dominance, allegiance, absorption, and conquest logic resumes.
+The scenario does not transfer every RTA brood to the King during bootstrap. That would erase the requested immediate coexistence of internal RTA broods and the Rat King. Internal brood markers remain on the map for an initial royal-consolidation grace period. After that period, normal dominance, allegiance, absorption, and conquest logic resumes.
 
 The grace period blocks instant scripted annexation only. It does not make human countries safe from rats, stop plague spread, or prevent ordinary wars against rat actors.
 
@@ -430,7 +430,7 @@ Each intensity must be tested as its own start condition.
 
 - four-continent distribution
 - several separate human crisis fronts
-- independent broods remain visible after launch
+- internal RTA brood markers remain visible after launch
 - Rat King survives but does not immediately absorb all broods
 
 ### High
@@ -446,7 +446,7 @@ Each intensity must be tested as its own start condition.
 - tag and division caps prevent runaway performance failure
 - Chaos stops below the world-end gate at bootstrap
 - Evolution V remains locked until live thresholds and focus progress are met
-- Rat King and independent broods coexist at launch
+- Rat King and internal RTA brood markers coexist at launch
 
 ### Cross-case validation
 

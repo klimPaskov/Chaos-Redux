@@ -4,7 +4,7 @@
 
 | Surface | Requirement |
 | --- | --- |
-| Tag handling | finite dormant pool, conflict checked, event-created origin flag, safe cleanup or no reuse |
+| Tag handling | exactly two conflict-checked tags, reusable `RTA` carrier plus separate `RTX` King, event-created origin flags, and safe cleanup |
 | Spawn | one to three qualifying plague states from a connected collapse basin, or a full scenario-selected basin during triggerable bootstrap |
 | Capital | emergence state, guaranteed owned and controlled |
 | Territory | no automatic full-country takeover, plague status preserved |

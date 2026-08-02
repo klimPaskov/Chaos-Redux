@@ -1,6 +1,6 @@
 # Event 020 remaining report art manifest
 
-Status: `complete_pending_parent_wiring`.
+Status: `complete`.
 
 Source mode: generated ImageGen period-documentary imagery. Generation fits because these Black Plague, Rat King, Crown Strike, aftermath, and Doctor Wu bridge scenes are fictional or alternate-history, with no real person, place, archive item, or readable publication represented.
 

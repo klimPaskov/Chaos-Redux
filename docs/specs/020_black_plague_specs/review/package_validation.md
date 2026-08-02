@@ -1,5 +1,7 @@
 # Package Validation
 
+> Historical planning validation note, reconciled 2026-08-02: this file records archive and specification checks, not live gameplay proof. The former independent-Rat-Nation and unresolved registry wording is superseded by the registered Diseases cluster `8`, scenario `SCN-012`, and the two-tag `RTA`/`RTX` contract.
+
 ## Result
 
 The revised Event 20 Black Plague planning package passed its final artifact checks after the user corrections were incorporated. These checks validate the planning files and archive structure. They do not validate unimplemented gameplay.
@@ -23,7 +25,7 @@ The revised Event 20 Black Plague planning package passed its final artifact che
 
 - The scenario is directly launchable through the shared triggerable scenario system, subject only to impossible or terminal conflicts.
 - Scenario intensities seed multiple continents and many states.
-- Scenario setup forces Evolutions I through IV, creates independent Rat Nations, and creates the Rat King.
+- Scenario setup forces Evolutions I through IV, seeds internal broods under the reusable `RTA` carrier, and creates or preserves the separate `RTX` Rat King.
 - Scenario setup does not grant Evolution V or world end.
 - Black Plague-specific decisions appear inside the shared disease category.
 - Cleaning city rats, food storage, sewer, flea, transport, demolition, hospital, quarantine, cordon, and treatment actions are represented.
@@ -41,4 +43,4 @@ The final ZIP is built from the `docs/` tree. The archive receives a CRC test, e
 
 ## Boundaries
 
-No gameplay code, final visual asset, audio file, spreadsheet edit, or in-game balance result is represented as complete. The mapmode resolver, scenario registry identifiers, tag capacity, black fog, and live performance remain implementation work.
+No gameplay code, final visual asset, audio file, spreadsheet edit, or in-game balance result is represented as complete. The live mapmode resolver, scenario transaction behavior, black fog, and performance remain user-owned validation surfaces. The scenario registry identifiers and two-tag capacity are recorded as current static evidence, not unresolved planning work.

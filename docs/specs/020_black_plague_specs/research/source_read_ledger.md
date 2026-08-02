@@ -1,5 +1,7 @@
 # Source Read Ledger
 
+> Historical planning-source ledger, reconciled 2026-08-02: the unavailable-environment notes and proposed cluster/scenario IDs below describe the pre-live planning pass. Current implementation evidence resolves the Diseases cluster as `8`, the triggerable scenario as `SCN-012`, and rat identity as reusable `RTA` plus separate `RTX`. Retain this ledger for provenance only and do not use its proposed-ID statements for new work.
+
 This ledger records every project source file supplied for the Event 20 planning task. Each file was read in full before the specification was drafted. Large files were read in bounded chunks so the review did not rely on truncated previews. Blank trailing CSV rows were inspected and excluded from design interpretation.
 
 ## Read result

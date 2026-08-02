@@ -1,0 +1,23 @@
+# Event 020 Black Plague report and news art manifest
+
+Status: complete for the three requested generated event pictures. The package remains active evidence under `docs/assets/020_black_plague/event_art/`; durable wiring facts are promoted in the Event 020 overview and `interface/020_black_plague_event_pictures.gfx`.
+
+Source mode: generated ImageGen period-documentary or period-news imagery. Generation fits because the Black Plague outbreak and Rat Nation are fictional and need unique scenes; no real person, place, archive item, or readable publication is being represented.
+
+Reference family inspected: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report/` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news/`, including each family contact sheet and cataloged native dimensions.
+
+| Asset | Intended use | Source PNG | Processed PNG | Final DDS | Target size | Proposed sprite | Target GFX | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `report_event_020_black_plague_origin` | First mainland Black Plague outbreak report card. | `docs/assets/020_black_plague/event_art/source/report_event_020_black_plague_origin_source.png` (1536x1024; SHA-256 `105c53ca5588319bbcc9101d875e03860c4002d0726d7a47af6969a5c1303888`) | `docs/assets/020_black_plague/event_art/processed/report_event_020_black_plague_origin.png` (210x176 RGBA; SHA-256 `3724f74cb51462b679caa5d7420a04a4aefc1ec3750beda146196155f0baacb3`) | `gfx/event_pictures/020_black_plague/report_event_020_black_plague_origin.dds` (SHA-256 `468a5a0c0a9e652bc1e3440c17a1b4fa343bc4f1e731b7764bad3b2e84fb6952`) | 210x176 | `GFX_report_event_020_black_plague_origin` | `interface/020_black_plague_event_pictures.gfx` | complete |
+| `report_event_020_rat_emergence` | First organized Rat Nation emergence report card. | `docs/assets/020_black_plague/event_art/source/report_event_020_rat_emergence_source.png` (1370x1148; SHA-256 `5f9059710f935733aab57272783ef9fff86d4e7593cea092389f2adfd20d7dbd`) | `docs/assets/020_black_plague/event_art/processed/report_event_020_rat_emergence.png` (210x176 RGBA; SHA-256 `e897900efdb456d611db36b4906ef1b374d3e0257f26404364e4bb4e38ec3bfb`) | `gfx/event_pictures/020_black_plague/report_event_020_rat_emergence.dds` (SHA-256 `6f3b24853e36cf674ac8fb3679db6467bb4fee95112e1bab0974823833873534`) | 210x176 | `GFX_report_event_020_rat_emergence` | `interface/020_black_plague_event_pictures.gfx` | complete |
+| `news_event_020_black_plague_overseas` | First confirmed overseas port outbreak news strip. | `docs/assets/020_black_plague/event_art/source/news_event_020_black_plague_overseas_source.png` (2022x778; SHA-256 `e3ef4fdb2c47a10314a58918bb3b5492692e34791bf93b857edd39ce701f1f32`) | `docs/assets/020_black_plague/event_art/processed/news_event_020_black_plague_overseas.png` (397x153 grayscale; SHA-256 `8a54307ada7c721588062f2b3b12e1d8d5c4154c20b3664760d217ddc863a4b0`) | `gfx/event_pictures/020_black_plague/news_event_020_black_plague_overseas.dds` (SHA-256 `9e6171aa92b89e96092d21a49ccfc8fbf03946ced1b4393f6d2baaf7ea321118`) | 397x153 | `GFX_news_event_020_black_plague_overseas` | `interface/020_black_plague_event_pictures.gfx` | complete |
+
+Report processing: `tools/process_report_event_image.py` produced exact 210x176 RGBA cards with monochrome-sepia tone, transparent corners, slight tilt, grain, and soft shadow. The report DDS files are one-level 32-bit uncompressed BGRA with exact file length `147968` bytes and alpha byte range 0-255.
+
+News processing: a deterministic Pillow cover crop and grayscale autocontrast pass produced exact 397x153 black-and-white pixels. The news DDS is one-level 32-bit uncompressed BGRA with exact file length `243092` bytes and opaque alpha range 255-255.
+
+Contact sheet: `docs/assets/020_black_plague/event_art/contact_sheet.png`.
+
+Prompt record: `docs/assets/020_black_plague/event_art/prompts/event20_report_news_prompts.md`.
+
+The producer did not edit GFX or gameplay files. Parent wiring for the three assets above is promoted in `events/020_black_death.txt` and `interface/020_black_plague_event_pictures.gfx`; this manifest remains the provenance record for the asset package. The five additional report-card slots are supplied by `docs/assets/020_black_plague/manifests/event20_remaining_report_art_manifest.md` and `docs/assets/020_black_plague/gfx_handoff_remaining_report_art.md`. Royal Burrows, ordinary-defeat, and route/hierarchy surfaces are supplied by their dedicated Event 020 manifests and runtime wiring. Slot-087 defeat aftermath art is supplied by the separate final handoff `2026-08-01_event20_super_event_087_art_handoff.md` and is wired under `interface/020_black_plague_super_events.gfx`.

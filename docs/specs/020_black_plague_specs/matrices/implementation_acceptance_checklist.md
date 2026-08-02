@@ -63,7 +63,7 @@ A completion auditor should mark each item Complete, Partial, Blocked, or Missin
 
 ## Rat Nations
 
-- [ ] finite tag pool is conflict checked
+- [ ] exactly two tags are conflict checked and registered: reusable `RTA` carrier plus separate `RTX` King
 - [ ] every tag has country, history, localisation, flags, focus loading, AI, and cleanup
 - [ ] four origin archetypes work
 - [ ] strong initial army scales with basin
@@ -97,9 +97,9 @@ A completion auditor should mark each item Complete, Partial, Blocked, or Missin
 - [ ] Low, Medium, High, and Maximum create materially different valid setups
 - [ ] many established plague states are distributed across several continents
 - [ ] Evolutions I through IV activate immediately and record once
-- [ ] several independent Rat Nations appear immediately
+- [ ] several internal RTA brood markers appear immediately without creating extra country tags
 - [ ] the separate Rat King appears immediately
-- [ ] Rat Nations and Rat King coexist after bootstrap
+- [ ] RTA internal broods and the RTX Rat King coexist after bootstrap
 - [ ] existing outbreaks and actors are reused without duplication
 - [ ] Chaos floor stops below direct world-end activation
 - [ ] Evolution V and terminal world end remain locked behind accepted live conditions
