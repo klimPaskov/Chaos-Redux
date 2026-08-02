@@ -21,7 +21,7 @@ Repeated production is separated into two steps:
 
 Cancelled or invalidated work does not refund a sunk material or temporal commitment.
 
-The first four foundation reports and the existing clone, machine, xenobiological, temporal, and singularity route dossiers keep the country's history readable through two presentation clauses. `GetBrilliantScientistKrgOriginClause` identifies the charter, rebellion, enclave, or takeover that created the state, while `GetBrilliantScientistKrgPortfolioClause` selects the highest-priority active project-force family reconstructed from the carried ledger. The portfolio clause describes the surviving institution in-world and adds no stage, equipment, unit, technology, meter, or route effect.
+The first four foundation reports, the existing clone, machine, xenobiological, temporal, and singularity route dossiers, and the five foreign-integration reports keep the country's history readable through two presentation clauses. `GetBrilliantScientistKrgOriginClause` identifies the charter, rebellion, enclave, or takeover that created the state, while `GetBrilliantScientistKrgPortfolioClause` selects the highest-priority active project-force family reconstructed from the carried ledger. The portfolio clause describes the surviving institution in-world and adds no stage, equipment, unit, technology, meter, or route effect.
 
 ## Stale-target contract
 
