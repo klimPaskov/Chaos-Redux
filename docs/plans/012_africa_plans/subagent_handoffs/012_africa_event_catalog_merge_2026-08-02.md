@@ -2,13 +2,13 @@
 
 Date: 2026-08-02.
 
-Status: Event 012 workbook fields confirmed in the current dirty workbook; export snapshots refreshed. No commit was created.
+Status: Event 012 workbook fields and export snapshots are clean and reconciled. The catalog remains a status record and does not prove gameplay completion. No workbook or CSV edit was made by this documentation reconciliation.
 
 ## Scope
 
-The accepted Event 012 catalog values were checked against the current `docs/spreadsheets/chaos_redux_events_catalog.xlsx` without replacing the workbook or rewriting unrelated Event 006, Event 016, or Event 020 work.
+The accepted Event 012 catalog values are present in the current `docs/spreadsheets/chaos_redux_events_catalog.xlsx` without replacing the workbook or rewriting unrelated Event 006, Event 016, or Event 020 work.
 
-The target values were already present, so no workbook cell write or CSV content change was needed in this pass. The required exporter was rerun and returned the same snapshot hashes.
+The target values were already present, so no workbook cell write or CSV content change was needed in this pass. The required exporter completed successfully, and the current workbook and export hashes are recorded below.
 
 ## Event 012 fields
 
@@ -19,22 +19,24 @@ The target values were already present, so no workbook cell write or CSV content
 
 ## Validation
 
-- Current workbook SHA256 before and after export: `bf8e0d8ead8f043cfabebd9fc2d07639a6739be4d0ba7904ad406e768fae1424`.
+- Current workbook SHA256: `4b6489d5582ed8be32e10db1d842b2449c49025e06544d386a6d42f1f72c9481`.
 - Workbook sheets remain `Events`, `Clusters`, `Scenarios`, `Info`, and `Legend`.
 - The Events table remains `A1:M1015`.
-- Event 012 row identity remains ID `12`, name `Africa Is One`, cluster `6`, Severe member severity, and Minor Fire-Once type.
+- Event 012 row identity is ID `12`, name `Africa Is One`, cluster `6`, Severe member severity, and Minor Fire-Once type.
+- `Events!M13` remains `Needs Testing`.
+- `Events!I13` retains the accepted gated World-End wording for `The World Is One`, including its uncertified baseline and external-package, rival, W5 pre-install receipt, terminal presentation/audio, unique-model, and native-language gates.
 - The Event 012 row in the exported Events CSV matches the workbook target fields.
-- No workbook save occurred because both accepted target cells were already merged. This preserved all unrelated dirty workbook changes.
-- No temporary workbook or lock file was left behind. A pre-existing 165-byte lock dated 2026-07-31 was verified stale with no Excel process running and removed.
+- `git status -- docs/spreadsheets` is clean.
+- No workbook or CSV file was edited by this documentation pass, and no unrelated catalog work was rewritten.
 
 ## Export results
 
-`python .tools/export_event_catalog_csv.py` completed successfully.
+`python -B .tools/export_event_catalog_csv.py` completed successfully.
 
-- `docs/spreadsheets/chaos_redux_events_catalog.csv`: SHA256 `7b59f52ea145f257f7015ea02e691998ad1dda3d4641c3082c27fcc077568c86`.
-- `docs/spreadsheets/chaos_redux_clusters_catalog.csv`: SHA256 `468115701405df265dba77959d64edc38aa72a61645b1a736bacd889161217c0`.
-- `docs/spreadsheets/chaos_redux_scenarios_catalog.csv`: SHA256 `659ccd2aefae3db6156725395093d654614032d17ea0398ae1f74057ca1c68c6`.
+- `docs/spreadsheets/chaos_redux_events_catalog.csv`: SHA256 `1af83ae91ddc71131b7791c01c3522c02101ea7e2a5e870cffe0af435a1aaf10`.
+- `docs/spreadsheets/chaos_redux_clusters_catalog.csv`: SHA256 `468115701405df265dba77959d64ed38aa72a61645b1a736bacd889161217c0`.
+- `docs/spreadsheets/chaos_redux_scenarios_catalog.csv`: SHA256 `56be4ed04687f84b47746c6e4a9dd0adec7859d787f80d2ee4cfdf406249252f`.
 
 ## Remaining boundary
 
-The catalog records the terminal route and status without claiming full Event 012 completion. W5 certification, terminal presentation and audio, unique models, and native-language review remain gated as stated in `Events!I13`.
+The clean catalog/export pair records the accepted terminal route wording and `Needs Testing` status without claiming full Event 012 completion. W5 certification, terminal presentation and audio, unique models, native-language review, and live gameplay acceptance remain gated as stated in `Events!I13`.
