@@ -171,6 +171,8 @@ The twenty-two aftermath decision sprites and four category sprites are register
 
 Their exact runtime paths and visual meanings are listed in `docs/assets/016_brilliant_scientist/aftermath_decision_icon_contract.md`.
 
+The archive and project-remnant hearings `chaosx.nr16.301`, `.303`, and `.310` through `.318` use `GFX_report_event_016_brilliant_scientist_aftermath_remnant`, a dedicated `210x176` documentary report scene. It is intentionally shared across those hearings because their descriptions identify the surviving family and legal choice; project-specific aftermath variants remain a separate content tranche.
+
 ## Future extensions
 
 The settlement can later support diplomatic participation by additional coalition members, but only through a reviewed design that preserves one authoritative custodian and prevents duplicate rewards.
