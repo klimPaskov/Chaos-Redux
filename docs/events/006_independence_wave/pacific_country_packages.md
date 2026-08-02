@@ -75,6 +75,11 @@ advisor portraits, dossier derivatives, or small consumers are authorized. CHU
 Karim Tinchurin v3 and ASY Haydo remain rights/date-gated evidence, and the
 alternate ASY Barsoum package remains pending independent audit.
 
+That package now has the v93 independent audit recorded: identity/likeness,
+HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with
+a low-resolution group-photo caveat. Parent release acceptance is still required;
+no runtime, DDS, GFX, advisor, or small-portrait promotion occurred.
+
 ## Availability and release safety
 
 The planner uses exact immutable availability wrappers:

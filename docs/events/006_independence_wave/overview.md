@@ -16,6 +16,10 @@ Event 006 completion is judged from source and static evidence. Repository sourc
 
 The v33 whole-event audit remains preserved as the latest historical completion audit. Its runtime-only holds are superseded by this acceptance decision, while its static findings and dated evidence remain current unless a later source audit says otherwise.
 
+## Portrait evidence addendum (2026-08-02)
+
+The alternate ASY Ignatius Aphrem I Barsoum source/repaint chain now has an independent v93 audit: identity/likeness, HOI4 leader style/framing, provenance, and the PD-1923/1921 rights/date basis pass with a documented low-resolution group-photo caveat. Parent release acceptance is still required, and the no-wire scope deliberately leaves the existing ASY consumer and DDS untouched. No advisor or small portrait is authorized. The current shelf remains 78 original-size PNG masters with 73 indexed rows and five older physical files outside the index; this evidence update does not admit IW-058.
+
 ## Shared core and registry API milestone (2026-07-29)
 
 The shared Event 006 core milestone is closed under source and static evidence. The whole event remains **HOLD / PARTIAL** because country-specific package content and other static acceptance surfaces remain incomplete.
