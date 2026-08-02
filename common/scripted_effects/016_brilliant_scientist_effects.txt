@@ -1265,6 +1265,11 @@ brilliant_scientist_reconcile_old_host_after_transfer = {
 	clr_country_flag = brilliant_scientist_portal_calibration_network_pending
 	clr_country_flag = brilliant_scientist_portal_calibration_network_in_progress
 	clr_country_flag = brilliant_scientist_portal_calibration_network_established
+	clr_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+	clr_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+	clr_country_flag = brilliant_scientist_high_speed_materials_kruger_tables
+	remove_dynamic_modifier = { modifier = brilliant_scientist_high_speed_kruger_envelope }
+	brilliant_scientist_clear_high_speed_materials_trial_target = yes
 	clr_country_flag = brilliant_scientist_breakthrough_report_active
 	clear_variable = brilliant_scientist_active_project_family
 	clear_variable = brilliant_scientist_active_project_stage
@@ -1646,6 +1651,15 @@ brilliant_scientist_inherit_kruger_personal_history_portfolio = {
 		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_portal_calibration_network_established } }
 		set_country_flag = brilliant_scientist_portal_calibration_network_established
 	}
+	if = {
+		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_high_speed_materials_trial_completed } }
+		set_country_flag = brilliant_scientist_high_speed_materials_trial_completed
+	}
+	if = {
+		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_high_speed_materials_kruger_tables } }
+		set_country_flag = brilliant_scientist_high_speed_materials_kruger_tables
+		add_dynamic_modifier = { modifier = brilliant_scientist_high_speed_kruger_envelope }
+	}
 
 	set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
 	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.none }
@@ -1965,6 +1979,12 @@ brilliant_scientist_inherit_kruger_carried_portfolio = {
 		if = {
 			limit = { has_country_flag = brilliant_scientist_formation_carried_portal_calibration_network_established }
 			set_country_flag = brilliant_scientist_portal_calibration_network_established
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_formation_carried_high_speed_materials_kruger_tables }
+			set_country_flag = brilliant_scientist_high_speed_materials_trial_completed
+			set_country_flag = brilliant_scientist_high_speed_materials_kruger_tables
+			add_dynamic_modifier = { modifier = brilliant_scientist_high_speed_kruger_envelope }
 		}
 		clear_array = brilliant_scientist_project_stage_entries
 		for_each_loop = {
@@ -3549,6 +3569,13 @@ brilliant_scientist_refresh_project_accident_pressure = {
 		}
 		subtract_from_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_portal_calibration_network.accident_pressure_reduction }
 	}
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry }
+			brilliant_scientist_high_speed_materials_trial_kruger_tables_is_active = yes
+		}
+		add_to_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_high_speed_materials_trial.kruger_rocketry_accident_pressure }
+	}
 	clamp_variable = { var = brilliant_scientist_accident_pressure min = constant:brilliant_scientist_accident.minimum max = constant:brilliant_scientist_accident.maximum }
 	round_variable = brilliant_scientist_accident_pressure
 }
@@ -3827,6 +3854,11 @@ brilliant_scientist_cleanup_transient_targets_after_world_end = {
 	brilliant_scientist_clear_foreign_context = yes
 	clr_country_flag = brilliant_scientist_cross_domain_review_pending
 	clr_country_flag = brilliant_scientist_cross_domain_review_in_progress
+	clr_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+	clr_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+	brilliant_scientist_clear_high_speed_materials_trial_target = yes
+	if = { limit = { has_dynamic_modifier = { modifier = brilliant_scientist_high_speed_qualification_board } } remove_dynamic_modifier = { modifier = brilliant_scientist_high_speed_qualification_board } }
+	if = { limit = { has_dynamic_modifier = { modifier = brilliant_scientist_high_speed_kruger_envelope } } remove_dynamic_modifier = { modifier = brilliant_scientist_high_speed_kruger_envelope } }
 	if = {
 		limit = { has_event_target = brilliant_scientist_primary_facility }
 		clear_global_event_target = brilliant_scientist_primary_facility

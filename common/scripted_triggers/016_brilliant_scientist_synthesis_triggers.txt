@@ -124,3 +124,162 @@ brilliant_scientist_portal_calibration_network_resolution_is_valid = {
 	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
 	NOT = { has_global_flag = world_end }
 }
+
+# STATE scope. A test corridor is an owned, controlled core that is not
+# impassable and has not already been certified or reserved by this trial.
+brilliant_scientist_high_speed_materials_trial_target_state_is_valid = {
+	is_owned_and_controlled_by = ROOT
+	is_core_of = ROOT
+	impassable = no
+	NOT = { has_state_flag = brilliant_scientist_high_speed_test_corridor_active }
+	NOT = { has_state_flag = brilliant_scientist_high_speed_test_corridor_certified }
+}
+
+# STATE scope. During a pending transaction only the saved corridor remains a
+# visible target; before commitment every otherwise-valid core state is shown.
+brilliant_scientist_high_speed_materials_trial_target_state_is_visible = {
+	is_owned_and_controlled_by = ROOT
+	is_core_of = ROOT
+	impassable = no
+	OR = {
+		brilliant_scientist_high_speed_materials_trial_target_state_is_valid = yes
+		AND = {
+			has_state_flag = brilliant_scientist_high_speed_test_corridor_active
+			ROOT = {
+				OR = {
+					has_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+					has_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Materials Deployment and Rocketry Prototype remain independent
+# ledgers; this reader only opens the joint qualification action.
+brilliant_scientist_high_speed_materials_trial_projects_are_healthy = {
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^2
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^3
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.materials } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.materials } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.materials } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.materials } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.rocketry } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.rocketry } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.rocketry } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.rocketry } }
+}
+
+# COUNTRY scope. The trial needs a healthy board, both facilities, expanded
+# prototype works, and one selectable test state.
+brilliant_scientist_high_speed_materials_trial_is_ready = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	brilliant_scientist_secondary_facility_is_valid = yes
+	has_country_flag = brilliant_scientist_primary_prototype_works_expanded
+	brilliant_scientist_high_speed_materials_trial_projects_are_healthy = yes
+	NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_high_speed_materials_trial_pending }
+	NOT = { has_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_high_speed_materials_trial_completed }
+	NOT = { has_country_flag = brilliant_scientist_high_speed_materials_national_board }
+	NOT = { has_country_flag = brilliant_scientist_high_speed_materials_kruger_tables }
+	KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_high_speed_materials_trial_completed } }
+	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
+	NOT = { has_global_flag = world_end }
+	any_owned_state = { brilliant_scientist_high_speed_materials_trial_target_state_is_valid = yes }
+}
+
+# COUNTRY scope. The same concrete burden is shown by the decision and used by
+# the AI reserve check; there is no political-power-only shortcut.
+brilliant_scientist_can_pay_high_speed_materials_trial = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_high_speed_materials_trial.civilian_factory_use }
+	has_equipment = { support_equipment > constant:brilliant_scientist_high_speed_materials_trial.support_equipment_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_high_speed_materials_trial.motorized_equipment_gate }
+	has_fuel > constant:brilliant_scientist_high_speed_materials_trial.fuel_gate
+	check_variable = { var = manpower value = constant:brilliant_scientist_high_speed_materials_trial.manpower_gate compare = greater_than }
+	check_variable = { var = air_experience value = constant:brilliant_scientist_high_speed_materials_trial.air_experience_gate compare = greater_than }
+	check_variable = { var = political_power value = constant:brilliant_scientist_high_speed_materials_trial.political_power_gate compare = greater_than }
+}
+
+# COUNTRY scope. AI starts only when it can preserve a reserve beyond the
+# payment gates; a human can still commit whenever the ordinary cost gate is met.
+brilliant_scientist_high_speed_materials_trial_ai_can_preserve_reserve = {
+	has_equipment = { support_equipment > constant:brilliant_scientist_high_speed_materials_trial_ai.support_equipment_reserve_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_high_speed_materials_trial_ai.motorized_equipment_reserve_gate }
+	has_fuel > constant:brilliant_scientist_high_speed_materials_trial_ai.fuel_reserve_gate
+	check_variable = { var = manpower value = constant:brilliant_scientist_high_speed_materials_trial_ai.manpower_reserve_gate compare = greater_than }
+	check_variable = { var = air_experience value = constant:brilliant_scientist_high_speed_materials_trial_ai.air_experience_reserve_gate compare = greater_than }
+	check_variable = { var = political_power value = constant:brilliant_scientist_high_speed_materials_trial_ai.political_power_reserve_gate compare = greater_than }
+}
+
+# COUNTRY scope. Existing settlement receipts shape only AI presentation and
+# option choice; they do not create a new country-specific route.
+brilliant_scientist_high_speed_materials_trial_ai_favors_national_board = {
+	OR = {
+		brilliant_scientist_has_high_dependence = yes
+		brilliant_scientist_has_high_independent_capacity = yes
+		has_country_flag = brilliant_scientist_cabinet_safety_board_established
+		has_country_flag = brilliant_scientist_country_settlement_british_research_associations
+		has_country_flag = brilliant_scientist_country_settlement_french_laboratories
+		has_country_flag = brilliant_scientist_country_settlement_polish_university_shelter
+		has_country_flag = brilliant_scientist_country_settlement_czechoslovak_research_charter
+	}
+}
+
+brilliant_scientist_high_speed_materials_trial_ai_favors_kruger_tables = {
+	OR = {
+		brilliant_scientist_has_high_project_capacity = yes
+		brilliant_scientist_has_high_mandate = yes
+		has_country_flag = brilliant_scientist_security_posture_military
+		has_country_flag = brilliant_scientist_internal_security_section_established
+		has_country_flag = brilliant_scientist_country_settlement_german_research_board
+		has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
+		has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+		has_country_flag = brilliant_scientist_country_settlement_italian_procurement_compact
+		has_country_flag = brilliant_scientist_country_settlement_chinese_technical_bureau
+	}
+}
+
+# COUNTRY scope. The proprietary receipt raises Rocketry accident pressure only
+# while Kruger remains the current host; the national board is institutionally
+# independent and has no portable accident consumer.
+brilliant_scientist_high_speed_materials_trial_kruger_tables_is_active = {
+	brilliant_scientist_is_current_host = yes
+	has_country_flag = brilliant_scientist_high_speed_materials_kruger_tables
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. The delayed event can resolve only against the saved corridor
+# and an unchanged host, facility, ledger, and terminal state.
+brilliant_scientist_high_speed_materials_trial_resolution_is_valid = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	brilliant_scientist_secondary_facility_is_valid = yes
+	has_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+	has_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+	brilliant_scientist_high_speed_materials_trial_projects_are_healthy = yes
+	NOT = { has_country_flag = brilliant_scientist_high_speed_materials_trial_completed }
+	KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_high_speed_materials_trial_completed } }
+	NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
+	has_event_target = brilliant_scientist_high_speed_test_corridor
+	event_target:brilliant_scientist_high_speed_test_corridor = {
+		is_owned_and_controlled_by = ROOT
+		is_core_of = ROOT
+		impassable = no
+		has_state_flag = brilliant_scientist_high_speed_test_corridor_active
+	}
+	NOT = { has_global_flag = world_end }
+}
