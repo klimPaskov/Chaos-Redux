@@ -1,5 +1,7 @@
 # Event 016 retired advisor workflow skill cleanup handoff
 
+> Historical cleanup record. The manual `create_advisor_icon.py` template compositor was added after this handoff and is now the active reusable advisor-card workflow. Use `.agents/skills/chaos-redux-event-assets/SKILL.md` section 21.1 and `tools/README.md`; do not treat the historical wording below as a current absence of tooling.
+
 Date: 2026-07-29
 
 Scope: skill-local cleanup only, plus this handoff. No gameplay, runtime asset, `.tools`, or other documentation file was edited.
@@ -11,12 +13,12 @@ Scope: skill-local cleanup only, plus this handoff. No gameplay, runtime asset, 
 - Removed the entire the retired advisor dossier asset kit kit, including manifests, generated frame/paper sources, overlays, prompts, and test variants.
 - Removed the advisor processor bytecode cache entry; the unrelated `extract_portrait_source_crop` cache entry remains untouched.
 - Updated `.agents/skills/chaos-redux-event-assets/SKILL.md` to remove the retired full-size and dossier processor commands, frozen processor/render hashes, schema and manifest contracts, reusable overlay requirements, and style-band gates.
-- Updated `.agents/skills/chaos-redux-event-assets/tools/README.md` to document deterministic/manual full-size portrait processing and native advisor/high-command handling without naming a replacement processor.
+- Updated `.agents/skills/chaos-redux-event-assets/tools/README.md` to document deterministic/manual full-size portrait processing and native advisor/high-command handling at the historical cleanup boundary.
 - Updated `.agents/skills/chaos-redux-event-assets/assets/README.md` to retain the separate authorized native `65x67` advisor/high-command family, vanilla-reference inspection, manual visual review, provenance, DDS conversion, and stable sprite wiring requirements without the retired kit.
 
 ## Preserved guidance
 
-The skill still treats explicitly authorized advisor, theorist, military-high-command, officer-corps, and army-small portraits as a separate native `65x67` asset family. It retains grounded-identity source rules, vanilla precedent inspection, independent visual review at native and enlarged scale, provenance records, repository DDS conversion, stable `.gfx` sprite wiring, and the rule that `army.small` is `65x67` while `army.large` remains the full `156x210` commander portrait. No replacement advisor workflow was created or registered.
+At the historical cleanup boundary, the skill still treated explicitly authorized advisor, theorist, military-high-command, officer-corps, and army-small portraits as a separate native `65x67` asset family. It retained grounded-identity source rules, vanilla precedent inspection, independent visual review at native and enlarged scale, provenance records, repository DDS conversion, stable `.gfx` sprite wiring, and the rule that `army.small` is `65x67` while `army.large` remains the full `156x210` commander portrait. The later manual `create_advisor_icon.py` compositor supersedes the no-tool wording and is documented in the active skill and tool README.
 
 ## Historical-only references outside scope
 
@@ -29,4 +31,4 @@ Older Event 014, Event 015, Event 006, and other plan/audit handoffs still menti
 - `rg --files .agents/skills/chaos-redux-event-assets` finds no retired processor, advisor overlay-kit, or retired test path.
 - Vanilla precedent review confirmed native `65x67` small advisor/high-command sprites in `interface/ideas.gfx` and `common/characters/TUR.txt`, plus separate full `army.large` and small portrait consumers in `common/characters/AFG.txt`.
 
-No gameplay or runtime validation was attempted, and no fallback advisor tool was introduced.
+No gameplay or runtime validation was attempted, and no fallback advisor tool was introduced at the historical cleanup boundary. The later active compositor is a deterministic template workflow, not a fallback asset.
