@@ -170,7 +170,7 @@ Achievement art uses final Fury-specific DDS triplets under `gfx/achievements/`,
 
 Current wiring uses stable Fury-specific assets:
 
-- report event: `GFX_report_event_fury_war_office`
+- report event: `GFX_report_event_random_war`, shared with the existing random-war report-card image
 - news event: `GFX_news_event_fury_first_conquest`
 - super-event slot: `59`
 - super-event image: `GFX_super_event_fury_becomes_a_state`, backed by generated final art at `gfx/super_events/007_fury/fury_becomes_a_state.dds`
@@ -183,7 +183,7 @@ Current wiring uses stable Fury-specific assets:
 - Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_static.dds`
 - Fury evolution details portrait treatment: the event-log evolution details window uses vanilla's `GFX_portrait_unknown` missing portrait and overlays `GFX_fury_leader_flame_overlay_animated` for Fury evolution stages
 
-Final Fury art and audio use stable gameplay IDs. Report, news, and super-event images use street-level Fury outbreak imagery: rogue soldiers, civilians fleeing, smoke, burning streets, and sudden neighbor-war panic. They should not be replaced with map rooms, command desks, ledgers, route strings, globes, or war-office planning scenes.
+Final Fury art and audio use stable gameplay IDs. Fury report events reuse the existing random-war report-card image. The separately processed `fury_war_office.dds` remains registered as a dormant report-card asset and is not an active Fury report consumer.
 
 The leader overlay is a scripted GUI presentation layer, not a replacement country portrait. `common/scripted_guis/007_fury_scripted_guis.txt` gates the flame icon itself, so it appears only when the active diplomacy target is a Fury actor. `interface/007_fury_leader_overlay.gui` attaches the overlay to the vanilla diplomacy leader portrait position without editing vanilla GUI files. The event-log evolution details version uses the same animated sprite inside `interface/chaosx_events_log_popup.gui` and gates visibility through `has_events_log_selected_fury_evolution`.
 
