@@ -74,6 +74,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - Rat Nation and Rat King meter-spending decisions now expose engine-native custom cost rows and blocked text for their existing Brood Mass, Hunger, Coherence, Sentience, Dominion, and terminal-preparation costs. The Brood Pulse availability and description were aligned to the actual `black_plague_rat_pool.brood_mass_raise_cost` consumed by its helper; no action effect, category, tag, or route gate was changed.
 - The Rat Nation absorption report now resolves to route-aware descriptions for Distributed Instinct, Dominant Beast, and Emergent Cunning, with the existing neutral text retained as a guarded fallback. The report remains a single `.43` event-log/news surface and does not add a tag, category, or merger branch.
 - The weaponized delivery report now carries the selected state through a regular event target and gives a distinct severe-crisis description while preserving a selected-state and targetless fallback. The delivery effect still uses the canonical exposure adapter and does not create a separate disease or death path.
+- Weaponization completion now exposes distinct Safety-First, Military Acceleration, and Dual-Use stockpile reports. Defensive Conversion has an explicit `.6` completion event and remains offensive-payload-free while adding its countermeasure gain.
 
 ## Validation evidence
 
