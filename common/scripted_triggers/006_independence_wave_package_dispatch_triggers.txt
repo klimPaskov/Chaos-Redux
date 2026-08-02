@@ -151,7 +151,16 @@ is_independence_wave_runtime_package_preflight_ready = {
 		# here until the separate content-attestation gate is promoted.
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_030 }
-			is_independence_wave_exact_package_iw_030_tag_available = yes
+			OR = {
+				AND = {
+					exists = no
+					is_independence_wave_exact_package_iw_030_tag_available = yes
+				}
+				AND = {
+					exists = yes
+					is_independence_wave_exact_package_iw_030_runtime_ready = yes
+				}
+			}
 		}
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_043 }
@@ -251,10 +260,21 @@ is_independence_wave_scenario_package_preflight_ready = {
 			is_independence_wave_exact_package_iw_019_tag_available = yes
 		}
 		# SCN-008 shares the same exact candidate proof; the outer attestation
-		# trigger intentionally still excludes IW-030.
+		# trigger intentionally still excludes IW-030. If a post-release scope is
+		# inspected, the runtime branch also requires setup, force, and cleanup
+		# receipts.
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_030 }
-			is_independence_wave_exact_package_iw_030_tag_available = yes
+			OR = {
+				AND = {
+					exists = no
+					is_independence_wave_exact_package_iw_030_tag_available = yes
+				}
+				AND = {
+					exists = yes
+					is_independence_wave_exact_package_iw_030_runtime_ready = yes
+				}
+			}
 		}
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_043 }
