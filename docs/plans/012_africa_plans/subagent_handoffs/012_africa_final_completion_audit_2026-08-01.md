@@ -16,7 +16,7 @@ The shared worktree also contains unrelated Event 016, Event 020, fallout, workb
 
 Event 012 is a broad source implementation with a coherent playable core, but it is not a completed release package.
 
-The entry event, core Charter state machine, full action inventory, focus-tree inventory, priority-package scaffolding, RSA and diaspora branches, W0-W4 world-order source, event-log/detail/evolution surfaces, localisation coverage, achievement registry, AI registry, and most registered 2D presentation assets exist.
+The entry event, core Charter state machine, full action inventory, focus-tree inventory, priority-package scaffolding, RSA and diaspora branches, W0-W4 world-order source, event-log/detail/evolution surfaces, localisation coverage, achievement registry, AI registry, and most registered 2D presentation assets exist. The B3 resource-concession, raw-export, development-fund, common-reserve, weather-owner, and achievement-kernel tranches are also present in the current source.
 
 Completion is blocked by W5 initial certification, thirteen priority-package end-to-end acceptance paths plus three dormant package/host bindings, achievement owner and lifetime-disqualifier closure, two AI acceptance blockers, unresolved action/runtime acceptance, missing model packages, incomplete four-role super-event audio, external-package identities, native-language review, branch-aware focus/UI acceptance, and committed catalog/spec promotion.
 
@@ -39,6 +39,8 @@ Limits: this was not an engine launch, live campaign, GUI click, sound playback,
 ## 2a. Post-audit source corrections
 
 Three narrow owner corrections landed after the earlier source census and are included in the audited revision. The disease-containment recorder now requires a positive active-outbreak ledger value, so research-site cleanup cannot manufacture an outbreak-containment receipt. Both Scramble aftermath settlement paths now call `africa_achievement_capture_scramble_settlement_snapshot` before response-roster cleanup, so the settled hostile-control count is preserved for negotiated and Africa-only deferred closure as well as the coalition-break action. The rival-confederation achievement refresh now requires the member's own `africa_priority_member_rival_bloc_victory` receipt in addition to the existing host target, so a reused helper cannot award the milestone from a relationship or departure state alone. These corrections do not close live acceptance, W5, model, audio, native-review, or external-package gates.
+
+The current source also includes the narrow B3 tranches recorded by `45bd94ae6` and `c03f27559` for measured concession settlement and raw-export dependency, `b82ac1138` for development-fund success and exploitation failure, `348036441` for common-reserve deployment and cleanup, `8cf5e9a7d` for weather target and direct-host victory ownership, and `b16aad796` for owner-kernel consolidation. Their source callsites are present; live campaign proof and remaining matrix disqualifiers remain open.
 
 ## 2b. Post-audit documentation reconciliation
 
@@ -68,13 +70,13 @@ The catalog handoff in `docs/plans/012_africa_plans/subagent_handoffs/012_africa
 | Baseline and Evolutions I-III | Source and current catalog present; clean catalog promotion pending | Baseline tier 4, Evolution I tier 4, Evolution II tier 5, and Evolution III tier 6 content exists. Evolution IV was deliberately recast as post-unification state rather than an extra event-log row. The current workbook and refreshed exports contain the three evolutions, cluster metadata, `Needs Testing`, and the gated World scenario; a clean commit is withheld because the shared workbook/export files also contain unrelated event edits. |
 | Scramble | Source-complete; scenario acceptance open | Five interest classes, a bounded coalition, material outcomes, and Africa-only closure exist. The final launch validator prevents an unsafe declaration, and both aftermath settlement paths capture the settled hostile-control snapshot before transient roster cleanup. Participant ranking still does not prove naval/deployable strength, ports, distance, or material readiness and can starve viable candidates. Several classification subhelpers are definition-only, suggesting an inlined implementation or stale scaffolding. |
 | W0-W5 and terminal World | W0-W4 source-complete; W5 blocked | W0-W4 include roster, consent/refusal/counterterms/withdrawal/coercion, six continent loops, four sponsorship modes, union, war, succession, exile, breakup, and terminal lifecycle. There is no initial all-six certification trigger/setter for W5. The only writer of `africa_world_package_implementation_ready` serves successor continuity, not initial package certification. `africa_the_world_super_event_package_ready` remains unset. |
-| 44 achievements | Registry/art complete; gameplay acceptance blocked | All 44 definitions, localisation triplets, and 132 three-state DDS files exist. The shared ledger still marks all 44 blocked. The latest B3 work gives narrow evidence for row 24 and row 28, and row 24 now has a bounded direct-host capitulation caller; live victory acceptance remains open. Rows 30, 32, 33, 37, and 38 retain exact-owner gaps; row 37 deliberately fails closed because the civilian-damage owner does not exist. Four rows are model-gated and row 44 is terminal-gated. |
+| 44 achievements | Registry/art and source-owner tranches present; gameplay acceptance blocked | All 44 definitions, localisation triplets, and 132 three-state DDS files exist. B3 now has source owners for rows 24, 28, 30, 32, 33, and 38, with direct host, measured concession, development-fund, reserve-deployment, diaspora-ownership, and weather-capitulation callsites. Row 37 deliberately remains fail-closed because no exact civilian-damage owner exists. Remaining proof includes live positive paths, lifetime disqualifiers, six-war reserve evidence, three-target weather evidence, and the model/world-gated rows. |
 | 64 AI profiles | Static registry complete; acceptance blocked | All 64 profiles have exact predicates, loader/registry calls, and action revalidation: nine overlays, 22 hosts, seven routes, eight member/rival, five external, six high-chaos, and seven world profiles. Profile 42 is the intentional terminal exception. The Scramble material-readiness/rank-starvation issue and the strategy-plan probability adapter's `PROBABILITY_SURFACE_EMPTY` result remain blockers. No 64-scenario campaign proof exists. |
 | 239 asset rows | Fully dispositioned, not fully delivered | The authoritative matrix records 50 `installed_runtime`, 21 `installed_dormant`, 133 `deferred_controlled_pool`, 12 `deferred_runtime_gated`, 16 `deferred_model_required`, and seven `deferred_unique_package_required`. No matrix row is undispositioned, but 168 rows remain deliberately deferred. |
 | Charter animations | File-complete; runtime acceptance open | The seal is an eight-frame 512x64 sheet at 8 fps and the authority ring is a ten-frame 640x64 sheet at 6 fps. Source frames, final DDS files, registrations, static fallbacks, parity/header/alpha/checksum evidence, and a handoff exist. Runtime animation, scaling, and click proof remain user-owned. |
 | Four super-event roles | Partial / blocked | The four image/text roles have documented presentation surfaces. Audio 59 and 60 exist as runtime WAVs and sound registrations but remain dormant because the four-role package is atomic. Audio 58 and 61 lack commissioned original lossless masters and rights-chain evidence. No role is accepted as runtime-wired, and the terminal role remains separately blocked by W5 and presentation readiness. |
 | Localisation, event log, details, evolutions, cluster UI | Source-complete with wording/native-review gaps | Required keys resolve and the 2026-08-01 collision repair removed the identified world-order duplicate-key conflict. Exact Afaan Oromoo strings remain absent pending native review. Some player-facing world-order strings still expose implementation language such as ledger, array, target-pool, dossier, or fallback concepts, and action objective class is not exposed as a dynamic player-facing label. |
-| Documentation, workbook, and exports | Partial / stale committed state | The overview, subsystem documents, handoffs, asset matrix, and acceptance ledger reflect the current blockers. The final improvement addendum remains active and has not been promoted into a fully accepted source spec. The current workbook and three exports share a 2026-08-01 generation timestamp and the current Event 012 CSV row is populated, but those files are dirty in the shared worktree and the committed Event 012 CSV row is stale. |
+| Documentation, workbook, and exports | Partial; clean catalog promotion pending | The overview, subsystem documents, handoffs, asset matrix, and acceptance ledger reflect the current blockers. The final improvement addendum remains active and has not been promoted into a fully accepted source spec. The current workbook and refreshed exports contain the accepted Event 012 row, but the shared workbook/export files remain dirty because they also contain unrelated event edits, so catalog promotion is pending. |
 
 ## 4. Exact model and unique-package needs
 
@@ -118,7 +120,7 @@ The final B1-B5 plan remains active:
 | --- | --- |
 | B1: W5 atomic political-package certification | Blocked; no initial certification trigger or setter and no authoritative six-package receipts. |
 | B2: Charter, overlays, constitutions, and thirteen reachable priority packages | Source-present; end-to-end acceptance and provenance remain open. Three additional package/host bindings remain dormant. |
-| B3: achievement exact owners and disqualifiers | Partial; row 24 and row 28 were narrowed, row 24 has a bounded capitulation owner, but rows 30, 32, 33, 37, and 38 remain unresolved. |
+| B3: achievement exact owners and disqualifiers | Source tranches installed; live acceptance remains open. Rows 24, 28, 30, 32, 33, and 38 have bounded owner callsites. Row 37 remains fail-closed until an exact civilian-damage owner exists, and remaining matrix disqualifiers still require authoritative transitions. |
 | B4: AI, focus, Scramble, package, and terminal scenarios | Static checks only; two AI blockers, focus layout ambiguity, package readiness, and terminal scenarios remain open. |
 | B5: localisation, log, docs, ledger, specs, workbook, and final audits | Docs and ledger were reconciled; native-language review, player-facing wording, spec promotion, clean committed workbook/export alignment, and final acceptance remain open. |
 
@@ -126,17 +128,17 @@ No accepted blocker is safely disposable as “future polish.”
 
 ## 6. Highest-confidence bounded non-model tranche
 
-The strongest bounded next gameplay tranche that does not require new tags, models, or external-package receipts is **B3 achievement owner/reachability closure for existing non-model, non-world systems**.
+The B3 source-owner tranche is now implemented for the existing non-model, non-world systems that expose authoritative outcomes. The next bounded work is acceptance and reconciliation of those owners, not another inferred proxy.
 
 The exact highest-confidence B3 owner is `africa_priority_member_record_rival_bloc_victory`, which now has a bounded `on_capitulation` caller when a rival priority member directly defeats the current host. The remaining gap is live positive/disqualifier acceptance, not a missing source callsite.
 
-The same patch tranche should either wire or explicitly retire the currently definition-only non-model achievement owners whose gameplay systems already exist, especially `africa_achievement_record_development_project`, `africa_achievement_record_diaspora_owned_project`, `africa_achievement_record_disease_outbreak_contained`, `africa_achievement_record_elephant_protection_victory`, `africa_achievement_record_elephant_supply_proof`, `africa_achievement_record_elephant_terrain_region`, `africa_achievement_record_reserve_war_answered`, `africa_achievement_record_socialised_resource_project`, and `africa_achievement_record_weather_army_defeated`.
+The current source now has literal callsites for the development-project, diaspora-owned, disease-containment, common-reserve, socialised-resource, and weather-army recorders. Model-gated elephant recorders remain intentionally dormant until the approved model packages and exact combat owners exist.
 
-Rows 30, 32, 33, and 38 need exact accepted owner outcomes before their recorders can be wired.
+Rows 30, 32, 33, and 38 have exact source owners. They still need live positive and negative acceptance, and row 30 retains its forced-resource-seizure disqualifier gap.
 
 Row 37 must remain fail-closed until a real civilian-damage owner exists; creating a proxy from action use or war start would be a forbidden simplification.
 
-This auditor did not implement that patch because gameplay edits are outside the read-only event-completion-auditor role and the exact owner outcome for each remaining row must be approved rather than inferred. A later bounded source correction now guards `africa_achievement_record_disease_outbreak_contained` behind a positive active-outbreak ledger value; a research-site cleanup cannot manufacture a containment receipt. The correction is recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_disease_containment_owner_correction_2026-08-01.md`. The older definition-only census below remains historical evidence and does not override the literal source callsites already present for development, diaspora-owned, disease-containment, reserve, socialised-resource, or weather recorders.
+The disease correction is recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_disease_containment_owner_correction_2026-08-01.md`. The older definition-only census below is historical evidence from before the B3 owner tranches and must not be read as a current missing-callsite claim.
 
 ## 7. Meaningful validation evidence and missing validation
 
@@ -188,9 +190,11 @@ Still missing and materially relevant:
 
 No fallback tag, proxy achievement owner, substitute model, generic continent identity, unlicensed audio, or silent readiness setter was accepted.
 
-## 9. Definition-only helper appendix
+## 9. Historical definition-only helper appendix
 
-The static scan found 52 top-level Event 012 helpers with no literal source reference outside their definition.
+The earlier static scan found 52 top-level Event 012 helpers with no literal source reference outside their definition.
+
+This appendix is retained as historical evidence from before the B3 owner tranches. It is not a current assertion that the development-project, diaspora-owned, disease-containment, common-reserve, socialised-resource, or weather-army recorders are unwired. Their current source callsites are recorded in the B3 handoffs and in the completion table above.
 
 This is a reachability warning, not a blanket load failure: some names can be compatibility hooks, planned dynamic entry points, or remnants of inlined logic.
 
@@ -251,8 +255,8 @@ The achievement recorders, first-proof orchestration, RSA proof helpers, package
 
 ## 10. Recommended next actions
 
-1. Continue the bounded B3 tranche by validating the direct-host rival-victory owner and then resolve rows 30, 32, 33, 37, and 38 without proxy milestones.
-2. Run focused decision/event inspection after that patch and reconcile the 44-row achievement ledger rather than bulk-promoting it.
+1. Run live positive and negative acceptance scenarios for the B3 owners, including concession settlement and forced-seizure disqualification, development-fund failure, six reserve wars, and three direct weather victories.
+2. Keep row 37 fail-closed until a real civilian-damage owner exists; do not infer it from hostile disaster use, wrath, or war presence.
 3. Obtain the authoritative six-package receipts before implementing B1 W5 certification; do not infer readiness from source existence.
 4. Run the thirteen reachable priority-package and 64-profile acceptance scenarios, including Scramble material-readiness/rank-starvation and terminal isolation.
 5. Produce the 16 required model packages through the approved 3D pipeline and obtain the seven unique external identity packages.
