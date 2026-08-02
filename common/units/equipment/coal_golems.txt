@@ -15,7 +15,29 @@ equipments = {
 		can_be_produced = {
 			OR = {
 				tag = KMB
-				is_infantry_spawn_golem_derivative_country = yes
+				AND = {
+					has_country_flag = infantry_spawn_derivative_country
+					OR = {
+						AND = {
+							has_country_flag = infantry_spawn_claimant_breakaway
+							NOT = { has_country_flag = infantry_spawn_nonhuman_derivative }
+							has_variable = infantry_spawn_derivative_claimant_uid
+							has_variable = infantry_spawn_derivative_family_id
+							check_variable = { var = infantry_spawn_derivative_family_id value = constant:infantry_spawn_lot_family.none compare = equals }
+						}
+						AND = {
+							NOT = { has_country_flag = infantry_spawn_claimant_breakaway }
+							has_country_flag = infantry_spawn_nonhuman_derivative
+							has_country_flag = infantry_spawn_derivative_provider_parent_isolation_proved
+							has_country_flag = infantry_spawn_derivative_provider_public_package_proved
+							has_variable = infantry_spawn_derivative_family_id
+							check_variable = { infantry_spawn_derivative_family_id > constant:infantry_spawn_lot_family.none }
+						}
+					}
+					has_country_flag = infantry_spawn_golem_derivative
+					has_variable = infantry_spawn_derivative_family_id
+					check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_golem_family.family_id compare = equals }
+				}
 			}
 		}
 		interface_category = interface_category_land
