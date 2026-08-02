@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_AFRICA_VALUE_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - EVENT 012 AFRICA EFFECTS
 # ============================================================================
@@ -15,13 +18,13 @@
 # ---------------------------------------------------------------------------
 
 africa_clear_prefire_context = {
-	set_temp_variable = { africa_prefire_ready = constant:africa_value.zero }
-	set_temp_variable = { africa_host_selection_pool_count = constant:africa_value.zero }
-	set_temp_variable = { africa_host_selection_weight = constant:africa_value.zero }
-	set_temp_variable = { africa_host_pool_weight_remaining = constant:africa_value.zero }
-	set_temp_variable = { africa_prefire_contact_pool_count = constant:africa_value.zero }
-	set_temp_variable = { africa_prefire_contact_target_count = constant:africa_value.zero }
-	set_temp_variable = { africa_prefire_contact_slot_cursor = constant:africa_value.zero }
+	set_temp_variable = { africa_prefire_ready = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_host_selection_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_host_selection_weight = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_host_pool_weight_remaining = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_prefire_contact_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_prefire_contact_target_count = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_prefire_contact_slot_cursor = @CR_SC_AFRICA_VALUE_ZERO }
 	clear_temp_array = africa_host_selection_pool
 	clear_temp_array = africa_prefire_contact_pool
 }
@@ -62,7 +65,7 @@ africa_prepare_host_selection_weight = {
 					capital_scope = { is_on_continent = africa }
 					has_volunteers_amount_from = {
 						tag = PREV
-						count > constant:africa_value.zero
+						count > @CR_SC_AFRICA_VALUE_ZERO
 					}
 				}
 			}
@@ -92,7 +95,7 @@ africa_prepare_host_selection_weight = {
 		limit = { surrender_progress > constant:africa_host_selection.near_capitulation_threshold }
 		add_to_temp_variable = { africa_host_selection_weight = constant:africa_host_selection.near_capitulation_penalty }
 	}
-	set_temp_variable = { africa_host_african_neighbor_count = constant:africa_value.zero }
+	set_temp_variable = { africa_host_african_neighbor_count = @CR_SC_AFRICA_VALUE_ZERO }
 	every_neighbor_country = {
 		limit = {
 			capital_scope = { is_on_continent = africa }
@@ -112,7 +115,7 @@ africa_prepare_host_selection_weight = {
 	if = {
 		limit = {
 			capital_scope = { is_island_state = yes }
-			check_variable = { africa_host_african_neighbor_count = constant:africa_value.zero }
+			check_variable = { africa_host_african_neighbor_count = @CR_SC_AFRICA_VALUE_ZERO }
 		}
 		add_to_temp_variable = { africa_host_selection_weight = constant:africa_host_selection.overseas_contact_penalty }
 	}
@@ -122,7 +125,7 @@ africa_prepare_host_selection_weight = {
 		min = constant:africa_host_selection.minimum_weight
 		max = constant:africa_host_selection.maximum_weight
 	}
-	set_temp_variable = { africa_host_african_neighbor_count = constant:africa_value.zero }
+	set_temp_variable = { africa_host_african_neighbor_count = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # COUNTRY scope on a prospective host. This is called only from the explicit
@@ -130,7 +133,7 @@ africa_prepare_host_selection_weight = {
 # playbook-mapped regional predicate and never persists a world scan.
 africa_build_prefire_contact_pool = {
 	clear_temp_array = africa_prefire_contact_pool
-	set_temp_variable = { africa_prefire_contact_pool_count = constant:africa_value.zero }
+	set_temp_variable = { africa_prefire_contact_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
 	save_event_target_as = africa_prefire_host_candidate
 	every_country = {
 		limit = {
@@ -157,12 +160,12 @@ africa_freeze_prefire_contact_roster = {
 		limit = { check_variable = { africa_prefire_contact_target_count > africa_prefire_contact_pool_count } }
 		set_temp_variable = { africa_prefire_contact_target_count = africa_prefire_contact_pool_count }
 	}
-	set_temp_variable = { africa_prefire_contact_slot_cursor = constant:africa_value.zero }
+	set_temp_variable = { africa_prefire_contact_slot_cursor = @CR_SC_AFRICA_VALUE_ZERO }
 	clear_array = africa_frozen_first_contact_targets
 	while_loop_effect = {
 		limit = {
 			check_variable = { africa_prefire_contact_slot_cursor < africa_prefire_contact_target_count }
-			check_variable = { africa_prefire_contact_pool_count > constant:africa_value.zero }
+			check_variable = { africa_prefire_contact_pool_count > @CR_SC_AFRICA_VALUE_ZERO }
 		}
 		random_scope_in_array = {
 			array = africa_prefire_contact_pool
@@ -201,9 +204,9 @@ africa_freeze_prefire_contact_roster = {
 		set_country_flag = africa_prefire_contacts_frozen
 	}
 	clear_temp_array = africa_prefire_contact_pool
-	set_temp_variable = { africa_prefire_contact_pool_count = constant:africa_value.zero }
-	set_temp_variable = { africa_prefire_contact_target_count = constant:africa_value.zero }
-	set_temp_variable = { africa_prefire_contact_slot_cursor = constant:africa_value.zero }
+	set_temp_variable = { africa_prefire_contact_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_prefire_contact_target_count = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_prefire_contact_slot_cursor = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # COUNTRY scope. Duplicated scope entries are the engine-supported weighted
@@ -225,22 +228,22 @@ africa_add_current_country_to_host_selection_pool = {
 		africa_prepare_host_selection_weight = yes
 		set_temp_variable = { africa_host_pool_weight_remaining = africa_host_selection_weight }
 		while_loop_effect = {
-			limit = { check_variable = { africa_host_pool_weight_remaining > constant:africa_value.zero } }
+			limit = { check_variable = { africa_host_pool_weight_remaining > @CR_SC_AFRICA_VALUE_ZERO } }
 			add_to_temp_array = { africa_host_selection_pool = THIS }
 			add_to_temp_variable = { africa_host_selection_pool_count = constant:africa_value.one }
 			subtract_from_temp_variable = { africa_host_pool_weight_remaining = constant:africa_value.one }
 		}
 	}
 	clear_temp_array = africa_prefire_contact_pool
-	set_temp_variable = { africa_prefire_contact_pool_count = constant:africa_value.zero }
-	set_temp_variable = { africa_host_pool_weight_remaining = constant:africa_value.zero }
-	set_temp_variable = { africa_host_selection_weight = constant:africa_value.zero }
+	set_temp_variable = { africa_prefire_contact_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_host_pool_weight_remaining = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_host_selection_weight = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # Any scope. This explicit fire-once scan is never called from a periodic hook.
 africa_select_weighted_prefire_host = {
 	clear_temp_array = africa_host_selection_pool
-	set_temp_variable = { africa_host_selection_pool_count = constant:africa_value.zero }
+	set_temp_variable = { africa_host_selection_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
 	every_country = {
 		limit = {
 			OR = {
@@ -251,7 +254,7 @@ africa_select_weighted_prefire_host = {
 		africa_add_current_country_to_host_selection_pool = yes
 	}
 	if = {
-		limit = { check_variable = { africa_host_selection_pool_count > constant:africa_value.zero } }
+		limit = { check_variable = { africa_host_selection_pool_count > @CR_SC_AFRICA_VALUE_ZERO } }
 			random_scope_in_array = {
 				array = africa_host_selection_pool
 				save_event_target_as = africa_prefire_host
@@ -262,9 +265,9 @@ africa_select_weighted_prefire_host = {
 		}
 	}
 	clear_temp_array = africa_host_selection_pool
-	set_temp_variable = { africa_host_selection_pool_count = constant:africa_value.zero }
-	set_temp_variable = { africa_host_pool_weight_remaining = constant:africa_value.zero }
-	set_temp_variable = { africa_host_selection_weight = constant:africa_value.zero }
+	set_temp_variable = { africa_host_selection_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_host_pool_weight_remaining = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_host_selection_weight = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # Any scope. Output is the regular africa_prefire_host target that survives into
@@ -483,7 +486,7 @@ africa_initialize_selected_host = {
 		set_variable = { africa_action_medium_days = constant:africa_action_duration.medium_days }
 		set_variable = { africa_action_long_days = constant:africa_action_duration.long_days }
 		set_variable = { africa_action_epic_days = constant:africa_action_duration.epic_days }
-		set_variable = { africa_active_action_count = constant:africa_value.zero }
+		set_variable = { africa_active_action_count = @CR_SC_AFRICA_VALUE_ZERO }
 		set_variable = { africa_active_action_cap = constant:africa_capacity.opening_active_action_cap }
 		set_variable = { africa_selected_target_cap = constant:africa_capacity.opening_selected_target_cap }
 		set_variable = { africa_dossier_cap = constant:africa_capacity.opening_dossier_cap }
@@ -500,7 +503,7 @@ africa_initialize_selected_host = {
 		set_variable = { africa_diaspora_settlement_capacity = constant:africa_initial_state.diaspora_capacity }
 		set_variable = { africa_diaspora_trust = constant:africa_initial_state.diaspora_trust }
 		set_variable = { africa_common_defence_stockpile = constant:africa_initial_state.common_defence_stockpile }
-		set_variable = { africa_common_reserve_deployment_sequence = constant:africa_value.zero }
+		set_variable = { africa_common_reserve_deployment_sequence = @CR_SC_AFRICA_VALUE_ZERO }
 		set_variable = { africa_member_representation_balance = constant:africa_initial_state.representation_balance }
 		set_variable = { africa_restoration_legitimacy = constant:africa_initial_state.restoration_legitimacy }
 		set_variable = { africa_ecological_wrath = constant:africa_initial_state.ecological_wrath }
@@ -705,7 +708,7 @@ africa_save_from_as_selected_action_state_target = {
 # COUNTRY scope on the host. Input is the regular africa_contact_to_register
 # event target. The helper is idempotent and never exceeds the roster cap.
 africa_register_contact_target = {
-	set_temp_variable = { africa_contact_registration_result = constant:africa_value.zero }
+	set_temp_variable = { africa_contact_registration_result = @CR_SC_AFRICA_VALUE_ZERO }
 	if = {
 		limit = {
 			has_event_target = africa_contact_to_register
@@ -799,7 +802,7 @@ africa_register_frozen_first_contact = {
 		}
 		africa_register_contact_target = yes
 		if = {
-			limit = { check_variable = { africa_contact_registration_result > constant:africa_value.zero } }
+			limit = { check_variable = { africa_contact_registration_result > @CR_SC_AFRICA_VALUE_ZERO } }
 			event_target:africa_contact_to_register = {
 				if = {
 					limit = { has_country_flag = africa_prefire_contact_threatened }
@@ -846,8 +849,8 @@ africa_register_first_contact_threatened = {
 		}
 		if = {
 			limit = {
-				check_variable = { africa_contact_registration_result > constant:africa_value.zero }
-				check_variable = { africa_relationship_transition_result > constant:africa_value.zero }
+				check_variable = { africa_contact_registration_result > @CR_SC_AFRICA_VALUE_ZERO }
+				check_variable = { africa_relationship_transition_result > @CR_SC_AFRICA_VALUE_ZERO }
 			}
 			set_country_flag = africa_first_contact_selected
 		}
@@ -865,7 +868,7 @@ africa_register_first_contact_subject = {
 			if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
 		}
 		if = {
-			limit = { check_variable = { africa_contact_registration_result > constant:africa_value.zero } }
+			limit = { check_variable = { africa_contact_registration_result > @CR_SC_AFRICA_VALUE_ZERO } }
 			set_country_flag = africa_first_contact_selected
 		}
 	}
@@ -881,7 +884,7 @@ africa_register_first_contact_regional_power = {
 			if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
 		}
 		if = {
-			limit = { check_variable = { africa_contact_registration_result > constant:africa_value.zero } }
+			limit = { check_variable = { africa_contact_registration_result > @CR_SC_AFRICA_VALUE_ZERO } }
 			set_country_flag = africa_first_contact_selected
 		}
 	}
@@ -1101,7 +1104,7 @@ africa_register_selected_continental_peace_exemption = {
 		}
 	}
 	if = {
-		limit = { check_variable = { africa_continental_peace_exemption_states^num > constant:africa_value.zero } }
+		limit = { check_variable = { africa_continental_peace_exemption_states^num > @CR_SC_AFRICA_VALUE_ZERO } }
 		event_target:africa_host = {
 			if = {
 				limit = { NOT = { is_in_array = { array = africa_peace_exemption_countries value = PREV } } }
@@ -1273,8 +1276,8 @@ africa_cancel_incompatible_action_before_relationship_transition = {
 }
 
 africa_apply_relationship_transition = {
-	set_temp_variable = { africa_relationship_transition_result = constant:africa_value.zero }
-	set_temp_variable = { africa_relationship_transition_allowed = constant:africa_value.zero }
+	set_temp_variable = { africa_relationship_transition_result = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_relationship_transition_allowed = @CR_SC_AFRICA_VALUE_ZERO }
 	set_temp_variable = { africa_transition_host_generation = constant:africa_value.invalid }
 	if = {
 		limit = {
@@ -1324,7 +1327,7 @@ africa_apply_relationship_transition = {
 		set_temp_variable = { africa_relationship_transition_allowed = constant:africa_value.one }
 	}
 	if = {
-		limit = { check_variable = { africa_relationship_transition_allowed > constant:africa_value.zero } }
+		limit = { check_variable = { africa_relationship_transition_allowed > @CR_SC_AFRICA_VALUE_ZERO } }
 		set_temp_variable = { africa_relationship_previous_state = constant:africa_relationship.outside }
 		if = { limit = { has_variable = africa_relationship_state } set_temp_variable = { africa_relationship_previous_state = africa_relationship_state } }
 		africa_cancel_incompatible_action_before_relationship_transition = yes
@@ -1349,12 +1352,12 @@ africa_apply_relationship_transition = {
 		set_country_flag = africa_relationship_transition_pending_notice
 		set_temp_variable = { africa_relationship_transition_result = constant:africa_value.one }
 	}
-	set_temp_variable = { africa_relationship_transition_allowed = constant:africa_value.zero }
+	set_temp_variable = { africa_relationship_transition_allowed = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # COUNTRY scope on the compact host.
 africa_reconcile_compact_host_promotion_criteria = {
-	set_temp_variable = { africa_compact_promotion_criterion_count = constant:africa_value.zero }
+	set_temp_variable = { africa_compact_promotion_criterion_count = @CR_SC_AFRICA_VALUE_ZERO }
 	if = { limit = { has_country_flag = africa_compact_long_campaign_survived } add_to_temp_variable = { africa_compact_promotion_criterion_count = constant:africa_value.one } }
 	if = { limit = { has_country_flag = africa_compact_leads_regional_council_or_rival } add_to_temp_variable = { africa_compact_promotion_criterion_count = constant:africa_value.one } }
 	if = { limit = { has_country_flag = africa_compact_route_contradiction_proven } add_to_temp_variable = { africa_compact_promotion_criterion_count = constant:africa_value.one } }
@@ -1557,7 +1560,7 @@ africa_apply_opening_focus_reward = {
 		africa_refresh_continental_focus_tree_layout = yes
 	}
 	africa_clamp_host_values = yes
-	set_temp_variable = { africa_focus_opening_step = constant:africa_value.zero }
+	set_temp_variable = { africa_focus_opening_step = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # COUNTRY scope on the host. Input: temporary africa_focus_overlay_step.
@@ -1649,7 +1652,7 @@ africa_apply_overlay_focus_reward = {
 	}
 	africa_apply_constitutional_overlay_payoff = yes
 	africa_clamp_host_values = yes
-	set_temp_variable = { africa_focus_overlay_step = constant:africa_value.zero }
+	set_temp_variable = { africa_focus_overlay_step = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # COUNTRY scope on the host. Input: temporary africa_focus_signature_step.
@@ -1692,7 +1695,7 @@ africa_apply_host_signature_focus_reward = {
 	}
 	africa_record_playbook_signature_step = yes
 	africa_clamp_host_values = yes
-	set_temp_variable = { africa_focus_signature_step = constant:africa_value.zero }
+	set_temp_variable = { africa_focus_signature_step = @CR_SC_AFRICA_VALUE_ZERO }
 }
 
 # COUNTRY scope on the host. All 51 accepted playbooks have explicit effect
