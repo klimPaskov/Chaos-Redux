@@ -88,7 +88,7 @@ brilliant_scientist_foreign_select_project_family = {
 	set_temp_variable = { brilliant_scientist_foreign_selected_family = constant:brilliant_scientist_project_family.none }
 	set_temp_variable = { brilliant_scientist_foreign_selected_stage = constant:brilliant_scientist_project_stage.none }
 	set_temp_variable = { brilliant_scientist_foreign_project_index = constant:brilliant_scientist_value.zero }
-	while = {
+	while_loop_effect = {
 		limit = { check_variable = { brilliant_scientist_foreign_project_index < constant:brilliant_scientist_event.project_family_count } }
 		set_temp_variable = { brilliant_scientist_foreign_candidate_family = brilliant_scientist_foreign_project_index }
 		add_to_temp_variable = { brilliant_scientist_foreign_candidate_family = constant:brilliant_scientist_value.one }
@@ -148,7 +148,7 @@ brilliant_scientist_foreign_initialize_knowledge_ledger = {
 		limit = { NOT = { has_country_flag = brilliant_scientist_foreign_knowledge_ledger_initialized } }
 		clear_array = brilliant_scientist_foreign_project_knowledge_entries
 		set_temp_variable = { brilliant_scientist_foreign_knowledge_index = constant:brilliant_scientist_value.zero }
-		while = {
+		while_loop_effect = {
 			limit = { check_variable = { brilliant_scientist_foreign_knowledge_index < constant:brilliant_scientist_event.project_family_count } }
 			add_to_array = { array = brilliant_scientist_foreign_project_knowledge_entries value = constant:brilliant_scientist_project_stage.none }
 			add_to_temp_variable = { brilliant_scientist_foreign_knowledge_index = constant:brilliant_scientist_value.one }
@@ -280,6 +280,10 @@ brilliant_scientist_foreign_finish_operation = {
 		else_if = {
 			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt } }
 			add_to_array = { array = brilliant_scientist_foreign_assassination_resolved_targets value = event_target:brilliant_scientist_foreign_operation_host }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge } }
+			add_to_array = { array = brilliant_scientist_foreign_public_challenge_resolved_targets value = event_target:brilliant_scientist_foreign_operation_host }
 		}
 	}
 	clr_country_flag = brilliant_scientist_foreign_operation_live
@@ -1217,6 +1221,113 @@ brilliant_scientist_foreign_host_diplomatic_response = {
 	}
 }
 
+# COUNTRY scope on the current host after a public challenge event. The actor
+# and host targets are established by the immediate targeted decision. The
+# response is public by definition, so every branch records detection and the
+# ordinary foreign ledgers before the actor receives its report.
+brilliant_scientist_foreign_resolve_public_challenge = {
+	event_target:brilliant_scientist_foreign_operation_actor = {
+		set_variable = { brilliant_scientist_foreign_last_operation_detected = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.safe_demonstration } }
+		set_country_flag = brilliant_scientist_foreign_public_challenge_answered
+		event_target:brilliant_scientist_foreign_operation_actor = {
+			set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success }
+			add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_host modifier = brilliant_scientist_foreign_scientific_contact }
+		}
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+			brilliant_scientist_change_mandate = yes
+			brilliant_scientist_change_exposure = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.deny_access } }
+		set_country_flag = brilliant_scientist_foreign_public_challenge_denied
+		event_target:brilliant_scientist_foreign_operation_actor = {
+			set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial }
+		}
+		add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_actor modifier = brilliant_scientist_foreign_diplomatic_protest }
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+			multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+			brilliant_scientist_change_mandate = yes
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+			brilliant_scientist_change_exposure = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.publish_selected_work } }
+		set_country_flag = brilliant_scientist_foreign_public_challenge_published
+		event_target:brilliant_scientist_foreign_operation_actor = {
+			set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success }
+			add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_host modifier = brilliant_scientist_foreign_scientific_contact }
+		}
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+			brilliant_scientist_change_mandate = yes
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.major }
+			brilliant_scientist_change_exposure = yes
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+			multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+			brilliant_scientist_change_dependence = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.blame_sabotage } }
+		set_country_flag = brilliant_scientist_foreign_public_challenge_blame
+		event_target:brilliant_scientist_foreign_operation_actor = {
+			set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial }
+		}
+		add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_actor modifier = brilliant_scientist_foreign_diplomatic_protest }
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+			brilliant_scientist_change_exposure = yes
+			brilliant_scientist_change_grievance = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.invite_observers } }
+		set_country_flag = brilliant_scientist_foreign_public_challenge_observers
+		event_target:brilliant_scientist_foreign_operation_actor = {
+			set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success }
+			add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_host modifier = brilliant_scientist_foreign_scientific_contact }
+		}
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+			brilliant_scientist_change_mandate = yes
+			brilliant_scientist_change_exposure = yes
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+			multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+			brilliant_scientist_change_dependence = yes
+			brilliant_scientist_change_project_capacity = yes
+		}
+	}
+	else = {
+		set_country_flag = brilliant_scientist_foreign_public_challenge_threatened
+		event_target:brilliant_scientist_foreign_operation_actor = {
+			set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure }
+		}
+		add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_actor modifier = brilliant_scientist_foreign_diplomatic_protest }
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.major }
+			brilliant_scientist_change_mandate = yes
+			brilliant_scientist_change_exposure = yes
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+			brilliant_scientist_change_grievance = yes
+		}
+	}
+	brilliant_scientist_foreign_record_resolution = yes
+	event_target:brilliant_scientist_foreign_operation_actor = { country_event = { id = chaosx.nr16.191 } }
+}
+
 # COUNTRY scope on the actor. Fires the operation-specific after-action report.
 brilliant_scientist_foreign_fire_actor_report = {
 	if = {
@@ -1246,6 +1357,10 @@ brilliant_scientist_foreign_fire_actor_report = {
 	else_if = {
 		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt } }
 		country_event = { id = chaosx.nr16.181 }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge } }
+		country_event = { id = chaosx.nr16.191 }
 	}
 }
 

@@ -325,6 +325,30 @@ brilliant_scientist_foreign_can_offer_protection_target = {
 	NOT = { is_in_array = { array = brilliant_scientist_foreign_protection_resolved_targets value = FROM } }
 }
 
+brilliant_scientist_foreign_can_public_challenge_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.public_challenge_gate
+		compare = greater_than_or_equals
+	}
+	OR = {
+		brilliant_scientist_foreign_has_diplomatic_access = yes
+		brilliant_scientist_foreign_has_intelligence_access = yes
+		is_in_array = { array = brilliant_scientist_foreign_observation_success_targets value = FROM }
+	}
+	FROM = {
+		OR = {
+			has_country_flag = brilliant_scientist_research_advantage_exposed
+			has_country_flag = brilliant_scientist_public_reputation_established
+			check_variable = { brilliant_scientist_foreign_operations_detected > constant:brilliant_scientist_value.zero }
+			check_variable = { brilliant_scientist_project_weaponization_count > constant:brilliant_scientist_value.zero }
+		}
+	}
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_public_challenge_resolved_targets value = FROM } }
+}
+
 brilliant_scientist_foreign_can_assassinate_target = {
 	brilliant_scientist_foreign_actor_is_operation_ready = yes
 	brilliant_scientist_foreign_target_is_current_host = yes

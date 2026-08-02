@@ -14,6 +14,8 @@ The 2026-08-02 continuation adds durable cross-event receipts and reachability g
 
 The same continuation also adds a loader-compatibility tranche in `016_static_field_constant_compatibility_extension_2026-08-02.md`. Sixteen decision files, two scripted-effect files, and three scripted-trigger files replace 451 static-field `constant:` uses with 162 file-scoped macros whose values were checked against the shared constant registry. Supported dynamic constant fields, gameplay logic, equipment helper gates, assets, and model contracts remain unchanged.
 
+The foreign-content continuation adds the evidence-gated public challenge specified in the world-reactions and decision matrices. A foreign actor with the public-challenge threshold and authenticated evidence can challenge each host once; the host receives six distinct answers in `chaosx.nr16.190`, and the actor receives the persistent result report `chaosx.nr16.191`. The operation records normal foreign history and public detection, changes only existing Directorate and diplomatic state, and never transfers Kruger, grants a project stage, adds an evolution, or introduces a model reference.
+
 ## Historical planning snapshot, 2026-07-14
 
 The mandatory improvement-loop addendum was produced and received a complete parent disposition. R2, R3, R4, R5, and R7 are promoted. R1 and R6 are rejected. The reconciled source of truth preserves exactly seventeen achievements and all six mapped super-event packages.
