@@ -592,6 +592,50 @@ africa_charter_council_category = {
 	}
 
 }
+
+africa_host_transfer_actions_category = {
+	africa_host_transfer_designate_successor = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_relationship_countries
+		activation = {
+			africa_is_current_host = yes
+			NOT = { has_global_flag = africa_host_successor_consumed }
+		}
+		target_root_trigger = {
+			africa_is_current_host = yes
+			NOT = { has_global_flag = africa_host_successor_consumed }
+		}
+		target_trigger = { FROM = { africa_host_transfer_designatable_candidate_is_valid = yes } }
+		visible = { africa_is_current_host = yes NOT = { has_global_flag = africa_host_successor_consumed } }
+		available = { FROM = { africa_host_transfer_designatable_candidate_is_valid = yes } }
+		cost = constant:africa_host_transfer.designation_pp_cost
+		complete_effect = {
+			FROM = {
+				save_global_event_target_as = africa_host_transfer_designated_successor
+				set_country_flag = africa_host_successor_designated
+			}
+			set_country_flag = africa_host_successor_designation_recorded
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	africa_host_transfer_commit_successor = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = global.africa_host_transfer_candidates
+		activation = { has_country_flag = africa_host_transfer_congress_open }
+		target_root_trigger = { africa_host_transfer_resolution_is_open = yes }
+		target_trigger = { FROM = { africa_host_transfer_candidate_is_valid = yes } }
+		visible = { has_country_flag = africa_host_transfer_congress_open }
+		available = { FROM = { africa_host_transfer_candidate_is_valid = yes } }
+		cost = constant:africa_host_transfer.review_pp_cost
+		complete_effect = {
+			FROM = { save_global_event_target_as = africa_host_transfer_successor }
+			africa_host_transfer_commit_selected_successor = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+}
+
 africa_protection_actions_category = {
 	africa_select_guarantee_sovereignty = {
 		icon = GFX_decision_012_africa_charter_ledger

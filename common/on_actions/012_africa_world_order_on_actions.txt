@@ -162,6 +162,14 @@ on_actions = {
 	# identify the exact member/partner transaction before the country is removed.
 	on_annex = {
 		effect = {
+			# The host must stage its ledger before the annexed country scope is
+			# removed. A recorded constitutional designation can complete the
+			# transfer in this callback; otherwise the annexer receives the explicit
+			# congress/crisis resolver with the surviving Charter pool.
+			if = {
+				limit = { FROM = { africa_is_current_host = yes } }
+				FROM = { africa_begin_host_transfer = yes }
+			}
 			if = {
 				limit = { FROM = { has_country_flag = africa_common_reserve_deployment_active } }
 				# The resolver owns the generation-gated capital-loss receipt and

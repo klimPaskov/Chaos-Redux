@@ -195,6 +195,90 @@ country_event = {
 	}
 }
 
+# An ordinary host annexation opens this explicit resolver on the annexer. A
+# pre-recorded constitutional designation can transfer in the same on-action;
+# otherwise this event never guesses a host and either opens a target congress
+# or records the suspended-host crisis.
+country_event = {
+	id = chaosx.nr12.230
+	title = chaosx.nr12.230.t
+	desc = chaosx.nr12.230.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = { africa_host_transfer_resolution_is_open = yes }
+
+	option = {
+		name = chaosx.nr12.230.a
+		trigger = { check_variable = { global.africa_host_transfer_candidate_count = constant:africa_host_transfer.minimum_candidates } }
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx.nr12.230.a.tt
+		africa_host_transfer_select_single_candidate = yes
+	}
+
+	option = {
+		name = chaosx.nr12.230.b
+		trigger = { check_variable = { global.africa_host_transfer_candidate_count > constant:africa_host_transfer.minimum_candidates } }
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx.nr12.230.b.tt
+		set_country_flag = africa_host_transfer_congress_open
+	}
+
+	option = {
+		name = chaosx.nr12.230.c
+		trigger = { check_variable = { global.africa_host_transfer_candidate_count < constant:africa_host_transfer.minimum_candidates } }
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx.nr12.230.c.tt
+		africa_host_transfer_enter_suspended_crisis = yes
+	}
+
+	option = {
+		name = chaosx.nr12.230.e
+		ai_chance = { base = 0 }
+		custom_effect_tooltip = chaosx.nr12.230.e.tt
+		africa_host_transfer_enter_suspended_crisis = yes
+	}
+}
+
+# Public notice for the no-successor branch. The staged ledger remains retained
+# in global arrays; no obligations are discarded by this notification.
+country_event = {
+	id = chaosx.nr12.231
+	title = chaosx.nr12.231.t
+	desc = chaosx.nr12.231.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = { has_global_flag = africa_host_transfer_suspended }
+
+	option = {
+		name = chaosx.nr12.231.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Successor notice after the new host pointer, member generations, and focus
+# loader have been committed. This is a normal country event and does not open a
+# second transfer transaction.
+country_event = {
+	id = chaosx.nr12.232
+	title = chaosx.nr12.232.t
+	desc = chaosx.nr12.232.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_country_flag = africa_host_successor_received_mandate
+		has_global_flag = africa_host_successor_consumed
+	}
+
+	option = {
+		name = chaosx.nr12.232.a
+		ai_chance = { base = 100 }
+	}
+}
+
 # Host-facing result notice for the shared runtime.
 country_event = {
 	id = chaosx.nr12.220
