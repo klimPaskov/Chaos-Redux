@@ -92,9 +92,9 @@ The static strategy-plan inventory contains the uncommitted continental plan plu
 
 The source matrix lists 16 package identities.
 
-The explicitly supported carrier predicate contains 13 accepted carrier-or-origin pathways: Asante, Oyo, Sokoto, Kanem-Bornu, Manden, Kongo, Buganda, Harar, Kilwa, Luba, Lunda, Merina, and Zulu.
+The current country-package audit resolves 13 conditionally reachable carrier-or-origin pathways: Asante, Oyo, Sokoto, Kanem-Bornu, Manden, Kongo, Buganda, Aksum, Harar, Nubia, Great Zimbabwe, Merina, and Zulu. Aksum/TIG, Nubia/SUD, and Great Zimbabwe/ZIM use the supported nonmatching vanilla-carrier predicate after their exact origin marker is recorded.
 
-The three dormant identities are Aksum, Nubia, and Great Zimbabwe; their distinct package scripts remain present, but they cannot satisfy `africa_priority_member_has_supported_carrier_identity` and therefore cannot pass the registration route in this acceptance slice.
+The three dormant identities are Luba/DYX, Lunda/DZX, and Kilwa/EMX. Their distinct package scripts and existing Event 006 tags remain present, but the installed Event 006 map-binding ledger has no accepted unique current state, so their live-receipt and map gates remain closed. No broad Congo or Tanganyika substitute is allowed.
 
 `africa_priority_member_can_register_package` also requires Event 012 activation, a valid Africa host event target with host commitment complete, no existing package or requalification lock, a non-Soviet Event 006 origin, promotion approval, and valid origin proof.
 
