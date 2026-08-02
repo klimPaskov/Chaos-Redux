@@ -680,11 +680,11 @@ Consequences:
 - Foreign asylum or leak event.
 - More severe future accidents.
 
-### Accepted country-specific institutional settlement pilot (static implementation complete; targeted validation pending, 2026-08-02)
+### Accepted finite country-specific institutional settlements (static implementation complete; targeted validation pending, 2026-08-03)
 
-The accepted settlement addendum adds four conditional choices inside the existing `chaosx.nr16.5` assistant-conflict event. Static source inspection confirms the named choices, resolvers, receipts, constants, selectors, AI factors, and localisation keys, and the bounded source implementation is complete in the working tree; targeted balance, transfer, cleanup, and live-acceptance evidence are still pending.
+The accepted settlement addendum adds ten conditional choices inside the existing `chaosx.nr16.5` assistant-conflict event. Static source inspection confirms the named choices, resolvers, receipts, constants, selectors, AI factors, and localisation keys, and the bounded source implementation is complete in the working tree; targeted balance, transfer, cleanup, and live-acceptance evidence are still pending.
 
-The generic `.5.a`, `.5.b`, and `.5.c` options remain unchanged. The national choices are available only to `ENG` in public-science or distributed-research context, `USA` in industrial-mobilization or distributed-research context, `SOV` in strategic-security or industrial-mobilization context, and `JAP` in strategic-security or industrial-mobilization context. Each choice clears the pending assistant conflict, marks it resolved, calls its named bounded base resolver and settlement resolver, and schedules the impossible lecture once. The six other named tags and all unnamed countries retain the complete generic choice set.
+The generic `.5.a`, `.5.b`, and `.5.c` options remain unchanged. The national choices are available only to `ENG` and `FRA` in public-science or distributed-research context, `USA` and `CZE` in industrial-mobilization or distributed-research context, `SOV`, `JAP`, `GER`, `ITA`, and `CHI` in strategic-security or industrial-mobilization context, and `POL` in public-science, distributed-research, or strategic-security context. Each choice clears the pending assistant conflict, marks it resolved, calls its named bounded base resolver and settlement resolver, and schedules the impossible lecture once. Unnamed countries retain the complete generic choice set.
 
 The accepted option and receipt contract is:
 
@@ -694,8 +694,14 @@ The accepted option and receipt contract is:
 | `USA` `chaosx.nr16.5.e_usa` | `brilliant_scientist_context_mediate_assistant_conflict` | `brilliant_scientist_country_settlement_american_federal_contracts` | `(+10, +5, +10, +15, +5, -5)` |
 | `SOV` `chaosx.nr16.5.f_sov` | `brilliant_scientist_context_bind_assistant_service` | `brilliant_scientist_country_settlement_soviet_academy_plan` | `(+5, +20, -5, +15, -5, +20)` |
 | `JAP` `chaosx.nr16.5.g_jap` | `brilliant_scientist_context_mediate_assistant_conflict` | `brilliant_scientist_country_settlement_japanese_riken_council` | `(+15, +5, +5, +10, +5, +5)` |
+| `GER` `chaosx.nr16.5.h_ger` | `brilliant_scientist_context_bind_assistant_service` | `brilliant_scientist_country_settlement_german_research_board` | `(+10, +20, -10, +20, -15, +20)` |
+| `FRA` `chaosx.nr16.5.i_fra` | `brilliant_scientist_context_recognize_assistant_school` | `brilliant_scientist_country_settlement_french_laboratories` | `(+10, -10, +15, +5, +25, -20)` |
+| `ITA` `chaosx.nr16.5.j_ita` | `brilliant_scientist_context_mediate_assistant_conflict` | `brilliant_scientist_country_settlement_italian_procurement_compact` | `(+20, +10, +15, +15, +5, -5)` |
+| `CHI` `chaosx.nr16.5.k_chi` | `brilliant_scientist_context_bind_assistant_service` | `brilliant_scientist_country_settlement_chinese_technical_bureau` | `(+5, +25, -10, +20, -20, +15)` |
+| `POL` `chaosx.nr16.5.l_pol` | `brilliant_scientist_context_mediate_assistant_conflict` | `brilliant_scientist_country_settlement_polish_university_shelter` | `(+15, 0, +10, +5, +15, 0)` |
+| `CZE` `chaosx.nr16.5.m_cze` | `brilliant_scientist_context_recognize_assistant_school` | `brilliant_scientist_country_settlement_czechoslovak_research_charter` | `(+5, -15, +15, +15, +20, -15)` |
 
-The delta and AI values belong in `common/script_constants/016_brilliant_scientist_country_settlement_constants.txt`. The four receipts are host-local institutional history and must not be added to the ordinary transfer-copy block or the Kruger State formation-copy block. They do not create, clone, rename, recruit, or re-scope Kruger. `.7` and `.8` receive only receipt-driven description clauses and AI modifiers; they do not receive new options or effects. Existing reaction outcomes, project custody, transfer ownership, terminal cleanup, and formation cancellation rules remain authoritative.
+The delta and AI values belong in `common/script_constants/016_brilliant_scientist_country_settlement_constants.txt`. The ten receipts are host-local institutional history and must not be added to the ordinary transfer-copy block or the Kruger State formation-copy block. They do not create, clone, rename, recruit, or re-scope Kruger. `.7` and `.8` receive only receipt-driven description clauses and AI modifiers; they do not receive new options or effects. Existing reaction outcomes, project custody, transfer ownership, terminal cleanup, and formation cancellation rules remain authoritative.
 
 ### Phase G: Confrontation and removal
 

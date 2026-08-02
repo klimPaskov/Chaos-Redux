@@ -138,7 +138,7 @@ brilliant_scientist_context_mediate_assistant_conflict = {
 
 # COUNTRY scope. Country-specific settlements keep the existing assistant
 # resolver and add only the named institutional delta. A receipt guard makes
-# each settlement idempotent and prevents the four history flags from coexisting.
+# each settlement idempotent and prevents the finite history flags from coexisting.
 brilliant_scientist_context_settle_british_research_associations = {
 	if = {
 		limit = {
@@ -148,6 +148,12 @@ brilliant_scientist_context_settle_british_research_associations = {
 					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
 					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
 					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+					has_country_flag = brilliant_scientist_country_settlement_german_research_board
+					has_country_flag = brilliant_scientist_country_settlement_french_laboratories
+					has_country_flag = brilliant_scientist_country_settlement_italian_procurement_compact
+					has_country_flag = brilliant_scientist_country_settlement_chinese_technical_bureau
+					has_country_flag = brilliant_scientist_country_settlement_polish_university_shelter
+					has_country_flag = brilliant_scientist_country_settlement_czechoslovak_research_charter
 				}
 			}
 		}
@@ -169,6 +175,12 @@ brilliant_scientist_context_settle_american_federal_contracts = {
 					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
 					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
 					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+					has_country_flag = brilliant_scientist_country_settlement_german_research_board
+					has_country_flag = brilliant_scientist_country_settlement_french_laboratories
+					has_country_flag = brilliant_scientist_country_settlement_italian_procurement_compact
+					has_country_flag = brilliant_scientist_country_settlement_chinese_technical_bureau
+					has_country_flag = brilliant_scientist_country_settlement_polish_university_shelter
+					has_country_flag = brilliant_scientist_country_settlement_czechoslovak_research_charter
 				}
 			}
 		}
@@ -192,6 +204,12 @@ brilliant_scientist_context_settle_soviet_academy_plan = {
 					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
 					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
 					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+					has_country_flag = brilliant_scientist_country_settlement_german_research_board
+					has_country_flag = brilliant_scientist_country_settlement_french_laboratories
+					has_country_flag = brilliant_scientist_country_settlement_italian_procurement_compact
+					has_country_flag = brilliant_scientist_country_settlement_chinese_technical_bureau
+					has_country_flag = brilliant_scientist_country_settlement_polish_university_shelter
+					has_country_flag = brilliant_scientist_country_settlement_czechoslovak_research_charter
 				}
 			}
 		}
@@ -217,6 +235,12 @@ brilliant_scientist_context_settle_japanese_riken_council = {
 					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
 					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
 					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+					has_country_flag = brilliant_scientist_country_settlement_german_research_board
+					has_country_flag = brilliant_scientist_country_settlement_french_laboratories
+					has_country_flag = brilliant_scientist_country_settlement_italian_procurement_compact
+					has_country_flag = brilliant_scientist_country_settlement_chinese_technical_bureau
+					has_country_flag = brilliant_scientist_country_settlement_polish_university_shelter
+					has_country_flag = brilliant_scientist_country_settlement_czechoslovak_research_charter
 				}
 			}
 		}
@@ -230,6 +254,104 @@ brilliant_scientist_context_settle_japanese_riken_council = {
 		brilliant_scientist_change_project_capacity = yes
 		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.japanese_grievance }
 		brilliant_scientist_change_grievance = yes
+	}
+}
+
+brilliant_scientist_context_settle_german_research_board = {
+	if = {
+		limit = { brilliant_scientist_context_country_settlement_is_unresolved = yes }
+		set_country_flag = brilliant_scientist_country_settlement_german_research_board
+		brilliant_scientist_context_bind_assistant_service = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.german_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.german_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.german_exposure_reduction }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.german_project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.german_grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
+brilliant_scientist_context_settle_french_laboratories = {
+	if = {
+		limit = { brilliant_scientist_context_country_settlement_is_unresolved = yes }
+		set_country_flag = brilliant_scientist_country_settlement_french_laboratories
+		brilliant_scientist_context_recognize_assistant_school = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.french_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.french_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.french_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.french_grievance_reduction }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
+brilliant_scientist_context_settle_italian_procurement_compact = {
+	if = {
+		limit = { brilliant_scientist_context_country_settlement_is_unresolved = yes }
+		set_country_flag = brilliant_scientist_country_settlement_italian_procurement_compact
+		brilliant_scientist_context_mediate_assistant_conflict = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.italian_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.italian_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.italian_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.italian_project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+	}
+}
+
+brilliant_scientist_context_settle_chinese_technical_bureau = {
+	if = {
+		limit = { brilliant_scientist_context_country_settlement_is_unresolved = yes }
+		set_country_flag = brilliant_scientist_country_settlement_chinese_technical_bureau
+		brilliant_scientist_context_bind_assistant_service = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.chinese_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.chinese_exposure_reduction }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.chinese_project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.chinese_independent_capacity_reduction }
+		brilliant_scientist_change_independent_capacity = yes
+	}
+}
+
+brilliant_scientist_context_settle_polish_university_shelter = {
+	if = {
+		limit = { brilliant_scientist_context_country_settlement_is_unresolved = yes }
+		set_country_flag = brilliant_scientist_country_settlement_polish_university_shelter
+		brilliant_scientist_context_mediate_assistant_conflict = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.polish_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.polish_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.polish_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.polish_grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
+brilliant_scientist_context_settle_czechoslovak_research_charter = {
+	if = {
+		limit = { brilliant_scientist_context_country_settlement_is_unresolved = yes }
+		set_country_flag = brilliant_scientist_country_settlement_czechoslovak_research_charter
+		brilliant_scientist_context_recognize_assistant_school = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.czechoslovak_project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.czechoslovak_dependence_reduction }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.czechoslovak_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.czechoslovak_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
 	}
 }
 
