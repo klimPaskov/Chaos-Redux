@@ -56,17 +56,9 @@ Use this skill for:
 - sprite sheets and GIF previews for review
 - any other static or animated visual asset required by a Chaos Redux event or mechanic
 
-Asset-type coverage is authorization-bounded. Do not infer a custom asset only
-because the corresponding gameplay object exists. Create an asset family only
-when an accepted spec row, asset manifest row, or explicit user instruction
-requests it. Apply the same rule to optional portraits, route emblems,
-animation, and other asset families not present in the accepted requirement
-set.
+Asset-type coverage is authorization-bounded. Do not infer a custom asset only because the corresponding gameplay object exists. Create an asset family only when an accepted spec row, asset manifest row, or explicit user instruction requests it. Apply the same rule to optional portraits, route emblems, animation, and other asset families not present in the accepted requirement set.
 
-Never infer an advisor, high-command, officer-corps, dossier-card, or other
-small-portrait family from a character, idea, trait, or `portraits = { ... }`
-consumer. Create that family only when the accepted requirement explicitly asks
-for it; otherwise leave the family absent and report the authorization boundary.
+Never infer an advisor, high-command, officer-corps, dossier-card, or other small-portrait family from a character, idea, trait, or `portraits = { ... }` consumer. Create that family only when the accepted requirement explicitly asks for it; otherwise leave the family absent and report the authorization boundary.
 
 Use this skill when the user asks the agent to create, source, process, or wire final visual assets.
 
@@ -107,12 +99,7 @@ The main agent owns final `.gfx` sprite definitions, gameplay references, docs a
 
 A good parent prompt to an asset subagent includes the event id, asset list, asset type, target size, source mode, final DDS folder, sprite name if already registered, reference folder, visual direction, source constraints, and anything the subagent must mark blocked instead of substituting.
 
-For one-person country-leader or officeholder portraits, the parent prompt must also
-state the polity's identity classification and the reason the selected source mode is
-allowed. Use the portrait source-mode gate in section 3: grounded identities are
-sourced, while generated one-person portraits are reserved for truly fictional
-high-chaos countries or impossible/supernatural entities. Agents must fail closed when
-that classification or source evidence is missing, contradictory, or unsupported.
+For one-person country-leader or officeholder portraits, the parent prompt must also state the polity's identity classification and the reason the selected source mode is allowed. Use the portrait source-mode gate in section 3: grounded identities are sourced, while generated one-person portraits are reserved for truly fictional high-chaos countries or impossible/supernatural entities. Agents must fail closed when that classification or source evidence is missing, contradictory, or unsupported.
 
 
 ## 2.2 Final asset placement and naming
@@ -286,61 +273,24 @@ Record the image source, source link, author or archive if available, license or
 
 ### Portrait source-mode gate
 
-Classify a country-leader, commander, named officeholder, or institutional-leader
-portrait before routing it:
+Classify a country-leader, commander, named officeholder, or institutional-leader portrait before routing it:
 
-- **Grounded identity**: any country or polity that existed, partly existed,
-  claims continuity from a real institution or community, or remains otherwise
-  plausibly historical, including real, historical, restored, separatist, regional,
-  indigenous, dynastic, or otherwise plausibly historical country, polity, or
-  community. Use `chaosx_asset_source_researcher` and attributed source material:
-  sourced real people for leaders, commanders, and named officeholders, or
-  authentic archival institutional material for a governing body or symbolic
-  institution. Match the time, place, role, and accepted demographic constraints.
-  Never generate an invented officeholder, fictional face, or invented grounded
-  institution, even when the route is absurd, alternate-history, or high-chaos. If
-  no defensible source and usable image exists, mark the portrait/package `blocked`
-  and do not substitute a generated portrait.
-- **Fictional high-chaos identity**: a truly fictional country or an
-  impossible/supernatural entity. A generated one-person leader is allowed only in
-  this class, and only when the package itself is high-chaos. Reject an ordinary,
-  conventionally dressed, or interchangeable generated officeholder. Make the
-  leader visually memorable with
-  extraordinary invented ceremonial dress, regalia, body adornment, ritual objects,
-  altered uniforms, or another internally coherent motif belonging to the fictional
-  polity's invented culture. The strangeness must come from that designed setting,
-  not borrowed sacred objects or exaggerated traits of a real people. Avoid modern
-  props, generic faces, meme aesthetics, gore, mockery, stereotypes, and caricatures
-  of real cultures.
+- **Grounded identity**: any country or polity that existed, partly existed, claims continuity from a real institution or community, or remains otherwise plausibly historical, including real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical country, polity, or community. Use `chaosx_asset_source_researcher` and attributed source material: sourced real people for leaders, commanders, and named officeholders, or authentic archival institutional material for a governing body or symbolic institution. Match the time, place, role, and accepted demographic constraints. Never generate an invented officeholder, fictional face, or invented grounded institution, even when the route is absurd, alternate-history, or high-chaos. If no defensible source and usable image exists, mark the portrait/package `blocked` and do not substitute a generated portrait.
+- **Fictional high-chaos identity**: a truly fictional country or an impossible/supernatural entity. A generated one-person leader is allowed only in this class, and only when the package itself is high-chaos. Reject an ordinary, conventionally dressed, or interchangeable generated officeholder. Make the leader visually memorable with extraordinary invented ceremonial dress, regalia, body adornment, ritual objects, altered uniforms, or another internally coherent motif belonging to the fictional polity's invented culture. The strangeness must come from that designed setting, not borrowed sacred objects or exaggerated traits of a real people. Avoid modern props, generic faces, meme aesthetics, gore, mockery, stereotypes, and caricatures of real cultures.
 
-Record the classification, source mode, identity evidence, and any blocked decision in
-the manifest and handoff. Missing, ambiguous, or contradictory classification is a
-fail-closed source-mode error; stop and report it instead of choosing a convenient
-fallback.
+Record the classification, source mode, identity evidence, and any blocked decision in the manifest and handoff. Missing, ambiguous, or contradictory classification is a fail-closed source-mode error; stop and report it instead of choosing a convenient fallback.
 
 ### Portrait subject ownership gate
 
-Before sourcing or wiring any real-person leader, commander, operative, or named
-officeholder token, search both installed vanilla and the current project for exact
-and variant identity forms (including transliterations, titles, and name-order
-variants). Check character definitions, country histories and recruitment, portrait
-files, `.gfx`/interface consumers, leader/commander/operative/officeholder consumers,
-and relevant localisation (normally `common/characters/`, `history/countries/`,
-`gfx/leaders/`, `interface/`, and `localisation/`). A person already defined,
-recruited, or meaningfully portrait-owned by a live character roster may not be
-cloned into another country.
+Before sourcing or wiring any real-person leader, commander, operative, or named officeholder token, search both installed vanilla and the current project for exact and variant identity forms (including transliterations, titles, and name-order variants).
+Check character definitions, country histories and recruitment, portrait files, `.gfx`/interface consumers, leader/commander/operative/officeholder consumers, and relevant localisation (normally `common/characters/`, `history/countries/`, `gfx/leaders/`, `interface/`, and `localisation/`).
+A person already defined, recruited, or meaningfully portrait-owned by a live character roster may not be cloned into another country.
 
-Reuse is allowed only through an explicit guarded existing-character transfer or
-availability contract that removes or invalidates origin ownership before target
-ownership and prevents simultaneous ownership. Without that contract, fail closed
-and block the portrait/token. Literal ship names, production-line names, streets,
-equipment, or incidental prose are not character ownership unless an actual
-character, portrait, leader, commander, operative, or officeholder consumer resolves
-to the person. Record search terms, roots/files and ids checked, matches or no-match
-evidence, disposition, and any transfer guard in the manifest and handoff. Run it in
-addition to the unchanged grounded-source-only (`grounded_source_only`) versus
-`fictional_high_chaos` source-mode gate; it never authorizes a generated grounded
-person.
+Reuse is allowed only through an explicit guarded existing-character transfer or availability contract that removes or invalidates origin ownership before target ownership and prevents simultaneous ownership.
+Without that contract, fail closed and block the portrait/token.
+Literal ship names, production-line names, streets, equipment, or incidental prose are not character ownership unless an actual character, portrait, leader, commander, operative, or officeholder consumer resolves to the person.
+Record search terms, roots/files and ids checked, matches or no-match evidence, disposition, and any transfer guard in the manifest and handoff.
+Run it in addition to the unchanged grounded-source-only (`grounded_source_only`) versus `fictional_high_chaos` source-mode gate; it never authorizes a generated grounded person.
 
 ### Real-person portraits
 
@@ -369,32 +319,21 @@ For generated or sourced one-person portraits, the asset handoff must identify t
 
 ### Fictional portraits
 
-Fictional country leaders, commanders, operatives, invented councils, collective
-bodies, supernatural leaders, and symbolic regime portraits must use `$imagegen`,
-subject to the portrait source-mode gate above. A generated one-person country leader
-is permitted only for a truly fictional high-chaos country or an impossible/supernatural
-entity; a grounded polity always remains on the sourced-real-person path.
+Fictional country leaders, commanders, operatives, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits must use `$imagegen`, subject to the portrait source-mode gate above.
+A generated one-person country leader is permitted only for a truly fictional high-chaos country or an impossible/supernatural entity; a grounded polity always remains on the sourced-real-person path.
 
 Generated country-leader and commander portraits should follow the full `156x210` HOI4 portrait convention. Generated operatives must follow the matching cataloged operative portrait and owning sprite. Use head-and-shoulders or restrained bust framing, a strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, a HOI4-compatible background, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
 
-For generated one-person portraits, record the subject role, apparent gender
-presentation, `fictional_high_chaos` classification, and the extraordinary invented
-regalia or cultural motif in the manifest and handoff. Where name pools or gender
-metadata apply, they must match the portrait. Never hand off a portrait in a way that
-lets implementation randomly assign names from the opposite gender pool. Do not use
-generic faces, modern props, meme aesthetics, gore, mockery, stereotypes, or
-caricatures of real cultures as visual shorthand.
+For generated one-person portraits, record the subject role, apparent gender presentation, `fictional_high_chaos` classification, and the extraordinary invented regalia or cultural motif in the manifest and handoff.
+Where name pools or gender metadata apply, they must match the portrait.
+Never hand off a portrait in a way that lets implementation randomly assign names from the opposite gender pool.
+Do not use generic faces, modern props, meme aesthetics, gore, mockery, stereotypes, or caricatures of real cultures as visual shorthand.
 
-For a fictional council, committee, junta, board, office, crowd, or symbolic-body
-leader, follow the accepted content brief and use an institutional name rather than a
-random personal name pool. A people-free institutional composition may use one
-readable symbol, empty chamber, desk, machinery, seal, document arrangement, or other
-institution-specific subject. A staged governing group is allowed only when the brief
-requires it and every visible subject satisfies the accepted demographic and period
-constraints. For a grounded institution, use defensible sourced archival material for
-the real institution or source a real officeholder; do not generate an invented body
-or officeholder. If the design calls for a specific person, route it through the
-one-person portrait rules instead of treating that person as an institution.
+For a fictional council, committee, junta, board, office, crowd, or symbolic-body leader, follow the accepted content brief and use an institutional name rather than a random personal name pool.
+A people-free institutional composition may use one readable symbol, empty chamber, desk, machinery, seal, document arrangement, or other institution-specific subject.
+A staged governing group is allowed only when the brief requires it and every visible subject satisfies the accepted demographic and period constraints.
+For a grounded institution, use defensible sourced archival material for the real institution or source a real officeholder; do not generate an invented body or officeholder.
+If the design calls for a specific person, route it through the one-person portrait rules instead of treating that person as an institution.
 
 ### User-provided assets
 
@@ -412,9 +351,8 @@ This skill owns its visual-reference library under:
 
 `assets/vanilla_reference/` is the canonical semantic library, with Vanilla HOI4
 as the primary source and explicitly marked Chaos Redux examples where needed.
-`assets/leader_portraits/` is the user-requested, curated male-only quick-reference
-pack for HOI4 country-leader and army/navy-commander styling. Do not route reference
-work through project-root asset folders or another skill-local copy.
+`assets/leader_portraits/` is the user-requested, curated male-only quick-reference pack for HOI4 country-leader and army/navy-commander styling.
+Do not route reference work through project-root asset folders or another skill-local copy.
 
 Start with:
 
@@ -434,15 +372,10 @@ Canonical portrait paths:
 - army and navy commanders: `assets/vanilla_reference/portraits/commanders/`
 - operatives: `assets/vanilla_reference/portraits/operatives/`
 - advisors and high-command dossier cards: `assets/vanilla_reference/portraits/advisors/`
-Country leaders, commanders, and operatives are full `156x210` portrait
-textures. For portrait work, inspect both the canonical role-specific contact sheet
-and the matching `assets/leader_portraits/leaders/` or
-`assets/leader_portraits/commanders/` quick-reference contact sheet. The copied pack
-is reference-only; its source mapping and hashes are recorded in
-`assets/leader_portraits/REFERENCE_MANIFEST.md`.
-Advisor and high-command dossier references are native `65x67` cards and use
-their own canonical contact sheet; do not substitute the full portrait or
-quick-reference packs for this family.
+Country leaders, commanders, and operatives are full `156x210` portrait textures.
+For portrait work, inspect both the canonical role-specific contact sheet and the matching `assets/leader_portraits/leaders/` or `assets/leader_portraits/commanders/` quick-reference contact sheet.
+The copied pack is reference-only; its source mapping and hashes are recorded in `assets/leader_portraits/REFERENCE_MANIFEST.md`.
+Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute the full portrait or quick-reference packs for this family.
 
 Canonical flag and event-art paths:
 
@@ -490,20 +423,16 @@ Canonical unit-visual paths:
 
 The tree is semantic, not a bank of interchangeable pictures. Use the folder for the exact owning UI or model surface, then follow the cataloged source, native canvas, frame count, transparency, and owning definition.
 
-The canonical `assets/vanilla_reference/` tree remains the source of truth for exact
-engine surfaces and semantic ownership. The curated `assets/leader_portraits/` pack
-is the deliberate portrait-review aid requested for agents and must stay aligned with
-its manifest; it is never a runtime asset source.
+The canonical `assets/vanilla_reference/` tree remains the source of truth for exact engine surfaces and semantic ownership.
+The curated `assets/leader_portraits/` pack is the deliberate portrait-review aid requested for agents and must stay aligned with its manifest; it is never a runtime asset source.
 
 The reusable achievement not-eligible compositing overlay lives at
 `icons/achievements/overlay.png`. It is a workflow
 input rather than a reference example, so it is excluded from the achievement
 contact sheet and coverage count.
 
-Do not add new reference images outside the skill-local `assets/` root. Add semantic
-references under `assets/vanilla_reference/`; add male leader or commander review
-copies under `assets/leader_portraits/` only with exact provenance, dimensions,
-hashes, and contact-sheet coverage recorded in its manifest.
+Do not add new reference images outside the skill-local `assets/` root.
+Add semantic references under `assets/vanilla_reference/`; add male leader or commander review copies under `assets/leader_portraits/` only with exact provenance, dimensions, hashes, and contact-sheet coverage recorded in its manifest.
 
 Before generating, sourcing, processing, or wiring an asset, read the library
 rules, inspect the matching category and contact sheet, and follow the vanilla
@@ -582,13 +511,10 @@ For every asset package:
    - `$imagegen`
    - internet source image
    - user-provided source image
-   For one-person country-leader or officeholder portraits, record the grounded or
-   `fictional_high_chaos` identity classification before selecting a mode. A grounded
-   identity must use a sourced real person; an unavailable defensible source is
-   `blocked`, never a generated substitute. Before sourcing or wiring a real-person
-   leader, commander, operative, or named officeholder, apply the portrait subject
-   ownership gate above and record its evidence. Missing or contradictory source-mode
-   or ownership evidence fails closed.
+   For one-person country-leader or officeholder portraits, record the grounded or `fictional_high_chaos` identity classification before selecting a mode.
+   A grounded identity must use a sourced real person; an unavailable defensible source is `blocked`, never a generated substitute.
+   Before sourcing or wiring a real-person leader, commander, operative, or named officeholder, apply the portrait subject ownership gate above and record its evidence.
+   Missing or contradictory source-mode or ownership evidence fails closed.
 11. For every real-person leader, commander, operative, or named-officeholder portrait, create the explicit archival crop and JSON equality evidence with the section 3 utility before ImageGen, then run the remaining section 3 sequence exactly and stop before conversion or wiring for the independent audit.
 12. Compare the unchanged master, crop, raw ImageGen result, processed 156x210 candidate, and role-specific references at native and enlarged sizes, and record independent likeness, style, and provenance verdicts; a pending or failed identity gate is `needs_user_review` or `blocked`, never converted or wired.
 13. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
@@ -679,9 +605,7 @@ Each asset entry should include:
 - source mode and source note for every animation frame when animated
 - for real-person portraits, immutable source-master path and hash, attribution, explicit crop coordinates, exact-crop PNG and JSON evidence paths and hashes, raw ImageGen result path and hash, deterministic processor/version with normalized arguments and hash, deterministic 156x210 candidate path and hash, role-specific reference folder and hashes, and native/enlarged comparison-sheet path
 - for real-person portraits, independent reviewer identity and date, proof that the reviewer is not the producer, separate likeness/style/provenance verdicts, and the portrait gate state
-- portrait subject-ownership search terms, roots/files and ids checked, matched owner or
-  consumer (or explicit no-match evidence), disposition, and any guarded transfer/
-  availability contract
+- portrait subject-ownership search terms, roots/files and ids checked, matched owner or consumer (or explicit no-match evidence), disposition, and any guarded transfer/availability contract
 - durable ComfyUI portrait source PNG path, matching prompt TXT path, exact wired runtime DDS basename and path, and source relationship for every portrait
 - ComfyUI replacement state: `comfyui_replacement_pending`, `comfyui_replaced`, or `comfyui_not_needed`
 
@@ -1181,59 +1105,38 @@ Country-leader, commander, operative, and named-officeholder identity candidates
 
 ## 21.1 Advisor and high-command portrait icons
 
-Advisor, theorist, military-high-command, and officer-corps portrait icons are a
-separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before
-work. The final target is native `65x67`, with a recognisable HOI4-styled
-head-and-shoulders portrait, a dark irregular dossier frame where the approved
-reference family uses one, and transparent outer corners. Do not infer this family
-from a character or small-portrait consumer; it must be present in the accepted
-requirement set.
+Advisor, theorist, military-high-command, and officer-corps portrait icons are a separate asset type.
+Inspect `assets/vanilla_reference/portraits/advisors/` before work.
+The final target is native `65x67`, with a recognisable HOI4-styled head-and-shoulders portrait, a dark irregular dossier frame where the approved reference family uses one, and transparent outer corners.
+Do not infer this family from a character or small-portrait consumer; it must be present in the accepted requirement set.
 
-Apply the section 3 source-mode gate to the advisor or high-command subject:
-grounded, historical, restored, separatist, regional, indigenous, dynastic, or
-otherwise plausibly historical identities use sourced real people, while generated
-one-person subjects are limited to truly fictional high-chaos or
-impossible/supernatural entities. Missing or contradictory classification fails
-closed. For a fictional subject in the allowed class, generate a distinct
-full-resolution portrait master with `$imagegen`; do not reuse a leader crop. For real people, complete the shared
-real-person identity gate through an independently approved `156x210` candidate
-before preparing the native card and preserve source attribution. Institutional or
-collective briefs must state whether the result is people-free or includes a
-governing group; never imply that invented faces are sourced historical individuals.
+Apply the section 3 source-mode gate to the advisor or high-command subject: grounded, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical identities use sourced real people, while generated one-person subjects are limited to truly fictional high-chaos or impossible/supernatural entities.
+Missing or contradictory classification fails closed.
+For a fictional subject in the allowed class, generate a distinct full-resolution portrait master with `$imagegen`; do not reuse a leader crop.
+For real people, complete the shared real-person identity gate through an independently approved `156x210` candidate before preparing the native card and preserve source attribution.
+Institutional or collective briefs must state whether the result is people-free or includes a governing group; never imply that invented faces are sourced historical individuals.
 
-Keep a repo-contained provenance manifest for every native card. Record the source
-mode, source and candidate hashes and dimensions, exact crop or composition notes,
-generation or editing inputs, attribution or ImageGen record, reviewer, date, and
-runtime path. Keep each source, processed PNG, review sheet, and metadata file in a
-distinct path; do not split out or bypass an individual source to weaken provenance.
+Keep a repo-contained provenance manifest for every native card.
+Record the source mode, source and candidate hashes and dimensions, exact crop or composition notes, generation or editing inputs, attribution or ImageGen record, reviewer, date, and runtime path.
+Keep each source, processed PNG, review sheet, and metadata file in a distinct path; do not split out or bypass an individual source to weaken provenance.
 
 Use `.agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py` for native `65x67` advisor-template composition. Use the canonical `portraits/advisors/advisor_template.png` as one exact, untouched top layer rather than reconstructing its frame, paper, or shadows from separate elements. Load the complete source portrait without cropping, resize that entire source to the native `65x67` advisor canvas first, apply the selected size, rotation, and opening-center offset to that complete intermediate, then alpha-composite the template on top. Use a placement study against the actual template opening when supplied transform values do not produce a valid fit. Record the complete-source resize, transformed dimensions, center, offset, rotation, sepia strength, template hash, processed PNG hash, and final DDS hash in the asset package. The reusable command contract and review checklist are documented under `tools/README.md` in the advisor and high-command dossier section.
 
-Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative
-portrait. Compose the subject independently inside the native card with a
-deterministic, task-specific/manual workflow and retain the exact crop, face
-placement, dimensions, hashes, and review evidence. Do not draw replacement frame,
-paper, seal, bevel, patina, emblem, writing, or shadow artwork from primitive
-geometry, and do not advertise a missing shared processor.
+Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative portrait.
+Compose the subject independently inside the native card with a deterministic, task-specific/manual workflow and retain the exact crop, face placement, dimensions, hashes, and review evidence.
+Do not draw replacement frame, paper, seal, bevel, patina, emblem, writing, or shadow artwork from primitive geometry, and do not advertise a missing shared processor.
 
-Check the native `65x67` candidate against the canonical advisor and high-command
-references. Confirm composition, face readability, frame silhouette and palette,
-paper geometry and opacity where present, transparent corners, texture continuity,
-and the absence of holes or fringe. Record any deterministic dimension or alpha
-checks as evidence, but treat visual approval as a separate human gate.
+Check the native `65x67` candidate against the canonical advisor and high-command references.
+Confirm composition, face readability, frame silhouette and palette, paper geometry and opacity where present, transparent corners, texture continuity, and the absence of holes or fringe.
+Record any deterministic dimension or alpha checks as evidence, but treat visual approval as a separate human gate.
 
-When a character explicitly defines a `portraits = { army = { small = ... } }`
-sprite, the small slot remains a native `65x67` dossier portrait while
-`army.large` remains the full `156x210` commander portrait. Do not create a plain
-`50x67` resize or crop for the army-small slot, and do not replace or downsize the
-approved full commander texture. Keep the large and small sprite names stable,
-record both runtime paths and provenance, and validate both textures separately.
+When a character explicitly defines a `portraits = { army = { small = ... } }` sprite, the small slot remains a native `65x67` dossier portrait while `army.large` remains the full `156x210` commander portrait.
+Do not create a plain `50x67` resize or crop for the army-small slot, and do not replace or downsize the approved full commander texture.
+Keep the large and small sprite names stable, record both runtime paths and provenance, and validate both textures separately.
 
-The independent visual review must compare the candidate with the canonical advisor
-and high-command references at native `65x67` and at `4x` nearest-neighbour size.
-Automated dimension and alpha checks produce evidence only; the producer may not
-approve the candidate. Convert only an independently approved PNG with
-`python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67`.
+The independent visual review must compare the candidate with the canonical advisor and high-command references at native `65x67` and at `4x` nearest-neighbour size.
+Automated dimension and alpha checks produce evidence only; the producer may not approve the candidate.
+Convert only an independently approved PNG with `python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67`.
 
 
 ## Animated leader portraits
