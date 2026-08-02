@@ -29,7 +29,7 @@ The complete IW-012 package reference is [the dedicated Iceland package document
 
 Any 63-row/68-file wording in the dated regional paragraph below is historical traceability only and does not override the current shelf authority recorded in the resume packet and source map.
 
-The ASY Barsoum v93 independent audit now passes identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis with a low-resolution group-photo caveat; parent release acceptance is required and no runtime promotion occurred.
+The ASY Barsoum v93 independent audit now passes identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis with a low-resolution group-photo caveat; v94 parent promotion updates only the existing concordat-council DDS consumer and does not admit IW-058.
 
 The current portrait-shelf authority is 78 original-size PNG masters in one flat directory, with 73 indexed rows and five older physical files outside that index (four ARX masters and the CHU Mirsaid master). No normalized 156x210 shelf files, advisor portraits, dossier derivatives, or small consumers are authorized. CHU Karim Tinchurin v3 and ASY Haydo remain rights/date-gated evidence, and the alternate ASY Barsoum package remains pending independent audit.
 
