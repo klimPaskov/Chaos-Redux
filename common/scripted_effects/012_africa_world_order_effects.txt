@@ -511,6 +511,34 @@ africa_initialize_scramble_and_world_packages = {
 
 		# This explicit post-unification census is the only global participant
 		# discovery pass. It never repeats on a daily/weekly/monthly on_action.
+		# The first bounded sweep reserves room for countries that can actually
+		# project an expedition. A second sweep fills the remaining roster with
+		# recognition, sanctions, treaty, and rivalry contacts, so country
+		# iteration order cannot hide every materially ready expedition actor.
+		every_country = {
+			limit = {
+				exists = yes
+				has_capitulated = no
+				NOT = { tag = ROOT }
+				NOT = { is_actual_nonhuman_country = yes }
+				NOT = { is_special_chaos_country = yes }
+				capital_scope = { NOT = { is_on_continent = africa } }
+				OR = {
+					is_major = yes
+					is_faction_leader = yes
+					any_owned_state = { is_on_continent = africa }
+				}
+				africa_ai_scramble_expedition_materially_ready = yes
+				event_target:africa_host = {
+					check_variable = {
+						var = africa_scramble_participant_count
+						value = constant:africa_scramble_response.participant_census_cap
+						compare = less_than
+					}
+				}
+			}
+			africa_scramble_register_participant = yes
+		}
 		every_country = {
 			limit = {
 				exists = yes
