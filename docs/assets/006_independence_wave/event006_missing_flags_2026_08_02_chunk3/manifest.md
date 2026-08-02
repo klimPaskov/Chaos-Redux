@@ -1,6 +1,6 @@
 # Event 006 missing flag package, chunk 3
 
-This package supplies the flat flag source masters, processed PNG ladders, and runtime TGA triplets for eight registered Event 006 tags.
+This package supplies the flat flag source masters, processed PNG ladders, and runtime TGA triplets for all seventeen requested Event 006 tags.
 
 The selected source masters are ImageGen outputs made from the documented identity references below; they are clean orthographic flag designs and are not photographs, fabric renders, or scene art.
 
@@ -14,6 +14,15 @@ The selected source masters are ImageGen outputs made from the documented identi
 | HCX | Texas | handed_off | ImageGen redraw guided by the attested Texas Lone Star flag. | Blue hoist, white upper fly, red lower fly, and one white star are period-safe and identity-specific. |
 | HDX | Cherokee Nation | needs_user_review | ImageGen civic synthesis using the exact Cherokee seven-point star cue and seven-oak-leaf institutional motif, with the modern official flag used only as a context reference. | The compact emblem is not an asserted historical Cherokee flag and needs Cherokee community/institutional review. |
 | HEX | Haudenosaunee Confederacy | needs_user_review | ImageGen negotiated-confederacy synthesis using the Eastern white pine and wampum-belt design language from the Iroquois Confederacy reference. | This is not a claim that one universal historical flag existed; exact confederacy/community approval remains required. |
+| IBX | Kachin State | needs_user_review | ImageGen alternate-history civic synthesis from Kachin highland, river, jade, and sun motifs. | No defensible single 1936 historical flag source was found; this is a clearly labelled regional synthesis. |
+| GIX | Wa State | needs_user_review | ImageGen alternate-history civic synthesis from Wa mountain-valley, tea, rubber, and sun motifs. | No defensible single 1936 historical flag source was found; this is not a copy of the modern Wa flag. |
+| GRX | Iwi-led Maori Federation | needs_user_review | ImageGen negotiated iwi-led civic synthesis using restrained koru and wave geometry. | This is not a copy of the modern Tino Rangatiratanga flag and requires iwi/community review. |
+| HFX | Lakota State | needs_user_review | ImageGen civic synthesis from Lakota treaty-territory, Black Hills, directional sun, and restrained feather cues. | No single period flag is asserted; community review is required. |
+| HGX | Dine State | needs_user_review | ImageGen pre-1968 Diné civic synthesis from four-direction mountain geometry. | The modern 1968 Navajo Nation flag is explicitly excluded; the generated route flag needs community review. |
+| HKX | Zapotec-Mixtec Federation | needs_user_review | ImageGen negotiated Oaxaca synthesis combining distinct Zapotec and Mixtec textile geometry. | No generic Aztec or Mexican motif is used; community review is required. |
+| HPX | Aymara State | needs_user_review | ImageGen Altiplano civic synthesis from restrained chakana-inspired geometry. | The seven-colour Wiphala grid is explicitly excluded; community review is required. |
+| HSX | Muisca Restoration | needs_user_review | ImageGen civic synthesis from Muisca raft, sun, river, and mountain archaeology cues. | Archaeological motifs do not establish an attested 1936 flag; restoration-route review is required. |
+| HUX | Patagonian State | needs_user_review | ImageGen non-Welsh, non-Araucania synthesis from southern wind, steppe, coastal wave, star, and sun motifs. | This is a fictional regional civic design rather than a historical flag claim. |
 
 All selected masters are retained under `source_png/` with SHA-256 hashes in `metadata/flag_validation.json` and `metadata/hashes.sha256`.
 

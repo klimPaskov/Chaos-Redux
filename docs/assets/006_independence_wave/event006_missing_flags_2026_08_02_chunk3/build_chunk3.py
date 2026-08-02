@@ -35,6 +35,40 @@ SIZES = {
 }
 TARGET_RATIO = 82 / 52
 
+REVIEW_TAGS = {
+    "GMX",
+    "GZX",
+    "HAX",
+    "HDX",
+    "HEX",
+    "IBX",
+    "GIX",
+    "GRX",
+    "HFX",
+    "HGX",
+    "HKX",
+    "HPX",
+    "HSX",
+    "HUX",
+}
+
+REVIEW_NOTES = {
+    "GMX": "Kokbayraq identity is grounded, but East Turkestan scope and modern reference overlap need review.",
+    "GZX": "The Great Seal-style roundel is a simplified generated emblem and needs small-size review.",
+    "HAX": "Fictional Cascadia route synthesis; not an asserted historical flag.",
+    "HDX": "Generated Cherokee civic synthesis; institutional and community review required.",
+    "HEX": "Generated Haudenosaunee synthesis; universal historical claim and community approval remain open.",
+    "IBX": "Generated Kachin civic synthesis; no defensible single 1936 historical flag source was found.",
+    "GIX": "Generated Wa civic synthesis; no defensible single 1936 historical flag source was found.",
+    "GRX": "Generated negotiated iwi-led synthesis; not a copy of the modern Tino Rangatiratanga flag.",
+    "HFX": "Generated Lakota treaty-state synthesis; community review required.",
+    "HGX": "Generated pre-1968 Diné synthesis; modern Navajo flag intentionally excluded.",
+    "HKX": "Generated negotiated Zapotec-Mixtec textile synthesis; community review required.",
+    "HPX": "Generated Aymara Altiplano synthesis; Wiphala intentionally excluded and review required.",
+    "HSX": "Generated Muisca restoration synthesis; archaeological motifs are not an attested 1936 flag.",
+    "HUX": "Generated Patagonian civic synthesis; explicitly not Welsh, Araucanian, or Argentine flag art.",
+}
+
 
 SPECS = (
     ("GMX", "East Turkestan", "GMX_east_turkestan_imagegen_raw.png", "https://en.wikipedia.org/wiki/Flag_of_East_Turkestan", "1933–1934 East Turkestan Republic Kokbayraq reference: deep blue field, one white hoist-opening crescent, one white five-point star"),
@@ -206,7 +240,8 @@ def process() -> None:
             "processed_master": master_path.relative_to(PACKAGE_ROOT).as_posix(),
             "processed_master_sha256": sha256(master_path),
             "sizes": size_records,
-            "status": "handed_off",
+            "status": "needs_user_review" if tag in REVIEW_TAGS else "handed_off",
+            "uncertainty": REVIEW_NOTES.get(tag, "No material uncertainty beyond the generated clean redraw."),
         }
 
     make_contact_sheets(source_images, final_images)

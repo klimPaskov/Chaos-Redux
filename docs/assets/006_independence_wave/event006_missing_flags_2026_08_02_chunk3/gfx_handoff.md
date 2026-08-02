@@ -12,6 +12,15 @@ Use the tag stem as the filename and keep the three runtime sizes together:
 - `gfx/flags/HCX.tga`, `gfx/flags/medium/HCX.tga`, `gfx/flags/small/HCX.tga`
 - `gfx/flags/HDX.tga`, `gfx/flags/medium/HDX.tga`, `gfx/flags/small/HDX.tga`
 - `gfx/flags/HEX.tga`, `gfx/flags/medium/HEX.tga`, `gfx/flags/small/HEX.tga`
+- `gfx/flags/IBX.tga`, `gfx/flags/medium/IBX.tga`, `gfx/flags/small/IBX.tga`
+- `gfx/flags/GIX.tga`, `gfx/flags/medium/GIX.tga`, `gfx/flags/small/GIX.tga`
+- `gfx/flags/GRX.tga`, `gfx/flags/medium/GRX.tga`, `gfx/flags/small/GRX.tga`
+- `gfx/flags/HFX.tga`, `gfx/flags/medium/HFX.tga`, `gfx/flags/small/HFX.tga`
+- `gfx/flags/HGX.tga`, `gfx/flags/medium/HGX.tga`, `gfx/flags/small/HGX.tga`
+- `gfx/flags/HKX.tga`, `gfx/flags/medium/HKX.tga`, `gfx/flags/small/HKX.tga`
+- `gfx/flags/HPX.tga`, `gfx/flags/medium/HPX.tga`, `gfx/flags/small/HPX.tga`
+- `gfx/flags/HSX.tga`, `gfx/flags/medium/HSX.tga`, `gfx/flags/small/HSX.tga`
+- `gfx/flags/HUX.tga`, `gfx/flags/medium/HUX.tga`, `gfx/flags/small/HUX.tga`
 
 The package copies are also kept in `final_tga/` for audit and reproducibility.
 
