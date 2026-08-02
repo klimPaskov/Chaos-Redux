@@ -106,8 +106,11 @@ queued entry when the shared window closes. Playback is emitted once per human
 country through the existing volume-mode helper.
 
 Package 1 records
+> The following historical sentence is superseded by the 2026-08-02 source-reachability note below.
 `independence_wave_radical_bloc_qualification_recorded` and the exact qualified
 actor. It does not award an achievement. The accepted Radical Bloc achievement definition and trigger scaffolding are registered, but no currently admitted route completes the later containment-survival proof. The achievements tranche must consume this qualification only through the reviewed qualification, containment, and disqualification contract and must not award it early. Packages 2-5 do not set the qualification.
+
+The earlier sentence saying that no admitted route completes the containment-survival proof is superseded by the 2026-08-02 GUI/achievement handoff: admitted IW-184/HBX is source-reachable through the existing Radical Sovereignty, League, danger-milestone, external-containment, and configured-survival gates. This remains source reachability only; no live occurrence or current row-level proof receipt is claimed.
 
 ## Audio production and rights
 
