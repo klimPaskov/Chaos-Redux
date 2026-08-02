@@ -331,6 +331,10 @@ africa_charter_council_category = {
 			africa_compact_promotion_proof_is_available = yes
 			check_variable = { var = political_power value = constant:africa_compact_promotion.proof_pp_cost compare = greater_than_or_equals }
 		}
+		custom_trigger_tooltip = {
+			tooltip = africa_compact_promotion_proof_requirement_tt
+			africa_compact_promotion_proof_is_available = yes
+		}
 		cost = constant:africa_compact_promotion.proof_pp_cost
 		custom_effect_tooltip = africa_record_compact_promotion_proof_tt
 		complete_effect = { africa_record_compact_promotion_proof = yes }
@@ -351,6 +355,10 @@ africa_charter_council_category = {
 			africa_compact_host_can_be_promoted = yes
 			check_variable = { var = political_power value = constant:africa_compact_promotion.promotion_pp_cost compare = greater_than_or_equals }
 		}
+		custom_trigger_tooltip = {
+			tooltip = africa_compact_promotion_requirement_tt
+			africa_compact_host_can_be_promoted = yes
+		}
 		cost = constant:africa_compact_promotion.promotion_pp_cost
 		custom_effect_tooltip = africa_promote_compact_host_tt
 		complete_effect = { africa_promote_compact_host_package = yes }
@@ -358,6 +366,42 @@ africa_charter_council_category = {
 			base = constant:africa_compact_promotion.ai_base
 			modifier = { factor = constant:africa_compact_promotion.ai_security_factor has_country_flag = africa_host_security_prepared }
 		}
+	}
+
+	africa_decline_compact_promotion = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = {
+			africa_is_current_host = yes
+			check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+			NOT = { has_country_flag = africa_compact_promotion_refused }
+			NOT = { has_country_flag = africa_host_package_promoted }
+		}
+		available = {
+			africa_is_current_host = yes
+			check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+		}
+		cost = 0
+		custom_effect_tooltip = africa_decline_compact_promotion_tt
+		complete_effect = { set_country_flag = africa_compact_promotion_refused }
+		ai_will_do = { base = 0 }
+	}
+
+	africa_reopen_compact_promotion_docket = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = {
+			africa_is_current_host = yes
+			check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+			has_country_flag = africa_compact_promotion_refused
+		}
+		available = {
+			africa_is_current_host = yes
+			check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+			check_variable = { var = political_power value = constant:africa_compact_promotion.reopen_pp_cost compare = greater_than_or_equals }
+		}
+		cost = constant:africa_compact_promotion.reopen_pp_cost
+		custom_effect_tooltip = africa_reopen_compact_promotion_docket_tt
+		complete_effect = { clr_country_flag = africa_compact_promotion_refused }
+		ai_will_do = { base = 0 }
 	}
 
 	africa_select_action_state_target = {
