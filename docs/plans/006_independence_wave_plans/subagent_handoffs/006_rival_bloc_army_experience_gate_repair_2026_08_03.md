@@ -2,17 +2,17 @@
 
 Date: 2026-08-03.
 
-Scope: restore the engine-backed army-experience trigger used by the Event 006 rival-bloc leadership mission. The supplied flag-atlas error family was already closed separately; this patch addresses the independent current source diagnostic found by the completion re-audit.
+Scope: verify and restore the engine-backed army-experience trigger used by the Event 006 rival-bloc leadership mission. The supplied flag-atlas error family was already closed separately; this handoff records the independent source diagnostic found by the completion re-audit and its current corrected source state.
 
 ## Patch
 
-`common/scripted_triggers/006_independence_wave_rival_bloc_triggers.txt` now uses:
+`common/scripted_triggers/006_independence_wave_rival_bloc_triggers.txt` uses:
 
 ```text
 army_experience > constant:independence_wave_rival_bloc_cost.leadership_army_experience
 ```
 
-instead of reading the engine resource through `check_variable`. The helper is consumed by both `available` and `custom_cost_trigger` in `common/decisions/006_independence_wave_rival_bloc_decisions.txt`, so the leadership mission now evaluates the same concrete resource in both surfaces.
+instead of reading the engine resource through `check_variable`. The helper is consumed by both `available` and `custom_cost_trigger` in `common/decisions/006_independence_wave_rival_bloc_decisions.txt`, so the leadership mission evaluates the same concrete resource in both surfaces. The current checkout contains the corrected expression; no duplicate gameplay diff is staged by this documentation-only receipt because the source was concurrently restored in the shared worktree before commit.
 
 ## Validation
 
