@@ -36,6 +36,19 @@ Scripted markers extend those buildings where a country program needs a laborato
 
 Pool ordering is country-specific and deterministic for AI selection. Occupied and non-core pools are preferred over colonial or emergency pools; core fallback is used only by routes that explicitly permit it and carries lower output, higher stability damage, stronger resistance, and greater reform pressure.
 
+## Building Icon Assets
+
+The concentration-camp and extermination-camp buildings use distinct custom artwork on both building-icon surfaces.
+
+- `GFX_building_concentration_camp` reads `gfx/interface/buildings/building_concentration_camp.dds` as a native `27x23` standalone icon.
+- `GFX_building_extermination_camp` reads `gfx/interface/buildings/building_extermination_camp.dds` as a native `27x23` standalone icon.
+- `GFX_buildings_strip` reads `gfx/interface/buildings/building_icon_strip.dds` as a `35`-frame strip of `46x46` frames.
+- Strip frame `34` belongs to `concentration_camp`; strip frame `35` belongs to `extermination_camp`.
+
+The standalone sprite aliases are registered in `interface/chaosx_buildings.gfx`, while the indexed strip is registered in `interface/countrystateview.gfx`. The generated source art, transparency review, frame-order review, final hashes, and prompt provenance are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-02_camp_building_icon_asset_handoff.md`.
+
+Future visual extensions should preserve the existing frame order and append new building frames at the end of the strip. A later gulag-network art pass should remain a separate building-icon requirement rather than reusing either camp icon.
+
 ## Deaths and Population Damage
 
 Every recurring or immediate population-loss action enters the Chaos Meter Deaths system. The state owner receives the population-loss record and real state population reduction; the stored responsible country receives hidden evidence, later condemnation, and tribunal responsibility. This distinction is important in occupied China, Manchuria, the Raj, North Africa, Libya, the Congo, occupied Poland, and Soviet borderlands.
