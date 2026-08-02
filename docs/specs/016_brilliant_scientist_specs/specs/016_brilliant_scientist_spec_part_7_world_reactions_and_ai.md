@@ -362,7 +362,7 @@ Countermeasure families:
 
 - Anti-machine electronic warfare.
 - Clone identity and growth-facility detection.
-- Creature containment and anti-bestiary weapons.
+- Creature containment and anti-synthesis weapons.
 - Portal detection and terminal disruption.
 - Temporal record authentication.
 - Biological defense and vaccination.
@@ -491,7 +491,7 @@ Possible links:
 Possible links:
 
 - Kruger proposes a project-specific doctrine or command system.
-- Robot, portal, bestiary, or temporal forces can create doctrine incidents.
+- Robot, portal, paleogenetic, xenobiological, or temporal forces can create doctrine incidents.
 - Event 16 should not absorb the separate doctrine event.
 
 ### Event 28: Asteroid incoming
@@ -657,7 +657,7 @@ AI route selection should evaluate:
 - Favor defensive or economic projects when weak.
 - Favor military projects when at war.
 - Treat cloning and robots as manpower alternatives based on actual shortages.
-- Use bestiary routes only when the relevant project exists.
+- Use paleogenetic and xenobiological routes only when the relevant project exists.
 - Avoid biological weaponization unless ideology, desperation, or high chaos supports it.
 - Avoid singularity research unless Evolution IV and world-end content are enabled.
 
@@ -734,9 +734,9 @@ Peaceful formation:
 
 - Clone AI maintains equipment and growth capacity.
 - Robot AI protects power and factories.
-- Bestiary AI protects feed and breeding sites.
+- Paleogenetic AI protects feed, breeding, and reserve sites; xenobiological AI protects vats, reagents, and control channels.
 - Portal AI defends terminals and uses raids against strategic facilities.
-- Temporal AI spends paradox capacity conservatively.
+- Temporal AI spends synchronization capacity conservatively and stabilizes before temporal debt becomes unrecoverable.
 - Biological AI considers condemnation and outbreak risk unless extremist.
 - Exotic-arms AI preserves elite units rather than wasting them in attrition.
 

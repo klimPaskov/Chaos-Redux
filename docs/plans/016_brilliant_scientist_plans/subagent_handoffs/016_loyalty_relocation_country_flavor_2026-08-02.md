@@ -10,7 +10,7 @@ This bounded presentation tranche extends the existing country-tag flavor helper
 
 - `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml`
 
-Each visible finding or outcome now appends `[This.GetBrilliantScientistCountryFlavorClause]` after the established host-archetype clause. The helper supplies authored clauses for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, and a safe general branch.
+Each visible finding or outcome now appends `[This.GetBrilliantScientistCountryFlavorClause]` after the established host-archetype clause. The helper supplies authored clauses for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, Czechoslovakia (`CZE`), and a safe general branch.
 
 ## Causal boundary
 

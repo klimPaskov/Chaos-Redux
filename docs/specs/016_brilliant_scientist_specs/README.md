@@ -80,7 +80,7 @@ The event can remain a powerful scientific success story. It can become a secret
 - The host country's gameplay is decision-led. It does not replace the host's existing focus tree.
 - A full bespoke focus tree belongs to the Kruger State.
 - Kruger rebellion strength and starting forces are derived from approved projects, facilities, authority, dependence, security, and chaos state.
-- Clone, robot, dinosaur, monster, portal, temporal, biological, and exotic-army outcomes are mechanically distinct.
+- Clone, robot, paleogenetic, xenobiological, portal, temporal, biological, and exotic-army outcomes are mechanically distinct.
 - The terminal capitulation weapon may fire from any starting chaos tier only by first pushing global chaos over the normal world-end threshold and then entering the existing terminal pipeline.
 - Six-package super-event title, quotation, button, and audio research is complete. Final Event 016-owned WAVs use visible IDs `90` through `95`. The six super-event DDS files, descriptions, localisation, triggers, shared sound definitions, settings-aware playback, and documentation are wired; live presentation acceptance remains user-owned.
 - All fifteen Kruger leader or scientist DDS files and matching `65x67` advisor DDS files are present under their registered Stage 0 through IV sprite contracts. The fourteen later advisor cards have been migrated to the canonical advisor-template compositor without changing their runtime identifiers. Final gameplay state-selection review and the independent status of animation packages remain tracked separately.

@@ -374,14 +374,14 @@ Kruger State temporal route.
 
 Challenge:
 
-Use a future-warning or recovery system to prevent the loss of the capital or singularity site, then close the resulting paradox without a timeline civil war.
+Use a future-warning or recovery system to prevent the loss of the capital or singularity site, then close the resulting temporal debt without a timeline civil war.
 
 Required conditions:
 
 - Temporal Deployment or higher.
 - Capital or strategic site entered a genuine danger state.
 - Bounded temporal action changes the outcome.
-- Paradox crisis resolved.
+- Temporal-debt synchronization crisis resolved.
 - No unlimited retry exploit.
 
 Difficulty:
@@ -534,7 +534,7 @@ Former host or coalition country.
 
 Challenge:
 
-Defeat a machine, clone, bestiary, temporal, or synthesis Kruger State after it becomes a world threat, then establish a rights-respecting scientific settlement for surviving project populations.
+Defeat a machine, clone, paleogenetic, xenobiological, temporal, or synthesis Kruger State after it becomes a world threat, then establish a rights-respecting scientific settlement for surviving project populations.
 
 Required conditions:
 

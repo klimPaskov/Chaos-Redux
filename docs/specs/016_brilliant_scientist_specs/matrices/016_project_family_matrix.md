@@ -33,15 +33,15 @@ Paleogenetics and xenobiological synthesis are separate at every stage and may c
 | Materials | Industry and resources | Rockets, robots, energy, portal | Factories and strategic resources |
 | Rocketry | Electronics, materials, test range | Alien arms, energy, singularity | Fuel, factories, range security |
 | High energy | Atomic research, strategic materials | Alien arms, portal, singularity | Rare resources, power, contamination risk |
-| Biomedical | Medical staff and facilities | Cloning, monsters, biological defense | Medical capacity and public trust |
+| Biomedical | Medical staff and facilities | Cloning, paleogenetics, xenobiological, biological defense | Medical capacity and public trust |
 | Teleportation | Energy, computation, materials | Electronics, biological delivery, temporal | Power, terminals, security |
-| Cloning | Biomedical and growth facilities | Monsters, paleogenetics, time | Food, equipment, medicine, identity conflict |
-| Robotics | Computation, electronics, materials | Machine state, monster control | Power, rare resources, factory burden |
-| Paleogenetics | Biomedical and cloning | Monster synthesis, machine harness | Food, handlers, containment |
-| Monsters | Biomedical, cloning or alien material | Robotics, paleogenetics | Containment, medical, panic |
+| Cloning | Biomedical and growth facilities | Paleogenetics, xenobiological synthesis, time | Food, equipment, medicine, identity conflict |
+| Robotics | Computation, electronics, materials | Machine state, xenobiological control | Power, rare resources, factory burden |
+| Paleogenetics | Biomedical and cloning | Xenobiological synthesis, machine harness | Food, handlers, containment |
+| Xenobiological synthesis | Biomedical, cloning or alien material | Robotics, paleogenetics | Containment, medical, panic |
 | Biological weapons | Biomedical, containment | Portal delivery, singularity contamination | Medical safety, condemnation, deaths |
 | Alien arms | Artifact or exotic discovery, energy | Guidance, singularity, machine systems | Rare material and foreign panic |
-| Temporal | Computation, energy, high chaos or event link | Cloning, robotics, portal | Paradox, power, record instability |
+| Temporal | Computation, energy, high chaos or event link | Cloning, robotics, portal | Temporal debt, power, record instability |
 | Singularity | High energy plus two advanced families | All terminal synergies | Years of research, several facilities, global threat |
 
 ## Project-stage consequences
@@ -67,7 +67,7 @@ Paleogenetics and xenobiological synthesis are separate at every stage and may c
 | Cloning | Nonviable body | Growth contamination | Identity or clone escape crisis |
 | Robotics | Frame failure | Network takeover | Autonomous military activation |
 | Paleogenetics | Specimen injury | Large escape | Ecological and military crisis |
-| Monsters | Handler death | Containment break | Engineered organism attack |
+| Xenobiological synthesis | Handler death | Containment break | Engineered organism attack |
 | Biological weapons | Laboratory exposure | Quarantine mission | Outbreak, deaths, condemnation |
 | Alien arms | Interface injury | Energy breach | Unknown strategic effect |
 | Temporal | Missing time | Duplicate personnel | Timeline contradiction and command crisis |

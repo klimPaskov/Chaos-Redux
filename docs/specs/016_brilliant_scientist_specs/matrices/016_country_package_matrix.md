@@ -26,7 +26,7 @@ Host takeover is an institutional-capture origin and never a territorial fallbac
 | Replicated sovereignty | Clone Prime or clone council | Replication motif | Clone state variants | Clone citizen, cohort, or hierarchy | Clone corps | Nonhuman only if clone-majority definition requires it |
 | Machine ascendancy | Machine-linked Kruger or network | Machine-node motif | Autonomous machine government | Human protected, subordinated, or integrated | Robot corps | Actual nonhuman after machine-majority transition |
 | Temporal Continuum | Multiple Kruger variants | Phase or loop motif | Prime, council, or future rule | Timeline-based identity | Temporal guard and recovered forces | Special chaos, nonhuman only if route warrants |
-| Xenobiological ascendancy | Altered or alien Kruger | Living geometric motif | Personal or biological hierarchy | Engineered populations | Monster, bestiary, exotic guard | Actual nonhuman when population and government transform |
+| Xenobiological ascendancy | Altered or alien Kruger | Living geometric motif | Personal or biological hierarchy | Engineered populations | Paleogenetic, xenobiological, or exotic guard | Actual nonhuman when population and government transform |
 | Synthesis | Combined route portrait | Combined simple emblem | Project-caste system | Mixed humans, clones, machines, organisms | Mixed project armies | Classification from actual majority and government |
 
 ## Starting idea lifecycle
@@ -55,8 +55,8 @@ Host takeover is an institutional-capture origin and never a territorial fallbac
 | Robot Autonomy | Machine command, automated industry, larger robot opening |
 | Paleogenetic Deployment | Creature support or one dinosaur formation |
 | Paleogenetic Weaponization | Dinosaur army and breeding system |
-| Monster Deployment | Guardian or assault unit |
-| Monster Autonomy | Monster force and breeding or control network |
+| Xenobiological Deployment | Guardian or assault unit |
+| Xenobiological Autonomy | Engineered-organism force and breeding or control network |
 | Teleportation Deployment | Linked sites and portal raider access |
 | Temporal Deployment | One bounded recovery or temporal guard package |
 | Alien arms Deployment | Elite exotic support and guard |

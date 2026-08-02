@@ -221,13 +221,13 @@ Goal:
 
 Replace slow human administration with optimized control.
 
-#### Bestiary command
+#### Paleogenetic and xenobiological command
 
 Members:
 
 - Handlers.
 - geneticists.
-- monster and paleogenetic unit officers.
+- paleogenetic and xenobiological unit officers.
 - containment staff.
 
 Goal:
@@ -507,7 +507,7 @@ Template directions:
 Strict limits:
 
 - One-time or escalating restoration.
-- Paradox pressure.
+- Temporal debt and synchronization pressure.
 - No uncapped unit duplication.
 
 ### Exotic-arm forces
@@ -556,7 +556,7 @@ Project forces grow through concrete systems.
 - Robot factories consume advanced materials, energy, and military production.
 - Creature facilities consume food, handlers, medical capacity, and secure territory.
 - Portal units require linked terminals and power.
-- Temporal recovery consumes synchronization capacity and raises paradox.
+- Temporal recovery consumes synchronization capacity and adds temporal debt.
 - Exotic weapons require rare materials and specialized production.
 - Conventional units require normal manpower and equipment.
 
@@ -596,7 +596,7 @@ Research slots and special-project capacity should scale with facilities, not re
 | --- | --- |
 | Cloning | Infantry equipment, medical support, food and logistics proxy costs |
 | Robotics | Advanced equipment, power, rare metals, repair |
-| Bestiary | Support equipment, handlers, transport, food and medical capacity |
+| Paleogenetic and xenobiological synthesis | Support equipment, handlers, transport, food and medical capacity |
 | Portal | Power, advanced materials, terminal construction, security |
 | Temporal | High-energy equipment, computation, synchronization facilities |
 | Alien arms | Rare resources, exotic components, elite production |
@@ -689,7 +689,7 @@ The Kruger State AI must:
 
 ## Cleanup and invalid-state handling
 
-- If no valid country package can be formed, the confrontation must resolve through defection, confinement, takeover, or a smaller non-country crisis.
+- If no valid country package can be formed, the confrontation must resolve through defection, confinement, or a smaller non-country crisis. Host takeover remains available only when the independent institutional-capture contract is already true.
 - Do not release a tag without a viable capital.
 - Do not transfer third-party occupied states.
 - Do not leave duplicate Kruger characters in host and breakaway rosters.

@@ -2,7 +2,7 @@
 
 ## Binding reconciliation
 
-The Bestiary lane splits into paleogenetic and xenobiological production, units, failures, supply, counters, and capstones, converging only through Synthesis. The temporal lane uses debt, synchronization capacity, anchors, authentication, and stabilization. Laboratory World and Strategic Singularity are mutually exclusive terminal commitments with distinct counterplay.
+The paleogenetic and xenobiological synthesis lanes split production, units, failures, supply, counters, and capstones, converging only through Synthesis. The temporal lane uses synchronization capacity, temporal debt, anchors, authentication, and stabilization. Laboratory World and Strategic Singularity are mutually exclusive terminal commitments with distinct counterplay.
 
 ## High-level lane diagram
 
@@ -26,7 +26,7 @@ Human Clone Machine  Auto  Bio  Portal             Human Machine      Recognitio
         |                                  |                                 |
         +-----------------[Project Military Branches]------------------------+
                            |       |       |       |
-                        Robots   Clones  Bestiary Quantum/Temporal
+                  Robots   Clones  Paleo/Xeno Synthesis Quantum/Temporal
                            \       |       /       /
                             +--[Dominant Portfolio Capstone]--+
                                             |
@@ -54,9 +54,9 @@ The diagram is a route guide, not a final coordinate map.
 | Robot corps | Frames, factories, repair, command | Robot templates and production | Machine rights and control | Army of Machines | Node capture or resource collapse |
 | Clone corps | Growth, training, officers, settlement | Clone templates and growth cycles | Clone legal status | Replicated host | Growth collapse |
 | Paleogenetics | Reserves, hatcheries, pens, handlers, ecology | Dinosaur and megafauna units | Restoration, reserve policy, or shock doctrine | Dinosaur Host | Escape, breeding collapse, habitat damage |
-| Xenobiological synthesis | Growth vats, fabrication, control methods, containment | Designed monster and specialist units | Biological caste or controlled use | Engineered Legion | Mutation, control loss, autonomous nest |
+| Xenobiological synthesis | Growth vats, fabrication, control methods, containment | Engineered organism and specialist units | Biological caste or controlled use | Engineered Legion | Mutation, control loss, autonomous nest |
 | Quantum transit | Terminals, power, linking, raids | Portal supply and strategic movement | Enables multi-site state | Global portal network | Terminal compromise |
-| Temporal military | Forecast, recovery, guard, time machine | Bounded temporal actions | Continuum government | Controlled time machine | Paradox crisis |
+| Temporal military | Forecast, recovery, guard, time machine | Bounded temporal actions | Continuum government | Controlled time machine | Temporal-debt synchronization crisis |
 | Exotic energy | Reactors, weapons, delivery, hardening | Elite arms and strategic systems | Deterrent or coercion policy | Strategic arsenal | Reactor and component catastrophe |
 | Diplomacy | Recognition, patrons, recruitment, intelligence | Technology trade, bloc, scientist actions | Open commonwealth or submission | Scientific bloc or submission network | Patron domination or isolation |
 | Expansion | Former host, facilities, resources, protectorates | Claims, war goals, integration, faction | Route-specific occupation model | Project empire | Overextension and coalition defeat |
@@ -80,7 +80,7 @@ The following require several completed foundations:
 
 - Machine state requires machine politics, automated administration, and sufficient robotics stage.
 - Replicated nation requires clone politics, growth infrastructure, and clone legal resolution.
-- Continuum requires temporal politics, synchronization infrastructure, and a controlled paradox state.
+- Continuum requires temporal politics, synchronization infrastructure, and a controlled temporal-debt state.
 - Strategic singularity requires high-energy branch plus two advanced project families and sovereign state.
 - Laboratory World requires world-conquest branch, overwhelming world control, and terminal chaos threshold.
 
@@ -130,7 +130,7 @@ The full file can contain all route nodes. A given campaign should see only vali
 | Human technocracy | Peaceful charter, low Grievance, need recognition | Can still pursue controlled expansion | Extreme personal rule already locked |
 | Clone sovereignty | Strong cloning, manpower need | More willing to choose cohort hierarchy | No growth facilities or clone stage |
 | Machine ascendancy | Strong robotics, low manpower, power access | More willing to replace humans | No machine network or severe power deficit |
-| Temporal Continuum | Temporal Deployment and stable synchronization | More willing to accept paradox | Temporal branch absent or paradox already critical |
+| Temporal Continuum | Temporal Deployment and stable synchronization | More willing to accept bounded temporal debt | Temporal branch absent or debt already critical |
 | Synthesis | Several project families and mixed army | More willing to embrace nonhuman caste system | One dominant route already completed |
 | Scientific commonwealth | Recognition opportunities and public history | Can create coercive protectorate only at high chaos | High Grievance and conquest doctrine |
 | Submission network | Strong military, foreign interest, Evolution IV | Main high-chaos diplomatic route | Weak enclave or no global reach |

@@ -10,7 +10,7 @@ AI treats paleogenetics and xenobiological synthesis as distinct production, sup
 | --- | --- | --- | --- | --- | --- |
 | Democratic, peaceful, stable | Public | Council or university network | Electronics, industry, medicine | State security, independent review | Public settlement or negotiated compact |
 | Democratic, wartime | Public or secret | Mixed council and military | Radar, rockets, medicine, defensive energy | Allied or state protection | Delay confrontation, then negotiate |
-| Fascist, expansionist | Secret | Military office and private guard | Weapons, cloning, monsters, biological, alien arms | Laboratory guard | Grant power, later seize or support sovereignty |
+| Fascist, expansionist | Secret | Military office and private guard | Weapons, cloning, paleogenetic, xenobiological, biological, alien arms | Laboratory guard | Grant power, later seize or support sovereignty |
 | Communist, institutional | Public or secret | State planning with collective oversight | Industry, computation, medicine, defense | State security | Integrate methods, resist personal sovereignty |
 | Communist, purging or desperate | Secret | Concentrated office | Weapons, cloning, biological | Security service | Confinement or violent crisis |
 | Non-aligned major | Public or private concession | Academy, court, military office | Broad conventional, strategic project | State or military guard | Compact, charter, or prestige route |
@@ -32,8 +32,8 @@ AI treats paleogenetics and xenobiological synthesis as distinct production, sup
 | Difficult terrain, transport shortage, or intimidation need | Paleogenetics | No feed, reserve land, handlers, veterinary capacity, or transport |
 | Fortified war or laboratory-defense need | Xenobiological synthesis | No medical fabrication, reagents, power, containment, or viable control method |
 | Strategic mobility | Teleportation | Terminals cannot be defended |
-| Intelligence disadvantage | Computation or temporal | Paradox or network compromise |
-| Desperation | Biological, monster, alien, singularity | Ordinary AI lacks ideology and threat gate |
+| Intelligence disadvantage | Computation or temporal | Temporal debt or network compromise |
+| Desperation | Biological, xenobiological, alien, singularity | Ordinary AI lacks ideology and threat gate |
 
 ## Host confrontation AI
 
@@ -93,7 +93,7 @@ AI treats paleogenetics and xenobiological synthesis as distinct production, sup
 | Clones | Sustained fronts and replacement-heavy war | Growth beyond equipment and medical capacity |
 | Robots | Defend industry, deliberate assaults | Low-power regions without supply |
 | Dinosaurs | Breakthrough and rough-terrain shock | Heavy air and anti-armor zones without support |
-| Monsters | Fortification break, facility defense, panic | Uncontrolled spread without handlers |
+| Xenobiological synthesis | Fortification break, facility defense, panic | Uncontrolled spread without handlers |
 | Portal units | Strategic raids, reinforce enclaves, seize facilities | Exposing undefended terminals |
 | Temporal units | Protect critical sites, recover one bounded crisis loss | Spending synchronization capacity or temporal debt on routine battles |
 | Exotic-arm units | Elite spearhead and leader guard | Attrition and low-value garrison use |

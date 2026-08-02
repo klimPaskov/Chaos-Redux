@@ -10,7 +10,7 @@ This bounded presentation tranche extends the existing country-tag flavor helper
 
 - `localisation/english/016_brilliant_scientist_l_english.yml`
 
-Each affected description now appends `[This.GetBrilliantScientistCountryFlavorClause]` after the existing ideology clause. The helper already provides authored clauses for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, and a safe general-country clause.
+Each affected description now appends `[This.GetBrilliantScientistCountryFlavorClause]` after the existing ideology clause. The helper already provides authored clauses for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, Czechoslovakia (`CZE`), and a safe general-country clause.
 
 ## Causal boundary
 
