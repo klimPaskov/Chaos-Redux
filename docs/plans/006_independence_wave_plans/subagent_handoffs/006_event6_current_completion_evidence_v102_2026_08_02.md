@@ -22,6 +22,8 @@ The byte-limited result above is historical for focus inspection. A fresh bounde
 
 The narrowed read-only geometry audit `006_event6_focus_geometry_audit_v111_2026_08_03.md` confirms bounded route, prerequisite, icon, localisation, reward, and source-AI coverage, but found no safe isolated coordinate patch; any reflow must be parent-owned and coordinated across the coupled lanes.
 
+The bounded probability receipt `006_event6_probability_inspect_current_v116_2026_08_03.md` now provides current decision-surface evidence separate from the unresolved generic-AI inspection. The core decision source resolves 10 decision candidates and 54 mission candidates with zero unresolved source diagnostics. The SCN-008 decision source resolves 3 decision candidates, one required input, and zero unresolved source diagnostics. Both pools remain intentionally incomplete for runtime world-state selection, so this receipt does not claim route ordering, probability normalization, timing, dominance, starvation, or live AI behavior.
+
 ## Fresh source checks
 
 | Check | Result |
@@ -29,6 +31,7 @@ The narrowed read-only geometry audit `006_event6_focus_geometry_audit_v111_2026
 | `python -B .tools/audit_event6_allocator.py` | Pass: 149 publishers, 126 automatic/high-chaos selectable rows, 138 SCN-008 ranked rows, 14 attested packages across 13 compatible reservation groups, RG-RHINE-SAAR pair capacity 2, automatic ladder 6/8/10/14/20, World Collapse 20, crisis and joint reservation ordering. |
 | `python -B .tools/audit_event6_scenario_matrix.py` | Pass: all 32 SCN-008 mode/intensity cells and all 8 required edge cases. |
 | `python -B .tools/audit_event6_gui_matrix.py` | Pass: five Statehood Ledger tabs, recognition/dependency/League/formable frame families, cleanup, and static/animated sibling exclusivity. Runtime rendering and save/load are not claimed. |
+| `hoi4_probability_inspect` bounded decision receipts | Pass at source discovery: core decisions 10 decision candidates plus 54 mission candidates, SCN-008 scenario decisions 3 candidates, and zero unresolved parser diagnostics. Runtime pools remain incomplete pending named world-state scenarios; see `006_event6_probability_inspect_current_v116_2026_08_03.md`. |
 | `python -B .tools/audit_chaosx_country_tags.py --surface-scan` | Pass: 136 protected Event 006/Soviet tags, zero external country-definition collisions, zero external identity-surface collisions, one intentionally skipped Random Events root. |
 | Registry tag-policy check | Pass: all 102 `reserve_new_event6_X_tag` rows resolve to tags ending in `X`; the 91 non-X resolved tags are explicit registered-tag reuses. |
 | Flat portrait shelf reconciliation | Pass: 80 physical original-size PNG masters and 80 indexed or explicitly recorded entries (79 table rows plus the retry-2 DOX tail record); no 156x210 shelf files or Event 006 advisor art. |
