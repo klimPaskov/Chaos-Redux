@@ -733,6 +733,8 @@ Synergies reward coherent portfolios without making every family mandatory.
 
 Synergies should unlock events, decisions, project variants, focus branches, unit support, or countermeasures. They should not be represented only by tiny percentage modifiers.
 
+The Advanced Materials plus Rocketry direction is promoted as a state-targeted qualification action. `brilliant_scientist_prepare_high_speed_materials_trial` funds a 180-day instrumented test corridor after Materials Deployment, Rocketry Prototype, expanded prototype works, healthy project ledgers, and both facilities are present. `chaosx.nr16.195` then separates a national qualification-board archive from Kruger's portable proprietary flight envelope. The national result improves air safety and remains with the former host; the proprietary result improves range, raises Rocketry accident pressure, and follows Kruger without replaying costs or ledger changes. Computation plus Robotics remains represented by the existing Kruger machine-command, supervisory-key, air-gap, containment, and assembly systems rather than a duplicate host charter. No model or CBRN callback is introduced by either disposition.
+
 ## Project accident framework
 
 Accidents should be specific to project stage and governance.

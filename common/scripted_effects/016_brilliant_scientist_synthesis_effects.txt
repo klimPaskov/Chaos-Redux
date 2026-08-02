@@ -34,6 +34,104 @@ brilliant_scientist_complete_portal_calibration_network = {
 	clr_country_flag = brilliant_scientist_portal_calibration_network_in_progress
 }
 
+# COUNTRY scope. The selected corridor is a global pointer because the state
+# must survive the decision's delayed completion; every terminal, transfer, or
+# resolution path clears it explicitly.
+brilliant_scientist_clear_high_speed_materials_trial_target = {
+	if = {
+		limit = { has_event_target = brilliant_scientist_high_speed_test_corridor }
+		event_target:brilliant_scientist_high_speed_test_corridor = {
+			clr_state_flag = brilliant_scientist_high_speed_test_corridor_active
+		}
+		clear_global_event_target = brilliant_scientist_high_speed_test_corridor
+	}
+}
+
+# COUNTRY scope. Invalidated high-speed trials consume their paid burden and
+# leave a retryable history marker without granting either ownership result.
+brilliant_scientist_fail_high_speed_materials_trial = {
+	set_country_flag = brilliant_scientist_high_speed_materials_trial_failed_ever
+	clr_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+	clr_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+	brilliant_scientist_clear_high_speed_materials_trial_target = yes
+}
+
+# COUNTRY scope. Public qualification keeps the flight tables with the host's
+# institution and never writes a portable Kruger result.
+brilliant_scientist_resolve_high_speed_materials_trial_national_board = {
+	if = {
+		limit = { brilliant_scientist_high_speed_materials_trial_resolution_is_valid = yes }
+		set_country_flag = brilliant_scientist_high_speed_materials_trial_completed
+		set_country_flag = brilliant_scientist_high_speed_materials_national_board
+		clr_country_flag = brilliant_scientist_high_speed_materials_kruger_tables
+		remove_dynamic_modifier = { modifier = brilliant_scientist_high_speed_kruger_envelope }
+		add_dynamic_modifier = { modifier = brilliant_scientist_high_speed_qualification_board }
+		KRG_warren_kruger = {
+			set_character_flag = brilliant_scientist_personal_high_speed_materials_trial_completed
+		}
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.national_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.national_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.national_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.national_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.national_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.national_grievance }
+		brilliant_scientist_change_grievance = yes
+		if = {
+			limit = { has_event_target = brilliant_scientist_high_speed_test_corridor }
+			event_target:brilliant_scientist_high_speed_test_corridor = {
+				clr_state_flag = brilliant_scientist_high_speed_test_corridor_active
+				set_state_flag = brilliant_scientist_high_speed_test_corridor_certified
+			}
+			clear_global_event_target = brilliant_scientist_high_speed_test_corridor
+		}
+		clr_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+		clr_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+	}
+	else = {
+		brilliant_scientist_fail_high_speed_materials_trial = yes
+	}
+}
+
+# COUNTRY scope. Kruger's proprietary tables follow the character and add a
+# distinct Rocketry incident burden while retaining the full range benefit.
+brilliant_scientist_resolve_high_speed_materials_trial_kruger_tables = {
+	if = {
+		limit = { brilliant_scientist_high_speed_materials_trial_resolution_is_valid = yes }
+		set_country_flag = brilliant_scientist_high_speed_materials_trial_completed
+		set_country_flag = brilliant_scientist_high_speed_materials_kruger_tables
+		clr_country_flag = brilliant_scientist_high_speed_materials_national_board
+		remove_dynamic_modifier = { modifier = brilliant_scientist_high_speed_qualification_board }
+		add_dynamic_modifier = { modifier = brilliant_scientist_high_speed_kruger_envelope }
+		KRG_warren_kruger = {
+			set_character_flag = brilliant_scientist_personal_high_speed_materials_trial_completed
+			set_character_flag = brilliant_scientist_personal_high_speed_materials_kruger_tables
+		}
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.kruger_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.kruger_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.kruger_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.kruger_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.kruger_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_high_speed_materials_trial.kruger_grievance }
+		brilliant_scientist_change_grievance = yes
+		brilliant_scientist_clear_high_speed_materials_trial_target = yes
+		clr_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+		clr_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+	}
+	else = {
+		brilliant_scientist_fail_high_speed_materials_trial = yes
+	}
+}
+
 brilliant_scientist_resolve_cross_domain_review_separate = {
 	if = {
 		limit = { brilliant_scientist_cross_domain_review_resolution_is_valid = yes }

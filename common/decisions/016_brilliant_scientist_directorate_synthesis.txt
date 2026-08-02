@@ -2,6 +2,7 @@
 # These file-scoped values mirror the authoritative shared constants.
 @CR_SC_BRILLIANT_SCIENTIST_CROSS_DOMAIN_REVIEW_CIVILIAN_FACTORY_USE = 2
 @CR_SC_BRILLIANT_SCIENTIST_PORTAL_CALIBRATION_NETWORK_CIVILIAN_FACTORY_USE = 2
+@CR_SC_BRILLIANT_SCIENTIST_HIGH_SPEED_MATERIALS_TRIAL_CIVILIAN_FACTORY_USE = 3
 # CHAOS REDUX - EVENT 016 DIRECTORATE CROSS-DOMAIN REVIEW
 # ============================================================================
 # A one-time host decision that keeps the paleogenetics and xenobiological
@@ -10,6 +11,103 @@
 # ============================================================================
 
 brilliant_scientist_directorate_category = {
+	brilliant_scientist_prepare_high_speed_materials_trial = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			OR = {
+				brilliant_scientist_high_speed_materials_trial_is_ready = yes
+				has_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+				has_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+			}
+		}
+		state_target = any_owned_state
+		target_trigger = {
+			FROM = { brilliant_scientist_high_speed_materials_trial_target_state_is_visible = yes }
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			brilliant_scientist_high_speed_materials_trial_is_ready = yes
+			brilliant_scientist_can_pay_high_speed_materials_trial = yes
+		}
+		cost = constant:brilliant_scientist_high_speed_materials_trial.political_power
+		custom_cost_trigger = { brilliant_scientist_can_pay_high_speed_materials_trial = yes }
+		custom_cost_text = brilliant_scientist_prepare_high_speed_materials_trial_cost
+		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_HIGH_SPEED_MATERIALS_TRIAL_CIVILIAN_FACTORY_USE }
+		days_remove = constant:brilliant_scientist_directorate_timing.high_speed_materials_trial_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_prepare_high_speed_materials_trial_effect_tt
+			set_country_flag = brilliant_scientist_high_speed_materials_trial_pending
+			set_country_flag = brilliant_scientist_high_speed_materials_trial_in_progress
+			FROM = {
+				set_state_flag = brilliant_scientist_high_speed_test_corridor_active
+				save_global_event_target_as = brilliant_scientist_high_speed_test_corridor
+			}
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_high_speed_materials_trial.support_equipment_spend
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_high_speed_materials_trial.motorized_equipment_spend
+			}
+			add_fuel = constant:brilliant_scientist_high_speed_materials_trial.fuel_spend
+			add_manpower = constant:brilliant_scientist_high_speed_materials_trial.manpower_spend
+			air_experience = constant:brilliant_scientist_high_speed_materials_trial.air_experience_spend
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { brilliant_scientist_primary_facility_is_valid = yes }
+				NOT = { brilliant_scientist_secondary_facility_is_valid = yes }
+				NOT = { has_country_flag = brilliant_scientist_high_speed_materials_trial_pending }
+				NOT = { brilliant_scientist_high_speed_materials_trial_projects_are_healthy = yes }
+				has_country_flag = brilliant_scientist_containment_action_in_progress
+				has_country_flag = brilliant_scientist_project_stage_in_progress
+				has_country_flag = brilliant_scientist_project_incident_active
+				has_country_flag = brilliant_scientist_terminal_commitment_locked
+				has_global_flag = world_end
+				NOT = { FROM = { brilliant_scientist_high_speed_materials_trial_target_state_is_visible = yes } }
+			}
+		}
+		cancel_effect = {
+			brilliant_scientist_fail_high_speed_materials_trial = yes
+		}
+		remove_effect = {
+			if = {
+				limit = { brilliant_scientist_high_speed_materials_trial_resolution_is_valid = yes }
+				country_event = { id = chaosx.nr16.195 }
+			}
+			else = {
+				brilliant_scientist_fail_high_speed_materials_trial = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_high_speed_materials_trial_ai.base
+			modifier = {
+				factor = 0
+				NOT = { brilliant_scientist_high_speed_materials_trial_ai_can_preserve_reserve = yes }
+			}
+			modifier = {
+				factor = 0
+				surrender_progress > constant:brilliant_scientist_high_speed_materials_trial_ai.severe_surrender_threshold
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_high_speed_materials_trial_ai.war_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_high_speed_materials_trial_ai.rocketry_deployment_factor
+				check_variable = { var = brilliant_scientist_project_stage_entries^3 value = constant:brilliant_scientist_project_stage.deployment compare = greater_than_or_equals }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_high_speed_materials_trial_ai.project_capacity_factor
+				brilliant_scientist_has_high_project_capacity = yes
+			}
+		}
+	}
+
 	brilliant_scientist_establish_portal_calibration_network = {
 		icon = GFX_decision_generic_research
 		visible = {
