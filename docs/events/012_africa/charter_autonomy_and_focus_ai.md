@@ -69,7 +69,7 @@ That helper checks the active tree before loading, preserves completed-focus his
 `africa_focus_route_ensure_continental_tree_loaded` is a compatibility wrapper around the canonical helper rather than a second implementation.
 Priority packages keep their existing-tree safeguard and also preserve completed-focus history.
 When South Africa's settlement transfers League custody to the saved exile patron, the old host is retained as the chain-local `africa_focus_completion_source`.
-The canonical loader copies completed continental focuses from that source into the successor's tree while the separate RSA transfer continues to carry variables, flags, arrays, and relationship state.
+The canonical loader copies completed continental focuses from that source into the successor's tree while the separate RSA transfer continues to carry variables, flags, arrays, relationship state, and reconciled relationship counts and capacity caps.
 
 ## Interactions
 
