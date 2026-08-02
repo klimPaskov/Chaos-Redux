@@ -237,12 +237,14 @@ of 60 and swap in the Federal Patrol Compact. The first two paid projects are
 sufficient to reach that threshold if the former host ceases to exist.
 
 Vanilla `FSM - Micronesia.txt` defines politics but no usable named political
-leader. Exact IW-179 setup therefore recruits and promotes the male,
-fictional Pohnpeian congress chair Elias Kihleng through
-`FSM_independence_wave_inter_island_congress_chair` without changing FSM's
-vanilla democratic politics or touching any non-Event-006 Micronesia. Prepared
-and final validation require that exact ruling character; package cleanup
-retires him.
+leader. The retained Elias Kihleng character and portrait are fictional
+evidence only; the explicit `independence_wave_fsm_sourced_identity_ready`
+gate prevents exact IW-179 setup from recruiting or promoting him. Prepared and
+final validation therefore remain outside the runtime attestation set until a
+named adult male Micronesian source clears identity, era, role, and rights
+review. Once that gate is cleared, parent-owned wiring will replace the
+evidence role without changing FSM's vanilla democratic politics or touching
+any non-Event-006 Micronesia, and cleanup will retire only the Event-006 role.
 
 The accepted Micronesian route contract is federal council, traditional,
 constitutional, and patron client. In the shared Event 006 route vocabulary,
