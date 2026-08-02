@@ -103,6 +103,8 @@ The current blocker evidence is preserved in the following handoffs; none of the
 
 The ASY Barsoum v93 independent audit is now complete: identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with a documented low-resolution group-photo caveat. Parent follow-up v94 promotes only the existing concordat-council DDS consumer; IW-058 remains fail-closed until its complete roster and package contracts are admitted.
 
+This addendum supersedes the earlier pending-audit wording in the dated blocker bullets; the wider package remains fail-closed even though its existing concordat-council portrait consumer now has the v94 runtime DDS.
+
 ## Design simplifications
 
 No requested design surface was intentionally simplified into a weaker substitute.
