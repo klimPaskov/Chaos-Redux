@@ -14,7 +14,9 @@ These checks bind promotion to the opening's weakness, proof mission, leverage, 
 
 `africa_promote_compact_host` costs the configured promotion political power and calls the shared `africa_promote_compact_host_package` effect. Promotion requires at least two reconciled criteria, the live capital and depth checks, viable territory, local support, a functioning institution, a distinct role, and no active overlap dispute, access failure, refusal, or prior promotion. Successful promotion preserves the original host country and changes only its host-depth and package state.
 
-The refusal flag remains a hard gate. A refused compact docket cannot be promoted by opinion or by the evidence decision. The shared promotion effect retains defensive refusal and access-failure clears, but its ordinary caller rejects those flags before the effect can run; no path silently overrides a refusal.
+`africa_decline_compact_promotion` is the explicit refusal path. It leaves the country as a compact signature and records a hard refusal without changing ownership, relationships, cores, or opinion. `africa_reopen_compact_promotion_docket` is the paid reconsideration path; it clears only that refusal receipt and leaves all evidence flags intact. No path silently overrides a refusal or promotes by opinion.
+
+Promotion also observes the shared `africa_overlap_dispute_active` and `africa_project_access_damaged` receipts written by the regional-action kernel. A successful overlap settlement clears the dispute receipt, while successful rail, river, port, processing, resource, procurement, food, development, and industrial projects clear the access-damage receipt on their resolved scope.
 
 ## AI and cleanup
 
@@ -26,7 +28,7 @@ No new art is required for this mechanic. Both decisions use the existing `GFX_d
 
 ## Future depth
 
-Later accepted content may let a real regional council, rival bloc, post-unification legacy, opening-depth failure, or Tier A identity write one of the four remaining criteria. Those writers must preserve the same evidence gate, refusal cleanup, and no-opinion rule rather than creating another promotion store.
+Later accepted content may let a real regional council, rival bloc, post-unification legacy, opening-depth failure, or Tier A identity write one of the four remaining criteria. Those writers must preserve the same evidence gate, refusal/reconsideration cleanup, and no-opinion rule rather than creating another promotion store.
 
 ## Validation scenarios
 
