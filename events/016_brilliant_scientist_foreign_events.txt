@@ -374,3 +374,88 @@ country_event = {
 	is_triggered_only = yes
 	option = { name = chaosx_nr16_181_a brilliant_scientist_foreign_finish_operation = yes }
 }
+
+# ---------------------------------------------------------------------------
+# Public challenge
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.190
+	title = chaosx_nr16_190_title
+	desc = chaosx_nr16_190_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_nr16_190_a
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_high
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_host_archetype_university }
+		}
+		set_temp_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.safe_demonstration }
+		brilliant_scientist_foreign_resolve_public_challenge = yes
+	}
+	option = {
+		name = chaosx_nr16_190_b
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_medium
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong brilliant_scientist_has_high_mandate = yes }
+		}
+		set_temp_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.deny_access }
+		brilliant_scientist_foreign_resolve_public_challenge = yes
+	}
+	option = {
+		name = chaosx_nr16_190_c
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_high
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong brilliant_scientist_has_high_exposure = yes }
+		}
+		set_temp_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.publish_selected_work }
+		brilliant_scientist_foreign_resolve_public_challenge = yes
+	}
+	option = {
+		name = chaosx_nr16_190_d
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_medium
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred brilliant_scientist_has_high_grievance = yes }
+		}
+		set_temp_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.blame_sabotage }
+		brilliant_scientist_foreign_resolve_public_challenge = yes
+	}
+	option = {
+		name = chaosx_nr16_190_e
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_high
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong has_country_flag = brilliant_scientist_public_compact }
+		}
+		set_temp_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.invite_observers }
+		brilliant_scientist_foreign_resolve_public_challenge = yes
+	}
+	option = {
+		name = chaosx_nr16_190_f
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_low
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_urgent brilliant_scientist_has_high_mandate = yes }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong has_country_flag = brilliant_scientist_secret_directorate }
+		}
+		set_temp_variable = { brilliant_scientist_public_challenge_response = constant:brilliant_scientist_foreign_public_challenge_response.threaten_accuser }
+		brilliant_scientist_foreign_resolve_public_challenge = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.191
+	title = chaosx_nr16_191_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_191_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_191_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_191_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_191_a brilliant_scientist_foreign_finish_operation = yes }
+}
