@@ -93,8 +93,14 @@ brilliant_scientist_has_current_host = {
 
 # COUNTRY scope. is_active_scientist is the engine-supported assignment gate;
 # rejecting it prevents transfer out of any active special project.
+brilliant_scientist_sovereignty_transition_is_allowed = {
+	NOT = { has_country_flag = brilliant_scientist_cross_domain_review_pending }
+	NOT = { has_country_flag = brilliant_scientist_cross_domain_review_in_progress }
+}
+
 brilliant_scientist_is_transfer_ready = {
 	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_sovereignty_transition_is_allowed = yes
 	KRG_warren_kruger = {
 		is_active_scientist = no
 	}
@@ -786,18 +792,22 @@ brilliant_scientist_has_viable_formation_inputs = {
 }
 
 brilliant_scientist_can_form_by_charter = {
+	brilliant_scientist_sovereignty_transition_is_allowed = yes
 	brilliant_scientist_verified_charter_territory_plan_is_valid = yes
 }
 
 brilliant_scientist_can_form_enclave = {
+	brilliant_scientist_sovereignty_transition_is_allowed = yes
 	brilliant_scientist_verified_enclave_territory_plan_is_valid = yes
 }
 
 brilliant_scientist_can_form_by_rebellion = {
+	brilliant_scientist_sovereignty_transition_is_allowed = yes
 	brilliant_scientist_verified_rebellion_territory_plan_is_valid = yes
 }
 
 brilliant_scientist_can_form_multi_site = {
+	brilliant_scientist_sovereignty_transition_is_allowed = yes
 	brilliant_scientist_has_viable_formation_inputs = yes
 	has_country_flag = brilliant_scientist_multi_site_network_verified
 	check_variable = {
@@ -808,6 +818,7 @@ brilliant_scientist_can_form_multi_site = {
 }
 
 brilliant_scientist_can_form_by_institutional_capture = {
+	brilliant_scientist_sovereignty_transition_is_allowed = yes
 	brilliant_scientist_institutional_capture_is_proven = yes
 	brilliant_scientist_is_current_host = yes
 	NOT = { has_global_flag = brilliant_scientist_kruger_state_active }
