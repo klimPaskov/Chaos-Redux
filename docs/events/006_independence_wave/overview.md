@@ -178,7 +178,7 @@ execution and save/load observation are optional future QA. FORM-06 through FORM
 remain fail-closed, including FORM-42. This historical portrait-gated snapshot
 predates the v33 whole-event authority and the IW-012 and IW-002 admissions. Its
 v6/v7/v9/v10 counts and authority labels are retained only as at-time evidence; use
-the v33 audit, current source-of-truth map, and resume packet for current routing.
+the v96 audit, current source-of-truth map, and resume packet for current routing.
 The overall **HOLD / PARTIAL** disposition remains open.
 
 The allocator and installed-scan figures in this historical snapshot are at-time evidence only. The v31 audit recorded 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, eleven exact attestations across ten compatible reservation groups, and Event 005-first joint reservation ordering before the later IW-002 admission. Its earlier 3/4/5/7/10 ladder is superseded by the later 6/8/10/14/20 design decision. The older 2026-07-18 installed scan covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling local mods, archives, and reports zero collisions; it is not a current environment scan.
