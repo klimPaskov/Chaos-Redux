@@ -759,28 +759,32 @@ africa_rsa_cleanup_old_host_runtime = {
 africa_rsa_cleanup_terminal_host_runtime = {
 	for_each_scope_loop = {
 		array = africa_relationship_countries
-		limit = {
-			exists = yes
-			africa_is_charter_subject_of_current_host = yes
+		if = {
+			limit = {
+				exists = yes
+				africa_is_charter_subject_of_current_host = yes
+			}
+			africa_release_member_from_continental_subject_status = yes
 		}
-		africa_release_member_from_continental_subject_status = yes
 	}
 	for_each_scope_loop = {
 		array = africa_peace_exemption_countries
-		limit = { exists = yes }
-		event_target:africa_host = {
-			remove_targeted_decision = {
-				target = PREV
-				decision = mission_africa_complete_continental_peace_exemption
+		if = {
+			limit = { exists = yes }
+			event_target:africa_host = {
+				remove_targeted_decision = {
+					target = PREV
+					decision = mission_africa_complete_continental_peace_exemption
+				}
 			}
+			for_each_scope_loop = {
+				array = africa_continental_peace_exemption_states
+				clr_state_flag = africa_continental_peace_exemption_active
+			}
+			clear_array = africa_continental_peace_exemption_states
+			clr_country_flag = africa_continental_peace_completion_mission_active
+			clr_country_flag = africa_continental_peace_terms_accepted
 		}
-		for_each_scope_loop = {
-			array = africa_continental_peace_exemption_states
-			clr_state_flag = africa_continental_peace_exemption_active
-		}
-		clear_array = africa_continental_peace_exemption_states
-		clr_country_flag = africa_continental_peace_completion_mission_active
-		clr_country_flag = africa_continental_peace_terms_accepted
 	}
 	clear_array = africa_relationship_countries
 	clear_array = africa_protected_countries
@@ -851,8 +855,10 @@ africa_rsa_transfer_host_to_exile_patron = {
 	FROM = {
 		for_each_scope_loop = {
 			array = africa_relationship_countries
-			limit = { africa_is_charter_subject_of_current_host = yes }
-			africa_release_member_from_continental_subject_status = yes
+			if = {
+				limit = { africa_is_charter_subject_of_current_host = yes }
+				africa_release_member_from_continental_subject_status = yes
+			}
 		}
 	}
 	event_target:africa_rsa_exile_patron = {
@@ -895,18 +901,18 @@ africa_rsa_transfer_host_to_exile_patron = {
 	}
 
 	FROM = {
-		for_each_scope_loop = { array = africa_relationship_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_relationship_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_protected_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_protected_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_associate_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_associate_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_chartered_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_chartered_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_autonomous_federal_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_autonomous_federal_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_integrated_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_integrated_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_resistant_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_resistant_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_leaving_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_leaving_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_rival_bloc_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_rival_bloc_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_occupied_settlement_countries limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_occupied_settlement_countries value = PREV } } }
-		for_each_scope_loop = { array = africa_selected_targets limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_selected_targets value = PREV } } }
-		for_each_scope_loop = { array = africa_peace_exemption_countries limit = { exists = yes } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_peace_exemption_countries value = PREV } } }
+		for_each_scope_loop = { array = africa_relationship_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_relationship_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_protected_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_protected_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_associate_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_associate_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_chartered_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_chartered_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_autonomous_federal_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_autonomous_federal_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_integrated_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_integrated_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_resistant_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_resistant_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_leaving_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_leaving_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_rival_bloc_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_rival_bloc_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_occupied_settlement_countries if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_occupied_settlement_countries value = PREV } }  }}
+		for_each_scope_loop = { array = africa_selected_targets if = { limit = { exists = yes event_target:africa_rsa_exile_patron = { NOT = { tag = PREV } } } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_selected_targets value = PREV } }  }}
+		for_each_scope_loop = { array = africa_peace_exemption_countries if = { limit = { exists = yes } event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_peace_exemption_countries value = PREV } }  }}
 		for_each_scope_loop = { array = africa_peace_exemption_states event_target:africa_rsa_exile_patron = { add_to_array = { array = africa_peace_exemption_states value = PREV } } }
 	}
 
