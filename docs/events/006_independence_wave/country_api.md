@@ -1,6 +1,6 @@
 # Event 006 country API and regional carrier map
 
-This document is the implementation-facing reference for reusing Independence Wave carriers in later events. The accepted registry remains `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`; the runtime collections and constants below are the stable lookup surfaces.
+This document is the implementation-facing reference for reusing Independence Wave carriers in later events. The accepted registry remains `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`; the runtime collections and constants below are the stable lookup surfaces. The documented X-tag to identity mapping is kept in `common/country_tags/006_independence_wave_countries.txt`, while registered-carrier rows remain keyed by the CSV's exact package ID and resolved tag.
 
 ## Runtime collections
 
@@ -16,6 +16,8 @@ Use the named collections in `common/collections/chaosx_country_collections.txt`
 | `collection:chaosx_country_independence_wave_overlay_routes` | All thirteen route-only overlay carriers | Living-country overlays; these rows are never standalone release candidates |
 | `collection:chaosx_country_africa` | Africa-priority carrier pool | Event 012 and later Africa crisis consumers |
 | `collection:chaosx_country_africa_overlap` | The twelve direct Event 006/Event 012 identity overlaps, including overlay-only COG | Africa identity selection before its own origin gate is applied |
+| `collection:chaosx_country_africa_overlap_non_overlay` | African overlaps that can be country packages rather than route-only overlays | Africa package selection after the overlay exclusion is proven |
+| `collection:chaosx_country_africa_current_map_bound` | African overlap carriers with a current-map anchor | Africa release planning after map and readiness checks |
 | `collection:chaosx_country_soviet_collapse` | Soviet Collapse carriers | Event 005-only consumers; never infer Event 006 content from membership |
 
 Region collections are exposed as `collection:chaosx_country_region_*` in the same file. The fourteen region arrays are `northern_and_western_europe`, `mediterranean_and_iberia`, `balkans_and_danube`, `eastern_europe_and_former_imperial_russia`, `volga_urals_siberia_far_east`, `caucasus_anatolia_mesopotamia`, `levant_and_arabia`, `north_africa_and_sahara`, `west_and_central_africa`, `east_africa_horn_great_lakes`, `southern_africa_and_indian_ocean`, `south_asia_and_himalaya`, `southeast_asia_east_asia_oceania`, and `americas_and_caribbean`.
