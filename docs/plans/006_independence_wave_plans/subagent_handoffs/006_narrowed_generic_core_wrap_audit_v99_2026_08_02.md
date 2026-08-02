@@ -10,7 +10,7 @@ The current user decision makes one `independence_wave_focus_tree` the shared tr
 
 ### Generic focus framework
 
-- `common/national_focus/006_independence_wave_focus.txt` contains 207 focus blocks: 184 regular and 23 shared.
+- The imported `common/national_focus/006_independence_wave*.txt` sources contain 318 focus blocks: 184 regular and 134 shared.
 - The tree covers survival/statehood, government, economy, military/security, diplomacy/host/patron, regional expansion, Network/League, formable/high-chaos, and gated package modules.
 - Static focus review found no duplicate IDs, missing prerequisites, unresolved localisation, unresolved custom tooltips, missing icons, or invalid mutual-exclusion targets. All focus blocks expose AI weighting and a concrete completion reward.
 - The common package barrier requires either the full generic tree contract or the reviewed additive-carrier contract before a release can commit. No package can silently claim a missing focus surface.

@@ -1,6 +1,6 @@
 # Event 006 generic focus tree
 
-`common/national_focus/006_independence_wave_focus.txt` defines the one shared Event 006 focus tree, `independence_wave_focus_tree` (207 blocks: 184 regular and 23 shared). Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
+The imported `common/national_focus/006_independence_wave*.txt` sources define the one shared Event 006 focus tree, `independence_wave_focus_tree` (318 blocks: 184 regular and 134 shared). Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
 
 ## Assignment contract
 
