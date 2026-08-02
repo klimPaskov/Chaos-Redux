@@ -8,7 +8,7 @@
 
 The FSM correction is part of this continuation: vanilla `FSM` exposes only `generic_focus`, so its dormant IW-179 package now uses the full Event 006 generic tree rather than an unregistered additive overlay. It remains outside attestation for its independent sourced-leader blocker.
 
-The v98 audit confirms the allocator and protected-tag scan. The non-live SCN-008 32-cell and eight-case edge receipts now pass `python -B .tools/audit_event6_scenario_matrix.py`; the commit-gated failure-summary and rejected-prefix/country-scope alignment repair is recorded in `subagent_handoffs/006_scn008_failure_summary_ledger_repair_2026_08_02.md`. Current focus inspect/render remains `SCAN_BYTE_LIMIT`, and whole-event blockers remain package capacity/admission, formables, assets, GUI/achievement evidence, catalog status, and super-event `6001`.
+The v98 audit confirms the allocator and protected-tag scan. The non-live SCN-008 32-cell and eight-case edge receipts now pass `python -B .tools/audit_event6_scenario_matrix.py`; the commit-gated failure-summary and rejected-prefix/country-scope alignment repair is recorded in `subagent_handoffs/006_scn008_failure_summary_ledger_repair_2026_08_02.md`. The narrowed generic-tree/core wrap receipt is `subagent_handoffs/006_narrowed_generic_core_wrap_audit_v99_2026_08_02.md`. Current focus inspect/render remains `SCAN_BYTE_LIMIT`, and whole-event blockers remain package capacity/admission, formables, assets, GUI/achievement evidence, catalog status, and super-event `6001`.
 
 ## 2026-08-02 historical whole-event authority (v97)
 
