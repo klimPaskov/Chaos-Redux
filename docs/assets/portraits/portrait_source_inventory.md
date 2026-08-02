@@ -4,13 +4,63 @@ Audit date: 2026-08-02.
 
 Scope: every DDS under `gfx/leaders/` was treated as a current mod portrait asset, including leader, commander, institutional, advisor, scientist, small-card, and animated-sheet variants.
 
-Original-resolution PNG found and archived by exact runtime basename: 145 of 296.
+Original-resolution PNG found and archived by exact runtime basename: 175 of 296.
 
-No original-resolution PNG found: 151.
+Additional original-resolution PNG recoveries from the second-pass search: 30.
 
-Only retained original/source PNGs were accepted. Runtime-sized processed PNGs, DDS decodes, contact sheets, rejected candidates, superseded candidates, and identity-preserving repaints whose real source existed only in another format were not substituted.
+No acceptable original-resolution PNG found; final runtime DDS converted losslessly to PNG: 121.
 
-# Portraits without an original-resolution PNG
+Every one of the 296 runtime portraits now has a matching PNG and prompt-only TXT file using the exact runtime DDS basename. Original sources were preferred over runtime conversions. Runtime-sized processed PNGs, older DDS-decoded source frames, contact sheets, rejected candidates, superseded candidates, and identity-preserving repaints whose real source existed only in another format were not mislabeled as originals.
+
+Final verification: all 296 runtime DDS basenames resolve to exactly one archived PNG and exactly one single-line `hoi4_portrait,` TXT prompt. All 121 DDS-derived PNG fallbacks were decoded independently and matched their runtime DDS pixel data exactly.
+
+# Additional original-resolution PNGs recovered
+
+## 003_holy_realm (12)
+
+- Eight static portrait masters recovered from the discarded `360d` Codex worktree's generated source package.
+- The Buddha Mandate static and animated entries use the first original full-resolution animation source frame.
+- The Empty Seat static and animated entries use the first original full-resolution animation source frame.
+
+## 005_soviet_collapse (5)
+
+- `BEC_leader.png`
+- `BLT_leader.png`
+- `COU_leader.png`
+- `ILU_leader.png`
+- `IRA_leader.png`
+
+These five generated portrait masters were restored directly from reachable Git blobs.
+
+## 006_independence_wave (4)
+
+- `portrait_ACX_cornish_port_and_mines_committee.png`
+- `portrait_AEX_flemish_civil_industrial_board.png`
+- `portrait_ASY_independence_wave_provisional_national_council.png`
+- `portrait_BRI_independence_wave_civic_commission.png`
+
+These four fictional institutional masters were recovered from their full-resolution generated source outputs.
+
+## 010_death (2)
+
+- `portrait_DTH_zol.png`
+- `portrait_DTH_zol_world_end.png`
+
+Both entries use the recovered full-resolution Zol source master from Git history. The animated sheet remains a DDS-derived fallback because a static source is not a substitute for its animation package.
+
+## 018_resources_found (7)
+
+- `portrait_DHO_khalvek.png`
+- `portrait_DHO_khalvek_small.png`
+- `portrait_DHO_orrukesh.png`
+- `portrait_DHO_orrukesh_small.png`
+- `portrait_DHO_thessik.png`
+- `portrait_DHO_thessik_small.png`
+- `portrait_DHO_vhorruk_animated.png`
+
+The three static/small pairs use their recovered full-resolution generated masters. The animated Vhorruk entry uses the first original full-resolution animation source frame recovered from Git history; the unrelated static Vhorruk entry remains a DDS-derived fallback.
+
+# DDS-derived fallback portraits
 
 ## 000_easter_eggs (1)
 
@@ -36,23 +86,11 @@ Only retained original/source PNGs were accepted. Runtime-sized processed PNGs, 
 - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_undead.dds`
 - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_wendigo.dds`
 
-## 003_holy_realm (13)
+## 003_holy_realm (1)
 
-- `gfx/leaders/003_holy_realm/portrait_THR_arhat_administration.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_bodhisattva_acala.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_bodhisattva_dharmamegha.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_bodhisattva_pramudita.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_buddha_mandate.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_buddha_mandate_animated.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_divine_sovereignty.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_empty_seat.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_empty_seat_animated.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_false_buddha.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_final_silence.dds`
 - `gfx/leaders/003_holy_realm/portrait_THR_godly_figure.dds`
-- `gfx/leaders/003_holy_realm/portrait_THR_refuge_bodhisattva.dds`
 
-## 005_soviet_collapse (66)
+## 005_soviet_collapse (61)
 
 - `gfx/leaders/005_soviet_collapse/AAX_leader.dds`
 - `gfx/leaders/005_soviet_collapse/ABX_leader.dds`
@@ -64,13 +102,10 @@ Only retained original/source PNGs were accepted. Runtime-sized processed PNGs, 
 - `gfx/leaders/005_soviet_collapse/ARM_leader.dds`
 - `gfx/leaders/005_soviet_collapse/AZR_leader.dds`
 - `gfx/leaders/005_soviet_collapse/BBH_leader.dds`
-- `gfx/leaders/005_soviet_collapse/BEC_leader.dds`
 - `gfx/leaders/005_soviet_collapse/BLR_leader.dds`
-- `gfx/leaders/005_soviet_collapse/BLT_leader.dds`
 - `gfx/leaders/005_soviet_collapse/BSK_leader.dds`
 - `gfx/leaders/005_soviet_collapse/BYA_leader.dds`
 - `gfx/leaders/005_soviet_collapse/CFR_leader.dds`
-- `gfx/leaders/005_soviet_collapse/COU_leader.dds`
 - `gfx/leaders/005_soviet_collapse/CRI_leader.dds`
 - `gfx/leaders/005_soviet_collapse/DHC_leader.dds`
 - `gfx/leaders/005_soviet_collapse/DSC_leader.dds`
@@ -83,11 +118,9 @@ Only retained original/source PNGs were accepted. Runtime-sized processed PNGs, 
 - `gfx/leaders/005_soviet_collapse/ICD_leader.dds`
 - `gfx/leaders/005_soviet_collapse/IJX_leader.dds`
 - `gfx/leaders/005_soviet_collapse/IKX_leader.dds`
-- `gfx/leaders/005_soviet_collapse/ILU_leader.dds`
 - `gfx/leaders/005_soviet_collapse/ILX_leader.dds`
 - `gfx/leaders/005_soviet_collapse/IMX_leader.dds`
 - `gfx/leaders/005_soviet_collapse/INX_leader.dds`
-- `gfx/leaders/005_soviet_collapse/IRA_leader.dds`
 - `gfx/leaders/005_soviet_collapse/IUL_leader.dds`
 - `gfx/leaders/005_soviet_collapse/KAR_leader.dds`
 - `gfx/leaders/005_soviet_collapse/KAZ_leader.dds`
@@ -121,40 +154,27 @@ Only retained original/source PNGs were accepted. Runtime-sized processed PNGs, 
 - `gfx/leaders/005_soviet_collapse/UZB_leader.dds`
 - `gfx/leaders/005_soviet_collapse/YAK_leader.dds`
 
-## 006_independence_wave (15)
+## 006_independence_wave (11)
 
 - `gfx/leaders/006_independence_wave/portrait_ACX_cornish_coastal_commander.dds`
-- `gfx/leaders/006_independence_wave/portrait_ACX_cornish_port_and_mines_committee.dds`
-- `gfx/leaders/006_independence_wave/portrait_AEX_flemish_civil_industrial_board.dds`
 - `gfx/leaders/006_independence_wave/portrait_AEX_flemish_industrial_security_commander.dds`
 - `gfx/leaders/006_independence_wave/portrait_ARX_independence_wave_emilio_lussu.dds`
 - `gfx/leaders/006_independence_wave/portrait_ARX_luigi_mella_santelia.dds`
 - `gfx/leaders/006_independence_wave/portrait_ARX_vittorio_verne.dds`
-- `gfx/leaders/006_independence_wave/portrait_ASY_independence_wave_provisional_national_council.dds`
 - `gfx/leaders/006_independence_wave/portrait_BAY_rupprecht_of_bavaria.dds`
-- `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`
 - `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds`
 - `gfx/leaders/006_independence_wave/portrait_COR_independence_wave_adolphe_landry.dds`
 - `gfx/leaders/006_independence_wave/portrait_COR_independence_wave_jean_chiappe.dds`
 - `gfx/leaders/006_independence_wave/portrait_RHI_josef_friedrich_matthes.dds`
 - `gfx/leaders/006_independence_wave/portrait_SCO_independence_wave_territorial_commandant.dds`
 
-## 010_death (3)
+## 010_death (1)
 
-- `gfx/leaders/010_death/portrait_DTH_zol.dds`
-- `gfx/leaders/010_death/portrait_DTH_zol_world_end.dds`
 - `gfx/leaders/010_death/portrait_DTH_zol_world_end_animated.dds`
 
-## 018_resources_found (8)
+## 018_resources_found (1)
 
-- `gfx/leaders/018_resources_found/portrait_DHO_khalvek.dds`
-- `gfx/leaders/018_resources_found/portrait_DHO_khalvek_small.dds`
-- `gfx/leaders/018_resources_found/portrait_DHO_orrukesh.dds`
-- `gfx/leaders/018_resources_found/portrait_DHO_orrukesh_small.dds`
-- `gfx/leaders/018_resources_found/portrait_DHO_thessik.dds`
-- `gfx/leaders/018_resources_found/portrait_DHO_thessik_small.dds`
 - `gfx/leaders/018_resources_found/portrait_DHO_vhorruk.dds`
-- `gfx/leaders/018_resources_found/portrait_DHO_vhorruk_animated.dds`
 
 ## 038_malta_crusaders (1)
 
