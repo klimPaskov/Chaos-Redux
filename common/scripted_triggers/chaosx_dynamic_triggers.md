@@ -51,6 +51,9 @@ Current coverage includes:
   families therefore need no classifier list edit.
 - The fixed Event 016 `KRG` country and any host transformed by proven
   institutional capture. Hosted Directorates remain ordinary countries.
+- Event 020 `RTA` Rat Nation and `RTX` Rat King actors through the shared
+  `black_plague_rat_country` and `black_plague_rat_king_country` markers. Both
+  are special actors and are excluded from ordinary human-host logic.
 
 ## is_actual_nonhuman_country
 
@@ -74,6 +77,9 @@ Current coverage includes:
 - Event 016 Kruger sovereignties only after an explicit machine, clone-only,
   engineered-biological, or alien-government population transition. A human
   Kruger State remains special without being classified as nonhuman.
+- Event 020 `RTA` Rat Nation and `RTX` Rat King actors through the shared
+  `black_plague_rat_country` and `black_plague_rat_king_country` markers. Their
+  plague immunity and non-human forces depend on this classification.
 
 The current Event 019 registry/scenario v4 reaudit is clean for both shared
 classifier routes. Neither trigger contains a zombie, ghost, golem, or future

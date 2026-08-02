@@ -53,7 +53,7 @@ This ledger records every project source file supplied for the Event 20 planning
 - Event 20 currently says that every country on a random continent receives a temporary idea. The requested rework replaces that entry with a state-based outbreak that begins in one mainland state and persists through the shared disease system.
 - Event 20 currently has only a rough Rat Nations note in Evolution IV. The requested rework assigns Rat Nations to Evolution III, a separate Rat King country to Evolution IV, and the world-end route to Evolution V.
 - The cluster catalog has no registered Diseases cluster. This package proposes a new Diseases cluster entry with Event 20 as its first Severe member. The final numeric cluster ID must be checked against the live repository before implementation.
-- The supplied scenario catalog contains no Black Plague entry. A later user correction requires a new triggerable scenario, proposed as `SCN-008` pending live registry conflict checks. It is fully designed in Part 9 and the scenario matrix.
+- The live scenario registry now carries the Black Plague triggerable scenario as `SCN-012`. Part 9, the scenario matrix, and the runtime registry use that stable identifier; the former `SCN-008` planning candidate is superseded.
 
 ## Subagent use disclosure
 

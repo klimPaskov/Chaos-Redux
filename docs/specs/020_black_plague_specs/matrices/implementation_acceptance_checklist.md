@@ -106,7 +106,7 @@ A completion auditor should mark each item Complete, Partial, Blocked, or Missin
 - [ ] one full mapmode rebuild shows seeded states immediately
 - [ ] scenario-launched flag protects ordinary achievements
 - [ ] temporary bypass flags, arrays, reservations, and pulse suppression are cleaned
-- [ ] repeat launch is blocked
+- [ ] repeat launch is idempotent and reconciliation-only; terminal or unavailable worlds remain blocked
 - [ ] save-reload preserves the scenario state
 
 ## Evolution V and world end

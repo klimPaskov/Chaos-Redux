@@ -108,13 +108,13 @@ Implement a 70 to 100 role focus tree with coronation, government, administratio
 
 ## Triggerable scenario
 
-Implement the Black Plague manual scenario through the existing data-driven Triggerable Scenarios system. Use the next verified free scenario ID, with `SCN-008` as the planning candidate. Register its sort value, constants, launch effect, eligibility trigger, scripted GUI handling, dynamic list row, intensity slider behavior, scripted localisation, GUI localisation, confirmation flow, docs, and catalog row.
+Implement the Black Plague manual scenario through the existing data-driven Triggerable Scenarios system. Use the verified live scenario identifier `SCN-012`. Register its sort value, constants, launch effect, eligibility trigger, scripted GUI handling, dynamic list row, intensity slider behavior, scripted localisation, GUI localisation, confirmation flow, docs, and catalog row.
 
 The launch is global and directly fireable unless world end is active or a valid minimum setup cannot be created. It bypasses ordinary Event 20 weight, enable state, Chaos gate, date gate, and Evolution I through IV pacing only while a scoped bootstrap flag exists.
 
-Low, Medium, High, and Maximum must scale continent count, established plague states and severity, independent Rat Nation count, Rat King territory and army strength, and the Chaos floor. Launch must immediately seed many states across several continents, activate and record Evolutions I through IV once, create several full Rat Nations, create the separate Rat King, initialize all AI and growth systems, and perform one full disease-board and mapmode rebuild.
+Low, Medium, High, and Maximum must scale continent count, established plague states and severity, internal RTA brood markers, Rat King territory and army strength, and the Chaos floor. Launch must immediately seed many states across several continents, activate and record Evolutions I through IV once, create several independent RTA broods without new tags, create the separate Rat King, initialize all AI and growth systems, and perform one full disease-board and mapmode rebuild.
 
-The Rat King must coexist with independent Rat Nations after bootstrap. Do not use the natural full-transfer coronation during this scenario. Count existing outbreaks, broods, or King toward targets so launching over an active Event 20 crisis remains idempotent.
+The Rat King must coexist with independent RTA broods after bootstrap. Do not use the natural full-transfer coronation during this scenario. Count existing outbreaks, brood markers, or King toward targets so launching over an active Event 20 crisis remains idempotent.
 
 Set a permanent scenario-launched achievement disqualifier. Stop the bootstrap Chaos floor at 999. Do not record Evolution V, set `world_end`, or bypass the accepted terminal requirements. Clear all temporary arrays, reservations, pulse suppression, targets, and bypass flags. Block a second launch.
 

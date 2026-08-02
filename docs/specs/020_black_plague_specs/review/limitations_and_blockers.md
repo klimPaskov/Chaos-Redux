@@ -1,6 +1,6 @@
 # Limitations, Blockers, and Honest Scope Disclosure
 
-> Documentation reconciliation, 2026-08-02: the unavailable-source statements below preserve the historical planning-package context. Current static evidence supersedes any blanket no-implementation reading: exactly `RTA` and `RTX` remain the only runtime Rat tags, the RTA/RTX focus surfaces are documented as 51/71 nodes, the last-response pair is native mission data, the dedicated weapon-delivery icon and source-frame Rat King/seal packages are promoted, and three Event 020 WAVs are 44.1 kHz. No bespoke 3D models are required or planned. Live game, playback, balance, and release-attribution checks remain open.
+> Documentation reconciliation, 2026-08-02: the unavailable-source statements below preserve the historical planning-package context. Current static evidence supersedes any blanket no-implementation reading: exactly `RTA` and `RTX` remain the only runtime Rat tags, the RTA/RTX focus surfaces are documented as 51/71 nodes, the last-response pair is native mission data, the dedicated weapon-delivery icon, Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages are promoted, and three Event 020 WAVs are 44.1 kHz. No bespoke 3D models are required or planned. Live game, playback, balance, and release-attribution checks remain open.
 
 ## Fully read sources
 
@@ -25,7 +25,7 @@ All 16 supplied subagent contracts were read and their standards were applied ma
 
 ## Asset status
 
-The historical planning package supplied only inventories and prompts. The current Event 020 tranche promotes final report/news assets, slot-087 art, the source-frame Rat King portrait, the source-frame Royal Burrows seal, and the dedicated weapon-delivery icon. Broader crisis, Doctor Wu, route/hierarchy, and aftermath presentation remains incomplete. Final asset provenance, release attribution, and live validation remain implementation-owned.
+The historical planning package supplied only inventories and prompts. The current Event 020 tranche promotes final report/news assets, slot-087 art, the source-frame Rat King portrait, the source-frame Royal Burrows seal, the Severe/Collapsed crisis seal, the Rat King terminal-readiness seal, and the dedicated weapon-delivery icon. Broader crisis-report, Doctor Wu, route/hierarchy, and aftermath presentation remains incomplete. Final asset provenance, release attribution, and live validation remain implementation-owned.
 
 ## Audio status
 

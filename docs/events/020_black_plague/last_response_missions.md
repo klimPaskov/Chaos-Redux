@@ -1,6 +1,6 @@
 # Event 20 last-response missions
 
-The last-response surface opens only after Evolution V has earned its terminal route. It extends the existing `chaosx_disease_containment_category`; it does not create a new disease category or cure a Black Plague state.
+The last-response surface opens only after Evolution V has earned its terminal route. It extends the existing `chaosx_disease_containment_category`; it does not create a new disease category or cure a Black Plague state. Hold the Line and Secure the Refuge are independently gated projects: a country may run both when it can pay both packages and hold both qualifying objectives, so the stacked relief is purchased with two full material and military commitments rather than granted by a free route switch.
 
 ## Hold the Line
 

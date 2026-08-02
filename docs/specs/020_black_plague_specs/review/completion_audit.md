@@ -4,7 +4,7 @@
 
 This audit compares the complete Event 20 request, including later corrections, with the revised planning package. It audits design coverage only. It does not claim gameplay implementation.
 
-> Documentation reconciliation, 2026-08-02: the design-only scope above remains authoritative for this audit, but its historical implementation disclaimer must not be read as a current no-code claim. The current static tranche is documented in the Event 020 overview and core-readiness report: exactly two Rat tags (`RTA` and `RTX`), 51/71 focus nodes, native last-response missions, promoted weapon-delivery and source-frame Rat King/seal assets, and three 44.1 kHz Event 020 WAVs. Full-design and live-validation completion remain open.
+> Documentation reconciliation, 2026-08-02: the design-only scope above remains authoritative for this audit, but its historical implementation disclaimer must not be read as a current no-code claim. The current static tranche is documented in the Event 020 overview and core-readiness report: exactly two Rat tags (`RTA` and `RTX`), 51/71 focus nodes, native last-response missions, promoted weapon-delivery, Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal assets, and three 44.1 kHz Event 020 WAVs. Full-design and live-validation completion remain open.
 
 ## User requirement coverage
 
