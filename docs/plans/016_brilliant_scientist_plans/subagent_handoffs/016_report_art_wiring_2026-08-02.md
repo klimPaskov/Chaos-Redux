@@ -16,9 +16,9 @@ This bounded non-model tranche promoted three existing generated Event 016 repor
 
 The source masters are retained in the ignored asset workspace under `docs/assets/016_brilliant_scientist/report_news_expansion/source_masters/report/`. Each runtime file is `210x176`, uncompressed 32-bit BGRA DDS with the same header contract as the existing Event 016 report package. The three processed scenes were visually reviewed at native size.
 
-## Deferred source masters
+## Superseded source-master note
 
-The computation/electronics and materials/rocketry breakthrough masters remain unprocessed because the shared `chaosx.nr16.6` report covers fifteen project families with one static picture and cannot safely select a family-specific texture without creating duplicate or incomplete report paths. They remain queued for a later reviewed breakthrough-presentation design rather than being silently substituted.
+The computation/electronics and materials/rocketry breakthrough masters were deferred by this earlier three-scene handoff because the shared `chaosx.nr16.6` report then had one static picture. They are now processed and wired by `016_breakthrough_report_art_wiring_2026-08-02.md` through scripted localisation; this note remains to explain why those two files are absent from the original three-scene package.
 
 ## Ownership and validation
 
