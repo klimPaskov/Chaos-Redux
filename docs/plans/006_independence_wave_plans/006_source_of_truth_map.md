@@ -2,9 +2,13 @@
 
 <!-- Documentation reconciliation: the current allocator passes fourteen attested packages across thirteen compatible reservation groups and fourteen distinct anchors; allocator, crisis, registry, evolution, and ledger cores are source-closed; v67 Universal Former Hosts target uniqueness is implemented while Wars of Separation remains per-release; global completion remains open. -->
 
-## 2026-08-02 current whole-event authority (v96)
+## 2026-08-02 current whole-event authority (v97)
 
-`subagent_handoffs/006_event6_completion_audit_v96_2026_08_02.md` is the latest whole-event completion authority and supersedes v33 and earlier completion matrices for current disposition; those dated bodies remain historical evidence. Its verdict is **partial and blocked**, with no newly admitted package, fallback, or unauthorized simplification. The exact compile-time attestation set remains fourteen packages across thirteen compatible reservation groups and fourteen distinct anchors.
+`subagent_handoffs/006_event6_completion_audit_v97_2026_08_02.md` is the latest whole-event completion authority and supersedes v96 and earlier completion matrices for current disposition; those dated bodies remain historical evidence. Its verdict is **partial and blocked**, with no newly admitted package, fallback, or unauthorized simplification. The exact compile-time attestation set remains fourteen packages across thirteen compatible reservation groups and fourteen distinct anchors.
+
+The corrected registry arithmetic is 206 total rows minus 13 overlay-only rows, which yields 193 non-overlay rows. Fourteen are attested, so 179 non-overlay rows remain unattested. The 180-row figure in v96 and older downstream summaries was off by one and is historical rather than current authority.
+
+This v97 authority supersedes any downstream line in this map that still calls v96 current.
 
 The current portrait shelf authority is 78 physical original-size PNG masters and 73 indexed rows, with five older physical files outside that index (four ARX masters and the CHU Mirsaid master). ASY Barsoum v93 passes the stated identity, style, provenance, and PD-1923/1921 rights/date gates; v94 promotes only the existing `gfx/leaders/006_independence_wave/portrait_ASY_independence_wave_concordat_council.dds` consumer (131168 bytes, SHA-256 `5c034700247de09480eedd294ca192045c18dd8b9582fe236dda776e7d67ad06`). No advisor, small/dossier portrait, wider IW-058 roster, package admission, or attestation follows.
 
