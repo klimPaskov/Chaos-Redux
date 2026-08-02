@@ -165,7 +165,7 @@ def make_contact_sheets(source_images: dict[str, Image.Image], finals: dict[str,
     draw = ImageDraw.Draw(ladder)
     draw.text((16, 12), "Event 006 chunk 3 final flag ladders (normal / medium / small)", fill=(0, 0, 0), font=font)
     scales = {"normal": 4, "medium": 8, "small": 32}
-    x_positions = {"normal": 160, "medium": 570, "small": 820}
+    x_positions = {"normal": 160, "medium": 570, "small": 950}
     for name in SIZES:
         draw.text((x_positions[name], 35), f"{name} {SIZES[name][0]}x{SIZES[name][1]}", fill=(0, 0, 0), font=font)
     for row, (tag, identity, *_rest) in enumerate(SPECS):
