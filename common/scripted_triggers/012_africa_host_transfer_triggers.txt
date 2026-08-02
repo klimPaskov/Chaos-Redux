@@ -82,3 +82,18 @@ africa_host_transfer_resolution_is_open = {
 	has_global_flag = africa_host_transfer_resolution_open
 	has_country_flag = africa_host_transfer_resolver
 }
+
+# COUNTRY scope on the resolver. A congress remains actionable only while at
+# least one recorded member still satisfies the live relationship and generation
+# receipt. This trigger exposes a lawful suspension route when every recorded
+# candidate has since disappeared or become ineligible.
+africa_host_transfer_congress_has_no_valid_candidate = {
+	africa_host_transfer_is_pending = yes
+	has_country_flag = africa_host_transfer_congress_open
+	NOT = {
+		any_of_scopes = {
+			array = global.africa_host_transfer_candidates
+			africa_host_transfer_candidate_is_valid = yes
+		}
+	}
+}

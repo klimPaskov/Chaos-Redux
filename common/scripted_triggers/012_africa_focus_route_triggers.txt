@@ -115,6 +115,57 @@ africa_focus_ai_compact_host_pressure = {
 	}
 }
 
+# COUNTRY scope. Overlay and origin-signature focuses use the live opening
+# ledger rather than a flat country weight. The pressure is deliberately
+# receipt-driven: unresolved authority, corridor, partner, congress, mandate,
+# proof, or crisis witnesses raise the next visible focus without inferring
+# intent from tag, ethnicity, or opinion.
+africa_focus_ai_overlay_pressure = {
+	africa_is_current_host = yes
+	OR = {
+		has_country_flag = africa_maghreb_sahara_overlay_active
+		has_country_flag = africa_west_atlantic_overlay_active
+		has_country_flag = africa_sahel_lake_chad_overlay_active
+		has_country_flag = africa_nile_horn_overlay_active
+		has_country_flag = africa_congo_basin_overlay_active
+		has_country_flag = africa_great_lakes_overlay_active
+		has_country_flag = africa_swahili_indian_ocean_overlay_active
+		has_country_flag = africa_southern_africa_overlay_active
+		has_country_flag = africa_madagascar_islands_overlay_active
+	}
+	OR = {
+		NOT = { has_country_flag = africa_overlay_authority_settled }
+		NOT = { has_country_flag = africa_overlay_corridor_charter_written }
+		NOT = { has_country_flag = africa_overlay_partner_commitment_prepared }
+		NOT = { has_country_flag = africa_overlay_local_terms_settled }
+		NOT = { has_country_flag = africa_overlay_council_convened }
+		NOT = { has_country_flag = africa_overlay_mandate_proven }
+		has_country_flag = africa_overlay_corridor_action_pending
+		has_country_flag = africa_overlay_corridor_ai_contract_pending
+	}
+}
+
+# COUNTRY scope. Full-host signature pressure follows the mapped dossier and
+# its live proof witnesses. Compact hosts retain the dedicated pressure above;
+# this helper makes the four full signature nodes respond to the same recorded
+# weakness/leverage/rival lifecycle instead of using one static factor.
+africa_focus_ai_origin_signature_pressure = {
+	africa_is_current_host = yes
+	OR = {
+		has_country_flag = africa_first_proof_active
+		has_country_flag = africa_first_proof_failed
+		has_country_flag = africa_first_proof_recovery_contract_active
+		has_country_flag = africa_project_access_damaged
+		has_country_flag = africa_overlap_dispute_active
+		has_country_flag = africa_neighbor_suspicion_active
+		has_country_flag = africa_emergency_diplomatic_leverage
+		AND = {
+			has_variable = africa_rival_bloc_count
+			check_variable = { africa_rival_bloc_count > constant:africa_value.zero }
+		}
+	}
+}
+
 africa_focus_has_grounded_origin = {
 	OR = {
 		has_country_flag = africa_origin_route_federal_union
