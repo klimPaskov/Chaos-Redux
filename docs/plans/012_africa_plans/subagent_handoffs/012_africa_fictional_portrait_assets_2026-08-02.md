@@ -2,7 +2,7 @@
 
 Date: 2026-08-02.
 
-This asset tranche creates six fictional, supernatural, or nonhuman leader-portrait subassets for existing Event 012 controlled-pool rows. It does not add a country tag, cosmetic tag, character, model, entity, focus, decision, localisation key, or workbook row.
+This asset tranche creates six fictional, supernatural, or nonhuman leader-portrait subassets for existing Event 012 controlled-pool rows. It adds only the dormant `.gfx` sprite registration; it does not add a country tag, cosmetic tag, character, model, entity, focus, decision, localisation key, or workbook row.
 
 ## Asset map
 
@@ -23,8 +23,8 @@ All six images are one centered figure on a plain matte background in a restrain
 
 ## Runtime boundary
 
-No `.gfx` registration or character wiring is made in this tranche. The six DDS files are source-complete but remain dormant until the existing country-package and model/entity gates are accepted. They must not be attached to the sixteen grounded historical African sovereign characters or used to fill a historical portrait-source gap.
+The six sprite IDs are registered in `interface/012_africa_leaders_fictional.gfx`, but no character wiring is made in this tranche. The DDS files and sprite endpoints remain dormant until the existing country-package and model/entity gates are accepted. They must not be attached to the sixteen grounded historical African sovereign characters or used to fill a historical portrait-source gap.
 
 ## Future work
 
-When the corresponding model and country package are accepted, the parent should add one dedicated fictional character definition and one `.gfx` registration per row, then validate the exact runtime gate and localisation. Historical African leaders require the separate sourced-real portrait contract documented in `docs/events/012_africa/portrait_runtime_gate.md`.
+When the corresponding model and country package are accepted, the parent should add one dedicated fictional character definition per row, then validate the exact runtime gate and localisation. Historical African leaders require the separate sourced-real portrait contract documented in `docs/events/012_africa/portrait_runtime_gate.md`.
