@@ -258,25 +258,27 @@ africa_achievement_record_horn_corridor_operational = {
 		set_temp_variable = { africa_achievement_horn_harar_ready = constant:africa_value.zero }
 		for_each_scope_loop = {
 			array = africa_relationship_countries
-			limit = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				africa_member_host_generation_is_current = yes
-				has_country_flag = africa_priority_member_politics_settled
-			}
 			if = {
 				limit = {
-					africa_priority_member_package_is_aksum = yes
-					has_country_flag = africa_priority_aksum_heritage_consent_separated
+					exists = yes
+					NOT = { has_capitulated = yes }
+					africa_member_host_generation_is_current = yes
+					has_country_flag = africa_priority_member_politics_settled
 				}
-				add_to_temp_variable = { africa_achievement_horn_aksum_ready = constant:africa_value.one }
-			}
-			if = {
-				limit = {
-					africa_priority_member_package_is_harar = yes
-					has_country_flag = africa_priority_harar_corridor_guarantees_diversified
+				if = {
+					limit = {
+						africa_priority_member_package_is_aksum = yes
+						has_country_flag = africa_priority_aksum_heritage_consent_separated
+					}
+					add_to_temp_variable = { africa_achievement_horn_aksum_ready = constant:africa_value.one }
 				}
-				add_to_temp_variable = { africa_achievement_horn_harar_ready = constant:africa_value.one }
+				if = {
+					limit = {
+						africa_priority_member_package_is_harar = yes
+						has_country_flag = africa_priority_harar_corridor_guarantees_diversified
+					}
+					add_to_temp_variable = { africa_achievement_horn_harar_ready = constant:africa_value.one }
+				}
 			}
 		}
 		if = {
@@ -1345,39 +1347,41 @@ africa_achievement_try_record_savanna_settlement = {
 		set_temp_variable = { africa_achievement_savanna_kuba_ready = constant:africa_value.zero }
 		for_each_scope_loop = {
 			array = africa_relationship_countries
-			limit = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				africa_member_host_generation_is_current = yes
-				NOT = { has_war_with = event_target:africa_host }
-				OR = {
-					africa_relationship_is_protected = yes
-					africa_relationship_is_associate = yes
-					africa_relationship_is_chartered = yes
-					africa_relationship_is_autonomous_federal = yes
-					africa_relationship_is_integrated_region = yes
-				}
-			}
 			if = {
 				limit = {
-					has_country_flag = africa_achievement_restoration_identity_luba_recorded
-					has_country_flag = africa_priority_member_overlap_disposition_recorded
+					exists = yes
+					NOT = { has_capitulated = yes }
+					africa_member_host_generation_is_current = yes
+					NOT = { has_war_with = event_target:africa_host }
+					OR = {
+						africa_relationship_is_protected = yes
+						africa_relationship_is_associate = yes
+						africa_relationship_is_chartered = yes
+						africa_relationship_is_autonomous_federal = yes
+						africa_relationship_is_integrated_region = yes
+					}
 				}
-				set_temp_variable = { africa_achievement_savanna_luba_ready = constant:africa_value.one }
-			}
-			if = {
-				limit = {
-					has_country_flag = africa_achievement_restoration_identity_lunda_recorded
-					has_country_flag = africa_priority_member_overlap_disposition_recorded
+				if = {
+					limit = {
+						has_country_flag = africa_achievement_restoration_identity_luba_recorded
+						has_country_flag = africa_priority_member_overlap_disposition_recorded
+					}
+					set_temp_variable = { africa_achievement_savanna_luba_ready = constant:africa_value.one }
 				}
-				set_temp_variable = { africa_achievement_savanna_lunda_ready = constant:africa_value.one }
-			}
-			if = {
-				limit = {
-					has_country_flag = africa_achievement_restoration_identity_kuba_recorded
-					has_country_flag = africa_achievement_kuba_overlap_settled
+				if = {
+					limit = {
+						has_country_flag = africa_achievement_restoration_identity_lunda_recorded
+						has_country_flag = africa_priority_member_overlap_disposition_recorded
+					}
+					set_temp_variable = { africa_achievement_savanna_lunda_ready = constant:africa_value.one }
 				}
-				set_temp_variable = { africa_achievement_savanna_kuba_ready = constant:africa_value.one }
+				if = {
+					limit = {
+						has_country_flag = africa_achievement_restoration_identity_kuba_recorded
+						has_country_flag = africa_achievement_kuba_overlap_settled
+					}
+					set_temp_variable = { africa_achievement_savanna_kuba_ready = constant:africa_value.one }
+				}
 			}
 		}
 		if = {
@@ -1408,39 +1412,41 @@ africa_achievement_refresh_medium_confidence_regions = {
 	clear_array = global.africa_achievement_medium_confidence_regions
 	for_each_scope_loop = {
 		array = africa_relationship_countries
-		limit = {
-			exists = yes
-			NOT = { has_capitulated = yes }
-			africa_member_host_generation_is_current = yes
-			has_variable = africa_regional_overlay
-			check_variable = { africa_regional_overlay > constant:africa_overlay.none }
-			NOT = { check_variable = { africa_regional_overlay > constant:africa_overlay.madagascar_islands } }
-			has_variable = africa_member_confidence
-			check_variable = {
-				var = africa_member_confidence
-				value = constant:africa_measure.medium
-				compare = greater_than_or_equals
-			}
-			OR = {
-				africa_relationship_is_protected = yes
-				africa_relationship_is_associate = yes
-				africa_relationship_is_chartered = yes
-				africa_relationship_is_autonomous_federal = yes
-				africa_relationship_is_integrated_region = yes
-			}
-		}
 		if = {
 			limit = {
-				NOT = {
-					is_in_array = {
-						array = global.africa_achievement_medium_confidence_regions
-						value = africa_regional_overlay
-					}
+				exists = yes
+				NOT = { has_capitulated = yes }
+				africa_member_host_generation_is_current = yes
+				has_variable = africa_regional_overlay
+				check_variable = { africa_regional_overlay > constant:africa_overlay.none }
+				NOT = { check_variable = { africa_regional_overlay > constant:africa_overlay.madagascar_islands } }
+				has_variable = africa_member_confidence
+				check_variable = {
+					var = africa_member_confidence
+					value = constant:africa_measure.medium
+					compare = greater_than_or_equals
+				}
+				OR = {
+					africa_relationship_is_protected = yes
+					africa_relationship_is_associate = yes
+					africa_relationship_is_chartered = yes
+					africa_relationship_is_autonomous_federal = yes
+					africa_relationship_is_integrated_region = yes
 				}
 			}
-			add_to_array = {
-				array = global.africa_achievement_medium_confidence_regions
-				value = africa_regional_overlay
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = global.africa_achievement_medium_confidence_regions
+							value = africa_regional_overlay
+						}
+					}
+				}
+				add_to_array = {
+					array = global.africa_achievement_medium_confidence_regions
+					value = africa_regional_overlay
+				}
 			}
 		}
 	}
@@ -1470,62 +1476,64 @@ africa_achievement_refresh_live_duration_counts = {
 
 	for_each_scope_loop = {
 		array = africa_relationship_countries
-		limit = {
-			exists = yes
-			NOT = { has_capitulated = yes }
-			africa_member_host_generation_is_current = yes
-		}
 		if = {
 			limit = {
-				OR = {
-					africa_relationship_is_chartered = yes
-					africa_relationship_is_autonomous_federal = yes
-					africa_relationship_is_integrated_region = yes
-				}
+				exists = yes
+				NOT = { has_capitulated = yes }
+				africa_member_host_generation_is_current = yes
 			}
-			add_to_temp_variable = { africa_achievement_live_full_members = constant:africa_value.one }
-		}
-		if = {
-			limit = {
-				has_variable = africa_member_confidence
-				check_variable = {
-					var = africa_member_confidence
-					value = constant:africa_measure.high
-					compare = greater_than_or_equals
+			if = {
+				limit = {
+					OR = {
+						africa_relationship_is_chartered = yes
+						africa_relationship_is_autonomous_federal = yes
+						africa_relationship_is_integrated_region = yes
+					}
 				}
-				OR = {
-					africa_relationship_is_protected = yes
-					africa_relationship_is_associate = yes
-					africa_relationship_is_chartered = yes
-					africa_relationship_is_autonomous_federal = yes
-				}
+				add_to_temp_variable = { africa_achievement_live_full_members = constant:africa_value.one }
 			}
-			add_to_temp_variable = { africa_achievement_live_high_confidence = constant:africa_value.one }
-		}
-		if = {
-			limit = {
-				is_subject = no
-				OR = {
-					africa_relationship_is_protected = yes
-					africa_relationship_is_associate = yes
-					africa_relationship_is_chartered = yes
-					africa_relationship_is_autonomous_federal = yes
+			if = {
+				limit = {
+					has_variable = africa_member_confidence
+					check_variable = {
+						var = africa_member_confidence
+						value = constant:africa_measure.high
+						compare = greater_than_or_equals
+					}
+					OR = {
+						africa_relationship_is_protected = yes
+						africa_relationship_is_associate = yes
+						africa_relationship_is_chartered = yes
+						africa_relationship_is_autonomous_federal = yes
+					}
 				}
+				add_to_temp_variable = { africa_achievement_live_high_confidence = constant:africa_value.one }
 			}
-			add_to_temp_variable = { africa_achievement_live_sovereign_members = constant:africa_value.one }
-		}
-		if = {
-			limit = {
-				has_country_flag = africa_registered_high_chaos_actor
-				has_country_flag = africa_achievement_actor_rights_protected
-				has_country_flag = africa_achievement_actor_obligations_settled
-				OR = {
-					africa_relationship_is_associate = yes
-					africa_relationship_is_chartered = yes
-					africa_relationship_is_autonomous_federal = yes
+			if = {
+				limit = {
+					is_subject = no
+					OR = {
+						africa_relationship_is_protected = yes
+						africa_relationship_is_associate = yes
+						africa_relationship_is_chartered = yes
+						africa_relationship_is_autonomous_federal = yes
+					}
 				}
+				add_to_temp_variable = { africa_achievement_live_sovereign_members = constant:africa_value.one }
 			}
-			add_to_temp_variable = { africa_achievement_live_nonhuman_members = constant:africa_value.one }
+			if = {
+				limit = {
+					has_country_flag = africa_registered_high_chaos_actor
+					has_country_flag = africa_achievement_actor_rights_protected
+					has_country_flag = africa_achievement_actor_obligations_settled
+					OR = {
+						africa_relationship_is_associate = yes
+						africa_relationship_is_chartered = yes
+						africa_relationship_is_autonomous_federal = yes
+					}
+				}
+				add_to_temp_variable = { africa_achievement_live_nonhuman_members = constant:africa_value.one }
+			}
 		}
 	}
 
@@ -1582,129 +1590,131 @@ africa_achievement_capture_africa_is_one_snapshot = {
 
 		for_each_scope_loop = {
 			array = africa_relationship_countries
-			limit = {
-				exists = yes
-				NOT = { has_capitulated = yes }
-				africa_member_host_generation_is_current = yes
-			}
+			if = {
+				limit = {
+					exists = yes
+					NOT = { has_capitulated = yes }
+					africa_member_host_generation_is_current = yes
+				}
 
-			if = {
-				limit = {
-					has_country_flag = africa_achievement_counted_protected_partner
-					is_subject = no
-					OR = {
-						africa_relationship_is_protected = yes
-						africa_relationship_is_associate = yes
-						africa_relationship_is_chartered = yes
-						africa_relationship_is_autonomous_federal = yes
-					}
-				}
-				add_to_temp_variable = { africa_achievement_snapshot_protected_alive = constant:africa_value.one }
-			}
-			if = {
-				limit = {
-					has_country_flag = africa_achievement_counted_guarantee
-					has_variable = africa_member_confidence
-					check_variable = {
-						var = africa_member_confidence
-						value = constant:africa_measure.high
-						compare = greater_than_or_equals
-					}
-				}
-				add_to_temp_variable = { africa_achievement_snapshot_guaranteed_high = constant:africa_value.one }
-			}
-			if = {
-				limit = {
-					OR = {
-						africa_relationship_is_chartered = yes
-						africa_relationship_is_autonomous_federal = yes
-						africa_relationship_is_integrated_region = yes
-					}
-				}
-				add_to_temp_variable = { africa_achievement_snapshot_full_members = constant:africa_value.one }
-			}
-
-			set_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.zero }
-			if = { limit = { has_country_flag = africa_action_offer_defence_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
-			if = { limit = { has_country_flag = africa_action_offer_development_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
-			if = { limit = { has_country_flag = africa_action_offer_federal_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
-			if = { limit = { has_country_flag = africa_action_offer_crown_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
-			if = { limit = { has_country_flag = africa_action_offer_peoples_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
-			if = { limit = { has_country_flag = africa_action_offer_security_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
-			if = { limit = { has_country_flag = africa_action_offer_sacred_ecological_compact_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
-			if = {
-				limit = {
-					check_variable = {
-						var = africa_achievement_snapshot_member_clause_count
-						value = constant:africa_achievement_count.clauses_per_member
-						compare = greater_than_or_equals
-					}
-					has_country_flag = africa_achievement_accession_dispute_resolved
-					NOT = { has_country_flag = africa_achievement_protected_clause_cancelled }
-				}
-				add_to_temp_variable = { africa_achievement_snapshot_clause_members = constant:africa_value.one }
-			}
-
-			if = {
-				limit = {
-					has_variable = africa_member_confidence
-					check_variable = {
-						var = africa_member_confidence
-						value = constant:africa_measure.high
-						compare = greater_than_or_equals
-					}
-					OR = {
-						africa_relationship_is_protected = yes
-						africa_relationship_is_associate = yes
-						africa_relationship_is_chartered = yes
-						africa_relationship_is_autonomous_federal = yes
-					}
-				}
-				add_to_temp_variable = { africa_achievement_snapshot_high_confidence = constant:africa_value.one }
-			}
-			if = {
-				limit = { africa_relationship_is_autonomous_federal = yes }
-				add_to_temp_variable = { africa_achievement_snapshot_autonomous_federal = constant:africa_value.one }
 				if = {
 					limit = {
-						has_country_flag = africa_member_representation_settled
-						has_country_flag = africa_achievement_fiscal_settlement_complete
+						has_country_flag = africa_achievement_counted_protected_partner
+						is_subject = no
+						OR = {
+							africa_relationship_is_protected = yes
+							africa_relationship_is_associate = yes
+							africa_relationship_is_chartered = yes
+							africa_relationship_is_autonomous_federal = yes
+						}
 					}
-					add_to_temp_variable = { africa_achievement_snapshot_federal_settled = constant:africa_value.one }
+					add_to_temp_variable = { africa_achievement_snapshot_protected_alive = constant:africa_value.one }
 				}
-			}
-			if = {
-				limit = { has_country_flag = africa_achievement_recognised_court_member }
-				add_to_temp_variable = { africa_achievement_snapshot_court_members = constant:africa_value.one }
-			}
-			if = {
-				limit = {
-					is_subject = no
-					OR = {
-						africa_relationship_is_protected = yes
-						africa_relationship_is_associate = yes
-						africa_relationship_is_chartered = yes
-						africa_relationship_is_autonomous_federal = yes
+				if = {
+					limit = {
+						has_country_flag = africa_achievement_counted_guarantee
+						has_variable = africa_member_confidence
+						check_variable = {
+							var = africa_member_confidence
+							value = constant:africa_measure.high
+							compare = greater_than_or_equals
+						}
+					}
+					add_to_temp_variable = { africa_achievement_snapshot_guaranteed_high = constant:africa_value.one }
+				}
+				if = {
+					limit = {
+						OR = {
+							africa_relationship_is_chartered = yes
+							africa_relationship_is_autonomous_federal = yes
+							africa_relationship_is_integrated_region = yes
+						}
+					}
+					add_to_temp_variable = { africa_achievement_snapshot_full_members = constant:africa_value.one }
+				}
+
+				set_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.zero }
+				if = { limit = { has_country_flag = africa_action_offer_defence_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
+				if = { limit = { has_country_flag = africa_action_offer_development_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
+				if = { limit = { has_country_flag = africa_action_offer_federal_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
+				if = { limit = { has_country_flag = africa_action_offer_crown_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
+				if = { limit = { has_country_flag = africa_action_offer_peoples_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
+				if = { limit = { has_country_flag = africa_action_offer_security_charter_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
+				if = { limit = { has_country_flag = africa_action_offer_sacred_ecological_compact_full } add_to_temp_variable = { africa_achievement_snapshot_member_clause_count = constant:africa_value.one } }
+				if = {
+					limit = {
+						check_variable = {
+							var = africa_achievement_snapshot_member_clause_count
+							value = constant:africa_achievement_count.clauses_per_member
+							compare = greater_than_or_equals
+						}
+						has_country_flag = africa_achievement_accession_dispute_resolved
+						NOT = { has_country_flag = africa_achievement_protected_clause_cancelled }
+					}
+					add_to_temp_variable = { africa_achievement_snapshot_clause_members = constant:africa_value.one }
+				}
+
+				if = {
+					limit = {
+						has_variable = africa_member_confidence
+						check_variable = {
+							var = africa_member_confidence
+							value = constant:africa_measure.high
+							compare = greater_than_or_equals
+						}
+						OR = {
+							africa_relationship_is_protected = yes
+							africa_relationship_is_associate = yes
+							africa_relationship_is_chartered = yes
+							africa_relationship_is_autonomous_federal = yes
+						}
+					}
+					add_to_temp_variable = { africa_achievement_snapshot_high_confidence = constant:africa_value.one }
+				}
+				if = {
+					limit = { africa_relationship_is_autonomous_federal = yes }
+					add_to_temp_variable = { africa_achievement_snapshot_autonomous_federal = constant:africa_value.one }
+					if = {
+						limit = {
+							has_country_flag = africa_member_representation_settled
+							has_country_flag = africa_achievement_fiscal_settlement_complete
+						}
+						add_to_temp_variable = { africa_achievement_snapshot_federal_settled = constant:africa_value.one }
 					}
 				}
-				add_to_temp_variable = { africa_achievement_snapshot_sovereign_members = constant:africa_value.one }
-			}
-			if = {
-				limit = {
-					has_country_flag = africa_registered_high_chaos_actor
-					has_country_flag = africa_achievement_actor_rights_protected
-					has_country_flag = africa_achievement_actor_obligations_settled
-					OR = {
-						africa_relationship_is_associate = yes
-						africa_relationship_is_chartered = yes
-						africa_relationship_is_autonomous_federal = yes
-					}
+				if = {
+					limit = { has_country_flag = africa_achievement_recognised_court_member }
+					add_to_temp_variable = { africa_achievement_snapshot_court_members = constant:africa_value.one }
 				}
-				add_to_temp_variable = { africa_achievement_snapshot_nonhuman_members = constant:africa_value.one }
-			}
-			if = {
-				limit = { has_country_flag = africa_achievement_archive_restoration_counted }
-				add_to_temp_variable = { africa_achievement_snapshot_archives_restored = constant:africa_value.one }
+				if = {
+					limit = {
+						is_subject = no
+						OR = {
+							africa_relationship_is_protected = yes
+							africa_relationship_is_associate = yes
+							africa_relationship_is_chartered = yes
+							africa_relationship_is_autonomous_federal = yes
+						}
+					}
+					add_to_temp_variable = { africa_achievement_snapshot_sovereign_members = constant:africa_value.one }
+				}
+				if = {
+					limit = {
+						has_country_flag = africa_registered_high_chaos_actor
+						has_country_flag = africa_achievement_actor_rights_protected
+						has_country_flag = africa_achievement_actor_obligations_settled
+						OR = {
+							africa_relationship_is_associate = yes
+							africa_relationship_is_chartered = yes
+							africa_relationship_is_autonomous_federal = yes
+						}
+					}
+					add_to_temp_variable = { africa_achievement_snapshot_nonhuman_members = constant:africa_value.one }
+				}
+				if = {
+					limit = { has_country_flag = africa_achievement_archive_restoration_counted }
+					add_to_temp_variable = { africa_achievement_snapshot_archives_restored = constant:africa_value.one }
+				}
 			}
 		}
 
