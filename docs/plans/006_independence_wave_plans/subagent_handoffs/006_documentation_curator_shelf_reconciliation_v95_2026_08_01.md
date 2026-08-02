@@ -53,3 +53,7 @@ The overview, resume packet, and source-of-truth map now use 78 physical masters
 1. Keep the parent-authorized 73 indexed-row count as current authority unless the asset owner reconciles the manifest's 72-row/77-file snapshot against the current 78-file shelf.
 2. Keep CHU v3 and ASY Haydo blocked on their rights/date HOLDs before any DDS, `.gfx`, character, or attestation work.
 3. Route ASY Barsoum v2 to an independent likeness/style/provenance audit before any runtime promotion; do not infer admission from shelf presence or the clearer source rights record.
+
+## Post-audit addendum (2026-08-02)
+
+The requested audit is now recorded in `006_iw058_asy_barsoum_pd1923_portrait_visual_audit_v93_2026_08_02.md` (commit `eaa0b6789`). Identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with the documented low-resolution group-photo caveat; parent release acceptance is still required. No DDS/GFX/character/localisation/runtime/advisor/small-portrait promotion occurred, so the shelf remains reference-only and IW-058 remains outside attestation.

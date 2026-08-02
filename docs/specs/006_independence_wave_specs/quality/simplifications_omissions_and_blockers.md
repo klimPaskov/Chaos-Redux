@@ -101,6 +101,8 @@ The current blocker evidence is preserved in the following handoffs; none of the
 - IW-179 FSM: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw179_micronesia_kabua_kabua_source_closure_2026_08_01.md` keeps FSM withdrawn from the FORM-48 member contract while the Kabua evidence remains weak/review-pending; do not change runtime binding.
 - IW-030 MNT, IW-177 FIJ, and IW-014 CAT remain HOLD for the rights/complete-roster, source-date/member-research, and identity/flag/carrier-contract blockers recorded in their current package handoffs. The shared IW-046 CHU overlay row also remains unadmitted.
 
+The ASY Barsoum v93 independent audit is now complete: identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with a documented low-resolution group-photo caveat. Parent release acceptance remains required and the no-wire scope leaves the existing consumer untouched; IW-058 remains fail-closed until its complete roster and package contracts are admitted.
+
 ## Design simplifications
 
 No requested design surface was intentionally simplified into a weaker substitute.
