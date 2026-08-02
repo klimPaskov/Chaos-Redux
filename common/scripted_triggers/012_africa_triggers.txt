@@ -1026,12 +1026,12 @@ africa_has_current_action_quote = {
 africa_can_pay_action_quote = {
 	africa_has_current_action_quote = yes
 	africa_action_quote_state_target_is_ready = yes
-	has_political_power > africa_quote_cost_pp
-	command_power > africa_quote_cost_cp
-	has_manpower > africa_quote_cost_manpower
-	has_fuel > africa_quote_cost_fuel
-	has_stability > africa_quote_cost_stability
-	check_variable = { var = war_support value = africa_quote_cost_war_support compare = greater_than }
+	NOT = { has_political_power < africa_quote_cost_pp }
+	NOT = { command_power < africa_quote_cost_cp }
+	NOT = { has_manpower < africa_quote_cost_manpower }
+	NOT = { has_fuel < africa_quote_cost_fuel }
+	NOT = { has_stability < africa_quote_cost_stability }
+	check_variable = { var = war_support value = africa_quote_cost_war_support compare = greater_than_or_equals }
 	check_variable = {
 		var = africa_civilian_capacity_available
 		value = africa_quote_cost_civilian
@@ -1155,8 +1155,8 @@ africa_natural_disaster_weapon_cost_is_available = {
 	OR = {
 		AND = {
 			NOT = { has_event_target = africa_natural_disaster_action_actor }
-			has_political_power > constant:africa_natural_disaster.caller_pp_cost
-			command_power > constant:africa_natural_disaster.caller_cp_cost
+			NOT = { has_political_power < constant:africa_natural_disaster.caller_pp_cost }
+			NOT = { command_power < constant:africa_natural_disaster.caller_cp_cost }
 			NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
 			NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
 		}
@@ -1205,8 +1205,8 @@ africa_natural_disaster_member_actor_is_eligible = {
 
 # COUNTRY scope on a priority member before the caller-side Event 013 reserve.
 africa_natural_disaster_member_cost_is_available = {
-	has_political_power > constant:africa_natural_disaster.caller_pp_cost
-	command_power > constant:africa_natural_disaster.caller_cp_cost
+	NOT = { has_political_power < constant:africa_natural_disaster.caller_pp_cost }
+	NOT = { command_power < constant:africa_natural_disaster.caller_cp_cost }
 	NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
 	NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
 }
