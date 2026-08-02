@@ -16,6 +16,8 @@ Every added reward writes to an existing Rat King register or existing terminal-
 
 The `black_plague_rat_king_court_category` also exposes one route operation per government: Crown Tithe spends Dominion for Brood Mass, Council Audit spends Cohesion for Sentience and renewed Cohesion, and Hierophant Broadcast spends Sentience for Terminal Preparation. Each operation has a visible meter cost and a timed, idempotent country flag so a route choice changes the living court rather than remaining focus-only text. The three government root focuses also fire the guarded `chaosx.nr20.77` route report once per RTX lifecycle, applying a distinct first-decree effect to Dominion, Cohesion, or Sentience and recording the route's Hunger tradeoff where appropriate.
 
+The three continuing court operations now fire `chaosx.nr20.79` with route-specific descriptions. The report records the Crown tithe, Council ledger, or Hierophant broadcast at completion while the timed operation flag and meter cost remain authoritative for repeat safety.
+
 All added focus names and descriptions are in `localisation/english/020_black_plague_rat_focus_l_english.yml`. The tree uses the existing Event 020 custom focus sprites; no new models are required for this route pass.
 
 ## Future depth

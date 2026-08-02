@@ -409,6 +409,7 @@ black_plague_rat_king_resolve_defeat = {
 			clr_country_flag = black_plague_rat_terminal_refuge_network
 			clr_country_flag = black_plague_rat_king_route_completed
 			clear_variable = black_plague_rat_king_route
+			clear_variable = black_plague_rat_last_policy_operation
 			clear_variable = black_plague_rat_king_dominion
 			clear_variable = black_plague_rat_king_sentience
 			clear_variable = black_plague_rat_king_cohesion
@@ -854,6 +855,7 @@ black_plague_rat_initialize_country = {
 	clr_country_flag = black_plague_rat_route_memory_cooldown
 	set_variable = { black_plague_rat_slot_id = black_plague_rat_selected_slot }
 	clear_variable = black_plague_rat_retirement_date
+	clear_variable = black_plague_rat_last_route_operation
 	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
 	set_variable = { black_plague_rat_hunger = constant:black_plague_rat_pool.hunger_initial }
 	set_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_initial }
@@ -1335,6 +1337,8 @@ black_plague_rat_distribute_the_nests = {
 		add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.distributed_nests_division_cap_gain }
 		set_temp_variable = { black_plague_rat_distributed_nests_cooldown_days = constant:black_plague_rat_decision.distributed_nests_cooldown_days }
 		set_country_flag = { flag = black_plague_rat_distributed_nests_cooldown days = black_plague_rat_distributed_nests_cooldown_days }
+		set_variable = { black_plague_rat_last_route_operation = constant:black_plague_rat_route_operation.distributed_nests }
+		country_event = { id = chaosx.nr20.78 }
 		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 		black_plague_rat_refresh_division_cap = yes
 		set_global_flag = black_plague_mapmode_dirty
@@ -1354,6 +1358,8 @@ black_plague_rat_seat_the_alpha = {
 		set_country_flag = black_plague_rat_king_candidate
 		set_temp_variable = { black_plague_rat_dominant_alpha_cooldown_days = constant:black_plague_rat_decision.dominant_alpha_cooldown_days }
 		set_country_flag = { flag = black_plague_rat_dominant_alpha_cooldown days = black_plague_rat_dominant_alpha_cooldown_days }
+		set_variable = { black_plague_rat_last_route_operation = constant:black_plague_rat_route_operation.dominant_alpha }
+		country_event = { id = chaosx.nr20.78 }
 		clamp_variable = { var = black_plague_rat_sentience min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 		black_plague_rat_refresh_division_cap = yes
@@ -1382,6 +1388,8 @@ black_plague_rat_decode_route_memory = {
 			set_temp_variable = { black_plague_route_memory_state_cooldown_days = constant:black_plague_rat_decision.emergent_route_memory_duration_days }
 			set_state_flag = { flag = black_plague_rat_route_memory_cooldown days = black_plague_route_memory_state_cooldown_days }
 		}
+		set_variable = { black_plague_rat_last_route_operation = constant:black_plague_rat_route_operation.emergent_route_memory }
+		country_event = { id = chaosx.nr20.78 }
 		clamp_variable = { var = black_plague_rat_sentience min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 		set_global_flag = black_plague_mapmode_dirty
 	}
@@ -1811,6 +1819,8 @@ black_plague_rat_cleanup_retired_country = {
 		remove_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy black_plague_rat_dominion black_plague_rat_fractured_instinct }
 		clear_variable = black_plague_rat_hunger
 		clear_variable = black_plague_rat_coherence
+		clear_variable = black_plague_rat_last_route_operation
+		clear_variable = black_plague_rat_last_policy_operation
 		clear_variable = black_plague_rat_dominion_states
 		clear_variable = black_plague_rat_disease_dominion
 		delete_unit_template_and_units = { division_template = "Rat Brood" disband = no }
@@ -2019,6 +2029,7 @@ black_plague_rat_initialize_king_country = {
 	clr_country_flag = black_plague_rat_crown_tithe_operation
 	clr_country_flag = black_plague_rat_council_audit_operation
 	clr_country_flag = black_plague_rat_hierophant_broadcast_operation
+	clear_variable = black_plague_rat_last_policy_operation
 	set_variable = { black_plague_rat_king_route = constant:black_plague_rat_king_route.undecided }
 	set_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_pool.king_dominion_initial }
 	set_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_pool.king_sentience_initial }

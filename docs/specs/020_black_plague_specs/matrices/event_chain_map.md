@@ -58,10 +58,12 @@ Event numbers after the canonical entry are retained here as the accepted Event 
 | `chaosx.nr20.74` | Royal Burrow sealing success | sealing operation owner | yes | one per completed site |
 | `chaosx.nr20.75` | Royal Burrow sealing timeout | sealing operation owner | yes | one per failed site |
 | `chaosx.nr20.77` | Rat King government route acknowledgement | Rat King | yes | one per carrier route selection |
+| `chaosx.nr20.78` | RTA route-operation report | RTA | yes | one per completed route operation |
+| `chaosx.nr20.79` | Rat King policy-operation report | Rat King | yes | one per completed royal policy operation |
 | `chaosx.nr20.80` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
 | `chaosx.nr20.90` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
 
-Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.77`, and `.90`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. The `.66-.69` entries report the two human last-response missions that share the disease category after Evolution V opens. This matrix remains the behavioral contract and does not claim live-game validation.
+Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.79`, and `.90`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. The `.66-.69` entries report the two human last-response missions that share the disease category after Evolution V opens. This matrix remains the behavioral contract and does not claim live-game validation.
 
 ## Runtime families
 

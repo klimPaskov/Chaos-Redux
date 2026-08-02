@@ -45,6 +45,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - The rat AI strategy file now has three route-specific RTX plans. Crown concentrates brutes and royal-node defense, Council favors distributed burrow and swarm coverage, and Hierophancy favors dock forces, coastal staging, and overseas pressure.
 - The reachable RTA archetype lanes now have persistent route effects: Urban Citadel Relays, Field Migration Burrows, Dock Cross-Sea Cargo, and War Rail Breach contribute to capped Brood Mass pulses, division-cap refreshes, route exposure, and route-aware RTA AI. Cross-Sea Cargo remains subordinate to Evolution II's overseas gate.
 - The rat categories now expose seven route operations: four timed RTA operations (Citadel Stockpile, Migration Lanes, Tide Manifest, Rail Breach Order) and three timed RTX policy operations (Crown Tithe, Council Audit, Hierophant Broadcast). Their costs and gains are centralized and their flags are consumed by spread, cap, or royal preparation logic.
+- The seven continuing route operations now fire guarded player-facing reports through `chaosx.nr20.78` and `chaosx.nr20.79`. The report descriptions distinguish each RTA route operation and each RTX court policy while retaining a safe generic branch for an unexpected operation value; no new tag or decision category is introduced.
 - The RTA brood category also exposes `Strip the Outer Districts` and state-targeted `Establish a Burrow Node`. Feeding trades Hunger for Brood Mass and visible infestation/devastation in one rat-held state under a timed scar/cooldown; Burrow Nodes spend Brood Mass and return local Brood Mass plus Coherence during their timed pulse window. Both remain inside the existing category and use only the reusable `RTA` carrier.
 - RTA can also `Follow the Refugee Road` into a selected human enemy state adjacent to rat-held ground. The decision spends Brood Mass, applies the canonical refugee-movement exposure with Rat Occupation provenance, and sets a state cooldown so the route cannot cascade within one pulse.
 - The same RTA category now exposes `Concentrate Brood`, `Scatter Brood`, `Devour Rival`, and state-targeted `Resist Absorption`. Concentration delays the shared growth clock while raising the persistent cap and Coherence; scattering spends low Coherence for a capped two-formation burst and adds Hunger; Devour Rival clears the merger clock for one immediate state-marker absorption attempt; Resist Absorption spends carrier mass to reinforce a weaker marker and set a timed shield that the automatic merger comparison respects.
@@ -79,7 +80,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 ## Validation evidence
 
 - The touched Event 020 script and localisation files have balanced braces and no unsupported `<=` or `>=` operators.
-- The Event 020 namespace contains 53 unique event IDs with no duplicate IDs.
+- The Event 020 namespace contains 62 unique event IDs with no duplicate IDs.
 - Player-facing Event 020 localisation keys have no duplicate keys; hidden scheduler callbacks intentionally have no title or description keys.
 - Event 020 localisation files retain UTF-8 BOM encoding.
 - The mandatory catalog exporter completed successfully after the workbook update and rewrote all three CSV exports.
@@ -91,7 +92,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 
 ## Remaining blockers and deviations
 
-- The RTA and RTX trees now meet the accepted focus-count floors at 50 and 70 nodes. Route-specific decisions, the three hierarchy actions, and court operations are wired; remaining narrative depth is primarily report text, dedicated crisis art, and live route validation.
+- The RTA and RTX trees now meet the accepted focus-count floors at 51 and 70 nodes. Route-specific decisions, the three hierarchy actions, and court operations are wired; remaining narrative depth is primarily report text, dedicated crisis art, and live route validation.
 - The accepted narrative and asset package still has queued outbreak, Rat Nation, weapon-delivery, and reconstruction surfaces. The shared-board rat-infestation source-frame badge, five evolution report cards, Severe Crisis, Doctor Wu, Crown Strike, Royal Node counterstrike icon, route crises, Rat King aftermath, Royal Burrow aftermath, the Royal Burrows seal animation, slot 087 art/text/audio wiring, and the Evolution IV Rat King portrait are promoted, but broader dedicated art/depth remains queued.
 - The state-clipped black fog enhancement remains unverified and is not used as a runtime prerequisite.
 - No in-game process was launched, per repository instructions, so scenario intensities, Royal Node outcomes, mission timeout behavior, and rat grace-period transfer still require live consumer validation.
@@ -112,6 +113,6 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 
 ## Handoff
 
-The Event 020 core and this content tranche are ready for the next content pass and targeted in-game validation. The scoped defeat/slot-087 wiring is static implementation evidence, not a live completion claim.
+The Event 020 core and this content tranche are ready for the next content pass and targeted in-game validation. The scoped defeat/slot-087 wiring and the `.78`/`.79` route-operation reports are static implementation evidence, not a live completion claim.
 
 The goal remains incomplete until the listed accepted content and presentation blockers are resolved.
