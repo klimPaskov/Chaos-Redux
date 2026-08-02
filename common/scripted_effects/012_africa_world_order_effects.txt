@@ -908,6 +908,10 @@ africa_scramble_launch_expedition_if_unresolved = {
 					has_capitulated = no
 					NOT = { has_war_with = event_target:africa_host }
 					can_declare_war_on = event_target:africa_host
+					# The pre-response classifier uses this same material gate. Keep the
+					# final declaration fail-closed so a flagged planner cannot launch
+					# an expedition without a deployable army, manpower, and coastal base.
+					africa_ai_scramble_expedition_materially_ready = yes
 					event_target:africa_host = {
 						check_variable = {
 							var = africa_scramble_expedition_actor_count
