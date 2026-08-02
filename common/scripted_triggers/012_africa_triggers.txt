@@ -1049,6 +1049,20 @@ africa_can_pay_action_quote = {
 	NOT = { has_equipment = { convoy_1 < africa_quote_cost_convoys } }
 }
 
+# COUNTRY scope on the host. Weather weapons add an Event 013 caller reserve
+# to the regular quoted Charter commitment, so launch availability must cover
+# both costs before the player confirms the action.
+africa_can_pay_selected_action_commitment = {
+	africa_can_pay_action_quote = yes
+	OR = {
+		AND = {
+			NOT = { check_variable = { africa_quote_action_id = constant:africa_action.petition_the_rain } }
+			NOT = { check_variable = { africa_quote_action_id = constant:africa_action.defy_the_drought } }
+		}
+		africa_natural_disaster_weapon_cost_is_available = yes
+	}
+}
+
 # COUNTRY scope on a target displayed by a targeted decision.
 africa_is_current_quoted_action_target = {
 	exists = yes

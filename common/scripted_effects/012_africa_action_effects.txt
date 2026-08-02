@@ -2532,6 +2532,8 @@ africa_clear_action_quote = {
 	set_variable = { africa_quote_cost_intelligence = constant:africa_action_cost.zero }
 	set_variable = { africa_quote_cost_stability = constant:africa_action_cost.zero }
 	set_variable = { africa_quote_cost_war_support = constant:africa_action_cost.zero }
+	set_variable = { africa_quote_natural_disaster_caller_pp = constant:africa_action_cost.zero }
+	set_variable = { africa_quote_natural_disaster_caller_cp = constant:africa_action_cost.zero }
 }
 
 # COUNTRY scope on the host. Input: regular africa_action_target and prepared
@@ -2726,6 +2728,16 @@ africa_refresh_selected_action_quote = {
 		set_variable = { africa_quote_cost_intelligence = africa_cost_intelligence }
 		set_variable = { africa_quote_cost_stability = africa_cost_stability }
 		set_variable = { africa_quote_cost_war_support = africa_cost_war_support }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { africa_selected_action_id = constant:africa_action.petition_the_rain }
+					check_variable = { africa_selected_action_id = constant:africa_action.defy_the_drought }
+				}
+			}
+			set_variable = { africa_quote_natural_disaster_caller_pp = constant:africa_natural_disaster.caller_pp_cost }
+			set_variable = { africa_quote_natural_disaster_caller_cp = constant:africa_natural_disaster.caller_cp_cost }
+		}
 		add_to_variable = { africa_action_quote_generation = constant:africa_value.one }
 		set_country_flag = africa_action_quote_ready
 	}
