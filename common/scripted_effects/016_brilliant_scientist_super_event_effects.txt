@@ -479,7 +479,11 @@ brilliant_scientist_activate_local_or_regional_defeat_aftermath = {
 	if = {
 		limit = { brilliant_scientist_regional_defeat_is_ready = yes }
 		set_country_flag = brilliant_scientist_regional_defeat_recorded
-		news_event = { id = chaosx.nr16.302 }
+		if = {
+			limit = { NOT = { has_global_flag = brilliant_scientist_news_regional_defeat_fired } }
+			set_global_flag = brilliant_scientist_news_regional_defeat_fired
+			news_event = { id = chaosx.nr16.302 days = constant:brilliant_scientist_news_runtime.delay_days }
+		}
 		if = {
 			limit = {
 				has_event_target = brilliant_scientist_kruger_state_former_host_persistent
