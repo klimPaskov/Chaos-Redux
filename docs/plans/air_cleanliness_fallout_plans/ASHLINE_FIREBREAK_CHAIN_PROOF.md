@@ -10,7 +10,7 @@
 - Candidate producer: `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
 - Event Log: `common/scripted_effects/chaosx_events_log_effects.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and `common/scripted_localisation/fallout_world_end_ashline_firebreak_event_log_scripted_localisation.txt`
 - Localisation: `localisation/english/fallout_world_end_ashline_firebreak_l_english.yml`
-- Asset: `gfx/event_pictures/fallout_world_end/report_event_fallout_ashline_firebreak.dds`, `interface/fallout_world_end.gfx`, and the dedicated workspace under `docs/assets/air_cleanliness_fallout/fallout_ashline_firebreak/`
+- Asset: `gfx/event_pictures/fallout/report_event_fallout_ashline_firebreak.dds`, `interface/fallout_world_end.gfx`, and the dedicated workspace under `docs/assets/air_cleanliness_fallout/fallout_ashline_firebreak/`
 
 ## Static checks
 

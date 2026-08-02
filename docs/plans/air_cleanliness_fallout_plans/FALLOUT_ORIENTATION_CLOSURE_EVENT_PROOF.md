@@ -64,7 +64,7 @@ Events `82` through `84` have no caller-owned event receipt. History `9110` supp
 
 ## Asset disposition
 
-The visible closure uses the existing dedicated Fallout sprite `GFX_report_event_fallout_orientation_closure`, backed by `gfx/event_pictures/fallout_world_end/report_event_fallout_orientation_closure.dds`. The hidden AI closure and cleanup have no picture. No zombie file, id, asset, sprite, audio, or path is referenced.
+The visible closure uses the existing dedicated Fallout sprite `GFX_report_event_fallout_orientation_closure`, backed by `gfx/event_pictures/fallout/report_event_fallout_orientation_closure.dds`. The hidden AI closure and cleanup have no picture. No zombie file, id, asset, sprite, audio, or path is referenced.
 
 ## Validation boundary
 

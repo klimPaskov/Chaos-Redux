@@ -320,7 +320,7 @@ The generated fictional package already exists and is ready for parent review:
 
 - sprite `GFX_report_event_fallout_last_transformer`
 - GFX target `interface/fallout_world_end.gfx`
-- runtime DDS `gfx/event_pictures/fallout_last_transformer/report_event_fallout_last_transformer.dds`
+- runtime DDS `gfx/event_pictures/fallout/report_event_fallout_last_transformer.dds`
 - manifest `docs/assets/air_cleanliness_fallout/fallout_last_transformer/manifest.json`
 - handoff `docs/assets/air_cleanliness_fallout/fallout_last_transformer/gfx_handoff.md`
 

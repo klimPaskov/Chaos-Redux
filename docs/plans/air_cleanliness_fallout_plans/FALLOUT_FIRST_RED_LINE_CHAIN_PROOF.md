@@ -88,7 +88,7 @@ Every payload maps to a dedicated localisation key. The player-facing opening, r
 
 The report sprite is `GFX_report_event_fallout_first_red_line`.
 
-The runtime texture is `gfx/event_pictures/fallout_first_red_line/report_event_fallout_first_red_line.dds` with `210x176` dimensions and exact byte length `147968`.
+The runtime texture is `gfx/event_pictures/fallout/report_event_fallout_first_red_line.dds` with `210x176` dimensions and exact byte length `147968`.
 
 Source, processed image, prompt, review notes, manifest, and GFX handoff are under `docs/assets/684_first_red_line/`.
 

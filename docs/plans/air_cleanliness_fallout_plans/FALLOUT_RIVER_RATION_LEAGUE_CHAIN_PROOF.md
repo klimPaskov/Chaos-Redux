@@ -74,7 +74,7 @@ The event detail resolver and name mapping are wired through the shared Events L
 
 ## Asset proof
 
-The final report DDS is `gfx/event_pictures/fallout_world_end/report_event_fallout_river_ration_league.dds`.
+The final report DDS is `gfx/event_pictures/fallout/report_event_fallout_river_ration_league.dds`.
 
 Its SHA-256 is `7f1688f6ef41b1d20e38d5ac8a4a2002bcf77e5373a3d42422f6593af270c8c2`.
 

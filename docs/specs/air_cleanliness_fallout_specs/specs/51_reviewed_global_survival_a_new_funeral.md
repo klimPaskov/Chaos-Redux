@@ -25,7 +25,7 @@ The callback closes the chain only after one hidden cleanup event releases the r
 
 ## Event Log and presentation
 
-The chain owns event ids `chaosx.fallout.541` through `chaosx.fallout.553` and Event Log history `9156`. The shared Event Log maps the history to `fallout.event_log.new_funeral`, and dedicated scripted localisation maps twelve branch outcomes and three callback outcomes. All visible events use `GFX_report_event_fallout_new_funeral` and the dedicated DDS at `gfx/event_pictures/fallout_world_end/report_event_fallout_new_funeral.dds`.
+The chain owns event ids `chaosx.fallout.541` through `chaosx.fallout.553` and Event Log history `9156`. The shared Event Log maps the history to `fallout.event_log.new_funeral`, and dedicated scripted localisation maps twelve branch outcomes and three callback outcomes. All visible events use `GFX_report_event_fallout_new_funeral` and the dedicated DDS at `gfx/event_pictures/fallout/report_event_fallout_new_funeral.dds`.
 
 ## Engine-sensitive boundary
 

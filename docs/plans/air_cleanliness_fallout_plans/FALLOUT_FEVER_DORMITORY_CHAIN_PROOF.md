@@ -66,7 +66,7 @@ that history to `fallout.event_log.fever_dormitory.name` and
 `GetFalloutEvent256EventLogDetail` maps every branch and outcome payload to
 concrete localisation. The dedicated report sprite is
 `GFX_report_event_fallout_fever_dormitory`, backed by
-`gfx/event_pictures/fallout_world_end/report_event_fallout_fever_dormitory.dds`.
+`gfx/event_pictures/fallout/report_event_fallout_fever_dormitory.dds`.
 Source, processed, contact-sheet, prompt, manifest, and GFX handoff evidence
 are under `docs/assets/air_cleanliness_fallout/fallout_fever_dormitory/`.
 No Zombie id, file, asset, audio, sprite, or path is reused.

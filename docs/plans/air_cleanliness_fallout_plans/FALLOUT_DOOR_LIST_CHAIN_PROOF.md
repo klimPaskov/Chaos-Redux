@@ -45,7 +45,7 @@ state memories and clearing the live registry flags.
 - Braces are balanced in the new effects, triggers, scripted localisation,
   interface, and event surfaces.
 - The dedicated Door List report DDS exists at
-  `gfx/event_pictures/fallout_door_list/report_event_fallout_door_list.dds` and
+  `gfx/event_pictures/fallout/report_event_fallout_door_list.dds` and
   is registered as `GFX_report_event_fallout_door_list`.
 - Every `chaosx.fallout.230` through `242` title, description, option, and
   tooltip reference has a localisation key.

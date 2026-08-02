@@ -22,6 +22,6 @@ The result schedules a hidden or human callback after one hundred eighty days. T
 
 ## Content and asset ownership
 
-The chain has authored event text for the Rime Ward clinic and East Gate crossing. It uses the dedicated `GFX_report_event_fallout_border_inspection_crisis` sprite and the dedicated report DDS under `gfx/event_pictures/fallout_border_inspection_crisis/`. Event Log history `9181` routes through the Fallout-owned detail localizer and has branch-specific choice and outcome text.
+The chain has authored event text for the Rime Ward clinic and East Gate crossing. It uses the dedicated `GFX_report_event_fallout_border_inspection_crisis` sprite and the dedicated report DDS under `gfx/event_pictures/fallout/`. Event Log history `9181` routes through the Fallout-owned detail localizer and has branch-specific choice and outcome text.
 
 The candidate remains dormant until scheduler activation review. It is not a super-event and does not register Fallout itself as an ordinary event.

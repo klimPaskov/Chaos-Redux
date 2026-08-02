@@ -69,7 +69,7 @@ The six dynamic modifiers reuse reviewed vanilla-style idea icons.
 `GFX_idea_generic_research_bonus` is defined in existing idea GFX and is used for inspection and maintenance surfaces.
 `GFX_idea_013_disaster_recovery_mobilization` is defined in `interface/013_natural_disasters.gfx` and is used for immediate opening and sealed-watch surfaces.
 `GFX_idea_country_without_breath` is defined in `interface/chaosx_ideas.gfx` and is used for licensed coordinates and failure surfaces.
-The report sprite is `GFX_report_event_fallout_sealed_warehouse` in `interface/fallout_world_end.gfx` and points to `gfx/event_pictures/fallout_world_end/report_event_fallout_sealed_warehouse.dds`.
+The report sprite is `GFX_report_event_fallout_sealed_warehouse` in `interface/fallout_world_end.gfx` and points to `gfx/event_pictures/fallout/report_event_fallout_sealed_warehouse.dds`.
 
 ## Future expansion
 

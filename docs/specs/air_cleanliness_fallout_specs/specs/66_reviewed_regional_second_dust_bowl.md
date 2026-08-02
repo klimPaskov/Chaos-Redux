@@ -177,7 +177,7 @@ History `9171` records the four opening choices, twelve result payloads, three c
 
 Current implementation evidence lists exported row `FALLOUT-656` at `docs/spreadsheets/chaos_redux_events_catalog.csv:613` with `Needs Testing` status. The export covers the four branch choices, twelve result outcomes, three callback outcomes, authenticated cancellation, and visible budget cost `3`. The wording pass removed internal state-variable references and matches the current player-facing terms.
 
-The dedicated asset package is `docs/assets/656_second_dust_bowl/` with sprite `GFX_report_event_fallout_second_dust_bowl` and runtime DDS `gfx/event_pictures/fallout_world_end/report_event_fallout_second_dust_bowl.dds`. The fictional report card shows blowing soil, improvised windbreaks, covered seed rows, trucks, and farm families beneath a cold ash-darkened sky. It contains no famous archival recreation, readable brands, flags, real people, zombie imagery, animation, or audio.
+The dedicated asset package is `docs/assets/656_second_dust_bowl/` with sprite `GFX_report_event_fallout_second_dust_bowl` and runtime DDS `gfx/event_pictures/fallout/report_event_fallout_second_dust_bowl.dds`. The fictional report card shows blowing soil, improvised windbreaks, covered seed rows, trucks, and farm families beneath a cold ash-darkened sky. It contains no famous archival recreation, readable brands, flags, real people, zombie imagery, animation, or audio.
 
 ## Cleanup and proof
 

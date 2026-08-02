@@ -32,7 +32,7 @@ The callback is scheduled after exactly `240` days from the result receipt. Call
 
 History `9178` is routed through `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` to the dedicated Doctor's Coup detail localiser. Choice, result, callback, and cancellation payloads are defined in `common/scripted_localisation/fallout_world_end_doctors_coup_event_log_scripted_localisation.txt`, and all player-facing branch text is in `localisation/english/fallout_world_end_doctors_coup_l_english.yml` with a UTF-8 BOM.
 
-The human opening, result, and callback use `GFX_report_event_fallout_doctors_coup`, registered in `interface/fallout_world_end.gfx`. The dedicated source, processed PNG, DDS, prompt, review note, and hashes are recorded in `docs/assets/705_doctors_coup/manifest.md`. The runtime DDS is `gfx/event_pictures/fallout_doctors_coup/report_event_fallout_doctors_coup.dds` and is not shared with any other chain.
+The human opening, result, and callback use `GFX_report_event_fallout_doctors_coup`, registered in `interface/fallout_world_end.gfx`. The dedicated source, processed PNG, DDS, prompt, review note, and hashes are recorded in `docs/assets/705_doctors_coup/manifest.md`. The runtime DDS is `gfx/event_pictures/fallout/report_event_fallout_doctors_coup.dds` and is not shared with any other chain.
 
 ## Cleanup and dormancy
 

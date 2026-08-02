@@ -111,7 +111,7 @@ The dedicated package is `docs/assets/642_mine_generator/`.
 - Processed PNG: `processed_210x176.png`, 210 by 176 RGBA, SHA-256 `F6009C921689291E952F197391F46D45F52120838BEB359EE9D7D0FA29921271`.
 - Package DDS and runtime DDS: `report_event_fallout_mine_generator.dds`, 210 by 176 BGRA, SHA-256 `FA95B93840CC9003C4FF101E9C014B76486E4CC34F13940A6772F1D1AF8D1DA0`.
 - Sprite: `GFX_report_event_fallout_mine_generator`.
-- Runtime path: `gfx/event_pictures/fallout_world_end/report_event_fallout_mine_generator.dds`.
+- Runtime path: `gfx/event_pictures/fallout/report_event_fallout_mine_generator.dds`.
 
 The art is a fictional ash-darkened Sub-Saharan mining settlement with a generator shed, ore stores, workers, guarded machinery, and sparse food stores.
 

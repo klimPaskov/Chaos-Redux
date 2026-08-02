@@ -28,7 +28,7 @@ Implementation may touch only the following Fallout-owned surfaces:
 - `common/scripted_triggers/fallout_world_end_event_triggers.txt`
 - Fallout event localisation and scripted localisation files
 - `interface/fallout_world_end.gfx` for dedicated report sprites
-- dedicated files under `gfx/event_pictures/fallout_world_end/`
+- dedicated files under `gfx/event_pictures/fallout/`
 - the Fallout event log, event details, manifests, proof documents, and workbook after implementation facts exist
 
 The package must not implement or alter:

@@ -34,7 +34,7 @@ Event Log history `9119`.
   result cleanup after callback release, retains durable memory flags, and
   clears transaction variables and transient flags.
 - The dedicated report image is at
-  `gfx/event_pictures/fallout_world_end/report_event_fallout_first_safe_birth.dds`.
+  `gfx/event_pictures/fallout/report_event_fallout_first_safe_birth.dds`.
   Its sprite is `GFX_report_event_fallout_first_safe_birth` in
   `interface/fallout_world_end.gfx`.
 

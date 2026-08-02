@@ -329,7 +329,7 @@ Static source review cannot prove live popup behavior, delayed target retention,
 
 Both blocks use `GFX_report_event_air_winter_dead_city_salvage`.
 
-The final DDS lives at `gfx/event_pictures/fallout/air_winter/report_event_air_winter_dead_city_salvage.dds`. The dedicated fictional documentary scene shows night crews crossing an ice and ash covered service street below collapsed urban facades, with lamps, braces, hand tools, and a guarded truck. It contains no creature, logo, lettering, zombie asset, audio, sprite, file, or path.
+The final DDS lives at `gfx/event_pictures/fallout/report_event_air_winter_dead_city_salvage.dds`. The dedicated fictional documentary scene shows night crews crossing an ice and ash covered service street below collapsed urban facades, with lamps, braces, hand tools, and a guarded truck. It contains no creature, logo, lettering, zombie asset, audio, sprite, file, or path.
 
 Localisation must name frozen service tunnels, damaged depots, unstable floors, utility crews, precise recovered equipment categories, and recorded casualties. Government-aware authority terms remain dynamic. The altered-return text describes an impossible social and bodily event without attributing it to ordinary radiation.
 

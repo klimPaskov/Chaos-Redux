@@ -32,7 +32,7 @@ History id `9111` carries fifteen explicit payloads. The event log maps the name
 
 ## Asset proof
 
-The visible events use `GFX_report_event_fallout_triage_wall`. The dedicated asset package is documented in `docs/assets/fallout_triage_wall/manifest.md` and wired by `interface/fallout_world_end.gfx` to `gfx/event_pictures/fallout_triage_wall/fallout_triage_wall_report.dds`. The report scene is a generated fictional clinic triage wall. It does not reuse zombie or existing Fallout ids, assets, audio, sprites, or paths.
+The visible events use `GFX_report_event_fallout_triage_wall`. The dedicated asset package is documented in `docs/assets/fallout_triage_wall/manifest.md` and wired by `interface/fallout_world_end.gfx` to `gfx/event_pictures/fallout/fallout_triage_wall_report.dds`. The report scene is a generated fictional clinic triage wall. It does not reuse zombie or existing Fallout ids, assets, audio, sprites, or paths.
 
 ## UI and icon surfaces
 

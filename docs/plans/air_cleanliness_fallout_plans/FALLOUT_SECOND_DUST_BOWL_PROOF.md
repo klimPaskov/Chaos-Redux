@@ -63,7 +63,7 @@ The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx
 - Runtime DDS SHA-256: `2c8e2044a94ff07de7dd95d7d23d5375d2dfeeae6cc96b3263150f41c78a352d`
 - Runtime DDS geometry: `210` by `176`, `147968` bytes
 - Runtime sprite: `GFX_report_event_fallout_second_dust_bowl`
-- Runtime path: `gfx/event_pictures/fallout_world_end/report_event_fallout_second_dust_bowl.dds`
+- Runtime path: `gfx/event_pictures/fallout/report_event_fallout_second_dust_bowl.dds`
 
 The asset depicts a fictional cold North American plains settlement with blowing soil, improvised windbreaks, covered seed rows, trucks, and farm families beneath an ash-darkened sky. No real person, flag, readable brand, zombie asset, animation, or audio is used.
 

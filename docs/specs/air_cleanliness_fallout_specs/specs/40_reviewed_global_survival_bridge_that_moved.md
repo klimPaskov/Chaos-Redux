@@ -17,6 +17,6 @@ The chain freezes crossing damage, route reliability, engineer capacity, local c
 
 The 365-day callback revisits the same crossing memory. It uses the same deterministic result for human and hidden AI lanes, records an Event Log payload, and releases the shared scheduler transaction through authenticated cleanup. Every branch has distinct outcome text, state modifiers, and delayed consequences. Durable branch and crossing-failure state flags preserve the route memory after the transaction is released.
 
-The dedicated report asset is registered as `GFX_report_event_fallout_bridge_that_moved` in `interface/fallout_world_end.gfx` and lives at `gfx/event_pictures/fallout_world_end/report_event_fallout_bridge_that_moved.dds`.
+The dedicated report asset is registered as `GFX_report_event_fallout_bridge_that_moved` in `interface/fallout_world_end.gfx` and lives at `gfx/event_pictures/fallout/report_event_fallout_bridge_that_moved.dds`.
 
 Native cross-map bridge topology, native bilateral scope creation, and runtime scheduler delivery remain engine-surface boundaries. The chain does not claim those surfaces.

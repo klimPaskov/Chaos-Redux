@@ -49,7 +49,7 @@ The hidden AI route uses the same branch affordability, frozen receipts, determi
 | Shared Event Log routing | `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | Localisation | `localisation/english/fallout_world_end_pirate_amnesty_l_english.yml` |
 | Sprite registration | `interface/fallout_world_end.gfx` |
-| Runtime report DDS | `gfx/event_pictures/pirate_amnesty/report_event_fallout_pirate_amnesty.dds` |
+| Runtime report DDS | `gfx/event_pictures/fallout/report_event_fallout_pirate_amnesty.dds` |
 
 The dedicated asset manifest and handoff are under `docs/assets/789_pirate_amnesty/`.
 

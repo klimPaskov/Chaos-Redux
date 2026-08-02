@@ -29,7 +29,7 @@ The chain writes survivor-country Event Log history `9177` for the selected bran
 
 ## Assets and localisation
 
-The dedicated report sprite is `GFX_report_event_fallout_permit_market` from `gfx/event_pictures/fallout_permit_market/report_event_fallout_permit_market.dds`. Source, processed, runtime, prompt, manifest, and review notes are under `docs/assets/698_permit_market/`. Player-facing text describes the Quarantine State, ash gate, ward councils, clinic registers, movement permits, and winter supply decisions.
+The dedicated report sprite is `GFX_report_event_fallout_permit_market` from `gfx/event_pictures/fallout/report_event_fallout_permit_market.dds`. Source, processed, runtime, prompt, manifest, and review notes are under `docs/assets/698_permit_market/`. Player-facing text describes the Quarantine State, ash gate, ward councils, clinic registers, movement permits, and winter supply decisions.
 
 ## Future depth
 

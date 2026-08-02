@@ -17,7 +17,7 @@ The chain freezes public exposure, mask stock, clinic confidence, shelter memory
 
 The 365-day callback revisits the same exposure memory. It uses the same deterministic result for human and hidden AI lanes, records an Event Log payload, and releases the shared scheduler transaction through authenticated cleanup. Every branch has distinct outcome text, state modifiers, and delayed consequences. Durable branch and exposure-failure state flags preserve the public memory after the transaction is released.
 
-The dedicated report asset is registered as `GFX_report_event_fallout_first_unmasked_day` in `interface/fallout_world_end.gfx` and lives at `gfx/event_pictures/fallout_world_end/report_event_fallout_first_unmasked_day.dds`.
+The dedicated report asset is registered as `GFX_report_event_fallout_first_unmasked_day` in `interface/fallout_world_end.gfx` and lives at `gfx/event_pictures/fallout/report_event_fallout_first_unmasked_day.dds`.
 
 Global contamination remains a gate and is not silently reduced by this event. The atmosphere must cross the existing spread threshold and remain below the existing severe-winter threshold before the chain can open.
 

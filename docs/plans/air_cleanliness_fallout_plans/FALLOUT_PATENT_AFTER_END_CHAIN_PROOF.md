@@ -13,7 +13,7 @@ The Patent After the End is a dormant ordinary Fallout chain. It owns candidate 
 - `events/fallout_world_end_events.txt`
 - `localisation/english/fallout_world_end_patent_after_end_l_english.yml`
 - `interface/fallout_world_end.gfx`
-- `gfx/event_pictures/patent_after_end/report_event_fallout_patent_after_end.dds`
+- `gfx/event_pictures/fallout/report_event_fallout_patent_after_end.dds`
 - `docs/assets/817_patent_after_end/`
 
 ## Runtime contract

@@ -23,7 +23,7 @@ Each policy is scored against frozen shelter, adaptation, filters, medicine, and
 
 ## Presentation and ownership
 
-The event uses the dedicated `GFX_report_event_fallout_fever_dormitory` asset under `gfx/event_pictures/fallout_world_end/`. It does not use zombie identifiers, art, audio, sprites, or paths. The event log uses history id `9117` and fifteen payloads for the four policy outcomes and the callback outcomes.
+The event uses the dedicated `GFX_report_event_fallout_fever_dormitory` asset under `gfx/event_pictures/fallout/`. It does not use zombie identifiers, art, audio, sprites, or paths. The event log uses history id `9117` and fifteen payloads for the four policy outcomes and the callback outcomes.
 
 ## Review boundary
 

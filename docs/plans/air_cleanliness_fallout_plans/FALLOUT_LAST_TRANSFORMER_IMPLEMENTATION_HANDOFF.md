@@ -40,7 +40,7 @@ claim completion of the Fallout release floor.
 The dedicated generated asset package is complete and separately manifested:
 
 - Runtime DDS:
-  `gfx/event_pictures/fallout_last_transformer/report_event_fallout_last_transformer.dds`
+  `gfx/event_pictures/fallout/report_event_fallout_last_transformer.dds`
 - Proposed sprite:
   `GFX_report_event_fallout_last_transformer`
 - Source, processed PNG, contact sheet, prompt, manifest, and `.gfx` notes:

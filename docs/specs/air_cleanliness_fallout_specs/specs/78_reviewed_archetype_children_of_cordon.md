@@ -20,6 +20,6 @@ The callback applies its own branch outcome deltas, future-leader pool, youth tr
 
 ## Content and asset ownership
 
-The chain has authored quarantine-generation text for reform, service travel, strict continuation, and local autonomy. Event Log history `9182` routes through the Fallout-owned detail localizer and covers all branch outcomes plus the callback. It uses the dedicated `GFX_report_event_fallout_children_of_cordon` sprite and the dedicated report DDS under `gfx/event_pictures/fallout_children_of_cordon/`.
+The chain has authored quarantine-generation text for reform, service travel, strict continuation, and local autonomy. Event Log history `9182` routes through the Fallout-owned detail localizer and covers all branch outcomes plus the callback. It uses the dedicated `GFX_report_event_fallout_children_of_cordon` sprite and the dedicated report DDS under `gfx/event_pictures/fallout/`.
 
 The chain is not Fallout itself, an ordinary super-event, or a second scheduler. It remains dormant until the Fallout-owned candidate coordinator selects it.

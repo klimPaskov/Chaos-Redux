@@ -29,7 +29,7 @@ The chain writes survivor-country Event Log history `9178` for the selected bran
 
 ## Assets and localisation
 
-The dedicated report sprite is `GFX_report_event_fallout_doctors_coup` from `gfx/event_pictures/fallout_doctors_coup/report_event_fallout_doctors_coup.dds`. Source, processed, runtime, prompt, manifest, and review notes are under `docs/assets/705_doctors_coup/`. Player-facing text names the Ash Ward Hospital, the Quarantine State, the civil council, the medical board, ward delegates, clinic registers, and winter fuel decisions.
+The dedicated report sprite is `GFX_report_event_fallout_doctors_coup` from `gfx/event_pictures/fallout/report_event_fallout_doctors_coup.dds`. Source, processed, runtime, prompt, manifest, and review notes are under `docs/assets/705_doctors_coup/`. Player-facing text names the Ash Ward Hospital, the Quarantine State, the civil council, the medical board, ward delegates, clinic registers, and winter fuel decisions.
 
 ## Future depth
 

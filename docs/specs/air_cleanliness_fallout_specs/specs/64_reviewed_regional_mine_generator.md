@@ -241,7 +241,7 @@ The dedicated workspace is `docs/assets/642_mine_generator/`.
 
 Required outputs are `source_generated.png`, `processed_210x176.png`, `manifest.json`, `README.md`, `handoff.md`, and the final DDS.
 
-The report sprite is `GFX_report_event_fallout_mine_generator`. The runtime texture is `gfx/event_pictures/fallout_world_end/report_event_fallout_mine_generator.dds` at `210x176`.
+The report sprite is `GFX_report_event_fallout_mine_generator`. The runtime texture is `gfx/event_pictures/fallout/report_event_fallout_mine_generator.dds` at `210x176`.
 
 The image should be a fictional period-documentary scene of a Sub-Saharan African resource settlement under ash-darkened light, with a generator shed, ore carts or stockpiles, workers around a ration ledger, guarded machinery, and visibly sparse food stores. The treatment is black-and-white with restrained sepia.
 
