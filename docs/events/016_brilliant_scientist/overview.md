@@ -46,6 +46,8 @@ The same retained context now continues through the four evolution reports, all 
 
 Foreign-operation result reports now retain that context after the operation returns to the actor. Invitations, protection offers, observation, recruitment, theft, sabotage, defection, extraction, and assassination results call a guarded helper that reads the carried host event target, so a university, industrial, militarized, threatened, colonial, refugee, or default host remains visible in the after-action record without changing the operation result.
 
+The seven delayed minor news headlines use the same retained context through a global-host helper. Public appointment, recognition, breakthrough, formation, project-army deployment, containment-coalition, and regional-defeat coverage therefore keeps the institutional pressure of the relevant host when the current-host target is still available; terminal cleanup safely falls back to the neutral clause.
+
 The existing loyalty and relocation dossiers, `chaosx.nr16.10` and `chaosx.nr16.11`, also append the host-archetype clause after their resolved finding or convoy outcome. This is presentation only and does not add a reward, evolution, event-log entry, or new fire path.
 
 The first four Kruger State foundation reports append a formation-origin clause from the retained charter, rebellion, enclave, or takeover flag. This keeps the state-building sequence tied to the way sovereignty was achieved without adding another route, idea, or event chain.
