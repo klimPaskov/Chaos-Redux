@@ -25,7 +25,7 @@ Evolution V can begin rolling when all of the following are true.
 - The Rat King controls a major share of eligible world states or a high absolute number appropriate to map size.
 - Event-attributed Black Plague deaths pass a catastrophic global threshold.
 - The Rat King has completed the necessary late government and military preparation groups.
-- At least one continent remains a valid world-end campaign target.
+- A permanent target has been selected from a continent that passes the live state, capital, and refuge viability gates. Its control is re-evaluated before Evolution V can resolve.
 
 ### Planning thresholds
 
@@ -66,15 +66,14 @@ When Evolution V records:
 
 - the event log adds the fifth evolution entry
 - the world-end focus lane becomes visible in the Rat King tree
-- a world-end readiness panel appears in the Rat King mechanic UI
-- continental target selection becomes available
+- the shared disease board reports terminal readiness, the committed continent, preparation progress, and takeover status
 - human countries receive stronger world-threat cooperation actions
 - the Rat King gains a final route-specific cosmetic and animated UI state
 - the terminal scenario remains locked until the focus route and continent condition are complete
 
 ## World-end readiness panel
 
-The panel should show public progress without revealing hidden implementation details.
+The shared board summary should show public progress without revealing hidden implementation details. It is part of the existing disease interface and does not create a second Black Plague category or a dedicated terminal window.
 
 ### Rat King view
 
@@ -120,7 +119,7 @@ The implementation should use existing continent and state group data rather tha
 
 ## Selecting the target continent
 
-The Rat King can select a continent when Evolution V begins.
+The Rat King can select a continent after the non-continent Evolution V gates are ready and before Evolution V resolves. The choice is permanent for the reign, so the final control ledger cannot be moved to exploit a later front.
 
 ### AI selection factors
 
@@ -147,7 +146,7 @@ The lane should be a late, deep route with several focus groups and campaign obj
 
 **Requirements**:
 
-- Evolution V recorded
+- Evolution V route open
 - target continent selected
 - sufficient Dominion and Sentience
 
