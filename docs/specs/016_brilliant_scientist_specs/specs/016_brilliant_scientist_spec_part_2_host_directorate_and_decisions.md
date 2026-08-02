@@ -680,9 +680,9 @@ Consequences:
 - Foreign asylum or leak event.
 - More severe future accidents.
 
-### Accepted country-specific institutional settlement pilot (implementation in progress, 2026-08-02)
+### Accepted country-specific institutional settlement pilot (static implementation complete; targeted validation pending, 2026-08-02)
 
-The accepted settlement addendum adds four conditional choices inside the existing `chaosx.nr16.5` assistant-conflict event. Static source inspection now confirms the named choices, resolvers, receipts, constants, selectors, AI factors, and localisation keys; source status remains accepted / implementation in progress because targeted balance, transfer, cleanup, and live-acceptance evidence are still pending.
+The accepted settlement addendum adds four conditional choices inside the existing `chaosx.nr16.5` assistant-conflict event. Static source inspection confirms the named choices, resolvers, receipts, constants, selectors, AI factors, and localisation keys, and the bounded source implementation is complete in the working tree; targeted balance, transfer, cleanup, and live-acceptance evidence are still pending.
 
 The generic `.5.a`, `.5.b`, and `.5.c` options remain unchanged. The national choices are available only to `ENG` in public-science or distributed-research context, `USA` in industrial-mobilization or distributed-research context, `SOV` in strategic-security or industrial-mobilization context, and `JAP` in strategic-security or industrial-mobilization context. Each choice clears the pending assistant conflict, marks it resolved, calls its named bounded base resolver and settlement resolver, and schedules the impossible lecture once. The six other named tags and all unnamed countries retain the complete generic choice set.
 
