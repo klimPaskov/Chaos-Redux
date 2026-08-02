@@ -38,14 +38,16 @@ Pool ordering is country-specific and deterministic for AI selection. Occupied a
 
 ## Building Icon Assets
 
-The concentration-camp, extermination-camp, and Gulag-network buildings use distinct custom artwork on both building-icon surfaces. The camp family follows the vanilla HOI4 building language: compact ochre pictograms and the standard charcoal beveled tile on the indexed strip.
+The concentration-camp and extermination-camp buildings use distinct custom artwork on both building-icon surfaces. The Gulag labor camp network deliberately reuses the concentration-camp artwork. The camp family follows the vanilla HOI4 building language: compact ochre pictograms and the standard charcoal beveled tile on the indexed strip.
 
 - `GFX_building_concentration_camp` reads `gfx/interface/buildings/building_concentration_camp.dds` as a native `27x23` standalone icon.
 - `GFX_building_extermination_camp` reads `gfx/interface/buildings/building_extermination_camp.dds` as a native `27x23` standalone icon.
-- `GFX_building_gulag_labor_camp_network` reads `gfx/interface/buildings/building_gulag_labor_camp_network.dds` as a native `27x23` standalone icon.
-- `GFX_buildings_strip` reads `gfx/interface/buildings/building_icon_strip.dds` as a `36`-frame strip of `46x46` frames.
-- Strip frame `34` belongs to `concentration_camp`, frame `35` belongs to `extermination_camp`, and frame `36` belongs to `gulag_labor_camp_network`.
-- Strip frames `34` through `36` composite their camp pictograms over the shared authoring tile at `gfx/interface/buildings/building_background.png`.
+- `GFX_building_gulag_labor_camp_network` reads the same native `27x23` texture as `GFX_building_concentration_camp`.
+- `GFX_buildings_strip` reads `gfx/interface/buildings/building_icon_strip.dds` as a `35`-frame strip of `46x46` frames.
+- Strip frame `34` belongs to both `concentration_camp` and `gulag_labor_camp_network`; frame `35` belongs to `extermination_camp`.
+- Strip frames `34` and `35` composite their camp pictograms over the shared authoring tile at `gfx/interface/buildings/building_background.png`.
+
+`extermination_camp` and `gulag_labor_camp_network` are effect- and decision-created buildings with `is_buildable = no`, following the vanilla non-buildable landmark and dam pattern. They remain visible in the state interface only after they exist and are excluded from the manual construction tab.
 
 The standalone sprite aliases are registered in `interface/chaosx_buildings.gfx`, while the indexed strip is registered in `interface/countrystateview.gfx`. The corrected HOI4-style source art and direct vanilla comparison are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-02_camp_building_icon_hoi4_style_correction.md`; the exact shared-background composite and pixel-preservation evidence are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-02_camp_building_background_composite.md`.
 
