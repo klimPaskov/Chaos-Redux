@@ -1,3 +1,8 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_MINIMUM_DIVISIONS = 2
+@CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_DIVISIONS = 3
+@CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_FRAGILE_DIVISIONS = 1
 # ============================================================================
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISION TRIGGERS
 # ============================================================================
@@ -252,22 +257,22 @@ can_pay_independence_wave_security_light_cost = {
 
 can_pay_independence_wave_security_standard_cost = {
 	has_manpower > constant:independence_wave_decision_cost.manpower_standard
-	army_experience > constant:independence_wave_decision_cost.army_experience_standard
+	has_army_experience > constant:independence_wave_decision_cost.army_experience_standard
 	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
 	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
 }
 
 can_pay_independence_wave_security_major_cost = {
 	has_manpower > constant:independence_wave_decision_cost.manpower_major
-	army_experience > constant:independence_wave_decision_cost.army_experience_major
+	has_army_experience > constant:independence_wave_decision_cost.army_experience_major
 	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major }
 	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_major }
 }
 
 can_pay_independence_wave_strategic_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
-	stability > constant:independence_wave_decision_cost.stability_standard
-	war_support > constant:independence_wave_decision_cost.war_support_minor
+	has_stability > constant:independence_wave_decision_cost.stability_standard
+	has_war_support > constant:independence_wave_decision_cost.war_support_minor
 	can_pay_independence_wave_diplomatic_standard_cost = yes
 }
 
@@ -363,7 +368,7 @@ is_valid_independence_wave_depot_state = {
 	ROOT = {
 		divisions_in_state = {
 			state = PREV
-			size > constant:independence_wave_decision_gate.minimum_divisions
+			size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_MINIMUM_DIVISIONS
 		}
 	}
 }
@@ -538,7 +543,7 @@ independence_wave_secure_provisional_capital_garrison_satisfied = {
 		AND = {
 			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
 			capital_scope = {
-				ROOT = { divisions_in_state = { state = PREV size > constant:independence_wave_decision_gate.secure_capital_fragile_divisions } }
+				ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_FRAGILE_DIVISIONS } }
 			}
 		}
 		AND = {
@@ -547,7 +552,7 @@ independence_wave_secure_provisional_capital_garrison_satisfied = {
 				NOT = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals } }
 			}
 			capital_scope = {
-				ROOT = { divisions_in_state = { state = PREV size > constant:independence_wave_decision_gate.secure_capital_divisions } }
+				ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_DIVISIONS } }
 			}
 		}
 	}
