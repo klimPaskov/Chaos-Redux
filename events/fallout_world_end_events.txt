@@ -21171,6 +21171,116 @@ country_event = {
 
 
 
+# Dormant Fallout mutant adaptation chain: The Adaptation Rite
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.1030
+	title = chaosx.fallout.1030.t
+	desc = chaosx.fallout.1030.opening.d
+	picture = GFX_report_event_fallout_adaptation_rite
+	is_triggered_only = yes
+	trigger = { fallout_event_908_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1030.a
+		trigger = { fallout_event_908_civic_rite_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_908_requested_branch = constant:fallout_event_908_branch.civic_rite } fallout_event_908_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1030.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1030.b
+		trigger = { fallout_event_908_religious_rite_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_908_requested_branch = constant:fallout_event_908_branch.religious_rite } fallout_event_908_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1030.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1030.c
+		trigger = { fallout_event_908_scientific_certification_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_908_requested_branch = constant:fallout_event_908_branch.scientific_certification } fallout_event_908_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1030.c.tt
+	}
+	option = {
+		name = chaosx.fallout.1030.d
+		trigger = { fallout_event_908_reject_ritual_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_908_requested_branch = constant:fallout_event_908_branch.reject_ritual } fallout_event_908_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1030.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1031
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_908_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_908_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1032
+	title = chaosx.fallout.1032.t
+	desc = { text = chaosx.fallout.1032.civic_rite.success.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.civic_rite compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1032.civic_rite.partial.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.civic_rite compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1032.civic_rite.failure.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.civic_rite compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1032.religious_rite.success.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.religious_rite compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1032.religious_rite.partial.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.religious_rite compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1032.religious_rite.failure.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.religious_rite compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1032.scientific_certification.success.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.scientific_certification compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1032.scientific_certification.partial.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.scientific_certification compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1032.scientific_certification.failure.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.scientific_certification compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1032.reject_ritual.success.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.reject_ritual compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1032.reject_ritual.partial.d trigger = { check_variable = { fallout_event_908_selected_branch value = constant:fallout_event_908_branch.reject_ritual compare = equals } check_variable = { fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.1032.reject_ritual.failure.d
+	picture = GFX_report_event_fallout_adaptation_rite
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_908_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.adaptation_rite_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.1032.a hidden_effect = { fallout_event_908_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.1032.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.1033
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_908_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.adaptation_rite_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_908_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1034
+	title = chaosx.fallout.1034.t
+	desc = { text = chaosx.fallout.1034.success.d trigger = { check_variable = { fallout_event_908_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1034.partial.d trigger = { check_variable = { fallout_event_908_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.1034.failure.d
+	picture = GFX_report_event_fallout_adaptation_rite
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_908_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.adaptation_rite_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_908_registry_is_current = yes }
+	immediate = { fallout_event_908_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.1034.a hidden_effect = { fallout_event_908_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.1034.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.1035
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_908_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.adaptation_rite_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_908_registry_is_current = yes }
+	immediate = { fallout_event_908_calculate_callback_outcome = yes fallout_event_908_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1036
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_908_cleanup_can_enter = yes }
+	immediate = { fallout_event_908_cleanup = yes }
+}
+
+
+
+
+
+
+
+
+
 # Dormant Fallout maritime chain: The Captain's Articles
 # ---------------------------------------------------------------------------
 
