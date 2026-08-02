@@ -6,7 +6,7 @@ Event 012 uses one source policy for historical sovereigns and a separate asset 
 
 1. The package keeps the existing Event 006 or vanilla carrier and never creates a new tag or cosmetic carrier.
 2. The three constitutional installation effects call the shared `africa_priority_member_portrait_runtime_is_approved` trigger before adding a country-leader role.
-3. The current approved identities are Shehu Sanda Kura for Kanem-Bornu, Emir Abdullahi for Harar, Pedro VII Afonso for Kongo, and Queen Ranavalona III for Merina.
+3. The current approved identities are Shehu Sanda Kura for Kanem-Bornu, Emir Abdullahi for Harar, Pedro VII Afonso for Kongo, Queen Ranavalona III for Merina, and Dinuzulu kaCetshwayo for Zulu.
 4. A held historical row receives its selected politics and a `africa_priority_member_sovereign_portrait_blocked` flag, but no generated ruler is promoted and no generic ruler is substituted.
 5. A future source-approved row can reuse the same trigger contract; no portrait identifier, tag, or package store needs to change.
 
