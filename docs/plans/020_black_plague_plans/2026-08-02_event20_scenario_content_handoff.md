@@ -8,8 +8,8 @@ This tranche adds intensity-aware player-facing text to the existing SCN-012 lau
 
 ## Runtime changes
 
-- `chaosx.nr20.90` now selects Low, High, and Maximum launch descriptions from `global.black_plague_scenario_intensity` through the existing `triggerable_scenario_intensity` constants.
-- Medium intensity and any unexpected intensity value retain the existing generic report as a guarded fallback.
+- `chaosx.nr20.90` now selects Low, Medium, High, and Maximum launch descriptions from `global.black_plague_scenario_intensity` through the existing `triggerable_scenario_intensity` constants.
+- Any unexpected intensity value retains the existing generic report as a guarded fallback.
 - The descriptions report the live continent, established-state, internal-RTA-basin, and RTX Royal Basin totals without exposing implementation-history wording.
 
 ## Source-of-truth changes
