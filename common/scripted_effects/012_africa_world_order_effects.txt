@@ -382,7 +382,7 @@ africa_scramble_classify_participant_interests = {
 	}
 	if = {
 		limit = {
-			NOT = { has_same_ideology = event_target:africa_host }
+			NOT = { event_target:africa_host = { has_same_ideology = yes } }
 			OR = {
 				is_major = yes
 				is_faction_leader = yes
@@ -1927,12 +1927,14 @@ africa_world_record_package_breakup = {
 		clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 		for_each_scope_loop = {
 			array = africa_world_constituent_countries
-			limit = { has_country_flag = africa_world_constituent_member }
-			clr_country_flag = africa_world_constituent_member
-			clr_country_flag = africa_world_constituent_consented
-			clr_country_flag = africa_world_constituent_coerced
-			set_country_flag = africa_world_constituent_withdrawn
-			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.withdrawn }
+			if = {
+				limit = { has_country_flag = africa_world_constituent_member }
+				clr_country_flag = africa_world_constituent_member
+				clr_country_flag = africa_world_constituent_consented
+				clr_country_flag = africa_world_constituent_coerced
+				set_country_flag = africa_world_constituent_withdrawn
+				set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.withdrawn }
+			}
 		}
 		if = {
 			limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }

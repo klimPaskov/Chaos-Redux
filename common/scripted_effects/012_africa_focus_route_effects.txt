@@ -274,29 +274,31 @@ africa_focus_open_route_action_contract = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_focus_requested_action = constant:africa_action.arbitrate_continental_succession } }
-		for_each_scope_loop = { array = africa_selected_country_targets limit = { africa_action_target_is_usable = yes } set_country_flag = africa_succession_dispute_active }
+		for_each_scope_loop = { array = africa_selected_country_targets if = { limit = { africa_action_target_is_usable = yes } set_country_flag = africa_succession_dispute_active  }}
 	}
 	else_if = {
 		limit = { check_variable = { africa_focus_requested_action = constant:africa_action.balance_food_and_industrial_plan } }
-		for_each_scope_loop = { array = africa_selected_country_targets limit = { africa_action_target_is_usable = yes } set_country_flag = africa_plan_balance_crisis_active }
+		for_each_scope_loop = { array = africa_selected_country_targets if = { limit = { africa_action_target_is_usable = yes } set_country_flag = africa_plan_balance_crisis_active  }}
 	}
 	else_if = {
 		limit = { check_variable = { africa_focus_requested_action = constant:africa_action.review_victorious_commander_loyalty } }
-		for_each_scope_loop = { array = africa_selected_country_targets limit = { africa_action_target_is_usable = yes } set_country_flag = africa_commander_loyalty_review_target }
+		for_each_scope_loop = { array = africa_selected_country_targets if = { limit = { africa_action_target_is_usable = yes } set_country_flag = africa_commander_loyalty_review_target  }}
 	}
 	else_if = {
 		limit = { check_variable = { africa_focus_requested_action = constant:africa_action.ratify_confederal_emergency_action } }
-		for_each_scope_loop = { array = africa_selected_country_targets limit = { africa_action_target_is_usable = yes } set_country_flag = africa_confederal_emergency_ratification_target }
+		for_each_scope_loop = { array = africa_selected_country_targets if = { limit = { africa_action_target_is_usable = yes } set_country_flag = africa_confederal_emergency_ratification_target  }}
 	}
 	else_if = {
 		limit = { check_variable = { africa_focus_requested_action = constant:africa_action.review_covenant_obligation } }
 		for_each_scope_loop = {
 			array = africa_selected_country_targets
-			limit = {
-				africa_action_target_is_usable = yes
-				OR = { has_country_flag = africa_registered_high_chaos_actor has_country_flag = africa_ecological_bargain_site }
+			if = {
+				limit = {
+					africa_action_target_is_usable = yes
+					OR = { has_country_flag = africa_registered_high_chaos_actor has_country_flag = africa_ecological_bargain_site }
+				}
+				set_country_flag = africa_covenant_obligation_target
 			}
-			set_country_flag = africa_covenant_obligation_target
 		}
 	}
 	else_if = {

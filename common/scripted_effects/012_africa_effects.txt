@@ -1084,22 +1084,24 @@ africa_register_selected_continental_peace_exemption = {
 	set_variable = { africa_member_host_generation = event_target:africa_host.africa_host_generation }
 	for_each_scope_loop = {
 		array = africa_action_state_targets
-		limit = {
-			is_on_continent = africa
-			is_owned_by = ROOT
-			is_controlled_by = ROOT
-		}
-		set_state_flag = africa_continental_peace_exemption_active
-		ROOT = {
-			if = {
-				limit = { NOT = { is_in_array = { array = africa_continental_peace_exemption_states value = PREV } } }
-				add_to_array = { array = africa_continental_peace_exemption_states value = PREV }
+		if = {
+			limit = {
+				is_on_continent = africa
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
 			}
-		}
-		event_target:africa_host = {
-			if = {
-				limit = { NOT = { is_in_array = { array = africa_peace_exemption_states value = PREV } } }
-				add_to_array = { array = africa_peace_exemption_states value = PREV }
+			set_state_flag = africa_continental_peace_exemption_active
+			ROOT = {
+				if = {
+					limit = { NOT = { is_in_array = { array = africa_continental_peace_exemption_states value = PREV } } }
+					add_to_array = { array = africa_continental_peace_exemption_states value = PREV }
+				}
+			}
+			event_target:africa_host = {
+				if = {
+					limit = { NOT = { is_in_array = { array = africa_peace_exemption_states value = PREV } } }
+					add_to_array = { array = africa_peace_exemption_states value = PREV }
+				}
 			}
 		}
 	}

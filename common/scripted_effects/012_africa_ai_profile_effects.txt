@@ -2452,15 +2452,17 @@ africa_ai_prepare_world_region_state_cursor = {
 		}
 		event_target:africa_action_target = {
 			capital_scope = {
-				limit = {
-					is_controlled_by = PREV
-					NOT = { has_state_flag = africa_action_project_active }
-				}
-				set_state_flag = africa_selected_action_state_candidate
-				set_state_flag = africa_selected_action_state
-				ROOT = {
-					add_to_array = { array = africa_selected_action_state_candidates value = PREV }
-					add_to_array = { array = africa_selected_action_state_targets value = PREV }
+				if = {
+					limit = {
+						is_controlled_by = PREV
+						NOT = { has_state_flag = africa_action_project_active }
+					}
+					set_state_flag = africa_selected_action_state_candidate
+					set_state_flag = africa_selected_action_state
+					ROOT = {
+						add_to_array = { array = africa_selected_action_state_candidates value = PREV }
+						add_to_array = { array = africa_selected_action_state_targets value = PREV }
+					}
 				}
 			}
 		}
