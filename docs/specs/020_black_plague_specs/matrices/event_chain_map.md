@@ -1,5 +1,7 @@
 # Event 20 Event Chain Map
 
+> Runtime reconciliation, 2026-08-02: the live chain preserves the accepted `.4` neighboring-threat report and uses `.90` for the SCN-012 launch report. The rows below are now implemented event surfaces, not requests to allocate additional IDs. The two-tag correction also replaces every historical multi-country Rat Nation reference with the reusable `RTA` carrier and separate `RTX` Rat King.
+
 All event numbers after the canonical entry are planning allocations. The implementation agent must inspect existing namespace use before final assignment.
 
 | Working event | Role | Primary actor | Player-facing | Repeats |
