@@ -21,7 +21,7 @@ Event 16 may be marked Reworked only when every required surface below is comple
 ## Baseline event
 
 - [ ] Event 16 remains registered as a minor fire-once event.
-- [ ] The unfinished rework stays disabled by default until the whole package is complete.
+- [ ] The default-enabled core stays safe for ordinary fire-once play while optional country flavour, quantitative balance evidence, live acceptance, and the seven deferred 3D packages remain explicitly outside the core load contract.
 - [ ] Host selection supports eligible AI and human countries rather than only majors or players.
 - [ ] Host selection excludes invalid, capitulated, nonhuman, and incompatible special chaos actors.
 - [ ] A valid laboratory state can be selected and persisted.
@@ -197,7 +197,7 @@ Event 16 may be marked Reworked only when every required surface below is comple
 - [ ] Strategic Singularity terminal super-event exists.
 - [ ] Defeat-aftermath super-event fires only after a major global crisis.
 - [ ] Every completed super-event has a unique final musical track unless the user explicitly approves reuse.
-- [ ] Every track is 44.1 kHz OGG, licensed or public domain, documented, and wired through the settings-aware helper.
+- [ ] Every track is a documented 44.1 kHz final WAV, licensed or public domain, and wired through the settings-aware helper.
 - [ ] Every super-event has researched title, description, button remark, quote, image, audio ID, and documentation.
 - [ ] No unresearched working label is used as final super-event localisation.
 - [ ] Kruger uses the shared world-threat framework.

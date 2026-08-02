@@ -76,6 +76,67 @@ defined_text = {
 	text = { localization_key = GFX_report_event_016_brilliant_scientist_directorate_dossier }
 }
 
+# Reuse the reviewed report-card families for the incident report without
+# changing the incident resolver. The active family remains the only input;
+# an unresolved or migrated value keeps the Directorate dossier image.
+defined_text = {
+	name = GetBrilliantScientistIncidentPicture
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.computation }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.electronics }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.robotics }
+			}
+		}
+		localization_key = GFX_report_event_016_brilliant_scientist_breakthrough_computation_electronics
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.materials }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.rocketry }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.high_energy }
+			}
+		}
+		localization_key = GFX_report_event_016_brilliant_scientist_breakthrough_materials_rocketry
+	}
+	text = {
+		trigger = { check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.cloning } }
+		localization_key = GFX_report_event_016_brilliant_scientist_aftermath_clone_machine
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.biomedical }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.paleogenetics }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.biological_weapons }
+			}
+		}
+		localization_key = GFX_report_event_016_brilliant_scientist_aftermath_biological_reserve
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.teleportation }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.temporal }
+			}
+		}
+		localization_key = GFX_report_event_016_brilliant_scientist_aftermath_portal_temporal
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.alien_arms }
+				check_variable = { brilliant_scientist_active_incident_family = constant:brilliant_scientist_project_family.singularity }
+			}
+		}
+		localization_key = GFX_report_event_016_brilliant_scientist_aftermath_alien_singularity
+	}
+	text = { localization_key = GFX_report_event_016_brilliant_scientist_directorate_dossier }
+}
+
 defined_text = {
 	name = GetBrilliantScientistInstitutionCause
 	text = { trigger = { has_country_flag = brilliant_scientist_public_science_council_established } localisation_key = brilliant_scientist_cause_institution_public_council }

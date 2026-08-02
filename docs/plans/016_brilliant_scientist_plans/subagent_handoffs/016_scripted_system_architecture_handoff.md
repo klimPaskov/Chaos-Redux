@@ -1,5 +1,7 @@
 # Event 016 Scripted-System Architecture Handoff
 
+> Historical enablement note (2026-08-01): the default-disabled instruction later in this handoff belonged to the architecture tranche's pre-core acceptance boundary. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current enablement and deferred-content status. This handoff remains evidence for reusable scripted architecture and does not claim whole-event completion.
+
 ## Status and ownership
 
 This handoff records the completed Event 016 scripted-system architecture tranche. It implements reusable constants, triggers, effects, and MTTH entries only. The parent agent still owns event scripts, decisions, special projects, character and trait definitions, KRG creation, focus content, shared registries, shared Fallout wiring, localisation, assets, AI, achievements, audits, and final enablement.

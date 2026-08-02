@@ -13,7 +13,7 @@ This bounded non-model tranche promotes the two existing family-specific first-P
 | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_breakthrough_computation_electronics.dds` | `GFX_report_event_016_brilliant_scientist_breakthrough_computation_electronics` | Computation and Electronics |
 | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_breakthrough_materials_rocketry.dds` | `GFX_report_event_016_brilliant_scientist_breakthrough_materials_rocketry` | Advanced Materials and Rocketry |
 
-The source masters remain in the ignored asset workspace under `docs/assets/016_brilliant_scientist/report_news_expansion/source_masters/report/`. Both processed previews and evidence DDS files are retained there. Runtime DDS files are `210x176` uncompressed 32-bit BGRA with the existing Event 016 report header contract and exact size `147968` bytes.
+The source masters remain in the ignored asset workspace under `docs/assets/016_brilliant_scientist/report_news_expansion/source_masters/report/`. Both processed previews and evidence DDS files are retained there. Runtime DDS files are `210x176` uncompressed 32-bit BGRA with the existing Event 016 report header contract and exact size `147968` bytes. The two cards were reprocessed through the standard sepia report-card pipeline on 2026-08-02 so their transparent corners, tilt, shadow, and sepia channels match the accepted report contract.
 
 ## Script routing
 

@@ -2,7 +2,7 @@
 
 ## Binding reconciliation
 
-> Core-runtime inventory reconciled 2026-08-02. The exact stage-0 `156x210` leader or scientist DDS and `65x67` advisor DDS are produced and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. The fourteen Stage I through IV leader or scientist portraits and matching advisor cards are present under registered sprite contracts, and every advisor card uses the canonical advisor-template workflow. Six severe route animation sheets contain real frame-by-frame art and have registered static fallbacks. The Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, thirteen report images, six super-event images, seven news images, and six sound cues are present and wired. Two family-specific breakthrough report variants and one remnant-hearing report scene are dynamically or statically routed; project-specific defeat/remnant variants and all seven 3D entity packages remain blocked.
+> Core-runtime inventory reconciled 2026-08-02. The exact stage-0 `156x210` leader or scientist DDS and `65x67` advisor DDS are produced and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. The fourteen Stage I through IV leader or scientist portraits and matching advisor cards are present under registered sprite contracts, and every advisor card uses the canonical advisor-template workflow. Six severe route animation sheets contain real frame-by-frame art and have registered static fallbacks. The Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, seventeen report images, six super-event images, seven news images, and six sound cues are present and wired. Two family-specific breakthrough report variants and four family-specific aftermath report variants are dynamically routed, with the shared remnant card retained for prototype-only hearings; all seven 3D entity packages remain blocked.
 
 ## Portraits and character assets
 
@@ -29,7 +29,7 @@
 | Accident and security reports | 8 to 12 | 210x176 | Generated period documentary | Report-card script, sepia |
 | News images | 6 to 10 | 397x153 | Generated period press | Black and white |
 | Super-event images | 6 | 457x328 | Generated fictional high-chaos | Recognition, formation, threat, Laboratory World, Singularity, and qualifying defeat packages |
-| Defeat and remnants | 3 to 6 | Report or news size | Generated period documentary | Match target surface |
+| Defeat and remnants | 3 to 6 | Report or news size | Generated period documentary | Match target surface; four family cards are routed and the shared archive card remains the prototype-only default |
 
 ## UI asset family
 

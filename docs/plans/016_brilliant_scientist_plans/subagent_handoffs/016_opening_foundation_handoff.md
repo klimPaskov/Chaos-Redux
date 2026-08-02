@@ -1,5 +1,7 @@
 # Event 016 opening and Kruger identity handoff
 
+> Historical enablement note (2026-08-01): the default-disabled instruction later in this handoff belonged to the opening tranche's pre-core acceptance boundary. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current enablement and deferred-content status. This handoff remains evidence for the opening identity contract and does not claim whole-event completion.
+
 ## Scope
 
 This tranche replaces the placeholder opening with the minor fire-once Doctor Warren Kruger incident. It implements the fixed character identity, weighted valid-host dispatch, public and secret appointments, one-time player referral, the exact research reward, and event-log actor correction. It does not claim completion of the Directorate, project portfolio, evolutions, foreign operations, containment, Kruger State, focus tree, terminal paths, achievements, or later visual stages.
