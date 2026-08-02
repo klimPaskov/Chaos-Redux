@@ -78,6 +78,8 @@ Host takeover is an institutional-capture origin and never a territorial fallbac
 | Biological | Medical safety and delivery | Containment and production | Foreign samples or facilities | Outbreak and condemnation |
 | Mixed synthesis | Every specialized supply | Project-caste economy | Submission network | Overload and internal conflict |
 
+The biological row is a binding requirement, not evidence that the current KRG runtime already owns a quantity ledger. The implementation contract is queued in `docs/plans/016_brilliant_scientist_plans/016_krg_biological_stockpile_delivery_addendum.md`; the native CBRN reservation and outcome callback remains a separately reviewed cross-system surface.
+
 ## Diplomacy matrix
 
 | Relationship | Peaceful charter | Violent split | Global threat |
