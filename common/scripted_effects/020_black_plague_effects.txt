@@ -226,6 +226,7 @@ black_plague_initialize_runtime = {
 		clr_global_flag = black_plague_system_eradicated
 		clr_global_flag = black_plague_report_origin_recognition
 		clr_global_flag = black_plague_report_first_threatened
+		clr_global_flag = black_plague_report_first_incubating
 		clr_global_flag = black_plague_report_late_origin_recognition
 		clr_global_flag = black_plague_report_first_foreign_infection
 		clr_global_flag = black_plague_report_first_overseas_infection
@@ -653,6 +654,16 @@ black_plague_emit_first_milestone_report = {
 		}
 		set_global_flag = black_plague_report_first_threatened
 		CONTROLLER = { news_event = { id = chaosx.nr20.4 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_incubating = yes
+			NOT = { has_global_flag = black_plague_report_first_incubating }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_incubating
+		CONTROLLER = { news_event = { id = chaosx.nr20.14 } }
 	}
 	if = {
 		limit = {
