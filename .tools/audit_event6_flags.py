@@ -1,8 +1,9 @@
-"""Audit Event 006 country flag triplets against the registered tag list.
+"""Audit Event 006 country flag families against the registered tag list.
 
-HOI4 loads normal, medium, and small flag atlases independently. This audit
-checks the engine-facing TGA names for every Event 006 country registration and
-reports missing files without treating a dormant package as playable.
+HOI4 loads normal, medium, and small flag atlases independently and resolves
+ideology-specific files before the unsuffixed fallback. This audit checks the
+engine-facing TGA names for every Event 006 country registration and reports
+missing files without treating a dormant package as playable.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TAG_FILE = ROOT / "common/country_tags/006_independence_wave_countries.txt"
 FLAG_DIRS = (ROOT / "gfx/flags", ROOT / "gfx/flags/medium", ROOT / "gfx/flags/small")
+IDEOLOGIES = ("communism", "democratic", "fascism", "neutrality")
 TAG_RE = re.compile(r"^\s*([A-Z][A-Z0-9_]{2})\s*=", re.MULTILINE)
 
 
@@ -34,13 +36,15 @@ def main() -> int:
 	missing: dict[str, list[str]] = {}
 	for tag in tags:
 		for directory in FLAG_DIRS:
-			path = directory / f"{tag}.tga"
-			if not path.is_file():
-				missing.setdefault(tag, []).append(str(path.relative_to(ROOT)).replace("\\", "/"))
+			paths = [directory / f"{tag}.tga"]
+			paths.extend(directory / f"{tag}_{ideology}.tga" for ideology in IDEOLOGIES)
+			for path in paths:
+				if not path.is_file():
+					missing.setdefault(tag, []).append(str(path.relative_to(ROOT)).replace("\\", "/"))
 
 	print(f"registered Event 006 tags: {len(tags)}")
-	print(f"complete flag triplets: {len(tags) - len(missing)}")
-	print(f"incomplete flag triplets: {len(missing)}")
+	print(f"complete flag families: {len(tags) - len(missing)}")
+	print(f"incomplete flag families: {len(missing)}")
 	for tag, paths in missing.items():
 		print(f"- {tag}: {', '.join(paths)}")
 
