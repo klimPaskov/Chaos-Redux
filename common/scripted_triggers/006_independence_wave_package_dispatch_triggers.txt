@@ -151,16 +151,10 @@ is_independence_wave_runtime_package_preflight_ready = {
 		# here until the separate content-attestation gate is promoted.
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_030 }
-			OR = {
-				AND = {
-					exists = no
-					is_independence_wave_exact_package_iw_030_tag_available = yes
-				}
-				AND = {
-					exists = yes
-					is_independence_wave_exact_package_iw_030_runtime_ready = yes
-				}
-			}
+			# This is a pre-release candidate proof. Active-package validation is
+			# owned by the MNT final-validation adapter after setup and activation.
+			exists = no
+			is_independence_wave_exact_package_iw_030_tag_available = yes
 		}
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_043 }
@@ -259,22 +253,13 @@ is_independence_wave_scenario_package_preflight_ready = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_019 }
 			is_independence_wave_exact_package_iw_019_tag_available = yes
 		}
-		# SCN-008 shares the same exact candidate proof; the outer attestation
-		# trigger intentionally still excludes IW-030. If a post-release scope is
-		# inspected, the runtime branch also requires setup, force, and cleanup
-		# receipts.
+		# SCN-008 evaluates dormant candidates before reservation. The outer
+		# attestation trigger intentionally still excludes IW-030; its active
+		# package validation is owned by the MNT final-validation adapter.
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_030 }
-			OR = {
-				AND = {
-					exists = no
-					is_independence_wave_exact_package_iw_030_tag_available = yes
-				}
-				AND = {
-					exists = yes
-					is_independence_wave_exact_package_iw_030_runtime_ready = yes
-				}
-			}
+			exists = no
+			is_independence_wave_exact_package_iw_030_tag_available = yes
 		}
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_043 }

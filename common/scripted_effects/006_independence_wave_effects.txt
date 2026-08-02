@@ -101,24 +101,37 @@ independence_wave_refresh_status_frame_state = {
 			limit = { has_independence_wave_severe_instability = yes }
 			set_variable = { independence_wave_gui_dependency_frame = constant:independence_wave_gui_frame.dependency_danger }
 		}
+		# League phases are a state machine, not a monotonic progress bar. Keep
+		# failed congresses and dissolved networks on the rest frame, and map
+		# only the explicit live phase groups to the authored four-frame strip.
 		if = {
 			limit = {
 				has_variable = global.independence_wave_league_phase
-				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.regional_conferences compare = greater_than_or_equals }
+				OR = {
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.regional_conferences }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
+				}
 			}
 			set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_drafting }
 		}
 		if = {
 			limit = {
 				has_variable = global.independence_wave_league_phase
-				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.charter_vote compare = greater_than_or_equals }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
 			}
 			set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_vote }
 		}
 		if = {
 			limit = {
 				has_variable = global.independence_wave_league_phase
-				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.formal_league compare = greater_than_or_equals }
+				OR = {
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.rival_leagues }
+				}
 			}
 			set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_activated }
 		}
@@ -625,6 +638,7 @@ independence_wave_reset_current_generation = {
 	clear_variable = independence_wave_gui_dependency_frame
 	clear_variable = independence_wave_gui_league_frame
 	clear_variable = independence_wave_gui_formable_frame
+	clr_country_flag = independence_wave_status_gui_show_animation
 	clr_country_flag = independence_wave_status_tab_government
 	clr_country_flag = independence_wave_status_tab_recognition
 	clr_country_flag = independence_wave_status_tab_security
