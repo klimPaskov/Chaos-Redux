@@ -45,15 +45,15 @@ No compatibility event remains in an older event namespace. Remove stale event d
 
 Use these dedicated system files unless local repository precedent proves a narrower layout:
 
-- `common/scripted_effects/fallout_world_end_effects.txt`
-- `common/scripted_triggers/fallout_world_end_triggers.txt`
-- `common/script_constants/fallout_world_end_constants.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_event_triggers.txt`
-- `common/script_constants/fallout_world_end_event_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
 - `common/on_actions/fallout_world_end_on_actions.txt` only for narrowly scoped Fallout lifecycle hooks
-- `common/scripted_guis/fallout_world_end_scripted_gui.txt`
-- `common/scripted_localisation/fallout_world_end_scripted_localisation.txt`
+- `common/scripted_guis/fallout_consolidated_scripted_gui.txt`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 
 Shared helpers may be called from existing global systems when they are genuinely shared. Fallout-owned state machines, cursors, migration, rewrite logic, and presentation remain in the Fallout files.
 
@@ -61,8 +61,8 @@ Shared helpers may be called from existing global systems when they are genuinel
 
 Use:
 
-- `interface/fallout_world_end.gui`
-- `interface/fallout_world_end.gfx`
+- `interface/fallout_consolidated.gui`
+- `interface/fallout_consolidated.gfx`
 - `gfx/interface/fallout_world_end/`
 
 The blackout background, transition textures, processing indicators, successor-selection UI, warning states, and any animated transition elements use dedicated Fallout sprites and textures.

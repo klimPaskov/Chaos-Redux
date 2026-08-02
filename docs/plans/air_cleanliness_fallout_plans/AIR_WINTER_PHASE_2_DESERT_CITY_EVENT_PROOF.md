@@ -10,15 +10,15 @@ The chain belongs to the Air Winter pilot. It does not count toward the 660-bloc
 
 Gameplay and presentation:
 
-- `common/script_constants/air_cleanliness_winter_event_constants.txt`
-- `common/dynamic_modifiers/air_cleanliness_winter_dynamic_modifiers.txt`
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt`
-- `common/scripted_effects/air_cleanliness_winter_event_effects.txt`
-- `common/scripted_localisation/air_cleanliness_winter_event_scripted_localisation.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 - `events/fallout_world_end_events.txt`
-- `localisation/english/fallout_world_end_events_l_english.yml`
-- `localisation/english/air_cleanliness_winter_l_english.yml`
-- `interface/air_cleanliness_winter.gfx`
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `interface/fallout_consolidated.gfx`
 
 Dedicated asset package:
 
@@ -157,7 +157,7 @@ Event 13 uses `picture = [GetAirWinterEvent13Picture]`. `GetAirWinterEvent13Pict
 
 This syntax has a current vanilla precedent. Installed `events/Britain.txt` uses `picture = [GetHitlerCroatianHandshakeEventPicture]` for event `britain.14`. Installed `common/scripted_localisation/00_scripted_localisation.txt` defines that token with conditional `localization_key = GFX_*` rows and a default picture. The offline Localisation page explicitly requires the American spelling `localization_key` for a scripted-localisation option. The Air Winter implementation mirrors that spelling and structure for both the picture selector and its government-aware nouns.
 
-The dedicated sprite is registered once as `GFX_report_event_air_winter_desert_water_convoy` in `interface/air_cleanliness_winter.gfx`. The source, processed, DDS, sprite, event, manifest, and handoff paths all use Fallout-owned Air Winter directories. No zombie id, file, asset, audio, sprite, or path is used.
+The dedicated sprite is registered once as `GFX_report_event_air_winter_desert_water_convoy` in `interface/fallout_consolidated.gfx`. The source, processed, DDS, sprite, event, manifest, and handoff paths all use Fallout-owned Air Winter directories. No zombie id, file, asset, audio, sprite, or path is used.
 
 ## Dedicated asset proof
 

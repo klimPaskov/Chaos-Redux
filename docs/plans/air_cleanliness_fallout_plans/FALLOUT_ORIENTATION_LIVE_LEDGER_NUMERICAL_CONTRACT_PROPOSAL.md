@@ -205,12 +205,12 @@ If the user keeps the exact result, events `66` through `69` remain outside the 
 
 Approval authorizes a bounded dormant implementation across:
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/scripted_effects/fallout_survival_ledger_effects.txt`
-- `common/scripted_triggers/fallout_survival_ledger_triggers.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_event_triggers.txt`
-- `common/dynamic_modifiers/fallout_world_end_orientation_dynamic_modifiers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
 - aligned Fallout modifier localisation, proof documents, and source specs
 
 Implementation must remove caller-supplied Cohesion and Supply Access inputs, retire the isolated orientation state mirrors, and preserve all current approval gates until exact row validators pass. It must not define events `66` through `84` merely to fill reserved ids while the exact repair, coverage rows, government rows, and candidate registries remain blocked.

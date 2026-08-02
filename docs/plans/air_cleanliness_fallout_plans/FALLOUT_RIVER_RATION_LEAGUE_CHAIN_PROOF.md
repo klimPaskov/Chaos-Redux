@@ -24,19 +24,19 @@ The reviewed addendum is `docs/plans/air_cleanliness_fallout_plans/2026-07-26_ri
 
 The event definitions are in `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
 
-The candidate producer is `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
+The candidate producer is `common/scripted_effects/fallout_consolidated_effects.txt`.
 
-The chain triggers are in `common/scripted_triggers/fallout_world_end_river_ration_league_event_triggers.txt`.
+The chain triggers are in `common/scripted_triggers/fallout_consolidated_triggers.txt`.
 
-The chain constants are in `common/script_constants/fallout_world_end_river_ration_league_constants.txt`.
+The chain constants are in `common/script_constants/fallout_consolidated_constants.txt`.
 
-The chain effects are in `common/scripted_effects/fallout_world_end_river_ration_league_event_effects.txt`.
+The chain effects are in `common/scripted_effects/fallout_consolidated_effects.txt`.
 
-The Event Log detail resolver is `common/scripted_localisation/fallout_world_end_river_ration_league_event_log_scripted_localisation.txt`.
+The Event Log detail resolver is `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`.
 
 The dedicated report asset manifest is `docs/assets/air_cleanliness_fallout/fallout_river_ration_league/manifest.md`.
 
-The runtime sprite is `GFX_report_event_fallout_river_ration_league` in `interface/fallout_world_end.gfx`.
+The runtime sprite is `GFX_report_event_fallout_river_ration_league` in `interface/fallout_consolidated.gfx`.
 
 ## Static contract
 

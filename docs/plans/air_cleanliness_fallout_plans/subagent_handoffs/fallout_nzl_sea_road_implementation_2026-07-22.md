@@ -59,7 +59,7 @@ The implementation was checked against:
 
 ## Asset proof
 
-The patrol window reuses the dedicated NZL Fallout `GFX_idea_fallout_nzl_lifeboat_navy` sprite already defined in `interface/fallout_world_end.gfx`. No Zombie sprite, texture, path, or audio is referenced. No additional art is required.
+The patrol window reuses the dedicated NZL Fallout `GFX_idea_fallout_nzl_lifeboat_navy` sprite already defined in `interface/fallout_consolidated.gfx`. No Zombie sprite, texture, path, or audio is referenced. No additional art is required.
 
 ## Static review boundary
 

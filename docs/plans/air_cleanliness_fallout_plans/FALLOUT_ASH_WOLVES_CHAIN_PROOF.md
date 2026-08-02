@@ -2,14 +2,14 @@
 
 ## Implemented surfaces
 
-- Constants: `common/script_constants/fallout_world_end_ash_wolves_constants.txt`
-- Dynamic modifiers: `common/dynamic_modifiers/fallout_world_end_ash_wolves_dynamic_modifiers.txt`
-- Triggers: `common/scripted_triggers/fallout_world_end_ash_wolves_event_triggers.txt`
-- Effects: `common/scripted_effects/fallout_world_end_ash_wolves_event_effects.txt`
-- Candidate producer: `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
+- Constants: `common/script_constants/fallout_consolidated_constants.txt`
+- Dynamic modifiers: `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- Triggers: `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- Effects: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Candidate producer: `common/scripted_effects/fallout_consolidated_effects.txt`
 - Events: `events/fallout_world_end_events.txt`, ids `chaosx.fallout.450` through `.456`
 - Event Log mappings: `common/scripted_effects/chaosx_events_log_effects.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and the dedicated payload localisation file
-- Asset wiring: `interface/fallout_world_end.gfx`, `gfx/event_pictures/fallout/report_event_fallout_ash_wolves.dds`, and the dedicated source and manifest package
+- Asset wiring: `interface/fallout_consolidated.gfx`, `gfx/event_pictures/fallout/report_event_fallout_ash_wolves.dds`, and the dedicated source and manifest package
 
 ## Deterministic state and scheduler proof
 

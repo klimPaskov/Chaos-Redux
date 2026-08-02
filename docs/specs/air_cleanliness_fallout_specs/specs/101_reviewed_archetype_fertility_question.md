@@ -27,7 +27,7 @@ The human and hidden AI lanes use the same branch priorities, deterministic scor
 
 ## Wiring and assets
 
-Runtime constants live in `common/script_constants/fallout_world_end_fertility_question_constants.txt`. Triggers and effects live in `common/scripted_triggers/fallout_world_end_fertility_question_event_triggers.txt` and `common/scripted_effects/fallout_world_end_fertility_question_event_effects.txt`. The candidate producer is `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
+Runtime constants live in `common/script_constants/fallout_consolidated_constants.txt`. Triggers and effects live in `common/scripted_triggers/fallout_consolidated_triggers.txt` and `common/scripted_effects/fallout_consolidated_effects.txt`. The candidate producer is `common/scripted_effects/fallout_consolidated_effects.txt`.
 
 Dynamic modifiers, opinion modifiers, Event Log routing, events, and localisation use dedicated Fertility Question names. The generated report art and manifest live under `docs/assets/894_fertility_question/`. Runtime art is `gfx/event_pictures/fallout/report_event_fallout_fertility_question.dds` registered as `GFX_report_event_fallout_fertility_question`.
 

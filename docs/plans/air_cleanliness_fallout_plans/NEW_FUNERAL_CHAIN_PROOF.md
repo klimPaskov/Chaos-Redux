@@ -18,7 +18,7 @@ The delayed triggers require the current global generation, the same country own
 
 ## Presentation proof
 
-The dedicated report image is a fictional symbolic imagegen source showing a cracked heated funeral hall, snowmelt, three survivor communities, and marked graves. The source and processed PNG are retained in `docs/assets/air_cleanliness_fallout/fallout_new_funeral/`. The processed card is 210 by 176, the DDS is a one-level uncompressed BGRA texture with the exact 210 by 176 payload length, and `interface/fallout_world_end.gfx` points to the dedicated Fallout texture path.
+The dedicated report image is a fictional symbolic imagegen source showing a cracked heated funeral hall, snowmelt, three survivor communities, and marked graves. The source and processed PNG are retained in `docs/assets/air_cleanliness_fallout/fallout_new_funeral/`. The processed card is 210 by 176, the DDS is a one-level uncompressed BGRA texture with the exact 210 by 176 payload length, and `interface/fallout_consolidated.gfx` points to the dedicated Fallout texture path.
 
 The shared Event Log recognizes history `9156`, while `GetFalloutEvent541EventLogDetail` maps fifteen payloads to concrete branch and callback text. The localisation file is UTF-8 with BOM.
 

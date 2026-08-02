@@ -40,6 +40,10 @@ Unused full-screen regional grade and static-alternative sprite registrations we
 
 The Fallout blackout sound call resolves to six dedicated volume variants in `sound/fallout_world_end_sound.asset`, backed by `sound/fallout_world_end/fallout_world_end_blackout.wav`.
 
+## Universal Fallout focus surface
+
+Every country reaches the same runtime-loaded `fallout_generic_focus_tree` after map return. The tree is owned by `common/national_focus/fallout_consolidated_focus.txt` and is activated by the generation-bound `fallout_generic_focus_activate` helper after fracture and region assignment. It provides four mutually exclusive government routes, recovery and military lanes, the Frontier Pact, adjacent claims and a state-owner ultimatum, nine region-gated lanes, and a Year Ten federation and order route. The tree has no country weight and does not load Independence Wave focuses. Static route coverage and localisation evidence are recorded in `FALLOUT_GENERIC_FOCUS_TREE_PROOF.md` and `docs/systems/air_cleanliness/fallout_generic_focus_tree.md`.
+
 ## Static wiring evidence
 
 The dedicated Fallout callback file contains 721 unique `chaosx.fallout` event definitions. All 721 referenced Fallout ids resolve, and no duplicate id is present.

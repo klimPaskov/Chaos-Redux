@@ -37,7 +37,7 @@ Player-facing text names the frozen lake, ash-dusted snow, the boiler, clinic ci
 
 ## Asset and icon manifest
 
-The report-event sprite `GFX_report_event_fallout_ice_melt_rations` is defined in `interface/fallout_world_end.gfx` and reads `gfx/event_pictures/fallout/report_event_fallout_ice_melt_rations.dds`. Its source, processed preview, runtime hash, prompt, and handoff are recorded under `docs/assets/air_cleanliness_fallout/fallout_ice_melt_rations/`. This chain does not request focus icons, decision icons, flags, portraits, audio, or animated sprites.
+The report-event sprite `GFX_report_event_fallout_ice_melt_rations` is defined in `interface/fallout_consolidated.gfx` and reads `gfx/event_pictures/fallout/report_event_fallout_ice_melt_rations.dds`. Its source, processed preview, runtime hash, prompt, and handoff are recorded under `docs/assets/air_cleanliness_fallout/fallout_ice_melt_rations/`. This chain does not request focus icons, decision icons, flags, portraits, audio, or animated sprites.
 
 ## Deliberate boundary
 

@@ -16,8 +16,8 @@ The source ordering preserves the old registry header while the transition gener
 
 ## Files changed
 
-- `common/scripted_effects/fallout_world_end_new_year_without_fireworks_event_effects.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_NEW_YEAR_WITHOUT_FIREWORKS_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_SCHEDULER_PROOF.md`

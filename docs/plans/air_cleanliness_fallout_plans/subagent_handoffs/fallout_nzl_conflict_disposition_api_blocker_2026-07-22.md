@@ -9,8 +9,8 @@ Status: **blocked; documentation-only audit; no gameplay patch**
 
 The dormant NZL package must remain dormant. A safe, generation-authenticated disposition API cannot be proven from the current repository, so this audit intentionally does **not** edit either of the two permitted gameplay files:
 
-- `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt`
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 
 The existing activation gate can be satisfied by two country flags plus matching generation variables, but no gameplay producer sets those receipts. The global conflict-ledger validators define an explicit resolution enum and reciprocal provenance checks, but the source currently contains no resolution commit effect that a NZL-local effect could safely call or mirror. Writing the NZL flags or an enum locally would therefore create an unauthenticated receipt and could activate over a player-owned country, an event package, or a live release reservation.
 
@@ -20,21 +20,21 @@ No fallback, silent retirement, overwrite, release, state transfer, substitute p
 
 | Surface | Current evidence | Audit result |
 | --- | --- | --- |
-| Tag and identity | `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt:7-40`, `fallout_nzl_assignment_identity_is_current` (`NZL`, memory `constant:fallout_country_memory.new_zealand_lifeboat_state`, region `constant:fallout_region.oceania_remote_islands`, archetype `constant:fallout_government_archetype.maritime_remnant`) | Identity contract is present; it does not resolve either conflict. |
+| Tag and identity | `common/scripted_triggers/fallout_consolidated_triggers.txt:7-40`, `fallout_nzl_assignment_identity_is_current` (`NZL`, memory `constant:fallout_country_memory.new_zealand_lifeboat_state`, region `constant:fallout_region.oceania_remote_islands`, archetype `constant:fallout_government_archetype.maritime_remnant`) | Identity contract is present; it does not resolve either conflict. |
 | Exact state package | `fallout_nzl_has_exact_state_package` (`284`, `1079`, `723`, `1080`, `1081`) and `NOT = { 726 = { is_owned_by = ROOT } }` | The five-state shape and Samoa exclusion are fail-closed for current ownership; they are not proof of a reservation/disposition outcome. |
-| Capital | `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:522+` writes the package capital path (`284` then `1079`) | Existing package behavior is documented; no capital receipt is emitted by this audit. |
+| Capital | `common/scripted_effects/fallout_consolidated_effects.txt:522+` writes the package capital path (`284` then `1079`) | Existing package behavior is documented; no capital receipt is emitted by this audit. |
 | Samoa / `SAM` | IW-175 loads `SAM` with package id `constant:independence_wave_package_id.iw_175` and anchor state `726` in `common/scripted_effects/006_independence_wave_packages_region_13_effects.txt:279-295`; the planner reserves `726` at `:754-760` | Live-plan/player/event ownership and final resolution are not exported to NZL. `726` cannot be inferred safe from owner absence alone. |
 | Aotearoa / `GRX` | `GRX` is registered in `common/country_tags/006_independence_wave_countries.txt:97`; scenario setup blocks IW-174/GRX in `common/scripted_effects/006_independence_wave_scenario_effects.txt:1137-1138`; the collision audit marks it `blocked_pending_distinct_identity` / `specific_variant_disabled` | Disabled registration is not a current retirement receipt. The overlap of `284` and `723` still needs an allocator-owned disposition. |
 | Politics, leaders, portraits, flags, advisors, parties | Existing NZL package effects and prior handoffs cover runtime parliament, characters, cosmetic tag, and package assets | No issue in this conflict-API audit; these surfaces remain downstream of the dormant activation gate. |
 | Focus, decisions, ideas, assets | Existing NZL focus/decision/idea files and localisation audits cover the package; activation is gated by `fallout_nzl_lifeboat_package_can_activate` | No new content is authorized. No icon, GFX, localisation, workbook, or asset file was changed. |
-| Military, technology, industry, supply, production | Existing package setup is in `fallout_nzl_lifeboat_effects.txt`; no conflict disposition writes equipment, states, or supply | Not a safe basis for resolving Samoa/Aotearoa ownership; no balance or setup change was made. |
+| Military, technology, industry, supply, production | Existing package setup is in `fallout_consolidated_effects.txt`; no conflict disposition writes equipment, states, or supply | Not a safe basis for resolving Samoa/Aotearoa ownership; no balance or setup change was made. |
 | AI and playability | `fallout_nzl_activate_lifeboat_package` is documented as dormant and has no gameplay caller; prior NZL proof notes the vanilla NZL alternate-AI retirement question | Playability remains intentionally dormant pending allocator receipts. |
 
 ## File-surface checklist and findings
 
 ### NZL trigger and effect surfaces
 
-`common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt:42-56` defines `fallout_nzl_conflict_dispositions_are_current` as:
+`common/scripted_triggers/fallout_consolidated_triggers.txt:42-56` defines `fallout_nzl_conflict_dispositions_are_current` as:
 
 1. `has_country_flag = fallout_nzl_samoa_disposition_resolved`;
 2. `has_country_flag = fallout_nzl_aotearoa_overlap_resolved`;
@@ -43,17 +43,17 @@ No fallback, silent retirement, overwrite, release, state transfer, substitute p
 
 `fallout_nzl_lifeboat_package_can_activate` at `:59-65` consumes that trigger. It does **not** check a typed disposition, source package id, source country, cleanup owner, output tag, player reservation, event ownership, or reciprocal global conflict row.
 
-`common/scripted_effects/fallout_nzl_lifeboat_effects.txt:157+` contains `fallout_nzl_reset_package_runtime`; it intentionally clears NZL runtime state but does not create Samoa/Aotearoa receipts. `fallout_nzl_activate_lifeboat_package` at `:522+` is explicitly commented as a dormant entry point. A gameplay search finds only that definition; there is no event, decision, on-action, startup effect, allocator, or planner caller.
+`common/scripted_effects/fallout_consolidated_effects.txt:157+` contains `fallout_nzl_reset_package_runtime`; it intentionally clears NZL runtime state but does not create Samoa/Aotearoa receipts. `fallout_nzl_activate_lifeboat_package` at `:522+` is explicitly commented as a dormant entry point. A gameplay search finds only that definition; there is no event, decision, on-action, startup effect, allocator, or planner caller.
 
 The two NZL receipt flags/variables occur only in the trigger. A source search for setters found no `set_country_flag = fallout_nzl_samoa_disposition_resolved`, no `set_country_flag = fallout_nzl_aotearoa_overlap_resolved`, and no setter for either generation variable. Generation equality alone authenticates freshness, not who resolved the conflict or what was resolved.
 
 ### Global conflict-ledger surfaces
 
-`common/scripted_triggers/fallout_world_end_triggers.txt:2517-2629` defines `fallout_live_tag_conflict_resolution_is_current`. It expects `fallout_live_tag_conflict_resolved`, `fallout_live_tag_conflict_resolution_generation`, `fallout_live_tag_conflict_resolution`, and `fallout_live_tag_conflict_cleanup_owner`, validates the explicit enum range, checks player/event-package provenance, and checks reciprocal output/cleanup relationships. `fallout_successor_assignment_country_row_is_current` at `:2670+` consumes the same current row.
+`common/scripted_triggers/fallout_consolidated_triggers.txt:2517-2629` defines `fallout_live_tag_conflict_resolution_is_current`. It expects `fallout_live_tag_conflict_resolved`, `fallout_live_tag_conflict_resolution_generation`, `fallout_live_tag_conflict_resolution`, and `fallout_live_tag_conflict_cleanup_owner`, validates the explicit enum range, checks player/event-package provenance, and checks reciprocal output/cleanup relationships. `fallout_successor_assignment_country_row_is_current` at `:2670+` consumes the same current row.
 
-`common/scripted_effects/fallout_world_end_effects.txt:3002+` (`fallout_record_live_tag_conflict_row`) records a source row as `allocation_pending`; it does not commit a resolution. `fallout_reset_successor_allocation_ledger` at `:2858-2875` only clears resolution fields. `fallout_finalize_successor_allocation_transaction` at `:2936+` finalizes the transaction after validation but does not expose a NZL-specific disposition receipt. A source search found no gameplay setter for `fallout_live_tag_conflict_resolution`, `fallout_live_tag_conflict_resolution_generation`, `fallout_live_tag_conflict_cleanup_owner`, or `fallout_live_tag_conflict_resolved`.
+`common/scripted_effects/fallout_consolidated_effects.txt:3002+` (`fallout_record_live_tag_conflict_row`) records a source row as `allocation_pending`; it does not commit a resolution. `fallout_reset_successor_allocation_ledger` at `:2858-2875` only clears resolution fields. `fallout_finalize_successor_allocation_transaction` at `:2936+` finalizes the transaction after validation but does not expose a NZL-specific disposition receipt. A source search found no gameplay setter for `fallout_live_tag_conflict_resolution`, `fallout_live_tag_conflict_resolution_generation`, `fallout_live_tag_conflict_cleanup_owner`, or `fallout_live_tag_conflict_resolved`.
 
-The enum in `common/script_constants/fallout_world_end_constants.txt` is the correct shared type vocabulary (`continued_in_place`, `converted_existing`, `released_releasable`, `created_dynamic`, `retired_landless`, `preserved_event_package`, `player_reserved`, with `none` and `upper_bound`). Its existence does not prove a producer or a valid result for either NZL overlap.
+The enum in `common/script_constants/fallout_consolidated_constants.txt` is the correct shared type vocabulary (`continued_in_place`, `converted_existing`, `released_releasable`, `created_dynamic`, `retired_landless`, `preserved_event_package`, `player_reserved`, with `none` and `upper_bound`). Its existence does not prove a producer or a valid result for either NZL overlap.
 
 ### Independence Wave surfaces
 
@@ -65,7 +65,7 @@ The enum in `common/script_constants/fallout_world_end_constants.txt` is the cor
 ## Why no narrow gameplay patch is safe
 
 1. Adding only typed NZL variables would still let a local caller assert an enum without the global source row, output relation, cleanup owner, and player/event provenance required by the global validator.
-2. Adding setters to `fallout_nzl_lifeboat_effects.txt` would make the dormant country package its own allocator and could bless `726` while IW-175 is reserved or live, or bless `284`/`723` while a future Aotearoa package is active.
+2. Adding setters to `fallout_consolidated_effects.txt` would make the dormant country package its own allocator and could bless `726` while IW-175 is reserved or live, or bless `284`/`723` while a future Aotearoa package is active.
 3. Treating blocked `GRX` as retired would silently resolve a curated-disabled package without a distinct-identity decision. Treating absent IW-175 runtime flags as safe would similarly conflate “not currently selected” with “resolved for this transition.”
 4. Strengthening the NZL trigger to call the global current-row trigger is not sufficient by itself: the current global row is scoped to a live conflict country and does not identify a completed, state-specific Samoa or Aotearoa disposition receipt. A dedicated allocator-owned bridge is required.
 5. There is no activation caller to test, and no map/state transfer is authorized by this scope. Any local patch would therefore be unexercised and could not prove post-resolution map safety.

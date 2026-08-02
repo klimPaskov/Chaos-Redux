@@ -6,7 +6,7 @@ False Positive is the reviewed Quarantine archetype chain at candidate `691`, tr
 
 ## Admission and receipts
 
-The candidate producer in `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` selects the lowest owned native state that passes `fallout_event_pilot_false_positive_state_is_current`. That gate requires current state identity, durable state resources, current Supply Access, a completed First Red Line memory, produced Air Winter Shelter Capacity, Adaptation, Reclamation, Exposure, Disease Pressure, phase, population, and a current Quarantine owner with public-health and grievance ledgers. Country admission also requires current Medicine, Cohesion, Recognition, campaign-day bounds, and one affordable branch.
+The candidate producer in `common/scripted_effects/fallout_consolidated_effects.txt` selects the lowest owned native state that passes `fallout_event_pilot_false_positive_state_is_current`. That gate requires current state identity, durable state resources, current Supply Access, a completed First Red Line memory, produced Air Winter Shelter Capacity, Adaptation, Reclamation, Exposure, Disease Pressure, phase, population, and a current Quarantine owner with public-health and grievance ledgers. Country admission also requires current Medicine, Cohesion, Recognition, campaign-day bounds, and one affordable branch.
 
 The opening receipt freezes the target state, owner, controller, transition generation, Air Winter values, public health, grievance, reliability, compensation, inspection fatigue, appeal backlog, and cause memory. `fallout_event_691_opening_target_is_current`, `fallout_event_691_target_is_current`, `fallout_event_691_registry_is_current`, `fallout_event_691_delayed_result_can_enter`, `fallout_event_691_callback_can_enter`, and `fallout_event_691_cleanup_can_enter` recheck the relevant receipt before each lane. State reservations use `fallout_event_691_registry_reserved` and `fallout_event_691_registry_committed`.
 
@@ -26,7 +26,7 @@ The callback is scheduled for one hundred fifty days after result delivery. Call
 
 History `9176` is survivor-country memory. The dedicated scripted localisation maps four choice payloads, twelve result payloads, three callback payloads, and cancellation to concrete regional and government-aware text. The chain does not register the Fallout consequence itself as an ordinary Event Log entry, evolution, or ordinary super-event.
 
-The human opening, result, and callback use `GFX_report_event_fallout_false_positive`. The generated source, processed PNG, DDS, manifest, prompt, and handoff are under `docs/assets/691_false_positive/`. The final DDS is `210x176`, legacy one-level uncompressed BGRA, and the sprite is registered in `interface/fallout_world_end.gfx`.
+The human opening, result, and callback use `GFX_report_event_fallout_false_positive`. The generated source, processed PNG, DDS, manifest, prompt, and handoff are under `docs/assets/691_false_positive/`. The final DDS is `210x176`, legacy one-level uncompressed BGRA, and the sprite is registered in `interface/fallout_consolidated.gfx`.
 
 ## Static proof and limits
 

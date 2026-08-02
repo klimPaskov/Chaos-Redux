@@ -6,8 +6,8 @@ Scope: replace the reviewed candidate `628` reset shortcut with an exact stale-r
 
 Changed files:
 
-- `common/scripted_effects/fallout_world_end_canal_schedule_event_effects.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_CANAL_SCHEDULE_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_SCHEDULER_PROOF.md`

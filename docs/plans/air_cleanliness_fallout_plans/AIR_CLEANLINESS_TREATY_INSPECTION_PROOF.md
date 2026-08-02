@@ -26,7 +26,7 @@ The implementation follows these required local references:
 - installed `documentation/script_concept_documentation.md`
 - installed `common/decisions/_documentation.md`
 - vanilla `common/decisions/AST.txt`, decision `AST_supply_arms_to_nation`
-- Chaos Redux Joint Filter Convoy in `common/decisions/air_cleanliness_treaty_decisions.txt`
+- Chaos Redux Joint Filter Convoy in `common/decisions/fallout_consolidated_decisions.txt`
 
 ## Event catalog alignment
 

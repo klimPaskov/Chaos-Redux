@@ -6,7 +6,7 @@ Scope: keep the existing Metro Republic Below generation-reset route state-bound
 
 Changed files:
 
-- `common/scripted_effects/fallout_world_end_metro_republic_below_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_METRO_REPUBLIC_BELOW_PROOF.md`
 
 Implementation evidence:

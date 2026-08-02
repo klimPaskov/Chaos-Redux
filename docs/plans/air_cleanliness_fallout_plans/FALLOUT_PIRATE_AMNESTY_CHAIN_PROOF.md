@@ -20,11 +20,11 @@ This proof records the static implementation of The Pirate Amnesty. The chain is
 
 ## Source evidence
 
-The producer block in `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` initializes the dedicated ledgers, selects the lowest eligible state, and appends one candidate row with candidate `789`, transaction `710084`, route `7200`, Fuel resource pressure, Air Winter severity, state subject type, and the selected target state.
+The producer block in `common/scripted_effects/fallout_consolidated_effects.txt` initializes the dedicated ledgers, selects the lowest eligible state, and appends one candidate row with candidate `789`, transaction `710084`, route `7200`, Fuel resource pressure, Air Winter severity, state subject type, and the selected target state.
 
-`common/scripted_triggers/fallout_world_end_pirate_amnesty_event_triggers.txt` authenticates the current West African Port Confederacies maritime-remnant row, current generation, owner, controller, target state, foreign neighbor, Supply Access, survival resources, Air Winter, the closed Harbor Without a City memory, and all branch affordability checks.
+`common/scripted_triggers/fallout_consolidated_triggers.txt` authenticates the current West African Port Confederacies maritime-remnant row, current generation, owner, controller, target state, foreign neighbor, Supply Access, survival resources, Air Winter, the closed Harbor Without a City memory, and all branch affordability checks.
 
-`common/scripted_effects/fallout_world_end_pirate_amnesty_event_effects.txt` freezes target and neighbor receipts, pays and refunds branch costs, resolves deterministic result and callback grades, uses bounded Deaths requests with cause `fallout_aftermath`, writes Air Winter and Supply Access consequences, records branch-aware memories, schedules hidden AI and human delayed lanes, appends the survivor Event Log payload, and closes through authenticated idempotent cleanup.
+`common/scripted_effects/fallout_consolidated_effects.txt` freezes target and neighbor receipts, pays and refunds branch costs, resolves deterministic result and callback grades, uses bounded Deaths requests with cause `fallout_aftermath`, writes Air Winter and Supply Access consequences, records branch-aware memories, schedules hidden AI and human delayed lanes, appends the survivor Event Log payload, and closes through authenticated idempotent cleanup.
 
 `events/fallout_world_end_events.txt` defines the human opening, hidden AI opening, human and hidden AI result, human and hidden AI callback, and cleanup blocks with the dedicated `GFX_report_event_fallout_pirate_amnesty` picture on visible lanes.
 

@@ -47,7 +47,7 @@ The other 96 region and archetype cells have no government runtime row. No gener
 
 ## Asset and engine-sensitive evidence
 
-Human events `74` and `76` use `GFX_report_event_fallout_government_archetype`. The sprite resolves through `interface/fallout_world_end.gfx` to the dedicated Fallout DDS recorded in the Ash-week orientation asset manifest.
+Human events `74` and `76` use `GFX_report_event_fallout_government_archetype`. The sprite resolves through `interface/fallout_consolidated.gfx` to the dedicated Fallout DDS recorded in the Ash-week orientation asset manifest.
 
 Hearts of Iron IV was not run, as requested. Source inspection proves the event ids, exact 3-day constant, tokenized dispatcher route, mapping, and sprite path. A refreshed read-only `hoi4.event_inspect` lint request targeted only `chaosx.fallout.74`, disabled helper expansion, and bounded traversal to 40 nodes, 80 edges, and depth 2. The service returned `EVENT_HELPER_PROJECTION_LIMIT` at its fixed 200000-helper ceiling before scanning files or producing an artifact or diagnostic. No MCP lint pass is claimed. Runtime popup presentation, save interruption, and multiplayer behavior are not claimed.
 

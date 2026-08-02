@@ -36,7 +36,7 @@ Those surfaces remain explicit follow-up work until their engine scope and confl
 
 ## Assets and Event Log
 
-The dedicated report image is `GFX_report_event_fallout_children_from_elsewhere` and is registered in `interface/fallout_world_end.gfx`.
+The dedicated report image is `GFX_report_event_fallout_children_from_elsewhere` and is registered in `interface/fallout_consolidated.gfx`.
 
 The source, processed card, DDS, prompt, manifest, and handoff live under `docs/assets/air_cleanliness_fallout/fallout_children_from_elsewhere/`.
 

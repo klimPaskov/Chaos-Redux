@@ -48,7 +48,7 @@ It reuses only the authenticated Health Without Borders ledgers `fallout_health_
 
 ## Presentation and assets
 
-The human opening, delayed result, and callback use `GFX_report_event_fallout_regional_health_compact`. The dedicated fictional report card is documented in `docs/assets/754_regional_health_compact/manifest.md` and registered in `interface/fallout_world_end.gfx`. Hidden AI lanes remain silent. No zombie asset, sprite, audio, path, or ordinary super-event surface is reused.
+The human opening, delayed result, and callback use `GFX_report_event_fallout_regional_health_compact`. The dedicated fictional report card is documented in `docs/assets/754_regional_health_compact/manifest.md` and registered in `interface/fallout_consolidated.gfx`. Hidden AI lanes remain silent. No zombie asset, sprite, audio, path, or ordinary super-event surface is reused.
 
 ## Review boundary
 

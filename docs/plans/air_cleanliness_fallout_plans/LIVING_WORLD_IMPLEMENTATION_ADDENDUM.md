@@ -11,11 +11,11 @@ It does not change the order of the existing proof gates. Air Winter phase logic
 Primary gameplay files:
 
 - `events/fallout_world_end_events.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt` when event helpers need separation from rewrite helpers
-- `common/scripted_triggers/fallout_world_end_event_triggers.txt` when event eligibility helpers need separation
-- `common/script_constants/fallout_world_end_event_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt` when event helpers need separation from rewrite helpers
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` when event eligibility helpers need separation
+- `common/script_constants/fallout_consolidated_constants.txt`
 - `common/on_actions/fallout_world_end_on_actions.txt` only for narrow lifecycle hooks
-- `common/scripted_localisation/fallout_world_end_scripted_localisation.txt`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 - dedicated Fallout decision, idea, focus, AI, country, GUI, GFX, and localisation files already mapped by the corrected plan
 
 The event definitions remain in one dedicated Fallout event file unless verified local engine or repository rules require a stronger physical split that retains the Fallout namespace and ownership.

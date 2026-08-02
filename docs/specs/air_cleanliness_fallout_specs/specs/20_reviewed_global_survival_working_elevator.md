@@ -62,10 +62,10 @@ The source event file is `events/fallout_world_end_events.txt` under
 `add_namespace = chaosx.fallout`. Events `324` through `330` provide the human
 opening, hidden AI opening, human and hidden AI result, human and hidden AI
 callback, and authenticated cleanup. Localisation is in
-`localisation/english/fallout_world_end_working_elevator_l_english.yml` with a
+`localisation/english/fallout_consolidated_l_english.yml` with a
 BOM. The dedicated report sprite is registered as
 `GFX_report_event_fallout_working_elevator` in
-`interface/fallout_world_end.gfx`.
+`interface/fallout_consolidated.gfx`.
 
 ## Review status
 

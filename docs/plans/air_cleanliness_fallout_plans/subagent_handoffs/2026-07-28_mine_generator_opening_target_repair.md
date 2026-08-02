@@ -6,7 +6,7 @@ Scope: keep the existing Mine Generator generation-reset route state-bound when 
 
 Changed files:
 
-- `common/scripted_effects/fallout_world_end_mine_generator_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_MINE_GENERATOR_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_ID_LEDGER.md`

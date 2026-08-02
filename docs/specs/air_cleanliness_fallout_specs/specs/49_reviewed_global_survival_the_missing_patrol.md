@@ -21,7 +21,7 @@ The human and hidden-AI lanes share one deterministic outcome calculation and on
 3. Cover up the disappearance keeps the operation quiet and protects short-term stability. It spends Recognition and Food. Success limits public fear but lowers intelligence and reputation. Partial success keeps the story contained while the missing ledger remains open. Failure turns the cover story into a civilian scandal and records the loss through the Deaths system.
 4. Wait for contact holds the route and listens for a return signal. It spends Food and Fuel. Success records a controlled contact and reduces exposure. Partial success leaves a weak signal and a live fear memory. Failure loses the route marker and records the loss through the Deaths system.
 
-The deterministic viability score weights current Supply Access, Cohesion, War Support, Army Experience, Intelligence, exposure, and fear. Branch-specific success and partial thresholds are centralized in `fallout_world_end_missing_patrol_constants.txt`.
+The deterministic viability score weights current Supply Access, Cohesion, War Support, Army Experience, Intelligence, exposure, and fear. Branch-specific success and partial thresholds are centralized in `fallout_consolidated_constants.txt`.
 
 ## Delayed callback and consequences
 

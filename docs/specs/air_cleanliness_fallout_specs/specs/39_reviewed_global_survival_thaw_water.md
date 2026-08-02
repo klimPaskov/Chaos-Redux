@@ -38,7 +38,7 @@ This chain is part of the normal-map winter route. It uses the existing `air_win
 
 ## Assets
 
-`GFX_report_event_fallout_thaw_water` is a dedicated generated report image registered in `interface/fallout_world_end.gfx`. The source, processed PNG, DDS, prompt, manifest, and handoff are under `docs/assets/air_cleanliness_fallout/fallout_thaw_water/`.
+`GFX_report_event_fallout_thaw_water` is a dedicated generated report image registered in `interface/fallout_consolidated.gfx`. The source, processed PNG, DDS, prompt, manifest, and handoff are under `docs/assets/air_cleanliness_fallout/fallout_thaw_water/`.
 
 ## Review boundary
 

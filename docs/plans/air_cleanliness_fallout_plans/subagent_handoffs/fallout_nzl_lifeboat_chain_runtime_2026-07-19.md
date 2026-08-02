@@ -19,7 +19,7 @@ was edited.
 
 ## Files changed
 
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - Added `fallout_nzl_add_chain_context_score` call support and
     `fallout_nzl_clear_partner_response_receipt`.
   - Made no-partner external startup dispatch the authored `.139`/`.140`
@@ -33,22 +33,22 @@ was edited.
     access-in-progress flags and tears down the generation-bound relief
     guarantee relation/receipt without touching persistent mobilization or
     postwar partner history.
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.md`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - Documents helper scopes, inputs, outputs, side effects, call sites, and
     the character migration.
-- `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - Uses inclusive `check_variable` for the pirate forced-settlement boundary.
   - Adds `fallout_nzl_year_ten_values_are_ready`, requiring current package and
     all four values at or above the central stable threshold.
-- `common/on_actions/fallout_nzl_lifeboat_on_actions.txt`
+- `common/on_actions/fallout_consolidated_on_actions.txt`
   - Settles the receipt from NZL scope for capitulation, peace-conference, and
     annexation while matching the exact stored aggressor. This catches
     capitulation/annexation by actors other than NZL without settling an
     unrelated country.
-- `common/script_constants/fallout_nzl_lifeboat_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
   - Added `fallout_nzl_score` fixed-point tuning category for state control,
     choices, routes, war pressure, and prior-result quality.
-- `common/characters/fallout_nzl_lifeboat_characters.txt`
+- `common/characters/fallout_consolidated_characters.txt`
   - Removed duplicate static definitions. Runtime generation now owns the six
     tokens and roles.
 - `events/fallout_world_end_events.txt`

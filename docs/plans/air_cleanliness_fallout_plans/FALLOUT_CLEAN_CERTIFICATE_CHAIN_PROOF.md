@@ -2,7 +2,7 @@
 
 The dormant chain owns candidate `719`, transaction `710074`, route `7180`, Event Log history `9180`, and `chaosx.fallout.719` through `.725`.
 
-Gameplay source is split across `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_clean_certificate_event_triggers.txt`, `common/scripted_effects/fallout_world_end_clean_certificate_event_effects.txt`, the Clean Certificate constants, the Clean Certificate dynamic modifiers, and the candidate producer block.
+Gameplay source is split across `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_consolidated_triggers.txt`, `common/scripted_effects/fallout_consolidated_effects.txt`, the Clean Certificate constants, the Clean Certificate dynamic modifiers, and the candidate producer block.
 
 The admission gate requires a current Quarantine owner, completed Returning Disease state memory, native Air Winter and Supply Access receipts, bounded disease and exposure, minimum shelter, supply, adaptation, public health, medicine, cohesion, recognition, and one affordable branch. The candidate selector chooses the lowest eligible native state and stores its id in the generation-bound dispatch envelope.
 

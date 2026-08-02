@@ -31,13 +31,13 @@ The hidden AI event scores all four authored branches with the same affordabilit
 
 | Surface | Owned file or identifier |
 | --- | --- |
-| Constants | `common/script_constants/fallout_world_end_failed_calculation_constants.txt` |
-| Candidate registry | `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`, candidate `831` |
-| Triggers | `common/scripted_triggers/fallout_world_end_failed_calculation_event_triggers.txt` |
-| Effects | `common/scripted_effects/fallout_world_end_failed_calculation_event_effects.txt` |
+| Constants | `common/script_constants/fallout_consolidated_constants.txt` |
+| Candidate registry | `common/scripted_effects/fallout_consolidated_effects.txt`, candidate `831` |
+| Triggers | `common/scripted_triggers/fallout_consolidated_triggers.txt` |
+| Effects | `common/scripted_effects/fallout_consolidated_effects.txt` |
 | Events | `events/fallout_world_end_events.txt`, `chaosx.fallout.831` through `.837` |
 | Event Log | `fallout_event_831_log.history_id = 9196`, name and detail routers |
-| Localisation | `localisation/english/fallout_world_end_failed_calculation_l_english.yml` |
+| Localisation | `localisation/english/fallout_consolidated_l_english.yml` |
 | Report art | `GFX_report_event_fallout_failed_calculation` and `docs/assets/831_failed_calculation/` |
 | Catalog | `FALLOUT-831`, candidate events `831` through `837`, status `Needs Testing` |
 

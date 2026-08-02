@@ -37,7 +37,7 @@ The chain preserves one of these country flags without changing the country tag 
 
 ## Asset and localisation
 
-The dedicated fictional report illustration is `GFX_report_event_fallout_returning_disease`, registered in `interface/fallout_world_end.gfx` and backed by `gfx/event_pictures/fallout/report_event_fallout_returning_disease.dds`. Source, processed PNG, DDS hashes, prompt record, and handoff notes live under `docs/assets/712_returning_disease/`. All player-facing text names Ash Ward Hospital, North Gate clinic, the eastern checkpoint, the aid convoy, and the relevant ledger rather than using generic apocalypse wording.
+The dedicated fictional report illustration is `GFX_report_event_fallout_returning_disease`, registered in `interface/fallout_consolidated.gfx` and backed by `gfx/event_pictures/fallout/report_event_fallout_returning_disease.dds`. Source, processed PNG, DDS hashes, prompt record, and handoff notes live under `docs/assets/712_returning_disease/`. All player-facing text names Ash Ward Hospital, North Gate clinic, the eastern checkpoint, the aid convoy, and the relevant ledger rather than using generic apocalypse wording.
 
 ## Dormancy and future links
 

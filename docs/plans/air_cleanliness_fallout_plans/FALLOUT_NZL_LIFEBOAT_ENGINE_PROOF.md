@@ -8,7 +8,7 @@ HOI4 was not run. Runtime persistence and multiplayer observation remain unobser
 
 ## Dormant activation boundary
 
-`fallout_nzl_activate_lifeboat_package` is defined once in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. The only caller is the dormant B7 vertical slice in `common/scripted_effects/fallout_successor_b7_effects.txt`, after the existing-tag assignment and receipt checks pass. No on action, event, decision, scheduler activation, or public scenario calls it.
+`fallout_nzl_activate_lifeboat_package` is defined once in `common/scripted_effects/fallout_consolidated_effects.txt`. The only caller is the dormant B7 vertical slice in `common/scripted_effects/fallout_consolidated_effects.txt`, after the existing-tag assignment and receipt checks pass. No on action, event, decision, scheduler activation, or public scenario calls it.
 
 The entry effect requires all of these current-generation receipts:
 
@@ -24,7 +24,7 @@ Activation resets only Fallout NZL-owned runtime state. It does not write assign
 
 ## Conflict-disposition producer boundary
 
-`fallout_nzl_record_conflict_dispositions` is defined once in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. The only caller is the guarded B7 existing-tag assignment producer. It can write only after the global phase is `survivor_allocation`, the successor conflict ledger is current, the NZL assignment owns and controls states 284, 1079, 723, 1080, and 1081, and state 726 is neither owned nor controlled by NZL.
+`fallout_nzl_record_conflict_dispositions` is defined once in `common/scripted_effects/fallout_consolidated_effects.txt`. The only caller is the guarded B7 existing-tag assignment producer. It can write only after the global phase is `survivor_allocation`, the successor conflict ledger is current, the NZL assignment owns and controls states 284, 1079, 723, 1080, and 1081, and state 726 is neither owned nor controlled by NZL.
 
 The Samoa input passes only when Samoa is absent from the current live conflict array or its resolution receipt is current for the active generation. Every live conflict country is then checked through the array. An Independence Wave package holder must have a current conflict resolution and must not own Wellington or Canterbury. The producer writes the two typed dispositions and their transition-generation receipts atomically inside one guarded block. `fallout_nzl_clear_conflict_dispositions` is a separate allocator reset helper and is not called by package runtime reset.
 
@@ -171,7 +171,7 @@ The offline on-actions reference and installed vanilla on-action files agree on 
 - `on_annex` exposes the annexer as `ROOT` and annexed country as `FROM`
 - `on_state_control_changed` exposes the new controller as `ROOT`, old controller as `FROM`, and changed state as `FROM.FROM`
 
-`common/on_actions/fallout_nzl_lifeboat_on_actions.txt` uses only these narrow hooks. It does not add a daily, weekly, monthly, or world-country iteration. A pirate war receipt is written only when one side is the current NZL package and the other side matches the generation-bound aggressor variable. Capitulation, annexation, and a winning peace-conference result write the settlement receipt only after that exact war receipt exists. If New Zealand is the capitulated or defeated peace-conference side, the same hooks write a distinct generation-bound defeat receipt. That receipt unlocks the late isolation focus with a four-point security gain and a seven-point Parliament Trust loss. It never counts as settlement for the Closed Seas achievement.
+`common/on_actions/fallout_consolidated_on_actions.txt` uses only these narrow hooks. It does not add a daily, weekly, monthly, or world-country iteration. A pirate war receipt is written only when one side is the current NZL package and the other side matches the generation-bound aggressor variable. Capitulation, annexation, and a winning peace-conference result write the settlement receipt only after that exact war receipt exists. If New Zealand is the capitulated or defeated peace-conference side, the same hooks write a distinct generation-bound defeat receipt. That receipt unlocks the late isolation focus with a four-point security gain and a seven-point Parliament Trust loss. It never counts as settlement for the Closed Seas achievement.
 
 The hostile target originates in the bilateral chain. A partner rejection is considered piracy evidence only when the responding country is already at war with the exact NZL owner event target. The owner stores that responder's country id and the current Fallout transition generation. No later focus, decision, or on action searches for a replacement.
 
@@ -187,7 +187,7 @@ Foreign basing is a real bilateral choice. The human external result can grant t
 
 ## Asset and ownership proof
 
-The package has seventy-five NZL Fallout sprite definitions in `interface/fallout_world_end.gfx`. Every defined texture path resolves to a dedicated runtime file. These definitions cover four event reports, three fictional leaders, two completed advisors, twenty-four focus icons, fourteen idea icons, eighteen decision or mission icons, one decision category icon, and nine achievement states. The three cosmetic identities each have large, medium, and small dedicated flags.
+The package has seventy-five NZL Fallout sprite definitions in `interface/fallout_consolidated.gfx`. Every defined texture path resolves to a dedicated runtime file. These definitions cover four event reports, three fictional leaders, two completed advisors, twenty-four focus icons, fourteen idea icons, eighteen decision or mission icons, one decision category icon, and nine achievement states. The three cosmetic identities each have large, medium, and small dedicated flags.
 
 The Radio Service Coordinator remains an explicit asset blocker. Its version 10 source passed neither the frozen paper-mean gate nor the frozen bottom-variation gate after ninety-six final candidates. No candidate PNG, review sheet, metadata record, DDS, or sprite definition was accepted. The generated-character block retains one unresolved portrait reference. The B7 caller remains dormant and no fallback portrait is used.
 

@@ -34,7 +34,7 @@ Medicine is not required merely to discover the chain.
 
 Seed-memory flags qualify when they prove a surviving working seed program.
 The greenhouse route is generation bound. During pretransition capture,
-`fallout_world_end_effects.txt` copies the live
+`fallout_consolidated_effects.txt` copies the live
 `air_winter_greenhouse_refuge` receipt into
 `fallout_pretransition_air_winter_greenhouse_provenance_recorded` and
 `fallout_pretransition_air_winter_greenhouse_generation`. The candidate checks
@@ -94,7 +94,7 @@ state branch, outcome, cause, provenance, and result memories remain.
 
 History `9113` owns fifteen payloads, twelve branch and outcome rows, and
 three callback rows. The selector is in
-`common/scripted_localisation/fallout_world_end_bad_batch_event_log_scripted_localisation.txt`.
+`common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`.
 Event Log name and detail routing is registered in
 `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and
 `common/scripted_effects/chaosx_events_log_effects.txt`.
@@ -113,13 +113,13 @@ The dedicated fictional altered-ecology report package is under
 provenance, manifest, and GFX handoff. The runtime DDS is
 `gfx/event_pictures/fallout/report_event_fallout_bad_batch.dds`.
 Sprite `GFX_report_event_fallout_bad_batch` is registered in
-`interface/fallout_world_end.gfx` and is referenced by all human opening,
+`interface/fallout_consolidated.gfx` and is referenced by all human opening,
 result, and callback events in this chain. No zombie art or path is reused.
 
 ## Asset and UI inventory
 
 The human report card uses `GFX_report_event_fallout_bad_batch`, defined in
-`interface/fallout_world_end.gfx` and stored at
+`interface/fallout_consolidated.gfx` and stored at
 `gfx/event_pictures/fallout/report_event_fallout_bad_batch.dds`.
 The branch options use text and resource tooltips only. No new focus, idea,
 decision, mapmode, scripted GUI, flag, portrait, or audio sprite is required

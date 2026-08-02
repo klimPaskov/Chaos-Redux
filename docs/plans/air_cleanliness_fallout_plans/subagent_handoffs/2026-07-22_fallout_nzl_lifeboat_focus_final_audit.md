@@ -6,20 +6,20 @@ Status: one narrow AI route patch is complete. The package remains dormant and n
 
 ## Changed files and identifiers
 
-- `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt`
+- `common/ai_strategy_plans/fallout_consolidated_ai.txt`
   - Added `fallout_nzl_fishery_quota_compacts` to the isolation plan at line 154.
   - Added `fallout_nzl_weatherproof_the_grain_sheds` to the isolation plan at line 155.
   - The order now places repair, fishery, radio weather, weatherproofing, and the two-island ring in a dependency-safe sequence.
 - No focus source, trigger helper, decision, idea, character, localisation, GFX, DDS, event, or asset file was changed.
 - No focus identifier was renamed.
 
-The proposed change to `fallout_nzl_lifeboat_package_is_current` in `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt:66-78` was rejected. The exact five-state trigger already gates package activation and starting-force creation at lines 59-63 of that file. Making it a durable current-package condition would close all focus, decision, event, advisor, and AI surfaces whenever a player temporarily loses or occupies one of the support states. That would conflict with continued play during war pressure and the existing capital-loss memory in `common/on_actions/fallout_nzl_lifeboat_on_actions.txt:116-133`.
+The proposed change to `fallout_nzl_lifeboat_package_is_current` in `common/scripted_triggers/fallout_consolidated_triggers.txt:66-78` was rejected. The exact five-state trigger already gates package activation and starting-force creation at lines 59-63 of that file. Making it a durable current-package condition would close all focus, decision, event, advisor, and AI surfaces whenever a player temporarily loses or occupies one of the support states. That would conflict with continued play during war pressure and the existing capital-loss memory in `common/on_actions/fallout_consolidated_on_actions.txt:116-133`.
 
 ## Route coverage
 
 | Route surface | Focus identifiers | Coverage and behavior |
 | --- | --- | --- |
-| Opening trunk | `fallout_nzl_count_the_living`, `fallout_nzl_seat_the_lifeboat_parliament`, `fallout_nzl_open_wellington_quays`, `fallout_nzl_relay_auckland_radio`, `fallout_nzl_measure_the_dairy_stores`, `fallout_nzl_bind_the_two_islands` | All six exist at `common/national_focus/fallout_nzl_lifeboat_focus.txt:24-137`. The bind focus uses three separate prerequisite blocks, so the three opening receipts are ANDed. Generation-aware opening and domestic result triggers prevent stale event results. |
+| Opening trunk | `fallout_nzl_count_the_living`, `fallout_nzl_seat_the_lifeboat_parliament`, `fallout_nzl_open_wellington_quays`, `fallout_nzl_relay_auckland_radio`, `fallout_nzl_measure_the_dairy_stores`, `fallout_nzl_bind_the_two_islands` | All six exist at `common/national_focus/fallout_consolidated_focus.txt:24-137`. The bind focus uses three separate prerequisite blocks, so the three opening receipts are ANDed. Generation-aware opening and domestic result triggers prevent stale event results. |
 | Humanitarian | `fallout_nzl_keep_the_harbor_lights`, `fallout_nzl_admit_the_first_rescue_fleet`, `fallout_nzl_publish_the_berth_ledger`, `fallout_nzl_elect_the_relief_speaker`, `fallout_nzl_guarantee_lifeboat_rights`, `fallout_nzl_pacific_relief_republic` | All six exist at lines 141-240. The first focus is mutually exclusive with `fallout_nzl_draw_the_southern_cordon`. The route commits a humanitarian flag, opens rescue transactions, promotes a runtime relief speaker, upgrades the morality idea, and applies the humanitarian identity. |
 | Isolation | `fallout_nzl_draw_the_southern_cordon`, `fallout_nzl_close_unregistered_anchorages`, `fallout_nzl_license_every_sea_road`, `fallout_nzl_appoint_the_harbor_constable`, `fallout_nzl_reserve_the_last_berths`, `fallout_nzl_southern_refuge` | All six exist at lines 244-359. The route is mutually exclusive with the humanitarian route. Security, trust, harbor capacity, the last-berth decision, runtime constable promotion, and the isolation identity are wired. The `license_every_sea_road` reward mismatch remains open below. |
 | Economy and survival | `fallout_nzl_dairy_relief_fleet`, `fallout_nzl_repair_the_milk_rail`, `fallout_nzl_fishery_quota_compacts`, `fallout_nzl_weatherproof_the_grain_sheds`, `fallout_nzl_rebuild_devonport`, `fallout_nzl_storm_port_engineers`, `fallout_nzl_radio_weather_chain`, `fallout_nzl_two_island_supply_ring` | All eight exist at lines 363-506. Rail repair checks state 723. Weatherproofing and the final supply ring use separate prerequisite blocks for AND semantics. The final idea lifecycle replaces the harbor and weather stages after both island logistics are proven. |
@@ -28,15 +28,15 @@ The proposed change to `fallout_nzl_lifeboat_package_is_current` in `common/scri
 
 ## Missing or simplified content
 
-1. `fallout_nzl_license_every_sea_road` at `common/national_focus/fallout_nzl_lifeboat_focus.txt:289-307` sets `fallout_nzl_last_berth_decision_open`, raises sea-lane security, and lowers harbor capacity. The accepted specification at `docs/specs/air_cleanliness_fallout_specs/fallout_nzl_lifeboat_state_pilot_spec.md:120-129` promises numbered permits, patrol windows, reduced piracy risk, and a higher convoy operating cost. Current code does not implement the convoy operating cost tradeoff.
+1. `fallout_nzl_license_every_sea_road` at `common/national_focus/fallout_consolidated_focus.txt:289-307` sets `fallout_nzl_last_berth_decision_open`, raises sea-lane security, and lowers harbor capacity. The accepted specification at `docs/specs/air_cleanliness_fallout_specs/fallout_nzl_lifeboat_state_pilot_spec.md:120-129` promises numbered permits, patrol windows, reduced piracy risk, and a higher convoy operating cost. Current code does not implement the convoy operating cost tradeoff.
 2. Official modifier documentation supports `underway_replenishment_convoy_cost` and `convoy_escort_efficiency`, but neither is a direct focus effect and no current NZL idea stage carries the required cost modifier. `trade_cost_for_target_factor` changes the cost for another country to buy this country's resources, not convoy operating cost. The wiki's generic `production_cost_max_convoy` entry is not present in the official modifier documentation consulted for this audit. Implementing the promised tradeoff therefore needs a deliberate idea or transaction design outside this narrow focus and AI scope. I did not invent a substitute modifier or relabel the existing harbor penalty.
-3. The focus inspector reports runtime leader references `NZL_fallout_relief_speaker` and `NZL_fallout_harbor_constable` as missing at focus lines 202 and 321. These leaders are generated by `fallout_nzl_activate_lifeboat_package` in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`, so static character definitions are intentionally absent. Runtime activation proof remains blocked because the helper has no caller.
+3. The focus inspector reports runtime leader references `NZL_fallout_relief_speaker` and `NZL_fallout_harbor_constable` as missing at focus lines 202 and 321. These leaders are generated by `fallout_nzl_activate_lifeboat_package` in `common/scripted_effects/fallout_consolidated_effects.txt`, so static character definitions are intentionally absent. Runtime activation proof remains blocked because the helper has no caller.
 4. The accepted specification names `fallout_nzl_port_militia_training_mission` and `fallout_nzl_arm_rescue_cutters_action` as focus identifiers. The implementation uses `fallout_nzl_port_militia_drill` and `fallout_nzl_armed_rescue_cutters`. The decision identifiers retain the specification names. This is a documentation reconciliation item, not a missing route.
 5. The live Fallout allocator still has no caller for `fallout_nzl_activate_lifeboat_package`. Samoa 726 and the Aotearoa or GRX conflict receipts remain unresolved. Vanilla NZL alternate AI plans still have empty abort blocks. These are activation blockers outside the focus-only patch.
 
 ## Icon coverage
 
-The focus file references 24 unique NZL goal sprites. The current inspection found a matching GFX definition and DDS file for every one under `interface/fallout_world_end.gfx` and `gfx/interface/goals/fallout_world_end_nzl_lifeboat_state`. Reuse is deliberate.
+The focus file references 24 unique NZL goal sprites. The current inspection found a matching GFX definition and DDS file for every one under `interface/fallout_consolidated.gfx` and `gfx/interface/goals/fallout_world_end_nzl_lifeboat_state`. Reuse is deliberate.
 
 | Icon id | Focus identifiers using it |
 | --- | --- |
@@ -67,15 +67,15 @@ The focus file references 24 unique NZL goal sprites. The current inspection fou
 
 ## Localisation and reward mismatch list
 
-- All 42 focus title and description keys resolve in `localisation/english/fallout_nzl_lifeboat_l_english.yml`. The file remains UTF-8 with BOM.
+- All 42 focus title and description keys resolve in `localisation/english/fallout_consolidated_l_english.yml`. The file remains UTF-8 with BOM.
 - `fallout_nzl_license_every_sea_road_desc` at localisation line 222 promises numbered permits and patrol windows, while the reward at focus lines 298-304 only opens the last-berth decision and changes the two stored values. The missing convoy operating cost is the same accepted-spec mismatch described above.
 - The count focus description presents the census as deciding harbor governance, while activation initializes the four values and the opening event receipt handles governance. This remains a safe activation-boundary simplification, not a missing localisation key.
 - The military identifier pairs listed above need documentation alignment. No player-facing key is missing.
 
 ## AI behavior gaps and changes
 
-- All 42 focus nodes have `ai_will_do` blocks and `search_filters` in `common/national_focus/fallout_nzl_lifeboat_focus.txt`.
-- The humanitarian plan at `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt:50-84` already covers its economy and military prerequisites.
+- All 42 focus nodes have `ai_will_do` blocks and `search_filters` in `common/national_focus/fallout_consolidated_focus.txt`.
+- The humanitarian plan at `common/ai_strategy_plans/fallout_consolidated_ai.txt:50-84` already covers its economy and military prerequisites.
 - Before this patch, the isolation plan at lines 129-161 omitted fishery quota compacts and weatherproof grain sheds. The omission could strand the listed `two_island_supply_ring` focus behind its weatherproof prerequisite. Both IDs are now present at lines 154-155.
 - A static sequence check confirms repair, fishery, radio weather, weatherproofing, and the final ring occur in dependency-safe order. All 66 plan focus references resolve to authored focus IDs.
 - Humanitarian pre-route selection requires a valid partner candidate. Isolation selection responds to war, critical harbor capacity, or sea-lane security below the critical constant. Route aborts require a current package and the opposite route is excluded.

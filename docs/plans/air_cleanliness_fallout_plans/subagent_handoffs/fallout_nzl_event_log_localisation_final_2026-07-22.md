@@ -13,7 +13,7 @@ and must stay dormant until their own activation proof is accepted.
 
 ## Changed files
 
-- `localisation/english/fallout_nzl_event_log_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
 `common/scripted_localisation/chaosx_scripted_localisation_debug.txt` was audited but not changed in this pass.
@@ -61,7 +61,7 @@ None in the owned package surface. All 36 `fallout_nzl.*` localisation keys refe
 
 ### Duplicate keys
 
-None in `fallout_nzl_event_log_l_english.yml`. The target scripted-localisation files have no duplicate `defined_text` names.
+None in `fallout_consolidated_l_english.yml`. The target scripted-localisation files have no duplicate `defined_text` names.
 
 ### Scripted-localisation findings
 
@@ -85,7 +85,7 @@ The package already exposes dynamic state names, metrics, dates, event actors, p
 
 ### File encoding concerns
 
-- `fallout_nzl_event_log_l_english.yml` starts with UTF-8 BOM `EF BB BF`, has 39 unique localisation keys, and contains no replacement characters.
+- `fallout_consolidated_l_english.yml` starts with UTF-8 BOM `EF BB BF`, has 39 unique localisation keys, and contains no replacement characters.
 - Both scripted-localisation files are valid UTF-8 plain text without a BOM, matching their existing script-file format. No replacement characters were found.
 
 ## Validation run

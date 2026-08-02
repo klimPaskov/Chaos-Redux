@@ -275,7 +275,7 @@ Paths:
 - source: `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_desert_water_convoy_source.png`
 - processed: `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_desert_water_convoy.png`
 - runtime: `gfx/event_pictures/fallout/report_event_air_winter_desert_water_convoy.dds`
-- registration: `interface/air_cleanliness_winter.gfx`
+- registration: `interface/fallout_consolidated.gfx`
 
 The fictional period-documentary scene shows a frost-split water main, a stone cistern, a railway water tanker, a period tanker truck, engineers with a route sheet, and civilians carrying period containers. Cold dust or sleet and sparse frost replace universal snow. The composition avoids text, flags, logos, modern containers, zombies, and culturally narrow architecture.
 

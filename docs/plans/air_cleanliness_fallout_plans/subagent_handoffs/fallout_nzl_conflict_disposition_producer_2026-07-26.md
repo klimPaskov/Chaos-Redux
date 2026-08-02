@@ -6,9 +6,9 @@ This handoff records a bounded implementation tranche for the dormant New Zealan
 
 ## Changed files
 
-- `common/script_constants/fallout_nzl_lifeboat_constants.txt` adds the typed `fallout_nzl_conflict_disposition` values `none`, `samoa_state_excluded`, and `aotearoa_overlap_inactive`.
-- `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt` adds the phase-bound input gate and the guarded `fallout_nzl_conflict_dispositions_can_record` trigger. It requires the current successor conflict ledger, the exact five-state NZL footprint, an excluded Samoa state 726, a current Samoa row when Samoa is live, and no unresolved Independence Wave holder of Wellington or Canterbury.
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.txt` adds `fallout_nzl_record_conflict_dispositions` and the separate `fallout_nzl_clear_conflict_dispositions` reset helper. The producer writes both disposition values and both transition-generation receipts in one guarded block.
+- `common/script_constants/fallout_consolidated_constants.txt` adds the typed `fallout_nzl_conflict_disposition` values `none`, `samoa_state_excluded`, and `aotearoa_overlap_inactive`.
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` adds the phase-bound input gate and the guarded `fallout_nzl_conflict_dispositions_can_record` trigger. It requires the current successor conflict ledger, the exact five-state NZL footprint, an excluded Samoa state 726, a current Samoa row when Samoa is live, and no unresolved Independence Wave holder of Wellington or Canterbury.
+- `common/scripted_effects/fallout_consolidated_effects.txt` adds `fallout_nzl_record_conflict_dispositions` and the separate `fallout_nzl_clear_conflict_dispositions` reset helper. The producer writes both disposition values and both transition-generation receipts in one guarded block.
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_NZL_LIFEBOAT_ENGINE_PROOF.md` records the engine contract and dormant caller boundary.
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md`, `docs/specs/air_cleanliness_fallout_specs/specs/53_successor_allocation_player_continuation_b7.md`, `docs/plans/air_cleanliness_fallout_plans/source_of_truth_map.md`, and `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md` replace the former no-producer statement with the current dormant-producer statement.
 

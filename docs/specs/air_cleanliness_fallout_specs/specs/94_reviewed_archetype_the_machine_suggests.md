@@ -31,13 +31,13 @@ The hidden AI event scores all four authored branches with the same affordabilit
 
 | Surface | Owned file or identifier |
 | --- | --- |
-| Constants | `common/script_constants/fallout_world_end_machine_suggests_constants.txt` |
-| Candidate registry | `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`, candidate `845` |
-| Triggers | `common/scripted_triggers/fallout_world_end_machine_suggests_event_triggers.txt` |
-| Effects | `common/scripted_effects/fallout_world_end_machine_suggests_event_effects.txt` |
+| Constants | `common/script_constants/fallout_consolidated_constants.txt` |
+| Candidate registry | `common/scripted_effects/fallout_consolidated_effects.txt`, candidate `845` |
+| Triggers | `common/scripted_triggers/fallout_consolidated_triggers.txt` |
+| Effects | `common/scripted_effects/fallout_consolidated_effects.txt` |
 | Events | `events/fallout_world_end_events.txt`, `chaosx.fallout.845` through `.851` |
 | Event Log | `fallout_event_845_log.history_id = 9198`, name and detail routers |
-| Localisation | `localisation/english/fallout_world_end_machine_suggests_l_english.yml` |
+| Localisation | `localisation/english/fallout_consolidated_l_english.yml` |
 | Report art | `GFX_report_event_fallout_machine_suggests` and `docs/assets/845_machine_suggests/` |
 | Catalog | `FALLOUT-845`, candidate events `845` through `851`, status `Needs Testing` |
 

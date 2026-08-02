@@ -36,7 +36,7 @@ Event Log history `9119`.
 - The dedicated report image is at
   `gfx/event_pictures/fallout/report_event_fallout_first_safe_birth.dds`.
   Its sprite is `GFX_report_event_fallout_first_safe_birth` in
-  `interface/fallout_world_end.gfx`.
+  `interface/fallout_consolidated.gfx`.
 
 ## Review boundary
 
@@ -58,12 +58,12 @@ this dormant chain.
 
 ## Files reviewed
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
-- `common/scripted_effects/fallout_world_end_first_safe_birth_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_first_safe_birth_event_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 - `events/fallout_world_end_events.txt`
-- `common/dynamic_modifiers/fallout_world_end_first_safe_birth_dynamic_modifiers.txt`
-- `common/scripted_localisation/fallout_world_end_first_safe_birth_event_log_scripted_localisation.txt`
-- `localisation/english/fallout_world_end_first_safe_birth_l_english.yml`
-- `interface/fallout_world_end.gfx`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `interface/fallout_consolidated.gfx`

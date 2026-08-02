@@ -4,7 +4,7 @@ This proof records the reviewed implementation boundary for candidate `929`. The
 
 ## Static source audit
 
-The source audit covers the candidate producer, shared event constants and Event Log routing, the dedicated constants, scripted triggers, scripted effects, dynamic modifiers, opinion modifiers, event block, localisation, GFX registration, asset manifest, spec, matrix, plan ledger, scheduler proof, source map, and catalog row.
+The source audit covers the candidate producer, shared event constants and Event Log routing, the dedicated constants, scripted triggers, scripted effects, dynamic modifiers, opinion modifiers, event block, localisation, GFX registration, asset manifest, spec, matrix, plan ledger, scheduler proof, and source map. Candidate `929` is an internal Fallout identity and is intentionally absent from the public event catalog workbook and exported CSV.
 
 The audit confirms one predecessor gate `fallout_event_922_memory_closed`, one candidate producer for `929`, one event block for each id `1051` through `1057`, one history id `9210`, four branch tokens, human and hidden AI parity, result and callback cleanup lanes, bounded Deaths requests, and no stale Cohort's First Ballot branch tokens in the dedicated runtime files. The localisation file has a UTF-8 BOM and covers opening, result, callback, Event Log, and dynamic result labels. The asset package contains a generated source, a processed 210x176 RGBA report image, a runtime DDS, prompt, manifest, hashes, and GFX handoff.
 

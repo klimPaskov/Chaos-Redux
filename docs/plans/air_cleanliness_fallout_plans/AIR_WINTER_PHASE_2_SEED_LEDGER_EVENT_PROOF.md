@@ -42,9 +42,9 @@ Ownership change, state reset, Fallout transition, and active Fallout therefore 
 
 ## Asset and localisation proof
 
-Events 10 and 18 use `GFX_report_event_air_winter_phase_2` from `interface/air_cleanliness_winter.gfx`. The industry modifier uses `GFX_air_winter_phase_2`. Their final DDS files live under dedicated Air Winter and Fallout paths. The manifest covers Phase 2 events 10 through 18. The route requires no additional asset and uses no zombie asset, audio, sprite, file, or path.
+Events 10 and 18 use `GFX_report_event_air_winter_phase_2` from `interface/fallout_consolidated.gfx`. The industry modifier uses `GFX_air_winter_phase_2`. Their final DDS files live under dedicated Air Winter and Fallout paths. The manifest covers Phase 2 events 10 through 18. The route requires no additional asset and uses no zombie asset, audio, sprite, file, or path.
 
-The opening and result use state-aware text and government-aware authority terms. Their visible event keys are in `localisation/english/fallout_world_end_events_l_english.yml`. The modifier name and description are in `localisation/english/air_cleanliness_winter_l_english.yml`.
+The opening and result use state-aware text and government-aware authority terms. Their visible event keys are in `localisation/english/fallout_consolidated_l_english.yml`. The modifier name and description are in `localisation/english/fallout_consolidated_l_english.yml`.
 
 ## Runtime boundary
 

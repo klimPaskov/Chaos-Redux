@@ -153,7 +153,7 @@ The official installed documentation and a vanilla precedent must be cited for e
 
 ## Assets
 
-Both blocks use `GFX_report_event_air_winter_phase_3`, the dedicated Air Winter Phase 3 report image registered in `interface/air_cleanliness_winter.gfx`. The asset manifest must map `.36` and `.37` to that sprite. No new art, sprite, audio, or path is required.
+Both blocks use `GFX_report_event_air_winter_phase_3`, the dedicated Air Winter Phase 3 report image registered in `interface/fallout_consolidated.gfx`. The asset manifest must map `.36` and `.37` to that sprite. No new art, sprite, audio, or path is required.
 
 ## Excluded surfaces
 

@@ -61,8 +61,8 @@ At the ceiling, the source remains close to the reversible low-contamination rec
 
 ## Files
 
-- `common/script_constants/air_cleanliness_natural_source_constants.txt`
-- `common/scripted_effects/air_cleanliness_natural_source_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `common/scripted_effects/013_natural_disasters_effects.txt`
 - `common/scripted_effects/chaos_meter_effects.txt`
 - `localisation/english/chaosx_chaos_meter_l_english.yml`

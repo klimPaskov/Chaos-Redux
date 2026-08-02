@@ -16,14 +16,14 @@ Candidate `394` is implemented as a dormant country-level chain in `events/fallo
 
 ## Cross-file wiring
 
-- Constants: `common/script_constants/fallout_world_end_ration_thief_election_constants.txt`.
-- Triggers: `common/scripted_triggers/fallout_world_end_ration_thief_election_event_triggers.txt`.
-- Effects: `common/scripted_effects/fallout_world_end_ration_thief_election_event_effects.txt`.
-- Candidate row: `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
-- Dynamic modifiers: `common/dynamic_modifiers/fallout_world_end_ration_thief_election_dynamic_modifiers.txt`.
+- Constants: `common/script_constants/fallout_consolidated_constants.txt`.
+- Triggers: `common/scripted_triggers/fallout_consolidated_triggers.txt`.
+- Effects: `common/scripted_effects/fallout_consolidated_effects.txt`.
+- Candidate row: `common/scripted_effects/fallout_consolidated_effects.txt`.
+- Dynamic modifiers: `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`.
 - Events: `events/fallout_world_end_events.txt`.
 - Event Log mappings: `common/scripted_effects/chaosx_events_log_effects.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and the dedicated scripted localisation file.
-- Localisation: `localisation/english/fallout_world_end_ration_thief_election_l_english.yml`.
+- Localisation: `localisation/english/fallout_consolidated_l_english.yml`.
 - Asset package: `docs/assets/air_cleanliness_fallout/fallout_ration_thief_election/` with dedicated runtime DDS and GFX registration.
 - Catalog row: `FALLOUT-394` in the workbook and exported Events CSV.
 

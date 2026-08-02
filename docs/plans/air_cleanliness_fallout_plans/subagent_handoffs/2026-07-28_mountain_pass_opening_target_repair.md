@@ -6,7 +6,7 @@ Scope: keep the existing Mountain Pass generation-reset route state-bound when i
 
 Changed files:
 
-- `common/scripted_effects/fallout_world_end_mountain_pass_census_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_MOUNTAIN_PASS_CENSUS_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md`
 

@@ -8,10 +8,10 @@ This tranche adds a B7-only existing-tag successor path for the New Zealand Life
 
 ## Changed files
 
-- `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt`
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`
-- `common/scripted_effects/fallout_successor_b7_effects.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_NZL_LIFEBOAT_ENGINE_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md`

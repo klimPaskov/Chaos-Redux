@@ -8,7 +8,7 @@ Scope: original-tag `NZL` strategy plans only. The dormant Fallout Lifeboat Stat
 
 An additive retirement or abort patch cannot be proven engine-safe from the available contracts, so no gameplay edit was made.
 
-The narrow gate that would be correct if the vanilla plan definitions could be extended is `fallout_nzl_lifeboat_package_is_current = yes`. It is generation-bound and package-bound. It is not a tag-only gate and is false for ordinary NZL. The two Fallout plans already use it in both `enable` and route-switch `abort` logic in `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt:25-181`.
+The narrow gate that would be correct if the vanilla plan definitions could be extended is `fallout_nzl_lifeboat_package_is_current = yes`. It is generation-bound and package-bound. It is not a tag-only gate and is false for ordinary NZL. The two Fallout plans already use it in both `enable` and route-switch `abort` logic in `common/ai_strategy_plans/fallout_consolidated_ai.txt:25-181`.
 
 The required compatibility behavior would be an additional abort disjunct on all four live vanilla plans:
 
@@ -51,10 +51,10 @@ No runtime plan-removal effect is documented, and HOI4 was not launched per task
 | Surface | Finding | Evidence |
 | --- | --- | --- |
 | Tag registration | PASS for carrier | Fallout uses existing `NZL`; no new tag is introduced. `docs/specs/air_cleanliness_fallout_specs/fallout_nzl_lifeboat_state_pilot_spec.md` identifies `NZL` as the existing carrier. |
-| Current package identity | PASS for narrow gate | `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt:66-78` requires `tag = NZL`, active package/focus flags, current transition generation, current assignment identity, and initialized values. |
+| Current package identity | PASS for narrow gate | `common/scripted_triggers/fallout_consolidated_triggers.txt:66-78` requires `tag = NZL`, active package/focus flags, current transition generation, current assignment identity, and initialized values. |
 | Vanilla AI compatibility | BLOCKED | Four vanilla plans remain live. Their original definitions are not safely extensible without a full-file override or unproven duplicate merge. |
-| Fallout AI plans | PASS for dormant source | `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt:25-181` has exactly `fallout_nzl_humanitarian_plan` and `fallout_nzl_isolation_plan`, both enabled only by the current package and `fallout_nzl_ai_override`, with route/current-package aborts. |
-| Activation | DORMANT by design | `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:522` defines `fallout_nzl_activate_lifeboat_package`; repository search finds no caller outside the definition. |
+| Fallout AI plans | PASS for dormant source | `common/ai_strategy_plans/fallout_consolidated_ai.txt:25-181` has exactly `fallout_nzl_humanitarian_plan` and `fallout_nzl_isolation_plan`, both enabled only by the current package and `fallout_nzl_ai_override`, with route/current-package aborts. |
+| Activation | DORMANT by design | `common/scripted_effects/fallout_consolidated_effects.txt:522` defines `fallout_nzl_activate_lifeboat_package`; repository search finds no caller outside the definition. |
 | Ordinary NZL behavior | PRESERVED | No tag-only, `original_tag`-only, or global Fallout abort was added. |
 
 ## Live plan inventory
@@ -67,8 +67,8 @@ Only the enabled mod `mod/chaos_redux.mod` is present in `C:/Users/klimp/OneDriv
 | `NZL_alternate_democratic` | `common/ai_strategy_plans/NZL_alternate_strategy_plan.txt:1-106` in vanilla | `original_tag = NZL`, Together for Victory | Historical default, random democratic alternate flag, or democratic alternate game rule | Empty block (`:25-26`) | Missing |
 | `NZL_alternate_fascist` | same vanilla file `:107-213` | `original_tag = NZL`, Together for Victory | Historical default, random fascist flag, or fascist game rule | Empty block (`:131-132`) | Missing |
 | `NZL_alternate_communist` | same vanilla file `:214-316` | `original_tag = NZL`, Together for Victory | Historical default, random communist flag, or communist game rule | Empty block (`:238-239`) | Missing |
-| `fallout_nzl_humanitarian_plan` | `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt:25-100` | `original_tag = NZL` | Only current package, override flag, and humanitarian route/partner/no-war conditions | Aborts on stale package or isolation route (`:43-48`) | Present |
-| `fallout_nzl_isolation_plan` | `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt:102-181` | `original_tag = NZL` | Only current package, override flag, and isolation route/war/security conditions | Aborts on stale package or humanitarian route (`:122-127`) | Present |
+| `fallout_nzl_humanitarian_plan` | `common/ai_strategy_plans/fallout_consolidated_ai.txt:25-100` | `original_tag = NZL` | Only current package, override flag, and humanitarian route/partner/no-war conditions | Aborts on stale package or isolation route (`:43-48`) | Present |
+| `fallout_nzl_isolation_plan` | `common/ai_strategy_plans/fallout_consolidated_ai.txt:102-181` | `original_tag = NZL` | Only current package, override flag, and isolation route/war/security conditions | Aborts on stale package or humanitarian route (`:122-127`) | Present |
 
 The four vanilla plans are the complete live original-tag inventory for the currently enabled mod set. Workshop copies were not treated as live because they are not enabled by the local `dlc_load.json`.
 
@@ -77,9 +77,9 @@ The four vanilla plans are the complete live original-tag inventory for the curr
 | Surface | Status | Concrete path / identifier |
 | --- | --- | --- |
 | Vanilla plan source | READ-ONLY reference | `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy_plans/NZL_alternate_strategy_plan.txt`; `NZL_historical_strategy_plan.txt` |
-| Mod Fallout plan source | Reviewed, no edit | `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt` |
-| Narrow current-generation trigger | Reviewed, no edit | `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt:66-78`, `fallout_nzl_lifeboat_package_is_current` |
-| Activation caller | Missing by design | `fallout_nzl_activate_lifeboat_package` has definition only at `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:522`; no caller was added |
+| Mod Fallout plan source | Reviewed, no edit | `common/ai_strategy_plans/fallout_consolidated_ai.txt` |
+| Narrow current-generation trigger | Reviewed, no edit | `common/scripted_triggers/fallout_consolidated_triggers.txt:66-78`, `fallout_nzl_lifeboat_package_is_current` |
+| Activation caller | Missing by design | `fallout_nzl_activate_lifeboat_package` has definition only at `common/scripted_effects/fallout_consolidated_effects.txt:522`; no caller was added |
 | Runtime plan-removal effect | Missing from documented engine surface | Official `effects_documentation.md` documents `add_ai_strategy` but no plan-removal counterpart |
 | Additive duplicate-plan proof | Missing | No official plan-specific merge contract, no local precedent, and no HOI4 run permitted |
 | Compatibility file | Intentionally absent | Creating a minimal duplicate-ID file would be an unproven and potentially destructive override |

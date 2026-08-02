@@ -145,7 +145,7 @@ Normalized inputs are:
 `auxiliary load = clamp((operational air bases + operational dockyards) * 10, 0, 100)`
 
 The result and callback never reread mutable resources, Air Winter values, or building levels to reclassify outcome.
-All coefficients, gates, costs, delays, building amounts, Deaths fractions, and result deltas belong in `common/script_constants/fallout_world_end_event_constants.txt`.
+All coefficients, gates, costs, delays, building amounts, Deaths fractions, and result deltas belong in `common/script_constants/fallout_consolidated_constants.txt`.
 
 ## Four branch commitments
 
@@ -319,7 +319,7 @@ It needs opening, four option, twelve result, branch-aware callback, custom trig
 The generated fictional package already exists and is ready for parent review:
 
 - sprite `GFX_report_event_fallout_last_transformer`
-- GFX target `interface/fallout_world_end.gfx`
+- GFX target `interface/fallout_consolidated.gfx`
 - runtime DDS `gfx/event_pictures/fallout/report_event_fallout_last_transformer.dds`
 - manifest `docs/assets/air_cleanliness_fallout/fallout_last_transformer/manifest.json`
 - handoff `docs/assets/air_cleanliness_fallout/fallout_last_transformer/gfx_handoff.md`

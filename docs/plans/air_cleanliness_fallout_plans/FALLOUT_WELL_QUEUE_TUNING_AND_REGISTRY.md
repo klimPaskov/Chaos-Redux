@@ -34,7 +34,7 @@ Success and partial results alter country water security, recognition, cohesion,
 
 ## Event-log and asset wiring
 
-History id `9108` has branch-specific success, partial, and failure payloads for the three opening branches plus callback outcomes. `GetFalloutEvent153EventLogDetail` routes those payloads to the dedicated Well Queue detail strings, and the history-name router exposes `fallout.event_log.well_queue.name`. The report art is `GFX_report_event_fallout_well_queue`, registered in `interface/fallout_world_end.gfx` and backed by the dedicated DDS and provenance manifest at `docs/assets/fallout_well_queue/`.
+History id `9108` has branch-specific success, partial, and failure payloads for the three opening branches plus callback outcomes. `GetFalloutEvent153EventLogDetail` routes those payloads to the dedicated Well Queue detail strings, and the history-name router exposes `fallout.event_log.well_queue.name`. The report art is `GFX_report_event_fallout_well_queue`, registered in `interface/fallout_consolidated.gfx` and backed by the dedicated DDS and provenance manifest at `docs/assets/fallout_well_queue/`.
 
 ## Engine-sensitive boundary
 

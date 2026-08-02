@@ -84,7 +84,7 @@ The shared Event Log name router maps history `9175` to `fallout.event_log.first
 
 The shared Event Log detail router maps history `9175` to `fallout.event_log.first_red_line.detail`, which calls `GetFalloutEvent684EventLogDetail`.
 
-Every payload maps to a dedicated localisation key. The player-facing opening, result, callback, option names, tooltips, Event Log title, and Event Log details are present in `localisation/english/fallout_world_end_first_red_line_l_english.yml`.
+Every payload maps to a dedicated localisation key. The player-facing opening, result, callback, option names, tooltips, Event Log title, and Event Log details are present in `localisation/english/fallout_consolidated_l_english.yml`.
 
 The report sprite is `GFX_report_event_fallout_first_red_line`.
 

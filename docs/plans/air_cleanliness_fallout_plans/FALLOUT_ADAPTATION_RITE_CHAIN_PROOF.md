@@ -4,12 +4,12 @@ This proof covers the reviewed dormant ordinary Fallout tranche for candidate `9
 
 ## Owned runtime surfaces
 
-- Candidate registry: `common/script_constants/fallout_world_end_event_constants.txt` and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
-- Dedicated constants: `common/script_constants/fallout_world_end_adaptation_rite_constants.txt`.
-- Triggers and effects: `common/scripted_triggers/fallout_world_end_adaptation_rite_event_triggers.txt` and `common/scripted_effects/fallout_world_end_adaptation_rite_event_effects.txt`.
+- Candidate registry: `common/script_constants/fallout_consolidated_constants.txt` and `common/scripted_effects/fallout_consolidated_effects.txt`.
+- Dedicated constants: `common/script_constants/fallout_consolidated_constants.txt`.
+- Triggers and effects: `common/scripted_triggers/fallout_consolidated_triggers.txt` and `common/scripted_effects/fallout_consolidated_effects.txt`.
 - Events: `events/fallout_world_end_events.txt`, ids `chaosx.fallout.1030` through `chaosx.fallout.1036`.
-- Event Log: `common/scripted_localisation/fallout_world_end_adaptation_rite_event_log_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and the dedicated localisation file.
-- Art: `interface/fallout_world_end.gfx` and `gfx/event_pictures/fallout/report_event_fallout_adaptation_rite.dds`.
+- Event Log: `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and the dedicated localisation file.
+- Art: `interface/fallout_consolidated.gfx` and `gfx/event_pictures/fallout/report_event_fallout_adaptation_rite.dds`.
 
 ## Static audit
 

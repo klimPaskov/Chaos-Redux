@@ -97,7 +97,7 @@ The state-ledger values are derived from the disclosed result thresholds and exa
 
 ## Assets and text
 
-All six blocks use `GFX_report_event_air_winter_phase_3`. The sprite is registered in `interface/air_cleanliness_winter.gfx` and its DDS is present under the dedicated Fallout and Air Winter path. The asset manifest maps `chaosx.fallout.20` through `.29` to the shared Phase 3 image.
+All six blocks use `GFX_report_event_air_winter_phase_3`. The sprite is registered in `interface/fallout_consolidated.gfx` and its DDS is present under the dedicated Fallout and Air Winter path. The asset manifest maps `chaosx.fallout.20` through `.29` to the shared Phase 3 image.
 
 All titles, descriptions, choices, result descriptions, and tooltips are present in the Fallout event localisation file. The text names the affected state, varies authority language through Air Winter scripted localisation, and describes actual resource, building, energy, casualty, and ledger consequences.
 

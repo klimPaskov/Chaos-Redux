@@ -1,4 +1,363 @@
 # ============================================================================
+# CHAOS REDUX - FALLOUT AND AIR CLEANLINESS EVENTS
+# Fallout is a consequence coordinator. These are internal callbacks and Air Winter reports.
+# ============================================================================
+
+# ============================================================================
+# Consolidated source: events/air_cleanliness_treaty_events.txt
+# ============================================================================
+# ============================================================================
+# AIR CLEANLINESS TREATY COUNTRY REPORTS
+# ============================================================================
+# The legacy global formation and violation reports remain in
+# chemical_warfare_events.txt. These reports cover lifecycle succession and the
+# real Air Winter filter-convoy project and the secretariat verification file.
+# ============================================================================
+
+add_namespace = chaosx_air_treaty
+
+country_event = {
+	id = chaosx_air_treaty.1
+	title = chaosx_air_treaty.1.t
+	desc = chaosx_air_treaty.1.d
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+
+	option = { name = chaosx_air_treaty.1.a }
+}
+
+country_event = {
+	id = chaosx_air_treaty.2
+	title = chaosx_air_treaty.2.t
+	desc = chaosx_air_treaty.2.d
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+
+	option = { name = chaosx_air_treaty.2.a }
+}
+
+country_event = {
+	id = chaosx_air_treaty.3
+	title = chaosx_air_treaty.3.t
+	desc = chaosx_air_treaty.3.d
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	option = { name = chaosx_air_treaty.3.a }
+}
+
+country_event = {
+	id = chaosx_air_treaty.4
+	title = chaosx_air_treaty.4.t
+	desc = chaosx_air_treaty.4.d
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+
+	option = { name = chaosx_air_treaty.4.a }
+}
+
+country_event = {
+	id = chaosx_air_treaty.5
+	title = chaosx_air_treaty.5.t
+	desc = chaosx_air_treaty.5.d
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	option = { name = chaosx_air_treaty.5.a }
+}
+
+# Inspected member response. The regular event target is rebuilt from the exact
+# country variable so delayed or reconstructed chains retain concrete text.
+country_event = {
+	id = chaosx_air_treaty.6
+	title = chaosx_air_treaty.6.t
+	desc = {
+		trigger = { has_government = democratic }
+		text = chaosx_air_treaty.6.democratic.d
+	}
+	desc = {
+		trigger = { has_government = communism }
+		text = chaosx_air_treaty.6.communism.d
+	}
+	desc = {
+		trigger = { has_government = fascism }
+		text = chaosx_air_treaty.6.fascism.d
+	}
+	desc = {
+		trigger = { has_government = neutrality }
+		text = chaosx_air_treaty.6.neutrality.d
+	}
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	trigger = { air_cleanliness_treaty_inspection_request_is_valid = yes }
+
+	immediate = {
+		var:air_cleanliness_treaty_inspection_inspector = {
+			save_event_target_as = air_cleanliness_treaty_inspection_inspector
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.6.a
+		trigger = { air_cleanliness_treaty_can_grant_full_verification = yes }
+		custom_effect_tooltip = chaosx_air_treaty.6.a.tt
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_lifecycle_ai.verification_full_access_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_full_access_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_full_access_communist_factor
+				has_government = communism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_full_access_fascist_factor
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_full_access_neutral_factor
+				has_government = neutrality
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_full_access_war_factor
+				has_war = yes
+			}
+		}
+		hidden_effect = {
+			set_temp_variable = {
+				air_cleanliness_treaty_inspection_response = constant:air_cleanliness_treaty_verification_outcome.full_access
+			}
+			air_cleanliness_treaty_record_verification_response = yes
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.6.b
+		trigger = { air_cleanliness_treaty_can_release_verification_records = yes }
+		custom_effect_tooltip = chaosx_air_treaty.6.b.tt
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_lifecycle_ai.verification_records_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_records_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_records_communist_factor
+				has_government = communism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_records_fascist_factor
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_records_neutral_factor
+				has_government = neutrality
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_records_war_factor
+				has_war = yes
+			}
+		}
+		hidden_effect = {
+			set_temp_variable = {
+				air_cleanliness_treaty_inspection_response = constant:air_cleanliness_treaty_verification_outcome.records_only
+			}
+			air_cleanliness_treaty_record_verification_response = yes
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.6.c
+		trigger = { air_cleanliness_treaty_inspection_request_is_valid = yes }
+		custom_effect_tooltip = chaosx_air_treaty.6.c.tt
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_lifecycle_ai.verification_refusal_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_refusal_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_refusal_communist_factor
+				has_government = communism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_refusal_fascist_factor
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_refusal_neutral_factor
+				has_government = neutrality
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_refusal_war_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_refusal_memory_factor
+				has_country_flag = air_cleanliness_treaty_ever_refused_inspection
+			}
+		}
+		hidden_effect = {
+			set_temp_variable = {
+				air_cleanliness_treaty_inspection_response = constant:air_cleanliness_treaty_verification_outcome.refused
+			}
+			air_cleanliness_treaty_record_verification_response = yes
+		}
+	}
+}
+
+# Secretariat result. The member response fixes the outcome before this report
+# is issued, so the visible option only consumes the exact delayed receipt.
+country_event = {
+	id = chaosx_air_treaty.7
+	title = chaosx_air_treaty.7.t
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_verification_outcome
+				value = constant:air_cleanliness_treaty_verification_outcome.full_access
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.7.full_access.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_verification_outcome
+				value = constant:air_cleanliness_treaty_verification_outcome.records_only
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.7.records_only.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_verification_outcome
+				value = constant:air_cleanliness_treaty_verification_outcome.refused
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.7.refused.d
+	}
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+	trigger = { air_cleanliness_treaty_verification_result_is_valid = yes }
+
+	immediate = {
+		var:air_cleanliness_treaty_verification_subject = {
+			save_event_target_as = air_cleanliness_treaty_inspection_subject
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.7.a
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_verification_outcome
+				value = constant:air_cleanliness_treaty_verification_outcome.full_access
+				compare = equals
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.7.a.tt
+		ai_chance = { base = constant:air_cleanliness_treaty_lifecycle_ai.verification_result_acknowledge_base }
+		hidden_effect = { air_cleanliness_treaty_complete_verification_transaction = yes }
+	}
+	option = {
+		name = chaosx_air_treaty.7.b
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_verification_outcome
+				value = constant:air_cleanliness_treaty_verification_outcome.records_only
+				compare = equals
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.7.b.tt
+		ai_chance = { base = constant:air_cleanliness_treaty_lifecycle_ai.verification_result_acknowledge_base }
+		hidden_effect = { air_cleanliness_treaty_complete_verification_transaction = yes }
+	}
+	option = {
+		name = chaosx_air_treaty.7.c
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_verification_outcome
+				value = constant:air_cleanliness_treaty_verification_outcome.refused
+				compare = equals
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.7.c.tt
+		ai_chance = { base = constant:air_cleanliness_treaty_lifecycle_ai.verification_result_acknowledge_base }
+		hidden_effect = { air_cleanliness_treaty_complete_verification_transaction = yes }
+	}
+}
+
+# Response-store recount. This appears only when a response that was available
+# at event opening can no longer pay its exact equipment cost at selection.
+country_event = {
+	id = chaosx_air_treaty.8
+	title = chaosx_air_treaty.8.t
+	desc = {
+		trigger = { has_government = democratic }
+		text = chaosx_air_treaty.8.democratic.d
+	}
+	desc = {
+		trigger = { has_government = communism }
+		text = chaosx_air_treaty.8.communism.d
+	}
+	desc = {
+		trigger = { has_government = fascism }
+		text = chaosx_air_treaty.8.fascism.d
+	}
+	desc = {
+		trigger = { has_government = neutrality }
+		text = chaosx_air_treaty.8.neutrality.d
+	}
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+	trigger = { air_cleanliness_treaty_inspection_request_is_valid = yes }
+
+	immediate = {
+		var:air_cleanliness_treaty_inspection_inspector = {
+			save_event_target_as = air_cleanliness_treaty_inspection_inspector
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.8.a
+		custom_effect_tooltip = chaosx_air_treaty.8.a.tt
+		ai_chance = { base = constant:air_cleanliness_treaty_lifecycle_ai.verification_recount_acknowledge_base }
+		hidden_effect = {
+			if = {
+				limit = { air_cleanliness_treaty_inspection_request_is_valid = yes }
+				country_event = { id = chaosx_air_treaty.6 }
+			}
+			else = { air_cleanliness_treaty_cancel_verification_transactions_for_country = yes }
+		}
+	}
+}
+
+# Hidden seven-day dispatcher. It consumes invalid delayed receipts on their
+# scheduled day and opens the visible result only for an exact live pair.
+country_event = {
+	id = chaosx_air_treaty.9
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { air_cleanliness_treaty_verification_result_is_valid = yes }
+			country_event = { id = chaosx_air_treaty.7 }
+		}
+		else = { air_cleanliness_treaty_clear_verification_transaction = yes }
+	}
+}
+
+# ============================================================================
+# Consolidated source: events/fallout_world_end_events.txt
+# ============================================================================
+# ============================================================================
 # CHAOS REDUX - FALLOUT WORLD END EVENTS
 # ============================================================================
 # Owns internal Fallout callbacks, Air Winter event chains, and later survivor

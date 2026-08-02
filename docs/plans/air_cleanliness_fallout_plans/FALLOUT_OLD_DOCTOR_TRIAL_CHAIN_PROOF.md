@@ -23,10 +23,10 @@ The result resolves after exactly `56` days and the witness review after exactly
 
 ## Wiring evidence
 
-- Gameplay: `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_old_doctor_trial_event_triggers.txt`, `common/scripted_effects/fallout_world_end_old_doctor_trial_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_old_doctor_trial_dynamic_modifiers.txt`.
-- Constants and candidate registry: `common/script_constants/fallout_world_end_old_doctor_trial_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
-- Event Log and localisation: `common/scripted_localisation/fallout_world_end_old_doctor_trial_event_log_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and `localisation/english/fallout_world_end_old_doctor_trial_l_english.yml`.
-- Opinion and assets: `common/opinion_modifiers/fallout_old_doctor_trial_opinion_modifiers.txt`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/fallout/report_event_fallout_old_doctor_trial.dds`, and `docs/assets/901_old_doctor_trial/`.
+- Gameplay: `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_consolidated_triggers.txt`, `common/scripted_effects/fallout_consolidated_effects.txt`, and `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`.
+- Constants and candidate registry: `common/script_constants/fallout_consolidated_constants.txt`, `common/script_constants/fallout_consolidated_constants.txt`, and `common/scripted_effects/fallout_consolidated_effects.txt`.
+- Event Log and localisation: `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and `localisation/english/fallout_consolidated_l_english.yml`.
+- Opinion and assets: `common/opinion_modifiers/fallout_consolidated_opinion_modifiers.txt`, `interface/fallout_consolidated.gfx`, `gfx/event_pictures/fallout/report_event_fallout_old_doctor_trial.dds`, and `docs/assets/901_old_doctor_trial/`.
 - Catalog and source design: `docs/specs/air_cleanliness_fallout_specs/specs/102_reviewed_archetype_old_doctors_trial.md` and the authoritative workbook row `FALLOUT-901`.
 
 Static audit must verify duplicate ids, constants, predecessor-memory gating, candidate wiring, branch and delayed references, Event Log history routing, localisation key coverage and BOM, dedicated art wiring, and wording hygiene. Focused Event Inspector lint may document blocking diagnostics for `chaosx.fallout.1023`, but no HOI4 runtime claim is made.

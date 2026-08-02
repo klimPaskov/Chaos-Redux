@@ -8,7 +8,7 @@ The B7 USA focus layer was checked with the offline focus inspector and the inst
 
 ## Changed files
 
-- `common/national_focus/fallout_successor_b7_usa_focus.txt`
+- `common/national_focus/fallout_consolidated_focus.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md`
 
 The guard compact and continental radio rewards now use `army_experience` with their existing values of 10 and 5. No focus ids, prerequisites, costs, AI weights, or package gates changed.

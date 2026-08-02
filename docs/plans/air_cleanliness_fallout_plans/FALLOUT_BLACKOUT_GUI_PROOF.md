@@ -2,7 +2,7 @@
 
 ## Scope
 
-This proof covers the Fallout-owned blackout surface in `interface/fallout_world_end.gui`, `common/scripted_guis/fallout_world_end_scripted_gui.txt`, `common/scripted_localisation/fallout_world_end_scripted_localisation.txt`, and the coordinator effects in `common/scripted_effects/fallout_world_end_effects.txt`.
+This proof covers the Fallout-owned blackout surface in `interface/fallout_consolidated.gui`, `common/scripted_guis/fallout_consolidated_scripted_gui.txt`, `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`, and the coordinator effects in `common/scripted_effects/fallout_consolidated_effects.txt`.
 
 The surface is not a super-event. The ordinary super-event GUI and event picture slots are not used for the transition.
 

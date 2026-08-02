@@ -10,9 +10,9 @@ This is not runtime acceptance. Hearts of Iron IV was not launched. No exact van
 
 The implementation is owned by:
 
-- `common/script_constants/fallout_world_end_constants.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt`
-- `common/scripted_triggers/fallout_world_end_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 
 The world transition uses schema 12. The network receipt uses `fallout_supply_network_collapse_schema.version = 1` so its payload can be audited independently inside the transition.
 

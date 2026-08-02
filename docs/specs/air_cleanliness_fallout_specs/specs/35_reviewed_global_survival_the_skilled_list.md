@@ -40,7 +40,7 @@ This is an explicit implementation boundary, not a hidden fallback. A later char
 
 ## Assets and Event Log
 
-The dedicated report image is `GFX_report_event_fallout_skilled_list` and is registered in `interface/fallout_world_end.gfx`.
+The dedicated report image is `GFX_report_event_fallout_skilled_list` and is registered in `interface/fallout_consolidated.gfx`.
 
 The source, processed card, DDS, prompt, manifest, and handoff live under `docs/assets/air_cleanliness_fallout/fallout_skilled_list/`.
 

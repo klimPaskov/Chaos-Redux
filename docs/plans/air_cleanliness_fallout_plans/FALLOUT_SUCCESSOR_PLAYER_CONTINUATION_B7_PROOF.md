@@ -4,14 +4,14 @@ Status: implemented as a dormant static pilot on 2026-07-25. This is not a relea
 
 ## Files
 
-- `common/script_constants/fallout_successor_b7_constants.txt`
-- `common/scripted_triggers/fallout_successor_b7_triggers.txt`
-- `common/scripted_effects/fallout_successor_b7_effects.txt`
-- `common/decisions/fallout_successor_b7_usa_decisions.txt`
-- `common/ai_strategy_plans/fallout_successor_b7_usa_ai.txt`
-- `common/ideas/fallout_successor_b7_usa_ideas.txt`
-- `common/national_focus/fallout_successor_b7_usa_focus.txt`
-- `localisation/english/fallout_successor_b7_usa_l_english.yml`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/decisions/fallout_consolidated_decisions.txt`
+- `common/ai_strategy_plans/fallout_consolidated_ai.txt`
+- `common/ideas/fallout_consolidated_ideas.txt`
+- `common/national_focus/fallout_consolidated_focus.txt`
+- `localisation/english/fallout_consolidated_l_english.yml`
 - `docs/assets/fallout_successor_b7_usa/manifest.md`
 - `docs/specs/air_cleanliness_fallout_specs/specs/53_successor_allocation_player_continuation_b7.md`
 - `docs/plans/air_cleanliness_fallout_plans/subagent_handoffs/fallout_fragmentation_nzl_candidate_2026-07-25.md`
@@ -27,7 +27,7 @@ The focus layer has seven authored focuses with centralized 35-day, 70-day, and 
 
 The focus layer now unlocks five route-locked continuity projects. Inland Depot Belt consumes rifles and trains while assigning a civilian factory, Guard Compacts consumes manpower, rifles, support stores, and Command Power, the Great Lakes Charter consumes convoys and Command Power, Radio Dead Zones consumes support stores and Command Power, and Federal Reconstruction Drive consumes trains while assigning a civilian factory. The projects change the frozen capital, write generation-bound logistics, security, diplomacy, information, or reconstruction memories, and apply a visible cancellation penalty when the package or capital becomes invalid. Each project has a distinct AI weight and the category is hidden until the USA package receipt is current.
 
-The latest offline focus inspector parsed the tree with seven focuses, seven resolved localisation titles, no connector crossings, no node intersections, and no long connectors. Its source scan does not load all interface definitions, so its workspace-wide diagnostics are not a runtime loading proof. The two USA focus rewards use the documented `army_experience` effect. Dedicated Fallout B7 focus and idea DDS files are now present under their event-owned folders, with parent-owned registrations in `interface/fallout_successor_b7_usa.gfx`. The source-generation prompt transcript was not retained by the interrupted worker, so independent visual approval and provenance review remain open.
+The latest offline focus inspector parsed the tree with seven focuses, seven resolved localisation titles, no connector crossings, no node intersections, and no long connectors. Its source scan does not load all interface definitions, so its workspace-wide diagnostics are not a runtime loading proof. The two USA focus rewards use the documented `army_experience` effect. Dedicated Fallout B7 focus and idea DDS files are now present under their event-owned folders, with parent-owned registrations in `interface/fallout_consolidated.gfx`. The source-generation prompt transcript was not retained by the interrupted worker, so independent visual approval and provenance review remain open.
 
 ## Fragmentation evidence
 
@@ -45,7 +45,7 @@ No B7 effect sets `fallout_successor_assignment_ledger_built`, `fallout_successo
 
 Offline references support `load_focus_tree`, `set_state_flag`, scope-valued variables, array loops, and capital building effects. The exact active transition caller, host authority, save recovery, multiplayer timing, tag-switch path, state ownership mutation, focus rendering, and runtime human-control receipt remain unobserved. HOI4 was not launched.
 
-The final art contract is explicit in `docs/assets/fallout_successor_b7_usa/manifest.md`. Seven focus sprites belong under `gfx/interface/goals/fallout_successor_b7_usa/` and four idea sprites belong under `gfx/interface/ideas/fallout_successor_b7_usa/`. All eleven are registered in `interface/fallout_successor_b7_usa.gfx` and are referenced by the B7 focus, idea, and continuity-project layers. They are dedicated Fallout art, not vanilla or Zombie placeholders. Prompt provenance and independent visual approval remain open. The shelter-registry focus and idea candidates still carry `needs_user_review` status because a visible `B7` plate remains in the generated source.
+The final art contract is explicit in `docs/assets/fallout_successor_b7_usa/manifest.md`. Seven focus sprites belong under `gfx/interface/goals/fallout_successor_b7_usa/` and four idea sprites belong under `gfx/interface/ideas/fallout_successor_b7_usa/`. All eleven are registered in `interface/fallout_consolidated.gfx` and are referenced by the B7 focus, idea, and continuity-project layers. They are dedicated Fallout art, not vanilla or Zombie placeholders. Prompt provenance and independent visual approval remain open. The shelter-registry focus and idea candidates still carry `needs_user_review` status because a visible `B7` plate remains in the generated source.
 
 ## Remaining blockers
 

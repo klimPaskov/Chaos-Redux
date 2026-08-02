@@ -10,7 +10,7 @@ The ordinary super-event GUI now rejects `world_end_fallout` in its visibility t
 
 Static source inspection shows that `initialize_world_end_scenario_registry` in `common/scripted_effects/chaosx_events_log_effects.txt` registers Fallout as the appended replacement for the retired Final Silence world-end row. Fallout has no ordinary Event Log row or evolution branch. The Fallout-specific ordinary Event Details card preparation hooks remain absent from the registry refresh, detail open, and toggle paths.
 
-The stable settings-ledger value `fallout_consequence_id.settings_ledger = 2` lives in `common/script_constants/fallout_world_end_constants.txt`. The world-end selector uses appended Fallout id 13, while ordinary Event Log and evolution registries remain untouched. The dedicated blackout GUI uses its own sequential display text. Fallout blackout audio remains owned by `fallout_dispatch_blackout_audio` in `common/scripted_effects/fallout_world_end_effects.txt`.
+The stable settings-ledger value `fallout_consequence_id.settings_ledger = 2` lives in `common/script_constants/fallout_consolidated_constants.txt`. The world-end selector uses appended Fallout id 13, while ordinary Event Log and evolution registries remain untouched. The dedicated blackout GUI uses its own sequential display text. Fallout blackout audio remains owned by `fallout_dispatch_blackout_audio` in `common/scripted_effects/fallout_consolidated_effects.txt`.
 
 The separate manual sandbox launch surface uses raw triggerable-scenario id 14, the next live id after 13. It is not an ordinary Fallout Event Log row, evolution, Event Details card, or ordinary super-event and remains launch-gated by the exact native province-sweep proof.
 
@@ -37,7 +37,7 @@ Static consumers of the flag are:
 - `air_contamination_monthly_update`, `air_contamination_apply_delta_bp`, and `air_contamination_apply_state_modifier` in `common/scripted_effects/chaos_meter_effects.txt`.
 - Chemical and biological Air contribution update, clear, and rebuild helpers.
 - Natural wildfire, volcanic, ashfall, and Black Plague source registration.
-- `air_winter_system_enabled` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`, where the permanent flag overrides a disabled pre-Fallout player setting.
+- `air_winter_system_enabled` in `common/scripted_triggers/fallout_consolidated_triggers.txt`, where the permanent flag overrides a disabled pre-Fallout player setting.
 - Treaty membership, invitation, decision, and host lifecycle surfaces in the Air Cleanliness treaty files.
 - The Air Cleanliness settings checkbox and exported settings row. The scripted GUI click trigger rejects `fallout_air_contamination_permanent_99`, so the post-Fallout value is visibly non-toggleable.
 
@@ -47,7 +47,7 @@ Cleaning Day and other ordinary reduction routes cannot change the permanent val
 
 ## Standard state loss proof
 
-The approved loss ladder is `90`, `91`, `92`, `93`, `94`, and `95` in `fallout_population_loss_percent` under `common/script_constants/fallout_world_end_constants.txt`. `fallout_apply_transition_phase_population_loss` iterates every state row that is not current. Each row calls `fallout_apply_state_population_loss`, which calculates a grade-specific request from the frozen pre-transition population and mutates state population through `apply_state_population_loss_without_recruitable_manpower_gain`.
+The approved loss ladder is `90`, `91`, `92`, `93`, `94`, and `95` in `fallout_population_loss_percent` under `common/script_constants/fallout_consolidated_constants.txt`. `fallout_apply_transition_phase_population_loss` iterates every state row that is not current. Each row calls `fallout_apply_state_population_loss`, which calculates a grade-specific request from the frozen pre-transition population and mutates state population through `apply_state_population_loss_without_recruitable_manpower_gain`.
 
 `fallout_reconcile_population_loss_receipt` calculates the observed live loss after the state mutation. It calls `chaos_meter_register_deaths` with `chaos_deaths_reason = fallout_aftermath`, civilian mode enabled, state population application disabled, and the original-owner target. The generation-bound state receipt is the idempotency guard. This proves state deletion and Deaths registration are two parts of one transaction.
 

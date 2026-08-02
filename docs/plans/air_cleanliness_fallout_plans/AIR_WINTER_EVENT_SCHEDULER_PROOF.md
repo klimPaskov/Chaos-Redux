@@ -2,7 +2,7 @@
 
 ## Implemented surface
 
-The Air Winter pilot scheduler has three entry points in `common/scripted_effects/air_cleanliness_winter_event_effects.txt`:
+The Air Winter pilot scheduler has three entry points in `common/scripted_effects/fallout_consolidated_effects.txt`:
 
 - `air_winter_event_prepare_candidate_cycle` clears the bounded event and island-source arrays, clears old source receipts, and snapshots the documented current engine year before the existing monthly state pass
 - `air_winter_schedule_phase_event` evaluates one state during that existing pass, captures durable seasonal observations, records one owner candidate, and records at most one island-refugee source receipt per source owner

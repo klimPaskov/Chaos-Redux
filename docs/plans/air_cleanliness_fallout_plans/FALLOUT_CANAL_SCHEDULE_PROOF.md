@@ -36,7 +36,7 @@ The image is fictional and contains no real people, flags, attested symbols, rea
 
 The effects file has balanced braces `1031/1031`. The trigger file has balanced braces `87/87`. The candidate registry remains balanced at `2816/2816`. The events file remains balanced at `11664/11664`. The dynamic modifier file has balanced braces `9/9`. The shared reset hook contains one Canal Schedule abort call in numeric order.
 
-The seven new event ids each occur once. The dedicated localisation has 62 unique keys and a UTF-8 BOM. The event references for 628, 630, and 632 resolve to the dedicated localisation file. The new effects, triggers, candidate row, and events reference Canal Schedule constants, all reviewed in `fallout_world_end_canal_schedule_constants.txt` or the shared Fallout event constants.
+The seven new event ids each occur once. The dedicated localisation has 62 unique keys and a UTF-8 BOM. The event references for 628, 630, and 632 resolve to the dedicated localisation file. The new effects, triggers, candidate row, and events reference Canal Schedule constants, all reviewed in `fallout_consolidated_constants.txt` or the shared Fallout event constants.
 
 ## Workbook and release floor
 

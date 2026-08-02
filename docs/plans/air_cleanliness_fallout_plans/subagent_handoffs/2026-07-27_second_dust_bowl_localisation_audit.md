@@ -6,7 +6,7 @@ Status note: The cancellation non-wiring finding below is a historical pre-paren
 
 ## Files changed
 
-- `localisation/english/fallout_world_end_second_dust_bowl_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
 
 No event script or scripted-localisation file was changed.
 

@@ -37,7 +37,7 @@ Player-facing text names Dr. Mara Vey, the ash-dusted ravine, charcoal layers, c
 
 ## Asset and icon manifest
 
-The report-event sprite is defined in `interface/fallout_world_end.gfx` and reads `gfx/event_pictures/fallout/report_event_fallout_ravine_water_chemist.dds`. Source, processed preview, runtime DDS, hashes, prompt, manifest, and GFX handoff are under `docs/assets/air_cleanliness_fallout/fallout_ravine_water_chemist/`. No flag, portrait, focus icon, decision icon, audio, or animated sprite is introduced.
+The report-event sprite is defined in `interface/fallout_consolidated.gfx` and reads `gfx/event_pictures/fallout/report_event_fallout_ravine_water_chemist.dds`. Source, processed preview, runtime DDS, hashes, prompt, manifest, and GFX handoff are under `docs/assets/air_cleanliness_fallout/fallout_ravine_water_chemist/`. No flag, portrait, focus icon, decision icon, audio, or animated sprite is introduced.
 
 ## Deliberate boundary
 

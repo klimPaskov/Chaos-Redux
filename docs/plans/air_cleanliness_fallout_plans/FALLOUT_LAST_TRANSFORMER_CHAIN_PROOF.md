@@ -71,7 +71,7 @@ country. The partner receives no mutation.
 3. The base viability is calculated from the approved weighted contract,
    rounded once, and clamped from `0` through `100`. Branch bonuses and
    success or partial thresholds are held in
-   `common/script_constants/fallout_world_end_event_constants.txt`.
+   `common/script_constants/fallout_consolidated_constants.txt`.
 4. A delayed result row is requested before payment. The result is due at
    exactly ten days. The visible event budget cost is `3`. Payment and the
    optional factory removal occur only after the delayed row and ordinary
@@ -133,7 +133,7 @@ The fictional report image is owned by Fallout and uses no Zombie surface.
 The final runtime asset is
 `gfx/event_pictures/fallout/report_event_fallout_last_transformer.dds`
 with sprite `GFX_report_event_fallout_last_transformer` registered in
-`interface/fallout_world_end.gfx`. The source, processed image, contact sheet,
+`interface/fallout_consolidated.gfx`. The source, processed image, contact sheet,
 prompt, manifest, and hashes are in
 `docs/assets/air_cleanliness_fallout/fallout_last_transformer/`. The DDS is a
 210 by 176 uncompressed 32-bit BGRA texture. No production fallback was used.

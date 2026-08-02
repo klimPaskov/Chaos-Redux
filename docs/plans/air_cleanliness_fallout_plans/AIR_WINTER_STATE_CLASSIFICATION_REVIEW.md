@@ -4,7 +4,7 @@
 
 **Primary manual review:** complete for the pinned installed vanilla build.
 
-The ledger in `common/script_constants/air_cleanliness_winter_presentation_states.txt` assigns every live vanilla state ID from 1 through 1081 to exactly one of the nine Air Winter presentation classes. The primary reviewer inspected all 1,081 state rows and manually adjudicated regional baselines, precedence conflicts, impassable states, island cases, and terrain/climate anomalies.
+The ledger in `common/script_constants/fallout_consolidated_constants.txt` assigns every live vanilla state ID from 1 through 1081 to exactly one of the nine Air Winter presentation classes. The primary reviewer inspected all 1,081 state rows and manually adjudicated regional baselines, precedence conflicts, impassable states, island cases, and terrain/climate anomalies.
 
 **Independent half-review:** complete and reconciled for IDs 541–1081. A fork-without-context reviewer inspected every state in that range and returned four disagreements. The primary reviewer accepted two changes and retained two primary assignments after rechecking the installed strategic-region weather and state evidence. The full 1–1081 primary review therefore has no unresolved rows.
 

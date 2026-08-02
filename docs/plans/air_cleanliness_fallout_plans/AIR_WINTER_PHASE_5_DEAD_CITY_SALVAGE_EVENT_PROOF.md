@@ -12,13 +12,13 @@ This tranche does not change the Air Winter survival formula, monthly phase coef
 
 Gameplay and presentation:
 
-- `common/script_constants/air_cleanliness_winter_event_constants.txt`
-- `common/on_actions/air_cleanliness_winter_on_actions.txt`
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt`
-- `common/scripted_effects/air_cleanliness_winter_event_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/on_actions/fallout_consolidated_on_actions.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `events/fallout_world_end_events.txt`
-- `localisation/english/fallout_world_end_events_l_english.yml`
-- `interface/air_cleanliness_winter.gfx`
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `interface/fallout_consolidated.gfx`
 
 Dedicated asset package:
 
@@ -127,7 +127,7 @@ The opening validates the generic owner-bound target contract and the exact ruin
 
 The result requires the generic target contract, exact branch, and `is_controlled_by = ROOT`. If ownership changes, the generic pending-owner validation fails. If ownership remains but an enemy controls the state, the dead-city invalid-branch trigger sees that the state is not controlled by `OWNER`.
 
-The offline on-action documentation defines `on_state_control_changed` with ROOT as the new controller, FROM as the old controller, and FROM.FROM as the state. `common/on_actions/air_cleanliness_winter_on_actions.txt` checks that exact state for any dead-city branch and calls the shared reconciliation effect immediately. This closes the transient loss and recapture window before the delayed result can be discarded. Monthly reconciliation remains the backstop for ownership changes, malformed branch rows, and other invalid pending ledgers. Reconciliation clears all three dead-city branches, the generic pending flag, and the stored owner. Fallout snapshot capture freezes the Air Winter row before the same state pass cancels pending branches.
+The offline on-action documentation defines `on_state_control_changed` with ROOT as the new controller, FROM as the old controller, and FROM.FROM as the state. `common/on_actions/fallout_consolidated_on_actions.txt` checks that exact state for any dead-city branch and calls the shared reconciliation effect immediately. This closes the transient loss and recapture window before the delayed result can be discarded. Monthly reconciliation remains the backstop for ownership changes, malformed branch rows, and other invalid pending ledgers. Reconciliation clears all three dead-city branches, the generic pending flag, and the stored owner. Fallout snapshot capture freezes the Air Winter row before the same state pass cancels pending branches.
 
 Every completed result marks `air_winter_memory_dead_city_salvage_exhausted`, clears all three branches, refreshes the state, and writes matching state and country result memory. Ordinary Air Winter reset clears the exhausted receipt. Ownership changes during an interrupted chain do not clear it because no completed extraction occurred.
 
@@ -152,7 +152,7 @@ Static asset checks recorded:
 
 The final DDS decode is pixel-identical to the processed PNG. Alpha ranges from 0 through 255, with 2,932 fully transparent pixels and 6,484 partially transparent pixels. The source, final image, and nine-image decoded contact sheet were visually reviewed.
 
-`GFX_report_event_air_winter_dead_city_salvage` is registered once in `interface/air_cleanliness_winter.gfx` and consumed by both event blocks. Its source, processed, runtime, sprite, and manifest paths are Fallout-owned. No zombie file, asset, sprite, audio, filename, directory, or visual motif is used.
+`GFX_report_event_air_winter_dead_city_salvage` is registered once in `interface/fallout_consolidated.gfx` and consumed by both event blocks. Its source, processed, runtime, sprite, and manifest paths are Fallout-owned. No zombie file, asset, sprite, audio, filename, directory, or visual motif is used.
 
 ## Static audit results
 

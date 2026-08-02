@@ -2,7 +2,7 @@
 
 ## Ownership
 
-The chain is Fallout-owned and dormant. Gameplay source lives in `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_border_inspection_crisis_event_triggers.txt`, `common/scripted_effects/fallout_world_end_border_inspection_crisis_event_effects.txt`, the Border Inspection Crisis constants, the dedicated dynamic modifiers, and the candidate producer block in `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
+The chain is Fallout-owned and dormant. Gameplay source lives in `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_consolidated_triggers.txt`, `common/scripted_effects/fallout_consolidated_effects.txt`, the Border Inspection Crisis constants, the dedicated dynamic modifiers, and the candidate producer block in `common/scripted_effects/fallout_consolidated_effects.txt`.
 
 Candidate `726`, transaction `710075`, route `7182`, history `9181`, and event ids `726` through `732` are unique to this chain. The route upper bound is `7183`.
 
@@ -16,6 +16,6 @@ The result writes survivor-country Event Log history payloads through `events_lo
 
 ## Engine-sensitive surfaces recorded
 
-The chain uses the existing state-scope `any_neighbor_state`, `every_neighbor_state`, `is_owned_by`, `owner`, `CONTROLLER`, `state = var:`, `var:` scope, `add_opinion_modifier`, `set_state_flag`, and `clear_state_flag` patterns already used by repository border and bilateral systems. It uses the existing Fallout delayed-result and authenticated cleanup helpers rather than a second scheduler or an ordinary super-event. The dedicated GFX sprite is registered in `interface/fallout_world_end.gfx` and points to the dedicated Fallout asset path.
+The chain uses the existing state-scope `any_neighbor_state`, `every_neighbor_state`, `is_owned_by`, `owner`, `CONTROLLER`, `state = var:`, `var:` scope, `add_opinion_modifier`, `set_state_flag`, and `clear_state_flag` patterns already used by repository border and bilateral systems. It uses the existing Fallout delayed-result and authenticated cleanup helpers rather than a second scheduler or an ordinary super-event. The dedicated GFX sprite is registered in `interface/fallout_consolidated.gfx` and points to the dedicated Fallout asset path.
 
 This proof is source evidence only. Hearts of Iron IV was not launched, and no live dispatch, save recovery, multiplayer, or player-facing render claim is made here.

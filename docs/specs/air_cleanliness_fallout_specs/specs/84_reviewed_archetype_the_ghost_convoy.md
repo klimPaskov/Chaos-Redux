@@ -48,7 +48,7 @@ Cleanup releases target and neighbor reservation flags, delayed tickets, branch 
 
 ## Presentation and assets
 
-The human opening, delayed result, and callback use `GFX_report_event_fallout_ghost_convoy`. The dedicated fictional report card is documented in `docs/assets/775_ghost_convoy/manifest.md` and registered in `interface/fallout_world_end.gfx`. Hidden AI lanes remain silent. No zombie asset, sprite, audio, path, or ordinary super-event surface is reused.
+The human opening, delayed result, and callback use `GFX_report_event_fallout_ghost_convoy`. The dedicated fictional report card is documented in `docs/assets/775_ghost_convoy/manifest.md` and registered in `interface/fallout_consolidated.gfx`. Hidden AI lanes remain silent. No zombie asset, sprite, audio, path, or ordinary super-event surface is reused.
 
 ## Review boundary
 

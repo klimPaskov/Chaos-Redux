@@ -1,0 +1,199 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT_CONSOLIDATED_ON_ACTIONS.TXT
+# Consolidated Fallout and Air Cleanliness loader surface.
+# Source files are preserved in lexical order to retain existing load order.
+# ============================================================================
+
+# ============================================================================
+# Consolidated source: common/on_actions/air_cleanliness_treaty_on_actions.txt
+# ============================================================================
+# ============================================================================
+# AIR CLEANLINESS TREATY NON-PERIODIC ON ACTIONS
+# ============================================================================
+# on_annex uses the documented scopes ROOT = annexer and FROM = annexed country.
+# Periodic work remains owned by the existing Air Contamination monthly host.
+# ============================================================================
+
+on_actions = {
+	on_annex = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = fallout_transition_active }
+					NOT = { has_global_flag = fallout_active }
+				}
+				FROM = { air_cleanliness_treaty_handle_annexed_country = yes }
+			}
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/on_actions/air_cleanliness_winter_on_actions.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - AIR WINTER CONTROL-CHANGE CLEANUP
+# ============================================================================
+# Reconciles the bound Phase 5 salvage transaction on the engine state-control
+# edge. ROOT is the new controller, FROM is the old controller, and FROM.FROM
+# is the transferred state.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						OR = {
+							has_state_flag = air_winter_dead_city_chain_survey
+							has_state_flag = air_winter_dead_city_chain_military
+							has_state_flag = air_winter_dead_city_chain_licensed
+						}
+					}
+				}
+				FROM.FROM = { air_winter_event_reconcile_pending_chain = yes }
+			}
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/on_actions/fallout_nzl_lifeboat_on_actions.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - FALLOUT NEW ZEALAND LIFEBOAT STATE ON ACTIONS
+# ============================================================================
+# Narrow event-driven receipts for the exact pirate war, its settlement, and
+# loss of the assigned package capital. No recurring country iteration is used.
+# State ids in on_state_control_changed remain static because the engine state
+# trigger consumes a literal state token. They mirror fallout_nzl_state.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = {
+					fallout_nzl_lifeboat_package_is_current = yes
+					fallout_nzl_pirate_aggressor_is_current = yes
+					var:fallout_nzl_pirate_aggressor = { tag = FROM }
+				}
+				fallout_nzl_record_pirate_war_started = yes
+			}
+			if = {
+				limit = {
+					FROM = {
+						fallout_nzl_lifeboat_package_is_current = yes
+						fallout_nzl_pirate_aggressor_is_current = yes
+						var:fallout_nzl_pirate_aggressor = { tag = ROOT }
+					}
+				}
+				FROM = { fallout_nzl_record_pirate_war_started = yes }
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			# ROOT is the capitulated country and FROM is the winner. The NZL
+			# package owns the receipt, so settle from its scope while matching
+			# the exact stored aggressor rather than the arbitrary winner.
+			NZL = {
+				if = {
+					limit = {
+						fallout_nzl_lifeboat_package_is_current = yes
+						fallout_nzl_pirate_war_receipt_is_current = yes
+						var:fallout_nzl_pirate_aggressor = { tag = ROOT }
+					}
+					fallout_nzl_record_pirate_settlement = yes
+				}
+				if = {
+					limit = {
+						fallout_nzl_lifeboat_package_is_current = yes
+						fallout_nzl_pirate_war_receipt_is_current = yes
+						tag = ROOT
+					}
+					fallout_nzl_record_pirate_defeat = yes
+				}
+			}
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			# ROOT is the winner and FROM is the defeated country. Peace can
+			# close the receipt even when the winner is not New Zealand.
+			NZL = {
+				if = {
+					limit = {
+						fallout_nzl_lifeboat_package_is_current = yes
+						fallout_nzl_pirate_war_receipt_is_current = yes
+						var:fallout_nzl_pirate_aggressor = { tag = FROM }
+					}
+					fallout_nzl_record_pirate_settlement = yes
+				}
+				if = {
+					limit = {
+						fallout_nzl_lifeboat_package_is_current = yes
+						fallout_nzl_pirate_war_receipt_is_current = yes
+						tag = FROM
+					}
+					fallout_nzl_record_pirate_defeat = yes
+				}
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			# ROOT is the annexer and FROM is the annexed country. This direct
+			# NZL scope handles annexation by any actor while retaining the
+			# exact stored-aggressor guard.
+			NZL = {
+				if = {
+					limit = {
+						fallout_nzl_lifeboat_package_is_current = yes
+						fallout_nzl_pirate_war_receipt_is_current = yes
+						var:fallout_nzl_pirate_aggressor = { tag = FROM }
+					}
+					fallout_nzl_record_pirate_settlement = yes
+				}
+				if = {
+					limit = {
+						fallout_nzl_lifeboat_package_is_current = yes
+						has_variable = fallout_nzl_guaranteed_relief_partner
+						var:fallout_nzl_guaranteed_relief_partner = { tag = FROM }
+					}
+					FROM = {
+						clr_country_flag = fallout_nzl_relief_guarantee_received
+						clear_variable = fallout_nzl_relief_guarantee_generation
+					}
+					clear_variable = fallout_nzl_guaranteed_relief_partner
+					clear_variable = fallout_nzl_guaranteed_relief_partner_generation
+				}
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM = { fallout_nzl_lifeboat_package_is_current = yes }
+					OR = {
+						AND = {
+							FROM = { check_variable = { fallout_successor_assignment_capital_state = constant:fallout_nzl_state.wellington } }
+							FROM.FROM = { state = 284 }
+						}
+						AND = {
+							FROM = { check_variable = { fallout_successor_assignment_capital_state = constant:fallout_nzl_state.auckland } }
+							FROM.FROM = { state = 1079 }
+						}
+					}
+				}
+				FROM = { set_country_flag = fallout_nzl_package_capital_ever_lost }
+			}
+		}
+	}
+}

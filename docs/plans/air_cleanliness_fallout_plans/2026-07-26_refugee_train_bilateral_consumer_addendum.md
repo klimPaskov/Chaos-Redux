@@ -42,14 +42,14 @@ No new tag, diplomacy relation, province sweep, asset, sprite, audio path, or sc
 
 ## Owned files
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
-- `common/scripted_effects/fallout_world_end_refugee_train_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_event_triggers.txt`
-- `common/scripted_triggers/fallout_world_end_refugee_train_event_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 - `events/fallout_world_end_events.txt`
-- `localisation/english/fallout_world_end_refugee_train_l_english.yml`
-- `common/scripted_localisation/fallout_world_end_refugee_train_bilateral_event_log_scripted_localisation.txt`
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `common/scripted_effects/chaosx_events_log_effects.txt`
 

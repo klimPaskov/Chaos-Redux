@@ -119,7 +119,7 @@ The implementation uses only `chaosx.fallout.38`, `chaosx.fallout.39`, `GFX_repo
 
 ## Presentation wiring
 
-Both event blocks use `GFX_report_event_air_winter_island_refugee_harbor`, registered in `interface/air_cleanliness_winter.gfx` and backed by:
+Both event blocks use `GFX_report_event_air_winter_island_refugee_harbor`, registered in `interface/fallout_consolidated.gfx` and backed by:
 
 - `gfx/event_pictures/fallout/report_event_air_winter_island_refugee_harbor.dds`
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_island_refugee_harbor_source.png`

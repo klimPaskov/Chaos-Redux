@@ -6,7 +6,7 @@ This correction is accepted for implementation. Fallout is a world consequence t
 
 ## Public ownership
 
-`common/scripted_effects/chaosx_events_log_effects.txt` is the public world-end selector registry. Fallout occupies the appended replacement row for the retired Final Silence selector. It is not registered in the ordinary country Event Log or evolution registries. Its stable settings-ledger value lives in `fallout_consequence_id` inside `common/script_constants/fallout_world_end_constants.txt`, while its world-end selector identity is `world_end_scenario_id = fallout`.
+`common/scripted_effects/chaosx_events_log_effects.txt` is the public world-end selector registry. Fallout occupies the appended replacement row for the retired Final Silence selector. It is not registered in the ordinary country Event Log or evolution registries. Its stable settings-ledger value lives in `fallout_consequence_id` inside `common/script_constants/fallout_consolidated_constants.txt`, while its world-end selector identity is `world_end_scenario_id = fallout`.
 
 The public world-end selector has a Fallout title, owner, and details branch so the replacement is visible in the world-end settings surface. That selector row is the only Fallout consequence details surface. No ordinary country Event Log row, ordinary evolution, ordinary Event Details card, or ordinary super-event registration is added. The New Zealand survivor card remains a post-consequence card and does not embed a world-end scenario description. The ordinary super-event GUI is hidden whenever `world_end_fallout` is set. The full-screen blackout GUI and dramatic sound remain Fallout-owned.
 
@@ -39,7 +39,7 @@ Retired Final Silence callbacks cannot take ownership of the Air Contamination v
 
 ## Standard Fallout population loss
 
-The accepted state loss ladder is defined in `common/script_constants/fallout_world_end_constants.txt` by `fallout_population_loss_percent`:
+The accepted state loss ladder is defined in `common/script_constants/fallout_consolidated_constants.txt` by `fallout_population_loss_percent`:
 
 | State grade | Direct population loss |
 | --- | ---: |

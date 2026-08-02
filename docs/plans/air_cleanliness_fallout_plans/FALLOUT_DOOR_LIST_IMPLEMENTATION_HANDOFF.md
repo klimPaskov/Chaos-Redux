@@ -23,29 +23,29 @@ release-floor credit until its engine-sensitive surfaces receive a live audit.
 
 ## Changed gameplay surfaces
 
-- `common/script_constants/fallout_world_end_event_constants.txt` owns branch,
+- `common/script_constants/fallout_consolidated_constants.txt` owns branch,
   threshold, viability, cost, movement, result, Event Log, AI, and fixed id
   values.
-- `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   selects the lowest valid destination and the lowest different source whose
   exposure is at least fifteen points higher. Candidate state ids and the
   source exposure floor are stored as normal country variables.
-- `common/scripted_triggers/fallout_world_end_door_list_event_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   separates opening eligibility from post-result receipt validation. The
   post-result triggers do not reapply the initial population or shelter floor.
-- `common/scripted_effects/fallout_world_end_door_list_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   freezes the pair and numerical ledgers, reserves delayed scheduler receipts,
   scores AI choices, applies result deltas, performs exact population movement,
   records durable state memories, writes Event Log history, schedules the
   callback, and releases cleanup receipts.
 - `events/fallout_world_end_events.txt` owns the human and hidden AI surfaces
   under `add_namespace = chaosx.fallout`.
-- `localisation/english/fallout_world_end_door_list_l_english.yml` contains
+- `localisation/english/fallout_consolidated_l_english.yml` contains
   concrete shelter and government-aware text with UTF-8 BOM encoding.
-- `common/scripted_localisation/fallout_world_end_door_list_event_log_scripted_localisation.txt`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
   maps the fifteen Event Log payloads to player-facing detail text.
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
-  and `interface/fallout_world_end.gfx` contain the central Event Log routes
+  and `interface/fallout_consolidated.gfx` contain the central Event Log routes
   and dedicated report sprite registration.
 
 ## Exact population proof

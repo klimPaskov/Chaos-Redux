@@ -13,8 +13,8 @@ The result delay is forty-two days and the callback delay is two hundred seventy
 
 ## Implementation handoff
 
-- Constants live in `common/script_constants/fallout_world_end_vault_of_voices_constants.txt`.
-- The candidate row is appended in `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
+- Constants live in `common/script_constants/fallout_consolidated_constants.txt`.
+- The candidate row is appended in `common/scripted_effects/fallout_consolidated_effects.txt`.
 - Triggers, effects, modifiers, Event Log payload localisation, events, and player-facing localisation are Fallout-owned surfaces.
 - The report image has a dedicated generated source, processed preview, DDS, manifest, and GFX handoff.
 - It does not reuse Zombie paths, Air Winter report images, The Working Machine art, or another Fallout chain's source.

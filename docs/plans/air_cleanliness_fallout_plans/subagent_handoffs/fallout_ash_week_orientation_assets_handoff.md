@@ -25,7 +25,7 @@ No source reuses Air Winter art. The images contain no readable text, flags, log
 
 ## Runtime sprite mapping
 
-Use `interface/fallout_world_end.gfx` and the stable sprite names below:
+Use `interface/fallout_consolidated.gfx` and the stable sprite names below:
 
 | Sprite | Final DDS |
 | --- | --- |
@@ -46,7 +46,7 @@ Parent visual review approved the contact sheet and six processed cards as disti
 
 ## Main-agent disposition
 
-The six sprites are registered in `interface/fallout_world_end.gfx`. Event bindings, event localisation, and log or detail consumers remain pending.
+The six sprites are registered in `interface/fallout_consolidated.gfx`. Event bindings, event localisation, and log or detail consumers remain pending.
 
 ## Remaining risks
 

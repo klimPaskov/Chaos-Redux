@@ -101,7 +101,7 @@ No prompt file was named for status reconciliation. Prompt files were left uncha
 
 - Parsed both edited JSON manifests with PowerShell `ConvertFrom-Json`.
 - Confirmed the asset manifest still reports `complete_with_radio_advisor_blocked` and `total_runtime_dds` equal to 75.
-- Counted 75 NZL sprite name lines in `interface/fallout_world_end.gfx` and confirmed the Radio Service Coordinator sprite is absent while completed report, leader, advisor, focus, idea, decision, category, and achievement registrations are present.
+- Counted 75 NZL sprite name lines in `interface/fallout_consolidated.gfx` and confirmed the Radio Service Coordinator sprite is absent while completed report, leader, advisor, focus, idea, decision, category, and achievement registrations are present.
 - Confirmed the old conflict-ledger absence sentence is gone and the dormant-pilot and ordinary-owner wording is present.
 - Confirmed the README carries `0 of 660`, absent `SCN-014`, Zombie-only Event 2, and the v10 blocker wording.
 - Re-read the engine proof and confirmed six numbered blockers, the no-caller boundary, radio blocker, Event Log and Event Details blocker, sea-road blocker, and `HOI4 was not run` evidence remain.

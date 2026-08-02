@@ -17,10 +17,10 @@ The three Air Winter map modes use the same access contract. A player cannot byp
 
 ## Script ownership
 
-- `common/script_constants/air_cleanliness_winter_constants.txt` owns the 9000 basis-point terminal threshold.
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt` derives the viewer's basic, office, and terminal access.
-- `common/scripted_effects/air_cleanliness_winter_response_effects.txt` grants `air_winter_atmospheric_office` when a roof-sampler project completes.
-- `common/scripted_effects/air_cleanliness_winter_effects.txt` reconstructs that country capability from surviving sampler states during normalisation and clears it through the bounded country reset.
+- `common/script_constants/fallout_consolidated_constants.txt` owns the 9000 basis-point terminal threshold.
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` derives the viewer's basic, office, and terminal access.
+- `common/scripted_effects/fallout_consolidated_effects.txt` grants `air_winter_atmospheric_office` when a roof-sampler project completes.
+- `common/scripted_effects/fallout_consolidated_effects.txt` reconstructs that country capability from surviving sampler states during normalisation and clears it through the bounded country reset.
 - `common/scripted_localisation/chaosx_scripted_localisation_map_modes.txt` selects one information tier for each mapmode tooltip.
 - `localisation/english/chaosx_map_modes_l_english.yml` owns the concrete player-facing reports.
 

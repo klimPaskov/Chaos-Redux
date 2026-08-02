@@ -14,11 +14,11 @@ The fractured border contract is Fallout-owned and uses the reserved Independenc
 
 ## Proof surfaces
 
-- `common/scripted_effects/fallout_world_end_effects.txt` owns the war-stop receipt, tag-preservation receipt, technology phase, and map-return ordering.
-- `common/scripted_effects/fallout_world_end_technology_effects.txt` owns the reviewed technology regression and emergency floor.
-- `common/scripted_effects/fallout_world_end_fracture_effects.txt` owns the conflict ledger, random source and state selection, and reserved-template dynamic output.
-- `common/scripted_triggers/fallout_world_end_triggers.txt` owns the no-delete, war-stop, technology, and map-return postconditions.
-- `common/scripted_triggers/fallout_world_end_fracture_triggers.txt` owns source eligibility and the release gate.
-- `common/script_constants/fallout_world_end_constants.txt` owns the regression schema, fracture pool tuning, and transition error codes.
+- `common/scripted_effects/fallout_consolidated_effects.txt` owns the war-stop receipt, tag-preservation receipt, technology phase, and map-return ordering.
+- `common/scripted_effects/fallout_consolidated_effects.txt` owns the reviewed technology regression and emergency floor.
+- `common/scripted_effects/fallout_consolidated_effects.txt` owns the conflict ledger, random source and state selection, and reserved-template dynamic output.
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` owns the no-delete, war-stop, technology, and map-return postconditions.
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` owns source eligibility and the release gate.
+- `common/script_constants/fallout_consolidated_constants.txt` owns the regression schema, fracture pool tuning, and transition error codes.
 
 The exact native all-valid-province thermonuclear sweep, host-authoritative blackout, dynamic tag readback, and mutating random border result remain runtime proof gates. Hearts of Iron IV was not run.

@@ -8,14 +8,14 @@ Event Log detail route is statically proven below.
 ## History identity
 
 `fallout_orientation_log.history_id` is `9110` in
-`common/script_constants/fallout_world_end_event_constants.txt`. It uses the
+`common/script_constants/fallout_consolidated_constants.txt`. It uses the
 existing `event_system_event_type.fallout_country_memory` type and the shared
 `record_events_log_system_history_entry` API. The writer never changes
 `global.last_fired_event_id`, so ordinary event history is not reassigned to an
 orientation result.
 
 `fallout_orientation_record_history` in
-`common/scripted_effects/fallout_world_end_orientation_event_log_effects.txt`
+`common/scripted_effects/fallout_consolidated_effects.txt`
 is called from the authenticated orientation resolver only after the five
 receipt arrays accept the component. It writes one row for a newly recorded
 component and stores the transition generation plus component as the duplicate
@@ -41,14 +41,14 @@ writer’s input gate.
 
 ## Localisation and Event Log routing
 
-`common/scripted_localisation/fallout_world_end_orientation_event_log_scripted_localisation.txt`
+`common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 maps every payload to a dedicated text key. The name and detail routes are
 registered in `GetEventsLogHistoryEventName` and
 `GetEventsLogEventDetailDescription` in
 `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`.
 `events_log_get_event_type_for_open_detail` recognizes history `9110` as a
 Fallout memory row. Player-facing text is in
-`localisation/english/fallout_world_end_orientation_event_log_l_english.yml`
+`localisation/english/fallout_consolidated_l_english.yml`
 and uses the approved regional and government-aware orientation vocabulary.
 
 ## Static checks

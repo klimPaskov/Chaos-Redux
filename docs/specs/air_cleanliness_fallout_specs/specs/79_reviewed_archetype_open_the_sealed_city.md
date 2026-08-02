@@ -33,6 +33,6 @@ History `9183` routes through the shared Event Log name and detail selectors. Ch
 
 ## Asset and review surface
 
-The dedicated report image is `GFX_report_event_fallout_open_the_sealed_city`, registered in `interface/fallout_world_end.gfx`. Source, processed PNG, runtime DDS, manifest, and GFX handoff live under `docs/assets/740_open_the_sealed_city/`.
+The dedicated report image is `GFX_report_event_fallout_open_the_sealed_city`, registered in `interface/fallout_consolidated.gfx`. Source, processed PNG, runtime DDS, manifest, and GFX handoff live under `docs/assets/740_open_the_sealed_city/`.
 
 The authoritative workbook row is `FALLOUT-740`. The chain is intentionally dormant and does not increase release-floor credit until the wider reviewed tranche is promoted.

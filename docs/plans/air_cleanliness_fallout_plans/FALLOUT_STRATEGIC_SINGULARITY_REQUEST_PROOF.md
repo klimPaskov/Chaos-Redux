@@ -10,9 +10,9 @@ This proof records the source-aware bridge between the Brilliant Scientist strat
 
 `common/scripted_effects/016_brilliant_scientist_super_event_effects.txt` prepares the strategic-singularity terminal, records its pre-lock consequence receipt, saves the initiating country as `fallout_request_actor_input`, and submits `fallout_request_source_input = constant:fallout_request_source.strategic_singularity` to `fallout_request_aftermath`.
 
-`fallout_explicit_terminal_request_is_valid` in `common/scripted_triggers/fallout_world_end_triggers.txt` accepts the strategic-singularity source as an explicit terminal request. That shared validator requires the world-end ledger to be free and the terminal to be enabled, but it does not require Air Contamination to reach 100 percent or impose a Chaos value above 1000. Any upstream Brilliant Scientist scenario eligibility remains a separate terminal rule and is not a Fallout request threshold.
+`fallout_explicit_terminal_request_is_valid` in `common/scripted_triggers/fallout_consolidated_triggers.txt` accepts the strategic-singularity source as an explicit terminal request. That shared validator requires the world-end ledger to be free and the terminal to be enabled, but it does not require Air Contamination to reach 100 percent or impose a Chaos value above 1000. Any upstream Brilliant Scientist scenario eligibility remains a separate terminal rule and is not a Fallout request threshold.
 
-`common/scripted_effects/fallout_world_end_effects.txt` remains the only request coordinator. It records the source, intensity, request date, coordinator, and actor target in the single idempotent envelope. Repeated calls are rejected by `fallout_request_ledger_is_free` rather than creating another request.
+`common/scripted_effects/fallout_consolidated_effects.txt` remains the only request coordinator. It records the source, intensity, request date, coordinator, and actor target in the single idempotent envelope. Repeated calls are rejected by `fallout_request_ledger_is_free` rather than creating another request.
 
 ## Rejection recovery
 
@@ -29,9 +29,9 @@ The source-aware calls are guarded by `fallout_request_source_is_strategic_singu
 ## Static checks
 
 - The Fallout namespace remains owned by `events/fallout_world_end_events.txt`.
-- The strategic-singularity source enum is declared in `common/script_constants/fallout_world_end_constants.txt`.
-- The source trigger and explicit-terminal validator are defined in `common/scripted_triggers/fallout_world_end_triggers.txt`.
-- The request envelope and lock bridge are defined in `common/scripted_effects/fallout_world_end_effects.txt`.
+- The strategic-singularity source enum is declared in `common/script_constants/fallout_consolidated_constants.txt`.
+- The source trigger and explicit-terminal validator are defined in `common/scripted_triggers/fallout_consolidated_triggers.txt`.
+- The request envelope and lock bridge are defined in `common/scripted_effects/fallout_consolidated_effects.txt`.
 - The Brilliant Scientist recovery and finalization effects are defined in `common/scripted_effects/016_brilliant_scientist_super_event_effects.txt`.
 - No setter for either Fallout scheduler activation flag was added.
 - No public manual scenario row was added.

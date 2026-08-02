@@ -60,7 +60,7 @@ The visible result has nine manually written descriptions for the three branches
 
 ## Asset binding
 
-Human events `70` and `72` use `GFX_report_event_fallout_resource_crisis`. The sprite resolves to `gfx/event_pictures/fallout/report_event_fallout_resource_crisis.dds` through `interface/fallout_world_end.gfx`. The source, processed PNG, DDS hash, and conversion evidence remain in `docs/assets/fallout_world_end/ash_week_orientation/asset_manifest.json`.
+Human events `70` and `72` use `GFX_report_event_fallout_resource_crisis`. The sprite resolves to `gfx/event_pictures/fallout/report_event_fallout_resource_crisis.dds` through `interface/fallout_consolidated.gfx`. The source, processed PNG, DDS hash, and conversion evidence remain in `docs/assets/fallout_world_end/ash_week_orientation/asset_manifest.json`.
 
 ## Dormancy and release count
 

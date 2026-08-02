@@ -72,7 +72,7 @@ The state memory reset clears every new opening and result memory. No state or c
 
 ## Assets
 
-All six blocks use `GFX_report_event_air_winter_phase_3`, the dedicated Air Winter Phase 3 report image registered in `interface/air_cleanliness_winter.gfx`. The existing manifest row maps all ten Phase 3 blocks to that sprite. No new art, sprite, or audio is required for this tranche.
+All six blocks use `GFX_report_event_air_winter_phase_3`, the dedicated Air Winter Phase 3 report image registered in `interface/fallout_consolidated.gfx`. The existing manifest row maps all ten Phase 3 blocks to that sprite. No new art, sprite, or audio is required for this tranche.
 
 ## Review acceptance
 

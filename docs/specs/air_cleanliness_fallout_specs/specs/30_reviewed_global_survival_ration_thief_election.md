@@ -27,4 +27,4 @@ AI selects a branch from government identity, cohesion, recognition, faction pre
 
 ## Asset and localisation surfaces
 
-The dedicated report art is `GFX_report_event_fallout_ration_thief_election` and is documented under `docs/assets/air_cleanliness_fallout/fallout_ration_thief_election/`. Localisation is in `localisation/english/fallout_world_end_ration_thief_election_l_english.yml`. Event Log name, detail, and fifteen payload descriptions are authored in the same package.
+The dedicated report art is `GFX_report_event_fallout_ration_thief_election` and is documented under `docs/assets/air_cleanliness_fallout/fallout_ration_thief_election/`. Localisation is in `localisation/english/fallout_consolidated_l_english.yml`. Event Log name, detail, and fifteen payload descriptions are authored in the same package.

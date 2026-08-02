@@ -4,12 +4,12 @@ Status: implemented by the parent agent on 2026-07-25.
 
 Changed files:
 
-- `common/script_constants/fallout_successor_b7_constants.txt`
-- `common/scripted_triggers/fallout_successor_b7_triggers.txt`
-- `common/scripted_effects/fallout_successor_b7_effects.txt`
-- `common/ideas/fallout_successor_b7_usa_ideas.txt`
-- `common/national_focus/fallout_successor_b7_usa_focus.txt`
-- `localisation/english/fallout_successor_b7_usa_l_english.yml`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/ideas/fallout_consolidated_ideas.txt`
+- `common/national_focus/fallout_consolidated_focus.txt`
+- `localisation/english/fallout_consolidated_l_english.yml`
 - `docs/assets/fallout_successor_b7_usa/manifest.md`
 - `docs/specs/air_cleanliness_fallout_specs/specs/53_successor_allocation_player_continuation_b7.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md`

@@ -8,14 +8,14 @@ The Fallout consequence remains a terminal transition. It is not an ordinary eve
 
 ## Authored implementation
 
-- `common/script_constants/fallout_world_end_regional_health_compact_constants.txt` owns branch, timing, cost, grading, callback, modifier, and history values.
-- `common/scripted_effects/fallout_world_end_regional_health_compact_event_effects.txt` owns deterministic registry snapshots, branch costs, state and neighbor reservations, Air Winter and Supply Access writes, Deaths-backed failures, bilateral opinion, Event Log payloads, delayed lanes, and cleanup.
-- `common/scripted_triggers/fallout_world_end_regional_health_compact_event_triggers.txt` owns current-state, current-country, affordability, delayed-result, callback, and cleanup gates.
-- `common/dynamic_modifiers/fallout_world_end_regional_health_compact_dynamic_modifiers.txt` owns branch result and callback presentation modifiers.
-- `common/opinion_modifiers/fallout_regional_health_compact_opinion_modifiers.txt` owns dedicated bilateral compact memories.
+- `common/script_constants/fallout_consolidated_constants.txt` owns branch, timing, cost, grading, callback, modifier, and history values.
+- `common/scripted_effects/fallout_consolidated_effects.txt` owns deterministic registry snapshots, branch costs, state and neighbor reservations, Air Winter and Supply Access writes, Deaths-backed failures, bilateral opinion, Event Log payloads, delayed lanes, and cleanup.
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` owns current-state, current-country, affordability, delayed-result, callback, and cleanup gates.
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt` owns branch result and callback presentation modifiers.
+- `common/opinion_modifiers/fallout_consolidated_opinion_modifiers.txt` owns dedicated bilateral compact memories.
 - `events/fallout_world_end_events.txt` owns the human opening, hidden AI opening, delayed result pair, callback pair, and cleanup under `chaosx.fallout`.
-- `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and `common/scripted_localisation/fallout_world_end_regional_health_compact_event_log_scripted_localisation.txt` route history `9185` to the dedicated detail resolver.
-- `localisation/english/fallout_world_end_regional_health_compact_l_english.yml` provides all player-facing event, tooltip, memory, and Event Log text.
+- `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt` route history `9185` to the dedicated detail resolver.
+- `localisation/english/fallout_consolidated_l_english.yml` provides all player-facing event, tooltip, memory, and Event Log text.
 
 ## Static evidence
 

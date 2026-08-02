@@ -28,17 +28,17 @@ The opening consumes one ordinary receipt only after the result transaction is a
 
 ## Event log and localization
 
-History id `9111` carries fifteen explicit payloads. The event log maps the name to `fallout.event_log.triage_wall.name` and maps each branch and outcome to a concrete detail key. Event title, descriptions, options, tooltips, callback text, dynamic modifier names, and history detail keys are in `localisation/english/fallout_world_end_triage_wall_l_english.yml`.
+History id `9111` carries fifteen explicit payloads. The event log maps the name to `fallout.event_log.triage_wall.name` and maps each branch and outcome to a concrete detail key. Event title, descriptions, options, tooltips, callback text, dynamic modifier names, and history detail keys are in `localisation/english/fallout_consolidated_l_english.yml`.
 
 ## Asset proof
 
-The visible events use `GFX_report_event_fallout_triage_wall`. The dedicated asset package is documented in `docs/assets/fallout_triage_wall/manifest.md` and wired by `interface/fallout_world_end.gfx` to `gfx/event_pictures/fallout/fallout_triage_wall_report.dds`. The report scene is a generated fictional clinic triage wall. It does not reuse zombie or existing Fallout ids, assets, audio, sprites, or paths.
+The visible events use `GFX_report_event_fallout_triage_wall`. The dedicated asset package is documented in `docs/assets/fallout_triage_wall/manifest.md` and wired by `interface/fallout_consolidated.gfx` to `gfx/event_pictures/fallout/fallout_triage_wall_report.dds`. The report scene is a generated fictional clinic triage wall. It does not reuse zombie or existing Fallout ids, assets, audio, sprites, or paths.
 
 ## UI and icon surfaces
 
 The chain needs no focus, idea, decision, or map icon. Its only visual surface is
 the report-event sprite `GFX_report_event_fallout_triage_wall`, registered in
-`interface/fallout_world_end.gfx`. The event log uses text payloads rather than
+`interface/fallout_consolidated.gfx`. The event log uses text payloads rather than
 a second icon surface.
 
 ## Static review performed

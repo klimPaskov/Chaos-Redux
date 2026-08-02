@@ -19,23 +19,23 @@ The parent shorthand "90-day current-generation licence" is implemented in the p
 
 ### Licence and operating window
 
-- `fallout_nzl_license_every_sea_road` retains its immediate seven-point Sea-Lane Security reward, opens Last-Berth Closure, and calls the licence helper at `common/national_focus/fallout_nzl_lifeboat_focus.txt:288-304`.
-- `fallout_nzl_activate_sea_road_licensing` writes the active flag and exact Fallout generation and opens Fishery Quota Compact at `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:75-79`.
-- `fallout_nzl_issue_sea_road_patrol_window` writes the timed flag through `fallout_nzl_duration.cooldown`, stamps the generation, increments the serial, and reuses one dynamic modifier at `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:82-103`. The constant is 90 days.
-- The fail-closed current triggers require a current package, current licence generation, timed patrol flag, matching patrol generation, and a positive serial at `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt:80-102`.
-- Exactly one lifecycle dynamic modifier exists. Its enable and remove triggers both use the current-window trigger at `common/dynamic_modifiers/fallout_nzl_lifeboat_dynamic_modifiers.txt:8-14`.
+- `fallout_nzl_license_every_sea_road` retains its immediate seven-point Sea-Lane Security reward, opens Last-Berth Closure, and calls the licence helper at `common/national_focus/fallout_consolidated_focus.txt:288-304`.
+- `fallout_nzl_activate_sea_road_licensing` writes the active flag and exact Fallout generation and opens Fishery Quota Compact at `common/scripted_effects/fallout_consolidated_effects.txt:75-79`.
+- `fallout_nzl_issue_sea_road_patrol_window` writes the timed flag through `fallout_nzl_duration.cooldown`, stamps the generation, increments the serial, and reuses one dynamic modifier at `common/scripted_effects/fallout_consolidated_effects.txt:82-103`. The constant is 90 days.
+- The fail-closed current triggers require a current package, current licence generation, timed patrol flag, matching patrol generation, and a positive serial at `common/scripted_triggers/fallout_consolidated_triggers.txt:80-102`.
+- Exactly one lifecycle dynamic modifier exists. Its enable and remove triggers both use the current-window trigger at `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt:8-14`.
 
 ### Paid action contract
 
-- Licensed Fishery Quota Compact requires and consumes five convoys in addition to its existing 25 Political Power and 350 manpower costs, then applies +7 Food Security and +4 Sea-Lane Security and refreshes the window at `common/decisions/fallout_nzl_lifeboat_decisions.txt:187-253`.
-- Licensed Quiet-Seas Patrol requires and consumes ten convoys and twelve Navy Experience, retains its factory commitment, applies +12 Sea-Lane Security, and refreshes the same window at `common/decisions/fallout_nzl_lifeboat_decisions.txt:913-999`.
+- Licensed Fishery Quota Compact requires and consumes five convoys in addition to its existing 25 Political Power and 350 manpower costs, then applies +7 Food Security and +4 Sea-Lane Security and refreshes the window at `common/decisions/fallout_consolidated_decisions.txt:187-253`.
+- Licensed Quiet-Seas Patrol requires and consumes ten convoys and twelve Navy Experience, retains its factory commitment, applies +12 Sea-Lane Security, and refreshes the same window at `common/decisions/fallout_consolidated_decisions.txt:913-999`.
 - Non-licensed branches retain the earlier fail-closed costs and results. The correction therefore does not grant free convoys, equipment, or a passive value loop.
-- The licensed Fishery AI weight is zero below ten convoys while the payment is five, preserving the specified five-convoy reserve at `common/decisions/fallout_nzl_lifeboat_decisions.txt:240-253`.
+- The licensed Fishery AI weight is zero below ten convoys while the payment is five, preserving the specified five-convoy reserve at `common/decisions/fallout_consolidated_decisions.txt:240-253`.
 
 ### Score-only pressure, cleanup, and fixed architecture
 
-- `fallout_nzl_add_sea_road_score` changes only temporary `fallout_nzl_chain_score`: +4 for a current isolation window and -4 for a lapsed licensed window at `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:114-128`.
-- Its only call sites are the external and Year 10 calculators at `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:1233` and `:1306`. Opening and domestic scoring do not read the window.
+- `fallout_nzl_add_sea_road_score` changes only temporary `fallout_nzl_chain_score`: +4 for a current isolation window and -4 for a lapsed licensed window at `common/scripted_effects/fallout_consolidated_effects.txt:114-128`.
+- Its only call sites are the external and Year 10 calculators at `common/scripted_effects/fallout_consolidated_effects.txt:1233` and `:1306`. Opening and domestic scoring do not read the window.
 - Package reset closes the modifier and clears the licence flag, licence generation, serial, timed flag, and patrol generation. No correction helper is called from `common/on_actions/`, and an exact non-documentation search found zero `fallout_nzl_activate_lifeboat_package = yes` callers.
 - Static source counts remain exactly 42 focus blocks, 18 decisions/missions, 14 ideas, and 26 authored event blocks (`chaosx.fallout.127` through `.152`).
 
@@ -45,25 +45,25 @@ No sea-road requirement is missing or simplified in the final snapshot.
 
 ### Dedicated ownership and shared history
 
-- `common/script_constants/fallout_nzl_event_log_constants.txt:16-24` assigns dedicated system ids `9101`, `9102`, `9103`, and `9104`. The authored roots remain `.127`, `.133`, `.139`, and `.147`.
+- `common/script_constants/fallout_consolidated_constants.txt:16-24` assigns dedicated system ids `9101`, `9102`, `9103`, and `9104`. The authored roots remain `.127`, `.133`, `.139`, and `.147`.
 - `common/script_constants/event_system_constants.txt:80` assigns `event_system_event_type.fallout_country_memory = 4`. History filter cycling, range validation, and row matching include filter 4 at `common/scripted_effects/chaosx_events_log_effects.txt:2855-2926` and `:3218-3229`.
 - `record_events_log_system_history_entry` prepends the shared sequence, date, dedicated id, type, compact result payload, primary actor, optional secondary actor, and existing history statistics without changing `global.last_fired_event_id` at `common/scripted_effects/chaosx_events_log_effects.txt:442-534`.
-- The NZL wrapper records NZL as primary actor and the exact current external country as secondary actor when present at `common/scripted_effects/fallout_nzl_event_log_effects.txt:100-138`.
+- The NZL wrapper records NZL as primary actor and the exact current external country as secondary actor when present at `common/scripted_effects/fallout_consolidated_effects.txt:100-138`.
 
 ### Exact private ledger and commit cardinality
 
-- `fallout_nzl_event_log_append_snapshot` prepends 18 parallel fields: shared sequence, exact date, dedicated id, detailed payload, country-memory id 91, choice, result, domestic prior result, route, actor and marker, secondary actor and marker, all four package values, and transition generation at `common/scripted_effects/fallout_nzl_event_log_effects.txt:163-228`.
-- Opening, domestic, and Year 10 wrappers are generation-deduplicated at `common/scripted_effects/fallout_nzl_event_log_effects.txt:140-161`, `:230-251`, and `:293-314`. Package reset now preserves their recorded flags and generation variables; a same-generation reactivation cannot duplicate committed rows, while a later generation can replace the receipt.
-- External logging is one row per transaction. A new external transaction clears only the transaction receipt at `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:644-657`. The authored external chain records before cleanup in `fallout_nzl_close_external_chain` at `common/scripted_effects/fallout_nzl_lifeboat_effects.txt:826-831`.
-- Rescue Passage records its successful second external partner before transaction cleanup at `common/decisions/fallout_nzl_lifeboat_decisions.txt:519-525`. The no-partner branch keeps the secondary-actor marker false and does not fabricate a country.
+- `fallout_nzl_event_log_append_snapshot` prepends 18 parallel fields: shared sequence, exact date, dedicated id, detailed payload, country-memory id 91, choice, result, domestic prior result, route, actor and marker, secondary actor and marker, all four package values, and transition generation at `common/scripted_effects/fallout_consolidated_effects.txt:163-228`.
+- Opening, domestic, and Year 10 wrappers are generation-deduplicated at `common/scripted_effects/fallout_consolidated_effects.txt:140-161`, `:230-251`, and `:293-314`. Package reset now preserves their recorded flags and generation variables; a same-generation reactivation cannot duplicate committed rows, while a later generation can replace the receipt.
+- External logging is one row per transaction. A new external transaction clears only the transaction receipt at `common/scripted_effects/fallout_consolidated_effects.txt:644-657`. The authored external chain records before cleanup in `fallout_nzl_close_external_chain` at `common/scripted_effects/fallout_consolidated_effects.txt:826-831`.
+- Rescue Passage records its successful second external partner before transaction cleanup at `common/decisions/fallout_consolidated_decisions.txt:519-525`. The no-partner branch keeps the secondary-actor marker false and does not fabricate a country.
 - Opening and domestic calls occur after their result application in the delayed resolvers at `events/fallout_world_end_events.txt:8978-8982` and `:9108-9112`. Year 10 logs only after its final receipt is written.
 
 ### Exact reload and package-card isolation
 
-- `fallout_nzl_load_open_history_payload` first resolves the selected dedicated id and exact shared sequence, then loads the private row with the same sequence and id at `common/scripted_effects/fallout_nzl_event_log_effects.txt:559-685`. It does not substitute later live values into an old history row.
-- `fallout_nzl_prepare_event_log_card` selects one transition generation. It uses live values only when NZL has a current package and at least one current-generation memory; otherwise it selects the newest stored generation. All four chain summaries and external contacts are filtered to that generation at `common/scripted_effects/fallout_nzl_event_log_effects.txt:316-557`.
-- Current live values, route, and aggressor are read inside `NZL = { ... }` and copied to the viewing human country's display variables at `common/scripted_effects/fallout_nzl_event_log_effects.txt:363-442`. The card is therefore not dependent on the viewer playing NZL.
-- `fallout_nzl.event_log.card.composite` embeds both the base Fallout detail and the NZL package card at `localisation/english/fallout_nzl_event_log_l_english.yml:37`. The scripted-localisation branch uses that composite only when NZL memory exists and otherwise retains the base Fallout key at `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt:10763-10773`.
+- `fallout_nzl_load_open_history_payload` first resolves the selected dedicated id and exact shared sequence, then loads the private row with the same sequence and id at `common/scripted_effects/fallout_consolidated_effects.txt:559-685`. It does not substitute later live values into an old history row.
+- `fallout_nzl_prepare_event_log_card` selects one transition generation. It uses live values only when NZL has a current package and at least one current-generation memory; otherwise it selects the newest stored generation. All four chain summaries and external contacts are filtered to that generation at `common/scripted_effects/fallout_consolidated_effects.txt:316-557`.
+- Current live values, route, and aggressor are read inside `NZL = { ... }` and copied to the viewing human country's display variables at `common/scripted_effects/fallout_consolidated_effects.txt:363-442`. The card is therefore not dependent on the viewer playing NZL.
+- `fallout_nzl.event_log.card.composite` embeds both the base Fallout detail and the NZL package card at `localisation/english/fallout_consolidated_l_english.yml:37`. The scripted-localisation branch uses that composite only when NZL memory exists and otherwise retains the base Fallout key at `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt:10763-10773`.
 
 ### Negative ownership contract
 
@@ -117,12 +117,12 @@ Not performed or not available:
 
 Audited moving-surface SHA-256 snapshot:
 
-- `fallout_nzl_lifeboat_effects.txt`: `923AE0CC35F20A5D491A200EA0EFE96FB615862587F80CCB3A8867ADEBC9D6E3`
-- `fallout_nzl_event_log_effects.txt`: `D1187A6651FADBF30CE289D35491F13ACE2C204EC9E65B896510A60C11065FA5`
+- `fallout_consolidated_effects.txt`: `923AE0CC35F20A5D491A200EA0EFE96FB615862587F80CCB3A8867ADEBC9D6E3`
+- `fallout_consolidated_effects.txt`: `D1187A6651FADBF30CE289D35491F13ACE2C204EC9E65B896510A60C11065FA5`
 - `chaosx_events_log_effects.txt`: `106BC9E95FA102F0A4D5CDE991A92A39110C4F1DE11A4464290DD7011B2450CF`
 - `chaosx_scripted_gui_events_log.txt`: `504ACDD3AD2DA4C27A28FBC274D1D112A3B48A3612AB1265C2520F06E4074E81`
 - `chaosx_scripted_localisation_events_log.txt`: `B1E654DEE8963E391EF6B6F9FEFEB714CBDEC6356CACF981E237441A7E74F57F`
-- `fallout_nzl_event_log_l_english.yml`: `F2BDC7E8A9EE1386D6447657DB4211AD4F025557DA58E1FC0D64713D553EC96E`
+- `fallout_consolidated_l_english.yml`: `F2BDC7E8A9EE1386D6447657DB4211AD4F025557DA58E1FC0D64713D553EC96E`
 - `FALLOUT_NZL_LIFEBOAT_ENGINE_PROOF.md`: `900F2C4AC90498A961673C222D2E6BC046BC3B99BDA769905798D1801A0827E1`
 
 ## 6. Asset and documentation gaps

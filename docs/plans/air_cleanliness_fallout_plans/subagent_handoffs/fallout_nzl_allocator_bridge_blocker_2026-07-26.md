@@ -9,7 +9,7 @@ Status: **blocked; documentation-only handoff; no gameplay edits**
 
 The requested package-aware NZL allocator bridge is not safe to implement against the current schemas. The repository has generation-authenticated conflict rows for countries and generation-authenticated inventory rows for states, but it has no state-level conflict-disposition receipt that can carry a typed result, source package or country, output country, cleanup owner, and transition generation for `726`, `284`, and `723`.
 
-The current NZL helper is also not a safe substitute. `fallout_nzl_record_conflict_dispositions` in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt` writes `fallout_nzl_samoa_disposition` and `fallout_nzl_aotearoa_overlap_disposition` from a NZL country scope, uses the locally invented enum `fallout_nzl_conflict_disposition`, and is called by the B7 NZL assignment producer. It cannot prove which allocator-owned semantic result occurred for either state group.
+The current NZL helper is also not a safe substitute. `fallout_nzl_record_conflict_dispositions` in `common/scripted_effects/fallout_consolidated_effects.txt` writes `fallout_nzl_samoa_disposition` and `fallout_nzl_aotearoa_overlap_disposition` from a NZL country scope, uses the locally invented enum `fallout_nzl_conflict_disposition`, and is called by the B7 NZL assignment producer. It cannot prove which allocator-owned semantic result occurred for either state group.
 
 Because the semantic result and the owner-side receipt API are unproven, this tranche makes no gameplay edits. The dormant package, scheduler, public scenario, player handoff, and general allocator remain unchanged.
 
@@ -17,45 +17,45 @@ Because the semantic result and the owner-side receipt API are unproven, this tr
 
 ### NZL package
 
-- `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - `fallout_nzl_has_exact_state_package` requires ownership and control of `284`, `1079`, `723`, `1080`, and `1081` and excludes NZL ownership of `726`.
   - `fallout_nzl_assignment_identity_is_current` requires tag `NZL`, the current assignment row, country memory `constant:fallout_country_memory.new_zealand_lifeboat_state`, region `constant:fallout_region.oceania_remote_islands`, and archetype `constant:fallout_government_archetype.maritime_remnant`.
   - `fallout_nzl_conflict_dispositions_are_current` consumes two NZL-local flags, two NZL-local enum variables, and two generation variables.
   - `fallout_nzl_conflict_disposition_inputs_are_current` checks the global phase, conflict ledger, NZL footprint, the current owner and controller of `726`, the `SAM` country row, and every live country row. It does not identify a state-level source, package id, output tag, cleanup owner, or typed semantic result for either overlap.
   - `fallout_nzl_existing_tag_conversion_can_commit` and `fallout_nzl_lifeboat_package_can_activate` consume the local receipt pair.
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - `fallout_nzl_record_conflict_dispositions` is the only writer for the local pair and is called from `fallout_nzl_commit_existing_tag_assignment`.
   - `fallout_nzl_clear_conflict_dispositions` is called from the global allocation reset and clears the local pair.
   - `fallout_nzl_activate_lifeboat_package` remains a dormant package loader, not an allocator.
-- `common/script_constants/fallout_nzl_lifeboat_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
   - `fallout_nzl_conflict_disposition` defines `samoa_state_excluded = 1` and `aotearoa_overlap_inactive = 2`. No source contract proves either value as a real allocator disposition, so these values cannot be promoted into the global resolution vocabulary.
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.md`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - Documents the package as dormant and dependent on allocator receipts, but has no supported state-level receipt contract.
 
 ### B7 allocator pilot
 
-- `common/scripted_triggers/fallout_successor_b7_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - `fallout_successor_b7_transaction_is_current` requires the survivor-allocation transaction, preallocation consumption, current generation, current conflict ledger, and current player reservation ledger.
   - `fallout_successor_b7_fragmentation_candidate_is_available` is a generic possible-country predicate. It excludes live rows, assignments, materialization receipts, release receipts, and landholding, but it has no NZL package identity or package-footprint contract.
-- `common/scripted_effects/fallout_successor_b7_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - `fallout_successor_b7_probe_fragmentation_candidate` selects the lowest-id generic possible country and lowest-id candidate state. It does not select a reviewed package or NZL.
   - `fallout_successor_b7_run_vertical_slice` is the dormant coordinator and the only path that reaches `NZL` assignment logic.
   - `fallout_nzl_commit_existing_tag_assignment` is called through the NZL effect file and writes the country-level `converted_existing` row. It does not publish a per-state Samoa or Aotearoa bridge receipt.
 
 ### Global Fallout allocator schema
 
-- `common/scripted_triggers/fallout_world_end_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - `fallout_live_tag_conflict_row_is_current` and `fallout_live_tag_conflict_resolution_is_current` are country-scope contracts.
   - `fallout_live_tag_conflict_resolution_provenance_is_current` accepts the shared enum `constant:fallout_tag_conflict_resolution.*` and validates source/output/cleanup relationships for a country row.
   - `fallout_successor_state_inventory_row_is_current` is a state-scope contract, but stores only owner, controller, hostability, player reservation, event-package markers, candidate membership, and generation. It has no disposition enum or source/output/cleanup receipt.
   - `fallout_successor_conflict_ledger_is_current` validates aligned country and state arrays, not state-level conflict outcomes.
   - `fallout_successor_assignment_country_row_is_current` and `fallout_successor_assignment_capital_row_is_current` validate post-allocation country and capital rows, not overlap-resolution rows.
-- `common/scripted_effects/fallout_world_end_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - `fallout_record_live_tag_conflict_row` records a country as `allocation_pending`.
   - `fallout_record_successor_state_inventory_row` records generation-bound state ownership and controller facts.
   - `fallout_reset_successor_conflict_inventory` and `fallout_reset_successor_allocation_ledger` clear these existing country and state rows. No effect commits a state-level disposition.
   - `fallout_begin_successor_allocation_transaction` and `fallout_finalize_successor_allocation_transaction` manage the general transaction. They do not expose an NZL-specific bridge API.
-- `common/script_constants/fallout_world_end_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
   - `fallout_successor_inventory_schema.version = 1` is the current state/country inventory schema.
   - `fallout_tag_conflict_resolution` contains `continued_in_place`, `converted_existing`, `released_releasable`, `created_dynamic`, `retired_landless`, `preserved_event_package`, and `player_reserved`. The enum is defined for country conflict rows and does not establish the semantic result for any of the three requested state surfaces.
 

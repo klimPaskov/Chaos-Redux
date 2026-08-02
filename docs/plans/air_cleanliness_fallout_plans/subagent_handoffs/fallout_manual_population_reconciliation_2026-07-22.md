@@ -14,20 +14,20 @@ fails closed with terminal
 
 ## Files changed
 
-- `common/script_constants/fallout_manual_scenario_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
   - advanced `fallout_manual_schema.version` from 2 to 4 for the new per-state
     receipt fields.
-- `common/scripted_effects/fallout_manual_scenario_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - reset and capture of `fallout_manual_prestrike_population_k` and generation;
   - first-week after-population, observed-loss, and reconciled-total provenance recorder;
   - manual additional-loss intent helper and sole all-state replay preflight.
-- `common/scripted_triggers/fallout_manual_scenario_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - manual-source, O(1) baseline-ledger, full-provenance, and preflight receipt triggers.
-- `common/script_constants/fallout_world_end_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
   - terminal `manual_population_contract_unproven` error identity.
-- `common/scripted_triggers/fallout_world_end_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - finalized population rows bind to the current manual preflight request.
-- `common/scripted_effects/fallout_world_end_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - two narrow intent call-site branches and the terminal pre-iteration gate;
   - existing strategic-singularity hunks were preserved.
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_MANUAL_POPULATION_RECONCILIATION_PROOF.md`

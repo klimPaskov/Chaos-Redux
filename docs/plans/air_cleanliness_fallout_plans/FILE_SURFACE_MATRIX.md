@@ -9,14 +9,14 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 | host monthly hook | `common/on_actions/chaosx_on_actions_chaos_meter.txt` | keep one host call and route into new phase helpers | 1 |
 | global Air logic | `common/scripted_effects/chaos_meter_effects.txt` | extract Air Winter logic into a dedicated subsystem file or clearly bounded section | 1 |
 | Air constants | `common/script_constants/chaos_meter_constants.txt` | retain global contamination thresholds and move new winter tables to a dedicated constants file | 1 |
-| state phase triggers | new `common/scripted_triggers/air_cleanliness_winter_triggers.txt` | add phase, escalation, recovery, mitigation, and valid-state checks | 1 |
-| state phase effects | new `common/scripted_effects/air_cleanliness_winter_effects.txt` | own phase calculation, modifier refresh, damage, recovery, aggregation, and flavour queues | 1 |
+| state phase triggers | new `common/scripted_triggers/fallout_consolidated_triggers.txt` | add phase, escalation, recovery, mitigation, and valid-state checks | 1 |
+| state phase effects | new `common/scripted_effects/fallout_consolidated_effects.txt` | own phase calculation, modifier refresh, damage, recovery, aggregation, and flavour queues | 1 |
 | state modifiers | new or existing dynamic modifier file | add phase-specific persistent modifiers and avoid reusing generic atomic effects for all phases | 1 |
 | state population loss | `common/scripted_effects/chaos_meter_effects.txt` | add shared winter and Fallout death reasons and call shared death registration | 1 |
 | state building damage | new Air Winter effects file | apply bounded phase and exposure damage through a single monthly selection | 2 |
 | state category damage | existing degradation helper plus new Air Winter effects | preserve original category memory and gate sustained downgrades | 2 |
 | winter flavour events | new `events/air_cleanliness_winter_events.txt` or a clear contamination namespace extension | add phase, regional, recovery, mitigation, and failure incidents | 2 |
-| winter decisions | new `common/decisions/air_cleanliness_winter_decisions.txt` | state-target mitigation, evacuation, shelter, repair, and rationing actions | 2 |
+| winter decisions | new `common/decisions/fallout_consolidated_decisions.txt` | state-target mitigation, evacuation, shelter, repair, and rationing actions | 2 |
 | winter categories | new category file | keep response decisions staged and uncluttered | 2 |
 | winter AI | decision weights plus strategy file if needed | choose responses from phase, industry, war, food, and survival pressure | 2 |
 | treaty | existing treaty helpers, events, decisions, opinion modifiers | restore with cached membership and performance-safe updates | 2 |
@@ -39,15 +39,15 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 | Surface | Existing file | Planned action | Tranche |
 | --- | --- | --- | --- |
 | stale Fallout event | `events/chemical_warfare_events.txt` | delete the Fallout block and keep only Air Contamination and chemical events | 3 |
-| Fallout constants | new `common/script_constants/fallout_world_end_constants.txt` | source ids, beat timing, grade thresholds, batch limits, and AI values | 3 |
-| Fallout effects | new `common/scripted_effects/fallout_world_end_effects.txt` | request, snapshot, blackout, state grade, world rewrite, cleanup, player handoff | 3 and 4 |
-| Fallout triggers | new `common/scripted_triggers/fallout_world_end_triggers.txt` | request eligibility, valid state, valid successor, transition safety, cleanup checks | 3 and 4 |
+| Fallout constants | new `common/script_constants/fallout_consolidated_constants.txt` | source ids, beat timing, grade thresholds, batch limits, and AI values | 3 |
+| Fallout effects | new `common/scripted_effects/fallout_consolidated_effects.txt` | request, snapshot, blackout, state grade, world rewrite, cleanup, player handoff | 3 and 4 |
+| Fallout triggers | new `common/scripted_triggers/fallout_consolidated_triggers.txt` | request eligibility, valid state, valid successor, transition safety, cleanup checks | 3 and 4 |
 | Fallout events | new `events/fallout_world_end_events.txt` | own every Fallout entry, blackout, rewrite, manual scenario, recovery, and aftermath event under `chaosx.fallout` | 3 onward |
 | Fallout on-actions | new Fallout-owned on-action only where needed | use narrow hooks, not a new global daily country loop | 3 |
-| blackout GUI | new `interface/fallout_world_end.gui` | full-screen black independent container, centered text, no close action during processing | 3 |
-| blackout GFX | new `interface/fallout_world_end.gfx` | background, subtle treatment, beat states, static fallbacks | 3 |
-| blackout scripted GUI | new `common/scripted_guis/fallout_world_end_scripted_gui.txt` | visibility, properties, dynamic player-choice list, dirty-variable update | 3 and 4 |
-| blackout scripted localisation | new `common/scripted_localisation/fallout_world_end_scripted_localisation.txt` | map phase values to researched final beat keys during implementation | 3 |
+| blackout GUI | new `interface/fallout_consolidated.gui` | full-screen black independent container, centered text, no close action during processing | 3 |
+| blackout GFX | new `interface/fallout_consolidated.gfx` | background, subtle treatment, beat states, static fallbacks | 3 |
+| blackout scripted GUI | new `common/scripted_guis/fallout_consolidated_scripted_gui.txt` | visibility, properties, dynamic player-choice list, dirty-variable update | 3 and 4 |
+| blackout scripted localisation | new `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt` | map phase values to researched final beat keys during implementation | 3 |
 | blackout localisation | new English localisation file | final text written after implementation state is stable | 3 |
 | sound | `sound/fallout_world_end/` and optional `music/fallout_world_end/` | use only Fallout-owned files and wrappers, never a normal super-event audio id | 3 |
 
@@ -70,7 +70,7 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 | units | templates, OOB, and dynamic spawns | give every fighting successor a real starting package and growth path | 6 onward |
 | assets | `docs/assets/fallout_world_end/`, dedicated Fallout GFX folders, and engine-required root flag folders | create Fallout-owned flags, portraits, icons, UI, report images, and animations | 6 onward |
 
-| Thaw Water ordinary chain | `events/fallout_world_end_events.txt`, `common/scripted_effects/fallout_world_end_thaw_water_event_effects.txt`, `common/scripted_triggers/fallout_world_end_thaw_water_event_triggers.txt`, `common/script_constants/fallout_world_end_thaw_water_constants.txt`, `common/dynamic_modifiers/fallout_world_end_thaw_water_dynamic_modifiers.txt`, `localisation/english/fallout_world_end_thaw_water_l_english.yml` | Four thaw policies, deterministic result and callback, Air Winter water and disease updates, Deaths-backed failure, and authenticated cleanup | reviewed tranche |
+| Thaw Water ordinary chain | `events/fallout_world_end_events.txt`, `common/scripted_effects/fallout_consolidated_effects.txt`, `common/scripted_triggers/fallout_consolidated_triggers.txt`, `common/script_constants/fallout_consolidated_constants.txt`, `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`, `localisation/english/fallout_consolidated_l_english.yml` | Four thaw policies, deterministic result and callback, Air Winter water and disease updates, Deaths-backed failure, and authenticated cleanup | reviewed tranche |
 
 ## Manual scenario
 

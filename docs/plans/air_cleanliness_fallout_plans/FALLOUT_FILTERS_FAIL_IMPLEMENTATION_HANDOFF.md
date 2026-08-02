@@ -17,7 +17,7 @@ The candidate producer adds one lowest-owned-state row with candidate `217`, tra
 
 ## Presentation and log evidence
 
-- Human surfaces use `GFX_report_event_fallout_filters_fail`, registered in `interface/fallout_world_end.gfx`.
+- Human surfaces use `GFX_report_event_fallout_filters_fail`, registered in `interface/fallout_consolidated.gfx`.
 - The dedicated asset package, source, processed PNG, DDS, prompt, contact sheet, manifest row, and hashes are recorded in `docs/assets/air_cleanliness_fallout/fallout_filters_fail_gfx_handoff.md`.
 - History id `9114` has fifteen payload selectors in the dedicated scripted localisation file. Central Event Log detail, name, and open-detail type routes include the new history id.
 - Localisation names the affected shelter state, filters, medicine, food, night crews, and government authority. The file uses UTF-8 with BOM.

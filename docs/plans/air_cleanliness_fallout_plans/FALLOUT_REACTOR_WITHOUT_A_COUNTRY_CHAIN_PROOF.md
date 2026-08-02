@@ -14,7 +14,7 @@ Failure uses the Deaths system and damages the nuclear reactor before infrastruc
 ## Asset proof
 
 The generated source, processed 210 by 176 preview, runtime uncompressed 32-bit BGRA DDS, prompt, manifest, and GFX handoff are under `docs/assets/air_cleanliness_fallout/fallout_reactor_without_a_country/`.
-The runtime sprite is `GFX_report_event_fallout_reactor_without_a_country` in `interface/fallout_world_end.gfx`.
+The runtime sprite is `GFX_report_event_fallout_reactor_without_a_country` in `interface/fallout_consolidated.gfx`.
 
 ## Engine-sensitive boundary
 

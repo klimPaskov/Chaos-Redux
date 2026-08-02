@@ -6,18 +6,18 @@ claim completion of the Fallout release floor.
 
 ## Gameplay files
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
   - ids, candidate identity, route, branch tokens, timing, costs, numerical
     thresholds, result deltas, history payloads, modifier values, and AI table
-- `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - Last Transformer candidate row and state priority selection
-- `common/scripted_triggers/fallout_world_end_last_transformer_event_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - state, receipt, partner, target, delayed-result, and cleanup gates
-- `common/scripted_effects/fallout_world_end_last_transformer_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - partner selection, input snapshot, viability, branch payment, delayed
     result, Deaths failure path, state mutation, callback, AI parity, history,
     and cleanup
-- `common/dynamic_modifiers/fallout_world_end_last_transformer_dynamic_modifiers.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
   - timed industrial, clinical, microgrid, neighbour, and grid-failure
     modifiers
 - `events/fallout_world_end_events.txt`
@@ -25,12 +25,12 @@ claim completion of the Fallout release floor.
 
 ## Presentation and log files
 
-- `interface/fallout_world_end.gfx`
+- `interface/fallout_consolidated.gfx`
   - `GFX_report_event_fallout_last_transformer`
-- `localisation/english/fallout_world_end_last_transformer_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
   - human opening, branch tooltips, result descriptions, callback text, and
     Event Log wording
-- `common/scripted_localisation/fallout_world_end_last_transformer_event_log_scripted_localisation.txt`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
   - payload-specific detail resolver
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
   - global history `9116` name and detail routing

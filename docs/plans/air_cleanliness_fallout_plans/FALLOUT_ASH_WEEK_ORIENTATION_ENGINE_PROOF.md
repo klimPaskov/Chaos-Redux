@@ -92,7 +92,7 @@ No random list, random country, random state, random delay, or live result-time 
 
 Official `modifiers_documentation.md` defines every modifier token used by the dormant orientation package. The country-facing values are `stability_factor`, `consumer_goods_factor`, `production_speed_buildings_factor`, and `repair_speed_factor`. Army-facing values are `supply_consumption_factor` and `attrition`. The state and war-production value is `mobilization_speed`.
 
-Vanilla dynamic modifiers provide direct structural precedents for mixing these country and military categories in a modifier attached to a country. `0_dynamic_modifiers.txt`, `bba_dynamic_modifiers.txt`, `SEA_dynamic_modifiers.txt`, and `wuw_dynamic_modifiers.txt` contain country dynamic modifiers with `mobilization_speed`, `supply_consumption_factor`, or `attrition`. The Fallout package follows that structure and keeps magnitudes in `common/script_constants/fallout_world_end_event_constants.txt`.
+Vanilla dynamic modifiers provide direct structural precedents for mixing these country and military categories in a modifier attached to a country. `0_dynamic_modifiers.txt`, `bba_dynamic_modifiers.txt`, `SEA_dynamic_modifiers.txt`, and `wuw_dynamic_modifiers.txt` contain country dynamic modifiers with `mobilization_speed`, `supply_consumption_factor`, or `attrition`. The Fallout package follows that structure and keeps magnitudes in `common/script_constants/fallout_consolidated_constants.txt`.
 
 The operational modifiers are dedicated Fallout definitions. Their names and paths do not reuse zombie content or a super-event package.
 

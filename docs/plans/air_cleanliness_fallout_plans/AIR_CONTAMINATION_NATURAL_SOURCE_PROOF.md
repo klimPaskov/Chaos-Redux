@@ -34,7 +34,7 @@ The aggregate reservoir is clamped from `0 bp` through `4 bp` after every impact
 
 The largest single addition is an abnormal massive eruption at `1.25 bp`, equal to `0.0125 percent`. The smallest addition is `0.05 bp`, equal to `0.0005 percent`. Regional wildfire smoke begins at `0.10 bp`, equal to `0.001 percent`.
 
-The complete accepted source ladder is centralized in `common/script_constants/air_cleanliness_natural_source_constants.txt`.
+The complete accepted source ladder is centralized in `common/script_constants/fallout_consolidated_constants.txt`.
 
 | Physical family | Local | Severe | Regional | Catastrophic | Abnormal |
 | --- | ---: | ---: | ---: | ---: | ---: |

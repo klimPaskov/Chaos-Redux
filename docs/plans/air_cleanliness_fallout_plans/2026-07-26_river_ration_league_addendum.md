@@ -519,7 +519,7 @@ The post-Fallout barge league, its delegates, archives, bridge militias, ration 
 If accepted, implementation affects:
 
 - `events/fallout_world_end_events.txt`
-- `common/script_constants/fallout_world_end_event_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
 - Dedicated River Ration scripted triggers and scripted effects, or the established reviewed-event files if that is the current pattern
 - Ordinary candidate registry and deterministic corridor selector
 - State and country memory helpers
