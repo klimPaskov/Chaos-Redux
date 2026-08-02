@@ -2,6 +2,8 @@
 
 Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v102_2026_08_02.md`; it supersedes no accepted design and records only current static checks and remaining gates.
 
+The 2026-08-03 IW-043 Gayaz Ishaki source-locked portrait evidence is recorded in `subagent_handoffs/006_iw043_chu_ishaki_portrait_repaint_v01_2026_08_03.md`. It adds no runtime consumer or admission: the independent likeness/style/provenance review and photographer/first-publication rights decision remain open.
+
 The vanilla-formable reproducibility defect identified by the 2026-08-02 continuation audit is resolved by the tracked mirror reconciliation in `subagent_handoffs/006_vanilla_formable_compatibility_reconciliation_2026_08_02.md` and commits `ca42ad22e` and `e86b3c183`. The current remaining formable blockers are package identity, member readiness, and route reachability, not missing guard source.
 
 <!-- Documentation reconciliation: the current allocator passes fourteen attested packages across thirteen compatible reservation groups and fourteen distinct anchors; allocator, crisis, registry, evolution, and ledger cores are source-closed; v67 Universal Former Hosts target uniqueness is implemented while Wars of Separation remains per-release; global completion remains open. -->
