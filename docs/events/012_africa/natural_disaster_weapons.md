@@ -75,7 +75,7 @@ The host also stores the attempted call's calculated strength in `africa_last_na
 
 Accepted calls set `africa_natural_disaster_call_accepted`, mark the numeric resolved-primary-country target with `africa_natural_disaster_targeted`, and copy the current `africa_host_generation` onto that target. The same accepted result records the member-disaster disqualifier when the target is already a current-generation Charter member or cooperative partner, and records the neutral-African disqualifier when the target is an African sovereign with an outside relationship.
 
-The first ordinary Event 013 impact that records positive civilian deaths invokes `natural_disaster_record_event012_civilian_weaponisation` in the impacted state. It requires the persisted `hostile_actor` caller type and Event 012 caller ID, then scopes back to the persisted Event 012 host and sets the existing civilian-weaponisation disqualifier. Accepted-call status, warning cards, building damage, generic Event 013 callers, and impact targeting alone do not set this flag.
+The first ordinary Event 013 impact in the matching sequence that records positive civilian deaths invokes `natural_disaster_record_event012_civilian_weaponisation` in the impacted state. Event 013 marks the scheduled state with a one-impact Event 012 witness and its sequence ID while preserving caller metadata for delayed reports. The callback requires that fresh sequence marker, the persisted `hostile_actor` caller type, and Event 012 caller ID, then scopes back to the persisted Event 012 host and sets the existing civilian-weaponisation disqualifier. Accepted-call status, warning cards, building damage, generic Event 013 callers, stale caller metadata, and impact targeting alone do not set this flag.
 
 When the marked target later capitulates directly to the same Event 012 host generation, the `on_capitulation` owner calls `africa_achievement_record_weather_army_defeated` on that distinct target and opens the weather-war milestone through `africa_achievement_record_weather_war_won`. A host transfer, peace conference, or third-party victory cannot satisfy this owner.
 
@@ -119,7 +119,7 @@ The implementation deliberately reuses actions 69 and 70 and does not reinterpre
 
 Partial and failed Event 012 action outcomes do not call Event 013; only a full action result consumes the reserved hostile nature payment.
 
-The Event 013 wrapper and contract files are unchanged and remain the source of truth for family availability, target-state eligibility, scale bounds, sequence planning, result semantics, and report/news presentation.
+The Event 013 public wrapper and call contract remain the source of truth for family availability, target-state eligibility, scale bounds, sequence planning, result semantics, and report/news presentation. The Event 013 effect file also owns the narrow Event 012 civilian-death callback described above, while the Event 012 action wrapper remains unchanged.
 
 The Event 012 `strange-force` actions remain outside this integration and retain their existing documented formation-consumer gap.
 
