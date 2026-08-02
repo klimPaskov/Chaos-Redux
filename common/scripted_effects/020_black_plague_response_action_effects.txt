@@ -1,3 +1,11 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_CLEAR_SEWERS_INFRASTRUCTURE_DAMAGE = 0.50
+@CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_CIVILIAN_FACTORY_DAMAGE = 2
+@CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_FAILED_CIVILIAN_FACTORY_DAMAGE = 1
+@CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_FAILED_INFRASTRUCTURE_DAMAGE = 1
+@CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_INFRASTRUCTURE_DAMAGE = 2
+@CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_MILITARY_FACTORY_DAMAGE = 1
 # ============================================================================
 # CHAOS REDUX - EVENT 020 BLACK PLAGUE RESPONSE ACTION EFFECTS
 # ============================================================================
@@ -686,7 +694,7 @@ black_plague_apply_clear_sewers_outcome = {
 	black_plague_claim_current_state_persistent_response = yes
 	damage_building = {
 		type = infrastructure
-		damage = constant:black_plague_response_penalty.clear_sewers_infrastructure_damage
+		damage = @CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_CLEAR_SEWERS_INFRASTRUCTURE_DAMAGE
 	}
 	set_temp_variable = { black_plague_response_sustain_days = constant:black_plague_response_duration.clear_sewers_sustain }
 	set_state_flag = { flag = black_plague_hidden_nests_suppressed days = black_plague_response_sustain_days }
@@ -752,9 +760,9 @@ black_plague_apply_demolition_outcome = {
 			set_state_flag = { flag = black_plague_screened_displacement_receiver days = black_plague_response_displacement_days }
 		}
 		set_state_flag = black_plague_demolition_screened_success
-		damage_building = { type = infrastructure damage = constant:black_plague_response_penalty.demolition_infrastructure_damage }
-		damage_building = { type = industrial_complex damage = constant:black_plague_response_penalty.demolition_civilian_factory_damage }
-		damage_building = { type = arms_factory damage = constant:black_plague_response_penalty.demolition_military_factory_damage }
+		damage_building = { type = infrastructure damage = @CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_INFRASTRUCTURE_DAMAGE }
+		damage_building = { type = industrial_complex damage = @CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_CIVILIAN_FACTORY_DAMAGE }
+		damage_building = { type = arms_factory damage = @CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_MILITARY_FACTORY_DAMAGE }
 	}
 	else = {
 		set_temp_variable = { black_plague_response_infestation_reduction = constant:black_plague_response_result.demolish_partial_infestation }
@@ -774,8 +782,8 @@ black_plague_apply_demolition_outcome = {
 			}
 		}
 		set_state_flag = black_plague_demolition_screening_failed
-		damage_building = { type = infrastructure damage = constant:black_plague_response_penalty.demolition_failed_infrastructure_damage }
-		damage_building = { type = industrial_complex damage = constant:black_plague_response_penalty.demolition_failed_civilian_factory_damage }
+		damage_building = { type = infrastructure damage = @CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_FAILED_INFRASTRUCTURE_DAMAGE }
+		damage_building = { type = industrial_complex damage = @CR_SC_BLACK_PLAGUE_RESPONSE_PENALTY_DEMOLITION_FAILED_CIVILIAN_FACTORY_DAMAGE }
 	}
 	black_plague_apply_current_state_response_deltas = yes
 	black_plague_add_current_state_cleanup_attempt = yes

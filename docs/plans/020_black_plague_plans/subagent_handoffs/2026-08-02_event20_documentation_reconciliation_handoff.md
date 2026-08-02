@@ -146,7 +146,7 @@ The parent retains final runtime wiring, live-consumer validation, balance claim
 | Two-tag correction | Accepted and promoted | Parent must preserve RTA/RTX and never revive RTB-RTM runtime tags. |
 | SCN-012 repeat reconciliation and intensity postcondition | Implemented statically and promoted | Parent/user owns fresh launch, repeat, save/reload, and failure-retry validation; complete inverse rollback is not claimed. |
 | Hold the Line and Secure the Refuge | Implemented statically as native missions | Parent/user owns live outcome, timeout, and teardown validation. |
-| Crown Strike and Seal Royal Burrows mission API | Queued decision | They remain shared timed state actions until the parent decides whether native mission fields are required. |
+| Crown Strike and Seal Royal Burrows mission API | Implemented statically as native mission bridges | State-selected zero-day launchers store explicit target markers; native country missions own the timeout, cancellation, factory reservation, and shared-action resolution. Live outcome validation remains open. |
 | RTA/RTX focus routes | Implemented statically at documented 51/71 counts | Parent/user owns live timing, AI order, layout, and balance validation. |
 | Weapon icon, Rat King portrait, Royal Burrows seal, and three WAVs | Promoted static evidence | Rights attribution and live playback/consumer validation remain open. |
 | Broader crisis/Doctor Wu/route/aftermath art and narrative | Queued | Existing readiness and addendum plans remain the working queue. |
@@ -159,14 +159,14 @@ The parent retains final runtime wiring, live-consumer validation, balance claim
 - README and limitations no longer say the source-frame Rat King/seal packages are unresolved; they now record those packages as promoted while retaining broader presentation blockers.
 - The readiness report, event overview, Rat King route doc, and source-of-truth disposition now use 51 RTA and 71 RTX focus counts.
 - The readiness report no longer lists the dedicated weapon-delivery icon as absent or treats a final rat model package as pending.
-- Last-response docs now state the native mission API; Crown Strike and Seal Royal Burrows remain explicitly separate shared timed actions pending a parent decision.
+- Last-response docs now state the native mission API; Crown Strike and Seal Royal Burrows follow the same bridge with explicit state markers and cleanup.
 - Part 9 and the triggerable-scenario matrix carry superseded notices for the old repeat-blocked wording and document accepted reconciliation-only idempotence plus the configured-intensity brood-target postcondition.
 - Historical 2026-08-01 content, consequence, focus-audit, Rat King-depth, and live-wiring handoffs now carry explicit superseded notices where their old counts or asset absence claims remain for provenance.
 
 ### Contradictions still open
 
 - The accepted 51/71 focus count convention is one tree-level identifier plus 50/70 focus blocks in the source text; no gameplay change was made to resolve that counting convention.
-- Crown Strike and Seal Royal Burrows still intentionally use the shared timed state-action API rather than native mission fields.
+- Crown Strike and Seal Royal Burrows now use native mission fields while retaining the shared state-action resolver for outcomes.
 - SCN-012 post-failure cleanup is retryable but does not prove atomic inverse rollback of every earlier disease or transfer mutation.
 - Live scenario, mission, focus, balance, audio playback, rights, and mapmode validation remain unrun.
 
@@ -222,13 +222,13 @@ The parent retains final runtime wiring, live-consumer validation, balance claim
 
 1. Treat this handoff plus `README.md`, the two-tag correction, Part 9, and the triggerable-scenario matrix as the current Event 020 documentation state.
 2. Preserve SCN-012 reconciliation-only repeat behavior and the configured-intensity brood-target postcondition; do not restore repeat blocking from historical prompt or matrix bodies.
-3. Keep Hold the Line and Secure the Refuge native missions, while deciding separately whether Crown Strike and Seal Royal Burrows should remain shared timed actions.
+3. Keep Hold the Line, Secure the Refuge, Crown Strike, and Seal Royal Burrows on the native mission surface; validate their live timeout, cancellation, and teardown behavior.
 4. Keep the no-model boundary permanent for this event unless the user explicitly reopens it.
 5. Carry live scenario/mission/focus/balance/audio/rights/mapmode validation and broader narrative/presentation gaps into the owning parent passes.
 
 ### Simplifications, omissions, and blockers
 
-This pass made no gameplay simplifications and did not claim Event 020 full completion. Remaining blockers are the explicitly listed live-validation, rights-attribution, Crown/Seal mission-API, black-fog, broader narrative/presentation, and workbook-owner surfaces.
+This pass made no gameplay simplifications and did not claim Event 020 full completion. Remaining blockers are the explicitly listed live-validation, rights-attribution, black-fog, broader narrative/presentation, and workbook-owner surfaces.
 
 ## Pass-4 current-tranche seal and SCN-012 contract addendum (2026-08-02)
 
@@ -310,3 +310,9 @@ This narrow follow-up reconciles the completed Event 020 crisis-seal and Rat Kin
 ### Simplifications, omissions, and blockers
 
 No gameplay simplification was introduced. The remaining documentation-visible boundary in this tranche is the absence of a dedicated scripted-GUI terminal-readiness panel; live validation remains unrun and no Event 020 full-completion claim is made.
+
+## Pass-5 native Crown and Royal Burrow mission bridge (2026-08-02)
+
+The parent implementation converted Crown Strike and Seal Royal Burrows from shared `days_remove` state actions into native mission-backed operations without changing their shared action ids, costs, reports, or the two-tag boundary. Each visible state-targeted decision is now a zero-day launcher that marks the selected state and activates a country mission. The mission owns the existing duration, civilian-factory reservation, invalidation cancellation, and timeout resolver; the resolver calls the original shared state-action effect exactly once and clears the marker, owner, mission flag, and mission instance.
+
+The active sources are `common/decisions/020_black_plague_shared_response_decisions.txt`, `common/scripted_triggers/020_black_plague_shared_response_triggers.txt`, `common/scripted_effects/020_black_plague_shared_response_effects.txt`, and `localisation/english/020_black_plague_response_l_english.yml`. Terminal country cleanup now removes both mission instances and clears their state markers. Live mission outcomes, GUI rendering, and factory reservation remain user-owned validation surfaces; the former native-mission API gap is superseded by this addendum.

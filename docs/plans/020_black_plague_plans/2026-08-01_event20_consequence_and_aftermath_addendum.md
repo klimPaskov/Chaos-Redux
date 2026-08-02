@@ -1,6 +1,6 @@
 # Event 020 consequence, hierarchy, and defeat aftermath addendum
 
-> Historical addendum snapshot, superseded for current counts and presentation status by the 2026-08-02 documentation reconciliation: the live RTA carrier still owns Hunger, Coherence, derived Disease Dominion, the staged Fractured Instinct spirit, and `.46` Hunger crisis handling, but current runtime documentation records 51 RTA focuses and 71 RTX focuses. The dedicated weapon-delivery icon, source-frame Rat King portrait and Royal Burrows seal, native last-response mission declarations, three 44.1 kHz Event 020 WAVs, and no-model boundary are now promoted. Retain the body for its valid unresolved route, native Crown Strike/Seal API, rights, and live-validation findings.
+> Historical addendum snapshot, superseded for current counts and presentation status by the 2026-08-02 documentation reconciliation: the live RTA carrier still owns Hunger, Coherence, derived Disease Dominion, the staged Fractured Instinct spirit, and `.46` Hunger crisis handling, but current runtime documentation records 51 RTA focuses and 71 RTX focuses. The dedicated weapon-delivery icon, source-frame Rat King portrait and Royal Burrows seal, native last-response mission declarations, three 44.1 kHz Event 020 WAVs, and no-model boundary are now promoted. A later parent tranche also converted Crown Strike and Seal Royal Burrows to native mission bridges; retain the body for its valid unresolved route, rights, and live-validation findings.
 
 ## Reconciliation status (2026-08-01)
 

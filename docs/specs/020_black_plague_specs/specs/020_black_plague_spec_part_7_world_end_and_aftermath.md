@@ -134,7 +134,7 @@ The Rat King can select a continent after the non-continent Evolution V gates ar
 
 ### Player selection
 
-A human Rat King sees a short list of valid continents with control progress and strategic risks. The choice has a long cooldown or becomes permanent after the first world-end focus so the player cannot switch to exploit progress.
+A human Rat King sees a short list of valid continents with control progress and strategic risks. The first valid choice is permanent for the reign, so the player cannot switch to exploit progress.
 
 ## World-end focus lane
 

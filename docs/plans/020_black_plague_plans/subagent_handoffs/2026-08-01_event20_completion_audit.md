@@ -8,7 +8,7 @@ Date: 2026-08-01
 
 The former absence findings for scoped defeat hooks, defeat metrics, resolver-owned reconstruction `.72`, and slot 087 presentation are superseded by the parent-owned tranche. Evidence is `common/on_actions/020_black_plague_on_actions.txt`, `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_triggers/020_black_plague_rat_triggers.txt`, `common/script_constants/020_black_plague_constants.txt`, `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html`, with final art/audio/text provenance in the 2026-08-01 slot-087 handoffs.
 
-The audit remains partial: broader narrative and route depth, generic crisis/Doctor Wu/route art, native mission API decisions, `.73` audience ownership, workbook/catalog alignment, release attribution, and live consumer validation remain open. No 3D model work is required by the current boundary.
+The audit remains partial: broader narrative and route depth, generic crisis/Doctor Wu/route art, `.73` audience ownership, workbook/catalog alignment, release attribution, and live consumer validation remain open. The later parent tranche resolved the Crown/Seal native mission API gap. No 3D model work is required by the current boundary.
 
 ## Audit boundary and verdict
 

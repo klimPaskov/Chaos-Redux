@@ -1,3 +1,10 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BLACK_PLAGUE_LAST_RESPONSE_HOLD_CIVILIAN_FACTORIES = 3
+@CR_SC_BLACK_PLAGUE_LAST_RESPONSE_REFUGE_CIVILIAN_FACTORIES = 4
+@CR_SC_BLACK_PLAGUE_SHARED_COST_EMERGENCY_COUNTERMEASURE_CIVILIAN_FACTORIES = 2
+@CR_SC_BLACK_PLAGUE_SHARED_RESULT_CROWN_STRIKE_CIVILIAN_FACTORIES = 5
+@CR_SC_BLACK_PLAGUE_SHARED_RESULT_ROYAL_SEAL_CIVILIAN_FACTORIES = 3
 # ============================================================================
 # CHAOS REDUX - EVENT 020 SHARED DISEASE RESPONSE DECISIONS
 # ============================================================================
@@ -20,7 +27,7 @@ chaosx_disease_containment_category = {
 		available = { black_plague_shared_country_can_pay_country_materials = yes }
 		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
 		custom_cost_text = black_plague_shared_emergency_countermeasure_drive_cost
-		modifier = { civilian_factory_use = constant:black_plague_shared_cost.emergency_countermeasure_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_SHARED_COST_EMERGENCY_COUNTERMEASURE_CIVILIAN_FACTORIES }
 		days_mission_timeout = constant:black_plague_shared_duration.emergency_countermeasure_drive
 		complete_effect = {
 			remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_shared_cost.country_support_equipment }
@@ -58,7 +65,7 @@ chaosx_disease_containment_category = {
 		available = { black_plague_human_last_response_hold_can_start = yes }
 		custom_cost_trigger = { black_plague_human_last_response_hold_can_start = yes }
 		custom_cost_text = black_plague_shared_start_last_response_hold_cost
-		modifier = { civilian_factory_use = constant:black_plague_last_response.hold_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_LAST_RESPONSE_HOLD_CIVILIAN_FACTORIES }
 		days_remove = constant:black_plague_last_response.launch_days
 		complete_effect = {
 			custom_effect_tooltip = black_plague_shared_start_last_response_hold_effect_tt
@@ -75,7 +82,7 @@ chaosx_disease_containment_category = {
 		available = { black_plague_human_last_response_refuge_can_start = yes }
 		custom_cost_trigger = { black_plague_human_last_response_refuge_can_start = yes }
 		custom_cost_text = black_plague_shared_start_last_response_refuge_cost
-		modifier = { civilian_factory_use = constant:black_plague_last_response.refuge_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_LAST_RESPONSE_REFUGE_CIVILIAN_FACTORIES }
 		days_remove = constant:black_plague_last_response.launch_days
 		complete_effect = {
 			custom_effect_tooltip = black_plague_shared_start_last_response_refuge_effect_tt
@@ -692,12 +699,32 @@ chaosx_disease_containment_category = {
 		available = { FROM = { black_plague_shared_can_strike_crown = yes } }
 		custom_cost_trigger = { black_plague_shared_country_can_pay_crown_strike = yes }
 		custom_cost_text = black_plague_shared_strike_the_crown_cost
-		modifier = { civilian_factory_use = constant:black_plague_shared_result.crown_strike_civilian_factories }
-		days_remove = constant:black_plague_shared_duration.strike_the_crown
-		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.strike_the_crown } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
-		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
-		cancel_trigger = { FROM = { NOT = { black_plague_shared_crown_target_can_continue = yes } } }
-		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		# The state-selected button is a zero-day launcher. The operation itself
+		# is represented by the native country mission below so its timer and
+		# cancellation remain visible to the player.
+		days_remove = 0
+		complete_effect = {
+			set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.strike_the_crown }
+			FROM = {
+				black_plague_begin_shared_state_action = yes
+				if = {
+					limit = {
+						has_state_flag = black_plague_shared_action_active
+						check_variable = { var = black_plague_shared_action_owner value = ROOT compare = equals }
+					}
+					set_state_flag = black_plague_shared_crown_mission_target
+					set_variable = { black_plague_shared_crown_mission_owner = ROOT }
+					ROOT = {
+						set_country_flag = black_plague_shared_crown_mission_active
+						activate_mission = black_plague_shared_strike_the_crown_mission
+					}
+				}
+			}
+			if = {
+				limit = { has_variable = black_plague_shared_action_pending }
+				clear_variable = black_plague_shared_action_pending
+			}
+		}
 		ai_will_do = {
 			base = 0
 		}
@@ -715,13 +742,90 @@ chaosx_disease_containment_category = {
 		available = { FROM = { black_plague_shared_can_seal_royal_burrows = yes } }
 		custom_cost_trigger = { black_plague_shared_country_can_pay_royal_seal = yes }
 		custom_cost_text = black_plague_shared_seal_royal_burrows_cost
-		modifier = { civilian_factory_use = constant:black_plague_shared_result.royal_seal_civilian_factories }
-		days_remove = constant:black_plague_shared_duration.seal_royal_burrows
-		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.seal_royal_burrows } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
-		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
-		cancel_trigger = { FROM = { NOT = { black_plague_shared_can_seal_royal_burrows = yes } } }
-		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		# As with Crown Strike, this state-targeted decision only launches the
+		# operation. The native mission owns the 180-day timer and outcome.
+		days_remove = 0
+		complete_effect = {
+			set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.seal_royal_burrows }
+			FROM = {
+				black_plague_begin_shared_state_action = yes
+				if = {
+					limit = {
+						has_state_flag = black_plague_shared_action_active
+						check_variable = { var = black_plague_shared_action_owner value = ROOT compare = equals }
+					}
+					set_state_flag = black_plague_shared_seal_mission_target
+					set_variable = { black_plague_shared_seal_mission_owner = ROOT }
+					ROOT = {
+						set_country_flag = black_plague_shared_seal_mission_active
+						activate_mission = black_plague_shared_seal_royal_burrows_mission
+					}
+				}
+			}
+			if = {
+				limit = { has_variable = black_plague_shared_action_pending }
+				clear_variable = black_plague_shared_action_pending
+			}
+		}
 		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	# Native mission wrappers for the two post-Evolution-IV operations. The
+	# state-selected launchers above store the target marker; these missions own
+	# the countdown and invoke the shared state-action resolver exactly once
+	# when the timer expires or the target becomes invalid.
+	black_plague_shared_strike_the_crown_mission = {
+		name = black_plague_shared_strike_the_crown_mission
+		desc = black_plague_shared_strike_the_crown_mission_desc
+		icon = GFX_decision_black_plague_strike_the_crown
+		allowed = { black_plague_country_is_human_host = yes }
+		activation = { has_country_flag = black_plague_shared_crown_mission_active }
+		selectable_mission = no
+		is_good = no
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_SHARED_RESULT_CROWN_STRIKE_CIVILIAN_FACTORIES }
+		days_mission_timeout = constant:black_plague_shared_duration.strike_the_crown
+		available = { always = no }
+		cancel_trigger = {
+			OR = {
+				NOT = { black_plague_shared_crown_mission_target_can_continue = yes }
+				has_global_flag = world_end
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = black_plague_shared_strike_the_crown_mission_cancelled_tt
+			black_plague_resolve_shared_crown_mission_cancel = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = black_plague_shared_strike_the_crown_mission_timeout_tt
+			black_plague_resolve_shared_crown_mission_timeout = yes
+		}
+	}
+
+	black_plague_shared_seal_royal_burrows_mission = {
+		name = black_plague_shared_seal_royal_burrows_mission
+		desc = black_plague_shared_seal_royal_burrows_mission_desc
+		icon = GFX_decision_black_plague_seal_royal_burrows_animated
+		allowed = { black_plague_country_is_human_host = yes }
+		activation = { has_country_flag = black_plague_shared_seal_mission_active }
+		selectable_mission = no
+		is_good = no
+		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_SHARED_RESULT_ROYAL_SEAL_CIVILIAN_FACTORIES }
+		days_mission_timeout = constant:black_plague_shared_duration.seal_royal_burrows
+		available = { always = no }
+		cancel_trigger = {
+			OR = {
+				NOT = { black_plague_shared_seal_mission_target_can_continue = yes }
+				has_global_flag = world_end
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = black_plague_shared_seal_royal_burrows_mission_cancelled_tt
+			black_plague_resolve_shared_seal_mission_cancel = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = black_plague_shared_seal_royal_burrows_mission_timeout_tt
+			black_plague_resolve_shared_seal_mission_timeout = yes
+		}
 	}
 
 	# Activated objectives are hidden until the matching start decision pays its
