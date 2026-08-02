@@ -73,7 +73,7 @@ This table is retained as historical packaging evidence. Its byte counts, line c
 | `diagrams/006_release_planner_flow.md` | 1395 | 37 | `c115b4ff69b5e4f7891d3ff74f01c563a00b41b9e4ded660b05cfd680d513330` |
 | `matrices/006_achievement_matrix.csv` | 5839 | 17 | `2ed680f7961e02b343b416dec8968d37771e945f0c99eaabab3fae3c0cf09a67` |
 | `matrices/006_ai_strategy_matrix.csv` | 7089 | 25 | `fcbba4046c9604f18077a3fc9973e5418d305d04fc723325a6b517c47948b97f` |
-| `matrices/006_asset_family_registry.csv` | 11417 | 49 | `61f7dd8d2442924a26a848607cae3706b46e6f07227dc37791d6e9266b49b4ac` |
+| `matrices/006_asset_family_registry.csv` | 11768 | 50 | `bbecf73b11a0c5ed927c81519216688d614e2e5a9d58fd45eee08289e8dbfb1f` |
 | `matrices/006_candidate_country_registry.csv` | 126656 | 207 | `b860c7dd9546b64bfa6a6d1e2575f8eb7bc728103be0df1ecf8d344606ade8dc` |
 | `matrices/006_candidate_country_registry_summary.md` | 1273 | 40 | `444bb02f4004de6f3e87257ed66756259b748c848d7f360dd95e88c4fdc3794d` |
 | `matrices/006_decision_mission_map.csv` | 19690 | 60 | `5e646c016c5764d8f7380af8354bfee7f3d5191933bf81b71d286ef4c46b8d0b` |

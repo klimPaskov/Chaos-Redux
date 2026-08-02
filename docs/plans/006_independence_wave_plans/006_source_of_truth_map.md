@@ -534,6 +534,8 @@ treatment family. Processing or pixel equality does not override either gate.
   AEX is represented by the living-BEL Flanders overlay, not a standalone Event
   006 country.
 
+The current static icon registry now assigns ASSET-049 to the existing Post-Release Instability idea sprite, matching IDEA-06 and the eight-family lifecycle matrix. ASSET-046 formable flag/emblem coverage, the portrait shelf crosswalk, and super-event audio remain separate open asset surfaces.
+
 For super-event `6002`, the preserved source, final `109.992517 s` WAV,
 hashes, loudness measurements, and exact wrappers are documented in
 `../../assets/006_independence_wave/super_events/audio/production_manifest.md`.

@@ -37,7 +37,7 @@ The 9 formable-or-route-only and 30 specific-community-variant-only packages rem
   - Asset-specific source URLs, creators or institutions, dates, license notes, attribution requirements, and use boundaries.
   - Motif-source routing for every non-reuse package cluster.
 - docs/plans/006_independence_wave_plans/asset_research/006_generated_fictional_art_inventory.md
-  - Generated-art ownership for ASSET-001 through ASSET-048.
+  - Generated-art ownership for ASSET-001 through ASSET-049.
   - Country flag and institutional portrait work.
   - Super-event scene briefs.
   - Required real-frame animation deliverables for ASSET-040 through ASSET-043.
@@ -98,7 +98,7 @@ This audit proves availability, not historical accuracy. Route variants still re
 - Confirmed the five visual-source groups are mutually exclusive and total 167.
 - Confirmed the excluded dispositions total 39 and were not included.
 - Checked installed normal, medium, and small flag roots for every registered tag in scope.
-- Cross-checked every ASSET-001 through ASSET-048 registry entry against the generated-art inventory.
+- Cross-checked every ASSET-001 through ASSET-049 registry entry against the generated-art inventory.
 - Reviewed the source page, author or institution, date, and license/restriction metadata for every portrait described as cleared.
 - Kept source research separate from media copying and final art production.
 
