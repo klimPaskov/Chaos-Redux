@@ -1,0 +1,147 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 FORMER-HOST RECOVERY EFFECTS
+# ============================================================================
+# Four one-time actions rebuild a former host after Kruger's departure. Success
+# receipts add independent capacity and count toward the three-success recovery
+# threshold; failures remain recorded and create pressure without granting the
+# same reward through another path.
+# ============================================================================
+
+# COUNTRY scope. Re-evaluate the vacuum transition after every successful
+# recovery action. The lifecycle file remains the single owner of idea swaps.
+brilliant_scientist_former_host_recovery_refresh = {
+	if = {
+		limit = {
+			brilliant_scientist_former_host_recovery_actor = yes
+			brilliant_scientist_former_host_recovery_is_complete = yes
+		}
+		set_country_flag = brilliant_scientist_former_host_recovery_closed
+		set_country_flag = brilliant_scientist_former_host_recovery_complete
+		brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+	}
+	else_if = {
+		limit = {
+			brilliant_scientist_former_host_recovery_actor = yes
+			brilliant_scientist_former_host_recovery_is_terminal = yes
+		}
+		set_country_flag = brilliant_scientist_former_host_recovery_closed
+	}
+}
+
+# COUNTRY scope. Shared success receipt; the caller sets its unique action
+# flag and applies the action-specific capacity, exposure, and grievance delta.
+brilliant_scientist_former_host_recovery_register_success = {
+	add_to_variable = {
+		brilliant_scientist_former_host_recovery_progress = constant:brilliant_scientist_recovery_cost.recovery_progress_success
+	}
+	add_to_variable = {
+		brilliant_scientist_former_host_recovery_actions_completed = constant:brilliant_scientist_recovery_cost.recovery_progress_success
+	}
+	set_variable = { brilliant_scientist_former_host_recovery_last_success_date = global.date }
+	brilliant_scientist_former_host_recovery_refresh = yes
+}
+
+# COUNTRY scope. A failed action is permanent for that action and does not
+# masquerade as rebuilt capacity. The board can still complete if the other
+# three actions succeed.
+brilliant_scientist_former_host_recovery_register_failure = {
+	add_to_variable = {
+		brilliant_scientist_former_host_recovery_actions_failed = constant:brilliant_scientist_recovery_cost.recovery_progress_failure
+	}
+	set_variable = { brilliant_scientist_former_host_recovery_last_failure_date = global.date }
+	brilliant_scientist_former_host_recovery_refresh = yes
+}
+
+brilliant_scientist_recover_independent_research = {
+	clr_country_flag = brilliant_scientist_recovery_research_in_progress
+	set_country_flag = brilliant_scientist_recovery_research_reconstructed
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.independent_capacity_research }
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_research }
+	brilliant_scientist_change_grievance = yes
+	brilliant_scientist_former_host_recovery_register_success = yes
+}
+
+brilliant_scientist_secure_abandoned_archive = {
+	clr_country_flag = brilliant_scientist_recovery_archive_in_progress
+	set_country_flag = brilliant_scientist_recovery_archive_secured
+	if = {
+		limit = { FROM = { exists = yes } }
+		FROM = { set_state_flag = brilliant_scientist_recovery_archive_secured }
+	}
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.independent_capacity_archive }
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_archive }
+	brilliant_scientist_change_grievance = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.exposure_archive }
+	brilliant_scientist_change_exposure = yes
+	brilliant_scientist_former_host_recovery_register_success = yes
+}
+
+brilliant_scientist_offer_amnesty_to_assistants = {
+	clr_country_flag = brilliant_scientist_recovery_amnesty_in_progress
+	set_country_flag = brilliant_scientist_recovery_amnesty_granted
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.independent_capacity_amnesty }
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_amnesty }
+	brilliant_scientist_change_grievance = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.exposure_amnesty }
+	brilliant_scientist_change_exposure = yes
+	set_country_flag = brilliant_scientist_recovery_amnesty_infiltration_risk
+	brilliant_scientist_former_host_recovery_register_success = yes
+}
+
+brilliant_scientist_complete_international_inspection = {
+	clr_country_flag = brilliant_scientist_recovery_inspection_in_progress
+	set_country_flag = brilliant_scientist_recovery_inspection_completed
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.independent_capacity_inspection }
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_inspection }
+	brilliant_scientist_change_grievance = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.exposure_inspection }
+	brilliant_scientist_change_exposure = yes
+	set_country_flag = brilliant_scientist_recovery_inspection_treaty_signed
+	set_country_flag = brilliant_scientist_tech_sharing_network_joined
+	brilliant_scientist_former_host_recovery_register_success = yes
+}
+
+brilliant_scientist_fail_recovery_research = {
+	clr_country_flag = brilliant_scientist_recovery_research_in_progress
+	set_country_flag = brilliant_scientist_recovery_research_failed
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_archive }
+	brilliant_scientist_change_grievance = yes
+	brilliant_scientist_former_host_recovery_register_failure = yes
+}
+
+brilliant_scientist_fail_recovery_archive = {
+	clr_country_flag = brilliant_scientist_recovery_archive_in_progress
+	set_country_flag = brilliant_scientist_recovery_archive_lost
+	if = {
+		limit = { FROM = { exists = yes } }
+		FROM = { set_state_flag = brilliant_scientist_recovery_archive_lost }
+	}
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_archive }
+	brilliant_scientist_change_grievance = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.exposure_amnesty }
+	brilliant_scientist_change_exposure = yes
+	brilliant_scientist_former_host_recovery_register_failure = yes
+}
+
+brilliant_scientist_fail_recovery_amnesty = {
+	clr_country_flag = brilliant_scientist_recovery_amnesty_in_progress
+	set_country_flag = brilliant_scientist_recovery_amnesty_failed
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_archive }
+	brilliant_scientist_change_grievance = yes
+	set_country_flag = brilliant_scientist_recovery_amnesty_infiltration_risk
+	brilliant_scientist_former_host_recovery_register_failure = yes
+}
+
+brilliant_scientist_fail_recovery_inspection = {
+	clr_country_flag = brilliant_scientist_recovery_inspection_in_progress
+	set_country_flag = brilliant_scientist_recovery_inspection_failed
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.grievance_archive }
+	brilliant_scientist_change_grievance = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_recovery_cost.exposure_amnesty }
+	brilliant_scientist_change_exposure = yes
+	brilliant_scientist_former_host_recovery_register_failure = yes
+}

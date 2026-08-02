@@ -51,6 +51,10 @@ The host and world-threat lifecycle uses:
 
 Source art, processed previews, decoded DDS evidence, manifest data, and contact sheets remain under `docs/assets/016_brilliant_scientist/idea_national_spirit_icons/` until the Event 16 goal reaches final acceptance.
 
-## Future extensions
+## Former-host recovery transition
 
-Route-specific mitigations can replace Scientific Vacuum with recovery ideas after the existing archive-recovery decisions have enough persistent outcomes to justify a distinct institution. Additional Kruger State lifecycle upgrades should reuse or replace the five existing liability families instead of adding another permanent stack.
+After Kruger departs, the former host exposes a separate recovery category with four one-time actions: reconstruct independent research, secure one selected abandoned archive, offer amnesty to surviving assistants, and request international inspection. Each action consumes factories and concrete equipment or manpower, records a success or failure receipt, and changes the hidden Independent Capacity, Grievance, or Exposure values. Three successful actions are required before `brilliant_scientist_former_host_recovery_complete` suppresses Scientific Vacuum; a failed action remains historical and cannot be clicked again, so the country must succeed with the remaining actions or live with the vacuum.
+
+The recovery category reuses the existing reconstruction seal `GFX_decision_category_brilliant_scientist_aftermath_reconstruction` rather than introducing an unregistered asset. The gameplay source is `common/decisions/016_brilliant_scientist_former_host_recovery_decisions.txt`, with tuning in `common/script_constants/016_brilliant_scientist_constants.txt` and lifecycle calls in `common/scripted_effects/016_brilliant_scientist_recovery_effects.txt`.
+
+Additional Kruger State lifecycle upgrades should reuse or replace the five existing liability families instead of adding another permanent stack.

@@ -85,6 +85,17 @@ On completion, event `chaosx.brilliant_scientist_krg.22` calls `brilliant_scient
 
 Existing major enemies are marked once during succession. `on_war_relation_added` marks later major enemies only when the network government is one of the belligerents. `on_capitulation` sets `brilliant_scientist_machine_major_war_victory` only when an independent, active machine-network Kruger State is the actual victor and the capitulated major owns the durable opponent marker. Peace clears an unused marker. No periodic scan is involved.
 
+## Route command staff
+
+Each command-lifecycle effect now writes one route-active flag and invokes the hidden roster handoff `chaosx.brilliant_scientist_krg.90`. The event recruits and activates one fixed institutional character for the selected route, guarded by a permanent recruited flag so repeat focus or decision calls cannot create duplicates:
+
+- `KRG_general_staff_office` supports `KRG_a_general_staff_for_the_state` with a high-command advisor and corps commander.
+- `KRG_machine_command_node` supports `KRG_write_the_machine_command_protocol` and the machine command choice with a high-command advisor and corps commander.
+- `KRG_clone_officer_corps` supports the clone officer command branch with a high-command advisor and corps commander.
+- `KRG_project_command_council` supports `KRG_a_council_of_project_commanders` and its project-force coordination branch with a high-command advisor and corps commander.
+
+The four candidates also carry unpromoted despotism country-leader roles for later route presentation, but none can displace Doctor Warren Kruger or `KRG_continuity_network` during recruitment. Re-selecting a command lifecycle deactivates the prior route advisor, clears its active route flag, and reactivates the matching fixed character if it was already recruited. All four roles reuse existing generic scientist GFX; no new portrait or model asset is required.
+
 ## Temporal rescue state machine
 
 `brilliant_scientist_krg_issue_bounded_future_warning` targets either the threatened capital or an intact singularity facility in an owned and controlled state adjacent to enemy-held ground. The target is revalidated for the full 30-day preparation.
@@ -134,6 +145,7 @@ No new art is required for this tranche.
 
 - Decisions reuse registered generic decision sprites.
 - The machine government reuses `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_4_machine.dds` through `GFX_portrait_KRG_doctor_warren_kruger_stage_4_machine` in `interface/016_brilliant_scientist.gfx`.
+- Route command offices reuse the existing vanilla generic scientist DDS shelf through the stable `GFX_portrait_generic_*` names.
 - Canonical biological raids and intelligence operations keep their existing agent, equipment, map, and operation artwork.
 
 If dedicated art is later commissioned, keep decision icons under the Event 016 asset package, register stable sprite names in `interface/016_brilliant_scientist.gfx`, and replace only the generic decision icon references. Do not rename gameplay IDs to match art filenames.
