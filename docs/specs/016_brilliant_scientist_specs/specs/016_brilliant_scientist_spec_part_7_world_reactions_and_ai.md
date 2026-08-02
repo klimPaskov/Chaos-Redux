@@ -568,7 +568,7 @@ Possible links:
 - A stolen incomplete project can trigger a severe failure abroad.
 - Independent teams can fail while learning to reduce dependence.
 
-The implemented baseline uses one guarded recovery choice in `chaosx.nr60.2`. When the active Directorate has the required Political Power, `chaosx.nr60.2.b` preserves the current research-slot total, records a permanent country receipt, and pays for the rescue through the existing Directorate meters. The ordinary two-slot failure and its news report remain available, while stolen-project and independent-team variants remain separate expansion hooks. The intervention is not an Event 016 evolution, project reward, Event Log entry, or model dependency.
+The implemented baseline uses one guarded recovery choice in `chaosx.nr60.2`. When the active Directorate has the required Political Power, `chaosx.nr60.2.b` preserves the current research-slot total, records a permanent country receipt, and pays for the rescue through the existing Directorate meters. Ordinary Kruger transfer and KRG formation copy that receipt before the new country can make another Event 060 choice. The ordinary two-slot failure and its news report remain available, while stolen-project and independent-team variants remain separate expansion hooks. The intervention is not an Event 016 evolution, project reward, Event Log entry, or model dependency.
 
 ### Event 89: Tech sharing
 
@@ -579,7 +579,7 @@ Possible links:
 - Joint laboratories can evolve into a technology-sharing faction.
 - Kruger State can create a submission-based sharing group.
 
-The implemented baseline preserves Event 089's generic group selection and adds a guarded Event 016 consequence for the active host. Joining a group records `brilliant_scientist_tech_sharing_network_joined` and moves the existing Directorate meters toward open exchange. Refusal records `brilliant_scientist_tech_sharing_refused` and moves them toward private control. Each posture can be recorded once, and neither path creates a new technology group, project family, Event Log entry, evolution, asset, or model dependency. A future Kruger State sharing faction remains a separate route surface.
+The implemented baseline preserves Event 089's generic group selection and adds a guarded Event 016 consequence for the active host. Joining a group records `brilliant_scientist_tech_sharing_network_joined` and moves the existing Directorate meters toward open exchange. Refusal records `brilliant_scientist_tech_sharing_refused` and moves them toward private control. The country and posture receipts are copied through ordinary Kruger transfer and KRG formation, so each posture can be recorded once across the identity's lifetime. Neither path creates a new technology group, project family, Event Log entry, evolution, asset, or model dependency. A future Kruger State sharing faction remains a separate route surface.
 
 ### Event 137: Research Investment
 
