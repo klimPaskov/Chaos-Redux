@@ -8082,7 +8082,9 @@ air_winter_response_complete_decontamination = {
 air_winter_refresh_normal_map_proof_entity = {
 	if = {
 		limit = {
-			@AIR_WINTER_NORMAL_MAP_PROOF_STATE = {
+			# Scope keys do not expand file-scoped constants; this mirrors the
+			# authoritative proof-state constant immediately above.
+			64 = {
 				check_variable = { air_winter_phase > constant:air_winter_phase.clear }
 			}
 		}
@@ -21206,6 +21208,7 @@ fallout_successor_b7_run_vertical_slice = {
 					NOT = { has_global_flag = fallout_player_allocation_reservation_ledger_complete }
 					NOT = { fallout_player_allocation_reservation_ledger_is_current = yes }
 				}
+			}
 			fallout_resolve_player_continuation_ledger_before_allocation = yes
 		}
 		if = {
@@ -28715,8 +28718,8 @@ fallout_event_464_apply_result_effects = {
 			subtract_from_variable = { air_winter_water_security = constant:fallout_event_464_threshold.result_state_water_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_464_threshold.result_state_disease_failure }
 			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_464_threshold.result_supply_failure } }
-			if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE }
-			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE }
+			if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } }
 			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } }
 			set_state_flag = fallout_event_464_crossing_failure
 		}
@@ -28824,7 +28827,7 @@ fallout_event_464_apply_callback_effects = {
 		fallout_survival_apply_cohesion_delta = yes
 		add_stability = constant:fallout_event_464_threshold.callback_stability_failure
 		add_war_support = constant:fallout_event_464_threshold.callback_war_support_failure
-		var:fallout_event_464_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_464_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_464_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_464_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_464_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_464_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
+		var:fallout_event_464_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_464_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_464_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_464_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_464_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_464_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
 		fallout_event_464_apply_callback_failure_deaths = yes
 	}
 	clamp_variable = { var = fallout_bridge_that_moved_crossing_damage_current min = constant:fallout_event_464_threshold.ledger_minimum max = constant:fallout_event_464_threshold.ledger_maximum }
@@ -55486,7 +55489,7 @@ fallout_event_normalize_candidate_pressure = {
 	if = {
 		limit = {
 			check_variable = { fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index > constant:fallout_survival_resource.none }
-			fallout_survival_country_row_is_current = yes
+			fallout_survival_country_resource_row_is_durable = yes
 		}
 		set_temp_variable = { fallout_event_candidate_resource_index = fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index }
 		set_temp_variable = { fallout_event_candidate_resource_pressure = constant:fallout_event_runtime.resource_pressure_midpoint }
@@ -71630,8 +71633,8 @@ fallout_event_471_apply_result_effects = {
 			subtract_from_variable = { air_winter_water_security = constant:fallout_event_471_threshold.result_state_water_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_471_threshold.result_state_disease_failure }
 			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_471_threshold.result_supply_failure } }
-			if = { limit = { rail_way > constant:fallout_event_runtime.zero } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE }
-			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE }
+			if = { limit = { rail_way > constant:fallout_event_runtime.zero } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } }
 			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } }
 			set_state_flag = fallout_event_471_exposure_failure
 		}
@@ -71739,7 +71742,7 @@ fallout_event_471_apply_callback_effects = {
 		fallout_survival_apply_cohesion_delta = yes
 		add_stability = constant:fallout_event_471_threshold.callback_stability_failure
 		add_war_support = constant:fallout_event_471_threshold.callback_war_support_failure
-		var:fallout_event_471_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_471_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_471_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_471_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_471_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_471_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_runtime.zero } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
+		var:fallout_event_471_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_471_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_471_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_471_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_471_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_471_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_runtime.zero } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
 		fallout_event_471_apply_callback_failure_deaths = yes
 	}
 	clamp_variable = { var = fallout_first_unmasked_day_public_exposure_current min = constant:fallout_event_471_threshold.ledger_minimum max = constant:fallout_event_471_threshold.ledger_maximum }

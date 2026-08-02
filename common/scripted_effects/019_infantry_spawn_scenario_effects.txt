@@ -2294,17 +2294,17 @@ infantry_spawn_scenario_rollback_dynamic_actor_creation = {
 		event_target:infantry_spawn_scenario_dynamic_actor = {
 			delete_unit = { disband = no }
 			if = {
-				limit = { num_divisions = constant:infantry_spawn_scenario_value.zero }
+				limit = { NOT = { num_divisions > constant:infantry_spawn_scenario_value.zero } }
 				set_temp_variable = { infantry_spawn_scenario_rollback_army_cleared = constant:infantry_spawn_scenario_value.one }
 			}
 		}
 		if = {
 			limit = { check_variable = { infantry_spawn_scenario_rollback_army_cleared = constant:infantry_spawn_scenario_value.one } }
 			event_target:infantry_spawn_scenario_dynamic_actor = {
-				every_owned_state = {
-					if = {
-						limit = { is_core_of = event_target:infantry_spawn_scenario_dynamic_actor }
-						remove_state_core = event_target:infantry_spawn_scenario_dynamic_actor
+					every_owned_state = {
+						if = {
+							limit = { is_core_of = event_target:infantry_spawn_scenario_dynamic_actor }
+							event_target:infantry_spawn_scenario_dynamic_actor = { remove_state_core = PREV }
 					}
 				}
 			}
@@ -2339,11 +2339,11 @@ infantry_spawn_scenario_retry_pending_rollback_cleanup = {
 		}
 		delete_unit = { disband = no }
 		if = {
-			limit = { num_divisions = constant:infantry_spawn_scenario_value.zero }
+			limit = { NOT = { num_divisions > constant:infantry_spawn_scenario_value.zero } }
 			every_owned_state = {
 				if = {
 					limit = { is_core_of = ROOT }
-					remove_state_core = ROOT
+					ROOT = { remove_state_core = PREV }
 				}
 			}
 			clr_country_flag = infantry_spawn_scenario_rollback_cleanup_pending
