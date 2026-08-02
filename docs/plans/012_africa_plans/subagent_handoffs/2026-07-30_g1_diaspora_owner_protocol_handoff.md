@@ -37,4 +37,4 @@ Brace-depth checks passed for all new files and the modified action-effects file
 
 ## Known limitations and follow-up
 
-Action 54 technical missions retain the existing matrix validation because that action is not one of the current consent-gated readers. The protocol does not yet add a Charter League GUI readout for the new host capacity lanes; the existing action surface can still quote and select the actions, while the owner event supplies the missing target answer. In-game loading and live event interaction remain parent-owned because agents do not launch Hearts of Iron IV.
+Action 54 technical missions retain the existing matrix validation because that action is not one of the current consent-gated readers. The Charter League project panel now exposes the host's live administration and intelligence capacity lanes alongside the action and project caps; the owner event still supplies the target's consent answer. In-game loading and live event interaction remain parent-owned because agents do not launch Hearts of Iron IV.
