@@ -12,7 +12,7 @@ The narrowed whole-event goal is **PARTIAL / HOLD** and cannot be marked complet
 
 The newly narrowed focus-assignment contract itself is **STATIC PASS**: Event 006 defines one shared `independence_wave_focus_tree`; thirteen currently admitted packages take its full-assignment branch; IW-012 ICE is the sole reviewed additive branch because it must preserve the living meaningful vanilla `iceland_tree`; and the common final validator converts an apparent package success to failure when neither branch is proven.
 
-This resolves the earlier bespoke-tree expectation. It does not close the shared generic tree's unresolved geometry evidence, the 14/20 capacity boundary, the incomplete scenario acceptance evidence, the missing `6001` runtime package, or the remaining shared asset, formable, GUI, achievement, and documentation gaps.
+This resolves the earlier bespoke-tree expectation. The non-live SCN-008 scenario acceptance evidence is now closed by the committed 32-cell and edge-case receipts, but this does not close the shared generic tree's unresolved geometry evidence, the 14/20 capacity boundary, the missing `6001` runtime package, or the remaining shared asset, formable, GUI, achievement, and documentation gaps.
 
 Live or in-game testing is explicitly out of scope and is not counted below as a completion blocker. Bespoke country focus trees are likewise not required. No fallback or package-admission shortcut is accepted.
 
