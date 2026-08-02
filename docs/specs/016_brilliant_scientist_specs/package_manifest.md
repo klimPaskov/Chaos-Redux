@@ -16,7 +16,7 @@
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
-| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, seven report images, six super-event images, and six milestone news images are present and registered; qualifying defeat/remnant art and broader country-specific flavour remain queued |
+| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, ten report images, six super-event images, and six milestone news images are present and registered; family-specific breakthrough variants, qualifying defeat/remnant art, and broader country-specific flavour remain queued |
 | Audio status | Six Event 016-owned WAVs, sound tracks, volume variants, and super-event presentation selectors are wired |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
 | Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |
