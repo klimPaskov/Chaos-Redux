@@ -12,7 +12,7 @@ The later frozen-roster RSA gate could then reject the selected SAF, leaving the
 
 ## Change
 
-`common/scripted_triggers/012_africa_rsa_triggers.txt` now defines `africa_rsa_prefire_contact_pool_has_patron`, which accepts an existing bounded patron or a valid African patron in the temporary contact pool.
+`common/scripted_triggers/012_africa_rsa_triggers.txt` now defines `africa_rsa_prefire_contact_pool_has_patron`, which checks the temporary contact pool for a valid African patron.
 
 `common/scripted_effects/012_africa_effects.txt` only adds a SAF candidate to the weighted host pool when that patron trigger passes and the existing minimum-contact threshold is met.
 

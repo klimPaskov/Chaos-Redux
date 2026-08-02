@@ -80,15 +80,13 @@ africa_rsa_has_exile_patron_candidate = {
 # COUNTRY scope during the one-shot host candidate build, after the
 # prospective host's temporary contact pool exists. This prevents original
 # SAF from entering the weighted pool when its frozen contact set contains no
-# valid African exile patron; existing relationship or selected-target patrons
-# remain accepted by the shared candidate helper.
+# valid African exile patron in the temporary contact pool. Persistent Event 12
+# relationship arrays do not exist before a host has been initialized and are
+# intentionally not consulted during this prefire pass.
 africa_rsa_prefire_contact_pool_has_patron = {
-	OR = {
-		africa_rsa_has_exile_patron_candidate = yes
-		any_of_scopes = {
-			array = africa_prefire_contact_pool
-			africa_rsa_is_valid_exile_patron = yes
-		}
+	any_of_scopes = {
+		array = africa_prefire_contact_pool
+		africa_rsa_is_valid_exile_patron = yes
 	}
 }
 
