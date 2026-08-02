@@ -1,0 +1,81 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 GENERIC RELEASE AI
+# ============================================================================
+# These additive profiles apply to every active Event 006 country that owns
+# the shared generic tree or a reviewed additive carrier. They use the public
+# Event 006 values rather than a country-specific identity, so an Africa,
+# Fallout, crisis, or other caller can reuse a registered tag without needing
+# another AI package. Package-specific strategy files remain additive.
+# ============================================================================
+
+independence_wave_generic_survival_profile = {
+	enable = {
+		is_independence_wave_active_country = yes
+		OR = {
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_additive_focus_overlay
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		OR = {
+			has_independence_wave_severe_instability = yes
+			NOT = { has_independence_wave_functioning_capacity = yes }
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_generic_ai.survival_army }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:independence_wave_generic_ai.survival_infantry }
+	ai_strategy = { type = equipment_production_factor id = support value = constant:independence_wave_generic_ai.survival_support }
+	ai_strategy = { type = equipment_production_factor id = artillery value = constant:independence_wave_generic_ai.survival_artillery }
+	ai_strategy = { type = equipment_production_min_factories id = train value = constant:independence_wave_generic_ai.survival_train }
+	ai_strategy = { type = build_building id = infrastructure value = constant:independence_wave_generic_ai.survival_infrastructure }
+	ai_strategy = { type = build_building id = bunker value = constant:independence_wave_generic_ai.survival_defense }
+	ai_strategy = { type = avoid_starting_wars value = constant:independence_wave_generic_ai.survival_war_restraint }
+}
+
+independence_wave_generic_recovery_profile = {
+	enable = {
+		is_independence_wave_active_country = yes
+		OR = {
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_additive_focus_overlay
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_independence_wave_functioning_capacity = yes
+		has_independence_wave_de_facto_recognition = yes
+		OR = {
+			has_independence_wave_severe_instability = yes
+			has_independence_wave_living_former_host = yes
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_generic_ai.recovery_army }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:independence_wave_generic_ai.recovery_infantry }
+	ai_strategy = { type = equipment_production_factor id = support value = constant:independence_wave_generic_ai.recovery_support }
+	ai_strategy = { type = equipment_production_factor id = artillery value = constant:independence_wave_generic_ai.recovery_artillery }
+	ai_strategy = { type = build_building id = industrial_complex value = constant:independence_wave_generic_ai.recovery_industry }
+	ai_strategy = { type = build_building id = infrastructure value = constant:independence_wave_generic_ai.recovery_infrastructure }
+	ai_strategy = { type = avoid_starting_wars value = constant:independence_wave_generic_ai.recovery_war_restraint }
+}
+
+independence_wave_generic_consolidation_profile = {
+	enable = {
+		is_independence_wave_active_country = yes
+		OR = {
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_additive_focus_overlay
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_independence_wave_functioning_capacity = yes
+		has_independence_wave_de_facto_recognition = yes
+		has_independence_wave_prepared_security = yes
+		NOT = { has_independence_wave_severe_instability = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_generic_ai.consolidation_army }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:independence_wave_generic_ai.consolidation_infantry }
+	ai_strategy = { type = equipment_production_factor id = support value = constant:independence_wave_generic_ai.consolidation_support }
+	ai_strategy = { type = equipment_production_factor id = artillery value = constant:independence_wave_generic_ai.consolidation_artillery }
+	ai_strategy = { type = build_building id = industrial_complex value = constant:independence_wave_generic_ai.consolidation_industry }
+	ai_strategy = { type = build_building id = infrastructure value = constant:independence_wave_generic_ai.consolidation_infrastructure }
+	ai_strategy = { type = avoid_starting_wars value = constant:independence_wave_generic_ai.consolidation_war_restraint }
+}

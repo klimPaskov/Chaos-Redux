@@ -49,7 +49,12 @@ independence_wave_dispatch_package_final_validation = {
 	if = {
 		limit = { check_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected } }
 		if = {
-			limit = { NOT = { has_independence_wave_generic_focus_contract = yes } }
+			limit = {
+				OR = {
+					NOT = { has_independence_wave_generic_focus_contract = yes }
+					NOT = { has_country_flag = independence_wave_generic_ai_profile }
+				}
+			}
 			set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.no_candidates }
 		}
 	}
