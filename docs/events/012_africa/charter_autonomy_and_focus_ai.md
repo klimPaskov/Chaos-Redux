@@ -30,6 +30,8 @@ They order already-eligible focuses after the host has selected a route, preserv
 7. Withdrawal, refusal, rivalry, resistance, or an outside settlement calls the shared release helper.
 8. That helper ends only an Event 12 Charter subject relationship and never dissolves an unrelated pre-existing subject arrangement.
 
+Both autonomy states also require `africa_member_host_generation_is_current`. A stale consent receipt from a prior host succession therefore cannot keep or requalify a member under the new Charter host.
+
 The two player-facing autonomy names and descriptions are `autonomy_africa_federal_member` and `autonomy_africa_integrated_region`.
 
 ## Continental focus AI flow
@@ -100,6 +102,7 @@ Focus-local route and live-state behavior remains centralized in the existing Ev
 - Every focus key in the ten AI plans must exist in `africa_continental_focus_tree`.
 - No autonomy state may allow automatic `can_take_level` or `can_lose_level` behavior.
 - A member may enter either state only after the matching consent flags are present.
+- A member may keep either state only while its recorded host generation matches the committed current host generation.
 - A member leaving the Charter must not remain in an Event 12 subject state.
 - A route plan must abort when its constitution or host identity is no longer current.
 
