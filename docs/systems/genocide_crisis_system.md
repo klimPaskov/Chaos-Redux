@@ -50,6 +50,18 @@ The standalone sprite aliases are registered in `interface/chaosx_buildings.gfx`
 
 Future visual extensions should preserve the existing frame order and append new building frames at the end of the strip. A later gulag-network art pass should remain a separate building-icon requirement rather than reusing either camp icon.
 
+## Static 3D Building Assets
+
+The camp buildings use custom static HOI4 map entities in addition to their existing 2D icons.
+
+- `building_concentration_camp` uses `chaosx_concentration_camp_mesh` from `gfx/models/buildings/chaosx_concentration_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
+- `building_extermination_camp` uses `chaosx_extermination_camp_mesh` from `gfx/models/buildings/chaosx_extermination_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
+- The intact entity bindings live in `gfx/entities/chaosx_buildings.asset`, and the PDX mesh declarations live in `gfx/entities/chaosx_buildings.gfx`.
+- Both buildings use the vanilla `special_project_facility_spawn` position pool, so the mod does not reintroduce `map/buildings.txt`.
+- Destroyed-state entities remain the vanilla bunker and stronghold-network destroyed meshes until a separate destroyed-asset package is approved.
+
+The production evidence, one-image Meshy inputs, Blender checkpoints, and reimport proofs are recorded under `docs/assets/system_camp_repression_rework/models_3d/`.
+
 ## Deaths and Population Damage
 
 Every recurring or immediate population-loss action enters the Chaos Meter Deaths system. The state owner receives the population-loss record and real state population reduction; the stored responsible country receives hidden evidence, later condemnation, and tribunal responsibility. This distinction is important in occupied China, Manchuria, the Raj, North Africa, Libya, the Congo, occupied Poland, and Soviet borderlands.
