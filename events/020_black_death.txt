@@ -933,6 +933,59 @@ country_event = {
 	option = { name = chaosx.nr20.76.a }
 }
 
+country_event = {
+	id = chaosx.nr20.77
+	title = chaosx.nr20.77.t
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_absolute_crown_route }
+		text = chaosx.nr20.77.d.absolute_crown
+	}
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_brood_council_route }
+		text = chaosx.nr20.77.d.brood_council
+	}
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_breath_hierophancy_route }
+		text = chaosx.nr20.77.d.breath_hierophancy
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				OR = {
+					has_country_flag = black_plague_rat_absolute_crown_route
+					has_country_flag = black_plague_rat_brood_council_route
+					has_country_flag = black_plague_rat_breath_hierophancy_route
+				}
+			}
+		}
+		text = chaosx.nr20.77.d
+	}
+	picture = GFX_report_event_020_rat_king_crisis
+	is_triggered_only = yes
+	option = {
+		trigger = { has_country_flag = black_plague_rat_absolute_crown_route }
+		name = chaosx.nr20.77.a.absolute_crown
+		add_to_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_policy.crown_route_selection_dominion_gain }
+		subtract_from_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_policy.route_selection_hunger_cost }
+		clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.king_meter_cap }
+		clamp_variable = { var = black_plague_rat_king_hunger min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.king_meter_cap }
+	}
+	option = {
+		trigger = { has_country_flag = black_plague_rat_brood_council_route }
+		name = chaosx.nr20.77.a.brood_council
+		add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_policy.council_route_selection_cohesion_gain }
+		clamp_variable = { var = black_plague_rat_king_cohesion min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.king_meter_cap }
+	}
+	option = {
+		trigger = { has_country_flag = black_plague_rat_breath_hierophancy_route }
+		name = chaosx.nr20.77.a.breath_hierophancy
+		add_to_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_policy.hierophancy_route_selection_sentience_gain }
+		add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_policy.route_selection_hunger_cost }
+		clamp_variable = { var = black_plague_rat_king_sentience min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.king_meter_cap }
+		clamp_variable = { var = black_plague_rat_king_hunger min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.king_meter_cap }
+	}
+}
+
 news_event = {
 	id = chaosx.nr20.90
 	title = chaosx.nr20.90.t
