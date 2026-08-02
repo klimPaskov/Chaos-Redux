@@ -12,7 +12,7 @@
 
 - Source PNG: `source_png/report_event_fallout_doctors_coup_source.png`
 - Processed PNG: `processed_png/report_event_fallout_doctors_coup.png`
-- Runtime DDS: `gfx/event_pictures/fallout_doctors_coup/report_event_fallout_doctors_coup.dds`
+- Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_doctors_coup.dds`
 - Prompt: `prompts/imagegen_prompt.txt`
 
 ## Runtime contract
@@ -20,7 +20,7 @@
 - Sprite: `GFX_report_event_fallout_doctors_coup`
 - GFX registration: `interface/fallout_world_end.gfx`
 - Event consumer: `events/fallout_world_end_events.txt`
-- Dedicated path: `gfx/event_pictures/fallout_doctors_coup/`
+- Dedicated path: `gfx/event_pictures/fallout/`
 
 ## Source and processing
 

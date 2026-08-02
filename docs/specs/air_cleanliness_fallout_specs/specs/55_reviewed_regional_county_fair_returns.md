@@ -87,7 +87,7 @@ The opening records a branch choice, the result records branch and outcome, and 
 
 Each history entry uses history `9159`, the country as primary actor, and the authenticated host state as secondary actor.
 
-The dedicated report card is `GFX_report_event_fallout_county_fair_returns` and resolves to `gfx/event_pictures/fallout_world_end/report_event_fallout_county_fair_returns.dds`.
+The dedicated report card is `GFX_report_event_fallout_county_fair_returns` and resolves to `gfx/event_pictures/fallout/report_event_fallout_county_fair_returns.dds`.
 
 The asset has a source image, processed PNG, prompt, hashes, manifest, and handoff. Earlier package variants remain non-selected evidence and are not runtime consumers.
 

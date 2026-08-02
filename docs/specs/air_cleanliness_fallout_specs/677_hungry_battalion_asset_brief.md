@@ -18,7 +18,7 @@ This brief owns one fictional Fallout report image for the reviewed Food Compact
 | Process | Apply the repository report-card processor after generation to create black-and-white sepia treatment, grain, paper border, tilt, transparent corners, and soft shadow |
 | Final source path | `docs/assets/677_hungry_battalion/source_png/report_event_fallout_hungry_battalion_source.png` |
 | Processed path | `docs/assets/677_hungry_battalion/processed_png/report_event_fallout_hungry_battalion.png` |
-| Runtime path | `gfx/event_pictures/fallout_world_end/report_event_fallout_hungry_battalion.dds` |
+| Runtime path | `gfx/event_pictures/fallout/report_event_fallout_hungry_battalion.dds` |
 | Sprite | `GFX_report_event_fallout_hungry_battalion` |
 | Registry | `interface/fallout_world_end.gfx` |
 

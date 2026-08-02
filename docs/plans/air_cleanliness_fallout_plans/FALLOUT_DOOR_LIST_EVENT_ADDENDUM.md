@@ -277,7 +277,7 @@ Do not show monsters, gore, contemporary insignia, or a generic ruined skyline.
 The human opening, result, and callback may share this dedicated family image.
 
 Register `GFX_report_event_fallout_door_list` in `interface/fallout_world_end.gfx`.
-Place the DDS under `gfx/event_pictures/fallout_door_list/`.
+Place the DDS under `gfx/event_pictures/fallout/`.
 The handoff requires source PNG, processed `210 x 176` PNG, final DDS, prompt and provenance note, manifest, preview, and exact sprite path.
 A static report image is sufficient because animation would not improve the admission decision.
 

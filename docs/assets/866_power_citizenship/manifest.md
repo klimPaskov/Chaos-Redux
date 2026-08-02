@@ -2,7 +2,7 @@
 
 | Role | Source | Processed | Runtime | Sprite |
 | --- | --- | --- | --- | --- |
-| Fallout report event | `power_citizenship_source.png` | `power_citizenship_processed.png` | `gfx/event_pictures/power_citizenship/report_event_fallout_power_citizenship.dds` | `GFX_report_event_fallout_power_citizenship` |
+| Fallout report event | `power_citizenship_source.png` | `power_citizenship_processed.png` | `gfx/event_pictures/fallout/report_event_fallout_power_citizenship.dds` | `GFX_report_event_fallout_power_citizenship` |
 
 Source dimensions are 1370 by 1148 pixels. The processed report image is 210 by 176 pixels with RGBA channels. The runtime texture is a 210 by 176 DDS.
 

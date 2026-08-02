@@ -66,7 +66,7 @@ The generated source is `docs/assets/600_radio_island_chain/source_generated.png
 
 The processed report image is `docs/assets/600_radio_island_chain/processed_210x176.png` with SHA-256 `eb337a17a8c954895e0c1af208cc9d1946fa10c1b035d6b2358856f82a2616cb`.
 
-The runtime DDS is `gfx/event_pictures/fallout_world_end/report_event_fallout_radio_island_chain.dds` with SHA-256 `8cbdfb43937b4cd4c4fd39fcdd334228a3812386a455af39daac1e60c3798d73`, DDS magic `DDS `, a 124-byte header, width 210, height 176, 32 bits per pixel, and a 147968-byte file length equal to the expected BGRA payload.
+The runtime DDS is `gfx/event_pictures/fallout/report_event_fallout_radio_island_chain.dds` with SHA-256 `8cbdfb43937b4cd4c4fd39fcdd334228a3812386a455af39daac1e60c3798d73`, DDS magic `DDS `, a 124-byte header, width 210, height 176, 32 bits per pixel, and a 147968-byte file length equal to the expected BGRA payload.
 
 The sprite `GFX_report_event_fallout_radio_island_chain` is registered in `interface/fallout_world_end.gfx` and the manifest records source, processed, runtime, prompt, and handoff provenance.
 

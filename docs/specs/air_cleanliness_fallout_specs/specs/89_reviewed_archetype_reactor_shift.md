@@ -54,7 +54,7 @@ The first-winter callback resolves after `270` days and grades the live ledgers 
 
 Choice, result, callback, and cancellation payloads use Event Log history `9193` and the dedicated scripted localisation `GetFalloutEvent810EventLogDetail`.
 
-The report picture is `GFX_report_event_fallout_reactor_shift`, backed by `gfx/event_pictures/reactor_shift/report_event_fallout_reactor_shift.dds` and the manifest under `docs/assets/810_reactor_shift/`.
+The report picture is `GFX_report_event_fallout_reactor_shift`, backed by `gfx/event_pictures/fallout/report_event_fallout_reactor_shift.dds` and the manifest under `docs/assets/810_reactor_shift/`.
 
 Cleanup clears country and state reservations only after the delayed result and callback tickets are released. It writes the closed Reactor Shift state memory, retains durable branch flags, and does not delete tags, create countries, request Fallout, or register a public Fallout event.
 

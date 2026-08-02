@@ -2,7 +2,7 @@
 
 Asset package: fictional alternate-history Europe report picture for "The River Ration League".
 
-Final runtime DDS: `gfx/event_pictures/fallout_world_end/report_event_fallout_river_ration_league.dds`
+Final runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_river_ration_league.dds`
 
 Final DDS SHA-256: `7f1688f6ef41b1d20e38d5ac8a4a2002bcf77e5373a3d42422f6593af270c8c2`
 
@@ -15,7 +15,7 @@ Suggested `.gfx` target: the existing Chaos Redux report-event sprite definition
 Ready-to-copy texture reference:
 
 ```text
-texturefile = "gfx/event_pictures/fallout_world_end/report_event_fallout_river_ration_league.dds"
+texturefile = "gfx/event_pictures/fallout/report_event_fallout_river_ration_league.dds"
 ```
 
 Source and evidence:

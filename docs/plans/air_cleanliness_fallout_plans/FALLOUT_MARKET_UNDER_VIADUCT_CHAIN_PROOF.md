@@ -14,7 +14,7 @@ The result and callback mutate food, scrap, medicine, price, merchant, ration, s
 
 ## Asset proof
 
-The dedicated source, processed preview, prompt, manifest, GFX handoff, and runtime DDS are under `docs/assets/air_cleanliness_fallout/fallout_market_under_viaduct/` and `gfx/event_pictures/fallout_world_end/report_event_fallout_market_under_viaduct.dds`.
+The dedicated source, processed preview, prompt, manifest, GFX handoff, and runtime DDS are under `docs/assets/air_cleanliness_fallout/fallout_market_under_viaduct/` and `gfx/event_pictures/fallout/report_event_fallout_market_under_viaduct.dds`.
 
 ## Inspector boundary
 

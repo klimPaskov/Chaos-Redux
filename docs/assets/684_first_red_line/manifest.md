@@ -6,7 +6,7 @@ This package owns the dedicated fictional Quarantine report-event image for cand
 
 | Requirement | Intended use | Source package | Runtime registration | Consumer | Status |
 | --- | --- | --- | --- | --- | --- |
-| `684.first_red_line.report_event` | Fever clinic, ash road, and Quarantine ward policy | generated source PNG to processed PNG | `gfx/event_pictures/fallout_first_red_line/report_event_fallout_first_red_line.dds`, sprite `GFX_report_event_fallout_first_red_line` | Events 684, 686, and 688 | wired static runtime |
+| `684.first_red_line.report_event` | Fever clinic, ash road, and Quarantine ward policy | generated source PNG to processed PNG | `gfx/event_pictures/fallout/report_event_fallout_first_red_line.dds`, sprite `GFX_report_event_fallout_first_red_line` | Events 684, 686, and 688 | wired static runtime |
 
 ## Asset entry
 
@@ -24,7 +24,7 @@ This package owns the dedicated fictional Quarantine report-event image for cand
 - Processed PNG: `docs/assets/684_first_red_line/processed_png/report_event_fallout_first_red_line.png`
 - Processed PNG SHA-256: `d75916aee0acb6334b67ea165754016420bea60b54dea3cd9896852f2112c570`
 - Processed dimensions: `210x176` RGBA PNG with report-card transparency
-- Final DDS: `gfx/event_pictures/fallout_first_red_line/report_event_fallout_first_red_line.dds`
+- Final DDS: `gfx/event_pictures/fallout/report_event_fallout_first_red_line.dds`
 - Final DDS SHA-256: `5d8cb9749c02d255ff44e126c9d13bafc6a088f2e70702ac4520ed130bd513d4`
 - DDS format: legacy one-level uncompressed BGRA, 32-bit, `210x176`, 128-byte header, exact length `147968` bytes
 - Sprite name: `GFX_report_event_fallout_first_red_line`

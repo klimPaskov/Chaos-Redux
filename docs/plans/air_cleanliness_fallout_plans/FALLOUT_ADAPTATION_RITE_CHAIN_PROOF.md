@@ -9,7 +9,7 @@ This proof covers the reviewed dormant ordinary Fallout tranche for candidate `9
 - Triggers and effects: `common/scripted_triggers/fallout_world_end_adaptation_rite_event_triggers.txt` and `common/scripted_effects/fallout_world_end_adaptation_rite_event_effects.txt`.
 - Events: `events/fallout_world_end_events.txt`, ids `chaosx.fallout.1030` through `chaosx.fallout.1036`.
 - Event Log: `common/scripted_localisation/fallout_world_end_adaptation_rite_event_log_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and the dedicated localisation file.
-- Art: `interface/fallout_world_end.gfx` and `gfx/event_pictures/adaptation_rite/report_event_fallout_adaptation_rite.dds`.
+- Art: `interface/fallout_world_end.gfx` and `gfx/event_pictures/fallout/report_event_fallout_adaptation_rite.dds`.
 
 ## Static audit
 

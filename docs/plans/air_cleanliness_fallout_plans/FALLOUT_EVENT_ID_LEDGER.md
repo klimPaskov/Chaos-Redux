@@ -1182,3 +1182,17 @@ The chain carries Equal Public School, Separate Institutions, Local Autonomy, an
 The asset evidence is `docs/assets/915_children_of_two_settlements/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_children_of_two_settlements`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-915` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_CHILDREN_OF_TWO_SETTLEMENTS_CHAIN_PROOF.md`.
+
+## The Cohort's First Ballot
+
+The Cohort's First Ballot adds dormant event ids `1044` through `1050` with candidate id `922`, transaction key `710103`, route `7238`, and history `9209`.
+
+The human opening is `1044`, the hidden AI opening is `1045`, the human and hidden AI delayed results are `1046` and `1047`, the human and hidden AI election reviews are `1048` and `1049`, and cleanup is `1050`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a closed Children of Two Settlements state memory, a current living ward, current Air Winter and Supply Access receipts, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign witness, ballot legitimacy, service pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, witness, generation, Air Winter values, Supply Access, and civic ledgers.
+
+The chain carries Seat a Youth Council, Reserve Guardian Seats, Constitute a Mixed Ward Assembly, and Require a Service Year branches with distinct survival costs, deterministic result and election-review grading, a 77-day result, a 450-day review, bounded Deaths effects, Air Winter and Supply Access effects, fictional succession memory, bilateral opinion, Event Log history `9209`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/922_cohorts_first_ballot/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_cohorts_first_ballot`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-922` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_COHORTS_FIRST_BALLOT_CHAIN_PROOF.md`.

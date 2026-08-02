@@ -21,7 +21,7 @@ No source reuses Air Winter art. The images contain no readable text, flags, log
 - Manifest with source/processed/DDS hashes: `asset_manifest.json`
 - Requirement-to-runtime crosswalk: `requirement_to_runtime_crosswalk.md`
 - GFX note: `gfx_handoff.md`
-- Final DDS files: `gfx/event_pictures/fallout_world_end/report_event_fallout_{national_orientation,capital_condition,resource_crisis,government_archetype,character_institution,orientation_closure}.dds`
+- Final DDS files: `gfx/event_pictures/fallout/report_event_fallout_{national_orientation,capital_condition,resource_crisis,government_archetype,character_institution,orientation_closure}.dds`
 
 ## Runtime sprite mapping
 
@@ -29,12 +29,12 @@ Use `interface/fallout_world_end.gfx` and the stable sprite names below:
 
 | Sprite | Final DDS |
 | --- | --- |
-| `GFX_report_event_fallout_national_orientation` | `gfx/event_pictures/fallout_world_end/report_event_fallout_national_orientation.dds` |
-| `GFX_report_event_fallout_capital_condition` | `gfx/event_pictures/fallout_world_end/report_event_fallout_capital_condition.dds` |
-| `GFX_report_event_fallout_resource_crisis` | `gfx/event_pictures/fallout_world_end/report_event_fallout_resource_crisis.dds` |
-| `GFX_report_event_fallout_government_archetype` | `gfx/event_pictures/fallout_world_end/report_event_fallout_government_archetype.dds` |
-| `GFX_report_event_fallout_character_institution` | `gfx/event_pictures/fallout_world_end/report_event_fallout_character_institution.dds` |
-| `GFX_report_event_fallout_orientation_closure` | `gfx/event_pictures/fallout_world_end/report_event_fallout_orientation_closure.dds` |
+| `GFX_report_event_fallout_national_orientation` | `gfx/event_pictures/fallout/report_event_fallout_national_orientation.dds` |
+| `GFX_report_event_fallout_capital_condition` | `gfx/event_pictures/fallout/report_event_fallout_capital_condition.dds` |
+| `GFX_report_event_fallout_resource_crisis` | `gfx/event_pictures/fallout/report_event_fallout_resource_crisis.dds` |
+| `GFX_report_event_fallout_government_archetype` | `gfx/event_pictures/fallout/report_event_fallout_government_archetype.dds` |
+| `GFX_report_event_fallout_character_institution` | `gfx/event_pictures/fallout/report_event_fallout_character_institution.dds` |
+| `GFX_report_event_fallout_orientation_closure` | `gfx/event_pictures/fallout/report_event_fallout_orientation_closure.dds` |
 
 Contract role mapping: national orientation (62/63 -> 64/65), capital condition (66/67 -> 68/69), resource crisis (70/71 -> 72/73), government archetype (74/75 -> 76/77), character/institution (78/79 -> 80/81), and closure (82/83). Cleanup 84 is hidden and has no dedicated card requirement.
 

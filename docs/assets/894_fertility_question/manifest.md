@@ -2,7 +2,7 @@
 
 - Source: `fertility_question_source.png`, generated fictional art.
 - Processed preview: `fertility_question_processed.png`, 210 by 176 RGBA report card.
-- Runtime DDS: `gfx/event_pictures/fertility_question/report_event_fallout_fertility_question.dds`, 210 by 176 BC3 card.
+- Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_fertility_question.dds`, 210 by 176 BC3 card.
 - Sprite: `GFX_report_event_fallout_fertility_question`.
 - Consumers: `chaosx.fallout.970` through `chaosx.fallout.976`.
 - The asset is dedicated to The Fertility Question and does not reuse Mixed Settlement Petition art, audio, sprites, or paths.

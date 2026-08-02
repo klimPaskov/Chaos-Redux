@@ -5,7 +5,7 @@ The main event file uses `GFX_report_event_fallout_ghost_convoy` for events `cha
 ```text
 spriteType = {
 	name = "GFX_report_event_fallout_ghost_convoy"
-	texturefile = "gfx/event_pictures/ghost_convoy/report_event_fallout_ghost_convoy.dds"
+	texturefile = "gfx/event_pictures/fallout/report_event_fallout_ghost_convoy.dds"
 }
 ```
 

@@ -15,7 +15,7 @@ interface/fallout_world_end.gfx
 Runtime texture:
 
 ```text
-gfx/event_pictures/old_doctor_trial/report_event_fallout_old_doctor_trial.dds
+gfx/event_pictures/fallout/report_event_fallout_old_doctor_trial.dds
 ```
 
 Event consumers:

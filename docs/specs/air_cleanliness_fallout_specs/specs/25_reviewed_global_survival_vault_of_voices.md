@@ -58,7 +58,7 @@ The state modifiers use reviewed existing icons.
 `GFX_idea_generic_research_bonus` marks preserved or weaponized records.
 `GFX_idea_013_disaster_recovery_mobilization` marks curated, traded, or partial archive service.
 `GFX_idea_country_without_breath` marks unsafe service.
-The report sprite is `GFX_report_event_fallout_vault_of_voices` in `interface/fallout_world_end.gfx` and points to `gfx/event_pictures/fallout_world_end/report_event_fallout_vault_of_voices.dds`.
+The report sprite is `GFX_report_event_fallout_vault_of_voices` in `interface/fallout_world_end.gfx` and points to `gfx/event_pictures/fallout/report_event_fallout_vault_of_voices.dds`.
 
 ## Future expansion
 

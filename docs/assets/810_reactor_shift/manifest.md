@@ -16,7 +16,7 @@ Processed dimensions: `210x176` RGBA.
 
 Processed SHA-256: `5efdcfc84059aff1ee4313a805682dabbf001eb41ab5dad999df4bd195843ec3`.
 
-Runtime DDS: `gfx/event_pictures/reactor_shift/report_event_fallout_reactor_shift.dds`.
+Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_reactor_shift.dds`.
 
 Runtime DDS dimensions: `210x176`, uncompressed RGBA pixel format.
 

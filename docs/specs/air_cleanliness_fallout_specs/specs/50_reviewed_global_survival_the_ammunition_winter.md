@@ -27,7 +27,7 @@ The chain uses the established Fallout ordinary receipt, delayed-result, hidden-
 
 ## IDs and assets
 
-The chain owns event ids `chaosx.fallout.534` through `chaosx.fallout.540`, candidate id `534`, transaction key `710050`, route `7150`, and Event Log history `9155`. Its dedicated sprite is `GFX_report_event_fallout_ammunition_winter`, backed by `gfx/event_pictures/fallout_world_end/report_event_fallout_ammunition_winter.dds` and the source manifest at `docs/assets/air_cleanliness_fallout/fallout_ammunition_winter/manifest.md`.
+The chain owns event ids `chaosx.fallout.534` through `chaosx.fallout.540`, candidate id `534`, transaction key `710050`, route `7150`, and Event Log history `9155`. Its dedicated sprite is `GFX_report_event_fallout_ammunition_winter`, backed by `gfx/event_pictures/fallout/report_event_fallout_ammunition_winter.dds` and the source manifest at `docs/assets/air_cleanliness_fallout/fallout_ammunition_winter/manifest.md`.
 
 ## Review boundary
 

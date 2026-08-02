@@ -20,7 +20,7 @@ The callback is delayed 180 days. It applies a second ledger pass, records a dur
 
 ## Event Log and assets
 
-History id 9118 uses payloads 11 through 53. The detail text is selected by `GetFalloutEvent269EventLogDetail`, with central Event Log mappings for the name and detail window. The dedicated report art is `GFX_report_event_fallout_names_missing` and lives at `gfx/event_pictures/fallout_world_end/report_event_fallout_names_missing.dds`. Source art, processing evidence, hashes, and the handoff are under `docs/assets/air_cleanliness_fallout/fallout_names_missing/`.
+History id 9118 uses payloads 11 through 53. The detail text is selected by `GetFalloutEvent269EventLogDetail`, with central Event Log mappings for the name and detail window. The dedicated report art is `GFX_report_event_fallout_names_missing` and lives at `gfx/event_pictures/fallout/report_event_fallout_names_missing.dds`. Source art, processing evidence, hashes, and the handoff are under `docs/assets/air_cleanliness_fallout/fallout_names_missing/`.
 
 ## AI and runtime boundary
 

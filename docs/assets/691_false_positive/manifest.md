@@ -4,7 +4,7 @@ This package owns the dedicated report image for the dormant Quarantine chain Fa
 
 | Consumer | Visual role | Source and processed files | Runtime texture | Sprite and event consumers |
 |---|---|---|---|---|
-| `691.false_positive.report_event` | Quarantine clerks compare a mistaken red seal with the corrected register while a cleared household waits at a frost gate | `source_png/report_event_fallout_false_positive_source.png` to `processed_png/report_event_fallout_false_positive.png` | `gfx/event_pictures/fallout_false_positive/report_event_fallout_false_positive.dds` | `GFX_report_event_fallout_false_positive`, events 691, 693, and 695 |
+| `691.false_positive.report_event` | Quarantine clerks compare a mistaken red seal with the corrected register while a cleared household waits at a frost gate | `source_png/report_event_fallout_false_positive_source.png` to `processed_png/report_event_fallout_false_positive.png` | `gfx/event_pictures/fallout/report_event_fallout_false_positive.dds` | `GFX_report_event_fallout_false_positive`, events 691, 693, and 695 |
 
 - Asset name: `report_event_fallout_false_positive`
 - Intended in-game use: `210x176` Fallout report-event card for False Positive
@@ -14,7 +14,7 @@ This package owns the dedicated report image for the dormant Quarantine chain Fa
 - Final DDS format: legacy one-level uncompressed BGRA, 32-bit, `210x176`, 128-byte header, exact length `147968` bytes
 - Sprite name: `GFX_report_event_fallout_false_positive`
 - Sprite registration: `interface/fallout_world_end.gfx`
-- Runtime texture path: `gfx/event_pictures/fallout_false_positive/report_event_fallout_false_positive.dds`
+- Runtime texture path: `gfx/event_pictures/fallout/report_event_fallout_false_positive.dds`
 
 The source was generated with the approved image workflow. It contains no baked text, real-world insignia, or reused First Red Line art. The processed crop is a direct cover fit to the report card dimensions. The final DDS was produced with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
 

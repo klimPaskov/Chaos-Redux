@@ -24,7 +24,7 @@ Dedicated asset package:
 
 - `docs/assets/air_cleanliness_fallout/source_png/report_events/report_event_air_winter_dead_city_salvage_source.png`
 - `docs/assets/air_cleanliness_fallout/processed_png/report_events/report_event_air_winter_dead_city_salvage.png`
-- `gfx/event_pictures/fallout/air_winter/report_event_air_winter_dead_city_salvage.dds`
+- `gfx/event_pictures/fallout/report_event_air_winter_dead_city_salvage.dds`
 - `docs/assets/air_cleanliness_fallout/contact_sheets/air_winter_report_events_final_contact_sheet.png`
 - `docs/assets/air_cleanliness_fallout/manifest.md`
 - `docs/assets/air_cleanliness_fallout/air_winter_report_event_gfx_handoff.md`

@@ -30,6 +30,6 @@ The chain does not request Fallout, create a country, transfer population betwee
 
 ## Assets and localisation
 
-The dedicated generated report art source, processed PNG, runtime DDS, manifest, prompt, and GFX handoff live under `docs/assets/873_name_we_choose/`. The runtime texture is `gfx/event_pictures/name_we_choose/report_event_fallout_name_we_choose.dds`, registered as `GFX_report_event_fallout_name_we_choose`.
+The dedicated generated report art source, processed PNG, runtime DDS, manifest, prompt, and GFX handoff live under `docs/assets/873_name_we_choose/`. The runtime texture is `gfx/event_pictures/fallout/report_event_fallout_name_we_choose.dds`, registered as `GFX_report_event_fallout_name_we_choose`.
 
 Player-facing text is in `localisation/english/fallout_world_end_name_we_choose_l_english.yml`. The Event Log detail and name routers use `fallout.event_log.name_we_choose.detail` and `fallout.event_log.name_we_choose.name`.

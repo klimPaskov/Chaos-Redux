@@ -55,7 +55,7 @@ The callback is scheduled three hundred days after the result. It grades current
 
 ## Assets
 
-The generated fictional report image is retained at `docs/assets/775_ghost_convoy/`. The source, processed preview, runtime DDS, hashes, dimensions, and source-mode disclaimer are in `manifest.md`. The runtime file is `gfx/event_pictures/ghost_convoy/report_event_fallout_ghost_convoy.dds`. The sprite is registered in `interface/fallout_world_end.gfx`. No zombie asset, audio, sprite, or path is referenced.
+The generated fictional report image is retained at `docs/assets/775_ghost_convoy/`. The source, processed preview, runtime DDS, hashes, dimensions, and source-mode disclaimer are in `manifest.md`. The runtime file is `gfx/event_pictures/fallout/report_event_fallout_ghost_convoy.dds`. The sprite is registered in `interface/fallout_world_end.gfx`. No zombie asset, audio, sprite, or path is referenced.
 
 ## Static review boundary
 

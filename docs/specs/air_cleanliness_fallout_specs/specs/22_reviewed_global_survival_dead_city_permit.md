@@ -58,7 +58,7 @@ The four state modifiers reuse reviewed vanilla-style modifier icons.
 `GFX_idea_generic_research_bonus` is defined in existing idea GFX and marks a successful or renewed permit.
 `GFX_idea_013_disaster_recovery_mobilization` is defined in `interface/013_natural_disasters.gfx` and marks a partial permit.
 `GFX_idea_country_without_breath` is defined in `interface/chaosx_ideas.gfx` and marks contamination.
-The report sprite is `GFX_report_event_fallout_dead_city_permit` in `interface/fallout_world_end.gfx` and points to `gfx/event_pictures/fallout_world_end/report_event_fallout_dead_city_permit.dds`.
+The report sprite is `GFX_report_event_fallout_dead_city_permit` in `interface/fallout_world_end.gfx` and points to `gfx/event_pictures/fallout/report_event_fallout_dead_city_permit.dds`.
 
 ## Future expansion
 

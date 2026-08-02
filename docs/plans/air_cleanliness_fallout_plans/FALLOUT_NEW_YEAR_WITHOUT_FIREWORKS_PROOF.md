@@ -57,7 +57,7 @@ The report package is `docs/assets/649_new_year_without_fireworks/`.
 - Processed PNG SHA-256: `8be3a5ded625b05349a87c2178dfa1a0a5645f997058b2275a6f6fbebf6a6b71`
 - Runtime DDS SHA-256: `bc48046b0f5cb7a387f32e1e0317174271ff2b46697cb45640658535c4ace5b7`
 - Runtime sprite: `GFX_report_event_fallout_new_year_without_fireworks`
-- Runtime path: `gfx/event_pictures/fallout_world_end/report_event_fallout_new_year_without_fireworks.dds`
+- Runtime path: `gfx/event_pictures/fallout/report_event_fallout_new_year_without_fireworks.dds`
 
 The asset depicts a fictional cold East Asian settlement with covered lamps, a ration table, memorial ribbons, civilians, and guards. No real person, flag, readable script, religious marker, fireworks, zombie asset, animation, or audio is used.
 

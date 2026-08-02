@@ -32,7 +32,7 @@ The result installs one branch-specific timed modifier or a register backlog mod
 - Modifiers: `common/dynamic_modifiers/fallout_world_end_names_missing_dynamic_modifiers.txt`
 - Event Log scripted localisation: `common/scripted_localisation/fallout_world_end_names_missing_event_log_scripted_localisation.txt`
 - Event Log central mappings: `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and `common/scripted_effects/chaosx_events_log_effects.txt`
-- Report art: `interface/fallout_world_end.gfx` and `gfx/event_pictures/fallout_world_end/report_event_fallout_names_missing.dds`
+- Report art: `interface/fallout_world_end.gfx` and `gfx/event_pictures/fallout/report_event_fallout_names_missing.dds`
 - Player text: `localisation/english/fallout_world_end_names_missing_l_english.yml`
 
 ## Runtime review boundary

@@ -5,7 +5,7 @@ Register this exact sprite in `interface/fallout_world_end.gfx`:
 ```text
 spriteType = {
 	name = "GFX_report_event_fallout_grid_vote"
-	texturefile = "gfx/event_pictures/grid_vote/report_event_fallout_grid_vote.dds"
+	texturefile = "gfx/event_pictures/fallout/report_event_fallout_grid_vote.dds"
 }
 ```
 

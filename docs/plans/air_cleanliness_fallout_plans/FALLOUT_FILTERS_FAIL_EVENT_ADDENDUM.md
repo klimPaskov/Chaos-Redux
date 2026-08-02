@@ -70,7 +70,7 @@ History `9114` receives explicit payloads for each branch and outcome plus callb
 
 ## Asset handoff
 
-Create a dedicated fictional shelter interior showing a failing filter room at night. Use no real person, flag, attested symbol, or Zombie visual. The package needs source PNG, processed 210 by 176 PNG, final DDS, prompt provenance, manifest, contact sheet or preview, and a `.gfx` handoff. The final sprite belongs in `interface/fallout_world_end.gfx` and the DDS belongs under `gfx/event_pictures/fallout_filters_fail/`.
+Create a dedicated fictional shelter interior showing a failing filter room at night. Use no real person, flag, attested symbol, or Zombie visual. The package needs source PNG, processed 210 by 176 PNG, final DDS, prompt provenance, manifest, contact sheet or preview, and a `.gfx` handoff. The final sprite belongs in `interface/fallout_world_end.gfx` and the DDS belongs under `gfx/event_pictures/fallout/`.
 
 ## Acceptance checks
 

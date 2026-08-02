@@ -4,7 +4,7 @@ The asset belongs exclusively to the Fallout Quarantine chain The Clean Certific
 
 - Source: `source_clean_certificate.png` generated for this chain with an original fictional scene.
 - Processed preview: `processed_clean_certificate.png` at the standard 210 by 176 report-card size.
-- Runtime DDS: `report_event_fallout_clean_certificate.dds` copied to `gfx/event_pictures/fallout_clean_certificate/`.
+- Runtime DDS: `report_event_fallout_clean_certificate.dds` copied to `gfx/event_pictures/fallout/`.
 - Sprite: `GFX_report_event_fallout_clean_certificate` in `interface/fallout_world_end.gfx`.
 - Consumers: `chaosx.fallout.719`, `chaosx.fallout.721`, and `chaosx.fallout.723`.
 - Ownership: Fallout-owned. It is not shared with Zombie, Air Winter, or another Fallout chain.

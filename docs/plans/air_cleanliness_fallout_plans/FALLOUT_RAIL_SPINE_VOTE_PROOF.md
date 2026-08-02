@@ -20,7 +20,7 @@ The generation-reset path is now statically wired before shared Fallout dispatch
 
 ## Dedicated asset proof
 
-The report card source, preview, manifest, prompt, and handoff live under `docs/assets/621_rail_spine_vote/`. The runtime file is `gfx/event_pictures/fallout_world_end/report_event_fallout_rail_spine_vote.dds`. The sprite is `GFX_report_event_fallout_rail_spine_vote`.
+The report card source, preview, manifest, prompt, and handoff live under `docs/assets/621_rail_spine_vote/`. The runtime file is `gfx/event_pictures/fallout/report_event_fallout_rail_spine_vote.dds`. The sprite is `GFX_report_event_fallout_rail_spine_vote`.
 
 The source is `1370x1148`. The preview is `210x176`. The DDS has DDS magic, a 124-byte header, 32-bit BGRA pixels, one mip level, a pitch of `840`, and a total size of `147968` bytes.
 

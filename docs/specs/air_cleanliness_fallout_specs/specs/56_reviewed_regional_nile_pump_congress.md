@@ -93,7 +93,7 @@ The opening, result, and callback write explicit choice and outcome payloads to 
 
 Dedicated scripted localisation resolves the branch, result, callback, and cancellation detail payloads.
 
-The dedicated report card is `GFX_report_event_fallout_nile_pump_congress` and resolves to `gfx/event_pictures/fallout_world_end/report_event_fallout_nile_pump_congress.dds` at `210x176`.
+The dedicated report card is `GFX_report_event_fallout_nile_pump_congress` and resolves to `gfx/event_pictures/fallout/report_event_fallout_nile_pump_congress.dds` at `210x176`.
 
 The asset source, processed preview, DDS, manifest, and GFX handoff are stored under `docs/assets/579_nile_pump_congress/` and use no Zombie Apocalypse identifier or path.
 

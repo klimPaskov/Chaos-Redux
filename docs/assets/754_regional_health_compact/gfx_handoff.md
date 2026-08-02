@@ -2,7 +2,7 @@
 
 The interface registration lives in `interface/fallout_world_end.gfx`.
 
-The event picture references `GFX_report_event_fallout_regional_health_compact`. The sprite points to `gfx/event_pictures/fallout_regional_health_compact/report_event_fallout_regional_health_compact.dds`.
+The event picture references `GFX_report_event_fallout_regional_health_compact`. The sprite points to `gfx/event_pictures/fallout/report_event_fallout_regional_health_compact.dds`.
 
 The event file uses the sprite for the human opening, delayed result, and delayed callback. Hidden AI lanes remain picture-free while retaining the same event token family.
 

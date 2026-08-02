@@ -5,7 +5,7 @@ The main event file uses `GFX_report_event_fallout_mutant_envoy_at_gate` for eve
 ```text
 spriteType = {
     name = "GFX_report_event_fallout_mutant_envoy_at_gate"
-    texturefile = "gfx/event_pictures/mutant_envoy_at_gate/report_event_fallout_mutant_envoy_at_gate.dds"
+    texturefile = "gfx/event_pictures/fallout/report_event_fallout_mutant_envoy_at_gate.dds"
 }
 ```
 

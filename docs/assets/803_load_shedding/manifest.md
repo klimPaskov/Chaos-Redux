@@ -16,7 +16,7 @@ Processed dimensions: `210x176` RGBA.
 
 Processed SHA-256: `11f22349374fa95f66d0b4ad758d73ddcdbe9f37803b5f7a98dc6982b22f9714`.
 
-Runtime DDS: `gfx/event_pictures/load_shedding/report_event_fallout_load_shedding.dds`.
+Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_load_shedding.dds`.
 
 Runtime DDS dimensions: `210x176`, uncompressed RGBA pixel format.
 

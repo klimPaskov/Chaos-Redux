@@ -33,6 +33,6 @@ The callback reads the surviving ledgers and state receipt again before writing 
 
 ## Presentation and ownership
 
-The chain uses `GFX_report_event_fallout_clean_certificate`, with source and processed files under `docs/assets/719_clean_certificate/`, a runtime DDS under `gfx/event_pictures/fallout_clean_certificate/`, dedicated localisation, dedicated Event Log detail, and shared history/name resolver routes.
+The chain uses `GFX_report_event_fallout_clean_certificate`, with source and processed files under `docs/assets/719_clean_certificate/`, a runtime DDS under `gfx/event_pictures/fallout/`, dedicated localisation, dedicated Event Log detail, and shared history/name resolver routes.
 
 No Zombie id, file, asset, audio, sprite, or path is reused.

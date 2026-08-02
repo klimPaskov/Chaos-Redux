@@ -142,7 +142,7 @@ It preserves branch memories, review memories, the requisition ledger, the stand
 
 The dedicated sprite is `GFX_report_event_fallout_hungry_battalion`.
 
-It points to `gfx/event_pictures/fallout_world_end/report_event_fallout_hungry_battalion.dds`.
+It points to `gfx/event_pictures/fallout/report_event_fallout_hungry_battalion.dds`.
 
 The DDS is an uncompressed `210x176` BGRA card with exact length `147968` bytes.
 

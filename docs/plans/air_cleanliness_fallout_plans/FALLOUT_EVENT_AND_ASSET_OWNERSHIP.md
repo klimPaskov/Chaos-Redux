@@ -74,7 +74,7 @@ Fallout is not a normal super-event. It must not use a super-event image slot, s
 Use dedicated system folders:
 
 - `docs/assets/fallout_world_end/`
-- `gfx/event_pictures/fallout_world_end/`
+- `gfx/event_pictures/fallout/`
 - `gfx/interface/fallout_world_end/`
 - `gfx/interface/goals/fallout_world_end/`
 - `gfx/interface/ideas/fallout_world_end/`

@@ -2,7 +2,7 @@
 
 - Source: `mixed_settlement_source.png`, generated fictional art.
 - Processed preview: `mixed_settlement_processed.png`, 210 by 176 RGBA report card.
-- Runtime DDS: `gfx/event_pictures/mixed_settlement/report_event_fallout_mixed_settlement.dds`, 210 by 176 BC3 card.
+- Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_mixed_settlement.dds`, 210 by 176 BC3 card.
 - Sprite: `GFX_report_event_fallout_mixed_settlement`.
 - Consumer: `chaosx.fallout.887` through `chaosx.fallout.893`.
 - The asset is dedicated to Mixed Settlement Petition and does not reuse Clinic or Council art, audio, sprites, or paths.

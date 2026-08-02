@@ -73,7 +73,7 @@ History `9164` routes four choice payloads, twelve branch result payloads, three
 
 The country is the primary actor and the authenticated shelter state is the secondary actor.
 
-The dedicated report sprite is `GFX_report_event_fallout_tunnel_ward_committees` and the runtime DDS is `gfx/event_pictures/fallout_world_end/report_event_fallout_tunnel_ward_committees.dds`.
+The dedicated report sprite is `GFX_report_event_fallout_tunnel_ward_committees` and the runtime DDS is `gfx/event_pictures/fallout/report_event_fallout_tunnel_ward_committees.dds`.
 
 Asset source, processed preview, runtime hash, DDS header, prompt, and handoff are recorded under `docs/assets/607_tunnel_ward_committees/manifest.json` and its companion files.
 

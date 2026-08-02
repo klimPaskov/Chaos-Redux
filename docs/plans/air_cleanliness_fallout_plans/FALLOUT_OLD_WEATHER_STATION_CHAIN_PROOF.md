@@ -14,7 +14,7 @@ The result and callback mutate forecast, contact, intelligence, supply access, r
 
 ## Asset proof
 
-The dedicated source, processed preview, prompt, manifest, GFX handoff, and runtime DDS are under `docs/assets/air_cleanliness_fallout/fallout_old_weather_station/` and `gfx/event_pictures/fallout_world_end/report_event_fallout_old_weather_station.dds`.
+The dedicated source, processed preview, prompt, manifest, GFX handoff, and runtime DDS are under `docs/assets/air_cleanliness_fallout/fallout_old_weather_station/` and `gfx/event_pictures/fallout/report_event_fallout_old_weather_station.dds`.
 
 ## Inspector boundary
 

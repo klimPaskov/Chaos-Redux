@@ -131,7 +131,7 @@ partner is written as the secondary actor for the bilateral branch.
 
 The fictional report image is owned by Fallout and uses no Zombie surface.
 The final runtime asset is
-`gfx/event_pictures/fallout_last_transformer/report_event_fallout_last_transformer.dds`
+`gfx/event_pictures/fallout/report_event_fallout_last_transformer.dds`
 with sprite `GFX_report_event_fallout_last_transformer` registered in
 `interface/fallout_world_end.gfx`. The source, processed image, contact sheet,
 prompt, manifest, and hashes are in

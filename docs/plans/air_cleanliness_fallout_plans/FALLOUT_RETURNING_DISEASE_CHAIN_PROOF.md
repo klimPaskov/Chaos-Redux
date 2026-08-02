@@ -49,7 +49,7 @@ Opening, result, callback, and cancelled payloads use `fallout_event_712_log`. S
 
 ## Asset evidence
 
-The generated source, processed 210x176 PNG, runtime DDS, prompt record, and handoff are under `docs/assets/712_returning_disease/`. The runtime DDS is copied to `gfx/event_pictures/fallout_returning_disease/report_event_fallout_returning_disease.dds`, and the sprite registration is in `interface/fallout_world_end.gfx`. The asset is dedicated to candidate 712 and is not shared with zombie, world-end, or other Fallout paths.
+The generated source, processed 210x176 PNG, runtime DDS, prompt record, and handoff are under `docs/assets/712_returning_disease/`. The runtime DDS is copied to `gfx/event_pictures/fallout/report_event_fallout_returning_disease.dds`, and the sprite registration is in `interface/fallout_world_end.gfx`. The asset is dedicated to candidate 712 and is not shared with zombie, world-end, or other Fallout paths.
 
 ## Review boundary
 

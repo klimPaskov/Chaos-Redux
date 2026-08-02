@@ -5,7 +5,7 @@ The main event file uses `GFX_report_event_fallout_harbor_without_city` for even
 ```text
 spriteType = {
 	name = "GFX_report_event_fallout_harbor_without_city"
-	texturefile = "gfx/event_pictures/harbor_without_city/report_event_fallout_harbor_without_city.dds"
+	texturefile = "gfx/event_pictures/fallout/report_event_fallout_harbor_without_city.dds"
 }
 ```
 

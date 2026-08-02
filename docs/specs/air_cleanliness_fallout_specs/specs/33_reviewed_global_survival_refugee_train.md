@@ -20,7 +20,7 @@ AI resolves through border legitimacy, integration cohesion, family memory, and 
 
 ## Assets
 
-The dedicated report picture is `GFX_report_event_fallout_refugee_train` from `gfx/event_pictures/fallout_world_end/report_event_fallout_refugee_train.dds`. Source prompts, processed image, hashes, and sprite wiring are in `docs/assets/air_cleanliness_fallout/fallout_refugee_train/`.
+The dedicated report picture is `GFX_report_event_fallout_refugee_train` from `gfx/event_pictures/fallout/report_event_fallout_refugee_train.dds`. Source prompts, processed image, hashes, and sprite wiring are in `docs/assets/air_cleanliness_fallout/fallout_refugee_train/`.
 
 ## Follow-up
 

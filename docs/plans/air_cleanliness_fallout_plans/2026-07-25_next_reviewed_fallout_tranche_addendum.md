@@ -356,7 +356,7 @@ The chain needs one dedicated static fictional report image.
 Proposed stable consumer names, subject to the collision and registration review:
 
 - Source workspace: `docs/assets/air_cleanliness_fallout/fallout_county_fair_returns/`
-- Runtime DDS: `gfx/event_pictures/fallout_world_end/report_event_fallout_county_fair_returns.dds`
+- Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_county_fair_returns.dds`
 - Sprite: `GFX_report_event_fallout_county_fair_returns`
 - Runtime size: the existing Fallout report-event card convention, expected `210x176`
 

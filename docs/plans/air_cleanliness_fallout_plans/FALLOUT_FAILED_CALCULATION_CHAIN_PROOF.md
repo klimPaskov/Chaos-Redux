@@ -18,7 +18,7 @@ The four branches are public inquiry, sealed calculation, operator accountabilit
 
 ## Asset proof
 
-The dedicated asset package is `docs/assets/831_failed_calculation/`. The registered sprite is `GFX_report_event_fallout_failed_calculation`, backed by `gfx/event_pictures/failed_calculation/report_event_fallout_failed_calculation.dds`. The source, processed preview, DDS, processor settings, and hashes are listed in the asset manifest. No prior Fallout, zombie, final silence, or blackout asset is reused.
+The dedicated asset package is `docs/assets/831_failed_calculation/`. The registered sprite is `GFX_report_event_fallout_failed_calculation`, backed by `gfx/event_pictures/fallout/report_event_fallout_failed_calculation.dds`. The source, processed preview, DDS, processor settings, and hashes are listed in the asset manifest. No prior Fallout, zombie, final silence, or blackout asset is reused.
 
 ## Status boundary
 

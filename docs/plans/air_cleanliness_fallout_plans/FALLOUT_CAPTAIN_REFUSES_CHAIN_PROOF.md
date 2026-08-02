@@ -10,7 +10,7 @@ The event triggers and effects are isolated in `common/scripted_triggers/fallout
 
 ## Dedicated asset evidence
 
-The fictional generated source, prompt, processed PNG, preview, runtime DDS, manifest, and handoff are under `docs/assets/air_cleanliness_fallout/fallout_captain_refuses/`. The mod runtime copy is `gfx/event_pictures/fallout_world_end/report_event_fallout_captain_refuses.dds` and the sprite is registered in `interface/fallout_world_end.gfx`.
+The fictional generated source, prompt, processed PNG, preview, runtime DDS, manifest, and handoff are under `docs/assets/air_cleanliness_fallout/fallout_captain_refuses/`. The mod runtime copy is `gfx/event_pictures/fallout/report_event_fallout_captain_refuses.dds` and the sprite is registered in `interface/fallout_world_end.gfx`.
 
 The source is 1672 by 941 RGB with SHA256 `662DC7B458D703C8B6E7FA836145636101EF5E916A949CAD2334CCEDB3EB5973`. The processed report card is 210 by 176 RGBA with SHA256 `0265124EF75E3DBB758C0C489E7453371291D54C6365BC40DB51AE7C3B36E3CE`. The runtime and mod DDS copies are 147968 bytes with SHA256 `AF44539F129DF9908E4B24A744B539FF98847DF18D595D2CC0F1CED2BBFE97E0`.
 

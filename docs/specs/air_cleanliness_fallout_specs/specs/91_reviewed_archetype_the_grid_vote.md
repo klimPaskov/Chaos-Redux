@@ -49,7 +49,7 @@ The chain records bilateral opinion, state memories for the selected neighbor, c
 | Events | `events/fallout_world_end_events.txt` |
 | Localisation | `localisation/english/fallout_world_end_grid_vote_l_english.yml` |
 | Event Log routing | `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, `common/scripted_localisation/fallout_world_end_grid_vote_event_log_scripted_localisation.txt` |
-| Report art | `gfx/event_pictures/grid_vote/report_event_fallout_grid_vote.dds` |
+| Report art | `gfx/event_pictures/fallout/report_event_fallout_grid_vote.dds` |
 | Sprite registration | `interface/fallout_world_end.gfx` as `GFX_report_event_fallout_grid_vote` |
 
 The chain is a dormant source package. Scheduler activation, host authority, save recovery, multiplayer delivery, runtime Event Log rendering, and release-floor credit remain unproven by design.

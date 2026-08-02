@@ -12,7 +12,7 @@
 
 - Source PNG: `source_png/report_event_fallout_permit_market_source.png`
 - Processed PNG: `processed_png/report_event_fallout_permit_market.png`
-- Runtime DDS: `gfx/event_pictures/fallout_permit_market/report_event_fallout_permit_market.dds`
+- Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_permit_market.dds`
 - Prompt: `prompts/imagegen_prompt.txt`
 
 ## Runtime contract
@@ -20,7 +20,7 @@
 - Sprite: `GFX_report_event_fallout_permit_market`
 - GFX registration: `interface/fallout_world_end.gfx`
 - Event consumer: `events/fallout_world_end_events.txt`
-- Dedicated path: `gfx/event_pictures/fallout_permit_market/`
+- Dedicated path: `gfx/event_pictures/fallout/`
 
 ## Source and processing
 

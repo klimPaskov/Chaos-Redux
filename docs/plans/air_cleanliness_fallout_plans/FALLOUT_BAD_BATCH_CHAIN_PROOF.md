@@ -111,7 +111,7 @@ addendum and do not earn release-floor credit here.
 The dedicated fictional altered-ecology report package is under
 `docs/assets/fallout_bad_batch/` with source PNG, processed preview, prompt
 provenance, manifest, and GFX handoff. The runtime DDS is
-`gfx/event_pictures/fallout_bad_batch/report_event_fallout_bad_batch.dds`.
+`gfx/event_pictures/fallout/report_event_fallout_bad_batch.dds`.
 Sprite `GFX_report_event_fallout_bad_batch` is registered in
 `interface/fallout_world_end.gfx` and is referenced by all human opening,
 result, and callback events in this chain. No zombie art or path is reused.
@@ -120,7 +120,7 @@ result, and callback events in this chain. No zombie art or path is reused.
 
 The human report card uses `GFX_report_event_fallout_bad_batch`, defined in
 `interface/fallout_world_end.gfx` and stored at
-`gfx/event_pictures/fallout_bad_batch/report_event_fallout_bad_batch.dds`.
+`gfx/event_pictures/fallout/report_event_fallout_bad_batch.dds`.
 The branch options use text and resource tooltips only. No new focus, idea,
 decision, mapmode, scripted GUI, flag, portrait, or audio sprite is required
 by this chain. The full-screen Fallout blackout remains owned by the separate

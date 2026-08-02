@@ -54,7 +54,7 @@ The callback is scheduled three hundred days after the result. It grades current
 
 ## Assets
 
-The generated fictional report image is retained at `docs/assets/761_mutant_envoy_at_gate/`. The source, processed preview, runtime DDS, hashes, dimensions, and source-mode disclaimer are in `manifest.md`. The runtime file is `gfx/event_pictures/mutant_envoy_at_gate/report_event_fallout_mutant_envoy_at_gate.dds`. The sprite is registered in `interface/fallout_world_end.gfx`. No zombie asset, audio, sprite, or path is referenced.
+The generated fictional report image is retained at `docs/assets/761_mutant_envoy_at_gate/`. The source, processed preview, runtime DDS, hashes, dimensions, and source-mode disclaimer are in `manifest.md`. The runtime file is `gfx/event_pictures/fallout/report_event_fallout_mutant_envoy_at_gate.dds`. The sprite is registered in `interface/fallout_world_end.gfx`. No zombie asset, audio, sprite, or path is referenced.
 
 ## Static review boundary
 

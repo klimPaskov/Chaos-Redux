@@ -13,7 +13,7 @@ The Grid Vote is a dormant ordinary Fallout chain. It owns candidate `824`, even
 - `events/fallout_world_end_events.txt`
 - `localisation/english/fallout_world_end_grid_vote_l_english.yml`
 - `interface/fallout_world_end.gfx`
-- `gfx/event_pictures/grid_vote/report_event_fallout_grid_vote.dds`
+- `gfx/event_pictures/fallout/report_event_fallout_grid_vote.dds`
 - `docs/assets/824_grid_vote/`
 - `docs/specs/air_cleanliness_fallout_specs/specs/91_reviewed_archetype_the_grid_vote.md`
 
@@ -31,7 +31,7 @@ Cleanup releases the result and callback receipts independently, clears reserved
 
 ## Asset proof
 
-`docs/assets/824_grid_vote/manifest.md` records the generated source, processed `210x176` RGBA card, legacy BGRA DDS, processing settings, hashes, sprite name, and runtime path. The runtime sprite is `GFX_report_event_fallout_grid_vote` and the final texture is `gfx/event_pictures/grid_vote/report_event_fallout_grid_vote.dds`.
+`docs/assets/824_grid_vote/manifest.md` records the generated source, processed `210x176` RGBA card, legacy BGRA DDS, processing settings, hashes, sprite name, and runtime path. The runtime sprite is `GFX_report_event_fallout_grid_vote` and the final texture is `gfx/event_pictures/fallout/report_event_fallout_grid_vote.dds`.
 
 ## Status boundary
 

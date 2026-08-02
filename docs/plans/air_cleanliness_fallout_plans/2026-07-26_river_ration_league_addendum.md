@@ -453,7 +453,7 @@ Do not mention candidates, arrays, constants, schedulers, caps, reworks, impleme
 Use one dedicated static fictional report image:
 
 - Source workspace: `docs/assets/air_cleanliness_fallout/fallout_river_ration_league/`
-- Runtime DDS: `gfx/event_pictures/fallout_world_end/report_event_fallout_river_ration_league.dds`
+- Runtime DDS: `gfx/event_pictures/fallout/report_event_fallout_river_ration_league.dds`
 - Sprite: `GFX_report_event_fallout_river_ration_league`
 - Runtime size: the existing Fallout report-card convention, expected `210x176`
 

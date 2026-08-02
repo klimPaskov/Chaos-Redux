@@ -34,7 +34,7 @@ The opening, result, and callback record history `9159` with the country as prim
 
 Cleanup releases both delayed receipts before clearing transient reservation and frozen ledgers, while durable fair memories remain.
 
-The report asset has a source image, processed PNG, prompt, hashes, manifest, handoff, and runtime DDS at `gfx/event_pictures/fallout_world_end/report_event_fallout_county_fair_returns.dds`.
+The report asset has a source image, processed PNG, prompt, hashes, manifest, handoff, and runtime DDS at `gfx/event_pictures/fallout/report_event_fallout_county_fair_returns.dds`.
 
 ## Engine-sensitive boundary
 

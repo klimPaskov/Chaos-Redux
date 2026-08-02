@@ -36,7 +36,7 @@ The charter audit resolves after exactly 450 days. Its success, partial, and fai
 
 The authored localisation is `localisation/english/fallout_world_end_repair_charter_l_english.yml`. Event Log detail and name routes are registered in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and `common/scripted_localisation/fallout_world_end_repair_charter_event_log_scripted_localisation.txt`.
 
-The dedicated report art is stored under `docs/assets/859_repair_charter/` and the runtime DDS is `gfx/event_pictures/repair_charter/report_event_fallout_repair_charter.dds`. The sprite name is `GFX_report_event_fallout_repair_charter`.
+The dedicated report art is stored under `docs/assets/859_repair_charter/` and the runtime DDS is `gfx/event_pictures/fallout/report_event_fallout_repair_charter.dds`. The sprite name is `GFX_report_event_fallout_repair_charter`.
 
 ## Validation boundary
 

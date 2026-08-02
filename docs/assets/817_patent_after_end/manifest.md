@@ -4,7 +4,7 @@
 | --- | --- | --- |
 | Generated source | `docs/assets/817_patent_after_end/patent_after_end_source.png` | Reviewable fictional source image |
 | Processed preview | `docs/assets/817_patent_after_end/patent_after_end_processed.png` | Fallout report-card preview at 210x176 RGBA |
-| Runtime DDS | `gfx/event_pictures/patent_after_end/report_event_fallout_patent_after_end.dds` | Event report image |
+| Runtime DDS | `gfx/event_pictures/fallout/report_event_fallout_patent_after_end.dds` | Event report image |
 | Sprite | `GFX_report_event_fallout_patent_after_end` | Event picture consumer |
 | GFX registration | `interface/fallout_world_end.gfx` | Runtime sprite declaration |
 

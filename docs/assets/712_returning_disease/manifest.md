@@ -14,7 +14,7 @@
 | Generated source | `docs/assets/712_returning_disease/source_returning_disease.png` | 1536x1024 | `F7AC81523CA5E3E0F23B75C775F7D8EB95F127FE3CE8B12E51EA561FBAEEB285` |
 | Processed review PNG | `docs/assets/712_returning_disease/processed_returning_disease.png` | 210x176 | `834ECF2C79E35D875398A47DF365BC38B93A338722A9CD9EF2D0C69711B9AD7C` |
 | Runtime DDS source | `docs/assets/712_returning_disease/report_event_fallout_returning_disease.dds` | 210x176 | `ECB715C86B471B31912A47660F80497ACFAB5CE5A28F61D813A93314150C12B2` |
-| Runtime DDS copy | `gfx/event_pictures/fallout_returning_disease/report_event_fallout_returning_disease.dds` | 210x176 | `ECB715C86B471B31912A47660F80497ACFAB5CE5A28F61D813A93314150C12B2` |
+| Runtime DDS copy | `gfx/event_pictures/fallout/report_event_fallout_returning_disease.dds` | 210x176 | `ECB715C86B471B31912A47660F80497ACFAB5CE5A28F61D813A93314150C12B2` |
 
 ## Prompt record
 

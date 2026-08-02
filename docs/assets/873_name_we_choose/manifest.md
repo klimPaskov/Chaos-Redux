@@ -2,7 +2,7 @@
 
 | Role | Source | Processed | Runtime | Sprite |
 | --- | --- | --- | --- | --- |
-| Fallout report event | `name_we_choose_source.png` | `name_we_choose_processed.png` | `gfx/event_pictures/name_we_choose/report_event_fallout_name_we_choose.dds` | `GFX_report_event_fallout_name_we_choose` |
+| Fallout report event | `name_we_choose_source.png` | `name_we_choose_processed.png` | `gfx/event_pictures/fallout/report_event_fallout_name_we_choose.dds` | `GFX_report_event_fallout_name_we_choose` |
 
 The source is generated fictional high-chaos event art because the Congo Green Basin mutant polity is an invented altered society and the scene has no real historical photograph to source. The report art was composed from a river pump-house council, public registers, ash, and a blank civic seal. It avoids claims about real-world radiation biology.
 

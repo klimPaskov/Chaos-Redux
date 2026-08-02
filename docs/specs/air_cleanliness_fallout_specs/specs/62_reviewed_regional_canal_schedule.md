@@ -81,7 +81,7 @@ Successful completion preserves durable Canal Schedule ledgers and the state mem
 
 The opening, result, callback, and cancellation write explicit choice and outcome payloads to Event Log history `9167` with the country as primary actor and the authenticated target state as secondary actor.
 
-Dedicated scripted localisation resolves branch, result, callback, and cancellation payloads. The report card uses `GFX_report_event_fallout_canal_schedule` and `gfx/event_pictures/fallout_world_end/report_event_fallout_canal_schedule.dds` at `210x176`.
+Dedicated scripted localisation resolves branch, result, callback, and cancellation payloads. The report card uses `GFX_report_event_fallout_canal_schedule` and `gfx/event_pictures/fallout/report_event_fallout_canal_schedule.dds` at `210x176`.
 
 ## Engine-sensitive proof boundary
 

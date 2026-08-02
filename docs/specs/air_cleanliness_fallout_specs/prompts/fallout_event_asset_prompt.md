@@ -11,7 +11,7 @@ Use dedicated Fallout folders and manifests.
 Required roots include:
 
 - `docs/assets/fallout_world_end/`
-- `gfx/event_pictures/fallout_world_end/`
+- `gfx/event_pictures/fallout/`
 - `gfx/interface/fallout_world_end/`
 - `gfx/interface/goals/fallout_world_end/`
 - `gfx/interface/ideas/fallout_world_end/`

@@ -20,7 +20,7 @@ The Event Log writer uses history `9168`, four opening payloads, twelve branch r
 
 ## Dedicated asset proof
 
-The report card source, preview, manifest, prompt, and handoff live under `docs/assets/635_mountain_pass_census/`. The runtime file is `gfx/event_pictures/fallout_world_end/report_event_fallout_mountain_pass_census.dds`. The sprite is `GFX_report_event_fallout_mountain_pass_census`.
+The report card source, preview, manifest, prompt, and handoff live under `docs/assets/635_mountain_pass_census/`. The runtime file is `gfx/event_pictures/fallout/report_event_fallout_mountain_pass_census.dds`. The sprite is `GFX_report_event_fallout_mountain_pass_census`.
 
 The source is `1371x1148`. The preview is `210x176` RGBA with deterministic report-card tilt, transparent edge space, a paper border, grain, and a soft alpha shadow. It contains `2932` fully transparent pixels and `6484` semi-transparent pixels. The DDS has DDS magic, a 124-byte header, 32-bit BGRA pixels, one mip level, a pitch of `840`, a measured alpha range of `0` through `255`, and a total size of `147968` bytes.
 

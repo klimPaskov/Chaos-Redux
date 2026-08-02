@@ -5,7 +5,7 @@ The main event file uses `GFX_report_event_fallout_captains_articles` for events
 ```text
 spriteType = {
 	name = "GFX_report_event_fallout_captains_articles"
-	texturefile = "gfx/event_pictures/captains_articles/report_event_fallout_captains_articles.dds"
+	texturefile = "gfx/event_pictures/fallout/report_event_fallout_captains_articles.dds"
 }
 ```
 

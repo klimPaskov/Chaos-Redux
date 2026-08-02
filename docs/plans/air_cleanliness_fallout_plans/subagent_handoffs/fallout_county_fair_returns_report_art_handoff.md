@@ -4,7 +4,7 @@ Status: wired by parent.
 
 ## Runtime asset
 
-- Final DDS: `gfx/event_pictures/fallout_world_end/report_event_fallout_county_fair_returns.dds`
+- Final DDS: `gfx/event_pictures/fallout/report_event_fallout_county_fair_returns.dds`
 - Dimensions: `210x176`
 - DDS format: one-level, uncompressed 32-bit BGRA with transparent card corners. Header, dimensions, exact byte length, and alpha range were validated.
 - Proposed sprite name: `GFX_report_event_fallout_county_fair_returns`
@@ -27,7 +27,7 @@ The sprite is registered in the existing report-event `.gfx` registry used by th
 ```text
 spriteType = {
     name = "GFX_report_event_fallout_county_fair_returns"
-    texturefile = "gfx/event_pictures/fallout_world_end/report_event_fallout_county_fair_returns.dds"
+    texturefile = "gfx/event_pictures/fallout/report_event_fallout_county_fair_returns.dds"
 }
 ```
 

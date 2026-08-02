@@ -70,7 +70,7 @@ does not describe implementation history.
 The dedicated report package is under `docs/assets/fallout_seed_vault/` with a
 retained generated source, processed 210 by 176 preview, prompt provenance,
 manifest, and final legacy BGRA DDS at
-`gfx/event_pictures/fallout_seed_vault/seed_vault_report.dds`. The sprite is
+`gfx/event_pictures/fallout/seed_vault_report.dds`. The sprite is
 registered in `interface/fallout_world_end.gfx` and human events `188`, `190`,
 `191`, `192`, `193`, and `198` reference it. The scene is fictional, contains
 no readable text, and uses no existing Fallout or zombie art.

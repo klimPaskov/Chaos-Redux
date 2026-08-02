@@ -49,7 +49,7 @@ The cleanup event consumes the authenticated cleanup ticket. It first releases c
 
 ## Presentation and ownership
 
-The dedicated report asset is `GFX_report_event_fallout_first_red_line`, backed by `gfx/event_pictures/fallout_first_red_line/report_event_fallout_first_red_line.dds`. Source, processed image, prompt, manifest, review notes, and GFX handoff live under `docs/assets/684_first_red_line/`.
+The dedicated report asset is `GFX_report_event_fallout_first_red_line`, backed by `gfx/event_pictures/fallout/report_event_fallout_first_red_line.dds`. Source, processed image, prompt, manifest, review notes, and GFX handoff live under `docs/assets/684_first_red_line/`.
 
 Player-facing text names the Quarantine State, the ash road, the clinic, the wards, and the chosen policy. The Event Log name and payload detail route through history `9175` and dedicated scripted localisation. These survivor memories are not a registration of the Fallout consequence itself.
 

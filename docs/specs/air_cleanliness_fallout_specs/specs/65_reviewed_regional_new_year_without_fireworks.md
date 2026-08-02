@@ -134,7 +134,7 @@ Refunds occur only when the exact payment flag exists and result effects were no
 The dedicated asset package is `docs/assets/649_new_year_without_fireworks/`.
 
 - Sprite: `GFX_report_event_fallout_new_year_without_fireworks`
-- Runtime path: `gfx/event_pictures/fallout_world_end/report_event_fallout_new_year_without_fireworks.dds`
+- Runtime path: `gfx/event_pictures/fallout/report_event_fallout_new_year_without_fireworks.dds`
 - Dimensions: `210` by `176`
 - Content: cold ash-darkened East Asian community at the year turning with covered lamps, a ration table, memorial ribbons, civilians, and guards
 - Exclusions: readable script, flags, identifiable people, religious markers, branding, fireworks, zombies, animation, and audio
