@@ -39,6 +39,12 @@ The portrait shelf is traceability-only for non-admitted candidates. Rights, pro
 
 ## Remaining blockers
 
+0. IW-179 FSM is explicitly fail-closed at setup: the package cannot promote
+   its retained fictional Elias Kihleng chair until
+   `independence_wave_fsm_sourced_identity_ready` is set after a sourced real
+   male Micronesian identity clears the asset gates. The older FORM-48 portrait
+   directory is evidence-only; its HBX output is superseded by the 2026-07-24
+   William D. Stephens source package.
 1. The current MCP focus inspect/render is byte-limited, and the retained source geometry has unresolved crossings and through-node hits; no fresh rendered validation artifact exists.
 2. Only fourteen of 193 non-overlay packages are attested, so the accepted 14/20 capacity promise and several scenario/formable routes remain fail-closed.
 3. 6001 has no authorized final audio/runtime package; the v101 candidate cannot be silently substituted for the accepted cue.
