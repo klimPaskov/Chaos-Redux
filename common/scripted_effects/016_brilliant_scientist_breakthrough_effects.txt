@@ -460,6 +460,11 @@ brilliant_scientist_record_breakthrough_public = {
 	add_to_variable = { brilliant_scientist_breakthrough_resolved_count = constant:brilliant_scientist_value.one }
 	clamp_variable = { var = brilliant_scientist_breakthrough_public_count min = constant:brilliant_scientist_value.zero max = constant:brilliant_scientist_event.project_family_count }
 	clamp_variable = { var = brilliant_scientist_breakthrough_resolved_count min = constant:brilliant_scientist_value.zero max = constant:brilliant_scientist_event.project_family_count }
+	if = {
+		limit = { NOT = { has_global_flag = brilliant_scientist_news_public_breakthrough_fired } }
+		set_global_flag = brilliant_scientist_news_public_breakthrough_fired
+		news_event = { id = chaosx.nr16.306 days = constant:brilliant_scientist_news_runtime.delay_days }
+	}
 	clr_country_flag = brilliant_scientist_breakthrough_report_active
 	brilliant_scientist_dispatch_next_breakthrough_report = yes
 	brilliant_scientist_try_schedule_primary_facility_reaction = yes

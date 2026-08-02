@@ -84,7 +84,7 @@ The selected country sees the minor report event `chaosx.nr16.2`. Its ordinary o
 
 Appointment is an atomic transaction around the single token `KRG_warren_kruger`. It creates that token once, changes nationality once, adds one advisor role and one scientist role, assigns level five in nuclear, naval, aeronautics, land warfare, biowarfare, and chemical warfare, records the posture and host, initializes the causal state, resolves the global fire-once gate, and rebinds the event-log actor. The advisor cannot be fired, so the `+100%` reward cannot be dismissed and reacquired. Later transfers must reject an active-project scientist and remove the existing roles before nationality and role ownership move.
 
-The public and secret options differ in Directorate posture and AI preference, not research power. The opening reveals no alien or temporal origin and fires no major news event or super-event. The host focus tree remains intact.
+The public and secret options differ in Directorate posture and AI preference, not research power. The opening reveals no alien or temporal origin and does not fire a major news event or super-event. A public appointment queues the minor public-appointment headline `chaosx.nr16.304`; a secret appointment remains local and intelligence-aware. The host focus tree remains intact.
 
 ## Directorate state
 
@@ -139,7 +139,7 @@ Automatic fail-deadly or deliberate global-use doctrine blocks Laboratory World 
 
 Six super-event packages are planned for recognition, formation, global threat, Laboratory World, Strategic Singularity, and qualifying defeat. Recognition and defeat are conditional at runtime but remain full production packages.
 
-Text and audio are complete for all six packages. Six role-distinct Event 016-owned WAVs exist at IDs 90 through 95, and six generated super-event DDS files plus seven generated report-event DDS files are present. Shared image, title, quotation, button, description, sound, volume-setting, trigger, and aftermath wiring is complete. Live playback acceptance remains user-owned.
+Text and audio are complete for all six packages. Six role-distinct Event 016-owned WAVs exist at IDs 90 through 95, and six generated super-event DDS files plus seven generated report-event DDS files are present. The six minor milestone news DDS files and one-time dispatch guards are documented in `systems/news_events.md`. Shared image, title, quotation, button, description, sound, volume-setting, trigger, and aftermath wiring is complete. Live playback acceptance remains user-owned.
 
 Six severe Kruger portrait animation packages exist for clone, machine, temporal, xenobiological, alien-revealed, and synthesis outcomes. Every package contains separate source frames, a static fallback, frame sheet, DDS, preview, contact sheet, manifest, and GFX handoff. Transform-only animation is not used.
 
@@ -178,7 +178,7 @@ Biological-weapon work must reuse the existing biowarfare, contamination, Deaths
 - Event 016 is default-enabled for ordinary fire-once selection; live scenario validation remains user-owned.
 - The report, super-event, portrait, animation, icon, flag, achievement, and Directorate UI packages are registered and have static consumer checks. Live presentation acceptance remains user-owned.
 - No Event016-specific 3D unit or building model package is accepted. The seven route-specific unit consumers remain a production and runtime-wiring backlog.
-- Broader news, defeat/remnant, and country-specific flavor content remains queued after the core runtime milestone, and no dedicated Kruger triggerable scenario is required by the accepted design.
+- Defeat/remnant and broader country-specific flavor content remains queued after the core runtime milestone, and no dedicated Kruger triggerable scenario is required by the accepted design. The six mapped public milestone headlines are now a bounded presentation layer; the qualifying defeat news still uses the aftermath pipeline and remains separately art-gated.
 
 ## Future plans
 
