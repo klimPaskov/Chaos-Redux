@@ -37,7 +37,7 @@ Spread is produced from a frozen source snapshot and resolved through a target l
 
 ## Shared disease UI and response
 
-Event 20 uses `chaosx_disease_containment_category`, the existing disease interface, and the existing contamination mapmode. It does not create a dedicated Black Plague category.
+Event 20 uses `chaosx_disease_containment_category`, the existing disease interface, and the existing contamination mapmode. It does not create a dedicated Black Plague category. The shared board's Black Plague summary also reports Royal Basin readiness, the committed continent, preparation progress, and terminal takeover status through `GetBlackPlagueTerminalReadiness`.
 
 The selected-state response surface provides rat cleaning, sealed food storage, sewer and burrow clearance, flea control, rail-yard and dock purges, demolition of lost blocks, emergency hospitals, quarantine, cordons, treatment, and Doctor Wu's protocol. Visibility and availability depend on the selected state, its phase, control, and response conditions. Actions have material, military, economic, and time costs. National countermeasure progress runs from 0 to 100 and reduces deaths and spread while enabling sustained cleanup. The shared disease category also exposes a timed Emergency Countermeasure Drive, route-specific Rat King crises, Royal Node strikes, the earned Crown Strike, and post-defeat Royal Burrow sealing; none of these operations cures a state instantly.
 
