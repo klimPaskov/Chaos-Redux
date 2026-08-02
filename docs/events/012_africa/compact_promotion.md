@@ -14,7 +14,7 @@ These checks bind promotion to the opening's weakness, proof mission, leverage, 
 
 `africa_promote_compact_host` costs the configured promotion political power and calls the shared `africa_promote_compact_host_package` effect. Promotion requires at least two reconciled criteria, the live capital and depth checks, viable territory, local support, a functioning institution, a distinct role, and no active overlap dispute, access failure, refusal, or prior promotion. Successful promotion preserves the original host country and changes only its host-depth and package state.
 
-The refusal flag remains a hard gate. A refused compact docket cannot be promoted by opinion or by the evidence decision. The shared promotion effect clears stale refusal and access-failure flags only after all promotion conditions have already passed.
+The refusal flag remains a hard gate. A refused compact docket cannot be promoted by opinion or by the evidence decision. The shared promotion effect retains defensive refusal and access-failure clears, but its ordinary caller rejects those flags before the effect can run; no path silently overrides a refusal.
 
 ## AI and cleanup
 
