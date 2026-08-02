@@ -41,11 +41,7 @@ The initial registry is in `matrices/006_formable_family_registry.csv`.
 
 ## Event 006 compatibility and signature contract for IW-043 and IW-058
 
-The source-implemented CHU/ASY package tranche is not part of the current exact
-fourteen-package runtime attestation set. IW-043 on vanilla carrier `CHU` and
-IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced
-identity, rights, package, and runtime gates are independently accepted. Their
-signature formable surfaces remain separate gates:
+The source-implemented CHU/ASY package tranche is not part of the current exact fourteen-package runtime attestation set. IW-043 on vanilla carrier `CHU` and IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced identity, rights, package, and runtime gates are independently accepted. Their signature formable surfaces remain separate gates:
 
 - FORM-12 and FORM-13 must use the IW-043 member, anchor, rights, consent,
   integration, and cleanup contract.
@@ -56,10 +52,7 @@ signature formable surfaces remain separate gates:
   parent re-audit. It suppresses those shortcuts only for active Event 006
   IW-043/IW-058 carriers and preserves ordinary and Event 005 behavior.
 
-The CHU/ASY package surfaces remain source-implemented but unadmitted. The exact
-package setup may write the FORM-12/13/18 adapter and achievement-writer
-attestations only after the matching carrier passes the current package gate.
-FORM-12 and FORM-13 require three external consenting members with
+The CHU/ASY package surfaces remain source-implemented but unadmitted. The exact package setup may write the FORM-12/13/18 adapter and achievement-writer attestations only after the matching carrier passes the current package gate. FORM-12 and FORM-13 require three external consenting members with
 three distinct controlled anchors. FORM-18 requires two external consenting
 members with two distinct controlled anchors. All three use a paid 180-day
 congress, a frozen invitation ledger, explicit human replies or scored AI
