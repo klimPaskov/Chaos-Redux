@@ -2682,6 +2682,14 @@ brilliant_scientist_appoint_kruger_from_opening = {
 		brilliant_scientist_try_schedule_alien_spacecraft_contact = yes
 		if = {
 			limit = {
+				check_variable = { brilliant_scientist_recruitment_posture = constant:brilliant_scientist_recruitment_posture.public_compact }
+				NOT = { has_global_flag = brilliant_scientist_news_public_appointment_fired }
+			}
+			set_global_flag = brilliant_scientist_news_public_appointment_fired
+			news_event = { id = chaosx.nr16.304 days = constant:brilliant_scientist_news_runtime.delay_days }
+		}
+		if = {
+			limit = {
 				check_variable = { brilliant_scientist_opening_appointment_committed = constant:brilliant_scientist_value.one }
 				has_country_flag = brilliant_scientist_received_initial_referral
 				has_event_target = brilliant_scientist_send_away_rejector

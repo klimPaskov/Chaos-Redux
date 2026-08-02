@@ -899,6 +899,22 @@ brilliant_scientist_apply_project_force_package_from_history = {
 			limit = { has_country_flag = brilliant_scientist_project_force_temporal_active }
 			brilliant_scientist_spawn_temporal_project_force = yes
 		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = brilliant_scientist_news_project_army_deployment_fired }
+				OR = {
+					check_variable = { brilliant_scientist_project_force_teleportation_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_cloning_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_robotics_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_paleogenetics_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_xenobiological_synthesis_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_alien_arms_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_temporal_formation_count > constant:brilliant_scientist_value.zero }
+				}
+			}
+			set_global_flag = brilliant_scientist_news_project_army_deployment_fired
+			news_event = { id = chaosx.nr16.308 days = constant:brilliant_scientist_news_runtime.delay_days }
+		}
 		clr_country_flag = brilliant_scientist_project_force_materialization_transaction
 		set_country_flag = brilliant_scientist_project_force_package_from_history_applied
 		set_temp_variable = { brilliant_scientist_project_force_package_applied = constant:brilliant_scientist_value.one }
