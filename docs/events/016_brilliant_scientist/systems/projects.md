@@ -124,7 +124,7 @@ Every stage decision has a nonzero family priority only after its exact visibili
 - three certified facility states;
 - an enabled Strategic Singularity selector.
 
-Native project AI uses the same host and capacity conditions and retains the engine's facility and breakthrough requirements. Incident recovery is urgent.
+Native project AI uses the same host and capacity conditions and retains the engine's facility and breakthrough requirements. Incident recovery is urgent. The ordinary `chaosx.nr16.13` report now resolves a family-specific risk clause for all fifteen ledgers, so computation, electronics, materials, rocketry, high energy, biomedical, teleportation, cloning, robotics, paleogenetics, xenobiological synthesis, biological weapons, alien arms, temporal research, and the Strategic Singularity each explain their own failure signature before the shared governance response. The clause is descriptive only and does not create a second incident, reward, or resource path.
 
 ## Strategic Singularity guard contract
 
