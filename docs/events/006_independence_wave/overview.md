@@ -86,7 +86,11 @@ FIJ/PNG/WPG consent-led adapter, MFX X-ending cosmetic identity, state-anchor
 array, autonomous-member cleanup, and material post-formation projects; the
 adapter remains fail-closed because IW-157/WPG and IW-178/PNG are sensitive
 packages without accepted named-community research and the MFX flag is still
-`needs_user_review`. FIJ stays outside runtime attestation. The current flat Event
+`needs_user_review`. FIJ stays outside runtime attestation. A source-linked HOI4
+repaint of the pre-1937 Vishnu Deo crop is retained as evidence in
+`006_iw177_fij_vishnu_deo_repaint_evidence_v109_2026_08_03.md`, but it does not clear
+the unresolved 1936 role, anonymous-source rights, halftone likeness, or FORM-39
+gates. The current flat Event
 006 portrait shelf authority records 80 original-size pre-resize PNG masters directly
 in one directory after the CHU Bolgar v90 v1/v2/v3, ASY Haydo, and ASY Barsoum
 original-size repaint copies. All 80 masters are indexed or explicitly recorded in
