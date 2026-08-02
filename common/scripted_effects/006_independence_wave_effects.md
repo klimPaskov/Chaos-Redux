@@ -1,5 +1,18 @@
 # Event 006 league expulsion evidence helpers
 
+## `independence_wave_apply_generic_government_route_politics`
+
+Country-scope helper called by `independence_wave_select_government_route` after
+the route has passed its package and ledger gates. It maps the seven shared
+government routes to a concrete ruling-party/elections posture: constitutional
+republic to democratic elections, popular council to communism without
+elections, radical sovereignty to fascism without elections, traditional,
+emergency, and patron-client routes to a non-elective neutrality posture, and
+the researched neutral commission route to a non-elective democratic posture.
+Package-specific adapters run afterward when they have a documented carrier
+party surface and may override the shared posture. This helper has no input
+store, does not add political power, and runs only at the one-time route lock.
+
 ## `independence_wave_record_league_expulsion_ground`
 
 Country-scope writer for the DM-60 charter case. Callers invoke it only at a

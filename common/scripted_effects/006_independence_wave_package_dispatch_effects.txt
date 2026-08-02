@@ -42,6 +42,17 @@ independence_wave_dispatch_package_final_validation = {
 	independence_wave_dispatch_iw093_iw098_package_final_validation = yes
 	independence_wave_dispatch_montenegro_package_final_validation = yes
 	independence_wave_dispatch_catalonia_package_final_validation = yes
+	# Every released Event 006 country must expose the one shared generic tree
+	# or a reviewed additive carrier overlay. Package adapters own their
+	# identity-specific checks, but this common barrier prevents a future
+	# adapter from admitting a country with no usable Event 006 focus surface.
+	if = {
+		limit = { check_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected } }
+		if = {
+			limit = { NOT = { has_independence_wave_generic_focus_contract = yes } }
+			set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.no_candidates }
+		}
+	}
 }
 
 # COUNTRY scope. Called before the shared reset clears package provenance.

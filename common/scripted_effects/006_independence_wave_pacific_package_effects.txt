@@ -3,8 +3,9 @@
 # ============================================================================
 # Setup, lifecycle, host settlement, bespoke HBX/HAW/FIJ focus rewards,
 # delegation preparation, final validation, and cleanup for IW-184/IW-173/
-# IW-177/IW-179. Exact dormant HBX, HAW, and FIJ packages may load the full
-# Event 006 framework after a generic-tree preflight; FSM remains additive.
+# IW-177/IW-179. Exact dormant HBX, HAW, FIJ, and FSM packages use the shared
+# Event 006 framework after a generic-tree preflight; no package loads a
+# bespoke country tree.
 # No effect performs a world-country scan or creates repeatable free formations.
 # ============================================================================
 
@@ -498,10 +499,11 @@ independence_wave_fsm_ratify_autonomous_federation_mandate = {
 	}
 }
 
-# FSM keeps its owning focus tree, so these exact adapters condense the accepted
-# route settlement into additive timed decisions. The shared route lock remains
-# the sole selector; the package flag only attests the completed local
-# settlement and never creates a second political state machine.
+# FSM has vanilla `generic_focus`, not a meaningful country-owned tree. These
+# exact adapters therefore add the shared Event 006 package surfaces after the
+# one generic framework is loaded. The shared route lock remains the sole
+# selector; the package flag only attests the completed local settlement and
+# never creates a second political state machine.
 independence_wave_fsm_select_federal_council_government = {
 	if = {
 		limit = { can_choose_independence_wave_fsm_government_settlement = yes has_country_flag = independence_wave_route_popular_council_available }
@@ -762,7 +764,7 @@ independence_wave_setup_iw_179_micronesia = {
 		independence_wave_refresh_fsm_lifecycle = yes
 		set_country_flag = independence_wave_pacific_provisional_command_established
 		if = { limit = { has_independence_wave_pacific_command_structure = yes } set_country_flag = independence_wave_command_roster_ready }
-		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.additive_overlay }
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
 		independence_wave_assign_focus_framework = yes
 		independence_wave_focus_allow_constitutional_route = yes
 		independence_wave_focus_allow_popular_council_route = yes

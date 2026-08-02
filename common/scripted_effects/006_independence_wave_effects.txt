@@ -337,6 +337,10 @@ independence_wave_select_government_route = {
 		set_variable = { independence_wave_government_route = independence_wave_government_route_input }
 		set_variable = { independence_wave_government_route_lock_date = global.date }
 		set_country_flag = independence_wave_government_route_locked
+		# The generic tree is a real political route, not only a ledger label.
+		# Apply the shared ideological posture first; researched package adapters
+		# below may then restore their documented carrier-specific party surface.
+		independence_wave_apply_generic_government_route_politics = yes
 		if = { limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.constitutional_republic } } set_country_flag = independence_wave_route_constitutional_republic }
 		else_if = { limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.popular_council } } set_country_flag = independence_wave_route_popular_council }
 		else_if = { limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.traditional_restoration } } set_country_flag = independence_wave_route_traditional_restoration }
@@ -374,6 +378,40 @@ independence_wave_select_government_route = {
 		independence_wave_dispatch_iw043_iw058_government_route_politics = yes
 		independence_wave_dispatch_iw_012_ice_government_route_politics = yes
 		independence_wave_refresh_country_state = yes
+	}
+}
+
+# Applies the shared ideology/elections posture for the generic Event 006 tree.
+# Package adapters that preserve a researched carrier-specific party call after
+# this helper and may override the shared posture. The effect is country-scope,
+# runs only once when the route locks, and does not create a political-power
+# store or a free faction loop.
+independence_wave_apply_generic_government_route_politics = {
+	if = {
+		limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.constitutional_republic } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.popular_council } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.radical_sovereignty } }
+		set_politics = { ruling_party = fascism elections_allowed = no }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { independence_wave_government_route = constant:independence_wave_government_route.traditional_restoration }
+				check_variable = { independence_wave_government_route = constant:independence_wave_government_route.emergency_military }
+				check_variable = { independence_wave_government_route = constant:independence_wave_government_route.patron_client }
+			}
+		}
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.neutral_commission } }
+		set_politics = { ruling_party = democratic elections_allowed = no }
 	}
 }
 

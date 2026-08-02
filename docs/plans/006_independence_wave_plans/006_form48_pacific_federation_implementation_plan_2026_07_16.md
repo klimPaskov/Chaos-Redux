@@ -67,8 +67,8 @@ also receive the full framework only while its current tree is `generic_focus`;
 it receives a bespoke seven-focus Hawaiian shared group, and cleanup restores
 `generic_focus` only while its current tree is still the Event 006 framework.
 Living, non-Event-006, Soviet-collapse, and meaningful non-generic HAW remain
-untouched. FSM keeps safe additive Event 006 content and never loads a
-replacement tree.
+untouched. Vanilla FSM exposes only `generic_focus`, so it receives the shared
+Event 006 framework; no meaningful existing tree is replaced.
 
 ## FORM-48 adapters and transaction
 
