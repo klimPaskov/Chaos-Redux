@@ -563,6 +563,6 @@ Full package acceptance remains open for carrier-flag ownership and provenance, 
 
 ## Sovereign portrait reconciliation (2026-08-01)
 
-The installed v2 visual package is the current portrait authority for these sixteen packages. It uses one decorated African king or queen per package on a plain, low-detail background in the HOI4 painted style, with dramatic regalia and restrained natural or supernatural symbolism. It does not use a council, delegation, crowd, committee, interior, battle scene, or institutional body as the player-facing leader portrait.
+The installed v3 visual package is the current portrait authority for these sixteen packages. It uses one decorated African king or queen per package on a plain, low-detail matte background in the HOI4 painted style, with dramatic but restrained regalia and bounded natural or supernatural symbolism. It does not use a council, delegation, crowd, committee, interior, battle scene, sacred-object motif, or institutional body as the player-facing leader portrait. The stable sprite names and existing-carrier/tag contract are unchanged.
 
 Older references in this handoff to “council portraits” describe the superseded overlay baseline. The `*_council_party` names, council government helper, and council route wording remain valid constitutional labels from the payoff matrix; they do not replace the sovereign character identity or authorize a collective leader image. This reconciliation changes no tag, carrier, cosmetic identity, country history, core, or gameplay gate.
