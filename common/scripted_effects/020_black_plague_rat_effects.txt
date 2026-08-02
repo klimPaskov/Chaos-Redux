@@ -157,6 +157,82 @@ black_plague_rat_king_send_royal_strike = {
 	}
 }
 
+# COUNTRY scope with FROM = selected target STATE. These operations are the
+# living middle of the terminal route: each one pays Dominion, Brood Mass,
+# military allocation, one factory slot through the decision, and time before
+# the shared exposure/death/mapmode contracts are touched.
+black_plague_rat_king_complete_terminal_harbor_campaign = {
+	if = {
+		limit = {
+			black_plague_rat_king_terminal_campaign_country_is_ready = yes
+			FROM = { black_plague_rat_king_terminal_harbor_target_is_valid = yes }
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.terminal_campaign_harbor_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.terminal_campaign_harbor_brood_mass_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_division_cap_bonus value = constant:black_plague_rat_decision.terminal_campaign_harbor_division_cap_cost compare = greater_than_or_equals }
+		}
+		subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_decision.terminal_campaign_harbor_dominion_cost }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.terminal_campaign_harbor_brood_mass_cost }
+		subtract_from_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.terminal_campaign_harbor_division_cap_cost }
+		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_decision.terminal_campaign_harbor_terminal_gain }
+		clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_brood_mass min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.brood_mass_cap }
+		FROM = {
+			save_event_target_as = black_plague_terminal_campaign_state
+			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.rat_occupation_base }
+			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.port_local }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.rat_occupation }
+			black_plague_apply_exposure = yes
+			black_plague_apply_current_state_mortality_once = yes
+			black_plague_apply_current_state_devastation = yes
+			set_temp_variable = { black_plague_terminal_campaign_cooldown_days = constant:black_plague_rat_decision.terminal_campaign_cooldown_days }
+			set_state_flag = { flag = black_plague_rat_king_terminal_harbor_closed days = black_plague_terminal_campaign_cooldown_days }
+			set_state_flag = { flag = black_plague_rat_king_terminal_harbor_cooldown days = black_plague_terminal_campaign_cooldown_days }
+		}
+		set_global_flag = black_plague_mapmode_dirty
+		country_event = { id = chaosx.nr20.83 }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = world_end } }
+		country_event = { id = chaosx.nr20.85 }
+	}
+}
+
+black_plague_rat_king_complete_terminal_capital_campaign = {
+	if = {
+		limit = {
+			black_plague_rat_king_terminal_campaign_country_is_ready = yes
+			FROM = { black_plague_rat_king_terminal_capital_target_is_valid = yes }
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.terminal_campaign_capital_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.terminal_campaign_capital_brood_mass_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_division_cap_bonus value = constant:black_plague_rat_decision.terminal_campaign_capital_division_cap_cost compare = greater_than_or_equals }
+		}
+		subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_decision.terminal_campaign_capital_dominion_cost }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.terminal_campaign_capital_brood_mass_cost }
+		subtract_from_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.terminal_campaign_capital_division_cap_cost }
+		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_decision.terminal_campaign_capital_terminal_gain }
+		clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_brood_mass min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.brood_mass_cap }
+		FROM = {
+			save_event_target_as = black_plague_terminal_campaign_state
+			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.rat_occupation_base }
+			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.troop_movement }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.rat_occupation }
+			black_plague_apply_exposure = yes
+			black_plague_apply_current_state_mortality_once = yes
+			black_plague_apply_current_state_devastation = yes
+			set_temp_variable = { black_plague_terminal_campaign_cooldown_days = constant:black_plague_rat_decision.terminal_campaign_cooldown_days }
+			set_state_flag = { flag = black_plague_rat_king_terminal_capital_silenced days = black_plague_terminal_campaign_cooldown_days }
+			set_state_flag = { flag = black_plague_rat_king_terminal_capital_cooldown days = black_plague_terminal_campaign_cooldown_days }
+		}
+		set_global_flag = black_plague_mapmode_dirty
+		country_event = { id = chaosx.nr20.84 }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = world_end } }
+		country_event = { id = chaosx.nr20.86 }
+	}
+}
+
 black_plague_rat_run_runtime_pulse = {
 	black_plague_rat_initialize_runtime = yes
 	if = {
@@ -372,6 +448,7 @@ black_plague_emit_rat_king_defeat_super_event = {
 black_plague_rat_king_resolve_defeat = {
 	if = {
 		limit = { NOT = { has_global_flag = black_plague_rat_king_defeat_resolved } }
+		black_plague_rat_king_clear_terminal_target_state = yes
 		set_global_flag = black_plague_rat_king_defeat_resolved
 		set_global_flag = black_plague_rat_king_defeated
 		clr_global_flag = black_plague_rat_king_active
@@ -2109,6 +2186,7 @@ black_plague_rat_select_royal_basin_state = {
 black_plague_rat_transfer_to_king = {
 	if = {
 		limit = { NOT = { has_global_flag = black_plague_rat_king_active } }
+		black_plague_rat_king_clear_terminal_target_state = yes
 		black_plague_rat_select_royal_basin_state = yes
 		if = {
 			limit = { has_event_target = black_plague_rat_royal_basin_state }
