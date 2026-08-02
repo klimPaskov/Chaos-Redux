@@ -139,7 +139,7 @@ Automatic fail-deadly or deliberate global-use doctrine blocks Laboratory World 
 
 Six super-event packages are planned for recognition, formation, global threat, Laboratory World, Strategic Singularity, and qualifying defeat. Recognition and defeat are conditional at runtime but remain full production packages.
 
-Text and audio are complete for all six packages. Six role-distinct Event 016-owned WAVs exist at IDs 90 through 95, and six generated super-event DDS files plus ten generated report-event DDS files are present. Seven minor news DDS files and one-time dispatch guards are documented in `systems/news_events.md`, covering six milestones and the mapped regional defeat. Shared image, title, quotation, button, description, sound, volume-setting, trigger, and aftermath wiring is complete. Live playback acceptance remains user-owned.
+Text and audio are complete for all six packages. Six role-distinct Event 016-owned WAVs exist at IDs 90 through 95, and six generated super-event DDS files plus twelve generated report-event DDS files are present. Seven minor news DDS files and one-time dispatch guards are documented in `systems/news_events.md`, covering six milestones and the mapped regional defeat. Shared image, title, quotation, button, description, sound, volume-setting, trigger, and aftermath wiring is complete. Live playback acceptance remains user-owned.
 
 Six severe Kruger portrait animation packages exist for clone, machine, temporal, xenobiological, alien-revealed, and synthesis outcomes. Every package contains separate source frames, a static fallback, frame sheet, DDS, preview, contact sheet, manifest, and GFX handoff. Transform-only animation is not used.
 
@@ -176,9 +176,9 @@ Biological-weapon work must reuse the existing biowarfare, contamination, Deaths
 ## Current blockers
 
 - Event 016 is default-enabled for ordinary fire-once selection; live scenario validation remains user-owned.
-- The report, super-event, portrait, animation, icon, flag, achievement, and Directorate UI packages are registered and have static consumer checks. Three generated report scenes now serve the laboratory briefing, assistant conflict, and loyalty dossier; the family-specific breakthrough masters remain queued because the shared breakthrough report has one static picture. Live presentation acceptance remains user-owned.
+- The report, super-event, portrait, animation, icon, flag, achievement, and Directorate UI packages are registered and have static consumer checks. Five generated report scenes now serve the laboratory briefing, assistant conflict, loyalty dossier, computation or electronics breakthrough, and materials or rocketry breakthrough. The shared breakthrough report routes those two scenes through scripted localisation and keeps the Directorate dossier as its safe default for every other family. Live presentation acceptance remains user-owned.
 - No Event016-specific 3D unit or building model package is accepted. The seven route-specific unit consumers remain a production and runtime-wiring backlog.
-- Defeat/remnant and broader country-specific flavor content remains queued after the core runtime milestone, and no dedicated Kruger triggerable scenario is required by the accepted design. The seven mapped news headlines and three institutional report scenes are now bounded presentation layers; qualifying defeat-remnant hearings and family-specific breakthrough variants remain separately art-gated.
+- Defeat/remnant and broader country-specific flavor content remains queued after the core runtime milestone, and no dedicated Kruger triggerable scenario is required by the accepted design. The seven mapped news headlines and five institutional or breakthrough report scenes are now bounded presentation layers; qualifying defeat-remnant hearings remain separately art-gated.
 
 ## Future plans
 
