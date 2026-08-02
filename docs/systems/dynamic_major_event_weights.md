@@ -43,7 +43,7 @@ Repeatable events remain in the non-major count after firing while they remain a
 
 ## Script Helpers
 
-The reusable helpers live in `common/scripted_effects/chaosx_logic_effects.txt` and are documented in `common/scripted_effects/chaosx_dynamic_effects.md`.
+The event-system helpers live in `common/scripted_effects/chaosx_logic_effects.txt`. Their behavior and ownership are documented in this system file because they are private to random-event selection and major-weight pacing.
 
 - `evaluate_random_event_active_pool_candidate`
 - `count_dynamic_major_weight_pool_events`

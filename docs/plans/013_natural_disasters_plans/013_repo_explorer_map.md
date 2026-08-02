@@ -229,7 +229,7 @@ Use the existing `death_consumption`/`zombie_outbreak_decay` branches as a compl
 
 ## Damage and modifiers
 
-`damage_buildings_in_random_states` in `common/scripted_effects/chaosx_dynamic_effects.txt` is not a suitable Event 013 controller. It chooses random controlled states, uses generic random building rolls, and has a direct population branch. Event 013 needs a selected-state, family-specific effect.
+The removed legacy helper `damage_buildings_in_random_states` was not a suitable Event 013 controller. It chose random controlled states, used generic random building rolls, and had a direct population branch. Event 013 instead owns selected-state, family-specific effects.
 
 The new `natural_disaster_apply_family_damage` should:
 

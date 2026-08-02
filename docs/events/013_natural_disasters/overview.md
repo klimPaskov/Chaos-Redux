@@ -44,6 +44,18 @@ Every report policy queues a delayed family report for the affected state's curr
 
 The reusable API owns disaster logic. External callers do not copy Deaths registration, damage, report, aftermath, or follow-up code.
 
+### Event-owned internal helpers
+
+Event 013 internal effects remain in `common/scripted_effects/013_natural_disasters_effects.txt` and are not part of the cross-system dynamic-effect registry.
+
+- `natural_disaster_resolve_ordinary_family` resolves the ordinary family for a validated request.
+- `natural_disaster_register_relief_recipient_country` and `natural_disaster_unregister_relief_recipient_country_if_inactive` maintain the bounded relief-recipient registry.
+- `natural_disaster_transfer_pending_jobs_for_state` moves the complete aligned delayed-job rows when responsibility for an affected state changes.
+- `natural_disaster_append_abnormal_history_record` and `natural_disaster_update_abnormal_history_record` own the abnormal-path history ledger.
+- `natural_disaster_rebuild_abnormal_gui_view` projects that ledger into the Event 013 abnormal-disaster view.
+
+External events call only `call_natural_disaster`. They do not call these internal helpers directly.
+
 ## Disaster families
 
 The engine defines 25 families:

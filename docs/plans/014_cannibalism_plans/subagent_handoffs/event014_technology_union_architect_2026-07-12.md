@@ -1,5 +1,7 @@
 # Event 014 additive technology-union handoff
 
+Current ownership note, 2026-08-02: the helper is used only by Event 014 and therefore lives in `common/scripted_effects/014_cannibalism_effects.txt`. The historical file list below records the earlier shared-registry implementation tranche.
+
 Date: 2026-07-12  
 Mode: bounded scripted-system implementation  
 Commit: none

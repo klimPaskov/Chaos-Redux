@@ -31,6 +31,15 @@ Regional or stronger wildfires contribute. Volcanic eruptions, ashfall, and mass
 
 The computed delta is applied through `air_contamination_apply_delta_bp`.
 
+#### Natural-source helper ownership
+
+The natural-disaster contamination bridge is private to the Air Contamination and Event 013 integration and lives in `common/scripted_effects/fallout_consolidated_effects.txt`.
+
+- `air_contamination_register_natural_disaster_source` runs in the resolved impact state, validates the Event 013 family and severity context, and adds one deduplicated contribution to the natural-source reservoir.
+- `air_contamination_prepare_natural_source_monthly` copies the clamped reservoir into the monthly delta, applies one decay step, and records the monthly tick date so the source cannot decay twice in one host update.
+
+The exact source-family and reservoir proof is documented in `docs/plans/air_cleanliness_fallout_plans/AIR_CONTAMINATION_NATURAL_SOURCE_PROOF.md`.
+
 ### 2) Nuke fallout seeding
 
 `chaos_meter_on_nuke_drop` no longer adds a direct global contamination spike.

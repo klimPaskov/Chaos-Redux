@@ -45,6 +45,16 @@ Current intentional vanilla-history exceptions:
 - `history/countries/GER - Germany.txt` remains because it changes vanilla equipment variant icon fields inside `create_equipment_variant` blocks.
 - `history/units/CHL_1936.txt` remains because it guards a vanilla Chile OOB MIO assignment behind the required DLC check rather than granting Chaos Redux startup content.
 
+## Script helper ownership
+
+The complete startup API lives in `common/scripted_effects/chaosx_startup_history_effects.txt` rather than the cross-system dynamic-effect registry.
+
+- `chaosx_apply_startup_history_grants` is the idempotent startup entry point and dispatches the country-specific additive grants.
+- `chaosx_startup_mark_existing_scientists` marks scientists that existed before one country grant generated its own candidates.
+- `chaosx_startup_clear_generated_scientist_helper_flags` clears the temporary selection markers after a generated scientist has been identified, named, assigned its final portrait, and given its persistent identity flag.
+
+The scientist helpers are internal to startup generation. Event chains should use their own event-owned character transactions instead of calling these helpers.
+
 ## Migrated startup surfaces
 
 The startup effect currently replaces copied vanilla overrides for:
