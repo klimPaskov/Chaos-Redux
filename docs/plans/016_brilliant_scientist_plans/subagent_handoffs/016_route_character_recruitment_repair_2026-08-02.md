@@ -2,7 +2,7 @@
 
 Date: 2026-08-02
 
-Status: parent-owned repair complete; live formation and succession validation remain user-owned.
+Status: superseded by the tracked-holder repair; live formation and succession validation remain user-owned.
 
 ## Scope
 
@@ -12,7 +12,7 @@ The existing KRG command-staff handoff defines four route offices that must be r
 
 - Restored guarded `recruit_character` calls for `KRG_general_staff_office`, `KRG_machine_command_node`, `KRG_clone_officer_corps`, and `KRG_project_command_council` in `events/016_brilliant_scientist_kruger_state_events.txt`.
 - Restored `recruit_character = KRG_continuity_network` before `promote_character` in `common/scripted_effects/016_brilliant_scientist_kruger_state_decision_effects.txt`.
-- Kept the separate reserved-DJX Kruger transfer contract in `common/scripted_effects/016_brilliant_scientist_effects.txt`; the dormant DJX history already recruits the fixed token, so opening appointment transfers its nationality to the selected host rather than creating a second token.
+- The later tracked-holder repair moved the fixed-token source into `history/countries/KRG - Kruger State.txt` and replaced the hard-coded DJX transfer with the documented `every_possible_country` character-scope transfer.
 - Kept the corrected `train_equipment` gate in `common/decisions/016_brilliant_scientist_kruger_state_foundation_decisions.txt`.
 
 ## Evidence and validation

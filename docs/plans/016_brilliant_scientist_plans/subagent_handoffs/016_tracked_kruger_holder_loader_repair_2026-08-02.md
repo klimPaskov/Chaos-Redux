@@ -11,14 +11,14 @@ The opening appointment used the reserved `DJX` country as the origin of the fix
 ## Changes
 
 - `history/countries/KRG - Kruger State.txt` now recruits `KRG_warren_kruger` in the tracked dormant country history alongside the institutional roster.
-- `common/country_tags/016_brilliant_scientist_country.txt` now points `KRG` at the tracked `history/countries/KRG - Kruger State.txt` filename.
+- `common/country_tags/016_brilliant_scientist_country.txt` retains the vanilla-compatible `countries/Kruger State KRG.txt` definition mapping, which resolves to the existing `common/countries/Kruger State KRG.txt` file.
 - `brilliant_scientist_appoint_kruger_from_opening` now uses the documented `every_possible_country` plus character-scope `set_nationality` pattern, so the opening finds the one recruited Kruger token without a hard-coded cross-event holder tag.
 - The duplicate guard now checks every active country for the fixed character and no longer exempts `DJX`.
 - A trailing history comment keeps the final KRG recruitment call from being the last parsed history line.
 
 ## Validation
 
-- The KRG tag path resolves to an existing tracked history file.
+- The KRG country-definition mapping resolves to the existing tracked `common/countries/Kruger State KRG.txt` file, and the tag's separate history file is `history/countries/KRG - Kruger State.txt`.
 - The tracked KRG history contains exactly one `recruit_character = KRG_warren_kruger` call.
 - Event 016 scripted-effect scans contain no remaining `DJX` holder reference.
 - Focused Event Inspector lint for `chaosx.nr16.2` returned `status = ok` with zero blocking diagnostics; workspace-wide helper analysis remains deferred by the tool's large-workspace limit.
