@@ -459,3 +459,41 @@ country_event = {
 	is_triggered_only = yes
 	option = { name = chaosx_nr16_191_a brilliant_scientist_foreign_finish_operation = yes }
 }
+
+# ---------------------------------------------------------------------------
+# Counter-Kruger program
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.193
+	title = chaosx_nr16_193_title
+	desc = chaosx_nr16_193_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_nr16_193_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_secret_directorate } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_193_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_medium modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_public_compact } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.194
+	title = chaosx_nr16_194_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_194_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_194_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_194_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_194_a brilliant_scientist_foreign_finish_operation = yes }
+}

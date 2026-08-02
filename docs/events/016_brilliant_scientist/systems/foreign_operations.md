@@ -26,6 +26,7 @@ Each actor may conduct one live operation at a time. A host accepts at most two 
 | Offer protection | Immediate host event | 35 Political Power | Alliance, faction, guarantee, or patron access; creates full, limited, or refused protection memory |
 | Attempt assassination | 90 days | 100 Political Power | Meaningful dangerous-project threat, hostile motive, and intelligence access; always produces attribution on a nonfailure |
 | Publicly challenge the programme | Immediate host event | 35 Political Power | Authenticated observation, exposed research, detected operations, or a strategic project; host chooses demonstration, denial, publication, observers, sabotage explanation, or threat |
+| Build a counter-Kruger programme | 120 days | 60 Political Power + 250 support equipment | Intelligence access, a project evidence receipt, and an active host project; records a family-specific countermeasure and improves later operations against the same host |
 
 Diplomatic approaches use host events `.100` and `.110`. Covert routes use detected host events and paired actor reports across `.120` through `.181`.
 
@@ -41,6 +42,8 @@ After at least one resolved Prototype, the first detected operation that resolve
 
 The public challenge is a separate actor-owned operation with its own per-host resolution ledger. It requires the public-challenge interest threshold plus diplomatic or intelligence access and one of four evidence sources: a successful observation, exposed research, detected foreign operations, or a strategic project. The challenge is immediately delivered to the current host as `chaosx.nr16.190`, and the six host answers apply distinct Mandate, Exposure, Dependence, Project Capacity, Grievance, and diplomatic-memory consequences before the actor receives `chaosx.nr16.191`. It does not steal a project stage, create a special-project reward, or move Doctor Kruger, and its public detection is recorded in the normal foreign-operation history.
 
+The counter-Kruger programme is a separate one-use actor operation. It requires the counter-program interest threshold, intelligence access, an active host project, a prior observation, recruitment, theft, public-challenge, or strategic-project evidence receipt, and 250 support equipment. The 120-day operation selects the host's most advanced family through the existing project-target helper; a successful result records the host and family in the actor's countermeasure arrays, while a partial result records only a failed family study. The actor's later operation score against that same host receives the bounded `countermeasure_previous` bonus, and the programme never grants a project stage, a second Kruger, or a unit. A detected operation opens `chaosx.nr16.193` before the actor report `.194`; the dedicated response avoids the generic controlled-exchange reaction so countermeasure work cannot accidentally become a full project-theory reward.
+
 The host-facing foreign-operation reports (`chaosx.nr16.100`, `.110`, `.120`, `.130`, `.140`, `.150`, `.160`, `.170`, and `.180`) append the same retained host-archetype clause used by the Directorate reports. Universities, industrial hosts, militarized states, threatened governments, colonial administrations, refugee networks, and the default host therefore read invitations, observation, recruitment, theft, sabotage, defection, extraction, and assassination through their own institutional pressures. Actor after-action reports (`.101`, `.111`, `.121`, `.131`, `.141`, `.151`, `.161`, `.171`, and `.181`) use `GetBrilliantScientistForeignHostFlavorClause` to read the carried host target, so the reporting country does not accidentally substitute its own archetype or lose the original context.
 
 ## Transfer and assassination safety
@@ -51,7 +54,7 @@ Assassination can confirm death only for ordinary human continuity. Clone, machi
 
 ## Persistent history
 
-Actor arrays retain observation, invitation, recruitment, theft, sabotage, defection, extraction, protection, and assassination history per host. The selected project family and stage remain recorded for exact follow-up descriptions and KRG route weighting. Opinion modifiers preserve invitation refusals, scientific contact, protection compacts, exposed operations, and diplomatic protests.
+Actor arrays retain observation, invitation, recruitment, theft, sabotage, defection, extraction, protection, assassination, and counter-program history per host. The selected project family and stage remain recorded for exact follow-up descriptions, family-specific countermeasure receipts, and KRG route weighting. Opinion modifiers preserve invitation refusals, scientific contact, protection compacts, exposed operations, and diplomatic protests.
 
 ## Assets and localisation
 
