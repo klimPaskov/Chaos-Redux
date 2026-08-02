@@ -14,7 +14,7 @@ Activation records the host's opening day, a bounded settlement window, and the 
 
 The defensive trigger also requires `africa_member_host_generation_is_current`, so a protected receipt from a superseded host cannot spend the successor host's reserve.
 
-Protected partners that start an offensive war receive no reserve. The host records `africa_achievement_reserve_offensive_abuse` so the achievement cannot be satisfied by a misused posture.
+Protected partners that start an offensive war receive no reserve. The abuse callback also requires the attacking member's current host-generation receipt, so a former protected partner cannot poison the successor host's achievement ledger. The host records `africa_achievement_reserve_offensive_abuse` so the achievement cannot be satisfied by a misused posture.
 
 ## Settlement and cleanup
 
