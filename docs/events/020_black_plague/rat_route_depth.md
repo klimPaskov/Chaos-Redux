@@ -22,4 +22,4 @@ The route focuses reuse the existing Event 020 rat goal sprites registered in `i
 
 ## Future extension
 
-Further depth can add route-specific report text and crisis art without changing the decision contract. Bespoke rat unit models remain explicitly outside the current goal and should only be produced if a later asset plan requests them.
+Further depth can add route-specific report text and crisis art without changing the decision contract. No bespoke rat unit models are required or planned for Event 020; the registered infantry entity remains the accepted visual consumer.

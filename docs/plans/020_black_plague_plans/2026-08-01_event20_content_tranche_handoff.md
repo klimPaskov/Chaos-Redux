@@ -2,6 +2,8 @@
 
 Date: 2026-08-01
 
+> Historical tranche snapshot, superseded for current documentation facts by the 2026-08-02 reconciliation: retain the implementation history and valid unresolved findings, but use 51 RTA focuses and 71 RTX focuses as the current documented counts. The dedicated weapon-delivery icon and source-frame Rat King/seal packages are promoted, Hold the Line and Secure the Refuge are native `activate_mission`/`days_mission_timeout` missions, three Event 020 WAVs are 44.1 kHz, and no bespoke 3D models are required or planned. SCN-012 repeat reconciliation and the live intensity postcondition fix are accepted; do not revive the older repeat-blocked wording.
+
 ## Scope
 
 This tranche extends the load-ready Event 020 gameplay core without producing 3D models, meshes, skeletal actions, or model-dependent assets.

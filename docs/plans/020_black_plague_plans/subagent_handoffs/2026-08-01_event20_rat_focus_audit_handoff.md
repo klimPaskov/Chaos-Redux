@@ -1,5 +1,7 @@
 # Event 20 Rat Focus Audit Handoff
 
+> Historical focus-audit snapshot, superseded for current counts by the 2026-08-02 reconciliation: the body records an earlier 23/38-focus inspection. Current runtime documentation records 51 RTA and 71 RTX focus nodes. Retain the audit's valid prerequisite, layout, and icon findings, and do not use its old compact-tree counts as the current source of truth.
+
 Date: 2026-08-01
 
 Scope: the two live Event 20 national focus trees for `RTA` and `RTX`. This audit did not touch models, country identity, events, decisions, or the runtime rat allocator.

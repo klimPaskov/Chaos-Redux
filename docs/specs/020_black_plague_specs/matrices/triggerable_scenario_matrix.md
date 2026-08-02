@@ -2,6 +2,8 @@
 
 The live implementation uses `SCN-012` and the two-tag correction below is authoritative.
 
+> Runtime reconciliation, 2026-08-02: the historical repeat-blocked rows are superseded for live behavior. A repeat SCN-012 signal is an idempotent reconciliation-only path that preserves existing disease ledgers, actors, intensity, and history while rebuilding counts, shared threat, board, and mapmode; terminal or otherwise unavailable worlds still fail closed. The current intensity postcondition also reconciles live RTA/RTX division counters before top-up and verifies both selected floors before marking launch success. A failed postcondition clears temporary reservations and remains retryable; it does not claim atomic inverse rollback of every prior mutation.
+
 ## Scenario registry row
 
 | Field | Planned value |
@@ -14,7 +16,7 @@ The live implementation uses `SCN-012` and the two-tag correction below is autho
 | Forced event state | Event 20 plus Evolutions I through IV |
 | Immediate actors | one reusable `RTA` Rat Nation carrier with internal brood basins and one separate `RTX` Rat King |
 | World end | not launched |
-| Repeat launch | blocked after success |
+| Repeat launch | reconciliation-only after success; terminal or unavailable worlds remain blocked |
 | Achievement handling | permanent scenario shortcut disqualifier |
 
 ## Intensity targets
@@ -40,15 +42,15 @@ The live implementation uses `SCN-012` and the two-tag correction below is autho
 
 | Order | System | Required result | Duplicate protection |
 | ---: | --- | --- | --- |
-| 1 | scenario state | bootstrap and permanent launched flag set | launch gate blocks prior success |
+| 1 | scenario state | bootstrap and permanent launched flag set | successful repeat signals enter reconciliation-only mode; terminal gate blocks |
 | 2 | Event 20 | registered and marked fired | reuse existing event history |
 | 3 | continents and states | distributed anchor basins selected | existing infected states count toward target |
 | 4 | disease values | status and seven Black Plague state values initialized | one registry entry per state |
 | 5 | Evolution I | stronger strain active and logged | skip record when already present |
 | 6 | Evolution II | overseas spread active and logged | skip record when already present |
-| 7 | Rat Nation carrier | missing internal broods and state markers created inside `RTA` | existing valid `RTA` brood markers count toward target; no new rat tag |
+| 7 | Rat Nation carrier | missing internal broods and state markers created inside `RTA` | existing valid `RTA` brood markers count toward target; live division counters reconcile before top-up; no new rat tag |
 | 8 | Evolution III | logged with first brood actor | one row only |
-| 9 | Rat King | separate Royal Basin and country created | preserve existing King when present |
+| 9 | Rat King | separate Royal Basin and country created | preserve existing King when present; reconcile the selected RTX division floor before postcondition success |
 | 10 | Evolution IV | logged with Rat King actor | one row only |
 | 11 | global systems | Chaos floor, world threat, pulses, Deaths, air cleanliness | shared helpers, one opening death pass, and one saved scheduler anchor that queues the first `.900` callback |
 | 12 | UI | disease board and full mapmode rebuild | one batch refresh after setup |
@@ -100,5 +102,5 @@ Royal King Hunger crises are country events rather than ordinary disease phases.
 | small or altered map | targets scale down after minimum validity, no invalid state or capital |
 | mapmode | every established Black Plague state is black immediately after launch |
 | decisions | Black Plague-specific rows appear in shared category, no dedicated category exists |
-| repeat launch | launch disabled with clear reason |
+| repeat launch | reconciliation-only idempotent path with clear terminal/unavailable reason when blocked |
 | save and reload | scenario state, actors, mapmode, decisions, and pulses remain valid |

@@ -1,6 +1,6 @@
 # Event 020 Rat King route depth
 
-The separate `RTX` Rat King now has a 70-focus tree in `common/national_focus/020_black_plague_rat_king_focus_tree.txt`. The tree stays inside the two-tag boundary: `RTA` remains the base Rat Nation and `RTX` remains the separate sentient King.
+The separate `RTX` Rat King now has a 71-focus tree in `common/national_focus/020_black_plague_rat_king_focus_tree.txt`. The tree stays inside the two-tag boundary: `RTA` remains the base Rat Nation and `RTX` remains the separate sentient King.
 
 The opening establishes the Royal Basin, crown, registers, refuge nodes, and capital seals. The player then chooses one mutually exclusive government route: Absolute Crown, Brood Council, or Black-Breath Hierophancy. Each route has its original four-focus core and an additional six-focus lane that explores a distinct royal cost profile.
 
@@ -22,4 +22,4 @@ All added focus names and descriptions are in `localisation/english/020_black_pl
 
 ## Future depth
 
-Further depth can add route-specific crisis art without changing the three-route or two-tag contract. Live in-game focus timing, AI completion order, and visual spacing remain user-side validation surfaces because the repository workflow does not launch Hearts of Iron IV.
+Further depth can add route-specific crisis art without changing the three-route or two-tag contract. No bespoke 3D models are required or planned for this route. Live in-game focus timing, AI completion order, and visual spacing remain user-side validation surfaces because the repository workflow does not launch Hearts of Iron IV.

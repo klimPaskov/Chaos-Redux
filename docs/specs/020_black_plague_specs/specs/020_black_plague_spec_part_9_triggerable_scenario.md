@@ -1,5 +1,7 @@
 # Event 20 Black Plague Specification, Part 9
 
+> Runtime reconciliation, 2026-08-02: the historical repeat-blocked wording in this design part is superseded by the accepted SCN-012 idempotent reconciliation contract. Successful repeat signals preserve existing disease ledgers, actors, intensity, and history while reconciling counts, shared threat, board, and mapmode; terminal or otherwise unavailable worlds still fail closed. The intensity postcondition now reconciles live RTA/RTX division counters before top-up and verifies both selected floors before recording launch success. Failed postconditions clear temporary state and remain retryable; this does not claim atomic inverse rollback of every earlier mutation.
+
 ## Triggerable scenario, instant multi-continent outbreak, and immediate rat kingdoms
 
 All labels in this file are working labels, not final localisation.
@@ -31,7 +33,7 @@ The scenario is separate from the Rat King terminal world-end scenario. Manual l
 | Type options | one fixed profile, working label Instant Plague Kingdoms |
 | Intensity | existing Low, Medium, High, Maximum slider |
 | Launch scope | global, not tied to the currently selected country |
-| Repeat launch | blocked after one successful launch |
+| Repeat launch | reconciliation-only after one successful launch; terminal or unavailable worlds remain blocked |
 | Normal event prerequisites | bypassed only during the scenario bootstrap |
 | World-end state | never set by launch |
 | Achievement status | ordinary Event 20 achievements are disqualified by the scenario launch flag |
@@ -386,7 +388,7 @@ The existing Rat King is preserved. The scenario strengthens its starting packag
 
 ### Repeated launch
 
-After a successful launch, the scenario row remains visible for history and detail purposes but the launch action is disabled. The tooltip explains that the instant setup has already been used.
+After a successful launch, the scenario row remains visible for history and detail purposes. A repeat signal enters an idempotent reconciliation-only path that does not reseed states, reset intensity, replay Evolutions I through IV, or fire duplicate launch or coronation reports. The terminal and unavailable-world gates still disable the launch action with a clear reason.
 
 ## Failure handling and cleanup
 
@@ -459,7 +461,7 @@ Each intensity must be tested as its own start condition.
 - affected Black Plague states show black immediately in the existing mapmode
 - the general disease category shows Black Plague-specific decisions without creating a second category
 - scenario bootstrap flags are cleared after launch
-- a second launch is blocked
+- a repeat launch performs reconciliation only, while terminal or unavailable worlds are blocked with a clear reason
 - save and reload preserves every state, country, decision, and mapmode status
 
 ## Acceptance criteria for the triggerable scenario
@@ -482,4 +484,4 @@ The scenario is complete only when:
 - ordinary Event 20 play continues after bootstrap
 - Evolution V and terminal world end still require their accepted live conditions
 - ordinary Event 20 achievements are protected from scenario shortcuts
-- repeat launch is safely blocked
+- repeat launch is safely idempotent and reconciliation-only; terminal or unavailable worlds remain blocked

@@ -2,7 +2,7 @@
 
 Date: 2026-08-01
 
-> Historical audit snapshot. The later 2026-08-01 content tranche statically wires the RTA hierarchy consumers, RTX crises `.57-.59`, Crown Strike `.64-.65`, scoped defeat/aftermath `.71-.75`, resolver-owned `.72`, and slot-087 presentation; this report’s older “absent” wording for those surfaces is superseded. Retain its valid unresolved findings for evolution/scenario/`.73` audience/asset validation and whole-spec completion, and use `2026-08-01_event20_documentation_cleanup_handoff.md` as the current documentation disposition.
+> Historical audit snapshot. The later 2026-08-01 content tranche statically wires the RTA hierarchy consumers, RTX crises `.57-.59`, Crown Strike `.64-.65`, scoped defeat/aftermath `.71-.75`, resolver-owned `.72`, and slot-087 presentation; this report’s older “absent” wording for those surfaces is superseded. The 2026-08-02 reconciliation also supersedes its older weapon-delivery-icon alias and source-frame Rat King/seal absence claims; retain those lines only as historical evidence. Retain its valid unresolved findings for evolution/scenario/`.73` audience/asset validation and whole-spec completion, and use `2026-08-02_event20_documentation_reconciliation_handoff.md` as the current documentation disposition.
 
 ## Reconciliation update (2026-08-01)
 

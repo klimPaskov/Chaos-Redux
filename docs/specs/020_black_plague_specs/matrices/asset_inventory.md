@@ -1,5 +1,7 @@
 # Asset Inventory
 
+> Runtime reconciliation, 2026-08-02: the accepted runtime identity is exactly two tags, reusable `RTA` and separate `RTX`. The former twelve-design Rat Nation pool is historical planning residue and must not be produced or wired. Current flag production covers the two live identities plus route/cosmetic variants owned by `RTX`; no bespoke 3D model is required or planned for Event 020.
+
 Every name is a proposed stable working name. Preserve any live-repository sprite name that already exists. Final files must follow the event-scoped asset folder rules.
 
 ## Disease and crisis board assets
@@ -108,7 +110,7 @@ Every one-person portrait handoff must record apparent presentation and matching
 
 ### Base Rat Nation pool
 
-Produce one unique fictional flag set for every final tag. Planning target: twelve complete designs.
+Produce one unique fictional flag set for each live runtime identity. Current target: two complete base designs, one for `RTA` and one for `RTX`, with only explicitly earned `RTX` route/cosmetic variants listed below.
 
 Required sizes for each design:
 

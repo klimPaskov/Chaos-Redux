@@ -1,5 +1,7 @@
 # Limitations, Blockers, and Honest Scope Disclosure
 
+> Documentation reconciliation, 2026-08-02: the unavailable-source statements below preserve the historical planning-package context. Current static evidence supersedes any blanket no-implementation reading: exactly `RTA` and `RTX` remain the only runtime Rat tags, the RTA/RTX focus surfaces are documented as 51/71 nodes, the last-response pair is native mission data, the dedicated weapon-delivery icon and source-frame Rat King/seal packages are promoted, and three Event 020 WAVs are 44.1 kHz. No bespoke 3D models are required or planned. Live game, playback, balance, and release-attribution checks remain open.
+
 ## Fully read sources
 
 Every project source file supplied in `/mnt/data` was read in full. The final inventory is 30 files, correcting an earlier interim progress count of 28. The source ledger lists every file, byte count, line count, and SHA-256.
@@ -23,7 +25,7 @@ All 16 supplied subagent contracts were read and their standards were applied ma
 
 ## Asset status
 
-The historical planning package supplied only inventories and prompts. The current Event 020 tranche promotes final report/news assets and slot-087 art; broader crisis, Doctor Wu, route/hierarchy, and source-frame animation production remains incomplete. Final asset wiring and live validation remain implementation-owned.
+The historical planning package supplied only inventories and prompts. The current Event 020 tranche promotes final report/news assets, slot-087 art, the source-frame Rat King portrait, the source-frame Royal Burrows seal, and the dedicated weapon-delivery icon. Broader crisis, Doctor Wu, route/hierarchy, and aftermath presentation remains incomplete. Final asset provenance, release attribution, and live validation remain implementation-owned.
 
 ## Audio status
 
@@ -41,7 +43,7 @@ The scenario design is complete and the live implementation uses `SCN-012` with 
 
 ## Balance status
 
-The package provides outcome bands, tuning targets, and 20 balance or scenario cases. It does not claim in-game balance or performance testing because no live game or implementation exists here. The Maximum scenario, mass mapmode rebuild, simultaneous Rat Nations, and Rat King coexistence need dedicated performance testing.
+The package provides outcome bands, tuning targets, and 20 balance or scenario cases. It does not claim in-game balance or performance testing because the game was not launched in this workflow. The Maximum scenario, mass mapmode rebuild, simultaneous internal RTA broods, and Rat King coexistence need dedicated performance testing.
 
 ## Catalog and spreadsheet status
 
@@ -59,5 +61,6 @@ Deliberate design boundaries are:
 - black fog remains an engine-dependent enhancement
 - the triggerable scenario starts Evolutions I through IV but does not grant Evolution V or terminal victory
 - the defeat aftermath super-event remains gated behind global-crisis conditions
+- no bespoke 3D models are required or planned; the registered infantry entity remains the accepted Rat visual consumer
 
 No requested correction was omitted from the revised planning package.
