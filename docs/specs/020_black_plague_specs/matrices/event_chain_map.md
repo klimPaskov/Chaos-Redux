@@ -67,10 +67,10 @@ Event numbers after the canonical entry are retained here as the accepted Event 
 | `chaosx.nr20.84` | Silence the Capitals success report | Rat King | yes | one per completed capital operation |
 | `chaosx.nr20.85` | Close the Harbors failure report | Rat King | yes | one per failed harbor operation |
 | `chaosx.nr20.86` | Silence the Capitals failure report | Rat King | yes | one per failed capital operation |
-| `chaosx.nr20.87` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
+| `chaosx.nr20.87-.89` | reserved weaponization iteration reports when event surfaces are used | project owner | yes | project controlled |
 | `chaosx.nr20.90` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
 
-Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.79`, and `.90`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. The `.66-.69` entries report the two human last-response missions that share the disease category after Evolution V opens. This matrix remains the behavioral contract and does not claim live-game validation.
+Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.86`, and `.90`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. The `.66-.69` entries report the two human last-response missions that share the disease category after Evolution V opens. The `.80-.86` rows are the paid target-selection, harbor, capital, and crown-campaign report surfaces used by the earned terminal route; `.87-.89` remain reserved for project-controlled weaponization iteration reports, while `.90` is reserved for the triggerable scenario launch report. This matrix remains the behavioral contract and does not claim live-game validation.
 
 ## Runtime families
 

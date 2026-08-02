@@ -45,18 +45,26 @@ black_plague_rat_king_royal_strike_target_is_valid = {
 	NOT = { has_state_flag = black_plague_rat_king_royal_strike_cooldown }
 }
 
-# Selected-continent campaign targets. The country trigger keeps the operation
-# inside the earned RTX route; the state triggers enforce the target marker,
-# human opposition, and a live enemy war before a decision can be committed.
-black_plague_rat_king_terminal_campaign_country_is_ready = {
+# Selected-continent campaign targets. The country continuation trigger keeps
+# an active operation inside the earned RTX route, while the ready trigger
+# additionally prevents parallel commitments. The state triggers enforce the
+# target marker, human opposition, and a live enemy war.
+black_plague_rat_king_terminal_campaign_country_can_continue = {
 	black_plague_rat_country_is_king = yes
 	has_global_flag = black_plague_evolution_v_route_open
 	has_global_flag = black_plague_rat_king_route_completed
 	has_global_flag = black_plague_rat_king_target_continent_selected
 	has_war = yes
+	NOT = { has_global_flag = black_plague_terminal_takeover_active }
+	NOT = { has_global_flag = world_end }
+}
+
+black_plague_rat_king_terminal_campaign_country_is_ready = {
+	black_plague_rat_king_terminal_campaign_country_can_continue = yes
 	NOT = { has_country_flag = black_plague_rat_king_terminal_campaign_active }
 	NOT = { has_country_flag = black_plague_rat_king_terminal_harbor_campaign_active }
 	NOT = { has_country_flag = black_plague_rat_king_terminal_capital_campaign_active }
+	NOT = { has_country_flag = black_plague_rat_king_terminal_coordination_campaign_active }
 }
 
 black_plague_rat_king_terminal_campaign_state_is_valid = {
@@ -75,13 +83,65 @@ black_plague_rat_king_terminal_harbor_target_is_valid = {
 	black_plague_rat_king_terminal_campaign_state_is_valid = yes
 	is_coastal = yes
 	naval_base > 0
+	# Human port inspections, sealed transport, and a completed air sweep are
+	# real counterplay windows. They can block a new harbor commitment and
+	# invalidate one already in progress when the defense finishes first.
+	NOT = { has_state_flag = black_plague_shared_port_inspections_active }
+	NOT = { has_state_flag = black_plague_shared_transport_sealed }
+	NOT = { has_state_flag = black_plague_shared_air_reconnaissance_complete }
 	NOT = { has_state_flag = black_plague_rat_king_terminal_harbor_cooldown }
 }
 
 black_plague_rat_king_terminal_capital_target_is_valid = {
 	black_plague_rat_king_terminal_campaign_state_is_valid = yes
-	has_state_flag = black_plague_rat_terminal_capital_target
+	OR = {
+		has_state_flag = black_plague_rat_terminal_capital_target
+		has_state_flag = black_plague_rat_terminal_refuge_node
+	}
+	# A prepared cordon or air sweep represents an active emergency defense
+	# around a capital/refuge and prevents the King from treating it as a free
+	# terminal objective.
+	NOT = { has_state_flag = black_plague_shared_anti_rat_cordon_active }
+	NOT = { has_state_flag = black_plague_shared_air_reconnaissance_complete }
 	NOT = { has_state_flag = black_plague_rat_king_terminal_capital_cooldown }
+}
+
+black_plague_rat_king_terminal_coordination_target_is_valid = {
+	black_plague_rat_king_terminal_campaign_state_is_valid = yes
+	black_plague_rat_state_has_logistics_pressure_target = yes
+	NOT = { has_state_flag = black_plague_rat_king_terminal_coordination_cooldown }
+}
+
+# Rat King population policy routes. The focus tree commits one doctrine for
+# the reign; these predicates keep the state-targeted policy decisions inside
+# that route and prevent a captured state from being edited after its policy
+# window has closed.
+black_plague_rat_king_population_preserve_route = {
+	black_plague_rat_country_is_king = yes
+	has_country_flag = black_plague_rat_king_population_preserve
+}
+
+black_plague_rat_king_population_empty_route = {
+	black_plague_rat_country_is_king = yes
+	has_country_flag = black_plague_rat_king_population_empty
+}
+
+black_plague_rat_king_population_selective_route = {
+	black_plague_rat_country_is_king = yes
+	has_country_flag = black_plague_rat_king_population_selective
+}
+
+black_plague_rat_king_population_state_target_is_valid = {
+	exists = yes
+	black_plague_state_is_rat_controlled = yes
+	black_plague_state_is_established = yes
+	CONTROLLER = { black_plague_rat_country_is_king = yes }
+	NOT = { has_state_flag = black_plague_rat_king_population_policy_cooldown }
+}
+
+black_plague_rat_king_population_selective_target_is_valid = {
+	black_plague_rat_king_population_state_target_is_valid = yes
+	black_plague_rat_state_has_logistics_pressure_target = yes
 }
 
 black_plague_rat_king_defeat_aftermath_is_eligible = {
