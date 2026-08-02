@@ -8,6 +8,8 @@ Completion state: **incomplete and active; the current canonical shelf authority
 
 2026-08-02 portrait addendum: the ASY Barsoum v93 independent audit passes identity/likeness, HOI4 leader style/framing, provenance, and the PD-1923/1921 rights/date basis with a documented low-resolution group-photo caveat. Parent follow-up v94 promotes only the existing ASY concordat-council DDS consumer; IW-058 remains outside attestation and no advisor/small portrait was created. The IW-030 retry adds a stronger Janko Vukotić archival source/crop with an explicit PD-Montenegro basis, but unknown original-photographer provenance and the subject's 1927 death keep it `needs_user_review`; no runtime portrait or relabeling is authorized. The CAT carrier handoff `subagent_handoffs/006_iw014_cat_focus_ownership_blocker_v87_2026_08_02.md` confirms that an additive overlay would be invisible on vanilla `generic_focus`, so IW-014/FORM-07 remain fail-closed.
 
+This v94 addendum supersedes any earlier “Barsoum pending independent audit/no runtime promotion” wording in dated shelf paragraphs above; the only current runtime change is the named concordat-council DDS promotion, while the wider IW-058 package remains unadmitted.
+
 The five evolution incident families and their paid Armed Birth reserve follow-through are source-wired by `9231c15f5` plus the current DM-22 gate repair. Country-package, admission, capacity, focus, formable, asset, AI, balance, and `6001` surfaces remain open.
 
 ## 2026-08-01 v67 and final-audit reconciliation
