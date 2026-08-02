@@ -1256,16 +1256,10 @@ independence_wave_scenario_freeze_summary = {
 		# A plan that failed before or after the ownership barrier is not a
 		# release. Keep the selected rows visible as failed/blocked rows so the
 		# summary cannot report countries that were rolled back or never created.
-		for_each_loop = {
-			array = global.independence_wave_plan_selected_package_ids
-			value = independence_wave_scenario_summary_package_id
-			add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = independence_wave_scenario_summary_package_id }
-		}
-		for_each_loop = {
-			array = global.independence_wave_plan_selected_package_ids
-			value = independence_wave_scenario_summary_package_id
-			add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = global.independence_wave_scenario_last_failure }
-		}
+		# Rejected rows already populated the country-entry ledger during ranked
+		# preflight. Preserve that prefix, then append selected rows in their
+		# frozen country-row order so package, country, and reason arrays remain
+		# positionally aligned for the player-facing ledger.
 		for_each_loop = {
 			array = global.liberation_plan_rejected_package_ids
 			value = independence_wave_scenario_summary_package_id
@@ -1275,6 +1269,23 @@ independence_wave_scenario_freeze_summary = {
 			array = global.liberation_plan_rejection_reasons
 			value = independence_wave_scenario_summary_reason
 			add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = independence_wave_scenario_summary_reason }
+		}
+		for_each_loop = {
+			array = global.independence_wave_plan_selected_package_ids
+			value = independence_wave_scenario_summary_package_id
+			add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = independence_wave_scenario_summary_package_id }
+		}
+		for_each_loop = {
+			array = global.independence_wave_plan_country_row_indices
+			value = independence_wave_scenario_summary_country_row
+			var:global.liberation_plan_countries^independence_wave_scenario_summary_country_row = {
+				add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = THIS }
+			}
+		}
+		for_each_loop = {
+			array = global.independence_wave_plan_selected_package_ids
+			value = independence_wave_scenario_summary_package_id
+			add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = global.independence_wave_scenario_last_failure }
 		}
 	}
 	set_variable = { global.independence_wave_scenario_released_count = global.independence_wave_scenario_released_package_ids^num }

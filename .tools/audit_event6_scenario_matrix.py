@@ -143,6 +143,18 @@ def main() -> int:
 		"failed SCN-008 summary does not retain selected rows and failure reason in blocked arrays",
 		errors,
 	)
+	failure_match = re.search(r"(?m)^\telse = \{\n\t\t# A plan that failed", scenario_summary)
+	failure_summary = scenario_summary[failure_match.start() :] if failure_match else ""
+	selected_ids = failure_summary.find("array = global.independence_wave_plan_selected_package_ids")
+	rejected_ids = failure_summary.find("array = global.liberation_plan_rejected_package_ids")
+	selected_rows = failure_summary.find("array = global.independence_wave_plan_country_row_indices")
+	selected_country_scope = failure_summary.find("var:global.liberation_plan_countries^independence_wave_scenario_summary_country_row")
+	selected_failure_reason = failure_summary.rfind("global.independence_wave_scenario_last_failure")
+	require(
+		rejected_ids >= 0 and selected_ids > rejected_ids and selected_rows > selected_ids and selected_country_scope > selected_rows and selected_failure_reason > selected_country_scope,
+		"failed SCN-008 summary does not preserve rejected-prefix then selected country/reason array alignment",
+		errors,
+	)
 
 	# Target selection must clear marks both before target selection and after the
 	# rule-specific dispatch. This is the source-level repeated-launch guarantee.

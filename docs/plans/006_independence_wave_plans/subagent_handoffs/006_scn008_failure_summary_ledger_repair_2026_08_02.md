@@ -9,7 +9,8 @@ The scenario summary effect could copy the selected package rows into the releas
 ## Repair
 
 - `independence_wave_scenario_freeze_summary` now requires the explicit `independence_wave_scenario_committed` ownership barrier before appending selected rows to the released ledger.
-- Failed or rolled-back plans append their selected rows to the blocked ledger instead and retain `global.independence_wave_scenario_last_failure` as the blocked reason.
+- Failed or rolled-back plans preserve the rejected-row prefix, then append their selected rows to the blocked ledger in frozen country-row order and retain `global.independence_wave_scenario_last_failure` as the blocked reason.
+- The selected country scopes are appended alongside their package IDs, so the package, country, and reason arrays remain positionally aligned for the player-facing ledger.
 - Failed plans do not derive a host count from the liberation plan; the default zero value remains visible.
 - Existing rejected package rows and rejection reasons remain preserved in both success and failure summaries.
 
