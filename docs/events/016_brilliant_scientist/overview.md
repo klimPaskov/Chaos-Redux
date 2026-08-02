@@ -52,7 +52,7 @@ The international-recognition headline additionally identifies the first recorde
 
 The existing loyalty and relocation dossiers, `chaosx.nr16.10` and `chaosx.nr16.11`, also append the host-archetype clause after their resolved finding or convoy outcome. This is presentation only and does not add a reward, evolution, event-log entry, or new fire path.
 
-The first four Kruger State foundation reports append a formation-origin clause from the retained charter, rebellion, enclave, or takeover flag. This keeps the state-building sequence tied to the way sovereignty was achieved without adding another route, idea, or event chain.
+The first four Kruger State foundation reports append a formation-origin clause from the retained charter, rebellion, enclave, or takeover flag. The clone, machine, xenobiological, temporal, and Singularity route dossiers and the five foreign-integration reports now append the same origin clause alongside their carried-portfolio clause. This keeps later sovereignty, diplomacy, and project-policy choices tied to the way the state was created without adding another route, idea, or event chain.
 
 ## Event identity
 
