@@ -250,9 +250,9 @@ Machine order:
 
 - Automated administration and robot enforcement cover the world.
 
-Bestiary order:
+Creature-and-synthesis order:
 
-- Human settlement is reorganized around controlled engineered ecosystems and military organisms.
+- Human settlement is reorganized around controlled reserves, vats, engineered ecosystems, and military organisms.
 
 Temporal order:
 
@@ -377,7 +377,7 @@ Foreign and former-host actors can:
 - Break power or delivery links.
 - Destroy machine command nodes.
 - Close portal terminals.
-- Raise paradox pressure.
+- Raise temporal debt or break synchronization capacity.
 - Offer a survivable surrender.
 - Develop a project-specific disarmament mission.
 
@@ -571,7 +571,7 @@ The treaty should be a playable decision and diplomacy system only if the crisis
 - A network claiming Kruger still exists.
 - Useful logistics or dangerous reactivation.
 
-### Bestiary remnants
+### Paleogenetic and xenobiological remnants
 
 - Escaped creatures.
 - Containment reserves.

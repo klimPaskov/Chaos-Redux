@@ -10,7 +10,7 @@ This bounded presentation tranche extends the existing country-tag flavor helper
 
 - `localisation/english/016_brilliant_scientist_containment_l_english.yml`
 
-Each containment report now appends `[This.GetBrilliantScientistCountryFlavorClause]` between the host-archetype and sovereignty-policy clauses. The selector supplies authored sentences for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, and a safe general branch.
+Each containment report now appends `[This.GetBrilliantScientistCountryFlavorClause]` between the host-archetype and sovereignty-policy clauses. The selector supplies authored sentences for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, Czechoslovakia (`CZE`), and a safe general branch.
 
 ## Causal boundary
 

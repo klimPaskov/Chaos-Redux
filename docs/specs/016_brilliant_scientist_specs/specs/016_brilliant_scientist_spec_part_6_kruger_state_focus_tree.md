@@ -2,7 +2,7 @@
 
 ## Binding reconciliation, 2026-07-14
 
-The broad Bestiary lane splits into separate paleogenetic and xenobiological openers, facilities, production decisions, units, supply burdens, failures, counters, and capstones. It converges only through Synthesis. The temporal lane uses debt, synchronization capacity, anchors, authentication, bounded recovery targets, stabilization, and persistent scars.
+The paleogenetic and xenobiological synthesis lane splits into separate paleogenetic and xenobiological openers, facilities, production decisions, units, supply burdens, failures, counters, and capstones. It converges only through Synthesis. The temporal lane uses debt, synchronization capacity, anchors, authentication, bounded recovery targets, stabilization, and persistent scars.
 
 Laboratory World is the conquest, submission, integration, and global-administration ending. Strategic Singularity is the vulnerable multi-year component race and denied-victory ending. Fail-deadly or deliberate global-use doctrine blocks Laboratory World while armed. Laboratory World consolidation requires disarmament and verified nonterminal control. Singularity firing permanently prevents Laboratory World; Laboratory World firing cancels singularity construction, arming, and activation.
 
@@ -54,7 +54,7 @@ The opening should branch based on actual formation type.
 | Conventional security | Unite guards and defectors | Create staff, intelligence, air defense, and ordinary army | Reliable military core that supports project armies |
 | Machine cognition | Repair network and frames | Autonomous command and automated production | Machine state and robot-army supremacy |
 | Replicative biology | Secure growth facilities | Clone population, officers, and army | Replicated sovereignty and massive controlled force growth |
-| Bestiary and synthesis | Contain creatures and breeding sites | Dinosaur, monster, and hybrid formations | Biological war ecology or controlled bestiary empire |
+| Paleogenetic and xenobiological synthesis | Contain creatures, vats, and control sites | Dinosaur, engineered-organism, and hybrid formations | Biological war ecology or controlled synthesis empire |
 | Quantum and temporal | Stabilize portals and records | Strategic transit, forecasting, duplication | Continuum state and global reach |
 | Exotic energy and strategic weapons | Secure reactors and materials | Energy arms, delivery, hardened sites | Strategic singularity and terminal deterrence |
 | Diplomacy and intelligence | Seek recognition and split foreign opinion | Recruit scientists, bargain technology, infiltrate rivals | Scientific bloc or global submission network |
@@ -275,7 +275,7 @@ Focus groups:
 - Create temporal archives.
 - Assign authority among Kruger variants.
 - Use future information.
-- Control paradox.
+- Control temporal debt.
 - Form the Continuum government.
 
 Mechanical role:
@@ -283,7 +283,7 @@ Mechanical role:
 - Forecasting, recovery, limited repeat actions, and temporal units.
 - Unique leader and advisor variants.
 - Strong intelligence and planning.
-- Paradox pressure, instability, and contradictory AI priorities.
+- Temporal debt, instability, and contradictory AI priorities.
 
 Route variants:
 
@@ -294,7 +294,7 @@ Route variants:
 
 Late payoff:
 
-A state able to recover selected losses and anticipate threats, with hard caps and escalating paradox.
+A state able to recover selected losses and anticipate threats, with hard caps and escalating temporal debt.
 
 Failure state:
 
@@ -462,7 +462,7 @@ Requires electronics and rocketry.
 
 ### Project-army council route
 
-- Lets clone, machine, bestiary, portal, and conventional commanders coordinate.
+- Lets clone, machine, paleogenetic, xenobiological, portal, and conventional commanders coordinate.
 - Supports synthesis politics.
 
 Conventional security capstone:
@@ -565,7 +565,7 @@ Capstone choices:
 
 - Dinosaur Host.
 - Engineered Legion.
-- Controlled Bestiary.
+- Controlled Synthesis.
 - Unleashed War Ecology.
 
 Failure states:
@@ -602,7 +602,7 @@ Decisions:
 Focus groups:
 
 - Authenticate the first time signal.
-- Establish paradox accounting.
+- Establish temporal-debt accounting.
 - Recover a lost prototype.
 - Invite or reject future Kruger.
 - Create temporal guards.
@@ -615,11 +615,11 @@ Decisions:
 - Recover one destroyed project component.
 - Restore a bounded unit.
 - Send a warning to an earlier stage.
-- Close a paradox event.
+- Close a temporal-debt event.
 
 Cross-route capstone:
 
-A Continuum Network can combine portals and temporal displacement. It grants exceptional reach and recovery, but sharply raises paradox, energy burden, and world threat.
+A Continuum Network can combine portals and temporal displacement. It grants exceptional reach and recovery, but sharply raises temporal debt, energy burden, and world threat.
 
 ## Exotic energy and strategic weapons branch
 
@@ -851,7 +851,7 @@ The implementation should define a clear filter taxonomy, such as:
 - Conventional military.
 - Machine projects.
 - Replicative biology.
-- Bestiary.
+- Paleogenetic and xenobiological synthesis.
 - Quantum and temporal.
 - Exotic energy.
 - Diplomacy and intelligence.
@@ -868,7 +868,7 @@ AI route choice uses inherited portfolio and formation state.
 | --- | --- |
 | Strong cloning, limited industry, high population pressure | Replicated sovereignty and clone corps |
 | Strong robotics, advanced materials, low manpower | Machine ascendancy and automated economy |
-| Paleogenetics or monster Deployment | Bestiary command and biological military |
+| Paleogenetics or xenobiological Deployment | Biological command and engineered-organism military |
 | Teleportation with several facility sites | Portal logistics and global facility seizure |
 | Temporal Deployment | Continuum politics and temporal intelligence |
 | Alien arms and high energy | Exotic energy, deterrent, or conquest |
@@ -887,9 +887,9 @@ The tree should contain reactive content for:
 - Power collapse.
 - Clone revolt.
 - Machine-network split.
-- Bestiary escape.
+- Paleogenetic or xenobiological containment breach.
 - Portal network compromise.
-- Temporal paradox crisis.
+- Temporal-debt synchronization crisis.
 - Foreign containment coalition.
 - Loss of strategic materials.
 - Kruger death or contradictory continuity.

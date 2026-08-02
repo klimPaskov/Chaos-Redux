@@ -28,7 +28,7 @@ Route coverage preserves six mapped super-event packages and exactly seventeen a
 | Teleportation | Part 3 and Event 151 link | Complete |
 | Cloning facilities and armies | Parts 3, 5, and 6 | Complete |
 | Time machine | Parts 3, 6, and Event 30 link | Complete |
-| Monster creation | Parts 3, 5, and 6 | Complete |
+| Xenobiological synthesis | Parts 3, 5, and 6 | Complete |
 | Biological weapons | Part 3 and system integration | Complete |
 | Alien guns | Part 3 | Complete |
 | Foreign invitation, theft, sabotage, protection | Parts 4 and 7 | Complete |
@@ -38,7 +38,7 @@ Route coverage preserves six mapped super-event packages and exactly seventeen a
 | Rebellion strength from approved projects | Parts 3 and 5 | Complete |
 | Robot army variant | Parts 3, 5, and 6 | Complete |
 | Dinosaur army variant | Parts 3, 5, and 6 | Complete |
-| Obedient monster army | Parts 3, 5, and 6 | Complete |
+| Controlled xenobiological force | Parts 3, 5, and 6 | Complete |
 | Large Kruger focus tree | Part 6 and focus architecture matrix | Complete path-level spec |
 | Evolution IV world conquest | Parts 4, 6, and 8 | Complete |
 | Stronger-than-thermonuclear nuke | Parts 3 and 8 strategic singularity | Complete |
@@ -71,9 +71,9 @@ Route coverage preserves six mapped super-event packages and exactly seventeen a
 | Human technocracy | Human institutions | Public or mixed laboratories | Conventional plus limited projects | Recognition and commonwealth | Protectorates or negotiated integration | Stable state or scientific commonwealth |
 | Replicated sovereignty | Clone rights or hierarchy | Growth and biological production | Clone corps | Clone asylum or submission | Settlement and replicated administration | Replicated nation or empire |
 | Machine ascendancy | Network rule | Automated industry | Robot corps | Machine compacts or coercion | Automated occupation | Machine world route |
-| Temporal Continuum | Prime or council | Synchronization network | Temporal guard and recovery | Future intelligence and paradox diplomacy | Temporal reach | Continuum or escape |
+| Temporal Continuum | Prime or council | Synchronization network | Temporal guard and recovery | Future intelligence and temporal-debt diplomacy | Temporal reach | Continuum or escape |
 | Paleogenetics | Handler corps or restoration authority | Reserves, hatcheries, pens | Dinosaurs and megafauna | Prestige, intimidation, or ecological threat | Feed, land, transport, reserve seizure | Restored-species state |
-| Xenobiological synthesis | Control-center or biological hierarchy | Vats, fabrication, containment | Designed monsters and specialists | Fear, medical leverage, adaptive war | Reagent, power, control-network seizure | Engineered biological empire |
+| Xenobiological synthesis | Control-center or biological hierarchy | Vats, fabrication, containment | Engineered organisms and specialists | Fear, medical leverage, adaptive war | Reagent, power, control-network seizure | Engineered biological empire |
 | Synthesis | Project-caste system | Mixed project economy | Several project families | Flexible or coercive | Project-specific integration | Synthesis world order |
 | Global submission | Kruger personal or route state | Global facility network | Dominant project army | Submission faction | Facility seizure and subject systems | Laboratory World |
 | Strategic singularity | Any sovereign extreme route | Multi-site terminal program | Deterrent and delivery | Coercion | Protect components | Fallout world end |

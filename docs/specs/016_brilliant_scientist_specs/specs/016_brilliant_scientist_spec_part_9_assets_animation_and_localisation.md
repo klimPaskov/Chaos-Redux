@@ -376,7 +376,7 @@ Families:
 - Conventional military.
 - Robot corps.
 - Clone corps.
-- Bestiary.
+- Paleogenetic and xenobiological synthesis.
 - Portal and temporal operations.
 - Exotic energy.
 - Diplomacy and intelligence.
@@ -599,7 +599,7 @@ A new state trying to govern laboratories, unusual populations, and a hostile bo
 
 Tone:
 
-Route-specific. Human, clone, machine, bestiary, temporal, and synthesis routes need distinct vocabulary and public concerns.
+Route-specific. Human, clone, machine, paleogenetic, xenobiological, temporal, and synthesis routes need distinct vocabulary and public concerns.
 
 ### Option direction
 

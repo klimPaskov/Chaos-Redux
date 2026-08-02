@@ -57,7 +57,7 @@ Project Capacity is visible. Independent Capacity and Grievance are hidden. The 
 | Paleogenetics | Breed, train, relocate, contain restored species | Feed, land, handlers, transport, veterinary capacity | Dinosaur or megafauna units and ecological risk |
 | Xenobiological synthesis | Grow, select control method, condition, deploy, contain | Medical capacity, reagents, power, control infrastructure | Designed-organism units and control-channel risk |
 | Portal network | Link terminals, transit, raid, close link | Power, advanced materials, security | Strategic movement and vulnerability |
-| Temporal system | Forecast, recover, duplicate, close paradox | Synchronization capacity, paradox | Limited recovery and future information |
+| Temporal system | Forecast, recover, duplicate, close a temporal-debt event | Synchronization capacity, temporal debt | Limited recovery and future information |
 | Exotic arms | Produce elite support and field projectors | Rare material, energy, factories | High-quality limited force |
 | Biological | Defense, stockpile, raid, quarantine | Medical capacity, aircraft, stockpiles | Existing biowarfare integration |
 | Diplomacy | Recognition, technology trade, patron balance | Access, technology, relations | Resources, protection, influence |

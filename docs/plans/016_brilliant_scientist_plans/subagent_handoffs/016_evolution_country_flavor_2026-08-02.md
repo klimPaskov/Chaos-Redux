@@ -10,7 +10,7 @@ This bounded presentation tranche extends the existing country-tag flavor helper
 
 - `localisation/english/016_brilliant_scientist_evolutions_l_english.yml`
 
-Each evolution report now appends `[This.GetBrilliantScientistCountryFlavorClause]` after its existing host-archetype clause. Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, and Poland receive authored institutional sentences, with a safe general branch for other tags.
+Each evolution report now appends `[This.GetBrilliantScientistCountryFlavorClause]` after its existing host-archetype clause. Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, and Czechoslovakia (`CZE`) receive authored institutional sentences, with a safe general branch for other tags.
 
 ## Causal boundary
 

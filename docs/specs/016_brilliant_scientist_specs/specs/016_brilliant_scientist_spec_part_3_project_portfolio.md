@@ -451,7 +451,7 @@ Weaponization or autonomy:
 Breakaway inheritance:
 
 - Dinosaur shock units if large breeding sites exist.
-- Bestiary focus branch.
+- Paleogenetic and xenobiological focus branches.
 - Special supply and replacement system.
 - Possible conflict between handlers, clones, machines, and animals.
 
@@ -629,14 +629,14 @@ Weaponization or autonomy:
 
 - Temporal duplicate units.
 - Kruger continuity through earlier or later versions.
-- Repeated strategic attempts at a severe stability and paradox cost.
+- Repeated strategic attempts at a severe stability and temporal-debt cost.
 - Escape from apparent death or capitulation.
 
 Breakaway inheritance:
 
 - Temporal recovery decisions.
 - Duplicate Kruger leader variants.
-- Special reinforcement waves with strict caps and paradox pressure.
+- Special reinforcement waves with strict caps and escalating temporal debt.
 - Singular Kruger or Continuum political route.
 
 Counterplay:
@@ -644,11 +644,11 @@ Counterplay:
 - Destroy synchronization equipment.
 - Separate records and command authority.
 - Use multiple independent observation teams.
-- Increase paradox pressure until temporal operations become self-defeating.
+- Force temporal debt high enough that temporal operations become self-defeating.
 
 Exploit boundary:
 
-Temporal systems cannot provide unlimited retries, free equipment, or uncapped divisions. Every recovery uses stored capacity, raises paradox pressure, and has one-time or escalating limits.
+Temporal systems cannot provide unlimited retries, free equipment, or uncapped divisions. Every recovery uses stored synchronization capacity, adds temporal debt, and has one-time or escalating limits.
 
 ### Strategic singularity superweapon
 
@@ -717,7 +717,7 @@ Synergies reward coherent portfolios without making every family mandatory.
 | Combination | Result direction |
 | --- | --- |
 | Computation plus robotics | Faster autonomous command and better robot reliability |
-| Computation plus temporal mechanics | Better prediction, lower early paradox, stronger future-information events |
+| Computation plus temporal mechanics | Better prediction, lower early temporal debt, stronger future-information events |
 | Electronics plus teleportation | Stable terminal calibration and portal detection |
 | Advanced materials plus rocketry | High-speed delivery and improved strategic range |
 | Advanced materials plus robots | Better frames, repair, and armor |

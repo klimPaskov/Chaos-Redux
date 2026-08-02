@@ -6,8 +6,8 @@ This parent-owned tranche adds country-specific presentation to the existing hos
 
 ## Implemented files
 
-- `common/scripted_localisation/016_brilliant_scientist_host_flavor_scripted_localisation.txt` now defines `GetBrilliantScientistCountryFlavorClause` for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, and a readable general clause.
-- `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml` now localizes the ten country clauses.
+- `common/scripted_localisation/016_brilliant_scientist_host_flavor_scripted_localisation.txt` now defines `GetBrilliantScientistCountryFlavorClause` for Germany, Britain, France, the Soviet Union, the United States, Japan, Italy, China, Poland, Czechoslovakia, and a readable general clause.
+- `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml` now localizes the ten named country clauses.
 - The same localisation file appends the selector to the existing `.4` institutional briefing, `.5` assistant conflict, `.6` first-prototype, `.7` facility, `.8` custody, and `.9` foreign-operation descriptions.
 
 ## Causal boundary

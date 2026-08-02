@@ -438,7 +438,7 @@ If capacity is high:
 
 #### Host takeover
 
-If Dependence and infiltration are extreme while territorial secession would be weak or unnecessary:
+If Dependence and infiltration are extreme and the full institutional-capture contract is proven:
 
 - Kruger can replace the government through loyal institutions, machine administration, clones, or temporal duplication.
 - This is a rare high-chaos route.
