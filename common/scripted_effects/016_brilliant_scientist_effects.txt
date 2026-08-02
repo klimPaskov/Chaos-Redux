@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST EFFECTS
 # ============================================================================
@@ -22,9 +25,9 @@
 # ---------------------------------------------------------------------------
 
 brilliant_scientist_clear_prefire_context = {
-	set_temp_variable = { brilliant_scientist_prefire_ready = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_prefire_evolution_stage = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_prefire_evolution_tier = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_prefire_ready = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_prefire_evolution_stage = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_prefire_evolution_tier = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 # Any scope, called by record_events_log_history_entry immediately after its
@@ -45,7 +48,7 @@ brilliant_scientist_bind_opening_history_sequence = {
 # replaces actor/has_actor, then clears pending state only after a successful
 # rebind. This corrects both direct acceptance and the player send-away route.
 brilliant_scientist_finalize_opening_history_actor = {
-	set_temp_variable = { brilliant_scientist_history_actor_rebound = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_history_actor_rebound = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = {
 			has_country_flag = brilliant_scientist_current_host
@@ -53,7 +56,7 @@ brilliant_scientist_finalize_opening_history_actor = {
 			has_variable = global.brilliant_scientist_pending_history_sequence
 		}
 		sanitize_events_log_history_actor_entries = yes
-		set_temp_variable = { brilliant_scientist_history_actor_index = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_history_actor_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		set_temp_variable = { brilliant_scientist_history_accepting_actor = THIS }
 		while_loop_effect = {
 			limit = {
@@ -85,7 +88,7 @@ brilliant_scientist_finalize_opening_history_actor = {
 		}
 	}
 	if = {
-		limit = { check_variable = { brilliant_scientist_history_actor_rebound > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_history_actor_rebound > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		clear_variable = global.brilliant_scientist_pending_history_sequence
 		clr_global_flag = brilliant_scientist_history_actor_rebind_pending
 		every_country = {
@@ -255,34 +258,34 @@ brilliant_scientist_add_current_country_to_host_selection_pool = {
 	brilliant_scientist_prepare_host_selection_weight = yes
 	set_temp_variable = { brilliant_scientist_host_pool_weight_remaining = brilliant_scientist_host_selection_weight }
 	while_loop_effect = {
-		limit = { check_variable = { brilliant_scientist_host_pool_weight_remaining > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_host_pool_weight_remaining > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		add_to_temp_array = { brilliant_scientist_host_selection_pool = THIS }
 		add_to_temp_variable = { brilliant_scientist_host_selection_pool_count = constant:brilliant_scientist_value.one }
 		subtract_from_temp_variable = { brilliant_scientist_host_pool_weight_remaining = constant:brilliant_scientist_value.one }
 	}
-	set_temp_variable = { brilliant_scientist_host_pool_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_host_selection_weight = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_host_pool_weight_remaining = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_host_selection_weight = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 # Any scope. This is an explicit fire-once scan, never a periodic on_action.
 brilliant_scientist_select_weighted_prefire_host = {
 	clear_temp_array = brilliant_scientist_host_selection_pool
-	set_temp_variable = { brilliant_scientist_host_selection_pool_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_host_selection_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	every_country = {
 		limit = { brilliant_scientist_is_eligible_host = yes }
 		brilliant_scientist_add_current_country_to_host_selection_pool = yes
 	}
 	if = {
-		limit = { check_variable = { brilliant_scientist_host_selection_pool_count > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_host_selection_pool_count > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		random_scope_in_array = {
 			array = brilliant_scientist_host_selection_pool
 			save_event_target_as = brilliant_scientist_prefire_host
 		}
 	}
 	clear_temp_array = brilliant_scientist_host_selection_pool
-	set_temp_variable = { brilliant_scientist_host_selection_pool_count = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_host_pool_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_host_selection_weight = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_host_selection_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_host_pool_weight_remaining = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_host_selection_weight = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 # Any country scope. Output is one regular event target, which survives into
@@ -386,19 +389,19 @@ brilliant_scientist_add_current_country_to_send_away_pool = {
 	brilliant_scientist_prepare_send_away_selection_weight = yes
 	set_temp_variable = { brilliant_scientist_send_away_weight_remaining = brilliant_scientist_send_away_selection_weight }
 	while_loop_effect = {
-		limit = { check_variable = { brilliant_scientist_send_away_weight_remaining > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_send_away_weight_remaining > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		add_to_temp_array = { brilliant_scientist_send_away_selection_pool = THIS }
 		add_to_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.one }
 		subtract_from_temp_variable = { brilliant_scientist_send_away_weight_remaining = constant:brilliant_scientist_value.one }
 	}
-	set_temp_variable = { brilliant_scientist_send_away_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_send_away_selection_weight = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_send_away_weight_remaining = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_send_away_selection_weight = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 brilliant_scientist_select_initial_send_away_recipient = {
-	set_temp_variable = { brilliant_scientist_send_away_recipient_selected = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_send_away_recipient_selected = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	clear_temp_array = brilliant_scientist_send_away_selection_pool
-	set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_send_away_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { is_ai = no }
 		save_event_target_as = brilliant_scientist_send_away_rejector
@@ -407,7 +410,7 @@ brilliant_scientist_select_initial_send_away_recipient = {
 			brilliant_scientist_add_current_country_to_send_away_pool = yes
 		}
 		if = {
-			limit = { check_variable = { brilliant_scientist_send_away_pool_count > constant:brilliant_scientist_value.zero } }
+			limit = { check_variable = { brilliant_scientist_send_away_pool_count > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 			random_scope_in_array = {
 				array = brilliant_scientist_send_away_selection_pool
 				save_event_target_as = brilliant_scientist_send_away_recipient
@@ -416,16 +419,16 @@ brilliant_scientist_select_initial_send_away_recipient = {
 		}
 	}
 	clear_temp_array = brilliant_scientist_send_away_selection_pool
-	set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_send_away_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_send_away_selection_weight = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_send_away_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_send_away_weight_remaining = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_send_away_selection_weight = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 # Any scope. The highest currently enabled evolution becomes the evolved
 # opening context. No chronology or unlock flag is written before recruitment.
 brilliant_scientist_prepare_prefire_evolution_context = {
-	set_temp_variable = { brilliant_scientist_prefire_evolution_stage = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_prefire_evolution_tier = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_prefire_evolution_stage = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_prefire_evolution_tier = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_is_evolution_iv_enabled = yes }
 		set_temp_variable = { brilliant_scientist_prefire_evolution_stage = constant:brilliant_scientist_event.evolution_iv_stage }
@@ -716,7 +719,7 @@ brilliant_scientist_prepare_facility_selection_weight = {
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.infrastructure_strong_bonus }
 	}
 	if = {
-		limit = { industrial_complex > constant:brilliant_scientist_value.zero }
+		limit = { industrial_complex > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.civilian_factory_present_bonus }
 	}
 	if = {
@@ -724,7 +727,7 @@ brilliant_scientist_prepare_facility_selection_weight = {
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.civilian_factory_cluster_bonus }
 	}
 	if = {
-		limit = { arms_factory > constant:brilliant_scientist_value.zero }
+		limit = { arms_factory > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.military_factory_present_bonus }
 	}
 	if = {
@@ -764,32 +767,32 @@ brilliant_scientist_prepare_facility_selection_weight = {
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.capital_victory_point_proxy_bonus }
 	}
 	if = {
-		limit = { supply_node > constant:brilliant_scientist_value.zero }
+		limit = { supply_node > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.supply_node_bonus }
 	}
 	if = {
-		limit = { rail_way > constant:brilliant_scientist_value.zero }
+		limit = { rail_way > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.railway_bonus }
 	}
 	if = {
-		limit = { anti_air_building > constant:brilliant_scientist_value.zero }
+		limit = { anti_air_building > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.anti_air_bonus }
 	}
 	if = {
-		limit = { bunker > constant:brilliant_scientist_value.zero }
+		limit = { bunker > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.land_fort_bonus }
 	}
 	if = {
-		limit = { coastal_bunker > constant:brilliant_scientist_value.zero }
+		limit = { coastal_bunker > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.coastal_fort_bonus }
 	}
 	if = {
 		limit = {
 			OR = {
-				nuclear_facility > constant:brilliant_scientist_value.zero
-				air_facility > constant:brilliant_scientist_value.zero
-				land_facility > constant:brilliant_scientist_value.zero
-				naval_facility > constant:brilliant_scientist_value.zero
+				nuclear_facility > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+				air_facility > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+				land_facility > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+				naval_facility > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
 			}
 		}
 		add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.special_project_building_bonus }
@@ -821,8 +824,8 @@ brilliant_scientist_prepare_facility_selection_weight = {
 		if = {
 			limit = {
 				OR = {
-					supply_node > constant:brilliant_scientist_value.zero
-					rail_way > constant:brilliant_scientist_value.zero
+					supply_node > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+					rail_way > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
 				}
 			}
 			add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.public_transport_bonus }
@@ -833,9 +836,9 @@ brilliant_scientist_prepare_facility_selection_weight = {
 		if = {
 			limit = {
 				OR = {
-					anti_air_building > constant:brilliant_scientist_value.zero
-					bunker > constant:brilliant_scientist_value.zero
-					coastal_bunker > constant:brilliant_scientist_value.zero
+					anti_air_building > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+					bunker > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+					coastal_bunker > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
 				}
 			}
 			add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.secret_defense_bonus }
@@ -855,7 +858,7 @@ brilliant_scientist_prepare_facility_selection_weight = {
 		}
 	}
 	if = {
-		limit = { check_variable = { brilliant_scientist_facility_selection_is_secondary > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_facility_selection_is_secondary > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		if = {
 			limit = { any_neighbor_state = { has_state_flag = brilliant_scientist_primary_facility } }
 			add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.secondary_network_bonus }
@@ -863,9 +866,9 @@ brilliant_scientist_prepare_facility_selection_weight = {
 		if = {
 			limit = {
 				OR = {
-					anti_air_building > constant:brilliant_scientist_value.zero
-					bunker > constant:brilliant_scientist_value.zero
-					coastal_bunker > constant:brilliant_scientist_value.zero
+					anti_air_building > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+					bunker > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+					coastal_bunker > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
 				}
 			}
 			add_to_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_facility.secondary_security_bonus }
@@ -882,11 +885,11 @@ brilliant_scientist_prepare_facility_selection_weight = {
 # STATE scope.
 brilliant_scientist_add_current_state_to_primary_facility_pool = {
 	set_temp_variable = { brilliant_scientist_facility_selection_base_weight = constant:brilliant_scientist_facility.primary_base_weight }
-	set_temp_variable = { brilliant_scientist_facility_selection_is_secondary = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_facility_selection_is_secondary = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	brilliant_scientist_prepare_facility_selection_weight = yes
 	set_temp_variable = { brilliant_scientist_facility_weight_remaining = brilliant_scientist_facility_selection_weight }
 	while_loop_effect = {
-		limit = { check_variable = { brilliant_scientist_facility_weight_remaining > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_facility_weight_remaining > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		add_to_temp_array = { brilliant_scientist_primary_facility_selection_pool = THIS }
 		add_to_temp_variable = { brilliant_scientist_primary_facility_pool_count = constant:brilliant_scientist_value.one }
 		subtract_from_temp_variable = { brilliant_scientist_facility_weight_remaining = constant:brilliant_scientist_value.one }
@@ -900,7 +903,7 @@ brilliant_scientist_add_current_state_to_secondary_facility_pool = {
 	brilliant_scientist_prepare_facility_selection_weight = yes
 	set_temp_variable = { brilliant_scientist_facility_weight_remaining = brilliant_scientist_facility_selection_weight }
 	while_loop_effect = {
-		limit = { check_variable = { brilliant_scientist_facility_weight_remaining > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_facility_weight_remaining > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		add_to_temp_array = { brilliant_scientist_secondary_facility_selection_pool = THIS }
 		add_to_temp_variable = { brilliant_scientist_secondary_facility_pool_count = constant:brilliant_scientist_value.one }
 		subtract_from_temp_variable = { brilliant_scientist_facility_weight_remaining = constant:brilliant_scientist_value.one }
@@ -917,13 +920,13 @@ brilliant_scientist_select_primary_facility = {
 		clear_global_event_target = brilliant_scientist_primary_facility
 	}
 	clear_temp_array = brilliant_scientist_primary_facility_selection_pool
-	set_temp_variable = { brilliant_scientist_primary_facility_pool_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_primary_facility_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	every_owned_state = {
 		limit = { brilliant_scientist_is_valid_primary_facility_state = yes }
 		brilliant_scientist_add_current_state_to_primary_facility_pool = yes
 	}
 	if = {
-		limit = { check_variable = { brilliant_scientist_primary_facility_pool_count > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_primary_facility_pool_count > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		random_scope_in_array = {
 			array = brilliant_scientist_primary_facility_selection_pool
 			set_state_flag = brilliant_scientist_primary_facility
@@ -932,9 +935,9 @@ brilliant_scientist_select_primary_facility = {
 		}
 	}
 	clear_temp_array = brilliant_scientist_primary_facility_selection_pool
-	set_temp_variable = { brilliant_scientist_primary_facility_pool_count = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_facility_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_primary_facility_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_facility_weight_remaining = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_facility_selection_weight = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 # COUNTRY scope.
@@ -947,13 +950,13 @@ brilliant_scientist_select_secondary_facility = {
 		clear_global_event_target = brilliant_scientist_secondary_facility
 	}
 	clear_temp_array = brilliant_scientist_secondary_facility_selection_pool
-	set_temp_variable = { brilliant_scientist_secondary_facility_pool_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_secondary_facility_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	every_owned_state = {
 		limit = { brilliant_scientist_is_valid_secondary_facility_state = yes }
 		brilliant_scientist_add_current_state_to_secondary_facility_pool = yes
 	}
 	if = {
-		limit = { check_variable = { brilliant_scientist_secondary_facility_pool_count > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_secondary_facility_pool_count > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		random_scope_in_array = {
 			array = brilliant_scientist_secondary_facility_selection_pool
 			set_state_flag = brilliant_scientist_secondary_facility
@@ -962,9 +965,9 @@ brilliant_scientist_select_secondary_facility = {
 		}
 	}
 	clear_temp_array = brilliant_scientist_secondary_facility_selection_pool
-	set_temp_variable = { brilliant_scientist_secondary_facility_pool_count = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_facility_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_facility_selection_weight = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_secondary_facility_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_facility_weight_remaining = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_facility_selection_weight = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 # Any scope.
@@ -1005,10 +1008,10 @@ brilliant_scientist_initialize_project_ledgers = {
 	clear_array = brilliant_scientist_breakthrough_public_families
 	clear_array = brilliant_scientist_breakthrough_classified_families
 	clr_country_flag = brilliant_scientist_breakthrough_report_active
-	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_resolved_count } } set_variable = { brilliant_scientist_breakthrough_resolved_count = constant:brilliant_scientist_value.zero } }
-	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_public_count } } set_variable = { brilliant_scientist_breakthrough_public_count = constant:brilliant_scientist_value.zero } }
-	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_classified_count } } set_variable = { brilliant_scientist_breakthrough_classified_count = constant:brilliant_scientist_value.zero } }
-	set_temp_variable = { brilliant_scientist_project_initialize_index = constant:brilliant_scientist_value.zero }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_resolved_count } } set_variable = { brilliant_scientist_breakthrough_resolved_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_public_count } } set_variable = { brilliant_scientist_breakthrough_public_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
+	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_classified_count } } set_variable = { brilliant_scientist_breakthrough_classified_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
+	set_temp_variable = { brilliant_scientist_project_initialize_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	while = {
 		limit = {
 			check_variable = { brilliant_scientist_project_initialize_index < constant:brilliant_scientist_event.project_family_count }
@@ -1025,14 +1028,14 @@ brilliant_scientist_initialize_project_ledgers = {
 # full cumulative burden; suspended stages retain half. A live stage mission
 # also occupies its incremental reservation until completion or cancellation.
 brilliant_scientist_refresh_project_capacity_from_gross = {
-	set_temp_variable = { brilliant_scientist_project_capacity_used = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_project_capacity_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_project_capacity_used = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_project_capacity_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	while = {
 		limit = { check_variable = { brilliant_scientist_project_capacity_index < constant:brilliant_scientist_event.project_family_count } }
 		set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_project_capacity_index }
 		add_to_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_value.one }
 		set_temp_variable = { brilliant_scientist_project_capacity_stage = brilliant_scientist_project_stage_entries^brilliant_scientist_project_capacity_index }
-		set_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_project_capacity_burden = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		if = {
 			limit = { check_variable = { brilliant_scientist_project_capacity_stage = constant:brilliant_scientist_project_stage.theory } }
 			set_temp_variable = { brilliant_scientist_project_capacity_burden = constant:brilliant_scientist_project_capacity.theory }
@@ -1076,12 +1079,12 @@ brilliant_scientist_load_project_index = {
 
 # COUNTRY scope. Derives portfolio counts without duplicating fifteen checks.
 brilliant_scientist_refresh_project_counts = {
-	set_variable = { brilliant_scientist_project_theory_count = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_prototype_count = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_deployment_count = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_weaponization_count = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_independently_replicated_family_count = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_project_count_index = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_project_theory_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_variable = { brilliant_scientist_project_prototype_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_variable = { brilliant_scientist_project_deployment_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_variable = { brilliant_scientist_project_weaponization_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_variable = { brilliant_scientist_independently_replicated_family_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_project_count_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	while = {
 		limit = {
 			check_variable = { brilliant_scientist_project_count_index < constant:brilliant_scientist_event.project_family_count }
@@ -1115,7 +1118,7 @@ brilliant_scientist_refresh_project_counts = {
 # advance by one or inherit a higher carried stage, but it can never reduce a
 # stage or exceed weaponization.
 brilliant_scientist_advance_project_to_requested_stage = {
-	set_temp_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_project_stage_changed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	brilliant_scientist_load_project_index = yes
 	if = {
 		limit = {
@@ -1140,7 +1143,7 @@ brilliant_scientist_advance_project_to_requested_stage = {
 
 # COUNTRY scope. Inputs: family and requested replicated stage.
 brilliant_scientist_replicate_project_to_requested_stage = {
-	set_temp_variable = { brilliant_scientist_project_replication_changed = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_project_replication_changed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	brilliant_scientist_load_project_index = yes
 	if = {
 		limit = {
@@ -1261,7 +1264,7 @@ brilliant_scientist_reconcile_old_host_after_transfer = {
 	clear_variable = brilliant_scientist_active_project_family
 	clear_variable = brilliant_scientist_active_project_stage
 	clear_variable = brilliant_scientist_active_project_capacity_delta
-	set_temp_variable = { brilliant_scientist_project_transfer_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_project_transfer_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	while = {
 		limit = { check_variable = { brilliant_scientist_project_transfer_index < constant:brilliant_scientist_event.project_family_count } }
 		set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_project_transfer_index }
@@ -1936,7 +1939,7 @@ brilliant_scientist_inherit_kruger_personal_history_portfolio = {
 	brilliant_scientist_store_inherited_project_stage = yes
 
 	set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.none }
-	set_temp_variable = { brilliant_scientist_project_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_project_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.none }
 	brilliant_scientist_refresh_project_counts = yes
 }
@@ -2038,21 +2041,21 @@ brilliant_scientist_inherit_kruger_carried_portfolio = {
 # Strategic resource units are an abstract reservation; family-specific decision
 # code maps them to existing steel/aluminium/tungsten/chromium/rubber/oil.
 brilliant_scientist_load_project_cost_and_duration = {
-	set_temp_variable = { brilliant_scientist_project_cost_ready = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_military_factories = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_trucks = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_trains = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_manpower = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_army_xp = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_air_xp = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_navy_xp = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_duration_days = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_cost_capacity = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_project_cost_ready = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_civilian_factories = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_military_factories = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_support_equipment = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_trucks = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_trains = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_fuel = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_manpower = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_army_xp = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_air_xp = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_navy_xp = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_political_power = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_resource_units = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_duration_days = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_cost_capacity = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 
 	if = {
 		limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory } }
@@ -2589,7 +2592,7 @@ brilliant_scientist_load_project_cost_and_duration = {
 		limit = {
 			brilliant_scientist_project_family_input_is_valid = yes
 			brilliant_scientist_project_stage_input_is_valid = yes
-			check_variable = { brilliant_scientist_cost_duration_days > constant:brilliant_scientist_value.zero }
+			check_variable = { brilliant_scientist_cost_duration_days > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		}
 		round_temp_variable = brilliant_scientist_cost_civilian_factories
 		round_temp_variable = brilliant_scientist_cost_military_factories
@@ -2628,8 +2631,8 @@ brilliant_scientist_finalize_pending_prefire_opening = {
 # Output: temporary brilliant_scientist_opening_appointment_committed.
 # This is the only first-recruit path for the fixed Kruger token.
 brilliant_scientist_appoint_kruger_from_opening = {
-	set_temp_variable = { brilliant_scientist_opening_appointment_committed = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_opening_history_was_ready = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_opening_appointment_committed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_opening_history_was_ready = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { has_global_flag = brilliant_scientist_history_actor_rebind_pending }
 		set_temp_variable = { brilliant_scientist_opening_history_was_ready = constant:brilliant_scientist_value.one }
@@ -2665,7 +2668,7 @@ brilliant_scientist_appoint_kruger_from_opening = {
 		set_temp_variable = { brilliant_scientist_opening_appointment_committed = constant:brilliant_scientist_value.one }
 		set_country_flag = brilliant_scientist_appointment_completed
 		if = {
-			limit = { check_variable = { brilliant_scientist_opening_history_was_ready > constant:brilliant_scientist_value.zero } }
+			limit = { check_variable = { brilliant_scientist_opening_history_was_ready > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 			brilliant_scientist_finalize_pending_prefire_opening = yes
 		}
 		if = {
@@ -2715,7 +2718,7 @@ brilliant_scientist_appoint_kruger_from_opening = {
 # mutated. Kruger has not been recruited yet, so this is not a nationality or
 # role transfer and cannot duplicate the fixed character.
 brilliant_scientist_forward_opening_to_selected_recipient = {
-	set_temp_variable = { brilliant_scientist_opening_forward_committed = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_opening_forward_committed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = {
 			is_ai = no
@@ -2762,7 +2765,7 @@ brilliant_scientist_add_kruger_roles = {
 		advisor = {
 			slot = theorist
 			ledger = army
-			cost = constant:brilliant_scientist_value.zero
+			cost = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
 			can_be_fired = no
 			idea_token = brilliant_scientist_warren_kruger_advisor
 			traits = {
@@ -2806,7 +2809,7 @@ brilliant_scientist_remove_kruger_roles = {
 # COUNTRY scope. Converts persistent character history into a single portrait
 # stage variable; the parent character file owns the actual portrait swap.
 brilliant_scientist_refresh_kruger_portrait_stage = {
-	set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_kruger_portrait_stage = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_iv_unlocked } }
 		set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.four }
@@ -2865,7 +2868,7 @@ brilliant_scientist_refresh_kruger_continuity_state = {
 # brilliant_scientist_transfer_recipient. All validation occurs before the
 # first mutation. Output temp brilliant_scientist_transfer_committed.
 brilliant_scientist_transfer_kruger_atomically = {
-	set_temp_variable = { brilliant_scientist_transfer_committed = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_transfer_committed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_transfer_inputs_are_valid = yes }
 		set_global_flag = brilliant_scientist_character_transaction_lock
@@ -2878,12 +2881,12 @@ brilliant_scientist_transfer_kruger_atomically = {
 		set_temp_variable = { brilliant_scientist_transfer_breakthrough_resolved_count = brilliant_scientist_breakthrough_resolved_count }
 		set_temp_variable = { brilliant_scientist_transfer_breakthrough_public_count = brilliant_scientist_breakthrough_public_count }
 		set_temp_variable = { brilliant_scientist_transfer_breakthrough_classified_count = brilliant_scientist_breakthrough_classified_count }
-		set_temp_variable = { brilliant_scientist_transfer_context_briefing_pending = constant:brilliant_scientist_value.zero }
-		set_temp_variable = { brilliant_scientist_transfer_context_assistant_pending = constant:brilliant_scientist_value.zero }
-		set_temp_variable = { brilliant_scientist_transfer_impossible_lecture_pending = constant:brilliant_scientist_value.zero }
-		set_temp_variable = { brilliant_scientist_transfer_cross_domain_review_pending = constant:brilliant_scientist_value.zero }
-		set_temp_variable = { brilliant_scientist_transfer_time_traveler_contact_pending = constant:brilliant_scientist_value.zero }
-		set_temp_variable = { brilliant_scientist_transfer_alien_artifact_contact_pending = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_transfer_context_briefing_pending = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+		set_temp_variable = { brilliant_scientist_transfer_context_assistant_pending = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+		set_temp_variable = { brilliant_scientist_transfer_impossible_lecture_pending = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+		set_temp_variable = { brilliant_scientist_transfer_cross_domain_review_pending = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+		set_temp_variable = { brilliant_scientist_transfer_time_traveler_contact_pending = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+		set_temp_variable = { brilliant_scientist_transfer_alien_artifact_contact_pending = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		if = {
 			limit = { has_country_flag = brilliant_scientist_context_briefing_pending }
 			set_temp_variable = { brilliant_scientist_transfer_context_briefing_pending = constant:brilliant_scientist_value.one }
@@ -2933,7 +2936,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 			value = brilliant_scientist_transfer_breakthrough_family
 			add_to_temp_array = { array = brilliant_scientist_transfer_breakthrough_classified_families value = brilliant_scientist_transfer_breakthrough_family }
 		}
-		set_temp_variable = { brilliant_scientist_transfer_breakthrough_pending = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_transfer_breakthrough_pending = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		if = {
 			limit = {
 				has_country_flag = brilliant_scientist_breakthrough_report_active
@@ -3144,7 +3147,7 @@ brilliant_scientist_record_evolution_from_temp = {
 	set_temp_variable = { events_log_evolution_type = constant:brilliant_scientist_event.evolution_type }
 	set_temp_variable = { events_log_evolution_stage = brilliant_scientist_evolution_log_stage }
 	set_temp_variable = { events_log_evolution_tier = brilliant_scientist_evolution_log_tier }
-	set_temp_variable = { events_log_evolution_has_actor = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { events_log_evolution_has_actor = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_has_current_host = yes }
 		event_target:brilliant_scientist_current_host = { save_event_target_as = events_log_evolution_actor }
@@ -3230,7 +3233,7 @@ brilliant_scientist_record_evolution_iv = {
 # before writing chronology or unlock flags.
 brilliant_scientist_record_prefire_evolved_opening = {
 	if = {
-		limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		brilliant_scientist_record_evolution_i = yes
 	}
 	if = {
@@ -3276,7 +3279,7 @@ brilliant_scientist_add_current_country_to_foreign_actor_pool = {
 	}
 	set_temp_variable = { brilliant_scientist_foreign_actor_weight_remaining = brilliant_scientist_foreign_actor_selection_weight }
 	while_loop_effect = {
-		limit = { check_variable = { brilliant_scientist_foreign_actor_weight_remaining > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_foreign_actor_weight_remaining > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		add_to_temp_array = { brilliant_scientist_foreign_actor_selection_pool = THIS }
 		add_to_temp_variable = { brilliant_scientist_foreign_actor_pool_count = constant:brilliant_scientist_value.one }
 		subtract_from_temp_variable = { brilliant_scientist_foreign_actor_weight_remaining = constant:brilliant_scientist_value.one }
@@ -3287,9 +3290,9 @@ brilliant_scientist_add_current_country_to_foreign_actor_pool = {
 # observation gate and weights the pool by that exact interest value.
 brilliant_scientist_select_foreign_actor = {
 	brilliant_scientist_clear_foreign_context = yes
-	set_temp_variable = { brilliant_scientist_foreign_context_ready = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_foreign_context_ready = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	clear_temp_array = brilliant_scientist_foreign_actor_selection_pool
-	set_temp_variable = { brilliant_scientist_foreign_actor_pool_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_foreign_actor_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	every_country = {
 		limit = {
 			brilliant_scientist_is_valid_foreign_actor = yes
@@ -3298,7 +3301,7 @@ brilliant_scientist_select_foreign_actor = {
 		brilliant_scientist_add_current_country_to_foreign_actor_pool = yes
 	}
 	if = {
-		limit = { check_variable = { brilliant_scientist_foreign_actor_pool_count > constant:brilliant_scientist_value.zero } }
+		limit = { check_variable = { brilliant_scientist_foreign_actor_pool_count > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 		random_scope_in_array = {
 			array = brilliant_scientist_foreign_actor_selection_pool
 			set_country_flag = brilliant_scientist_foreign_action_target
@@ -3310,9 +3313,9 @@ brilliant_scientist_select_foreign_actor = {
 		set_temp_variable = { brilliant_scientist_foreign_context_ready = constant:brilliant_scientist_value.one }
 	}
 	clear_temp_array = brilliant_scientist_foreign_actor_selection_pool
-	set_temp_variable = { brilliant_scientist_foreign_actor_pool_count = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_foreign_actor_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_foreign_actor_selection_weight = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_foreign_actor_pool_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_foreign_actor_weight_remaining = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_foreign_actor_selection_weight = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 }
 
 # Any scope. The selected foreign actor receives one owned-and-controlled state
@@ -3381,7 +3384,7 @@ brilliant_scientist_refresh_foreign_interest = {
 		limit = {
 			brilliant_scientist_has_current_host = yes
 			event_target:brilliant_scientist_current_host = {
-				check_variable = { brilliant_scientist_project_deployment_count > constant:brilliant_scientist_value.zero }
+				check_variable = { brilliant_scientist_project_deployment_count > @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 			}
 		}
 		add_to_variable = { brilliant_scientist_foreign_interest = constant:brilliant_scientist_foreign.advanced_project_weight }
@@ -3406,7 +3409,7 @@ brilliant_scientist_refresh_foreign_interest = {
 # strength only; it never creates KRG or transfers a state.
 brilliant_scientist_calculate_formation_power_score = {
 	brilliant_scientist_refresh_project_counts = yes
-	set_variable = { brilliant_scientist_formation_power_score = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_formation_power_score = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	set_temp_variable = { brilliant_scientist_formation_score_component = brilliant_scientist_formation_selected_state_count }
 	multiply_temp_variable = { brilliant_scientist_formation_score_component = constant:brilliant_scientist_formation.state_score }
 	add_to_variable = { brilliant_scientist_formation_power_score = brilliant_scientist_formation_score_component }
@@ -3435,7 +3438,7 @@ brilliant_scientist_calculate_formation_power_score = {
 # Output: temporary brilliant_scientist_force_count. This computes a capped
 # entitlement only; unit creation must also charge existing equipment/manpower.
 brilliant_scientist_load_capped_force_count = {
-	set_temp_variable = { brilliant_scientist_force_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_force_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	brilliant_scientist_load_project_index = yes
 	if = {
 		limit = {
@@ -3464,7 +3467,7 @@ brilliant_scientist_load_capped_force_count = {
 			multiply_temp_variable = { brilliant_scientist_force_count = constant:brilliant_scientist_force.minimum_equipment_ratio }
 		}
 		round_temp_variable = brilliant_scientist_force_count
-		clamp_temp_variable = { var = brilliant_scientist_force_count min = constant:brilliant_scientist_value.zero max = brilliant_scientist_force_cap }
+		clamp_temp_variable = { var = brilliant_scientist_force_count min = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO max = brilliant_scientist_force_cap }
 	}
 }
 
@@ -3543,7 +3546,7 @@ brilliant_scientist_register_temporal_anchor = {
 # stable semantic ID is copied to a normal variable so the readiness trigger
 # and commit can consume the same exact target. Used IDs can never be rebound.
 brilliant_scientist_bind_temporal_target = {
-	set_temp_variable = { brilliant_scientist_temporal_target_bound = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_temporal_target_bound = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	clr_country_flag = brilliant_scientist_temporal_action_target_bound
 	clear_variable = brilliant_scientist_temporal_bound_target_id
 	if = {
@@ -3570,7 +3573,7 @@ brilliant_scientist_bind_temporal_target = {
 # COUNTRY scope. Input temporary sync cost/debt gain after the exact target
 # binder. Output temp brilliant_scientist_temporal_action_committed.
 brilliant_scientist_commit_bounded_temporal_action = {
-	set_temp_variable = { brilliant_scientist_temporal_action_committed = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_temporal_action_committed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_temporal_action_is_ready = yes }
 		subtract_from_variable = { brilliant_scientist_temporal_sync_capacity = brilliant_scientist_temporal_sync_cost }
@@ -3593,7 +3596,7 @@ brilliant_scientist_commit_bounded_temporal_action = {
 # COUNTRY scope. A decision mission owns the completion call; no daily/monthly
 # on_action and no passive debt decay is introduced.
 brilliant_scientist_begin_temporal_stabilization = {
-	set_temp_variable = { brilliant_scientist_temporal_stabilization_started = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_temporal_stabilization_started = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_can_begin_temporal_stabilization = yes }
 		set_temp_variable = { brilliant_scientist_temporal_stabilization_duration = constant:brilliant_scientist_temporal.stabilization_days }
@@ -3651,7 +3654,7 @@ brilliant_scientist_lose_temporal_anchor = {
 # one persistent conclusion can be locked. Transformation is not an input and
 # therefore cannot prove extraterrestrial provenance on its own.
 brilliant_scientist_lock_origin_conclusion = {
-	set_temp_variable = { brilliant_scientist_origin_conclusion_locked = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_origin_conclusion_locked = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = {
 			NOT = { brilliant_scientist_origin_conclusion_is_unlocked = yes }
@@ -3734,8 +3737,8 @@ brilliant_scientist_commit_to_lab_world = {
 # COUNTRY scope. This effect intentionally stops before the shared chaos and
 # Fallout calls. Output: deficit, local reason reservation, source target, ready.
 brilliant_scientist_prepare_singularity_terminal_commit = {
-	set_temp_variable = { brilliant_scientist_terminal_commit_ready = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_singularity_chaos_deficit = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_terminal_commit_ready = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
+	set_temp_variable = { brilliant_scientist_singularity_chaos_deficit = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	set_temp_variable = { brilliant_scientist_singularity_chaos_history_reason = constant:brilliant_scientist_singularity.chaos_history_reason }
 	if = {
 		limit = { brilliant_scientist_singularity_terminal_commit_state_is_ready = yes }
@@ -3744,7 +3747,7 @@ brilliant_scientist_prepare_singularity_terminal_commit = {
 			limit = { has_variable = global.chaos_meter_value }
 			subtract_from_temp_variable = { brilliant_scientist_singularity_chaos_deficit = global.chaos_meter_value }
 		}
-		clamp_temp_variable = { var = brilliant_scientist_singularity_chaos_deficit min = constant:brilliant_scientist_value.zero }
+		clamp_temp_variable = { var = brilliant_scientist_singularity_chaos_deficit min = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 		save_event_target_as = brilliant_scientist_terminal_source_actor
 		set_temp_variable = { brilliant_scientist_terminal_commit_ready = constant:brilliant_scientist_value.one }
 	}
@@ -3753,7 +3756,7 @@ brilliant_scientist_prepare_singularity_terminal_commit = {
 # COUNTRY scope. Output only; the parent terminal event performs the scenario
 # registry and presentation call before using the marker below.
 brilliant_scientist_prepare_lab_world_terminal_commit = {
-	set_temp_variable = { brilliant_scientist_terminal_commit_ready = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_terminal_commit_ready = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_lab_world_terminal_is_ready = yes }
 		save_event_target_as = brilliant_scientist_terminal_source_actor

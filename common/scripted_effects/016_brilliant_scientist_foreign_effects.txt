@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BRILLIANT_SCIENTIST_FOREIGN_LIMIT_NEGATIVE_OPINION_EXCLUSIVE = -24
+@CR_SC_BRILLIANT_SCIENTIST_FOREIGN_LIMIT_POSITIVE_OPINION_EXCLUSIVE = 24
 # ============================================================================
 # CHAOS REDUX - EVENT 016 FOREIGN OPERATIONS EFFECTS
 # ============================================================================
@@ -423,7 +427,7 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 			check_variable = { brilliant_scientist_foreign_operation_is_diplomatic > constant:brilliant_scientist_value.zero }
 			has_opinion = {
 				target = event_target:brilliant_scientist_foreign_operation_host
-				value > constant:brilliant_scientist_foreign_limit.positive_opinion_exclusive
+				value > @CR_SC_BRILLIANT_SCIENTIST_FOREIGN_LIMIT_POSITIVE_OPINION_EXCLUSIVE
 			}
 		}
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.positive_relations_diplomatic }
@@ -457,7 +461,7 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 		limit = {
 			has_opinion = {
 				target = event_target:brilliant_scientist_foreign_operation_host
-				value < constant:brilliant_scientist_foreign_limit.negative_opinion_exclusive
+				value < @CR_SC_BRILLIANT_SCIENTIST_FOREIGN_LIMIT_NEGATIVE_OPINION_EXCLUSIVE
 			}
 			check_variable = { brilliant_scientist_foreign_operation_is_diplomatic < constant:brilliant_scientist_value.one }
 		}
