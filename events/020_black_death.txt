@@ -401,6 +401,68 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = chaosx.nr20.47
+	title = chaosx.nr20.47.t
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_flood_front }
+		text = chaosx.nr20.47.d.flood_front
+	}
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_break_strongpoints }
+		text = chaosx.nr20.47.d.break_strongpoints
+	}
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_hunt_roads }
+		text = chaosx.nr20.47.d.hunt_roads
+	}
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_hold_nest }
+		text = chaosx.nr20.47.d.hold_nest
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				OR = {
+					has_country_flag = black_plague_rat_flood_front
+					has_country_flag = black_plague_rat_break_strongpoints
+					has_country_flag = black_plague_rat_hunt_roads
+					has_country_flag = black_plague_rat_hold_nest
+				}
+			}
+		}
+		text = chaosx.nr20.47.d
+	}
+	picture = GFX_report_event_020_rat_emergence
+	is_triggered_only = yes
+	option = {
+		trigger = { has_country_flag = black_plague_rat_flood_front }
+		name = chaosx.nr20.47.a.flood_front
+		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_state_gain }
+		add_to_variable = { black_plague_rat_hunger = constant:black_plague_rat_pool.hunger_pulse_gain }
+		clamp_variable = { var = black_plague_rat_brood_mass min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.brood_mass_cap }
+		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+	}
+	option = {
+		trigger = { has_country_flag = black_plague_rat_break_strongpoints }
+		name = chaosx.nr20.47.a.break_strongpoints
+		add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_depth.break_strongpoints_division_cap_gain }
+		black_plague_rat_refresh_division_cap = yes
+	}
+	option = {
+		trigger = { has_country_flag = black_plague_rat_hunt_roads }
+		name = chaosx.nr20.47.a.hunt_roads
+		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_depth.hunt_roads_pulse_mass_gain }
+		clamp_variable = { var = black_plague_rat_brood_mass min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.brood_mass_cap }
+	}
+	option = {
+		trigger = { has_country_flag = black_plague_rat_hold_nest }
+		name = chaosx.nr20.47.a.hold_nest
+		add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_state_gain }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+	}
+}
+
 news_event = {
 	id = chaosx.nr20.50
 	title = chaosx.nr20.50.t
