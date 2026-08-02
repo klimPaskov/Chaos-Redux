@@ -564,11 +564,11 @@ Avoid making the Holy Realm sound like a generic cult shouting about doom. Its d
 
 Sample event text direction:
 
-> The ministers expected a speech. Instead, the Bodhisattva placed one hand on the map and waited until the room had gone still. When the silence ended, every border looked temporary.
+> The ministers waited for a speech as the Bodhisattva placed one hand on the map. The room went still, and when the silence ended, every border looked temporary.
 
-> The first Arhat candidate returned from the mountain pass after six days without sleep. He gave no account of what he had seen. He only asked where the next road needed guarding.
+> The first Arhat candidate returned from the mountain pass after six days without sleep. He gave no account of what he had seen, and asked only where the next road needed guarding.
 
-> Foreign diplomats asked whether the proclamation changed the government. The clerk answering them wrote that the government had finally become accurate.
+> Foreign diplomats asked whether the proclamation changed the government. The clerk answering them wrote that the government had become accurate.
 
 These lines are examples of tone, not final localization.
 
@@ -3425,9 +3425,9 @@ These samples are not final localization. They define tone for the coding and wr
 
 #### 48.1 The Realm of the Vow is Proclaimed
 
-The old ministries did not close with shouting. They closed by instruction. At dawn, clerks received white paper seals and placed them over party emblems, military portraits, and old civil registers. The radio read the proclamation three times. The state would no longer govern in the name of victory, class, dynasty, or nation alone. It would govern in the name of release from fear.
+The old ministries closed without shouting. They closed by instruction. At dawn, clerks received white paper seals and placed them over party emblems, military portraits, and old civil registers. The radio read the proclamation three times. The state would no longer govern in the name of victory, class, dynasty, or nation alone. It would govern in the name of release from fear.
 
-Foreign envoys asked whether a coup had occurred. The answer returned on folded paper: no throne had fallen. The offices had been taught to kneel.
+Foreign envoys asked whether a coup had occurred. The answer returned on folded paper: the offices had been taught to kneel.
 
 Option tone examples:
 
@@ -3438,13 +3438,13 @@ Option tone examples:
 
 #### 48.2 The Compassion Schism
 
-The argument began over a refugee road and spread through every office in the Realm. The Quietists said the gate existed to open. The army said an open gate was only a road for enemies. The Mandala Bureau asked for names, skills, fevers, loyalties, and fingerprints. The Arhats asked why people still spoke as if fear had voting rights.
+The argument began over a refugee road and spread through every office in the Realm. The Quietists pressed to open the gate. The army warned that an unguarded road would invite enemies. The Mandala Bureau asked for names, skills, fevers, loyalties, and fingerprints. The Arhats asked why people still spoke as if fear had voting rights.
 
-By evening, the question had changed. The council was no longer asking how many people the Realm could save. It was asking what compassion was allowed to do to those who resisted it.
+By evening, the council was measuring what compassion could do to those who resisted it.
 
 Option tone examples:
 
-1. **The Realm shelters. It does not rule the world.**
+1. **The Realm shelters without ruling the world.**
 2. **Compassion must be organized.**
 3. **The violent understand guarded roads.**
 4. **No answer may be spoken yet.**
@@ -3454,7 +3454,7 @@ Option tone examples:
 
 For three nights, no decree left the inner chamber. Ministers waited in the outer hall with blank paper. The generals waited with sealed orders. Refugee columns waited beneath the passes. At dawn, the bell was struck once. Those near the courtyard said the sound did not return.
 
-The proclamation was shorter than expected. The Bodhisattva had not abandoned the world. The Bodhisattva had crossed it and returned as law.
+The proclamation was shorter than expected. It declared that the Bodhisattva had crossed the world and returned as law.
 
 Option tone examples:
 
@@ -3466,7 +3466,7 @@ Option tone examples:
 
 #### 48.4 The Ledger of Names Has No End
 
-The Mandala Bureau began with columns. Country, province, cause, age, witness, source confidence. By the second week, clerks stopped sharpening pencils and began using ink by the bottle. By the third, a clerk wrote one sentence in the margin and refused to return to his desk.
+The Mandala Bureau began with columns for country, province, cause, age, witness, and source confidence. By the second week, clerks stopped sharpening pencils and began using ink by the bottle. By the third, one clerk wrote a sentence in the margin and refused to return to his desk.
 
 There are too many names for history to hold.
 
@@ -3500,7 +3500,7 @@ Each log entry should be written as a short historical record. It should not be 
 
 Example:
 
-**The Compassion Schism ended with the Mandala Bureau empowered to organize foreign suffering. The Quietists remained in the monasteries, but their objections no longer shaped the road policy.**
+**The Compassion Schism ended with the Mandala Bureau empowered to organize foreign suffering. The Quietists remained in the monasteries, and their objections no longer shaped road policy.**
 
 This gives later events a clean way to refer back to past decisions.
 
@@ -3840,7 +3840,7 @@ Player options:
 
 Narrative purpose:
 
-The Realm announces that the last war has already ended. The world has not accepted the result yet.
+The Realm announces that the last war has already ended. The world is still resisting the result.
 
 Gameplay purpose:
 
@@ -4927,9 +4927,9 @@ Avoid:
 
 Sample event text direction:
 
-**The Mandala Bureau did not announce a target list. It announced a filing order. The first page held capitals, reactors, ports, and the names of governments that had refused peace. The last page was blank. A clerk explained that the blank page was for the countries that believed distance was a policy.**
+**The Mandala Bureau issued a filing order for the target list. The first page held capitals, reactors, ports, and the names of governments that had refused peace. A clerk reserved the blank final page for countries that believed distance was a policy.**
 
-**The first reports from abroad came through broken radio bands. Some called it war. Some called it judgment. The Realm recorded neither word. The official term remained release.**
+**The first reports from abroad came through broken radio bands. Foreign voices struggled to name the event. The Realm recorded it under the official term, release.**
 
 **A minister asked whether neutral countries would be spared. The answer arrived the next morning on a sealed card: neutrality is a border drawn around delay.**
 
@@ -9895,9 +9895,9 @@ These are tone samples. They should guide final writing rather than replace poli
 
 **The Figure at the High Monastery**
 
-The reports did not agree. Some called the figure a teacher. Some called the gatherings a threat to the state. The army counted rifles in the courtyards. The monks counted names at the gate.
+Reports describe a teacher leading gatherings that threaten the state. The army counted rifles in the courtyards, and the monks counted names at the gate.
 
-By morning, pilgrims had filled the road below the monastery. No one had ordered them there.
+By morning, pilgrims had filled the road below the monastery. No order had sent them there.
 
 Options:
 
@@ -9910,9 +9910,9 @@ Options:
 
 **The Roads Climb Toward Silence**
 
-The first refugees arrived before the snow melted. Then came deserters, widows, monks, wounded soldiers, foreign children, and men who claimed to have forgotten their country.
+Refugees arrived as the snow melted, followed by deserters, widows, monks, wounded soldiers, foreign children, and men who claimed to have forgotten their country.
 
-The border officers asked how many could be admitted. The Bodhisattva asked how many could be turned away and still leave the Realm unchanged.
+Border officers counted the people they could admit. The Bodhisattva measured the cost of turning anyone away.
 
 Options:
 
@@ -9924,7 +9924,7 @@ Options:
 
 **A Village without Petitions**
 
-The district office reports that no petitions were filed for ninety days. The Arhat overseer calls it proof of peace. The local clerk has asked to be reassigned.
+The district office reports no petitions for ninety days. The Arhat overseer records the silence as proof of peace, and the local clerk has asked to be reassigned.
 
 The petition box remains in the square. Its slot has been polished smooth by weather, not by use.
 
@@ -9941,7 +9941,7 @@ Options:
 
 The foreign envoys expected a proclamation. They received a sealed copy of the new constitutional order.
 
-The document did not name a ruler. It named a witness. It did not create a throne. It stated that the throne had finally become accurate.
+The document names a witness and records the throne as an instrument of that witness.
 
 Options:
 
@@ -9952,9 +9952,9 @@ Options:
 
 **The Vow against Annihilation**
 
-The target ledger was carried into the chamber and placed before the ministers. No one opened it.
+The target ledger was carried into the chamber and placed before the ministers, who left it closed.
 
-The Buddha spoke once. Peace without witnesses is only another name for failure.
+The Buddha spoke once. Peace had to leave witnesses alive.
 
 Options:
 
@@ -9965,7 +9965,7 @@ Options:
 
 **The Throne without a Body**
 
-The clerks removed the ruler's name from the daily orders. They did not leave the line blank. They wrote Witnessed by the Sovereign Path.
+The clerks removed the ruler's name from the daily orders and replaced it with Witnessed by the Sovereign Path.
 
 Foreign diplomats asked who now governed the Realm. The reply arrived without a signature.
 
@@ -9978,9 +9978,9 @@ Options:
 
 **The Final Silence**
 
-The last peace delegation did not depart. The roads were closed before dawn.
+The last peace delegation remained inside as the roads closed at dawn.
 
-At noon, the Mandala Bureau entered the sky into the register. At dusk, the first foreign capital disappeared from the ledger of future petitions.
+At noon, the Mandala Bureau entered the sky into the register, and by dusk the first foreign capital had disappeared from the ledger of future petitions.
 
 Options:
 

@@ -13,7 +13,7 @@ The four required presentation roles have distinct trigger meanings, final title
 | Role | Final title | Selected quotation | Attribution line | Original button remark | Display slot | Audio ID |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | Africa is one | `THE CONTINENT TAKES ITS SEAT` | `building up for themselves a great nation in Africa.` | `Marcus Garvey, "Africa for the Africans," Negro World, 22 April 1922` | `The continent will answer for itself.` | `101` | `58` |
-| Scramble response | `THE MAPMAKERS RETURN` | `to enable them, if need be, to make good any claims of their own.` | `General Act of the Conference at Berlin, Article 34, 26 February 1885` | `This time, Africa answers.` | `102` | `59` |
+| Scramble response | `THE MAPMAKERS RETURN` | `to enable them, if need be, to make good any claims of their own.` | `General Act of the Conference at Berlin, Article 34, 26 February 1885` | `Africa answers through its own institutions.` | `102` | `59` |
 | Continental wars | `CONTINENTS UNDER ARMS` | `War is a mere continuation of policy by other means.` | `Carl von Clausewitz, On War, Book I, Chapter I, J. J. Graham translation` | `The arguments have reached the front.` | `103` | `60` |
 | The World | `ONE WORLD REMAINS` | `Nothing beside remains.` | `Percy Bysshe Shelley, "Ozymandias," first published 1818` | `The last border is an archive.` | `104` | `61` |
 
@@ -153,7 +153,7 @@ The African actor remains the central subject. The event records how it answers 
 - Final title: `THE MAPMAKERS RETURN`
 - Final quotation: use the exact selected Article 34 fragment in the handoff result table.
 - Final attribution: `General Act of the Conference at Berlin, Article 34, 26 February 1885`
-- Final button remark: `This time, Africa answers.`
+- Final button remark: `Africa answers through its own institutions.`
 
 The title recalls the political practice of partition without giving the outside powers ownership of the scene. The description names both the response and Africa's action.
 
@@ -302,7 +302,7 @@ The line supplies finality, exhaustion, and a warning against empty triumph. The
 Use the shared first and final sentences with exactly one resolution clause and one inheritance clause.
 
 ```text
-{{final_actor}} is the last eligible continent-scale sovereignty. {{resolution_clause}} {{inheritance_clause}} Rival world orders have ended. Their peoples remain.
+{{final_actor}} is the last eligible continent-scale sovereignty. {{resolution_clause}} {{inheritance_clause}} Rival world orders have ended, and their peoples remain.
 ```
 
 Resolution clauses:

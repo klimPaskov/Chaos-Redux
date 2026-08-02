@@ -10,13 +10,13 @@ This file records the catalog wording contract for the live Event 020 rows. The 
 | --- | --- |
 | ID | `20` |
 | Event Name | Black Plague |
-| Details | A severe Black Death strain begins in one vulnerable mainland state, kills population over time, spreads through state and transport routes, and becomes part of the shared disease containment and biological warfare system. Final wording should remain premise-focused and omit effect lists. |
-| Evo I | The strain becomes more lethal, spreads somewhat faster, relapses more easily, and requires countries to adapt their countermeasures. |
-| Evo II | The disease can cross seas through ports, convoys, military movement, and other valid maritime connections. |
-| Evo III | A connected uncontrolled plague basin can establish the reusable `RTA` Rat Nation carrier with strong self-growing armies that use no human manpower or equipment. Additional broods remain internal basin markers under `RTA`. |
-| Evo IV | The strongest internal brood can establish the separate sentient `RTX` Rat King country, which receives the deeper government and focus tree. |
-| Evo V | A successful Rat King can unlock a world-end focus path after enough conquest and deaths. |
-| World-End Scenario | The Rat King completes the world-end path, controls a continent, and takes over the world. |
+| Details | A severe Black Death strain begins in one vulnerable mainland state. It kills population over time, spreads along state and transport routes, and draws countries into a shared struggle over containment and biological warfare. |
+| Evo I | The strain grows more lethal and spreads faster, with relapses that force countries to adapt their countermeasures. |
+| Evo II | The disease crosses seas through ports, convoys, military movement, and other maritime routes. |
+| Evo III | An uncontrolled plague basin gives rise to the first Rat Nation, whose broods grow armies without human supplies. |
+| Evo IV | The strongest brood becomes a sentient Rat King with a government and ambitions of its own. |
+| Evo V | The Rat King opens a path toward world conquest after enough land and lives have been taken. |
+| World-End Scenario | The Rat King completes its final path, controls a continent, and carries the plague kingdom across the world. |
 | Type | Minor Fire-Once |
 | Cluster ID | `8` (live Diseases cluster) |
 | Member Severity | Severe |
@@ -28,7 +28,7 @@ This file records the catalog wording contract for the live Event 020 rows. The 
 | --- | --- |
 | Cluster ID | `8` (live registered cluster) |
 | Cluster Name | Diseases |
-| Details | Disease incidents create persistent state outbreaks, population loss, containment choices, medical responses, and links to the biological warfare system. Final wording should match in-game cluster detail localisation. |
+| Details | Disease incidents leave persistent outbreaks and population loss, and they force choices over containment, medicine, and biological warfare. |
 | Members | `20` initially |
 | Type | Live registered cluster type for one-time severe disease incidents |
 | Chaos level | planning unlock tier `2`, subject to live cluster balance |
@@ -39,11 +39,11 @@ This file records the catalog wording contract for the live Event 020 rows. The 
 | Field | Planned value or direction |
 | --- | --- |
 | Scenario ID | `SCN-012` (live registered scenario) |
-| Scenario Name | working label Black Plague Unbound, final wording must be direct and specific |
-| Details | Immediately establishes Black Plague in many states across several continents, activates Evolutions I through IV, seeds internal brood basins in the reusable `RTA` Rat Nation carrier, and creates the separate `RTX` Rat King. It does not trigger Evolution V or world end. |
-| Type Options | fixed profile, working label Instant Plague Kingdoms |
-| Intensity Scaling | Low, Medium, High, and Maximum control continent count, infected-state count and severity, internal `RTA` brood coverage, Rat King territory and army strength, and the Chaos floor; the number of rat country tags never scales above `RTA` and `RTX`. |
-| Status | Registered and wired; live launch and balance validation remain user-owned |
+| Scenario Name | Black Plague Unbound |
+| Details | A sudden Black Plague crisis spreads across several continents. New outbreaks appear, internal rat basins grow, and a Rat King emerges. The final world-end path remains closed. |
+| Type Options | Instant Plague Kingdoms |
+| Intensity Scaling | Low, Medium, High, and Maximum spread the crisis across more continents, states, brood basins, and Rat King territory as severity rises. The scenario creates only the two established rat countries. |
+| Status | Playable |
 
 ## Related catalog notes
 

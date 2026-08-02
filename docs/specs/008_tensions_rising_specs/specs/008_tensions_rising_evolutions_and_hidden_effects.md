@@ -13,9 +13,9 @@ The stage should be determined from campaign state and logged according to the s
 | Stage | Display tier | Suggested unlock condition | Record timing | Event detail preview |
 | --- | --- | --- | --- | --- |
 | I | Gathering Storm | chaos value reaches Gathering Storm and Event 8 is enabled | first qualifying automatic or manual Event 8 run after threshold, or MTTH-style evolution check if shared system supports it | “Cable traffic and official denials begin to quicken later incidents.” |
-| II | Rising Chaos | chaos value reaches Rising Chaos, Stage I known or implicitly bypassed by pre-fire opening | first qualifying Stage II packet | “Rumours become a market, accusations produce visible diplomatic costs.” |
-| III | Chaos Tier | chaos value reaches Chaos Tier | first qualifying Stage III packet | “General staffs and border commands react before diplomats can finish denying anything.” |
-| IV | Totalen Chaos | chaos value reaches Totalen Chaos | first qualifying Stage IV packet | “The world enters a permanent alert rhythm. Tension no longer needs room to rise.” |
+| II | Rising Chaos | chaos value reaches Rising Chaos, Stage I known or implicitly bypassed by pre-fire opening | first qualifying Stage II packet | “Rumours become a market, and accusations begin shaping diplomatic relations.” |
+| III | Chaos Tier | chaos value reaches Chaos Tier | first qualifying Stage III packet | “General staffs and border commands react as diplomats continue their denials.” |
+| IV | Totalen Chaos | chaos value reaches Totalen Chaos | first qualifying Stage IV packet | “The world settles into a permanent alert rhythm, and every capital keeps its warnings active.” |
 
 If Event 8 first fires at a high chaos tier, it should start at the highest allowed stage for that tier. The lower stages should either be recorded as skipped-by-opening if the current event-log system supports that distinction, or simply not recorded and not presented as fired history. Do not spam four evolution popups at once.
 

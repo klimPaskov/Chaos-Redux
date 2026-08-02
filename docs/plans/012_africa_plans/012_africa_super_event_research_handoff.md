@@ -134,7 +134,7 @@ Description direction, not final localisation: identify the final actor, name th
 - **Attribution:** *General Act of the Conference at Berlin*, Article 34, 26 February 1885.
 - **Evidence:** the linked [English transcription of the General Act](https://www.internationalwaterlaw.org/documents/regionaldocs/1885GeneralActBerlinConference.pdf) gives this exact Article 34 wording on PDF page 13. The [German Federal Foreign Office archival overview](https://archiv.diplo.de/arc-en/the-political-archive/general-act-2684414) independently explains that Articles 34 and 35 established the effective-occupation framework and that no African representative was consulted.
 - **Rights assessment:** the underlying 1885 treaty text is a strong public-domain candidate by age and official-document character. Attribution confidence is high for the Article and substance, but the final ledger should compare this English wording with a contemporaneous official English printing before shipping because the linked transcription does not identify its translator.
-- **Selected button remark:** `This time, Africa answers.` Original Chaos Redux wording; no external attribution dependency.
+- **Selected button remark:** `Africa answers through its own institutions.` Original Chaos Redux wording; no external attribution dependency.
 - **Backup original remark:** `The old capitals have found their voice.`
 - **Permission-blocked historical backup:** Touré's OAU line listed in the rights section above.
 

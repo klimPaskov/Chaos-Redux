@@ -47,7 +47,7 @@ All titles, descriptions, and option remarks are original Chaos Redux copy. The 
 chaosx_super_event.49.t: "Hannibal Lecter Commands"
 chaosx_super_event.49.q: "\"A Multitude of men, are made One Person, when they are by one man, or one Person, Represented\"\n §Y-Thomas Hobbes, Leviathan-§!"
 chaosx_super_event.49.a: "The scattered knives have found a hand."
-chaosx_super_event.49.d: "The identical maps, rank tables, prisoner ledgers, and synchronized attacks have acquired a public author. Hannibal Lecter has taken command of the strongest Host and summoned the warlords to his standard.\n\nNo government can prove whether he designed every cell or claimed the network when it had grown strong enough. The warlords no longer debate the distinction. Their armies, islands, and feeding territories are moving under one command."
+chaosx_super_event.49.d: "The identical maps, rank tables, prisoner ledgers, and synchronized attacks have acquired a public author. Hannibal Lecter has taken command of the strongest Host and summoned the warlords to his standard.\n\nNo government can determine how much of the network Hannibal designed before claiming it as his own. The warlords have accepted his command, and their armies, islands, and feeding territories now move together."
 ```
 
 ### Ranked quotation candidates
@@ -158,7 +158,7 @@ chaosx_super_event.50.d: "The last limits on Hannibal Lecter's command have been
 chaosx_super_event.52.t: "The Burial Detail"
 chaosx_super_event.52.q: "\"Future years will never know the seething hell\"\n §Y-Walt Whitman, Specimen Days-§!"
 chaosx_super_event.52.a: "Begin with the names."
-chaosx_super_event.52.d: "The last army under Hannibal Lecter's command has been broken, and the roads into the feeding capitals are open. Recovery teams are finding prisoners, ledgers, unmarked pits, and names erased from military rolls across several countries.\n\nThe coalition has won the war, but whole districts remain emptied. Every surviving government has inherited the work of identification, burial, trial, and relief. The destroyed network leaves incomplete family lists wherever its routes once ran."
+chaosx_super_event.52.d: "The last army under Hannibal Lecter's command has been broken, and the roads into the feeding capitals are open. Recovery teams are finding prisoners, ledgers, unmarked pits, and names erased from military rolls across several countries.\n\nThe coalition has won the war, and whole districts remain emptied. Every surviving government has inherited the work of identification, burial, trial, and relief. The destroyed network leaves incomplete family lists wherever its routes once ran."
 ```
 
 ### Ranked quotation candidates

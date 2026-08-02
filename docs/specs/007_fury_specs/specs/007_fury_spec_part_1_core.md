@@ -258,7 +258,7 @@ Player-facing direction:
 
 Title direction: `A Border Vanishes`.
 
-Description direction: A small country defeats a neighbor before outside observers agree on the cause. Reports emphasize sudden mobilization, improvised columns, and new officials moving into captured administrative buildings.
+Description direction: A small country defeats a neighbor, and outside observers struggle to explain the cause. Reports emphasize sudden mobilization, improvised columns, and new officials moving into captured administrative buildings.
 
 Button direction: short, cold, and uneasy. Example direction: `Count the next border`.
 

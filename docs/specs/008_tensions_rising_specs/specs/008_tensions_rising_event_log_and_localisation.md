@@ -20,7 +20,7 @@ The description should be short and report-like. It should mention diplomatic ac
 
 Suggested draft:
 
-> A chain of public accusations, military communiqués, and unattributed leaks has unsettled diplomatic circles. No capital admits there is a crisis, yet border offices, newspapers, and staff rooms have all begun behaving as if one is near.
+> A chain of public accusations, military communiqués, unattributed leaks, and official denials has unsettled diplomatic circles. Border offices, newspapers, and staff rooms have begun behaving as if a crisis is near.
 
 ### Option text
 
@@ -49,13 +49,13 @@ Option: **Everyone has a source.**
 
 ### Stage III: General Staffs Stop Sleeping
 
-> Staff offices remain lit long after the public briefings end. Maps are checked, train schedules copied, and commanders told that nothing is happening while being ordered to prepare for it.
+> Staff offices remain lit long after the public briefings end. Maps are checked, train schedules copied, and commanders receive quiet orders to prepare for an unnamed crisis.
 
 Option: **No one sleeps through this.**
 
 ### Stage IV: The Permanent Alert
 
-> The latest warnings become routine across foreign offices. Capitals compare denials, watch railway notices, and prepare contingency files while insisting the situation remains manageable.
+> The latest warnings spread across foreign offices. Capitals compare denials, watch railway notices, and prepare contingency files as the pressure becomes part of daily government.
 
 Option: **Log the latest alerts.**
 
@@ -63,15 +63,15 @@ Option: **Log the latest alerts.**
 
 ### Main detail text
 
-> A repeatable global pressure incident. In calm conditions it raises world tension while there is still room for tension to rise. Once the world has entered higher chaos tiers, the same headline can keep firing even at maximum world tension, adding chaos directly and leaving diplomatic aftershocks behind it.
+> This repeatable pressure incident follows public accusations, leaks, and military communiqués as diplomatic distrust spreads. Later stages bring broader panic through embassies, markets, staff rooms, and border offices. Even when tension is already high, the same headline can return with new diplomatic aftershocks.
 
 ### Mechanics summary text
 
-> Higher stages can briefly quicken the rhythm of later incidents, sour relations between plausible rivals, and produce follow-up incidents about the panic spreading through embassies, markets, staff rooms, and border offices. At high chaos, safe border incidents can become non-transfer clashes.
+> Later stages quicken the exchange of reports and sour relations between plausible rivals. Panic spreads through embassies, markets, staff rooms, and border offices, and safe border incidents can become clashes at high chaos.
 
 ### World-end line
 
-> No world-end scenario. This event can help push the world toward collapse through chaos and pacing pressure, but it never becomes a terminal branch by itself.
+> This event never becomes a world-end scenario. It can push the campaign toward collapse through rising pressure, but it does not end the world by itself.
 
 ## Evolution detail entries
 
@@ -79,28 +79,28 @@ Evolution track name: **Diplomatic Fever**
 
 ### Stage I event detail preview
 
-**Cable Traffic Flood**  -  The event begins to add chaos directly and can fire even when world tension is already full. Diplomatic cables, denials, and rumours can briefly quicken later incidents.
+**Cable Traffic Flood**  -  Diplomatic cables begin outpacing official denials, and rumours start to shape later incidents.
 
 ### Stage II event detail preview
 
-**The Accusation Market**  -  The event adds stronger chaos and tension packets. Rumours become useful political tools, damaging relations and sometimes creating temporary national panic.
+**The Accusation Market**  -  Rumours and accusations become useful political tools, damaging relations and spreading temporary panic.
 
 ### Stage III event detail preview
 
-**General Staffs Stop Sleeping**  -  The event can push several rivalries at once. Countries become more willing to react through existing war-preparation and diplomatic systems.
+**General Staffs Stop Sleeping**  -  Military staffs react immediately, and several rivalries move at once.
 
 ### Stage IV event detail preview
 
-**The Permanent Alert**  -  The event reaches its strongest non-terminal form. It applies severe pressure, large diplomatic shocks, follow-up incidents, and rare safe border clashes without becoming a terminal branch.
+**The Permanent Alert**  -  The alert has become permanent. Diplomatic shocks, follow-up incidents, and rare border clashes spread through the remaining channels without ending the campaign.
 
 ## Evolution log titles
 
 | Stage | Evolution log title | Short row direction |
 | --- | --- | --- |
 | I | Cable Traffic Flood | Diplomatic traffic begins outpacing official denials. |
-| II | The Accusation Market | Rumours and accusations become a political economy. |
-| III | General Staffs Stop Sleeping | Military staffs react before diplomats finish speaking. |
-| IV | The Permanent Alert | The world no longer needs room for tension to rise. |
+| II | The Accusation Market | Rumours and accusations shape ministries, newspapers, and border commands. |
+| III | General Staffs Stop Sleeping | Military staffs react immediately as diplomatic exchanges continue. |
+| IV | The Permanent Alert | The alert has become part of daily government. |
 
 The stage title should appear in evolution catalogue, evolution history, and selected-event detail surfaces wherever the current event-log implementation supports stage text.
 
@@ -110,7 +110,7 @@ The stage title should appear in evolution catalogue, evolution history, and sel
 
 Tone: muted, bureaucratic, suspicious.
 
-> A message circulated through several foreign ministries today. Every government named in the document denied writing it. Several denied receiving it. None denied reading it.
+> A message circulated through several foreign ministries today. Every government named in the document denies writing or receiving it, and officials across those capitals have already read it.
 
 Effect direction: small world-tension, chaos, and opinion aftershock.
 
@@ -118,7 +118,7 @@ Effect direction: small world-tension, chaos, and opinion aftershock.
 
 Tone: quiet public unease.
 
-> Reporters have noticed embassy staff abandoning front entrances in several capitals. Officials insist the change is procedural. The guards at the front gates have been doubled.
+> Reporters have noticed embassy staff abandoning front entrances in several capitals. Guards now stand in doubled numbers at the front gates, and the staff give no public reason for the change.
 
 Effect direction: small world-tension, chaos, opinion, and AI posture aftershock.
 
@@ -126,7 +126,7 @@ Effect direction: small world-tension, chaos, opinion, and AI posture aftershock
 
 Tone: tension beyond measurement.
 
-> The public measures say the world can grow no more tense. The offices disagree. Clerks still copy new warnings, commanders still ask for clearer orders, newspapers still find darker words.
+> The public measures say the world can grow no more tense. Clerks continue copying new warnings, commanders ask for clearer orders, and newspapers find darker words.
 
 Effect direction: small world-tension, chaos, and opinion aftershock.
 
@@ -134,7 +134,7 @@ Effect direction: small world-tension, chaos, and opinion aftershock.
 
 Tone: markets smell panic.
 
-> Neutral shipping firms have begun rewriting their rates before any government admits danger. It is often said that merchants hear war before diplomats name it.
+> Neutral shipping firms have begun rewriting their rates. Every voyage now carries a surcharge for a war that no capital will name.
 
 Effect direction: small world-tension, chaos, opinion aftershock, and Insurance Market achievement hook.
 
@@ -142,7 +142,7 @@ Effect direction: small world-tension, chaos, opinion aftershock, and Insurance 
 
 Tone: impossible coincidence.
 
-> Two capitals received the same rumour through different channels, with the same phrasing, the same missing signature, and the same urgent warning. Both deny being the source.
+> Two capitals received the same rumour through different channels, with identical phrasing, a missing signature, and the same urgent warning. Neither government can identify where the message began.
 
 Effect direction: world-tension, chaos, and multiple opinion aftershocks.
 
@@ -150,7 +150,7 @@ Effect direction: world-tension, chaos, and multiple opinion aftershocks.
 
 Tone: military fatigue.
 
-> Staff cars were seen outside several ministries long after midnight. Official spokesmen said the meetings were routine. No one asked why routine now requires blackout curtains.
+> Staff cars were seen outside several ministries long after midnight. Spokesmen called the meetings routine, and blackout curtains covered the windows.
 
 Effect direction: world-tension, chaos, opinion, and AI posture pressure.
 
@@ -158,7 +158,7 @@ Effect direction: world-tension, chaos, opinion, and AI posture pressure.
 
 Tone: naval near-miss.
 
-> A naval movement passed without public explanation today. Harbour offices confirmed nothing, denied nothing, and asked newspapers not to print ship names.
+> A naval movement passed without public explanation today. Harbour offices offered no details and asked newspapers not to print ship names.
 
 Effect direction: world-tension, chaos, opinion, and AI posture pressure.
 
@@ -166,7 +166,7 @@ Effect direction: world-tension, chaos, opinion, and AI posture pressure.
 
 Tone: frontier unease.
 
-> Lamps stayed lit along a quiet border through the night. Local commanders blamed weather, then training, then paperwork. None of the explanations satisfied anyone nearby.
+> Lamps stayed lit along a quiet border through the night. Local commanders attributed the display to weather, training, and paperwork. No explanation satisfied anyone nearby.
 
 Effect direction: heavier opinion pressure and possible high-stage safe non-transfer border war.
 
@@ -182,7 +182,7 @@ Effect direction: heavier opinion pressure and possible high-stage safe non-tran
 
 Tone: the last ordinary briefing before extended alert routine.
 
-> The briefing began with ordinary phrasing. It ended with no questions, no jokes, and no one willing to call the day ordinary again.
+> The briefing began with ordinary phrasing and ended with no questions or jokes. No one was willing to call the day ordinary again.
 
 Effect direction: strongest follow-up bundle and the highest high-stage safe border-war chance.
 

@@ -15,7 +15,7 @@ The parent implementation owner should freeze the named source edition in the fi
 | Role | Title | Selected main quote | Speaker or source | Selected button remark |
 | --- | --- | --- | --- | --- |
 | Africa is one | `THE CONTINENT TAKES ITS SEAT` | `building up for themselves a great nation in Africa.` | Marcus Garvey, “Africa for the Africans,” *Negro World*, 22 April 1922; exact fragment witnessed in *Philosophy and Opinions of Marcus Garvey* (1923 collection). | `The continent will answer for itself.` |
-| Scramble response | `THE MAPMAKERS RETURN` | `to enable them, if need be, to make good any claims of their own.` | General Act of the Conference at Berlin, Article 34, 26 February 1885; frozen to Hertslet, *The Map of Africa by Treaty*, 3rd ed., 1909, vol. II, Article XXXIV, printed p. 484. | `This time, Africa answers.` |
+| Scramble response | `THE MAPMAKERS RETURN` | `to enable them, if need be, to make good any claims of their own.` | General Act of the Conference at Berlin, Article 34, 26 February 1885; frozen to Hertslet, *The Map of Africa by Treaty*, 3rd ed., 1909, vol. II, Article XXXIV, printed p. 484. | `Africa answers through its own institutions.` |
 | Continental wars | `CONTINENTS UNDER ARMS` | `War is a mere continuation of policy by other means.` | Carl von Clausewitz, *On War*, Book I, Chapter I, J. J. Graham translation (1874; 1909 London reprint). | `The arguments have reached the front.` |
 | The World | `ONE WORLD REMAINS` | `Nothing beside remains.` | Percy Bysshe Shelley, “Ozymandias,” first published in *The Examiner*, January 1818; frozen to the Hutchinson 1914 edition. | `The last border is an archive.` |
 
@@ -88,7 +88,7 @@ This role is the external response to a sovereign African actor, not a replay of
 - Corroborating and contextual sources: [English treaty transcription](https://www.internationalwaterlaw.org/documents/regionaldocs/1885GeneralActBerlinConference.pdf) and [German Federal Foreign Office archive context](https://archiv.diplo.de/arc-en/the-political-archive/general-act-2684414).
 - Attribution confidence: high. Wording confidence: high for the Hertslet 1909 edition; the earlier web-only translator blocker is closed for wording purposes. Hertslet’s title page says the volume is not an official publication, so the final ledger should identify it as the edition witness rather than claim it is the treaty original.
 - Copyright note: the 1885 act and 1909 edition are public-domain by age with strong confidence, and the Internet Archive record reports no known restrictions. Keep the edition and jurisdiction caveat in the ledger.
-- Recommended original button remark: `This time, Africa answers.`
+- Recommended original button remark: `Africa answers through its own institutions.`
 
 ### Cultural and route fit
 
@@ -171,7 +171,7 @@ The four selected button lines are original Chaos Redux-authored text. They have
 | Role | Selected original line | Why it fits |
 | --- | --- | --- |
 | Africa is one | `The continent will answer for itself.` | A concise declaration of political agency; it does not choose a constitution or ideology. |
-| Scramble response | `This time, Africa answers.` | Reverses the direction of the colonial claim language without celebrating the Berlin conference. |
+| Scramble response | `Africa answers through its own institutions.` | Gives the African actor public agency through the institutions named by the dynamic description. |
 | Continental wars | `The arguments have reached the front.` | Connects Clausewitz’s policy frame to the active front and preserves human stakes. |
 | The World | `The last border is an archive.` | Makes the terminal moment about memory, record, and inheritance rather than extinction. |
 

@@ -71,7 +71,7 @@ Route fit:
 
 ### Closed island-state description
 
-> The gates of the completed island-state have closed behind a society organized for service. Guarded stores, fortified boundaries, assigned districts, and dependent outposts now answer to one stewardship. Foreign missions watch ration columns move with military precision and find no place for refusal inside the system. The state calls its separation complete. Its neighbors see a regional hierarchy held together by reserves, compulsory labor, and checkpoints that govern every road and harbor.
+> The gates of the completed island-state have closed behind a society organized for service. Guarded stores, fortified boundaries, assigned districts, and dependent outposts now answer to one stewardship. Foreign missions watch ration columns move with military precision and find no place for refusal inside the system. Separation governs the state, and reserves, compulsory labor, and checkpoints extend its regional hierarchy along every road and harbor.
 
 Route fit:
 
