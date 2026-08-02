@@ -55,6 +55,8 @@ Farid Nuzha (1894-1970) is a plausible living Assyrian journalist/activist and n
 
 Existing package leads were not reused: Gallo Shabo is project-owned, Barsoum is reserved/promoted for Concordat, Werda/Warda remains low-resolution with unresolved 1936 status, Haydo has unresolved rights, Agha Petros is dead in 1932 and Kaiserreich-owned, Malik Khoshaba/Malik Yaqo/Yusuf Malek/Dawid Mar Shimun/Yosip Khoshaba/Malik Qambar Warda are Kaiserreich-owned, Naum Faiq and Freydun Atoraya fail the 1936 death gate, and unnamed recruits/Cecil Beaton/Toma Tomas fail exact-person or era gates.
 
+Shayin Giwargis Kikkeh (1887-1943) was checked as an additional Levies lead because the Assyrian RAF Levies biography gives a strong 1936 service fit and a 1929-1930 family portrait. Exact Kaiserreich ownership was found at `ASY_shayin_giwargis_kikkeh` in `common/characters/ASY characters.txt`; it is rejected and not reused.
+
 ## Handoff files
 
 - Full evidence manifest: `docs/assets/006_independence_wave/iw058_asy_roster_source_research_2026_08_02/manifest.md`.
