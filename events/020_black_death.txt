@@ -773,7 +773,30 @@ country_event = {
 news_event = {
 	id = chaosx.nr20.90
 	title = chaosx.nr20.90.t
-	desc = chaosx.nr20.90.d
+	desc = {
+		trigger = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.low } }
+		text = chaosx.nr20.90.d.low
+	}
+	desc = {
+		trigger = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.high } }
+		text = chaosx.nr20.90.d.high
+	}
+	desc = {
+		trigger = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+		text = chaosx.nr20.90.d.maximum
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				OR = {
+					check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.low }
+					check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.high }
+					check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.maximum }
+				}
+			}
+		}
+		text = chaosx.nr20.90.d
+	}
 	picture = GFX_report_event_020_black_plague_unbound
 	is_triggered_only = yes
 	minor_flavor = no

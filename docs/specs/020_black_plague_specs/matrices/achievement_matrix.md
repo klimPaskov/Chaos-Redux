@@ -1,5 +1,7 @@
 # Achievement Matrix
 
+> Runtime reconciliation, 2026-08-02: the live achievement registry uses the `020_black_plague_*` IDs and the two-tag lifecycle. `One Crown, Many Tails` counts absorbed RTA brood states through the shared `black_plague_rat_king_absorbed_brood_states` counter. Triggerable scenario launches permanently disqualify ordinary Event 020 achievements. The matrix remains the design contract, while icon triplets, localisation, and tracking helpers are already wired in the live package.
+
 All titles are working labels, not final localisation. Achievement IDs are planning keys that must be checked against the live achievement registry.
 
 | Working ID | Working label | Eligible actor | Unlock conditions | Disqualifiers | Visibility | Difficulty | Tracking needs | Icon direction |
