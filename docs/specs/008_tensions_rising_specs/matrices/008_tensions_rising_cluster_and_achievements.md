@@ -16,7 +16,7 @@
 
 | Event | Role | Member severity | Stage gate | Notes |
 | --- | --- | --- | --- | --- |
-| 8 Tensions Rising | required | medium | Calm World | for now one member, applies normal Event 8 effects |
+| 8 Tensions Rising | required | low | Calm World | for now one member, applies normal Event 8 effects |
 
 ### Cluster story
 

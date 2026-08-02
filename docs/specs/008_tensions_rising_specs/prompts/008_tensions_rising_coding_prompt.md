@@ -28,7 +28,7 @@ Implement or cleanly plan:
 - capped temporary Tension Pulse integrated with existing event timer logic, no new global daily/weekly/monthly loop
 - relation-pair selection with timed opinion modifiers and cooldowns
 - delayed follow-up report/news events
-- optional `Diplomatic Panic` cluster if it can be fully registered and logged with the current member note: for now one member, Event 8, required, medium severity
+- optional `Diplomatic Panic` cluster if it can be fully registered and logged with the current member note: for now one member, Event 8, required, low severity
 - AI posture pressure via valid existing routes only, no direct forced normal war declarations
 - Stage III+ follow-up incidents may start rare safe non-transfer border wars only through strict adjacent-pair checks and cooldowns
 

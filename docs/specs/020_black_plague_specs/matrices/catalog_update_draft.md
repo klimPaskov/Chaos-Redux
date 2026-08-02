@@ -30,7 +30,7 @@ This file records the catalog wording contract for the live Event 020 rows. The 
 | Cluster Name | Diseases |
 | Details | Disease incidents leave persistent outbreaks and population loss, and they force choices over containment, medicine, and biological warfare. |
 | Members | `20` initially |
-| Type | Live registered cluster type for one-time severe disease incidents |
+| Type | Minor Repeatable |
 | Chaos level | planning unlock tier `2`, subject to live cluster balance |
 | Status | Registered and wired; live consumer validation remains user-owned |
 
