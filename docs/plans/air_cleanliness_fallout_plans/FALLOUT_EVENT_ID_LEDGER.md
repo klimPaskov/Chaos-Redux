@@ -1196,3 +1196,15 @@ The chain carries Seat a Youth Council, Reserve Guardian Seats, Constitute a Mix
 The asset evidence is `docs/assets/922_cohorts_first_ballot/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_cohorts_first_ballot`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-922` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_COHORTS_FIRST_BALLOT_CHAIN_PROOF.md`.
+
+## The Quarantine Ultimatum
+
+The Quarantine Ultimatum adds dormant event ids `1051` through `1057` with candidate id `929`, transaction key `710104`, route `7242`, and history `9210`.
+
+The human opening is `1051`, the hidden AI opening is `1052`, the human and hidden AI delayed results are `1053` and `1054`, the human and hidden AI wet-season reviews are `1055` and `1056`, and cleanup is `1057`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a closed Cohort's First Ballot state memory, a current living river or hill gate, current Air Winter and Supply Access receipts, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign neighbor, border legitimacy, inspection pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, witness, generation, Air Winter values, Supply Access, and quarantine ledgers.
+
+The four branches are Accept the Named Controls, Negotiate a Joint Inspection, Defy the Red Line, and Seek Allies Along the Hill Road. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and gate ledgers, resolves after `56` days, schedules the wet-season review after `330` days, applies bounded Deaths failure, writes quarantine and bilateral memories, records Event Log history `9210`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired under the consolidated Fallout asset folder.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_QUARANTINE_ULTIMATUM_CHAIN_PROOF.md`.

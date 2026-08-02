@@ -396,3 +396,15 @@ Successor package production, player materialization, general allocation, countr
 | The Cohort's First Ballot localisation and Event Log | `localisation/english/fallout_world_end_cohorts_first_ballot_l_english.yml`, `common/scripted_localisation/fallout_world_end_cohorts_first_ballot_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Cohort's First Ballot opinion and assets | `common/opinion_modifiers/fallout_cohorts_first_ballot_opinion_modifiers.txt`, `docs/assets/922_cohorts_first_ballot/manifest.md`, `interface/fallout_world_end.gfx`, and `gfx/event_pictures/fallout/report_event_fallout_cohorts_first_ballot.dds` |
 | The Cohort's First Ballot status boundary | dormant source package with four fictional civic-succession branches, hidden AI parity, 77-day result, 450-day election review, bounded Deaths effects, succession and bilateral memories, Event Log history `9209`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Quarantine Ultimatum source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Quarantine Ultimatum design | `docs/specs/air_cleanliness_fallout_specs/specs/106_reviewed_archetype_quarantine_ultimatum.md` |
+| The Quarantine Ultimatum runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_QUARANTINE_ULTIMATUM_CHAIN_PROOF.md` |
+| The Quarantine Ultimatum gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_quarantine_ultimatum_event_triggers.txt`, `common/scripted_effects/fallout_world_end_quarantine_ultimatum_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_quarantine_ultimatum_dynamic_modifiers.txt` |
+| The Quarantine Ultimatum constants and registry | `common/script_constants/fallout_world_end_quarantine_ultimatum_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Quarantine Ultimatum localisation and Event Log | `localisation/english/fallout_world_end_quarantine_ultimatum_l_english.yml`, `common/scripted_localisation/fallout_world_end_quarantine_ultimatum_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Quarantine Ultimatum opinion and assets | `common/opinion_modifiers/fallout_quarantine_ultimatum_opinion_modifiers.txt`, `docs/assets/929_quarantine_ultimatum/manifest.md`, `interface/fallout_world_end.gfx`, and `gfx/event_pictures/fallout/report_event_fallout_quarantine_ultimatum.dds` |
+| The Quarantine Ultimatum status boundary | dormant source package with four fictional quarantine-diplomacy branches, hidden AI parity, 56-day result, 330-day wet-season review, bounded Deaths effects, quarantine and bilateral memories, Event Log history `9210`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

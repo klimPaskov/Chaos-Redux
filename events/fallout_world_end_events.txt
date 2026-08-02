@@ -21501,6 +21501,116 @@ country_event = {
 
 
 
+# Dormant Fallout mutant diplomacy chain: The Quarantine Ultimatum
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.1051
+	title = chaosx.fallout.1051.t
+	desc = chaosx.fallout.1051.opening.d
+	picture = GFX_report_event_fallout_quarantine_ultimatum
+	is_triggered_only = yes
+	trigger = { fallout_event_929_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1051.a
+		trigger = { fallout_event_929_accept_controls_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_929_requested_branch = constant:fallout_event_929_branch.accept_controls } fallout_event_929_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1051.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1051.b
+		trigger = { fallout_event_929_negotiate_inspection_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_929_requested_branch = constant:fallout_event_929_branch.negotiate_inspection } fallout_event_929_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1051.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1051.c
+		trigger = { fallout_event_929_defy_line_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_929_requested_branch = constant:fallout_event_929_branch.defy_line } fallout_event_929_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1051.c.tt
+	}
+	option = {
+		name = chaosx.fallout.1051.d
+		trigger = { fallout_event_929_seek_allies_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_929_requested_branch = constant:fallout_event_929_branch.seek_allies } fallout_event_929_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1051.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1052
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_929_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_929_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1053
+	title = chaosx.fallout.1053.t
+	desc = { text = chaosx.fallout.1053.accept_controls.success.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.accept_controls compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1053.accept_controls.partial.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.accept_controls compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1053.accept_controls.failure.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.accept_controls compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1053.negotiate_inspection.success.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.negotiate_inspection compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1053.negotiate_inspection.partial.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.negotiate_inspection compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1053.negotiate_inspection.failure.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.negotiate_inspection compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1053.defy_line.success.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.defy_line compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1053.defy_line.partial.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.defy_line compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1053.defy_line.failure.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.defy_line compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1053.seek_allies.success.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.seek_allies compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1053.seek_allies.partial.d trigger = { check_variable = { fallout_event_929_selected_branch value = constant:fallout_event_929_branch.seek_allies compare = equals } check_variable = { fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.1053.seek_allies.failure.d
+	picture = GFX_report_event_fallout_quarantine_ultimatum
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_929_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.quarantine_ultimatum_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.1053.a hidden_effect = { fallout_event_929_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.1053.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.1054
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_929_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.quarantine_ultimatum_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_929_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1055
+	title = chaosx.fallout.1055.t
+	desc = { text = chaosx.fallout.1055.success.d trigger = { check_variable = { fallout_event_929_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1055.partial.d trigger = { check_variable = { fallout_event_929_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.1055.failure.d
+	picture = GFX_report_event_fallout_quarantine_ultimatum
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_929_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.quarantine_ultimatum_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_929_registry_is_current = yes }
+	immediate = { fallout_event_929_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.1055.a hidden_effect = { fallout_event_929_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.1055.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.1056
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_929_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.quarantine_ultimatum_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_929_registry_is_current = yes }
+	immediate = { fallout_event_929_calculate_callback_outcome = yes fallout_event_929_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1057
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_929_cleanup_can_enter = yes }
+	immediate = { fallout_event_929_cleanup = yes }
+}
+
+
+
+
+
+
+
+
+
 # Dormant Fallout maritime chain: The Captain's Articles
 # ---------------------------------------------------------------------------
 
