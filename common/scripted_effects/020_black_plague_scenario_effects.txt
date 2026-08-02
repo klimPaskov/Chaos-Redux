@@ -707,6 +707,7 @@ black_plague_triggerable_scenario_launch = {
 	if = {
 		limit = { black_plague_scenario_can_reconcile_from_triggerable_scenarios = yes }
 		set_global_flag = black_plague_triggerable_scenario_bootstrap
+		clr_global_flag = black_plague_triggerable_scenario_setup_failed
 		# A repeat signal is reconciliation-only, but it still has to restore the
 		# configured intensity floor after a save/reload, lost divisions, or a
 		# surviving carrier losing one of its internal basins. Candidate collection
@@ -722,6 +723,10 @@ black_plague_triggerable_scenario_launch = {
 		black_plague_scenario_refresh_shared_threat = yes
 		black_plague_refresh_mapmode_once = yes
 		disease_containment_board_refresh_open_black_plague_boards = yes
+		if = {
+			limit = { NOT = { black_plague_scenario_reconciliation_postcondition_is_ready = yes } }
+			set_global_flag = black_plague_triggerable_scenario_setup_failed
+		}
 		clear_array = global.black_plague_scenario_candidate_states
 		clear_array = global.black_plague_scenario_anchor_states
 		clear_array = global.black_plague_scenario_rat_candidate_states

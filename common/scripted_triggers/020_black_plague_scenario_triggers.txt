@@ -207,6 +207,48 @@ black_plague_scenario_can_reconcile_from_triggerable_scenarios = {
 	NOT = { black_plague_scenario_is_terminally_closed = yes }
 }
 
+# A repeat signal is successful only when the live runtime still satisfies the
+# stored intensity contract. This keeps a degraded save or a failed top-up
+# visible in the scenario UI instead of silently clearing the scoped bypass.
+black_plague_scenario_reconciliation_postcondition_is_ready = {
+	RTA = {
+		black_plague_rat_country_is_active = yes
+		check_variable = {
+			var = black_plague_rat_division_count
+			value = global.black_plague_scenario_rat_division_floor
+			compare = greater_than_or_equals
+		}
+	}
+	RTX = {
+		black_plague_rat_country_is_king = yes
+		check_variable = {
+			var = black_plague_rat_division_count
+			value = global.black_plague_scenario_king_division_floor
+			compare = greater_than_or_equals
+		}
+	}
+	check_variable = {
+		var = global.black_plague_established_state_count
+		value = global.black_plague_scenario_established_target
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_scenario_internal_broods_created
+		value = global.black_plague_scenario_internal_brood_target
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_scenario_king_states_transferred
+		value = global.black_plague_scenario_king_state_target
+		compare = greater_than_or_equals
+	}
+	has_global_flag = black_plague_evolution_i_active
+	has_global_flag = black_plague_evolution_ii_active
+	has_global_flag = black_plague_evolution_iii_active
+	has_global_flag = black_plague_evolution_iv_active
+	has_global_flag = black_plague_rat_king_active
+}
+
 black_plague_scenario_can_start_from_triggerable_scenarios = {
 	NOT = { black_plague_scenario_is_terminally_closed = yes }
 	NOT = { has_global_flag = black_plague_triggerable_scenario_launched }
