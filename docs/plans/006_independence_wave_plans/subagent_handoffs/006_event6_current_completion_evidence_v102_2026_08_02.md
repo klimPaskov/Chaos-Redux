@@ -20,6 +20,8 @@ The MCP probability service lists all 11 weighted-logic adapters. A targeted `ai
 
 The byte-limited result above is historical for focus inspection. A fresh bounded `hoi4.focus_inspect` and `hoi4.focus_render` completed against the same source and tree. The render receipt is `006_event6_focus_render_current_2026_08_03.md`; it reports 184 direct focuses, 223 prerequisite connectors, and 14 blocking diagnostics: 43 connector crossings, 7 node intersections, 28 long connectors, and 5 same-row close pairs. A compact rewrite request was quality-blocked and left the source hash unchanged. The focus tree therefore has a current rendered artifact but remains geometry-blocked; no completion or live validation claim follows.
 
+The narrowed read-only geometry audit `006_event6_focus_geometry_audit_v111_2026_08_03.md` confirms bounded route, prerequisite, icon, localisation, reward, and source-AI coverage, but found no safe isolated coordinate patch; any reflow must be parent-owned and coordinated across the coupled lanes.
+
 ## Fresh source checks
 
 | Check | Result |
