@@ -11,6 +11,7 @@ This tranche adds intensity-aware player-facing text to the existing SCN-012 lau
 - `chaosx.nr20.90` now selects Low, Medium, High, and Maximum launch descriptions from `global.black_plague_scenario_intensity` through the existing `triggerable_scenario_intensity` constants.
 - Any unexpected intensity value retains the existing generic report as a guarded fallback.
 - The descriptions report the live continent, established-state, internal-RTA-basin, and RTX Royal Basin totals without exposing implementation-history wording.
+- A repeat SCN-012 signal now performs an idempotent intensity reconciliation before refreshing the shared disease board: it recounts established states, fills missing internal RTA brood markers, tops up the RTX Royal Basin, and restores the configured RTA/RTX division floors. Temporary candidate arrays, reservation flags, and reconciliation counters are cleared before ordinary pulses resume.
 
 ## Source-of-truth changes
 
@@ -22,6 +23,7 @@ This tranche adds intensity-aware player-facing text to the existing SCN-012 lau
 ## Validation
 
 - Focused `hoi4_event_inspect` lint on `chaosx.nr20.90` returned `status: ok`, no blockers, and zero blocking diagnostics. The adapter still reports its documented workspace-wide helper/lifecycle deferral.
+- Static inspection of `common/scripted_effects/020_black_plague_scenario_effects.txt` after the reconciliation change found balanced blocks, no unsupported comparison operators, and a clean scoped diff.
 - Touched scripts and localisation retain balanced blocks, no unsupported comparison operators, and UTF-8 BOM localisation encoding.
 
 ## Remaining boundary
