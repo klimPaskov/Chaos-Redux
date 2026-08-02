@@ -2,6 +2,14 @@
 
 The imported `common/national_focus/006_independence_wave*.txt` sources define the one shared Event 006 focus tree, `independence_wave_focus_tree` (318 resolved focus blocks: 184 regular `focus = {}` nodes declared in the main tree and 134 package or regional nodes resolved through `shared_focus` imports). The shared count is an import surface inside the same tree, not 134 additional country trees. Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
 
+| Source surface | Direct `focus` blocks | `shared_focus` blocks | Role |
+| --- | ---: | ---: | --- |
+| `006_independence_wave_focus.txt` | 184 | 23 | Main tree declaration and shared roots |
+| `006_independence_wave_iw043_iw058_focus.txt` | 0 | 48 | Volga/Assyria package modules |
+| `006_independence_wave_iw093_iw098_focus.txt` | 0 | 43 | Asante/Sokoto package modules |
+| `006_independence_wave_pacific_focus.txt` | 0 | 20 | Pacific package modules |
+| **Resolved total** | **184** | **134** | **One `independence_wave_focus_tree`** |
+
 ## Assignment contract
 
 `common/scripted_effects/006_independence_wave_focus_effects.txt` is the sole assignment surface. A full-framework assignment sets `independence_wave_full_focus_framework` and `independence_wave_generic_focus_tree_assigned`, then loads `independence_wave_focus_tree`. An additive assignment never calls `load_focus_tree`; it sets `independence_wave_additive_focus_overlay` and `independence_wave_generic_focus_overlay_assigned` only after a package has registered a reviewed owning carrier. `common/scripted_triggers/006_independence_wave_focus_triggers.txt` exposes `has_independence_wave_generic_focus_contract` for validators and downstream loaders.
