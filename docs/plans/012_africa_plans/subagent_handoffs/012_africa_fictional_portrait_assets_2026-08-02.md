@@ -2,7 +2,7 @@
 
 Date: 2026-08-02.
 
-This asset tranche creates six fictional, supernatural, or nonhuman leader-portrait subassets for existing Event 012 controlled-pool rows. It adds only the dormant `.gfx` sprite registration; it does not add a country tag, cosmetic tag, character, model, entity, focus, decision, localisation key, or workbook row.
+This asset tranche creates six fictional, supernatural, or nonhuman leader-portrait subassets for existing Event 012 controlled-pool rows. The v2 pass replaces the visually repetitive formal-court treatment with six distinct absurd silhouettes while retaining the vanilla HOI4 head-and-shoulders crop and plain background. All six current generated identities are male-presenting or explicitly nonhuman; no female character was generated. It adds only the dormant `.gfx` sprite registration; it does not add a country tag, cosmetic tag, character, model, entity, focus, decision, localisation key, or workbook row.
 
 ## Asset map
 
@@ -17,9 +17,9 @@ This asset tranche creates six fictional, supernatural, or nonhuman leader-portr
 
 ## Production and review evidence
 
-The built-in ImageGen source masters, processed 156x210 PNGs, DDS hashes, prompt pairs, contact sheet, and visual review are retained under the ignored asset workspace `docs/assets/012_africa_world_order/` and `docs/assets/portraits/012_africa_world_order/`. The machine-readable manifest is `docs/assets/012_africa_world_order/manifests/012_africa_world_order_fictional_portraits_manifest.json`.
+The built-in ImageGen v2 source masters, processed 156x210 PNGs, DDS hashes, prompt pairs, source/decoded contact sheets, and visual review are retained under the ignored asset workspace `docs/assets/012_africa_world_order/` and `docs/assets/portraits/012_africa_world_order/`. The machine-readable manifest is `docs/assets/012_africa_world_order/manifests/012_africa_world_order_fictional_portraits_manifest.json`.
 
-All six images are one centered figure on a plain matte background in a restrained HOI4 painted treatment. They contain no councils, committees, crowds, readable text, watermarks, modern props, or real historical/ethnic identity. Pan's rejected photoreal/CGI draft remains excluded from the package.
+The v2 visual identities are deliberately non-interchangeable: Pan is a horned forest trickster with a reed-and-bronze spiral crown; Gorilla Kingdom is a massive gorilla with a jagged stone crown and carved basalt gorget; The Green is a bark guardian with a vermilion eye band and seedling clasp; Living Rivers is a liquid face with a wave mantle and copper throat eddy; Stoneborn is a basalt-and-ore sovereign with amber fissures and a geode throat; Ancient Hosts is a colossal slate host with a white spiral brow mark and shoulder monoliths. They contain no councils, committees, crowds, readable text, watermarks, modern props, or real historical/ethnic identity. Pan's rejected photoreal/CGI draft remains excluded from the package.
 
 ## Runtime boundary
 

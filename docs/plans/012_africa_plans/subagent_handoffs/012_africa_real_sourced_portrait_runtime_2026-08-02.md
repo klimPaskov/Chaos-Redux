@@ -37,7 +37,7 @@ Current runtime DDS hashes are:
 
 ## Held rows and simplifications
 
-Buganda remains review-only. The available Mutesa II source is a shadowed 145x195 third-from-left crop in a four-kings group photograph, and the repaint sharpens uniform insignia that cannot be proven from that crop. Its generated runtime portrait and generic Kabaka localisation remain unchanged.
+Buganda remains review-only. The available Mutesa II source is a shadowed 145x195 third-from-left crop in a four-kings group photograph, and the repaint sharpens uniform insignia that cannot be proven from that crop. A separate Daudi Cwa II plate from Jules Leclercq's 1913 *Aux sources du Nil* is retained as an evidence-only alternative: the named Kabaka is visibly seated on an ornate throne with a patterned cap, robe/cape, broad sash, and white staff, and the exact source crop is verified. It still needs the source-locked repaint and independent review gates before any DDS or runtime use. Its generated runtime portrait and generic Kabaka localisation remain unchanged.
 
 Asante remains blocked: Prempeh II is already owned by Event 006, while the locally retained Prempeh I candidate still needs independent identity confirmation. Sokoto, Luba, and Lunda remain rights/provenance review cases. Oyo, Manden, Aksum, Kilwa, Nubia, and Great Zimbabwe remain source-gap cases. The Zulu row remains actor-gated as Dinuzulu kaCetshwayo only; it is not a Solomon kaDinuzulu substitution. The twelve remaining held rows therefore retain the existing generated source mode; no unsupported lion head, spear, ritual mask, face paint, crown, or animal regalia was added to them.
 
