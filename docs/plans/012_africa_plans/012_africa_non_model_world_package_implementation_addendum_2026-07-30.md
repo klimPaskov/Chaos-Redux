@@ -2,15 +2,23 @@
 
 Date: 2026-07-30
 
-Status: Proposed bounded implementation addendum
+Status: Implemented through W4 at source level. W5 remains an unresolved accepted tranche promoted to `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md`.
 
 Owner: Main Event 012 implementation agent
 
 Planner ownership: Design only
 
+## Current disposition (2026-08-02)
+
+The W0 readiness and shared-lane repairs, W1 constituent protocol, W2 six package loops, W3 four grounded sponsorship modes, and W4 union, war, successor, breakup, and terminal lifecycle now have current source callsites. The corresponding handoffs and the current `docs/events/012_africa/world_order.md` document are implementation evidence only and do not prove live acceptance.
+
+W5 remains unresolved. The initial all-six certification trigger and atomic setter for `africa_world_package_implementation_ready` are absent. A successor continuity path may copy an existing readiness flag to a reviewed successor, but that path is not initial W5 certification. `africa_the_world_super_event_package_ready` remains unset. No models, new tags, external package readiness claims, or live-consumer completion claims are made here.
+
+The final integration and acceptance owner is `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md`. This July 30 addendum is retained as the design and implementation record for W0-W4 and is no longer a second active design authority.
+
 ## 1. Decision
 
-One bounded improvement pass is still useful.
+The bounded improvement pass defined here is implemented through W4 at source level. The unresolved W5 integration and acceptance work remains in the final 2026-08-01 addendum.
 
 The roster foundation, thirty-two external focus AI plans, thirty-nine complete flag ladders, one hundred twenty-one focus icons, and thirty-eight idea icons have closed the old registration and visual-production gaps.
 
@@ -24,17 +32,17 @@ It does not reopen the Event 012 host package, the Scramble response itself, Eve
 
 ## 2. Prior addendum check and disposition
 
-No unresolved Event 012 improvement addendum covers this exact post-foundation gap.
+This addendum was the accepted design layer for the post-foundation W0-W4 implementation tranche. Its current disposition is `implemented through W4`.
 
 `docs/plans/012_africa_plans/subagent_handoffs/012_africa_world_package_completion_audit_2026-07-29.md` remains an accepted audit queue, not an improvement addendum.
 
-This addendum narrows that audit to executable non-model work after the roster, AI-plan, flag, and icon tranches.
+The addendum narrowed that audit to executable non-model work after the roster, AI-plan, flag, and icon tranches. The source implementation is now recorded in the W0-W4 handoffs and current runtime files.
 
 The closure recommendation in `docs/specs/012_africa_specs/handoffs/012_africa_improvement_loop_closure_review.md` required another loop only after a meaningful implementation tranche.
 
 That condition is satisfied by the current roster foundation, thirty-two focus AI plans, thirty-nine flag ladders, and one hundred fifty-nine icon assets.
 
-Do not request another improvement-loop pass for this package until this addendum is implemented, promoted into the source specification, explicitly queued with a reason, or rejected with a reason.
+Do not request another improvement-loop pass for this package while W5 remains unresolved in the final integration addendum. Promote accepted W0-W4 facts into the source specification only after parent review.
 
 ## 3. Accepted foundations
 
@@ -801,7 +809,7 @@ Do not edit the exported CSV files directly.
 
 ## 18. Bounded implementation tranches
 
-### W0. Readiness and Shared-Lane Proof Repair
+### W0. Readiness and Shared-Lane Proof Repair — Source-implemented
 
 Dependencies: Current six focus trees, committed icon registration in `07bb51901`, and the flag handoff.
 
@@ -822,7 +830,7 @@ Exit proof:
 - No focus or idea uses a fallback sprite.
 - A capstone cannot complete on the actor alone.
 
-### W1. Constituent Agency and Package Ratification Protocol
+### W1. Constituent Agency and Package Ratification Protocol — Source-implemented
 
 Dependencies: W0 and roster foundation.
 
@@ -842,7 +850,7 @@ Exit proof:
 - Coerced members never satisfy voluntary quorum.
 - No response leaves a stale target or pending count.
 
-### W2. Six Distinct Polity Play Loops
+### W2. Six Distinct Polity Play Loops — Source-implemented
 
 Dependencies: W1 and all six grounded focus routes.
 
@@ -862,7 +870,7 @@ Exit proof:
 - Every capstone requires the package's own crisis and shared-lane proof.
 - All six packages are playable by AI and by a human actor.
 
-### W3. Four-Mode Sponsorship Diplomacy
+### W3. Four-Mode Sponsorship Diplomacy — Source-implemented
 
 Dependencies: W1 and W2.
 
@@ -881,7 +889,7 @@ Exit proof:
 - Refusal does not install or subordinate the candidate.
 - Every obligation closes its target arrays and flags on fulfilment, default, actor loss, or terminal cleanup.
 
-### W4. Union, War, Succession, Breakup, and Terminal Lifecycle
+### W4. Union, War, Succession, Breakup, and Terminal Lifecycle — Source-implemented
 
 Dependencies: W1 through W3.
 
@@ -906,7 +914,7 @@ Exit proof:
 - Peaceful unanimous union and last-standing war routes are separately provable.
 - `africa_the_world_super_event_package_ready` remains unset.
 
-### W5. AI, Localisation, Asset Verification, Documentation, and Atomic Gate Promotion
+### W5. AI, Localisation, Asset Verification, Documentation, and Atomic Gate Promotion — Unresolved 2026-08-01 tranche
 
 Dependencies: W0 through W4 complete with no accepted simplification.
 
@@ -1091,6 +1099,6 @@ On acceptance, merge the state model, IDs, lifecycle rules, AI behavior, exact c
 
 After promotion, mark this plan as promoted or superseded rather than leaving a second active source of truth.
 
-When W0 through W5 are implemented, all audits pass, all delivered assets are wired, the workbook is aligned, and the final super-event readiness dependency is either completed or explicitly remains the sole blocker, the improvement loop should stop.
+W0 through W4 have source callsites, but W5 remains unresolved because the initial all-six certification receipts, AI and localisation acceptance, asset verification, documentation promotion, and atomic readiness gate are not complete. The improvement loop should stop only after the final addendum's W5 work and required audits are resolved or explicitly blocked by the parent.
 
 At that point the parent should write a closure handoff limited to final localisation review, asset handoff verification, task-specific scenario validation, audit reruns, and terminal super-event readiness.
