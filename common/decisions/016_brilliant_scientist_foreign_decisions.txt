@@ -323,6 +323,49 @@ brilliant_scientist_foreign_operations_category = {
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_assassination_weight }
 	}
 
+	brilliant_scientist_foreign_build_counter_program = {
+		icon = GFX_decision_generic_research
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_counter_program_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_build_counter_program_target = yes }
+			}
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_foreign_cost.counter_program_support_equipment } }
+		}
+		cost = constant:brilliant_scientist_foreign_cost.counter_program_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.counter_program_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_counter_program_effect_tt
+			hidden_effect = {
+				add_equipment_to_stockpile = {
+					type = support_equipment
+					amount = constant:brilliant_scientist_foreign_cost.counter_program_support_equipment_spend
+				}
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.counter_program }
+				brilliant_scientist_foreign_start_operation = yes
+				brilliant_scientist_foreign_prepare_project_target = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_counter_program_weight }
+	}
+
 	brilliant_scientist_foreign_public_challenge = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = brilliant_scientist_foreign_host_targets

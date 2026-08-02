@@ -285,6 +285,10 @@ brilliant_scientist_foreign_finish_operation = {
 			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge } }
 			add_to_array = { array = brilliant_scientist_foreign_public_challenge_resolved_targets value = event_target:brilliant_scientist_foreign_operation_host }
 		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.counter_program } }
+			add_to_array = { array = brilliant_scientist_foreign_counter_program_resolved_targets value = event_target:brilliant_scientist_foreign_operation_host }
+		}
 	}
 	clr_country_flag = brilliant_scientist_foreign_operation_live
 	clr_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
@@ -349,6 +353,11 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt } }
 		set_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.assassination_attempt_base }
 		set_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.assassination_attempt_base }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.counter_program } }
+		set_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.counter_program_base }
+		set_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.counter_program_base }
 	}
 
 	if = {
@@ -489,6 +498,10 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 	if = {
 		limit = { is_in_array = { array = brilliant_scientist_foreign_recruitment_success_targets value = event_target:brilliant_scientist_foreign_operation_host } }
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.prior_recruitment }
+	}
+	if = {
+		limit = { is_in_array = { array = brilliant_scientist_foreign_countermeasure_targets value = event_target:brilliant_scientist_foreign_operation_host } }
+		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.countermeasure_previous }
 	}
 	if = {
 		limit = { has_country_flag = brilliant_scientist_foreign_prior_operation_failed }
@@ -989,6 +1002,35 @@ brilliant_scientist_foreign_apply_assassination_result = {
 	}
 }
 
+# COUNTRY scope on the actor. A counter-Kruger programme records the exact
+# family it studied and gives later operations against the same host a bounded
+# intelligence advantage without copying the host's project stage or reward.
+brilliant_scientist_foreign_apply_counter_program_result = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } }
+		set_country_flag = brilliant_scientist_foreign_countermeasure_ready
+		add_to_array = { array = brilliant_scientist_foreign_countermeasure_targets value = event_target:brilliant_scientist_foreign_operation_host }
+		add_to_array = { array = brilliant_scientist_foreign_countermeasure_families value = brilliant_scientist_foreign_selected_project_family }
+		event_target:brilliant_scientist_foreign_operation_host = {
+			if = {
+				limit = { event_target:brilliant_scientist_foreign_operation_actor = { check_variable = { brilliant_scientist_foreign_last_operation_detected > constant:brilliant_scientist_value.zero } } }
+				set_country_flag = brilliant_scientist_foreign_counter_program_detected
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+				brilliant_scientist_change_exposure = yes
+				brilliant_scientist_change_grievance = yes
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } }
+		set_country_flag = brilliant_scientist_foreign_countermeasure_partial
+		event_target:brilliant_scientist_foreign_operation_host = {
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+			brilliant_scientist_change_exposure = yes
+		}
+	}
+}
+
 # COUNTRY scope on the actor. Dispatches all covert result contracts.
 brilliant_scientist_foreign_apply_covert_result = {
 	if = {
@@ -1018,6 +1060,10 @@ brilliant_scientist_foreign_apply_covert_result = {
 	else_if = {
 		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt } }
 		brilliant_scientist_foreign_apply_assassination_result = yes
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.counter_program } }
+		brilliant_scientist_foreign_apply_counter_program_result = yes
 	}
 }
 
@@ -1362,6 +1408,10 @@ brilliant_scientist_foreign_fire_actor_report = {
 		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge } }
 		country_event = { id = chaosx.nr16.191 }
 	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.counter_program } }
+		country_event = { id = chaosx.nr16.194 }
+	}
 }
 
 # COUNTRY scope on the actor. A detected operation gives the host a response
@@ -1402,6 +1452,10 @@ brilliant_scientist_foreign_dispatch_covert_events = {
 		else_if = {
 			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt } }
 			event_target:brilliant_scientist_foreign_operation_host = { country_event = { id = chaosx.nr16.180 } }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.counter_program } }
+			event_target:brilliant_scientist_foreign_operation_host = { country_event = { id = chaosx.nr16.193 } }
 		}
 	}
 	else = { brilliant_scientist_foreign_fire_actor_report = yes }
