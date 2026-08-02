@@ -4,7 +4,9 @@ Updated: 2026-08-02 after the Event 006 v96 whole-event completion audit, the IW
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
-The current whole-event authority is `subagent_handoffs/006_event6_completion_audit_v96_2026_08_02.md` (commit `9926f6d55`). It supersedes v33 and earlier completion matrices for current disposition while preserving their dated evidence. Its static verdict remains partial: fourteen packages are attested, 180 selectable rows remain unattested, focus/probability inspection is limited by `SCAN_BYTE_LIMIT`, CAT/FORM-07 remains fail-closed, `6001` remains rights-blocked, and no new package admission or fallback is authorized.
+The current whole-event authority is `subagent_handoffs/006_event6_completion_audit_v97_2026_08_02.md`. It supersedes v96 and earlier completion matrices for current disposition while preserving their dated evidence. Its static verdict remains partial: fourteen packages are attested, 179 non-overlay rows remain unattested, focus/probability inspection remains tool-limited, CAT/FORM-07 remains fail-closed for content readiness, `6001` remains rights-blocked, and no new package admission or fallback is authorized.
+
+The v97 authority supersedes any downstream line in this packet that still calls v96 current. The corrected count is 206 total registry rows minus 13 overlay-only rows, yielding 193 non-overlay rows, of which fourteen are attested and 179 remain unattested.
 
 The 2026-08-02 ASY Barsoum v93 audit now passes identity/likeness, HOI4 leader style/framing, provenance, and the PD-1923/1921 rights/date basis with a low-resolution group-photo caveat. Parent follow-up v94 promotes only the existing concordat-council DDS consumer; no GFX, character, localisation, advisor, or small-portrait promotion occurred, so IW-058 remains outside the fourteen-package attestation set.
 
