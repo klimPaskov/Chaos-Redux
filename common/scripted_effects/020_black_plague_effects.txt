@@ -944,6 +944,18 @@ black_plague_refresh_current_state_modifier = {
 		set_variable = { black_plague_modifier_resistance = constant:black_plague_modifier.rat_resistance }
 		set_variable = { black_plague_modifier_compliance = constant:black_plague_modifier.rat_compliance }
 	}
+	if = {
+		limit = { has_state_flag = black_plague_rat_king_population_preserved }
+		add_to_variable = { black_plague_modifier_resistance = constant:black_plague_rat_population_policy.preserve_resistance_factor }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_rat_king_population_selective_target }
+		add_to_variable = { black_plague_modifier_resistance = constant:black_plague_rat_population_policy.selective_resistance_factor }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_rat_king_population_emptied }
+		add_to_variable = { black_plague_modifier_resistance = constant:black_plague_rat_population_policy.empty_resistance_factor }
+	}
 
 	set_variable = { black_plague_modifier_local_resources = black_plague_modifier_local_supplies }
 	set_temp_variable = { black_plague_modifier_scale = black_plague_load }
@@ -1582,6 +1594,10 @@ black_plague_process_current_state_pulse = {
 
 		add_to_variable = { black_plague_phase_days = constant:black_plague_timing.pulse_days }
 		black_plague_apply_current_phase_growth = yes
+		# Rat King population policy is a state-level modifier on the shared
+		# disease pulse. It runs before response and exact mortality so a policy
+		# changes the same nonlinear transaction used by every other actor.
+		black_plague_rat_apply_king_population_policy = yes
 		if = {
 			limit = {
 				NOT = { black_plague_state_is_threatened = yes }
