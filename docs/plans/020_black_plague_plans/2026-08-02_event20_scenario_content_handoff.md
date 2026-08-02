@@ -17,6 +17,7 @@ This tranche adds intensity-aware player-facing text to the existing SCN-012 lau
 - `catalog_update_draft.md` now records the live workbook rows for Event 020, Diseases cluster `8`, and SCN-012, with `Needs Testing` remaining the user-owned validation status.
 - `achievement_matrix.md` now records the live `020_black_plague_*` registry and the two-tag absorbed-brood counter used by `One Crown, Many Tails`.
 - `event_chain_map.md` now records the live `.4` neighboring-threat allocation and `.90` SCN-012 report allocation, plus the RTA/RTX replacement for historical multi-tag wording.
+- The last legacy `GetBlackDeathContinent`/`global.black_death_continent` surface was retired. The compatibility `chaosx.news.21` description now uses canonical mainland wording, so the weighted single-origin implementation is the only Event 020 origin contract.
 
 ## Validation
 
