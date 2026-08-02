@@ -1,5 +1,7 @@
 # Event 006 shared focus re-audit - 2026-07-28
 
+> **Superseded for current geometry routing (2026-08-03):** This dated re-audit preserves the restored pre-reflow layout and its 14-diagnostic hold. Use `006_focus_geometry_reflow_parent_2026_08_02.md` for the current source-clean geometry receipt and retain this body only as historical traceability.
+
 ## Status and scope
 
 This is a read-only re-audit of the restored Event 006 shared focus framework. No gameplay, localisation, icon, plan, or source file was patched, and no file was staged or committed. The current geometry remains blocked by the same coupled layout diagnostics recorded in the 2026-07-26 geometry handoff.

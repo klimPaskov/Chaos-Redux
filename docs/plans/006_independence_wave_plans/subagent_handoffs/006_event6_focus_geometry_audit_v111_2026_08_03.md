@@ -1,5 +1,7 @@
 # Event 006 generic focus geometry audit v111
 
+> **Superseded for current geometry routing (2026-08-03):** This read-only audit preserves its 14-diagnostic pre-reflow layout and route-coverage evidence. The parent-owned reflow receipt `006_focus_geometry_reflow_parent_2026_08_02.md` and current completion evidence v102 supersede its layout disposition for current routing. Do not rewrite the dated measurements below.
+
 Date: 2026-08-03.
 
 Scope: read-only audit of the single Event 006 generic focus tree, its three shared-focus modules, route coverage, prerequisite and mutual-exclusion semantics, icons, localisation, rewards, AI hooks, and the current MCP layout diagnostics.
