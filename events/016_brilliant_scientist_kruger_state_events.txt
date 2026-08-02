@@ -477,3 +477,83 @@ country_event = {
 		event_target:brilliant_scientist_krg_foreign_actor = { brilliant_scientist_refresh_world_threat_source = yes }
 	}
 }
+
+# Internal route-staff handoff. The command-lifecycle effects own route
+# selection and call this event only after the matching command idea and active
+# flag have been written. Recruitment stays in an event so the fixed roster is
+# assigned synchronously without duplicating Kruger's office-holder role.
+country_event = {
+	id = chaosx.brilliant_scientist_krg.90
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_general_active
+				NOT = { has_country_flag = brilliant_scientist_krg_staff_general_recruited }
+			}
+			if = { limit = { NOT = { has_character = KRG_general_staff_office } } recruit_character = KRG_general_staff_office }
+			set_country_flag = brilliant_scientist_krg_staff_general_recruited
+		}
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_general_active
+				has_character = KRG_general_staff_office
+				NOT = { KRG_general_staff_office = { is_hired_as_advisor = yes } }
+			}
+			activate_advisor = KRG_general_staff_office
+		}
+
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_machine_active
+				NOT = { has_country_flag = brilliant_scientist_krg_staff_machine_recruited }
+			}
+			if = { limit = { NOT = { has_character = KRG_machine_command_node } } recruit_character = KRG_machine_command_node }
+			set_country_flag = brilliant_scientist_krg_staff_machine_recruited
+		}
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_machine_active
+				has_character = KRG_machine_command_node
+				NOT = { KRG_machine_command_node = { is_hired_as_advisor = yes } }
+			}
+			activate_advisor = KRG_machine_command_node
+		}
+
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_clone_active
+				NOT = { has_country_flag = brilliant_scientist_krg_staff_clone_recruited }
+			}
+			if = { limit = { NOT = { has_character = KRG_clone_officer_corps } } recruit_character = KRG_clone_officer_corps }
+			set_country_flag = brilliant_scientist_krg_staff_clone_recruited
+		}
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_clone_active
+				has_character = KRG_clone_officer_corps
+				NOT = { KRG_clone_officer_corps = { is_hired_as_advisor = yes } }
+			}
+			activate_advisor = KRG_clone_officer_corps
+		}
+
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_council_active
+				NOT = { has_country_flag = brilliant_scientist_krg_staff_council_recruited }
+			}
+			if = { limit = { NOT = { has_character = KRG_project_command_council } } recruit_character = KRG_project_command_council }
+			set_country_flag = brilliant_scientist_krg_staff_council_recruited
+		}
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_krg_staff_council_active
+				has_character = KRG_project_command_council
+				NOT = { KRG_project_command_council = { is_hired_as_advisor = yes } }
+			}
+			activate_advisor = KRG_project_command_council
+		}
+	}
+}

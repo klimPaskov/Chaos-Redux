@@ -1,0 +1,114 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 FORMER-HOST RECOVERY TRIGGERS
+# ============================================================================
+# The recovery board is available only to the viable country that hosted
+# Kruger before a departure or Kruger-State formation. State targets remain
+# ordinary owned former laboratory states; no stale global target is required.
+# ============================================================================
+
+# COUNTRY scope. The former host may recover after a clean departure, exile,
+# transfer, or Kruger-State formation, but never while it still hosts Kruger or
+# after a terminal world-end state.
+brilliant_scientist_former_host_recovery_actor = {
+	exists = yes
+	has_capitulated = no
+	has_country_flag = brilliant_scientist_former_host
+	has_country_flag = brilliant_scientist_kruger_departed
+	NOT = { has_country_flag = brilliant_scientist_current_host }
+	NOT = { has_country_flag = brilliant_scientist_kruger_state }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_country_flag = brilliant_scientist_former_host_recovery_closed }
+	capital_scope = { is_controlled_by = ROOT }
+	any_owned_state = {
+		is_owned_and_controlled_by = PREV
+		OR = {
+			has_state_flag = brilliant_scientist_former_primary_facility
+			has_state_flag = brilliant_scientist_former_secondary_facility
+			has_state_flag = brilliant_scientist_directorate_site_shuttered
+			has_variable = brilliant_scientist_facility_type
+		}
+	}
+}
+
+# COUNTRY scope. The board is closed only when all four receipts have been
+# recorded or when a terminal state makes recovery impossible.
+brilliant_scientist_former_host_recovery_board_open = {
+	brilliant_scientist_former_host_recovery_actor = yes
+	OR = {
+		AND = {
+			NOT = { has_country_flag = brilliant_scientist_recovery_research_reconstructed }
+			NOT = { has_country_flag = brilliant_scientist_recovery_research_failed }
+		}
+		AND = {
+			NOT = { has_country_flag = brilliant_scientist_recovery_archive_secured }
+			NOT = { has_country_flag = brilliant_scientist_recovery_archive_lost }
+		}
+		AND = {
+			NOT = { has_country_flag = brilliant_scientist_recovery_amnesty_granted }
+			NOT = { has_country_flag = brilliant_scientist_recovery_amnesty_failed }
+		}
+		AND = {
+			NOT = { has_country_flag = brilliant_scientist_recovery_inspection_completed }
+			NOT = { has_country_flag = brilliant_scientist_recovery_inspection_failed }
+		}
+	}
+}
+
+brilliant_scientist_former_host_recovery_is_terminal = {
+	AND = {
+		OR = { has_country_flag = brilliant_scientist_recovery_research_reconstructed has_country_flag = brilliant_scientist_recovery_research_failed }
+		OR = { has_country_flag = brilliant_scientist_recovery_archive_secured has_country_flag = brilliant_scientist_recovery_archive_lost }
+		OR = { has_country_flag = brilliant_scientist_recovery_amnesty_granted has_country_flag = brilliant_scientist_recovery_amnesty_failed }
+		OR = { has_country_flag = brilliant_scientist_recovery_inspection_completed has_country_flag = brilliant_scientist_recovery_inspection_failed }
+	}
+}
+
+# COUNTRY scope. Separate from the public board gate so in-progress decisions
+# can cancel cleanly without awarding a reward twice.
+brilliant_scientist_former_host_recovery_action_is_idle = {
+	NOT = { has_country_flag = brilliant_scientist_recovery_research_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_recovery_archive_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_recovery_amnesty_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_recovery_inspection_in_progress }
+}
+
+# STATE scope with ROOT as the former-host country. A recoverable archive must
+# still be owned, controlled, supplied through a node, and carry an Event 016
+# facility receipt. The state flag prevents a second reward from one archive.
+brilliant_scientist_former_host_recovery_archive_state = {
+	is_owned_and_controlled_by = ROOT
+	supply_node > constant:brilliant_scientist_recovery_cost.secure_archive_supply_node_gate
+	OR = {
+		has_state_flag = brilliant_scientist_former_primary_facility
+		has_state_flag = brilliant_scientist_former_secondary_facility
+		has_state_flag = brilliant_scientist_directorate_site_shuttered
+		has_variable = brilliant_scientist_facility_type
+	}
+	NOT = { has_state_flag = brilliant_scientist_recovery_archive_secured }
+	NOT = { has_state_flag = brilliant_scientist_recovery_archive_lost }
+}
+
+brilliant_scientist_former_host_recovery_has_assistants = {
+	OR = {
+		has_country_flag = brilliant_scientist_research_cohort_recruited
+		has_country_flag = brilliant_scientist_university_research_network_chartered
+		has_country_flag = brilliant_scientist_exile_scholar_network_established
+	}
+}
+
+brilliant_scientist_former_host_recovery_has_foreign_access = {
+	OR = {
+		has_country_flag = brilliant_scientist_foreign_observer_contact
+		has_country_flag = brilliant_scientist_foreign_protection_framework_active
+		has_country_flag = brilliant_scientist_joint_laboratory_framework_active
+		is_in_faction = yes
+	}
+}
+
+brilliant_scientist_former_host_recovery_is_complete = {
+	check_variable = {
+		var = brilliant_scientist_former_host_recovery_progress
+		value = constant:brilliant_scientist_recovery_cost.recovery_progress_required
+		compare = greater_than_or_equals
+	}
+}

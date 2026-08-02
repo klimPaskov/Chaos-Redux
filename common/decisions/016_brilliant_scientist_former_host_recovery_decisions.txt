@@ -1,0 +1,187 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 FORMER-HOST RECOVERY DECISIONS
+# ============================================================================
+# Four one-time actions answer the post-Kruger recovery contract: rebuild an
+# independent research bench, secure one named archive state, split surviving
+# assistants, and invite an inspection compact. Every action consumes concrete
+# capacity or materiel, records success or failure, and feeds the same hidden
+# recovery progress that can retire Scientific Vacuum.
+# ============================================================================
+
+@CR_SC_BRILLIANT_SCIENTIST_RECOVERY_RESEARCH_FACTORIES = 3
+@CR_SC_BRILLIANT_SCIENTIST_RECOVERY_ARCHIVE_FACTORIES = 2
+@CR_SC_BRILLIANT_SCIENTIST_RECOVERY_AMNESTY_FACTORIES = 2
+@CR_SC_BRILLIANT_SCIENTIST_RECOVERY_INSPECTION_FACTORIES = 3
+
+brilliant_scientist_former_host_recovery_category = {
+	brilliant_scientist_reconstruct_independent_research = {
+		icon = GFX_decision_generic_operation
+		fire_only_once = yes
+		cancel_if_not_visible = yes
+		visible = {
+			brilliant_scientist_former_host_recovery_board_open = yes
+			NOT = { has_country_flag = brilliant_scientist_recovery_research_reconstructed }
+			NOT = { has_country_flag = brilliant_scientist_recovery_research_failed }
+		}
+		available = {
+			brilliant_scientist_former_host_recovery_action_is_idle = yes
+			brilliant_scientist_former_host_recovery_has_assistants = yes
+			has_country_flag = brilliant_scientist_research_cohort_recruited
+			has_equipment = { support_equipment > constant:brilliant_scientist_recovery_cost.reconstruct_research_support_gate }
+			has_manpower > constant:brilliant_scientist_recovery_cost.reconstruct_research_manpower_gate
+		}
+		cost = constant:brilliant_scientist_recovery_cost.reconstruct_research_pp
+		days_remove = constant:brilliant_scientist_recovery_timing.reconstruct_research_days
+		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_RECOVERY_RESEARCH_FACTORIES }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_recovery_research_in_progress
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_recovery_cost.reconstruct_research_support_spend }
+			add_manpower = constant:brilliant_scientist_recovery_cost.reconstruct_research_manpower_spend
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_former_host_recovery_actor = yes }
+				NOT = { brilliant_scientist_former_host_recovery_has_assistants = yes }
+			}
+		}
+		cancel_effect = { brilliant_scientist_fail_recovery_research = yes }
+		remove_effect = {
+			brilliant_scientist_recover_independent_research = yes
+			custom_effect_tooltip = brilliant_scientist_reconstruct_independent_research_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_recovery_ai.reconstruct_base
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.public_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.secret_factor has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.war_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_secure_abandoned_archive = {
+		icon = GFX_decision_generic_operation
+		fire_only_once = yes
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_former_host_recovery_board_open = yes
+			NOT = { has_country_flag = brilliant_scientist_recovery_archive_secured }
+			NOT = { has_country_flag = brilliant_scientist_recovery_archive_lost }
+		}
+		target_trigger = { FROM = { brilliant_scientist_former_host_recovery_archive_state = yes } }
+		visible = {
+			brilliant_scientist_former_host_recovery_board_open = yes
+			NOT = { has_country_flag = brilliant_scientist_recovery_archive_secured }
+			NOT = { has_country_flag = brilliant_scientist_recovery_archive_lost }
+		}
+		available = {
+			brilliant_scientist_former_host_recovery_action_is_idle = yes
+			has_equipment = { support_equipment > constant:brilliant_scientist_recovery_cost.secure_archive_support_gate }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_recovery_cost.secure_archive_truck_gate }
+		}
+		cost = constant:brilliant_scientist_recovery_cost.secure_archive_pp
+		days_remove = constant:brilliant_scientist_recovery_timing.secure_archive_days
+		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_RECOVERY_ARCHIVE_FACTORIES }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_recovery_archive_in_progress
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_recovery_cost.secure_archive_support_spend }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:brilliant_scientist_recovery_cost.secure_archive_truck_spend }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_former_host_recovery_actor = yes }
+				FROM = { NOT = { brilliant_scientist_former_host_recovery_archive_state = yes } }
+			}
+		}
+		cancel_effect = { brilliant_scientist_fail_recovery_archive = yes }
+		remove_effect = {
+			brilliant_scientist_secure_abandoned_archive = yes
+			custom_effect_tooltip = brilliant_scientist_secure_abandoned_archive_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_recovery_ai.secure_archive_base
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.war_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_offer_amnesty_to_assistants = {
+		icon = GFX_decision_generic_political_discourse
+		fire_only_once = yes
+		cancel_if_not_visible = yes
+		visible = {
+			brilliant_scientist_former_host_recovery_board_open = yes
+			NOT = { has_country_flag = brilliant_scientist_recovery_amnesty_granted }
+			NOT = { has_country_flag = brilliant_scientist_recovery_amnesty_failed }
+		}
+		available = {
+			brilliant_scientist_former_host_recovery_action_is_idle = yes
+			brilliant_scientist_former_host_recovery_has_assistants = yes
+			has_equipment = { support_equipment > constant:brilliant_scientist_recovery_cost.offer_amnesty_support_gate }
+			has_manpower > constant:brilliant_scientist_recovery_cost.offer_amnesty_manpower_gate
+		}
+		cost = constant:brilliant_scientist_recovery_cost.offer_amnesty_pp
+		days_remove = constant:brilliant_scientist_recovery_timing.offer_amnesty_days
+		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_RECOVERY_AMNESTY_FACTORIES }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_recovery_amnesty_in_progress
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_recovery_cost.offer_amnesty_support_spend }
+			add_manpower = constant:brilliant_scientist_recovery_cost.offer_amnesty_manpower_spend
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_former_host_recovery_actor = yes }
+				NOT = { brilliant_scientist_former_host_recovery_has_assistants = yes }
+			}
+		}
+		cancel_effect = { brilliant_scientist_fail_recovery_amnesty = yes }
+		remove_effect = {
+			brilliant_scientist_offer_amnesty_to_assistants = yes
+			custom_effect_tooltip = brilliant_scientist_offer_amnesty_to_assistants_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_recovery_ai.offer_amnesty_base
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.public_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.war_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_request_international_inspection = {
+		icon = GFX_decision_generic_political_discourse
+		fire_only_once = yes
+		cancel_if_not_visible = yes
+		visible = {
+			brilliant_scientist_former_host_recovery_board_open = yes
+			NOT = { has_country_flag = brilliant_scientist_recovery_inspection_completed }
+			NOT = { has_country_flag = brilliant_scientist_recovery_inspection_failed }
+		}
+		available = {
+			brilliant_scientist_former_host_recovery_action_is_idle = yes
+			brilliant_scientist_former_host_recovery_has_foreign_access = yes
+			has_equipment = { support_equipment > constant:brilliant_scientist_recovery_cost.international_inspection_support_gate }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_recovery_cost.international_inspection_truck_gate }
+		}
+		cost = constant:brilliant_scientist_recovery_cost.international_inspection_pp
+		days_remove = constant:brilliant_scientist_recovery_timing.international_inspection_days
+		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_RECOVERY_INSPECTION_FACTORIES }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_recovery_inspection_in_progress
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_recovery_cost.international_inspection_support_spend }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:brilliant_scientist_recovery_cost.international_inspection_truck_spend }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_former_host_recovery_actor = yes }
+				NOT = { brilliant_scientist_former_host_recovery_has_foreign_access = yes }
+			}
+		}
+		cancel_effect = { brilliant_scientist_fail_recovery_inspection = yes }
+		remove_effect = {
+			brilliant_scientist_complete_international_inspection = yes
+			custom_effect_tooltip = brilliant_scientist_request_international_inspection_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_recovery_ai.international_inspection_base
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.foreign_contact_factor brilliant_scientist_former_host_recovery_has_foreign_access = yes }
+			modifier = { factor = constant:brilliant_scientist_recovery_ai.war_factor has_war = yes }
+		}
+	}
+}

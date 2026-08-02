@@ -1195,28 +1195,71 @@ brilliant_scientist_weaponize_inherited_portfolio = {
 	add_ideas = brilliant_scientist_weaponized_project_portfolio
 }
 
+brilliant_scientist_krg_reset_command_staff = {
+	# Route ideas are mutually exclusive. Clear the previous institutional
+	# choice before the next route writes its idea and activates its office.
+	if = { limit = { has_idea = brilliant_scientist_fragmented_command } remove_ideas = brilliant_scientist_fragmented_command }
+	if = { limit = { has_idea = brilliant_scientist_general_staff_command } remove_ideas = brilliant_scientist_general_staff_command }
+	if = { limit = { has_idea = brilliant_scientist_machine_command_network } remove_ideas = brilliant_scientist_machine_command_network }
+	if = { limit = { has_idea = brilliant_scientist_clone_officer_corps } remove_ideas = brilliant_scientist_clone_officer_corps }
+	if = { limit = { has_idea = brilliant_scientist_project_council_command } remove_ideas = brilliant_scientist_project_council_command }
+	if = { limit = { has_idea = brilliant_scientist_project_armies_in_rivalry } remove_ideas = brilliant_scientist_project_armies_in_rivalry }
+	if = {
+		limit = { has_character = KRG_general_staff_office }
+		if = { limit = { KRG_general_staff_office = { is_hired_as_advisor = yes } } deactivate_advisor = KRG_general_staff_office }
+	}
+	if = {
+		limit = { has_character = KRG_machine_command_node }
+		if = { limit = { KRG_machine_command_node = { is_hired_as_advisor = yes } } deactivate_advisor = KRG_machine_command_node }
+	}
+	if = {
+		limit = { has_character = KRG_clone_officer_corps }
+		if = { limit = { KRG_clone_officer_corps = { is_hired_as_advisor = yes } } deactivate_advisor = KRG_clone_officer_corps }
+	}
+	if = {
+		limit = { has_character = KRG_project_command_council }
+		if = { limit = { KRG_project_command_council = { is_hired_as_advisor = yes } } deactivate_advisor = KRG_project_command_council }
+	}
+	clr_country_flag = brilliant_scientist_krg_staff_general_active
+	clr_country_flag = brilliant_scientist_krg_staff_machine_active
+	clr_country_flag = brilliant_scientist_krg_staff_clone_active
+	clr_country_flag = brilliant_scientist_krg_staff_council_active
+}
+
 brilliant_scientist_establish_general_staff_command = {
+	brilliant_scientist_krg_reset_command_staff = yes
 	if = { limit = { has_idea = brilliant_scientist_fragmented_command } remove_ideas = brilliant_scientist_fragmented_command }
 	if = { limit = { has_idea = brilliant_scientist_project_armies_in_rivalry } remove_ideas = brilliant_scientist_project_armies_in_rivalry }
 	add_ideas = brilliant_scientist_general_staff_command
+	set_country_flag = brilliant_scientist_krg_staff_general_active
+	country_event = { id = chaosx.brilliant_scientist_krg.90 }
 }
 
 brilliant_scientist_establish_machine_command = {
+	brilliant_scientist_krg_reset_command_staff = yes
 	if = { limit = { has_idea = brilliant_scientist_fragmented_command } remove_ideas = brilliant_scientist_fragmented_command }
 	if = { limit = { has_idea = brilliant_scientist_project_armies_in_rivalry } remove_ideas = brilliant_scientist_project_armies_in_rivalry }
 	add_ideas = brilliant_scientist_machine_command_network
+	set_country_flag = brilliant_scientist_krg_staff_machine_active
+	country_event = { id = chaosx.brilliant_scientist_krg.90 }
 }
 
 brilliant_scientist_establish_clone_officer_corps = {
+	brilliant_scientist_krg_reset_command_staff = yes
 	if = { limit = { has_idea = brilliant_scientist_fragmented_command } remove_ideas = brilliant_scientist_fragmented_command }
 	if = { limit = { has_idea = brilliant_scientist_project_armies_in_rivalry } remove_ideas = brilliant_scientist_project_armies_in_rivalry }
 	add_ideas = brilliant_scientist_clone_officer_corps
+	set_country_flag = brilliant_scientist_krg_staff_clone_active
+	country_event = { id = chaosx.brilliant_scientist_krg.90 }
 }
 
 brilliant_scientist_establish_project_council_command = {
+	brilliant_scientist_krg_reset_command_staff = yes
 	if = { limit = { has_idea = brilliant_scientist_fragmented_command } remove_ideas = brilliant_scientist_fragmented_command }
 	if = { limit = { has_idea = brilliant_scientist_project_armies_in_rivalry } remove_ideas = brilliant_scientist_project_armies_in_rivalry }
 	add_ideas = brilliant_scientist_project_council_command
+	set_country_flag = brilliant_scientist_krg_staff_council_active
+	country_event = { id = chaosx.brilliant_scientist_krg.90 }
 }
 
 brilliant_scientist_establish_conventional_supply = {

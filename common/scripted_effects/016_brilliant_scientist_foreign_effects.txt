@@ -431,7 +431,7 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 	if = {
 		limit = {
 			check_variable = { brilliant_scientist_foreign_operation_is_diplomatic > constant:brilliant_scientist_value.zero }
-			has_same_ideology = event_target:brilliant_scientist_foreign_operation_host
+			event_target:brilliant_scientist_foreign_operation_host = { has_same_ideology = yes }
 		}
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.same_ideology_diplomatic }
 	}
@@ -465,7 +465,7 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 	}
 	if = {
 		limit = {
-			NOT = { has_same_ideology = event_target:brilliant_scientist_foreign_operation_host }
+			NOT = { event_target:brilliant_scientist_foreign_operation_host = { has_same_ideology = yes } }
 			check_variable = { brilliant_scientist_foreign_operation_is_diplomatic < constant:brilliant_scientist_value.one }
 		}
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.ideological_rival_hostile }
