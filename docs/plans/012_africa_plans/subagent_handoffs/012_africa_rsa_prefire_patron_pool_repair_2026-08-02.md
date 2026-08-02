@@ -20,8 +20,9 @@ Generic African hosts retain the existing contact-pool and weight path unchanged
 
 ## Expected behavior
 
-- Original SAF with a valid bounded patron remains selectable and can reach the shared RSA entry route.
+- Original SAF with a valid bounded patron is eligible for weighted selection, subject to the existing random three-to-five-contact freeze and final RSA gate.
 - Original SAF without a valid patron is excluded before weighted selection, so another eligible generic host may be selected instead.
+- If the random freeze omits the possible patron, the final gate rejects SAF and the new cleanup branch clears the frozen roster so a later explicit attempt is not poisoned by stale state.
 - If no eligible host remains, the fire-once event stays closed rather than creating an invalid host or inventing a fallback tag.
 - The existing frozen-roster and post-dispatch RSA gates remain authoritative.
 

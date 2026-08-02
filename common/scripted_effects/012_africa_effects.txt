@@ -292,6 +292,14 @@ africa_prepare_random_event_fire = {
 			}
 			set_temp_variable = { africa_prefire_ready = constant:africa_value.one }
 		}
+		else_if = {
+			limit = { has_event_target = africa_prefire_host }
+			# A rejected frozen roster must not poison a later explicit fire
+			# attempt with stale contact flags or an old patron count.
+			event_target:africa_prefire_host = {
+				africa_clear_frozen_first_contact_context = yes
+			}
+		}
 	}
 }
 
