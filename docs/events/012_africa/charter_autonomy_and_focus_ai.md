@@ -103,6 +103,7 @@ Focus-local route and live-state behavior remains centralized in the existing Ev
 - No autonomy state may allow automatic `can_take_level` or `can_lose_level` behavior.
 - A member may enter either state only after the matching consent flags are present.
 - A member may keep either state only while its recorded host generation matches the committed current host generation.
+- Departure terms use the same committed-host and current-generation gate, so a member cannot open a withdrawal negotiation during a stale host-target transition.
 - A member leaving the Charter must not remain in an Event 12 subject state.
 - A route plan must abort when its constitution or host identity is no longer current.
 
