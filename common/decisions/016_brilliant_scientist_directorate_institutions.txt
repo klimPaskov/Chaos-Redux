@@ -874,4 +874,331 @@ brilliant_scientist_directorate_category = {
 			modifier = { factor = constant:brilliant_scientist_directorate_ai.blocked brilliant_scientist_control_is_compromised = yes }
 		}
 	}
+
+	brilliant_scientist_award_national_science_chair = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_university_research_network_chartered
+			NOT = { has_country_flag = brilliant_scientist_institutional_appointment_method_selected }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_institutional_appointment_in_progress }
+			NOT = { brilliant_scientist_control_is_lost = yes }
+			has_political_power > constant:brilliant_scientist_institutional_appointments.national_chair_pp
+			has_equipment = { support_equipment > constant:brilliant_scientist_institutional_appointments.national_chair_support_gate }
+			has_manpower > constant:brilliant_scientist_institutional_appointments.national_chair_manpower_gate
+		}
+		cost = constant:brilliant_scientist_institutional_appointments.national_chair_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.national_chair_days
+		fire_only_once = yes
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_MEDIUM_CONSUMER_GOODS
+			production_factory_efficiency_gain_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_MEDIUM_EFFICIENCY
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_institutional_appointment_in_progress
+			add_manpower = constant:brilliant_scientist_institutional_appointments.national_chair_manpower_spend
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_institutional_appointments.national_chair_support_spend
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				brilliant_scientist_control_is_lost = yes
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_institutional_appointment_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_institutional_appointment_in_progress
+			set_country_flag = brilliant_scientist_institutional_appointment_method_selected
+			set_country_flag = brilliant_scientist_national_chair_awarded
+			add_dynamic_modifier = { modifier = brilliant_scientist_national_chair }
+			custom_effect_tooltip = brilliant_scientist_award_national_science_chair_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.national_chair_mandate }
+				brilliant_scientist_change_mandate = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.national_chair_dependence }
+				brilliant_scientist_change_dependence = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.national_chair_exposure }
+				brilliant_scientist_change_exposure = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.national_chair_capacity }
+				brilliant_scientist_change_project_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.national_chair_independent_capacity }
+				brilliant_scientist_change_independent_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.national_chair_grievance }
+				brilliant_scientist_change_grievance = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_rotate_grants_among_institutions = {
+		icon = GFX_decision_generic_research
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_university_research_network_chartered
+			NOT = { has_country_flag = brilliant_scientist_institutional_appointment_method_selected }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_institutional_appointment_in_progress }
+			NOT = { brilliant_scientist_control_is_lost = yes }
+			has_political_power > constant:brilliant_scientist_institutional_appointments.grant_rotation_pp
+			has_equipment = { support_equipment > constant:brilliant_scientist_institutional_appointments.grant_rotation_support_gate }
+			has_manpower > constant:brilliant_scientist_institutional_appointments.grant_rotation_manpower_gate
+		}
+		cost = constant:brilliant_scientist_institutional_appointments.grant_rotation_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.grant_rotation_days
+		fire_only_once = yes
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_LIGHT_CONSUMER_GOODS
+			production_factory_efficiency_gain_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_LIGHT_EFFICIENCY
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_institutional_appointment_in_progress
+			add_manpower = constant:brilliant_scientist_institutional_appointments.grant_rotation_manpower_spend
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_institutional_appointments.grant_rotation_support_spend
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				brilliant_scientist_control_is_lost = yes
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_institutional_appointment_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_institutional_appointment_in_progress
+			set_country_flag = brilliant_scientist_institutional_appointment_method_selected
+			set_country_flag = brilliant_scientist_grants_rotated
+			add_dynamic_modifier = { modifier = brilliant_scientist_grant_rotation }
+			custom_effect_tooltip = brilliant_scientist_rotate_grants_among_institutions_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.grant_rotation_dependence }
+				brilliant_scientist_change_dependence = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.grant_rotation_capacity }
+				brilliant_scientist_change_project_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.grant_rotation_independent_capacity }
+				brilliant_scientist_change_independent_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.grant_rotation_grievance }
+				brilliant_scientist_change_grievance = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_host_archetype_refugee }
+		}
+	}
+
+	brilliant_scientist_let_kruger_select_institutions = {
+		icon = GFX_decision_generic_research
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_university_research_network_chartered
+			NOT = { has_country_flag = brilliant_scientist_institutional_appointment_method_selected }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_institutional_appointment_in_progress }
+			NOT = { brilliant_scientist_control_is_lost = yes }
+			has_political_power > constant:brilliant_scientist_institutional_appointments.kruger_selection_pp
+			has_equipment = { support_equipment > constant:brilliant_scientist_institutional_appointments.kruger_selection_support_gate }
+			has_manpower > constant:brilliant_scientist_institutional_appointments.kruger_selection_manpower_gate
+		}
+		cost = constant:brilliant_scientist_institutional_appointments.kruger_selection_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.kruger_institution_selection_days
+		fire_only_once = yes
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_MEDIUM_CONSUMER_GOODS
+			production_factory_efficiency_gain_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_MEDIUM_EFFICIENCY
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_institutional_appointment_in_progress
+			add_manpower = constant:brilliant_scientist_institutional_appointments.kruger_selection_manpower_spend
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_institutional_appointments.kruger_selection_support_spend
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				brilliant_scientist_control_is_lost = yes
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_institutional_appointment_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_institutional_appointment_in_progress
+			set_country_flag = brilliant_scientist_institutional_appointment_method_selected
+			set_country_flag = brilliant_scientist_kruger_selected_institutions
+			add_dynamic_modifier = { modifier = brilliant_scientist_kruger_selected_institutions }
+			custom_effect_tooltip = brilliant_scientist_let_kruger_select_institutions_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.kruger_selection_mandate }
+				brilliant_scientist_change_mandate = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.kruger_selection_dependence }
+				brilliant_scientist_change_dependence = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.kruger_selection_exposure }
+				brilliant_scientist_change_exposure = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.kruger_selection_capacity }
+				brilliant_scientist_change_project_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.kruger_selection_independent_capacity }
+				brilliant_scientist_change_independent_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_appointments.kruger_selection_grievance }
+				brilliant_scientist_change_grievance = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = fascism }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = communism }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_host_archetype_militarized }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_country_flag = brilliant_scientist_host_archetype_university }
+		}
+	}
+
+	brilliant_scientist_protect_dissenting_scientists = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_institution_established
+			NOT = { has_country_flag = brilliant_scientist_dissent_protected }
+			NOT = { has_country_flag = brilliant_scientist_ethics_chair_dismissed }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_institutional_conflict_in_progress }
+			NOT = { brilliant_scientist_control_is_lost = yes }
+			has_political_power > constant:brilliant_scientist_institutional_conflict.protect_dissent_pp
+			has_equipment = { support_equipment > constant:brilliant_scientist_institutional_conflict.protect_dissent_support_gate }
+			has_manpower > constant:brilliant_scientist_institutional_conflict.protect_dissent_manpower_gate
+		}
+		cost = constant:brilliant_scientist_institutional_conflict.protect_dissent_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.institutional_conflict_days
+		fire_only_once = yes
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_LIGHT_CONSUMER_GOODS
+			production_factory_efficiency_gain_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_LIGHT_EFFICIENCY
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_institutional_conflict_in_progress
+			add_manpower = constant:brilliant_scientist_institutional_conflict.protect_dissent_manpower_spend
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_institutional_conflict.protect_dissent_support_spend
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				brilliant_scientist_control_is_lost = yes
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_institutional_conflict_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_institutional_conflict_in_progress
+			set_country_flag = brilliant_scientist_dissent_protected
+			add_dynamic_modifier = { modifier = brilliant_scientist_protected_dissent }
+			custom_effect_tooltip = brilliant_scientist_protect_dissenting_scientists_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.protect_dissent_mandate }
+				brilliant_scientist_change_mandate = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.protect_dissent_dependence }
+				brilliant_scientist_change_dependence = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.protect_dissent_exposure }
+				brilliant_scientist_change_exposure = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.protect_dissent_capacity }
+				brilliant_scientist_change_project_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.protect_dissent_independent_capacity }
+				brilliant_scientist_change_independent_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.protect_dissent_grievance }
+				brilliant_scientist_change_grievance = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_host_archetype_university }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_host_archetype_refugee }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_dismiss_ethics_chair = {
+		icon = GFX_decision_generic_research
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_institution_established
+			NOT = { has_country_flag = brilliant_scientist_dissent_protected }
+			NOT = { has_country_flag = brilliant_scientist_ethics_chair_dismissed }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_institutional_conflict_in_progress }
+			NOT = { brilliant_scientist_control_is_lost = yes }
+			has_political_power > constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_pp
+			has_equipment = { support_equipment > constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_support_gate }
+		}
+		cost = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.institutional_conflict_days
+		fire_only_once = yes
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_LIGHT_CONSUMER_GOODS
+			production_factory_efficiency_gain_factor = @CR_SC_BRILLIANT_SCIENTIST_DIRECTORATE_MODIFIER_CONSTRUCTION_LIGHT_EFFICIENCY
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_institutional_conflict_in_progress
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_support_spend
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				brilliant_scientist_control_is_lost = yes
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_institutional_conflict_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_institutional_conflict_in_progress
+			set_country_flag = brilliant_scientist_ethics_chair_dismissed
+			add_dynamic_modifier = { modifier = brilliant_scientist_ethics_chair_dismissed }
+			custom_effect_tooltip = brilliant_scientist_dismiss_ethics_chair_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_mandate }
+				brilliant_scientist_change_mandate = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_dependence }
+				brilliant_scientist_change_dependence = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_exposure }
+				brilliant_scientist_change_exposure = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_capacity }
+				brilliant_scientist_change_project_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_independent_capacity }
+				brilliant_scientist_change_independent_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_institutional_conflict.dismiss_ethics_chair_grievance }
+				brilliant_scientist_change_grievance = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = fascism }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = communism }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_country_flag = brilliant_scientist_public_science_council_established }
+		}
+	}
 }
