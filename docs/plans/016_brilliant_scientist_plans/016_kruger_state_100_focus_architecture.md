@@ -2,7 +2,7 @@
 
 Date: 2026-07-16
 
-Status: accepted architecture implemented in the Event 016 focus tranche. All 180 focus-produced contracts have executable consumers; the implementation handoff and consumer ledger record the exact downstream wiring. Bespoke focus-icon production and an engine render remain outstanding.
+Status: accepted architecture implemented in the Event 016 focus tranche. All 180 focus-produced contracts have executable consumers; the implementation handoff and consumer ledger record the exact downstream wiring. All 100 focus icon DDS files are present in the runtime asset folder; engine render and parent visual acceptance remain outstanding.
 
 ## Fixed implementation contract
 
