@@ -19,7 +19,7 @@ registry or central asset ledger:
 | --- | --- | --- | --- | --- | --- |
 | IW-184 | California | Event 006 `HBX` | Level 2 | state 378 | full Event 006 tree plus a bespoke Pacific branch |
 | IW-173 | Hawai'i | registered vanilla `HAW` | Level 2 | state 629 | full Event 006 tree plus a bespoke seven-focus Hawaiian shared group |
-| IW-179 | Micronesia | registered vanilla `FSM` | Level 1 | state 684 | additive decisions and ideas; owning tree preserved |
+| IW-179 | Micronesia | registered vanilla `FSM` | Level 1 | state 684 | shared generic tree plus additive package decisions and ideas |
 
 The accepted registry, corrected FORM-48 plan, installed-map bindings, and
 force map align on these IDs. California is the exact carrier candidate.
@@ -212,7 +212,9 @@ separate explicit invitation and frozen consent ledger.
 
 ### IW-179 Micronesia
 
-Micronesia also preserves its registered tag, history, and owning focus tree.
+Micronesia preserves its registered tag and history. Vanilla `FSM` exposes only
+the non-meaningful `generic_focus` tree, so the package loads the shared Event
+006 generic tree rather than replacing a meaningful existing country tree.
 Its Scattered Island Authority crisis uses an Inter-Island Authority ledger.
 An inter-island revenue congress, patrol relay network, and former-
 administration settlement raise the ledger from 25 toward the stable threshold
@@ -462,8 +464,9 @@ The package audit should cover at least:
 3. Dormant exact IW-173 `HAW` with `generic_focus` receives its anchor, full
    Event 006 tree, and Hawaiian focus group while retaining David Kalakaua
    Kawananakoa and its alternate vanilla leaders. A meaningful non-generic or
-   non-Event-006 HAW remains untouched. Exact `FSM` receives its additive
-   package and Event 006 congress chair without a tree replacement.
+   non-Event-006 HAW remains untouched. Exact `FSM` receives the same shared
+   generic tree, its additive package surfaces, and the Event 006 congress chair
+   without replacing a meaningful tree.
 4. Living or externally reserved `HAW`, `FSM`, or `HBX` fails the exact
    availability wrapper before release.
 5. State 629, 684, or 378 reserved by another release system removes only the
@@ -481,8 +484,8 @@ The package audit should cover at least:
     reveal only after the exact HBX route gate is true.
 11. Cleanup removes package and FORM-48 runtime state, restores HAW's generic
     tree only from exact IW-173's active Event 006 tree, preserves every HAW
-    political leader and FSM's owning tree, and retires only the exact Event
-    006 HBX/FSM origin characters.
+    political leader and keeps the shared generic framework on FSM, and retires
+    only the exact Event 006 HBX/FSM origin characters.
 12. The HBX, HAW, and FSM portrait sprites resolve to the three asset-lane DDS
     files, remain male large portraits, and have no adviser or small-icon
     consumer. HAW's consumer is the admitted Samuel Wilder King role; FSM's

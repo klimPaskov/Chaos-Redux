@@ -10,9 +10,13 @@ Country-package implementation references are grouped by region. See the [Northe
 
 The reusable tag and region contract is documented in [Country API and regional carrier map](country_api.md). Later events should consume these `chaosx_country_*` collections and origin-gated dispatchers instead of inventing another carrier for a country already represented by Event 006.
 
-## Controlling acceptance authority (2026-08-02, v96)
+## Generic focus-tree decision (2026-08-02)
 
-The latest whole-event completion authority is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_completion_audit_v96_2026_08_02.md`. It supersedes v33 and earlier whole-event completion matrices for current disposition while preserving their dated findings as historical evidence. Its verdict is **partial and blocked**. No package is newly admitted, and no fallback or unauthorized simplification is accepted.
+Every admitted Event 006 release uses the one shared `independence_wave_focus_tree` generic framework. Its survival, government, economy, military, diplomacy/host, regional, network/league, formable, and high-chaos lanes write the shared visible ledgers and are adapted by package metadata and gated regional modules inside the same tree. Existing meaningful carrier trees are preserved through a reviewed additive overlay. Bespoke country focus trees and live/in-game testing are outside the current scope. The assignment and fail-closed validation contract is documented in [generic focus tree](systems/generic_focus_tree.md).
+
+## Controlling acceptance authority (2026-08-02, v98)
+
+The latest whole-event completion authority is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_narrowed_generic_focus_completion_audit_v98_2026_08_02.md`. It supersedes v97, v33, and earlier whole-event completion matrices for current disposition while preserving their dated findings as historical evidence. Its verdict is **partial and blocked** for the whole event, while the narrowed one-tree focus contract is a static PASS. No package is newly admitted, and no fallback or unauthorized simplification is accepted.
 
 Event 006 completion is judged from source and static evidence. Repository source inspection, MCP inspections, transaction and source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static package capacity, incomplete packages and formables, asset gaps, focus diagnostics, `6001` rights, unreachable source routes, missing AI/source proof, and unwired content remain blockers where listed below.
 
@@ -48,9 +52,9 @@ This loop is source-closed and does not change the current fourteen-package atte
 
 The implementation handoff is `../../plans/006_independence_wave_plans/subagent_handoffs/006_evolution_incident_resolution_core_2026_08_01.md`.
 
-## Current runtime admission and package boundary (2026-08-02)
+## Current runtime admission and package boundary (2026-08-02; v96 historical evidence)
 
-The latest whole-event completion authority is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_completion_audit_v96_2026_08_02.md`. It records a **partial and blocked** disposition, supersedes v33 and earlier whole-event snapshots for current routing, and admits no new package or fallback. The exact compile-time content-attestation set is IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-018 ARX Sardinia, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California. These fourteen packages span thirteen compatible reservation groups and fourteen distinct anchors; IW-018 is admitted by `006_iw018_arx_postwire_package_audit_v78_2026_08_01.md`. Bounded package-audit limitations, including the v66 COR limitations, do not close the whole-event gate.
+The v96 completion authority remains dated evidence; the v98 authority above governs current routing. It records a **partial and blocked** disposition, admits no new package or fallback, and preserves the same exact compile-time content-attestation set: IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-018 ARX Sardinia, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California. These fourteen packages span thirteen compatible reservation groups and fourteen distinct anchors; IW-018 is admitted by `006_iw018_arx_postwire_package_audit_v78_2026_08_01.md`. Bounded package-audit limitations, including the v66 COR limitations, do not close the whole-event gate.
 
 IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-179 FSM, IW-030 MNT, IW-177 FIJ, and IW-014 CAT remain **HOLD / fail-closed** outside this attestation set with their current sourced-roster, role, identity/flag, formable, or shared-focus evidence blockers. The shared IW-046 CHU overlay row remains unadmitted as well. No custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier portraits, or small derivatives are authorized.
 
