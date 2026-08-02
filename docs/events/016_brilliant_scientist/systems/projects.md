@@ -169,11 +169,11 @@ Weaponization certification leaves `brilliant_scientist_singularity_arming_state
 
 No missing sprite is registered or referenced. New projects intentionally reuse registered Chaos Redux or vanilla special-project icons that match their facility class. The decision layer uses existing generic research and operation icons.
 
-Dedicated project art remains a separate asset task. Stable future keys are the exact `GFX_<project_id>` keys listed in the Event 016 reuse identifier map, plus one family-card key `GFX_brilliant_scientist_project_<family>`. Their eventual DDS files should live under `gfx/interface/special_project/016_brilliant_scientist/` and be registered in an Event 016 project-specific `.gfx` file. Nothing in this tranche claims those assets already exist.
+Dedicated project art is present for the live portfolio. The sixteen special-project cards are `161x98` DDS files under `gfx/interface/special_project/project_icons/016_brilliant_scientist/`, the sixty family-stage decision cards are `32x32` DDS files under `gfx/interface/decisions/016_brilliant_scientist/projects/`, and `interface/016_brilliant_scientist_project_icons.gfx` registers both sets. The exact sprite-to-consumer ledger and processing evidence are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_project_icon_asset_handoff.md`. These cards are presentation-only and do not change project prerequisites, costs, or rewards.
 
 ## Future plans
 
-- Produce and register dedicated project and family-card art, then replace only the intentional registered-icon reuse.
+- Keep the sixteen special-project and sixty family-stage cards aligned with any future project-id additions; do not silently substitute a generic icon for a newly introduced family or stage.
 - Add exact bespoke unit and equipment production packages if a later parent-owned tranche expands the authorized surface. The current operational technologies strengthen existing formations and create no free materiel.
 - Add KRG focus and AI consumers for the family-specific `*_military_package_ready` flags.
 - Connect a separately authorized Singularity arming process to the guarded preparation contract.
