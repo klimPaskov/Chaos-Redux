@@ -12,7 +12,7 @@ This bounded non-model tranche adds one dedicated aftermath report scene for the
 | --- | --- | --- |
 | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_aftermath_remnant.dds` | `GFX_report_event_016_brilliant_scientist_aftermath_remnant` | `chaosx.nr16.301`, `.303`, and `.310` through `.318` |
 
-The source master remains in the ignored asset workspace under `docs/assets/016_brilliant_scientist/report_news_expansion/source_masters/aftermath/`. The processed preview and evidence DDS remain alongside it. The runtime DDS is `210x176` uncompressed 32-bit BGRA with the existing Event 016 report header contract and exact size `147968` bytes.
+The source master remains in the ignored asset workspace under `docs/assets/016_brilliant_scientist/report_news_expansion/source_masters/aftermath/`. The processed preview and evidence DDS remain alongside it. The runtime DDS is `210x176` uncompressed 32-bit BGRA with the existing Event 016 report header contract and exact size `147968` bytes. It was reprocessed through the standard sepia report-card pipeline on 2026-08-02 so its transparent corners, tilt, shadow, and sepia channels match the accepted report contract.
 
 ## Presentation boundary
 

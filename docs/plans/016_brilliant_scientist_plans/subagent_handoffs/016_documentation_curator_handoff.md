@@ -2,6 +2,8 @@
 
 Date: 2026-07-14
 
+> Superseded continuation note (2026-08-01): this handoff is historical evidence from the pre-core-runtime reconciliation. Its default-disabled and incomplete-runtime statements must not override `016_core_runtime_handoff_map.md` or the current continuation handoff. No files are deleted.
+
 Mode: documentation-only reconciliation. No gameplay, localisation, image, audio, spreadsheet, or shared-registry file was edited.
 
 ## Result
@@ -41,7 +43,7 @@ The previous Event 016 visible-ID range 88 through 93 is superseded. Live Event 
 
 ### Implementation state
 
-- Event 016 remains default-disabled and gameplay-incomplete.
+- At the 2026-07-14 cutoff, Event 016 remained default-disabled and gameplay-incomplete. This is historical evidence superseded by the current core-runtime map.
 - The six-package super-event text research is complete as research, but images, final descriptions, localisation, triggers, shared identifiers, presentation registration, and runtime wiring remain incomplete.
 - Five severe later-stage portrait package families remain required. The xenobiological-or-alien family retains its evidence-gated subvariants.
 
@@ -101,7 +103,7 @@ The previous Event 016 visible-ID range 88 through 93 is superseded. Live Event 
 - Super-event images, final descriptions, localisation, triggers, and presentation wiring are incomplete.
 - Stage I through IV static and animated portrait production is incomplete despite pre-registered filename contracts.
 - Persistent character assignment and the wider Event 016 gameplay package are incomplete.
-- Event 016 remains default-disabled.
+- The 2026-07-14 package remained default-disabled at that cutoff. Current enablement is governed by the core-runtime map.
 - External redistribution rights for the Stage 0 copied base remain unresolved.
 - Event 020 still declares visible IDs 85 through 87 that collide with live Event 015 selectors. Resolving that external collision is outside this Event 016 documentation-only scope.
 - Spreadsheet alignment remains pending final in-game wording.

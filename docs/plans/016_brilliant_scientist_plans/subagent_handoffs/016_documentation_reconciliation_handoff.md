@@ -2,6 +2,8 @@
 
 Date: 2026-07-29
 
+> Superseded continuation note (2026-08-01): this handoff predates commits `01b1a2f3d` and `4b59b0adf`. Its core-runtime map remains useful, but current documentation status and the two report-presentation continuations are recorded in `016_core_runtime_handoff_map.md` and `016_documentation_curator_continuation_2026-08-01.md`.
+
 Mode: documentation-only reconciliation for the core-runtime handoff milestone. No gameplay, localisation, scripted-localisation, GUI, GFX, event, focus, decision, idea, scripted-effect, scripted-trigger, on-action, country, history, AI, audio, image, DDS, model, animation, or spreadsheet file was edited.
 
 ## Result

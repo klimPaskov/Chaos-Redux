@@ -171,7 +171,7 @@ The twenty-two aftermath decision sprites and four category sprites are register
 
 Their exact runtime paths and visual meanings are listed in `docs/assets/016_brilliant_scientist/aftermath_decision_icon_contract.md`.
 
-The archive and project-remnant hearings `chaosx.nr16.301`, `.303`, and `.310` through `.318` use `GFX_report_event_016_brilliant_scientist_aftermath_remnant`, a dedicated `210x176` documentary report scene. It is intentionally shared across those hearings because their descriptions identify the surviving family and legal choice; project-specific aftermath variants remain a separate content tranche.
+The archive and project-remnant hearings `chaosx.nr16.301`, `.303`, and `.310` through `.318` use scripted picture selection. `GetBrilliantScientistAftermathRemnantPicture` routes clone or machine, biological or paleogenetic or xenobiological, portal or temporal, and alien or singularity remnants to four reviewed `210x176` documentary report cards. Prototype-only and unresolved remnant records retain `GFX_report_event_016_brilliant_scientist_aftermath_remnant`, while the regional settlement `.303` keeps the shared archive card because it is not tied to one project family. The legal choices, receipts, and inspection progress are unchanged by this presentation routing.
 
 ## Future extensions
 

@@ -1,6 +1,6 @@
 # Event 016 requirement and route coverage
 
-> This matrix records specification coverage only. Every row marked `Complete` means the design requirement was covered in the source pack; it does not mean gameplay, localisation, AI, assets, audio, or spreadsheet work exists. Implementation is pending for the entire Event 016 package beyond the live placeholder baseline.
+> This matrix records specification coverage only. Every row marked `Complete` means the design requirement was covered in the source pack; it does not mean gameplay, localisation, AI, assets, audio, or spreadsheet work exists. The final sentence reflects the pre-implementation matrix freeze and is historical. For current runtime status, use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`, which records a default-enabled core and the later `.10`/`.11` and KRG foundation presentation continuations.
 
 ## Binding reconciliation
 

@@ -6,9 +6,9 @@ This is the bounded, read-only repository map requested for Event 016. It identi
 
 The accepted Event 016 specification package under docs/specs/016_brilliant_scientist_specs is the design source of truth. This handoff is an implementation map, not a replacement specification.
 
-## Follow-up reconciliation, 2026-07-14
+## Historical follow-up reconciliation, 2026-07-14
 
-Event 016 remains default-disabled and gameplay-incomplete. The original implementation snapshot below remains useful baseline evidence, but these later facts control presentation integration:
+At the 2026-07-14 map snapshot, Event 016 remained default-disabled and gameplay-incomplete. The original implementation snapshot below remains useful baseline evidence, but these later facts control presentation integration:
 
 - Event 015 occupies visible super-event IDs 85 through 89.
 - Event 016 uses visible IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat.
@@ -17,6 +17,8 @@ Event 016 remains default-disabled and gameplay-incomplete. The original impleme
 - The exact stage-0 leader or scientist DDS and advisor DDS are complete and registered. Stage I through IV sprite contracts are pre-registered, but the referenced later assets remain missing.
 - Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. Its visible overlap with Event 015 is external to Event 016.
 - Fallout is an independent unnumbered system under `chaosx.fallout`. It owns its request coordinator, blackout GUI, transition events, assets, and audio wrappers.
+
+> Superseded runtime note (2026-08-01): the default-disabled and gameplay-incomplete statements in this historical follow-up no longer describe current status. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for the default-enabled core runtime, the `.10`/`.11` host-archetype continuation, and the first four KRG foundation report continuation. The seven Event 016-specific 3D packages, live acceptance, quantitative balance evidence, and broader art/news/remnant work remain deferred.
 
 ## Executive verdict
 
@@ -163,16 +165,17 @@ common/scripted_effects/chaosx_logic_effects.txt already registers Event 16 in i
 - No cluster registration exists or should be added.
 - get_event_type therefore already resolves Event 16 through the fire-once array.
 
-#### Default-disabled rework queue
+#### Historical default-disabled rework queue
 
 common/scripted_effects/chaosx_logic_effects.txt: initialize_default_disabled_events_for_rework_queue checks event_log_event_is_reworked_default_enabled.
 
-common/scripted_triggers/chaosx_settings_triggers.txt: event_log_event_is_reworked_default_enabled does not include Event 16. This correctly keeps the placeholder disabled by default.
+At the 2026-07-14 map snapshot, `common/scripted_triggers/chaosx_settings_triggers.txt: event_log_event_is_reworked_default_enabled` did not include Event 16. That snapshot correctly kept the then-placeholder disabled by default. The current allowlist status is governed by the core-runtime map.
 
-Ownership rule:
+Historical ownership rule:
 
-- Add Event 16 to event_log_event_is_reworked_default_enabled only in the final accepted implementation tranche, after gameplay, AI, localisation, assets, log details, evolutions, and documentation are complete.
-- Do not enable it merely because the entry event fires.
+- At the snapshot, add Event 16 to `event_log_event_is_reworked_default_enabled` only in the final accepted implementation tranche, after gameplay, AI, localisation, assets, log details, evolutions, and documentation are complete.
+- At the snapshot, do not enable it merely because the entry event fires.
+- These are retained implementation-order rules, not a current instruction to disable the core runtime.
 
 #### Automatic availability
 

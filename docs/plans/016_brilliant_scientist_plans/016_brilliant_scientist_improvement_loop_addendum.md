@@ -16,6 +16,8 @@ This addendum has been reviewed and dispositioned. It is retained as design evid
 
 The original R1 and R6 recommendation bodies below are superseded historical proposals. Any count or instruction derived from them, including five super-events or sixteen achievements, is nonbinding.
 
+> Historical evidence note (2026-07-14): the implementation baseline described in the evidence section below predates the current default-enabled core runtime and the 2026-08-01 `.10`/`.11` host-archetype and KRG foundation presentation continuations. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current status. This addendum remains design evidence and does not claim whole-event completion.
+
 ## Status and scope
 
 This is the required focused improvement addendum for Event 016. It is not an implementation handoff and it does not claim that gameplay is complete.
@@ -27,7 +29,7 @@ This addendum stays under `docs/plans/016_brilliant_scientist_plans/` until the 
 ## Evidence reviewed
 
 - Every file under `docs/specs/016_brilliant_scientist_specs/`.
-- The current Event 016 event, idea, news event, and localisation. The live implementation remains a two-event placeholder with one `+50%` idea and no persistent Kruger system.
+- The Event 016 event, idea, news event, and localisation as inspected at the 2026-07-14 cutoff. At that snapshot the live implementation was a two-event placeholder with one `+50%` idea and no persistent Kruger system.
 - Required offline wiki pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, decisions, ideas, AI, countries, focuses, equipment, divisions, GUI, scripted GUI, and graphical assets.
 - Vanilla character, special-project, focus-tree, civil-war, AI, and documentation precedents.
 - The Event 016 historical research and repository-inspection notes.

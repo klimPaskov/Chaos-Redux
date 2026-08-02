@@ -1,12 +1,14 @@
 # Event 016 repository inspection notes
 
+> Historical repository snapshot. The placeholder, default-disabled, and missing-system observations below describe the 2026-07-14 pre-implementation inspection only. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for the current default-enabled core runtime and the later `.10`/`.11` host-archetype and KRG foundation presentation continuations.
+
 ## Reverification, 2026-07-14
 
-The Event 016 gameplay footprint remains the same placeholder baseline described below. The repository contains no implemented Directorate, persistent Warren Kruger character, staged project portfolio, temporal-debt system, Kruger State country package, Event 016 focus tree, Event 016 achievements, or wired Event 016 asset and super-event packages. The reconciled design must therefore be described as planned, never implemented.
+At the 2026-07-14 cutoff, the Event 016 gameplay footprint remained the placeholder baseline described below. The repository then contained no implemented Directorate, persistent Warren Kruger character, staged project portfolio, temporal-debt system, Kruger State country package, Event 016 focus tree, Event 016 achievements, or wired Event 016 asset and super-event packages. This research note must therefore be read as historical inspection evidence rather than a current implementation status.
 
 ## Current event script
 
-The live event is currently a two-step placeholder.
+At the 2026-07-14 cutoff, the live event was a two-step placeholder.
 
 - `chaosx.nr16.1` is hidden and triggered only.
 - It chooses a random country from a pool restricted to majors or human-controlled countries.

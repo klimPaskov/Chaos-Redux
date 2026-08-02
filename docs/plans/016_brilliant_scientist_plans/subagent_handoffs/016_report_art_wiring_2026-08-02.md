@@ -16,6 +16,8 @@ This bounded non-model tranche promoted three existing generated Event 016 repor
 
 The source masters are retained in the ignored asset workspace under `docs/assets/016_brilliant_scientist/report_news_expansion/source_masters/report/`. Each runtime file is `210x176`, uncompressed 32-bit BGRA DDS with the same header contract as the existing Event 016 report package. The three processed scenes were visually reviewed at native size.
 
+The three runtime scenes were reprocessed on 2026-08-02 through the repository report-card processor after the completion audit identified missing sepia and transparent card-edge treatment. Their retained runtime paths and sprite names are unchanged; the corrected DDS files now have the same `192x153` card, 2-pixel border, 3-degree tilt, soft shadow, sepia, grain, and transparent `210x176` canvas contract as the opening report card.
+
 ## Superseded source-master note
 
 The computation/electronics and materials/rocketry breakthrough masters were deferred by this earlier three-scene handoff because the shared `chaosx.nr16.6` report then had one static picture. They are now processed and wired by `016_breakthrough_report_art_wiring_2026-08-02.md` through scripted localisation; this note remains to explain why those two files are absent from the original three-scene package.

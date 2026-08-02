@@ -2,11 +2,11 @@
 
 Date: 2026-07-14
 
-> Current-runtime pointer (2026-07-29): this packet is retained as the 2026-07-14 planning resume snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` before continuing implementation because the opening, shared architecture, bounded gameplay tranches, and multiple asset packages have advanced since this packet was written. Event 016 is default-enabled at the core-runtime milestone but is not content-complete.
+> Current-runtime pointer (2026-08-01): this packet is retained as the 2026-07-14 planning resume snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` before continuing implementation because the opening, shared architecture, bounded gameplay tranches, host-archetype dossier presentation, KRG foundation presentation, and multiple asset packages have advanced since this packet was written. Event 016 is default-enabled at the core-runtime milestone but is not content-complete. Every unqualified implementation, default-state, and next-action statement below is historical snapshot wording.
 
-## Resume state
+## Historical resume state, 2026-07-14
 
-Event 016 is design-reconciled and remains default-disabled. Gameplay implementation is incomplete. Do not restart planning and do not rerun the improvement-loop planner.
+At the 2026-07-14 snapshot, Event 016 was design-reconciled and remained default-disabled with incomplete gameplay implementation. Do not use this historical state as a current enablement or continuation gate, and do not rerun the improvement-loop planner.
 
 ## Read first
 
@@ -36,16 +36,16 @@ Event 016 is design-reconciled and remains default-disabled. Gameplay implementa
 - Use visible Event 016 IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat.
 - Treat Event 015's live use of 85 through 89 as the current collision boundary. Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. That external overlap with Event 015 does not control the Event 016 assignment.
 
-## Current repository baseline
+## Historical repository baseline, 2026-07-14
 
 - Entry root `chaosx.nr16.1` exists but does not implement the planned host resolver or lifecycle.
 - The current idea grants `+50%`, not the fixed planned `+100%` opening anchor.
 - Placeholder localisation and an opening news event exist.
-- Event 16 is registered but remains outside the final default-enabled allowlist.
+- At the 2026-07-14 snapshot, Event 16 was registered but remained outside the final default-enabled allowlist.
 - No completed Directorate, project portfolio, Kruger State, focus tree, achievement, or final wired super-event package exists.
-- Event 016 remains outside the final default-enabled allowlist.
+- At the 2026-07-14 snapshot, Event 016 remained outside the final default-enabled allowlist.
 
-## Exact next action
+## Historical next action, 2026-07-14
 
 Spawn `chaosx_scripted_system_architect` with `fork_context=false` and the updated architecture prompt. Require a handoff under `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/`.
 
@@ -62,9 +62,9 @@ The handoff must freeze:
 - shared ID constants for world-end scenarios 11 and 12 and visible super-events 90 to 95
 - constants, scopes, event targets, cleanup, and intended call sites
 
-After parent review, begin Tranche 1. Do not enable Event 16 by default during that tranche.
+After parent review, the historical plan was to begin Tranche 1 without enabling Event 16 by default. This instruction is superseded by the current core-runtime map.
 
-## Presentation status
+## Historical presentation status, 2026-07-14
 
 - Six-package super-event text research is complete.
 - Super-event images are absent.
@@ -87,6 +87,6 @@ After parent review, begin Tranche 1. Do not enable Event 16 by default during t
 - Do not treat pre-registered later portrait sprites as completed assets.
 - Do not edit the catalog workbook before final localisation exists.
 
-## Completion boundary
+## Historical completion boundary, 2026-07-14
 
-The next session continues implementation preparation from a documentation-reconciled package with complete Event 016-owned audio files and a complete registered stage-0 portrait package. It does not begin from a complete Event 016 system, and it must not describe the source pack as implemented.
+The 2026-07-14 next session was intended to continue implementation preparation from a documentation-reconciled package with complete Event 016-owned audio files and a complete registered stage-0 portrait package. The current continuation begins from `016_core_runtime_handoff_map.md`, not from this historical packet. It does not claim whole-event completion.

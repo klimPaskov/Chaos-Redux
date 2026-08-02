@@ -16,7 +16,7 @@
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
-| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, thirteen report images, six super-event images, and seven Event 016 news images are present and registered; project-specific defeat/remnant variants and broader country-specific flavour remain queued |
+| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, seventeen report images, six super-event images, and seven Event 016 news images are present and registered; broader country-specific flavour remains queued |
 | Audio status | Six Event 016-owned WAVs, sound tracks, volume variants, and super-event presentation selectors are wired |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
 | Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |
@@ -66,4 +66,4 @@
 - Severe portrait animation families: `5`.
 - Integrity ledger: `package_checksums.sha256`.
 
-The checksum ledger preserves the established 53-entry reconciled Event 016 documentation source set named in its header. It uses repository-relative paths in the existing order and excludes the ledger itself. No ZIP or implementation-readiness claim is made.
+The checksum ledger preserves the established 55-entry reconciled Event 016 documentation source set named in its header. It uses repository-relative paths in the existing order and excludes the ledger itself. No ZIP or implementation-readiness claim is made.

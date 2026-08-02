@@ -1,6 +1,6 @@
 # Temporary continuation prompt, not part of the event specification
 
-> Superseded 2026-07-14. Do not use this prompt to rerun the improvement planner. Continue from `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`. The current source-of-truth correction assigns visible Event 016 IDs `90` through `95`, records complete six-package audio research and OGG production, and records the completed and registered stage-0 portrait package. Gameplay remains incomplete and default-disabled.
+> Superseded 2026-08-01. Do not use this prompt to rerun the improvement planner or to restore its default-disabled wording. Continue from `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. The current map records the default-enabled core runtime, the `.10`/`.11` host-archetype dossier continuation, and the first four KRG foundation report origin continuation. Broader country flavour, bespoke project/news/remnant art, quantitative balance evidence, live acceptance, and the seven Event 016-specific 3D packages remain deferred.
 
 Continue the Chaos Redux Event 16 `Brilliant Scientist` planning and implementation handoff from the exact stopping point below. Do not restart the design, summarize away completed material, or rewrite finished sections unless the mandatory planner finds a concrete defect.
 
