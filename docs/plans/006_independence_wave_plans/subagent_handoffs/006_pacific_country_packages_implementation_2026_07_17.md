@@ -5,6 +5,8 @@ Date: 2026-07-17
 Status: bounded HBX/HAW/FSM pre-formation country-package implementation is
 complete; FORM-48 as a whole remains deliberately fail-closed.
 
+> **Current focus-scope correction (2026-08-02):** This dated package handoff predates the accepted one-tree decision. Its “bespoke Pacific branch” wording now means package-gated shared nodes inside `independence_wave_focus_tree`, not a separate country `focus_tree = {}` definition. IW-179 FSM remains withdrawn behind `independence_wave_fsm_sourced_identity_ready`.
+
 ## Locked package identities
 
 The accepted registry, corrected FORM-48 plan, installed-map bindings, and
@@ -12,7 +14,7 @@ force-map rows all confirm the following exact identities:
 
 | Package | Country | Tag | Exact anchor | Package treatment |
 | --- | --- | --- | ---: | --- |
-| IW-184 | California | `HBX` | 378 | full Event 006 framework and bespoke Pacific branch |
+| IW-184 | California | `HBX` | 378 | full Event 006 generic tree with package-gated shared nodes |
 | IW-173 | Hawai'i | `HAW` | 629 | additive package; vanilla tree and leadership preserved |
 | IW-179 | Micronesia | `FSM` | 684 | additive package; vanilla tree preserved |
 
