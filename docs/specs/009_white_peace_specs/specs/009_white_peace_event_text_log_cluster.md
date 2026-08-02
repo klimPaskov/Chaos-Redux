@@ -60,7 +60,7 @@ Tables in Several Rooms
 
 ### `chaosx.nr9.2.d`
 
-The first note was copied, then copied again. Several minor governments receive the same thin formula: no claims, no reparations, no procession, no speech from a balcony. Staff officers fold maps they had not been allowed to win.
+The first note was copied, then copied again. Several minor governments receive the same thin formula, with no claims, reparations, procession, or speech from a balcony. Staff officers fold maps they had not been allowed to win.
 
 Across several fronts, the fighting stops without a declared victor.
 
@@ -76,7 +76,7 @@ A Major Power Steps Back
 
 ### `chaosx.nr9.3.d`
 
-A major government signs away one part of its war without ceremony. Diplomats call it prudence. Officers call it an order. Along the border, the men who expected victory or ruin receive neither.
+A major government signs away one part of its war without ceremony. Diplomats and officers issue the same restrained order, and along the border, men who expected victory or ruin receive only a command to stand down.
 
 The settlement grants no spoils and demands no surrender.
 
@@ -92,9 +92,9 @@ The Armistice Circular
 
 ### `chaosx.nr9.4.d`
 
-A diplomatic circular moves through several capitals, carrying the same exhausted formula from front to front. Not friendship. Not surrender. Not forgiveness. Just enough ink to make rifles lower and artillery crews wait for orders that never come.
+A diplomatic circular moves through several capitals, carrying the same exhausted formula from front to front. It promises no friendship, surrender, or forgiveness. Its ink is enough to make rifles lower and artillery crews wait for orders that never come.
 
-The world is not calm, but several wars have gone quiet.
+Several wars have gone quiet, and the wider world remains tense.
 
 ### `chaosx.nr9.4.a`
 
@@ -104,7 +104,7 @@ The line goes quiet.
 
 ### Short detail
 
-White Peace searches for safe wars that can end without conquest, indemnity, or scripted-story damage. At first it settles one minor-country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader settlements when the world has too many wars. Its selection weight rises with active wars and valid minor-war candidates, but repeatable decay and higher-stage penalties keep it from becoming common.
+White Peace searches for wars that can end without conquest, indemnity, or damage to a larger story. At first it settles one minor-country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader settlements when too many wars crowd the world.
 
 ### Long detail direction
 
@@ -167,9 +167,9 @@ Use scripted localisation for a compact status line:
 | Available, low pressure | `Safe settlement candidate found. Current war pressure is low.` |
 | Available, high pressure | `Several safe settlement candidates found. War pressure is high.` |
 | Unavailable, no wars | `No active wars.` |
-| Unavailable, unsafe wars | `Active wars exist, but none are safe for White Peace.` |
-| Stage II major candidate | `A major-country settlement candidate exists, but the branch remains rare.` |
-| Stage III broad candidate | `A broad settlement candidate exists, but protected wars are still excluded.` |
+| Unavailable, unsafe wars | `No safe war is available for White Peace.` |
+| Stage II major candidate | `A major-country settlement candidate is available. This branch is rare.` |
+| Stage III broad candidate | `A broad settlement candidate is available. Protected wars remain excluded.` |
 
 ## Localisation audit requirements
 
@@ -187,7 +187,7 @@ Before the implementation is called complete, run a localisation audit for:
 
 After implementation, the event catalog row for Event ID `9` should use player-facing wording equivalent to:
 
-**Details:** White Peace looks for safe wars that can end without conquest or scripted-story damage. The base version settles one minor-country pair. Its selection weight rises when many active wars and valid minor-war candidates exist, but repeatable recovery, firing decay, and evolution penalties keep it rare.
+**Details:** White Peace searches for wars that can end without conquest, indemnity, or damage to a larger story. The base version settles one minor-country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader settlements when too many wars crowd the world.
 
 **Evolution detail:** Repeated Minor Settlements can settle several minor pairs from one firing. Major-Country Settlement rarely involves a major country. Broad Diplomatic Settlement can quiet several safe conflicts or a larger safe war segment when the world has too many wars.
 

@@ -264,7 +264,7 @@ The history entry should show the primary country as actor. If the event-log sys
 
 Recommended event-detail text:
 
-> White Peace searches for safe wars that can end without conquest, indemnity, or scripted-story damage. At first it settles one minor country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader diplomatic settlements when the world has too many wars. Its selection weight rises with active wars and valid minor-war candidates, but repeated firings and higher evolutions keep it from becoming common.
+> White Peace searches for wars that can end without conquest, indemnity, or damage to a larger story. At first it settles one minor-country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader settlements when too many wars crowd the world.
 
 Recommended evolution-summary text:
 
@@ -302,7 +302,7 @@ Dynamic values such as pair count or primary actor names can appear in tooltips 
 
 **Title direction:** A Note Without Demands
 
-**Description direction:** A neutral consular channel delivers identical terms to both governments. The papers name no victor, no indemnity, and no border change. Staff officers are ordered to hold the same line they held before the first shot mattered.
+**Description direction:** A neutral consular channel delivers identical terms to both governments. The papers name no victor, indemnity, or border change. Staff officers receive orders to hold the line drawn before the first shot mattered.
 
 **Option direction:** Let the guns fall silent.
 
@@ -310,7 +310,7 @@ Dynamic values such as pair count or primary actor names can appear in tooltips 
 
 **Title direction:** Tables in Several Rooms
 
-**Description direction:** More than one minor front receives the same formula: no claims, no reparations, and no ceremony. The notices move faster than the newspapers can explain them.
+**Description direction:** Several minor fronts receive the same formula, with no claims, reparations, or ceremony. The notices move faster than newspapers can explain them.
 
 **Option direction:** No one claims victory.
 
@@ -318,7 +318,7 @@ Dynamic values such as pair count or primary actor names can appear in tooltips 
 
 **Title direction:** A Major Power Steps Back
 
-**Description direction:** A major government signs away one part of its war without procession or triumph. Diplomats call it prudence. Officers call it an order. The border posts call it quiet.
+**Description direction:** A major government signs away one part of its war without procession or triumph. Diplomats and officers issue the order, and the border posts fall quiet.
 
 **Option direction:** The order has already been given.
 
@@ -326,7 +326,7 @@ Dynamic values such as pair count or primary actor names can appear in tooltips 
 
 **Title direction:** The Armistice Circular
 
-**Description direction:** A diplomatic circular passes through several capitals, carrying the same thin formula from front to front. Not a treaty of friendship, not a surrender, not a settlement of old hatred. Just enough paper to make guns stop.
+**Description direction:** A diplomatic circular passes through several capitals, carrying the same thin formula from front to front. It offers no treaty of friendship, surrender, or settlement of old hatred. The paper is enough to make guns stop.
 
 **Option direction:** The line goes quiet.
 

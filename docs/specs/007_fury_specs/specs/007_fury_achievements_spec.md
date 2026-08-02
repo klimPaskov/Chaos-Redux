@@ -21,7 +21,7 @@ Fury achievements should reward containment, difficult scenario survival, defeat
 
 ### Fuse Cut Short
 
-Description direction: Defeat an active Fury country before it wins its first war.
+Description direction: Defeat a Fury country before its first conquest.
 
 Unlock conditions:
 
@@ -40,7 +40,7 @@ Icon direction: cut fuse over a small border map.
 
 ### No Minor Shall Be Major
 
-Description direction: Prevent any Fury country from becoming a major for a full Fury cycle, then defeat all active Fury actors.
+Description direction: Keep every Fury country minor for one full Fury cycle, then defeat them all.
 
 Unlock conditions:
 
@@ -58,7 +58,7 @@ Icon direction: small flag blocked by a large staff marker.
 
 ### The Firebreak Holds
 
-Description direction: As a country bordering Fury, complete border watch and survive the next Fury war without losing your capital.
+Description direction: As a country bordering Fury, complete Border Watch and survive the next Fury war without losing your capital.
 
 Unlock conditions:
 
@@ -77,7 +77,7 @@ Icon direction: line of soldiers along a marked border.
 
 ### Break the March Pact
 
-Description direction: Defeat the Fury Pact after at least two Fury countries have joined it.
+Description direction: Defeat the Fury Pact after at least two Fury countries join it.
 
 Unlock conditions:
 
@@ -95,7 +95,7 @@ Icon direction: broken faction seal with marching arrows split.
 
 ### Ten Fires, No Dawn
 
-Description direction: Survive and defeat a Maximum intensity World in Fury scenario.
+Description direction: Survive and defeat a Maximum-intensity World in Fury scenario.
 
 Unlock conditions:
 
@@ -115,7 +115,7 @@ Icon direction: ten small flames crossed by a world map grid.
 
 ### The Last Neighbor Stands
 
-Description direction: Border a Fury country that has no other valid neighbors and defeat it before the world-end branch begins.
+Description direction: Defeat a Fury country with no other valid neighbors before the world-end branch begins.
 
 Unlock conditions:
 
@@ -153,7 +153,7 @@ Icon direction: burned maps being archived under a sealed stamp.
 
 ### Let the Fires Fight
 
-Description direction: In Hostile Fury type, cause two Fury countries to fight and make sure both are defeated.
+Description direction: In a Hostile Fury scenario, make two Fury countries fight and defeat them both.
 
 Unlock conditions:
 
@@ -172,7 +172,7 @@ Icon direction: two arrows crashing into each other over a small map.
 
 ### Alone Against the Major
 
-Description direction: Defeat a Fury major while not in a faction.
+Description direction: Defeat a Fury major while remaining outside every faction.
 
 Unlock conditions:
 
@@ -190,7 +190,7 @@ Icon direction: lone shield in front of a large red map marker.
 
 ### Paper Borders Hold
 
-Description direction: Stop Fury before it cores any conquered state.
+Description direction: Stop Fury before it cores a conquered state.
 
 Unlock conditions:
 

@@ -20,7 +20,7 @@ The reworked event keeps the user-provided core:
 - Later evolutions add direct chaos, larger world tension packets, temporary timer pressure, relation damage, delayed follow-up incidents, and rare safe high-stage border wars.
 - The event never has a world-end scenario.
 
-The emotional center is not that a map changed. The emotional center is that every government begins acting as if a map is about to change.
+The emotional center is every government acting as if a map is about to change.
 
 ## Player-facing fantasy
 
@@ -37,8 +37,8 @@ Working popup title: **Tensions Rising**
 The baseline incident is a short report, not a dramatic apocalypse announcement. It should read like a sober foreign-office bulletin:
 
 - “A sequence of public accusations, military communiqués, and newspaper leaks has unsettled diplomatic circles.”
-- “No government is admitting to a crisis, which has made observers more nervous.”
-- “Markets, staff offices, and border commands are reacting before any formal declaration is made.”
+- “Public denials accompany the reports, and observers grow more nervous.”
+- “Markets, staff offices, and border commands react to the same pressure without waiting for a formal declaration.”
 
 ### Baseline trigger and effect
 
@@ -91,7 +91,7 @@ At Gathering Storm, public fear becomes self-reinforcing. The same event now add
 
 ### Tone
 
-Stage I should feel like wires, clerks, desk lamps, and official denials. Nobody has crossed the line yet, but more countries are drawing lines.
+Stage I should feel like wires, clerks, desk lamps, and official denials. No country has crossed the line yet. More capitals are drawing their own.
 
 ### Follow-up incident candidates
 
@@ -117,7 +117,7 @@ At Rising Chaos, fear becomes a market. Every rumor is valuable to somebody: opp
 
 ### Tone
 
-Stage II is louder and more cynical. Governments are still denying war, but ministries, newspapers, and markets are behaving as if war has become sellable.
+Stage II is louder and more cynical. Governments continue to deny war as ministries, newspapers, and markets behave as if war has become sellable.
 
 ### Follow-up report candidates
 
@@ -143,7 +143,7 @@ At Chaos Tier, suspicion enters the armed services. The event should make the AI
 
 ### Tone
 
-Stage III should read like fatigue. The world is not only angry, it is tired, jumpy, and running on memoranda no one wants to sign.
+Stage III should read like fatigue. The world is angry, tired, and jumpy, running on memoranda no one wants to sign.
 
 ### Follow-up report candidates
 
@@ -169,7 +169,7 @@ At Totalen Chaos, tension is no longer a metric. It is the climate. This stage m
 
 ### Tone
 
-Stage IV is quiet, not explosive. The frightening image is not a battle, it is all the lights staying on in every ministry at once.
+Stage IV is quiet and sustained. Its frightening image is every ministry keeping its lights on through the night.
 
 ## Hidden Tension Pulse system
 
@@ -369,11 +369,11 @@ The event’s default actor is global. Evolution rows do not need a country acto
 
 Recommended event detail summary:
 
-> “A repeatable global pressure incident. In calm conditions it raises world tension while there is still room for tension to rise. Once the world has entered higher chaos tiers, the same headline can keep firing even at maximum world tension, adding chaos directly and leaving hidden diplomatic aftershocks behind it.”
+> “This repeatable pressure incident follows public accusations, leaks, and military communiqués as diplomatic distrust spreads. Later stages bring broader panic through embassies, markets, staff rooms, and border offices. Even when tension is already high, the same headline can return with new diplomatic aftershocks.”
 
 Recommended evolution detail summary:
 
-> “The Diplomatic Fever track turns public tension into a pacing force. Later stages add direct chaos, larger tension packets, temporary incident-timer pressure, timed relation damage, and delayed diplomatic reports. The final stage is the strongest non-terminal pressure packet.”
+> “The Diplomatic Fever track turns public tension into a visible pressure cycle. Later stages spread rumours through embassies, markets, staff rooms, and border offices, and the final stage keeps the alert present without becoming a terminal branch.”
 
 ## Balance and exploit limits
 

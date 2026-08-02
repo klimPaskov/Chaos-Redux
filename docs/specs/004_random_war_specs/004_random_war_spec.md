@@ -47,7 +47,7 @@ Result:
 
 Report direction:
 
-A border incident turns into war before either government fully controls the situation. Each side gives a different explanation. Troops cross the line while diplomats argue over who moved first.
+A border incident becomes a war before either government can control the story. Each side issues its own explanation as troops cross the line and diplomats argue over who moved first.
 
 Aggressor options:
 
@@ -327,27 +327,27 @@ Explain:
 
 ### Details
 
-A random eligible country declares war on another eligible country. Higher chaos stages create larger linked war webs. Compatible Chaos Redux special countries can appear in later stages.
+Random War catches two countries in a sudden declaration. Later stages can link several wars and draw compatible Chaos Redux powers into the same conflict web.
 
 ### Evo I
 
-Gathering Storm: Triangular Incident. Three countries become locked into a linked war pattern.
+Gathering Storm: Triangular Incident links three countries in one sudden conflict.
 
 ### Evo II
 
-Rising Chaos: Four Fronts. Four declarations fire in one conflict web, with a small chance for a compatible special chaos country to appear.
+Rising Chaos: Four Fronts links four declarations in one conflict web and may draw in a compatible Chaos Redux power.
 
 ### Evo III
 
-Chaos Tier: Contagious Ultimatums. Five declarations fire, major countries and faction members become more likely, and special chaos country involvement becomes more common.
+Chaos Tier: Contagious Ultimatums links five declarations and can draw major powers, faction members, or a compatible Chaos Redux power into the conflict.
 
 ### Evo IV
 
-Totalen Chaos: The War Week. Six declarations fire in a short chain, with a strong chance of one compatible special chaos country participating.
+Totalen Chaos: The War Week links six declarations in a short chain, with a compatible Chaos Redux power likely to participate.
 
 ### Evo V
 
-World Collapse: Open Season. Seven to eight declarations fire while normal random events still run. Compatible special chaos countries are strongly favored when available.
+World Collapse: Open Season spreads seven or eight declarations as ordinary events continue, and compatible Chaos Redux powers are likely to join.
 
 ### Cluster
 

@@ -53,7 +53,7 @@ If the quote area cannot comfortably hold a two-line fragment, the exact short f
 The following is original implementation-facing wording, not a quotation:
 
 - Title: `THE WOUNDS REMAIN`
-- Description: `The Rat King's dominion has ended after a catastrophe that crossed continents. The Royal Basin is silent, but hospitals, railways, archives, and emptied towns still bear the plague's mark. Survivors begin the long work of sealing warrens, rebuilding what can be rebuilt, and preserving the memory that victory did not make the world safe.`
+- Description: `The Rat King's dominion has ended after a catastrophe crossed continents. The Royal Basin is silent. Hospitals, railways, archives, and emptied towns still bear the plague's mark. Survivors begin the long work of sealing warrens, rebuilding what can be rebuilt, and preserving the memory of a victory won at terrible cost.`
 - Button: `Lest we forget.`
 - Main quote: `In visions of the night, like dropping rain,` followed by `Descend the many memories of pain`, attributed to Aeschylus, *Agamemnon* (trans. E. D. A. Morshead).
 

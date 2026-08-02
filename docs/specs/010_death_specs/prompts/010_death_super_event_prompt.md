@@ -13,7 +13,7 @@ The functional role labels below are not final titles. They exist only so the re
 - Trigger: Death consumes the first mainland state with more than 100,000 population.
 - Role: first reveal.
 - Tone: blunt, cold public recognition; not final apocalypse yet.
-- Description direction: the old island silences are reinterpreted; a mainland coastal state empties; the black country on the map now has a public name.
+- Description direction: Old island silences are reinterpreted when a mainland coastal state empties and the black country on the map receives a public name.
 - Title research direction: find a short reveal title that names or exposes the crisis without making the moment sound like the final apocalypse.
 - Button or cultural remark research direction: find a short sourced line, allusion, or historically grounded remark about diplomatic helplessness, official disbelief, counting the living, failed treaty language, or a government trying to name something outside normal politics.
 - Quote research direction: find a real quote about death, silence, discovery, naming, or fear of the inevitable.
@@ -25,7 +25,7 @@ The functional role labels below are not final titles. They exist only so the re
 - Trigger: Death has consumed an entire continent and Chaos is above 1000.
 - Role: world-end scenario.
 - Tone: terminal, oceanic, global.
-- Description direction: one continent is gone from the living world; black footholds appear on every remaining continent.
+- Description direction: A continent is gone from the living world, and black footholds appear on every remaining continent.
 - Title research direction: find a short terminal title tied to coasts, final borders, silence, or Death crossing continents.
 - Button or cultural remark research direction: find a short sourced line, allusion, or historically grounded remark about every shore becoming exposed, the sea carrying disaster, or the last safe border failing.
 - Quote research direction: find a real quote about final shores, judgment, silence, collapse, or the end of order.
@@ -37,7 +37,7 @@ The functional role labels below are not final titles. They exist only so the re
 - Trigger: Death defeated after public reveal and after a large crisis threshold, such as more than 10 million consumed population or a world-end attempt.
 - Role: costly victory aftermath.
 - Tone: reflective, grief, vigilance; not triumphal.
-- Description direction: Death is gone but consumed states remain empty; victory cannot return the people.
+- Description direction: Death is gone, and the consumed states remain empty. Victory cannot return the people.
 - Title research direction: find a short aftermath title about survival, empty land, memory, or victory that cannot restore the dead.
 - Button or cultural remark research direction: find a short sourced line, allusion, or historically grounded remark about grief, memorial records, the limits of victory, or names of the dead.
 - Quote research direction: find a real quote about memory, grief, survival, or vigilance.
@@ -49,7 +49,7 @@ The functional role labels below are not final titles. They exist only so the re
 - Trigger: Death consumes every eligible world state.
 - Role: final completion and end state.
 - Tone: silence, no audience, no record keeper.
-- Description direction: one country remains and no one remains to read the map.
+- Description direction: One country remains on the map, with no population left to read it.
 - Title research direction: find a short final title about witness, silence, last records, or the end of human observation.
 - Button or cultural remark research direction: find a short sourced line, allusion, or historically grounded remark about silence without witnesses, failed records, or the absence of an audience.
 - Quote research direction: find a real quote about silence, oblivion, lastness, or witness.

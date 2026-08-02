@@ -72,7 +72,7 @@ The producer scans owned states and selects the lowest native state id that sati
 - The requesting country owns and controls the state.
 - The state has the current Fallout generation and durable state row.
 - The state has a produced Air Winter snapshot for the current generation.
-- The native state terrain is `plains`.
+- Plains has the largest land-pixel share among the state's member provinces in the immutable vanilla 1.19.2 geography registry.
 - The pretransition category is rural, pastoral, or town.
 - The state retains at least `3k` surviving population.
 - Native infrastructure is above zero and is not already damaged beyond the accepted entry condition.
@@ -84,7 +84,7 @@ The producer scans owned states and selects the lowest native state id that sati
 - Current Food reserve is from `5` through `40`.
 - No Second Dust Bowl completion memory or exclusive state reservation is present.
 
-The plains trigger and current state ledgers prove the target. The implementation must not infer a named historical Dust Bowl district and must not invent a province, receiving state, country tag, or partner.
+The dominant-plains registry and current state ledgers prove the target. The implementation must not infer a named historical Dust Bowl district and must not invent a province, receiving state, country tag, or partner.
 
 ## Candidate variables and frozen receipt
 

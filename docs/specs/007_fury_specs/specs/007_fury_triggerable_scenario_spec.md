@@ -109,20 +109,20 @@ The scenario should not permanently bypass ordinary Fury rules outside setup.
 
 Title direction: `The World in Fury`.
 
-Description direction: small countries in several regions begin sudden war preparations at the same time. The pattern is too similar to dismiss and too scattered to explain as one government plan.
+Description direction: Small countries in several regions begin war preparations at the same time. The pattern is too similar to dismiss and too scattered to explain as one government plan.
 
-Fury Pact type text direction: reports show liaison officers, shared signals, and matching war-office forms among the Fury countries.
+Fury Pact type text direction: Reports show liaison officers, shared signals, and matching war-office forms among the Fury countries.
 
-Hostile Fury type text direction: reports show similar methods but no coordination. Each Fury actor appears to believe the whole map is its own front.
+Hostile Fury type text direction: Reports show similar methods without coordination. Each country appears to believe the whole map is its own front.
 
 Intensity text direction:
 
 | Intensity | Player-facing impact text |
 | --- | --- |
-| Low | Two small AI countries receive the Fury package and begin the normal loop when safe |
-| Medium | Five dispersed AI minors begin Fury with stronger openings and the first evolution pattern when safe |
-| High | Nine dispersed Fury actors appear with cooperation or rivalry behavior when safe |
-| Maximum | Up to sixteen AI minors become Fury when the world has enough safe candidates, with stronger openings and all-neighbor pressure |
+| Low | Two small countries begin the Fury cycle and start looking for a first war |
+| Medium | Five dispersed minor countries begin the Fury cycle with stronger openings and an early evolution |
+| High | Nine dispersed countries emerge with cooperation or rivalry between them |
+| Maximum | Up to sixteen minor countries become Fury, with stronger openings and pressure on every available neighbor |
 
 ## Scenario type labels
 
@@ -131,7 +131,7 @@ Suggested UI labels:
 | Type | Label | Detail direction |
 | --- | --- | --- |
 | Fury Pact | Pact | Fury countries can cooperate, form a faction, and share war support |
-| Hostile Fury | Hostile | Fury countries are hostile to ordinary states and can turn on each other |
+| Hostile Fury | Hostile | Fury countries oppose ordinary states and can turn on each other |
 
 ## Player safety
 

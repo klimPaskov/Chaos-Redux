@@ -98,7 +98,7 @@ Each super-event below uses a functional role label only. The role label is for 
 | Role | First reveal. |
 | Tone | Blunt public recognition, not yet final apocalypse. |
 | Title requirement | Research a short reveal title. Do not use an unresearched working title. |
-| Description direction | A mainland coastal state has emptied. The old island reports are reinterpreted. The black country is now a named crisis. |
+| Description direction | A mainland coastal state has emptied, and the black country on the map is now a public crisis. Governments cannot explain the silence through quarantine, diplomacy, or colonial inquiry. |
 | Button or cultural remark requirement | Research a short line or allusion about diplomatic helplessness, counting the living, official disbelief, or failed treaty language. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about death, silence, discovery, fear, naming, or inevitability. Prefer public-domain literature, scripture, philosophy, or historical source. |
 | Audio direction | Sparse, grim, 1-2 minute public-domain or clearly licensed track. Not a drone/test tone. |
@@ -114,7 +114,7 @@ Each super-event below uses a functional role label only. The role label is for 
 | Role | World-end scenario. |
 | Tone | Terminal, oceanic, global. |
 | Title requirement | Research a short terminal title tied to coasts, final borders, silence, or Death crossing continents. Do not use an unresearched working title. |
-| Description direction | One continent is gone from the living world. New black footholds appear on every remaining continent. |
+| Description direction | A continent has become a black absence, and new black footholds appear on every remaining continent. The crisis has entered its terminal phase. |
 | Button or cultural remark requirement | Research a short line or allusion about every shore becoming exposed, the sea carrying disaster, or the last safe border failing. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about finality, judgment, silence, shores, collapse, or the end of order. |
 | Audio direction | Finality, slow dread, unique final track. |
@@ -130,7 +130,7 @@ Each super-event below uses a functional role label only. The role label is for 
 | Role | Defeat aftermath. |
 | Tone | Costly victory. No restoration of the dead. |
 | Title requirement | Research a short aftermath title about survival, empty land, memory, or victory that cannot restore the dead. Do not use an unresearched working title. |
-| Description direction | Death is removed from the map, but wastelands stay empty. Countries argue over memory, rebuilding, and blame. |
+| Description direction | Death is gone from the map, and the states it consumed remain empty. The victory cannot restore the people, ports, factories, or towns that vanished. |
 | Button or cultural remark requirement | Research a short line or allusion about grief, memorial records, the limits of victory, or the names of the dead. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about memory, survival, grief, vigilance, or rebuilding after loss. |
 | Audio direction | Reflective, not triumphant. |
@@ -146,7 +146,7 @@ Each super-event below uses a functional role label only. The role label is for 
 | Role | Final completion. |
 | Tone | Silence and record failure. |
 | Title requirement | Research a short final title about witness, silence, last records, or the end of human observation. Do not use an unresearched working title. |
-| Description direction | There is one country and no one left to read the map. |
+| Description direction | The last records stop as the radio reports nothing. One country remains on the final map, with no population left to read it. |
 | Button or cultural remark requirement | Research a short line or allusion about silence without witnesses, failed records, or the absence of an audience. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about silence, oblivion, lastness, witness, or the failure of records. |
 | Audio direction | Very sparse final track, unique and documented. |
@@ -198,19 +198,19 @@ After implementation, the spreadsheet row for ID 10 should be updated from `Spir
 
 Suggested player-facing details field:
 
-> A quiet black country appears on a remote island and does not announce itself. Months later, nearby records stop matching reality. Islands fall silent, ports empty, and the name Death remains a rumour until the first mainland state vanishes.
+> A quiet black country appears on a remote island and does not announce itself. Months later, nearby records stop matching reality as islands fall silent and ports empty. The name Death remains a rumour until the first mainland state vanishes.
 
 Suggested evolution fields:
 
-- `Second Shore: Death begins slow island spread once the focus path is open.`
-- `Mainland Hunger: Death presses islands faster and opens the mainland reveal path.`
-- `First Hosts: weak passive ghost hosts appear if Death has consumed enough population.`
-- `Hollow Hosts: ghost hosts become more numerous and stronger, but remain weaker than infantry.`
-- `World End: the terminal branch becomes available. If a continent is consumed while Chaos is above 1000, Death opens footholds on every continent.`
+- `Second Shore: Death reaches beyond its first island, and the silence spreads along nearby shores.`
+- `Mainland Hunger: Islands fall quiet as Death's reach approaches the mainland.`
+- `First Hosts: The first weak ghost hosts appear among the emptied states.`
+- `Hollow Hosts: Ghost hosts gather in greater numbers and press farther from the silent coasts.`
+- `World End: Death opens black footholds across every continent, and containment becomes a terminal struggle.`
 
 Suggested world-end field:
 
-> If Death consumes a full continent while Chaos is above 1000, the Last Shores world-end scenario begins: Death gains coastal footholds on every continent, ghost hosts become aggressive, and normal containment becomes a terminal struggle.
+> If Death consumes a full continent, black footholds appear on every continent and the last shores become a terminal struggle.
 
 Type remains `Minor Fire-Once`. Cluster fields remain blank / no cluster. Status should remain `To Be Reworked` until implementation completes and is tested.
 

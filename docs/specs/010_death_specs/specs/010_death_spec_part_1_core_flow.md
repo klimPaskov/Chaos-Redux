@@ -186,7 +186,7 @@ Do not prewrite the title, button text, cultural remark, or quote in this spec. 
 
 Title research direction: find a short reveal title that names or exposes the crisis without making the moment sound like the final apocalypse.
 
-Description direction: a mainland coastal state has emptied. The black country on the map is no longer a remote anomaly. Governments now understand that ordinary quarantine, diplomacy, and colonial inquiry cannot explain the silence.
+Description direction: A mainland coastal state has emptied, and the black country on the map is now a public crisis. Governments cannot explain the silence through quarantine, diplomacy, or colonial inquiry.
 
 Button or cultural remark research direction: find a short researched line or allusion that reacts to diplomatic helplessness, official disbelief, counting the living, or the failure of ordinary treaty language. Do not use an invented sample line.
 
@@ -198,7 +198,7 @@ Do not prewrite the title, button text, cultural remark, or quote in this spec. 
 
 Title research direction: find a short terminal title tied to coasts, final borders, silence, or the spread of Death across continents.
 
-Description direction: one continent has become a black absence, Chaos has passed the world-end threshold, and new black footholds are appearing on every continent. The event should tell the player this is a terminal scenario without writing a mechanical checklist inside the super-event text.
+Description direction: A continent has become a black absence, and new black footholds appear on every remaining continent. The crisis has entered its terminal phase.
 
 Button or cultural remark research direction: find a short researched line or allusion about every shore becoming exposed, the sea carrying disaster, or the last safe border failing. Do not use an invented sample line.
 
@@ -212,7 +212,7 @@ Do not prewrite the title, button text, cultural remark, or quote in this spec. 
 
 Title research direction: find a short aftermath title about survival, empty land, memory, or victory that cannot restore the dead.
 
-Description direction: Death is gone from the map, but the states it consumed remain empty. The victory is real, but it does not restore the people, ports, factories, or towns that vanished.
+Description direction: Death is gone from the map, and the states it consumed remain empty. The victory cannot restore the people, ports, factories, or towns that vanished.
 
 Button or cultural remark research direction: find a researched line or allusion about grief, memorial records, the limits of victory, or the names of the dead. Do not use an invented sample line.
 
@@ -224,7 +224,7 @@ Do not prewrite the title, button text, cultural remark, or quote in this spec. 
 
 Title research direction: find a short final title about witness, silence, last records, or the end of human observation.
 
-Description direction: the last records stop. The last radio claims to hear nothing. The last map contains one country and no population to read it.
+Description direction: The last records stop as the radio reports nothing. One country remains on the final map, with no population left to read it.
 
 Button or cultural remark research direction: find a researched line or allusion about silence without witnesses, the end of record keeping, or the absence of an audience. Do not use an invented sample line.
 
@@ -234,7 +234,7 @@ Quote research direction: verify a quote about silence, oblivion, lastness, witn
 
 The Event Details window should describe the premise, not the mechanics. It should not list attrition, speed penalties, population deletion values, or spawn formulas. A suitable direction:
 
-> A quiet black country appears on a remote island and does not announce itself. Months later, nearby records stop matching reality. Islands fall silent, ports empty, and the name Death remains more rumour than diplomacy until the first mainland state vanishes.
+> A quiet black country appears on a remote island and does not announce itself. Months later, nearby records stop matching reality as islands fall silent and ports empty. The name Death remains a rumour until the first mainland state vanishes.
 
 The details field should mention that the event replaces `Spirit of War/Peace` only in developer documentation, not in player-facing text.
 

@@ -15,7 +15,7 @@ The selected direct references are deliberately short. The source ledger below d
 | Role | Recommended title | Recommended quote | Attribution and source | Recommended cultural remark or button line |
 | --- | --- | --- | --- | --- |
 | Africa is one | `THE CONTINENT TAKES ITS SEAT` | `building up for themselves a great nation in Africa.` | Marcus Garvey, “Africa for the Africans,” *Negro World*, 22 April 1922. Exact wording checked against the *Philosophy and Opinions of Marcus Garvey* scan and PBS transcription. | `The continent will answer for itself.` |
-| Scramble response | `THE MAPMAKERS RETURN` | `to enable them, if need be, to make good any claims of their own.` | General Act of the Conference at Berlin, Article 34, 26 February 1885. Exact wording checked against the International Water Law transcription. | `This time, Africa answers.` |
+| Scramble response | `THE MAPMAKERS RETURN` | `to enable them, if need be, to make good any claims of their own.` | General Act of the Conference at Berlin, Article 34, 26 February 1885. Exact wording checked against the International Water Law transcription. | `Africa answers through its own institutions.` |
 | Continental wars | `CONTINENTS UNDER ARMS` | `War is a mere continuation of policy by other means.` | Carl von Clausewitz, *On War*, Book I, Chapter I, J. J. Graham translation. Project Gutenberg hosts the 1874 translation and 1909 London reprint. | `The arguments have reached the front.` |
 | The World | `ONE WORLD REMAINS` | `Nothing beside remains.` | Percy Bysshe Shelley, “Ozymandias,” first published in *The Examiner*, January 1818. Text checked against the 1914 Hutchinson edition. | `The last border is an archive.` |
 
@@ -77,7 +77,7 @@ Use `Unite we must.` as a non-shipping backup or as a button candidate only afte
 - Source work: General Act of the Conference at Berlin, Chapter VI, Article 34, signed 26 February 1885.
 - Source URLs: [Article 34 English transcription](https://www.internationalwaterlaw.org/documents/regionaldocs/1885GeneralActBerlinConference.pdf) and [German Federal Foreign Office historical context](https://archiv.diplo.de/arc-en/the-political-archive/general-act-2684414).
 - Attribution confidence: high. Wording confidence: medium until the parent freezes a named English treaty edition or scan. Rights confidence: high for the 1885 underlying act by age, but the particular translation or transcription should be cited separately.
-- Recommended original remark or button line: `This time, Africa answers.`
+- Recommended original remark or button line: `Africa answers through its own institutions.`
 
 ### Cultural and route fit
 
