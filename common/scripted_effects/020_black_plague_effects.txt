@@ -233,6 +233,8 @@ black_plague_initialize_runtime = {
 		clr_global_flag = black_plague_report_first_contained
 		clr_global_flag = black_plague_report_first_relapse
 		clr_global_flag = black_plague_report_first_cured
+		clr_global_flag = black_plague_report_first_collapsed
+		clr_global_flag = black_plague_report_first_recovery
 		clr_global_flag = black_plague_report_countermeasure_milestone
 		clr_global_flag = black_plague_report_rat_emergence
 		clr_global_flag = black_plague_report_rat_resurgence
@@ -700,6 +702,16 @@ black_plague_emit_first_milestone_report = {
 	if = {
 		limit = {
 			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_collapsed = yes
+			NOT = { has_global_flag = black_plague_report_first_collapsed }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_collapsed
+		CONTROLLER = { news_event = { id = chaosx.nr20.12 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
 			black_plague_state_is_contained = yes
 			NOT = { has_global_flag = black_plague_report_first_contained }
 			CONTROLLER = { exists = yes }
@@ -727,6 +739,16 @@ black_plague_emit_first_milestone_report = {
 		}
 		set_global_flag = black_plague_report_first_cured
 		CONTROLLER = { news_event = { id = chaosx.nr20.9 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_recovering = yes
+			NOT = { has_global_flag = black_plague_report_first_recovery }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_recovery
+		CONTROLLER = { news_event = { id = chaosx.nr20.13 } }
 	}
 	if = {
 		limit = {

@@ -4,7 +4,7 @@ Event 20 is a playable state-level epidemic, containment, biowarfare, and Rat em
 
 The natural incident is registered as a minor fire-once event and is default enabled through `constant:black_plague_identity.event_id`. Doctor Wu remains a separate Event 163 companion registration. Event 20 is registered in the shared Diseases cluster and in the public world-end scenario catalog; the terminal row remains inactive until Evolution V's earned conditions are met.
 
-The player-facing report chain is wired under `events/020_black_death.txt`. Natural play reports origin recognition, the first threatened neighbour, late origin recognition, the first foreign and overseas infections, Severe Crisis, Containment, relapse, cure, countermeasure learning, ten million deaths, eradication, Rat emergence, resurgence, brood absorption, the sentient crown, the royal crisis, Royal Node success or counterfire, emergency countermeasure timeout, and the earned terminal route. SCN-012 uses `chaosx.nr20.90` for its launch briefing; the `.4` allocation remains the first neighboring-threat report.
+The player-facing report chain is wired under `events/020_black_death.txt`. Natural play reports origin recognition, the first threatened neighbour, late origin recognition, the first foreign and overseas infections, Severe Crisis, Collapsed, Containment, Recovery, relapse, cure, countermeasure learning, ten million deaths, eradication, Rat emergence, resurgence, brood absorption, the sentient crown, the royal crisis, Royal Node success or counterfire, emergency countermeasure timeout, and the earned terminal route. SCN-012 uses `chaosx.nr20.90` for its launch briefing; the `.4` allocation remains the first neighboring-threat report.
 
 ## Natural origin
 
