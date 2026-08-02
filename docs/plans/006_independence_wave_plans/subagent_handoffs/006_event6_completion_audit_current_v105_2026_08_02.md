@@ -1,5 +1,7 @@
 # Event 006 current whole-event completion audit v105
 
+> **Superseded for current routing (2026-08-03):** This dated audit predates the parent-owned focus reflow and the v109 `6001` audio research. Preserve its body as historical evidence. Use `006_event6_current_completion_evidence_v102_2026_08_02.md` for whole-event disposition, `006_focus_geometry_reflow_parent_2026_08_02.md` for current focus geometry, and `006_super_event_6001_audio_research_v109_2026_08_02.md` for current `6001` research.
+
 Date: 2026-08-02.
 
 Mode: read-only completion audit of the current worktree against `docs/specs/006_independence_wave_specs`, the accepted one-generic-tree decision, current plans and handoffs, runtime source, asset evidence, and catalog authority.

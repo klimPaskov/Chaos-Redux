@@ -1,5 +1,7 @@
 # Event 006 completion audit resume
 
+> **Superseded for current routing (2026-08-03):** This dated resume audit preserves its pre-reflow focus diagnostics, v101/v108-era `6001` references, and catalog/source findings. Use `006_event6_current_completion_evidence_v102_2026_08_02.md` for whole-event disposition, `006_focus_geometry_reflow_parent_2026_08_02.md` for current focus geometry, and `006_super_event_6001_audio_research_v109_2026_08_02.md` for current `6001` research.
+
 Date: 2026-08-02.
 
 Repository base: `89795413f` with a materially dirty Event 006 worktree.

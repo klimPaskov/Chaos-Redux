@@ -1,5 +1,7 @@
 # Event 006 current shared focus and overlay audit - 2026-07-28
 
+> **Superseded for current geometry routing (2026-08-03):** This dated audit preserves its pre-reflow 14-diagnostic HOLD / PARTIAL result and additive-carrier limitations. Use `006_focus_geometry_reflow_parent_2026_08_02.md` for current geometry and `006_event6_current_completion_evidence_v102_2026_08_02.md` for whole-event disposition.
+
 ## Status and scope
 
 This is a read-only re-audit of the current Event 006 focus tree, shared-focus imports, package overlays, and additive-overlay assignment contract. No gameplay, localisation, icon, scripted-effect, or focus source file was patched, and no commit was created. The result remains HOLD / PARTIAL for focus completion because the central tree is not validator-clean and additive carrier visibility is not proven.

@@ -1,5 +1,7 @@
 # Event 006 super-event 6001 audio research v101
 
+> **Superseded audio research candidate (2026-08-03):** v109 replaces this Marine Band 2018 candidate as the strongest current research record and preserves v101 as historical evidence. No candidate is approved or wired. Use `006_super_event_6001_audio_research_v109_2026_08_02.md` for current rights, provenance, jurisdiction, and tonal-fit routing.
+
 Research date: 2026-08-02.
 
 Scope: bounded audio-rights research for Event 006 super-event `6001`, The League of New States. The accepted Jeremiah Clarke/London Brass Players recording remains blocked. This pass checked the existing 6001 research and package, found a separate rights-clear candidate, downloaded only the immutable source into the temporary event-scoped evidence folder, and performed no runtime, sound-definition, event, localisation, `.gfx`, GUI, spreadsheet, or catalogue edit.

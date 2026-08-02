@@ -1,5 +1,7 @@
 # Event 006 generic focus contract closure handoff
 
+> **Superseded for current geometry evidence (2026-08-03):** The accepted one-tree closure and scope boundary remain valid, but this plan's retained v82/scan-limit geometry rows predate the parent-owned reflow. Preserve the dated plan body. Use `subagent_handoffs/006_focus_geometry_reflow_parent_2026_08_02.md` and current completion evidence v102 for current geometry routing.
+
 Date: 2026-08-02
 
 Event: `006` — Independence Wave

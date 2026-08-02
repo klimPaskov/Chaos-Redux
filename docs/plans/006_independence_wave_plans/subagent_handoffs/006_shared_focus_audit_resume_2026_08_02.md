@@ -1,5 +1,7 @@
 # Event 006 shared focus audit resume — 2026-08-02
 
+> **Superseded for current geometry routing (2026-08-03):** This resume preserves the pre-reflow 223-connector and 14-diagnostic inspection. The parent-owned reflow receipt `006_focus_geometry_reflow_parent_2026_08_02.md` records the current source-clean 184-node and 186-visible-connector graph. Preserve the dated audit body for traceability and do not use its layout hold as the current Event 006 disposition.
+
 ## Outcome
 
 The current Event 006 shared tree is source-complete for the accepted shared-tree architecture, but its rendered layout remains validation-blocked. No safe bounded coordinate patch was identified. The focus source, imported package modules, icons, localisation, rewards, prerequisites, and source-level AI blocks are present; the remaining geometry and additive-carrier limits require a broader reviewed reflow or architecture decision outside this narrow audit.
@@ -78,4 +80,3 @@ The audit did not reword player-facing text or alter rewards because the request
 ## Recommended next action
 
 Parent should retain the current source and schedule a reviewed layout pass that treats the founding-settlement root fan and professional-defense fan as coupled subgraphs, then rerun `hoi4.focus_inspect` and `hoi4.focus_render`. Keep the additive carrier boundary fail-closed unless a meaningful-tree owner is explicitly reviewed and statically imports the overlay. No focus source files were changed by this audit.
-

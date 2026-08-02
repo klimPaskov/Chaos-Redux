@@ -1,5 +1,7 @@
 # Event 006 current documentation reconciliation v106
 
+> **Superseded for current routing (2026-08-03):** This dated reconciliation retains the v101 `6001` audio reference and predates the parent-owned focus reflow. Preserve its disposition tables and historical findings. Use `006_source_of_truth_map.md`, `006_independence_wave_resume_packet.md`, current completion evidence v102, and audio research v109 for current authority.
+
 Date: 2026-08-02
 
 Role: `chaosx_documentation_curator`
