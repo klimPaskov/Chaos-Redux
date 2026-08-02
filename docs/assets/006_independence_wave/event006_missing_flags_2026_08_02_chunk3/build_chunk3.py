@@ -45,6 +45,15 @@ SPECS = (
     ("HCX", "Texas", "HCX_texas_imagegen_raw.png", "https://en.wikipedia.org/wiki/Flag_of_Texas", "attested Texas Lone Star flag: blue hoist panel, white upper fly, red lower fly, one white star"),
     ("HDX", "Cherokee Nation", "HDX_cherokee_imagegen_raw.png", "https://www.cherokee.org/about-the-nation/frequently-asked-questions/culture/?page=2&pageSize=7&term=", "generated compact civic synthesis using the exact Cherokee seven-point star and seven-oak-leaf institutional cues; not a copy of the modern official flag"),
     ("HEX", "Haudenosaunee Confederacy", "HEX_haudenosaunee_imagegen_raw.png", "https://en.wikipedia.org/wiki/Flag_of_the_Iroquois_Confederacy", "generated negotiated-confederacy civic synthesis from the Haudenosaunee wampum-belt and Eastern white pine motif; not an asserted universal historical flag"),
+    ("IBX", "Kachin State", "IBX_kachin_state_imagegen_raw.png", "https://en.wikipedia.org/wiki/Kachin_Independence_Army", "generated alternate-history civic synthesis from Kachin highland, river, jade, and sun motifs; no attested historical flag claim"),
+    ("GIX", "Wa State", "GIX_wa_state_imagegen_raw.png", "https://en.wikipedia.org/wiki/Wa_State", "generated alternate-history civic synthesis from Wa mountain-valley, tea, rubber, and sun motifs; no exact modern Wa flag copy"),
+    ("GRX", "Iwi-led Maori Federation", "GRX_maori_federation_imagegen_raw.png", "https://en.wikipedia.org/wiki/Tino_Rangatiratanga", "generated negotiated iwi-led civic synthesis using restrained koru and wave geometry; not a copy of the modern Tino Rangatiratanga flag"),
+    ("HFX", "Lakota State", "HFX_lakota_state_imagegen_raw.png", "https://en.wikipedia.org/wiki/Lakota_people", "generated alternate-history civic synthesis from Lakota treaty-territory, Black Hills, directional sun, and restrained feather cues"),
+    ("HGX", "Dine State", "HGX_dine_state_imagegen_raw.png", "https://en.wikipedia.org/wiki/Navajo_Nation", "generated pre-1968 alternate-history Diné civic synthesis from four-direction mountain geometry; explicitly not the 1968 Navajo Nation flag"),
+    ("HKX", "Zapotec-Mixtec Federation", "HKX_zapotec_mixtec_imagegen_raw.png", "https://en.wikipedia.org/wiki/Mixtec", "generated negotiated Oaxaca civic synthesis combining distinct Zapotec and Mixtec textile geometry; no generic Aztec or Mexican motif"),
+    ("HPX", "Aymara State", "HPX_aymara_state_imagegen_raw.png", "https://en.wikipedia.org/wiki/Aymara_people", "generated alternate-history Altiplano civic synthesis from restrained chakana-inspired geometry; explicitly not a Wiphala copy"),
+    ("HSX", "Muisca Restoration", "HSX_muisca_restoration_imagegen_raw.png", "https://en.wikipedia.org/wiki/Muisca", "generated alternate-history civic synthesis from Muisca raft, sun, river, and mountain archaeology cues"),
+    ("HUX", "Patagonian State", "HUX_patagonian_state_imagegen_raw.png", "https://en.wikipedia.org/wiki/Patagonia", "generated non-Welsh, non-Araucania civic synthesis from southern wind, steppe, coastal wave, star, and sun motifs"),
 )
 
 
