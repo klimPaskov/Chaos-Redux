@@ -1053,3 +1053,13 @@ It follows the closed Mixed Settlement Petition state memory in the Congo Green 
 The four branches are Offer Voluntary Household Support, Build Public Cohort Services, Open Two-Witness Adoption Houses, and Keep an Emergency Register Only. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and household ledgers, resolves after `49` days, schedules a `365` day next-generation review, applies bounded Deaths failure, writes household, generation, demographic memory, and bilateral memories, records Event Log history `9205`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired.
 
 The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population between states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. Static proof is recorded in `FALLOUT_FERTILITY_QUESTION_CHAIN_PROOF.md`.
+
+## The Old Doctor's Trial tranche
+
+The Old Doctor's Trial is a dormant ordinary Fallout chain at `chaosx.fallout.1023` through `chaosx.fallout.1029` with candidate `901`, transaction `710100`, route `7232`, and Event Log history `9206`.
+
+It follows the closed Fertility Question state memory in the Congo Green Basin mutant polity. The candidate selects the lowest current hearing ward with a foreign witness, surviving population, current Air Winter and Supply Access values, trial legitimacy, atrocity pressure, Medicine, Cohesion, Recognition, and an affordable branch.
+
+The four branches are Open a Public Trial, Convene a Truth Commission, Pardon the Doctor for Retained Knowledge, and Keep the Records Under Seal. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and justice ledgers, resolves after `56` days, schedules a `420` day witness review, applies bounded Deaths failure, writes justice and bilateral memories, records Event Log history `9206`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired.
+
+The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population between states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. Static proof is recorded in `FALLOUT_OLD_DOCTOR_TRIAL_CHAIN_PROOF.md`.
