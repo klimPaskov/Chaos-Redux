@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_DIPLOMATIC_ACCEPTANCE_OPINION = 25
+@CR_SC_INDEPENDENCE_WAVE_VALUE_MINIMUM = 0
 add_namespace = chaosx.nr6
 
 # Canonical repeatable entry. A joint-cluster presentation always takes
@@ -148,9 +152,10 @@ country_event = {
 }
 
 # Internal synchronous character handoff for northern/western European
-# regional packages with complete roster contracts. Static characters are recruited from an event,
-# never from a scripted effect or on action. The calling setup effect validates
-# the complete roster before it can publish package success.
+# regional packages with complete roster contracts. Static characters are
+# recruited from this hidden event only when the package is actually released;
+# the calling setup effect validates the complete roster before it can publish
+# package success.
 country_event = {
 	id = chaosx.nr6.10
 	hidden = yes
@@ -190,9 +195,9 @@ country_event = {
 	}
 }
 
-# Internal synchronous character handoff for Event 006 package rosters.
-# Static characters are recruited from an event, never from a scripted effect
-# or on action. The calling setup effect remains responsible for validating
+# Internal synchronous roster checkpoint for Event 006 package rosters.
+# Characters are recruited from this hidden event only after a package has
+# been selected. The calling setup effect remains responsible for validating
 # the package-specific roster and role contract.
 country_event = {
 	id = chaosx.nr6.350
@@ -317,7 +322,7 @@ country_event = {
 		event_target:independence_wave_reclamation_front_coordinator = { tag = ROOT }
 		check_variable = {
 			var = global.independence_wave_reclamation_front_count
-			value = constant:independence_wave_value.minimum
+			value = @CR_SC_INDEPENDENCE_WAVE_VALUE_MINIMUM
 			compare = greater_than
 		}
 	}
@@ -426,7 +431,7 @@ country_event = {
 						value = constant:independence_wave_instability_band.severe
 						compare = greater_than_or_equals
 					}
-					independence_wave_capacity < constant:independence_wave_capacity_band.institutional
+					check_variable = { var = independence_wave_capacity value = constant:independence_wave_capacity_band.institutional compare = less_than }
 				}
 			}
 		}
@@ -455,7 +460,7 @@ country_event = {
 		ai_chance = {
 			base = constant:independence_wave_decision_ai.standard
 			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_government = democratic }
-			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_opinion = { target = FROM value > constant:independence_wave_decision_gate.diplomatic_acceptance_opinion } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_opinion = { target = FROM value > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_DIPLOMATIC_ACCEPTANCE_OPINION } }
 			modifier = {
 				factor = constant:independence_wave_decision_ai.modifier_double
 				FROM = {
@@ -499,7 +504,7 @@ country_event = {
 		ai_chance = {
 			base = constant:independence_wave_decision_ai.low
 			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_war_with = FROM }
-			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_opinion = { target = FROM value < constant:independence_wave_value.minimum } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_opinion = { target = FROM value < @CR_SC_INDEPENDENCE_WAVE_VALUE_MINIMUM } }
 			modifier = { factor = constant:independence_wave_decision_ai.modifier_double capital_scope = { NOT = { is_controlled_by = ROOT } } }
 		}
 	}
