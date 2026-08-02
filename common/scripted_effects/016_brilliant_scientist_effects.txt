@@ -1012,7 +1012,7 @@ brilliant_scientist_initialize_project_ledgers = {
 	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_public_count } } set_variable = { brilliant_scientist_breakthrough_public_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 	if = { limit = { NOT = { has_variable = brilliant_scientist_breakthrough_classified_count } } set_variable = { brilliant_scientist_breakthrough_classified_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO } }
 	set_temp_variable = { brilliant_scientist_project_initialize_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
-	while = {
+	while_loop_effect = {
 		limit = {
 			check_variable = { brilliant_scientist_project_initialize_index < constant:brilliant_scientist_event.project_family_count }
 		}
@@ -1030,7 +1030,7 @@ brilliant_scientist_initialize_project_ledgers = {
 brilliant_scientist_refresh_project_capacity_from_gross = {
 	set_temp_variable = { brilliant_scientist_project_capacity_used = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	set_temp_variable = { brilliant_scientist_project_capacity_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
-	while = {
+	while_loop_effect = {
 		limit = { check_variable = { brilliant_scientist_project_capacity_index < constant:brilliant_scientist_event.project_family_count } }
 		set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_project_capacity_index }
 		add_to_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_value.one }
@@ -1085,7 +1085,7 @@ brilliant_scientist_refresh_project_counts = {
 	set_variable = { brilliant_scientist_project_weaponization_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	set_variable = { brilliant_scientist_independently_replicated_family_count = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	set_temp_variable = { brilliant_scientist_project_count_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
-	while = {
+	while_loop_effect = {
 		limit = {
 			check_variable = { brilliant_scientist_project_count_index < constant:brilliant_scientist_event.project_family_count }
 		}
@@ -1265,7 +1265,7 @@ brilliant_scientist_reconcile_old_host_after_transfer = {
 	clear_variable = brilliant_scientist_active_project_stage
 	clear_variable = brilliant_scientist_active_project_capacity_delta
 	set_temp_variable = { brilliant_scientist_project_transfer_index = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
-	while = {
+	while_loop_effect = {
 		limit = { check_variable = { brilliant_scientist_project_transfer_index < constant:brilliant_scientist_event.project_family_count } }
 		set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_project_transfer_index }
 		add_to_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_value.one }
