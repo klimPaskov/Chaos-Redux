@@ -7,7 +7,10 @@
 # event-owned recruitment transaction from the package registration effect.
 # A settlement adds and promotes exactly one leader role, changes the ruling
 # party only by explicit country choice, and names that party after the
-# selected institution. Prior leaders are retained rather than retired.
+# selected institution. Prior leaders are retained rather than retired. A
+# historical sovereign role is fail-closed until its source-locked portrait
+# has passed the runtime source gate; held rows keep their package politics
+# but do not expose an unreviewed generated ruler.
 # ============================================================================
 
 africa_priority_member_queue_vanilla_sovereign_recruitment = {
@@ -21,6 +24,22 @@ africa_priority_member_queue_vanilla_sovereign_recruitment = {
 }
 
 africa_priority_member_install_council_government = {
+	if = {
+		limit = { africa_priority_member_portrait_runtime_is_approved = yes }
+		clr_country_flag = africa_priority_member_sovereign_portrait_blocked
+		africa_priority_member_install_council_government_runtime = yes
+	}
+	else = {
+		set_politics = {
+			ruling_party = neutrality
+			elections_allowed = no
+		}
+		clr_country_flag = africa_priority_member_sovereign_installed
+		set_country_flag = africa_priority_member_sovereign_portrait_blocked
+	}
+}
+
+africa_priority_member_install_council_government_runtime = {
 	set_politics = {
 		ruling_party = neutrality
 		elections_allowed = no
@@ -228,6 +247,22 @@ africa_priority_member_install_council_government = {
 }
 
 africa_priority_member_install_civic_government = {
+	if = {
+		limit = { africa_priority_member_portrait_runtime_is_approved = yes }
+		clr_country_flag = africa_priority_member_sovereign_portrait_blocked
+		africa_priority_member_install_civic_government_runtime = yes
+	}
+	else = {
+		set_politics = {
+			ruling_party = democratic
+			elections_allowed = yes
+		}
+		clr_country_flag = africa_priority_member_sovereign_installed
+		set_country_flag = africa_priority_member_sovereign_portrait_blocked
+	}
+}
+
+africa_priority_member_install_civic_government_runtime = {
 	set_politics = {
 		ruling_party = democratic
 		elections_allowed = yes
@@ -435,6 +470,22 @@ africa_priority_member_install_civic_government = {
 }
 
 africa_priority_member_install_producer_government = {
+	if = {
+		limit = { africa_priority_member_portrait_runtime_is_approved = yes }
+		clr_country_flag = africa_priority_member_sovereign_portrait_blocked
+		africa_priority_member_install_producer_government_runtime = yes
+	}
+	else = {
+		set_politics = {
+			ruling_party = communism
+			elections_allowed = no
+		}
+		clr_country_flag = africa_priority_member_sovereign_installed
+		set_country_flag = africa_priority_member_sovereign_portrait_blocked
+	}
+}
+
+africa_priority_member_install_producer_government_runtime = {
 	set_politics = {
 		ruling_party = communism
 		elections_allowed = no

@@ -8,6 +8,8 @@ The country-owned decisions cover the timed founding crisis, mountain depots, re
 
 Montenegro reuses the vanilla MNT character definitions and does not copy a history file. The roster handoff is event-owned in `chaosx.nr6.350`, as required for synchronous character recruitment. Source-locked HOI4-style raw repaints now exist for Blažo Jovanović and Blažo Đukanović, and the independent visual audit passes their identity, male framing, artifacts, HOI4 style, and source/crop linkage; rights remain review-pending, and deterministic 156x210 candidates remain evidence-only. The generic vanilla Kristo Popovic portrait is not accepted as a grounded Event 006 visual. IW-030 therefore remains fail-closed until the full male roster has defensible source provenance, final portrait admission, and runtime wiring without a generic substitute. The global shared-focus geometry audit also remains a package-admission blocker.
 
+The latest evidence tranche adds an identity-preserving HOI4-style repaint and deterministic 156x210 candidate for sourced Mitar Martinovic under `docs/assets/006_independence_wave/iw030_mnt_portrait_source_research_v87_2026_08_01/`. The independent v91 audit prefers v7 but leaves the portrait at `needs_user_review` for human style sign-off and explicit identity/roster ownership; it is not assigned to `MNT_kristo_popovic`, converted to DDS, or wired at runtime.
+
 ## Runtime surfaces
 
 | Surface | File | Runtime identifiers |
