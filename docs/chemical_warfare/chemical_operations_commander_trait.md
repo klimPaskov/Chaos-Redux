@@ -15,8 +15,8 @@ The trait is intended for corps commanders and does two things:
 - Type: `corps_commander`
 - Trait type: `assignable_trait`
 - Cost: `500`
-- Manual assignment requires the owner country to have `chemical_operations_academy_spirit`
-- The same academy spirit also gives new and leveling army leaders a `50%` scripted chance to gain the trait automatically
+- Manual assignment requires only the owner country's `chaos_warfare` doctrine.
+- The retired academy-spirit identifier remains hidden for save compatibility and does not add another gate to the trait.
 - Trait tree placement:
   - `chemical_operations_commander` sits below core general traits (`gui_row = 15`)
   - `skilled_staffer` and `expert_delegator` moved slightly down (`gui_row = 16`)

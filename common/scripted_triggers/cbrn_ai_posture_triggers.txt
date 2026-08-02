@@ -1,3 +1,9 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_ARTILLERY_RESERVE_FLOOR = 0.08
+@CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_INFANTRY_RESERVE_FLOOR = 0.15
+@CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_MOTORIZED_RESERVE_FLOOR = 0.08
+@CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_SUPPORT_RESERVE_FLOOR = 0.10
 # ============================================================================
 # CHAOS REDUX - CBRN AI POSTURE TRIGGERS
 # ============================================================================
@@ -81,24 +87,24 @@ cbrn_ai_has_conventional_army_deficit = {
 	OR = {
 		stockpile_ratio = {
 			archetype = infantry_equipment
-			ratio < constant:cbrn_ai_posture.conventional_infantry_reserve_floor
+			ratio < @CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_INFANTRY_RESERVE_FLOOR
 		}
 		stockpile_ratio = {
 			archetype = support_equipment
-			ratio < constant:cbrn_ai_posture.conventional_support_reserve_floor
+			ratio < @CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_SUPPORT_RESERVE_FLOOR
 		}
 		AND = {
 			has_tech = artillery1
 			stockpile_ratio = {
 				archetype = artillery_equipment
-				ratio < constant:cbrn_ai_posture.conventional_artillery_reserve_floor
+				ratio < @CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_ARTILLERY_RESERVE_FLOOR
 			}
 		}
 		AND = {
 			has_tech = motorised_infantry
 			stockpile_ratio = {
 				archetype = motorized_equipment
-				ratio < constant:cbrn_ai_posture.conventional_motorized_reserve_floor
+				ratio < @CR_SC_CBRN_AI_POSTURE_CONVENTIONAL_MOTORIZED_RESERVE_FLOOR
 			}
 		}
 	}

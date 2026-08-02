@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CBRN_MATH_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - EXACT-STATE CBRN BATTLEFIELD OPERATION TRIGGERS
 # ============================================================================
@@ -428,7 +431,7 @@ cbrn_battlefield_common_target_state = {
 
 cbrn_battlefield_target_has_enemy_divisions = {
 	CONTROLLER = {
-		divisions_in_state = { state = PREV size > constant:cbrn_math.zero }
+		divisions_in_state = { state = PREV size > @CR_SC_CBRN_MATH_ZERO }
 	}
 }
 
@@ -444,7 +447,7 @@ cbrn_battlefield_projector_target_state = {
 	cbrn_battlefield_common_target_state = yes
 	OR = {
 		supply_node > constant:cbrn_battlefield_operation_target.minimum_supply_node
-		fort > constant:cbrn_battlefield_operation_target.minimum_fort_level
+		check_variable = { var = fort value = constant:cbrn_battlefield_operation_target.minimum_fort_level compare = greater_than }
 		has_state_category = city
 		has_state_category = large_city
 		has_state_category = metropolis

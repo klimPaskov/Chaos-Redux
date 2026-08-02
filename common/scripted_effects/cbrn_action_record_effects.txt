@@ -50,25 +50,25 @@ cbrn_append_unified_action_record = {
 		set_temp_variable = { cbrn_unified_record_uid = global.cbrn_action_record_uid_next }
 
 		save_event_target_as = cbrn_unified_record_actor
-		clear_event_target = cbrn_unified_record_resolved_victim
+		clear_global_event_target = cbrn_unified_record_resolved_victim
 		add_to_array = { array = global.cbrn_action_record_uid_entries value = cbrn_unified_record_uid }
 		add_to_array = { array = global.cbrn_action_record_actor_entries value = event_target:cbrn_unified_record_actor }
 		if = {
 			limit = { has_event_target = cbrn_unified_record_victim_country }
 			event_target:cbrn_unified_record_victim_country = {
-				save_event_target_as = cbrn_unified_record_resolved_victim
+				save_global_event_target_as = cbrn_unified_record_resolved_victim
 			}
 		}
 		else = {
 			event_target:cbrn_unified_record_target_state = {
 				owner = {
-					save_event_target_as = cbrn_unified_record_resolved_victim
+					save_global_event_target_as = cbrn_unified_record_resolved_victim
 				}
 			}
 			if = {
 				limit = { NOT = { has_event_target = cbrn_unified_record_resolved_victim } }
 				event_target:cbrn_unified_record_actor = {
-					save_event_target_as = cbrn_unified_record_resolved_victim
+					save_global_event_target_as = cbrn_unified_record_resolved_victim
 				}
 			}
 		}

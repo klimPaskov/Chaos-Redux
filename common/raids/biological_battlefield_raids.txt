@@ -1,3 +1,7 @@
+# Static database fields in this file do not accept script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BIO_BATTLEFIELD_TARGET_CONCENTRATED_DIVISION_FLOOR = 2
+
 # ============================================================================
 # CHAOS REDUX - BATTLEFIELD BIOLOGICAL DISSEMINATION RAIDS
 # ============================================================================
@@ -99,8 +103,17 @@ types = {
 			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = {
+				factor = constant:bio_battlefield_ai.fortified_target_factor
+				var:target_state = {
+					any_province_building_level = {
+						province = { all_provinces = yes }
+						building = bunker
+						level > 0
+					}
+				}
+			}
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > @CR_SC_BIO_BATTLEFIELD_TARGET_CONCENTRATED_DIVISION_FLOOR } } } }
 			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
 			modifier = {
 				factor = constant:bio_battlefield_ai.sanction_vulnerability_factor
@@ -251,8 +264,17 @@ types = {
 			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = {
+				factor = constant:bio_battlefield_ai.fortified_target_factor
+				var:target_state = {
+					any_province_building_level = {
+						province = { all_provinces = yes }
+						building = bunker
+						level > 0
+					}
+				}
+			}
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > @CR_SC_BIO_BATTLEFIELD_TARGET_CONCENTRATED_DIVISION_FLOOR } } } }
 			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.sanction_vulnerability_factor ROOT = { check_variable = { condemnation_total > constant:bio_battlefield_ai.high_condemnation_threshold } check_variable = { condemnation_import_vulnerability > constant:bio_battlefield_ai.high_import_vulnerability_threshold } NOT = { bio_battlefield_ai_is_desperate_route = yes } } }
 		}
@@ -313,8 +335,17 @@ types = {
 			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = {
+				factor = constant:bio_battlefield_ai.fortified_target_factor
+				var:target_state = {
+					any_province_building_level = {
+						province = { all_provinces = yes }
+						building = bunker
+						level > 0
+					}
+				}
+			}
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > @CR_SC_BIO_BATTLEFIELD_TARGET_CONCENTRATED_DIVISION_FLOOR } } } }
 			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.sanction_vulnerability_factor ROOT = { check_variable = { condemnation_total > constant:bio_battlefield_ai.high_condemnation_threshold } check_variable = { condemnation_import_vulnerability > constant:bio_battlefield_ai.high_import_vulnerability_threshold } NOT = { bio_battlefield_ai_is_desperate_route = yes } } }
 		}
@@ -375,8 +406,17 @@ types = {
 			modifier = { factor = constant:bio_battlefield_ai.defensive_profile_factor ROOT = { cbrn_ai_has_defensive_cbrn_profile = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.prepared_program_factor ROOT = { bio_battlefield_ai_has_safe_domestic_program = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.fortified_target_factor var:target_state = { land_fort > 0 } }
-			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > constant:bio_battlefield_target.concentrated_division_floor } } } }
+			modifier = {
+				factor = constant:bio_battlefield_ai.fortified_target_factor
+				var:target_state = {
+					any_province_building_level = {
+						province = { all_provinces = yes }
+						building = bunker
+						level > 0
+					}
+				}
+			}
+			modifier = { factor = constant:bio_battlefield_ai.concentrated_army_factor var:target_state = { CONTROLLER = { divisions_in_state = { state = PREV size > @CR_SC_BIO_BATTLEFIELD_TARGET_CONCENTRATED_DIVISION_FLOOR } } } }
 			modifier = { factor = constant:bio_battlefield_ai.active_outbreak_factor var:target_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
 			modifier = { factor = constant:bio_battlefield_ai.sanction_vulnerability_factor ROOT = { check_variable = { condemnation_total > constant:bio_battlefield_ai.high_condemnation_threshold } check_variable = { condemnation_import_vulnerability > constant:bio_battlefield_ai.high_import_vulnerability_threshold } NOT = { bio_battlefield_ai_is_desperate_route = yes } } }
 		}

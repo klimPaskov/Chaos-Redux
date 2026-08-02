@@ -4,7 +4,7 @@ Chaos Redux should avoid copying vanilla `history/` files when the goal is only 
 
 ## Runtime flow
 
-`common/on_actions/chaosx_on_actions.txt` calls `chaosx_apply_startup_history_grants` from `on_startup`.
+`common/on_actions/chaosx_on_actions.txt` calls `chaosx_apply_startup_history_grants` from `on_startup` through one existing-country scope. The effect keeps one global idempotence guard, dispatches all tag-specific facilities, starting technologies, stockpiles, projects, and other history grants by explicit country scope, then runs the per-country initialization helpers across existing countries. Mapped countries therefore do not depend on which country the engine selected as the startup caller.
 
 The implementation lives in `common/scripted_effects/chaosx_startup_history_effects.txt`.
 
@@ -60,6 +60,7 @@ The scientist helpers are internal to startup generation. Event chains should us
 The startup effect currently replaces copied vanilla overrides for:
 
 - existing-country Chaos Redux technology, stockpile, generated scientist, trait, breakthrough, special-project, and delayed-event grants
+- prepared-country starting chemistry/biology setup is preserved, including Britain's `sp:anthrax_bomb` special-project completion and Germany's starting `tabun` technology
 - chemical warfare facility placement in states 16, 59, 122, 158, 239, 361, and 530
 - biowarfare facility placement in states 247, 282, 328, 338, 440, 609, 816, and 823
 - the Australia citizen-army tuning variables

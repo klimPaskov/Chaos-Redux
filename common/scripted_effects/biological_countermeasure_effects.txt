@@ -201,7 +201,7 @@ bio_countermeasure_release_field_hospital_reservation = {
 	clear_variable = bio_field_hospital_medical_provider
 	clear_variable = bio_field_hospital_medical_commitment
 	clear_variable = bio_field_hospital_order_cycle
-	clear_temp_variable = bio_countermeasure_refund_value
+	set_temp_variable = { bio_countermeasure_refund_value = 0 }
 }
 
 bio_countermeasure_apply_field_hospital = {
@@ -542,7 +542,7 @@ bio_countermeasure_release_international_mission_reservation = {
 	clear_variable = bio_international_medical_provider
 	clear_variable = bio_international_medical_commitment
 	clear_variable = bio_international_order_cycle
-	clear_temp_variable = bio_countermeasure_refund_value
+	set_temp_variable = { bio_countermeasure_refund_value = 0 }
 }
 
 bio_countermeasure_add_international_transparency_to_agent = {
@@ -594,8 +594,8 @@ bio_countermeasure_apply_international_mission = {
 	bio_countermeasure_add_international_transparency_to_agent = yes
 	set_temp_variable = { bio_countermeasure_transparency_agent = constant:bio_lifecycle_agent.smallpox }
 	bio_countermeasure_add_international_transparency_to_agent = yes
-	clear_temp_variable = bio_countermeasure_transparency_agent
-	clear_temp_variable = bio_active_agent
+	set_temp_variable = { bio_countermeasure_transparency_agent = 0 }
+	set_temp_variable = { bio_active_agent = 0 }
 }
 
 bio_countermeasure_pay_containment_mission = {
@@ -669,7 +669,7 @@ bio_countermeasure_start_containment_mission = {
 			subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.containment_mission_medical_commitment }
 			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 		}
-		clear_temp_variable = bio_countermeasure_state_max_intensity
+		set_temp_variable = { bio_countermeasure_state_max_intensity = 0 }
 	}
 }
 
@@ -708,7 +708,7 @@ bio_countermeasure_adjust_all_containment_agents = {
 	set_temp_variable = { bio_active_agent = constant:bio_lifecycle_agent.smallpox }
 	bio_countermeasure_adjust_containment_agent = yes
 	bio_lifecycle_update_current_agent_air_contribution_from_slot = yes
-	clear_temp_variable = bio_active_agent
+	set_temp_variable = { bio_active_agent = 0 }
 	bio_lifecycle_refresh_state_modifiers = yes
 }
 
@@ -721,9 +721,9 @@ bio_countermeasure_apply_containment_success = {
 	multiply_temp_variable = { bio_containment_medical_delta = constant:bio_lifecycle_math.negation }
 	bio_countermeasure_adjust_all_containment_agents = yes
 	set_state_flag = bio_containment_mission_success_history
-	clear_temp_variable = bio_containment_intensity_delta
-	clear_temp_variable = bio_containment_exposed_delta
-	clear_temp_variable = bio_containment_medical_delta
+	set_temp_variable = { bio_containment_intensity_delta = 0 }
+	set_temp_variable = { bio_containment_exposed_delta = 0 }
+	set_temp_variable = { bio_containment_medical_delta = 0 }
 }
 
 bio_countermeasure_apply_containment_partial_success = {
@@ -735,9 +735,9 @@ bio_countermeasure_apply_containment_partial_success = {
 	multiply_temp_variable = { bio_containment_medical_delta = constant:bio_lifecycle_math.negation }
 	bio_countermeasure_adjust_all_containment_agents = yes
 	set_state_flag = bio_containment_mission_partial_history
-	clear_temp_variable = bio_containment_intensity_delta
-	clear_temp_variable = bio_containment_exposed_delta
-	clear_temp_variable = bio_containment_medical_delta
+	set_temp_variable = { bio_containment_intensity_delta = 0 }
+	set_temp_variable = { bio_containment_exposed_delta = 0 }
+	set_temp_variable = { bio_containment_medical_delta = 0 }
 }
 
 bio_countermeasure_apply_containment_failure = {
@@ -746,9 +746,9 @@ bio_countermeasure_apply_containment_failure = {
 	set_temp_variable = { bio_containment_medical_delta = constant:bio_countermeasure_response.containment_failure_medical_add }
 	bio_countermeasure_adjust_all_containment_agents = yes
 	set_state_flag = bio_containment_mission_failure_history
-	clear_temp_variable = bio_containment_intensity_delta
-	clear_temp_variable = bio_containment_exposed_delta
-	clear_temp_variable = bio_containment_medical_delta
+	set_temp_variable = { bio_containment_intensity_delta = 0 }
+	set_temp_variable = { bio_containment_exposed_delta = 0 }
+	set_temp_variable = { bio_containment_medical_delta = 0 }
 }
 
 bio_countermeasure_clear_containment_mission = {
@@ -772,7 +772,7 @@ bio_countermeasure_clear_containment_mission = {
 	clear_variable = bio_containment_mission_cycle
 	clear_variable = bio_containment_mission_start_intensity
 	clear_variable = bio_containment_mission_new_spreads
-	clear_temp_variable = bio_countermeasure_refund_value
+	set_temp_variable = { bio_countermeasure_refund_value = 0 }
 }
 
 bio_countermeasure_resolve_containment_mission = {
@@ -901,7 +901,7 @@ bio_countermeasure_start_border_cleanup_job = {
 		set_country_flag = bio_border_cleanup_job_active
 		set_temp_variable = { bio_border_cleanup_delay = constant:bio_countermeasure_timing.border_cleanup_interval_days }
 		country_event = { id = bio_countermeasure.1 days = bio_border_cleanup_delay }
-		clear_temp_variable = bio_border_cleanup_delay
+		set_temp_variable = { bio_border_cleanup_delay = 0 }
 	}
 }
 
@@ -1002,5 +1002,5 @@ bio_countermeasure_cleanup_state_commitments = {
 	clear_variable = bio_international_medical_provider
 	clear_variable = bio_international_medical_commitment
 	clear_variable = bio_international_order_cycle
-	clear_temp_variable = bio_countermeasure_refund_value
+	set_temp_variable = { bio_countermeasure_refund_value = 0 }
 }

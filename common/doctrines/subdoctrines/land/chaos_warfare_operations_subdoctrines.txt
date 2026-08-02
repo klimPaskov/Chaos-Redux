@@ -13,14 +13,38 @@
 @CBRN_INTEGRATED_COMMAND_AI_BASE = 1.00
 @CBRN_INTEGRATED_COMMAND_AI_UNAVAILABLE = 0
 @CBRN_INTEGRATED_COMMAND_AI_COMMITTED = 2.00
-@CBRN_INTEGRATED_COMMAND_MASTERY_MULT = 6.00
+@CBRN_INTEGRATED_COMMAND_MASTERY_MULT = 14.00
 @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD = 100
-@CBRN_INTEGRATED_COMMAND_M1_RECON = 0.10
-@CBRN_INTEGRATED_COMMAND_M2_REINFORCE = 0.02
-@CBRN_INTEGRATED_COMMAND_M3_HQ_SUPPLY = -0.05
-@CBRN_INTEGRATED_COMMAND_M4_COORDINATION = 0.01
-@CBRN_INTEGRATED_COMMAND_M5_ORG = 0.02
-@CBRN_INTEGRATED_COMMAND_M5_COORDINATION = 0.02
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_PLANNING = 0.20
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_REINFORCE = 0.10
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_RECON = 0.35
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_COORDINATION = 0.15
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_CHEMICAL_DEFENSE = 0.25
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_CHEMICAL_BREAKTHROUGH = 0.25
+@CBRN_INTEGRATED_COMMAND_M1_RECON = 0.35
+@CBRN_INTEGRATED_COMMAND_M1_PLANNING = 0.20
+@CBRN_INTEGRATED_COMMAND_M2_REINFORCE = 0.10
+@CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_DEFENSE = 0.25
+@CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_BREAKTHROUGH = 0.25
+@CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_RELIABILITY = 0.25
+@CBRN_INTEGRATED_COMMAND_M2_ARMY_INTEL = 0.15
+@CBRN_INTEGRATED_COMMAND_M2_INTEL_FROM_COMBAT = 0.35
+@CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_SUPPLY = -0.20
+@CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_SUPPLY = -0.20
+@CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_RELIABILITY = 0.25
+@CBRN_INTEGRATED_COMMAND_M3_ATTRITION = -0.20
+@CBRN_INTEGRATED_COMMAND_M4_COORDINATION = 0.15
+@CBRN_INTEGRATED_COMMAND_M4_CHEMICAL_SOFT_ATTACK = 0.25
+@CBRN_INTEGRATED_COMMAND_M5_ORG = 0.15
+@CBRN_INTEGRATED_COMMAND_M5_REINFORCE = 0.10
+@CBRN_INTEGRATED_COMMAND_M5_RECON = 0.35
+@CBRN_INTEGRATED_COMMAND_M5_COORDINATION = 0.15
+@CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_SOFT_ATTACK = 0.25
+@CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_BREAKTHROUGH = 0.25
+@CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_DEFENSE = 0.25
+@CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_TANK_SOFT_ATTACK = 0.25
+@CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_TANK_BREAKTHROUGH = 0.25
+@CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_TANK_DEFENSE = 0.25
 
 integrated_chemical_operations = {
 	track = operations
@@ -63,12 +87,23 @@ integrated_chemical_operations = {
 		}
 	}
 
+	planning_speed = @CBRN_INTEGRATED_COMMAND_ACTIVATION_PLANNING
+	land_reinforce_rate = @CBRN_INTEGRATED_COMMAND_ACTIVATION_REINFORCE
+	recon_factor = @CBRN_INTEGRATED_COMMAND_ACTIVATION_RECON
+	coordination_bonus = @CBRN_INTEGRATED_COMMAND_ACTIVATION_COORDINATION
+
+	category_chemical_support_companies = {
+		defense = @CBRN_INTEGRATED_COMMAND_ACTIVATION_CHEMICAL_DEFENSE
+		breakthrough = @CBRN_INTEGRATED_COMMAND_ACTIVATION_CHEMICAL_BREAKTHROUGH
+	}
+
 	effect = { cbrn_record_integrated_command_adoption = yes }
 
 	rewards = {
 		operational_recon_grids = {
 			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
 			recon_factor = @CBRN_INTEGRATED_COMMAND_M1_RECON
+			planning_speed = @CBRN_INTEGRATED_COMMAND_M1_PLANNING
 			effect = {
 				cbrn_record_operations_mastery_one = yes
 				custom_effect_tooltip = integrated_chemical_operations_operational_recon_grids_tt
@@ -78,6 +113,15 @@ integrated_chemical_operations = {
 		signal_intelligence_fusion = {
 			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
 			land_reinforce_rate = @CBRN_INTEGRATED_COMMAND_M2_REINFORCE
+			category_chemical_support_companies = {
+				breakthrough = @CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_BREAKTHROUGH
+				defense = @CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_DEFENSE
+			}
+			category_chemical_tank_support_companies = {
+				reliability = @CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_RELIABILITY
+			}
+			army_intel_factor = @CBRN_INTEGRATED_COMMAND_M2_ARMY_INTEL
+			intel_from_combat_factor = @CBRN_INTEGRATED_COMMAND_M2_INTEL_FROM_COMBAT
 			effect = {
 				cbrn_record_operations_mastery_two = yes
 				custom_effect_tooltip = integrated_chemical_operations_signal_intelligence_fusion_tt
@@ -87,8 +131,13 @@ integrated_chemical_operations = {
 		countercontamination_routing = {
 			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
 			category_cbrn_hq = {
-				supply_consumption = @CBRN_INTEGRATED_COMMAND_M3_HQ_SUPPLY
+				supply_consumption = @CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_SUPPLY
 			}
+			category_chemical_tank_support_companies = {
+				supply_consumption = @CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_SUPPLY
+				reliability = @CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_RELIABILITY
+			}
+			attrition = @CBRN_INTEGRATED_COMMAND_M3_ATTRITION
 			effect = {
 				cbrn_record_operations_mastery_three = yes
 				custom_effect_tooltip = integrated_chemical_operations_countercontamination_routing_tt
@@ -98,6 +147,9 @@ integrated_chemical_operations = {
 		air_surface_chemical_link = {
 			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
 			coordination_bonus = @CBRN_INTEGRATED_COMMAND_M4_COORDINATION
+			category_chemical_support_companies = {
+				soft_attack = @CBRN_INTEGRATED_COMMAND_M4_CHEMICAL_SOFT_ATTACK
+			}
 			effect = {
 				cbrn_record_operations_mastery_four = yes
 				custom_effect_tooltip = integrated_chemical_operations_air_surface_chemical_link_tt
@@ -108,6 +160,18 @@ integrated_chemical_operations = {
 			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
 			army_org_factor = @CBRN_INTEGRATED_COMMAND_M5_ORG
 			coordination_bonus = @CBRN_INTEGRATED_COMMAND_M5_COORDINATION
+			land_reinforce_rate = @CBRN_INTEGRATED_COMMAND_M5_REINFORCE
+			recon_factor = @CBRN_INTEGRATED_COMMAND_M5_RECON
+			category_chemical_support_companies = {
+				soft_attack = @CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_SOFT_ATTACK
+				breakthrough = @CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_BREAKTHROUGH
+				defense = @CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_DEFENSE
+			}
+			category_chemical_tank_support_companies = {
+				soft_attack = @CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_TANK_SOFT_ATTACK
+				breakthrough = @CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_TANK_BREAKTHROUGH
+				defense = @CBRN_INTEGRATED_COMMAND_M5_CHEMICAL_TANK_DEFENSE
+			}
 			effect = {
 				cbrn_record_operations_mastery_five = yes
 				custom_effect_tooltip = integrated_chemical_operations_theater_intelligence_overmatch_tt

@@ -1,10 +1,10 @@
 # Doctrine-style icon GFX handoff
 
-No `.gfx` file was edited in this subtask.
+No `.gfx` file was edited in the asset-production subtask; parent integration is complete in `interface/cbrn_doctrine.gfx`.
 
 Suggested sibling runtime folder: `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/`.
 
-The parent implementation agent should repoint the existing sprite definitions in `interface/cbrn_doctrine.gfx` as follows while keeping sprite names stable:
+The parent implementation repointed the existing sprite definitions in `interface/cbrn_doctrine.gfx` as follows while keeping sprite names stable:
 
 ```text
 GFX_doctrine_extermination_columns_medium -> gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_hazard_assault_formations.dds

@@ -15,7 +15,7 @@ Accepted source precedence was applied throughout: numbered specifications, then
 | Requirement | Evidence | Result |
 | --- | --- | --- |
 | Conditional adoption, visible to all | `cbrn_chaos_warfare_adoption_capable` accepts masks plus agent technology, a completed chemical project, command establishment, a mapped historical program, or scenario override | pass |
-| No excessive global doctrine package | old 20-percent chemical-support attack package removed; maximum Stage 5 global attack is the mutually exclusive Terminal Hazard spirit at 5 percent | pass |
+| No excessive global doctrine package | old all-country chemical-support attack package removed; permanent attack remains confined to the mutually exclusive Terminal Hazard spirit at 35 percent | pass |
 | Ninety-day institution proof | mission requires 500 masks, 50 decontamination sets, 100 support equipment, one fielded Operations Section, and one protected regimental formation; exact failure and paid remediation paths exist | pass |
 | Four cross-track institutions | explicit claim decisions enforce production/reserve/HQ, delivery mastery/payload/protected-order history, two-track/decontamination/intelligence proof, and all-track/mastery/policy/advanced-protection proof | pass |
 | Readiness ladder | caps 39/59/74/89/100 and minima 10/30/45/65/85 are centralized and granted only by the mapped institution | pass |
@@ -26,8 +26,8 @@ Accepted source precedence was applied throughout: numbered specifications, then
 | Tactic payload safety | Chemical Barrage requires an exact payload-consumed proof that no unsupported adapter sets; it remains fail-closed | pass |
 | Use-policy ladder | five policies have centralized PP/CP/readiness/institution/payload gates and a 90-day reassessment lock | pass |
 | Doctrine mitigation boundary | one canonical 0.90/0.80/0.70 Condemnation ladder is selected in the shared action record; strategic and mass-casualty floors are applied afterward | pass |
-| Officer-corps bounds | three mutually exclusive Army Command spirits and three mutually exclusive Division Command spirits use modest permanent modifiers and route-aware AI | pass |
-| High command and leader trait | four generic institutional offices avoid invented people; the assignable commander trait requires doctrine, Protective Foundation, and a fielded Operations Section | pass |
+| Officer-corps bounds | three mutually exclusive Army Command spirits and three mutually exclusive Division Command spirits use strong permanent modifiers and route-aware AI | pass |
+| High command and leader trait | four generic institutional offices avoid invented people; the assignable commander trait requires only the Chaos Warfare doctrine | pass |
 | No genocide unlock | legacy Concentration authority is cleared; no camp, extermination, experiment-site, or generic Concentration-law unlock is granted | pass |
 | Exact-state cleanup | player-selected controlled contaminated state, active Decontamination Corridor, inverse-severity output, and 28-day country/state locks | pass |
 | Continuous-air boundary | Chemical Air Interdiction is an eligibility marker only; no passive region contamination, idle-aircraft contamination, or activity estimator exists | pass |
@@ -55,9 +55,9 @@ Maximum permanent stacks and operational multipliers are enumerated there. The s
 - Four Stage 5 localisation files contain 530 unique keys with no duplicate, indented, `:0`, or missing-BOM finding. All 88 dynamic constant-reference occurrences resolve.
 - Every one of the 50 doctrine effects and 48 doctrine triggers has a caller and dynamic-helper documentation.
 - The five static doctrine files have no undefined or unused parser macro and no undocumented global `constant:` token; local mirrors match the centralized tuning tables.
-- All 45 final Stage 5 runtime DDS paths are uniquely registered and exist. The package contains 61 independent visible concepts, source captures, alpha masters, processed PNGs, contact sheets, a dimension/alpha inventory, provenance prompts, manifest, and GFX handoff.
+- All 45 original Stage 5 runtime DDS paths remain uniquely registered and exist. The follow-up asset package adds four doctrine-style replacement icons and 20 regenerated large counter DDS files without replacing the preserved grand-doctrine source or legacy military-raid icon family. The package contains independent visible concepts, source captures, alpha masters, processed PNGs, contact sheets, a dimension/alpha inventory, provenance prompts, manifests, and GFX handoffs.
 - Parent visual review accepted all nine contact sheets, including the independent institutional-review ledger/dossier icon.
-- All 45 DDS files were regenerated after review with the standard 128-byte uncompressed BGRA header, texture caps, real alpha, exact declared dimensions, and no mipmaps.
+- The original 45 Stage 5 DDS files and the follow-up doctrine/counter DDS files use the standard 128-byte uncompressed BGRA header, texture caps, real alpha, exact declared dimensions, and no mipmaps.
 - `docs/systems/chaos_warfare_doctrine.md`, `docs/systems/cbrn_hq_command.md`, the dynamic helper references, asset package, implementation plan, balance report, and improvement-loop addendum match the implemented Stage 5 surface.
 
 ## Engine limits and later-stage ownership

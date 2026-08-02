@@ -26,7 +26,7 @@ Toxic Armored Warfare grants no Concentration occupation law, camp, exterminatio
 
 ## Runtime art
 
-`GFX_doctrine_chemical_suppression_medium` is registered in `interface/cbrn_doctrine.gfx` and uses the final dedicated Toxic Armored Warfare icon at `gfx/interface/doctrines/icons/stage_5_chaos_warfare/doctrine_toxic_armored_warfare.dds`.
+`GFX_doctrine_chemical_suppression_medium` is registered in `interface/cbrn_doctrine.gfx` and uses the final dedicated Toxic Armored Warfare icon at `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_toxic_armored_warfare.dds`.
 
 The full doctrine and officer-corps asset package, source PNGs, processed PNGs, contact sheets, validation inventory, and manifests are under `docs/assets/chaos_warfare_system/stage_5_doctrine_officer_corps/`. No placeholder or cross-type substitute is retained for this track.
 
