@@ -588,6 +588,16 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 		set_temp_variable = { brilliant_scientist_foreign_host_component = brilliant_scientist_foreign_security_alert }
 		multiply_temp_variable = { brilliant_scientist_foreign_host_component = constant:brilliant_scientist_foreign_detection.security_alert_factor }
 		add_to_temp_variable = { brilliant_scientist_foreign_detection_score = brilliant_scientist_foreign_host_component }
+		if = {
+			limit = {
+				brilliant_scientist_portal_calibration_network_is_active = yes
+				check_variable = {
+					event_target:brilliant_scientist_foreign_operation_actor.brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.teleportation
+				}
+			}
+			subtract_from_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.portal_calibration_network }
+			add_to_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.portal_calibration_network }
+		}
 	}
 
 	set_temp_variable = { brilliant_scientist_foreign_project_component = brilliant_scientist_foreign_selected_project_stage }

@@ -1262,6 +1262,9 @@ brilliant_scientist_reconcile_old_host_after_transfer = {
 	brilliant_scientist_clear_project_incident_report_pending = yes
 	clr_country_flag = brilliant_scientist_cross_domain_review_pending
 	clr_country_flag = brilliant_scientist_cross_domain_review_in_progress
+	clr_country_flag = brilliant_scientist_portal_calibration_network_pending
+	clr_country_flag = brilliant_scientist_portal_calibration_network_in_progress
+	clr_country_flag = brilliant_scientist_portal_calibration_network_established
 	clr_country_flag = brilliant_scientist_breakthrough_report_active
 	clear_variable = brilliant_scientist_active_project_family
 	clear_variable = brilliant_scientist_active_project_stage
@@ -1639,6 +1642,10 @@ brilliant_scientist_store_inherited_project_stage = {
 # highest stage proved by Kruger's persistent personal-history flags.
 brilliant_scientist_inherit_kruger_personal_history_portfolio = {
 	brilliant_scientist_initialize_project_ledgers = yes
+	if = {
+		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_portal_calibration_network_established } }
+		set_country_flag = brilliant_scientist_portal_calibration_network_established
+	}
 
 	set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
 	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.none }
@@ -1955,6 +1962,10 @@ brilliant_scientist_inherit_kruger_carried_portfolio = {
 	if = {
 		limit = { has_country_flag = brilliant_scientist_formation_portfolio_snapshot_ready }
 		brilliant_scientist_initialize_project_ledgers = yes
+		if = {
+			limit = { has_country_flag = brilliant_scientist_formation_carried_portal_calibration_network_established }
+			set_country_flag = brilliant_scientist_portal_calibration_network_established
+		}
 		clear_array = brilliant_scientist_project_stage_entries
 		for_each_loop = {
 			array = brilliant_scientist_formation_carried_project_stage_entries
@@ -3530,6 +3541,13 @@ brilliant_scientist_refresh_project_accident_pressure = {
 	if = {
 		limit = { has_country_flag = brilliant_scientist_reaction_patent_pool }
 		add_to_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_host_reaction_delta.accident_minor }
+	}
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation }
+			brilliant_scientist_portal_calibration_network_is_active = yes
+		}
+		subtract_from_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_portal_calibration_network.accident_pressure_reduction }
 	}
 	clamp_variable = { var = brilliant_scientist_accident_pressure min = constant:brilliant_scientist_accident.minimum max = constant:brilliant_scientist_accident.maximum }
 	round_variable = brilliant_scientist_accident_pressure
