@@ -446,9 +446,9 @@ Final implementation should build flavor from host context without writing a sep
 - The host can build a plural scientific community.
 - Foreign persecution and asylum influence assistant loyalty.
 
-### Accepted country-specific institutional settlement pilot (static implementation complete; targeted validation pending, 2026-08-02)
+### Accepted finite country-specific institutional settlements (static implementation complete; targeted validation pending, 2026-08-03)
 
-The accepted addendum makes four country contexts mechanically distinct inside the existing institutional sequence without creating separate country chains. Britain (`ENG`) can select a DSIR-style research-association compact in public-science or distributed-research context, the United States (`USA`) can select a federal university-industry contract network in industrial-mobilization or distributed-research context, the Soviet Union (`SOV`) can select an Academy institute plan in strategic-security or industrial-mobilization context, and Japan (`JAP`) can select a RIKEN-centered joint technical council in strategic-security or industrial-mobilization context. The six other named tags and all unnamed countries retain the generic assistant choices and current country presentation clauses.
+The accepted addendum makes ten country contexts mechanically distinct inside the existing institutional sequence without creating separate country chains. Britain (`ENG`) and France (`FRA`) can select public-science or distributed-research institutions, the United States (`USA`) and Czechoslovakia (`CZE`) can select industrial-mobilization or distributed-research institutions, the Soviet Union (`SOV`), Japan (`JAP`), Germany (`GER`), Italy (`ITA`), and China (`CHI`) can select strategic-security or industrial-mobilization institutions, and Poland (`POL`) can select public-science, distributed-research, or strategic-security institutions. Unnamed countries retain the generic assistant choices and current country presentation clauses.
 
 The national option uses the existing `.5` settlement path and its base resolver, then applies the fixed bounded vector and writes one host-local receipt. The existing `.7` and `.8` three-way choices remain unchanged; receipts add only the facility or custody clause and the named downstream AI factors. No substitute incident, additional timing value, new route, reward, model, or historical scientist identity is introduced. Static source inspection confirms the promoted runtime identifiers and the bounded source implementation is complete in the working tree; targeted balance, transfer, cleanup, and live-acceptance evidence remain pending.
 
@@ -669,7 +669,7 @@ AI route selection should evaluate:
 
 ### Country-settlement AI contract
 
-The accepted pilot centralizes its tuning in `common/script_constants/016_brilliant_scientist_country_settlement_constants.txt` under `brilliant_scientist_country_settlement_ai`: `option_base = 10`, `option_preferred_factor = 2.25`, `option_cautious_factor = 0.50`, `reaction_preferred_factor = 1.50`, and `reaction_cautious_factor = 0.70`. The four national `.5` options use the base and preferred factor only in their compatible context and may combine with the existing mutually exclusive host-archetype factor.
+The accepted finite layer centralizes its tuning in `common/script_constants/016_brilliant_scientist_country_settlement_constants.txt` under `brilliant_scientist_country_settlement_ai`: `option_base = 10`, `option_preferred_factor = 2.25`, `option_cautious_factor = 0.50`, `reaction_preferred_factor = 1.50`, and `reaction_cautious_factor = 0.70`. The ten national `.5` options use the base and preferred factor only in their compatible context and may combine with the existing mutually exclusive host-archetype factor.
 
 | Receipt | `.7` preference | `.7` caution | `.8` preference | `.8` caution |
 | --- | --- | --- | --- | --- |
@@ -677,8 +677,14 @@ The accepted pilot centralizes its tuning in `common/script_constants/016_brilli
 | American federal contracts | Industrial charter `x1.50` | None | Patent pool `x1.50` | None |
 | Soviet Academy plan | Restricted district `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
 | Japanese RIKEN council | Industrial charter `x1.50` | None | Executive reserve `x1.50` | None |
+| German research board | Industrial charter `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
+| French laboratories | Civic compact `x1.50` | Industrial charter `x0.70` | Public trust `x1.50` | Executive reserve `x0.70` |
+| Italian procurement compact | Industrial charter `x1.50` | Civic compact `x0.70` | Patent pool `x1.50` | Public trust `x0.70` |
+| Chinese technical bureau | Industrial charter `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
+| Polish university shelter | Civic compact `x1.50` | Restricted district `x0.70` | Public trust `x1.50` | Executive reserve `x0.70` |
+| Czechoslovak research charter | Industrial charter `x1.50` | Civic compact `x0.70` | Patent pool `x1.50` | Public trust `x0.70` |
 
-Britain adds the existing university archetype factor and applies the caution factor separately at war and high Exposure. The United States adds the existing industrial archetype factor and applies the caution factor separately at high Dependence and high Exposure. The Soviet Union adds the existing militarized archetype factor and applies the caution factor separately at high Dependence and high Grievance. Japan adds its applicable industrial or militarized archetype factor and applies the caution factor separately at high Dependence and high Grievance. No factor is zero, country identity never forces an outcome, and existing war, accident-pressure, Exposure, Dependence, and Grievance modifiers can reverse the national preference.
+Britain adds the existing university archetype factor and applies the caution factor separately at war and high Exposure. The United States adds the existing industrial archetype factor and applies the caution factor separately at high Dependence and high Exposure. The Soviet Union adds the existing militarized archetype factor and applies the caution factor separately at high Dependence and high Grievance. Japan adds its applicable industrial or militarized archetype factor and applies the caution factor separately at high Dependence and high Grievance. Germany adds the militarized or industrial archetype factor and applies caution at high Exposure. France adds the university archetype factor and applies caution at high Exposure. Italy adds the industrial or militarized archetype factor and applies caution at high Dependence. China adds the threatened or militarized archetype factor and applies caution at high Exposure. Poland adds the refugee or threatened archetype factor and applies caution at high Grievance. Czechoslovakia adds the industrial or university archetype factor and applies caution at high Dependence. No factor is zero, country identity never forces an outcome, and existing war, accident-pressure, Exposure, Dependence, and Grievance modifiers can reverse the national preference.
 
 ### AI confrontation rules
 

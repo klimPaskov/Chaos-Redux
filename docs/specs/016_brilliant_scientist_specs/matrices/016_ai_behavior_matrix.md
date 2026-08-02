@@ -19,9 +19,9 @@ AI treats paleogenetics and xenobiological synthesis as distinct production, sup
 | Morally restrictive | Public | Safety board and replication | Conventional and defensive | Ordinary security | Early removal or public settlement |
 | High-chaos extremist | Secret | Unrestricted laboratory | Forbidden and singularity families | Private project guard | Sovereignty, takeover, or world route |
 
-## Accepted country-specific institutional settlement AI (static implementation complete; targeted validation pending, 2026-08-02)
+## Accepted finite country-specific institutional settlement AI (static implementation complete; targeted validation pending, 2026-08-03)
 
-The four conditional `.5` options use the centralized `brilliant_scientist_country_settlement_ai` values `option_base = 10`, `option_preferred_factor = 2.25`, `option_cautious_factor = 0.50`, `reaction_preferred_factor = 1.50`, and `reaction_cautious_factor = 0.70`. The options are compatible only with the named tag and context gate; the existing generic `.5` options retain their current triggers, effects, and AI weights.
+The ten conditional `.5` options use the centralized `brilliant_scientist_country_settlement_ai` values `option_base = 10`, `option_preferred_factor = 2.25`, `option_cautious_factor = 0.50`, `reaction_preferred_factor = 1.50`, and `reaction_cautious_factor = 0.70`. The options are compatible only with the named tag and context gate; the existing generic `.5` options retain their current triggers, effects, and AI weights.
 
 | Tag | Option | Context gate | Existing archetype factor | Separate caution checks |
 | --- | --- | --- | --- | --- |
@@ -29,6 +29,12 @@ The four conditional `.5` options use the centralized `brilliant_scientist_count
 | `USA` | `chaosx.nr16.5.e_usa` | Industrial-mobilization or distributed-research | Industrial | High Dependence and high Exposure |
 | `SOV` | `chaosx.nr16.5.f_sov` | Strategic-security or industrial-mobilization | Militarized | High Dependence and high Grievance |
 | `JAP` | `chaosx.nr16.5.g_jap` | Strategic-security or industrial-mobilization | Industrial or militarized | High Dependence and high Grievance |
+| `GER` | `chaosx.nr16.5.h_ger` | Strategic-security or industrial-mobilization | Militarized or industrial | High Exposure |
+| `FRA` | `chaosx.nr16.5.i_fra` | Public-science or distributed-research | University | High Exposure |
+| `ITA` | `chaosx.nr16.5.j_ita` | Strategic-security or industrial-mobilization | Industrial or militarized | High Dependence |
+| `CHI` | `chaosx.nr16.5.k_chi` | Strategic-security or industrial-mobilization | Militarized or threatened | High Exposure |
+| `POL` | `chaosx.nr16.5.l_pol` | Public-science, distributed-research, or strategic-security | Refugee or threatened | High Grievance |
+| `CZE` | `chaosx.nr16.5.m_cze` | Industrial-mobilization or distributed-research | Industrial or university | High Dependence |
 
 The downstream receipt factors are:
 
@@ -38,8 +44,14 @@ The downstream receipt factors are:
 | American federal contracts | Industrial charter `x1.50` | None | Patent pool `x1.50` | None |
 | Soviet Academy plan | Restricted district `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
 | Japanese RIKEN council | Industrial charter `x1.50` | None | Executive reserve `x1.50` | None |
+| German research board | Industrial charter `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
+| French laboratories | Civic compact `x1.50` | Industrial charter `x0.70` | Public trust `x1.50` | Executive reserve `x0.70` |
+| Italian procurement compact | Industrial charter `x1.50` | Civic compact `x0.70` | Patent pool `x1.50` | Public trust `x0.70` |
+| Chinese technical bureau | Industrial charter `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
+| Polish university shelter | Civic compact `x1.50` | Restricted district `x0.70` | Public trust `x1.50` | Executive reserve `x0.70` |
+| Czechoslovak research charter | Industrial charter `x1.50` | Civic compact `x0.70` | Patent pool `x1.50` | Public trust `x0.70` |
 
-No factor is zero and country identity never forces an outcome. Existing high Exposure, high Dependence, high Grievance, war, and accident-pressure modifiers remain able to reverse the national preference. `GER`, `FRA`, `ITA`, `CHI`, `POL`, `CZE`, and unnamed countries keep their generic option pool. The matrix records an accepted contract in progress; it does not claim runtime implementation or balance certification.
+No factor is zero and country identity never forces an outcome. Existing high Exposure, high Dependence, high Grievance, war, and accident-pressure modifiers remain able to reverse the national preference. Unnamed countries keep their generic option pool. Static runtime implementation is complete for the finite ten-country layer; targeted transfer, cleanup, probability, balance, and live-acceptance evidence remain pending.
 
 ## Host project priority
 

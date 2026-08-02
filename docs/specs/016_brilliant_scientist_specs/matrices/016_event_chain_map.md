@@ -45,15 +45,15 @@ Kruger State or takeover
       -> Strategic Singularity and Fallout terminal
 ```
 
-## Accepted country-specific institutional settlement pilot (static implementation complete; targeted validation pending, 2026-08-02)
+## Accepted finite country-specific institutional settlements (static implementation complete; targeted validation pending, 2026-08-03)
 
-The accepted pilot stays inside the existing institution sequence and does not create a parallel country ladder:
+The accepted finite layer stays inside the existing institution sequence and does not create a parallel country ladder:
 
 ```text
 Existing context report .4
   -> existing assistant-conflict report .5
       -> generic .5.a / .5.b / .5.c remain available
-      -> one conditional national settlement for ENG, USA, SOV, or JAP
+      -> one conditional national settlement for ENG, USA, SOV, JAP, GER, FRA, ITA, CHI, POL, or CZE
           -> host-local receipt and bounded Directorate vector
           -> existing impossible-lecture scheduler, once
   -> existing facility reaction .7
@@ -62,9 +62,9 @@ Existing context report .4
       -> receipt-driven description clause and AI preference/caution only
 ```
 
-The national options are gated by the current tag plus public-science or distributed-research context for `ENG`, industrial-mobilization or distributed-research context for `USA`, strategic-security or industrial-mobilization context for `SOV`, and strategic-security or industrial-mobilization context for `JAP`. `GER`, `FRA`, `ITA`, `CHI`, `POL`, `CZE`, and every unnamed country retain the complete generic `.5` option pool. No event ID, fire path, delay, evolution, cluster entry, decision, focus, GUI, country, scientist, project reward, or asset package is added, and existing `.7` and `.8` player-facing choices remain three-way.
+The national options are gated by the current tag plus public-science or distributed-research context for `ENG` and `FRA`, industrial-mobilization or distributed-research context for `USA`, industrial-mobilization or distributed-research context for `CZE`, strategic-security or industrial-mobilization context for `SOV`, `JAP`, `GER`, `ITA`, and `CHI`, and public-science, distributed-research, or strategic-security context for `POL`. Every unnamed country retains the complete generic `.5` option pool. No event ID, fire path, delay, evolution, cluster entry, decision, focus, GUI, country, scientist, project reward, or asset package is added, and existing `.7` and `.8` player-facing choices remain three-way.
 
-The four settlement receipts are host-local and are intentionally excluded from ordinary transfer-copy and Kruger State formation-copy blocks. Transfer before `.5` uses the recipient tag; transfer after `.5` leaves the former host receipt local and gives the recipient only the existing generic assistant state. Static source inspection confirms the promoted identifiers and existing route wiring; the bounded source implementation is complete in the working tree, with targeted balance, transfer, cleanup, and live-acceptance evidence pending.
+The ten settlement receipts are host-local and are intentionally excluded from ordinary transfer-copy and Kruger State formation-copy blocks. Transfer before `.5` uses the recipient tag; transfer after `.5` leaves the former host receipt local and gives the recipient only the existing generic assistant state. Static source inspection confirms the promoted identifiers and existing route wiring; the bounded source implementation is complete in the working tree, with targeted balance, transfer, cleanup, and live-acceptance evidence pending.
 
 ## Baseline stage map
 
