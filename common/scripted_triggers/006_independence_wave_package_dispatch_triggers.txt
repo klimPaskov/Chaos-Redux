@@ -147,6 +147,12 @@ is_independence_wave_runtime_package_preflight_ready = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_019 }
 			original_tag = ASX
 		}
+		# IW-030 has an exact candidate identity proof, but remains fail-closed
+		# here until the separate content-attestation gate is promoted.
+		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_030 }
+			is_independence_wave_exact_package_iw_030_tag_available = yes
+		}
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_043 }
 			original_tag = CHU
@@ -243,6 +249,12 @@ is_independence_wave_scenario_package_preflight_ready = {
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_019 }
 			is_independence_wave_exact_package_iw_019_tag_available = yes
+		}
+		# SCN-008 shares the same exact candidate proof; the outer attestation
+		# trigger intentionally still excludes IW-030.
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_030 }
+			is_independence_wave_exact_package_iw_030_tag_available = yes
 		}
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_043 }
