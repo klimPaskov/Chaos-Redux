@@ -707,11 +707,39 @@ black_plague_triggerable_scenario_launch = {
 	if = {
 		limit = { black_plague_scenario_can_reconcile_from_triggerable_scenarios = yes }
 		set_global_flag = black_plague_triggerable_scenario_bootstrap
+		# A repeat signal is reconciliation-only, but it still has to restore the
+		# configured intensity floor after a save/reload, lost divisions, or a
+		# surviving carrier losing one of its internal basins. Candidate collection
+		# counts the live established states and infected human basins without
+		# reseeding ordinary disease or replaying any evolution.
+		black_plague_scenario_collect_candidates = yes
+		black_plague_scenario_seed_internal_broods = yes
+		black_plague_scenario_expand_king_basin = yes
+		black_plague_scenario_raise_rat_army_to_floor = yes
+		black_plague_scenario_assign_king_army = yes
 		black_plague_rebuild_runtime_counts = yes
 		black_plague_refresh_air_cleanliness_source = yes
 		black_plague_scenario_refresh_shared_threat = yes
 		black_plague_refresh_mapmode_once = yes
 		disease_containment_board_refresh_open_black_plague_boards = yes
+		clear_array = global.black_plague_scenario_candidate_states
+		clear_array = global.black_plague_scenario_anchor_states
+		clear_array = global.black_plague_scenario_rat_candidate_states
+		every_state = {
+			limit = {
+				OR = {
+					has_state_flag = black_plague_scenario_reserved
+					has_state_flag = black_plague_scenario_anchor
+					has_state_flag = black_plague_scenario_king_reserved
+				}
+			}
+			clr_state_flag = black_plague_scenario_reserved
+			clr_state_flag = black_plague_scenario_anchor
+			clr_state_flag = black_plague_scenario_king_reserved
+		}
+		clear_variable = global.black_plague_scenario_existing_established_count
+		clear_variable = global.black_plague_scenario_unestablished_human_capacity
+		clear_variable = global.black_plague_scenario_established_capacity
 		clr_global_flag = black_plague_triggerable_scenario_bootstrap
 	}
 	else_if = {
