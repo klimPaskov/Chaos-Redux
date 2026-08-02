@@ -2,7 +2,7 @@
 
 Date: 2026-08-02.
 
-This handoff now records the v3 visual replacement for six fictional, supernatural, or nonhuman leader-portrait subassets on existing Event 012 controlled-pool rows. The v3 pass is deliberately absurd without becoming a busy council scene: every portrait has one male-presenting or nonhuman subject, one memorable impossible motif, a plain matte background, and a readable HOI4 head-and-shoulders silhouette. No female character was generated. It adds no country tag, cosmetic tag, character, model, entity, focus, decision, localisation key, or workbook row.
+This handoff now records the v3 visual replacement for six fictional, supernatural, or nonhuman leader-portrait subassets on existing Event 012 controlled-pool rows. The v3 pass is deliberately absurd without becoming a busy council scene: every portrait has one male-presenting or nonhuman subject, one memorable impossible motif, a plain matte background, and a readable HOI4 head-and-shoulders silhouette. No female character was generated. The six dormant portrait consumers are now declared in `common/characters/012_africa_fictional_characters.txt`; they add no country tag, cosmetic tag, country-leader role, model, entity, focus, decision, or workbook row.
 
 ## v3 selected runtime set
 
@@ -36,10 +36,12 @@ The built-in ImageGen v3 source masters, processed 156x210 PNGs, DDS hashes, pro
 
 The v3 visual identities are deliberately non-interchangeable: Pan is a storm-crowned sovereign; Gorilla Kingdom is a fruit-crowned silverback; The Green is a baobab-crowned mirror sovereign; Living Rivers is a copper-ringed waterfall sovereign; Stoneborn is a rose salt-glass ruler; Ancient Hosts is a leopard-hooded painted king. They contain no councils, committees, crowds, readable text, watermarks, modern props, or real historical/ethnic identity. The unused Moth-Eyed and Living Drum explorations remain outside the six-row package. The rejected photoreal/CGI Pan draft remains excluded.
 
+Pan and Gorilla Kingdom use the two user-required untranslated Afaan Oromoo court names through the neutral localisation keys `africa_absurd_regnal_name_01` and `africa_absurd_regnal_name_02`. Their exact strings remain visible only as dormant fictional character names; no English gloss, historical attribution, or technical identifier contains them. The protocol's native-speaker and final flavour review remains open.
+
 ## Runtime boundary
 
 The six sprite IDs remain registered in `interface/012_africa_leaders_fictional.gfx`, and only their texture endpoints moved to the v3 DDS paths. No character wiring is made in this tranche. The DDS files and sprite endpoints remain dormant until the existing country-package and model/entity gates are accepted. They must not be attached to the sixteen grounded historical African sovereign characters or used to fill a historical portrait-source gap.
 
 ## Future work
 
-When the corresponding model and country package are accepted, the parent should add one dedicated fictional character definition per row, then validate the exact runtime gate and localisation. Historical African leaders require the separate sourced-real portrait contract documented in `docs/events/012_africa/portrait_runtime_gate.md`.
+When the corresponding model and country package are accepted, the parent should add the country-leader role and validate the exact runtime gate. Historical African leaders require the separate sourced-real portrait contract documented in `docs/events/012_africa/portrait_runtime_gate.md`.
