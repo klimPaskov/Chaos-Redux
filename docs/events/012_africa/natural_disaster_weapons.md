@@ -85,7 +85,7 @@ Rejected calls set `africa_natural_disaster_call_rejected` and record a bounded 
 
 Accepted calls have a 20 percent bounded backfire chance that records `africa_natural_disaster_backfire_recorded` and increases ecological wrath. After the host meter is clamped, reaching `africa_achievement_ratio.ecological_rampage_threshold` records `africa_achievement_ecological_wrath_collapse`, which is a lifetime disqualifier for the weather achievement.
 
-Every attempted call starts the 180-day `africa_natural_disaster_weapon_cooldown` flag on the controller and, for a member-directed action, on the member caller as well.
+Every weather action that consumes the reserved caller payment starts the 180-day `africa_natural_disaster_weapon_cooldown` flag on the controller and, for a member-directed action, on the member caller as well. The shared cleanup applies this same cooldown after a partial or failed action, while the full Event 013 bridge applies it immediately and remains idempotent.
 
 The normal `africa_cleanup_action` path clears `africa_natural_disaster_weapon_reserved` on the controller and caller, clears `africa_natural_disaster_member_nature_action_active`, clears the two member global pointers, and retains the action ledger's existing target cooldown, arrays, state flags, generation checks, and capacity restoration.
 
@@ -117,7 +117,7 @@ The generic bounded-roster fallback excludes both actions, so the AI cannot sele
 
 The implementation deliberately reuses actions 69 and 70 and does not reinterpret `weaponise_fictional_pathogen` (73) as a weather family because Event 013 has no pathogen family.
 
-Partial and failed Event 012 action outcomes do not call Event 013; only a full action result consumes the reserved hostile nature payment.
+Partial and failed Event 012 action outcomes do not call Event 013, but the reserved hostile-nature payment has already been consumed and therefore still incurs the actor cooldown before the reservation flag is cleared.
 
 The Event 013 public wrapper and call contract remain the source of truth for family availability, target-state eligibility, scale bounds, sequence planning, result semantics, and report/news presentation. The Event 013 effect file also owns the narrow Event 012 civilian-death callback described above, while the Event 012 action wrapper remains unchanged.
 
