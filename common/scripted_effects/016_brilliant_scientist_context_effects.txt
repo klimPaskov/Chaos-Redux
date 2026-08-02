@@ -136,6 +136,103 @@ brilliant_scientist_context_mediate_assistant_conflict = {
 	brilliant_scientist_change_grievance = yes
 }
 
+# COUNTRY scope. Country-specific settlements keep the existing assistant
+# resolver and add only the named institutional delta. A receipt guard makes
+# each settlement idempotent and prevents the four history flags from coexisting.
+brilliant_scientist_context_settle_british_research_associations = {
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_country_flag = brilliant_scientist_country_settlement_british_research_associations
+					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
+					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
+					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+				}
+			}
+		}
+		set_country_flag = brilliant_scientist_country_settlement_british_research_associations
+		brilliant_scientist_context_recognize_assistant_school = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.british_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.british_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+	}
+}
+
+brilliant_scientist_context_settle_american_federal_contracts = {
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_country_flag = brilliant_scientist_country_settlement_british_research_associations
+					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
+					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
+					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+				}
+			}
+		}
+		set_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
+		brilliant_scientist_context_mediate_assistant_conflict = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.american_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.american_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.american_project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+	}
+}
+
+brilliant_scientist_context_settle_soviet_academy_plan = {
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_country_flag = brilliant_scientist_country_settlement_british_research_associations
+					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
+					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
+					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+				}
+			}
+		}
+		set_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
+		brilliant_scientist_context_bind_assistant_service = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.soviet_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.soviet_project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.soviet_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.soviet_grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
+brilliant_scientist_context_settle_japanese_riken_council = {
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_country_flag = brilliant_scientist_country_settlement_british_research_associations
+					has_country_flag = brilliant_scientist_country_settlement_american_federal_contracts
+					has_country_flag = brilliant_scientist_country_settlement_soviet_academy_plan
+					has_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+				}
+			}
+		}
+		set_country_flag = brilliant_scientist_country_settlement_japanese_riken_council
+		brilliant_scientist_context_mediate_assistant_conflict = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.japanese_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.japanese_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.japanese_project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_country_settlement_delta.japanese_grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
 # COUNTRY scope. A host transfer abandons any delayed assistant-conflict
 # appointment on the former host. The resolved context and policy flags remain
 # as institutional history, but the transient follow-up must not linger after

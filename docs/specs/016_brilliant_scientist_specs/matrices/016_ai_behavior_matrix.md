@@ -19,6 +19,28 @@ AI treats paleogenetics and xenobiological synthesis as distinct production, sup
 | Morally restrictive | Public | Safety board and replication | Conventional and defensive | Ordinary security | Early removal or public settlement |
 | High-chaos extremist | Secret | Unrestricted laboratory | Forbidden and singularity families | Private project guard | Sovereignty, takeover, or world route |
 
+## Accepted country-specific institutional settlement AI (implementation in progress, 2026-08-02)
+
+The four conditional `.5` options use the centralized `brilliant_scientist_country_settlement_ai` values `option_base = 10`, `option_preferred_factor = 2.25`, `option_cautious_factor = 0.50`, `reaction_preferred_factor = 1.50`, and `reaction_cautious_factor = 0.70`. The options are compatible only with the named tag and context gate; the existing generic `.5` options retain their current triggers, effects, and AI weights.
+
+| Tag | Option | Context gate | Existing archetype factor | Separate caution checks |
+| --- | --- | --- | --- | --- |
+| `ENG` | `chaosx.nr16.5.d_eng` | Public-science or distributed-research | University | War and high Exposure |
+| `USA` | `chaosx.nr16.5.e_usa` | Industrial-mobilization or distributed-research | Industrial | High Dependence and high Exposure |
+| `SOV` | `chaosx.nr16.5.f_sov` | Strategic-security or industrial-mobilization | Militarized | High Dependence and high Grievance |
+| `JAP` | `chaosx.nr16.5.g_jap` | Strategic-security or industrial-mobilization | Industrial or militarized | High Dependence and high Grievance |
+
+The downstream receipt factors are:
+
+| Receipt | `.7` preference | `.7` caution | `.8` preference | `.8` caution |
+| --- | --- | --- | --- | --- |
+| British research associations | Civic compact `x1.50` | Restricted district `x0.70` | Public trust `x1.50` | Executive reserve `x0.70` |
+| American federal contracts | Industrial charter `x1.50` | None | Patent pool `x1.50` | None |
+| Soviet Academy plan | Restricted district `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
+| Japanese RIKEN council | Industrial charter `x1.50` | None | Executive reserve `x1.50` | None |
+
+No factor is zero and country identity never forces an outcome. Existing high Exposure, high Dependence, high Grievance, war, and accident-pressure modifiers remain able to reverse the national preference. `GER`, `FRA`, `ITA`, `CHI`, `POL`, `CZE`, and unnamed countries keep their generic option pool. The matrix records an accepted contract in progress; it does not claim runtime implementation or balance certification.
+
 ## Host project priority
 
 | Need | Preferred family | Avoid when |
