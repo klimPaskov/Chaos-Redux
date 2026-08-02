@@ -2,16 +2,19 @@
 
 ## Scope
 
-This B5 wording tranche removes the final implementation-facing phrase identified in the current world-order localisation review. It does not alter the Scramble state machine, target validation, war declaration, package gates, tags, models, or terminal readiness.
+This B5 wording tranche removes implementation-facing ledger terminology from the current world-order localisation review. It does not alter the Scramble state machine, target validation, war declaration, package gates, tags, models, or terminal readiness.
 
 ## Change
 
 `localisation/english/012_africa_world_order_l_english.yml` changes `africa_world_launch_prepared_war_desc` from “outside the target pool” to “excluded from this war”. The player still sees the same diplomatic restriction, expressed as an in-world war rule rather than an internal selection-store term.
 
+The working-tree wording pass also changes the registered-partner event from “war ledger” to “war record”, describes the post-war cleanup as a recorded continental settlement, and describes preparation and partner calls in terms of attacker, defender, war aim, and registered governments rather than bounded arrays. These are player-facing wording changes only; stable localisation keys and gameplay effects remain unchanged.
+
 ## Validation
 
 - The localisation file retains its UTF-8 BOM.
 - The key remains unique and its Clausewitz quoting is unchanged.
+- The file contains 253 unique keys and retains its UTF-8 BOM after the wording pass.
 - No scripted identifier or gameplay source changed.
 
 ## Remaining wording boundary
