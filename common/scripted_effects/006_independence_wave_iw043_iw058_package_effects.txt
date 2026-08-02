@@ -1263,6 +1263,10 @@ independence_wave_define_iw058_package_formation_template = {
 independence_wave_setup_iw043_middle_volga = {
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw043_setup_complete
+	# The setup-surface gate below must never inherit a stale identity receipt
+	# from an earlier CHU generation. Rebuild it from the current force mapping
+	# and generation-scoped force package proof after the shared force pass.
+	clr_country_flag = independence_wave_iw043_cosmetic_identity_ready
 	set_temp_variable = { independence_wave_iw043_setup_result = constant:independence_wave_planner.no_candidates }
 	if = {
 		limit = { can_initialize_independence_wave_iw043_package = yes }
@@ -1275,6 +1279,15 @@ independence_wave_setup_iw043_middle_volga = {
 			independence_wave_apply_dynamic_starting_force = yes
 		}
 		independence_wave_define_iw043_package_formation_template = yes
+		if = {
+			limit = {
+				has_country_flag = independence_wave_force_mapping_loaded
+				check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_043 }
+				has_country_flag = independence_wave_force_package_applied
+				has_independence_wave_force_package_for_current_generation = yes
+			}
+			set_country_flag = independence_wave_iw043_cosmetic_identity_ready
+		}
 		if = {
 			limit = { has_independence_wave_iw043_setup_surface = yes }
 			set_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_043 }
