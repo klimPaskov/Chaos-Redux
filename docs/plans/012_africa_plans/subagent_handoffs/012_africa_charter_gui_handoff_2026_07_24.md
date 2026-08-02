@@ -1,6 +1,6 @@
 # Event 012 Charter League GUI handoff
 
-Status: implemented in the shared worktree and ready for parent review. This handoff covers only the decision-category Charter window surface, its scripted GUI bindings, the GUI localisation, and the reserved sprite registrations. No Event 012 action effects, AI weights, opinion logic, event targets, or binary art were changed.
+Status: implemented in the shared worktree and ready for parent review. This handoff covers only the decision-category Charter window surface, its scripted GUI bindings, the GUI localisation, and the reserved sprite registrations. The project panel also exposes the live administration and intelligence capacity lanes used by the shared action quote. No Event 012 action effects, AI weights, opinion logic, event targets, or binary art were changed.
 
 ## Files changed
 

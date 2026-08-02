@@ -7811,6 +7811,10 @@ africa_resolve_action = {
 		set_variable = { africa_active_action_status = constant:africa_action_status.resolved }
 		set_variable = { africa_last_action_id = africa_active_action_id }
 		set_variable = { africa_last_action_outcome = africa_active_action_outcome }
+		# Snapshot the row-specific objective before the result popup is created.
+		# The popup evaluates its scripted localisation immediately, while the
+		# idempotent cleanup below clears the active record afterward.
+		set_variable = { africa_last_action_objective = africa_active_action_objective }
 		save_event_target_as = africa_action_result_target
 		event_target:africa_host = { country_event = { id = chaosx.nr12.220 } }
 		africa_cleanup_action = yes
