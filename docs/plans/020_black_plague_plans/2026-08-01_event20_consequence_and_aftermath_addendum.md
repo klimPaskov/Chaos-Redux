@@ -552,6 +552,10 @@ The existing source-attributed Event 020 research pack is sufficient for this bo
 The implementation pattern should mirror Event 016's event-driven qualifying-defeat score, peak-state tracking, saved victor handoff, and nonterminal aftermath ownership where compatible.
 For engine scopes, use the vanilla `on_capitulation` and `on_state_control_changed` precedents inspected in `common/on_actions/00_on_actions.txt` and `events/CapitulationEvents.txt`.
 
+## Current presentation reconciliation (2026-08-02)
+
+The six RTA hierarchy focus icons listed in the original asset package are now promoted and wired through `interface/020_black_plague_rat_identity.gfx`, with source and processed evidence under `docs/assets/020_black_plague/`. The organized-rat public news surface is also promoted as `GFX_news_event_020_rat_nations` and consumed by `chaosx.nr20.41`; its 397x153 black-and-white DDS and source evidence are recorded in the Event 020 asset manifest. The remaining open items in this addendum are native-mission API choice, broader narrative depth, rights attribution, and live validation.
+
 ## Open questions and blockers
 
 The current shared timed state-action implementation leaves one parent design choice: whether Crown Strike and Seal Royal Burrows satisfy the accepted mission contract or must be converted to native mission fields.

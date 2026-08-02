@@ -1,6 +1,6 @@
 # Asset Inventory
 
-> Runtime reconciliation, 2026-08-02: the accepted runtime identity is exactly two tags, reusable `RTA` and separate `RTX`. The former twelve-design Rat Nation pool is historical planning residue and must not be produced or wired. Current flag production covers the two live identities plus route/cosmetic variants owned by `RTX`; no bespoke 3D model is required or planned for Event 020. The crisis-board `black_plague_crisis_seal` and terminal `black_plague_rat_king_terminal_readiness` packages now have promoted eight-frame runtime DDS sheets, static fallbacks, manifests, and parent-owned GFX consumers.
+> Runtime reconciliation, 2026-08-02: the accepted runtime identity is exactly two tags, reusable `RTA` and separate `RTX`. The former twelve-design Rat Nation pool is historical planning residue and must not be produced or wired. Current flag production covers the two live identities plus route/cosmetic variants owned by `RTX`; no bespoke 3D model is required or planned for Event 020. The crisis-board `black_plague_crisis_seal` and terminal `black_plague_rat_king_terminal_readiness` packages now have promoted eight-frame runtime DDS sheets, static fallbacks, manifests, and parent-owned GFX consumers. The organized-rat news surface also has a promoted 397x153 black-and-white `news_event_020_rat_nations` strip consumed by `chaosx.nr20.41`.
 
 Every name is a proposed stable working name. Preserve any live-repository sprite name that already exists. Final files must follow the event-scoped asset folder rules.
 

@@ -23,3 +23,11 @@ Runtime `.gfx` and focus wiring remain parent-owned, and the handoff is now prom
 | `black_plague_rat_king_terminal_readiness` | Rat King terminal/world-end readiness decision seal, reserved for a future scripted-GUI panel | `animations/rat_king_world_end_readiness_seal/source_frames/` and `processed_frames/` | `gfx/interface/animated/020_black_plague/world_end_readiness_seal/black_plague_rat_king_terminal_readiness_static.dds`; `gfx/interface/animated/020_black_plague/world_end_readiness_seal/black_plague_rat_king_terminal_readiness_sheet.dds` | 64x64 frames; 8 frames; 512x64 sheet; 6 FPS loop | `GFX_black_plague_rat_king_terminal_readiness_static`; `GFX_black_plague_rat_king_terminal_readiness_animated` | `animations/rat_king_world_end_readiness_seal/{manifest.md,gfx_handoff.md}` |
 
 Both packages use independent generated source frames and retain static fallbacks. Runtime registration is promoted in `interface/020_black_plague_rat_identity.gfx`. The crisis seal is mounted on the shared selected-state card and gated by `disease_containment_board_view_state_is_black_plague_crisis`, with the player-facing tooltip `disease_containment.gui.selected.black_plague_crisis_seal.tt`; the terminal-readiness animated sprite is consumed by `black_plague_rat_king_execute_terminal_takeover`, while a separate terminal-readiness scripted-GUI panel remains absent. No bespoke Rat model or additional country tag is part of either package.
+
+## Rat Nations news strip (2026-08-02)
+
+| Asset | Intended use | Source / processed package | Runtime DDS | Size | Sprite / consumer |
+| --- | --- | --- | --- | --- | --- |
+| `news_event_020_rat_nations` | Public news report when organized broods take the surface | `source_png/news_event_020_rat_nations_imagegen_source.png`; `processed_png/news_event_020_rat_nations.png`; `contact_sheets/news_event_020_rat_nations_contact_sheet.png` | `gfx/event_pictures/020_black_plague/news_event_020_rat_nations.dds` | 397x153, black and white | `GFX_news_event_020_rat_nations` / `chaosx.nr20.41` in `events/020_black_death.txt` |
+
+The strip is generated fictional period-news imagery with no readable text or modern objects. Runtime registration is in `interface/020_black_plague_event_pictures.gfx`; it replaces the report-card consumer on the public organized-rat news event without changing the event id or log contract.
