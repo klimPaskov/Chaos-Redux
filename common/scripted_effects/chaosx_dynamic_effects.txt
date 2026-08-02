@@ -1,39 +1,472 @@
-# ============================================================================
-# CHAOS REDUX - CROSS-SYSTEM DYNAMIC EFFECTS
-# ============================================================================
-# This file contains only public scripted effects with demonstrated reuse
-# across unrelated events or shared systems. Event-owned and subsystem-private
-# helpers belong in their owning scripted-effect files.
-# ============================================================================
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+#
+#    #####  #   # #    #   ##   #    # #  ####     ###### ###### ###### ######  ####  #####  ####
+#    #    #  # #  ##   #  #  #  ##  ## # #    #    #      #      #      #      #    #   #   #
+#    #    #   #   # #  # #    # # ## # # #         #####  #####  #####  #####  #        #    ####
+#    #    #   #   #  # # ###### #    # # #         #      #      #      #      #        #        #
+#    #    #   #   #   ## #    # #    # # #    #    #      #      #      #      #    #   #   #    #
+#    #####    #   #    # #    # #    # #  ####     ###### #      #      ######  ####    #    ####
+#
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
 
-# Rebuild the shared existential-threat aggregate from event-owned source flags.
+
+modify_value_based_on_chaos_tier = {
+    # Input: base_value, add_value
+    # Output: modified_value
+    set_temp_variable = { modified_value = base_value }
+    if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 0 } }
+        multiply_temp_variable = { add_value = 0 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+        multiply_temp_variable = { add_value = 1 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+        multiply_temp_variable = { add_value = 2 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+        multiply_temp_variable = { add_value = 3 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value > 3 } }
+        multiply_temp_variable = { add_value = 4 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+}
+
+###############################################################################################################
+
+calculate_economy_scaled_factory_grant = {
+	# Input: economy_scaled_factory_grant_step, economy_scaled_factory_grant_min, economy_scaled_factory_grant_cap
+	# Output: economy_scaled_factory_grant_count
+	set_temp_variable = { economy_scaled_factory_grant_pool = num_of_civilian_factories }
+	add_to_temp_variable = { economy_scaled_factory_grant_pool = num_of_military_factories }
+	set_temp_variable = { economy_scaled_factory_grant_count = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = economy_scaled_factory_grant_pool
+				value = economy_scaled_factory_grant_step
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = economy_scaled_factory_grant_count
+				value = economy_scaled_factory_grant_cap
+				compare = less_than
+			}
+		}
+		add_to_temp_variable = { economy_scaled_factory_grant_count = 1 }
+		subtract_from_temp_variable = { economy_scaled_factory_grant_pool = economy_scaled_factory_grant_step }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = economy_scaled_factory_grant_count
+				value = economy_scaled_factory_grant_min
+				compare = less_than
+			}
+		}
+		set_temp_variable = { economy_scaled_factory_grant_count = economy_scaled_factory_grant_min }
+	}
+}
+
+###############################################################################################################
+
+# Can define variables 'buildings_to_damage_per_state', 'percent_of_states_to_target', and 'damage_modifier' to control how many buildings are damaged per state, how many buildings to damage, and how much damage is applied. Also 'state_population_percent' to control how much of population % is killed in the selected random state(s).
+damage_buildings_in_random_states = {
+    # Input: buildings_to_damage_per_state, percent_of_states_to_target, damage_modifier, state_population_percent
+
+    # THIS refers to the country executing the script.
+
+    # First, count the total number of states.
+    set_temp_variable = { num_controlled_states = 1 }
+    every_controlled_state = {
+        add_to_temp_variable = { num_controlled_states = 1 }
+    }
+
+    set_temp_variable = { num_states_to_target = var:num_controlled_states }
+    if = {
+        limit = {
+            check_variable = { percent_of_states_to_target = 0 }
+        }
+        set_temp_variable = { percent_of_states_to_target = 0.1 } }
+
+        if = {
+            limit = {
+                check_variable = { num_states_to_target > 0 }
+            } # In case target country even has any controlled states.
+            # caclulate the number of states to target based on the percentage.
+            multiply_temp_variable = { num_states_to_target = percent_of_states_to_target }
+            if = { limit = { check_variable = { num_states_to_target < 1 } }
+            set_temp_variable = { num_states_to_target = 1 }
+        }
+        round_temp_variable = num_states_to_target
+    }
+
+    if = {
+        limit = { check_variable = { damage_modifier = 0 } }
+        set_temp_variable = { damage_modifier = 0.25 }
+    }
+    if = {
+        limit = { check_variable = { buildings_to_damage_per_state < 1 } }
+        set_temp_variable = { buildings_to_damage_per_state = 3 }
+    }
+
+
+    multiply_temp_variable = { state_population_percent = 1000 }
+    if = {
+        limit = { check_variable = { state_population_percent < 1 } }
+        set_temp_variable = { state_population_percent = -1 }
+    }
+
+    for_loop_effect = {
+        end = var:num_states_to_target
+
+        # Select a random controlled state that has at least one of the targetable buildings.
+        random_owned_controlled_state = {
+            limit = {
+                OR = {
+                    infrastructure > 0
+                    arms_factory > 0
+                    industrial_complex > 0
+                    air_base > 0
+                    supply_node > 0
+                    rail_way > 0
+                    naval_base > 0
+                    bunker > 0
+                    coastal_bunker > 0
+                    dockyard > 0
+                    anti_air_building > 0
+                    synthetic_refinery > 0
+                    fuel_silo > 0
+                    radar_station > 0
+                    rocket_site > 0
+                    nuclear_reactor > 0
+                    nuclear_reactor_heavy_water > 0
+                    commercial_nuclear_reactor > 0
+                }
+            }
+
+
+            set_temp_variable = { pop_loss = state_population_k }
+            round_temp_variable = pop_loss
+            multiply_temp_variable = { pop_loss = state_population_percent }
+            add_manpower = pop_loss
+
+
+            # 3. Loop and damage a random building each time.
+            for_loop_effect = {
+                end = buildings_to_damage_per_state # Temp variables work with any scope.
+
+                meta_effect = {
+                    text = {
+                        random_list = {
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    infrastructure < 1
+                                }
+                                damage_building = { type = infrastructure damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    arms_factory < 1
+                                }
+                                damage_building = { type = arms_factory damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    industrial_complex < 1
+                                }
+                                damage_building = { type = industrial_complex damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    air_base < 1
+                                }
+                                damage_building = { type = air_base damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    supply_node < 1
+                                }
+                                damage_building = { type = supply_node damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    rail_way < 1
+                                }
+                                damage_building = { type = rail_way damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    naval_base < 1
+                                }
+                                damage_building = { type = naval_base damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    bunker < 1
+                                }
+                                damage_building = { type = bunker damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    coastal_bunker < 1
+                                }
+                                damage_building = { type = coastal_bunker damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    dockyard < 1
+                                }
+                                damage_building = { type = dockyard damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    anti_air_building < 1
+                                }
+                                damage_building = { type = anti_air_building damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    synthetic_refinery < 1
+                                }
+                                damage_building = { type = synthetic_refinery damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    fuel_silo < 1
+                                }
+                                damage_building = { type = fuel_silo damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    radar_station < 1
+                                }
+                                damage_building = { type = radar_station damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    rocket_site < 1
+                                }
+                                damage_building = { type = rocket_site damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    nuclear_reactor < 1
+                                }
+                                damage_building = { type = nuclear_reactor damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    nuclear_reactor_heavy_water < 1
+                                }
+                                damage_building = { type = nuclear_reactor_heavy_water damage = [DMG] }
+                            }
+                            1 = {
+                                modifier = {
+                                    factor = 0
+                                    commercial_nuclear_reactor < 1
+                                }
+                                damage_building = { type = commercial_nuclear_reactor damage = [DMG] }
+                            }
+                        }
+                    }
+                    DMG = "[?damage_modifier]"
+                }
+            }
+        }
+    }
+    # clear_variable = damage_modifier
+    # clear_variable = num_controlled_states
+    # clear_variable = num_states_to_target
+    # clear_variable = percent_of_states_to_target
+    # clear_variable = buildings_to_damage_per_state
+    # clear_variable = state_population_percent
+}
+
+###############################################################################################################
+
+
+get_random_sea_region = {
+    random_list = {
+        1 = { set_variable = { global.rand_sea_region = 9 } }
+        1 = { set_variable = { global.rand_sea_region = 16 } }
+        1 = { set_variable = { global.rand_sea_region = 18 } }
+        1 = { set_variable = { global.rand_sea_region = 29 } }
+        1 = { set_variable = { global.rand_sea_region = 30 } }
+        1 = { set_variable = { global.rand_sea_region = 32 } }
+        1 = { set_variable = { global.rand_sea_region = 42 } }
+        1 = { set_variable = { global.rand_sea_region = 43 } }
+        1 = { set_variable = { global.rand_sea_region = 44 } }
+        1 = { set_variable = { global.rand_sea_region = 45 } }
+        1 = { set_variable = { global.rand_sea_region = 46 } }
+        1 = { set_variable = { global.rand_sea_region = 47 } }
+        1 = { set_variable = { global.rand_sea_region = 48 } }
+        1 = { set_variable = { global.rand_sea_region = 49 } }
+        1 = { set_variable = { global.rand_sea_region = 50 } }
+        1 = { set_variable = { global.rand_sea_region = 51 } }
+        1 = { set_variable = { global.rand_sea_region = 52 } }
+        1 = { set_variable = { global.rand_sea_region = 53 } }
+        1 = { set_variable = { global.rand_sea_region = 54 } }
+        1 = { set_variable = { global.rand_sea_region = 55 } }
+        1 = { set_variable = { global.rand_sea_region = 56 } }
+        1 = { set_variable = { global.rand_sea_region = 57 } }
+        1 = { set_variable = { global.rand_sea_region = 58 } }
+        1 = { set_variable = { global.rand_sea_region = 59 } }
+        1 = { set_variable = { global.rand_sea_region = 60 } }
+        1 = { set_variable = { global.rand_sea_region = 61 } }
+        1 = { set_variable = { global.rand_sea_region = 62 } }
+        1 = { set_variable = { global.rand_sea_region = 63 } }
+        1 = { set_variable = { global.rand_sea_region = 64 } }
+        1 = { set_variable = { global.rand_sea_region = 65 } }
+        1 = { set_variable = { global.rand_sea_region = 66 } }
+        1 = { set_variable = { global.rand_sea_region = 67 } }
+        1 = { set_variable = { global.rand_sea_region = 68 } }
+        1 = { set_variable = { global.rand_sea_region = 69 } }
+        1 = { set_variable = { global.rand_sea_region = 71 } }
+        1 = { set_variable = { global.rand_sea_region = 72 } }
+        1 = { set_variable = { global.rand_sea_region = 73 } }
+        1 = { set_variable = { global.rand_sea_region = 74 } }
+        1 = { set_variable = { global.rand_sea_region = 75 } }
+        1 = { set_variable = { global.rand_sea_region = 76 } }
+        1 = { set_variable = { global.rand_sea_region = 77 } }
+        1 = { set_variable = { global.rand_sea_region = 78 } }
+        1 = { set_variable = { global.rand_sea_region = 79 } }
+        1 = { set_variable = { global.rand_sea_region = 80 } }
+        1 = { set_variable = { global.rand_sea_region = 81 } }
+        1 = { set_variable = { global.rand_sea_region = 82 } }
+        1 = { set_variable = { global.rand_sea_region = 83 } }
+        1 = { set_variable = { global.rand_sea_region = 84 } }
+        1 = { set_variable = { global.rand_sea_region = 85 } }
+        1 = { set_variable = { global.rand_sea_region = 86 } }
+        1 = { set_variable = { global.rand_sea_region = 87 } }
+        1 = { set_variable = { global.rand_sea_region = 88 } }
+        1 = { set_variable = { global.rand_sea_region = 89 } }
+        1 = { set_variable = { global.rand_sea_region = 90 } }
+        1 = { set_variable = { global.rand_sea_region = 91 } }
+        1 = { set_variable = { global.rand_sea_region = 92 } }
+        1 = { set_variable = { global.rand_sea_region = 93 } }
+        1 = { set_variable = { global.rand_sea_region = 94 } }
+        1 = { set_variable = { global.rand_sea_region = 95 } }
+        1 = { set_variable = { global.rand_sea_region = 96 } }
+        1 = { set_variable = { global.rand_sea_region = 97 } }
+        1 = { set_variable = { global.rand_sea_region = 98 } }
+        1 = { set_variable = { global.rand_sea_region = 99 } }
+        1 = { set_variable = { global.rand_sea_region = 100 } }
+        1 = { set_variable = { global.rand_sea_region = 101 } }
+        1 = { set_variable = { global.rand_sea_region = 102 } }
+        1 = { set_variable = { global.rand_sea_region = 103 } }
+        1 = { set_variable = { global.rand_sea_region = 104 } }
+        1 = { set_variable = { global.rand_sea_region = 105 } }
+        1 = { set_variable = { global.rand_sea_region = 106 } }
+        1 = { set_variable = { global.rand_sea_region = 107 } }
+        1 = { set_variable = { global.rand_sea_region = 108 } }
+        1 = { set_variable = { global.rand_sea_region = 109 } }
+        1 = { set_variable = { global.rand_sea_region = 110 } }
+        1 = { set_variable = { global.rand_sea_region = 110 } }
+        1 = { set_variable = { global.rand_sea_region = 111 } }
+        1 = { set_variable = { global.rand_sea_region = 112 } }
+        1 = { set_variable = { global.rand_sea_region = 113 } }
+        1 = { set_variable = { global.rand_sea_region = 114 } }
+        1 = { set_variable = { global.rand_sea_region = 115 } }
+        1 = { set_variable = { global.rand_sea_region = 166 } }
+        1 = { set_variable = { global.rand_sea_region = 168 } }
+        1 = { set_variable = { global.rand_sea_region = 169 } }
+        1 = { set_variable = { global.rand_sea_region = 170 } }
+        1 = { set_variable = { global.rand_sea_region = 171 } }
+        1 = { set_variable = { global.rand_sea_region = 172 } }
+        1 = { set_variable = { global.rand_sea_region = 173 } }
+        1 = { set_variable = { global.rand_sea_region = 174 } }
+        1 = { set_variable = { global.rand_sea_region = 175 } }
+        1 = { set_variable = { global.rand_sea_region = 176 } }
+        1 = { set_variable = { global.rand_sea_region = 177 } }
+        1 = { set_variable = { global.rand_sea_region = 202 } }
+        1 = { set_variable = { global.rand_sea_region = 203 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 207 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 279 } }
+    }
+}
+
+###############################################################################################################
+
+# Reserved cleanup hook for special non-human countries. The whole-world weekly
+# caller remains intentionally disabled until a bounded invocation owns it.
+clear_special_chaos_country_civilian_effects = {
+    if = {
+        limit = { has_country_flag = mass_panic }
+        clr_country_flag = mass_panic
+    }
+    if = {
+        limit = { has_idea = galaxies_mix }
+        remove_ideas = galaxies_mix
+    }
+}
+
+###############################################################################################################
+
 refresh_world_threat_state = {
-	set_variable = { global.world_threat_source_count = 0 }
+    set_variable = { global.world_threat_source_count = 0 }
 
-	if = {
-		limit = { has_global_flag = world_threat_source_zombies }
-		add_to_variable = { global.world_threat_source_count = 1 }
-	}
-	if = {
-		limit = { has_global_flag = world_threat_source_holy_realm }
-		add_to_variable = { global.world_threat_source_count = 1 }
-	}
-	if = {
-		limit = { has_global_flag = world_threat_source_mengele }
-		add_to_variable = { global.world_threat_source_count = 1 }
-	}
-	if = {
-		limit = { has_global_flag = world_threat_source_fury }
-		add_to_variable = { global.world_threat_source_count = 1 }
-	}
-	if = {
-		limit = { has_global_flag = world_threat_source_death }
-		add_to_variable = { global.world_threat_source_count = 1 }
-	}
-	if = {
-		limit = { has_global_flag = world_threat_source_cannibalism }
-		add_to_variable = { global.world_threat_source_count = 1 }
-	}
+    if = {
+        limit = { has_global_flag = world_threat_source_zombies }
+        add_to_variable = { global.world_threat_source_count = 1 }
+    }
+    if = {
+        limit = { has_global_flag = world_threat_source_holy_realm }
+        add_to_variable = { global.world_threat_source_count = 1 }
+    }
+    if = {
+        limit = { has_global_flag = world_threat_source_mengele }
+        add_to_variable = { global.world_threat_source_count = 1 }
+    }
+    if = {
+        limit = { has_global_flag = world_threat_source_fury }
+        add_to_variable = { global.world_threat_source_count = 1 }
+    }
+    if = {
+        limit = { has_global_flag = world_threat_source_death }
+        add_to_variable = { global.world_threat_source_count = 1 }
+    }
+    if = {
+        limit = { has_global_flag = world_threat_source_cannibalism }
+        add_to_variable = { global.world_threat_source_count = 1 }
+    }
 	if = {
 		limit = { has_global_flag = world_threat_source_black_plague }
 		add_to_variable = { global.world_threat_source_count = 1 }
@@ -47,25 +480,78 @@ refresh_world_threat_state = {
 		add_to_variable = { global.world_threat_source_count = 1 }
 	}
 
-	if = {
-		limit = { check_variable = { global.world_threat_source_count > 0 } }
-		set_global_flag = world_in_threat
-	}
-	else = {
-		clr_global_flag = world_in_threat
+    if = {
+        limit = { check_variable = { global.world_threat_source_count > 0 } }
+        set_global_flag = world_in_threat
+    }
+    else = {
+        clr_global_flag = world_in_threat
+    }
+}
+###############################################################################################################
+
+# Public country-scope additive technology union. See
+# chaosx_dynamic_effects.md for the donor contract and compatibility rules.
+union_compatible_researched_technologies_from_donor = {
+	for_each_loop = {
+		array = event_target:technology_union_donor.researched_techs
+		value = technology_union_entry
+		if = {
+			limit = {
+				NOT = { has_tech = var:technology_union_entry }
+				if = {
+					limit = { check_variable = { technology_union_entry = token:flexible_line } }
+					NOT = { has_tech = streamlined_line }
+				}
+				else_if = {
+					limit = { check_variable = { technology_union_entry = token:streamlined_line } }
+					NOT = { has_tech = flexible_line }
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { technology_union_entry = token:concentrated_industry }
+							check_variable = { technology_union_entry = token:concentrated_industry2 }
+							check_variable = { technology_union_entry = token:concentrated_industry3 }
+							check_variable = { technology_union_entry = token:concentrated_industry4 }
+							check_variable = { technology_union_entry = token:concentrated_industry5 }
+						}
+					}
+					NOT = { has_tech = dispersed_industry }
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { technology_union_entry = token:dispersed_industry }
+							check_variable = { technology_union_entry = token:dispersed_industry2 }
+							check_variable = { technology_union_entry = token:dispersed_industry3 }
+							check_variable = { technology_union_entry = token:dispersed_industry4 }
+							check_variable = { technology_union_entry = token:dispersed_industry5 }
+						}
+					}
+					NOT = { has_tech = concentrated_industry }
+				}
+			}
+			set_technology = {
+				var:technology_union_entry = 1
+				popup = no
+			}
+		}
 	}
 }
 
-# Public country-scope Event 013 entry point. External events and shared
-# scenario systems provide the documented call contract, while Event 013 owns
-# request validation and resolution.
+###############################################################################################################
+
+# Public country-scope Event 013 entry point. See chaosx_dynamic_effects.md.
 call_natural_disaster = {
 	natural_disaster_call = yes
 	natural_disaster_reset_call_inputs = yes
 }
 
-# Public state-scope population transaction used by the Deaths ledger and by
-# systems that must reconcile HOI4's recruitable-manpower side effect.
+###############################################################################################################
+
+# Public state-scope exact civilian population transaction. See
+# chaosx_dynamic_effects.md for the input/output contract.
 apply_state_population_loss_without_recruitable_manpower_gain = {
 	if = {
 		limit = {
@@ -155,9 +641,6 @@ apply_state_population_loss_without_recruitable_manpower_gain = {
 	set_temp_variable = { state_population_transaction_loss = constant:chaos_meter_deaths.zero }
 }
 
-# Public state-scope exact civilian-loss API. It clamps a request against the
-# supplied population floor and either records the exact loss through Deaths or
-# performs the same population mutation without presentation logging.
 apply_exact_state_civilian_population_loss = {
 	set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
 	set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
@@ -247,3 +730,5 @@ apply_exact_state_civilian_population_loss = {
 	set_temp_variable = { state_civilian_population_loss_available = constant:chaos_meter_deaths.zero }
 	set_temp_variable = { state_population_transaction_loss = constant:chaos_meter_deaths.zero }
 }
+
+###############################################################################################################

@@ -12313,56 +12313,6 @@ cannibalism_create_integrated_warlord_servant = {
 # CBL creation and public reveal
 # ---------------------------------------------------------------------------
 
-# Event 014-owned additive technology union. The current country receives
-# compatible researched technologies from event_target:technology_union_donor.
-union_compatible_researched_technologies_from_donor = {
-	for_each_loop = {
-		array = event_target:technology_union_donor.researched_techs
-		value = technology_union_entry
-		if = {
-			limit = {
-				NOT = { has_tech = var:technology_union_entry }
-				if = {
-					limit = { check_variable = { technology_union_entry = token:flexible_line } }
-					NOT = { has_tech = streamlined_line }
-				}
-				else_if = {
-					limit = { check_variable = { technology_union_entry = token:streamlined_line } }
-					NOT = { has_tech = flexible_line }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							check_variable = { technology_union_entry = token:concentrated_industry }
-							check_variable = { technology_union_entry = token:concentrated_industry2 }
-							check_variable = { technology_union_entry = token:concentrated_industry3 }
-							check_variable = { technology_union_entry = token:concentrated_industry4 }
-							check_variable = { technology_union_entry = token:concentrated_industry5 }
-						}
-					}
-					NOT = { has_tech = dispersed_industry }
-				}
-				else_if = {
-					limit = {
-						OR = {
-							check_variable = { technology_union_entry = token:dispersed_industry }
-							check_variable = { technology_union_entry = token:dispersed_industry2 }
-							check_variable = { technology_union_entry = token:dispersed_industry3 }
-							check_variable = { technology_union_entry = token:dispersed_industry4 }
-							check_variable = { technology_union_entry = token:dispersed_industry5 }
-						}
-					}
-					NOT = { has_tech = concentrated_industry }
-				}
-			}
-			set_technology = {
-				var:technology_union_entry = 1
-				popup = no
-			}
-		}
-	}
-}
-
 cannibalism_apply_unified_country_ai_strategy = {
 	add_ai_strategy = { type = build_army value = constant:cannibalism_ai_strategy.hannibal_build_army }
 	add_ai_strategy = { type = equipment_production_factor id = infantry value = constant:cannibalism_ai_strategy.hannibal_build_infantry }
