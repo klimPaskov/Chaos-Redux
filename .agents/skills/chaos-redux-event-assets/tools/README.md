@@ -5,18 +5,14 @@ Call them from the mod root. Canonical engine-surface reference lookups use:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
 
-For leader/commander style review, also inspect the user-requested male-only
-quick-reference pack at
-`.agents/skills/chaos-redux-event-assets/assets/leader_portraits/`. Its files
-are review-only copies and are never processor or runtime inputs. Advisor dossier
-cards use the separate canonical references under
+For leader/commander style review, inspect the canonical role-specific references.
+Advisor dossier cards use the separate canonical references under
 `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
 There is no bundled full-size portrait processor. After the immutable crop, create
 the deterministic `156x210` country-leader, commander, operative, or named-officeholder
 candidate with a reproducible task-specific/manual image workflow. Inspect the
-canonical role family (`leaders/`, `commanders/`, or `operatives/`) plus the
-male-only quick-reference pack where applicable. Retain the processed source or
+canonical role family (`leaders/`, `commanders/`, or `operatives/`). Retain the processed source or
 ImageGen result, candidate PNG, exact dimensions, crop metadata, hashes, role-specific
 comparison sheet, and independent likeness/style/provenance review. Do not hand off
 a raw, filtered, or merely resized photograph as runtime art.
