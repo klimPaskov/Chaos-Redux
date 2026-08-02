@@ -137,6 +137,8 @@ The permanent country flag `brilliant_scientist_offensive_biological_weapon_used
 
 The first valid call writes the Event 016 receipt and refreshes the shared Kruger threat source. Ordinary-agent use therefore follows the canonical attribution threshold; concealed releases are not converted into a fabricated immediate confirmation.
 
+The native payload ledger described above is not yet an Event 016-owned KRG quantity system. The Event 016 country package currently restores biological history, delivery technologies, containment, and authority, while a bounded KRG production, reservation, consumption, transfer, and defeat ledger remains queued under `docs/plans/016_brilliant_scientist_plans/016_krg_biological_stockpile_delivery_addendum.md`. That later tranche must debit or return one Event 016 charge through an idempotent native callback and must preserve the native CBRN outcome owner.
+
 AI must first complete the same authorization. The human scientific republic is excluded. Other Kruger AI can cross the gate only under extreme policy on sovereign-directorate, xenobiological, or active world-threat routes, or while near capitulation under strategic authority. The canonical raid and operation AI still performs its own retaliation, safety, target-value, policy, stockpile, staging, aircraft, network, and risk checks afterward.
 
 ## Assets and interface wiring
