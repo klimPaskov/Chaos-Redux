@@ -10,6 +10,8 @@ The 2026-08-03 row-level source-placeholder audit `subagent_handoffs/006_grounde
 
 The bounded FORM-08 ledger and identity-gate repair is recorded in `subagent_handoffs/006_form08_ledger_gate_repair_2026_08_03.md`. Its four ledgers are now visible in the Danubian decision category and all four control charter promotion; vanilla and concurrent HUN_EMPIRE identity claims are fail-closed. The accepted Vojvodina/Slavonia member set and installed-map crosswalk remain open and do not promote FORM-08 readiness.
 
+The v111 `6001` audio handoff records a rights-cleared CC0/public-domain *Defilier-Marsch* / Anker-Orchester candidate, but it remains research-only and unselected. The accepted `6001` cue remains absent from runtime until parent human listening and final approval; this candidate is not a fallback for `6002`.
+
 The Event 006/012 reusable-carrier focus handoff `subagent_handoffs/006_africa_registry_focus_handoff_2026_08_03.md` restores the accepted ownership boundary: the seven African X shells require a live Event 006 receipt, Soviet-origin carriers are rejected, and Africa's focus loader skips active or meaningful creating-event trees before retrying after Event 006 cleanup. The shared `collection:chaosx_country_africa` API remains the lookup surface; no new tag or package admission follows.
 
 Current static completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v104_2026_08_03.md`, read together with v103 for the underlying static checks.
