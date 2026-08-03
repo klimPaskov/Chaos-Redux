@@ -6,8 +6,10 @@ The Event 006 formable registry is the shared discovery and transaction framewor
 
 All 48 accepted family rows have stable discovery metadata, but the shared
 framework does not declare a family operational by metadata alone. FORM-01
-through FORM-05 remain promoted from their owning adapters, and FORM-48 is now
-promoted after the Pacific package and coordinated adapter audits. FORM-07 now
+through FORM-05 remain promoted from their owning adapters. FORM-48 has a
+framework-readiness attestation and a complete carrier/member contract, but it
+remains operationally unreachable until an admitted HBX/HAW/FSM member set
+exists. FORM-07 now
 has a bounded Iberian adapter surface for CAT/NAV/GLC, but remains fail-closed
 until its researched X identity, flag package, and identity contract are
 approved. FORM-06 and FORM-08 through FORM-47 remain fail-closed, including
@@ -176,17 +178,18 @@ registration effect clears any prior family bundle first, binds the readiness
 variable to its exact family, and then restores only the six generic adapter
 attestations and its family-specific proof. FORM-03 additionally restores its
 separately audited progression attestation. FORM-05 is promoted through its
-own audited adapter. FORM-48 now follows the same contract: its registration
-binds family 48, sets the six shared adapter flags, sets
+own audited adapter. FORM-48 follows the same framework contract: its
+registration binds family 48, sets the six shared adapter flags, sets
 `independence_wave_form48_registry_surface_registered`, and sets
 `independence_wave_form48_readiness_attested` only after the coordinated Pacific
-PASS audits. FORM-07 remains fail-closed under its identity, flag, and
-NAV/GLC package contract. FORM-06 and FORM-08 through FORM-47 remain
-fail-closed, including FORM-42.
+PASS audits. The live commit gate still requires the exact active HBX/HAW/FSM
+member set, so the family is not currently operational. FORM-07 remains
+fail-closed under its identity, flag, and NAV/GLC package contract. FORM-06 and
+FORM-08 through FORM-47 remain fail-closed, including FORM-42.
 Earlier FORM-48 handoffs that recorded unset flags are preserved as historical
 evidence, not current status.
 
-### FORM-48 Pacific adapter (current)
+### FORM-48 Pacific adapter (framework-ready, operationally unreachable)
 
 FORM-48 uses HBX as the carrier and HAW/FSM as sovereign autonomous members.
 The family-48 identity adapter applies cosmetic identity `PFX` to the committed
