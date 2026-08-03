@@ -1,0 +1,88 @@
+# IW-030 Montenegro portrait source research v53 (2026-08-01)
+
+## Scope and disposition
+
+This package is source research only for the grounded vanilla MNT roster used by Event 006 IW-030. It does not edit characters, history, events, `.gfx`, localisation, or gameplay files, and it does not authorize runtime wiring. No advisor, high-command, dossier, operative, or female portrait asset was created.
+
+The accepted source mode is `grounded_source_only`: Montenegro is a real historical polity and the three vanilla named consumers are real men. The current `MNT_kristo_popovic` consumer points to `GFX_portrait_europe_generic_land_19`, which is not an identity-preserving portrait and remains a hard blocker. The two period sources below have source-locked HOI4 repaint masters and deterministic 156x210 evidence candidates; independent visual review passes identity, male framing, artifacts, and HOI4 style, while source/crop linkage and rights remain review-pending. DDS conversion, `.gfx` wiring, and runtime admission remain parent-owned follow-up gates.
+
+## Candidate summary
+
+| Vanilla consumer | Proposed subject | Status | Source/date/identity finding | Runtime decision |
+| --- | --- | --- | --- | --- |
+| `MNT_blazo_jovanovic` | Blažo Jovanović (1907–1976) | `visual_pass_needs_provenance_review` | High-resolution 1942 group photograph from znaci.net; Commons caption explicitly identifies Jovanović as the middle subject in a three-person Livno group (“from right: Milinko Đurović, Blažo Jovanović, Čedo Kapor”). The face and moustache/cap match the separate 1942 individual record; the raw HOI4 repaint and 156x210 candidate pass the independent visual screen. | No DDS or sprite wiring until source/crop linkage and the unknown-photographer public-domain rationale receive final review. |
+| `MNT_blazo_dukanovic` | Blažo Đukanović (1883–1943) | `visual_pass_needs_rights_review` | Commons record explicitly identifies the subject; source is *Generali i admirali Kraljevine Jugoslavije: 1918–1941* (Mile S. Bjelajac, 2004), with an estimated 1938–1940 portrait and Commons `PD-old` / Public Domain Mark rationale. The raw HOI4 repaint and 156x210 candidate pass the independent visual screen, but the unknown photographer/book reproduction still needs rights review. | Do not wire until rights, source/crop linkage, and final portrait admission pass. |
+| `MNT_kristo_popovic` | Krsto Zrnov Popović (1881–1947) | `blocked_provenance` | Commons has a male uniform portrait under CC BY-SA 3.0 with VRTS permission confirmed, but the page has no machine-readable author, source, or date and does not establish a 1936-era fit. | Do not use this file as a final source without a defensible archive/source/date record; generic vanilla texture remains blocked. |
+
+## Selected source 1: Blažo Jovanović, Livno 1942
+
+- **Commons record:** <https://commons.wikimedia.org/wiki/File:Grupa_vojnih_rukovodilaca_u_oslobo%C4%91enom_Livnu.jpg>.
+- **Canonical original:** <https://upload.wikimedia.org/wikipedia/commons/a/ab/Grupa_vojnih_rukovodilaca_u_oslobo%C4%91enom_Livnu.jpg> (retrieved through the repository-safe `i0.wp.com` proxy because Wikimedia upload throttled direct retrieval).
+- **Archive/source credit:** `znaci.net/fotogalerija/fotogalerija06.html`; the Commons record identifies the source as the wartime photograph collection and credits the image to an unknown photographer.
+- **Source date:** 1942 (contemporary wartime image; Jovanović was 35 and an active Montenegrin partisan leader).
+- **Rights:** Commons page uses `PD-because` and links the znaci.net public-domain rationale. Photographer remains unknown; retain this uncertainty for the independent rights reviewer.
+- **Identity evidence:** Commons caption gives the ordering “S desna na levo: Milinko Đurović, Blažo Jovanović, Čedo Kapor.” Jovanović is the central standing man. The retained 235x358 Commons portrait (`Blažo Jovanović.jpg`, also dated 1942) shows the same cap, moustache, brow, nose, and face proportions and is kept as corroborating evidence, not as a final runtime source.
+- **Era fit:** 1942 is later than the 1936 scenario start but remains a period-authentic active-life portrait of a named MNT leader. The parent should use the source only if the package accepts a wartime/active-life portrait for the 1936-era roster.
+- **Source master:** `source_masters/mnt_blazo_jovanovic_livno_1942.jpg` — 1121x1509 RGB, SHA-256 `a66cf887c8b28f86c92dedd763b3cb6bd046c01f6dff0f63825c07f30c64c120`.
+- **Exact crop:** `source_crops/mnt_blazo_jovanovic_livno_1942_head_shoulders.png` — 420x770 RGB, crop rectangle `[left=300, top=80, right=720, bottom=850]` in half-open decoded source pixels, SHA-256 `fd5834027ece9dce94c7dd0f5a7f9b0b74559a85c2653619bc890b3fe117b880`.
+- **Crop proof:** `crop_metadata/mnt_blazo_jovanovic_livno_1942_crop.json`; `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` v1.0, Pillow decode, `status=exact_source_crop_verified`, `decoded_pixels_equal=true`, matching RGBA rectangle/output hash `1276f4d33fcf19a16e07ca9e733240ed5da4fc8a3d8f0ff016d826586617e855`.
+
+## Selected source 2: Blažo Đukanović, 1938–1940
+
+- **Commons record:** <https://commons.wikimedia.org/wiki/File:Bla%C5%BEo_%C4%90ukanovi%C4%87.jpg>.
+- **Canonical original:** <https://upload.wikimedia.org/wikipedia/commons/7/77/Bla%C5%BEo_%C4%90ukanovi%C4%87.jpg> (retrieved through the repository-safe `i0.wp.com` proxy because Wikimedia upload throttled direct retrieval).
+- **Source credit:** Mile S. Bjelajac, *Generali i admirali Kraljevine Jugoslavije: 1918–1941: studija vojne elite i biografski leksikon*, Institut za savremenu istoriju Srbije, Dobro, Beograd, 2004.
+- **Source date:** estimated between 1938 and 1940 according to the Commons record; this brackets the 1936-era setting closely and shows Đukanović in a Yugoslav military uniform before his 1943 death.
+- **Rights:** Commons metadata states unknown photographer and applies `PD-old` with the note “Author of this file is dead more then 70 years ago”; the category also carries CC-PD-Mark. The unknown photographer and book-reproduction chain are rights-review uncertainties, not a blanket approval. Do not promote until an independent reviewer confirms the public-domain basis.
+- **Identity evidence:** Commons description is explicitly “Photo of Blažo Đukanović”; the face is a clear adult male head-and-shoulders portrait with uniform and medals. No alternate-person substitution is proposed.
+- **Source master:** `source_masters/mnt_blazo_dukanovic_1938_1940.jpg` — 443x599 RGB, SHA-256 `b099dff0ad5b45d8dd33a10c9a0ccc113d4e08afa8ca1fa7c2d5fe68b76a8be8`.
+- **Exact crop:** `source_crops/mnt_blazo_dukanovic_1938_1940_head_shoulders.png` — 390x455 RGB, crop rectangle `[left=30, top=20, right=420, bottom=475]`, SHA-256 `b626fe6089e3483f89a7fc0d553b69b16fa52ce8116b696d2f6e3362ec318cd9`.
+- **Crop proof:** `crop_metadata/mnt_blazo_dukanovic_1938_1940_crop.json`; `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` v1.0, Pillow decode, `status=exact_source_crop_verified`, `decoded_pixels_equal=true`, matching RGBA rectangle/output hash `34f6357c79cf89a7b2eb1705da16474c81e2273a7bbed8e0e44ff14d5d47ded7`.
+
+## Additional Jovanović evidence and rejected alternatives
+
+- `source_masters/mnt_blazo_jovanovic_portrait_1942.jpg` is the direct Commons file <https://commons.wikimedia.org/wiki/File:Bla%C5%BEo_Jovanovi%C4%87.jpg>, 235x358 RGB, SHA-256 `a6867d4c7fbf9cab555953cfc58c85840e0c7420c329fb2addba9c90e353a692`. Commons records date 1942, unknown author, znaci.net credit, and a public-domain `PD-because` rationale. It is identity corroboration only; the low native resolution is not adequate for a dependable final 156x210 portrait pipeline.
+- `source_masters/mnt_blazo_jovanovic_upper_brezna_1942.jpg` is <https://commons.wikimedia.org/wiki/File:Crna_Gora_ustanici.jpg>, a 2518x1682 Savo Orović photograph dated May 1942 and marked `PD-Yugoslavia`; the caption and image notes identify Jovanović. It is retained as contextual evidence but not selected because the group composition and face presentation require a separate identity audit against the cleaner Livno source.
+- `source_masters/mnt_blazo_jovanovic_1942_group.jpg` is <https://commons.wikimedia.org/wiki/File:Veljko_Zekovi%C4%87,_Bla%C5%BEo_Jovanović,_Đuro_Roganović_i_Milo_Jovićević.jpg>, 1737x2455, Savo Orović, May 1942, `PD-Yugoslavia`; the caption names Jovanović but does not pin his position. It is retained as a candidate comparison only.
+- `source_masters/mnt_blazo_jovanovic_lipova_ravan_1942.jpg` is <https://commons.wikimedia.org/wiki/File:Grupa_komunista_i_skojevaca_iz_Crne_Gore,_Lipova_Ravan,_25._maja_1942.jpg>, 1271x922, Savo Orović, 25 May 1942, `PD-Yugoslavia`; the caption names Jovanović among a four-person lower row but the source is a multi-person scene and no crop was promoted.
+- The direct alternative <https://commons.wikimedia.org/wiki/File:Krsto_Zrnov_Popovic.jpg> is male and carries CC BY-SA 3.0 with VRTS permission confirmed, but Commons marks the file as missing machine-readable author and source and gives no date. It is `blocked_provenance`, not a defensible replacement for `MNT_kristo_popovic` without additional archive evidence and attribution/ShareAlike handling.
+
+## 2026-08-03 source-admission addendum: higher-resolution Savo Orović record
+
+The stronger Jovanović evidence is retained as a separate immutable source master rather than replacing the visually cleaner Livno candidate.  Commons identifies the file as <https://commons.wikimedia.org/wiki/File:Grupa_boraca_i_rukovodilaca_iz_Crne_Gore%2C_Lipova_Ravan%2C_25._maja_1942.jpg> and gives the canonical source URL <https://upload.wikimedia.org/wikipedia/commons/3/38/Grupa_boraca_i_rukovodilaca_iz_Crne_Gore%2C_Lipova_Ravan%2C_25._maja_1942.jpg>.
+
+The source is a 2083x1380 8-bit indexed image dated 1942-05-25.  The Commons description explicitly names Blažo Jovanović as the third person in the lower row: “Dole: Mirko Stanišić, Radomir Babić, Blažo Jovanović, Ratko Radović.”  The page credits Savo Orović and `https://znaci.org/fotografija.php?br=8889`, while the Znaci archive identifies the source as the Museum of the Revolution of the Peoples of Yugoslavia and states that its archival photographs are public domain unless otherwise noted.
+
+Commons labels the file Public domain under the `PD-Yugoslavia` framework.  Preserve the metadata discrepancy that the Commons creator field names Savo Orović while the upload history describes the original photographer as unknown; the named archive credit and date are strong evidence, but this handoff does not convert the discrepancy into an unconditional legal clearance.
+
+The unchanged local master is `source_masters/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_1942.jpg`, 2083x1380, SHA-256 `919393b924cee9c6de3d1e1fd4e864b4ffed387a3fe60fd52c43bc58b6d682a4`.  The exact source crop is `source_crops/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_1942_head_shoulders_v2.png`, crop rectangle `[1040,500,1490,1200]`, 450x700 grayscale (`L` decode), SHA-256 `e96c730d6d82702ea2937c1ff3bfa46b9d998921784aae2bf5be435a336cd737`, with equality proof in `crop_metadata/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_1942_crop_v2.json` and `decoded_pixels_equal=true`.  The crop is evidence only and has not entered the repaint, DDS, or runtime pipeline.
+
+At native inspection the moustached lower-row subject is legible and provides a materially better crop than the earlier 1271x922 derivative, but the group context, cap, rifle, and adjacent figures remain visible.  Mark the candidate `source_identity_pass_needs_visual_repaint_review`: source/date/identity evidence is strong, while a source-locked repaint and independent likeness/style audit are still required.  Do not silently substitute this source under another MNT identity.
+
+## Subject ownership audit
+
+Exact and variant searches were run in the current Chaos Redux tree and installed vanilla roots for `Blažo Jovanović`, `Blazo Jovanovic`, `MNT_blazo_jovanovic`, `Blažo Đukanović`, `Blazo Dukanovic`, `MNT_blazo_dukanovic`, `Krsto Popović`, `Krsto Zrnov Popović`, and `MNT_kristo_popovic`. The only live identity owners are the intended vanilla MNT definitions and Event 006 recruitment/route consumers:
+
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/characters/MNT.txt` owns all three vanilla character ids and their existing portrait tokens.
+- Vanilla `history/countries/MNT - Montenegro.txt` recruits the same three ids.
+- Chaos Redux `events/006_independence_wave.txt`, `common/scripted_triggers/006_independence_wave_montenegro_package_triggers.txt`, and `common/scripted_effects/006_independence_wave_montenegro_package_effects.txt` are the IW-030 consumers already recorded by the country-package audit.
+- No cross-country Chaos Redux or vanilla character, commander, operative, or officeholder consumer for these three Montenegrin identities was found. No transfer guard is needed for the proposed same-owner reuse, but the parent must keep the roster ownership singular.
+
+## Pipeline and blocker boundary
+
+The exact archival crops are complete and immutable. The source-locked raw HOI4 repaints, prompt pairs, output hashes, independent native/4x audit sheets, and deterministic 156x210 candidates are recorded in `repaint_source_lock_2026_08_01.md` and the matching `processed_candidates/` folder. The audit passes visual identity, male framing, artifacts, and HOI4 style for both; source/crop linkage and rights remain pending. Repository-standard DDS conversion and `.gfx` wiring remain prohibited until every portrait gate and the complete roster pass.
+
+The generic `MNT_kristo_popovic` texture remains blocked. The cleanest roster repair is to use the Jovanović Livno source for `MNT_blazo_jovanovic` and the Đukanović source for `MNT_blazo_dukanovic`, then either (a) route the constitutional/traditional role to one of those already sourced male MNT leaders if the parent accepts the roster semantics, or (b) source a separate Krsto Popović archive image with author/date evidence before replacing the generic consumer. Do not fabricate a Popović portrait or silently relabel another subject.
+
+## Review evidence
+
+`review/mnt_portrait_source_contact_sheet.png` compares the selected exact crops, direct Jovanović corroboration, contextual Jovanović groups, and Đukanović source at review scale. The extra `review/*_candidates.jpg` files are inspection evidence only and are not runtime assets.
+## 2026-08-03 Znaci 8889 source-locked JovanoviÄ‡ repaint trial
+
+This addendum is limited to the already researched Savo OroviÄ‡/Znaci 8889 source. The unchanged source master remains `source_masters/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_1942.jpg` (2083x1380 grayscale, SHA-256 `919393b924cee9c6de3d1e1fd4e864b4ffed387a3fe60fd52c43bc58b6d682a4`). Its exact crop is `source_crops/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_1942_head_shoulders_v2.png` with required decoded-master rectangle `[1040,500,1490,1200]`, 450x700, SHA-256 `e96c730d6d82702ea2937c1ff3bfa46b9d998921784aae2bf5be435a336cd737`, and equality evidence in `crop_metadata/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_1942_crop_v2.json` (`decoded_pixels_equal=true`). The source is contemporary 1942 wartime material and the Commons/Znaci record identifies JovanoviÄ‡ as the third lower-row subject; the archive/creator metadata discrepancy and `PD-Yugoslavia` rationale remain a parent-owned rights review item.
+
+| Asset | Source mode | Paths / hashes | Target / role | Status | Runtime boundary |
+| --- | --- | --- | --- | --- | --- |
+| `mnt_blazo_jovanovic_znaci_8889_hoi4_repaint_v1` | `grounded_source_only` + source-locked ImageGen edit | Prompt: `prompts/mnt_blazo_jovanovic_znaci_8889_hoi4_repaint_v1.txt`. Raw repaint: `repaints_raw/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_hoi4_repaint_v1.png` (1080x1456 RGB, SHA-256 `e3e2b2367dddc071b8e5d706a1297add703bf8b528f3510b9e6fbb0dab0c4696`). Original-size shelf copy: `../portraits_generated_png/portrait_MNT_blazo_jovanovic_znaci_8889_hoi4_master.png` (same hash). | Candidate: `processed_candidates/portrait_MNT_blazo_jovanovic_znaci_8889_156x210_candidate.png` (156x210 RGBA, SHA-256 `ad02d6e2826bbae21760cd937a33d740d8405a231610553e86d36228608795eb`). Metadata is adjacent JSON; role family is country leader; canonical style refs are `portraits/leaders/fin_carl_mannerheim.png` and `afg_mohammed_zahir_shah.png`. | `needs_user_review`: parent agent `/root` independently records `PASS_visual_identity` and `PASS_hoi4_leader_style`; provenance/rights remain `NEEDS_USER_REVIEW` because of the creator/unknown-photographer discrepancy and unresolved `PD-Yugoslavia` acceptance. | No DDS, `.gfx`, character, history, event, localisation, or gameplay wiring. Parent may later promote only after the remaining provenance/rights and complete-roster gates pass. Existing durable ComfyUI pair keeps the established `portrait_MNT_blazo_jovanovic` basename; no new runtime basename is introduced by this trial. |
+
+Review evidence is in `review/mnt_blazo_jovanovic_znaci_8889_review_native_2026_08_03.png` and `review/mnt_blazo_jovanovic_znaci_8889_review_4x_nearest_2026_08_03.png`; the separate gate record is `audit/mnt_blazo_jovanovic_znaci_8889_independent_review_2026_08_03.md`. The deterministic processing record is `processed_candidates/portrait_MNT_blazo_jovanovic_znaci_8889_156x210_candidate.json`. Independent likeness/style review is complete (`PASS_visual_identity`, `PASS_hoi4_leader_style`); provenance/rights remain `NEEDS_USER_REVIEW`, so the candidate remains non-runtime and no DDS is authorized.
