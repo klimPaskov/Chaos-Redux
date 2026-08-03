@@ -2,7 +2,7 @@
 
 Date: 2026-07-28
 
-Status: **IMPLEMENTED / STATIC REVIEW PENDING**
+Status: **SOURCE-IMPLEMENTED / FINAL PROBABILITY AND WHOLE-EVENT ACCEPTANCE QUEUED**
 
 The plan-only design below remains the rationale and acceptance matrix. Gameplay is now wired in the two ICE decision/focus surfaces and the ICE-local trigger file; runtime probability, shared-focus visibility, and whole-event completion remain open.
 
@@ -16,7 +16,7 @@ This document is not a new broad Event 006 expansion pass.
 
 It elaborates one finite closure workstream exposed by the IW-012 implementation after the dynamic former-host AI repair and the decision/mission timing repairs.
 
-The v27 improvement-loop closure remains authoritative: do not add another country package, focus family, formable, decision family, scripted GUI, scenario family, achievement, super-event, visual layer, or technology layer while its finite closure gates remain unresolved.
+The v27 improvement-loop closure remains the accepted rationale. Its bounded gameplay tranche is source-implemented; do not add another country package, focus family, formable, decision family, scripted GUI, scenario family, achievement, super-event, visual layer, or technology layer as a substitute for the remaining probability and whole-event acceptance evidence.
 
 The new IW-012 source-design gap is narrower:
 
@@ -26,9 +26,9 @@ The new IW-012 source-design gap is narrower:
 - in an otherwise peaceful package, the armed-neutrality project can pre-empt Constitutional, Traditional, or Patron-Client selection before those focus weights can express a preference;
 - route probability is therefore not merely missing runtime evidence; the current source lacks the package-aware comparison promised by the accepted specification.
 
-This addendum should be implemented once, audited, folded into the accepted IW-012 and AI specifications, and closed.
+This addendum is source-implemented and folded into the current IW-012 and AI surfaces. Final probability and whole-event acceptance remain queued.
 
-Do not run another IW-012 improvement-loop pass while this addendum remains unresolved.
+Do not run another IW-012 improvement-loop pass; the remaining work is bounded acceptance evidence, not another content expansion.
 
 ## Evidence for the gap
 
@@ -480,6 +480,6 @@ Open questions: none are required to implement the bounded arbitration table.
 
 Separate blocker: FORM-02 still requires a valid GZX/Newfoundland founder and runtime transaction evidence; this addendum does not solve or weaken that gate.
 
-Prior addendum state: v27 remains unresolved and authoritative.
+Prior addendum state: v27 remains the accepted rationale; the bounded closure tranche is source-implemented and its final acceptance evidence remains open.
 
 This file is a finite v27 closure workstream made necessary by the subsequent IW-012 tranche, not a new broad expansion layer.
