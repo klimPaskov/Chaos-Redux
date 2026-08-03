@@ -78,7 +78,7 @@ Shared tags are intentional reuse, not duplicate definitions. The API requires e
 
 ## AI and playability
 
-The generic AI assignment is tied to the same focus contract and is required by the final package barrier. Source-level AI profiles exist for accepted packages, but this audit did not run live weighted selection, allocator execution, save/load, or player-owned scenario play. The current completion authority still marks overall AI/balance acceptance unverified, the 14-country simultaneous witness unresolved, and the 20-country capacity structurally impossible with the current 15 attestations (`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`).
+The generic AI assignment is tied to the same focus contract and is required by the final package barrier. Source-level AI profiles exist for accepted packages, but this audit did not run live weighted selection, allocator execution, save/load, or player-owned scenario play. The source-backed standalone fourteen-package witness now passes in `.tools/audit_event6_allocator.py` and is documented in `006_event6_14_package_static_witness_2026_08_03.md`; overall AI/balance acceptance remains unverified, live execution remains unobserved, and the 20-country capacity is structurally impossible with the current 15 attestations (`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`).
 
 ## Validation and skipped checks
 
@@ -94,7 +94,7 @@ Skipped meaningful validation: no Hearts of Iron IV process, live release, map w
 ## Remaining blockers and handoff
 
 1. Keep the central attestation gate unchanged until each candidate package has complete country-specific identity, map, host, politics, leader/portrait, flag, advisor, forces/technology/industry, ideas/decisions, focus/overlay, AI, localisation, asset, cleanup, and provenance evidence.
-2. Do not treat 15 attested IDs as a simultaneous 14-package witness; the current completion authority explicitly says the 14-country witness is unresolved and the 20-country capacity is structurally impossible at the current attestation count.
+2. Keep the static fourteen-package witness (`006_event6_14_package_static_witness_2026_08_03.md`) aligned with the allocator source, but do not treat it as live execution evidence; the 20-country capacity is structurally impossible at the current attestation count.
 3. Do not broaden the collision scanner or remap excluded tags without an explicit namespace decision; the current zero result is limited to 136 protected Event 006/Soviet tags and one skipped Random Events root.
 4. Preserve vanilla histories and meaningful trees for reused carriers; resolve shared CHU/BIA package identity by package ID and anchor, never by tag alone.
 5. Keep overlay-only rows non-selectable and all unbound rows fail-closed until an authoritative map binding exists.

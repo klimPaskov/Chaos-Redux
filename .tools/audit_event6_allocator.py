@@ -10,12 +10,14 @@ from __future__ import annotations
 import re
 import sys
 import csv
+import os
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLISHER_GLOB = "006_independence_wave_packages_region_*_effects.txt"
 OVERLAY_ONLY_IDS = {5, 22, 25, 35, 59, 85, 101, 102, 105, 156, 196, 197, 204}
+STATIC_14_WITNESS_IDS = {1, 2, 4, 6, 7, 8, 9, 10, 17, 18, 19, 23, 173, 184}
 
 
 def read(relative: str) -> str:
@@ -157,6 +159,204 @@ def require_order(text: str, labels: list[tuple[str, str]], context: str, errors
 		positions.append(position)
 	if positions != sorted(positions):
 		errors.append(f"{context}: wrong order: " + " -> ".join(label for label, _ in labels))
+
+
+def parse_state_ids(raw: str) -> set[int]:
+	return {int(value) for value in re.findall(r"\d+", raw or "")}
+
+
+def parse_state_owner_map(raw: str) -> dict[int, str]:
+	return {
+		int(state_id): owner
+		for state_id, owner in re.findall(r"(\d+)\s*=\s*([A-Z0-9_]+)", raw or "")
+	}
+
+
+def parse_capital_map(raw: str) -> dict[str, int]:
+	return {
+		owner: int(state_id)
+		for owner, state_id in re.findall(r"([A-Z0-9_]+)\s*=\s*(\d+)", raw or "")
+	}
+
+
+def load_vanilla_owned_states(errors: list[str]) -> dict[str, set[int]]:
+	vanilla_root = Path(
+		os.environ.get(
+			"HOI4_ROOT",
+			r"C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV",
+		)
+	)
+	state_root = vanilla_root / "history" / "states"
+	if not state_root.is_dir():
+		errors.append(
+			"14-country static witness requires the installed vanilla history/states root: "
+			+ str(state_root)
+		)
+		return {}
+	owned: dict[str, set[int]] = {}
+	for path in state_root.glob("*.txt"):
+		match = re.match(r"^(\d+)", path.stem)
+		if match is None:
+			continue
+		state_id = int(match.group(1))
+		text = path.read_text(encoding="utf-8-sig", errors="ignore")
+		owner_match = re.search(r"(?m)^\s*owner\s*=\s*([A-Z0-9_]+)", text)
+		if owner_match is not None:
+			owned.setdefault(owner_match.group(1), set()).add(state_id)
+	return owned
+
+
+def validate_static_14_witness(
+	binding_rows: list[dict[str, str]],
+	installed_reservation_rows: list[dict[str, str]],
+	attested_ids: list[int],
+	loaders: dict[int, str],
+	dispatch: str,
+	errors: list[str],
+) -> dict[str, int]:
+	"""Validate one source-backed fourteen-package standalone allocation.
+
+	This is deliberately a static acceptance witness, not a live-game
+	simulation. It proves that the currently admitted packages can be frozen
+	together from the installed bindings while retaining at least one vanilla
+	state for every former host and preserving the capital-preference rule.
+	"""
+	binding_by_id = {
+		int(row["package_id"].split("-")[1]): row
+		for row in binding_rows
+		if row.get("package_id")
+	}
+	reservation_by_group = {
+		row["reservation_group"]: row
+		for row in installed_reservation_rows
+		if row.get("reservation_group")
+	}
+	allowed_readiness = {
+		"ready_automatic",
+		"ready_high_chaos",
+		"ready_if_tag_not_living",
+		"ready_unique_state_confirmed",
+	}
+	owned_states = load_vanilla_owned_states(errors)
+	selected_group_counts: dict[str, int] = {}
+	selected_footprints: dict[str, set[int]] = {}
+	selected_anchors: set[int] = set()
+	selected_states: set[int] = set()
+	selected_tags: set[str] = set()
+	for package_id in sorted(STATIC_14_WITNESS_IDS):
+		row = binding_by_id.get(package_id)
+		require(row is not None, f"IW{package_id:03d} static witness row is missing", errors)
+		if row is None:
+			continue
+		require(
+			package_id in attested_ids,
+			f"IW{package_id:03d} static witness is not content-attested",
+			errors,
+		)
+		require(
+			package_id in loaders,
+			f"IW{package_id:03d} static witness has no package loader",
+			errors,
+		)
+		require(
+			row["readiness_verdict"] in allowed_readiness,
+			f"IW{package_id:03d} static witness has non-admitted readiness {row['readiness_verdict']!r}",
+			errors,
+		)
+		require(
+			not row["missing_current_state_ids"].strip(),
+			f"IW{package_id:03d} static witness still has missing current state ids",
+			errors,
+		)
+		anchor_ids = parse_state_ids(row["anchor_state_ids"])
+		require(
+			len(anchor_ids) == 1,
+			f"IW{package_id:03d} static witness must have exactly one anchor",
+			errors,
+		)
+		if len(anchor_ids) != 1:
+			continue
+		anchor = next(iter(anchor_ids))
+		require(anchor not in selected_anchors, f"static witness anchor {anchor} is reused", errors)
+		selected_anchors.add(anchor)
+		tag = row["resolved_tag"]
+		require(tag and tag not in selected_tags, f"static witness tag {tag!r} is reused", errors)
+		selected_tags.add(tag)
+		group = row["reservation_group"]
+		selected_group_counts[group] = selected_group_counts.get(group, 0) + 1
+		reservation = reservation_by_group.get(group)
+		require(reservation is not None, f"IW{package_id:03d} static witness group {group!r} is missing", errors)
+		if reservation is not None:
+			require(
+				selected_group_counts[group] <= int(reservation["maximum_automatic_packages_per_wave"]),
+				f"static witness exceeds {group} capacity",
+				errors,
+			)
+		owner_map = parse_state_owner_map(row["initial_owner_by_state"])
+		host = owner_map.get(anchor)
+		require(host is not None, f"IW{package_id:03d} static witness anchor has no former host", errors)
+		if host is None:
+			continue
+		compact_states = parse_state_ids(row["compact_state_ids"])
+		require(anchor in compact_states, f"IW{package_id:03d} compact footprint omits its anchor", errors)
+		require(
+			not (compact_states & selected_states),
+			f"IW{package_id:03d} compact footprint overlaps an earlier witness footprint",
+			errors,
+		)
+		selected_states.update(compact_states)
+		for state_id in compact_states:
+			require(
+				owner_map.get(state_id) == host,
+				f"IW{package_id:03d} compact state {state_id} is not owned by former host {host}",
+				errors,
+			)
+		selected_footprints.setdefault(host, set()).update(compact_states)
+		require(
+			f"constant:independence_wave_package_id.iw_{package_id:03d}" in dispatch,
+			f"IW{package_id:03d} static witness is not present in the package dispatch surface",
+			errors,
+		)
+		require(
+			f"is_independence_wave_exact_package_iw_{package_id:03d}_tag_available = yes" in dispatch,
+			f"IW{package_id:03d} static witness has no exact tag-availability guard",
+			errors,
+		)
+
+	protected_states: dict[str, int] = {}
+	for host, footprint in sorted(selected_footprints.items()):
+		vanilla_owned = owned_states.get(host, set())
+		require(vanilla_owned, f"static witness former host {host} is absent from vanilla history", errors)
+		require(
+			footprint <= vanilla_owned,
+			f"static witness footprint for {host} contains non-host vanilla states",
+			errors,
+		)
+		remaining = vanilla_owned - footprint
+		require(remaining, f"static witness would erase former host {host}", errors)
+		capital_candidates = [
+			int(state_id)
+			for row in binding_rows
+			if host in parse_capital_map(row.get("initial_owner_capitals", ""))
+			for state_id in [parse_capital_map(row["initial_owner_capitals"])[host]]
+		]
+		capital = capital_candidates[0] if capital_candidates else None
+		protected = capital if capital in remaining else min(remaining)
+		protected_states[host] = protected
+		require(
+			capital is not None,
+			f"static witness former host {host} has no documented capital",
+			errors,
+		)
+		if capital is not None and capital in remaining:
+			require(
+				protected == capital,
+				f"static witness did not prefer surviving capital {capital} for {host}",
+				errors,
+			)
+	require(len(selected_anchors) == 14, f"static witness contains {len(selected_anchors)} anchors instead of 14", errors)
+	require(len(selected_tags) == 14, f"static witness contains {len(selected_tags)} tags instead of 14", errors)
+	return protected_states
 
 
 def main() -> int:
@@ -405,6 +605,14 @@ def main() -> int:
 			)
 
 	execution = read("common/scripted_effects/006_independence_wave_execution_effects.txt")
+	static_witness_protected_states = validate_static_14_witness(
+		binding_rows,
+		installed_reservation_rows,
+		attested_ids,
+		loaders,
+		dispatch,
+		errors,
+	)
 	require_order(
 		execution,
 		[
@@ -708,6 +916,10 @@ def main() -> int:
 	print(f"- automatic/high-chaos selectable packages: {len(automatic_ids)}")
 	print(f"- SCN-008 ranked selectable packages: {len(ranked_ids)}")
 	print(f"- attested packages: {len(attested_ids)}; compatible reservation groups: {len(set(attested_groups.values()))}")
+	print(
+		"- static standalone witness: 14 admitted packages; protected former-host states "
+		+ ", ".join(f"{host}={state_id}" for host, state_id in sorted(static_witness_protected_states.items()))
+	)
 	print("- RG-RHINE-SAAR pair capacity: 2 distinct packages (IW-008 anchor 51; IW-010 anchor 42)")
 	print("- automatic counts: 6 / 8 / 10 / 14 / 20 (World Collapse 20)")
 	print("- scenario intensities: low anchor/fragile; medium compact/viable; high extended/armed; maximum extended/high-chaos")
