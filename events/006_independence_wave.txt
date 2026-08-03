@@ -151,54 +151,22 @@ country_event = {
 	}
 }
 
-# Internal synchronous character handoff for northern/western European
-# regional packages with complete roster contracts. Static characters are
-# recruited from this hidden event only when the package is actually released;
-# the calling setup effect validates the complete roster before it can publish
-# package success.
+# Internal synchronous roster checkpoint for northern/western European
+# regional packages. Static characters are attached to their fixed tags from
+# history/general at game start, so the calling setup effect can validate the
+# complete roster without runtime recruitment.
 country_event = {
 	id = chaosx.nr6.10
 	hidden = yes
 	is_triggered_only = yes
 
-	immediate = {
-		if = {
-			limit = { is_independence_wave_sco_package = yes }
-			if = { limit = { NOT = { has_character = SCO_independence_wave_shipping_authority_commissioner } } recruit_character = SCO_independence_wave_shipping_authority_commissioner }
-			if = { limit = { NOT = { has_character = SCO_independence_wave_industrial_reconstruction_secretary } } recruit_character = SCO_independence_wave_industrial_reconstruction_secretary }
-			if = { limit = { NOT = { has_character = SCO_independence_wave_territorial_defense_planner } } recruit_character = SCO_independence_wave_territorial_defense_planner }
-		}
-		else_if = {
-			limit = { is_independence_wave_wls_package = yes }
-			if = { limit = { NOT = { has_character = WLS_independence_wave_bilingual_civil_service_commissioner } } recruit_character = WLS_independence_wave_bilingual_civil_service_commissioner }
-			if = { limit = { NOT = { has_character = WLS_independence_wave_coal_rail_organizer } } recruit_character = WLS_independence_wave_coal_rail_organizer }
-			if = { limit = { NOT = { has_character = WLS_independence_wave_mountain_defense_planner } } recruit_character = WLS_independence_wave_mountain_defense_planner }
-		}
-		else_if = {
-			limit = { is_independence_wave_rhi_package = yes }
-			if = { limit = { NOT = { has_character = RHI_independence_wave_municipal_customs_administrator } } recruit_character = RHI_independence_wave_municipal_customs_administrator }
-			if = { limit = { NOT = { has_character = RHI_independence_wave_rail_works_liaison } } recruit_character = RHI_independence_wave_rail_works_liaison }
-			if = { limit = { NOT = { has_character = RHI_independence_wave_river_defense_planner } } recruit_character = RHI_independence_wave_river_defense_planner }
-		}
-		else_if = {
-			limit = { is_independence_wave_bay_package = yes }
-			if = { limit = { NOT = { has_character = BAY_independence_wave_district_finance_administrator } } recruit_character = BAY_independence_wave_district_finance_administrator }
-			if = { limit = { NOT = { has_character = BAY_independence_wave_estates_constitutional_liaison } } recruit_character = BAY_independence_wave_estates_constitutional_liaison }
-			if = { limit = { NOT = { has_character = BAY_independence_wave_alpine_supply_inspector } } recruit_character = BAY_independence_wave_alpine_supply_inspector }
-		}
-		else_if = {
-			limit = { is_independence_wave_ajx_package = yes }
-			if = { limit = { NOT = { has_character = AJX_independence_wave_mine_rail_dispatch_superintendent } } recruit_character = AJX_independence_wave_mine_rail_dispatch_superintendent }
-			if = { limit = { NOT = { has_character = AJX_independence_wave_cross_border_accounts_comptroller } } recruit_character = AJX_independence_wave_cross_border_accounts_comptroller }
-			if = { limit = { NOT = { has_character = AJX_independence_wave_factory_security_inspector } } recruit_character = AJX_independence_wave_factory_security_inspector }
-		}
-	}
+	immediate = { }
 }
 
 # Internal synchronous roster checkpoint for Event 006 package rosters.
-# Characters are recruited from this hidden event only after a package has
-# been selected. The calling setup effect remains responsible for validating
-# the package-specific roster and role contract.
+# Fixed-tag characters are attached during game history initialization. The
+# Transylvania branch retains its explicit vanilla-roster receipt because no
+# generated character handoff is required there.
 country_event = {
 	id = chaosx.nr6.350
 	hidden = yes
@@ -206,107 +174,6 @@ country_event = {
 
 	immediate = {
 		if = {
-			limit = { is_independence_wave_cor_package = yes }
-			if = { limit = { NOT = { has_character = COR_corsican_municipal_congress } } recruit_character = COR_corsican_municipal_congress }
-			if = { limit = { NOT = { has_character = COR_jean_chiappe } } recruit_character = COR_jean_chiappe }
-			if = { limit = { NOT = { has_character = COR_paolo_pietri } } recruit_character = COR_paolo_pietri }
-			if = { limit = { NOT = { has_character = COR_antone_rocchi } } recruit_character = COR_antone_rocchi }
-		}
-		else_if = {
-			limit = { is_independence_wave_hbx_package = yes }
-			if = { limit = { NOT = { has_character = HBX_independence_wave_civic_convention_chair } } recruit_character = HBX_independence_wave_civic_convention_chair }
-		}
-		else_if = {
-			limit = { is_independence_wave_haw_package = yes }
-			if = { limit = { NOT = { has_character = HAW_independence_wave_territorial_delegate } } recruit_character = HAW_independence_wave_territorial_delegate }
-		}
-		else_if = {
-			limit = { is_independence_wave_mnt_package = yes }
-			if = { limit = { NOT = { has_character = MNT_kristo_popovic } } recruit_character = MNT_kristo_popovic }
-			if = { limit = { NOT = { has_character = MNT_blazo_jovanovic } } recruit_character = MNT_blazo_jovanovic }
-			if = { limit = { NOT = { has_character = MNT_blazo_dukanovic } } recruit_character = MNT_blazo_dukanovic }
-		}
-		else_if = {
-			limit = { is_independence_wave_fsm_package = yes }
-			if = { limit = { NOT = { has_character = FSM_independence_wave_inter_island_congress_chair } } recruit_character = FSM_independence_wave_inter_island_congress_chair }
-		}
-		else_if = {
-			limit = { is_independence_wave_fij_package = yes }
-			if = { limit = { NOT = { has_character = FIJ_independence_wave_founding_congress_chair } } recruit_character = FIJ_independence_wave_founding_congress_chair }
-		}
-		else_if = {
-			limit = { is_independence_wave_iw043_country = yes }
-			if = { limit = { NOT = { has_character = CHU_independence_wave_middle_volga_congress } } recruit_character = CHU_independence_wave_middle_volga_congress }
-			if = { limit = { NOT = { has_character = CHU_independence_wave_federal_presidium } } recruit_character = CHU_independence_wave_federal_presidium }
-			if = {
-				limit = {
-					OR = {
-						has_country_flag = independence_wave_iw043_route_restoration
-						has_country_flag = independence_wave_route_traditional_restoration
-					}
-					NOT = { has_character = CHU_independence_wave_bolgar_civic_presidium }
-				}
-				recruit_character = CHU_independence_wave_bolgar_civic_presidium
-			}
-			if = {
-				limit = {
-					OR = {
-						has_country_flag = independence_wave_iw043_route_emergency_guard
-						has_country_flag = independence_wave_route_emergency_military
-					}
-					NOT = { has_character = CHU_independence_wave_river_security_directorate }
-				}
-				recruit_character = CHU_independence_wave_river_security_directorate
-			}
-		}
-		else_if = {
-			limit = { is_independence_wave_iw058_country = yes }
-			if = { limit = { NOT = { has_character = ASY_independence_wave_provisional_national_council } } recruit_character = ASY_independence_wave_provisional_national_council }
-			if = { limit = { NOT = { has_character = ASY_independence_wave_concordat_council } } recruit_character = ASY_independence_wave_concordat_council }
-			if = {
-				limit = {
-					OR = {
-						has_country_flag = independence_wave_iw058_route_civic_assembly
-						has_country_flag = independence_wave_route_constitutional_republic
-						has_country_flag = independence_wave_route_popular_council
-					}
-					NOT = { has_character = ASY_independence_wave_civic_national_assembly }
-				}
-				recruit_character = ASY_independence_wave_civic_national_assembly
-			}
-			if = {
-				limit = {
-					OR = {
-						has_country_flag = independence_wave_iw058_route_levies_guardianship
-						has_country_flag = independence_wave_route_emergency_military
-					}
-					NOT = { has_character = ASY_independence_wave_levies_guardianship }
-				}
-				recruit_character = ASY_independence_wave_levies_guardianship
-			}
-		}
-		else_if = {
-			limit = { is_independence_wave_iw093_prepared_scope = yes }
-			if = { limit = { NOT = { has_character = DOX_prempeh_ii } } recruit_character = DOX_prempeh_ii }
-			if = { limit = { NOT = { has_character = DOX_kwame_frimpong } } recruit_character = DOX_kwame_frimpong }
-			if = { limit = { NOT = { has_character = DOX_kwaku_ntim } } recruit_character = DOX_kwaku_ntim }
-		}
-		else_if = {
-			limit = {
-				is_independence_wave_iw098_prepared_scope = yes
-				is_independence_wave_iw098_event012_state_safe = yes
-			}
-			if = { limit = { NOT = { has_character = SOK_muhammad_dikko } } recruit_character = SOK_muhammad_dikko }
-			if = { limit = { NOT = { has_character = SOK_bello_rabah } } recruit_character = SOK_bello_rabah }
-			if = {
-				limit = {
-					is_independence_wave_iw098_post_cutover = yes
-					NOT = { has_character = SOK_siddiq_abubakar }
-				}
-				recruit_character = SOK_siddiq_abubakar
-			}
-		}
-		else_if = {
 			# TRA reuses the vanilla Iuliu Maniu roster. The checkpoint is
 			# explicit so the additive carrier does not silently treat the
 			# setup event as a no-op when no generated character is required.
