@@ -152,6 +152,7 @@ independence_wave_iw035_livonia_start_watch_mission = {
 	clr_country_flag = independence_wave_iw035_livonia_watch_interrupted
 	set_country_flag = independence_wave_iw035_livonia_watch_running
 	set_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.minimum }
+	set_variable = { independence_wave_iw035_livonia_watch_suspension_days = constant:independence_wave_iw035_livonia_value.minimum }
 	activate_mission = independence_wave_iw035_hold_livonian_corridor_watch
 }
 
@@ -179,6 +180,23 @@ independence_wave_iw035_livonia_fail_watch_mission = {
 		set_temp_variable = { independence_wave_iw035_livonia_security_delta = constant:independence_wave_iw035_livonia_value.minimum }
 		independence_wave_iw035_livonia_change_values = yes
 	}
+}
+
+independence_wave_iw035_livonia_cancel_watch_permanent_identity_loss = {
+	if = {
+		limit = { has_country_flag = independence_wave_iw035_livonia_watch_running }
+		set_country_flag = independence_wave_iw035_livonia_watch_failed
+	}
+	if = { limit = { has_active_mission = independence_wave_iw035_hold_livonian_corridor_watch } remove_mission = independence_wave_iw035_hold_livonian_corridor_watch }
+	independence_wave_iw035_livonia_remove_overlay_ideas = yes
+	clr_country_flag = independence_wave_iw035_livonia_watch_running
+	clr_country_flag = independence_wave_iw035_livonia_watch_interrupted
+	clr_country_flag = independence_wave_iw035_livonia_overlay_active
+	clr_country_flag = independence_wave_iw035_livonia_overlay_suspended
+	clr_country_flag = independence_wave_route_overlay_active
+	set_country_flag = independence_wave_iw035_livonia_permanent_identity_loss
+	set_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.minimum }
+	clear_variable = independence_wave_iw035_livonia_watch_suspension_days
 }
 
 independence_wave_iw035_livonia_handle_watch_cancel = {
@@ -245,6 +263,7 @@ independence_wave_iw035_livonia_initialize_overlay = {
 		set_variable = { independence_wave_iw035_livonia_civic_legitimacy = constant:independence_wave_iw035_livonia_value.civic_legitimacy_start }
 		set_variable = { independence_wave_iw035_livonia_coastal_security = constant:independence_wave_iw035_livonia_value.coastal_security_start }
 		set_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.minimum }
+		set_variable = { independence_wave_iw035_livonia_watch_suspension_days = constant:independence_wave_iw035_livonia_value.minimum }
 		set_variable = { independence_wave_anchor_state = 12 }
 		set_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.river_or_corridor }
 		set_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime }
@@ -282,6 +301,17 @@ independence_wave_iw035_livonia_pause_watch_mission = {
 			mission = independence_wave_iw035_hold_livonian_corridor_watch
 			days = independence_wave_iw035_livonia_pause_days
 		}
+		add_to_variable = { independence_wave_iw035_livonia_watch_suspension_days = constant:independence_wave_iw035_livonia_duration.watch_pause_daily_extension }
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_iw035_livonia_watch_suspension_days
+					value = constant:independence_wave_iw035_livonia_duration.watch_suspension_grace_days
+					compare = greater_than_or_equals
+				}
+			}
+			independence_wave_iw035_livonia_cancel_watch_permanent_identity_loss = yes
+		}
 	}
 }
 
@@ -295,6 +325,7 @@ independence_wave_iw035_livonia_resume_overlay = {
 		set_country_flag = independence_wave_iw035_livonia_overlay_active
 		set_country_flag = independence_wave_route_overlay_active
 		clr_country_flag = independence_wave_iw035_livonia_overlay_suspended
+		set_variable = { independence_wave_iw035_livonia_watch_suspension_days = constant:independence_wave_iw035_livonia_value.minimum }
 		independence_wave_iw035_livonia_refresh_idea_lifecycle = yes
 	}
 }

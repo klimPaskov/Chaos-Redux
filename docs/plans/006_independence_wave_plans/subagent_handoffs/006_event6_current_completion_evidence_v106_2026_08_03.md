@@ -41,6 +41,8 @@ The current IW-058 ASY source research (`006_iw058_asy_portrait_source_research_
 
 The current registry/API audit (`006_country_registry_api_current_audit_2026_08_03.md`) confirms 206 registry rows (193 selectable and 13 overlays), 102 Event 006 tags, 138 bound and 55 unbound selectable rows, 23 adapters but only 14 content attestations, and zero external definition or identity-surface collisions in the scoped Event 006/Soviet scan. The current decision/mission audit (`006_current_decision_mission_crisis_allocator_ledger_audit_2026_08_03.md`) remains source-pass for the accepted map and records an explicit permanent-carrier-loss cleanup policy HOLD for IW-022/IW-025/IW-035. The current whole-event audit (`006_event6_final_completion_audit_current_2026_08_03.md`) retains the 14/193 and 14/20 capacity gates, formable, `6001`, catalog, and AI/balance blockers.
 
+The parent has since implemented the bounded permanent-identity-loss policy in `006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md`. IW-022, IW-025, and IW-035 now preserve temporary interruptions for a centralized 30-day grace window and then explicitly remove their stale paid watch mission and flags when the exact carrier identity remains absent. The source follow-up audit `006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md` passes with no P1/P2 defect; live/save-load behavior remains unclaimed.
+
 ## Portrait policy boundary
 
 Grounded historical portraits now use the unchanged attributed source, exact head-and-shoulders crop, deterministic `156x210` fit, independent identity/framing/provenance audit, and authorized DDS placeholder sequence. Retained HOI4-style repaint chains are evidence history only unless a later explicit user request authorizes a replacement. No Event 006 advisor icons, advisor portrait blocks, dossier portraits, or small derivatives are authorized.
@@ -72,5 +74,6 @@ No fallback or simplification was introduced by this continuation. No Hearts of 
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_generic_focus_surface_audit_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_mnt_v105_documentation_reconciliation_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_catalog_status_reconcile_current_2026_08_03.md`
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md`
 - Current documentation alignment commits: `9091a5459`, `5f3642a81`, `c280e3013`, and `68824eb9a`.
 - Catalog source/export reconciliation commit: `162a25655`.
