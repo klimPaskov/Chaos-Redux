@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This subsystem begins after `africa_is_one` and preserves the original Event 12 host. It resolves the foreign Scramble response through recognition, conditional recognition, sanctions, ultimatums, an optional expedition war, and an aftermath congress. W1-W4 source now includes the six continent-package polity loops, sponsorship, union, war, succession, breakup, and terminal lifecycle, while initial W5 package certification remains blocked by absent authoritative pre-install receipts.
+This subsystem begins after `africa_is_one` and preserves the original Event 12 host. It resolves the foreign Scramble response through recognition, conditional recognition, sanctions, ultimatums, an optional expedition war, and an aftermath congress. W1-W4 source now includes the six continent-package polity loops, sponsorship, union, war, succession, breakup, and terminal lifecycle. The closed W5 certification trigger and atomic setter now exist, but the audit-owned review receipt and reviewed callsite remain intentionally absent.
 
 The package sections below are source and design evidence, not a claim that any external package is runtime-ready. The current asset and presentation dispositions are authoritative only in `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv`, and the six late or episodic action families remain list-only decision content rather than duplicate Charter controls.
 
@@ -15,8 +15,8 @@ No response grants African membership, integration, annexation, or cores. The fo
 3. Each participant explicitly chooses recognition, conditional recognition, sanctions, or an ultimatum in `africa_world_order.1`.
 4. Four timed phases track diplomatic shock, coalition formation, intervention or settlement, and aftermath.
 5. Intervention can produce a real war. Pairwise on-actions record war, capitulation, and peace without periodic country iteration, and the host advances only after every flagged expedition actor is out of its war with the host.
-6. During the aftermath, Action 85 can install one documented actor for each of the six external continent packages only after the per-candidate `africa_world_package_implementation_ready` gate is intentionally certified. Sponsorship creates a separate 180-day material obligation.
-7. Full world-order opening requires all six dedicated packages, a resolved Scramble, and the missing initial W5 certification receipt contract. A documented mixed or absent roster can instead close the Africa-only docket without opening world-order actions.
+6. During the aftermath, Action 85 can install one documented actor for each of the six external continent packages only after the reviewed W5 effect certifies all six candidates together and sets the per-candidate `africa_world_package_implementation_ready` gate. Sponsorship creates a separate 180-day material obligation.
+7. Full world-order opening requires all six dedicated packages, a resolved Scramble, and the audit-owned `africa_world_package_runtime_surfaces_reviewed` receipt. A documented mixed or absent roster can instead close the Africa-only docket without opening world-order actions.
 8. Settled packages can consent to union, remain sovereign, become rivals, fight a prepared continental war, or accept a postwar submission settlement.
 9. The terminal World identity remains unavailable until all continent packages are resolved, chaos is above the terminal threshold, no ordinary settlement remains pending, and the researched final super-event package sets `africa_the_world_super_event_package_ready`.
 
@@ -31,6 +31,8 @@ When no external candidate carries the reviewed `africa_world_package_implementa
 - `common/scripted_effects/012_africa_world_order_effects.txt` contains the one-time census, response choices, package installation, obligations, package ledgers, and terminal cleanup. Parallel focus contributions are counted independently, while the displayed package step remains the highest numbered step reached.
 - Actions 77 through 92 continue to use the shared Action 1 through 102 selector and outcome kernel. The world-order file supplies their exact full, partial, and failure semantics.
 - Candidate countries qualify only if they still use the generic focus tree or carry the explicit `africa_world_package_focus_replacement_approved` audit flag. Meaningful existing country trees are not replaced.
+- `africa_world_all_package_runtime_surfaces_are_certified` proves an exact six-entry, one-per-continent pending roster, live sovereign candidates, controlled non-African capitals, and no successor, exile, breakup, terminal, or high-chaos substitution state. It also requires the audit-owned `africa_world_package_runtime_surfaces_reviewed` flag. The flag has no gameplay writer until the named package, asset, localisation, AI, and documentation audits are accepted.
+- `africa_world_certify_all_package_runtime_surfaces` rechecks that trigger and sets `africa_world_package_implementation_ready` across the frozen candidate array in one bounded pass. It records `africa_world_package_runtime_surfaces_certified` only after the pass and never installs a package or opens terminal presentation.
 - A candidate also needs `africa_world_package_implementation_ready` before Action 85 can install it. This is an implementation gate, not a gameplay fallback.
 - Every continent-package loader preserves completed-focus history. The installer remains one-shot through the candidate-to-installed state transition, so activating a reviewed package cannot silently erase earlier national progress.
 - W4 union eligibility rejects the canonical `africa_world_submission_settlement` receipt written by Action 88 and continental-war submission; terminally submitted packages cannot re-enter the union partner route.
@@ -261,7 +263,7 @@ Scramble phase flags and intervention-war flags are cleared at settlement or def
 
 ## Remaining acceptance work
 
-- Define and review authoritative pre-install route, constituent, AI, focus, idea, identity, localisation, asset, documentation, and W0-W4 receipts before adding the W5 all-six certification trigger and atomic setter. Static source existence is not a receipt.
+- Define and review authoritative pre-install route, constituent, AI, focus, idea, identity, localisation, asset, documentation, and W0-W4 receipts before setting `africa_world_package_runtime_surfaces_reviewed` or adding the reviewed W5 post-freeze callsite. Static source existence is not a receipt.
 - Run positive and negative acceptance scenarios for the thirteen conditionally reachable priority packages; keep DYX/Luba, DZX/Lunda, and EMX/Kilwa dormant and unbound until separately accepted Event 006 map packages exist.
 - Resolve the two AI evidence blockers with a materially incapable Scramble scenario and a compatible strategy-plan score probe; do not bulk-rewrite the 107 flat focus weights from an empty probability surface.
 - Preserve the permanent list-only disposition for Scramble response, world order, constitutional crises, post-unification governance, host opening, and regional restorations rather than adding duplicate Charter controls.
@@ -269,6 +271,10 @@ Scramble phase flags and intervention-war flags are cleared at settlement or def
 - Research and approve high-chaos continent routes, terminal presentation, and super-event roles only after their separate text, identity, model, rights, and runtime gates pass.
 
 ## World-order roster and polity foundation (tranche 1)
+
+The W5 certification scaffold now exists as a closed trigger and atomic setter. It remains uncalled until the audit-owned pre-install receipt is accepted.
+
+The trigger requires the exact six-entry pending roster and one candidate for each continent. The setter rechecks that proof and sets readiness for all six candidates in one bounded pass.
 
 The external roster is a one-time, host-owned census. `africa_world_nominate_missing_package_candidates` still nominates existing sovereign countries with the approved generic or replacement focus surface, but `africa_world_finalize_package_roster` now records each of the six continent slots in one of three bounded arrays: `africa_world_package_resolved_continents`, `africa_world_package_pending_continents`, or `africa_world_package_absent_continents`. `africa_world_package_roster_documented` is set only after all six slots have a disposition. A pending implementation-ready candidate still blocks the partial docket close, so the Scramble cannot silently discard a package that is ready to install.
 
@@ -279,6 +285,8 @@ Each installed actor keeps its original country tag and receives `africa_world_i
 Constituent countries carry `africa_world_constituent_status` and explicit consent, refusal, coercion, withdrawal, successor, or exile flags. Package actors receive bounded target-array decisions for consent, refusal, coercion, and withdrawal. No decision transfers states, manufactures cores, changes a country tag, or substitutes opinion for a recorded polity outcome.
 
 When an actor capitulates or is annexed, the narrow loss helper opens a successor review and records one eligible same-continent sovereign candidate when available. If no candidate exists, the actor receives an explicit exile or breakup certification path. A recognised successor replaces the predecessor in the host actor store, inherits the continent identity and live package balances, receives the package focus tree, and rebuilds heartland and constituent proof under its own sovereignty. The predecessor loses active package ownership. Successor recognition is continuity rather than a terminal settlement, so the replacement must still earn an accepted sovereign, union, submission, exile, or breakup result. Exile and breakup enter the terminal ledger exactly once, and breakup applies the documented authority loss.
+
+It does not install packages or set terminal presentation readiness.
 
 ### Foundation helper map
 
@@ -295,4 +303,4 @@ The new shared tuning category is `africa_world_roster` in `common/script_consta
 
 ### Cleanup and unsupported surfaces
 
-The on-action hooks do not run a recurring all-country scan. Successor candidate flags are cleared when a successor is committed or a breakup is certified, constituent member flags are cleared during breakup, installed actors are removed from the candidate store, pending roster entries are removed when a candidate installs, and absent entries are retained as the documented historical disposition. W0-W4 source includes the dynamic union-war and terminal lifecycle, but initial W5 certification remains queued because the pre-install receipt contract is absent. This documentation pass does not set `africa_world_package_implementation_ready`, `africa_the_world_super_event_package_ready`, or any model readiness flag; terminal presentation remains independently gated.
+The on-action hooks do not run a recurring all-country scan. Successor candidate flags are cleared when a successor is committed or a breakup is certified, constituent member flags are cleared during breakup, installed actors are removed from the candidate store, pending roster entries are removed when a candidate installs, and absent entries are retained as the documented historical disposition. W0-W4 source includes the dynamic union-war and terminal lifecycle. W5 certification scaffolding is source-present but remains uncalled because the audit-owned pre-install receipt is absent. This documentation pass does not set `africa_world_package_runtime_surfaces_reviewed`, `africa_world_package_implementation_ready`, `africa_the_world_super_event_package_ready`, or any model readiness flag. Terminal presentation remains independently gated.

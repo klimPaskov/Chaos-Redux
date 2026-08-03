@@ -122,6 +122,103 @@ africa_world_roster_is_documented = {
 	}
 }
 
+# COUNTRY scope on the Event 12 host. This is the closed W5 certification
+# gate for the six pre-install external packages. The reviewed global flag is
+# intentionally human/audit-owned because Clausewitz cannot inspect visual
+# review, localisation review, documentation acceptance, or the external
+# package handoff itself. No gameplay writer sets that flag in this tranche.
+# The six explicit continent clauses reject duplicate or missing slots while
+# the exact candidate count rejects an overfilled roster. This trigger does
+# not install a package, choose a route, or open the terminal identity.
+africa_world_all_package_runtime_surfaces_are_certified = {
+	africa_is_current_host = yes
+	has_global_flag = africa_world_package_runtime_surfaces_reviewed
+	NOT = { has_global_flag = africa_world_package_runtime_surfaces_certified }
+	NOT = { has_global_flag = world_end }
+	has_country_flag = africa_world_package_roster_documented
+	NOT = { has_country_flag = africa_world_package_roster_absence_documented }
+	check_variable = {
+		var = africa_world_package_candidate_count
+		value = constant:africa_world_order.required_package_count
+	}
+	check_variable = {
+		var = africa_world_package_roster_disposition_count
+		value = constant:africa_world_order.required_package_count
+	}
+	check_variable = {
+		var = africa_world_package_pending_count
+		value = constant:africa_world_order.required_package_count
+	}
+	check_variable = {
+		var = africa_world_package_absent_count
+		value = constant:africa_value.zero
+	}
+	check_variable = {
+		var = africa_world_package_resolved_count
+		value = constant:africa_value.zero
+	}
+	NOT = {
+		any_of_scopes = {
+			array = africa_world_package_candidates
+			OR = {
+				NOT = { africa_world_package_is_candidate = yes }
+				has_capitulated = yes
+				is_subject = yes
+				is_government_in_exile = yes
+				is_actual_nonhuman_country = yes
+				is_special_chaos_country = yes
+				has_country_flag = africa_world_package_actor
+				has_country_flag = africa_world_package_installed
+				has_country_flag = africa_world_package_successor_candidate
+				has_country_flag = africa_world_package_successor_review_open
+				has_country_flag = africa_world_package_exile_path_resolved
+				has_country_flag = africa_world_package_breakup_recorded
+				has_country_flag = africa_world_package_terminally_resolved
+				capital_scope = {
+					NOT = { is_controlled_by = PREV }
+				}
+				capital_scope = { is_on_continent = africa }
+				NOT = {
+					OR = {
+						has_focus_tree = generic_focus
+						has_country_flag = africa_world_package_focus_replacement_approved
+					}
+				}
+			}
+		}
+	}
+	any_of_scopes = {
+		array = africa_world_package_candidates
+		africa_world_package_is_candidate = yes
+		check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east }
+	}
+	any_of_scopes = {
+		array = africa_world_package_candidates
+		africa_world_package_is_candidate = yes
+		check_variable = { africa_world_continent_id = constant:africa_world_continent.europe }
+	}
+	any_of_scopes = {
+		array = africa_world_package_candidates
+		africa_world_package_is_candidate = yes
+		check_variable = { africa_world_continent_id = constant:africa_world_continent.asia }
+	}
+	any_of_scopes = {
+		array = africa_world_package_candidates
+		africa_world_package_is_candidate = yes
+		check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america }
+	}
+	any_of_scopes = {
+		array = africa_world_package_candidates
+		africa_world_package_is_candidate = yes
+		check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america }
+	}
+	any_of_scopes = {
+		array = africa_world_package_candidates
+		africa_world_package_is_candidate = yes
+		check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania }
+	}
+}
+
 # COUNTRY scope on an installed package actor. This is a real heartland proof,
 # not a cosmetic continent flag: the actor must still control the recorded
 # minimum number of states on its own continent.

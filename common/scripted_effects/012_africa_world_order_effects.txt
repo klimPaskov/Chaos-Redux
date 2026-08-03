@@ -326,6 +326,28 @@ africa_world_finalize_package_roster = {
 	}
 }
 
+# COUNTRY scope on the Event 12 host. W5 is deliberately a reviewed, atomic
+# certification step. The reviewed flag is not set by gameplay code. Once the
+# parent accepts the six-package handoff, this effect may be called after the
+# roster freeze and before Action 85 can install any package. The trigger is
+# rechecked in the same effect, then every frozen candidate receives readiness
+# in one bounded pass. No package, route, tag, territory, or terminal flag is
+# touched here. A second call is a no-op after the global certification receipt
+# is recorded.
+africa_world_certify_all_package_runtime_surfaces = {
+	if = {
+		limit = {
+			africa_world_all_package_runtime_surfaces_are_certified = yes
+			NOT = { has_global_flag = africa_world_package_runtime_surfaces_certified }
+		}
+		for_each_scope_loop = {
+			array = africa_world_package_candidates
+			set_country_flag = africa_world_package_implementation_ready
+		}
+		set_global_flag = africa_world_package_runtime_surfaces_certified
+	}
+}
+
 # COUNTRY scope on a foreign participant.
 africa_scramble_register_participant = {
 	if = {

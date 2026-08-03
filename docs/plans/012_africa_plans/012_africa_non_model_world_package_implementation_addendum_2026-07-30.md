@@ -2,7 +2,7 @@
 
 Date: 2026-07-30
 
-Status: Implemented through W4 at source level. W5 remains an unresolved accepted tranche promoted to `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md`.
+Status: Implemented through W4 at source level. W5 certification scaffolding is source-present but remains an unresolved accepted tranche promoted to `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md`.
 
 Owner: Main Event 012 implementation agent
 
@@ -12,7 +12,7 @@ Planner ownership: Design only
 
 The W0 readiness and shared-lane repairs, W1 constituent protocol, W2 six package loops, W3 four grounded sponsorship modes, and W4 union, war, successor, breakup, and terminal lifecycle now have current source callsites. The corresponding handoffs and the current `docs/events/012_africa/world_order.md` document are implementation evidence only and do not prove live acceptance.
 
-W5 remains unresolved. The initial all-six certification trigger and atomic setter for `africa_world_package_implementation_ready` are absent. A successor continuity path may copy an existing readiness flag to a reviewed successor, but that path is not initial W5 certification. `africa_the_world_super_event_package_ready` remains unset. No models, new tags, external package readiness claims, or live-consumer completion claims are made here.
+W5 remains unresolved at acceptance level. The initial all-six certification trigger and atomic setter for `africa_world_package_implementation_ready` are now source-present, but they remain uncalled behind the audit-owned `africa_world_package_runtime_surfaces_reviewed` flag. A successor continuity path may copy an existing readiness flag to a reviewed successor, but that path is not initial W5 certification. `africa_the_world_super_event_package_ready` remains unset. No models, new tags, external package readiness claims, or live-consumer completion claims are made here.
 
 The final integration and acceptance owner is `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md`. This July 30 addendum is retained as the design and implementation record for W0-W4 and is no longer a second active design authority.
 
@@ -815,6 +815,8 @@ Dependencies: Current six focus trees, committed icon registration in `07bb51901
 
 Work:
 
+- The all-six trigger and atomic setter are source-present and remain uncalled until the audit-owned review flag is accepted.
+
 - Keep `africa_world_package_implementation_ready` unset.
 - Preserve the existing same-block OR route convergence in all six trees.
 - Add missing route-sensitive shared-lane helpers for the Middle East, Europe, and Asia.
@@ -914,7 +916,7 @@ Exit proof:
 - Peaceful unanimous union and last-standing war routes are separately provable.
 - `africa_the_world_super_event_package_ready` remains unset.
 
-### W5. AI, Localisation, Asset Verification, Documentation, and Atomic Gate Promotion — Unresolved 2026-08-01 tranche
+### W5. AI, Localisation, Asset Verification, Documentation, and Atomic Gate Promotion — Scaffolded, review-gated 2026-08-03 tranche
 
 Dependencies: W0 through W4 complete with no accepted simplification.
 
@@ -942,7 +944,7 @@ It must prove the six package content registrations, constituent protocol, six p
 
 Script cannot prove documentation or human visual review directly.
 
-The main implementation agent must therefore set one reviewed global certification flag only after the audits and asset handoffs are accepted.
+The main implementation agent must therefore set one reviewed global certification flag only after the audits and asset handoffs are accepted. The source scaffold now reads `africa_world_package_runtime_surfaces_reviewed`, but no gameplay writer sets it.
 
 The setter effect then applies `africa_world_package_implementation_ready` to all six nominated candidates in one bounded loop.
 
