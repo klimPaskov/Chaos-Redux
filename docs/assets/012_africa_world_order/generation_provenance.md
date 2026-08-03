@@ -8,6 +8,21 @@
 - All 15 source atlases were generated at 1254x1254 RGB with a flat `#00ff00` chroma-key field and a 4x4 row-major layout. The atlas files are preserved in `source_atlases/` and the original generated-image UUID filenames are recorded below.
 - The official `remove_chroma_key.py` helper was used for each cropped source tile (`#00ff00`, soft matte, despill); final PNGs were resized to the existing Event 012 contracts and converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
 
+## Fictional portrait v4 provenance
+
+The v4 portrait replacement used the official built-in ImageGen route after the vanilla leader contact sheet was inspected. Each prompt requested one male-presenting or explicitly nonhuman high-chaos subject, a plain matte background, a vanilla HOI4 head-and-shoulders crop, and a unique impossible natural motif. The six generated masters are preserved in the durable queue and copied into `source_png/`; exact prompt text is stored beside each queue master and the machine-readable manifest records the runtime hashes.
+
+| Identity | Generated master | Unique motif |
+| --- | --- | --- |
+| Pan | `exec-dbea960c-5126-470b-976d-f08e7665998a.png` | ram-horn thundercloud crown, blue lightning, copper rain gauge |
+| Gorilla Kingdom | `exec-c3c8aaed-6204-45d3-a4f7-810bae97e437.png` | red-clay termite citadel crown, gold lantern, drum-rim gorget |
+| The Green | `exec-6d6ee93a-a4bf-43e1-bd46-8756840a94a3.png` | half-baobab ring-eye face, branch crown, fireflies |
+| Living Rivers | `exec-56b3b1b3-fa11-4618-ad4a-d2b1e616c71d.png` | river-delta crown, waterfall beard, suspended collar delta |
+| Stoneborn | `exec-93d500e4-3b58-4c06-96cd-1e198c2bd634.png` | meteor crown, salt-glass facial planes, constellation throat geode |
+| Ancient Hosts | `exec-1e4dde6a-a41b-49b7-b5b0-07042adedf0b.png` | leopard hood split into ancestral stone and black feathers, eclipse paint |
+
+The v4 review sheet is `comparison_v4/portrait_012_africa_fictional_v4_decoded_contact_sheet.png`; final DDS conversion used the repository converter at 156x210. V3 remains retained as comparison evidence, not the current stable sprite target.
+
 ## Atlas provenance and exact prompts
 
 Each entry below records the original generated-image output and the prompt passed to `image_gen.imagegen`. Subjects are row-major; unused filler cells were not shipped.
@@ -48,4 +63,3 @@ Exact idea prompt used for all three atlases:
 > Create one compact 4 by 4 atlas of sixteen unique Hearts of Iron IV national-idea icon illustrations. Every cell is one centered symbolic emblem designed for 64x64, ornate dark outline, painterly but crisp, no text, no letters, no flags, no logos, no UI frame. Use flat chroma-key green #00ff00 in gutters and behind each emblem for later transparency processing. Row-major [group-specific subject list]. Fill the remaining cells with additional distinct neutral diplomatic/continental/oceanic emblems. Keep the requested subjects visually distinct and readable at small size.
 
 The group-specific subject lists are exactly the first shipped tiles in each manifest record: Middle East + Europe (13), Asia + North America (12), and South America + Oceania (13). No filler tile was shipped and no generated tile was rejected during contact-sheet review.
-
