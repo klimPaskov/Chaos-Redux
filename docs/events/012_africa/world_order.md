@@ -37,6 +37,8 @@ When no external candidate carries the reviewed `africa_world_package_implementa
 
 Consent-based union dissolution now opens the `.713` and `.717` record events for both sovereign actors from the existing dissolution receipts before pair cleanup. If a registered continental war ends without an accepted armistice, submission, constituent release, successor, exile, or breakup receipt, the pairwise peace hook records the explicit `collapsed` status and opens `.733` for the attacker before running the shared cleanup; it does not infer a terminal settlement.
 
+Successor transfer, exile certification, and breakup certification now open their existing W4 acknowledgement events from the same written receipts that drive terminal accounting. The review-close event accepts successor registration, exile resolution, and package terminal resolution as separate documented outcomes.
+
 Pairwise settlement hooks clear only the actor that actually left the war, while `africa_scramble_reconcile_intervention_war` closes the intervention global and opens aftermath only when no flagged coalition actor remains at war with the host.
 
 ### Scramble interest census and response roster
