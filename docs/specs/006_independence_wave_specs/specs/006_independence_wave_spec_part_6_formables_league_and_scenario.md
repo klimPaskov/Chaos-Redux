@@ -41,7 +41,7 @@ The initial registry is in `matrices/006_formable_family_registry.csv`.
 
 ## Event 006 compatibility and signature contract for IW-043 and IW-058
 
-The source-implemented CHU/ASY package tranche is not part of the current exact fourteen-package runtime attestation set. IW-043 on vanilla carrier `CHU` and IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced identity, rights, package, and runtime gates are independently accepted. Their signature formable surfaces remain separate gates:
+The source-implemented CHU/ASY package tranche is not part of the current post-TRA fifteen-package runtime attestation set. IW-043 on vanilla carrier `CHU` and IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced identity, rights, package, and runtime gates are independently accepted. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by the dated reconciliation handoff, but FORM-08 remains a separate fail-closed Vojvodina/Slavonia member, consent, and anchor gate. Their signature formable surfaces remain separate gates:
 
 - FORM-12 and FORM-13 must use the IW-043 member, anchor, rights, consent,
   integration, and cleanup contract.
