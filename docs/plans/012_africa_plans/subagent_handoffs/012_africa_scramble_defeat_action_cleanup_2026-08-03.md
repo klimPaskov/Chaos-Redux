@@ -7,7 +7,7 @@ Actions 77-84 were structurally implemented but their category and selectors use
 ## Changes
 
 - `common/decisions/categories/012_africa_categories.txt` now requires `africa_scramble_response_active` for the Scramble action category.
-- `common/scripted_effects/012_africa_world_order_effects.txt` clears response phase flags, resets the action family to post-unification, clears the selected action and quote, and clears state-selection context when the host records defeat.
+- `common/scripted_effects/012_africa_world_order_effects.txt` clears the response-open flag on negotiated aftermath, deferred docket closure, terminal world-order conversion, and defeat; defeat additionally clears response phase flags, resets the action family to post-unification, clears the selected action and quote, and clears state-selection context.
 - `common/on_actions/012_africa_world_order_on_actions.txt` mirrors the same reset in the fallback intervention-loss callback.
 - `docs/events/012_africa/overview.md` records the lifecycle contract and the controlled scope.
 
