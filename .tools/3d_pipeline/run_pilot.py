@@ -54,6 +54,10 @@ from pack_pdx_material import (  # noqa: E402
 )
 
 
+STATIC_ASSET_KINDS = {"static", "building", "static_building"}
+REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "building", "static_building"}
+
+
 def task_file(job: Path, stage: str) -> Path:
     return job / "provider" / "tasks" / f"{stage}.json"
 
@@ -65,9 +69,15 @@ def read_job(job: Path) -> Dict[str, Any]:
 def stage_vanilla_reference(job: Path, spec: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Stage the named installed vanilla reference inside the bounded job root."""
 
-    if spec.get("asset_kind") != "humanoid":
+    asset_kind = spec.get("asset_kind")
+    if asset_kind not in REFERENCE_CALIBRATED_ASSET_KINDS:
         return None
     reference = spec.get("vanilla_scale_reference") or {}
+    if asset_kind in {"building", "static_building"} and not reference:
+        raise RuntimeError(
+            "Static building preparation requires a named installed vanilla scale reference; "
+            "height-only calibration is not permitted."
+        )
     source = Path(str(reference.get("mesh", ""))).resolve()
     if not source.is_file():
         raise FileNotFoundError(f"Installed vanilla scale reference is missing: {source}")
@@ -383,7 +393,15 @@ def download_once(
     return result
 
 
-def candidate_gate(job: Path, prep: Dict[str, Any], *, hard_max: int, stage: str) -> None:
+def candidate_gate(
+    job: Path,
+    prep: Dict[str, Any],
+    *,
+    hard_max: int,
+    stage: str,
+    max_runtime_footprint_m: Optional[float] = None,
+    runtime_entity_scale: float = 1.0,
+) -> None:
     geometry = prep.get("geometry", {})
     failures = []
     if geometry.get("triangles", 0) <= 0:
@@ -394,10 +412,23 @@ def candidate_gate(job: Path, prep: Dict[str, Any], *, hard_max: int, stage: str
         failures.append("degenerate faces remain")
     if geometry.get("negative_scale_objects"):
         failures.append("negative scale remains")
+    if max_runtime_footprint_m is not None:
+        dimensions = geometry.get("dimensions", [0.0, 0.0, 0.0])
+        runtime_footprint = max(float(dimensions[0]), float(dimensions[1])) * runtime_entity_scale
+        if runtime_footprint > float(max_runtime_footprint_m) + 1e-5:
+            failures.append(
+                f"runtime footprint {runtime_footprint:.4f}m exceeds "
+                f"budget {float(max_runtime_footprint_m):.4f}m"
+            )
     if failures:
         write_json(
             job / "validation" / f"{stage}_gate.json",
-            {"status": "blocked", "failures": failures, "geometry": geometry},
+            {
+                "status": "blocked",
+                "failures": failures,
+                "geometry": geometry,
+                "runtime_footprint": prep.get("runtime_footprint"),
+            },
         )
         raise RuntimeError(f"Geometry gate failed for {stage}: {failures}")
     write_json(
@@ -406,6 +437,7 @@ def candidate_gate(job: Path, prep: Dict[str, Any], *, hard_max: int, stage: str
             "status": "passed",
             "failures": [],
             "geometry": geometry,
+            "runtime_footprint": prep.get("runtime_footprint"),
             "visual_review_required": True,
             "visual_review": "parent_agent_reviewed_preview_set",
         },
@@ -757,9 +789,12 @@ def run_candidate(spec: Dict[str, Any]) -> Dict[str, Any]:
         filename="generation_model.fbx",
     )
     profile = read_json(PIPELINE_ROOT / "config" / "asset_profiles.json")["profiles"][spec["profile"]]
+    footprint_config = profile.get("footprint", {})
+    max_runtime_footprint_m = footprint_config.get("max_runtime_footprint_m")
+    runtime_footprint_policy = spec.get("runtime_footprint_policy", "reject")
     texture_sources = (
         prepare_pilot_texture_sources(job, spec)
-        if spec["asset_kind"] == "static"
+        if spec["asset_kind"] in STATIC_ASSET_KINDS
         else {}
     )
     prep = blender.prepare_candidate(
@@ -772,12 +807,16 @@ def run_candidate(spec: Dict[str, Any]) -> Dict[str, Any]:
         target_triangles=profile["triangle_range"]["working_triangle_target"],
         vanilla_reference=vanilla_reference,
         texture_source_rels=texture_sources,
+        max_runtime_footprint_m=max_runtime_footprint_m,
+        runtime_footprint_policy=runtime_footprint_policy,
     )
     candidate_gate(
         job,
         prep,
         hard_max=profile["triangle_range"]["hard_max"],
         stage="provider_candidate",
+        max_runtime_footprint_m=max_runtime_footprint_m,
+        runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
     )
     update_job(job, status="candidate_qa", selected_provider_task=generation_id)
     append_history(
@@ -1192,7 +1231,7 @@ def main() -> int:
             results.append({"asset": asset, "candidate": candidate})
             if phase == "candidate":
                 continue
-        if spec["asset_kind"] == "static":
+        if spec["asset_kind"] in STATIC_ASSET_KINDS:
             results.append({"asset": asset, "continuation": continue_static(spec)})
         else:
             results.append({"asset": asset, "continuation": continue_humanoid(spec)})

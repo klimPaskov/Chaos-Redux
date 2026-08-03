@@ -299,6 +299,8 @@ def chaosx_blender_hoi4_prepare_candidate(
     geometry_source_rel: str = "",
     repair_before_reduction: bool = False,
     topology_weld_distance: float = 1e-5,
+    max_runtime_footprint_m: float | None = None,
+    runtime_footprint_policy: str = "reject",
 ) -> Dict[str, Any]:
     """Import, preserve, normalize, triangulate, material-tag, and checkpoint a candidate."""
 
@@ -318,6 +320,8 @@ def chaosx_blender_hoi4_prepare_candidate(
             "geometry_source_rel": geometry_source_rel,
             "repair_before_reduction": repair_before_reduction,
             "topology_weld_distance": topology_weld_distance,
+            "max_runtime_footprint_m": max_runtime_footprint_m,
+            "runtime_footprint_policy": runtime_footprint_policy,
         },
     )
 

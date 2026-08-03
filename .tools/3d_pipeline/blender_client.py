@@ -82,6 +82,8 @@ class BlenderAdapterClient:
         geometry_source_rel: Optional[str] = None,
         repair_before_reduction: bool = False,
         topology_weld_distance: float = 1e-5,
+        max_runtime_footprint_m: Optional[float] = None,
+        runtime_footprint_policy: str = "reject",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_prepare_candidate",
@@ -99,6 +101,8 @@ class BlenderAdapterClient:
                 "geometry_source_rel": geometry_source_rel or "",
                 "repair_before_reduction": repair_before_reduction,
                 "topology_weld_distance": topology_weld_distance,
+                "max_runtime_footprint_m": max_runtime_footprint_m,
+                "runtime_footprint_policy": runtime_footprint_policy,
             },
         )
 

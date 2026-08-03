@@ -157,6 +157,26 @@ python .tools/3d_pipeline/run_pilot.py --asset anomaly_recon_trooper
 python .tools/3d_pipeline/run_pilot.py --all
 ~~~
 
-This workflow is for skeletal 3D `.mesh` and `.anim` production.
+This workflow supports both skeletal 3D `.mesh`/`.anim` production and static HOI4 map-building `.mesh` production.
+
+The pilot runner routes `building` and `static_building` jobs through the static mesh path, requires their named installed vanilla scale reference, and never attempts humanoid rigging or animation for them.
+
+## Static map-building contract
+
+Use the `building` asset profile for any model consumed by `show_on_map` building entities. Calibrate against the installed vanilla mesh and the exact entity scale, then enforce both source height and runtime X/Y footprint. The current profile uses `facility_land.mesh` with `building_land_facility` at source height `3.4697628021`, entity scale `0.6`, effective runtime height `2.0818576813`, and a `4.0m` maximum runtime footprint.
+
+The adapter rejects an over-budget footprint by default. A job may explicitly request `fit_to_budget`, which applies one uniform X/Y factor after height normalization and records the before/after dimensions and factor. It never silently stretches X and Y independently.
+
+Static building materials follow the installed vanilla consumer shader, currently `PdxMeshAdvancedSnow`, and the GFX meshsettings name must match the exported mesh object. Runtime material packing uses `Image_0.dds` for diffuse, `Image_1.dds` for PDX specular, and `Image_2.dds` for PDX normal after channel QA.
+
+Never use `special_project_facility_spawn` for a custom map-building consumer. Use a dedicated provincial spawn pool for direct map buildings. For state-level gameplay with one visual per state, keep the gameplay building non-map and create a hidden provincial anchor with `province_max = 1`, `state_max = 1`, a dedicated spawn pool, and `construct_building_in_random_province` plus explicit cleanup/conversion logic. This route does not require `map/buildings.txt`.
+
+Run the read-only runtime audit from the repository root:
+
+~~~powershell
+python .tools/3d_pipeline/validate_runtime_contract.py --all
+~~~
+
+The audit checks the profile calibration, runtime files, GFX consumers, building definitions, provincial anchor declarations, reimport topology, and packed DDS dimensions/channels without requiring a paid provider call.
 
 Route 2D frame-sheet animation, animated sprites, GIF previews, and frame-by-frame UI packages to `chaos-redux-frame-animation`.

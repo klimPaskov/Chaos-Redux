@@ -35,8 +35,28 @@
       },
     "building": {
       "axis": "z_up",
-      "scale_reference": "installed vanilla special_project_facility_spawn and a comparable installed vanilla facility, measured per job",
-      "scale_policy": "match the calibrated vanilla rendered height with entity scale applied exactly once",
+      "scale_reference": "installed vanilla facility_land.mesh/facility_land entity used by the map-building consumer",
+      "scale_policy": "match a named installed vanilla building consumer's source height and entity scale exactly once; height-only calibration is invalid",
+      "vanilla_reference": {
+        "mesh": "gfx/models/buildings/facility_land.mesh",
+        "entity": "building_land_facility",
+        "mesh_height_m": 3.4697628021,
+        "entity_scale": 0.6,
+        "runtime_height_m": 2.0818576813,
+        "runtime_dimensions_m": [3.6194131851, 3.1972126007, 2.0818576813],
+        "measurement": "io_pdx_mesh import of the installed facility_land.mesh and vanilla gfx/entities/buildings.gfx"
+      },
+      "footprint": {
+        "axes": ["x", "y"],
+        "max_runtime_footprint_m": 4.0,
+        "policy": "reject_unless_explicit_fit_to_budget",
+        "comparison": "keep custom map buildings close to the installed vanilla facility footprint; 4.0m is the hard runtime ceiling"
+      },
+      "placement": {
+        "shared_spawn_points_allowed": false,
+        "default_policy": "dedicated_spawn_point_or_provincial_anchor",
+        "one_visual_per_state_requires": "province_building_max_1_and_random_province_construction"
+      },
       "texture_max_dimension": 1024,
       "triangle_range": {
         "preferred_min": 8000,
@@ -52,7 +72,7 @@
           "spec",
           "n"
         ],
-        "shader": "PdxMeshAdvanced",
+        "shader": "PdxMeshAdvancedSnow",
         "specular_packing": {
           "red": 0,
           "green": 32,

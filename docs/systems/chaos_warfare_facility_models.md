@@ -12,7 +12,7 @@ Both assets are static map entities and intentionally have no armature, skeletal
 
 The existing building definitions remain the gameplay owners for `biowarfare_facility` and `cw_facility` in `common/buildings/chaosx_buildings.txt`.
 
-Each building uses the existing `special_project_facility_spawn` map spawn point and resolves to its dedicated entity through the `building_<building_id>` naming convention.
+Each building uses its own dedicated provincial spawn pool, `chaosx_biowarfare_facility_spawn` or `chaosx_cw_facility_spawn`, and resolves to its dedicated entity through the `building_<building_id>` naming convention. The custom pools prevent these models from consuming the vanilla shared special-project positions.
 
 The active runtime chain is `biowarfare_facility` -> `building_biowarfare_facility` -> `biowarfare_facility_mesh` -> `gfx/models/buildings/biowarfare_facility.mesh` -> the three stable biological DDS files.
 
@@ -24,25 +24,25 @@ The duplicate `gfx/models/buildings/chaosx_mesh.gfx`, `gfx/models/buildings/biow
 
 ## Vanilla scale crosswalk
 
-The installed vanilla reference is `gfx/models/buildings/TEST_building3.mesh`, whose imported object is `TEST_building3`, source height is 2.464908123 meters, and vanilla special-project entity scale is 2.0.
+The installed vanilla reference is `gfx/models/buildings/facility_land.mesh`, whose imported `facility_land` mesh height is 3.469762802 meters and whose `building_land_facility` entity scale is 0.6.
 
-The reference therefore has an effective runtime height of 4.929816246 meters, and the custom entities use the same single runtime scale of 2.0 in `gfx/entities/chaosx_buildings.gfx`.
+The reference therefore has an effective runtime height of 2.081857681 meters, and the custom entities use the same scale of 0.6 in `gfx/entities/chaosx_buildings.gfx`.
 
-The biological candidate is 2.459402084 meters at source scale and 4.918804168 meters at runtime scale, which is 0.011012077 meters below the reference effective height.
+The biological export is normalized to the facility source height and then fit uniformly in X/Y to a maximum runtime footprint of 4 meters.
 
-The chemical candidate is 2.462154865 meters at source scale and 4.924309731 meters at runtime scale, which is 0.005506516 meters below the reference effective height.
+The chemical export is normalized to the same facility source height and the same 4-meter runtime footprint budget.
 
 Both packages use Z-up and -Y-forward orientation with ground contact at the world origin.
 
 ## Geometry and materials
 
-The biological export contains 30,000 triangles, dimensions 7.789175 by 8.022599 by 2.459402 meters, and zero boundary, loose-edge, non-manifold, degenerate-face, and zero-length-normal defects in the export audit.
+The biological export contains 30,000 triangles and passes the pre-export topology gate with zero boundary, loose-edge, non-manifold, degenerate-face, and zero-length-normal defects.
 
-The chemical export contains 58,002 triangles, dimensions 6.674174 by 6.674461 by 2.462155 meters, and zero boundary, loose-edge, non-manifold, degenerate-face, and zero-length-normal defects in the export audit.
+The chemical export contains 58,004 triangles and passes the pre-export topology gate with zero boundary, loose-edge, non-manifold, degenerate-face, and zero-length-normal defects.
 
-The chemical 30,000-triangle decimation was rejected because its preview had a spiky artifact, and the accepted 58,002-triangle result was produced by a free local reprocess of the same downloaded GLB without another paid provider call.
+The chemical 30,000-triangle decimation was rejected because its preview had a spiky artifact, and the accepted 58,004-triangle result was produced by a free local reprocess of the same downloaded GLB without another paid provider call.
 
-Each material uses one `PdxMeshAdvanced` slot with diffuse `Image_0.dds`, packed PDX specular `Image_1.dds`, and packed PDX normal `Image_2.dds` before the runtime filenames are assigned in the GFX declarations.
+Each material uses one `PdxMeshAdvancedSnow` slot with diffuse `Image_0.dds`, packed PDX specular `Image_1.dds`, and packed PDX normal `Image_2.dds` before the runtime filenames are assigned in the GFX declarations. The runtime meshsettings name is the exported object name `Mesh_0.001` for both facilities.
 
 The packed PDX specular convention is R=0, G=32, B=metallic, and alpha=roughness, and the packed normal convention is the repository pipeline’s PDX normal layout.
 
@@ -72,12 +72,12 @@ The biological pilot pair is state 338, Gloucestershire, province 6351, and the 
 
 The chemical pilot pair is state 122, Wales, province 9364, and the exact pair is already used by `chaosx_add_startup_cw_facility_9364`.
 
-The installed vanilla state files contain those provinces, and the installed province definitions classify both as land provinces, so no permanent `map/buildings.txt` row was added that would force a building into every new game.
+The installed vanilla state files contain those provinces, and the installed province definitions classify both as land provinces, so no permanent `map/buildings.txt` row was added. The dedicated spawn pools and normal state/province construction rules provide the runtime placement without a map override.
 
 ## Future plans
 
 Future work can add a separate destroyed-state mesh only if the building definitions later opt into `has_destroyed_mesh`, and that should be treated as a new asset profile rather than reusing these intact static packages.
 
-Future work can add snow-aware material variants only after a runtime map review demonstrates that the current `PdxMeshAdvanced` material needs seasonal treatment.
+Future work can add a separate non-snow material variant only after a runtime map review demonstrates that the current `PdxMeshAdvancedSnow` material needs a different seasonal treatment.
 
 Future work can add a non-transform-only idle animation only if the building consumer changes from static map geometry to a real skeletal entity, with a separate `.anim` export and reimport proof.
