@@ -48,8 +48,8 @@ after the coordinated PASS audits, sets all six shared adapter readiness flags,
 `independence_wave_form48_registry_surface_registered`, and
 `independence_wave_form48_readiness_attested`. No annexation or integration
 fallback is used. FORM-06 through FORM-47 remain fail-closed, including
-FORM-42. The current whole-event evidence authority is
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v105_2026_08_03.md`.
+FORM-42. The current whole-event evidence authority is the source map and resume packet under
+`../../plans/006_independence_wave_plans/`; the post-TRA admission handoff records the latest package delta.
 The narrowed v98 handoff remains generic-focus evidence only. The whole event stays
 **HOLD / PARTIAL** while FSM admission, live allocation, scenario, AI, and
 synchronized transaction evidence remain open. The v105 normal-spacing receipt
@@ -61,8 +61,8 @@ dedicated Iceland package reference rather than duplicated in this Pacific
 package document.
 
 The current allocator audit passes 149 publishers, 126 automatic/high-chaos
-selectable packages, 138 SCN-008 ranked packages, fourteen exact attestations
-across thirteen compatible reservation groups and fourteen distinct anchors, the
+selectable packages, 138 SCN-008 ranked packages, fifteen exact attestations
+across fourteen compatible reservation groups and fifteen distinct anchors, the
 doubled 6/8/10/14/20 ladder, and
 Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
 covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
@@ -72,8 +72,7 @@ shelf now contains 63 original-size masters with no normalized or advisor
 derivatives.
 
 That sentence is a dated historical snapshot. The current portrait-shelf authority
-is 81 original-size PNG masters directly under
-`docs/assets/006_independence_wave/portraits_generated_png/`, with all 81 indexed or
+is 83 original-size PNG masters in the flat shelf recorded by the current source map, with all 83 indexed or
 explicitly recorded in the two flat-shelf manifests; no normalized 156x210 shelf
 files, advisor portraits, dossier derivatives, or small consumers are authorized.
 CHU Karim Tinchurin v3, the other CHU evidence rows, the two MNT masters, and ASY
@@ -81,7 +80,7 @@ Haydo remain `needs_user_review` rights/date or provenance evidence. ASY Barsoum
 passes its independent audit and v94 promotes only the existing concordat-council
 DDS consumer; the wider IW-058 package remains outside attestation.
 
-Current shelf-index override (2026-08-03): all 81 physical masters are now indexed
+Current shelf-index override (2026-08-03): all 83 physical masters are now indexed
 or explicitly recorded in the two flat-shelf manifests. The indexed rows are
 traceability-only and do not change any rights, provenance, role, or runtime
 admission gates.
