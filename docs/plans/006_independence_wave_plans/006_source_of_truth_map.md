@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v104_2026_08_03.md`, read together with v103 for its underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
+Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v105_2026_08_03.md`, read together with v104/v103 for their underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
 
 The 2026-08-03 overlay-watch repair is recorded in `subagent_handoffs/006_overlay_watch_activation_repair_2026_08_03.md` and the current IW-022 audit `subagent_handoffs/006_iw022_dalmatia_overlay_audit_2026_08_03.md`. IW-022, IW-025, and IW-035 now expose explicit paid watch-mobilisation decisions and threshold-closing watch-success legitimacy writers; they remain non-selectable or route-overlay adapters, not newly attested country packages. Permanent route-loss mission cleanup remains a documented design HOLD.
 
