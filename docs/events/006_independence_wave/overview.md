@@ -44,6 +44,8 @@ The flag-atlas receipt `../../plans/006_independence_wave_plans/subagent_handoff
 
 The rival-bloc gate receipt `../../plans/006_independence_wave_plans/subagent_handoffs/006_rival_bloc_army_experience_gate_repair_2026_08_03.md` records restoration of the direct engine-backed `army_experience` comparison for both the leadership mission availability and cost surfaces. The earlier diagnostic in `006_flag_atlas_and_current_diagnostics_reaudit_2026_08_03.md` is pre-repair evidence. The narrow repair does not change the rival-bloc design, package attestation, or whole-event **HOLD / PARTIAL** status.
 
+The decision/mission audit found and closed two narrow source issues: `independence_wave_evolution_incident_category` now has a player-facing title key, and the three rival-bloc mission definitions no longer rely on engine-ignored `visible` blocks. Their activation, availability, timeout, and cancellation paths remain the authoritative lifecycle gates. This repair is recorded in commits `8ea15ea11` and `5fb9800e0`; it does not change package attestation, runtime evidence, or the whole-event **HOLD / PARTIAL** status.
+
 ## 2026-08-02 historical controlling acceptance authority (v102; superseded by the 2026-08-03 continuation)
 
 > Historical v102 routing snapshot: use the 2026-08-03 continuation above and v103 for current routing. The v102 handoff and parent reflow remain dated evidence. Any later dated paragraph retaining 80/74/6, 295/111/50, or the earlier 3/4/5/7/10 ladder is historical traceability only.
