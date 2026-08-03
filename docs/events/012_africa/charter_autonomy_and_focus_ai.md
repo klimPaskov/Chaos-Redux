@@ -32,6 +32,8 @@ They order already-eligible focuses after the host has selected a route, preserv
 
 Both autonomy states also require `africa_member_host_generation_is_current`. A stale consent receipt from a prior host succession therefore cannot keep or requalify a member under the new Charter host.
 
+The final living-core recognition gate also requires `africa_member_security_settlement_complete` and the writer-backed `africa_member_continental_constitution_accepted` receipt after the full integration prerequisites. State ownership and opinion alone never authorise cores.
+
 The two player-facing autonomy names and descriptions are `autonomy_africa_federal_member` and `autonomy_africa_integrated_region`.
 
 ## Continental focus AI flow
