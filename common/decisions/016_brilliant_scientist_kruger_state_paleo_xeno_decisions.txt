@@ -200,13 +200,23 @@ brilliant_scientist_krg_paleogenetics_category = {
 		icon = GFX_decision_brilliant_scientist_krg_paleogenetic_hatchery
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
-			has_country_flag = brilliant_scientist_focus_unlock_bounded_paleogenetic_breeding
-			has_country_flag = brilliant_scientist_krg_paleogenetic_recruitment_authorized
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				AND = {
+					has_country_flag = brilliant_scientist_focus_unlock_bounded_paleogenetic_breeding
+					has_country_flag = brilliant_scientist_krg_paleogenetic_recruitment_authorized
+				}
+			}
 		}
 		available = {
 			brilliant_scientist_kruger_focus_paleogenetics_is_operational = yes
-			has_country_flag = brilliant_scientist_krg_paleogenetic_veterinary_support_active
-			any_owned_state = { has_state_flag = brilliant_scientist_krg_paleogenetic_transport_pen }
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				AND = {
+					has_country_flag = brilliant_scientist_krg_paleogenetic_veterinary_support_active
+					any_owned_state = { has_state_flag = brilliant_scientist_krg_paleogenetic_transport_pen }
+				}
+			}
 			brilliant_scientist_krg_can_pay_project_batch_cost = yes
 			check_variable = { brilliant_scientist_krg_paleogenetic_breeding_cycles < constant:brilliant_scientist_krg_capacity.paleogenetic_breeding_cycle_maximum }
 		}
@@ -215,6 +225,12 @@ brilliant_scientist_krg_paleogenetics_category = {
 		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE }
 		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				NOT = { brilliant_scientist_kruger_focus_paleogenetics_is_operational = yes }
+			}
+		}
 		remove_effect = {
 			add_equipment_to_stockpile = { type = kruger_paleogenetic_equipment_1 amount = constant:brilliant_scientist_krg_output.paleogenetic_equipment_batch }
 			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_krg_output.paleogenetic_support_batch }
@@ -414,13 +430,23 @@ brilliant_scientist_krg_xenobiology_category = {
 		icon = GFX_decision_brilliant_scientist_krg_xenobiological_vat
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
-			has_country_flag = brilliant_scientist_focus_unlock_bounded_xenobiological_production
-			has_country_flag = brilliant_scientist_krg_xenobiological_recruitment_authorized
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				AND = {
+					has_country_flag = brilliant_scientist_focus_unlock_bounded_xenobiological_production
+					has_country_flag = brilliant_scientist_krg_xenobiological_recruitment_authorized
+				}
+			}
 		}
 		available = {
 			brilliant_scientist_kruger_focus_xenobiological_is_operational = yes
-			brilliant_scientist_has_exact_xeno_control_mode = yes
-			any_owned_state = { has_state_flag = brilliant_scientist_krg_xenobiological_medical_fabrication }
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				AND = {
+					brilliant_scientist_has_exact_xeno_control_mode = yes
+					any_owned_state = { has_state_flag = brilliant_scientist_krg_xenobiological_medical_fabrication }
+				}
+			}
 			brilliant_scientist_krg_can_pay_project_batch_cost = yes
 			check_variable = { brilliant_scientist_krg_xenobiological_production_cycles < constant:brilliant_scientist_krg_capacity.xenobiological_production_cycle_maximum }
 		}
@@ -429,6 +455,12 @@ brilliant_scientist_krg_xenobiology_category = {
 		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE }
 		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				NOT = { brilliant_scientist_kruger_focus_xenobiological_is_operational = yes }
+			}
+		}
 		remove_effect = {
 			add_equipment_to_stockpile = { type = kruger_xenobiological_equipment_1 amount = constant:brilliant_scientist_krg_output.xenobiological_equipment_batch }
 			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_krg_output.xenobiological_support_batch }

@@ -1,11 +1,13 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 016 NATIVE RAID EFFECTS
 # ============================================================================
-# Persistent bookkeeping and target damage for the portal facility raid.
+# Persistent bookkeeping, portal landings, factory extraction, and target
+# damage for the portal facility raid.
 # Native raid reservation, cancellation, expiry, outcome selection, equipment
 # collection, and raid history remain owned by the HOI4 raid engine. These
-# effects only record Event 016 follow-up state and damage the selected
-# strategic facility after the native outcome has been resolved.
+# effects resolve the Event 016 consequences after the native outcome has been
+# selected: the breach can seize one province, create a Portal Raider cadre,
+# and extract factories to the raider country as off-map industry.
 # ============================================================================
 
 @CR_SC_PORTAL_RAID_LIGHT_DAMAGE = 1
@@ -34,6 +36,67 @@ brilliant_scientist_record_portal_raid_success = {
 brilliant_scientist_record_portal_raid_critical_success = {
 	brilliant_scientist_record_portal_raid_success = yes
 	set_country_flag = brilliant_scientist_portal_raid_critical_success_ever
+}
+
+# STATE scope. The successful portal operation is a real one-province landing,
+# not a damage-only report. The actor becomes controller of the selected
+# province while the target country retains the surrounding state, and the
+# existing locked Quantum Transit Raiders template supplies the spawned cadre.
+# This leaves a persistent state flag for later spread, containment, and
+# aftermath systems without adding a whole-world polling on_action.
+brilliant_scientist_portal_raid_establish_beachhead = {
+	set_state_flag = brilliant_scientist_portal_beachhead_active
+	set_state_flag = brilliant_scientist_portal_raid_breach_recorded
+	var:actor_country = {
+		set_province_controller = var:target_province
+		set_country_flag = brilliant_scientist_portal_beachhead_established_ever
+		add_to_variable = { brilliant_scientist_portal_beachheads = constant:brilliant_scientist_value.one }
+	}
+	create_unit = {
+		division = "name = \"Portal Breach Cadre\" division_template = \"Quantum Transit Raiders\" start_experience_factor = 0.50 start_equipment_factor = 0.40 start_manpower_factor = 0.75"
+		owner = var:actor_country
+		prioritize_location = var:target_province
+		allow_spawning_on_enemy_provs = yes
+		count = 1
+	}
+}
+
+# STATE scope. Extracts exactly one factory level from the selected target and
+# returns it to the raiding country as an off-map factory. Off-map industry is
+# intentional here: the factory is portable loot and cannot fail because the
+# raider has no free construction slot at the moment of the raid. The priority
+# keeps the outcome legible and lets a critical success call this effect twice.
+brilliant_scientist_portal_raid_steal_factory = {
+	if = {
+		limit = { arms_factory > 0 }
+		remove_building = { type = arms_factory level = 1 }
+		set_state_flag = brilliant_scientist_portal_factory_extracted
+		var:actor_country = {
+			add_offsite_building = { type = arms_factory level = 1 }
+			set_country_flag = brilliant_scientist_portal_factory_extraction_ever
+			add_to_variable = { brilliant_scientist_portal_factories_stolen = constant:brilliant_scientist_value.one }
+		}
+	}
+	else_if = {
+		limit = { industrial_complex > 0 }
+		remove_building = { type = industrial_complex level = 1 }
+		set_state_flag = brilliant_scientist_portal_factory_extracted
+		var:actor_country = {
+			add_offsite_building = { type = industrial_complex level = 1 }
+			set_country_flag = brilliant_scientist_portal_factory_extraction_ever
+			add_to_variable = { brilliant_scientist_portal_factories_stolen = constant:brilliant_scientist_value.one }
+		}
+	}
+	else_if = {
+		limit = { dockyard > 0 }
+		remove_building = { type = dockyard level = 1 }
+		set_state_flag = brilliant_scientist_portal_factory_extracted
+		var:actor_country = {
+			add_offsite_building = { type = dockyard level = 1 }
+			set_country_flag = brilliant_scientist_portal_factory_extraction_ever
+			add_to_variable = { brilliant_scientist_portal_factories_stolen = constant:brilliant_scientist_value.one }
+		}
+	}
 }
 
 # STATE scope. Damages the highest-value surviving strategic facility in the

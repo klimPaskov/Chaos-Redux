@@ -33,7 +33,7 @@ Evidence was checked in `events/016_brilliant_scientist_*.txt`, `common/decision
 
 - The high-speed event description already resolves the saved test-corridor state name with `[brilliant_scientist_high_speed_test_corridor.GetName]` and appends the host-specific facility clause through `GetBrilliantScientistCountrySettlementFacilityClause`.
 - Settlement option tooltips already use host-specific facility/custody clause selectors for all ten receipts.
-- The only bounded wording opportunity is consistency: ten settlement/context tooltip strings use "Capacity rises/falls," while the Directorate UI and high-speed tooltips call the same variable "Project Capacity."
+- The only bounded wording opportunity is consistency: the context/settlement receipt set uses "Capacity rises/falls," while the Directorate UI and high-speed tooltips call the same variable "Project Capacity."
 
 ## Cross-surface mismatch notes
 
@@ -58,12 +58,21 @@ Evidence was checked in `events/016_brilliant_scientist_*.txt`, `common/decision
 ## Changed files and validation
 
 - Changed file: this handoff only; no gameplay or localisation source file was patched.
-- Validation included BOM/format checks, case-sensitive duplicate-key scans, scripted-localisation definition/reference scans, bounded cross-surface key coverage scans, focused `.195` reference search, and Event Log mapping inspection.
+- Validation included BOM/format checks, case-sensitive duplicate-key scans, scripted-localisation definition/reference scans, bounded cross-surface key coverage scans, focused `.195` reference search, Event Log mapping inspection, and the Portal Raid localisation/source reference scan recorded below.
 - In-game loading and live UI validation were not run because repository instructions reserve those checks for the user.
 
 ## Unresolved wording decisions
 
 The owner should decide whether "Capacity" is acceptable shorthand in the bounded context/settlement receipts or whether all 17 listed strings should use the Directorate UI label "Project Capacity."
+
+## Portal Raid localisation rerun (2026-08-03)
+
+- `localisation/english/chaosx_raids_l_english.yml` is UTF-8 with BOM, contains 101 parsed keys, has no duplicate keys, and has no malformed localisation lines. Its portal-specific keys also have no cross-file collision in the English localisation set.
+- All 18 portal-specific source references resolve: the category availability tooltip, generated category/type labels, target label, three target/preparation/launch requirement tooltips, and eight actor/victim outcome tooltips. The two unrelated biological category references in the shared category file also resolve elsewhere.
+- The updated factory wording matches the current effects: the target accepts a state with any factory or strategic facility; normal success calls one factory-extraction effect; critical success calls it twice; extraction removes one available `arms_factory`, `industrial_complex`, or `dockyard` level per call and adds the same type as off-map industry to the raider country. Strategic-facility-only targets therefore receive the landing/damage outcome without an invented factory, as the text implies.
+- The beachhead wording matches province seizure and cadre creation. The parent corrected the two target outcome strings to say "established a beachhead for further spread," which does not claim that an automatic spread effect runs in the outcome.
+- `raid_type_brilliant_scientist_portal_facility_raid_desc` describes the intended landing and conditional factory extraction, while outcome tooltips distinguish failure, limited success, normal success, and critical success. No missing or contradictory Portal Raid key remains.
+- No live parser, province-controller, factory-extraction, or UI rendering validation was run; those checks remain user-owned.
 
 ## Handoff path
 

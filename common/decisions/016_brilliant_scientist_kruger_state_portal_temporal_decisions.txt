@@ -213,12 +213,14 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 		icon = GFX_decision_brilliant_scientist_krg_portal_terminal
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
-			has_country_flag = brilliant_scientist_focus_unlock_bounded_portal_recruitment
-			has_country_flag = brilliant_scientist_focus_unlock_paid_strategic_insertions
+			brilliant_scientist_kruger_focus_teleportation_is_operational = yes
 		}
 		available = {
 			brilliant_scientist_kruger_focus_teleportation_is_operational = yes
-			has_country_flag = brilliant_scientist_krg_terminal_supply_network_linked
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				has_country_flag = brilliant_scientist_krg_terminal_supply_network_linked
+			}
 			brilliant_scientist_krg_can_pay_project_batch_cost = yes
 			check_variable = { brilliant_scientist_krg_portal_transit_batches < constant:brilliant_scientist_krg_capacity.portal_transit_batch_maximum }
 		}
@@ -227,6 +229,12 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE }
 		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				NOT = { brilliant_scientist_kruger_focus_teleportation_is_operational = yes }
+			}
+		}
 		remove_effect = { brilliant_scientist_krg_complete_portal_transit_batch = yes }
 		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
 	}
@@ -263,7 +271,10 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 		state_target = any_owned_state
 		on_map_mode = map_and_decisions_view
 		target_root_trigger = {
-			brilliant_scientist_krg_temporal_actions_are_active = yes
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				brilliant_scientist_krg_temporal_actions_are_active = yes
+			}
 			has_country_flag = brilliant_scientist_focus_unlock_anchor_discovery_missions
 			NOT = { has_event_target = brilliant_scientist_temporal_anchor }
 		}
@@ -479,22 +490,33 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 		icon = GFX_decision_brilliant_scientist_krg_temporal_anchor
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
-			has_country_flag = brilliant_scientist_focus_unlock_bounded_temporal_guard_operations
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				has_country_flag = brilliant_scientist_focus_unlock_bounded_temporal_guard_operations
+			}
 		}
 		available = {
 			brilliant_scientist_kruger_focus_temporal_is_operational = yes
-			brilliant_scientist_krg_temporal_actions_are_active = yes
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				brilliant_scientist_krg_temporal_actions_are_active = yes
+			}
 			brilliant_scientist_krg_can_pay_project_batch_cost = yes
 			NOT = { has_country_flag = brilliant_scientist_krg_temporal_guard_batch_committed }
-			check_variable = {
-				var = brilliant_scientist_temporal_sync_capacity
-				value = constant:brilliant_scientist_krg_temporal.temporal_guard_sync_cost
-				compare = greater_than_or_equals
-			}
-			check_variable = {
-				var = brilliant_scientist_temporal_debt
-				value = constant:brilliant_scientist_temporal.debt_maximum
-				compare = less_than
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				AND = {
+					check_variable = {
+						var = brilliant_scientist_temporal_sync_capacity
+						value = constant:brilliant_scientist_krg_temporal.temporal_guard_sync_cost
+						compare = greater_than_or_equals
+					}
+					check_variable = {
+						var = brilliant_scientist_temporal_debt
+						value = constant:brilliant_scientist_temporal.debt_maximum
+						compare = less_than
+					}
+				}
 			}
 			check_variable = { brilliant_scientist_krg_temporal_guard_batches < constant:brilliant_scientist_krg_capacity.temporal_guard_batch_maximum }
 		}
@@ -503,6 +525,12 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE }
 		complete_effect = { brilliant_scientist_krg_commit_temporal_guard_batch = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				NOT = { brilliant_scientist_kruger_focus_temporal_is_operational = yes }
+			}
+		}
 		cancel_effect = { clr_country_flag = brilliant_scientist_krg_temporal_guard_batch_committed }
 		remove_effect = {
 			if = {

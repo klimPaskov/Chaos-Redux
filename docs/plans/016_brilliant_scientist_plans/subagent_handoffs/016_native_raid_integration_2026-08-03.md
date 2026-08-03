@@ -26,10 +26,10 @@ This tranche clarifies and wires Event 016's native raid surface without adding 
 
 ## Runtime behavior
 
-1. Existing ordinary biological, battlefield, captured-facility recovery, hostile weaponized-zombie, friendly weaponized-zombie, and anti-zombie-cure raids remain manually usable whenever their native authority, policy, target, staging, aircraft or formation, and payload requirements pass.
-2. A living active Kruger in the current host or active Kruger State multiplies the native AI willingness for those biological operations. It does not auto-launch, bypass authority, change outcome strength, or create a second payload ledger.
-3. `brilliant_scientist_portal_warfare_tech`, granted at the teleportation weaponization stage, exposes the native `brilliant_scientist_portal_facility_raid` in `brilliant_scientist_raids`. It requires the existing teleportation weaponization history, the authenticated network, an owned Event 016 or KRG transit terminal, a Portal Raider battalion, the existing `kruger_portal_equipment` archetype, a supply-node starting point, and a hostile state containing a strategic facility.
-4. Portal outcomes use native raid history plus persistent Event 016 actor and state markers. Limited, successful, and critical outcomes damage the highest-value surviving strategic facility; no models or new payload archetypes are introduced.
+1. Existing ordinary biological, battlefield, captured-facility recovery, hostile weaponized-zombie, friendly weaponized-zombie, and anti-zombie-cure raids remain manually usable whenever their native policy, target, staging, aircraft or formation, and payload requirements pass.
+2. A living active Kruger in the current host or active Kruger State bypasses the separate Event 016 authority board and multiplies native AI willingness for those biological operations. It does not auto-launch, change outcome strength, or create a second payload ledger.
+3. `brilliant_scientist_portal_warfare_weaponization_tech` exposes the native `brilliant_scientist_portal_facility_raid` in `brilliant_scientist_raids`. Active Kruger, the existing locked `Quantum Transit Raiders` template, one `kruger_portal_equipment` charge, a supply-node starting point, and a hostile state containing a factory or strategic facility are enough; the former separate network, terminal, and authority steps are not required.
+4. Limited outcomes damage the target facility. Successful outcomes additionally set the target province controller to the raider country, create a `Portal Breach Cadre` with the existing `Quantum Transit Raiders` template in that province, and extract one factory level into the raider country's off-map industry. Critical outcomes call extraction twice, so up to two factory levels can be removed when the target has enough factories. No models or new payload archetypes are introduced.
 
 ## Validation and risks
 
