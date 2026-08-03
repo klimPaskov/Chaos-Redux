@@ -16,6 +16,7 @@ Event 006 remains incomplete and active with a whole-event **HOLD / PARTIAL** di
 - `python -B .tools/audit_event6_scenario_matrix.py`: all 32 SCN-008 cells and 8 required edge cases pass the static matrix.
 - `python -B .tools/audit_event6_gui_matrix.py`: five Statehood Ledger tabs and the static/animated sibling contract pass; runtime rendering and save/load are not claimed.
 - Normal focus inspection remains 184 nodes and 192 connectors with zero Event 006 geometry defects; the explicit `nodeSpacing=80` result remains an inspect-threshold artifact.
+- The evolution-incident category now has a player-facing title localization, and the three rival-bloc mission definitions no longer carry engine-ignored `visible` blocks; their activation, availability, timeout, and cancellation contracts remain intact.
 
 ## IW-030 Jovanović Znaci 8889
 
