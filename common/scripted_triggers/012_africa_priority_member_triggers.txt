@@ -99,6 +99,54 @@ africa_priority_member_portrait_runtime_is_approved = {
 	}
 }
 
+# COUNTRY scope. These seven identities are Event 006-owned carriers that
+# Event 012 may reuse additively. Membership is an identity lookup only; the
+# focus loader still protects a live Event 006/Soviet origin and any meaningful
+# existing tree before it can install the Africa surface.
+africa_priority_member_uses_independence_wave_country_tag = {
+	OR = {
+		is_independence_wave_registry_africa_asante_carrier = yes
+		is_independence_wave_registry_africa_oyo_carrier = yes
+		is_independence_wave_registry_africa_kanem_bornu_carrier = yes
+		is_independence_wave_registry_africa_luba_carrier = yes
+		is_independence_wave_registry_africa_lunda_carrier = yes
+		is_independence_wave_registry_africa_kilwa_carrier = yes
+		is_independence_wave_registry_africa_zulu_carrier = yes
+	}
+}
+
+# COUNTRY scope. The seven Event 006-owned shells are actionable for Africa
+# only while their live Event 006 origin receipt exists. A bare registered X
+# tag cannot masquerade as an Africa promotion target.
+africa_priority_member_has_active_event6_shell_receipt = {
+	is_independence_wave_registry_event6_origin = yes
+	NOT = { has_country_flag = independence_wave_origin_ended }
+}
+
+# COUNTRY scope. Event 006 and Soviet Collapse own their active focus surface.
+# Africa can keep its additive package ledger on the carrier, but it must not
+# replace the creating event's tree while either origin is still live.
+africa_priority_member_focus_surface_is_protected = {
+	OR = {
+		is_independence_wave_registry_event6_origin = yes
+		AND = {
+			has_focus_tree = independence_wave_focus_tree
+			NOT = { has_country_flag = independence_wave_origin_ended }
+		}
+		is_independence_wave_registry_soviet_origin = yes
+	}
+}
+
+# COUNTRY scope. Only a generic carrier or an explicitly registered Event 006
+# carrier may receive the Africa focus surface. All other meaningful trees stay
+# untouched and are served by the additive package decisions/ideas/forces/AI.
+africa_priority_member_focus_surface_is_safe = {
+	OR = {
+		africa_priority_member_uses_independence_wave_country_tag = yes
+		has_focus_tree = generic_focus
+	}
+}
+
 # COUNTRY scope. These are the niche African country tags already present in
 # the project. Event 012 loads package content onto these countries directly
 # and never creates or applies a replacement priority-member tag. No
@@ -158,6 +206,8 @@ africa_priority_member_is_vanilla_sovereign_carrier = {
 
 # COUNTRY scope. Valid asante formation or release identity.
 africa_priority_member_origin_is_asante = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+	africa_priority_member_has_active_event6_shell_receipt = yes
 	OR = {
 		original_tag = DOX
 		tag = DOX
@@ -167,6 +217,8 @@ africa_priority_member_origin_is_asante = {
 
 # COUNTRY scope. Valid oyo formation or release identity.
 africa_priority_member_origin_is_oyo = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+	africa_priority_member_has_active_event6_shell_receipt = yes
 	OR = {
 		original_tag = DSX
 		tag = DSX
@@ -185,6 +237,8 @@ africa_priority_member_origin_is_sokoto = {
 
 # COUNTRY scope. Valid kanem bornu formation or release identity.
 africa_priority_member_origin_is_kanem_bornu = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+	africa_priority_member_has_active_event6_shell_receipt = yes
 	OR = {
 		original_tag = DUX
 		tag = DUX
@@ -239,6 +293,8 @@ africa_priority_member_origin_is_harar = {
 
 # COUNTRY scope. Valid kilwa formation or release identity.
 africa_priority_member_origin_is_kilwa = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+	africa_priority_member_has_active_event6_shell_receipt = yes
 	OR = {
 		original_tag = EMX
 		tag = EMX
@@ -257,6 +313,8 @@ africa_priority_member_origin_is_nubia = {
 
 # COUNTRY scope. Valid luba formation or release identity.
 africa_priority_member_origin_is_luba = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+	africa_priority_member_has_active_event6_shell_receipt = yes
 	OR = {
 		original_tag = DYX
 		tag = DYX
@@ -266,6 +324,8 @@ africa_priority_member_origin_is_luba = {
 
 # COUNTRY scope. Valid lunda formation or release identity.
 africa_priority_member_origin_is_lunda = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+	africa_priority_member_has_active_event6_shell_receipt = yes
 	OR = {
 		original_tag = DZX
 		tag = DZX
@@ -293,6 +353,8 @@ africa_priority_member_origin_is_merina = {
 
 # COUNTRY scope. Valid zulu formation or release identity.
 africa_priority_member_origin_is_zulu = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+	africa_priority_member_has_active_event6_shell_receipt = yes
 	OR = {
 		original_tag = EQX
 		tag = EQX
@@ -300,10 +362,11 @@ africa_priority_member_origin_is_zulu = {
 	}
 }
 
-# COUNTRY scope. Every accepted identity is resolved from its existing country
-# tag or a same-country Event 012 origin flag. No Event 006 or Independence Wave
-# registry state is required, and surveying records no territory or cores.
+# COUNTRY scope. Vanilla identities resolve from their existing country tag or a
+# same-country Event 012 origin flag; the seven Event 006 X shells additionally
+# require their live Event 006 receipt. Surveying records no territory or cores.
 africa_priority_member_has_supported_carrier_identity = {
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
 	OR = {
 		africa_priority_member_origin_is_asante = yes
 		africa_priority_member_origin_is_oyo = yes
@@ -462,6 +525,9 @@ africa_priority_member_can_register_package = {
 	has_global_flag = africa_event_active
 	has_event_target = africa_host
 	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
+	# Soviet Collapse is a separate origin system. It may not be converted into
+	# an Event 012 priority-member package by a shared carrier lookup.
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
 	NOT = { has_country_flag = africa_priority_member_package_active }
 	# A negotiated partial result must finish its recorded requalification
 	# problem before any low-level caller can register the full package.

@@ -237,13 +237,11 @@ africa_priority_member_resolve_requalification_issue = {
 	}
 }
 
-# COUNTRY scope after complete package registration. Every supported carrier
-# receives the Event 012 priority-member tree directly, including the seven
-# existing niche tags while an Event 006 origin or focus tree is present. The
-# package owns its focus/content surface without creating a replacement tag;
-# existing country identity, territory, and lifetime origin records remain on
-# the original carrier. The reusable carrier pool is exposed as
-# `collection:chaosx_country_africa` for future African events.
+# COUNTRY scope after complete package registration. Event 012 owns its
+# additive package on the existing carrier, but it never replaces a live
+# Event 006/Soviet origin tree or another meaningful national tree. The
+# reusable carrier pool is exposed as `collection:chaosx_country_africa` for
+# future African events.
 africa_priority_member_ensure_focus_tree_loaded = {
 	if = {
 		limit = {
@@ -252,15 +250,27 @@ africa_priority_member_ensure_focus_tree_loaded = {
 		clr_country_flag = africa_priority_member_focus_tree_loaded
 		clr_country_flag = africa_priority_member_focus_tree_overlay_skipped
 		if = {
+			limit = { africa_priority_member_focus_surface_is_protected = yes }
+			# The creating event keeps its tree. Event 012's decisions, ideas,
+			# forces, AI, and package ledgers remain additive on this carrier.
+			set_country_flag = africa_priority_member_focus_tree_overlay_skipped
+		}
+		else_if = {
 			limit = { has_focus_tree = africa_priority_member_focus_tree }
 			set_country_flag = africa_priority_member_focus_tree_loaded
 		}
-		else = {
+		else_if = {
+			limit = { africa_priority_member_focus_surface_is_safe = yes }
 			load_focus_tree = {
 				tree = africa_priority_member_focus_tree
 				keep_completed = yes
 			}
 			set_country_flag = africa_priority_member_focus_tree_loaded
+		}
+		else = {
+			# A meaningful non-Event-006 tree is preserved; no synthetic overlay
+			# flag is used to imply that the engine loaded a second tree.
+			set_country_flag = africa_priority_member_focus_tree_overlay_skipped
 		}
 		mark_focus_tree_layout_dirty = yes
 	}
