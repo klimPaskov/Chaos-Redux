@@ -2,19 +2,20 @@
 # CHAOS REDUX - EVENT 016 PORTAL FACILITY RAID
 # ============================================================================
 # Portal Warfare from the teleportation weaponization stage unlocks one native
-# land raid against a hostile strategic facility. The raid uses the existing
-# portal-raider battalion, the existing portal-equipment archetype, native
-# reservation/collection/cancellation/expiry, and the normal raid history.
-# No automatic launch or parallel payload ledger is created here.
+# land raid against a hostile factory or strategic facility. A successful raid
+# is a real portal landing: the target province changes controller, a Portal
+# Raider formation is created there, and one or more factories can be extracted
+# into the raider country. Native reservation/collection/cancellation/expiry
+# and the normal raid history remain the engine-owned delivery contract.
 # ============================================================================
 
-@CR_SC_PORTAL_RAID_PREPARATION_DAYS = 28
-@CR_SC_PORTAL_RAID_TARGET_COOLDOWN_DAYS = 120
-@CR_SC_PORTAL_RAID_COMMAND_POWER = 25
-@CR_SC_PORTAL_RAID_EQUIPMENT_RESERVATION = 4
-@CR_SC_PORTAL_RAID_AI_MIN_SUCCESS_CHANCE = 0.35
-@CR_SC_PORTAL_RAID_SUCCESS_BASE = 0.45
-@CR_SC_PORTAL_RAID_CRITICAL_BASE = 0.12
+@CR_SC_PORTAL_RAID_PREPARATION_DAYS = 7
+@CR_SC_PORTAL_RAID_TARGET_COOLDOWN_DAYS = 30
+@CR_SC_PORTAL_RAID_COMMAND_POWER = 10
+@CR_SC_PORTAL_RAID_EQUIPMENT_RESERVATION = 1
+@CR_SC_PORTAL_RAID_AI_MIN_SUCCESS_CHANCE = 0.25
+@CR_SC_PORTAL_RAID_SUCCESS_BASE = 0.55
+@CR_SC_PORTAL_RAID_CRITICAL_BASE = 0.15
 @CR_SC_PORTAL_RAID_DISASTER_BASE = 0.15
 @CR_SC_PORTAL_RAID_FAILURE_ORG_DAMAGE = 0.40
 @CR_SC_PORTAL_RAID_FAILURE_STRENGTH_DAMAGE = 0.15
@@ -82,7 +83,7 @@ types = {
 		}
 
 		visible = {
-			has_tech = brilliant_scientist_portal_warfare_tech
+			has_tech = brilliant_scientist_portal_warfare_weaponization_tech
 		}
 		show_target = {
 			custom_trigger_tooltip = {
@@ -226,6 +227,8 @@ types = {
 					var:target_state = {
 						custom_effect_tooltip = brilliant_scientist_portal_raid_success_target_tt
 						brilliant_scientist_portal_raid_damage_target_light = yes
+						brilliant_scientist_portal_raid_establish_beachhead = yes
+						brilliant_scientist_portal_raid_steal_factory = yes
 					}
 				}
 				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
@@ -244,6 +247,9 @@ types = {
 					var:target_state = {
 						custom_effect_tooltip = brilliant_scientist_portal_raid_critical_success_target_tt
 						brilliant_scientist_portal_raid_damage_target_heavy = yes
+						brilliant_scientist_portal_raid_establish_beachhead = yes
+						brilliant_scientist_portal_raid_steal_factory = yes
+						brilliant_scientist_portal_raid_steal_factory = yes
 					}
 				}
 				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }

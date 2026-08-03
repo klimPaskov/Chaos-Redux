@@ -38,8 +38,13 @@ brilliant_scientist_krg_exotic_and_biological_category = {
 		icon = GFX_decision_brilliant_scientist_krg_exotic_guard
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
-			has_country_flag = brilliant_scientist_focus_unlock_bounded_exotic_guard_production
-			has_country_flag = brilliant_scientist_krg_interface_security_staffed
+			OR = {
+				brilliant_scientist_kruger_raid_ai_is_active = yes
+				AND = {
+					has_country_flag = brilliant_scientist_focus_unlock_bounded_exotic_guard_production
+					has_country_flag = brilliant_scientist_krg_interface_security_staffed
+				}
+			}
 		}
 		available = {
 			brilliant_scientist_kruger_focus_alien_arms_is_operational = yes
@@ -51,6 +56,12 @@ brilliant_scientist_krg_exotic_and_biological_category = {
 		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE }
 		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				NOT = { brilliant_scientist_kruger_focus_alien_arms_is_operational = yes }
+			}
+		}
 		remove_effect = { brilliant_scientist_krg_complete_exotic_guard_batch = yes }
 		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
 	}
