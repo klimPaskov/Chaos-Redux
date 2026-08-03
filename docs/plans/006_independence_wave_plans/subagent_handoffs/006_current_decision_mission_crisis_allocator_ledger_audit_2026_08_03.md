@@ -18,6 +18,8 @@ The accepted source is the seven-part Event 006 specification under docs/specs/0
 
 Current implementation disposition is controlled by 006_source_of_truth_map.md and 006_event6_current_completion_evidence_v106_2026_08_03.md.
 
+The permanent-identity-loss watch cleanup is controlled by commit `b6fe20ba0`, `subagent_handoffs/006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md`, and the reconciled IW-022 overlay audit `subagent_handoffs/006_iw022_dalmatia_overlay_audit_2026_08_03.md`. Those current sources supersede the pre-repair stale-mission finding below while preserving the runtime and save/load evidence boundary.
+
 The current completion evidence records the frozen allocator, synchronized transaction, crisis queue, dynamic ledgers, five evolution incidents, shared focus tree, decision and mission map, SCN-008 matrix, and Statehood Ledger semantic matrix as source-closed core surfaces.
 
 The current completion evidence also records fourteen attested non-overlay packages, thirteen compatible reservation groups, and no admitted fourteen- or twenty-package witness.
@@ -54,23 +56,15 @@ SCN-008 artifact: hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7
 
 ## Issues, sorted by severity
 
-### P2 — permanent carrier-identity loss can indefinitely preserve an interrupted overlay watch
+### Historical P2 finding: superseded by `b6fe20ba0`
 
 Affected identifiers are independence_wave_iw022_hold_adriatic_watch, independence_wave_iw025_hold_vojvodina_border_watch, and independence_wave_iw035_hold_livonian_corridor_watch.
 
-The paid mobilisation decisions added for IW-022, IW-025, and IW-035 correctly activate their formerly inactive watch missions and make the settlement route reachable.
+> Historical pre-`b6fe20ba0` snapshot: the paid mobilisation decisions for IW-022, IW-025, and IW-035 correctly activated their formerly inactive watch missions and made the settlement routes reachable. Temporary route loss marked the watch interrupted and extended the active mission by one day per carrier hook. Permanent carrier-identity loss could then leave a stale mission and running/interrupted state indefinitely because the failure effect required the active overlay identity. The owner-policy choice was recorded as a P2 design HOLD at that time. This block is retained for traceability only and is not a claim about the current source.
 
-On a temporary route loss, each overlay suspension marks the watch interrupted and extends the active mission by one day on each carrier-specific daily hook.
+The committed repair gives each overlay a centralized 30-day suspension grace counter. Before the threshold, temporary identity loss keeps the named mission paused and the existing resume path resets the counter when the exact route returns. At the threshold, the package-local cancellation helper removes the named mission and ideas, clears running/interrupted/active/suspended/shared overlay flags, resets hold progress, clears the suspension counter, and sets a permanent-identity-loss flag that blocks reactivation. The reconciled IW-022 audit records the same source contract for Dalmatia, and the cleanup handoff records the parallel Vojvodina and Livonia paths.
 
-On a permanent carrier-identity loss, the same pause remains active indefinitely because the failure effect is gated by the active overlay identity and therefore cannot clear the running and interrupted mission flags while the carrier remains inactive.
-
-This creates a stale mission and state path rather than a repeatable reward or free-resource exploit.
-
-The current source map and the IW-022 overlay audit already classify permanent route-loss cleanup as a design HOLD, so no local gameplay patch is appropriate without an owner decision.
-
-The owner must choose and document one policy: permanent pause, a bounded suspension grace period, or immediate cancellation with explicit flag and ledger cleanup.
-
-Any implementation must preserve the accepted temporary interruption and resumption behavior.
+The current source result is PASS for bounded lifecycle cleanup. Exact engine ordering between a mission timeout and the first or thirtieth inactive daily hook, live carrier behavior, and save/load persistence remain unverified runtime evidence boundaries.
 
 Relevant files are common/scripted_effects/006_independence_wave_iw022_dalmatia_effects.txt, common/scripted_effects/006_independence_wave_iw025_vojvodina_effects.txt, common/scripted_effects/006_independence_wave_iw035_livonia_effects.txt, and their carrier-specific on-action hooks.
 
@@ -103,7 +97,7 @@ This is a completion-evidence limitation rather than a source defect in the froz
 | Evolution incidents | Each of the five stage-gated decisions requires its active evolution and no prior branch resolution. | The pending flag is set before the timed decision ends, cleared by the event outcome, and cleared on origin loss. | PASS at source. |
 | Rival Bloc | Invitation, membership, host-front, patron-pressure, and leadership-candidate gates own the action surface. | Invitation and member helpers remove active missions, local variables, arrays, member records, and global event targets on expiry, invalidation, exit, or dissolution. | PASS at source. |
 | SCN-008 ledger | A frozen rejection ledger owns three zero-reward navigation controls only. | Closing removes the display flag, while reset and freeze helpers clear target marks, policy state, arrays, and cursors between launches. | PASS at source. |
-| IW-022, IW-025, and IW-035 watches | A route-active carrier exposes the paid mobilisation action after its preparatory action. | Normal success, failure, cancellation, timeout, and temporary suspension are explicit. | PARTIAL because permanent identity loss has no accepted cleanup policy. |
+| IW-022, IW-025, and IW-035 watches | A route-active carrier exposes the paid mobilisation action after its preparatory action. | Normal success, failure, cancellation, timeout, temporary suspension, and 30-day permanent-identity-loss cleanup are explicit in current source. | PASS at source for lifecycle cleanup. Live timeout ordering, carrier loss timing, and save/load behavior remain open. |
 
 The current scan finds sixty direct days_mission_timeout declarations across the Event 006 decision files.
 
@@ -120,7 +114,7 @@ The three former inert rival-bloc mission-visible fields are absent from the cur
 | Rival Bloc invitation, reserve, and leadership | Invited or member country, Rival Bloc categories, cross-country contract scope. | Valid recipient, membership, candidate, host, or patron condition plus centralized resource gates and durations. | Expiry, membership loss, recipient invalidation, and contract dissolution call the local and global cleanup helpers. | Low because the pending target, invitation deadline, member arrays, and active-mission gates are cleared or revalidated. |
 | DM-58 reclamation front | League coordinator and registered members in valid border regions. | Valid coordinator, persisted witness membership, minimum member count, unique external objectives, and material payment before the finite operation. | Completion executes the staged front, while witness loss, no valid preflight, or timeout rolls back and opens the declared League crisis path. | Low in source because revalidation cancels on stored-witness loss and cleanup clears coordinator, participant, state, and operation data. |
 | Formable deadline objectives | Formable carrier or created formable country, its regional category, route-specific objective region. | Explicit focus, route, capability, material, and deadline guards. | The named route resolution or failure effect closes the objective and prevents repeated reward. | Low because deadline objects are not repeatable selectable reward actions. |
-| Dalmatia, Vojvodina, and Livonia watches | Respectively CRO-origin Dalmatia, HUN-origin Vojvodina, and LIT Livonia carrier overlays. | Carrier identity, anchor control, prior action, concrete guard payment, garrison objective, and centralized timeout. | Success sets the settlement-opening receipt, while normal cancellation or timeout calls the watch failure path. | Low during an active or temporary-interruption route, but permanent route loss is the P2 stale-state HOLD above. |
+| Dalmatia, Vojvodina, and Livonia watches | Respectively CRO-origin Dalmatia, HUN-origin Vojvodina, and LIT Livonia carrier overlays. | Carrier identity, anchor control, prior action, concrete guard payment, garrison objective, centralized timeout, and a 30-day suspension grace. | Success sets the settlement-opening receipt. Normal cancellation or timeout calls the watch failure path. Permanent identity loss removes the named mission and package-owned state, then blocks restart. | Low at source. Exact timeout ordering, live carrier-loss timing, and save/load behavior remain runtime evidence limits. |
 
 ## Cost and requirement clarity
 
@@ -202,11 +196,11 @@ The allocator fails closed on insufficient capacity and exact-count mismatch ins
 
 The SCN-008 rejection ledger has zero reward and zero AI weight, so its navigation controls are not an economic or repeated-action exploit.
 
-The only unresolved cleanup risk found in current decision-owned mechanics is the overlay permanent-identity-loss policy described at P2.
+The overlay permanent-identity-loss policy is source-closed by `b6fe20ba0`. Remaining cleanup evidence is limited to live mission-timeout ordering, carrier-loss timing, and save/load behavior.
 
 ## Recommended fixes and handoff
 
-1. Parent or feature owner decision required: record a permanent carrier-identity-loss policy for the IW-022, IW-025, and IW-035 watch missions before a narrow cleanup patch is written.
+1. No gameplay policy decision is pending for permanent carrier-identity loss. The bounded 30-day grace and cancellation policy is implemented in `b6fe20ba0`. Parent-owned follow-up is limited to live mission-timeout ordering, carrier-loss timing, and save/load verification.
 
 2. Narrow localisation maintenance patch recommended: change the literal COG cost values in localisation/english/006_independence_wave_iw101_iw102_iw105_cog_overlays_l_english.yml to existing script-constant substitutions.
 
@@ -214,7 +208,7 @@ The only unresolved cleanup risk found in current decision-owned mechanics is th
 
 4. Retain the current whole-event HOLD / PARTIAL status until declared AI and balance scenarios, live mission and queue behavior, save/load, UI interaction, package admission, formable readiness, source-rights, and other parent-owned completion gates are closed.
 
-No new plan handoff was written because the only P2 issue is an already-recorded design policy choice and the P3 localisation work is a narrow local patch.
+No new plan handoff was written because the former P2 policy choice is implemented and the remaining runtime evidence belongs to parent-owned validation. The P3 localisation work remains a separate narrow local patch.
 
 ## Changed files and validation boundary
 
