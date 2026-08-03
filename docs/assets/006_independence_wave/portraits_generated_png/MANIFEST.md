@@ -22,6 +22,6 @@ The 2026-08-03 Znaci 8889 JovanoviÄ‡ source-locked repaint trial is also reta
 
 - `portrait_MNT_blazo_jovanovic_znaci_8889_hoi4_master.png`
 
-This shelf copy is reference-only and remains `needs_user_review` pending independent likeness/style/provenance and rights review. It is not a native 156x210 texture, DDS, or runtime input.
+This shelf copy is reference-only. Independent likeness and HOI4-style review pass; provenance and rights remain `needs_user_review`. It is not a native 156x210 texture, DDS, or runtime input.
 
 The v1 through v4 candidates have independent HOLD verdicts. The v5 candidate remains pending independent review. No candidate is approved for DDS or `.gfx` wiring.

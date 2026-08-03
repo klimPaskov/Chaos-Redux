@@ -140,12 +140,17 @@ Skipped meaningful validation: no HOI4 launch, live event triggering, AI campaig
 
 ## Concrete next fixes
 
-1. Remove the inert `visible` blocks from the three rival-bloc missions in `common/decisions/006_independence_wave_rival_bloc_decisions.txt`.
+1. The two narrow source findings from this audit are closed by commits
+`8ea15ea11` (category title) and `5fb9800e0` (three inert mission `visible`
+blocks). The remaining work is bounded runtime/AI/persistence evidence and the
+package, formable, source-rights, audio, and capacity gates recorded by the
+current completion audit.
 2. Run live evidence for the 32 selector cells, requester loss during a queued crisis, rival invitation invalidation, membership exit during DM-58, and Statehood Ledger state/save-load persistence before lifting the v104 hold.
 
 ## Handoff status
 
-Changed files: this audit handoff only.
+Changed files: this audit handoff only; the historical source findings above
+were closed by the parent commits listed in the current authority.
 
 Changed decision, mission, scripted-GUI, or localisation IDs: none.
 
