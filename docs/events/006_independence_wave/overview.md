@@ -6,6 +6,10 @@ Independence Wave is the Minor Repeatable member of the Liberations cluster. It 
 
 The accepted design authority remains `docs/specs/006_independence_wave_specs/`. This file is the implementation-facing map for the live script surfaces and is updated as each plan tranche is completed.
 
+## Current grounded-portrait policy
+
+Historical and otherwise grounded portraits use unchanged sourced originals as temporary runtime placeholders: an explicit head-and-shoulders crop, deterministic `156x210` fit, and DDS conversion without HOI4 repainting, recolouring, or retouching. The immutable originals are archived in `docs/assets/portraits/006_independence_wave/`, and the current converted tranche is recorded in `docs/assets/006_independence_wave/source_placeholder_2026_08_03/`. Older references below to source-locked HOI4 repaint chains describe retained evidence history and are superseded for current placeholder runtime files unless a later user request explicitly authorizes a styled replacement. Fictional/high-chaos portraits remain on the generated HOI4-style route. No Independence Wave advisor icons are created.
+
 Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](northern_western_europe_packages.md) and the [Pacific country-package and FORM-48 reference](pacific_country_packages.md).
 
 The reusable tag and region contract is documented in [Country API and regional carrier map](country_api.md). Later events should consume these `chaosx_country_*` collections and origin-gated dispatchers instead of inventing another carrier for a country already represented by Event 006.

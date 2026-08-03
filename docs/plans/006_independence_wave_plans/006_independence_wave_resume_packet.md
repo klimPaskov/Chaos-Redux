@@ -4,6 +4,8 @@ Updated: 2026-08-03 after the Event 006 v103/v104 current completion evidence, t
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
+Current portrait rule: grounded historical identities use unchanged sourced originals as temporary runtime placeholders after exact head-and-shoulders cropping and deterministic `156x210` resizing; the DDS is labelled `source_placeholder`. Originals are archived in `docs/assets/portraits/006_independence_wave/`, with the current converted tranche under `docs/assets/006_independence_wave/source_placeholder_2026_08_03/`. Earlier HOI4-style repaint records remain archival evidence only unless a later user request explicitly authorizes a styled replacement.
+
 Current static completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v104_2026_08_03.md`, read together with v103 for the underlying static checks.
 
 The current focus authority is `subagent_handoffs/006_event6_focus_geometry_repair_current_2026_08_03.md`. Its normal inspection (`nodeSpacing=2`, `laneSpacing=80`) resolves 184 nodes and 192 connectors with zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout warnings. Its explicit-spacing artifact (`nodeSpacing=80`, `laneSpacing=80`) keeps the same stable layout but reports 164 same-row pairs below threshold and 19 warning-level spacing entries with no movable focus IDs. This is an inspect-threshold artifact, not a safe local source defect. The parent reflow and v111 geometry receipts remain historical traceability, and the clean normal-spacing result does not change the incomplete whole-event status.
