@@ -2,6 +2,8 @@
 
 Current reconciliation (2026-08-03): the flat shelf contains 83 physical original-size PNG evidence/candidate files, and the table plus the two IW-182 GZX rows below account for all 83. The older 81-count paragraph is retained only as dated traceability.
 
+The 83-file reconciliation above is current. The next inventory paragraph retains its original 81-master wording as dated source-history; the table and the two flat-shelf manifests together account for all 83 physical files.
+
 This manifest indexes 81 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every physical PNG in the flat shelf has a row below, including the four ARX v76 masters, the CHU Mirsaid master, the first DOX Prempeh-II repaint, and the Znaci 8889 Jovanović repaint. Every indexed shelf file is a byte-for-byte copy of the corresponding ImageGen PNG and sits directly in this directory; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
 
 | Date | Trial | Shelf copy | Original ImageGen output | SHA-256 | Dimensions | Mode | Bytes |
@@ -105,7 +107,9 @@ Inventory count: **83** indexed flat pre-resize masters. The shelf-copy column c
 
 Post-audit addendum (2026-08-02): ASY Barsoum v93 independently passes identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis with a low-resolution group-photo caveat; parent release acceptance is required and the candidate remains unwired. IW-030 Janko Vukotić is a separate source/research-only candidate under `needs_user_review`, with no repaint, DDS, or relabeling. The flat shelf remains 78 physical masters / 73 indexed rows and contains no normalized 156x210 files or Event 006 advisor/small portraits.
 
-> The preceding post-audit addendum's 78-master and 73-row wording is a historical snapshot superseded by the current 80-master all-indexed-or-explicitly-recorded reconciliation.
+> The preceding post-audit addendum's 78-master and 73-row wording is a historical snapshot superseded by the current 83-master all-indexed-or-explicitly-recorded reconciliation.
+
+Current shelf reconciliation override (2026-08-03): the physical shelf contains 83 original-size PNG masters and this manifest records all 83 masters. The converted `source_placeholder` tranche is separate under `docs/assets/006_independence_wave/source_placeholder_2026_08_03/`. The older 78/73, 80/74/6, and 81-master paragraphs below or above are dated traceability only; no shelf indexing grants DDS, GFX, character, runtime, package, or attestation promotion.
 
 Retry-2 addendum (2026-08-02): `portrait_DOX_prempeh_ii_hoi4_style_2026_08_02_retry2.png` is a flat original-size 1081x1455 RGB master copied from the source-locked ImageGen repaint. SHA-256 is `1F4DE5280DC4F5050E11159D48FC672A2A0E65CFAF1F10C3A13579ECAE32D01F`. The independent audit records a conditional near-pass for identity, regalia, framing, and HOI4 style, with minor facial drift and ornate framing caveats. It is evidence-only pending final visual acceptance; no normalized shelf file or advisor derivative was added.
 
@@ -114,3 +118,5 @@ Current shelf reconciliation override (2026-08-03): the physical shelf contains 
 IW-030 source-shelf addendum (2026-08-03): `portrait_MNT_blazo_jovanovic_znaci_8889_hoi4_master.png` is a 1080x1456 RGB original-size ImageGen repaint copied from `iw030_mnt_portrait_source_research_v53_2026_08_01/repaints_raw/mnt_blazo_jovanovic_znaci_8889_lipova_ravan_hoi4_repaint_v1.png`. SHA-256 is `e3e2b2367dddc071b8e5d706a1297add703bf8b528f3510b9e6fbb0dab0c4696`. It is evidence-only and has no DDS or runtime GFX reference; independent likeness/style review passes, while provenance and rights remain `NEEDS_USER_REVIEW` under the IW-030 workspace.
 
 IW-182 source-shelf addendum (2026-08-03): `GZX_william_r_howley_identity_preserve.png` is a 1071x1468 RGB original-size source-locked repaint copied from `gzx_newfoundland_portrait_source_research_2026_08_03/repaints_raw/GZX_william_r_howley_hoi4_repaint_v1.png`. SHA-256 is `8ef9ef3a0fd212a93afe5261bde29db2bc0e287f02de94c7271bf359d7f433db`. It is evidence-only with no DDS or runtime GFX reference; identity/style/provenance review is pending and the NPG/Commons rights warning remains `NEEDS_USER_REVIEW`.
+
+Current manifest authority (2026-08-03): the 83-file reconciliation at the top of this manifest supersedes the older 81-master paragraph above. The physical shelf and both flat-shelf manifests account for all 83 files, while the converted `source_placeholder` tranche remains separate and no shelf row grants runtime, package, or attestation promotion.
