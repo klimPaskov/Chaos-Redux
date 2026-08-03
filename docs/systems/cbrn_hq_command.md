@@ -58,7 +58,7 @@ Operating packages are centralized in `common/script_constants/cbrn_hq_constants
 
 Prepare Chemical Offensive and Combined CBRN Overmatch require a positive supported chemical-payload stock signal, but they do not remove an arbitrary generic payload. The delivery adapter must reserve and consume the player-selected agent before calling the shared exposure pipeline.
 
-The doctrine-gated `chemical_operations_commander` trait reduces preparation for all seven CBRN HQ abilities by ten percent after the normal readiness, Operations Section, and high-protection adjustments. The mutually exclusive offensive doctrine multiplier applies after that commander adjustment and only to Prepare Chemical Offensive and Combined CBRN Overmatch. Neither effect grants release authority or reduces equipment, Command Power, upkeep, duration, or cooldown.
+The doctrine-independent `chemical_operations_commander` trait reduces preparation for all seven CBRN HQ abilities by ten percent after the normal readiness, Operations Section, and high-protection adjustments. The active Chemical Operations Academy can grant the trait to army leaders on creation or level-up, and commanders can still assign it through the normal paid trait path. The mutually exclusive offensive doctrine multiplier applies after that commander adjustment and only to Prepare Chemical Offensive and Combined CBRN Overmatch. Neither effect grants release authority or reduces equipment, Command Power, upkeep, duration, or cooldown.
 
 ## Doctrine and technology wiring
 

@@ -24,6 +24,7 @@
 # - OWNER must be the attacking country. Wrap the call if needed.
 
 @CHEM_FIRST_USE_SURPRISE_DURATION_DAYS = 30
+@CHEM_OPERATIONS_ACADEMY_TRAIT_ROLL_MAX = 100
 
 chem_sync_chemical_tactic_preferred_weight_ideas = {
 	# Country flags make these hidden-idea grants idempotent across startup and research callbacks.
@@ -62,6 +63,34 @@ chem_grant_first_use_surprise = {
             days = @CHEM_FIRST_USE_SURPRISE_DURATION_DAYS
         }
     }
+}
+
+# Army-leader scope. FROM is the country that owns the unit leader.
+# The active academy uses this helper from creation and level-up on actions so
+# acquisition remains event-driven and does not depend on a doctrine gate.
+chem_try_grant_chemical_operations_trait_from_academy_spirit = {
+	if = {
+		limit = {
+			FROM = { has_idea = chemical_operations_academy_spirit }
+			is_army_leader = yes
+			NOT = { has_trait = chemical_operations_commander }
+		}
+		randomize_temp_variable = {
+			var = chem_operations_academy_trait_roll
+			min = 0
+			max = @CHEM_OPERATIONS_ACADEMY_TRAIT_ROLL_MAX
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = chem_operations_academy_trait_roll
+					value = constant:chem_chaos_warfare_spirit.academy.chemical_operations_trait_gain_chance
+					compare = less_than
+				}
+			}
+			add_unit_leader_trait = chemical_operations_commander
+		}
+	}
 }
 
 chem_set_livens_integration_values = {

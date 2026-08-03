@@ -269,14 +269,42 @@ ideas = {
 		}
 	}
 
-	# Compatibility-only identifiers. No replacement mechanic is hidden here.
+	# The academy is an active officer-corps route. It grants army leaders a
+	# chance to learn the commander trait when they are created or level up.
 	academy_spirit = {
 		chemical_operations_academy_spirit = {
 			ledger = army
 			picture = chemical_operations_academy_spirit
-			visible = { always = no }
-			available = { always = no }
-			ai_will_do = { factor = @CR_SC_CBRN_MATH_ZERO }
+			modifier = {
+				custom_modifier_tooltip = chemical_operations_academy_spirit_tt
+			}
+			ai_will_do = {
+				base = @CR_SC_CBRN_MATH_ZERO
+				modifier = {
+					add = constant:cbrn_doctrine_ai.officer_corps_base
+					cbrn_country_has_program = yes
+					OR = {
+						has_tech = chlorine_gas
+						has_tech = phosgene
+						has_tech = mustard_gas
+						has_tech = lewisite
+						has_tech = sarin
+						has_tech = soman
+					}
+				}
+				modifier = {
+					add = constant:cbrn_doctrine_ai.enemy_use_factor
+					has_enemy_used_chemical_weapons = yes
+				}
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.officer_corps_unavailable_factor
+					NOT = { has_dlc = "No Step Back" }
+				}
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.nonhuman_factor
+					is_actual_nonhuman_country = yes
+				}
+			}
 		}
 	}
 

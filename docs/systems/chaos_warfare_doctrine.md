@@ -148,7 +148,7 @@ Four generic institutional high-command offices avoid inventing historical perso
 - Chemical Logistics Inspector: -20 percent attrition and -15 percent supply consumption.
 - Biological Security Director: +20 percent army organization and -15 percent resistance growth.
 
-The `chemical_operations_commander` leader trait costs 500 and requires the Chaos Warfare doctrine. It reduces preparation time for the seven CBRN HQ abilities by 10 percent, after the ability's normal readiness and company adjustments. It grants no free release ability.
+The `chemical_operations_commander` leader trait costs 500 and has no doctrine prerequisite. The active Chemical Operations Academy gives eligible army leaders a 50 percent chance to gain it when created or when they level up. It reduces preparation time for the seven CBRN HQ abilities by 10 percent, after the ability's normal readiness and company adjustments. It grants no free release ability.
 
 ## AI behavior
 
@@ -158,7 +158,7 @@ Officer-corps and high-command choices use the same defensive, battlefield, logi
 
 ## Compatibility and migration
 
-The grand doctrine and four track IDs remain stable for save and script compatibility. Legacy atrocity-facing names and broad permanent bonuses are replaced. The old academy and chemical-air spirit IDs remain hidden, unavailable, and AI-disabled so saves can resolve them without exposing a substitute mechanic. Random academy trait grants and the old cylinder abilities are removed. Legacy Integrated Operations biological bonuses are neutralized. The dedicated Theater Contamination and Terminal Hazard spirits provide the accepted biological escalation, deployment refund, and Condemnation behavior.
+The grand doctrine and four track IDs remain stable for save and script compatibility. Legacy atrocity-facing names and broad permanent bonuses are replaced. The Chemical Operations Academy remains an active officer-corps route, while the old chemical-air spirit ID remains hidden and unavailable for save compatibility. Academy trait rolls occur only on leader creation and level-up; no periodic country scan or passive chemical activity is used. Legacy Integrated Operations biological bonuses are neutralized. The dedicated Theater Contamination and Terminal Hazard spirits provide the accepted biological escalation, deployment refund, and Condemnation behavior.
 
 `on_startup` performs the migration for new campaigns but is not called when an existing save is loaded. A country that already has Chaos Warfare but lacks the institutional adoption flag therefore sees a one-time, zero-cost §YConvene CBRN Institutional Review§! decision. Human and AI countries can execute the same idempotent migration without a global periodic pulse. It reconstructs only native track/mastery facts, clears obsolete occupation-law authority, initializes the establishment review, and grants only independently eligible doctrine technologies. It never fabricates cross-track institutions, stock, fielded formations, protected orders, payload use, or consequences.
 
