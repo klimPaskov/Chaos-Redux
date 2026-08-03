@@ -4,27 +4,27 @@
 
 This read-only pass covers the high-speed materials trial tranche, the ten-country settlement tranche, Event 016 event/localisation surfaces, scripted localisation, event-log/detail mappings, and referenced report/decision assets.
 
-Evidence was checked in `events/016_brilliant_scientist_*.txt`, `common/decisions/016_brilliant_scientist_*.txt`, the 17 `localisation/english/016_brilliant_scientist*_l_english.yml` files, the six `common/scripted_localisation/016_brilliant_scientist_*.txt` files, the shared Event Log scripted localisation, and the linked plans/specs/docs.
+Evidence was checked in `events/016_brilliant_scientist_*.txt`, `common/decisions/016_brilliant_scientist_*.txt`, the 16 `localisation/english/016_brilliant_scientist*_l_english.yml` package files plus shared achievement/event-name localisation, the six `common/scripted_localisation/016_brilliant_scientist_*.txt` files, the shared Event Log scripted localisation, and the linked plans/specs/docs.
 
 ## Missing key list
 
-- No missing localisation keys were found in the 259 Event 016 event/title/description/option references.
-- No missing localisation keys were found in the 680 bounded Event 016 UI references across events, decisions, focuses, ideas, modifiers, characters, country files, special projects, technologies, and units.
+- No missing localisation keys were found in 451 unique literal event title/description/option references across all 13 Event 016 event scripts.
+- No missing localisation keys were found in the broader 821 explicit player-facing field references scanned across events, decisions, focuses, ideas, modifiers, characters, country files, special projects, technologies, achievements, and shared Event Log surfaces.
 - The high-speed action has all required decision, cost, effect, event (`chaosx.nr16.195`), outcome, and dynamic-modifier keys.
-- All six new settlement options (`chaosx.nr16.5.h_ger` through `.5.m_cze`) and their tooltip keys are present.
+- All ten country-settlement options (`chaosx.nr16.5.d_eng` through `.5.m_cze`) and their tooltip keys are present.
 - All ten settlement facility/custody scripted-localisation outputs have corresponding keys.
 - Event name 16, Event Log evolution/detail entries, and world-end title/detail outputs are present.
 
 ## Duplicate key list
 
-- No duplicate case-sensitive localisation keys were found across 2,780 Event 016 English keys.
+- No duplicate case-sensitive localisation keys were found across 2,780 unique Event 016 package English keys.
 - No duplicate `defined_text` names were found across 92 Event 016 scripted-localisation definitions.
 - A case-insensitive comparison surfaced `KRG_XENOBIOLOGICAL_ASCENDANCY` and a lower-case focus key as a near-collision, but the keys are case-sensitive and are not duplicates.
 
 ## Scripted localisation issue list
 
-- No undefined `GetBrilliant...` scripted-localisation calls were found in Event 016 localisation values.
-- No missing `localization_key` targets were found in the six Event 016 scripted-localisation files.
+- No undefined `GetBrilliant...` scripted-localisation calls were found in Event 016 localisation or source values.
+- No missing non-GFX `localization_key` targets were found in the six Event 016 scripted-localisation files; all 87 GFX return values are registered in interface definitions.
 - No undefined scripted-localisation references were found in the audited Event 016 event, decision, focus, and country surfaces.
 - Event Log mappings resolve Event 016 to `chaosx.event_name.16`, `chaosx.events_log.window.event_details.brilliant_scientist`, all four evolution title/description pairs, and both world-end title/detail branches.
 - No forbidden section-sign or pound-sign format characters were found in the six Event 016 scripted-localisation files.
@@ -45,14 +45,14 @@ Evidence was checked in `events/016_brilliant_scientist_*.txt`, `common/decision
 
 ## File encoding concerns
 
-- All 17 Event 016 English YAML files are UTF-8 with BOM.
+- All 16 direct Event 016 English YAML package files are UTF-8 with BOM; the shared Event Log/achievement/event-name files used by this feature were also included in the key scans.
 - The six Event 016 scripted-localisation TXT files are BOM-free, matching their script-file role; this is not a localisation YAML encoding defect.
 - No Event 016 localisation key uses the deprecated `:0` form, leading whitespace, or malformed multi-line value syntax.
 
 ## Recommended fixes
 
 - No blocking localisation patch is required.
-- Optional future wording pass: normalize the ten settlement/context tooltip phrases from "Capacity rises/falls" to "Project Capacity rises/falls" in `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml` and any matching context strings, if the owning gameplay/UI pass prefers the longer label.
+- Optional future wording pass: normalize the bounded context/settlement receipt keys `brilliant_scientist_context_public_science_tt`, `brilliant_scientist_context_strategic_security_tt`, `brilliant_scientist_context_industrial_mobilization_tt`, `brilliant_scientist_context_distributed_research_tt`, `brilliant_scientist_context_recognize_assistant_school_tt`, `brilliant_scientist_context_bind_assistant_service_tt`, `brilliant_scientist_context_mediate_assistant_conflict_tt`, and `brilliant_scientist_country_settlement_{british,american,soviet,japanese,german,french,italian,chinese,polish,czechoslovak}_tt` from "Capacity rises/falls" to "Project Capacity rises/falls" in `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml`, if the owning gameplay/UI pass prefers the longer label.
 - Leave `.195` out of Event Log/catalog child-event listings unless the event design explicitly changes; adding a row would contradict the accepted high-speed addendum.
 
 ## Changed files and validation
@@ -63,7 +63,7 @@ Evidence was checked in `events/016_brilliant_scientist_*.txt`, `common/decision
 
 ## Unresolved wording decisions
 
-The owner should decide whether "Capacity" is acceptable shorthand in settlement receipts or whether all ten strings should use the Directorate UI label "Project Capacity."
+The owner should decide whether "Capacity" is acceptable shorthand in the bounded context/settlement receipts or whether all 17 listed strings should use the Directorate UI label "Project Capacity."
 
 ## Handoff path
 
