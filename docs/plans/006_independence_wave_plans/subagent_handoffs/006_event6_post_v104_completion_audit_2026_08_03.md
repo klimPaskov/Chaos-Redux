@@ -111,6 +111,12 @@ No fallback, admission shortcut, generic replacement identity, generic flag, gen
 
 No narrow gameplay patch is justified by this audit.
 
+## Parent follow-up disposition (2026-08-03)
+
+The documentation drifts identified above were reconciled after the audit: FORM-48 now distinguishes framework readiness from operational reachability, the Znaci 8889 shelf records independent visual identity/style PASS with provenance/rights still open, and the decision audit is marked historical after commits `8ea15ea11` and `5fb9800e0`. These documentation repairs are in `1054c6a88`.
+
+The current FSM, FIJ, New Guinea, and `6001` research handoffs are committed in `3070a2ac0`. The catalog worker re-exported all three CSV snapshots without workbook changes and recorded the unchanged status-schema boundary in `b8bbc2ec4`. These receipts do not promote a package, formable, status, audio cue, or runtime branch.
+
 The FORM-48 readiness writer is not itself a safe patch target because the shared commit proof separately requires exact active HBX/HAW/FSM membership and therefore fails closed while FSM is unavailable.
 
 The explicit 80-column focus-spacing artifact is not a safe local patch target because normal HOI4 spacing is clean and a local coordinate change would not satisfy a tree-wide 80-column policy.
