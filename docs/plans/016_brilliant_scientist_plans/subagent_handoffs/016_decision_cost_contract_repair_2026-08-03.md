@@ -19,6 +19,7 @@ This narrow repair normalizes Event 016 decisions that displayed a `custom_cost_
 - PowerShell brace counts: project board `open=1716`, `close=1716`; synthesis `open=95`, `close=95`; foreign `open=160`, `close=160`.
 - `git diff --check` was clean for the owned decision files before commit.
 - No CBRN callback, model, asset, country, or event-chain behavior was changed.
+- Post-repair `hoi4_probability_inspect` accepted the project-board source with `PROBABILITY_SOURCE_INSPECTED`, validation passed, zero diagnostics, and three discovered AI candidates; the foreign source likewise passed with three candidates and zero unresolved diagnostics. The synthesis decision source returned `PROBABILITY_SURFACE_EMPTY` for the decision adapter, so no synthesis balance claim is made; its existing AI block remains statically brace-checked.
 
 ## Remaining limits
 
