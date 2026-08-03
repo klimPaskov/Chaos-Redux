@@ -2,6 +2,10 @@
 
 Date: 2026-07-18
 
+## Superseding implementation note (2026-08-03)
+
+The current source-of-truth is `docs/events/012_africa/overview.md`, `docs/events/012_africa/portrait_runtime_gate.md`, `docs/assets/portraits/012_africa/source_locked_runtime_mapping.md`, and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_priority_member_direct_tags_focus_male_leaders_2026-08-03.md`. The direct-tag tranche supersedes the dated receipt-gate and female-portrait wording below: Event 012 recognises the sixteen existing carriers without reading Independence Wave registry state, all sixteen sovereign character rows are male-only, and all sixteen current runtime DDS files use the `_source_locked.dds` contract. The historical paragraphs remain retained evidence, not a competing implementation authority.
+
 ## Status
 
 The bounded gameplay overlay for all 16 rows in the priority-member package matrix is implemented. No priority row was merged, rejected, or queued inside this overlay. Parent integration also supplies one dynamically loaded eight-focus package tree and a 35-idea lifecycle: sixteen distinct starting problems, three political-settlement stages, and sixteen distinct mature compacts. This parameterises common structure while preserving package-specific institutions, economies, forces, League roles, overlap settlements, post-settlement programmes, localisation, rewards, and AI priorities.
@@ -568,3 +572,11 @@ The installed sovereign portrait paths remain the stable runtime contract for th
 The historical source gate is now separate from asset presence. Only the three independently reviewed male source-locked rows (Kanem-Bornu, Harar, and Kongo) receive a promoted sovereign leader role. Merina, Aksum, and Nubia remain held until a safe male source and identity review replaces the prior female or unresolved portrait rows. Other historical rows retain their package mechanics but do not promote an unreviewed ImageGen portrait until the source manifest, exact identity, rights position, repaint, independent review, and runtime actor eligibility are accepted. The Dinuzulu kaCetshwayo source-locked candidate remains held because no accepted 1936 eligibility or alternate-history contract authorizes promoting a 1908 deceased ruler; it is never a Solomon kaDinuzulu substitute. The six fictional high-chaos portrait subassets for Pan, Gorilla Kingdom, The Green, Living Rivers, Stoneborn, and Ancient Hosts are separate dormant model-required assets and must never be attached to these grounded sovereign characters.
 
 Older references in this handoff to “council portraits” describe the superseded overlay baseline. The `*_council_party` names, council government helper, and council route wording remain valid constitutional labels from the payoff matrix; they do not replace the sovereign character identity or authorize a collective leader image. This reconciliation changes no tag, carrier, cosmetic identity, country history, core, or gameplay gate.
+
+## Direct-tag and all-row runtime correction (2026-08-03)
+
+The current Event 012 package code removes the live Event 006 receipt requirement from the seven niche origin predicates and overlap-origin recorder. Their existing carrier identities remain the only tag contract; Event 012 still creates no country or cosmetic tag. The package focus loader now directly loads `africa_priority_member_focus_tree` for every accepted carrier and no longer skips the tree while an Event 006 or Soviet focus surface is present.
+
+The runtime portrait admission predicate now covers all sixteen package ids because all sixteen stable DDS and GFX rows exist. All sixteen sovereign character definitions explicitly use `gender = male`; Aksum, Nubia, and Merina use the male titles Negus, Qore, and Mpanjaka in localisation. This gameplay correction supersedes the earlier three-row source gate for package loading, but it does not certify historical source, rights, actor eligibility, or visual parity.
+
+The retained generated Aksum, Nubia, and Merina DDS evidence remains visibly female-presenting while their gameplay metadata is male, so those three rows still require a male-presenting replacement or approved source-locked repaint before release. The dated implementation handoff is `docs/plans/012_africa_plans/subagent_handoffs/012_africa_priority_member_direct_tags_focus_male_leaders_2026-08-03.md`.

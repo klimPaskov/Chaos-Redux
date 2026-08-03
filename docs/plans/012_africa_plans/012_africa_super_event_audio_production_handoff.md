@@ -6,7 +6,7 @@ Prepared: 24 July 2026
 
 The rights-cleared Scramble response and Continental wars recordings have been acquired from the exact researched Commons sources, verified against their published SHA-1 checksums, edited to the approved 115-second windows, converted to 44,100 Hz stereo lossless masters, and exported as Ogg Vorbis and PCM WAV runtime pairs.
 
-No runtime registration or super-event wiring is included in this tranche because the four-role package must be registered atomically after all four audio roles, images, final text, and live identifier rechecks are complete.
+Historical note: the original 24 July tranche did not include runtime registration. The 03 August integration pass completed the atomic four-role registration after roles 1 and 4 were sourced under the superseding CC0 handoff.
 
 ## Delivered files
 
@@ -32,12 +32,16 @@ The final WAV files are accompanied by courtesy credit, public-domain source, an
 
 Chromaprint comparison against 118 other repository audio files found no exact decoded-audio fingerprint collision for either runtime candidate.
 
-## Remaining blockers
+## Superseding role 1 and role 4 handoff
 
-Africa is one audio ID 58 remains production-blocked until an original 110-second score, lossless master, full creator and performer credits, and complete redistribution rights exist.
+The former original-commission blockers for roles 1 and 4 are superseded by `subagent_handoffs/012_africa_super_event_audio_cc0_roles_1_4_2026-08-03.md`. That handoff records the CC0 John Bartmann source masters, frozen source hashes, exact 110-second and 116-second WAV derivatives, and the completed raw-sound/wrapper wiring. No role uses an unlicensed substitute.
 
-The World audio ID 61 remains production-blocked until an original 116-second score, lossless master, full creator and performer credits, and complete redistribution rights exist.
+## Remaining production notes
+
+Africa is one audio ID 58 is complete under the CC0 source record in the superseding handoff.
+
+The World audio ID 61 is complete under the CC0 source record in the superseding handoff.
 
 Slots 101-104 and audio IDs 58-61 must be rescanned immediately before atomic registration.
 
-The four-role package must not be partially wired, and no generic, anthem, library, or silent substitute is approved.
+The four-role package is wired as four distinct registered cues; no generic, anthem, library, or silent substitute is used.

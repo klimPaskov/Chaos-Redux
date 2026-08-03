@@ -87,3 +87,6 @@ Meaningful checks completed: static focus-block parse across all eight Event 012
 - External package readiness and successor loading can expose package-specific runtime issues that static focus parsing cannot prove.
 
 No broad focus redesign, fallback, or unowned gameplay simplification was made in this tranche.
+# Superseding parent note (2026-08-03)
+
+The one external sponsorship payoff row that was queued in this audit is now implemented and recorded as row 78 in the acceptance ledger. Six dedicated world focus trees, their package decisions, AI profiles, emblems, leaders, and terminal consumers are registered; this file retains the prior static-audit evidence and layout warnings.

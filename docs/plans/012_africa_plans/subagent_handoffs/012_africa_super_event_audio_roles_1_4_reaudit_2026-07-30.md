@@ -1,5 +1,7 @@
 # Event 012 Africa super-event audio roles 1 and 4 re-audit
 
+Superseded on 2026-08-03 by `012_africa_super_event_audio_cc0_roles_1_4_2026-08-03.md`. The original-commission-only blockers recorded below remain historical research, not the current Event 012 runtime disposition.
+
 Prepared: 2026-07-30
 
 Scope: narrow audio research and acceptance audit for role 1, **Africa is one**, and role 4, **The World**. This note does not edit sound definitions, event files, localisation, GFX, GUI, catalogue rows, or gameplay wiring. It supersedes neither the canonical Event 012 audio research handoff nor the 2026-07-30 four-role audit; it records the current acceptance boundary after a fresh source-folder, runtime, registry, and identifier check.

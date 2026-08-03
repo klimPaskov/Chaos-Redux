@@ -28,3 +28,6 @@ Asante is blocked by Event 006 ownership for Prempeh II and uncertain individual
 - Source masters, exact crop JSON, processed 156x210 PNG evidence, and converter-produced DDS evidence are under `docs/assets/012_africa_world_order/{source_masters,source_crops,processed_png,final_dds}/portraits/`.
 
 All evidence DDS files are deliberately outside the runtime `gfx/leaders/` tree. The parent owns any future repaint, `.gfx` wiring, character identity change, and actor eligibility decision.
+# Superseding parent note (2026-08-03)
+
+The source-only review below is retained as dated provenance. The current parent tranche has sourced and installed direct source placeholders for all sixteen male-only identities, including Mansa Musa's Catalan Atlas image, the Kilwa 1572 map panel, the Taharqa statue reconstruction, the Great Zimbabwe Bird artifact, the Oyo office photograph, and Radama II. See `docs/assets/portraits/012_africa/source_locked_runtime_mapping.md` for the current runtime map and explicit artifact/map identity treatment.

@@ -2,6 +2,10 @@
 
 Date: 2026-08-01.
 
+## Superseding implementation note (2026-08-03)
+
+The W5 callsite and six external identity package tranche described as queued in this dated addendum have since been implemented at source level. Seven named package-surface receipts, a separate review writer, and the atomic readiness setter now run after roster freeze. Retain the remaining live AI, rights/actor, custom-carrier instantiation, achievement-owner, and model-gated items as open acceptance work; use the current overview and W5 handoff as the active status authority.
+
 Status: Final bounded improvement-loop addendum; broad expansion is closed, implementation and acceptance remain open.
 
 Owner: Main Event 012 implementation agent, with the exact specialist owners named below.

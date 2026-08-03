@@ -2,6 +2,10 @@
 
 Date: 2026-07-30
 
+## Superseding implementation note (2026-08-03)
+
+The current W5 source tranche is no longer uncalled: seven named package-surface receipts, a separate review writer, and the atomic readiness setter are wired from `africa_initialize_scramble_and_world_packages`. The six external package identity assets, focus roots, leader descriptions, and The World emblem are installed but remain political/dormant gates. This dated addendum remains the W0-W4 design record; current status belongs to `docs/events/012_africa/world_order.md` and the W5 handoff.
+
 Status: Implemented through W4 at source level. W5 certification scaffolding is source-present but remains an unresolved accepted tranche promoted to `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md`.
 
 Owner: Main Event 012 implementation agent
@@ -1104,3 +1108,6 @@ After promotion, mark this plan as promoted or superseded rather than leaving a 
 W0 through W4 have source callsites, but W5 remains unresolved because the initial all-six certification receipts, AI and localisation acceptance, asset verification, documentation promotion, and atomic readiness gate are not complete. The improvement loop should stop only after the final addendum's W5 work and required audits are resolved or explicitly blocked by the parent.
 
 At that point the parent should write a closure handoff limited to final localisation review, asset handoff verification, task-specific scenario validation, audit reruns, and terminal super-event readiness.
+# Superseding parent note (2026-08-03)
+
+The six external-continent packages, their unique emblems, male fictional stewards, focus/decision/AI surfaces, and terminal World presentation are now implemented and registered. This addendum remains the earlier design and sequencing record; current runtime evidence is in `docs/events/012_africa/world_order.md` and `docs/assets/012_africa_world_order/gfx_handoff.md`.

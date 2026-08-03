@@ -24,3 +24,6 @@ The documentation now describes the two-sweep census and shared material gate wi
 ## Follow-up
 
 Retain the historical audit handoffs that predate the shared material gate. If live scenario receipts become available, update the acceptance ledger and package-specific docs together; do not infer completion from static source inspection alone.
+# Superseding parent note (2026-08-03)
+
+The current source adds the six external package identity surfaces, male fictional stewards, The World terminal emblem, and the reviewed W5 callsite. Any earlier wording that describes unique package assets or W5 as missing is historical; use `docs/events/012_africa/world_order.md` and the current asset matrix for the active contract.

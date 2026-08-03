@@ -1,5 +1,7 @@
 # Event 012 W5 B1 atomic certification blocker handoff
 
+> Superseded on 2026-08-03. The missing package-source tranche is now implemented: six external focus/decision/AI packages, unique emblems, male fictional package stewards, localisation, and terminal World presentation are registered. The parent accepted the source-backed W5 callsite after the frozen six-entry roster proof. This document remains the historical blocker record; use `012_africa_w5_certification_scaffolding_2026-08-03.md` and `docs/events/012_africa/world_order.md` for the current contract.
+
 Status: queued and intentionally not implemented in gameplay source.
 
 Owner scope audited: `common/scripted_triggers/012_africa_world_order_triggers.txt` and `common/scripted_effects/012_africa_world_order_effects.txt`.

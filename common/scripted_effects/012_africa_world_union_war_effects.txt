@@ -1093,15 +1093,15 @@ africa_world_union_war_cleanup_package = {
 # ---------------------------------------------------------------------------
 
 # COUNTRY scope on the Event 012 host. This is a review opener only. It never
-# sets africa_the_world_super_event_package_ready and never calls the world
-# identity effect.
+# changes presentation readiness or calls the world identity effect.
 africa_world_terminal_protocol_begin_unanimous_union = {
 	if = {
 		limit = {
 			africa_is_current_host = yes
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = africa_world_terminal_political_proof_complete }
 			NOT = { has_global_flag = africa_world_terminal_protocol_unanimous_union }
 			NOT = { has_global_flag = africa_world_terminal_protocol_last_standing }
-			NOT = { has_global_flag = africa_the_world_super_event_package_ready }
 		}
 		set_global_flag = africa_world_terminal_protocol_unanimous_union
 		set_variable = { africa_world_terminal_union_approval_count = constant:africa_value.zero }
@@ -1158,9 +1158,10 @@ africa_world_terminal_protocol_begin_last_standing = {
 	if = {
 		limit = {
 			africa_is_current_host = yes
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = africa_world_terminal_political_proof_complete }
 			NOT = { has_global_flag = africa_world_terminal_protocol_unanimous_union }
 			NOT = { has_global_flag = africa_world_terminal_protocol_last_standing }
-			NOT = { has_global_flag = africa_the_world_super_event_package_ready }
 		}
 		set_global_flag = africa_world_terminal_protocol_last_standing
 		set_variable = { africa_world_terminal_actor_proof_count = constant:africa_value.zero }
@@ -1269,5 +1270,6 @@ africa_world_terminal_protocol_cleanup_after_identity = {
 		clr_global_flag = africa_world_terminal_protocol_review_sent
 		clr_global_flag = africa_world_terminal_protocol_blocked
 		clear_global_event_target = africa_world_terminal_protocol_host
+		clear_global_event_target = africa_world_last_continental_war_target
 	}
 }
