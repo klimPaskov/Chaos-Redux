@@ -346,6 +346,10 @@ package remain fail-closed. Event 6 uses no custom advisor, high-command,
 officer-corps, or dossier portrait sprites. All fourteen obsolete `_small`
 dossier DDS files, registrations, and consumers have been removed.
 
+## 2026-08-03 historical source-placeholder workflow
+
+The current historical-source placeholder rule is recorded in `../../plans/006_independence_wave_plans/subagent_handoffs/006_historical_portrait_placeholder_workflow_2026_08_03.md`. Preserve the attributed original source, make the exact head-and-shoulders crop, run deterministic `156x210` processing, complete the independent identity/crop/provenance review, and convert to DDS only when the normal rights and runtime gates authorize it. No ImageGen repaint is required or permitted for a historical placeholder unless the user explicitly requests that additional art pass. Mark the manifest status `historical_source_placeholder`. This status does not clear rights, runtime, package, attestation, or reachability gates; fictional high-chaos generated portraits remain separate.
+
 ## Historical 2026-07-18 male HOI4 portrait package
 
 The historical generated portrait inventory is

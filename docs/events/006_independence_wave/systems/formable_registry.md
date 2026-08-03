@@ -204,6 +204,8 @@ localisation, flag/portrait, and postformation handoff chain under
 `docs/plans/006_independence_wave_plans/subagent_handoffs/`; the earlier
 fail-closed admission wording in those handoffs is historical and preserved.
 
+The current FSM research boundary is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_fsm_petrus_mailo_source_research_current_2026_08_03.md`: `independence_wave_fsm_sourced_identity_ready` remains unset, so framework readiness is not runtime reachability or package admission. HAW and HBX admission alone does not satisfy the exact HBX/HAW/FSM member contract, and no FORM-48 promotion follows.
+
 ## Origin separation and living countries
 
 The shared core never annexes a country, creates a subject, changes a tag, assigns a cosmetic tag, or replaces a focus tree.
