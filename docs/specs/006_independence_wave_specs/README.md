@@ -99,6 +99,8 @@ This README describes accepted design and research, not the moving implementatio
 baseline. Current production, wiring, audit, and blocker status lives in
 `../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. In
 particular, the 6002 derivative and slot-24 runtime package are implemented,
-while most country packages, FORM-06 through FORM-48, all sixteen achievement
-definitions/localisation sets, remaining animation families, final catalog
-alignment, and whole-event validation remain incomplete.
+while most country packages, FORM-06 through FORM-48, remaining animation
+families, final catalog alignment, and whole-event validation remain incomplete.
+All sixteen achievement definitions, their localisation pairs, and the 48
+normal/grey/not-eligible icon states are source-present; achievement reachability
+remains partial where its owning country or formable package is not admitted.
