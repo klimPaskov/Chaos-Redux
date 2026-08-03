@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v105_2026_08_03.md`, read together with v104/v103 for their underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
+Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read together with v105/v104/v103 for their underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
 
 Current-count override: any historical paragraph below that says 80/74/6 portrait masters or 295/111/50 focus arithmetic is traceability only. The current shelf is 81 original-size portrait masters, and the current generic focus inspection is 184 direct plus 134 shared definitions with 27 imports, 318 unique definitions and 345 raw entries. Use v105 and the current dated package/portrait handoffs for admission decisions.
 
@@ -26,11 +26,11 @@ The 2026-08-03 field-compatibility repair in commit `dcb35cf966993d1a34fc5516492
 
 <!-- Documentation reconciliation: the current allocator passes fourteen attested packages across thirteen compatible reservation groups and fourteen distinct anchors; allocator, crisis, registry, evolution, and ledger cores are source-closed; v67 Universal Former Hosts target uniqueness is implemented while Wars of Separation remains per-release; global completion remains open. -->
 
-## 2026-08-03 current authority continuation: v105, focus spacing, MNT, FSM, and gate repairs
+## 2026-08-03 current authority continuation: v106, package gates, focus spacing, MNT, FSM, and portrait policy
 
-Event 006 remains incomplete and active with a whole-event **HOLD / PARTIAL** disposition. This continuation is the current routing authority for the v105 source checks, the dated v104/v103 underlying evidence, current focus inspection, IW-030 Montenegro, IW-179 FSM, the flag atlas, and the rival-bloc gate repair. It records static evidence only and does not change the accepted specification, package attestation, readiness, catalog, gameplay, asset production, runtime wiring, or live-validation boundary.
+Event 006 remains incomplete and active with a whole-event **HOLD / PARTIAL** disposition. This continuation is the current routing authority for the v106 source checks, the dated v105/v104/v103 underlying evidence, the TRA/FORM-08/MNT package gates, current focus inspection, IW-030 Montenegro, IW-179 FSM, the flag atlas, the grounded-portrait placeholder policy, and the rival-bloc gate repair. It records static evidence only and does not change the accepted specification, package attestation, readiness, catalog, gameplay, asset production, runtime wiring, or live-validation boundary.
 
-The current whole-event static authority is `subagent_handoffs/006_event6_current_completion_evidence_v105_2026_08_03.md`, read together with v104/v103 for their underlying static checks. Fourteen of 193 non-overlay packages remain attested, the 14/20 bands remain fail-closed below admitted capacity, and no package or fallback is promoted by this continuation. Commit `3e1e14329` is an Event 016 localisation audit and adds no Event 006 authority.
+The current whole-event static authority is `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read together with v105/v104/v103 for their underlying static checks. Fourteen of 193 non-overlay packages remain attested, the 14/20 bands remain fail-closed below admitted capacity, and no package or fallback is promoted by this continuation. Commit `3e1e14329` is an Event 016 localisation audit and adds no Event 006 authority.
 
 The current package-gate addenda are `subagent_handoffs/006_iw023_tra_current_admission_audit_2026_08_03.md`, `subagent_handoffs/006_form08_danubian_gate_audit_current_2026_08_03.md`, and `subagent_handoffs/006_iw030_mnt_current_package_gate_audit_2026_08_03.md`. They confirm source-consistent but fail-closed TRA/FORM-08/MNT gates and do not promote a package, lower a threshold, or authorize a fallback.
 
