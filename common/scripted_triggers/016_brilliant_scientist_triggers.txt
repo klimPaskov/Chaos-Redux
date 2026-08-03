@@ -53,16 +53,22 @@ brilliant_scientist_has_any_eligible_host = {
 	}
 }
 
+# Any scope. The dormant KRG history row intentionally owns the fixed Kruger
+# character so the post-formation identity is loader-safe. Only a holder on a
+# different original tag blocks the first appointment or forwarding transaction.
+brilliant_scientist_has_non_dormant_kruger_holder = {
+	any_country = {
+		has_character = KRG_warren_kruger
+		NOT = { original_tag = KRG }
+	}
+}
+
 # Any scope. The shared fire-once dispatcher additionally checks its disabled
 # and already-fired arrays; this helper owns Event 016-specific availability.
 brilliant_scientist_automatic_event_is_available = {
 	NOT = { has_global_flag = brilliant_scientist_event_resolved }
 	NOT = { has_global_flag = world_end }
-	NOT = {
-		any_country = {
-			has_character = KRG_warren_kruger
-		}
-	}
+	NOT = { brilliant_scientist_has_non_dormant_kruger_holder = yes }
 	brilliant_scientist_has_any_eligible_host = yes
 }
 
