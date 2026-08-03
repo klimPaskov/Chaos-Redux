@@ -2,9 +2,13 @@
 
 Date: 2026-07-30
 
+Follow-up repair: 2026-08-03.
+
 Owner: `/root/africa_world_w2_south_america_oceania`
 
 Scope: grounded South American and Oceanian package loops only. The implementation keeps the existing package actors, variables, route helpers, focus IDs, and shared world-order proof surfaces. It does not create tags, models, high-chaos routes, readiness setters, recurring all-country scans, or new event targets.
+
+The 2026-08-03 follow-up closes a receipt mismatch in the shared proof trigger. The successful `.505.a` ratification callback now writes `africa_south_america_resource_debt_law_ratified` and `africa_south_america_south_atlantic_partnership_ratified`; the successful `.605.a` callback now writes `africa_oceania_pacific_reserve_ratified` and `africa_oceania_africa_sea_treaty_ratified`. These are permanent ratification receipts, not focus-click shortcuts, and are written only after the existing local proof, founding, heartland, constituent, and balance/network gates pass.
 
 ## Changed files
 
