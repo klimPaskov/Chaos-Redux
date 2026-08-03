@@ -1,0 +1,69 @@
+# Some fields in this file reject script-constant tokens.
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARMY_PRIORITY = 88
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARTILLERY_PRIORITY = 24
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_DEFENSE_PRIORITY = 82
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_EMERGENCY_ARMY_PRIORITY = 112
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_FOUNDING_RESTRAINT = -230
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_INFRASTRUCTURE_PRIORITY = 66
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_PRODUCTION_PRIORITY = 38
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SETTLED_RESTRAINT = -430
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SUPPORT_PRIORITY = 46
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_TRADITIONAL_ARMY_PRIORITY = 104
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-023 TRANSYLVANIA AI
+# ============================================================================
+# The vanilla TRA AI remains active. These additive strategies make the
+# Event 006 package protect its mountain anchor, settle its host ledger, and
+# prefer the researched frontier force profile.
+# ============================================================================
+
+independence_wave_tra_frontier_survival = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_iw_023_setup_complete
+		has_country_flag = independence_wave_tra_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_tra_host_restraint = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_iw_023_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_tra_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_tra_settled_frontier = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_tra_settlement_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_tra_emergency_commission = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_tra_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_DEFENSE_PRIORITY }
+}
