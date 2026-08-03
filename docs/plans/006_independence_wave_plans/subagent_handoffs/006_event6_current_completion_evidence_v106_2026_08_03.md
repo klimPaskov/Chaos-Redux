@@ -23,6 +23,7 @@ The whole goal remains open because only 14 of 193 non-overlay rows are content-
 | Shared generic focus | Normal-spacing inspection resolves 184 nodes and 192 connectors with zero Event 006 crossings, intersections, long connectors, too-close pairs, or layout warnings. | The isolated independent-command warning is intentional; runtime focus selection remains outside this receipt. |
 | Focus render and source coverage | Fresh `hoi4.focus_render` resolves 318 unique definitions (184 direct plus 134 shared), 192 Event 006 connectors, 121/121 icon/shine/DDS registrations, 318/318 title/description/tooltip/AI blocks, and clean Event 006 geometry. | Fourteen unrelated vanilla continuous-focus icon diagnostics and one vanilla localisation warning remain outside Event 006; the isolated Event 006 warning is intentional. No live focus selection or save/load claim. |
 | Decisions, missions, localisation, and GUI inspection | Current decision/mission audit is source-pass for the accepted map; localisation audit finds 46 BOM English YML files, 6,522 scoped keys, 50 defined texts, 469 popup refs, 319 focus IDs, 1,474 decision/category refs, and 39 GUI refs resolving. | GUI render diagnostics are non-isolating because the repository-wide artifact reports 1,886 blocking diagnostics and 75 overlaps; live interaction remains unproven. |
+| Catalog source and exports | Workbook source and regenerated CSV mirrors are now reconciled by `162a25655`: Event 006 is `Unavailable`, SCN-008 is `Unavailable`, and the mixed Liberations cluster remains `Partially Available`; player-facing wording was not changed. | This corrects the catalog-state mismatch recorded in the earlier audit snapshot; it does not promote packages, increase admitted capacity, or change the HOLD / PARTIAL verdict. |
 
 ## Current package-gate addenda
 
@@ -70,4 +71,6 @@ No fallback or simplification was introduced by this continuation. No Hearts of 
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_final_completion_audit_current_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_generic_focus_surface_audit_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_mnt_v105_documentation_reconciliation_2026_08_03.md`
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_catalog_status_reconcile_current_2026_08_03.md`
 - Current documentation alignment commits: `9091a5459`, `5f3642a81`, `c280e3013`, and `68824eb9a`.
+- Catalog source/export reconciliation commit: `162a25655`.

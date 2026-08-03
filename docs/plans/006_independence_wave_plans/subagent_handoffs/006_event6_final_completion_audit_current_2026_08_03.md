@@ -178,8 +178,10 @@ The source-of-truth map also carries multiple historical handoffs whose numeric 
 
 The parent subsequently reconciled the flat portrait shelf manifests: the physical shelf contains 83 original-size PNG evidence/candidate files, including the previously unindexed `portrait_GZX_frederick_c_alderdice.png`, and the manifests now record all 83. The GZX rows remain evidence-only with rights, role, date, and review gates open; this reconciliation does not promote IW-182 or alter the audit's 14/193 attestation result.
 
+The parent also reconciled the catalog source and exports in commit `162a25655`: Event 006 is now `Unavailable`, SCN-008 is now `Unavailable`, and the mixed Liberations cluster remains `Partially Available`. The workbook wording is unchanged, and the earlier catalog mismatch is retained only as the dated audit snapshot; this correction does not alter the HOLD / PARTIAL verdict or any package, capacity, or runtime gate.
+
 ## Final completion statement
 
 Event 006 is **not complete**. The correct current disposition is **HOLD / PARTIAL**.
 
-There are no accepted simplifications that convert the missing packages, formables, assets, AI/balance proof, `6001`, or catalog-state conflict into completed work.
+There are no accepted simplifications that convert the missing packages, formables, assets, AI/balance proof, or `6001` into completed work.
