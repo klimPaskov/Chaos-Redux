@@ -30,6 +30,8 @@ The unchanged originals are archived in this single durable folder and are not r
 
 The archive is intentionally separate from the event workspace and contains one folder only. Runtime `.dds` files remain under `gfx/leaders/006_independence_wave/`. A later HOI4-style repaint is an optional replacement pass and requires an explicit user request; it must retain the unchanged original and the source-placeholder candidate.
 
+Some older files in this flat archive have adjacent `.txt` prompt records or prior painted PNGs from superseded portrait experiments. Those records are retained for provenance history only. They are not instructions for the current runtime, do not turn a source placeholder into a styled portrait, and must never be used as a replacement for the unchanged source master. The current runtime state is always the dated `source_placeholder` manifest and its crop/metadata/processed-PNG/DDS chain.
+
 The current processed placeholder tranche is recorded under `docs/assets/006_independence_wave/source_placeholder_2026_08_03/` with one crop, metadata record, and `156x210` PNG per promoted source. The corresponding runtime DDS files are wired under `gfx/leaders/006_independence_wave/`; no runtime reference points into the durable archive.
 
 Fictional or genuinely high-chaos portraits follow the generated HOI4-style portrait workflow and keep their source/prompt package beside the other durable portrait records. This policy does not authorize new advisor icons for Independence Wave.
