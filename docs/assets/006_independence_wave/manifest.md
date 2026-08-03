@@ -566,3 +566,11 @@ gate changed.
 No normalized `156x210` files, advisor portraits, dossier derivatives, or small
 portraits are authorized. Event 006 does not authorize custom advisor icons or
 advisor portrait blocks.
+
+## 2026-08-03 flag-atlas and blocked-surface reconciliation
+
+The flag-atlas repair handoff `../../plans/006_independence_wave_plans/subagent_handoffs/006_flag_atlas_ideology_variant_repair_2026_08_03.md` records 102 registered Event 006 tags with complete normal, medium, and small families and four ideology suffixes at each size. It restored 1,188 ideology-suffixed variants from each tag's existing reviewed masters. The strict audit reports 102 complete families, 0 incomplete families, and 0 missing variants in the direct suffix scan; the latest installed-tag/custom-cosmetic audit records 0 collisions. This is synchronization evidence only and does not create a new art source, flag design, GFX surface, readiness flag, package admission, or runtime promotion.
+
+IW-177 FIJ remains outside content attestation/readiness and does not require a new flag asset. Preserve the vanilla FIJ flag triplets while the current package-audit, source-research, and Vishnu Deo repaint handoffs keep FIJ **BLOCKED / needs_user_review** under the circa-1940s Sukuna date gate, unresolved 1936 role/source evidence, and FORM-39 member, identity, flag, and consent gates. No FIJ runtime asset promotion or fallback is authorized.
+
+Super-event `6001` remains absent from runtime. The v110 handoff records Ivo Muhvić's *Mačekova koračnica*, performed by the Croatian Armed Forces Symphonic Wind Orchestra, as a conditional research candidate only; it is not selected or wired, and the accepted Clarke cue is not silently replaced. Explicit user approval under the accepted specification, human listening, and composition-jurisdiction review are required before any final WAV, wrapper, catalog row, or runtime wiring is created. No runtime audio derivative was created in this manifest update.
