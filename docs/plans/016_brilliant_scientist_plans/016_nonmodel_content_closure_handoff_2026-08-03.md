@@ -46,7 +46,7 @@ The next useful work is not another content tranche:
 
 1. Validate the high-speed trial's cancellation, ordinary transfer, KRG snapshot, national-result retention, proprietary-result movement, terminal cleanup, AI affordability, and `.195` outcome behavior.
 2. Validate the ten-country settlement layer's transfer, cleanup, balance, and probability behavior.
-3. Validate Event 019 providers 504-508 through creation, management, defeat, and cleanup without Event 016 state leakage.
+3. Validate Event 019 providers 504-510 through creation, management, defeat, and cleanup without Event 016 state leakage. Providers 509 and 510 are now present for Portal Raider and Temporal Guard; this is interoperability completion, not a new route or project mechanic.
 4. Review quantitative project timing, foreign-operation scoring, force production, rebellion, and terminal timing.
 5. Rerun decision/mission, localisation, event-completion, and documentation audits against the final implementation state.
 
