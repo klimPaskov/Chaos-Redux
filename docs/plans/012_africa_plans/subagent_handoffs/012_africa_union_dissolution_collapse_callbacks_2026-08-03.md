@@ -12,9 +12,9 @@ This tranche closes two existing W4 callback gaps without adding a country tag, 
 
 ## Dissolution callback
 
-`africa_world_union_protocol_dissolve_by_treaty` already wrote `africa_world_dissolution_recorded` and `africa_world_union_protocol_dissolved` for both sovereign actors, but no caller opened the corresponding record events.
+`africa_world_union_protocol_dissolve_by_treaty` already wrote `africa_world_union_dissolution_recorded` and `africa_world_union_protocol_dissolved` for both sovereign actors, but no caller opened the corresponding record events.
 
-`events/012_africa_world_package_union_war.txt` now uses the canonical `africa_world_dissolution_recorded` receipt for event `.713`.
+`events/012_africa_world_package_union_war.txt` now uses the canonical `africa_world_union_dissolution_recorded` receipt for event `.713`.
 
 The treaty effect opens events `.713` and `.717` for both actors before pair cleanup, so the consented dissolution is visible to each government while the existing historical flags remain queryable.
 
