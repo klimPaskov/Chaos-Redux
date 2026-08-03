@@ -10,7 +10,7 @@ Current overlay-watch override: `subagent_handoffs/006_overlay_watch_permanent_i
 
 Current IW-020 override: `subagent_handoffs/006_atx_venice_country_package_audit_2026_08_03.md` is the package authority and `subagent_handoffs/006_iw020_atx_venice_source_clearance_2026_08_03.md` is the source-only visual authority. The Volpi candidate and Venetian maritime references remain `needs_user_review`; ATX has no runtime package adapter or attestation and remains fail-closed.
 
-Current COG cost override: `subagent_handoffs/006_cog_overlay_cost_localisation_repair_2026_08_03.md` and its PASS re-audit `subagent_handoffs/006_cog_overlay_cost_localisation_reaudit_2026_08_03.md` supersede the narrow P3 literal-cost drift note in the dated decision/mission audit. The twelve COG displayed values and the sibling reusable-region overlay values now resolve from their centralized cost constants; payment and affordability effects remain unchanged.
+Current COG cost override: `subagent_handoffs/006_cog_overlay_cost_localisation_repair_2026_08_03.md` and its PASS re-audit `subagent_handoffs/006_cog_overlay_cost_localisation_reaudit_2026_08_03.md` supersede the narrow P3 literal-cost drift note in the dated decision/mission audit. The twelve COG displayed values and the sibling reusable-region overlay values now resolve from their centralized cost constants and canonical installed icon tokens; payment and affordability effects remain unchanged.
 
 The v106 authority supersedes any downstream paragraph that still calls v105, v104, or v103 the current whole-event router; those paragraphs remain dated traceability unless explicitly promoted by v106.
 
