@@ -180,6 +180,8 @@ The parent subsequently reconciled the flat portrait shelf manifests: the physic
 
 The parent also reconciled the catalog source and exports in commit `162a25655`: Event 006 is now `Unavailable`, SCN-008 is now `Unavailable`, and the mixed Liberations cluster remains `Partially Available`. The workbook wording is unchanged, and the earlier catalog mismatch is retained only as the dated audit snapshot; this correction does not alter the HOLD / PARTIAL verdict or any package, capacity, or runtime gate.
 
+The parent also implemented the bounded permanent-identity-loss cleanup recorded in `006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md`. IW-022, IW-025, and IW-035 now cancel stale paid watch missions and clear package-owned interruption state after their centralized 30-day grace window, while preserving temporary route suspension/resumption. The follow-up source audit `006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md` is a source PASS with no P1/P2 defect; live/save-load behavior remains an open evidence boundary.
+
 ## Final completion statement
 
 Event 006 is **not complete**. The correct current disposition is **HOLD / PARTIAL**.

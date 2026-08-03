@@ -58,6 +58,8 @@ The decision/mission audit found and closed two narrow source issues: `independe
 
 The current flat portrait shelf reconciliation is 83 original-size PNG evidence/candidate masters, all indexed or explicitly recorded in the two flat-shelf manifests. The GZX Howley and Alderdice rows remain rights/role/review-gated evidence only, and no shelf row grants DDS, GFX, character, runtime, package, or attestation promotion. Earlier 80/81/82-master paragraphs are dated traceability.
 
+The overlay-watch lifecycle repair is recorded in `../../plans/006_independence_wave_plans/subagent_handoffs/006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md` and its source-PASS re-audit in `../../plans/006_independence_wave_plans/subagent_handoffs/006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md`. IW-022, IW-025, and IW-035 preserve temporary carrier interruptions but cancel their paid watch missions and clear package-owned state after a centralized 30-day permanent-identity-loss grace window. The source repair does not promote an overlay to a standalone country package or claim live/save-load evidence.
+
 ## 2026-08-02 historical controlling acceptance authority (v102; superseded by the 2026-08-03 continuation)
 
 > Historical v102 routing snapshot: use the 2026-08-03 continuation above and v103 for current routing. The v102 handoff and parent reflow remain dated evidence. Any later dated paragraph retaining 80/74/6, 295/111/50, or the earlier 3/4/5/7/10 ladder is historical traceability only.

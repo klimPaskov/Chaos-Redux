@@ -153,6 +153,7 @@ independence_wave_iw022_dalmatia_start_watch_mission = {
 	clr_country_flag = independence_wave_iw022_dalmatia_watch_interrupted
 	set_country_flag = independence_wave_iw022_dalmatia_watch_running
 	set_variable = { independence_wave_iw022_dalmatia_watch_hold_days = constant:independence_wave_iw022_dalmatia_value.minimum }
+	set_variable = { independence_wave_iw022_dalmatia_watch_suspension_days = constant:independence_wave_iw022_dalmatia_value.minimum }
 	activate_mission = independence_wave_iw022_hold_adriatic_watch
 }
 
@@ -180,6 +181,23 @@ independence_wave_iw022_dalmatia_fail_watch_mission = {
 		set_temp_variable = { independence_wave_iw022_dalmatia_legitimacy_delta = constant:independence_wave_iw022_dalmatia_outcome.watch_failure_legitimacy }
 		independence_wave_iw022_dalmatia_change_values = yes
 	}
+}
+
+independence_wave_iw022_dalmatia_cancel_watch_permanent_identity_loss = {
+	if = {
+		limit = { has_country_flag = independence_wave_iw022_dalmatia_watch_running }
+		set_country_flag = independence_wave_iw022_dalmatia_watch_failed
+	}
+	if = { limit = { has_active_mission = independence_wave_iw022_hold_adriatic_watch } remove_mission = independence_wave_iw022_hold_adriatic_watch }
+	independence_wave_iw022_dalmatia_remove_overlay_ideas = yes
+	clr_country_flag = independence_wave_iw022_dalmatia_watch_running
+	clr_country_flag = independence_wave_iw022_dalmatia_watch_interrupted
+	clr_country_flag = independence_wave_iw022_dalmatia_overlay_active
+	clr_country_flag = independence_wave_iw022_dalmatia_overlay_suspended
+	clr_country_flag = independence_wave_route_overlay_active
+	set_country_flag = independence_wave_iw022_dalmatia_permanent_identity_loss
+	set_variable = { independence_wave_iw022_dalmatia_watch_hold_days = constant:independence_wave_iw022_dalmatia_value.minimum }
+	clear_variable = independence_wave_iw022_dalmatia_watch_suspension_days
 }
 
 independence_wave_iw022_dalmatia_handle_watch_cancel = {
@@ -246,6 +264,7 @@ independence_wave_iw022_dalmatia_initialize_overlay = {
 		set_variable = { independence_wave_iw022_dalmatia_coastal_security = constant:independence_wave_iw022_dalmatia_value.coastal_security_start }
 		set_variable = { independence_wave_iw022_dalmatia_municipal_legitimacy = constant:independence_wave_iw022_dalmatia_value.municipal_legitimacy_start }
 		set_variable = { independence_wave_iw022_dalmatia_watch_hold_days = constant:independence_wave_iw022_dalmatia_value.minimum }
+		set_variable = { independence_wave_iw022_dalmatia_watch_suspension_days = constant:independence_wave_iw022_dalmatia_value.minimum }
 		set_variable = { independence_wave_anchor_state = 103 }
 		set_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.port_or_island }
 		set_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime }
@@ -283,6 +302,17 @@ independence_wave_iw022_dalmatia_pause_watch_mission = {
 			mission = independence_wave_iw022_hold_adriatic_watch
 			days = independence_wave_iw022_dalmatia_pause_days
 		}
+		add_to_variable = { independence_wave_iw022_dalmatia_watch_suspension_days = constant:independence_wave_iw022_dalmatia_duration.watch_pause_daily_extension }
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_iw022_dalmatia_watch_suspension_days
+					value = constant:independence_wave_iw022_dalmatia_duration.watch_suspension_grace_days
+					compare = greater_than_or_equals
+				}
+			}
+			independence_wave_iw022_dalmatia_cancel_watch_permanent_identity_loss = yes
+		}
 	}
 }
 
@@ -296,6 +326,7 @@ independence_wave_iw022_dalmatia_resume_overlay = {
 		set_country_flag = independence_wave_iw022_dalmatia_overlay_active
 		set_country_flag = independence_wave_route_overlay_active
 		clr_country_flag = independence_wave_iw022_dalmatia_overlay_suspended
+		set_variable = { independence_wave_iw022_dalmatia_watch_suspension_days = constant:independence_wave_iw022_dalmatia_value.minimum }
 		independence_wave_iw022_dalmatia_refresh_idea_lifecycle = yes
 	}
 }
