@@ -1,6 +1,6 @@
 # Event 006 pre-resize source repaint inventory
 
-This manifest indexes 80 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every physical PNG in the flat shelf has a row below, including the four ARX v76 masters, the CHU Mirsaid master, and the first DOX Prempeh-II repaint. Every indexed shelf file is a byte-for-byte copy of the corresponding ImageGen PNG and sits directly in this directory; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
+This manifest indexes 81 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every physical PNG in the flat shelf has a row below, including the four ARX v76 masters, the CHU Mirsaid master, the first DOX Prempeh-II repaint, and the Znaci 8889 Jovanović repaint. Every indexed shelf file is a byte-for-byte copy of the corresponding ImageGen PNG and sits directly in this directory; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
 
 | Date | Trial | Shelf copy | Original ImageGen output | SHA-256 | Dimensions | Mode | Bytes |
 |---|---|---|---|---|---:|---|---:|
