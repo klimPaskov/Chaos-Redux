@@ -8,7 +8,7 @@ Scope: current-facing Event 006 status and blocker documentation after IW-023 Tr
 
 The current exact compile-time attestation boundary is 15 of 193 selectable non-overlay packages across 14 compatible reservation groups and 15 distinct anchors: IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by `006_iw023_tra_runtime_scenario_admission_reconciliation_2026_08_03.md` and gameplay commit `712c7c868`.
 
-The 14-country band has raw admitted inventory but no accepted simultaneous execution witness. The 20-country band is structurally impossible with the current 15 attestations. FORM-08 remains fail-closed for its Vojvodina/Slavonia member, consent, and anchor contract. The whole event remains **HOLD / PARTIAL**.
+The source-backed standalone fourteen-package witness is now recorded in `006_event6_14_package_static_witness_2026_08_03.md` and enforced by the allocator audit. It proves unique anchors/tags, compact host-owned footprints, the two-slot RG-RHINE-SAAR exception, and capital-preferred host remnants, but it is not a live execution or save/load receipt. The 20-country band is structurally impossible with the current 15 attestations. FORM-08 remains fail-closed for its Vojvodina/Slavonia member, consent, and anchor contract. The whole event remains **HOLD / PARTIAL**.
 
 The obsolete pasted flag-log is not current evidence and was not used. Current collision evidence is limited to the scoped Event 006/Soviet registered-tag scan and strict static flag/tag audits.
 
@@ -25,7 +25,7 @@ The already-current v106 overview, source-of-truth map, resume packet, and regio
 
 ## Validation receipts
 
-- `.tools/audit_event6_allocator.py`: PASS; 149 publishers, 126 automatic/high-chaos selectable rows, 138 SCN-008-ranked rows, 15 attestations, 14 compatible groups, 15 anchors, doubled 6/8/10/14/20 ladder, crisis/order receipts, and Event 005-first joint ordering.
+- `.tools/audit_event6_allocator.py`: PASS; 149 publishers, 126 automatic/high-chaos selectable rows, 138 SCN-008-ranked rows, 15 attestations, 14 compatible groups, 15 anchors, a source-backed fourteen-package standalone witness, doubled 6/8/10/14/20 ladder, crisis/order receipts, and Event 005-first joint ordering.
 - `.tools/audit_event6_scenario_matrix.py`: PASS; 32 mode/intensity cells and eight edge cases.
 - `.tools/audit_event6_gui_matrix.py`: PASS; Statehood Ledger semantic matrix and static/animated sibling exclusivity.
 - `.tools/audit_event6_flags.py --strict`: PASS; 102/102 Event 006 flag families.
@@ -35,4 +35,4 @@ No live game, save/load, player-owned scenario, or in-game log claim is made.
 
 ## Remaining blockers
 
-The remaining blockers are the 178 unattested country packages, the missing accepted 14-country simultaneous witness, structurally impossible 20-country capacity at the current attestation count, fail-closed formable families including FORM-08, absent `6001` runtime/audio approval and wiring, incomplete asset consumers, and final named-scenario AI/balance acceptance. Grounded portraits may use the current unchanged-source placeholder workflow when their package gates authorize a runtime consumer; no Event 006 advisor icons are created or needed.
+The remaining blockers are the 178 unattested country packages, the distinction between this static fourteen-package witness and a live execution receipt, structurally impossible 20-country capacity at the current attestation count, fail-closed formable families including FORM-08, absent `6001` runtime/audio approval and wiring, incomplete asset consumers, and final named-scenario AI/balance acceptance. Grounded portraits may use the current unchanged-source placeholder workflow when their package gates authorize a runtime consumer; no Event 006 advisor icons are created or needed.

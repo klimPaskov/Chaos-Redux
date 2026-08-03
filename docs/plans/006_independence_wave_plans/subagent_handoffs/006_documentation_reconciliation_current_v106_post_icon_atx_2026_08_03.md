@@ -8,7 +8,7 @@ Scope: documentation-only reconciliation for the Event 006 overview, source-of-t
 
 ## Current post-TRA status override
 
-The current whole-event authority is post-TRA and remains **HOLD / PARTIAL**: 15 of 193 selectable non-overlay packages are content-attested, spanning 14 compatible reservation groups and 15 distinct anchors; 178 selectable rows remain unattested. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by `006_iw023_tra_runtime_scenario_admission_reconciliation_2026_08_03.md` and commit `712c7c868`. The 14-country band still lacks an accepted simultaneous execution witness, and the 20-country band remains structurally impossible with 15 attestations. FORM-08 is a separate fail-closed member/consent/anchor gate. Any pre-TRA fourteen-package, thirteen-group, or fourteen-anchor wording elsewhere in this handoff is historical traceability only.
+The current whole-event authority is post-TRA and remains **HOLD / PARTIAL**: 15 of 193 selectable non-overlay packages are content-attested, spanning 14 compatible reservation groups and 15 distinct anchors; 178 selectable rows remain unattested. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by `006_iw023_tra_runtime_scenario_admission_reconciliation_2026_08_03.md` and commit `712c7c868`. The source-backed standalone fourteen-package witness is now recorded in `006_event6_14_package_static_witness_2026_08_03.md`; it proves the frozen source allocation and host-remnant rule but is not live execution evidence. The 20-country band remains structurally impossible with 15 attestations. FORM-08 is a separate fail-closed member/consent/anchor gate. Any pre-TRA fourteen-package, thirteen-group, or fourteen-anchor wording elsewhere in this handoff is historical traceability only.
 
 The obsolete pasted flag-log text is excluded from current evidence. Current collision status comes only from the scoped registered-tag source and the strict static tag audit.
 
@@ -17,7 +17,7 @@ The obsolete pasted flag-log text is excluded from current evidence. Current col
 | Surface | Current authority | Boundary |
 | --- | --- | --- |
 | Accepted design | `docs/specs/006_independence_wave_specs/` | The accepted specification is unchanged and remains the design source of truth. |
-| Whole-event static status | `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read with the post-TRA completion audit | Event 006 remains **HOLD / PARTIAL** with 15 of 193 non-overlay packages attested, 14 compatible reservation groups, and 15 distinct anchors. The 14/20 bands remain fail-closed below their accepted witnesses. This is static evidence and does not claim gameplay completion or live execution. |
+| Whole-event static status | `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read with `006_event6_14_package_static_witness_2026_08_03.md` and the post-TRA completion audit | Event 006 remains **HOLD / PARTIAL** with 15 of 193 non-overlay packages attested, 14 compatible reservation groups, and 15 distinct anchors. The standalone fourteen-package source witness passes; live execution remains unobserved and the 20 band remains fail-closed. This is static evidence and does not claim gameplay completion. |
 | Current overview | `docs/events/006_independence_wave/overview.md` | The 2026-08-03 v106 continuation is current; v105/v104/v103 paragraphs are dated traceability unless explicitly marked otherwise. |
 | Current resume routing | `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` | The explicit v106 override and current shelf/COG/audio notes control resume work; older counts remain historical. |
 | Current plan routing | `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` | The map now identifies v106, the 83-master shelf, v111 audio research, current ATX/MNT gates, and the current COG post-icon audit as routing evidence. |
@@ -55,7 +55,7 @@ The obsolete pasted flag-log text is excluded from current evidence. Current col
 
 ## Contradictions still open
 
-- Event 006 remains **HOLD / PARTIAL**; 15 of 193 non-overlay packages are attested across 14 compatible reservation groups and 15 anchors, and 14/20 capacity remains fail-closed.
+- Event 006 remains **HOLD / PARTIAL**; 15 of 193 non-overlay packages are attested across 14 compatible reservation groups and 15 anchors, the standalone fourteen-package source witness passes, and live/20-country capacity remains outside the current evidence boundary.
 - ATX Venice lacks a complete runtime adapter, complete country surfaces, source/portrait clearance, and attestation.
 - MNT retains provenance, role, runtime, and package gates despite stronger archival source notes.
 - IW-023 TRA has current source-local PASS evidence and is admitted to the runtime and SCN-008 dispatch sets; FORM-08 remains separately **HOLD** and no fallback promotion follows.
