@@ -1,5 +1,7 @@
 # Event 016 documentation completion-boundary reconciliation
 
+> Superseded continuation note (2026-08-03): this handoff predates the completed 21-icon KRG country-idea package and the reconciled asset manifest. Its historical gap and manifest-consistency notes remain audit evidence only. Use `016_core_runtime_handoff_map.md`, `docs/specs/016_brilliant_scientist_specs/handoffs/016_completion_status.md`, and `016_resume_docs_reconciliation_2026-08-03.md` for current status.
+
 Date: 2026-08-03
 
 ## Scope

@@ -1,5 +1,7 @@
 # Asset production prompt for Event 016 Brilliant Scientist
 
+> Superseded continuation note (2026-08-03): the production inventory below is a historical planning prompt. The current asset manifest records the produced and registered 2D packages, including the complete 21-icon KRG country-idea extension. Do not rerun broad asset production from this prompt. Use `docs/assets/016_brilliant_scientist/manifest.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current status. External Stage-0 portrait rights, targeted or live acceptance, and the no-model boundary remain open.
+
 The binding inventory is six super-event images, seventeen achievement icon triplets, and five severe portrait animation package families. All remain required. Stage 0 alone is complete and registered. Every super-event image, achievement icon, later portrait source and runtime file, severe animation package, flag, project icon, UI asset, report image, and news image remains unproduced and unwired.
 
 Use this prompt with the correct narrow Chaos Redux asset subagents. Spawn every project subagent with `fork_context=false`.
