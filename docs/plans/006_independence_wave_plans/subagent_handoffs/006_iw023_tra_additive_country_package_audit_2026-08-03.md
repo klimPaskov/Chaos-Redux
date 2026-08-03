@@ -2,6 +2,9 @@
 
 Date: 2026-08-03
 
+> Historical pre-repair audit. Its planner, roster, and FORM-08 findings are
+> superseded by the current source and `006_iw023_tra_postrepair_audit_2026_08_03.md`.
+
 Status: HOLD for parent review; this is a static package audit and does not claim runtime completion.
 
 ## Scope and evidence
