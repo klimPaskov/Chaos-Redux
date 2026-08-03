@@ -43,7 +43,7 @@ Its current disposition is:
 | W2 Six Distinct Polity Play Loops | Source-implemented | The three W2 package handoffs, six package event ranges `.100-.606`, and integrated decision boards | Package-by-package scenario acceptance remains open. |
 | W3 Four-Mode Sponsorship | Source-implemented | `012_africa_world_w3_sponsorship_modes_2026-07-30.md`, the integrated offer/mission decisions, and the military on-action callsites | Mode balance, default, betrayal, actor-loss, and cleanup scenarios remain open. |
 | W4 Union, War, Succession, Breakup, and Terminal Lifecycle | Source-implemented | `012_africa_world_w4_union_war_terminal_2026-07-30.md`, `012_africa_world_w2_w4_runtime_integration_2026-07-30.md`, and current union/war effects and events | Bilateral, settlement, succession, terminal, and world-end scenario acceptance remains open. |
-| W5 AI, Localisation, Asset Verification, Documentation, and Atomic Gate Promotion | Unresolved accepted tranche | The exact certification trigger and initial atomic setter described by the prior addendum do not exist; the historical acceptance surfaces remain open | Implement B1, B4, and B5 below after B2 and B3 evidence is reconciled. |
+| W5 AI, Localisation, Asset Verification, Documentation, and Atomic Gate Promotion | Scaffolded, review-gated accepted tranche | The exact certification trigger and initial atomic setter now exist, but the audit-owned review receipt and reviewed post-freeze callsite remain open | Complete B1, B4, and B5 below after B2 and B3 evidence is reconciled. |
 
 W0 through W4 should be promoted into the source specification as accepted implementation facts after the main agent reviews their current callsites.
 
@@ -179,7 +179,9 @@ It must not infer completion from a cosmetic tag, selected target, focus visibil
 
 ### Design problem
 
-W0-W4 source exists, but initial package candidates cannot enter grounded world-order play because there is no reviewed all-six certification trigger and no initial atomic writer for `africa_world_package_implementation_ready`.
+The all-six trigger and atomic setter are now source-present. The audit-owned review receipt and reviewed post-freeze callsite remain open.
+
+W0-W4 source exists, but initial package candidates cannot enter grounded world-order play because the all-six certification scaffold has no accepted review receipt or reviewed post-freeze callsite. The closed trigger and initial atomic writer for `africa_world_package_implementation_ready` are now source-present.
 
 The current writer inside `africa_world_commit_package_successor` is an intentional continuity transfer for an already accepted package and is not the missing initial certification path.
 
