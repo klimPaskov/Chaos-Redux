@@ -40,7 +40,7 @@ The current mod intentionally has no `map/buildings.txt` override.
 
 The state gameplay buildings do not declare `show_on_map`, `show_on_map_meshes`, `has_destroyed_mesh`, or a spawn point, so the state interface cannot create one map mesh for every state-level camp value.
 
-Each state-level camp is represented by one hidden provincial anchor building. `concentration_camp_site` and `extermination_camp_site` use the dedicated `chaosx_camp_visual_anchor_spawn` pool with `province_max = 1` and `state_max = 1`, and are created with `construct_building_in_random_province` from state scope.
+Each state-level camp is represented by one hidden provincial anchor building. `concentration_camp_site` uses `chaosx_concentration_camp_visual_anchor_spawn`, while `extermination_camp_site` uses `chaosx_extermination_camp_visual_anchor_spawn`; each pool has `max = 1`, and each anchor has `province_max = 1` and `state_max = 1`. They are created with `construct_building_in_random_province` from state scope. Separate pools are required because HOI4 resolves one map entity per spawn point and the two anchors use different meshes.
 
 `chaosx_refresh_camp_visual_anchor` removes stale opposing anchors, preserves an existing same-type anchor, and creates one random valid provincial anchor when the corresponding state gameplay building exists. Extermination sites take visual precedence when both state values coexist. Removing or dismantling the state camp removes both anchor types.
 

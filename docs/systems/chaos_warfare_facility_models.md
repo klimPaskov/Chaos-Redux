@@ -12,11 +12,11 @@ Both assets are static map entities and intentionally have no armature, skeletal
 
 The existing building definitions remain the gameplay owners for `biowarfare_facility` and `cw_facility` in `common/buildings/chaosx_buildings.txt`.
 
-Each building uses its own dedicated provincial spawn pool, `chaosx_biowarfare_facility_spawn` or `chaosx_cw_facility_spawn`, and resolves to its dedicated entity through the `building_<building_id>` naming convention. The custom pools prevent these models from consuming the vanilla shared special-project positions.
+Each building uses its own dedicated provincial spawn pool, `chaosx_biowarfare_facility_spawn` or `chaosx_cw_facility_spawn`, and resolves to its dedicated `building_<spawn_point>` entity. The custom pools prevent these models from consuming the vanilla shared special-project positions.
 
-The active runtime chain is `biowarfare_facility` -> `building_biowarfare_facility` -> `biowarfare_facility_mesh` -> `gfx/models/buildings/biowarfare_facility.mesh` -> the three stable biological DDS files.
+The active runtime chain is `biowarfare_facility` -> `chaosx_biowarfare_facility_spawn` -> `building_chaosx_biowarfare_facility_spawn` -> `biowarfare_facility_mesh` -> `gfx/models/buildings/biowarfare_facility.mesh` -> the three stable biological DDS files.
 
-The active runtime chain is `cw_facility` -> `building_cw_facility` -> `cw_facility_mesh` -> `gfx/models/buildings/cw_facility.mesh` -> the three stable chemical DDS files.
+The active runtime chain is `cw_facility` -> `chaosx_cw_facility_spawn` -> `building_chaosx_cw_facility_spawn` -> `cw_facility_mesh` -> `gfx/models/buildings/cw_facility.mesh` -> the three stable chemical DDS files.
 
 Both entities are declared in `gfx/entities/chaosx_buildings.asset` with an `idle` default state and are backed by the sole active model declarations in `gfx/entities/chaosx_buildings.gfx`.
 
