@@ -34,6 +34,7 @@ When no external candidate carries the reviewed `africa_world_package_implementa
 - A candidate also needs `africa_world_package_implementation_ready` before Action 85 can install it. This is an implementation gate, not a gameplay fallback.
 - Every continent-package loader preserves completed-focus history. The installer remains one-shot through the candidate-to-installed state transition, so activating a reviewed package cannot silently erase earlier national progress.
 - W4 union eligibility rejects the canonical `africa_world_submission_settlement` receipt written by Action 88 and continental-war submission; terminally submitted packages cannot re-enter the union partner route.
+- The resolver no longer recognises the legacy `africa_world_package_terminal_absorbed` flag. That flag had no writer in the Event 012 source, while the accepted runtime paths require consent, submission, successor, exile, breakup, or explicit terminal-resolution receipts; no instant annexation path is implied.
 
 Consent-based union dissolution now opens the `.713` and `.717` record events for both sovereign actors from the existing dissolution receipts before pair cleanup. If a registered continental war ends without an accepted armistice, submission, constituent release, successor, exile, or breakup receipt, the pairwise peace hook records the explicit `collapsed` status and opens `.733` for the attacker before running the shared cleanup; it does not infer a terminal settlement.
 
