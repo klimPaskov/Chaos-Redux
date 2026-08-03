@@ -44,6 +44,7 @@ No fallback, placeholder, final `.wav`, final edited `.ogg`, sound definition, w
 
 - Composition rights: the Commons raw description applies `{{PD/1923|1932}}` to the 1899 Sousa composition. The composition is public domain under the source page's stated United States basis.
 - Recording rights: the Commons raw description applies `{{PD-USGov-Military-Navy}}` to the performance. The template's English text says the recording is a work of a U.S. Navy sailor or employee made as part of official duties and is public domain **in the United States**.
+- Rights-template evidence: <https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Navy> and the English template text at <https://commons.wikimedia.org/w/index.php?title=Template:PD-USGov-Military-Navy/en&action=raw>.
 - Commons API `extmetadata` reports `LicenseShortName=Public domain`, `UsageTerms=Public domain`, `Copyrighted=False`, `AttributionRequired=false`, and `License=pd`.
 - Attribution: not required by the stated public-domain basis. Recommended courtesy provenance if this candidate is later approved: `John Philip Sousa, Hands Across the Sea (1899); United States Navy Band (1992), source via the U.S. Navy Band archive and Wikimedia Commons; U.S. federal public-domain performance and public-domain composition; edited excerpt.`
 - License confidence: **high for United States redistribution** because the source record names the federal Navy band and points to an archived official Navy Band file; **medium for worldwide redistribution** because `PD-USGov-Military-Navy` is not a worldwide CC0 grant and the current official page is unavailable to this client.
@@ -107,7 +108,7 @@ The previously documented John Philip Sousa *Hands Across the Sea* recording by 
 - Local source: `docs/assets/006_independence_wave/super_events/audio/source/Sousa_Hands_Across_The_Sea_United_States_Marine_Band_2018.ogg`.
 - Source bytes: `7,302,316`; SHA-256 `5C5B4C3ADAB6E3D4A6BFB1496C0A02780B7B9F98697DC05B12369D93F7C955B6`; SHA-1 `36171615CA8F41512F4CF0B8336F1A0F4AA370EB`.
 - Decoded source: Ogg Vorbis, 48 kHz, 2-channel stereo, `167.185167 s`, with an embedded PNG stream that must be excluded during conversion (`-map 0:a:0 -vn`).
-- Commons rights: composition `PD-old-auto-expired`; performance/recording `PD-USGov-Military-Marines`; API metadata reports public domain and no attribution requirement. Confidence is high for U.S. rights and medium for worldwide rights.
+- Commons rights: composition `PD-old-auto-expired`; performance/recording `PD-USGov-Military-Marines`; the rights template is <https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Marines> and its English text is at <https://commons.wikimedia.org/w/index.php?title=Template:PD-USGov-Military-Marines/en&action=raw>. API metadata reports public domain and no attribution requirement. Confidence is high for U.S. rights and medium for worldwide rights.
 - This candidate has the strongest metadata detail (2018 album, track 56, conductor) but the official source page could not be independently reached, and its more assertive American military-band idiom still needs explicit tonal approval. The prior v101 handoff remains evidence; no derivative was produced.
 
 ## Other source findings and rejection reasons
