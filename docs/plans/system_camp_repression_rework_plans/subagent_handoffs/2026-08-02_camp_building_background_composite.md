@@ -2,14 +2,16 @@
 
 Status: complete for the requested deterministic strip correction.
 
+The runtime strip was subsequently recovered by `2026-08-03_building_icon_strip_recovery.md`; the checksum and first-33-payload statements below describe the pre-recovery runtime and are retained as historical evidence for the camp-frame composite.
+
 ## Runtime change
 
 - Updated only `gfx/interface/buildings/building_icon_strip.dds`.
 - Frames 34 and 35 now use the exact user-provided `gfx/interface/buildings/building_background.png` as their background while retaining the accepted ochre watchtower/fence and crematorium/chimney/fence pictograms.
 - Frames 1-33 remain payload-byte identical to the pre-change strip.
 - The strip remains 35 frames at `1610x46` with `46x46` frames.
-- Final strip SHA-256: `de2dc7538003b3966a64d4d8ad303e98ab4930a281cd60040bf01419e33bd1bf`.
-- Pre-change strip SHA-256: `c7359e1ff2de6d3105c0ef152adc12583aec43fd03ba42204810087ac520acdd`.
+- Historical composite strip SHA-256: `de2dc7538003b3966a64d4d8ad303e98ab4930a281cd60040bf01419e33bd1bf`.
+- Historical pre-composite strip SHA-256: `c7359e1ff2de6d3105c0ef152adc12583aec43fd03ba42204810087ac520acdd`.
 
 ## User source provenance
 
