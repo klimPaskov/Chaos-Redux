@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Audit the Event 006 anchor-first frozen-plan contract.
 
-This is a mechanical source audit. It does not simulate HOI4, package readiness,
-or live map ownership; those remain separate gameplay and scenario tests.
+This is a mechanical source audit. It does not simulate HOI4 or live map
+ownership; the static fourteen-package witness checks only the current source
+bindings, attestation gate, and vanilla history needed for that witness.
 """
 
 from __future__ import annotations
@@ -624,6 +625,11 @@ def main() -> int:
 		errors,
 	)
 	require("set_capital = event_target:" not in execution, "Event 006 uses undocumented set_capital shorthand", errors)
+	for needle, label in (
+		("independence_wave_rollback_reversible_frozen_country_packages = {", "reversible Event 006 cleanup helper"),
+		("liberation_release_execute_compensating_rollback = yes", "compensating ownership rollback"),
+	):
+		require(needle in execution, f"Event 006 execution is missing {label}", errors)
 	for needle in (
 		"is_owned_by = event_target:independence_wave_execution_state_target",
 		"is_controlled_by = event_target:independence_wave_execution_state_target",
@@ -821,6 +827,11 @@ def main() -> int:
 	)
 
 	joint = read("common/scripted_effects/005_006_liberations_collision_effects.txt")
+	for needle, label in (
+		("liberations_joint_cancel_before_ownership_mutation = yes", "pre-mutation joint cancellation"),
+		("liberations_joint_record_failure_after_ownership_mutation = yes", "post-mutation joint rollback"),
+	):
+		require(needle in joint, f"joint Event 005/Event 006 flow is missing {label}", errors)
 	require_order(
 		joint,
 		[
