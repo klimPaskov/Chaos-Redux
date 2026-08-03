@@ -1,0 +1,60 @@
+# Chaos Redux camp map-visual anchors.
+# These effects run in state scope. Camp gameplay buildings remain state-level
+# modifiers; exactly one provincial anchor owns the visible camp mesh.
+
+@CHAOSX_CAMP_VISUAL_ANCHOR_REMOVE_LEVEL = 999
+
+chaosx_refresh_camp_visual_anchor = {
+	if = {
+		limit = { extermination_camp > 0 }
+		remove_building = {
+			type = concentration_camp_site
+			level = @CHAOSX_CAMP_VISUAL_ANCHOR_REMOVE_LEVEL
+			province = { all_provinces = yes }
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_province_building_level = {
+						province = { all_provinces = yes }
+						building = extermination_camp_site
+						level > 0
+					}
+				}
+			}
+			construct_building_in_random_province = { extermination_camp_site = 1 }
+		}
+	}
+	else_if = {
+		limit = { concentration_camp > 0 }
+		remove_building = {
+			type = extermination_camp_site
+			level = @CHAOSX_CAMP_VISUAL_ANCHOR_REMOVE_LEVEL
+			province = { all_provinces = yes }
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_province_building_level = {
+						province = { all_provinces = yes }
+						building = concentration_camp_site
+						level > 0
+					}
+				}
+			}
+			construct_building_in_random_province = { concentration_camp_site = 1 }
+		}
+	}
+	else = {
+		remove_building = {
+			type = concentration_camp_site
+			level = @CHAOSX_CAMP_VISUAL_ANCHOR_REMOVE_LEVEL
+			province = { all_provinces = yes }
+		}
+		remove_building = {
+			type = extermination_camp_site
+			level = @CHAOSX_CAMP_VISUAL_ANCHOR_REMOVE_LEVEL
+			province = { all_provinces = yes }
+		}
+	}
+}

@@ -128,6 +128,8 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
             "target_height_m": spec.get("blender_target_height_m", spec["target_height_m"]),
             "effective_runtime_height_m": spec.get("blender_effective_runtime_height_m"),
             "runtime_entity_scale": spec.get("runtime_entity_scale"),
+            "max_runtime_footprint_m": spec.get("max_runtime_footprint_m"),
+            "runtime_footprint_policy": spec.get("runtime_footprint_policy", "reject"),
             "runtime_diffuse_gamma": spec.get("runtime_diffuse_gamma"),
             "vanilla_scale_reference": spec.get("vanilla_scale_reference"),
             "runtime_stem": spec["runtime_stem"],
@@ -174,6 +176,8 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
 - Blender source-mesh calibration height: {spec.get("blender_target_height_m", spec["target_height_m"])} m
 - Blender effective runtime height after entity scale: {spec.get("blender_effective_runtime_height_m", spec.get("blender_target_height_m", spec["target_height_m"]))} m
 - Pilot unit consumer scale: {spec.get("runtime_entity_scale", "not applicable")}
+- Runtime footprint budget: {spec.get("max_runtime_footprint_m", "profile default or not applicable")} m
+- Runtime footprint policy: {spec.get("runtime_footprint_policy", "reject")}
 - Runtime diffuse gamma grade: {spec.get("runtime_diffuse_gamma", "not applied")}
 - Target topology: triangles
 - Meshy model: {spec["meshy_ai_model"]}

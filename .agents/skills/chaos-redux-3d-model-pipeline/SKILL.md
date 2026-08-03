@@ -56,6 +56,8 @@ Use existing Chaos Redux paths under `gfx/models/` and `gfx/entities/` as local 
 
 For a humanoid land-unit pilot, this is a hard calibration gate, not a suggestion: import the installed vanilla infantry `.mesh` into the Blender reference collection read-only, identify the exact entity and runtime `scale`, exclude collision-only geometry, and record the measured source-mesh height, effective runtime height, forward axis, ground contact, and the comparison result in the job and manifest. When the custom entity retains the vanilla entity scale, normalize the exported mesh to the measured source-mesh height so the engine applies that scale exactly once; do not normalize to the effective runtime height and then multiply it by the entity scale again. Do not use a generic real-world height or an arbitrary entity `scale` as a substitute. Keep the provider/animation height and the Blender source-mesh calibration height as separate fields when the provider and HOI4 coordinate spaces differ.
 
+For a static map-building pilot, this is also a hard calibration gate: import the installed vanilla mesh used by the actual building entity, identify the exact `pdxmesh` and entity scale, measure the source dimensions and effective runtime dimensions, and record the reference in the job and manifest. Height-only calibration is invalid for buildings. The current `building` profile uses `facility_land.mesh` with `building_land_facility`, source height `3.4697628021`, entity scale `0.6`, effective runtime height `2.0818576813`, and a hard runtime X/Y footprint ceiling of `4.0` meters. A candidate over that ceiling must be explicitly fit with one uniform X/Y factor and must record before/after dimensions; silent anisotropic stretching is forbidden.
+
 ## Job intake and deterministic layout
 
 Validate the job before any paid work. The parent must provide:
@@ -66,6 +68,7 @@ Validate the job before any paid work. The parent must provide:
 - one asset profile: `static_prop`, `building`, `humanoid_unit`, `nonhumanoid_creature`, `vehicle_land`, `aircraft`, `naval`, or `articulated_attachment`
 - geometry intent, required components, forbidden additions, texture direction, and unseen-side/rear-geometry policy
 - named vanilla reference paths and the expected scale relationship
+- for buildings, the measured runtime footprint budget and whether the consumer is a dedicated provincial map building or a state-level gameplay building with a provincial visual anchor
 - required action roles, runtime consumer, credit hard/soft limits, and paid-attempt limit
 - the locked provider, Blender, adapter, and `io_pdx_mesh` dependencies
 - the deterministic job root and exact handoff path
@@ -148,16 +151,17 @@ Required stages:
 
 1. import the approved GLB or FBX and preserve provider objects
 2. duplicate into the working collection
-3. import named vanilla references read-only; humanoid land units must include the installed vanilla infantry reference and its entity scale
+3. import named vanilla references read-only; humanoid land units must include the installed vanilla infantry reference and its entity scale, and building jobs must include the installed mesh and exact map-building entity scale
 4. inspect scene and geometry
 5. normalize orientation, scale, origin, and ground/water contact
-6. perform only bounded local repairs
-7. triangulate before final rig and export QA
-8. convert PBR inputs to the locally verified PDX material convention
-9. process textures and record DDS paths
-10. create or validate the rig
-11. create, retarget, clean, and bake actions
-12. save checkpoints, export, and build evidence
+6. measure and enforce the profile runtime footprint budget for static map buildings
+7. perform only bounded local repairs
+8. triangulate before final rig and export QA
+9. convert PBR inputs to the locally verified PDX material convention
+10. process textures and record DDS paths
+11. create or validate the rig
+12. create, retarget, clean, and bake actions
+13. save checkpoints, export, and build evidence
 
 Save stable checkpoint stages in `blender/checkpoints/` (source import, normalized, repaired, material, rigged, actions, and pre-export). Preserve source checkpoints, working checkpoints, Blender version, adapter version, checksums, and stage transitions. Never edit provider-source objects in place. Substantial missing geometry is not an automatic repair: regenerate, request explicit manual modeling scope, or block.
 
@@ -168,6 +172,12 @@ Record triangles, vertices, objects, material slots, loose components, non-manif
 Retain provider source maps unchanged. Convert through the exact local PDX material precedent and record shader, channel mapping, color space, alpha behavior, texture dimensions, DDS paths, and unsupported maps. For the latest installed PDX packed specular route, use the recorded layout of red unused or mask zero, green specular level, blue metallic, and alpha roughness; never use a raw grayscale roughness map as the PDX specular map. Use the repository converter at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` for final PNG to DDS conversion and follow that skill's complete DDS-header and alpha validation. For HOI4 model textures, enforce the profile's verified maximum dimension, currently 1024 pixels for the local vanilla model surface unless fresh installed references prove otherwise, and record any resize. If the provider diffuse is too dark, derive a documented deterministic grade from the immutable provider base and rebuild the runtime derivative from that base on every run; never compound a grade from an older processed or runtime texture. Do not pass materials QA with missing, black, magenta, invisible, accidentally transparent, or implausibly reflective surfaces.
 
 Use one profile's calibrated axes, scale, triangle range, material/texture limits, rig route, action roles, root policy, instance density, semantic checks, export preset, and runtime pattern. A profile must be calibrated before paid or export work begins.
+
+For map buildings, the profile's footprint budget is a hard runtime gate. The default policy is `reject`; `fit_to_budget` is allowed only when the job explicitly requests it and applies a uniform X/Y fit after height normalization. The adapter report must retain `runtime_dimensions_before_fit_m`, `runtime_dimensions_after_fit_m`, `fit_factor_xy`, `runtime_footprint_before_m`, and `runtime_footprint_after_m`.
+
+The reusable pilot runner treats `building` and `static_building` as static routes, prepares their `Image_0`/`Image_1`/`Image_2` texture sources, and never sends them through humanoid rig or action continuation. A building job without a named installed vanilla reference is rejected before Blender preparation.
+
+For static map-building materials, use the shader from the installed vanilla building consumer. With the current vanilla surface this is `PdxMeshAdvancedSnow`. The GFX `meshsettings.name` must equal the actual exported mesh object name, such as `Mesh_0.001`; provider labels, job slugs, and guessed names are not accepted. Verify packed PDX normal and specular channel statistics before synchronizing runtime DDS files.
 
 For humanoids, provider rigging is a candidate only for a clear standard humanoid biped within the verified endpoint's constraints; inspect and map it in Blender. For nonhumanoids, create a custom rig with a written rig map. For mechanical assets, use rigid components and deliberate pivots: turrets, barrels, recoil, propellers, rotors, doors, wheels, and tracks must not bend from blended weights.
 
@@ -183,6 +193,8 @@ Before export, ensure the export collection contains only approved objects and t
 
 For every output, retain the export log and reimport or parse the actual `.mesh` or `.anim` bytes through the locked stack, saving the proof scene or parser report, measured geometry/action facts, output checksum, and any warnings. If the verified stack cannot re-import or parse that format, record an explicit `required installation/verification` or `blocked` result. A Blender viewport, provider preview, file existence, or plausible filename is not reimport evidence. Do not silently ignore exporter warnings, missing actions, unsupported material channels, or an absent parser.
 
+For static map buildings, also audit the runtime consumer after reimport: the `.gfx` scale and shader, meshsettings object name, runtime mesh and DDS paths, building definition, and spawn policy must agree. A custom map building must not use vanilla `special_project_facility_spawn`. Use a dedicated `type = province`, `max = 1` spawn pool for a direct map consumer. If gameplay is state-level but the visual must appear once, remove map flags and spawn ownership from the gameplay building, define a hidden provincial anchor with `province_max = 1` and `state_max = 1`, place it with `construct_building_in_random_province` from state scope, and explicitly clean it up on conversion, dismantlement, annexation, or deletion. This route does not require `map/buildings.txt`.
+
 ## Evidence package and handoff
 
 The job package must contain, as applicable:
@@ -195,6 +207,7 @@ The job package must contain, as applicable:
 - source and final textures, animation previews, `.mesh`, and `.anim`
 - export/reimport evidence, manifest, and requirement-to-runtime crosswalk
 - a runtime handoff with proposed stable names, paths, material/shader mapping, action mapping, and the exact files/identifiers the parent must wire
+- for static buildings, footprint/scale evidence, meshsettings object-name evidence, dedicated spawn or provincial-anchor evidence, and the runtime contract audit result
 
 Each model manifest entry records the asset ID/slug, profile, source reference and checksum, provider lineage, selected candidate, checkpoint, geometry counts, objects/materials, armature/bones, actions/frame data, source/final textures, exports/checksums, exporter version/settings, proposed runtime identifiers, actual runtime registration only after parent wiring, live consumer, in-game evidence only after parent validation, and status. Use `complete`, `needs_user_review`, `blocked`, or `canceled`; never create a fallback completion state.
 

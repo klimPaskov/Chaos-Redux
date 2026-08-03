@@ -549,7 +549,7 @@ def bind_texture_sources(job: Path, payload: Dict[str, Any]) -> List[Dict[str, A
         raise RuntimeError("Texture binding found no working mesh objects.")
     image_names = (
         STATIC_TEXTURE_IMAGE_NAMES
-        if payload.get("asset_kind") == "static"
+        if payload.get("asset_kind") in {"static", "building", "static_building"}
         else TEXTURE_IMAGE_NAMES
     )
     records: List[Dict[str, Any]] = []
@@ -891,6 +891,76 @@ def normalize_geometry(target_height: float) -> Dict[str, Any]:
         "bounds_max": list(world_bounds(meshes)[1]),
         "ground_contact_z": world_bounds(meshes)[0].z,
     }
+
+
+def constrain_runtime_footprint(
+    max_runtime_footprint_m: Optional[float],
+    runtime_entity_scale: float,
+    policy: str,
+) -> Dict[str, Any]:
+    """Enforce a map-building footprint after source-height calibration.
+
+    A building's height and map footprint are separate runtime contracts. The
+    old pipeline checked only height, which allowed a compound-sized Meshy
+    result to be rendered as one ordinary HOI4 building. The fit operation is
+    explicit and uniform in X/Y; the default is a hard rejection so future
+    work cannot silently distort a model.
+    """
+
+    if policy not in {"reject", "fit_to_budget"}:
+        raise RuntimeError(f"Unsupported runtime footprint policy: {policy}")
+    if max_runtime_footprint_m is None:
+        return {
+            "status": "not_configured",
+            "policy": policy,
+            "max_runtime_footprint_m": None,
+        }
+    maximum = float(max_runtime_footprint_m)
+    if maximum <= 0.0:
+        raise RuntimeError("The runtime building footprint budget must be positive.")
+    if runtime_entity_scale <= 0.0:
+        raise RuntimeError("Runtime entity scale must be positive for footprint validation.")
+    minimum, maximum_bounds = world_bounds(mesh_objects())
+    source_dimensions = maximum_bounds - minimum
+    runtime_dimensions = source_dimensions * runtime_entity_scale
+    current_footprint = max(float(runtime_dimensions.x), float(runtime_dimensions.y))
+    record: Dict[str, Any] = {
+        "policy": policy,
+        "max_runtime_footprint_m": maximum,
+        "source_dimensions_before_fit_m": list(source_dimensions),
+        "runtime_dimensions_before_fit_m": list(runtime_dimensions),
+        "runtime_footprint_before_fit_m": current_footprint,
+        "fit_factor_xy": 1.0,
+    }
+    if current_footprint > maximum + 1e-6:
+        if policy != "fit_to_budget":
+            raise RuntimeError(
+                "Building footprint exceeds its runtime budget: "
+                f"{current_footprint:.6f}m > {maximum:.6f}m. "
+                "Use an explicit fit_to_budget decision after visual review."
+            )
+        factor = maximum / current_footprint
+        for obj in root_objects(
+            [obj for obj in bpy.context.scene.objects if obj.get("chaosx_working", False)]
+        ):
+            obj.scale.x *= factor
+            obj.scale.y *= factor
+        bpy.context.view_layer.update()
+        minimum, maximum_bounds = world_bounds(mesh_objects())
+        source_dimensions = maximum_bounds - minimum
+        runtime_dimensions = source_dimensions * runtime_entity_scale
+        record["fit_factor_xy"] = factor
+        record["fit_applied"] = True
+    else:
+        record["fit_applied"] = False
+    record["source_dimensions_after_fit_m"] = list(source_dimensions)
+    record["runtime_dimensions_after_fit_m"] = list(runtime_dimensions)
+    record["runtime_footprint_after_fit_m"] = max(
+        float(runtime_dimensions.x), float(runtime_dimensions.y)
+    )
+    if record["runtime_footprint_after_fit_m"] > maximum + 1e-5:
+        raise RuntimeError("The explicit building footprint fit did not meet its budget.")
+    return record
 
 
 def triangulate_and_normals() -> Dict[str, Any]:
@@ -1828,6 +1898,11 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     if runtime_entity_scale <= 0.0:
         raise RuntimeError("Candidate preparation requires a positive runtime entity scale.")
     normalize = normalize_geometry(target_height)
+    footprint = constrain_runtime_footprint(
+        payload.get("max_runtime_footprint_m"),
+        runtime_entity_scale,
+        str(payload.get("runtime_footprint_policy", "reject")),
+    )
     triangulation = triangulate_and_normals()
     weld_distance = float(payload.get("topology_weld_distance", 1e-5))
     pre_reduction_topology_repair = None
@@ -1909,6 +1984,7 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "geometry_transfer": geometry_transfer,
         "imported_geometry": imported_metrics,
         "normalization": normalize,
+        "runtime_footprint": footprint,
         "runtime_calibration": {
             "mesh_target_height_m": target_height,
             "entity_scale": runtime_entity_scale,

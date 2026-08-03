@@ -57,10 +57,11 @@ Future visual extensions must preserve the existing frame order and append new b
 
 The camp buildings use custom static HOI4 map entities in addition to their existing 2D icons.
 
-- `building_concentration_camp` uses `chaosx_concentration_camp_mesh` from `gfx/models/buildings/chaosx_concentration_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
-- `building_extermination_camp` uses `chaosx_extermination_camp_mesh` from `gfx/models/buildings/chaosx_extermination_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
+- `building_concentration_camp_site` is the visible provincial anchor for the state-level `concentration_camp` gameplay building and uses `chaosx_concentration_camp_mesh` from `gfx/models/buildings/chaosx_concentration_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
+- `building_extermination_camp_site` is the visible provincial anchor for the state-level `extermination_camp` gameplay building and uses `chaosx_extermination_camp_mesh` from `gfx/models/buildings/chaosx_extermination_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
 - The intact entity bindings live in `gfx/entities/chaosx_buildings.asset`, and the PDX mesh declarations live in `gfx/entities/chaosx_buildings.gfx`.
-- Both buildings use the vanilla `special_project_facility_spawn` position pool, so the mod does not reintroduce `map/buildings.txt`.
+- The state gameplay buildings are deliberately non-map consumers. A state with `concentration_camp` or `extermination_camp` receives one hidden provincial `concentration_camp_site` or `extermination_camp_site` anchor through `construct_building_in_random_province` and the dedicated `chaosx_camp_visual_anchor_spawn` pool, so the map shows one camp model rather than one model per state building placement or a shared special-project pool.
+- Extermination anchors replace concentration anchors during an upgrade, and cleanup removes both anchor types. The map placement remains fully scripted; `map/buildings.txt` stays removed.
 - Destroyed-state entities remain the vanilla bunker and stronghold-network destroyed meshes until a separate destroyed-asset package is approved.
 
 The production evidence, one-image Meshy inputs, Blender checkpoints, and reimport proofs are recorded under `docs/assets/system_camp_repression_rework/models_3d/`.

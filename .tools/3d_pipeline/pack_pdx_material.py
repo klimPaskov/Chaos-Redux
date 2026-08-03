@@ -19,6 +19,21 @@ from PIL import Image
 PDX_SPECULAR_LEVEL = 32
 
 
+def _channel_stats(image: Image.Image) -> Dict[str, Dict[str, float]]:
+    """Return compact channel evidence for runtime texture QA."""
+
+    rgba = image.convert("RGBA")
+    result: Dict[str, Dict[str, float]] = {}
+    for name, channel in zip(("R", "G", "B", "A"), rgba.split()):
+        values = list(channel.getdata())
+        result[name] = {
+            "min": int(min(values)),
+            "max": int(max(values)),
+            "mean": round(sum(values) / len(values), 4),
+        }
+    return result
+
+
 def _record(path: Path, root: Path) -> Dict[str, Any]:
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     return {
@@ -95,6 +110,7 @@ def pack_pdx_specular_map(job: Path, specular_source_rel: str) -> Dict[str, Any]
         },
         "output": _record(output, job),
         "dimensions": list(packed.size),
+        "channel_stats": _channel_stats(packed),
     }
     report_path = job / "blender" / "reports" / "pdx_material_pack.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)
@@ -144,6 +160,7 @@ def pack_pdx_specular_channels(
         },
         "output": _record(output, job),
         "dimensions": list(packed.size),
+        "channel_stats": _channel_stats(packed),
     }
     report_path = job / "blender" / "reports" / "pdx_generation_specular_pack.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)
@@ -204,9 +221,16 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
 
     source = (job / normal_source_rel).resolve()
     if source.name.casefold() == "pdx_normal.png":
+        with Image.open(source) as packed_source:
+            stats = _channel_stats(packed_source)
+        if stats["R"]["max"] != 0 or stats["B"]["max"] != 0:
+            raise ValueError(
+                f"Existing PDX normal has non-zero unused channels: {source}"
+            )
         return {
             "status": "already_packed",
             "output": _record(source, job),
+            "channel_stats": stats,
         }
     if not source.is_file():
         raise FileNotFoundError(f"PDX normal packing requires the provider normal map: {source}")
@@ -232,6 +256,7 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
         "source": _record(source, job),
         "output": _record(output, job),
         "dimensions": list(packed.size),
+        "channel_stats": _channel_stats(packed),
     }
     report_path = job / "blender" / "reports" / "pdx_normal_pack.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)

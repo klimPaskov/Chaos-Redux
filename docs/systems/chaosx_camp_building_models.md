@@ -18,36 +18,36 @@ The full production records live under `docs/assets/system_camp_repression_rewor
 
 The runtime stems are `chaosx_concentration_camp` and `chaosx_extermination_camp`.
 
-The intact entities are `building_concentration_camp` and `building_extermination_camp`.
+The state gameplay buildings are `concentration_camp` and `extermination_camp`. The visible provincial anchor entities are `building_concentration_camp_site` and `building_extermination_camp_site`.
 
 The PDX mesh keys are `chaosx_concentration_camp_mesh` and `chaosx_extermination_camp_mesh`.
 
-The model source scale is calibrated against vanilla `TEST_building3.mesh` at source height 2.4649081230 and entity scale 2.0.
+The model source scale is calibrated against vanilla `facility_land.mesh` at source height 3.4697628021 and entity scale 0.6, for an effective runtime height of 2.0818576813. Every export is also checked against a 4-meter maximum runtime footprint.
 
 The geometry briefs target realistic proportions, muted materials, and restrained medium detail so the buildings fit the vanilla HOI4 map-building language while remaining readable at map distance.
 
 ## Runtime wiring
 
-The parent implementation owns the `.gfx` meshsettings, `.asset` entity bindings, runtime `.mesh` and DDS files, and the final live consumer validation.
+The parent implementation owns the `.gfx` meshsettings, `.asset` entity bindings, runtime `.mesh` and DDS files, and the final live consumer validation. The meshsettings use the exported `Mesh_0.001` object name and the vanilla map-building `PdxMeshAdvancedSnow` shader.
 
 The existing camp icon keys remain `GFX_building_concentration_camp` and `GFX_building_extermination_camp`; this model package does not replace those 2D icons.
 
 The existing destroyed entities are not silently replaced by an intact custom mesh.
 
-## Map placement constraint
+## Map placement contract
 
 The current mod intentionally has no `map/buildings.txt` override.
 
-The vanilla building-model rules require a map position keyed by the building name unless a validated shared `spawn_point` is used.
+The state gameplay buildings do not declare `show_on_map`, `show_on_map_meshes`, `has_destroyed_mesh`, or a spawn point, so the state interface cannot create one map mesh for every state-level camp value.
 
-The camp definitions use the vanilla `special_project_facility_spawn` point, whose existing map positions are shared by the mod's other static facility buildings.
+Each state-level camp is represented by one hidden provincial anchor building. `concentration_camp_site` and `extermination_camp_site` use the dedicated `chaosx_camp_visual_anchor_spawn` pool with `province_max = 1` and `state_max = 1`, and are created with `construct_building_in_random_province` from state scope.
 
-This keeps the mod's `map/buildings.txt` folder removed while retaining valid map positions for dynamically created camps.
+`chaosx_refresh_camp_visual_anchor` removes stale opposing anchors, preserves an existing same-type anchor, and creates one random valid provincial anchor when the corresponding state gameplay building exists. Extermination sites take visual precedence when both state values coexist. Removing or dismantling the state camp removes both anchor types.
 
-The visual test pair is concentration camp in state 64, province 375, and extermination camp in state 88, province 417; both provinces have vanilla `special_project_facility_spawn` rows.
+This keeps the `map/buildings.txt` folder removed while retaining a single valid map model per state. The helper is called at creation, registration, refresh, conversion, annexation cleanup, and dismantlement cleanup, so later model replacements cannot reintroduce state-wide visual duplication through a shared pool.
 
 ## Future extensions
 
 If destroyed-state readability is required, add separate custom destroyed meshes through the same one-image and reimport gates rather than aliasing the intact models.
 
-If a dedicated map-placement solution is approved, preserve all required vanilla `map/buildings.txt` rows and record the generated camp rows in each asset manifest.
+Future work can add separate destroyed-state meshes for the provincial anchors only if the anchor definitions opt into `has_destroyed_mesh`. Any such package must retain the one-anchor-per-state contract and the same vanilla scale/footprint gates.
