@@ -171,12 +171,4 @@ Static building materials follow the installed vanilla consumer shader, currentl
 
 Never use `special_project_facility_spawn` for a custom map-building consumer. Use a dedicated provincial spawn pool for direct map buildings. For state-level gameplay with one visual per state, keep the gameplay building non-map and create a hidden provincial anchor with `province_max = 1`, `state_max = 1`, a dedicated spawn pool, and `construct_building_in_random_province` plus explicit cleanup/conversion logic. This route does not require `map/buildings.txt`.
 
-Run the read-only runtime audit from the repository root:
-
-~~~powershell
-python .tools/3d_pipeline/validate_runtime_contract.py --all
-~~~
-
-The audit checks the profile calibration, runtime files, GFX consumers, building definitions, provincial anchor declarations, reimport topology, and packed DDS dimensions/channels without requiring a paid provider call.
-
 Route 2D frame-sheet animation, animated sprites, GIF previews, and frame-by-frame UI packages to `chaos-redux-frame-animation`.
