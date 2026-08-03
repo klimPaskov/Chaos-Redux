@@ -39,6 +39,8 @@ Consent-based union dissolution now opens the `.713` and `.717` record events fo
 
 Successor transfer, exile certification, and breakup certification now open their existing W4 acknowledgement events from the same written receipts that drive terminal accounting. The review-close event accepts successor registration, exile resolution, and package terminal resolution as separate documented outcomes.
 
+If breakup is certified while a registered continental war remains open, the guarded wrapper writes the existing bilateral `africa_world_war_settlement_breakup` receipt and settled status for both actors, opens `.725`, and then closes the protocol. A generic post-loss breakup outside an open war does not acquire a war settlement receipt.
+
 Pairwise settlement hooks clear only the actor that actually left the war, while `africa_scramble_reconcile_intervention_war` closes the intervention global and opens aftermath only when no flagged coalition actor remains at war with the host.
 
 ### Scramble interest census and response roster
