@@ -6,6 +6,8 @@ Portrait policy supersession: grounded historical portraits now use unchanged so
 
 The current 15-row source-placeholder crosswalk and independent byte audit are `docs/assets/006_independence_wave/source_placeholder_2026_08_03/manifest.md` and `subagent_handoffs/006_grounded_portrait_placeholder_audit_2026_08_03.md`. All crop and DDS chains pass; DOX is placeholder-only and SOK Dikko remains `NEEDS_REVIEW` for rights and era fit. This evidence does not promote a package or clear any runtime admission gate.
 
+The bounded FORM-08 ledger and identity-gate repair is recorded in `subagent_handoffs/006_form08_ledger_gate_repair_2026_08_03.md`. The Danubian decision category now exposes all four live ledgers, charter promotion consumes all four thresholds, and HUN_EMPIRE admission fails closed against the vanilla formation flag, the Event 006 identity lock, and any living cosmetic carrier. The accepted Vojvodina/Slavonia geography and installed-map crosswalk remain unresolved, so no package or formable readiness is promoted.
+
 The 2026-08-03 IW-043 Gayaz Ishaki source-locked portrait evidence is recorded in `subagent_handoffs/006_iw043_chu_ishaki_portrait_repaint_v01_2026_08_03.md`. It adds no runtime consumer or admission: the independent likeness/style/provenance review and photographer/first-publication rights decision remain open.
 
 The vanilla-formable reproducibility defect identified by the 2026-08-02 continuation audit is resolved by the tracked mirror reconciliation in `subagent_handoffs/006_vanilla_formable_compatibility_reconciliation_2026_08_02.md` and commits `ca42ad22e` and `e86b3c183`. The current remaining formable blockers are package identity, member readiness, and route reachability, not missing guard source.

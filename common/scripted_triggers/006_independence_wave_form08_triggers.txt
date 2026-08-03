@@ -47,7 +47,17 @@ is_independence_wave_form08_eligible_member = {
 
 has_independence_wave_form08_exact_carrier_anchor = {
 	is_independence_wave_form08_eligible_member = yes
+	has_independence_wave_form08_identity_clearance = yes
+}
+
+# Vanilla HUN, Habsburg, and Austria-Hungary routes can already claim the
+# HUN_EMPIRE cosmetic identity. FORM-08 must not silently reuse that identity
+# while another country is carrying it, so admission is fail-closed until the
+# installed world has no live carrier and the vanilla formation flag is clear.
+has_independence_wave_form08_identity_clearance = {
 	NOT = { has_global_flag = independence_wave_form08_hun_empire_identity_in_use }
+	NOT = { has_global_flag = form_austria_hungary_flag }
+	NOT = { any_country = { has_cosmetic_tag = HUN_EMPIRE } }
 }
 
 is_independence_wave_form08_member = {
