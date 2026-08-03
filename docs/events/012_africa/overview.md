@@ -116,6 +116,7 @@ The first ten report images, six current news images, four current super-event i
 - No strange unit model, entity, or formation output is claimed for elephant logistics, elephant shock, Gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, or plague carriers.
 - The exact deferred country-visual and unit-model crosswalk is recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_model_requirements_2026-08-01.md`; no model-readiness gate is opened while production is explicitly deferred.
 - The three custom-formation action IDs remain runtime-gated by `africa_strange_formation_package_ready`.
+- Actions 71 and 72 remain runtime-gated by `africa_fictional_pathogen_review_authorized`; their target-owned disease receipts, secure-lab owner, failure outbreak writer, and cleanup contract are not present, so they are hidden and recorded as blocked rather than exposed as no-op choices.
 - The six continent packages and The World remain runtime-gated by `africa_world_package_implementation_ready`; the initial certification setter is intentionally absent until pre-install receipts exist.
 - The six late or episodic action families are permanently list-only and are not duplicated in the Charter GUI.
 - The legacy `africa_world_package_terminal_absorbed` receipt had no writer and was removed from the resolver and successor cleanup; the source design's absorbed-union possibility remains a documented future disposition rather than an unwired or instant-annexation gameplay path.
