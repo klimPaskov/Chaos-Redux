@@ -957,6 +957,45 @@ africa_register_current_relationship_state = {
 	}
 }
 
+# COUNTRY scope on a registered Event 012 member from relationship registration,
+# on_join_faction, or on_leave_faction. Foreign patronage is a derived receipt:
+# it exists only while a current-generation member is in a faction whose leader
+# is neither the Event 012 host, another current-generation member, nor a leader
+# sharing the host's faction. The helper is deliberately bounded to the member
+# country; it does not scan the world or infer patronage from opinion.
+africa_reconcile_foreign_patronage_state = {
+	if = {
+		limit = {
+			has_event_target = africa_host
+			africa_member_host_generation_is_current = yes
+			NOT = { africa_is_current_host = yes }
+			is_in_faction = yes
+			OR = {
+				africa_relationship_is_protected = yes
+				africa_relationship_is_associate = yes
+				africa_relationship_is_chartered = yes
+				africa_relationship_is_autonomous_federal = yes
+				africa_relationship_is_integrated_region = yes
+				africa_relationship_is_resistant = yes
+				africa_relationship_is_leaving = yes
+				africa_relationship_is_rival_bloc = yes
+				africa_relationship_is_occupied_settlement = yes
+			}
+			faction_leader = {
+				exists = yes
+				is_faction_leader = yes
+				NOT = { africa_is_current_host = yes }
+				NOT = { africa_member_host_generation_is_current = yes }
+				NOT = { is_in_faction_with = event_target:africa_host }
+			}
+		}
+		set_country_flag = africa_foreign_patronage_active
+	}
+	else = {
+		clr_country_flag = africa_foreign_patronage_active
+	}
+}
+
 # COUNTRY scope on the host. Expands capacity only after the relationship
 # registry proves that the Charter can administer the larger workload.
 africa_reconcile_relationship_counts_and_caps = {
@@ -1339,6 +1378,7 @@ africa_apply_relationship_transition = {
 		if = { limit = { NOT = { has_variable = africa_member_confidence } } set_variable = { africa_member_confidence = constant:africa_measure.medium } }
 		africa_apply_relationship_transition_consequence = yes
 		africa_register_current_relationship_state = yes
+		africa_reconcile_foreign_patronage_state = yes
 		event_target:africa_host = { africa_reconcile_relationship_counts_and_caps = yes }
 		if = {
 			limit = {
