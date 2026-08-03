@@ -83,7 +83,7 @@ Six-package super-event title, button, quotation, and audio research is complete
 - Static implementation is present for the core runtime, finite ten-country settlement layer, portal-calibration and high-speed-materials consumers, KRG country/focus/project/decision surfaces, Event 019 providers, and the registered report, news, super-event, sound, localisation, and catalog surfaces.
 - Targeted transfer, cleanup, probability and affordability, quantitative balance, Event 019 isolation, live GUI/audio/presentation, and user-owned campaign evidence remain validation-pending.
 - The KRG biological history bridge is present, but stockpile, native reservation, consumption, transfer, and defeat cleanup remain blocked by the missing idempotent native CBRN callback contract documented in `016_krg_biological_stockpile_delivery_addendum.md`; no fallback or free payload is authorized.
-- Twenty-one visible KRG lifecycle/project ideas lack their own bespoke 64x64 `picture` assignment and approved art; this is the outstanding non-model visual gap beyond the existing thirteen-icon tranche.
+- The 21-icon KRG country-idea extension is wired: all 28 visible KRG lifecycle/project ideas have bespoke 64x64 `picture` assignments and registered DDS art, with technical evidence retained under `docs/assets/016_brilliant_scientist/krg_country_idea_icons/`.
 - Seven Event 016-specific 3D packages remain deferred outside the current no-model instruction. They are retained as a future approval-dependent backlog, not as a current blocker or next action.
 - Broader country-specific chains beyond the finite ten-country layer are closed/rejected as filler by `016_nonmodel_content_closure_handoff_2026-08-03.md`; reopen only under a new accepted design decision.
 
