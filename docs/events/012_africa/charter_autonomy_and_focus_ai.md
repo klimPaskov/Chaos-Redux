@@ -62,6 +62,11 @@ The seven constitutional route families also use `africa_focus_ai_route_pressure
 That shared trigger branches on the committed constitution, raises route pressure for low payoff axes, and responds to unresolved mapped action contracts, constitutional crises, and pending postwar review.
 Its multiplier is tuned by `africa_focus_ai_route.pressure_multiplier` so route behavior remains centralised without duplicating AI stores.
 
+All 54 regional-overlay focuses now pair the live overlay ledger with the matching region predicate, so every authority, corridor, partner, local-terms, council, and mandate step receives region-aware pressure instead of a flat overlay weight.
+The four full-host origin-signature focuses retain dossier-witness pressure, while the two compact signature focuses retain the shared proof and viability pressure used by all 29 compact playbooks.
+The six external package trees remain source-wired through the world-order loader and their 32 route plans: five Middle East, six Europe, five Asia, five North America, six South America, and five Oceania plans.
+The package implementation-readiness gate remains authoritative for installation and is not bypassed by focus AI.
+
 The bounded action controller composes all active regional, constitutional, relationship, foreign-power, high-chaos, world, and host-specific profile layers.
 Its early and late dispatchers cover Actions 1 through 102 without scanning every country on a recurring on-action.
 Scramble phase changes and the world-order opening refresh the stored host-policy snapshot immediately, so AI decision weights do not wait for the controller's next cadence.
