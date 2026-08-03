@@ -45,6 +45,8 @@ The current registry/API audit (`006_country_registry_api_current_audit_2026_08_
 
 The parent has since implemented the bounded permanent-identity-loss policy in `006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md`. IW-022, IW-025, and IW-035 now preserve temporary interruptions for a centralized 30-day grace window and then explicitly remove their stale paid watch mission and flags when the exact carrier identity remains absent. The source follow-up audit `006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md` passes with no P1/P2 defect; live/save-load behavior remains unclaimed.
 
+The parent also repaired the narrow COG overlay cost-display drift in `006_cog_overlay_cost_localisation_repair_2026_08_03.md`. All twelve COG base, blocked, and tooltip cost strings, plus the sibling reusable-region overlay family, now read their existing centralized constants; no gameplay cost or route gate changed.
+
 ## Portrait policy boundary
 
 Grounded historical portraits now use the unchanged attributed source, exact head-and-shoulders crop, deterministic `156x210` fit, independent identity/framing/provenance audit, and authorized DDS placeholder sequence. Retained HOI4-style repaint chains are evidence history only unless a later explicit user request authorizes a replacement. No Event 006 advisor icons, advisor portrait blocks, dossier portraits, or small derivatives are authorized.
@@ -78,5 +80,7 @@ No fallback or simplification was introduced by this continuation. No Hearts of 
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_catalog_status_reconcile_current_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md`
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_cog_overlay_cost_localisation_repair_2026_08_03.md`
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_cog_overlay_cost_localisation_reaudit_2026_08_03.md`
 - Current documentation alignment commits: `9091a5459`, `5f3642a81`, `c280e3013`, and `68824eb9a`.
 - Catalog source/export reconciliation commit: `162a25655`.

@@ -60,6 +60,8 @@ The current flat portrait shelf reconciliation is 83 original-size PNG evidence/
 
 The overlay-watch lifecycle repair is recorded in `../../plans/006_independence_wave_plans/subagent_handoffs/006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md` and its source-PASS re-audit in `../../plans/006_independence_wave_plans/subagent_handoffs/006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md`. IW-022, IW-025, and IW-035 preserve temporary carrier interruptions but cancel their paid watch missions and clear package-owned state after a centralized 30-day permanent-identity-loss grace window. The source repair does not promote an overlay to a standalone country package or claim live/save-load evidence.
 
+The COG overlay cost-display repair is recorded in `../../plans/006_independence_wave_plans/subagent_handoffs/006_cog_overlay_cost_localisation_repair_2026_08_03.md`, with a PASS re-audit in `../../plans/006_independence_wave_plans/subagent_handoffs/006_cog_overlay_cost_localisation_reaudit_2026_08_03.md`. Its twelve cost strings and the sibling reusable-region overlay strings now read their shared cost constants, closing the documented tuning-drift risk without changing any payment or availability logic.
+
 ## 2026-08-02 historical controlling acceptance authority (v102; superseded by the 2026-08-03 continuation)
 
 > Historical v102 routing snapshot: use the 2026-08-03 continuation above and v103 for current routing. The v102 handoff and parent reflow remain dated evidence. Any later dated paragraph retaining 80/74/6, 295/111/50, or the earlier 3/4/5/7/10 ladder is historical traceability only.
