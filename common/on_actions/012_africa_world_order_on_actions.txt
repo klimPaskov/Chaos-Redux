@@ -8,6 +8,23 @@
 # ============================================================================
 
 on_actions = {
+	on_join_faction = {
+		effect = {
+			# ROOT is the joining member. The helper resolves the current faction
+			# leader and records only an external patron; internal League factions
+			# remain outside the patronage state.
+			africa_reconcile_foreign_patronage_state = yes
+		}
+	}
+
+	on_leave_faction = {
+		effect = {
+			# The member has already left the faction when this callback runs, so
+			# the same helper clears the derived receipt without a world scan.
+			africa_reconcile_foreign_patronage_state = yes
+		}
+	}
+
 	on_war_relation_added = {
 		effect = {
 			if = {
