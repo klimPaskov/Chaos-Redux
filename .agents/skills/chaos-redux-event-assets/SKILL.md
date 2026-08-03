@@ -142,7 +142,7 @@ An absent event-scoped `docs/assets/` folder is expected after a fully complete 
 
 ### Durable ComfyUI portrait replacement queue
 
-Create a durable ComfyUI handoff for every portrait while continuing the normal HOI4 processing, resize, DDS conversion, review, and runtime-wiring workflow. Treat the agent-produced HOI4-style runtime portrait as a usable placeholder that may later be replaced manually; do not delay the current implementation merely because the ComfyUI pass is pending.
+Create a durable source handoff for every portrait while continuing the normal crop, resize, DDS conversion, review, and runtime-wiring workflow. For a historical or otherwise grounded portrait, the original sourced photograph is the temporary runtime placeholder; an HOI4-style ImageGen repaint is not required unless the user explicitly requests one. Record that the runtime image is a source placeholder so a later art pass can replace it without losing provenance.
 
 Create one source/prompt pair for each portrait. Build its basename from dynamic project keys:
 
@@ -160,7 +160,7 @@ docs/assets/portraits/<event_id>_<event_slug>/<runtime_portrait_basename>.txt
 
 Resolve `<tag>` from the actual country tag or cosmetic tag that owns the portrait in the implementation. Resolve `<character_key>` from the actual stable scripted character or institutional subject key, not a localised display name. Use the resolved runtime texture filename's basename, not the sprite id or a generic `portrait` filename, and preserve its exact spelling and case. Decide and register the dynamic runtime DDS basename before creating the durable pair when portrait work precedes final wiring, then wire the DDS with that same basename. Never rename only one side of the runtime DDS, source PNG, and prompt TXT contract.
 
-Save the highest-resolution portrait source that anchors the subject as `<runtime_portrait_basename>.png`, before the final `156x210` resize and DDS conversion. Prefer the pre-style identity or subject master suitable for a later ComfyUI image-input pass. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder. If the source is an attributed real-person photograph, retain the immutable downloaded master and provenance in the active evidence workspace and save a lossless PNG copy in the durable queue; the queue copy never replaces the real-person provenance or identity-audit requirements.
+Save the highest-resolution original portrait source that anchors the subject as `<runtime_portrait_basename>.png`, before the final crop, `156x210` resize, and DDS conversion. For a sourced historical person, retain the immutable downloaded master and provenance in the active evidence workspace and save a lossless PNG copy in the durable queue; the queue copy never replaces the real-person provenance or identity-audit requirements. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder.
 
 Analyze the saved portrait source, use established task context and verified research about the subject, and follow this portrait-description instruction:
 
@@ -263,7 +263,7 @@ For generated World War II-era report/news/super-event images:
 - avoid modern streets, uniforms, props, weapons, vehicles, signage, UI overlays, cinematic color grading, and readable generated text
 - keep the source PNG, processed preview, final DDS, prompt, and manifest entry
 - record the source mode as generated and explain why generation fit better than sourcing
-- never use text-only generation, a name, a description, or a substitute face to fabricate a real person's likeness; an identity-preserving ImageGen edit of the unchanged sourced portrait is allowed only under the real-person workflow below
+- never use text-only generation, a name, a description, or a substitute face to fabricate a real person's likeness; a historical portrait may use the unchanged sourced crop as its temporary runtime placeholder, while an identity-preserving ImageGen edit is optional and requires an explicit user request
 
 Follow the repository web research rules from `AGENTS.md` when searching for source images.
 
@@ -296,23 +296,23 @@ Run it in addition to the unchanged grounded-source-only (`grounded_source_only`
 
 Do not generate, reconstruct, or substitute the identity of a real person. This applies to country leaders, commanders, operatives, and named officeholders. The identity master must be an unchanged attributed archival photograph of the real subject; for a male subject, it must be an unchanged attributed archival male photograph. An illustration, statue, reenactor, actor, text description, or generated reconstruction cannot serve as the identity master.
 
-Use this mandatory fail-closed sequence for every real-person portrait: unchanged attributed archival photograph (archival male photograph for male subjects) -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted portrait family -> deterministic 156x210 processing -> independent likeness/style/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS.
+Use this mandatory fail-closed placeholder sequence for every real-person portrait: unchanged attributed archival photograph (archival male photograph for male subjects) -> explicit head-and-shoulders crop -> deterministic 156x210 processing -> independent identity/crop/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS. Do not perform an HOI4-style ImageGen repaint for a historical placeholder unless the user explicitly authorizes that additional art pass.
 
-Make the explicit crop boundary before ImageGen with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py`, passing required decoded-master `left top right bottom` coordinates and retaining its lossless PNG plus JSON evidence. The utility uses Pillow as the single decode/crop backend, reopens the PNG, and fails closed unless its decoded pixels exactly equal the same decoded master rectangle; it never resizes, enhances, recolours, retouches, or overwrites without `--force`. An `ffmpeg` or ImageMagick crop that cannot retain an equivalent exact decoded-pixel equality proof is not an accepted immutable source crop.
+Make the explicit head-and-shoulders crop before resizing with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py`, passing required decoded-master `left top right bottom` coordinates and retaining its lossless PNG plus JSON evidence. The utility uses Pillow as the single decode/crop backend, reopens the PNG, and fails closed unless its decoded pixels exactly equal the same decoded master rectangle; it never resizes, enhances, recolours, retouches, or overwrites without `--force`. An `ffmpeg` or ImageMagick crop that cannot retain an equivalent exact decoded-pixel equality proof is not an accepted immutable source crop.
 
 Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed photographs. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official photographic portraits, military archive photographs, or passport or identity photographs. Archival illustrations may inform period context but never identity or likeness. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
 
-Preserve the unchanged master as immutable evidence and use the exact crop as the ImageGen identity reference; role-specific canonical references may guide style only and may not supply, replace, or invent the person's face.
+Preserve the unchanged master as immutable evidence and use the exact crop as the source for the temporary runtime placeholder; role-specific references may document the expected period and role but may not supply, replace, or invent the person's face.
 
 Identity preservation is a separate non-compensable pass/fail gate: style quality can never excuse identity drift. Preserve exact facial geometry, asymmetry, age, expression, hair and facial hair, pose, and source-visible clothing, and do not add hidden detail or unsupported clothing or insignia.
 
-Compare the unchanged master, explicit crop, raw ImageGen result, processed 156x210 candidate, and role-specific canonical references at native size and an enlarged inspection scale of at least 4x nearest-neighbour.
+Compare the unchanged master, explicit crop, processed 156x210 candidate, DDS output, and role-specific references at native size and an enlarged inspection scale of at least 4x nearest-neighbour.
 
-Reject genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, or a mere filtered/resized photograph. Raw or merely resized sourced images are evidence only and never final runtime portraits.
+Reject genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, and weak likeness. In historical placeholder mode, a faithfully cropped and resized sourced photograph is intentionally the temporary final runtime portrait; label it `historical_source_placeholder`, not HOI4-style-final.
 
-Keep the source, crop, raw ImageGen result, processed candidate, audit sheet, and final DDS in distinct paths; never overwrite the source master or silently replace provenance.
+Keep the source, crop, processed candidate, audit sheet, and final DDS in distinct paths; never overwrite the source master or silently replace provenance.
 
-Record the source link, attribution, archive, license or public-domain status when available, immutable source hash, crop coordinates, prompt or generation record, role/reference family, candidate hash, audit reviewer and date, separate likeness/style/provenance verdicts, final DDS path, and sprite name in the manifest and handoff. If any source, identity, provenance, or audit evidence is missing or fails, mark the portrait blocked and do not substitute a generated or generic person.
+Record the source link, attribution, archive, license or public-domain status when available, immutable source hash, crop coordinates, role/reference family, candidate hash, audit reviewer and date, placeholder status, final DDS path, and sprite name in the manifest and handoff. If any source, identity, provenance, crop, or audit evidence is missing or fails, mark the portrait blocked and do not substitute a generated or generic person.
 
 For generated or sourced one-person portraits, the asset handoff must identify the subject's role and gender presentation plus any matching name-pool or character-metadata requirement. Female-presenting portraits must not be paired with male names and should require `female = yes` where a country leader is created directly. Male-presenting portraits must not be paired with female names or `female = yes`. Council, board, office, crowd, and symbolic-institution portraits should keep institutional leader names instead of personal random-name pools.
 
