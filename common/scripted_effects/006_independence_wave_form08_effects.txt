@@ -10,17 +10,33 @@
 
 independence_wave_form08_register_readiness = {
 	independence_wave_formable_clear_selected_family_readiness = yes
-	set_variable = { independence_wave_formable_readiness_family = constant:independence_wave_formable_family.danubian_confederation }
-	set_country_flag = independence_wave_formable_territory_adapter_ready
-	# HUN_EMPIRE is an existing vanilla cosmetic identity with a complete flag
-	# package. This receipt records reviewed reuse; no new tag or flag is added.
-	set_country_flag = independence_wave_formable_x_tag_reserved
-	set_country_flag = independence_wave_form08_hun_empire_identity_reuse_attested
-	set_country_flag = independence_wave_formable_flag_package_ready
-	set_country_flag = independence_wave_formable_identity_adapter_ready
-	set_country_flag = independence_wave_formable_integration_adapter_ready
-	set_country_flag = independence_wave_formable_member_policy_audited
-	set_country_flag = independence_wave_form08_readiness_attested
+	# FORM-08 is currently implemented through the researched TRA carrier. Keep
+	# the generic family-registration helper fail-closed for any future package
+	# that selects family 8 before its own member, territory, and identity
+	# adapter has been reviewed.
+	if = {
+		limit = {
+			is_independence_wave_tra_package = yes
+			has_variable = independence_wave_anchor_state
+			var:independence_wave_anchor_state = {
+				state = 84
+				is_owned_and_controlled_by = ROOT
+			}
+			capital_scope = { state = 84 }
+		}
+		set_variable = { independence_wave_formable_readiness_family = constant:independence_wave_formable_family.danubian_confederation }
+		set_country_flag = independence_wave_formable_territory_adapter_ready
+		# HUN_EMPIRE is an existing vanilla cosmetic identity with a complete
+		# flag package. This receipt records reviewed reuse; no new tag or flag
+		# is added.
+		set_country_flag = independence_wave_formable_x_tag_reserved
+		set_country_flag = independence_wave_form08_hun_empire_identity_reuse_attested
+		set_country_flag = independence_wave_formable_flag_package_ready
+		set_country_flag = independence_wave_formable_identity_adapter_ready
+		set_country_flag = independence_wave_formable_integration_adapter_ready
+		set_country_flag = independence_wave_formable_member_policy_audited
+		set_country_flag = independence_wave_form08_readiness_attested
+	}
 }
 
 independence_wave_formable_identity_adapter_8 = {

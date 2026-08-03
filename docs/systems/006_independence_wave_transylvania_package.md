@@ -22,4 +22,6 @@ The package-specific files are:
 
 All decision icons reuse registered Event 006 decision sprites in `interface/006_independence_wave.gfx`. No advisor art is created. The leader portrait remains the installed vanilla `GFX_portrait_Iuliu_Maniu` asset.
 
-The package remains subject to the normal synchronized reservation, host-survival, tag-origin, force, arrays, and final-validation gates. IW-023 is admitted to the content-attestation trigger only after the static package audit confirms every setup receipt and the additive focus carrier import.
+The package remains subject to the normal synchronized reservation, host-survival, tag-origin, force, arrays, and final-validation gates. Setup selects the Danubian Confederation family only through the reviewed TRA carrier, loads its shared profile, and records the existing `HUN_EMPIRE` cosmetic identity as a fail-closed reuse. The family still requires three researched members, consents, and unique anchors before any identity or territory mutation; Banat and Macedonia remain outside the admitted package pool until their own packages are researched.
+
+IW-023 is not in the compile-time content-attestation set yet. Admission remains closed until the current post-repair country-package audit accepts the complete setup receipts, additive focus carrier, current-map reservation, force and AI contracts, and the non-runtime formable boundary. This documentation does not claim live release, save/load, or in-game balance evidence.

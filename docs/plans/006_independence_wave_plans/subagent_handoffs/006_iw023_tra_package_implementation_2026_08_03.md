@@ -28,6 +28,6 @@ IW-023 reuses the registered vanilla `TRA` carrier and preserves its vanilla his
 
 ## Held items and boundaries
 
-- The Danubian Confederation formable family has a registry constant but no accepted IW-023 identity, integration, roster, territory, and tag adapter. IW-023 therefore remains fail-closed with no formable family registered rather than exposing a non-committable route.
+- Historical note: this implementation handoff predates the reviewed FORM-08 Danubian adapter. The current adapter source is recorded in `006_iw023_form08_danubian_adapter_2026_08_03.md` and `006_form08_ledger_gate_repair_2026_08_03.md`; IW-023 now selects and registers the family through the TRA carrier, while the three-member territory and identity commit remains fail-closed. This handoff is not current admission authority.
 - The shared Austro-Hungarian focus file is a static carrier for the preserved vanilla tree. Event 006 overlay focuses remain inert unless the country has the Event 006 overlay assignment and lifecycle flags; no vanilla country is overwritten.
 - This tranche does not attest TRA for automatic release, does not add bespoke TRA focus content, and does not claim live runtime, save/load, or balance completion.
