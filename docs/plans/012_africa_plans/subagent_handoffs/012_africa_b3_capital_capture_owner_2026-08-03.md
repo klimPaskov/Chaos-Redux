@@ -14,21 +14,21 @@ When the external overlord (`FROM`) has the target-owned `africa_diaspora_bond_i
 
 All other qualifying external overlords call `africa_achievement_record_foreign_government_capture`. The callback then preserves the pre-existing `africa_achievement_record_external_puppet_status` owner for the military achievement, so no existing disqualifier is replaced or duplicated.
 
-The bounded `on_release_as_puppet` callback covers the occupied-territories release path with the same host-only classification. The engine documentation exposes no single callback that identifies every direct autonomy effect as a new government capture, so unmarked autonomy-level changes remain an explicit acceptance blocker rather than being inferred from a generic subject state.
+The bounded `on_release_as_puppet` callback covers the occupied-territories release path, and `on_subject_autonomy_level_change` covers direct autonomy transitions while ROOT remains an Event 012 host subject under the external capital. Both use the same host-only classification. No generic member-autonomy or opinion proxy is used.
 
 ## Source changes
 
 - `common/scripted_effects/012_africa_achievement_effects.txt` defines the two sticky achievement owner helpers.
-- `common/on_actions/012_africa_world_order_on_actions.txt` classifies the overlord inside the bounded `on_puppet` and `on_release_as_puppet` witnesses.
+- `common/on_actions/012_africa_world_order_on_actions.txt` classifies the overlord inside the bounded `on_puppet`, `on_release_as_puppet`, and `on_subject_autonomy_level_change` witnesses.
 - `docs/plans/012_africa_plans/012_africa_b3_achievement_owner_closure_2026-08-01.md` records the row-28 follow-up.
 - `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` records the measured ownership, loss, capture, and corruption owner evidence while retaining the blocked live status.
 
 ## Validation and remaining risk
 
-Static source review confirms one definition and two bounded callback owners for each new helper, one shared external-puppet receipt, no new tags or models, and no reader-only government-capture flag in the Event 012 source tree.
+Static source review confirms one definition and three bounded callback owners for each new helper, one shared external-puppet receipt, no new tags or models, and no reader-only government-capture flag in the Event 012 source tree.
 
-The callbacks use the documented subject-creation scopes (`ROOT` as puppet and `FROM` as overlord); ordinary opinion changes, faction membership, annexation, and unrelated diaspora contact do not set either flag. Direct autonomy transitions that do not pass through one of these subject-creation callbacks remain unclassified.
+The callbacks use the documented scopes (`ROOT` as subject and `FROM` as overlord); ordinary opinion changes, faction membership, annexation, and unrelated diaspora contact do not set either flag. The autonomy callback requires the host to be an actual subject under a non-African capital before recording capture.
 
 The achievement remains blocked until a live campaign demonstrates ten distinct locally controlled projects, the measured ownership threshold, no later ownership loss, no unresolved corruption, and no capture outcome. No in-game session was launched.
 
-No fallback was used. The remaining unclassified direct-autonomy paths are a documented engine-scope limitation and keep the achievement blocked until an exact owner is exposed.
+No fallback or simplification was used for the confirmed subject-creation and autonomy-transition owners.

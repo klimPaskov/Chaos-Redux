@@ -214,6 +214,35 @@ on_actions = {
 		}
 	}
 
+	# ROOT is the subject and FROM is its overlord when an autonomy effect
+	# changes the subject level outside the two explicit release callbacks.
+	# The external-capital and host-only guards make the state itself the exact
+	# capture witness; ordinary African Charter-member autonomy cannot qualify.
+	on_subject_autonomy_level_change = {
+		effect = {
+			if = {
+				limit = {
+					any_core_state = { is_on_continent = africa }
+					africa_is_current_host = yes
+					is_subject = yes
+					FROM = {
+						capital_scope = {
+							NOT = { is_on_continent = africa }
+						}
+					}
+				}
+				if = {
+					limit = { FROM = { has_country_flag = africa_diaspora_bond_issue_completed } }
+					africa_achievement_record_diaspora_government_capture = yes
+				}
+				else = {
+					africa_achievement_record_foreign_government_capture = yes
+				}
+				africa_achievement_record_external_puppet_status = yes
+			}
+		}
+	}
+
 	# ROOT is the annexer and FROM is still the victim during this callback.
 	# The victim's Event 012 generation or immutable achievement-counted flags
 	# identify the exact member/partner transaction before the country is removed.
