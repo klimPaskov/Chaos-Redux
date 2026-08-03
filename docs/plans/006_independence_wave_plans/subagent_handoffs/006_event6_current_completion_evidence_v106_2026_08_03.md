@@ -30,6 +30,10 @@ The current FORM-08 gate audit (`006_form08_danubian_gate_audit_current_2026_08_
 
 The current IW-030 MNT package-gate audit (`006_iw030_mnt_current_package_gate_audit_2026_08_03.md`) confirms native vanilla history and roster usage, clean state-105 mapping, package lifecycle/decision/force/AI/cleanup surfaces, and clean normal-spacing focus geometry. MNT remains HOLD for sourced male roster provenance/rights, non-generic portrait admission, attestation, and unobserved runtime/AI/balance evidence.
 
+The current IW-043 CHU portrait source research (`006_iw043_portrait_source_research_current_2026_08_03.md`) adds Hadi Atlasi as a source-only civic-presidium lead with exact crop and source-placeholder preview evidence. The 1937 date, Commons/NKVD rights chain, and repost provenance remain `needs_user_review`; Shamil Usmanov remains blocked and no DDS, GFX, character, or package admission changed.
+
+The current IW-177 FIJ package audit (`006_iw177_fiji_current_package_audit_2026_08_03.md`) finds source-coherent setup, politics, six-focus/decision/mission, ideas/ledgers, forces, AI, cleanup, flags, and localisation. FIJ remains HOLD because the legacy candidate gate and central attestation omit IW-177, Sukuna's source is circa-1940s, Vishnu Deo has anonymous-source and role limits, and FORM-39 member, consent, X-tag, flag, identity, and MFX research inputs remain unresolved.
+
 ## Portrait policy boundary
 
 Grounded historical portraits now use the unchanged attributed source, exact head-and-shoulders crop, deterministic `156x210` fit, independent identity/framing/provenance audit, and authorized DDS placeholder sequence. Retained HOI4-style repaint chains are evidence history only unless a later explicit user request authorizes a replacement. No Event 006 advisor icons, advisor portrait blocks, dossier portraits, or small derivatives are authorized.
@@ -49,5 +53,7 @@ No fallback or simplification was introduced by this continuation. No Hearts of 
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw023_tra_current_admission_audit_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_form08_danubian_gate_audit_current_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw030_mnt_current_package_gate_audit_2026_08_03.md`
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw043_portrait_source_research_current_2026_08_03.md`
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw177_fiji_current_package_audit_2026_08_03.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_mnt_v105_documentation_reconciliation_2026_08_03.md`
 - Current documentation alignment commits: `9091a5459`, `5f3642a81`, `c280e3013`, and `68824eb9a`.
