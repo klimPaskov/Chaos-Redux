@@ -2,6 +2,8 @@
 
 Status: complete; visual review result: HOI4-style PASS.
 
+The runtime strip payload was subsequently recovered by `2026-08-03_building_icon_strip_recovery.md`; this handoff retains the accepted camp-art review and provenance, while its former full-strip checksum is historical.
+
 ## Changed runtime files
 
 - `gfx/interface/buildings/building_icon_strip.dds` — 35 frames, 1610x46; only frames 34 and 35 replaced.
@@ -22,8 +24,7 @@ The old frame 34 was a transparent tall watchtower/gate render and the old frame
 
 ## Checksums and strip preservation
 
-- Preserved first-33 pixel payload SHA-256: `22f1a3f21fcc4a8ff0789317309a6de3355e01b6bb57eb661191dbdfd76e7b0c`.
-- Final strip DDS SHA-256: `c7359e1ff2de6d3105c0ef152adc12583aec43fd03ba42204810087ac520acdd`.
+- The accepted camp frame payloads remain the source for frames 34 and 35; the current full-strip checksum is recorded in `2026-08-03_building_icon_strip_recovery.md`.
 - Final concentration DDS SHA-256: `c3373e5ab84b931bd9e4a6764c2057d4738890b08b80df4855a1c2c405d2db7a`.
 - Final extermination DDS SHA-256: `0cdd6fe3ba7cfa2e6a66553f80872a2607fa7f1b764b67165e4b2e39e322f16b`.
 - DDS header validation: all have 128-byte legacy headers, dimensions 1610x46 / 27x23 / 27x23, exact lengths 296368 / 2612 / 2612, BGRA masks, `DDSCAPS_TEXTURE` 0x1000, and alpha extrema 0..255.
