@@ -6,12 +6,18 @@ Subagent: `/root/event6_documentation_curator_current`.
 
 Scope: documentation-only reconciliation for the Event 006 overview, source-of-truth map, resume packet, portrait pre-resize manifest, and this handoff. No gameplay, localisation, scripted localisation, GUI, GFX, character, history, decision, focus, idea, country, AI, audio, image, DDS, spreadsheet, or binary asset file was edited.
 
+## Current post-TRA status override
+
+The current whole-event authority is post-TRA and remains **HOLD / PARTIAL**: 15 of 193 selectable non-overlay packages are content-attested, spanning 14 compatible reservation groups and 15 distinct anchors; 178 selectable rows remain unattested. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by `006_iw023_tra_runtime_scenario_admission_reconciliation_2026_08_03.md` and commit `712c7c868`. The 14-country band still lacks an accepted simultaneous execution witness, and the 20-country band remains structurally impossible with 15 attestations. FORM-08 is a separate fail-closed member/consent/anchor gate. Any pre-TRA fourteen-package, thirteen-group, or fourteen-anchor wording elsewhere in this handoff is historical traceability only.
+
+The obsolete pasted flag-log text is excluded from current evidence. Current collision status comes only from the scoped registered-tag source and the strict static tag audit.
+
 ## Source-of-truth map
 
 | Surface | Current authority | Boundary |
 | --- | --- | --- |
 | Accepted design | `docs/specs/006_independence_wave_specs/` | The accepted specification is unchanged and remains the design source of truth. |
-| Whole-event static status | `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read with `006_event6_final_completion_audit_current_2026_08_03.md` | Event 006 remains **HOLD / PARTIAL** with 14 of 193 non-overlay packages attested and the 14/20 bands fail-closed below admitted capacity. This is static evidence and does not claim gameplay completion or live execution. |
+| Whole-event static status | `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read with the post-TRA completion audit | Event 006 remains **HOLD / PARTIAL** with 15 of 193 non-overlay packages attested, 14 compatible reservation groups, and 15 distinct anchors. The 14/20 bands remain fail-closed below their accepted witnesses. This is static evidence and does not claim gameplay completion or live execution. |
 | Current overview | `docs/events/006_independence_wave/overview.md` | The 2026-08-03 v106 continuation is current; v105/v104/v103 paragraphs are dated traceability unless explicitly marked otherwise. |
 | Current resume routing | `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` | The explicit v106 override and current shelf/COG/audio notes control resume work; older counts remain historical. |
 | Current plan routing | `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` | The map now identifies v106, the 83-master shelf, v111 audio research, current ATX/MNT gates, and the current COG post-icon audit as routing evidence. |
@@ -26,7 +32,7 @@ Scope: documentation-only reconciliation for the Event 006 overview, source-of-t
 
 | Document or tranche | Disposition | Current reading |
 | --- | --- | --- |
-| v106 whole-event evidence and current final audit | Current / accepted evidence | Use for whole-event status and current blocker routing. |
+| v106 whole-event evidence and post-TRA final audit | Current / accepted evidence | Use for whole-event status and current blocker routing; the post-TRA exact set is 15/193 across 14 groups and 15 anchors. |
 | v105, v104, v103 whole-event evidence | Historical underlying evidence | Preserve listed checks and blocker details, but do not call these the current whole-event router. |
 | Older v102/v98/v97/v96/v33 and prior completion notes | Historical or superseded | Retained for traceability; no current counts or completion claim may be derived from them. |
 | COG repair and pre-icon re-audit | Source repair evidence, with old bare-token note superseded | The post-icon-fix audit is current for display-token status; payment and availability logic were not reclassified. |
@@ -49,10 +55,10 @@ Scope: documentation-only reconciliation for the Event 006 overview, source-of-t
 
 ## Contradictions still open
 
-- Event 006 remains **HOLD / PARTIAL**; 14 of 193 non-overlay packages are attested, and 14/20 capacity remains fail-closed.
+- Event 006 remains **HOLD / PARTIAL**; 15 of 193 non-overlay packages are attested across 14 compatible reservation groups and 15 anchors, and 14/20 capacity remains fail-closed.
 - ATX Venice lacks a complete runtime adapter, complete country surfaces, source/portrait clearance, and attestation.
 - MNT retains provenance, role, runtime, and package gates despite stronger archival source notes.
-- IW-023 TRA has current source-local PASS evidence in `006_iw023_tra_independent_source_admission_audit_2026_08_03.md`, but outer package admission remains **HOLD** with no attestation or fallback promotion.
+- IW-023 TRA has current source-local PASS evidence and is admitted to the runtime and SCN-008 dispatch sets; FORM-08 remains separately **HOLD** and no fallback promotion follows.
 - FIJ, FSM, CHU, ASY, CAT/FORM-07, additional formables, AI/balance evidence, and other package gates remain fail-closed as recorded by v106 and the current addenda.
 - `6001` remains blocked by accepted-cue rights and parent approval; no v111 candidate selection is implied.
 - Live gameplay, save/load, runtime-consumer observation, and player-owned scenario evidence remain outside this documentation pass.
@@ -69,8 +75,8 @@ Scope: documentation-only reconciliation for the Event 006 overview, source-of-t
 
 1. Decide whether the v111 `Defilier-Marsch` candidate is acceptable after explicit human listening, tonal review, and composition-jurisdiction review; do not treat it as an automatic replacement or fallback.
 2. Keep ATX and MNT fail-closed until their named source, package, runtime, and attestation gates pass independently.
-3. Record the final IW-023 TRA audit disposition when its bounded handoff lands; this cleanup intentionally does not pre-empt that audit.
-4. Continue using v106 plus the current handoffs as the Event 006 resume packet, and do not re-open historical v105/v104/v103 arithmetic unless a new dated authority supersedes v106.
+3. Keep the IW-023 TRA admission reconciliation and post-TRA completion audit paired with v106 for current routing; do not reopen the separate FORM-08 gate without its accepted member/consent/anchor proof.
+4. Continue using v106 plus the current post-TRA handoffs as the Event 006 resume packet, and do not re-open historical v105/v104/v103 arithmetic unless a new dated authority supersedes v106.
 
 ## Cleanup actions if patching is not allowed
 

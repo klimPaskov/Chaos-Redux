@@ -6,7 +6,15 @@ This package is the accepted source specification; implementation status is reco
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
-## 2026-07-29 shared core and registry API milestone
+## Current post-TRA implementation reconciliation (2026-08-03)
+
+The current whole-event status is **HOLD / PARTIAL**. The exact compile-time content-attestation set is fifteen packages (`IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-018`, `IW-019`, `IW-023`, `IW-173`, and `IW-184`) across fourteen compatible reservation groups and fifteen distinct anchors. The registry contains 193 selectable non-overlay rows, leaving 178 unattested. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by `006_iw023_tra_runtime_scenario_admission_reconciliation_2026_08_03.md` and gameplay commit `712c7c868`.
+
+The 14-country automatic band has enough raw admitted inventory but still lacks an accepted simultaneous execution witness; the 20-country band is structurally impossible with fifteen attestations. FORM-08 remains separately fail-closed for its accepted Vojvodina/Slavonia member, consent, and anchor proof. `6001`, additional formables, package-specific AI/balance acceptance, and the remaining 178 country packages remain blockers. The obsolete pasted flag-log is excluded from current evidence; current collision evidence comes only from the scoped registered-tag source and strict static audit.
+
+The current grounded portrait policy is unchanged-source placeholder processing: retain the attributed source, take the exact head-and-shoulders crop, perform deterministic `156x210` processing, independently audit identity/framing/provenance, and convert to DDS only when a runtime consumer is otherwise authorized. No Event 006 advisor icons are created or required.
+
+## 2026-07-29 shared core and registry API milestone (historical baseline)
 
 The core implementation milestone is closed under source and static evidence. The closure covers the automatic and World Collapse loop, the Event 005 and Event 006 reservation and transaction boundary, the shared country-value and host, patron, Network, League, and rival-bloc systems, and the reusable Event 006 country-registration and collection API. The approved automatic ladder remains 6/8/10/14/20, with the 14- and 20-country targets fail-closed below admitted package and reservation capacity.
 
@@ -14,7 +22,7 @@ This closure is not a country-package completion claim. The current fourteen-pac
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, eighty decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
-## Current implementation reconciliation (2026-07-25)
+## Current implementation reconciliation (2026-07-25 historical baseline)
 
 The accepted specification includes the later sourced-portrait decision.
 This section is the current implementation ledger rather than a rewrite of the planning baseline.

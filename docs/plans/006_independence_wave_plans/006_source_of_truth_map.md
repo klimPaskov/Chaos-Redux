@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read together with v105/v104/v103 for their underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
+Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, the post-TRA completion audit, and `subagent_handoffs/006_event6_post_tra_documentation_reconciliation_2026_08_03.md`, read together with v105/v104/v103 for their underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
 
 Current-count override: any historical paragraph below that says 80/74/6, 81, or 82 portrait masters or 295/111/50 focus arithmetic is traceability only. The current shelf is 83 original-size portrait evidence/candidate masters, and the current generic focus inspection is 184 direct plus 134 shared definitions with 27 imports, 318 unique definitions and 345 raw entries. Use v106, the fresh whole-event audit, and the current dated package/portrait handoffs for admission decisions.
 

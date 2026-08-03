@@ -21,6 +21,12 @@ The focus rows are family-level baseline icons because the accepted specificatio
 defines thirteen focus icon families. They are not a claim that every individual
 focus has unique art.
 
+## Current Event 006 portrait and advisor boundary (2026-08-03)
+
+The current runtime/admission authority recognizes fifteen content-attested packages: IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184. This asset manifest does not promote a package; the package handoffs and central attestation trigger remain authoritative. Grounded historical portraits use the unchanged-source placeholder path: attributed source, exact head-and-shoulders crop, deterministic 156x210 fit, independent identity/framing/provenance review, then DDS conversion only for an otherwise-authorized runtime consumer. Fictional/high-chaos portraits use the separate generated route. No Independence Wave advisor icons, advisor portrait cards, dossier portraits, or small derivatives are created or required.
+
+The current flat original-size portrait shelf is documented by `portraits_generated_png/MANIFEST.md` and `PRE_RESIZE_MANIFEST.md`; it is evidence-only and does not grant package admission. The converted source-placeholder tranche is separately documented at `source_placeholder_2026_08_03/manifest.md`. Provider-backed HOI4-style replacement completion is not claimed for this source-placeholder tranche.
+
 ## Focus icon families
 
 All final files are 94x86 uncompressed BGRA DDS with alpha. For each row,
