@@ -16,13 +16,17 @@ The carrier keeps the best surviving member capital in deterministic order: stat
 
 ## Visible post-formation system
 
-After a successful commit the carrier tracks federal cohesion, arbitration capacity, transport authority, and minority settlement. A provisional, coordinated, or integrated charter idea is refreshed from those values. Three material-costed decisions expose the public work loop:
+After a successful commit the carrier tracks federal cohesion, arbitration capacity, transport authority, and minority settlement. The four values are shown live in the Danubian decision-category ledger, and all four participate in charter promotion: the coordinated charter requires every ledger to reach the coordinated threshold, while the integrated charter requires every ledger to reach the integrated threshold. Three material-costed decisions expose the public work loop:
 
 * `Convene the River Congress` spends strategic and administrative reserves over a long congress window.
 * `Arbitrate the Border Communities` spends strategic and security reserves over a public arbitration window.
 * `Standardize Rail and River Authority` spends strategic and administrative reserves over a transport convention window.
 
-The decisions alter Event 006 country values as well as the FORM-08 ledgers; they are not passive checklist missions or free unit rewards.
+The decisions alter Event 006 country values as well as the FORM-08 ledgers; they are not passive checklist missions or free unit rewards. FORM-08 also refuses to claim `HUN_EMPIRE` while the vanilla Austria-Hungary formation flag is set or any living country already carries that cosmetic identity.
+
+## Registry reconciliation still required
+
+The accepted registry names Transylvania, Banat, Vojvodina, Slavonia, and compatible members. The current audited adapter remains narrower (TRA, AXX, and MAC anchors) because the Vojvodina/Slavonia package and installed-map crosswalk are not yet attested. This tranche makes the existing four-ledger loop visible and meaningful without admitting an unresearched member or silently changing the accepted geography.
 
 ## Asset and localisation wiring
 
@@ -31,4 +35,3 @@ FORM-08 intentionally reuses the vanilla `HUN_EMPIRE` identity and flags. Its li
 ## Future work
 
 The family remains runtime-inadmissible until Banat and Macedonia have complete researched Event 006 package adapters and their source, territory, symbols, leaders, and collision evidence. The adapter does not claim live-game, save/load, or whole-event AI validation.
-
