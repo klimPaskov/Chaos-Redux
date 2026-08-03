@@ -251,8 +251,16 @@ independence_wave_prepare_weight_iw_180 = {
 
 independence_wave_prepare_weight_iw_182 = {
 	set_temp_variable = { independence_wave_weight_iw_182 = constant:independence_wave_allocation_factor.zero }
+	# GZX is a dormant shell until the full identity, portrait, and gameplay
+	# attestation is promoted. Mirror the execution-id gate used by the admitted
+	# California carrier so an unadmitted candidate cannot enter the frozen
+	# allocation and fail only at release preflight.
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_182 }
 	if = {
-		limit = { can_plan_independence_wave_package_iw_182 = yes }
+		limit = {
+			can_plan_independence_wave_package_iw_182 = yes
+			has_independence_wave_runtime_package_content_attestation_for_execution_id = yes
+		}
 		independence_wave_load_package_iw_182 = yes
 		independence_wave_calculate_candidate_allocation_weight = yes
 		set_temp_variable = { independence_wave_weight_iw_182 = independence_wave_candidate_weight }
