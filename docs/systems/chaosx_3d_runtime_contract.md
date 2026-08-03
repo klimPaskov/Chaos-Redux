@@ -22,6 +22,8 @@ Never attach a custom map-building model to the vanilla shared `special_project_
 
 When gameplay is state-level but the visual must appear once, keep the gameplay building non-map and create a hidden provincial visual-anchor building with `province_max = 1`, `state_max = 1`, a dedicated spawn pool, and `construct_building_in_random_province` from state scope. Add explicit cleanup and conversion logic for the anchor.
 
+Every custom `spawn_point` must have a matching `building_<spawn_point>` entity in the active `.asset` file. Different meshes must use different spawn points because one spawn point resolves to one map entity.
+
 This workflow does not require `map/buildings.txt`. The only permanent placement evidence required is the dedicated spawn declaration, the state-scope construction helper, and a runtime consumer audit.
 
 ## Completion evidence
