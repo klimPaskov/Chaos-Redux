@@ -4,6 +4,8 @@ This document records the bounded country-core implementation for the `IW-043` M
 
 The controlling design is `docs/plans/006_independence_wave_plans/006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`. Portrait and identity safeguards come from the accepted specification and the current event-asset skill. Earlier generated portrait manifests remain provenance evidence only. The 2026-07-22 treatment ledger is the authority for Sultan-Galiev and Shabo; every other route still requires a sourced real male candidate or authentic archival material for the actual institution.
 
+The 2026-08-03 source-only tranche archives exact crops and deterministic `156x210` previews for Mirsaid Sultan-Galiev, Karim Tinchurin, Luka Spasov, Shamoun Hanne Haydo, and Rev. Joel E. Werda/Warda under `subagent_handoffs/006_iw043_iw058_historical_source_placeholder_research_2026_08_03.md`. Four candidates remain `needs_user_review` for rights/date or role admission and Werda/Warda is blocked for low resolution and unresolved 1936 continuity; no DDS, character admission, runtime wiring, or package attestation follows.
+
 ## Scripted architecture contract
 
 The package-level reusable logic lives in `common/scripted_triggers/006_independence_wave_iw043_iw058_package_triggers.txt` and `common/scripted_effects/006_independence_wave_iw043_iw058_package_effects.txt`. The shared tuning source is `common/script_constants/006_independence_wave_iw043_iw058_constants.txt`; no package helper introduces a file-scoped magic duration, strength floor, organization floor, or conversion value.
