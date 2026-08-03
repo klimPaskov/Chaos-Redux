@@ -33,6 +33,7 @@ When no external candidate carries the reviewed `africa_world_package_implementa
 - Candidate countries qualify only if they still use the generic focus tree or carry the explicit `africa_world_package_focus_replacement_approved` audit flag. Meaningful existing country trees are not replaced.
 - A candidate also needs `africa_world_package_implementation_ready` before Action 85 can install it. This is an implementation gate, not a gameplay fallback.
 - Every continent-package loader preserves completed-focus history. The installer remains one-shot through the candidate-to-installed state transition, so activating a reviewed package cannot silently erase earlier national progress.
+- W4 union eligibility rejects the canonical `africa_world_submission_settlement` receipt written by Action 88 and continental-war submission; terminally submitted packages cannot re-enter the union partner route.
 
 Pairwise settlement hooks clear only the actor that actually left the war, while `africa_scramble_reconcile_intervention_war` closes the intervention global and opens aftermath only when no flagged coalition actor remains at war with the host.
 
