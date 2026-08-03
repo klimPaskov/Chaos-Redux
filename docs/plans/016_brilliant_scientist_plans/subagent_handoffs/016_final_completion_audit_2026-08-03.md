@@ -150,3 +150,21 @@ No new gameplay fallback, placeholder CBRN action, or hidden replacement mechani
 The twenty-one visible KRG ideas using generic/default presentation are an outstanding unapproved 2D visual simplification.
 
 No 3D simplification is recorded because model work is explicitly outside the current audit boundary.
+
+## Correction — 2026-08-03 KRG country-idea icon status refresh
+
+This correction was checked at repository HEAD `063ae9331` and supersedes only the earlier statements in this audit that twenty-one visible KRG ideas lacked bespoke `picture` assignments, sprite registrations, or runtime DDS files.
+
+Commit `2956c5cb3` is an ancestor of the inspected HEAD and added the bounded twenty-one-icon package documented in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_krg_country_idea_icon_wiring_2026-08-03.md`.
+
+The current `common/ideas/016_brilliant_scientist_country_ideas.txt` contains 28 visible country-idea definitions, 28 `picture` assignments, and 28 unique picture tokens.
+
+Every one of those 28 assignments resolves to a registered `GFX_idea_<picture>` sprite in `interface/016_brilliant_scientist_idea_icons.gfx`, a present runtime DDS file, and a Git-tracked runtime DDS file.
+
+The introducing commit added exactly 21 DDS files under `gfx/interface/ideas/016_brilliant_scientist/`; all 21 are present and tracked at the inspected HEAD, with no missing or untracked row.
+
+The complete Event 016 idea GFX file now registers 34 idea sprites and the runtime folder contains 34 matching tracked `idea_brilliant_scientist_*.dds` files, comprising the thirteen earlier sprites plus the twenty-one-icon extension.
+
+The static twenty-one-icon omission and its associated recommended production action are therefore closed.
+
+This correction does not make a whole-event completion claim and does not change the native CBRN callback blocker, quantitative and targeted scenario gaps, user-owned live idea-card presentation, durable portrait queue issue, documentation reconciliation findings, or the no-model boundary.
