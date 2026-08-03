@@ -10,13 +10,19 @@
 | Source status | Reconciled implementation specification |
 | Package date | 2026-08-01 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded `.4` through `.9` context/first-Prototype flavour implemented, with host-archetype presentation continued through `.10` through `.18`, ten authored country-tag clauses added to `.4` through `.9`, `.12` through `.18`, the base/evolved opening and referral reports, the loyalty/relocation dossiers, the four logged evolution reports, and the `.30` through `.32` containment reports, formation-origin presentation added to the first four KRG foundation reports, and the tracked Kruger holder history repaired; broader optional event chains, seven Event 016 3D packages, balance evidence, and live acceptance remain blocked |
+| Planning state | Improvement addendum disposition complete; default-enabled core runtime, finite ten-country settlement, portal-calibration consumer, and high-speed-materials trial are statically implemented, with host-archetype presentation continued through `.10` through `.18`, ten authored country-tag clauses, formation-origin and carried-portfolio presentation, and tracked Kruger holder history repaired; targeted transfer, cleanup, probability, balance, Event 019 isolation, and live acceptance remain pending; the KRG biological stockpile is queued and blocked on the native CBRN callback contract; twenty-one visible KRG lifecycle/project ideas still lack bespoke 64x64 icon wiring; seven Event 016 3D packages are deferred outside the current no-model scope; broader country chains are closed/rejected as filler unless a new accepted design reopens them |
+| Static implementation status | Implemented | Core runtime, finite ten-country settlement layer, portal calibration, high-speed materials, KRG country/focus/project/decision surfaces, Event 019 providers, and registered presentation/localisation surfaces are present in source. |
+| Validation status | Pending | Targeted transfer, cleanup, probability/affordability, quantitative balance, provider isolation, live GUI/audio/presentation, and user-owned campaign scenarios remain open. |
+| Native CBRN dependency | Blocked | The accepted KRG biological stockpile/delivery design awaits a stable idempotent native raid reservation/outcome/cancellation/expiry callback. No Event 016 fallback, free payload, or parallel ledger is approved. |
+| 2D idea-icon status | Gap | Twenty-one visible KRG lifecycle/project ideas lack their own bespoke 64x64 `picture` assignment and approved art; the existing thirteen-icon tranche is incomplete for the full criterion. |
+| 3D model status | Deferred outside current scope | Seven Event 016 model packages remain a future approval-dependent backlog under the current no-model instruction. They are not a current blocker or next action. |
+| Broader country-chain status | Closed/rejected as filler | The non-model closure handoff closes country chains beyond the finite ten-country layer. Reopen only through a new accepted design decision. |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
-| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, twenty-five report images, six super-event images, and seven Event 016 news images are present and registered; the country-tag clauses reuse existing report art and introduce no new asset requirement |
+| Visual asset status | Fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, twenty-five report images, six super-event images, and seven Event 016 news images are present and registered. Thirteen bespoke Event 016 idea/national-spirit DDS files are present, but twenty-one visible KRG lifecycle/project ideas still lack their own bespoke 64x64 `picture` assignment and approved art. The country-tag clauses reuse existing report art and introduce no new asset requirement. |
 | Audio status | Six Event 016-owned WAVs, sound tracks, volume variants, and super-event presentation selectors are wired |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
 | Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |
@@ -53,8 +59,13 @@
 ## File status legend
 
 - `specified`: design surface is reconciled and ready for implementation, but is not implemented.
+- `static_implemented`: source and registered runtime surfaces are present; targeted or live acceptance may still be open.
+- `validation_pending`: implementation is present, but required transfer, cleanup, balance, provider, or live evidence has not been accepted.
 - `research_gate`: implementation depends on source verification or licensing.
-- `blocked`: a required implementation, research, asset, audio, or integration dependency is absent.
+- `blocked`: a required implementation or integration dependency is absent, such as the native CBRN callback contract.
+- `gap`: a required non-model visual or documentation surface is incomplete, such as the twenty-one visible idea icons.
+- `deferred_outside_scope`: intentionally excluded by the current no-model instruction and not a current completion blocker.
+- `closed_rejected`: deliberately closed as filler or superseded unless a new accepted design reopens it.
 - `implementation_only`: intentionally left to the implementation agent, such as final focus coordinates and exact script IDs.
 
 ## Package integrity summary
