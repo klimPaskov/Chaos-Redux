@@ -2,7 +2,9 @@
 
 Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, read together with v105/v104/v103 for their underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
 
-Current-count override: any historical paragraph below that says 80/74/6 portrait masters or 295/111/50 focus arithmetic is traceability only. The current shelf is 81 original-size portrait masters, and the current generic focus inspection is 184 direct plus 134 shared definitions with 27 imports, 318 unique definitions and 345 raw entries. Use v105 and the current dated package/portrait handoffs for admission decisions.
+Current-count override: any historical paragraph below that says 80/74/6 portrait masters or 295/111/50 focus arithmetic is traceability only. The current shelf is 81 original-size portrait masters, and the current generic focus inspection is 184 direct plus 134 shared definitions with 27 imports, 318 unique definitions and 345 raw entries. Use v106 and the current dated package/portrait handoffs for admission decisions.
+
+The v106 authority supersedes any downstream paragraph that still calls v105, v104, or v103 the current whole-event router; those paragraphs remain dated traceability unless explicitly promoted by v106.
 
 The 2026-08-03 overlay-watch repair is recorded in `subagent_handoffs/006_overlay_watch_activation_repair_2026_08_03.md` and the current IW-022 audit `subagent_handoffs/006_iw022_dalmatia_overlay_audit_2026_08_03.md`. IW-022, IW-025, and IW-035 now expose explicit paid watch-mobilisation decisions and threshold-closing watch-success legitimacy writers; they remain non-selectable or route-overlay adapters, not newly attested country packages. Permanent route-loss mission cleanup remains a documented design HOLD.
 
