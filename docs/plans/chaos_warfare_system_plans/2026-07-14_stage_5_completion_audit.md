@@ -27,7 +27,7 @@ Accepted source precedence was applied throughout: numbered specifications, then
 | Use-policy ladder | five policies have centralized PP/CP/readiness/institution/payload gates and a 90-day reassessment lock | pass |
 | Doctrine mitigation boundary | one canonical 0.90/0.80/0.70 Condemnation ladder is selected in the shared action record; strategic and mass-casualty floors are applied afterward | pass |
 | Officer-corps bounds | three mutually exclusive Army Command spirits and three mutually exclusive Division Command spirits use strong permanent modifiers and route-aware AI | pass |
-| High command and leader trait | four generic institutional offices avoid invented people; the assignable commander trait requires only the Chaos Warfare doctrine | pass |
+| High command and leader trait | four generic institutional offices avoid invented people; the doctrine-independent commander trait is manually assignable and is also granted through the active Chemical Operations Academy on leader creation or level-up | pass |
 | No genocide unlock | legacy Concentration authority is cleared; no camp, extermination, experiment-site, or generic Concentration-law unlock is granted | pass |
 | Exact-state cleanup | player-selected controlled contaminated state, active Decontamination Corridor, inverse-severity output, and 28-day country/state locks | pass |
 | Continuous-air boundary | Chemical Air Interdiction is an eligibility marker only; no passive region contamination, idle-aircraft contamination, or activity estimator exists | pass |

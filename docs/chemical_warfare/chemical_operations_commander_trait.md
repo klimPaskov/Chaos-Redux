@@ -15,8 +15,9 @@ The trait is intended for corps commanders and does two things:
 - Type: `corps_commander`
 - Trait type: `assignable_trait`
 - Cost: `500`
-- Manual assignment requires only the owner country's `chaos_warfare` doctrine.
-- The retired academy-spirit identifier remains hidden for save compatibility and does not add another gate to the trait.
+- The trait has no doctrine prerequisite.
+- When the active `chemical_operations_academy_spirit` is assigned, army leaders have a 50 percent roll to gain the trait when they are created and again when they level up.
+- Manual assignment remains available through the normal paid commander-trait path and does not require the Chaos Warfare doctrine.
 - Trait tree placement:
   - `chemical_operations_commander` sits below core general traits (`gui_row = 15`)
   - `skilled_staffer` and `expert_delegator` moved slightly down (`gui_row = 16`)
@@ -54,7 +55,6 @@ This was done by removing `duration` and `unit_modifiers` blocks from the four c
   - `chemical_operations_commander`
   - `chemical_operations_commander_desc`
   - `chemical_operations_commander_tt`
-  - `chemical_operations_commander_prerequisite_tt`
 
 ## Historical Leaders Pre-assigned
 To seed the system at game start with more chemically relevant commanders, this trait is pre-assigned in country history to:
