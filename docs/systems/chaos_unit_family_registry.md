@@ -42,8 +42,10 @@ Event 016 registers the following generic Event 019 families from its idempotent
 | Paleogenetic Creature | 506 | `kruger_paleogenetic_beast`, `kruger_paleogenetic_equipment_1` | Paleogenetic equipment, manpower, political power, and command power callbacks. |
 | Xenobiological Organism | 507 | `kruger_xenobiological_assault`, `kruger_xenobiological_equipment_1` | Xenobiological equipment, manpower, political power, and command power callbacks. |
 | Alien Interface Infantry | 508 | `kruger_exotic_guard`, `kruger_exotic_arms_equipment_1` | Alien-arms equipment, manpower, political power, and command power callbacks. |
+| Portal Raider | 509 | `kruger_portal_raider`, `kruger_portal_equipment_1` | Portal equipment, manpower, political power, and command power callbacks. |
+| Temporal Guard | 510 | `kruger_temporal_guard`, `kruger_temporal_equipment_1` | Temporal equipment, manpower, political power, and command power callbacks. |
 
-These rows use neutral visual profile 999 and remain unavailable until their corresponding Event 016 history-derived runtime flag is active, so Event 016 native force materialisation remains unchanged and no provider row becomes a synonym for the Event 016 parent identity.
+These seven rows use neutral visual profile 999 and remain unavailable until their corresponding Event 016 history-derived runtime flag is active, so Event 016 native force materialisation remains unchanged and no provider row becomes a synonym for the Event 016 parent identity.
 
 The provider callbacks record only manpower in the shared Event 019 obligation ledger; project equipment is deliberately reconciled and paid by the provider callbacks so the shared equipment-profile enum is not broadened for Event 016-only equipment lines.
 
