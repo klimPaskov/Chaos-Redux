@@ -10,7 +10,7 @@ Event 016 is **partial and blocked**, not complete.
 
 The core runtime and the recent finite-country settlement, portal-calibration, and high-speed-materials tranches have broad static implementation coverage, and this audit found no confirmed duplicate event ID, missing direct localisation reference, missing registered texture, or dangling recent-tranche event reference.
 
-Whole-package completion is prevented by one accepted gameplay dependency and one confirmed non-model visual requirement: the KRG biological stockpile/reservation/consumption lifecycle cannot be implemented safely until the native CBRN raid system exposes an idempotent callback contract, and twenty-one visible KRG lifecycle/project ideas still lack their own bespoke `picture` assignment and 64x64 art.
+Whole-package completion is prevented by one accepted gameplay dependency: the KRG biological stockpile/reservation/consumption lifecycle cannot be implemented safely until the native CBRN raid system exposes an idempotent callback contract. The formerly reported twenty-one-icon gap is closed by the wired 28-idea package; live presentation and durable portrait-source acceptance remain open.
 
 Quantitative balance evidence, targeted transfer and cleanup scenarios, and user-owned live presentation acceptance also remain open.
 
@@ -31,7 +31,7 @@ No 3D package is treated as a blocker, simplification, or recommended next actio
 | Biological stockpile and delivery | **Blocked** | The binding rows in `docs/specs/016_brilliant_scientist_specs/acceptance/016_acceptance_criteria.md` require a stockpile cap, production cycle, native reservation, consumption/refund lifecycle, transfer persistence, and cleanup. The current Event 016 source contains the biological cap constant but no Event 016 stockpile, reserved, production, or delivery ledger. The native raid lifecycle has no stable reservation/cancellation/expiry callback that can call Event 016 exactly once. |
 | Cross-event provider isolation | Partial validation | The accepted provider bridge and adapters are present in the Event 016 package, but this bounded audit did not expand into an unrelated Event 019 package review. The accepted Event 019 provider-isolation and live-consumer scenarios remain an explicit validation gap. |
 | Localisation, Event Log, details, evolutions, super-events, and catalog | Finished statically; live acceptance partial | A scan of the thirteen direct Event 016 event files found 359 unique localisation keys and no missing English key. The Event 16 workbook/export row contains four evolutions and both terminal texts, and the absorbed Crazy Scientist row remains unavailable. Live layout, animation, sound, Event Log, details-window, and super-event presentation were not accepted in game by this audit. |
-| 2D assets | Partial | All 244 direct texture references in the nine Event 016 GFX files resolve, and the report, news, super-event, leader, focus, achievement, decision, category, Directorate, and sound packages are present. However, `common/ideas/016_brilliant_scientist_country_ideas.txt` defines 28 ideas and gives only 7 a `picture`, while `interface/016_brilliant_scientist_idea_icons.gfx` registers the existing thirteen-icon tranche. The post-commit country audit therefore correctly records twenty-one visible KRG lifecycle/project ideas without approved bespoke icon wiring. |
+| 2D assets | Finished statically; live acceptance partial | All 244 direct texture references in the nine Event 016 GFX files resolve, the report/news/super-event/leader/focus/achievement/decision/category/Directorate/sound packages are present, and all 28 visible KRG country ideas have unique `picture` assignments resolving to 34 registered sprites and tracked DDS files. Live presentation and the durable portrait-source queue remain open. |
 | 3D assets | Excluded | The parent instruction is no-model. Existing 3D backlog documents are historical or deferred context only and are not a current acceptance gate for this audit. |
 | Documentation and handoffs | Partial/stale | Recent tranches have implementation and audit handoffs, and no accepted gameplay plan was found without a disposition. Several source-facing status documents still describe 3D production and broader country chains as blockers despite the current no-model instruction and the non-model closure, the severe-portrait manifest contradicts itself, and the binding acceptance checklist remains wholly unchecked despite substantial static completion evidence. |
 
@@ -51,15 +51,15 @@ Implementing only an Event 016 production decision or decrementing a local count
 
 No fallback or placeholder action is approved, and none was introduced.
 
-### 2. Twenty-one visible KRG idea icons
+### 2. Visible KRG idea icons (static gap closed)
 
 The binding asset criterion at `docs/specs/016_brilliant_scientist_specs/acceptance/016_acceptance_criteria.md:234` requires every idea and national spirit to have its own 64x64 source art.
 
-The current `common/ideas/016_brilliant_scientist_country_ideas.txt` has 28 idea definitions but only 7 explicit `picture` assignments, at lines 26, 76, 87, 108, 148, 209, and 270.
+The earlier audit counted only seven explicit `picture` assignments before the bounded 21-icon extension landed.
 
-The existing `interface/016_brilliant_scientist_idea_icons.gfx` registers thirteen bespoke idea sprites, matching the bounded thirteen-icon handoff rather than full KRG lifecycle/project-idea coverage.
+The current `interface/016_brilliant_scientist_idea_icons.gfx` registers 34 idea sprites, and the runtime folder contains 34 matching tracked DDS files.
 
-The confirmed twenty-one missing assignments are a non-model visual simplification because those visible ideas inherit generic/default presentation.
+The former twenty-one missing assignments are closed statically. Live card presentation and user-owned visual acceptance remain open, but no generic/default icon fallback is recorded for the visible KRG package.
 
 Other Event 016 idea files were not reclassified as visible or hidden in this bounded pass, so this audit does not inflate the confirmed count beyond the twenty-one already evidenced by the post-commit country audit.
 
@@ -137,7 +137,7 @@ Read-only evidence artifacts:
 ## Recommended next actions
 
 1. Give the shared native CBRN system an explicit owner and design the stable, idempotent reservation/outcome/cancellation callback contract first. Do not implement an Event 016 production decision, local debit, or fallback until that contract exists and has its own audit.
-2. Produce and wire bespoke 64x64 2D art for the confirmed twenty-one visible KRG lifecycle/project ideas, then perform a bounded visibility audit of the remaining Event 016 idea files before claiming the asset criterion.
+2. Perform the bounded visibility and live-presentation audit for the 28 visible KRG ideas and reconcile the durable portrait-source queue before claiming the asset criterion.
 3. Run the documented quantitative matrix and the settlement, portal, high-speed, ordinary-transfer, fixed-tag formation, terminal-cleanup, Event 019 isolation, achievement, AI, and live presentation scenarios.
 4. Reconcile the status map, completion status, package manifest, README, severe-portrait table, acceptance checklist, and durable portrait queue ownership so deferred, rejected, blocked, and completed work are separated accurately.
 
@@ -147,7 +147,7 @@ Do not reopen 3D production or broader filler country chains under the current i
 
 No new gameplay fallback, placeholder CBRN action, or hidden replacement mechanic was found in the audited commits.
 
-The twenty-one visible KRG ideas using generic/default presentation are an outstanding unapproved 2D visual simplification.
+No visible KRG idea is currently recorded as using a generic/default icon; the remaining 2D work is live presentation and durable portrait-source acceptance.
 
 No 3D simplification is recorded because model work is explicitly outside the current audit boundary.
 
