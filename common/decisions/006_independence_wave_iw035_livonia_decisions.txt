@@ -54,6 +54,41 @@ independence_wave_iw035_livonia_category = {
 		}
 	}
 
+	independence_wave_iw035_mobilize_livonian_watch = {
+		name = independence_wave_iw035_mobilize_livonian_watch
+		desc = independence_wave_iw035_mobilize_livonian_watch_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_iw035_livonia_overlay_active = yes
+			has_country_flag = independence_wave_iw035_livonia_coastal_watch_established
+			NOT = { has_country_flag = independence_wave_iw035_livonia_watch_running }
+			NOT = { has_country_flag = independence_wave_iw035_livonia_watch_interrupted }
+			NOT = { has_country_flag = independence_wave_iw035_livonia_watch_completed }
+		}
+		available = {
+			can_pay_independence_wave_iw035_livonia_guard_cost = yes
+			has_independence_wave_iw035_livonia_anchor_control = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw035_livonia_guard_cost = yes }
+		custom_cost_text = independence_wave_iw035_guard_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw035_guard_start_effect_tt
+			independence_wave_iw035_livonia_start_watch_mission = yes
+		}
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:independence_wave_iw035_livonia_ai.high
+			modifier = {
+				factor = constant:independence_wave_iw035_livonia_ai.disabled
+				NOT = { has_independence_wave_iw035_livonia_watch_garrison = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_iw035_livonia_ai.double
+				has_war = no
+			}
+		}
+	}
+
 	independence_wave_iw035_hold_livonian_corridor_watch = {
 		name = independence_wave_iw035_hold_livonian_corridor_watch
 		desc = independence_wave_iw035_hold_livonian_corridor_watch_desc

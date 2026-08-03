@@ -2,6 +2,8 @@
 
 Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v104_2026_08_03.md`, read together with v103 for its underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
 
+The 2026-08-03 overlay-watch repair is recorded in `subagent_handoffs/006_overlay_watch_activation_repair_2026_08_03.md` and the current IW-022 audit `subagent_handoffs/006_iw022_dalmatia_overlay_audit_2026_08_03.md`. IW-022, IW-025, and IW-035 now expose explicit paid watch-mobilisation decisions and threshold-closing watch-success legitimacy writers; they remain non-selectable or route-overlay adapters, not newly attested country packages. Permanent route-loss mission cleanup remains a documented design HOLD.
+
 Portrait policy supersession: grounded historical portraits now use unchanged source placeholders (exact head-and-shoulders crop, deterministic `156x210` fit, DDS) by default. The immutable source archive is `docs/assets/portraits/006_independence_wave/` and the current converted tranche is `docs/assets/006_independence_wave/source_placeholder_2026_08_03/`. Earlier HOI4-repaint descriptions remain evidence history and do not describe the current placeholder runtime files unless an explicit later styled-replacement request is recorded.
 
 The current 15-row source-placeholder crosswalk and independent byte audit are `docs/assets/006_independence_wave/source_placeholder_2026_08_03/manifest.md` and `subagent_handoffs/006_grounded_portrait_placeholder_audit_2026_08_03.md`. All crop and DDS chains pass; DOX is placeholder-only and SOK Dikko remains `NEEDS_REVIEW` for rights and era fit. This evidence does not promote a package or clear any runtime admission gate.

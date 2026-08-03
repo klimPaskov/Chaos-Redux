@@ -54,6 +54,41 @@ independence_wave_iw022_dalmatia_category = {
 		}
 	}
 
+	independence_wave_iw022_mobilize_adriatic_watch = {
+		name = independence_wave_iw022_mobilize_adriatic_watch
+		desc = independence_wave_iw022_mobilize_adriatic_watch_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_iw022_dalmatia_overlay_active = yes
+			has_country_flag = independence_wave_iw022_dalmatia_coastwatch_established
+			NOT = { has_country_flag = independence_wave_iw022_dalmatia_watch_running }
+			NOT = { has_country_flag = independence_wave_iw022_dalmatia_watch_interrupted }
+			NOT = { has_country_flag = independence_wave_iw022_dalmatia_watch_completed }
+		}
+		available = {
+			can_pay_independence_wave_iw022_dalmatia_guard_cost = yes
+			has_independence_wave_iw022_dalmatia_port_corridor_control = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw022_dalmatia_guard_cost = yes }
+		custom_cost_text = independence_wave_iw022_guard_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw022_guard_start_effect_tt
+			independence_wave_iw022_dalmatia_start_watch_mission = yes
+		}
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:independence_wave_iw022_dalmatia_ai.high
+			modifier = {
+				factor = constant:independence_wave_iw022_dalmatia_ai.disabled
+				NOT = { has_independence_wave_iw022_dalmatia_watch_garrison = yes }
+			}
+			modifier = {
+				factor = constant:independence_wave_iw022_dalmatia_ai.double
+				has_war = no
+			}
+		}
+	}
+
 	independence_wave_iw022_hold_adriatic_watch = {
 		name = independence_wave_iw022_hold_adriatic_watch
 		desc = independence_wave_iw022_hold_adriatic_watch_desc

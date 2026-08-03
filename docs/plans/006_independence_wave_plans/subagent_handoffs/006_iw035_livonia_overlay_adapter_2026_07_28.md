@@ -37,3 +37,7 @@ The route is additive and only activates while the country is still `LIT` with c
 ## Remaining acceptance work
 
 This bounded adapter does not yet provide a safe way to insert the shared Event 006 focus framework into a meaningful living LIT tree. Network, patron, league, formable, host-survival, save/load cleanup, symbol/leader clearance, and live carrier evidence remain open. The overall route-overlay acceptance item therefore remains unchecked; nine other exact vanilla route-overlay adapters are still absent, and the Event 006 completion audit remains `HOLD/PARTIAL`.
+
+## 2026-08-03 source continuation
+
+The previously orphaned paid `independence_wave_iw035_livonia_start_watch_mission` effect now has the explicit `independence_wave_iw035_mobilize_livonian_watch` decision caller with anchor and material-cost gates, matching the existing overlay mission pattern. The watch-success legitimacy writer now uses the centralized `watch_legitimacy_gain = 32`, which closes the municipal and federal settlement threshold after the documented depot and coastal-watch chain (`30 + 8 - 5 + 32 = 65`). This does not promote the overlay to a complete Event 006 package and does not resolve the existing route-loss pause, focus, network, league, formable, source, or runtime boundaries.
