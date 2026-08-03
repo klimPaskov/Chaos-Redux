@@ -1459,7 +1459,7 @@ africa_prepare_action_profile = {
 		set_temp_variable = { africa_profile_kernel = constant:africa_action_kernel.formation_terminal }
 		set_temp_variable = { africa_profile_phase = constant:africa_action_phase.terminal_approach }
 		set_temp_variable = { africa_profile_target_mode = constant:africa_action_target_mode.country }
-		set_temp_variable = { africa_profile_duration_band = constant:africa_action_duration_band.epic }
+		set_temp_variable = { africa_profile_duration_band = constant:africa_action_duration_band.instant }
 		set_temp_variable = { africa_profile_risk = constant:africa_action_risk.high }
 		set_temp_variable = { africa_profile_cost_tier = constant:africa_value.four }
 		set_temp_variable = { africa_uses_pp = constant:africa_value.one }
@@ -4520,7 +4520,11 @@ africa_begin_quoted_action_against_target = {
 		if = {
 			limit = { check_variable = { africa_quote_duration_band = constant:africa_action_duration_band.instant } }
 			event_target:africa_action_target = {
-				set_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+				if = {
+					limit = { check_variable = { africa_active_action_id = constant:africa_action.form_dynamic_two_continent_union } }
+					africa_roll_action_outcome = yes
+				}
+				else = { set_variable = { africa_active_action_outcome = constant:africa_action_outcome.full } }
 				africa_resolve_action = yes
 			}
 		}

@@ -264,3 +264,6 @@ No fallback was introduced or accepted by this audit.
 No gameplay file was edited.
 
 No commit was created by this audit.
+# Superseding parent note (2026-08-03)
+
+The package-identity and terminal-presentation gaps described by this dated delta are closed in source. The six external packages now have dedicated emblems, leaders, focus trees, decisions, AI, and registered localisation; The World has a dedicated terminal emblem and wired achievement/super-event consumer. Keep this file as historical audit evidence.

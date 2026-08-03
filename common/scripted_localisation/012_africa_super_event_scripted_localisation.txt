@@ -1,0 +1,157 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 WORLD-ORDER SUPER-EVENT LOCALISATION
+# ============================================================================
+# Route- and ledger-aware text for the four Africa presentation roles. Every
+# branch describes a recorded state; no presentation branch invents a foreign
+# actor, settlement, or constitutional result.
+# ============================================================================
+
+defined_text = {
+	name = GetAfricaSuperEventConstitutionClause
+	text = {
+		trigger = { check_variable = { africa_constitution = constant:africa_constitution.federal_union } }
+		localization_key = africa_super_event_constitution_federal_union
+	}
+	text = {
+		trigger = { check_variable = { africa_constitution = constant:africa_constitution.continental_republic } }
+		localization_key = africa_super_event_constitution_continental_republic
+	}
+	text = {
+		trigger = { check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns } }
+		localization_key = africa_super_event_constitution_council_of_crowns
+	}
+	text = {
+		trigger = { check_variable = { africa_constitution = constant:africa_constitution.peoples_union } }
+		localization_key = africa_super_event_constitution_peoples_union
+	}
+	text = {
+		trigger = { check_variable = { africa_constitution = constant:africa_constitution.military_continentalism } }
+		localization_key = africa_super_event_constitution_military_continentalism
+	}
+	text = {
+		trigger = { check_variable = { africa_constitution = constant:africa_constitution.continental_confederation } }
+		localization_key = africa_super_event_constitution_continental_confederation
+	}
+	text = {
+		trigger = { check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant } }
+		localization_key = africa_super_event_constitution_ancestral_covenant
+	}
+	text = { localization_key = africa_super_event_constitution_uncommitted }
+}
+
+defined_text = {
+	name = GetAfricaSuperEventUnresolvedCostClause
+	text = {
+		trigger = { has_country_flag = africa_postwar_constitutional_review_pending }
+		localization_key = africa_super_event_cost_postwar_review
+	}
+	text = {
+		trigger = {
+			OR = {
+				has_country_flag = africa_focus_autonomy_offer_pending
+				has_country_flag = africa_autonomy_extended_pending_review
+			}
+		}
+		localization_key = africa_super_event_cost_autonomy_review
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = africa_world_sponsorship_overextension
+				value = constant:africa_value.zero
+				compare = greater_than
+			}
+		}
+		localization_key = africa_super_event_cost_sponsorship_overextension
+	}
+	text = {
+		trigger = {
+			any_of_scopes = {
+				array = africa_world_package_actors
+				OR = {
+					has_country_flag = africa_world_sponsorship_obligation_due
+					has_country_flag = africa_world_package_successor_review_open
+					has_country_flag = africa_world_package_breakup_review_open
+				}
+			}
+		}
+		localization_key = africa_super_event_cost_package_obligation
+	}
+	text = { localization_key = africa_super_event_cost_clean_ledger }
+}
+
+defined_text = {
+	name = GetAfricaSuperEventScrambleResponseClause
+	text = {
+		trigger = {
+			has_variable = africa_scramble_expedition_count
+			check_variable = { africa_scramble_expedition_count > constant:africa_value.zero }
+			has_event_target = africa_scramble_last_response_actor
+		}
+		localization_key = africa_super_event_scramble_expedition_named
+	}
+	text = {
+		trigger = {
+			has_variable = africa_scramble_ultimatum_count
+			check_variable = { africa_scramble_ultimatum_count > constant:africa_value.zero }
+			has_event_target = africa_scramble_last_response_actor
+		}
+		localization_key = africa_super_event_scramble_ultimatum_named
+	}
+	text = {
+		trigger = {
+			has_variable = africa_scramble_sanction_count
+			check_variable = { africa_scramble_sanction_count > constant:africa_value.zero }
+			has_event_target = africa_scramble_last_response_actor
+		}
+		localization_key = africa_super_event_scramble_sanctions_named
+	}
+	text = {
+		trigger = {
+			has_variable = africa_scramble_recognition_count
+			check_variable = { africa_scramble_recognition_count > constant:africa_value.zero }
+			has_event_target = africa_scramble_last_response_actor
+		}
+		localization_key = africa_super_event_scramble_recognition_named
+	}
+	text = {
+		trigger = { has_event_target = africa_scramble_lead_participant }
+		localization_key = africa_super_event_scramble_open_named
+	}
+	text = { localization_key = africa_super_event_scramble_open_unattributed }
+}
+
+defined_text = {
+	name = GetAfricaSuperEventContinentalWarClause
+	text = {
+		trigger = { has_event_target = africa_world_last_continental_war_target }
+		localization_key = africa_super_event_continental_war_named
+	}
+	text = {
+		trigger = {
+			any_of_scopes = {
+				array = africa_world_package_actors
+				has_country_flag = africa_world_package_rival
+			}
+		}
+		localization_key = africa_super_event_continental_war_rival_bloc
+	}
+	text = { localization_key = africa_super_event_continental_war_open }
+}
+
+defined_text = {
+	name = GetAfricaSuperEventTerminalProtocolClause
+	text = {
+		trigger = { has_country_flag = africa_world_super_event_terminal_unanimous_union }
+		localization_key = africa_super_event_terminal_unanimous_union
+	}
+	text = {
+		trigger = { has_country_flag = africa_world_super_event_terminal_last_standing }
+		localization_key = africa_super_event_terminal_last_standing
+	}
+	text = {
+		trigger = { has_country_flag = africa_world_super_event_terminal_continental_campaign }
+		localization_key = africa_super_event_terminal_continental_campaign
+	}
+	text = { localization_key = africa_super_event_terminal_protocol_recorded }
+}

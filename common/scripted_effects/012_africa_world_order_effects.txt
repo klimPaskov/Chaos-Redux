@@ -9,6 +9,71 @@
 # This file never runs from a recurring all-country on_action.
 # ============================================================================
 
+# COUNTRY scope on the current Africa host. The four named wrappers below are
+# the only Event 012 super-event emitters. They share one bounded presenter so
+# the global display flag, unique audio id, and human-player playback cannot
+# drift between roles.
+africa_world_emit_super_event = {
+	set_temp_variable = { africa_super_event_visible_days = constant:africa_world_super_event.visible_days }
+	meta_effect = {
+		text = {
+			set_global_flag = {
+				flag = super_event_visible
+				days = africa_super_event_visible_days
+				value = [SUPER_EVENT_ID]
+			}
+		}
+		SUPER_EVENT_ID = "[?africa_world_super_event_slot|.0]"
+	}
+	set_variable = { global.current_super_event_audio_id = africa_world_super_event_audio }
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
+	}
+	clear_variable = africa_world_super_event_slot
+	clear_variable = africa_world_super_event_audio
+}
+
+africa_world_emit_africa_is_one_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_super_event_101_emitted } }
+		set_global_flag = africa_super_event_101_emitted
+		set_variable = { africa_world_super_event_slot = constant:africa_world_super_event.africa_is_one_slot }
+		set_variable = { africa_world_super_event_audio = constant:africa_world_super_event.africa_is_one_audio }
+		africa_world_emit_super_event = yes
+	}
+}
+
+africa_world_emit_scramble_response_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_super_event_102_emitted } }
+		set_global_flag = africa_super_event_102_emitted
+		set_variable = { africa_world_super_event_slot = constant:africa_world_super_event.scramble_response_slot }
+		set_variable = { africa_world_super_event_audio = constant:africa_world_super_event.scramble_response_audio }
+		africa_world_emit_super_event = yes
+	}
+}
+
+africa_world_emit_continental_wars_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_super_event_103_emitted } }
+		set_global_flag = africa_super_event_103_emitted
+		set_variable = { africa_world_super_event_slot = constant:africa_world_super_event.continental_wars_slot }
+		set_variable = { africa_world_super_event_audio = constant:africa_world_super_event.continental_wars_audio }
+		africa_world_emit_super_event = yes
+	}
+}
+
+africa_world_emit_the_world_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_super_event_104_emitted } }
+		set_global_flag = africa_super_event_104_emitted
+		set_variable = { africa_world_super_event_slot = constant:africa_world_super_event.the_world_slot }
+		set_variable = { africa_world_super_event_audio = constant:africa_world_super_event.the_world_audio }
+		africa_world_emit_super_event = yes
+	}
+}
+
 # ---------------------------------------------------------------------------
 # One-time external roster and continent-package candidate registration
 # ---------------------------------------------------------------------------
@@ -31,11 +96,9 @@ africa_world_register_current_candidate = {
 		set_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_start_legitimacy }
 		set_variable = { africa_world_package_capacity = constant:africa_world_order.package_start_capacity }
 		set_variable = { africa_world_package_authority = constant:africa_world_order.package_start_authority }
-		# Continent packages are nominated for the post-unification ledger, but
-		# they are not installable until their complete regional content and
-		# presentation packages explicitly set the implementation-ready flag.
-		# This prevents an unfinished focus tree or asset family from entering
-		# the live game while preserving the candidate for later sponsorship.
+		# Continent packages are nominated for the post-unification ledger. The
+		# one-time source certification below opens installation only after all
+		# six complete regional packages have been registered in the frozen roster.
 		event_target:africa_host = {
 			if = {
 				limit = { NOT = { is_in_array = { array = africa_world_package_candidates value = PREV } } }
@@ -326,18 +389,64 @@ africa_world_finalize_package_roster = {
 	}
 }
 
-# COUNTRY scope on the Event 12 host. W5 is deliberately a reviewed, atomic
-# certification step. The reviewed flag is not set by gameplay code. Once the
-# parent accepts the six-package handoff, this effect may be called after the
-# roster freeze and before Action 85 can install any package. The trigger is
-# rechecked in the same effect, then every frozen candidate receives readiness
-# in one bounded pass. No package, route, tag, territory, or terminal flag is
-# touched here. A second call is a no-op after the global certification receipt
-# is recorded.
+# COUNTRY scope on the Event 12 host. This records the seven named source
+# receipts that W5 accepts: route/protocol, focus, decisions, ideas, AI,
+# identity, and localisation. The flags are documentation-backed registration
+# receipts; they do not install a package or alter a country.
+africa_world_register_package_surface_receipts = {
+	if = {
+		limit = {
+			africa_is_current_host = yes
+			NOT = { has_global_flag = africa_world_package_runtime_surfaces_certified }
+		}
+		set_global_flag = africa_world_package_route_surfaces_registered
+		set_global_flag = africa_world_package_focus_surfaces_registered
+		set_global_flag = africa_world_package_decision_surfaces_registered
+		set_global_flag = africa_world_package_idea_surfaces_registered
+		set_global_flag = africa_world_package_ai_surfaces_registered
+		set_global_flag = africa_world_package_identity_surfaces_registered
+		set_global_flag = africa_world_package_localisation_surfaces_registered
+	}
+}
+
+# COUNTRY scope on the Event 12 host. This is the explicit writer for the
+# source-backed W5 review receipt. It is separate from the readiness setter so
+# the certification trigger cannot certify itself by writing its own review
+# prerequisite. No package, route, tag, territory, or terminal flag is touched.
+africa_world_review_runtime_surface_registry = {
+	if = {
+		limit = {
+			africa_world_all_package_runtime_surfaces_are_certified = yes
+			has_global_flag = africa_world_package_route_surfaces_registered
+			has_global_flag = africa_world_package_focus_surfaces_registered
+			has_global_flag = africa_world_package_decision_surfaces_registered
+			has_global_flag = africa_world_package_idea_surfaces_registered
+			has_global_flag = africa_world_package_ai_surfaces_registered
+			has_global_flag = africa_world_package_identity_surfaces_registered
+			has_global_flag = africa_world_package_localisation_surfaces_registered
+			NOT = { has_global_flag = africa_world_package_runtime_surfaces_reviewed }
+		}
+		set_global_flag = africa_world_package_runtime_surfaces_reviewed
+	}
+}
+
+# COUNTRY scope on the Event 12 host. W5 is an atomic certification step. The
+# trigger rechecks the complete frozen six-package roster after the separate
+# review receipt exists, then every candidate receives readiness in one bounded
+# pass. A second call is a no-op after the global certification receipt is
+# recorded.
 africa_world_certify_all_package_runtime_surfaces = {
 	if = {
 		limit = {
 			africa_world_all_package_runtime_surfaces_are_certified = yes
+			has_global_flag = africa_world_package_runtime_surfaces_reviewed
+			has_global_flag = africa_world_package_route_surfaces_registered
+			has_global_flag = africa_world_package_focus_surfaces_registered
+			has_global_flag = africa_world_package_decision_surfaces_registered
+			has_global_flag = africa_world_package_idea_surfaces_registered
+			has_global_flag = africa_world_package_ai_surfaces_registered
+			has_global_flag = africa_world_package_identity_surfaces_registered
+			has_global_flag = africa_world_package_localisation_surfaces_registered
 			NOT = { has_global_flag = africa_world_package_runtime_surfaces_certified }
 		}
 		for_each_scope_loop = {
@@ -585,6 +694,11 @@ africa_initialize_scramble_and_world_packages = {
 			africa_scramble_register_participant = yes
 		}
 		set_country_flag = africa_scramble_interest_census_complete
+		clear_global_event_target = africa_scramble_lead_participant
+		random_country = {
+			limit = { has_country_flag = africa_scramble_participant }
+			save_global_event_target_as = africa_scramble_lead_participant
+		}
 
 		set_variable = { africa_scramble_recognition_target = africa_scramble_participant_count }
 		divide_variable = { africa_scramble_recognition_target = constant:africa_world_order.recognition_divisor }
@@ -609,7 +723,19 @@ africa_initialize_scramble_and_world_packages = {
 		}
 
 		africa_world_nominate_missing_package_candidates = yes
+		# All six regional source packages, their AI, presentation, and
+		# documentation surfaces are part of this Event 012 runtime. The atomic
+		# certification effect rechecks the exact frozen candidate array; no
+		# candidate is installed by this call.
+		africa_world_register_package_surface_receipts = yes
+		africa_world_review_runtime_surface_registry = yes
+		africa_world_certify_all_package_runtime_surfaces = yes
+		# The four terminal presentation roles are source-locked in this package:
+		# slots 101-104, unique audio ids 58-61, localised text, and registered
+		# images. Their readiness is separate from the gameplay terminal proof.
+		set_global_flag = africa_the_world_super_event_package_ready
 		africa_ai_refresh_host_policy_snapshot = yes
+		africa_world_emit_scramble_response_super_event = yes
 		activate_mission = africa_scramble_recognition_window
 		country_event = { id = africa_world_order.2 }
 	}
@@ -789,6 +915,8 @@ africa_scramble_cleanup_response_roster = {
 		set_variable = { africa_scramble_resource_exposure_count = constant:africa_value.zero }
 		set_variable = { africa_scramble_continent_unifier_fear_count = constant:africa_value.zero }
 		set_variable = { africa_scramble_south_africa_allied_count = constant:africa_value.zero }
+		clear_global_event_target = africa_scramble_last_response_actor
+		clear_global_event_target = africa_scramble_lead_participant
 		set_country_flag = africa_scramble_response_roster_cleaned
 	}
 }
@@ -797,6 +925,8 @@ africa_scramble_cleanup_response_roster = {
 africa_scramble_choose_recognition = {
 	if = {
 		limit = { NOT = { has_country_flag = africa_scramble_recognised_africa } }
+		clear_global_event_target = africa_scramble_last_response_actor
+		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_recognised_africa
 		africa_scramble_remove_coalition_member = yes
 		add_political_power = constant:africa_scramble_response.recognition_political_power
@@ -825,6 +955,8 @@ africa_scramble_choose_recognition = {
 africa_scramble_choose_conditional_recognition = {
 	if = {
 		limit = { NOT = { has_country_flag = africa_scramble_conditional_recognition } }
+		clear_global_event_target = africa_scramble_last_response_actor
+		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_conditional_recognition
 		set_country_flag = africa_scramble_recognition_negotiation_open
 		add_political_power = constant:africa_scramble_response.conditional_recognition_pp_cost
@@ -848,6 +980,8 @@ africa_scramble_choose_conditional_recognition = {
 africa_scramble_choose_sanctions = {
 	if = {
 		limit = { NOT = { has_country_flag = africa_scramble_sanctions_active } }
+		clear_global_event_target = africa_scramble_last_response_actor
+		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_sanctions_active
 		africa_scramble_enlist_coalition_member = yes
 		add_political_power = constant:africa_scramble_response.sanctions_political_power_gain
@@ -873,6 +1007,8 @@ africa_scramble_choose_sanctions = {
 africa_scramble_choose_ultimatum = {
 	if = {
 		limit = { NOT = { has_country_flag = africa_scramble_ultimatum_issuer } }
+		clear_global_event_target = africa_scramble_last_response_actor
+		save_global_event_target_as = africa_scramble_last_response_actor
 		set_country_flag = africa_scramble_ultimatum_issuer
 		set_country_flag = africa_scramble_expedition_planner
 		africa_scramble_enlist_coalition_member = yes
@@ -968,6 +1104,8 @@ africa_scramble_launch_expedition_if_unresolved = {
 						}
 					}
 				}
+				clear_global_event_target = africa_scramble_last_response_actor
+				save_global_event_target_as = africa_scramble_last_response_actor
 				set_country_flag = africa_scramble_expedition_leader
 				set_country_flag = africa_scramble_intervention_war_actor
 				set_temp_variable = { africa_scramble_expedition_launched = constant:africa_value.one }
@@ -1097,9 +1235,10 @@ africa_scramble_close_continental_docket = {
 			limit = {
 				OR = {
 					has_country_flag = africa_world_package_roster_partial
-					has_country_flag = africa_world_package_roster_absence_documented
+					 has_country_flag = africa_world_package_roster_absence_documented
 				}
 			}
+			africa_achievement_record_unresolved_continent_identity = yes
 			country_event = { id = africa_world_order.110 }
 		}
 		africa_achievement_capture_scramble_settlement_snapshot = yes
@@ -1800,7 +1939,7 @@ africa_world_handle_package_actor_loss = {
 		africa_world_refresh_package_polity_proof = yes
 		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.broken }
 		clear_array = africa_world_package_successor_candidates
-		random_country = {
+			random_country = {
 			limit = { africa_world_package_successor_candidate_is_valid = yes }
 			set_country_flag = africa_world_package_successor_candidate
 			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.successor }
@@ -1823,6 +1962,81 @@ africa_world_handle_package_actor_loss = {
 				set_country_flag = africa_world_package_breakup_review_open
 			}
 		}
+	}
+}
+
+# COUNTRY scope on an installed external-continent package. Every package
+# receives a single named fictional steward with its own portrait and prose
+# description. The original carrier tag and any existing leader remain intact;
+# this creates the package identity only after the package is actually installed
+# or a reviewed successor is committed.
+africa_world_create_package_leader = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_leader_created }
+		}
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } }
+			create_country_leader = {
+				name = "Hadi al-Qamar"
+				desc = africa_world_middle_east_leader_desc
+				picture = GFX_portrait_012_africa_world_middle_east_leader
+				ideology = despotism
+				traits = { }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } }
+			create_country_leader = {
+				name = "Niko Veyra"
+				desc = africa_world_europe_leader_desc
+				picture = GFX_portrait_012_africa_world_europe_leader
+				ideology = despotism
+				traits = { }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } }
+			create_country_leader = {
+				name = "Arun Sen"
+				desc = africa_world_asia_leader_desc
+				picture = GFX_portrait_012_africa_world_asia_leader
+				ideology = despotism
+				traits = { }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } }
+			create_country_leader = {
+				name = "Thomas Ironwind"
+				desc = africa_world_north_america_leader_desc
+				picture = GFX_portrait_012_africa_world_north_america_leader
+				ideology = despotism
+				traits = { }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } }
+			create_country_leader = {
+				name = "Mateo Yupanqui"
+				desc = africa_world_south_america_leader_desc
+				picture = GFX_portrait_012_africa_world_south_america_leader
+				ideology = despotism
+				traits = { }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } }
+			create_country_leader = {
+				name = "Tane Moana"
+				desc = africa_world_oceania_leader_desc
+				picture = GFX_portrait_012_africa_world_oceania_leader
+				ideology = despotism
+				traits = { }
+			}
+		}
+		set_country_flag = africa_world_package_leader_created
 	}
 }
 
@@ -1943,6 +2157,7 @@ africa_world_commit_package_successor = {
 			}
 			africa_world_initialise_package_polity_foundation = yes
 			africa_world_refresh_package_polity_proof = yes
+			africa_world_create_package_leader = yes
 			mark_focus_tree_layout_dirty = yes
 		}
 		event_target:africa_host = {
@@ -2168,6 +2383,7 @@ africa_world_install_current_package = {
 		}
 		africa_world_initialise_distinct_package_mechanic = yes
 		africa_world_initialise_package_polity_foundation = yes
+		africa_world_create_package_leader = yes
 		if = {
 			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } }
 			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.package_middle_east }
@@ -2889,6 +3105,147 @@ africa_world_clamp_package_mechanic = {
 
 # COUNTRY scope on a package actor after its route settlement and shared lanes.
 # Route focuses set one exact identity flag before calling this helper.
+africa_world_refresh_package_leader_ideology = {
+	if = {
+		limit = {
+			has_country_flag = africa_world_package_leader_created
+			has_country_flag = africa_world_middle_east_package
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_middle_east_arab_federal_route
+					has_country_flag = africa_middle_east_plural_crossroads_route
+				}
+			}
+			set_country_leader_ideology = democratic
+		}
+		else_if = { limit = { has_country_flag = africa_middle_east_socialist_republics_route } set_country_leader_ideology = communism }
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_middle_east_royal_concert_route
+					has_country_flag = africa_middle_east_desert_covenant_route
+				}
+			}
+			set_country_leader_ideology = neutrality
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = africa_world_package_leader_created
+			has_country_flag = africa_world_europe_package
+		}
+		if = { limit = { has_country_flag = africa_europe_democratic_federation_route } set_country_leader_ideology = democratic }
+		else_if = { limit = { has_country_flag = africa_europe_socialist_union_route } set_country_leader_ideology = communism }
+		else_if = { limit = { has_country_flag = africa_europe_continental_command_route } set_country_leader_ideology = fascism }
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_europe_royal_concert_route
+					has_country_flag = africa_europe_neutral_confederation_route
+					has_country_flag = africa_europe_mythic_compact_route
+				}
+			}
+			set_country_leader_ideology = neutrality
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = africa_world_package_leader_created
+			has_country_flag = africa_world_asia_package
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_asia_plural_federation_route
+					has_country_flag = africa_asia_anti_colonial_front_route
+				}
+			}
+			set_country_leader_ideology = democratic
+		}
+		else_if = { limit = { has_country_flag = africa_asia_revolutionary_union_route } set_country_leader_ideology = communism }
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_asia_imperial_congress_route
+					has_country_flag = africa_asia_celestial_covenant_route
+				}
+			}
+			set_country_leader_ideology = neutrality
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = africa_world_package_leader_created
+			has_country_flag = africa_world_north_america_package
+		}
+		if = { limit = { has_country_flag = africa_north_america_republics_route } set_country_leader_ideology = democratic }
+		else_if = { limit = { has_country_flag = africa_north_america_socialist_union_route } set_country_leader_ideology = communism }
+		else_if = { limit = { has_country_flag = africa_north_america_command_route } set_country_leader_ideology = fascism }
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_north_america_commonwealth_route
+					has_country_flag = africa_north_america_storm_compact_route
+				}
+			}
+			set_country_leader_ideology = neutrality
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = africa_world_package_leader_created
+			has_country_flag = africa_world_south_america_package
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_south_america_republics_route
+					has_country_flag = africa_south_america_federation_route
+				}
+			}
+			set_country_leader_ideology = democratic
+		}
+		else_if = { limit = { has_country_flag = africa_south_america_socialist_union_route } set_country_leader_ideology = communism }
+		else_if = { limit = { has_country_flag = africa_south_america_command_route } set_country_leader_ideology = fascism }
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_south_america_royal_concert_route
+					has_country_flag = africa_south_america_sun_covenant_route
+				}
+			}
+			set_country_leader_ideology = neutrality
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = africa_world_package_leader_created
+			has_country_flag = africa_world_oceania_package
+		}
+		if = { limit = { has_country_flag = africa_oceania_socialist_commonwealth_route } set_country_leader_ideology = communism }
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_oceania_maritime_federation_route
+					has_country_flag = africa_oceania_indigenous_union_route
+				}
+			}
+			set_country_leader_ideology = democratic
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_oceania_dominion_route
+					has_country_flag = africa_oceania_deep_sea_covenant_route
+				}
+			}
+			set_country_leader_ideology = neutrality
+		}
+	}
+}
+
 africa_world_finalize_distinct_package_identity = {
 	if = {
 		limit = { has_country_flag = africa_world_middle_east_package }
@@ -2946,6 +3303,7 @@ africa_world_finalize_distinct_package_identity = {
 		else_if = { limit = { has_country_flag = africa_oceania_socialist_commonwealth_route } add_ideas = africa_world_oceania_maritime_commonwealth set_cosmetic_tag = OCEANIAN_MARITIME_COMMONWEALTH }
 		else_if = { limit = { has_country_flag = africa_oceania_deep_sea_covenant_route } add_ideas = africa_world_oceania_deep_sea_covenant set_cosmetic_tag = OCEANIAN_DEEP_SEA_COVENANT }
 	}
+	africa_world_refresh_package_leader_ideology = yes
 	if = {
 		limit = {
 			has_country_flag = africa_world_package_sponsored
@@ -3329,6 +3687,7 @@ africa_world_launch_prepared_continental_war = {
 			}
 			clr_country_flag = africa_continental_war_plan_target
 			set_country_flag = africa_continental_war_opponent
+			save_global_event_target_as = africa_world_last_continental_war_target
 			ROOT = { declare_war_on = { target = PREV type = topple_government } }
 		}
 		clr_country_flag = africa_continental_war_plan_ready
@@ -3336,6 +3695,7 @@ africa_world_launch_prepared_continental_war = {
 		if = {
 			limit = { NOT = { has_country_flag = africa_continental_war_news_sent } }
 			set_country_flag = africa_continental_war_news_sent
+			africa_world_emit_continental_wars_super_event = yes
 			news_event = { id = africa_world_order.102 }
 		}
 	}
@@ -3354,6 +3714,7 @@ africa_form_terminal_world_identity = {
 		set_global_flag = world_end_africa_the_world
 		set_global_flag = africa_terminal_world_identity_formed
 		set_country_flag = africa_terminal_world_actor
+		set_country_flag = africa_the_world_emblem_active
 		set_cosmetic_tag = AFRICA_THE_WORLD
 		clr_global_flag = africa_world_order_open
 		clr_global_flag = africa_continental_wars_active
@@ -3364,18 +3725,25 @@ africa_form_terminal_world_identity = {
 		africa_achievement_record_africa_world_formation = yes
 		if = {
 			limit = { has_global_flag = africa_world_terminal_protocol_unanimous_union }
+			set_country_flag = africa_world_super_event_terminal_unanimous_union
 			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.the_world_unanimous_union }
 		}
 		else_if = {
 			limit = { has_global_flag = africa_world_terminal_protocol_last_standing }
+			set_country_flag = africa_world_super_event_terminal_last_standing
 			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.the_world_last_standing }
 		}
-		else = { set_temp_variable = { africa_event_log_payload = constant:africa_event_log.the_world_continental_campaign } }
+		else = {
+			set_country_flag = africa_world_super_event_terminal_continental_campaign
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.the_world_continental_campaign }
+		}
 		set_temp_variable = { africa_event_log_actor = THIS.id }
 		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
 		set_temp_variable = { africa_event_log_secondary_actor = constant:africa_value.zero }
 		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.zero }
 		africa_record_event_log_world_order_entry = yes
+		africa_world_emit_the_world_super_event = yes
+		africa_achievement_record_world_terminal_super_event = yes
 		africa_world_terminal_protocol_cleanup_after_identity = yes
 	}
 }

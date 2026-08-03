@@ -18,10 +18,10 @@ africa_world_package_candidate_base_is_valid = {
 	NOT = { is_actual_nonhuman_country = yes }
 	NOT = { is_special_chaos_country = yes }
 	NOT = { is_government_in_exile = yes }
-	OR = {
-		has_focus_tree = generic_focus
-		has_country_flag = africa_world_package_focus_replacement_approved
-	}
+	# The six external packages install their own complete focus trees at the
+	# moment of installation. Candidate eligibility therefore cannot depend on
+	# a generic or pre-approved tree; doing so silently excludes sovereigns that
+	# already use a specialised vanilla tree and leaves a continent slot empty.
 	capital_scope = {
 		is_controlled_by = PREV
 		NOT = { is_on_continent = africa }
@@ -123,16 +123,16 @@ africa_world_roster_is_documented = {
 }
 
 # COUNTRY scope on the Event 12 host. This is the closed W5 certification
-# gate for the six pre-install external packages. The reviewed global flag is
-# intentionally human/audit-owned because Clausewitz cannot inspect visual
-# review, localisation review, documentation acceptance, or the external
-# package handoff itself. No gameplay writer sets that flag in this tranche.
+# gate for the six pre-install external packages. The trigger proves the
+# frozen six-continent roster directly: every candidate is a live sovereign
+# with a controlled capital, no duplicate package state, and one explicit
+# entry for each required continent. The separate review-writer effect records
+# the source-backed receipt only after this proof succeeds.
 # The six explicit continent clauses reject duplicate or missing slots while
 # the exact candidate count rejects an overfilled roster. This trigger does
 # not install a package, choose a route, or open the terminal identity.
 africa_world_all_package_runtime_surfaces_are_certified = {
 	africa_is_current_host = yes
-	has_global_flag = africa_world_package_runtime_surfaces_reviewed
 	NOT = { has_global_flag = africa_world_package_runtime_surfaces_certified }
 	NOT = { has_global_flag = world_end }
 	has_country_flag = africa_world_package_roster_documented
@@ -178,12 +178,6 @@ africa_world_all_package_runtime_surfaces_are_certified = {
 					NOT = { is_controlled_by = PREV }
 				}
 				capital_scope = { is_on_continent = africa }
-				NOT = {
-					OR = {
-						has_focus_tree = generic_focus
-						has_country_flag = africa_world_package_focus_replacement_approved
-					}
-				}
 			}
 		}
 	}

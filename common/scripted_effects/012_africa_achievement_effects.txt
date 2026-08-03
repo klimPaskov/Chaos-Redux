@@ -1313,16 +1313,20 @@ africa_achievement_record_restoration_identity = {
 	africa_achievement_refresh_host_duration_windows = yes
 }
 
-# COUNTRY scope on the completed IW-102 Kuba overlay when that country is also
-# a current Event 012 relationship member. The overlay owns the final council
-# charter and territorial compact; no cosmetic tag alone can create an
-# achievement identity.
+# COUNTRY scope on a direct-tag Kongo carrier that has completed its own Event
+# 012 constitutional and settlement surfaces. The stable helper name remains
+# for older callers, but the achievement no longer reads Independence Wave
+# route state, council flags, or cosmetic-only identity.
 africa_achievement_record_kuba_restoration_identity = {
 	if = {
 		limit = {
-			is_independence_wave_iw102_kuba_route_active = yes
-			has_country_flag = independence_wave_iw102_kuba_council_charter
-			has_country_flag = independence_wave_iw102_kuba_territorial_compact
+			africa_priority_member_origin_is_kongo = yes
+			OR = {
+				has_country_flag = africa_priority_kongo_court_civic_congress_government
+				has_country_flag = africa_priority_kongo_cross_border_commonwealth_government
+				has_country_flag = africa_priority_kongo_river_community_union_government
+			}
+			has_country_flag = africa_priority_kongo_post_settlement_action_completed
 			has_event_target = africa_host
 			africa_member_host_generation_is_current = yes
 		}
@@ -2720,6 +2724,10 @@ africa_achievement_record_other_world_end = {
 		limit = { NOT = { has_global_flag = africa_achievement_africa_owned_world_end } }
 		set_global_flag = africa_achievement_other_world_end_used
 	}
+}
+
+africa_achievement_record_unresolved_continent_identity = {
+	set_global_flag = africa_achievement_unresolved_continent_identity
 }
 
 africa_achievement_record_forced_scenario = {

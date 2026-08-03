@@ -206,3 +206,6 @@ These simplifications are safe only because the readiness gates remain unset.
 No fallback was introduced by this audit.
 
 No gameplay file was edited.
+# Superseding parent note (2026-08-03)
+
+This dated audit is retained as historical blocker evidence. The six external packages and terminal World identity now have the unique focus, decision, AI, emblem, leader/terminal identity, localisation, and GFX surfaces that were absent in this snapshot. Current dispositions are maintained in the Event 012 asset matrix and acceptance ledger.
