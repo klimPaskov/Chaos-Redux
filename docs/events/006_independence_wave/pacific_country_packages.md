@@ -49,10 +49,12 @@ after the coordinated PASS audits, sets all six shared adapter readiness flags,
 `independence_wave_form48_readiness_attested`. No annexation or integration
 fallback is used. FORM-06 through FORM-47 remain fail-closed, including
 FORM-42. The current whole-event evidence authority is
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v102_2026_08_02.md`.
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v105_2026_08_03.md`.
 The narrowed v98 handoff remains generic-focus evidence only. The whole event stays
-**HOLD / PARTIAL** while FSM admission, live allocation, scenario, focus geometry,
-AI, and synchronized transaction evidence remain open.
+**HOLD / PARTIAL** while FSM admission, live allocation, scenario, AI, and
+synchronized transaction evidence remain open. The v105 normal-spacing receipt
+resolves 184 nodes and 192 connectors with zero Event 006 geometry defects. Its
+explicit spacing artifact remains a threshold record, not a Pacific package blocker.
 IW-012 Iceland belongs to the Northern and Western Europe scope and its static
 admission is documented in `northern_western_europe_packages.md` and the
 dedicated Iceland package reference rather than duplicated in this Pacific
@@ -70,20 +72,19 @@ shelf now contains 63 original-size masters with no normalized or advisor
 derivatives.
 
 That sentence is a dated historical snapshot. The current portrait-shelf authority
-is 80 original-size PNG masters directly under
-`docs/assets/006_independence_wave/portraits_generated_png/`, with all 80 indexed or
-explicitly recorded in the two flat-shelf manifests (79 table rows plus the retry-2
-tail record); no normalized 156x210 shelf files, advisor portraits, dossier
-derivatives, or small consumers are authorized.
+is 81 original-size PNG masters directly under
+`docs/assets/006_independence_wave/portraits_generated_png/`, with all 81 indexed or
+explicitly recorded in the two flat-shelf manifests; no normalized 156x210 shelf
+files, advisor portraits, dossier derivatives, or small consumers are authorized.
 CHU Karim Tinchurin v3, the other CHU evidence rows, the two MNT masters, and ASY
 Haydo remain `needs_user_review` rights/date or provenance evidence. ASY Barsoum v93
 passes its independent audit and v94 promotes only the existing concordat-council
 DDS consumer; the wider IW-058 package remains outside attestation.
 
-Current shelf-index override (2026-08-02): all 80 physical masters are now indexed
-or explicitly recorded in the two flat-shelf manifests (79 table rows plus the
-retry-2 DOX tail record). The six reconciled rows are traceability-only and do not
-change any rights, provenance, role, or runtime admission gates.
+Current shelf-index override (2026-08-03): all 81 physical masters are now indexed
+or explicitly recorded in the two flat-shelf manifests. The indexed rows are
+traceability-only and do not change any rights, provenance, role, or runtime
+admission gates.
 
 That package now has the v93 independent audit recorded: identity/likeness,
 HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with
