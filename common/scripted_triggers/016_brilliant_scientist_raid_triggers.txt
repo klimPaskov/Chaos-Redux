@@ -1,0 +1,62 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 RAID TRIGGERS
+# ============================================================================
+# Native raid integration for Warren Kruger's active host and sovereign state.
+# Existing biological raids remain manually launchable under their native
+# authority and payload contracts. These triggers only add the Kruger-directed
+# AI preference and gate the portal raid to the project technology, authenticated
+# network, terminal, and project-force history already owned by Event 016.
+# ============================================================================
+
+# COUNTRY scope. Kruger actively directs this country and therefore prefers
+# native biological operations more often. This never authorizes a raid by
+# itself; the native raid's own authority, policy, target, payload, and unit
+# checks still have to pass.
+brilliant_scientist_kruger_raid_ai_is_active = {
+	OR = {
+		brilliant_scientist_is_current_host = yes
+		brilliant_scientist_is_active_kruger_state = yes
+	}
+	has_character = KRG_warren_kruger
+	KRG_warren_kruger = {
+		has_character_flag = brilliant_scientist_personal_active
+	}
+}
+
+# COUNTRY scope. The portal-warfare technology and its native portal-raider
+# equipment are usable only after the linked transit network and at least one
+# owned terminal survive. The terminal OR keeps the direct host project and the
+# later Kruger-State terminal route on the same native raid surface.
+brilliant_scientist_portal_raid_actor_is_ready = {
+	has_tech = brilliant_scientist_portal_warfare_tech
+	brilliant_scientist_kruger_focus_teleportation_weaponization_is_operational = yes
+	has_country_flag = brilliant_scientist_quantum_transit_network_ready
+	any_owned_state = {
+		OR = {
+			has_state_flag = brilliant_scientist_quantum_transit_terminal
+			has_state_flag = brilliant_scientist_krg_transit_terminal
+		}
+	}
+}
+
+# COUNTRY/raid target context. The target must be a hostile country and the
+# selected state must remain owned and controlled by that country while the
+# raid is prepared or launched. Strategic facilities are the only valid target.
+brilliant_scientist_portal_raid_target_is_valid = {
+	FROM = {
+		exists = yes
+		has_war_with = ROOT
+	}
+	var:target_state = {
+		is_owned_by = FROM
+		is_controlled_by = FROM
+		OR = {
+			industrial_complex > 0
+			arms_factory > 0
+			dockyard > 0
+			rocket_site > 0
+			nuclear_reactor > 0
+			commercial_nuclear_reactor > 0
+		}
+	}
+}
