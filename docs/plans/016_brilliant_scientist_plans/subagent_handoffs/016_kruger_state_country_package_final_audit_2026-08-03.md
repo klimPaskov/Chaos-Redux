@@ -112,3 +112,15 @@ Changed tags, states, leaders, parties, focus IDs, localisation keys, and formab
 Plan handoff: this file, `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_kruger_state_country_package_final_audit_2026-08-03.md`.
 
 Parent review should carry the four blockers/limits above into the final Event 016 completion report and schedule targeted validation rather than adding a new KRG identity or fallback CBRN implementation.
+
+## Correction — 2026-08-03 KRG country-idea icon status refresh
+
+This dated correction was verified at current repository HEAD `aa0741da5194` and supersedes only the earlier 21-icon gap statements in this handoff.
+
+The icon implementation in `2956c5cb3` wires all 21 previously unassigned Kruger State lifecycle/project ideas. `common/ideas/016_brilliant_scientist_country_ideas.txt` now contains 28 visible top-level KRG idea definitions, 28 explicit `picture` assignments, and 28 unique picture tokens. `interface/016_brilliant_scientist_idea_icons.gfx` registers 34 unique Event 016 idea sprites, and all 34 texture references resolve to 34 tracked DDS files under `gfx/interface/ideas/016_brilliant_scientist/`; the 34 count includes the pre-existing 13-sprite tranche plus the 21 KRG sprites.
+
+The asset handoff `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_krg_country_idea_icon_wiring_2026-08-03.md` records 21/21 complete validation rows with 64x64 dimensions, 16,512-byte DDS outputs, transparent corners, exact header checks, and decoded-pixel equality checks. The matching manifest is `docs/assets/016_brilliant_scientist/krg_country_idea_icons/manifest.md`, with 21 complete rows in `docs/assets/016_brilliant_scientist/krg_country_idea_icons/validation.tsv`.
+
+The former 21-icon omission in the Focus, decisions, ideas, and assets section and item 4 in Missing, stale, and blocked surfaces are therefore closed as current-status findings; they remain in the earlier audit text only as historical observations. This correction changes documentation only and does not alter gameplay or claim that the wider country package is complete.
+
+The genuine open limits remain: native CBRN stockpile/reservation/consumption/debit behavior is still unavailable without the required callback contract; targeted charter, rebellion, enclave, takeover, transfer, annexation, cleanup, and interrupted-event scenarios remain unvalidated; quantitative conventional-guard, project-force, AI-route, and settlement-probability balance checks remain pending; live in-game country and idea-card presentation acceptance remains user-owned; bounded KRG technology-tree proof remains partial; and the mixed historical asset manifest/portrait-source provenance still needs reconciliation.
