@@ -94,6 +94,6 @@ Native advisor and special-project scientist tiles use the static portrait selec
 
 This is the required static fallback behavior, not a substitute for the severe animation package: the real frame animation is visible in the event-owned Directorate surface.
 
-The current asset manifest still contains pre-production status prose and must be reconciled after the report, super-event, achievement, focus, and Directorate UI tranches finish so concurrent asset work does not overwrite this review.
+The current asset manifest was reconciled on 2026-08-03 in `docs/assets/016_brilliant_scientist/manifest.md`. Its current counters and runtime registrations supersede the earlier pre-production-status note in this handoff. External redistribution rights for the copied Stage-0 source remain unresolved, and final state-selection or live GUI animation acceptance remains parent-owned.
 
 No fallback, placeholder, or transform-only animation was accepted in this tranche.

@@ -1,5 +1,7 @@
 # Super-event research prompt for Event 016 Brilliant Scientist
 
+> Superseded continuation note (2026-08-03): the image, description, localisation, and wiring gaps below are historical planning text. Current six-image, six-audio, shared wiring, and report presentation status is recorded in `docs/assets/016_brilliant_scientist/manifest.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. Do not rerun completed research or production without a concrete evidence defect. Live presentation acceptance remains parent-owned.
+
 Research exactly six mapped packages. International recognition and qualifying defeat are conditional at runtime but still require complete text, image, unique audio, source, licence, localisation, documentation, and wiring handoffs.
 
 Use visible super-event reservations 90 through 95 in this order: recognition, formation, global threat, Laboratory World, Strategic Singularity, qualifying defeat. Live Event 015 wiring occupies visible IDs 85 through 89. Laboratory World and Strategic Singularity use world-end scenario IDs 11 and 12.

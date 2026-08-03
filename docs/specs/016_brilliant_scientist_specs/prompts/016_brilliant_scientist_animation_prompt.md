@@ -1,5 +1,7 @@
 # Animation production prompt for Event 016 Brilliant Scientist
 
+> Superseded continuation note (2026-08-03): the missing-asset statements below are a historical production prompt. The six Stage-IV route sheets and static fallbacks are present and registered in the current asset manifest. Do not rerun portrait or animation production without a concrete evidence defect. Use `docs/assets/016_brilliant_scientist/manifest.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current status. Final state-selection or live GUI animation acceptance remains parent-owned.
+
 Produce exactly five severe portrait packages: clone, machine, temporal, xenobiological or alien, and synthesis. The combined xenobiological-or-alien package follows the locked campaign conclusion; transformation alone must not imply extraterrestrial provenance.
 
 Stage 0 is complete and registered. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced assets remain missing. Treat those live names as fixed output contracts. The xenobiological-or-alien family has mutually exclusive evidence-gated xenobiological and alien-revealed outputs inside one package family.
