@@ -70,7 +70,7 @@ The admission reconciliation at `006_iw023_tra_runtime_scenario_admission_reconc
 | Registry, tag, binding, and flag infrastructure | **PASS as infrastructure** | The registry contains 206 rows, the installed binding ledger has 138 bound and 55 unbound selectable rows, the strict flag audit passes 102 complete Event 006 families, and the scoped Event 006/Soviet scan reports zero external country-definition or identity-surface collisions. Registration, binding, and flag presence do not grant package admission. |
 | Selectable country packages | **BLOCKED, 15 of 193 attested** | IW-023 is correctly added to the central runtime and SCN-008 gates. The remaining 178 rows still require country-specific identity, history, territory, politics, roster, portrait, forces, technology, ideas, decisions, focus ownership, diplomacy, host relations, AI, localisation, assets, cleanup, and independent package attestation as applicable. |
 | Route overlays | **PARTIAL** | All 13 accepted overlay rows are excluded from the release denominator and have bounded route-adapter evidence. Several still lack complete Network, League, formable, symbol, leader, and package-specific AI integration. |
-| Network and League | **PASS for the shared engine, PARTIAL for accepted reach and presentation** | Charter, reserve, confidence, arbitration, rescue, rival-bloc, and lifecycle effects exist. Package participation is incomplete, ASSET-004 has no gameplay consumer, and the league-formation super-event `6001` is absent from runtime. |
+| Network and League | **PASS for the shared engine, PARTIAL for accepted reach and presentation** | Charter, reserve, confidence, arbitration, rescue, rival-bloc, and lifecycle effects exist. ASSET-004 is consumed by the first-proclamation news event `chaosx.nr6.35`; package participation is incomplete and the league-formation super-event `6001` is absent from runtime. |
 | Formable registry | **BLOCKED / PARTIAL** | Five families are operationally reachable. Seven more have bounded adapters but remain unreachable or fail-closed. The rest have no reviewed commit branch in the shared readiness surface. TRA admission does not promote FORM-08. |
 | SCN-008 | **PARTIAL** | The fresh scenario audit passes all 32 mode/intensity cells and all eight declared edge cases. Six numeric families expose eight player-facing modes. The scenario still filters through the 15-ID content gate, while 178 selectable registry rows lack admissible packages. Its all-viable-candidate promise is therefore not whole-event complete. |
 | Statehood Ledger and frame animation | **PASS for the source-semantic contract** | The fresh GUI matrix passes five tabs, the 5/3/4/4 semantic frame families, cleanup variables, and four static/animated sibling pairs. Runtime rendering and save/load were not claimed. |
@@ -97,7 +97,7 @@ The admission reconciliation at `006_iw023_tra_runtime_scenario_admission_reconc
 The non-portrait asset surface remains substantial but partial.
 
 - ASSET-001 through ASSET-003, ASSET-006 through ASSET-044, ASSET-047, and ASSET-049 have material source or runtime evidence subject to reachability.
-- ASSET-004 is registered as `GFX_news_event_006_asset_004_league_congress` but has no gameplay consumer.
+- ASSET-004 is registered as `GFX_news_event_006_asset_004_league_congress` and consumed once by `chaosx.nr6.35` after the first successful league proclamation.
 - ASSET-005 has a runtime DDS and sprite registration, but its owning `6001` package is absent.
 - ASSET-002 and ASSET-003 are consumed only by IW-093/IW-098 source, whose packages remain unadmitted.
 - ASSET-045 portraits are not complete under the current provider-backed completion rule.
@@ -195,7 +195,7 @@ The existing HOI4 event trace for `chaosx.nr6.1` remains a partial inspection be
 4. Authorize and stabilize the portrait provider route, commit the provider lock, run the locked workflow, verify 832x1120 and 156x210 outputs, convert approved DDS files, and obtain independent final-versus-placeholder reviews. Retain the repaired CHU archive row as source evidence only and do not count queued jobs or source placeholders as final portraits.
 5. Complete the remaining 43 formable families or retain each one as an explicit design or research blocker. FORM-08 needs AXX/MAC and one accepted three-member, three-consent, three-anchor proof despite TRA admission.
 6. Complete `6001` only after explicit candidate selection and listening approval, then produce the full unique audio, slot, localisation, Event Log, firing, documentation, and catalogue package.
-7. Complete ASSET-004 consumption, ASSET-045 portraits, ASSET-046 formable identities and emblems, and ASSET-048 regional reports. Preserve package reachability gates for ASSET-002 and ASSET-003.
+7. Complete ASSET-045 portraits, ASSET-046 formable identities and emblems, and ASSET-048 regional reports. Preserve package reachability gates for ASSET-002 and ASSET-003.
 8. Run the accepted named-world-state AI probability, generic strategy-factor, route dominance and starvation, package comparison, capacity, and whole-event balance acceptance after the missing package and formable tranches exist.
 9. Repeat the final country-package, formable, focus, decision and mission, localisation, asset, catalog, AI and balance, super-event, and event-completion audits before any completion claim.
 

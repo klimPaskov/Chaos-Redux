@@ -2577,6 +2577,17 @@ independence_wave_open_charter_vote = {
 	}
 }
 
+# The first successful league proclamation consumes the accepted ASSET-004
+# congress news image. A global receipt keeps later upgrades and reforms from
+# replaying the opening-news presentation.
+independence_wave_emit_first_league_congress_news = {
+	if = {
+		limit = { NOT = { has_global_flag = independence_wave_first_league_congress_news_fired } }
+		set_global_flag = independence_wave_first_league_congress_news_fired
+		news_event = { id = chaosx.nr6.35 days = 2 }
+	}
+}
+
 independence_wave_proclaim_consultative_league = {
 	independence_wave_reconcile_registries = yes
 	if = {
@@ -2595,6 +2606,7 @@ independence_wave_proclaim_consultative_league = {
 			array = global.independence_wave_league_founder_entries
 			independence_wave_register_league_member = yes
 		}
+		independence_wave_emit_first_league_congress_news = yes
 	}
 }
 
@@ -2619,6 +2631,7 @@ independence_wave_proclaim_formal_league = {
 			array = global.independence_wave_league_founder_entries
 			independence_wave_register_league_member = yes
 		}
+		independence_wave_emit_first_league_congress_news = yes
 	}
 }
 
