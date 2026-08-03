@@ -1,0 +1,53 @@
+# Some AI fields reject script-constant tokens; these are file-scoped tuning
+# values for the researched Danubian carrier profile.
+@CR_SC_INDEPENDENCE_WAVE_FORM08_ARMY_PRIORITY = 96
+@CR_SC_INDEPENDENCE_WAVE_FORM08_RAIL_PRIORITY = 74
+@CR_SC_INDEPENDENCE_WAVE_FORM08_DEFENSE_PRIORITY = 84
+@CR_SC_INDEPENDENCE_WAVE_FORM08_FOUNDING_RESTRAINT = -280
+@CR_SC_INDEPENDENCE_WAVE_FORM08_SETTLED_RESTRAINT = -420
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-08 DANUBIAN CONFEDERATION AI
+# ============================================================================
+# The vanilla carrier AI remains active. These additive strategies prioritize
+# the corridor, protect the capital anchor, and avoid wars while the charter
+# projects are unresolved.
+# ============================================================================
+
+independence_wave_form08_corridor_survival = {
+	allowed = { has_cosmetic_tag = HUN_EMPIRE }
+	enable = {
+		is_independence_wave_form08_postformation_carrier = yes
+		NOT = { has_country_flag = independence_wave_form08_transport_project_complete }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_FORM08_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_FORM08_RAIL_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_FORM08_DEFENSE_PRIORITY }
+}
+
+independence_wave_form08_charter_restraint = {
+	allowed = { has_cosmetic_tag = HUN_EMPIRE }
+	enable = {
+		is_independence_wave_form08_postformation_carrier = yes
+		OR = {
+			NOT = { has_country_flag = independence_wave_form08_congress_project_complete }
+			NOT = { has_country_flag = independence_wave_form08_arbitration_project_complete }
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_FORM08_FOUNDING_RESTRAINT }
+}
+
+independence_wave_form08_settled_confederation = {
+	allowed = { has_cosmetic_tag = HUN_EMPIRE }
+	enable = {
+		is_independence_wave_form08_postformation_carrier = yes
+		has_country_flag = independence_wave_form08_congress_project_complete
+		has_country_flag = independence_wave_form08_arbitration_project_complete
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_FORM08_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_FORM08_SETTLED_RESTRAINT }
+}
+

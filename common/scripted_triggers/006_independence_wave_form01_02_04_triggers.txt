@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_FORM04_AI_GERMAN_DOMINANCE_RATIO = 0.67
 # ============================================================================
 # CHAOS REDUX - EVENT 006 FORM-01, FORM-02, AND FORM-04 TRIGGERS
 # ============================================================================
@@ -108,6 +111,11 @@ has_independence_wave_selected_formable_identity_available = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation }
 			has_country_flag = independence_wave_form07_identity_attested
 		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation }
+			has_country_flag = independence_wave_form08_hun_empire_identity_reuse_attested
+			NOT = { has_global_flag = independence_wave_form08_hun_empire_identity_in_use }
+		}
 		NOT = {
 			OR = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state }
@@ -118,14 +126,15 @@ has_independence_wave_selected_formable_identity_available = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation }
 			}
 		}
 	}
 }
 
 has_independence_wave_form04_undominated_corridor = {
-	42 = { NOT = { controller = GER } }
-	51 = { NOT = { controller = GER } }
+	42 = { NOT = { is_controlled_by = GER } }
+	51 = { NOT = { is_controlled_by = GER } }
 }
 
 # Candidate-country scope with ROOT as the carrier. Neighbourhood alone is not
@@ -209,6 +218,10 @@ has_independence_wave_form0124_valid_response_connection = {
 			NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
 			is_neighbor_of = var:independence_wave_formable_inviting_carrier
 			has_independence_wave_form04_connected_capitals = yes
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.danubian_confederation }
+			has_independence_wave_form08_diplomatic_connection_to_inviting_carrier = yes
 		}
 	}
 }
@@ -320,7 +333,7 @@ should_independence_wave_form04_ai_avoid_german_dominance = {
 	GER = { exists = yes }
 	strength_ratio = {
 		tag = GER
-		ratio < constant:independence_wave_form04_ai.german_dominance_ratio
+		ratio < @CR_SC_INDEPENDENCE_WAVE_FORM04_AI_GERMAN_DOMINANCE_RATIO
 	}
 	NOT = { can_independence_wave_use_rhine_bavaria_high_chaos_actions = yes }
 }
