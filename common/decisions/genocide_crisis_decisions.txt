@@ -125,6 +125,7 @@ genocide_crisis_category = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_germany_occupied_poland_prisoner_source = yes
 				NOT = { concentration_camp > 0 }
+				NOT = { extermination_camp > 0 }
 			}
 		}
 		available = {
@@ -139,7 +140,7 @@ genocide_crisis_category = {
 					camp_rework_country_under_ai_project_cap = yes
 				}
 			}
-			manpower > constant:camp_rework_cost.expansion_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
 			command_power > constant:camp_rework_cost.expansion_command
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
@@ -148,6 +149,7 @@ genocide_crisis_category = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_germany_occupied_poland_prisoner_source = yes
 				NOT = { concentration_camp > 0 }
+				NOT = { extermination_camp > 0 }
 			}
 		}
 		complete_effect = {
@@ -190,7 +192,7 @@ genocide_crisis_category = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_germany_occupied_poland_prisoner_source = yes
 				concentration_camp > 0
-				NOT = { extermination_camp > 0 }
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
 			}
 		}
 		available = {
@@ -208,7 +210,7 @@ genocide_crisis_category = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_germany_occupied_poland_prisoner_source = yes
 				concentration_camp > 0
-				NOT = { extermination_camp > 0 }
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
 			}
 		}
 		complete_effect = {
@@ -331,7 +333,7 @@ genocide_crisis_category = {
 			}
 			custom_trigger_tooltip = {
 				tooltip = camp_rework_transfer_guard_transport_cost_tt
-				manpower > constant:camp_rework_cost.expansion_manpower
+				check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
 				command_power > constant:camp_rework_cost.expansion_command
 				has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
@@ -451,7 +453,7 @@ genocide_crisis_category = {
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				concentration_camp > 0
-				NOT = { extermination_camp > 0 }
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
 			}
 		}
 
@@ -470,7 +472,7 @@ genocide_crisis_category = {
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				concentration_camp > 0
-				NOT = { extermination_camp > 0 }
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
 			}
 		}
 
@@ -770,6 +772,7 @@ imperial_occupation_crisis = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_japan_ordered_repression_pool_state = yes
 				NOT = { concentration_camp > 0 }
+				NOT = { extermination_camp > 0 }
 			}
 		}
 		available = {
@@ -783,6 +786,7 @@ imperial_occupation_crisis = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_japan_ordered_repression_pool_state = yes
 				NOT = { concentration_camp > 0 }
+				NOT = { extermination_camp > 0 }
 			}
 		}
 		complete_effect = {
@@ -884,6 +888,11 @@ imperial_occupation_crisis = {
 					is_japan_colonial_occupation_pool_state = yes
 					is_japan_home_island_fallback_state = yes
 				}
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
+				OR = {
+					concentration_camp > 0
+					NOT = { extermination_camp > 0 }
+				}
 			}
 		}
 		available = {
@@ -902,7 +911,7 @@ imperial_occupation_crisis = {
 			has_army_experience > @GENOCIDE_RAIL_ARMY_XP_COST
 			custom_trigger_tooltip = {
 				tooltip = camp_rework_transfer_guard_transport_cost_tt
-				manpower > constant:camp_rework_cost.expansion_manpower
+				check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
 				command_power > constant:camp_rework_cost.expansion_command
 				has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 				has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
@@ -914,6 +923,11 @@ imperial_occupation_crisis = {
 					is_japan_china_manchuria_pool_state = yes
 					is_japan_colonial_occupation_pool_state = yes
 					is_japan_home_island_fallback_state = yes
+				}
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
+				OR = {
+					concentration_camp > 0
+					NOT = { extermination_camp > 0 }
 				}
 			}
 		}

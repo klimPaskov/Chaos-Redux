@@ -238,7 +238,26 @@ genocide_country_has_extermination_upgrade_target = {
 	}
 	any_controlled_state = {
 		concentration_camp > 0
-		NOT = { extermination_camp > 0 }
+		check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
+	}
+}
+
+genocide_country_can_liberate_discovered_camp = {
+	has_war = yes
+	has_event_target = genocide_discovered_state
+	has_event_target = genocide_responsible_country
+	event_target:genocide_responsible_country = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_war_with = ROOT
+	}
+	event_target:genocide_discovered_state = {
+		is_controlled_by = ROOT
+		OR = {
+			concentration_camp > 0
+			extermination_camp > 0
+			gulag_labor_camp_network > 0
+		}
 	}
 }
 

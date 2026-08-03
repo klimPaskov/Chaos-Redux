@@ -20,11 +20,13 @@ Runtime maps are rebuilt from immutable provider sources. Diffuse is `Image_0`, 
 
 Never attach a custom map-building model to the vanilla shared `special_project_facility_spawn` pool. A facility that is itself a map building uses a dedicated `type = province`, `max = 1` spawn pool.
 
-When gameplay is state-level but the visual must appear once, keep the gameplay building non-map and create a hidden provincial visual-anchor building with `province_max = 1`, `state_max = 1`, a dedicated spawn pool, and `construct_building_in_random_province` from state scope. Add explicit cleanup and conversion logic for the anchor.
+When every gameplay level must have a visible model, make the gameplay building the direct consumer and provide one explicit spawn position for every possible rendered level. A hidden provincial anchor remains appropriate only when the design intentionally needs one visual independent of the gameplay building level; place and remove such an anchor with `set_building_level`, never a random constructor.
+
+Leave automatic nudging enabled for any dynamic custom spawn pool that has no complete `map/buildings.txt` coordinate coverage. Use `disable_auto_nudging = yes` only when every intended province has an explicit maintained position.
 
 Every custom `spawn_point` must have a matching `building_<spawn_point>` entity in the active `.asset` file. Different meshes must use different spawn points because one spawn point resolves to one map entity.
 
-This workflow does not require `map/buildings.txt`. The only permanent placement evidence required is the dedicated spawn declaration, the state-scope construction helper, and a runtime consumer audit.
+A dynamic spawn pool needs no `map/buildings.txt` only when automatic nudging demonstrably creates valid placements. If it does not, ship a deterministic full override that preserves all vanilla rows, covers every intended custom position, and can be regenerated against the installed vanilla map.
 
 ## Completion evidence
 

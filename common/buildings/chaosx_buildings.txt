@@ -8,6 +8,7 @@
 @CONCENTRATION_CAMP_COMPLIANCE = -0.04
 @CONCENTRATION_CAMP_RESOURCES = 0.08
 @CONCENTRATION_CAMP_PRODUCTION = 0.05
+@CONCENTRATION_CAMP_MAX_LEVEL = 5
 
 @EXTERMINATION_CAMP_BASE_COST = 2600
 @EXTERMINATION_CAMP_VALUE = 3
@@ -19,6 +20,8 @@
 @EXTERMINATION_CAMP_COMPLIANCE = -0.18
 @EXTERMINATION_CAMP_RESOURCES = -0.05
 @EXTERMINATION_CAMP_PRODUCTION = -0.08
+@EXTERMINATION_CAMP_MAX_LEVEL = 5
+@EXTERMINATION_CAMP_CONCENTRATION_CONSTRUCTION_SPEED = -100.00
 
 @GULAG_NETWORK_BASE_COST = 1800
 @GULAG_NETWORK_VALUE = 2
@@ -109,6 +112,10 @@ buildings = {
 		infrastructure_construction_effect = yes
 		value = @CONCENTRATION_CAMP_VALUE
 		damage_factor = @CONCENTRATION_CAMP_DAMAGE
+		spawn_point = chaosx_concentration_camp_visual_anchor_spawn
+		show_on_map = 5
+		show_on_map_meshes = 1
+		has_destroyed_mesh = no
 		is_buildable = yes
 		need_detection = yes
 		detecting_intel_type = civilian
@@ -124,7 +131,8 @@ buildings = {
 
 		level_cap = {
 			shares_slots = no
-			state_max = 1
+			state_max = @CONCENTRATION_CAMP_MAX_LEVEL
+			group_by = chaosx_camp_network
 		}
 
 		state_modifiers = {
@@ -142,6 +150,10 @@ buildings = {
 		infrastructure_construction_effect = yes
 		value = @EXTERMINATION_CAMP_VALUE
 		damage_factor = @EXTERMINATION_CAMP_DAMAGE
+		spawn_point = chaosx_extermination_camp_visual_anchor_spawn
+		show_on_map = 5
+		show_on_map_meshes = 1
+		has_destroyed_mesh = no
 		# This site is created only through camp-system effects and decisions.
 		is_buildable = no
 		need_detection = yes
@@ -159,7 +171,8 @@ buildings = {
 
 		level_cap = {
 			shares_slots = no
-			state_max = 1
+			state_max = @EXTERMINATION_CAMP_MAX_LEVEL
+			group_by = chaosx_camp_network
 		}
 
 		state_modifiers = {
@@ -169,6 +182,7 @@ buildings = {
 			compliance_growth = @EXTERMINATION_CAMP_COMPLIANCE
 			state_resources_factor = @EXTERMINATION_CAMP_RESOURCES
 			state_production_speed_buildings_factor = @EXTERMINATION_CAMP_PRODUCTION
+			state_production_speed_concentration_camp_factor = @EXTERMINATION_CAMP_CONCENTRATION_CONSTRUCTION_SPEED
 		}
 	}
 

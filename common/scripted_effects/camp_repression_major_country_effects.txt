@@ -137,17 +137,19 @@ camp_rework_japan_refresh_values = {
 	set_temp_variable = { camp_japan_china_evidence_total = 0 }
 	for_each_scope_loop = {
 		array = camp_active_site_states
-		limit = {
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { tag = ROOT }
-			OR = {
-				is_japan_china_manchuria_pool_state = yes
-				has_state_flag = camp_rework_pingfang_anchor
-			}
-		}
 		if = {
-			limit = { has_variable = camp_state_evidence_depth }
-			add_to_temp_variable = { camp_japan_china_evidence_total = camp_state_evidence_depth }
+			limit = {
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+				OR = {
+					is_japan_china_manchuria_pool_state = yes
+					has_state_flag = camp_rework_pingfang_anchor
+				}
+			}
+			if = {
+				limit = { has_variable = camp_state_evidence_depth }
+				add_to_temp_variable = { camp_japan_china_evidence_total = camp_state_evidence_depth }
+			}
 		}
 	}
 	set_variable = { evidence_depth_china = camp_japan_china_evidence_total }
@@ -790,6 +792,16 @@ camp_rework_germany_register_auschwitz_layers = {
 			set_state_flag = genocide_ss_laboratory_site
 			set_state_flag = camp_rework_experiment_site
 			set_state_flag = genocide_atrocity_site_known_to_regime
+			set_temp_variable = { genocide_requested_concentration_level = constant:genocide_camp_level.auschwitz }
+			genocide_ensure_concentration_camp_level = yes
+			if = {
+				limit = { NOT = { has_state_flag = camp_rework_mengele_extermination_upgrade_applied } }
+				genocide_register_extermination_site_for_root = yes
+				if = {
+					limit = { check_variable = { genocide_camp_conversion_succeeded > 0 } }
+					set_state_flag = camp_rework_mengele_extermination_upgrade_applied
+				}
+			}
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
 			camp_rework_register_active_site = yes
 			camp_rework_register_evidence_state = yes
@@ -921,6 +933,17 @@ camp_rework_germany_complete_occupied_poland_expansion_mission = {
 				clr_state_flag = camp_rework_germany_poland_expansion_project
 				set_state_flag = genocide_german_holocaust_poland_site
 				genocide_register_concentration_site_for_root = yes
+				if = {
+					limit = {
+						NOT = { extermination_camp > 0 }
+						check_variable = { building_level@concentration_camp < constant:genocide_camp_level.maximum }
+					}
+					add_building_construction = {
+						type = concentration_camp
+						level = constant:genocide_camp_level.standard
+						instant_build = yes
+					}
+				}
 				add_building_construction = { type = infrastructure level = @CAMP_MAJOR_COUNTRY_BUILDING_LEVEL instant_build = yes }
 			}
 		}
@@ -1014,11 +1037,13 @@ camp_rework_germany_complete_eastern_fortifications = {
 camp_rework_germany_fail_eastern_fortifications = {
 	for_each_scope_loop = {
 		array = camp_evidence_states
-		limit = {
-			has_state_flag = camp_rework_germany_eastern_fortification_project
-			camp_rework_state_can_accept_responsibility_from_root = yes
+		if = {
+			limit = {
+				has_state_flag = camp_rework_germany_eastern_fortification_project
+				camp_rework_state_can_accept_responsibility_from_root = yes
+			}
+			clr_state_flag = camp_rework_germany_eastern_fortification_project
 		}
-		clr_state_flag = camp_rework_germany_eastern_fortification_project
 	}
 	add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
@@ -1029,11 +1054,13 @@ camp_rework_germany_fail_eastern_fortifications = {
 camp_rework_germany_cancel_eastern_fortifications = {
 	for_each_scope_loop = {
 		array = camp_evidence_states
-		limit = {
-			has_state_flag = camp_rework_germany_eastern_fortification_project
-			camp_rework_state_can_accept_responsibility_from_root = yes
+		if = {
+			limit = {
+				has_state_flag = camp_rework_germany_eastern_fortification_project
+				camp_rework_state_can_accept_responsibility_from_root = yes
+			}
+			clr_state_flag = camp_rework_germany_eastern_fortification_project
 		}
-		clr_state_flag = camp_rework_germany_eastern_fortification_project
 	}
 	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_minor }
 	camp_rework_recalculate_country_values = yes
@@ -1305,6 +1332,18 @@ camp_rework_japan_apply_prisoner_experiment = {
 		add_to_variable = { genocide_decisions_taken = 1 }
 		FROM = {
 			if = { limit = { NOT = { has_variable = genocide_responsible_country } } set_variable = { genocide_responsible_country = ROOT } }
+			if = {
+				limit = {
+					NOT = { concentration_camp > 0 }
+					NOT = { extermination_camp > 0 }
+				}
+				add_building_construction = {
+					type = concentration_camp
+					level = constant:genocide_camp_level.standard
+					instant_build = yes
+				}
+			}
+			genocide_register_extermination_site_for_root = yes
 			set_state_flag = genocide_site_has_responsible_country
 			set_state_flag = genocide_japanese_biowarfare_atrocity_site
 			set_state_flag = camp_rework_experiment_site
@@ -1777,20 +1816,22 @@ camp_rework_japan_complete_prisoner_experiment_shutdown = {
 	set_temp_variable = { camp_japan_experiment_shutdown_blocked = 0 }
 	for_each_scope_loop = {
 		array = camp_active_site_states
-		limit = {
-			camp_rework_state_can_accept_responsibility_from_root = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { tag = ROOT }
-			OR = {
-				has_state_flag = genocide_japanese_biowarfare_atrocity_site
-					has_state_flag = camp_rework_experiment_site
-			}
-		}
 		if = {
-			limit = { camp_rework_state_is_actor_or_subject_controlled = yes }
-			add_to_temp_array = { camp_japan_experiment_shutdown_states = THIS }
+			limit = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+				OR = {
+					has_state_flag = genocide_japanese_biowarfare_atrocity_site
+						has_state_flag = camp_rework_experiment_site
+				}
+			}
+			if = {
+				limit = { camp_rework_state_is_actor_or_subject_controlled = yes }
+				add_to_temp_array = { camp_japan_experiment_shutdown_states = THIS }
+			}
+			else = { set_temp_variable = { camp_japan_experiment_shutdown_blocked = 1 } }
 		}
-		else = { set_temp_variable = { camp_japan_experiment_shutdown_blocked = 1 } }
 	}
 	if = {
 		limit = {
@@ -1799,8 +1840,10 @@ camp_rework_japan_complete_prisoner_experiment_shutdown = {
 		}
 		for_each_scope_loop = {
 			array = camp_japan_experiment_shutdown_states
-			limit = { camp_rework_state_is_actor_responsible_controlled = yes }
-			camp_rework_complete_dismantlement = yes
+			if = {
+				limit = { camp_rework_state_is_actor_responsible_controlled = yes }
+				camp_rework_complete_dismantlement = yes
+			}
 		}
 		clr_country_flag = camp_rework_japan_shutdown_mission_active
 		set_country_flag = japan_prisoner_experiments_shutdown
@@ -1962,12 +2005,14 @@ camp_rework_soviet_refresh_current_famine_state = {
 camp_rework_soviet_refresh_famine_states = {
 	for_each_scope_loop = {
 		array = camp_active_site_states
-		limit = {
-			camp_rework_state_can_accept_responsibility_from_root = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { tag = ROOT }
+		if = {
+			limit = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+			}
+			camp_rework_soviet_refresh_current_famine_state = yes
 		}
-		camp_rework_soviet_refresh_current_famine_state = yes
 	}
 }
 
@@ -1978,12 +2023,14 @@ camp_rework_soviet_prepare_famine_event_state = {
 	clear_variable = sov_famine_event_state_id
 	for_each_scope_loop = {
 		array = camp_active_site_states
-		limit = {
-			has_state_flag = genocide_soviet_famine_pressure_site
-			camp_rework_state_is_actor_responsible_controlled = yes
-			ROOT = { NOT = { has_variable = sov_famine_event_state_id } }
+		if = {
+			limit = {
+				has_state_flag = genocide_soviet_famine_pressure_site
+				camp_rework_state_is_actor_responsible_controlled = yes
+				ROOT = { NOT = { has_variable = sov_famine_event_state_id } }
+			}
+			ROOT = { set_variable = { sov_famine_event_state_id = PREV.id } }
 		}
-		ROOT = { set_variable = { sov_famine_event_state_id = PREV.id } }
 	}
 }
 
@@ -2003,7 +2050,7 @@ camp_rework_soviet_update_famine = {
 		add_to_temp_variable = { camp_soviet_monthly_famine_change = constant:camp_rework_soviet.monthly_famine_from_paranoia }
 	}
 	if = {
-		limit = { stability < constant:camp_rework_threshold.low_stability }
+		limit = { check_variable = { var = stability value = constant:camp_rework_threshold.low_stability compare = less_than } }
 		add_to_temp_variable = { camp_soviet_monthly_famine_change = constant:camp_rework_soviet.monthly_famine_from_low_stability }
 	}
 	if = {
@@ -2309,21 +2356,23 @@ camp_rework_soviet_complete_gulag_dismantlement = {
 	set_temp_variable = { camp_soviet_dismantlement_blocked = 0 }
 	for_each_scope_loop = {
 		array = camp_active_site_states
-		limit = {
-			camp_rework_state_can_accept_responsibility_from_root = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { tag = ROOT }
-			OR = {
-				has_state_flag = genocide_soviet_mass_repression_site
-				has_state_flag = genocide_soviet_famine_pressure_site
-				gulag_labor_camp_network > 0
-			}
-		}
 		if = {
-			limit = { camp_rework_state_is_actor_or_subject_controlled = yes }
-			add_to_temp_array = { camp_soviet_dismantlement_states = THIS }
+			limit = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+				OR = {
+					has_state_flag = genocide_soviet_mass_repression_site
+					has_state_flag = genocide_soviet_famine_pressure_site
+					gulag_labor_camp_network > 0
+				}
+			}
+			if = {
+				limit = { camp_rework_state_is_actor_or_subject_controlled = yes }
+				add_to_temp_array = { camp_soviet_dismantlement_states = THIS }
+			}
+			else = { set_temp_variable = { camp_soviet_dismantlement_blocked = 1 } }
 		}
-		else = { set_temp_variable = { camp_soviet_dismantlement_blocked = 1 } }
 	}
 	if = {
 		limit = {
@@ -2332,8 +2381,10 @@ camp_rework_soviet_complete_gulag_dismantlement = {
 		}
 		for_each_scope_loop = {
 			array = camp_soviet_dismantlement_states
-			limit = { camp_rework_state_is_actor_responsible_controlled = yes }
-			camp_rework_complete_dismantlement = yes
+			if = {
+				limit = { camp_rework_state_is_actor_responsible_controlled = yes }
+				camp_rework_complete_dismantlement = yes
+			}
 		}
 		clr_country_flag = sov_gulag_dismantlement_active
 		set_country_flag = camp_rework_reform_route_open
@@ -2585,19 +2636,23 @@ camp_rework_soviet_complete_retreat_records_crisis = {
 	clear_temp_array = camp_soviet_retreat_records_states
 	for_each_scope_loop = {
 		array = camp_evidence_states
-		limit = {
-			has_state_flag = camp_rework_soviet_retreat_records_target
-			camp_rework_state_can_accept_responsibility_from_root = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { tag = ROOT }
+		if = {
+			limit = {
+				has_state_flag = camp_rework_soviet_retreat_records_target
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+			}
+			add_to_temp_array = { camp_soviet_retreat_records_states = THIS }
 		}
-		add_to_temp_array = { camp_soviet_retreat_records_states = THIS }
 	}
 	for_each_scope_loop = {
 		array = camp_soviet_retreat_records_states
-		limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
-		clr_state_flag = camp_rework_soviet_retreat_records_target
-		camp_rework_destroy_evidence = yes
+		if = {
+			limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
+			clr_state_flag = camp_rework_soviet_retreat_records_target
+			camp_rework_destroy_evidence = yes
+		}
 	}
 	clear_temp_array = camp_soviet_retreat_records_states
 	clr_country_flag = camp_rework_soviet_retreat_records_active
@@ -2609,16 +2664,18 @@ camp_rework_soviet_complete_retreat_records_crisis = {
 camp_rework_soviet_fail_retreat_records_crisis = {
 	for_each_scope_loop = {
 		array = camp_evidence_states
-		limit = {
-			has_state_flag = camp_rework_soviet_retreat_records_target
-			camp_rework_state_can_accept_responsibility_from_root = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { tag = ROOT }
+		if = {
+			limit = {
+				has_state_flag = camp_rework_soviet_retreat_records_target
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+			}
+			clr_state_flag = camp_rework_soviet_retreat_records_target
+			set_state_flag = genocide_site_discovered
+			set_state_flag = camp_rework_liberated_evidence
+			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_coverup.failure_evidence_gain }
 		}
-		clr_state_flag = camp_rework_soviet_retreat_records_target
-		set_state_flag = genocide_site_discovered
-		set_state_flag = camp_rework_liberated_evidence
-		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_coverup.failure_evidence_gain }
 	}
 	clr_country_flag = camp_rework_soviet_retreat_records_active
 	add_to_variable = { camp_policy_evidence = constant:camp_rework_coverup.failure_evidence_gain }
@@ -2629,13 +2686,15 @@ camp_rework_soviet_fail_retreat_records_crisis = {
 camp_rework_soviet_cancel_retreat_records_crisis = {
 	for_each_scope_loop = {
 		array = camp_evidence_states
-		limit = {
-			has_state_flag = camp_rework_soviet_retreat_records_target
-			camp_rework_state_can_accept_responsibility_from_root = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { tag = ROOT }
+		if = {
+			limit = {
+				has_state_flag = camp_rework_soviet_retreat_records_target
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+			}
+			clr_state_flag = camp_rework_soviet_retreat_records_target
 		}
-		clr_state_flag = camp_rework_soviet_retreat_records_target
 	}
 	clr_country_flag = camp_rework_soviet_retreat_records_active
 }

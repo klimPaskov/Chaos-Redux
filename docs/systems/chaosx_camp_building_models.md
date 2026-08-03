@@ -18,7 +18,7 @@ The full production records live under `docs/assets/system_camp_repression_rewor
 
 The runtime stems are `chaosx_concentration_camp` and `chaosx_extermination_camp`.
 
-The state gameplay buildings are `concentration_camp` and `extermination_camp`. The visible provincial anchor entities are `building_concentration_camp_site` and `building_extermination_camp_site`.
+The state gameplay buildings are `concentration_camp` and `extermination_camp`. They render directly through `building_chaosx_concentration_camp_visual_anchor_spawn` and `building_chaosx_extermination_camp_visual_anchor_spawn`; the older site entities remain registered only for save and script compatibility.
 
 The PDX mesh keys are `chaosx_concentration_camp_mesh` and `chaosx_extermination_camp_mesh`.
 
@@ -36,18 +36,18 @@ The existing destroyed entities are not silently replaced by an intact custom me
 
 ## Map placement contract
 
-The current mod intentionally has no `map/buildings.txt` override.
+The mod ships a generated `map/buildings.txt` override that preserves the complete installed vanilla table and adds custom spawn coordinates inside every land province covered by the vanilla special-project facility pool.
 
-The state gameplay buildings do not declare `show_on_map`, `show_on_map_meshes`, `has_destroyed_mesh`, or a spawn point, so the state interface cannot create one map mesh for every state-level camp value.
+Both gameplay buildings are direct map consumers. Their dedicated spawn pools each provide five positions, so every existing concentration or extermination level receives its own visible model. Separate pools are required because HOI4 resolves one map entity per spawn point and the two camp types use different meshes.
 
-Each state-level camp is represented by one hidden provincial anchor building. `concentration_camp_site` uses `chaosx_concentration_camp_visual_anchor_spawn`, while `extermination_camp_site` uses `chaosx_extermination_camp_visual_anchor_spawn`; each pool has `max = 1`, and each anchor has `province_max = 1` and `state_max = 1`. They are created with `construct_building_in_random_province` from state scope. Separate pools are required because HOI4 resolves one map entity per spawn point and the two anchors use different meshes.
+The two buildings share the `chaosx_camp_network` state cap of five. Concentration camps are normally buildable. Extermination camps remain non-buildable and can only be produced when a decision or scripted event removes one concentration level and adds one extermination level. Once the first extermination level exists, its state modifier blocks further concentration-camp construction. Historical heavy sites begin above level one; the Auschwitz program establishes three total camp levels and converts one of them for the experimental extermination layer.
 
-`chaosx_refresh_camp_visual_anchor` removes stale opposing anchors, preserves an existing same-type anchor, and creates one random valid provincial anchor when the corresponding state gameplay building exists. Extermination sites take visual precedence when both state values coexist. Removing or dismantling the state camp removes both anchor types.
+The camp spawn pools disable automatic nudging because their complete custom coordinate coverage is generated and maintained in `map/buildings.txt`.
 
-This keeps the `map/buildings.txt` folder removed while retaining a single valid map model per state. The helper is called at creation, registration, refresh, conversion, annexation cleanup, and dismantlement cleanup, so later model replacements cannot reintroduce state-wide visual duplication through a shared pool.
+`chaosx_refresh_camp_visual_anchor` is now compatibility cleanup: it removes obsolete hidden anchor levels left by earlier implementations. Creation, conversion, annexation cleanup, and dismantlement operate on the gameplay buildings themselves. The generated coordinate table keeps all five concentration and all five extermination positions spatially distinct where province geometry permits it.
 
 ## Future extensions
 
 If destroyed-state readability is required, add separate custom destroyed meshes through the same one-image and reimport gates rather than aliasing the intact models.
 
-Future work can add separate destroyed-state meshes for the provincial anchors only if the anchor definitions opt into `has_destroyed_mesh`. Any such package must retain the one-anchor-per-state contract and the same vanilla scale/footprint gates.
+Future work can add separate destroyed-state meshes if the direct gameplay consumers opt into `has_destroyed_mesh`. Any such package must retain the five-position-per-type contract and the same vanilla scale and footprint gates.

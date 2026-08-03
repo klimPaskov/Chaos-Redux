@@ -97,13 +97,9 @@ checkpoints, texture evidence, exports, logs, validation, runtime handoff, and
 screenshots/evidence. Final runtime files must be copied or staged outside
 `docs/assets` before entity wiring.
 
-## Pilot profiles
+## Pilot profile
 
-The first two bounded pilots are:
-
-- `anomaly_signal_beacon`: a static occult signal beacon prop with one mesh.
-- `anomaly_recon_trooper`: a standard humanoid reconnaissance trooper with
-  `idle` and `attack` skeletal action roles.
+The retained bounded pilot is `anomaly_signal_beacon`, a static occult signal beacon prop with one mesh.
 
 Profile calibration is in `.tools/3d_pipeline/config/asset_profiles.json`.
 Working triangle targets are intentionally lower than the provider preference
@@ -121,9 +117,7 @@ completion.
 
 ## Live-validation status
 
-The 2026-07-22 launch waiver is retained as historical evidence, but it is no longer the current runtime state. A subsequent Germany run exposed that the standalone showcase's history-only consumers were not visible. The showcase was repaired with an idempotent `on_startup` consumer and a tag-specific `on_daily_GER` repair hook that create the pilot division/template and set the pilot building in Brandenburg state 64, isolated province 9560; the pilot troop remains in province 6521. The custom building map row is `64;anomaly_signal_beacon_pilot_spawn;2995.00;9.70;1556.00;0.00;0`, with X and bottom-up Z selected from the installed `provinces.bmp` interior pixels for province 9560. The building effect selects the exact province with `province = { id = 9560 }`, while the template is created in Germany's country scope and the building and `create_unit` calls run in a direct state 64 scope. The latest user-run session still reports renderer geometry corruption and a missing building, so live completion remains unclaimed.
-
-The unit pilot adds one runtime texticon registration in `interface/chaosx_3d_model_pilots.gfx`, reusing the vanilla infantry icon; it uses the vanilla-supported `PdxMeshAdvanced` material route with explicit diffuse, normal, and specular maps, and its move state binds a real Blender-authored in-place locomotion action; it does not add player-facing localisation keys. Any later runtime integration must follow the normal Chaos Redux asset and localisation rules in `AGENTS.md`.
+The 2026-07-22 launch waiver is retained as historical evidence, but it is no longer the current runtime state. A subsequent Germany run exposed that the standalone beacon showcase's history-only consumer was not visible. The showcase uses an idempotent `on_startup` consumer and a tag-specific `on_daily_GER` repair hook to set the building in Brandenburg state 64, isolated province 9560. The custom building map row is `64;anomaly_signal_beacon_pilot_spawn;2995.00;9.70;1556.00;0.00;0`, with X and bottom-up Z selected from the installed `provinces.bmp` interior pixels for province 9560. The building effect selects the exact province with `province = { id = 9560 }`. The latest user-run session still reports renderer geometry corruption and a missing building, so live completion remains unclaimed.
 
 ## Known review items
 

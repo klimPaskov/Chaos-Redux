@@ -1043,7 +1043,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     mesh_export = blender.export_mesh(slug, attack_blend, mesh_rel)
     action_reports: Dict[str, Dict[str, Any]] = {}
     attack_action_name = action_name_for_role(prep, "attack")
-    attack_anim_rel = "export/anim/chaosx_anomaly_recon_trooper_attack.anim"
+    attack_anim_rel = f"export/anim/{spec['runtime_stem']}_attack.anim"
     attack_anim_export = blender.export_animation(
         slug,
         attack_blend,
@@ -1067,7 +1067,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         slug,
         mesh_rel,
         attack_anim_rel,
-        proof_name="chaosx_anomaly_recon_trooper_attack",
+        proof_name=f"{spec['runtime_stem']}_attack",
     )
 
     idle_source = animation_downloads["idle"]["file"]["relative_path"]
@@ -1099,7 +1099,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     )
     idle_blend = "blender/checkpoints/idle_pre_export.blend"
     idle_action_name = action_name_for_role(idle_prep, "idle")
-    idle_anim_rel = "export/anim/chaosx_anomaly_recon_trooper_idle.anim"
+    idle_anim_rel = f"export/anim/{spec['runtime_stem']}_idle.anim"
     idle_anim_export = blender.export_animation(
         slug,
         idle_blend,
@@ -1123,7 +1123,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         slug,
         mesh_rel,
         idle_anim_rel,
-        proof_name="chaosx_anomaly_recon_trooper_idle",
+        proof_name=f"{spec['runtime_stem']}_idle",
     )
     move_action_name = "Armature|Move|baselayer_WORKING"
     move_blend = "blender/checkpoints/move_pre_export.blend"
@@ -1133,7 +1133,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         move_blend,
         move_action_name,
     )
-    move_anim_rel = "export/anim/chaosx_anomaly_recon_trooper_move.anim"
+    move_anim_rel = f"export/anim/{spec['runtime_stem']}_move.anim"
     move_anim_export = blender.export_animation(
         slug,
         move_blend,
@@ -1144,7 +1144,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         slug,
         mesh_rel,
         move_anim_rel,
-        proof_name="chaosx_anomaly_recon_trooper_move",
+        proof_name=f"{spec['runtime_stem']}_move",
     )
     action_reports["move"] = {
         "required_role": "move",

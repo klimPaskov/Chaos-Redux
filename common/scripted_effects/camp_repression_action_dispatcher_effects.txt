@@ -68,6 +68,7 @@ camp_rework_dispatch_generic_action = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				NOT = { has_state_flag = camp_rework_expanded_labor_site }
 				NOT = { extermination_camp > 0 }
+				check_variable = { building_level@concentration_camp < constant:genocide_camp_level.maximum }
 			}
 		}
 		camp_rework_expand_labor_in_action_state = yes
@@ -126,7 +127,7 @@ camp_rework_dispatch_generic_action = {
 				is_valid_camp_active_site_state = yes
 				camp_rework_state_is_actor_responsible_controlled = yes
 				concentration_camp > 0
-				NOT = { extermination_camp > 0 }
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
 			}
 		}
 		camp_rework_radicalize_site_in_action_state = yes
@@ -292,8 +293,8 @@ camp_rework_dispatch_soviet_action = {
 			var:camp_rework_action_state_id = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_soviet_extreme_repression_pool_state = yes
-				NOT = { extermination_camp > 0 }
-				NOT = { has_state_flag = camp_rework_radicalized_site }
+				concentration_camp > 0
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
 			}
 		}
 		camp_rework_soviet_extreme_repression_in_action_state = yes
