@@ -38,7 +38,7 @@ Implement one paid, one-time host decision in the existing Directorate category.
 - Persistent country receipt: `brilliant_scientist_portal_calibration_network_established`
 - Optional active-decision flag, only if needed for transfer-safe cancellation: `brilliant_scientist_portal_calibration_network_in_progress`
 - Tuning rows: `brilliant_scientist_portal_calibration_network` and `brilliant_scientist_portal_calibration_network_ai`
-- Player-facing keys: decision name, description, exact custom cost text, completion tooltip, and the receipt's countermeasure explanation under the same identifier family.
+- Player-facing keys: decision name, description, concrete cost text used by the availability tooltip, completion tooltip, and the receipt's countermeasure explanation under the same identifier family.
 
 ### Exact gameplay contract
 

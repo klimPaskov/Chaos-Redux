@@ -20,6 +20,7 @@ This narrow repair normalizes Event 016 decisions that displayed a `custom_cost_
 - `git diff --check` was clean for the owned decision files before commit.
 - No CBRN callback, model, asset, country, or event-chain behavior was changed.
 - Post-repair `hoi4_probability_inspect` accepted the project-board source with `PROBABILITY_SOURCE_INSPECTED`, validation passed, zero diagnostics, and three discovered AI candidates; the foreign source likewise passed with three candidates and zero unresolved diagnostics. The synthesis decision source returned `PROBABILITY_SURFACE_EMPTY` for the decision adapter, so no synthesis balance claim is made; its existing AI block remains statically brace-checked.
+- Reconciled the high-speed addendum and portal-calibration handoff wording so they describe the current `cost` plus `custom_trigger_tooltip` contract rather than the removed `custom_cost_*` surface.
 
 ## Remaining limits
 
