@@ -8,6 +8,8 @@ Current catalog override: the workbook source and regenerated CSV mirrors were r
 
 Current overlay-watch override: `subagent_handoffs/006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md` records the implemented 30-day permanent-identity-loss cleanup for IW-022, IW-025, and IW-035, and `subagent_handoffs/006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md` records the source PASS. The former policy HOLD is superseded for source routing; temporary suspension/resumption remains, while live/save-load verification is still outside the evidence claim.
 
+Current IW-020 override: `subagent_handoffs/006_atx_venice_country_package_audit_2026_08_03.md` is the package authority and `subagent_handoffs/006_iw020_atx_venice_source_clearance_2026_08_03.md` is the source-only visual authority. The Volpi candidate and Venetian maritime references remain `needs_user_review`; ATX has no runtime package adapter or attestation and remains fail-closed.
+
 The v106 authority supersedes any downstream paragraph that still calls v105, v104, or v103 the current whole-event router; those paragraphs remain dated traceability unless explicitly promoted by v106.
 
 The 2026-08-03 overlay-watch repair is recorded in `subagent_handoffs/006_overlay_watch_activation_repair_2026_08_03.md` and the current IW-022 audit `subagent_handoffs/006_iw022_dalmatia_overlay_audit_2026_08_03.md`. IW-022, IW-025, and IW-035 now expose explicit paid watch-mobilisation decisions and threshold-closing watch-success legitimacy writers; they remain non-selectable or route-overlay adapters, not newly attested country packages. The earlier permanent route-loss mission-cleanup HOLD is superseded by the dated bounded-cleanup handoff above; live/save-load evidence remains open.
