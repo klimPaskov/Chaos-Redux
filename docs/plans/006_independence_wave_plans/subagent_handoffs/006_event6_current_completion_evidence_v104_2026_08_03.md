@@ -17,6 +17,7 @@ Event 006 remains incomplete and active with a whole-event **HOLD / PARTIAL** di
 - `python -B .tools/audit_event6_gui_matrix.py`: five Statehood Ledger tabs and the static/animated sibling contract pass; runtime rendering and save/load are not claimed.
 - Normal focus inspection remains 184 nodes and 192 connectors with zero Event 006 geometry defects; the explicit `nodeSpacing=80` result remains an inspect-threshold artifact.
 - The evolution-incident category now has a player-facing title localization, and the three rival-bloc mission definitions no longer carry engine-ignored `visible` blocks; their activation, availability, timeout, and cancellation contracts remain intact.
+- Current research holds are recorded in `006_iw177_fij_source_research_current_2026_08_03.md`, `006_iw157_iw178_new_guinea_source_research_current_2026_08_03.md`, and `006_event6_fsm_petrus_mailo_source_research_current_2026_08_03.md`; `006_super_event_6001_audio_research_v110_2026_08_03.md` keeps 6001 absent from runtime.
 
 ## IW-030 Jovanović Znaci 8889
 
