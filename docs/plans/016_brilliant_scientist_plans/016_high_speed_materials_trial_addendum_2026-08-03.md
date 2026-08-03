@@ -207,7 +207,7 @@ Create `brilliant_scientist_high_speed_materials_trial` constants for:
 
 Use separate positive gate values and negative spend values, matching the current portal-calibration cost pattern.
 
-The decision uses `custom_cost_trigger` and `custom_cost_text` so the equipment, fuel, manpower, Air Experience, political-power, and factory requirements are visible before commitment.
+The decision keeps the ordinary political-power `cost` for the engine to debit once and uses `custom_trigger_tooltip` inside `available` with `brilliant_scientist_can_pay_high_speed_materials_trial` to show and gate the concrete equipment, fuel, manpower, Air Experience, and factory requirements before commitment.
 
 The decision pays all stockpile, fuel, manpower, and Air Experience costs in `complete_effect` and occupies three civilian factories for the full 180 days.
 
