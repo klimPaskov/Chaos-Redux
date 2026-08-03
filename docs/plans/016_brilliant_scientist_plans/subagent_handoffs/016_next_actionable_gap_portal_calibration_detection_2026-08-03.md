@@ -1,14 +1,16 @@
-# Event 016 next actionable gap: portal calibration and detection synergy
+# Event 016 next actionable gap: portal calibration and detection synergy (historical audit)
 
 Date: 2026-08-03
 
-Status: read-only completion audit; one bounded non-model gameplay tranche recommended. No gameplay, localisation, asset, model, or spreadsheet file was changed by this audit.
+Status: superseded historical read-only audit. The bounded gameplay recommendation was implemented and is recorded in `subagent_handoffs/016_portal_calibration_detection_implementation_2026-08-03.md`; retain this file as the pre-implementation evidence trail. No gameplay, localisation, asset, model, or spreadsheet file was changed by this audit.
+
+Current disposition: do not use the recommendation below as an outstanding gap or spawn a duplicate tranche. The implementation handoff and `016_core_runtime_handoff_map.md` are the current source of truth. Targeted transfer, cleanup, probability, affordability, quantitative-balance, and live acceptance remain open, while the native CBRN callback boundary and seven model packages remain separately blocked or deferred.
 
 ## Executive result
 
 Event 016 remains partial rather than whole-event complete.
 
-The highest-priority actionable requirement found outside the blocked native CBRN callback boundary and the deferred 3D packages is the accepted Electronics plus Teleportation cross-project synergy. The specification requires stable terminal calibration and portal detection, and requires cross-project synergies to unlock an event, decision, project variant, focus branch, unit support, or countermeasure instead of existing only as small modifiers. Current source uses Electronics as a Teleportation stage prerequisite but provides no persistent Electronics plus Teleportation synergy receipt, no host decision, and no calibration or detection consumer.
+At the time of this audit, the highest-priority actionable requirement outside the blocked native CBRN callback boundary and deferred 3D packages was the accepted Electronics plus Teleportation cross-project synergy. That requirement is now satisfied by the one-time Directorate decision, persistent receipt, accident-pressure consumer, and Teleportation-specific foreign-operation scoring described in the implementation handoff. The historical audit below records the pre-implementation gap and its accepted contract.
 
 A bounded host-side Directorate decision can close one concrete part of that accepted portfolio contract without adding an event chain, project family, unit, model, CBRN interaction, or world scan.
 
@@ -21,9 +23,9 @@ A bounded host-side Directorate decision can close one concrete part of that acc
 - `brilliant_scientist_can_begin_teleportation_deployment` in `common/scripted_triggers/016_brilliant_scientist_project_triggers.txt:716` through `:735` already requires Electronics Prototype through `project_stage_entries^1`, High Energy Deployment through `project_stage_entries^4`, and a valid secondary facility. This is a prerequisite gate, not a synergy reward or countermeasure.
 - `brilliant_scientist_apply_project_stage_outputs` in `common/scripted_effects/016_brilliant_scientist_project_effects.txt:320` through `:345` creates the ordinary transit network and later military-package receipts. It does not create an Electronics plus Teleportation calibration or detection receipt.
 - `brilliant_scientist_refresh_project_accident_pressure` in `common/scripted_effects/016_brilliant_scientist_effects.txt:3486` through `:3535` accounts for stage pressure and the existing facility/custody reactions, but no project-synergy countermeasure.
-- The current one-time cross-project implementation is the Paleogenetics plus Xenobiological review: `brilliant_scientist_convene_cross_domain_review` in `common/decisions/016_brilliant_scientist_directorate_synthesis.txt:12`, `chaosx.nr16.14` in `events/016_brilliant_scientist_synthesis_events.txt:10`, and its receipt effects in `common/scripted_effects/016_brilliant_scientist_synthesis_effects.txt`. Targeted scans found no equivalent Electronics plus Teleportation consumer in Event 016 decisions, events, scripted triggers, scripted effects, or localisation.
+- At audit time, the current one-time cross-project implementation was the Paleogenetics plus Xenobiological review: `brilliant_scientist_convene_cross_domain_review` in `common/decisions/016_brilliant_scientist_directorate_synthesis.txt:12`, `chaosx.nr16.14` in `events/016_brilliant_scientist_synthesis_events.txt:10`, and its receipt effects in `common/scripted_effects/016_brilliant_scientist_synthesis_effects.txt`. The pre-implementation scans found no equivalent Electronics plus Teleportation consumer; the follow-up implementation handoff records the now-present consumer.
 
-This is a missing accepted mechanic, not merely missing presentation. The existing project-stage prerequisites and individual project modifiers do not satisfy the explicit synergy-consumer requirement.
+This was a missing accepted mechanic, not merely missing presentation, when the audit was written. It is retained as historical evidence; the current implementation is not a new event chain, project family, unit, model, CBRN interaction, or world scan.
 
 ## Bounded patch recommendation
 
@@ -96,7 +98,7 @@ No new report event ID, Event Log entry, evolution, super-event, news event, foc
 
 | Surface | Audit result |
 | --- | --- |
-| Project portfolio | Partial. All fifteen stage families and the existing Paleogenetics plus Xenobiological review are present, but the accepted Electronics plus Teleportation synergy has no gameplay consumer. |
+| Project portfolio | Static implementation complete for the accepted non-model synergy slice. All fifteen stage families, the Paleogenetics plus Xenobiological review, and the Electronics plus Teleportation calibration/detection consumer are present; targeted validation remains open. |
 | Foreign actions | Statically covered for the mapped action set, public challenge, and counter-Kruger programme. Quantitative pool evidence and live scenarios remain incomplete. The optional Teleportation detection factor above is a synergy consumer, not a new foreign action. |
 | Containment | Statically covered for the current bounded host and KRG paths. Live territory-loss and cancellation acceptance remains open. |
 | KRG package and project forces | Statically broad and playable. Five families use Event 019 provider adapters; portal and temporal have native capped recruitment, production, and strategic decisions. A complete unified recovery economy remains broader work, but it is not a smaller next patch than the synergy above. |
@@ -116,6 +118,6 @@ No new report event ID, Event Log entry, evolution, super-event, news event, foc
 
 ## Validation performed and limits
 
-The audit compared the accepted project-portfolio requirements with the current Event 016 project decisions, stage triggers, stage effects, synthesis review, accident-pressure calculation, KRG portal/temporal decisions, Event 019 provider bridge, current source-of-truth map, completion status, and the latest biological re-audit. Targeted identifier scans found the existing Paleogenetics plus Xenobiological synthesis consumer but no Electronics plus Teleportation calibration/detection decision, receipt, effect, or localisation.
+The audit compared the accepted project-portfolio requirements with the then-current Event 016 project decisions, stage triggers, stage effects, synthesis review, accident-pressure calculation, KRG portal/temporal decisions, Event 019 provider bridge, current source-of-truth map, completion status, and the latest biological re-audit. The follow-up implementation handoff records the decision, receipt, effects, consumers, transfer/formation history, cleanup, localisation, and validation evidence that closed this gap.
 
 No Hearts of Iron IV process or live scenario was run. No probability normalization, campaign balance proof, or player-facing visual acceptance is claimed. No gameplay, localisation, asset, model, spreadsheet, or existing documentation file was edited; this handoff is the only new file.
