@@ -588,18 +588,19 @@ defined_text = {
 	text = { trigger = { NOT = { camp_rework_country_uses_generic_kit = yes } } localization_key = camp_cost_status_country_kit }
 	text = { trigger = { has_country_flag = camp_rework_expansion_frozen } localization_key = camp_cost_status_frozen }
 	text = { trigger = { NOT = { has_variable = camp_selected_state_id } } localization_key = camp_cost_status_select_state }
+	text = { trigger = { var:camp_selected_state_id = { has_state_flag = camp_rework_concentration_construction_locked } } localization_key = camp_cost_status_concentration_locked }
 	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes OR = { has_state_flag = camp_rework_expanded_labor_site extermination_camp > 0 } } } localization_key = camp_cost_status_site_already_expanded }
 	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } NOT = { camp_rework_country_can_expand_generic_labor = yes } } localization_key = camp_cost_status_route_lock }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_active_site_state = yes } concentration_camp > 0 } } localization_key = camp_cost_status_dormant_legacy }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_active_site_state = yes } } NOT = { camp_rework_country_can_activate_generic = yes } } localization_key = camp_cost_status_route_lock }
 	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } has_political_power < constant:camp_rework_cost.expansion_pp } localization_key = camp_cost_status_political_power }
-	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } NOT = { manpower > constant:camp_rework_cost.expansion_manpower } } localization_key = camp_cost_status_manpower }
+	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than } } } localization_key = camp_cost_status_manpower }
 	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } NOT = { command_power > constant:camp_rework_cost.expansion_command } } localization_key = camp_cost_status_command_power }
 	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } NOT = { has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment } } } localization_key = camp_cost_status_infantry_equipment }
 	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } NOT = { has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment } } } localization_key = camp_cost_status_support_equipment }
 	text = { trigger = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } NOT = { has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains } } } localization_key = camp_cost_status_trains }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_active_site_state = yes } } has_political_power < constant:camp_rework_cost.activation_pp } localization_key = camp_cost_status_political_power }
-	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_active_site_state = yes } } NOT = { manpower > constant:camp_rework_cost.activation_manpower } } localization_key = camp_cost_status_manpower }
+	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_active_site_state = yes } } NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than } } } localization_key = camp_cost_status_manpower }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_active_site_state = yes } } NOT = { command_power > constant:camp_rework_cost.activation_command } } localization_key = camp_cost_status_command_power }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_active_site_state = yes } } NOT = { has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment } } } localization_key = camp_cost_status_support_equipment }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { OR = { is_valid_camp_active_site_state = yes is_generic_player_selectable_camp_pool_state = yes } } } } localization_key = camp_cost_status_state_pool }
@@ -627,7 +628,7 @@ defined_text = {
 	text = { trigger = { NOT = { has_active_camp_network = yes } } localization_key = camp_cost_status_active_network }
 	text = { trigger = { has_country_flag = camp_rework_guards_allocated } localization_key = camp_cost_status_guards_active }
 	text = { trigger = { has_political_power < constant:camp_rework_cost.guard_pp } localization_key = camp_cost_status_political_power }
-	text = { trigger = { NOT = { manpower > constant:camp_rework_cost.guard_manpower } } localization_key = camp_cost_status_manpower }
+	text = { trigger = { NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than } } } localization_key = camp_cost_status_manpower }
 	text = { trigger = { NOT = { command_power > constant:camp_rework_cost.guard_command } } localization_key = camp_cost_status_command_power }
 	text = { trigger = { NOT = { has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment } } } localization_key = camp_cost_status_infantry_equipment }
 	text = { trigger = { always = yes } localization_key = camp_cost_status_ready }
@@ -658,7 +659,7 @@ defined_text = {
 	text = { trigger = { NOT = { camp_rework_country_can_reform = yes } } localization_key = camp_cost_status_reform_route }
 	text = { trigger = { has_country_flag = camp_rework_gui_dismantlement_active } localization_key = camp_cost_status_closure_active }
 	text = { trigger = { has_political_power < constant:camp_rework_cost.dismantle_pp } localization_key = camp_cost_status_political_power }
-	text = { trigger = { NOT = { manpower > constant:camp_rework_cost.dismantle_manpower } } localization_key = camp_cost_status_manpower }
+	text = { trigger = { NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than } } } localization_key = camp_cost_status_manpower }
 	text = { trigger = { NOT = { has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment } } } localization_key = camp_cost_status_support_equipment }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_dismantlement_state = yes } } } localization_key = camp_cost_status_dismantlement_state }
 	text = { trigger = { always = yes } localization_key = camp_cost_status_ready }
@@ -669,7 +670,7 @@ defined_text = {
 	text = { trigger = { NOT = { camp_rework_country_can_destroy_retreat_evidence = yes } } localization_key = camp_cost_status_evidence_route }
 	text = { trigger = { NOT = { has_variable = camp_selected_state_id } } localization_key = camp_cost_status_select_state }
 	text = { trigger = { has_political_power < constant:camp_rework_cost.evidence_pp } localization_key = camp_cost_status_political_power }
-	text = { trigger = { NOT = { manpower > constant:camp_rework_cost.activation_manpower } } localization_key = camp_cost_status_manpower }
+	text = { trigger = { NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than } } } localization_key = camp_cost_status_manpower }
 	text = { trigger = { NOT = { command_power > constant:camp_rework_cost.evidence_command } } localization_key = camp_cost_status_command_power }
 	text = { trigger = { NOT = { has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment } } } localization_key = camp_cost_status_support_equipment }
 	text = { trigger = { var:camp_selected_state_id = { NOT = { is_valid_camp_enemy_proximity_state = yes } } } localization_key = camp_cost_status_enemy_proximity }

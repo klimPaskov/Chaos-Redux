@@ -21288,7 +21288,10 @@ soviet_collapse_uwr_build_cw_facility = {
 
 soviet_collapse_uwr_build_experiment_camp = {
 	random_owned_controlled_state = {
-		limit = { NOT = { concentration_camp > 0 } }
+		limit = {
+			NOT = { concentration_camp > 0 }
+			NOT = { extermination_camp > 0 }
+		}
 		if = {
 			limit = { NOT = { has_variable = genocide_responsible_country } }
 			set_variable = { genocide_responsible_country = ROOT }
@@ -21299,7 +21302,7 @@ soviet_collapse_uwr_build_experiment_camp = {
 		set_state_flag = genocide_atrocity_site_known_to_regime
 		add_building_construction = {
 			type = concentration_camp
-			level = 1
+			level = constant:genocide_camp_level.standard
 			instant_build = yes
 		}
 		chaosx_refresh_camp_visual_anchor = yes

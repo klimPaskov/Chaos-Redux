@@ -20,6 +20,8 @@ The active runtime chain is `cw_facility` -> `chaosx_cw_facility_spawn` -> `buil
 
 Both entities are declared in `gfx/entities/chaosx_buildings.asset` with an `idle` default state and are backed by the sole active model declarations in `gfx/entities/chaosx_buildings.gfx`.
 
+The dedicated spawn pools use explicit coordinates in `map/buildings.txt`. The generated override preserves every installed vanilla row and adds one biological and one chemical spawn point inside every land province covered by the vanilla special-project facility pool.
+
 The duplicate `gfx/models/buildings/chaosx_mesh.gfx`, `gfx/models/buildings/biowarfare_facility.asset`, and `gfx/models/buildings/cw_facility.asset` definitions were removed so each custom mesh name has one authoritative declaration.
 
 ## Vanilla scale crosswalk
@@ -72,7 +74,7 @@ The biological pilot pair is state 338, Gloucestershire, province 6351, and the 
 
 The chemical pilot pair is state 122, Wales, province 9364, and the exact pair is already used by `chaosx_add_startup_cw_facility_9364`.
 
-The installed vanilla state files contain those provinces, and the installed province definitions classify both as land provinces, so no permanent `map/buildings.txt` row was added. The dedicated spawn pools and normal state/province construction rules provide the runtime placement without a map override.
+The installed vanilla state files contain those provinces, and the installed province definitions classify both as land provinces. The permanent generated `map/buildings.txt` rows provide the runtime positions for these pilots and for facilities constructed in any other covered land province.
 
 ## Future plans
 

@@ -898,6 +898,7 @@ camp_rework_colonial_register_current_state = {
 			OR = { is_controlled_by = ROOT CONTROLLER = { is_subject_of = ROOT } }
 			NOT = { is_valid_camp_active_site_state = yes }
 			NOT = { concentration_camp > 0 }
+			NOT = { extermination_camp > 0 }
 		}
 		if = {
 			limit = { NOT = { has_variable = genocide_responsible_country } }
@@ -931,6 +932,15 @@ camp_rework_colonial_expand_current_state = {
 			var:genocide_responsible_country = { tag = ROOT }
 			OR = { is_controlled_by = ROOT CONTROLLER = { is_subject_of = ROOT } }
 			NOT = { has_state_flag = camp_rework_expanded_labor_site }
+			NOT = { extermination_camp > 0 }
+		}
+		if = {
+			limit = { check_variable = { building_level@concentration_camp < constant:genocide_camp_level.maximum } }
+			add_building_construction = {
+				type = concentration_camp
+				level = constant:genocide_camp_level.standard
+				instant_build = yes
+			}
 		}
 		set_state_flag = camp_rework_expanded_labor_site
 		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.expanded_labor }
@@ -2339,7 +2349,7 @@ camp_rework_complete_usa_court_review = {
 		limit = {
 			has_government = democratic
 			has_country_flag = camp_rework_expansion_frozen
-			stability > constant:camp_rework_threshold.low_stability
+			check_variable = { var = stability value = constant:camp_rework_threshold.low_stability compare = greater_than }
 		}
 		set_country_flag = camp_rework_usa_court_review_complete
 		add_to_variable = { court_challenge_pressure = constant:camp_rework_country_value.inspection_tribunal_relief }

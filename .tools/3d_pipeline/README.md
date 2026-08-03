@@ -153,7 +153,6 @@ Run these commands from the repository root after the start and dependency gates
 ~~~powershell
 python .tools/3d_pipeline/verify_environment.py --probe-meshy
 python .tools/3d_pipeline/run_pilot.py --asset anomaly_signal_beacon
-python .tools/3d_pipeline/run_pilot.py --asset anomaly_recon_trooper
 python .tools/3d_pipeline/run_pilot.py --all
 ~~~
 
@@ -169,6 +168,8 @@ The adapter rejects an over-budget footprint by default. A job may explicitly re
 
 Static building materials follow the installed vanilla consumer shader, currently `PdxMeshAdvancedSnow`, and the GFX meshsettings name must match the exported mesh object. Runtime material packing uses `Image_0.dds` for diffuse, `Image_1.dds` for PDX specular, and `Image_2.dds` for PDX normal after channel QA.
 
-Never use `special_project_facility_spawn` for a custom map-building consumer. Use a dedicated provincial spawn pool for direct map buildings. Every custom `spawn_point` must have a matching `building_<spawn_point>` entity in the active `.asset` file. Different meshes must use different spawn points because one spawn point resolves to one map entity. For state-level gameplay with one visual per state, keep the gameplay building non-map and create a hidden provincial anchor with `province_max = 1`, `state_max = 1`, a dedicated spawn pool, and `construct_building_in_random_province` plus explicit cleanup/conversion logic. This route does not require `map/buildings.txt`.
+Never use `special_project_facility_spawn` for a custom map-building consumer. Use a dedicated provincial spawn pool for direct map buildings. Every custom `spawn_point` must have a matching `building_<spawn_point>` entity in the active `.asset` file. Different meshes must use different spawn points because one spawn point resolves to one map entity. When every state-level gameplay building level must appear, wire the gameplay building directly and provide one spawn position per possible level. Use a hidden provincial anchor only for a deliberate single visual independent of gameplay level, and maintain it with state-scoped `set_building_level`. Leave automatic nudging enabled unless a complete `map/buildings.txt` coordinate table exists.
 
 Route 2D frame-sheet animation, animated sprites, GIF previews, and frame-by-frame UI packages to `chaos-redux-frame-animation`.
+
+Regenerate the full map-building coordinate override after an installed vanilla map update with `python .tools/generate_chaosx_building_positions.py --vanilla-map "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/map" --output map/buildings.txt --force`. The generator preserves all vanilla rows and derives distinct in-province positions for both custom warfare facilities, five concentration-camp levels, and five extermination-camp levels.

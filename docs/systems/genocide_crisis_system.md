@@ -21,7 +21,7 @@ The system never offers a protected-class target selector. State selection is ba
 5. The registered-state processor applies the resolved population loss once, reports it through the shared Deaths helpers, updates labor and resistance pressure, and deepens hidden evidence.
 6. The responsible-country processor updates guard, transport, supply, administrative overextension, stability, legitimacy, reform, and country-specific pressure.
 7. Enemy capture, inspection, public use, outbreak exposure, crisis exposure, or a country legal route can reveal evidence. Ordinary operation does not create passive foreign condemnation.
-8. Discovery reads `genocide_responsible_country`, exposes stored hidden atrocity and cover-up pressure, and records the state as discovered without recurring report spam.
+8. Discovery reads `genocide_responsible_country`, exposes stored hidden atrocity and cover-up pressure, and records the state as discovered without recurring report spam. A discoverer that controls the state while still at war with the responsible country receives an event option to dismantle every camp level, free surviving prisoners into its manpower pool, and preserve the evidence.
 9. Reform and dismantlement freeze expansion, close active sites, remove active registration, preserve the historical record, and convert active burdens into reform, redress, or legacy outcomes.
 
 ## Site Types and State Pools
@@ -48,7 +48,7 @@ The concentration-camp and extermination-camp buildings use distinct custom artw
 - Strip frames `32` and `33` use the same shared authoring tile for the biowarfare and chemical-warfare facilities, with normalized transparent edge pixels so the construction panel does not render a light halo.
 - Strip frames `34` and `35` composite their camp pictograms over the shared authoring tile at `gfx/interface/buildings/building_background.png`.
 
-`extermination_camp` and `gulag_labor_camp_network` are effect- and decision-created buildings with `is_buildable = no`, following the vanilla non-buildable landmark and dam pattern. They remain visible in the state interface only after they exist and are excluded from the manual construction tab.
+`concentration_camp` is normally buildable and supports five levels. `extermination_camp` and `gulag_labor_camp_network` are effect- and decision-created buildings with `is_buildable = no`, following the vanilla non-buildable landmark and dam pattern. Concentration and extermination camps share five state levels: every extermination upgrade consumes one concentration level, and the first extermination level blocks further concentration construction in that state.
 
 The standalone sprite aliases are registered in `interface/chaosx_buildings.gfx`, while the indexed strip is registered in `interface/countrystateview.gfx`. The corrected HOI4-style source art and direct vanilla comparison are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-02_camp_building_icon_hoi4_style_correction.md`; the exact shared-background composite and pixel-preservation evidence are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-02_camp_building_background_composite.md`; the recovered frame order and current runtime checksum are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-03_building_icon_strip_recovery.md`; the facility edge-pixel correction is recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-03_facility_icon_halo_correction.md`.
 
@@ -58,11 +58,11 @@ Future visual extensions must preserve the existing frame order and append new b
 
 The camp buildings use custom static HOI4 map entities in addition to their existing 2D icons.
 
-- `building_concentration_camp_site` is the visible provincial anchor for the state-level `concentration_camp` gameplay building and uses `chaosx_concentration_camp_mesh` from `gfx/models/buildings/chaosx_concentration_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
-- `building_extermination_camp_site` is the visible provincial anchor for the state-level `extermination_camp` gameplay building and uses `chaosx_extermination_camp_mesh` from `gfx/models/buildings/chaosx_extermination_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
+- `building_chaosx_concentration_camp_visual_anchor_spawn` is the direct map entity for `concentration_camp` and uses `chaosx_concentration_camp_mesh` from `gfx/models/buildings/chaosx_concentration_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
+- `building_chaosx_extermination_camp_visual_anchor_spawn` is the direct map entity for `extermination_camp` and uses `chaosx_extermination_camp_mesh` from `gfx/models/buildings/chaosx_extermination_camp.mesh` with diffuse, packed specular, and packed normal DDS maps.
 - The intact entity bindings live in `gfx/entities/chaosx_buildings.asset`, and the PDX mesh declarations live in `gfx/entities/chaosx_buildings.gfx`.
-- The state gameplay buildings are deliberately non-map consumers. A state with `concentration_camp` or `extermination_camp` receives one hidden provincial `concentration_camp_site` or `extermination_camp_site` anchor through `construct_building_in_random_province` and its dedicated concentration or extermination spawn pool, so the map shows one camp model rather than one model per state building placement or a shared special-project pool.
-- Extermination anchors replace concentration anchors during an upgrade, and cleanup removes both anchor types. The map placement remains fully scripted; `map/buildings.txt` stays removed.
+- The gameplay buildings are direct map consumers with five explicit positions per spawn pool. A state can therefore show any mixture from five concentration camps to five extermination camps, and conversion visibly replaces one model type with the other.
+- The generated `map/buildings.txt` preserves the installed vanilla placement table and adds complete camp and warfare-facility coverage. The compatibility refresh helper only removes obsolete hidden anchor levels.
 - Destroyed-state entities remain the vanilla bunker and stronghold-network destroyed meshes until a separate destroyed-asset package is approved.
 
 The production evidence, one-image Meshy inputs, Blender checkpoints, and reimport proofs are recorded under `docs/assets/system_camp_repression_rework/models_3d/`.
@@ -71,7 +71,7 @@ The production evidence, one-image Meshy inputs, Blender checkpoints, and reimpo
 
 Every recurring or immediate population-loss action enters the Chaos Meter Deaths system. The state owner receives the population-loss record and real state population reduction; the stored responsible country receives hidden evidence, later condemnation, and tribunal responsibility. This distinction is important in occupied China, Manchuria, the Raj, North Africa, Libya, the Congo, occupied Poland, and Soviet borderlands.
 
-Recurring harm is owned by the registered monthly state processor. Decisions and events can create a distinct immediate burst, but they do not duplicate the recurring monthly tick. Recruitable-population and stability modifiers represent institutional burden; they are not substitutes for population deaths.
+Recurring harm is owned by the registered monthly state processor. Camp deaths, evidence growth, and resistance growth scale with the state's combined concentration and extermination levels, while each building level also stacks its state modifiers. Decisions and events can create a distinct immediate burst, but they do not duplicate the recurring monthly tick. Recruitable-population and stability modifiers represent institutional burden; they are not substitutes for population deaths.
 
 The player-facing Deaths summary continues to group camp, forced-labor, gulag, chemical-site, and biological-site losses through the existing reason mappings.
 
