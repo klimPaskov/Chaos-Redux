@@ -656,4 +656,4 @@ None of these questions blocks the authored two-value progression. They constrai
 
 No fallback progression, copied route, territorial annexation, passive checklist, placeholder asset, or free reward path is proposed.
 
-This is a documentation-only addendum. Gameplay, localisation, assets, matrices, and the workbook remain unchanged in this tranche. The unresolved dissolution route and exact period language-law research are disclosed design boundaries, not silent substitutes.
+The authored progression is source-implemented in the current tree. Final attestation, route-readiness, and live evidence remain queued; the unresolved dissolution route and exact period language-law research are disclosed design boundaries, not silent substitutes.
