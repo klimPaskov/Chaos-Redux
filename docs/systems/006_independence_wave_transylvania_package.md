@@ -2,7 +2,7 @@
 
 IW-023 reuses the vanilla TRA identity for an Event 006 release centred on the compact Transylvanian anchor in state 84. State 76 remains optional territory in the frozen reservation and is not taken when doing so would remove the host's protected state.
 
-The package preserves the vanilla TRA history, Iuliu Maniu leader, recruited characters, and `austro_hungarian_releasable_focus` tree. The mod copy of that tree is byte-equivalent to the installed vanilla source apart from the eight reviewed Event 006 additive shared-focus imports. The release adapter assigns the additive overlay after the country is prepared and never calls `load_focus_tree` for TRA.
+The package preserves the vanilla TRA history, Iuliu Maniu leader, recruited characters, and `austro_hungarian_releasable_focus` tree. Event 006 uses the reviewed additive shared-focus carrier after the country is prepared and never replaces TRA's meaningful vanilla tree with a bespoke tree.
 
 The runtime package tracks `independence_wave_tra_frontier_cohesion` and `independence_wave_tra_federal_legitimacy`. Depots, screened defectors, the multiethnic assembly, government route decisions, host settlement, the durable sovereignty decision, and the Danube network action change these values and the shared Event 006 ledgers. A founding mission fails with concrete ledger losses when the capital is lost or the council times out.
 
@@ -24,4 +24,4 @@ All decision icons reuse registered Event 006 decision sprites in `interface/006
 
 The package remains subject to the normal synchronized reservation, host-survival, tag-origin, force, arrays, and final-validation gates. Setup selects the Danubian Confederation family only through the reviewed TRA carrier, loads its shared profile, and records the existing `HUN_EMPIRE` cosmetic identity as a fail-closed reuse. The family still requires three researched members, consents, and unique anchors before any identity or territory mutation; Banat and Macedonia remain outside the admitted package pool until their own packages are researched.
 
-IW-023 is not in the compile-time content-attestation set yet. Admission remains closed until the current post-repair country-package audit accepts the complete setup receipts, additive focus carrier, current-map reservation, force and AI contracts, and the non-runtime formable boundary. This documentation does not claim live release, save/load, or in-game balance evidence.
+IW-023 is admitted to the current compile-time content-attestation set and the normal/SCN-008 dispatch branches. The package remains subject to the synchronized reservation, host-survival, force, AI, and final-validation gates; FORM-08 is a separate fail-closed system and does not inherit this admission. This documentation does not claim live release, save/load, or in-game balance evidence.
