@@ -18,6 +18,8 @@ Event 006 remains incomplete and active with a whole-event **HOLD / PARTIAL** di
 - Normal focus inspection remains 184 nodes and 192 connectors with zero Event 006 geometry defects; the explicit `nodeSpacing=80` result remains an inspect-threshold artifact.
 - The evolution-incident category now has a player-facing title localization, and the three rival-bloc mission definitions no longer carry engine-ignored `visible` blocks; their activation, availability, timeout, and cancellation contracts remain intact.
 - Current research holds are recorded in `006_iw177_fij_source_research_current_2026_08_03.md`, `006_iw157_iw178_new_guinea_source_research_current_2026_08_03.md`, and `006_event6_fsm_petrus_mailo_source_research_current_2026_08_03.md`; `006_super_event_6001_audio_research_v110_2026_08_03.md` keeps 6001 absent from runtime.
+- The post-v104 completion audit `006_event6_post_v104_completion_audit_2026_08_03.md` is the current requirement-by-requirement disposition and records the remaining FORM, package, asset, audio, catalog, AI/balance, and capacity gaps.
+- The catalog audit `006_catalog_alignment_current_2026_08_03.md` confirms the Event 006, Liberations, and SCN-008 workbook rows and all three exports are wording-aligned; its status-schema limitation remains deliberately unchanged for user review.
 
 ## IW-030 Jovanović Znaci 8889
 
