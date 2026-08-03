@@ -154,6 +154,8 @@ on_actions = {
 	# ROOT is the new puppet and FROM is its overlord. This is the exact
 	# subject-creation witness for an Event 012 host/member that retains an
 	# African core under an external capital; no current-control proxy is used.
+	# A completed diaspora bond actor is classified separately from an unrelated
+	# foreign overlord before the shared no-foreign-boot receipt is written.
 	on_puppet = {
 		effect = {
 			if = {
@@ -168,6 +170,44 @@ on_actions = {
 							NOT = { is_on_continent = africa }
 						}
 					}
+				}
+				if = {
+					limit = { africa_is_current_host = yes }
+					if = {
+						limit = { FROM = { has_country_flag = africa_diaspora_bond_issue_completed } }
+						africa_achievement_record_diaspora_government_capture = yes
+					}
+					else = {
+						africa_achievement_record_foreign_government_capture = yes
+					}
+				}
+				africa_achievement_record_external_puppet_status = yes
+			}
+		}
+	}
+
+	# ROOT is the released subject and FROM is the overlord when the occupied
+	# territories menu creates a puppet outside a peace conference. This is a
+	# separate engine callback from on_puppet, but uses the same host-only
+	# government-capture classification and the same no-foreign-boot receipt.
+	on_release_as_puppet = {
+		effect = {
+			if = {
+				limit = {
+					any_core_state = { is_on_continent = africa }
+					africa_is_current_host = yes
+					FROM = {
+						capital_scope = {
+							NOT = { is_on_continent = africa }
+						}
+					}
+				}
+				if = {
+					limit = { FROM = { has_country_flag = africa_diaspora_bond_issue_completed } }
+					africa_achievement_record_diaspora_government_capture = yes
+				}
+				else = {
+					africa_achievement_record_foreign_government_capture = yes
 				}
 				africa_achievement_record_external_puppet_status = yes
 			}

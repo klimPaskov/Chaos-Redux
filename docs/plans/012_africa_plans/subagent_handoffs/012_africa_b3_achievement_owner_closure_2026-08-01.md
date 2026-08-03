@@ -30,7 +30,7 @@ The existing `africa_achievement_record_disaster_weaponised_against_civilians` d
 
 Row 24 now has a real positive owner call from the bounded rival-bloc victory transaction, while its existing rival-count, League-destruction, puppet, and terminal-chaos disqualifier owners remain subject to the broader achievement audit.
 
-Row 28 now has a measured local-ownership writer and a sticky local-ownership-loss disqualifier, while foreign or diaspora government capture and unresolved corruption retain their existing gates and still require their own exact owner review where callers are absent.
+Row 28 now has a measured local-ownership writer, a sticky local-ownership-loss disqualifier, exact foreign and diaspora government-capture owners, and the existing bond-failure corruption owner; the follow-up callback classification is recorded in `012_africa_b3_capital_capture_owner_2026-08-03.md`.
 
 Row 30 remains blocked because no exact measured foreign-concession-share writer was found; `africa_achievement_ore_leaves_as_machines_owner_ready` is not opened.
 
