@@ -38,6 +38,8 @@ Focus content follows the creating event. Every admitted Event 006-owned tag use
 
 For Africa, call `africa_priority_member_register_from_origin` after the Africa package has recorded its own origin and exact package ID. `africa_priority_member_ensure_focus_tree_loaded` then loads `africa_priority_member_focus_tree` only when the carrier is on its generic or Event 006-owned safe path. If Event 006 or Soviet Collapse still owns the active origin or a meaningful focus tree, the loader records `africa_priority_member_focus_tree_overlay_skipped` and preserves the existing surface. This is the intended handoff for Asante (`DOX`), Oyo (`DSX`), Sokoto (`SOK`), Kanem-Bornu (`DUX`), Kongo (`COG` cosmetic overlay), Luba (`DYX`), Lunda (`DZX`), Buganda (`UGA`), Harar (`HAR`), Kilwa (`EMX`), Zulu (`EQX`), and Merina (`MAD`).
 
+The Africa priority-member identity helper also consumes the intersection of `collection:chaosx_country_independence_wave_owned` and `collection:chaosx_country_africa_overlap_non_overlay`. This keeps the public API live for Event 006-owned African carriers without broadening the focus loader to registered vanilla carriers. Origin, package, map, and meaningful-tree gates remain mandatory; collection membership never grants admission or permits a tree overwrite.
+
 ## Safe reuse sequence
 
 1. Resolve the desired identity through the registry CSV and the appropriate `chaosx_country_*` collection.

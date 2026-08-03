@@ -103,8 +103,25 @@ africa_priority_member_portrait_runtime_is_approved = {
 # Event 012 may reuse additively. Membership is an identity lookup only; the
 # focus loader still protects a live Event 006/Soviet origin and any meaningful
 # existing tree before it can install the Africa surface.
+africa_priority_member_uses_independence_wave_country_collection = {
+	AND = {
+		# The intersection keeps this API consumer limited to Event 006-owned
+		# Africa carriers; registered vanilla carriers remain on their own
+		# identity and focus-preservation paths below.
+		collection_contains = {
+			collection = collection:chaosx_country_independence_wave_owned
+			country = THIS
+		}
+		collection_contains = {
+			collection = collection:chaosx_country_africa_overlap_non_overlay
+			country = THIS
+		}
+	}
+}
+
 africa_priority_member_uses_independence_wave_country_tag = {
 	OR = {
+		africa_priority_member_uses_independence_wave_country_collection = yes
 		is_independence_wave_registry_africa_asante_carrier = yes
 		is_independence_wave_registry_africa_oyo_carrier = yes
 		is_independence_wave_registry_africa_kanem_bornu_carrier = yes
