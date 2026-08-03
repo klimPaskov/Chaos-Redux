@@ -4,6 +4,8 @@ Current completion evidence is consolidated in `subagent_handoffs/006_event6_cur
 
 Current-count override: any historical paragraph below that says 80/74/6, 81, or 82 portrait masters or 295/111/50 focus arithmetic is traceability only. The current shelf is 83 original-size portrait evidence/candidate masters, and the current generic focus inspection is 184 direct plus 134 shared definitions with 27 imports, 318 unique definitions and 345 raw entries. Use v106, the fresh whole-event audit, and the current dated package/portrait handoffs for admission decisions.
 
+Current catalog override: the workbook source and regenerated CSV mirrors were reconciled in commit `162a25655`. Event 006 and SCN-008 are `Unavailable`, while the mixed Liberations cluster remains `Partially Available`; wording fields were not changed. Any downstream paragraph describing the pre-reconciliation `Partially Available`/`Playable` status is dated audit traceability only.
+
 The v106 authority supersedes any downstream paragraph that still calls v105, v104, or v103 the current whole-event router; those paragraphs remain dated traceability unless explicitly promoted by v106.
 
 The 2026-08-03 overlay-watch repair is recorded in `subagent_handoffs/006_overlay_watch_activation_repair_2026_08_03.md` and the current IW-022 audit `subagent_handoffs/006_iw022_dalmatia_overlay_audit_2026_08_03.md`. IW-022, IW-025, and IW-035 now expose explicit paid watch-mobilisation decisions and threshold-closing watch-success legitimacy writers; they remain non-selectable or route-overlay adapters, not newly attested country packages. Permanent route-loss mission cleanup remains a documented design HOLD.
