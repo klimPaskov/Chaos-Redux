@@ -16,7 +16,7 @@ This bounded repair uses the current repository and current `hoi4.focus_inspect`
 
 Before the repair, the focus was available at the military branch row without a visible parent and the focus inspector reported it as isolated. After the repair, it is part of the military-archetype branch and still preserves the existing mutual exclusion, completion reward, AI weighting, and downstream defense capstone contract.
 
-The focus remains at its existing coordinate `x = 49`, `y = 8` so it does not collide with adjacent military choices. The resulting parent connector spans eight columns and does not cross another focus. The inspector no longer reports `FOCUS_ISOLATED` for Event 006.
+The focus remains at its existing coordinate `x = 49`, `y = 8` so it does not collide with adjacent military choices. The resulting parent connector spans thirteen columns and one row without crossing another focus. The inspector no longer reports `FOCUS_ISOLATED` for Event 006.
 
 ## Validation
 

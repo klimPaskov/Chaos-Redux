@@ -1,5 +1,7 @@
 # Event 006 generic focus surface audit
 
+> **Superseded for current routing (2026-08-03):** This audit predates the visible prerequisite repair for `independence_wave_preserve_independent_command`. Use `006_generic_focus_isolated_command_prerequisite_repair_2026_08_03.md` and the fresh MCP receipt for current geometry: 184 nodes, 193 connectors, zero Event 006 crossings/intersections/isolated diagnostics, and one intentional 13-column long connector. The body below remains dated pre-repair traceability.
+
 Date: 2026-08-03.
 
 Scope: read-only audit of the accepted one-tree Event 006 focus framework after the parent-owned geometry reflow. The audit covers route coverage, prerequisites, mutual exclusions, icons, localisation, rewards, AI hooks, and current `hoi4.focus_inspect`/`hoi4.focus_render` evidence.
