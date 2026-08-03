@@ -18,6 +18,16 @@ The Statehood Ledger source-semantic receipt is `../../plans/006_independence_wa
 
 SCN-008 now has a non-live static acceptance receipt for all eight player-facing modes at four intensities, plus eight edge cases covering zero-ready and mixed readiness, anchor and Event 005 collisions, protected-host survival, repeated launches, former-host uniqueness, and alternate belligerence target/ledger alignment. The receipts are `../../plans/006_independence_wave_plans/subagent_handoffs/006_scn008_32_cell_static_acceptance_2026_08_02.md` and `../../plans/006_independence_wave_plans/subagent_handoffs/006_scn008_edge_case_static_matrix_2026_08_02.md`, checked by `.tools/audit_event6_scenario_matrix.py`. The failure-summary repair is recorded in `../../plans/006_independence_wave_plans/subagent_handoffs/006_scn008_failure_summary_ledger_repair_2026_08_02.md`; failed selections stay in the unavailable ledger with matching country scopes and reasons. They do not promote packages or claim 14/20 admitted capacity.
 
+## 2026-08-03 documentation continuation
+
+The whole-event disposition remains **HOLD / PARTIAL**. This continuation records static evidence only and does not change the accepted specification, package attestation, readiness, catalog, gameplay, asset production, or runtime-wiring boundary.
+
+The flag-atlas repair handoff `../../plans/006_independence_wave_plans/subagent_handoffs/006_flag_atlas_ideology_variant_repair_2026_08_03.md` records complete normal, medium, and small families for all 102 registered Event 006 tags, with `_communism`, `_democratic`, `_fascism`, and `_neutrality` variants at each size. It restored 1,188 ideology-suffixed variants from the tags' existing reviewed masters. The strict audit reports 102 complete families, 0 incomplete families, and a direct suffix scan with 0 missing variants; the latest installed-tag/custom-cosmetic audit records 0 collisions. This is an atlas-completeness repair and does not promote a country package or authorize a new flag design.
+
+The current IW-177 FIJ package audit `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw177_fij_package_audit_current_2026_08_03.md` closes its source review with no local gameplay defect, while the companion source-research handoff and the Vishnu Deo repaint evidence keep FIJ **BLOCKED / needs_user_review** and outside content attestation/readiness. The circa-1940s Sukuna source remains outside the 1936 baseline, Vishnu Deo still has unresolved role and anonymous-source limitations, and the FORM-39 member, identity, flag, and consent gates remain fail-closed. No FIJ readiness, attestation, admission, route, or fallback asset changed.
+
+The v110 audio handoff `../../plans/006_independence_wave_plans/subagent_handoffs/006_super_event_6001_audio_research_v110_2026_08_03.md` records Ivo Muhvić's *Mačekova koračnica* as a conditional `6001` research candidate only. The accepted Clarke recording is not silently replaced; the Muhvić/Croatian Armed Forces cue is not selected or wired and requires explicit user approval under the accepted specification, human listening, and composition-jurisdiction review before any parent-owned conversion or runtime wiring. `6001` remains absent from runtime.
+
 ## Controlling acceptance authority (2026-08-02, current source/static evidence)
 
 > Current whole-event routing uses `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v102_2026_08_02.md` together with the parent-owned focus reflow handoff `../../plans/006_independence_wave_plans/subagent_handoffs/006_focus_geometry_reflow_parent_2026_08_02.md`. Event 006 is incomplete and active. The current shelf is 80 original-size portrait masters with all 80 indexed or explicitly recorded, represented by 79 table rows plus the retry-2 tail record. The current focus surface is 184 direct definitions plus 134 full shared definitions plus 27 import references, for 318 unique definitions and 345 raw entries; its Event 006 geometry is now source-clean at 186 visible connectors with zero crossings, intersections, long connectors, or too-close pairs. The automatic ladder is 6/8/10/14/20 with World Collapse 20. Fourteen package attestations span thirteen compatible groups and fourteen anchors. FSM remains withdrawn behind `independence_wave_fsm_sourced_identity_ready`, 6001 remains rights-blocked and absent from runtime, one generic focus tree is in scope, and bespoke trees and live testing are out of scope. Later dated paragraphs retaining 80/74/6, 295/111/50, or the earlier 3/4/5/7/10 ladder are historical traceability only.
@@ -137,7 +147,7 @@ The post-commit IW-012 route-arbitration evidence from `3570ed8ff` and `72d8549e
 
 Super-event 6002 is implemented at source level but only partly reachable while the hidden-formable predicate lacks an admitted carrier and the twenty-country predicate lacks a source-level package-capacity route. Super-event 6001 remains blocked by exact-recording rights, with no fallback or substitute authorized. The Radical Bloc achievement definition, trigger scaffolding, and league-expulsion disqualifier writer are source-wired; the source-only 16-row receipt records its static route/disqualifier matrix, and the admitted IW-184/HBX route is source-reachable through its existing route, League, danger, containment, and survival gates, but no live completion or runtime occurrence is claimed.
 
-Current 6001 audio authority (2026-08-02): the accepted London Brass Players recording remains rights-blocked and absent from runtime. The stronger bounded research handoff `../../plans/006_independence_wave_plans/subagent_handoffs/006_super_event_6001_audio_research_v109_2026_08_02.md` records a possible Sousa *Hands Across the Sea* / United States Navy Band 1992 replacement with a documented U.S.-federal-public-domain basis, but worldwide-jurisdiction review, tonal acceptance, phrase-safe trimming, and parent-owned conversion/wiring remain open. No fallback or runtime audio is implied.
+Historical 6001 audio authority (2026-08-02; superseded by the 2026-08-03 continuation above): the accepted London Brass Players recording remains rights-blocked and absent from runtime. The stronger bounded research handoff `../../plans/006_independence_wave_plans/subagent_handoffs/006_super_event_6001_audio_research_v109_2026_08_02.md` records a possible Sousa *Hands Across the Sea* / United States Navy Band 1992 replacement with a documented U.S.-federal-public-domain basis, but worldwide-jurisdiction review, tonal acceptance, phrase-safe trimming, and parent-owned conversion/wiring remain open. No fallback or runtime audio is implied.
 
 The former 2026-07-22 admission paragraph below is retained as historical evidence and is superseded by this current gate.
 
@@ -365,7 +375,10 @@ The qualifying actor and reason are frozen at the mutation boundary. Event 6 his
 
 `The League of New States` remains absent: the accepted 1949 recording lacks
 verified United States redistribution permission, so slot 23 and audio ID 6001
-are not wired and no replacement has been substituted. Full trigger, source,
+are not wired. The v110 handoff preserves *Mačekova koračnica* as a conditional
+research candidate only; it is not selected or wired and cannot replace the
+accepted cue without explicit user approval under the accepted specification,
+human listening, and composition-jurisdiction review. Full trigger, source,
 rights, checksum, exclusion, and implementation details are in
 `docs/super_events/006_independence_wave/research.md`.
 
