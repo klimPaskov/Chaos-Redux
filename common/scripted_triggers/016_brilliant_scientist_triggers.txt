@@ -63,12 +63,26 @@ brilliant_scientist_has_non_dormant_kruger_holder = {
 	}
 }
 
+# Any scope. The fire-once dispatcher sets both flags before it sends the
+# hidden entry event, and the appointment or forwarding transaction clears
+# them only after the current opening has committed. This closes the window in
+# which a human referral is still pending but the global resolved flag is not.
+brilliant_scientist_has_pending_opening_transaction = {
+	any_country = {
+		OR = {
+			has_country_flag = brilliant_scientist_opening_chain_active
+			has_country_flag = brilliant_scientist_prefire_opening_pending
+		}
+	}
+}
+
 # Any scope. The shared fire-once dispatcher additionally checks its disabled
 # and already-fired arrays; this helper owns Event 016-specific availability.
 brilliant_scientist_automatic_event_is_available = {
 	NOT = { has_global_flag = brilliant_scientist_event_resolved }
 	NOT = { has_global_flag = world_end }
 	NOT = { brilliant_scientist_has_non_dormant_kruger_holder = yes }
+	NOT = { brilliant_scientist_has_pending_opening_transaction = yes }
 	brilliant_scientist_has_any_eligible_host = yes
 }
 
