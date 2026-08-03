@@ -1,0 +1,65 @@
+# Event 006 adapter-only country admission triage
+
+Date: 2026-08-03 (Europe/Kyiv).
+
+Scope: current read-only country-package triage for IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, IW-179 FSM, and IW-014 CAT. The obsolete pasted flag log was excluded. No gameplay, map, character, portrait, flag, localisation, `.gfx`, DDS, dispatch, attestation, or registry file was edited by this triage.
+
+## Verdict
+
+`SAFE_PACKAGE_PATCH = NONE` and `SAFE_ATTESTATION_PROMOTION = NONE`. All eight candidates are present in the adapter dispatch surface but absent from the content-attestation allowlist, and the outer preflight correctly stops before any candidate branch. Removing a readiness predicate, inserting a receipt, or adding an attestation entry would weaken the fail-closed contract.
+
+The smallest concrete next tranche is IW-030 Montenegro (`MNT`, IW-030), limited to source/rights/role decisions for the three native male consumers, followed only after acceptance by deterministic source-placeholder-to-DDS conversion, parent-owned runtime review, and a fresh package audit. This is a queued tranche, not an admission claim. MNT has no selected formable family and its country, state, politics, focus, decisions, ideas, force mapping, AI, localisation, and cleanup surfaces are already present. The v110 source package has separate source masters, exact crops, and evidence-only `156x210` placeholders for all three native consumers. The tranche is still blocked because all three source chains remain `needs_user_review`, and Popović's current generic runtime sprite cannot be treated as grounded evidence.
+
+FIJ is the strongest static runner-up, but its single leader gate is coupled to unresolved FORM-39 PNG/WPG/MFX member, identity, flag, consent, and route inputs. CHU, ASY, DOX, SOK, FSM, and CAT have broader unresolved portrait, formable, historical-source, or partner-package contracts. No candidate is safe to patch or promote in this turn.
+
+## Current gate authority
+
+`common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt` lists all eight IDs in `has_independence_wave_runtime_package_adapter_for_execution_id`, but `has_independence_wave_runtime_package_content_attestation_for_execution_id` intentionally contains only the 15 currently attested IDs and omits `iw_030`, `iw_043`, `iw_058`, `iw_093`, `iw_098`, `iw_177`, `iw_179`, and `iw_014`. Candidate-specific branches therefore cannot execute through normal or SCN-008 preflight.
+
+The current completion receipt is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`. It reports 15 attested packages, 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, 14 compatible reservation groups, and the unresolved technology-tree-render limitation because no Technology Tree Viewer is installed.
+
+## Candidate coverage and blockers
+
+| ID and tag | Map/reservation and package surfaces | Country-package blockers | Disposition |
+| --- | --- | --- | --- |
+| IW-030 `MNT` | State `105`; `RG-105`; vanilla MNT carrier; Montenegro setup/effects, triggers, full shared focus, 420-day mission, ten decisions, ideas, force row `p30`, AI, localisation, cleanup. | Native consumers `MNT_kristo_popovic`, `MNT_blazo_jovanovic`, and `MNT_blazo_dukanovic` in vanilla `common/characters/MNT.txt` are all male. Popović source/licence/date provenance remains review-pending and the runtime sprite is generic. Jovanović and Đukanović source rights remain review-pending. `MNT_mitar_martinovic` is a distinct candidate identity and may not be relabelled onto another consumer. Live force, supply, AI, release, and save/load evidence is absent. | **Recommended next source tranche; HOLD.** |
+| IW-043 `CHU` | Anchors `249/256`; `RG-MIDDLE-VOLGA-KAZAN`; high-chaos-only; CHU package effects/triggers, 48 shared-framework focuses, decisions, missions, ideas, force/AI, FORM-12/13 adapters, flags/localisation. | Four institutional consumers in `common/characters/006_independence_wave_iw043_iw058_characters.txt:11-49` need a complete grounded roster. Spasov is independently promoted to an existing DDS consumer, while Federal Presidium, Bolgar Civic Presidium, and Middle Volga Congress evidence still has source/rights/role review. Ishaki is source/crop/placeholder evidence only; Musa rights remain uncleared. FORM-12/13 member, identity, consent, anchor, flag, and staged-integration contracts are not closed. | HOLD; no local patch. |
+| IW-058 `ASY` | State `676`/Mosul; `RG-NORTHERN-MESOPOTAMIA`; ASY package triggers/effects, 25 focuses, decisions, ideas, force/AI, FORM-18, flags/localisation. | Four all-male institutional consumers in `common/characters/006_independence_wave_iw043_iw058_characters.txt:51-89` are not fully cleared. The provisional council uses accepted Gallo Shabo, but Barsoum's current DDS hash/path needs reconciliation, Civic Assembly candidates have date/role blockers, and Levies Guardianship candidates have date/rights/role blockers. Yousef VI source/crop/placeholder is source-only and rights/role review-pending. FORM-18 identity/member/consent/anchor/staged-integration gates remain closed. | HOLD; no local patch. |
+| IW-093 `DOX` | State `274`; `RG-GHANA-ASANTE-FANTE`; custom DOX country/history, package setup/final/cleanup, 43 focuses, 18 decisions, ideas, force/AI, region-09 loaders, FORM-24 registry row. | Prempeh II source placeholder exists but treatment/rights is not admitted; commanders `DOX_kwame_frimpong` and `DOX_kwaku_ntim` are invented/generated and cannot satisfy grounded roster gates. State `274` is broad Ghana and the Kumasi VP `12787` does not prove a dedicated Asante capital/territory contract. FORM-24 lacks a closed member, identity, X-tag, flag, consent, and integration adapter. | HOLD; no local patch. |
+| IW-098 `SOK` | Vanilla SOK carrier; current bound state `902`/VP `1891`; `RG-NIGERIA-COARSE`; package setup/final/cleanup, focus/decision/ideas/force/AI surfaces, FORM-25 registry row. | Dikko is source-placeholder evidence only and rights/treatment remain unresolved; Bello is generated/invented; Siddiq is generic; pre-cutover Hasan is absent and the date-aware branch must not silently use Siddiq. The registry CSV still records stale `DTX`/state `558` data while current runtime binding is SOK/state `902`. FORM-25 has no closed identity, member, X-tag, flag, consent, or staged-integration contract. | HOLD; stale binding must be reconciled before any future admission. |
+| IW-177 `FIJ` | State `636`; `RG-PACIFIC-ISLANDS`; vanilla FIJ carrier; six focuses, six decisions, mission, ideas, force profile `p177`, AI, localisation, cleanup, FORM-39 surfaces. | `FIJ_independence_wave_founding_congress_chair` has no accepted 1936-compatible grounded source/role: Sukuna is circa 1940s and Vishnu Deo has unresolved 1936 office-role fit. FORM-39 still requires accepted FIJ/PNG/WPG member research, MFX X-tag/identity/flat-flag readiness, route adapter writers, consent, collision, and runtime proof. | HOLD; static runner-up, not safe. |
+| IW-179 `FSM` | State `684`; `RG-PACIFIC-ISLANDS`; vanilla FSM carrier; Pacific focus/decision/ideas/AI, force profile `p179`, FORM-48 member framework, cleanup. | `FSM_independence_wave_inter_island_congress_chair` has no source that simultaneously clears identity, 1936-era fit, rights, and portrait usability. Petrus Mailo evidence is postwar with unclear reuse terms; Henry Nanpei is unavailable/rights-unclear; Kabua Kabua is wrong role/region; withdrawn fictional Elias Kihleng must not return. FORM-48 remains unreachable until FSM is admitted. | HOLD; no safe source tranche yet. |
+| IW-014 `CAT` | State `165`; `RG-165`; vanilla CAT carrier; full-framework minimal tree, setup/final/cleanup, decisions, ideas, AI, localisation, FORM-07 adapter. | Lluís Companys and vanilla assets are structurally usable, but FORM-07 still needs a source-approved Iberian X identity, complete flat flag package, identity review, and complete NAV/IW-013 plus GLC/IW-015 partner adapters and corridor proof. CAT has no package-local portrait defect that can be safely fixed in isolation. | HOLD; no local patch. |
+
+## MNT next tranche definition
+
+The bounded tranche should not change gameplay files or the dispatch allowlist. Parent-owned work is limited to: (1) resolve Popović's Commons/Serb Land of Montenegro VRTS and missing date/photographer evidence; (2) resolve Jovanović's Znaci/Museum public-domain statement and creator discrepancy; (3) resolve Đukanović's `PD-old` book/photographer chain; (4) decide whether distinct `MNT_mitar_martinovic` is an approved role-correct identity rather than a relabel; (5) for each accepted identity, run the repository crop/equality review and only then convert the accepted `156x210` placeholder to runtime DDS and review the existing character/sprite contract; and (6) rerun the MNT package audit and parent-owned runtime release/force/AI/save-load checks. Do not create a generic replacement, relabel an accepted face, add an advisor, alter flags, or add IW-030 to attestation before those receipts exist.
+
+Evidence package: `docs/assets/006_independence_wave/iw030_mnt_portrait_source_research_v110_2026_08_03/` contains source masters, exact crops, `decoded_pixels_equal=true` metadata, evidence-only placeholders, review sheet, and manifest. Current MNT package authority is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw030_mnt_current_package_gate_audit_2026_08_03.md`; the source gate is `006_iw030_mnt_portrait_source_research_v110_2026_08_03.md`.
+
+## Required country-package checklist
+
+- Tag/identity: all eight IDs are registered adapter candidates; no tag collision was found in the protected Event 006/Soviet surface scan.
+- Map/state: MNT `105`, CHU `249/256`, ASY `676`, DOX `274`, SOK `902`, FIJ `636`, FSM `684`, and CAT `165` are the current anchors or bindings described above; DOX's broad state and SOK's stale registry row remain concrete map/registry risks.
+- Politics/parties: all eight have package setup or vanilla carrier politics surfaces; live route probabilities, stability, laws, and diplomacy remain unobserved and are not admission evidence.
+- Leaders/portraits: every candidate has at least one unresolved source, rights, role, generic, generated, or absent-runtime portrait gate except for limited individual CHU/ASY evidence; no opposite-gender pairing was found.
+- Flags/assets: MNT, FIJ, FSM, and CAT intentionally reuse vanilla carrier triplets; CHU/ASY/DOX/SOK formable or route-specific identity/flag contracts are not closed. Source placeholders remain evidence-only and do not clear rights or package attestation.
+- Focus/decisions/ideas: all eight have their package focus/decision/idea files or explicit shared-framework assignments; no focus/decision rewrite is justified while admission gates are closed.
+- Military/technology/industry/supply: static force rows and vanilla baselines are present where documented, but dynamic materialisation, production, supply, technology rendering, and save/load are not proven. No Technology Tree Viewer is installed.
+- AI/playability: package AI strategy files exist for all eight where documented, but no live scenario or balance claim can be made from source-only evidence.
+- Cleanup/release: setup/final/cleanup wrappers exist for the candidates, but live ownership/control mutation and rollback are unobserved.
+
+## Validation
+
+Task-specific static checks run on 2026-08-03 from the mod root:
+
+- `python -B .tools/audit_event6_allocator.py` passed with 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, 15 attested packages, and 14 compatible reservation groups.
+- `python -B .tools/audit_event6_scenario_matrix.py` passed all 32 SCN-008 cells and 8 edge cases.
+- `python -B .tools/audit_event6_flags.py --strict` reported 102 registered Event 006 tags, 102 complete flag families, and 0 incomplete families.
+- `python -B .tools/audit_chaosx_country_tags.py --surface-scan` reported 136 protected Event 006/Soviet tags, 0 external country-definition collisions, and 0 external identity-surface collisions.
+
+Skipped meaningful validation: no HOI4 launch, live release, dynamic force materialisation, production/supply observation, focus/technology render, AI/balance sweep, save/load rollback, formable consent execution, portrait DDS promotion, or attestation change. These checks remain parent/user-owned or blocked by unresolved source/role/formable receipts. The installed package exposes no Technology Tree Viewer.
+
+## Simplifications, omissions, and blockers
+
+No fallback, generic replacement, invented leader, relabel, flag substitution, formable shortcut, gameplay patch, attestation entry, or broad identity redesign was used. The eight candidates remain incomplete and fail-closed. The MNT source/rights/role tranche is a recommendation for the next bounded work item only; it is not a promotion or completion claim.
