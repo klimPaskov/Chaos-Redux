@@ -1,0 +1,253 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PORTAL FACILITY RAID
+# ============================================================================
+# Portal Warfare from the teleportation weaponization stage unlocks one native
+# land raid against a hostile strategic facility. The raid uses the existing
+# portal-raider battalion, the existing portal-equipment archetype, native
+# reservation/collection/cancellation/expiry, and the normal raid history.
+# No automatic launch or parallel payload ledger is created here.
+# ============================================================================
+
+@CR_SC_PORTAL_RAID_PREPARATION_DAYS = 28
+@CR_SC_PORTAL_RAID_TARGET_COOLDOWN_DAYS = 120
+@CR_SC_PORTAL_RAID_COMMAND_POWER = 25
+@CR_SC_PORTAL_RAID_EQUIPMENT_RESERVATION = 4
+@CR_SC_PORTAL_RAID_AI_MIN_SUCCESS_CHANCE = 0.35
+@CR_SC_PORTAL_RAID_SUCCESS_BASE = 0.45
+@CR_SC_PORTAL_RAID_CRITICAL_BASE = 0.12
+@CR_SC_PORTAL_RAID_DISASTER_BASE = 0.15
+@CR_SC_PORTAL_RAID_FAILURE_ORG_DAMAGE = 0.40
+@CR_SC_PORTAL_RAID_FAILURE_STRENGTH_DAMAGE = 0.15
+@CR_SC_PORTAL_RAID_LIMITED_ORG_DAMAGE = 0.25
+@CR_SC_PORTAL_RAID_LIMITED_STRENGTH_DAMAGE = 0.08
+@CR_SC_PORTAL_RAID_SUCCESS_ORG_DAMAGE = 0.12
+@CR_SC_PORTAL_RAID_SUCCESS_STRENGTH_DAMAGE = 0.03
+@CR_SC_PORTAL_RAID_CRITICAL_ORG_DAMAGE = 0.05
+@CR_SC_PORTAL_RAID_CRITICAL_STRENGTH_DAMAGE = 0.01
+
+types = {
+	brilliant_scientist_portal_facility_raid = {
+		days_to_prepare = @CR_SC_PORTAL_RAID_PREPARATION_DAYS
+		days_re_enable = @CR_SC_PORTAL_RAID_TARGET_COOLDOWN_DAYS
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_PORTAL_RAID_AI_MIN_SUCCESS_CHANCE
+
+		category = brilliant_scientist_raids
+		custom_map_icon = GFX_raid_type_icon_brilliant_scientist_portal_facility_raid
+		equipment_icon = GFX_archetype_cbrn_instrument_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_portal_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_PORTAL_RAID_COMMAND_POWER
+
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+
+		ai_will_do = {
+			base = constant:brilliant_scientist_raid_ai.portal_base
+			modifier = {
+				factor = 0
+				ROOT = { NOT = { brilliant_scientist_portal_raid_actor_is_ready = yes } }
+			}
+			modifier = {
+				factor = 0
+				ROOT = { NOT = { brilliant_scientist_portal_raid_target_is_valid = yes } }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_raid_ai.kruger_state_factor
+				ROOT = { brilliant_scientist_is_active_kruger_state = yes brilliant_scientist_kruger_raid_ai_is_active = yes }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_raid_ai.portal_kruger_factor
+				ROOT = { brilliant_scientist_kruger_raid_ai_is_active = yes NOT = { brilliant_scientist_is_active_kruger_state = yes } }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_raid_ai.portal_major_target_factor
+				FROM = { is_major = yes }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_raid_ai.portal_capital_target_factor
+				var:target_state = { is_capital = yes }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_raid_ai.portal_facility_target_factor
+				var:target_state = {
+					OR = {
+						rocket_site > 0
+						nuclear_reactor > 0
+						commercial_nuclear_reactor > 0
+					}
+				}
+			}
+		}
+
+		visible = {
+			has_tech = brilliant_scientist_portal_warfare_tech
+		}
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_portal_raid_target_available_tt
+				hidden_trigger = { brilliant_scientist_portal_raid_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_portal_raid_preparation_available_tt
+				hidden_trigger = {
+					brilliant_scientist_portal_raid_actor_is_ready = yes
+					brilliant_scientist_portal_raid_target_is_valid = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_portal_raid_launch_available_tt
+				hidden_trigger = {
+					has_war_with = FROM
+					brilliant_scientist_portal_raid_actor_is_ready = yes
+					brilliant_scientist_portal_raid_target_is_valid = yes
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_portal_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_portal_raid_target_is_valid = yes }
+			}
+		}
+
+		target_type = {
+			state = {
+				is_owned_by = FROM
+				is_controlled_by = FROM
+				OR = {
+					industrial_complex > 0
+					arms_factory > 0
+					dockyard > 0
+					rocket_site > 0
+					nuclear_reactor > 0
+					commercial_nuclear_reactor > 0
+				}
+			}
+		}
+		starting_point = {
+			building_types = { supply_node }
+			allow_faction_buildings = yes
+		}
+		unit_requirements = {
+			battalion_types = {
+				kruger_portal_raider = { min = 1 }
+			}
+		}
+		essential_equipment = {
+			kruger_portal_equipment = @CR_SC_PORTAL_RAID_EQUIPMENT_RESERVATION
+		}
+
+		success_factors = {
+			success = {
+				base = @CR_SC_PORTAL_RAID_SUCCESS_BASE
+				experience = { weight = 0.20 start_weight = -0.20 reference = 1.0 }
+				organisation = { weight = 0.10 start_weight = -0.10 reference = 100 }
+				strength = { weight = 0.15 start_weight = -0.15 reference = 1.0 }
+				recon = { weight = 0.10 reference = 10 }
+			}
+			critical = {
+				base = @CR_SC_PORTAL_RAID_CRITICAL_BASE
+				experience = { weight = 0.20 reference = 1.0 }
+				recon = { weight = 0.05 reference = 10 }
+			}
+			disaster = {
+				base = @CR_SC_PORTAL_RAID_DISASTER_BASE
+				organisation = { weight = -0.10 start_weight = 0.10 reference = 100 }
+				strength = { weight = -0.10 start_weight = 0.10 reference = 1.0 }
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					var:actor_country = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_failure_actor_tt
+						brilliant_scientist_record_portal_raid_attempt = yes
+					}
+					raid_damage_units = {
+						org_damage = @CR_SC_PORTAL_RAID_FAILURE_ORG_DAMAGE
+						str_damage = @CR_SC_PORTAL_RAID_FAILURE_STRENGTH_DAMAGE
+						ratio = yes
+					}
+					raid_add_unit_experience = 0.05
+					add_raid_history_entry = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_failure_target_tt
+					}
+				}
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					var:actor_country = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_limited_success_actor_tt
+						brilliant_scientist_record_portal_raid_limited_success = yes
+					}
+					raid_damage_units = {
+						org_damage = @CR_SC_PORTAL_RAID_LIMITED_ORG_DAMAGE
+						str_damage = @CR_SC_PORTAL_RAID_LIMITED_STRENGTH_DAMAGE
+						ratio = yes
+					}
+					raid_add_unit_experience = 0.15
+					add_raid_history_entry = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_limited_success_target_tt
+						brilliant_scientist_portal_raid_damage_target_light = yes
+					}
+				}
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					var:actor_country = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_success_actor_tt
+						brilliant_scientist_record_portal_raid_success = yes
+					}
+					raid_damage_units = {
+						org_damage = @CR_SC_PORTAL_RAID_SUCCESS_ORG_DAMAGE
+						str_damage = @CR_SC_PORTAL_RAID_SUCCESS_STRENGTH_DAMAGE
+						ratio = yes
+					}
+					raid_add_unit_experience = 0.25
+					add_raid_history_entry = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_success_target_tt
+						brilliant_scientist_portal_raid_damage_target_light = yes
+					}
+				}
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					var:actor_country = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_critical_success_actor_tt
+						brilliant_scientist_record_portal_raid_critical_success = yes
+					}
+					raid_add_unit_experience = 0.35
+					add_raid_history_entry = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						custom_effect_tooltip = brilliant_scientist_portal_raid_critical_success_target_tt
+						brilliant_scientist_portal_raid_damage_target_heavy = yes
+					}
+				}
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+}

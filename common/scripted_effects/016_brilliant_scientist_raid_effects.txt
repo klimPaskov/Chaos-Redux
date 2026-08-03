@@ -1,0 +1,98 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 NATIVE RAID EFFECTS
+# ============================================================================
+# Persistent bookkeeping and target damage for the portal facility raid.
+# Native raid reservation, cancellation, expiry, outcome selection, equipment
+# collection, and raid history remain owned by the HOI4 raid engine. These
+# effects only record Event 016 follow-up state and damage the selected
+# strategic facility after the native outcome has been resolved.
+# ============================================================================
+
+@CR_SC_PORTAL_RAID_LIGHT_DAMAGE = 1
+@CR_SC_PORTAL_RAID_HEAVY_DAMAGE = 2
+
+# COUNTRY scope. Called once by each native portal-raid outcome.
+brilliant_scientist_record_portal_raid_attempt = {
+	set_country_flag = brilliant_scientist_portal_raid_attempted
+	add_to_variable = { brilliant_scientist_portal_raid_attempts = constant:brilliant_scientist_value.one }
+}
+
+# COUNTRY scope. The flags are persistent history for later decisions,
+# intelligence, and aftermath reactions; they do not grant a second payload.
+brilliant_scientist_record_portal_raid_limited_success = {
+	brilliant_scientist_record_portal_raid_attempt = yes
+	set_country_flag = brilliant_scientist_portal_raid_limited_success_ever
+	add_to_variable = { brilliant_scientist_portal_raid_successes = constant:brilliant_scientist_value.one }
+}
+
+brilliant_scientist_record_portal_raid_success = {
+	brilliant_scientist_record_portal_raid_attempt = yes
+	set_country_flag = brilliant_scientist_portal_raid_success_ever
+	add_to_variable = { brilliant_scientist_portal_raid_successes = constant:brilliant_scientist_value.one }
+}
+
+brilliant_scientist_record_portal_raid_critical_success = {
+	brilliant_scientist_record_portal_raid_success = yes
+	set_country_flag = brilliant_scientist_portal_raid_critical_success_ever
+}
+
+# STATE scope. Damages the highest-value surviving strategic facility in the
+# selected state. State history is retained even if the building is later
+# repaired, so foreign reaction and intelligence decisions can distinguish a
+# portal breach from an ordinary land battle.
+brilliant_scientist_portal_raid_damage_target_light = {
+	set_state_flag = brilliant_scientist_portal_raid_targeted
+	if = {
+		limit = { nuclear_reactor > 0 }
+		damage_building = { type = nuclear_reactor damage = @CR_SC_PORTAL_RAID_LIGHT_DAMAGE }
+	}
+	else_if = {
+		limit = { commercial_nuclear_reactor > 0 }
+		damage_building = { type = commercial_nuclear_reactor damage = @CR_SC_PORTAL_RAID_LIGHT_DAMAGE }
+	}
+	else_if = {
+		limit = { rocket_site > 0 }
+		damage_building = { type = rocket_site damage = @CR_SC_PORTAL_RAID_LIGHT_DAMAGE }
+	}
+	else_if = {
+		limit = { arms_factory > 0 }
+		damage_building = { type = arms_factory damage = @CR_SC_PORTAL_RAID_LIGHT_DAMAGE }
+	}
+	else_if = {
+		limit = { industrial_complex > 0 }
+		damage_building = { type = industrial_complex damage = @CR_SC_PORTAL_RAID_LIGHT_DAMAGE }
+	}
+	else_if = {
+		limit = { dockyard > 0 }
+		damage_building = { type = dockyard damage = @CR_SC_PORTAL_RAID_LIGHT_DAMAGE }
+	}
+}
+
+brilliant_scientist_portal_raid_damage_target_heavy = {
+	brilliant_scientist_portal_raid_damage_target_light = yes
+	set_state_flag = brilliant_scientist_portal_raid_breach_recorded
+	if = {
+		limit = { nuclear_reactor > 0 }
+		damage_building = { type = nuclear_reactor damage = @CR_SC_PORTAL_RAID_HEAVY_DAMAGE }
+	}
+	else_if = {
+		limit = { commercial_nuclear_reactor > 0 }
+		damage_building = { type = commercial_nuclear_reactor damage = @CR_SC_PORTAL_RAID_HEAVY_DAMAGE }
+	}
+	else_if = {
+		limit = { rocket_site > 0 }
+		damage_building = { type = rocket_site damage = @CR_SC_PORTAL_RAID_HEAVY_DAMAGE }
+	}
+	else_if = {
+		limit = { arms_factory > 0 }
+		damage_building = { type = arms_factory damage = @CR_SC_PORTAL_RAID_HEAVY_DAMAGE }
+	}
+	else_if = {
+		limit = { industrial_complex > 0 }
+		damage_building = { type = industrial_complex damage = @CR_SC_PORTAL_RAID_HEAVY_DAMAGE }
+	}
+	else_if = {
+		limit = { dockyard > 0 }
+		damage_building = { type = dockyard damage = @CR_SC_PORTAL_RAID_HEAVY_DAMAGE }
+	}
+}

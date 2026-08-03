@@ -59,6 +59,8 @@ The decision must have a visible trigger tooltip showing the current stockpile, 
 
 Event 016 must not implement a second raid outcome. The existing native biological raid and lifecycle code remains responsible for payload type, equipment debit, reservation, target, success or failure, contamination, condemnation, retaliation, and world-threat effects.
 
+This callback dependency applies only to the separate Event 016-owned KRG quantity ledger described by this addendum. It does not block manual use of the existing native biological, battlefield, captured-facility recovery, hostile or friendly weaponized-zombie, and anti-zombie-cure raids, their native AI, or the technology-gated Event 016 Portal Facility Raid. Those raid types use the normal native reservation and outcome lifecycle without an Event 016 stockpile debit.
+
 A separately reviewed shared-system patch is required at the native reservation and outcome boundary. The hook must be narrow and opt-in:
 
 1. Before a native reservation succeeds, resolve `event_target:brilliant_scientist_krg_biological_delivery_actor` and verify that the actor is sovereign KRG, has an active Event 016 ledger, has `brilliant_scientist_krg_biological_stockpile >= 1`, has no delivery already in flight, and has the matching per-agent authorization receipt.
