@@ -3565,7 +3565,7 @@ air_winter_apply_phase_modifier = {
 	set_variable = { air_winter_local_supply_factor = constant:air_winter_runtime.zero }
 	if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			air_winter_is_phase_1 = yes
 		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_1_modifier.local_supplies }
@@ -3573,7 +3573,7 @@ air_winter_apply_phase_modifier = {
 	}
 	else_if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			air_winter_is_phase_2 = yes
 		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_2_modifier.local_supplies }
@@ -3581,7 +3581,7 @@ air_winter_apply_phase_modifier = {
 	}
 	else_if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			air_winter_is_phase_3 = yes
 		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_3_modifier.local_supplies }
@@ -3589,7 +3589,7 @@ air_winter_apply_phase_modifier = {
 	}
 	else_if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			air_winter_is_phase_4 = yes
 		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_4_modifier.local_supplies }
@@ -3597,7 +3597,7 @@ air_winter_apply_phase_modifier = {
 	}
 	else_if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			air_winter_is_phase_5 = yes
 		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_5_modifier.local_supplies }
@@ -3605,7 +3605,7 @@ air_winter_apply_phase_modifier = {
 	}
 	else_if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			air_winter_is_phase_6 = yes
 		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_6_modifier.local_supplies }
@@ -3624,7 +3624,7 @@ air_winter_apply_disease_modifier = {
 
 	if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			check_variable = {
 				var = air_winter_disease_pressure
 				value = constant:air_winter_disease_modifier.entry_pressure
@@ -3833,7 +3833,7 @@ air_winter_update_building_damage = {
 
 	if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			check_variable = { air_winter_building_pressure_delta > constant:air_winter_runtime.zero }
 		}
 		subtract_from_temp_variable = { air_winter_building_pressure_delta = air_winter_building_adaptation }
@@ -3842,7 +3842,7 @@ air_winter_update_building_damage = {
 		add_to_variable = { air_winter_building_damage_pressure = air_winter_building_pressure_delta }
 	}
 	else_if = {
-		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
+		limit = { air_winter_system_enabled = yes }
 		set_temp_variable = { air_winter_building_recovery = air_winter_building_reclamation }
 		add_to_temp_variable = { air_winter_building_recovery = air_winter_building_adaptation }
 		subtract_from_variable = { air_winter_building_damage_pressure = air_winter_building_recovery }
@@ -3855,7 +3855,7 @@ air_winter_update_building_damage = {
 
 	if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			air_winter_building_damage_is_ready = yes
 		}
 		set_temp_variable = { air_winter_building_damage_amount = constant:air_winter_building_damage.damage_phase_3 }
@@ -3954,7 +3954,7 @@ air_winter_apply_state_population_loss = {
 
 	if = {
 		limit = {
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 			check_variable = { air_winter_death_percent > constant:air_winter_runtime.zero }
 			check_variable = { state_population_k > constant:air_winter_runtime.zero }
 		}
@@ -5111,7 +5111,7 @@ air_winter_event_apply_deaths = {
 	if = {
 		limit = {
 			NOT = { has_global_flag = settings_chaos_deaths_disabled }
-			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_system_enabled = yes
 		}
 		set_temp_variable = { air_winter_event_death_request = state_population_k }
 		multiply_temp_variable = { air_winter_event_death_request = constant:air_winter_event_deaths.population_scale }
@@ -5918,7 +5918,7 @@ air_winter_event_apply_reactor_failure_fallout = {
 	set_temp_variable = { chaos_fallout_duration_days = constant:air_winter_event_outcome.reactor_failure_fallout_days }
 	set_temp_variable = { chaos_fallout_intensity_add = constant:air_winter_event_outcome.reactor_failure_fallout_intensity }
 	if = {
-		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
+		limit = { air_winter_system_enabled = yes }
 		chaos_meter_apply_nuclear_fallout_to_state = yes
 	}
 }
