@@ -1,0 +1,145 @@
+# ============================================================================
+# CHAOS REDUX - HISTORICAL CBRN ADVISOR OPERATIONAL EFFECTS
+# ============================================================================
+# Overview:
+# - Applies active named advisor and theorist traits inside the shared chemical
+#   exposure and biological lifecycle pipelines.
+# - Keeps every modifier conditional on the advisor actually occupying a slot.
+# - Never modifies payload debit, evidence, attribution, or death recording.
+# ============================================================================
+
+# Country scope. Inputs/outputs are temporary chemical action variables.
+cbrn_apply_historical_actor_chemical_advisor_modifiers = {
+	set_temp_variable = { cbrn_action_historical_contamination_mult = constant:cbrn_math.one }
+	if = {
+		limit = { has_idea_with_trait = chaos_warfare_chemical_theorist_trait }
+		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_historical_advisor.chemical_theorist_dose_mult }
+		multiply_temp_variable = { cbrn_action_historical_contamination_mult = constant:cbrn_historical_advisor.chemical_theorist_contamination_mult }
+		multiply_temp_variable = { cbrn_action_doctrine_condemnation_mult_local = constant:cbrn_historical_advisor.chemical_theorist_condemnation_mult }
+	}
+	if = {
+		limit = { has_idea_with_trait = cbrn_toxicological_weaponization_director_trait }
+		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_historical_advisor.toxicological_director_dose_mult }
+		multiply_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_historical_advisor.toxicological_director_death_mult }
+		multiply_temp_variable = { cbrn_action_civilian_casualty_mult = constant:cbrn_historical_advisor.toxicological_director_death_mult }
+		multiply_temp_variable = { cbrn_action_historical_contamination_mult = constant:cbrn_historical_advisor.toxicological_director_contamination_mult }
+		multiply_temp_variable = { cbrn_action_doctrine_condemnation_mult_local = constant:cbrn_historical_advisor.toxicological_director_condemnation_mult }
+	}
+}
+
+# Country scope. Adjusts the local readiness delta without changing caller data.
+cbrn_apply_historical_readiness_advisor_modifiers = {
+	if = {
+		limit = {
+			has_idea_with_trait = chaos_warfare_chemical_theorist_trait
+			check_variable = { cbrn_readiness_delta_local > constant:cbrn_math.zero }
+		}
+		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.chemical_theorist_readiness_gain_mult }
+	}
+	else_if = {
+		limit = {
+			has_idea_with_trait = chaos_warfare_chemical_theorist_trait
+			check_variable = { cbrn_readiness_delta_local < constant:cbrn_math.zero }
+		}
+		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.chemical_theorist_readiness_cost_mult }
+	}
+	if = {
+		limit = {
+			has_idea_with_trait = cbrn_toxicological_weaponization_director_trait
+			check_variable = { cbrn_readiness_delta_local > constant:cbrn_math.zero }
+		}
+		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.toxicological_director_readiness_gain_mult }
+	}
+	else_if = {
+		limit = {
+			has_idea_with_trait = cbrn_toxicological_weaponization_director_trait
+			check_variable = { cbrn_readiness_delta_local < constant:cbrn_math.zero }
+		}
+		multiply_temp_variable = { cbrn_readiness_delta_local = constant:cbrn_historical_advisor.toxicological_director_readiness_cost_mult }
+	}
+}
+
+# Country scope. The exact target state event target must already exist.
+cbrn_apply_historical_target_chemical_advisor_modifiers = {
+	set_temp_variable = { cbrn_action_historical_medical_saturation_mult = constant:cbrn_math.one }
+	if = {
+		limit = {
+			has_event_target = cbrn_action_target_state
+			event_target:cbrn_action_target_state = { CONTROLLER = { has_idea_with_trait = cbrn_medical_countermeasure_pioneer_trait } }
+		}
+		multiply_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_historical_advisor.medical_chemical_casualty_mult }
+		multiply_temp_variable = { cbrn_action_civilian_casualty_mult = constant:cbrn_historical_advisor.medical_chemical_casualty_mult }
+		set_temp_variable = { cbrn_action_historical_medical_saturation_mult = constant:cbrn_historical_advisor.medical_chemical_saturation_mult }
+	}
+}
+
+# State scope. Reads the exact seed actor and modifies only operational snapshots.
+bio_lifecycle_apply_historical_actor_advisor_modifiers = {
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_idea_with_trait = chaos_warfare_biological_theorist_trait }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:cbrn_historical_advisor.biological_theorist_potency_mult }
+		multiply_temp_variable = { bio_seed_doctrine_growth_mult = constant:cbrn_historical_advisor.biological_theorist_growth_mult }
+		multiply_temp_variable = { bio_seed_doctrine_spread_mult = constant:cbrn_historical_advisor.biological_theorist_spread_mult }
+		multiply_temp_variable = { bio_seed_doctrine_death_mult = constant:cbrn_historical_advisor.biological_theorist_death_mult }
+		multiply_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:cbrn_historical_advisor.biological_theorist_condemnation_mult }
+	}
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_idea_with_trait = chaos_warfare_weaponization_theorist_trait }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:cbrn_historical_advisor.weaponization_theorist_potency_mult }
+		multiply_temp_variable = { bio_seed_doctrine_growth_mult = constant:cbrn_historical_advisor.weaponization_theorist_growth_mult }
+		multiply_temp_variable = { bio_seed_doctrine_spread_mult = constant:cbrn_historical_advisor.weaponization_theorist_spread_mult }
+		multiply_temp_variable = { bio_seed_doctrine_death_mult = constant:cbrn_historical_advisor.weaponization_theorist_death_mult }
+		multiply_temp_variable = { bio_seed_doctrine_medical_mult = constant:cbrn_historical_advisor.weaponization_theorist_medical_mult }
+		multiply_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:cbrn_historical_advisor.weaponization_theorist_condemnation_mult }
+	}
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_idea_with_trait = cbrn_biological_program_director_trait }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:cbrn_historical_advisor.biological_program_potency_mult }
+		multiply_temp_variable = { bio_seed_doctrine_growth_mult = constant:cbrn_historical_advisor.biological_program_growth_mult }
+		multiply_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:cbrn_historical_advisor.biological_program_condemnation_mult }
+	}
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_idea_with_trait = cbrn_biological_weaponization_director_trait }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:cbrn_historical_advisor.biological_weaponization_potency_mult }
+		multiply_temp_variable = { bio_seed_doctrine_growth_mult = constant:cbrn_historical_advisor.biological_weaponization_growth_mult }
+		multiply_temp_variable = { bio_seed_doctrine_spread_mult = constant:cbrn_historical_advisor.biological_weaponization_spread_mult }
+		multiply_temp_variable = { bio_seed_doctrine_death_mult = constant:cbrn_historical_advisor.biological_weaponization_death_mult }
+		multiply_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:cbrn_historical_advisor.biological_weaponization_condemnation_mult }
+	}
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_idea_with_trait = cbrn_resistance_biological_sabotage_director_trait }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:cbrn_historical_advisor.resistance_sabotage_potency_mult }
+		multiply_temp_variable = { bio_seed_doctrine_spread_mult = constant:cbrn_historical_advisor.resistance_sabotage_spread_mult }
+		multiply_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:cbrn_historical_advisor.resistance_sabotage_condemnation_mult }
+	}
+}
+
+# State scope. Applies the current controller's defensive appointments.
+bio_lifecycle_apply_historical_target_advisor_modifiers = {
+	if = {
+		limit = { CONTROLLER = { has_idea_with_trait = cbrn_medical_countermeasure_pioneer_trait } }
+		multiply_temp_variable = { bio_death_countermeasure_mult = constant:cbrn_historical_advisor.medical_biological_death_mult }
+		multiply_temp_variable = { bio_medical_countermeasure_mult = constant:cbrn_historical_advisor.medical_biological_saturation_mult }
+		add_to_temp_variable = { bio_detection_environment_add = constant:cbrn_historical_advisor.medical_biological_detection_add }
+	}
+}

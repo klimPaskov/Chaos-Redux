@@ -46,8 +46,8 @@ class AdvisorIconTests(unittest.TestCase):
 			0.0,
 		)
 		self.assertEqual(card.size, ADVISOR.CARD_SIZE)
-		card_pixels = list(card.get_flattened_data())
-		template_pixels = list(template.get_flattened_data())
+		card_pixels = list(card.get_flattened_data() if hasattr(card, "get_flattened_data") else card.getdata())
+		template_pixels = list(template.get_flattened_data() if hasattr(template, "get_flattened_data") else template.getdata())
 		for index, pixel in enumerate(template_pixels):
 			if pixel[3] == 255:
 				self.assertEqual(card_pixels[index], pixel)
