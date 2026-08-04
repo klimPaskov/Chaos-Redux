@@ -39,7 +39,7 @@ Scheduling failures refund branch costs and clear reserved state receipts. Resul
 
 ## Surfaces
 
-The chain has dedicated constants, scripted triggers, scripted effects, dynamic modifiers, bilateral opinion modifiers, Event Log scripted localisation, ordinary event localisation, a report-event DDS, a sprite registration, an asset manifest, a proof note, and a catalog row. It has no focus-tree dependency and does not add political-power stores or harmless reward loops.
+The chain has dedicated constants, scripted triggers, scripted effects, dynamic modifiers, bilateral opinion modifiers, Event Log scripted localisation, ordinary event localisation, a report-event DDS, a sprite registration, an asset manifest, and a proof note. It has no workbook or catalog row, no focus-tree dependency, and no political-power store or harmless reward loop.
 
 ## Future depth
 

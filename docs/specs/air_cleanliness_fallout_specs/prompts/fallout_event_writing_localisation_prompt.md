@@ -254,5 +254,5 @@ Report:
 - unsourced cultural references
 - mutant-science errors
 - style violations
-- spreadsheet mismatches
+- Fallout catalog-registration leaks
 - exact changed keys and files

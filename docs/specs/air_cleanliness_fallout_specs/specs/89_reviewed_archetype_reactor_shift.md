@@ -60,4 +60,4 @@ Cleanup clears country and state reservations only after the delayed result and 
 
 ## Deferred engine surfaces
 
-Scheduler activation, host authority, save recovery, multiplayer delivery, and live Event Log presentation remain user-owned runtime checks. The exact native all-valid-province thermonuclear sweep remains a separate Fallout consequence blocker.
+Scheduler release receipts, reviewed producers, and activation setters remain absent. The exact native all-valid-province thermonuclear sweep belongs to the completed Fallout consequence core.

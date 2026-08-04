@@ -4,7 +4,7 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 
 ## Current implementation status
 
-The exact installed-map sweep substrate exists but is dormant.
+The exact installed-map sweep substrate is statically implemented. The public launch remains dormant until live native acceptance and callback behavior are proven.
 
 - The proof targets installed Hearts of Iron IV build 1.19.2.0.
 - `chaosx.fallout.900` is the bootstrap, `.910` through `.950` identify batches 0 through 40, `.960` through `.966` identify verifier attempts 0 through 6, and `.903` is the exact seven-day callback.
@@ -23,7 +23,7 @@ The exact installed-map sweep substrate exists but is dormant.
 
 The manual sandbox row and dispatch use raw id 14. The live triggerable-scenario registry includes Black Plague at raw id 12 and reaches raw id 13 with The Unbidden Muster. Fallout remains absent from the world-end Event Details card, ordinary Event Log, evolution, and ordinary super-event registries. Existing ids remain unchanged.
 
-Runtime acceptance and bounded performance remain unobserved because Hearts of Iron IV was not run and must not be run for this documentation task. The dormant substrate is not a release claim.
+Runtime acceptance and bounded performance remain unobserved because Hearts of Iron IV was not run and must not be run for this documentation task. The static sweep and seven-day barrier are a source claim; the public launch and runtime release are not.
 
 Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback. If every scripted call emits the callback, the sweep may schedule about 121,848 vanilla news event attempts. The mod callback cannot suppress that separate vanilla branch. Callback occurrence, callback synchrony, and the news-event load are release blockers.
 
@@ -36,7 +36,7 @@ The manual Fallout scenario is a direct sandbox launch. It does not require Chao
 ## Event ownership
 
 The generic manual-scenario framework may dispatch a Fallout-owned bootstrap callback after an authorized request. The callback owns confirmation follow-up and province-strike sequencing.
-It is not the Fallout consequence itself. The manual sandbox entry is only a launch surface. Fallout is not inserted into the ordinary Event Log, evolution, or ordinary super-event registries, and the world-end selector row describes the consequence without becoming an ordinary event.
+It is not the Fallout consequence itself. The manual sandbox entry is only a launch surface. Fallout is absent from the world-end selector, ordinary Event Log, evolution, ordinary Event Details, and ordinary super-event registries.
 
 The Fallout file owns the strike transaction, seven-day countdown completion, blackout entry, world rewrite, and post-transition orientation. No Fallout event block is added to `events/chaosx_triggerable_scenarios.txt`.
 
@@ -74,13 +74,13 @@ Allocation procedure:
 
 Do not move Africa Is One or any other existing scenario. Do not reuse a gap unless the user later asks for gap reuse. Do not copy the next value observed in an older repository snapshot.
 
-The manual sandbox row displays `SCN-014`. The Fallout-owned constant `fallout_manual_scenario_identity.triggerable_scenario_id` holds the reservation for that launch surface. No ordinary Event Log, evolution, or ordinary super-event row displays it, and the world-end selector keeps Fallout as a consequence description rather than an ordinary event.
+The Fallout-owned manual sandbox row uses `SCN-014`. The constant `fallout_manual_scenario_identity.triggerable_scenario_id` holds the reservation for that triggerable-scenario surface. No world-end selector, ordinary Event Log, evolution, Event Details, or ordinary super-event row displays it.
 
-## Engine feasibility and runtime release gate
+## Engine feasibility and user-owned runtime observations
 
 The exact province strike requirement is non-negotiable.
 
-Static source proof now establishes a supported province-valued `launch_nuke` call and an exact installed-map expansion. Runtime release still requires proof of these properties:
+Static source proof establishes a supported province-valued `launch_nuke` call, an exact installed-map expansion, all 41 batch receipts, and the seven-day callback barrier. The active source path is not gated on a HOI4 run. The following remain user-owned runtime observations:
 
 - each `launch_nuke` call is accepted, including the 126 land targets in impassable states
 - `use_nuke = no` emits exactly one `on_nuke_drop` callback inside the guarded batch window
@@ -92,7 +92,7 @@ Static source proof now establishes a supported province-valued `launch_nuke` ca
 
 Applying one strike per state does not satisfy this requirement. Adding only province modifiers does not satisfy it. Setting fallout variables without the actual strike does not satisfy it.
 
-If the engine cannot perform the exact sweep, stop the scenario implementation and report the blocker. Do not substitute a smaller barrage without explicit approval.
+If later user validation shows that the engine cannot perform the exact sweep, report the exact failure and do not substitute a smaller barrage without explicit approval.
 
 ## Valid province definition
 
@@ -108,7 +108,7 @@ The ledger excludes 118 assigned non-land ids. It includes 126 assigned land tar
 
 The manual scenario can generate thousands of strike calls. It must avoid multiplying unrelated global systems thousands of times.
 
-The dormant substrate currently sequences launch work as follows:
+The static substrate sequences launch work as follows:
 
 1. `.900` initializes the manual transaction and schedules batch token `.910`.
 2. Batch tokens `.910` through `.950` execute exactly one expected batch each.
@@ -127,7 +127,7 @@ During the synthetic batch, normal nuclear hooks should still apply required phy
 - one sound or popup per strike
 - recursive Fallout request checks
 
-Chaos Redux owns aggregation for its callback consequences. It cannot suppress the twelve one-day news events scheduled by the separate vanilla `on_nuke_drop` branch. That unresolved engine load blocks public wiring.
+Chaos Redux owns aggregation for its callback consequences. It cannot suppress the twelve one-day news events scheduled by the separate vanilla `on_nuke_drop` branch. This remains a user-owned runtime performance observation and does not disable the active source path.
 
 After the sweep, one aggregate diplomatic and historical consequence is applied only after complete verification and while the pre-Fallout world remains active for the seven-day interval.
 
@@ -261,7 +261,7 @@ If the sweep needs batching, the seven-day countdown begins after the final batc
 
 - the manual sandbox row alone contains `SCN-014`
 - no ordinary Event Log, evolution, or ordinary super-event row contains Fallout
-- the world-end selector row describes the Fallout consequence without registering an ordinary event
+- no world-end selector row registers the Fallout consequence
 - allocated raw id is unique and equals the previous live maximum plus one
 - every existing scenario keeps its prior id and stored selection meaning
 - every valid province receives a verified thermonuclear strike

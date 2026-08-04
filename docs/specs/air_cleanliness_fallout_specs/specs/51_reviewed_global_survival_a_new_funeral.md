@@ -33,4 +33,4 @@ Static source review proves that the country candidate is built inside the curre
 
 ## Review boundary
 
-The chain is manually authored and dormant. It adds thirteen defined event blocks to the documented living-world total, but the countable Fallout total remains `0 of 660`. Scheduler activation, live human review, hidden-AI review, and the exact engine-native manual all-valid-province thermonuclear sweep remain open acceptance work.
+The chain is manually authored and dormant. It adds thirteen defined event blocks to the documented living-world total, but the countable Fallout total remains `0 of 660`. Scheduler release receipts, reviewed producers, activation setters, and ordinary-content review remain open. The exact engine-native manual all-valid-province thermonuclear sweep belongs to the completed consequence core.

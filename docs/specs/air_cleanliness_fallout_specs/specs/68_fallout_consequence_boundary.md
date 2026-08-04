@@ -2,13 +2,13 @@
 
 ## Status
 
-This correction is accepted for implementation. Fallout is a world consequence transition. It replaces the retired Final Silence world-end selector row, but it is not an ordinary Event Log event, an evolution entry, or an ordinary super-event. The transition may still use country events for blackout presentation, phase scheduling, recovery, and later survivor chains. Those later chains are ordinary post-consequence content and may keep their own event history.
+This correction is accepted and its static core implementation is reconciled. Fallout is a world consequence transition with no ordinary Event Log, evolution, Event Details, or world-end selector registry row. The retired Final Silence identity remains save and cause-memory compatibility only. The transition may still use country events for blackout presentation, phase scheduling, recovery, and later survivor chains. Those later chains are ordinary post-consequence content and may keep their own event history. Static completion does not claim live HOI4 execution, multiplayer timing, native callback behavior, or release of the dormant ordinary living-world scheduler.
 
 ## Public ownership
 
-`common/scripted_effects/chaosx_events_log_effects.txt` is the public world-end selector registry. Fallout occupies the appended replacement row for the retired Final Silence selector. It is not registered in the ordinary country Event Log or evolution registries. Its stable settings-ledger value lives in `fallout_consequence_id` inside `common/script_constants/fallout_consolidated_constants.txt`, while its world-end selector identity is `world_end_scenario_id = fallout`.
+`common/scripted_effects/chaosx_events_log_effects.txt` is the public Event Details and world-end selector registry. Its initializer contains neither a Fallout row nor a Final Silence row. Fallout is represented by the internal `fallout_consequence_id.settings_ledger` value and the `world_end_fallout` transition flag. The reserved `world_end_scenario_id.fallout` constant is a save and trigger compatibility identity only; it does not create a registry entry, title, details branch, or public selector surface.
 
-The public world-end selector has a Fallout title, owner, and details branch so the replacement is visible in the world-end settings surface. That selector row is the only Fallout consequence details surface. No ordinary country Event Log row, ordinary evolution, ordinary Event Details card, or ordinary super-event registration is added. The New Zealand survivor card remains a post-consequence card and does not embed a world-end scenario description. The ordinary super-event GUI is hidden whenever `world_end_fallout` is set. The full-screen blackout GUI and dramatic sound remain Fallout-owned.
+No public world-end selector or Fallout consequence details row is added. No ordinary country Event Log row, ordinary evolution, ordinary Event Details card, or ordinary super-event registration is added. The New Zealand survivor card remains a post-consequence card and does not embed a world-end scenario description. The ordinary super-event GUI is hidden whenever `world_end_fallout` is set. The full-screen blackout GUI and dramatic sound remain Fallout-owned.
 
 ## Permanent Air Contamination lock
 
@@ -70,11 +70,11 @@ After each state records its synthetic Fallout intensity and expiry ledger, `fal
 
 ## Engine-sensitive proof boundary
 
-The state mutation and aggregate Deaths routing are source-proven by the effects named above. The vanilla references document `launch_nuke` inputs but do not prove an exact engine-native sweep across every valid installed-map province. The manual scenario therefore remains dormant behind its existing static proof gate. No variable-only fallout, one-strike-per-state substitute, or public Event Details registration may be presented as equivalent proof. Live playtesting is a later user validation handoff and is not a completion requirement for the static core-mechanics tranche.
+The state mutation and aggregate Deaths routing are source-proven by the effects named above. The installed-map static proof expands 10,154 unique valid land provinces across 1,081 states into 41 native `launch_nuke` batches and places the exact seven-day callback behind the issued, observed, state-count, and generation receipts. Vanilla references document the `launch_nuke` inputs but do not prove engine acceptance for every target class, callback synchrony, callback load, save recovery, or multiplayer timing. The manual launch therefore remains release-gated for live validation even though its static sweep substrate is implemented. No variable-only fallout, one-strike-per-state substitute, or public Event Details registration may be presented as equivalent proof. Live playtesting is a later user validation handoff and is not a completion requirement for the static core-mechanics tranche.
 
 ## Review checklist
 
-- Fallout replaces the retired Final Silence row in the world-end selector registry.
+- Fallout is absent from the world-end selector registry; its internal consequence flag and settings-ledger identity own the transition.
 - Fallout has no ordinary Event Log row, evolution entry, or ordinary super-event registration.
 - Fallout blackout display text and audio remain dedicated to the consequence transition.
 - Air Contamination is permanently locked at 99 percent by `fallout_air_contamination_permanent_99`.
@@ -83,4 +83,4 @@ The state mutation and aggregate Deaths routing are source-proven by the effects
 - Standard and manual state population loss both use the approved 90 to 95 percent band.
 - Both paths record the observed civilian loss through Deaths after state population mutation.
 - Fallout-owned Deaths registration remains mandatory when the general Deaths setting is disabled.
-- The exact native manual sweep remains blocked by missing static engine proof, not by missing user live validation.
+- The exact 10,154-province manual sweep and seven-day barrier are implemented statically; native execution, callback load, save, and multiplayer acceptance remain outside this static tranche.

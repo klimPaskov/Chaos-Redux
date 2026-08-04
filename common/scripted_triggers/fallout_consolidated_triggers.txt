@@ -1214,7 +1214,7 @@ air_winter_event_has_operational_factory = {
 air_winter_event_phase_1_has_operational_port = {
 	OR = {
 		non_damaged_building_level = { building = dockyard level > constant:air_winter_event_runtime.zero }
-		non_damaged_building_level = { building = naval_base level > constant:air_winter_event_runtime.zero }
+		naval_base > constant:air_winter_event_runtime.zero
 	}
 }
 
@@ -3809,7 +3809,6 @@ fallout_manual_runtime_schema_is_current = {
 # Supported scope: COUNTRY
 fallout_manual_sweep_can_begin = {
 	exists = yes
-	has_global_flag = fallout_manual_native_sweep_release_enabled
 	fallout_request_ledger_is_free = yes
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = fallout_manual_scenario_active }
@@ -11394,36 +11393,23 @@ fallout_event_old_ready_empty_ordinary_receipts_can_repromote = {
 	check_variable = { var = global.fallout_event_ordinary_receipt_registry_generation value = global.fallout_event_registry_generation compare = equals }
 	check_variable = { global.fallout_event_registry_count > constant:fallout_event_runtime.zero }
 	check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_index_entries^num compare = equals }
-	set_temp_variable = { fallout_event_old_ready_ordinary_count = constant:fallout_event_runtime.zero }
-	for_each_loop = {
-		array = global.fallout_event_registry_index_entries
-		value = fallout_event_old_ready_ordinary_index_value
-		index = fallout_event_old_ready_ordinary_index
-		if = {
-			limit = {
-				check_variable = { var = fallout_event_old_ready_ordinary_index_value value = fallout_event_old_ready_ordinary_index compare = equals }
-				check_variable = { var = global.fallout_event_registry_generation_entries^fallout_event_old_ready_ordinary_index value = global.fallout_event_registry_generation compare = equals }
-			}
-			var:global.fallout_event_registry_countries^fallout_event_old_ready_ordinary_index = {
-				if = {
-					limit = {
-						has_country_flag = fallout_event_registry_member
-						has_country_flag = fallout_event_runtime_initialized
-						check_variable = { var = fallout_event_registry_index value = fallout_event_old_ready_ordinary_index compare = equals }
-						OR = {
-							fallout_event_empty_ordinary_receipt_v1_can_migrate = yes
-							AND = {
-								fallout_event_ordinary_receipt_is_consistent = yes
-								NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
-							}
-						}
-					}
-					add_to_temp_variable = { fallout_event_old_ready_ordinary_count = constant:fallout_event_runtime.one }
-				}
+	check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_generation_entries^num compare = equals }
+	check_variable = { var = global.fallout_event_registry_count value = global.fallout_event_registry_countries^num compare = equals }
+	all_of_scopes = {
+		array = global.fallout_event_registry_countries
+		has_country_flag = fallout_event_registry_member
+		has_country_flag = fallout_event_runtime_initialized
+		has_variable = fallout_event_registry_index
+		check_variable = { var = global.fallout_event_registry_index_entries^fallout_event_registry_index value = fallout_event_registry_index compare = equals }
+		check_variable = { var = global.fallout_event_registry_generation_entries^fallout_event_registry_index value = global.fallout_event_registry_generation compare = equals }
+		OR = {
+			fallout_event_empty_ordinary_receipt_v1_can_migrate = yes
+			AND = {
+				fallout_event_ordinary_receipt_is_consistent = yes
+				NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
 			}
 		}
 	}
-	check_variable = { var = fallout_event_old_ready_ordinary_count value = global.fallout_event_registry_count compare = equals }
 }
 
 # Supported scope: COUNTRY. Input: requested transaction key. Compact queue
@@ -17199,26 +17185,37 @@ fallout_event_471_cleanup_can_enter = {
 # CHAOS REDUX - FALLOUT FRACTURE TRIGGERS
 # ============================================================================
 
-# Supported scope: COUNTRY. Fracture only considers a pretransition country
-# with more than one surviving state and a severe frozen state grade. The war
-# memory gate keeps the effect tied to the requested severe-war case.
+# Supported scope: COUNTRY. Fracture never consumes a human or protected
+# package. Every source retains its capital and at least one state. Priority
+# selection adds the severe-war memory below, while this general gate ensures
+# that Fallout always has a statically valid random-border fallback.
 fallout_fracture_source_is_eligible = {
 	exists = yes
+	is_ai = yes
 	has_country_flag = fallout_pretransition_country
-	has_country_flag = fallout_pretransition_had_war
+	NOT = { fallout_country_has_live_event_package_ownership = yes }
 	num_of_controlled_states > constant:fallout_fracture_contract.minimum_source_states
 	any_owned_state = {
-		OR = {
-			check_variable = {
-				var = fallout_state_grade
-				value = constant:fallout_state_grade.dead_city
-				compare = greater_than_or_equals
-			}
-			check_variable = {
-				var = fallout_state_grade
-				value = constant:fallout_state_grade.wasteland
-				compare = greater_than_or_equals
-			}
+		NOT = { is_capital = yes }
+		NOT = { has_state_flag = fallout_fracture_state_transferred }
+		has_variable = fallout_state_grade
+		is_controlled_by = PREV
+	}
+}
+
+# Supported scope: COUNTRY. War-scarred countries are selected before the
+# general fallback when at least one still has a severe non-capital state.
+fallout_fracture_priority_source_is_eligible = {
+	fallout_fracture_source_is_eligible = yes
+	has_country_flag = fallout_pretransition_had_war
+	any_owned_state = {
+		NOT = { is_capital = yes }
+		NOT = { has_state_flag = fallout_fracture_state_transferred }
+		is_controlled_by = PREV
+		check_variable = {
+			var = fallout_state_grade
+			value = constant:fallout_state_grade.dead_city
+			compare = greater_than_or_equals
 		}
 	}
 }
@@ -17234,6 +17231,29 @@ fallout_fracture_conflict_ledger_is_current = {
 		compare = equals
 	}
 	has_variable = global.fallout_fracture_safe_template_count
+	has_variable = global.fallout_fracture_blocked_template_count
+	has_variable = global.fallout_fracture_template_count
+	has_variable = global.fallout_fracture_recorded_template_count
+	check_variable = {
+		var = global.fallout_fracture_recorded_template_count
+		value = global.fallout_fracture_template_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_fracture_template_pool^num
+		value = global.fallout_fracture_template_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_fracture_safe_templates^num
+		value = global.fallout_fracture_safe_template_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_fracture_blocked_templates^num
+		value = global.fallout_fracture_blocked_template_count
+		compare = equals
+	}
 	check_variable = {
 		var = global.fallout_fracture_safe_template_count
 		value = constant:fallout_fracture_contract.zero
@@ -17241,12 +17261,164 @@ fallout_fracture_conflict_ledger_is_current = {
 	}
 }
 
-# Supported scope: COUNTRY. The release flag is deliberately absent from
-# normal saves until live dynamic-tag and no-delete readback is proven.
+# Supported scope: COUNTRY. The ledger is built before this trigger is read.
+# Dynamic-country creation and child effects are documented engine surfaces,
+# so the core fracture no longer depends on an unrelated live-test flag.
 fallout_fracture_release_is_enabled = {
-	has_global_flag = fallout_fracture_release_enabled
 	fallout_fracture_conflict_ledger_is_current = yes
 	NOT = { has_global_flag = fallout_tag_preservation_failed }
+}
+
+# Supported scope: COUNTRY. The border campaign resolves only when the same
+# Fallout generation owns and controls the exact state named by its ultimatum.
+fallout_generic_border_campaign_resolved = {
+	fallout_generic_focus_runtime_is_current = yes
+	has_country_flag = fallout_generic_border_campaign_active
+	has_variable = fallout_generic_border_target_state
+	has_variable = fallout_generic_border_campaign_generation
+	check_variable = {
+		var = fallout_generic_border_campaign_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	var:fallout_generic_border_target_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+# Supported scope: COUNTRY. The heartland campaign uses a separate receipt so
+# its late-game route cannot be satisfied by the earlier frontier settlement.
+fallout_generic_heartland_campaign_resolved = {
+	fallout_generic_focus_runtime_is_current = yes
+	has_country_flag = fallout_generic_heartland_campaign_active
+	has_variable = fallout_generic_heartland_target_state
+	has_variable = fallout_generic_heartland_campaign_generation
+	check_variable = {
+		var = fallout_generic_heartland_campaign_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	var:fallout_generic_heartland_target_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+# Supported scope: COUNTRY. Dynamic outputs are created after the frozen world
+# snapshot and therefore own a separate derived classification receipt.
+fallout_fracture_dynamic_country_is_allocation_ready = {
+	exists = yes
+	is_ai = yes
+	has_country_flag = fallout_fracture_dynamic_country
+	has_country_flag = fallout_fracture_output_package_clean
+	has_country_flag = fallout_country_survives
+	has_country_flag = fallout_country_classified
+	has_variable = fallout_fracture_output_generation
+	has_variable = fallout_government_classifier_generation
+	has_variable = fallout_government_classifier_schema_version
+	has_variable = fallout_fracture_core_count
+	check_variable = {
+		var = fallout_fracture_core_count
+		value = constant:fallout_runtime.one
+		compare = equals
+	}
+	NOT = {
+		OR = {
+			fallout_country_has_zombie_package_ownership = yes
+			fallout_country_has_mengele_package_ownership = yes
+			fallout_country_has_soviet_package_ownership = yes
+			fallout_country_has_independence_package_ownership = yes
+			fallout_country_has_liberation_reservation = yes
+			fallout_country_has_holy_realm_package_ownership = yes
+			fallout_country_has_cannibalism_package_ownership = yes
+			fallout_country_has_other_special_package_ownership = yes
+		}
+	}
+	has_variable = fallout_government_origin_archetype
+	check_variable = {
+		var = fallout_fracture_output_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_government_classifier_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_government_classifier_schema_version
+		value = constant:fallout_government_classifier_schema.version
+		compare = equals
+	}
+	check_variable = { fallout_government_origin_archetype > constant:fallout_government_archetype.none }
+	check_variable = { fallout_government_origin_archetype < constant:fallout_government_archetype.upper_bound }
+	fallout_country_technology_regression_is_current = yes
+	any_owned_state = { fallout_state_can_host_government = yes }
+}
+
+# Supported scope: COUNTRY
+fallout_fracture_output_country_row_is_current = {
+	fallout_fracture_dynamic_country_is_allocation_ready = yes
+	is_in_array = { array = global.fallout_fracture_output_countries value = THIS }
+	any_owned_state = {
+		has_state_flag = fallout_fracture_state_transferred
+		has_variable = fallout_fracture_output_country
+		var:fallout_fracture_output_country = { tag = PREV }
+	}
+}
+
+# Supported scope: STATE
+fallout_fracture_output_state_row_is_current = {
+	has_state_flag = fallout_fracture_state_transferred
+	has_variable = fallout_fracture_output_country
+	has_variable = fallout_fracture_generation
+	check_variable = {
+		var = fallout_fracture_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	is_in_array = { array = global.fallout_fracture_output_states value = THIS }
+	is_owned_and_controlled_by = var:fallout_fracture_output_country
+	is_core_of = var:fallout_fracture_output_country
+	var:fallout_fracture_output_country = { fallout_fracture_dynamic_country_is_allocation_ready = yes }
+}
+
+# Supported scope: COUNTRY
+fallout_fracture_output_ledger_is_current = {
+	has_variable = global.fallout_fracture_output_count
+	check_variable = { global.fallout_fracture_output_count > constant:fallout_fracture_contract.zero }
+	check_variable = {
+		var = global.fallout_fracture_output_countries^num
+		value = global.fallout_fracture_output_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_fracture_output_states^num
+		value = global.fallout_fracture_output_count
+		compare = equals
+	}
+	all_of_scopes = {
+		array = global.fallout_fracture_output_countries
+		fallout_fracture_output_country_row_is_current = yes
+	}
+	all_of_scopes = {
+		array = global.fallout_fracture_output_states
+		fallout_fracture_output_state_row_is_current = yes
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_fracture_transition_is_current = {
+	has_global_flag = fallout_fracture_transition_applied
+	has_variable = global.fallout_fracture_transition_generation
+	check_variable = {
+		var = global.fallout_fracture_transition_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	fallout_fracture_output_ledger_is_current = yes
+	fallout_pretransition_tag_rows_exist = yes
 }
 
 # ============================================================================
@@ -27367,6 +27539,72 @@ fallout_event_656_requested_branch_is_affordable = {
 	}
 }
 
+# STATE scope. Vanilla exposes province terrain but no state-scope terrain
+# trigger. This immutable 1.19.2 registry classifies a state as plains when
+# plains has the largest land-pixel share among its member provinces.
+fallout_event_656_state_has_dominant_plains_terrain = {
+	OR = {
+		state = 6 state = 9 state = 10 state = 14 state = 15 state = 16
+		state = 18 state = 21 state = 23 state = 24 state = 27 state = 29
+		state = 30 state = 32 state = 33 state = 35 state = 36 state = 37
+		state = 40 state = 44 state = 45 state = 46 state = 56 state = 57
+		state = 58 state = 60 state = 61 state = 62 state = 67 state = 75
+		state = 77 state = 78 state = 79 state = 81 state = 86 state = 87
+		state = 91 state = 92 state = 93 state = 99 state = 101 state = 109
+		state = 110 state = 111 state = 113 state = 115 state = 116 state = 124
+		state = 125 state = 127 state = 128 state = 129 state = 130 state = 131
+		state = 134 state = 135 state = 137 state = 138 state = 141 state = 145
+		state = 154 state = 155 state = 160 state = 163 state = 164 state = 169
+		state = 170 state = 174 state = 177 state = 179 state = 187 state = 188
+		state = 189 state = 192 state = 193 state = 196 state = 197 state = 198
+		state = 199 state = 200 state = 201 state = 202 state = 203 state = 204
+		state = 205 state = 206 state = 207 state = 211 state = 212 state = 214
+		state = 217 state = 218 state = 221 state = 222 state = 223 state = 225
+		state = 227 state = 232 state = 234 state = 235 state = 236 state = 237
+		state = 238 state = 239 state = 240 state = 241 state = 243 state = 245
+		state = 251 state = 255 state = 256 state = 257 state = 258 state = 259
+		state = 261 state = 265 state = 270 state = 272 state = 275 state = 278
+		state = 281 state = 282 state = 285 state = 291 state = 299 state = 300
+		state = 307 state = 308 state = 313 state = 315 state = 316 state = 318
+		state = 319 state = 320 state = 332 state = 337 state = 338 state = 341
+		state = 346 state = 348 state = 361 state = 363 state = 364 state = 365
+		state = 367 state = 369 state = 372 state = 373 state = 374 state = 375
+		state = 383 state = 384 state = 388 state = 389 state = 390 state = 392
+		state = 394 state = 395 state = 396 state = 399 state = 401 state = 423
+		state = 424 state = 425 state = 427 state = 428 state = 429 state = 431
+		state = 435 state = 437 state = 438 state = 439 state = 440 state = 447
+		state = 461 state = 466 state = 467 state = 469 state = 485 state = 496
+		state = 498 state = 499 state = 502 state = 504 state = 516 state = 517
+		state = 518 state = 519 state = 522 state = 525 state = 526 state = 527
+		state = 541 state = 542 state = 544 state = 549 state = 555 state = 570
+		state = 571 state = 572 state = 582 state = 583 state = 590 state = 591
+		state = 598 state = 606 state = 607 state = 608 state = 609 state = 610
+		state = 611 state = 613 state = 614 state = 624 state = 626 state = 629
+		state = 630 state = 631 state = 632 state = 633 state = 635 state = 636
+		state = 637 state = 638 state = 639 state = 641 state = 642 state = 643
+		state = 644 state = 645 state = 646 state = 647 state = 648 state = 650
+		state = 651 state = 652 state = 655 state = 664 state = 684 state = 685
+		state = 686 state = 690 state = 691 state = 692 state = 693 state = 694
+		state = 695 state = 696 state = 698 state = 702 state = 703 state = 704
+		state = 705 state = 708 state = 710 state = 713 state = 715 state = 717
+		state = 720 state = 722 state = 725 state = 726 state = 727 state = 730
+		state = 731 state = 733 state = 734 state = 738 state = 739 state = 761
+		state = 763 state = 766 state = 774 state = 778 state = 781 state = 788
+		state = 791 state = 793 state = 798 state = 801 state = 807 state = 815
+		state = 819 state = 822 state = 825 state = 831 state = 834 state = 844
+		state = 849 state = 861 state = 868 state = 871 state = 873 state = 874
+		state = 882 state = 884 state = 886 state = 887 state = 892 state = 895
+		state = 898 state = 899 state = 901 state = 902 state = 905 state = 906
+		state = 909 state = 910 state = 911 state = 912 state = 925 state = 932
+		state = 933 state = 935 state = 937 state = 945 state = 946 state = 948
+		state = 956 state = 971 state = 973 state = 974 state = 975 state = 977
+		state = 983 state = 984 state = 991 state = 998 state = 1011 state = 1025
+		state = 1027 state = 1031 state = 1034 state = 1035 state = 1037 state = 1038
+		state = 1041 state = 1047 state = 1051 state = 1053 state = 1058 state = 1066
+		state = 1071 state = 1072 state = 1076 state = 1077
+	}
+}
+
 fallout_event_656_state_is_current = {
 	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
 	is_controlled_by = ROOT
@@ -27387,7 +27625,7 @@ fallout_event_656_state_is_current = {
 	has_variable = air_winter_exposure
 	check_variable = { var = fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
 	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
-	terrain = plains
+	fallout_event_656_state_has_dominant_plains_terrain = yes
 	OR = {
 		check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.rural }
 		check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.pastoral }
@@ -27499,7 +27737,7 @@ fallout_event_656_registry_is_current = {
 		fallout_survival_state_resource_row_is_durable = yes
 		has_variable = fallout_pretransition_state_category
 		check_variable = { var = fallout_pretransition_state_category value = ROOT.fallout_event_656_target_state_category compare = equals }
-		terrain = plains
+		fallout_event_656_state_has_dominant_plains_terrain = yes
 		check_variable = { var = ROOT.fallout_event_656_frozen_target_owner value = OWNER compare = equals }
 		check_variable = { var = ROOT.fallout_event_656_frozen_target_controller value = CONTROLLER compare = equals }
 	}
@@ -28907,18 +29145,44 @@ fallout_world_snapshot_rows_are_current = {
 		array = global.fallout_pretransition_countries
 		fallout_pretransition_country_snapshot_row_is_current = yes
 	}
-	collection_size = {
-		input = game:all_countries
-		value = global.fallout_pretransition_countries^num
-	}
-	collection_size = {
-		input = {
-			input = game:all_countries
-			operators = {
-				limit = { is_in_array = { array = global.fallout_pretransition_countries value = THIS } }
+	OR = {
+		AND = {
+			NOT = { has_variable = global.fallout_postsnapshot_country_count }
+			collection_size = {
+				input = game:all_countries
+				value = global.fallout_pretransition_countries^num
+			}
+			collection_size = {
+				input = {
+					input = game:all_countries
+					operators = {
+						limit = { is_in_array = { array = global.fallout_pretransition_countries value = THIS } }
+					}
+				}
+				value = global.fallout_pretransition_countries^num
 			}
 		}
-		value = global.fallout_pretransition_countries^num
+		AND = {
+			has_variable = global.fallout_postsnapshot_country_count
+			collection_size = {
+				input = game:all_countries
+				value = global.fallout_postsnapshot_country_count
+			}
+			collection_size = {
+				input = {
+					input = game:all_countries
+					operators = {
+						limit = {
+							OR = {
+								is_in_array = { array = global.fallout_pretransition_countries value = THIS }
+								is_in_array = { array = global.fallout_fracture_output_countries value = THIS }
+							}
+						}
+					}
+				}
+				value = global.fallout_postsnapshot_country_count
+			}
+		}
 	}
 	collection_size = {
 		input = {
@@ -30033,17 +30297,29 @@ fallout_state_is_major_urban_area = {
 fallout_state_can_host_government = {
 	has_variable = fallout_state_grade
 	has_variable = fallout_survival_value
-	has_variable = fallout_pretransition_population_k
-	check_variable = { fallout_pretransition_population_k > @CR_SC_FALLOUT_RUNTIME_ZERO }
-	check_variable = {
-		var = fallout_state_grade
-		value = constant:fallout_state_grade.wasteland
-		compare = less_than
-	}
-	check_variable = {
-		var = fallout_survival_value
-		value = constant:fallout_survival_value.government_minimum
-		compare = greater_than_or_equals
+	OR = {
+		AND = {
+			has_variable = fallout_pretransition_population_k
+			check_variable = { fallout_pretransition_population_k > @CR_SC_FALLOUT_RUNTIME_ZERO }
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.wasteland
+				compare = less_than
+			}
+			check_variable = {
+				var = fallout_survival_value
+				value = constant:fallout_survival_value.government_minimum
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			has_state_flag = fallout_emergency_government_host
+			check_variable = {
+				var = fallout_survival_value
+				value = constant:fallout_survival_value.minimum
+				compare = greater_than_or_equals
+			}
+		}
 	}
 }
 
@@ -30145,6 +30421,7 @@ fallout_country_has_other_special_package_ownership = {
 # ownership is visible in the row instead of being silently assigned to one
 # cleanup owner.
 fallout_country_has_live_event_package_ownership = {
+	NOT = { has_country_flag = fallout_fracture_dynamic_country }
 	OR = {
 		fallout_country_has_zombie_package_ownership = yes
 		fallout_country_has_mengele_package_ownership = yes
@@ -31911,15 +32188,30 @@ fallout_wars_stopped_at_admission_is_current = {
 	}
 }
 
-# Supported scope: COUNTRY. Truces and market access have exact inverses and
-# ordered-pair readback. Docking rights have an exhaustive ordered-pair inverse
-# with generation-bound application proof. Resource rights have an exhaustive
-# country-state inverse and readback for observable grants. The other required
-# surfaces remain fail closed until an exact reset and validation route is proven.
+# Supported scope: COUNTRY. The controller rewrite is exhaustive and has an
+# exact state-level readback, so no postwar occupation can survive into capital
+# selection or the successor ledger.
+fallout_state_controllers_restored_is_current = {
+	has_global_flag = fallout_transition_state_controllers_restored
+	has_variable = global.fallout_transition_state_controller_generation
+	check_variable = {
+		var = global.fallout_transition_state_controller_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	NOT = { any_state = { NOT = { is_owned_and_controlled_by = OWNER } } }
+}
+
+# Supported scope: COUNTRY. This contract contains only diplomacy surfaces with
+# a documented inverse and either a readback trigger or an exhaustive,
+# generation-bound application receipt. Lend lease, expeditionary internals,
+# trade routes, and intelligence networks are diagnostic surfaces and are not
+# allowed to deadlock the world rewrite.
 fallout_old_world_diplomacy_full_reset_is_verified = {
 	has_global_flag = fallout_transition_old_world_diplomacy_proven_complete
 	has_global_flag = fallout_transition_truces_reset_complete
 	has_global_flag = fallout_transition_wars_stopped_complete
+	fallout_state_controllers_restored_is_current = yes
 	has_variable = global.fallout_transition_wars_stopped_generation
 	check_variable = {
 		var = global.fallout_transition_wars_stopped_generation
@@ -31930,10 +32222,6 @@ fallout_old_world_diplomacy_full_reset_is_verified = {
 	NOT = { has_global_flag = fallout_transition_docking_rights_validation_blocked }
 	NOT = { has_global_flag = fallout_transition_market_access_reset_blocked }
 	NOT = { has_global_flag = fallout_transition_resource_rights_reset_blocked }
-	NOT = { has_global_flag = fallout_transition_lend_lease_reset_blocked }
-	NOT = { has_global_flag = fallout_transition_trade_routes_reset_blocked }
-	NOT = { has_global_flag = fallout_transition_intelligence_reset_blocked }
-	NOT = { has_global_flag = fallout_transition_expeditionaries_reset_blocked }
 	has_global_flag = fallout_transition_docking_rights_reset_applied
 	has_global_flag = fallout_transition_docking_rights_reset_verified
 	has_global_flag = fallout_transition_market_access_reset_applied
@@ -31946,8 +32234,6 @@ fallout_old_world_diplomacy_full_reset_is_verified = {
 	has_variable = global.fallout_transition_market_access_verification_generation
 	has_variable = global.fallout_transition_resource_rights_reset_generation
 	has_variable = global.fallout_transition_resource_rights_verification_generation
-	has_variable = global.fallout_transition_lend_lease_verification_generation
-	has_variable = global.fallout_transition_expeditionaries_verification_generation
 	check_variable = {
 		var = global.fallout_transition_docking_rights_reset_generation
 		value = global.fallout_transition_generation
@@ -31978,20 +32264,6 @@ fallout_old_world_diplomacy_full_reset_is_verified = {
 		value = global.fallout_transition_generation
 		compare = equals
 	}
-	check_variable = {
-		var = global.fallout_transition_lend_lease_verification_generation
-		value = global.fallout_transition_generation
-		compare = equals
-	}
-	check_variable = {
-		var = global.fallout_transition_expeditionaries_verification_generation
-		value = global.fallout_transition_generation
-		compare = equals
-	}
-	has_global_flag = fallout_transition_lend_lease_reset_verified
-	has_global_flag = fallout_transition_trade_routes_reset_verified
-	has_global_flag = fallout_transition_intelligence_reset_verified
-	has_global_flag = fallout_transition_expeditionaries_reset_verified
 }
 
 # Supported scope: COUNTRY
@@ -32241,6 +32513,7 @@ fallout_map_return_postconditions_are_met = {
 	has_global_flag = fallout_player_continuation_commit_complete
 	has_global_flag = fallout_player_assignment_uniqueness_verified
 	fallout_old_world_diplomacy_full_reset_is_verified = yes
+	fallout_fracture_transition_is_current = yes
 	fallout_state_rewrite_postconditions_are_met = yes
 	check_variable = {
 		var = global.fallout_player_snapshot_count
@@ -33564,4 +33837,218 @@ fallout_event_401_cleanup_can_enter = {
 	fallout_event_issued_delayed_cleanup_is_current = yes
 	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.year_zero_cleanup }
 	fallout_event_401_registry_is_current = yes
+}
+
+# ============================================================================
+# Consolidated source: common/scripted_triggers/fallout_generic_focus_triggers.txt
+# ============================================================================
+# Shared gates for the universal post-Fallout focus and decision package.
+# ============================================================================
+
+# Supported scope: STATE. These installed-map state sets refine the broad
+# continent check so all nine Fallout regions are reachable from a capital.
+fallout_generic_capital_is_in_south_asia = {
+	OR = {
+		state = 267
+		state = 321
+		state = 322
+		state = 323
+		state = 324
+		state = 415
+		state = 427
+		state = 429
+		state = 430
+		state = 431
+		state = 432
+		state = 434
+		state = 435
+		state = 438
+		state = 439
+		state = 440
+		state = 445
+		state = 757
+		state = 758
+		state = 983
+		state = 985
+		state = 986
+		state = 987
+		state = 990
+		state = 993
+		state = 994
+		state = 995
+		state = 996
+		state = 997
+		state = 1005
+		state = 1006
+		state = 1007
+		state = 1008
+		state = 1009
+	}
+}
+
+fallout_generic_capital_is_in_eurasian_interior = {
+	OR = {
+		state = 287
+		state = 516
+		state = 566
+		state = 567
+		state = 568
+		state = 570
+		state = 575
+		state = 576
+		state = 577
+		state = 578
+		state = 619
+		state = 759
+		state = 878
+		state = 1042
+	}
+}
+
+fallout_generic_capital_is_in_mena = {
+	OR = {
+		state = 273
+		state = 290
+		state = 291
+		state = 293
+		state = 294
+		state = 410
+		state = 411
+		state = 414
+		state = 417
+		state = 446
+		state = 447
+		state = 448
+		state = 449
+		state = 450
+		state = 451
+		state = 452
+		state = 453
+		state = 454
+		state = 455
+		state = 456
+		state = 457
+		state = 458
+		state = 459
+		state = 460
+		state = 461
+		state = 462
+		state = 513
+		state = 514
+		state = 515
+		state = 552
+		state = 553
+		state = 554
+		state = 656
+		state = 658
+		state = 659
+		state = 661
+		state = 662
+		state = 663
+		state = 665
+		state = 675
+		state = 676
+		state = 677
+		state = 678
+		state = 680
+		state = 699
+		state = 765
+		state = 767
+		state = 775
+		state = 782
+		state = 783
+		state = 786
+		state = 799
+		state = 856
+		state = 858
+		state = 906
+		state = 907
+		state = 992
+		state = 1002
+		state = 1003
+		state = 1010
+		state = 1011
+		state = 1013
+		state = 1014
+		state = 1015
+		state = 1016
+	}
+}
+
+fallout_generic_capital_is_in_latin_america = {
+	OR = {
+		is_on_continent = south_america
+		state = 277
+		state = 304
+		state = 311
+		state = 312
+		state = 313
+		state = 314
+		state = 316
+		state = 317
+		state = 474
+		state = 475
+		state = 476
+		state = 477
+		state = 478
+		state = 479
+		state = 485
+		state = 685
+	}
+}
+
+fallout_generic_focus_runtime_is_current = {
+	has_global_flag = fallout_active
+	NOT = { has_global_flag = fallout_transition_active }
+	has_country_flag = fallout_generic_focus_tree_loaded
+	has_variable = fallout_generic_focus_generation
+	check_variable = {
+		var = fallout_generic_focus_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+}
+
+fallout_generic_has_empty_belt_target = {
+	any_owned_state = {
+		any_neighbor_state = {
+			NOT = { is_owned_by = ROOT }
+			owner = { exists = yes NOT = { tag = ROOT } }
+			check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.ash_zone compare = greater_than_or_equals }
+			check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.wasteland compare = less_than }
+		}
+	}
+}
+
+fallout_generic_has_heartland_target = {
+	any_owned_state = {
+		any_neighbor_state = {
+			NOT = { is_owned_by = ROOT }
+			owner = { exists = yes NOT = { tag = ROOT } }
+			check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.ash_zone compare = less_than }
+		}
+	}
+}
+
+fallout_generic_has_government_route = {
+	OR = {
+		has_country_flag = fallout_generic_civic_route
+		has_country_flag = fallout_generic_ration_route
+		has_country_flag = fallout_generic_command_route
+		has_country_flag = fallout_generic_shelter_route
+	}
+}
+
+fallout_generic_has_regional_program = {
+	OR = {
+		has_country_flag = fallout_generic_region_north_america
+		has_country_flag = fallout_generic_region_europe
+		has_country_flag = fallout_generic_region_eurasian_interior
+		has_country_flag = fallout_generic_region_east_asia
+		has_country_flag = fallout_generic_region_south_asia
+		has_country_flag = fallout_generic_region_mena
+		has_country_flag = fallout_generic_region_africa
+		has_country_flag = fallout_generic_region_latin_america
+		has_country_flag = fallout_generic_region_oceania
+	}
 }

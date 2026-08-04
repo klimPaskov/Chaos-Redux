@@ -32,4 +32,4 @@ The chain owns `GFX_report_event_fallout_ashline_firebreak`, its dedicated runti
 
 ## Review boundary
 
-The chain is manually authored and dormant. It adds eleven defined event blocks to the living-world implementation total. It remains outside the countable Fallout release floor until scheduler activation and runtime review are accepted. The exact engine-native manual all-valid-province thermonuclear sweep remains a separate open blocker.
+The chain is manually authored and dormant. It adds eleven defined event blocks to the living-world implementation total. It remains outside the countable Fallout release floor until scheduler activation and ordinary-content review are accepted. The exact engine-native manual all-valid-province thermonuclear sweep belongs to the completed consequence core.

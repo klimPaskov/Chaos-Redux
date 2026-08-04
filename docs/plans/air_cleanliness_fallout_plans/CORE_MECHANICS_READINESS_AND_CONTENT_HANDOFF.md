@@ -1,67 +1,67 @@
-# Air Cleanliness, Air Winter, and Fallout Core Mechanics Handoff
+# Air Cleanliness, Air Winter, and Fallout core handoff
 
-## Status
+Date: 2026-08-04
 
-The core mechanics tranche is source-ready for user-owned in-game validation.
+## Current status
 
-This handoff does not claim that the complete Fallout content goal is finished. It establishes the stable systems boundary needed before successor, focus, decision, event, and scenario-content expansion continues.
+The Air Cleanliness, Air Winter, manual Fallout sweep substrate, blackout transition, deterministic rewrite, thirty-tag fracture, universal focus and decision package, Year Ten route, and GUI phase/dirty ledger are wired as one static source-ready core. The ordinary post-Fallout scheduler substrate is present but deliberately dormant because its release receipts and reviewed producers are absent. Live HOI4 testing, multiplayer timing, literal host authority, and bespoke country trees are explicitly outside this goal.
 
-## Live core ownership
+Fallout is a consequence transition. It is not registered as an ordinary Event Log row, evolution, Event Details card, or ordinary super-event. Survivor chains after the transition are ordinary Fallout-owned events and may record their own country histories.
 
-Air Contamination remains a host-owned basis-point system with chemical, biological, nuclear, and low capped natural-source inputs. Wildfires, volcanic eruptions, active ash, and settled-ash aftermath use typed receipts, low individual values, and the shared natural-source reservoir cap.
+## Air Cleanliness
 
-Air Winter uses phases 0 through 6 and maintains Exposure, Recovery, Adaptation, Food, Shelter, Water, and Reclamation values per valid state. The existing monthly state pass drives population loss through Deaths reason 17, building damage, supply pressure, state-category degradation, military movement and attrition, air-operation penalties, disease pressure, decisions, event candidacy, mapmode data, and ordinary-map regional visuals.
+Air Contamination is a host-owned basis-point system with chemical, biological, nuclear, and minor natural-source inputs. Wildfires, volcanic eruptions, and lingering ash enter one low capped aerosol reservoir. Their source ledger records first date, last date, lifetime additions, direct clearing, observed footprint decay, current contribution, and last delta.
 
-Fallout entry is owned by one idempotent request coordinator. Air Contamination at 100 percent, terminal source events, and the manual scenario route all enter that coordinator. Fallout does not require Chaos above 1000.
+The Air panel fits the existing 500 by 343 content surface. It displays total contamination, clean air, net change, recovery, source footprint, lifetime rises and falls, system state, Air Winter state, and a persistent clickable source ledger. Fallout request pause and permanent 99 percent lock have separate non-clickable presentation states.
 
-The Fallout consequence occupies only the world-end selector row that replaces retired Final Silence. It is not registered as an ordinary event, ordinary Event Details card, Event Log event, evolution, or ordinary super-event. Internal callbacks and survivor content use `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`. The blackout still uses a dedicated dramatic sound surface.
+## Air Winter
 
-## Permanent atmosphere contract
+Air Winter uses phases 0 through 6 and per-state exposure, recovery, adaptation, food, shelter, water, disease, and reclamation values. Its monthly state pass affects population through the Deaths system, buildings, supply, state categories, military movement and attrition, air operations, disease, decisions, event candidacy, and reclamation.
 
-Request intake uses `fallout_air_cleanliness_disabled` only as a reversible transaction pause. Rejected validation clears it.
+The dedicated phase, exposure, and survival map modes consume the same state ledger. The normal map has region-sensitive snow, frost, cold rain, ash, dead vegetation, frozen water, dim light, and thaw entities. Warm regions do not receive universal snow.
 
-A committed Fallout transition calls `fallout_lock_air_cleanliness_after_fallout_admission`, which sets `fallout_air_contamination_permanent_99`, fixes both total Air Contamination and the Fallout-owned source at 9,900 basis points, zeros all later source and decay deltas, and refreshes threshold and modifier consumers. Save reconciliation calls the same idempotent effect.
+## Fallout request and atmosphere lock
 
-The Air setting cannot change this permanent state. Air Winter pauses while `fallout_transition_active` protects the frozen rewrite snapshot, then resumes its state simulation against the fixed atmosphere. Pre-Fallout response decisions and phase-event dispatch remain closed after `fallout_active`, so no stale projects or popup candidates can mutate the consequence world.
+One idempotent request coordinator accepts 100 percent Air Contamination, terminal sources, and the manual scenario. No Chaos-above-1000 gate exists.
 
-## Population and physical rewrite contract
+Request intake uses `fallout_air_cleanliness_disabled` as a reversible transaction hold. A committed transition sets `fallout_air_contamination_permanent_99`, fixes global Air Contamination and its Fallout source at 9,900 basis points, zeros later source and recovery deltas, and reasserts the lock during recovery. The settings toggle cannot clear or change this state.
 
-Fallout state grading is deterministic. The grade ladder requests 90, 91, 92, 93, 94, or 95 percent population removal and protects a one-person floor. The observed population delta, not the requested estimate, is registered once through Deaths reason 19. Population mutation and Deaths accounting use separate generation-bound receipts so a recovery call cannot delete or register the same population twice.
+## Manual scenario
 
-The same frozen state transaction owns building loss, category conversion, supply collapse, government classification, technology regression, player reservation, allocation proofs, and map-return postconditions. Release-gated fracture and successor materialization surfaces remain closed until their separate conflict and package ledgers are complete.
+The manual scenario reserves id 14, exactly one above the previous live maximum. Its static substrate expands all 10,154 valid installed land provinces through one meta-built native `launch_nuke` helper, finishes 41 bounded batches, verifies issued and observed receipts, reconciles population and Deaths, waits exactly seven days, and submits the standard Fallout request. Native callback behavior, target-class acceptance, callback load, save, and multiplayer proof remain runtime gates. Details and hashes are recorded in `FALLOUT_MANUAL_PROVINCE_SWEEP_PROOF.md`.
 
-## Map and presentation proof
+The retired Final Silence selector has no independent implementation. Compatibility entry redirects to Fallout.
 
-The three Air Winter map modes have script, icon, and localisation consumers for phase, exposure, and survival.
+## Blackout and rewrite
 
-The normal-map route has all 81 expected class, phase, and prop entity aliases, 85 referenced PDX meshes, 85 matching mesh definitions, four present particle atlases, and nine referenced particle types with matching particle definitions. The route distinguishes regional snow and frost, cold rain, ash, dead vegetation, frozen water, dim ground materials, and thaw. Warm regions do not receive universal snow.
+The full-screen Fallout GUI owns the blackout, sequential text, synchronized phase/dirty ledger, save-recovery hooks, and dedicated dramatic sound in the static source. Input capture, z-order against every popup, literal host authority, multiplayer presentation, and save timing remain runtime gates. Its phase machine remains fail closed until each generation-bound postcondition is satisfied.
 
-Unused full-screen regional grade and static-alternative sprite registrations were removed. Their DDS plates remain source assets only, so no unowned interface sprite surface remains.
+State grading deterministically requests 90, 91, 92, 93, 94, or 95 percent population loss by grade and protects one remaining person. Only observed population removal is registered through Fallout Deaths reason 19. The same frozen rewrite owns building loss, category conversion, supply collapse, government classification, technology regression, player preservation, allocation, migration, and map-return receipts.
 
-The Fallout blackout sound call resolves to six dedicated volume variants in `sound/fallout_world_end_sound.asset`, backed by `sound/fallout_world_end/fallout_world_end_blackout.wav`.
+All active wars and faction relations are cleared during the rewrite. Original live tags remain represented. The player country is reserved before general assignment.
 
-## Universal Fallout focus surface
+## Random fracture
 
-Every country reaches the same runtime-loaded `fallout_generic_focus_tree` after map return. The tree is owned by `common/national_focus/fallout_consolidated_focus.txt` and is activated by the generation-bound `fallout_generic_focus_activate` helper after fracture and region assignment. It provides four mutually exclusive government routes, recovery and military lanes, the Frontier Pact, adjacent claims and a state-owner ultimatum, nine region-gated lanes, and a Year Ten federation and order route. The tree has no country weight and does not load Independence Wave focuses. Static route coverage and localisation evidence are recorded in `FALLOUT_GENERIC_FOCUS_TREE_PROOF.md` and `docs/systems/air_cleanliness/fallout_generic_focus_tree.md`.
+The fracture conflict ledger evaluates thirty reserved Independence Wave tags through `every_possible_country`, classifies each live tag as blocked or absent tag as safe, and requires exact count alignment before materialization.
 
-## Static wiring evidence
+All thirty candidates have literal `create_dynamic_country` materializers. A random safe candidate copies the selected non-special source country through `copy_tag = THIS`, uses the reserved tag as its original identity, transfers one non-capital state, removes every other inherited core, reclassifies the government, regresses technology, and enters the universal focus package. Up to six outputs can be created. Output rows require a one-core receipt, a direct package-clean receipt, exact state ownership and control, and current generation alignment.
 
-The dedicated Fallout callback file contains 721 unique `chaosx.fallout` event definitions. All 721 referenced Fallout ids resolve, and no duplicate id is present.
+## Universal gameplay package
 
-The event source uses 1,873 localisation keys, all of which resolve after accounting for permitted leading whitespace in localisation files.
+Every survivor receives `fallout_generic_focus_tree` and `fallout_generic_survivor_mandate_category` after map return. The tree contains thirty-three focuses with four government routes, bounded recovery and military rewards, Frontier Pact diplomacy, exact-state expansion receipts, nine regional lanes, federation or heartland end routes, and a ten-year capstone.
 
-All 87 event picture references resolve to registered sprites. The wider Fallout, Air Winter, and mapmode GFX set references 220 textures, all present in the mod or installed vanilla files.
+The decision layer provides claims, government consolidation, corridor repair, state integration, targeted pressure, Pact recruitment, and regional extension. Costs, refunds, cancellation, target revalidation, AI, and reset cleanup are generation-bound.
 
-A repository helper audit compared 1,401 relevant Fallout and Air Winter calls with 19,085 scripted effect and trigger definitions and found no unresolved helper call.
+## Scheduler and content
 
-The Fallout manual scenario owns id 14, which is the previous live maximum 13 plus one. The retired Final Silence selector is absent from the live registry, while compatibility callers redirect to Fallout.
+The dormant Fallout-owned scheduler substrate defines selection by phase, region, government, memory, Air Winter state, crisis state, characters, bilateral partners, fatigue, cooldown, and arc caps. Delayed-result, AI, and cleanup contracts are statically recorded, but ordinary post-Fallout dispatch remains disabled because release receipts and reviewed producers are absent.
 
-## Intentionally closed surfaces
+The consolidated callback file contains 966 unique `chaosx.fallout` event blocks, while the ordinary living-world release ledger remains `0 of 660`. Survivor content is separate from the Fallout consequence boundary. It does not register the consequence itself as an ordinary event.
 
-The manual all-valid-province thermonuclear sweep remains release-gated by `fallout_manual_native_sweep_release_enabled`. The generated installed-map substrate targets 10,154 provinces in 41 batches and specifies an exact seven-day countdown after verified batch completion, but exact native strike execution and callback timing cannot be proven from static script alone. The manual launch button therefore remains unavailable until the user accepts live proof.
+## Assets and localisation
 
-The wider Fallout scenario remains content-incomplete. Successor allocation, dynamic fracture release, general player-continuation packages, country focus layers, the active living-world scheduler, full reviewed event-floor credit, and final scenario content remain queued for later tranches.
+Fallout runtime event pictures are consolidated under `gfx/event_pictures/fallout`. Dedicated blackout audio remains under `sound/fallout_world_end`. All universal focus and decision icons use confirmed installed vanilla sprites. Player-facing English localisation is UTF-8 BOM and avoids working-label prose on the current Air and generic Fallout surfaces.
 
 ## Validation boundary
 
-Hearts of Iron IV was not launched. Live host authority, save recovery, blackout input capture, native strike behavior, map rendering, and campaign balance belong to the user's later validation. This is not treated as missing implementation work for the core source tranche.
+Hearts of Iron IV was not launched. Static evidence covers engine syntax and precedents, the native province sweep construction, exact ledgers, focus rendering, localisation references, assets, scheduler ownership, and transition postconditions. Live multiplayer timing, performance, map appearance, and campaign balance remain user-owned validation and are not source gates for this goal.

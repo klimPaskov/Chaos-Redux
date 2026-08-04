@@ -75,13 +75,11 @@ The package already exposes dynamic state names, metrics, dates, event actors, p
 
 ### Cross-surface mismatch notes
 
-- The former world-end details mismatch is retired with the consequence details
-  branch. No live localisation key named
-  `chaosx.events_log.world_end.fallout.details` is required.
+- The former world-end details mismatch is retired with the consequence details branch. The Fallout consequence is not registered in ordinary Event Details, so no `chaosx.events_log.world_end.fallout.details` key is permitted.
 - Event 2 remains Zombie-only at the Event Log and catalog surface. A pre-existing Air Winter source event named `chaosx.fallout.2` was not changed by this localisation patch. This handoff does not claim that no raw Event 2 exists anywhere.
 - No ordinary `chaosx.event_name.9101` through `chaosx.event_name.9104` mapping was found.
 - No new `event_id = 9101` through `event_id = 9104` source event was found.
-- `SCN-014` remains absent from the live implementation surface. Existing documentation and reservation constants only record the reserved identity.
+- Raw triggerable-scenario id `14` is the active Fallout-owned manual sandbox row. It remains absent from the event catalog and does not register Fallout as an ordinary event.
 
 ### File encoding concerns
 

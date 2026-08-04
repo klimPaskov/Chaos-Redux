@@ -198,7 +198,7 @@ After each batch, run the owning audits. Before completion, run:
 - country-package audit
 - localisation audit
 - documentation cleanup
-- spreadsheet update
+- catalog-exclusion verification
 - event completion audit
 - manual improvement-loop closure pass
 

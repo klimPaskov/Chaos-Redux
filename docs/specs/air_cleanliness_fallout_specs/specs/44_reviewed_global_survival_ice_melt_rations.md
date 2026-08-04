@@ -41,7 +41,7 @@ The report-event sprite `GFX_report_event_fallout_ice_melt_rations` is defined i
 
 ## Deliberate boundary
 
-This chain remains dormant. Scheduler activation, host authority, save recovery, multiplayer input blocking, full-screen blackout delivery, and runtime Event Log display remain unproven engine surfaces. The station filter reserve is a Fallout country ledger rather than a native equipment store. The chain does not create a character, a successor tag, a new state, or native frozen-water topology. The exact engine-native all-valid-province thermonuclear sweep for the manual scenario remains separately blocked.
+This chain remains dormant because scheduler release receipts, reviewed producers, and activation setters are absent. The station filter reserve is a Fallout country ledger rather than a native equipment store. The chain does not create a character, a successor tag, a new state, or native frozen-water topology. The full-screen blackout and exact engine-native all-valid-province thermonuclear sweep belong to the completed consequence core.
 
 ## Future extension
 

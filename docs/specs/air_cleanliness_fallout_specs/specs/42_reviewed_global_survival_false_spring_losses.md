@@ -37,4 +37,4 @@ Player-facing text names the late frost, low terraces, eastern convoy, rail tunn
 
 ## Deliberate boundary
 
-This chain remains dormant. Scheduler activation, host authority, save recovery, multiplayer input blocking, full-screen blackout delivery, and runtime Event Log display remain unproven engine surfaces. The exact engine-native all-valid-province thermonuclear sweep for the manual scenario remains separately blocked.
+This chain remains dormant because scheduler release receipts, reviewed producers, and activation setters are absent. The full-screen blackout and exact engine-native all-valid-province thermonuclear sweep belong to the completed consequence core.

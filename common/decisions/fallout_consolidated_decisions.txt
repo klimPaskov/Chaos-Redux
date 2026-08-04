@@ -1,3 +1,18 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_CLEANING_DAY_CIVILIAN_FACTORIES = 4
+@CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_FILTER_CONVOY_CIVILIAN_FACTORIES = 2
+@CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_VERIFICATION_CIVILIAN_FACTORIES = 1
+@CR_SC_AIR_WINTER_RESPONSE_COST_CLINIC_CIVILIAN_FACTORIES = 2
+@CR_SC_AIR_WINTER_RESPONSE_COST_CROP_CIVILIAN_FACTORIES = 2
+@CR_SC_AIR_WINTER_RESPONSE_COST_GREENHOUSE_CIVILIAN_FACTORIES = 4
+@CR_SC_FALLOUT_SUCCESSOR_B7_PROJECT_DEPOT_CIVILIAN_FACTORIES = 1
+@CR_SC_FALLOUT_SUCCESSOR_B7_PROJECT_RECONSTRUCTION_CIVILIAN_FACTORIES = 1
+@CR_SC_FALLOUT_GENERIC_DECISION_SURVEY_CIVILIAN_FACTORIES = 1
+@CR_SC_FALLOUT_GENERIC_DECISION_CORRIDOR_CIVILIAN_FACTORIES = 1
+@CR_SC_FALLOUT_GENERIC_DECISION_INTEGRATION_CIVILIAN_FACTORIES = 2
+@CR_SC_FALLOUT_GENERIC_DECISION_ROUTE_CIVILIAN_FACTORIES = 1
+@CR_SC_FALLOUT_GENERIC_DECISION_REGION_CIVILIAN_FACTORIES = 1
 # ============================================================================
 # CHAOS REDUX - FALLOUT_CONSOLIDATED_DECISIONS.TXT
 # Consolidated Fallout and Air Cleanliness loader surface.
@@ -29,7 +44,7 @@ air_cleanliness_treaty_category = {
 		cost = constant:air_cleanliness_treaty_runtime.zero
 		days_remove = constant:air_cleanliness_treaty_runtime.cleaning_day_duration_days
 		modifier = {
-			civilian_factory_use = constant:air_cleanliness_treaty_runtime.cleaning_day_civilian_factories
+			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_CLEANING_DAY_CIVILIAN_FACTORIES
 		}
 		fire_only_once = no
 
@@ -80,7 +95,7 @@ air_cleanliness_treaty_category = {
 		cost = constant:air_cleanliness_treaty_runtime.zero
 		days_remove = constant:air_cleanliness_treaty_runtime.filter_convoy_duration_days
 		modifier = {
-			civilian_factory_use = constant:air_cleanliness_treaty_runtime.filter_convoy_civilian_factories
+			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_FILTER_CONVOY_CIVILIAN_FACTORIES
 		}
 		fire_only_once = no
 
@@ -153,7 +168,7 @@ air_cleanliness_treaty_category = {
 		cost = constant:air_cleanliness_treaty_runtime.zero
 		days_remove = constant:air_cleanliness_treaty_runtime.verification_mission_duration_days
 		modifier = {
-			civilian_factory_use = constant:air_cleanliness_treaty_runtime.verification_civilian_factories
+			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_VERIFICATION_CIVILIAN_FACTORIES
 		}
 		fire_only_once = no
 
@@ -394,7 +409,7 @@ air_winter_response_category = {
 		on_map_mode = map_and_decisions_view
 		days_remove = constant:air_winter_response_timing.clinic_conversion_days
 		days_re_enable = constant:air_winter_response_timing.early_reenable_days
-		modifier = { civilian_factory_use = constant:air_winter_response_cost.clinic_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_AIR_WINTER_RESPONSE_COST_CLINIC_CIVILIAN_FACTORIES }
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
 		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
@@ -492,7 +507,7 @@ air_winter_response_category = {
 		on_map_mode = map_and_decisions_view
 		days_remove = constant:air_winter_response_timing.protected_crop_days
 		days_re_enable = constant:air_winter_response_timing.early_reenable_days
-		modifier = { civilian_factory_use = constant:air_winter_response_cost.crop_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_AIR_WINTER_RESPONSE_COST_CROP_CIVILIAN_FACTORIES }
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
 		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
@@ -792,7 +807,7 @@ air_winter_response_category = {
 		on_map_mode = map_and_decisions_view
 		days_remove = constant:air_winter_response_timing.greenhouse_conversion_days
 		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
-		modifier = { civilian_factory_use = constant:air_winter_response_cost.greenhouse_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_AIR_WINTER_RESPONSE_COST_GREENHOUSE_CIVILIAN_FACTORIES }
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
 		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
@@ -1166,13 +1181,13 @@ fallout_food_security_category = {
 		}
 		available = {
 			fallout_survival_country_resource_row_is_durable = yes
-			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.ration_law_food_cost compare = greater_than_or_equals }
-			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_100_decision.ration_law_filter_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.ration_law_food_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^7 value = constant:fallout_event_100_decision.ration_law_filter_cost compare = greater_than_or_equals }
 		}
 		custom_cost_trigger = {
 			fallout_survival_country_resource_row_is_durable = yes
-			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.ration_law_food_cost compare = greater_than_or_equals }
-			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_100_decision.ration_law_filter_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.ration_law_food_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^7 value = constant:fallout_event_100_decision.ration_law_filter_cost compare = greater_than_or_equals }
 		}
 		custom_cost_text = fallout.event_log.last_inventory.ration_law_cost
 		days_mission_timeout = constant:fallout_event_100_decision.ration_law_days
@@ -1192,7 +1207,7 @@ fallout_food_security_category = {
 			set_country_flag = fallout_event_100_ration_law_failed
 			set_temp_variable = { fallout_event_100_modifier_days = constant:fallout_event_100_timing.grievance_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_food_grievance_aftershock days = fallout_event_100_modifier_days }
-			clear_temp_variable = fallout_event_100_modifier_days
+			set_temp_variable = { fallout_event_100_modifier_days = 0 }
 		}
 		timeout_effect = {
 			clr_country_flag = fallout_event_100_ration_law_active
@@ -1204,11 +1219,11 @@ fallout_food_security_category = {
 			set_temp_variable = { fallout_event_100_modifier_days = constant:fallout_event_100_timing.ration_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_food_public_ration_law days = fallout_event_100_modifier_days }
 			fallout_orientation_clamp_resources = yes
-			clear_temp_variable = fallout_event_100_cohesion_delta
-			clear_temp_variable = fallout_event_100_modifier_days
+			set_temp_variable = { fallout_event_100_cohesion_delta = 0 }
+			set_temp_variable = { fallout_event_100_modifier_days = 0 }
 		}
 		fire_only_once = yes
-		ai_will_do = { base = 4 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_threshold.food_partial compare = less_than } } }
+		ai_will_do = { base = 4 modifier = { factor = 2 check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_100_threshold.food_partial compare = less_than } } }
 	}
 
 	fallout_event_100_first_hunger_mission = {
@@ -1225,13 +1240,13 @@ fallout_food_security_category = {
 		}
 		available = {
 			fallout_survival_country_resource_row_is_durable = yes
-			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.hunger_mission_food_cost compare = greater_than_or_equals }
-			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.hunger_mission_food_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals }
 		}
 		custom_cost_trigger = {
 			fallout_survival_country_resource_row_is_durable = yes
-			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.hunger_mission_food_cost compare = greater_than_or_equals }
-			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.hunger_mission_food_cost compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals }
 		}
 		custom_cost_text = fallout.event_log.last_inventory.hunger_mission_cost
 		days_mission_timeout = constant:fallout_event_100_decision.hunger_mission_days
@@ -1251,7 +1266,7 @@ fallout_food_security_category = {
 			set_country_flag = fallout_event_100_first_hunger_mission_failed
 			set_temp_variable = { fallout_event_100_modifier_days = constant:fallout_event_100_timing.grievance_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_food_grievance_aftershock days = fallout_event_100_modifier_days }
-			clear_temp_variable = fallout_event_100_modifier_days
+			set_temp_variable = { fallout_event_100_modifier_days = 0 }
 		}
 		timeout_effect = {
 			clr_country_flag = fallout_event_100_first_hunger_mission_active
@@ -1261,10 +1276,10 @@ fallout_food_security_category = {
 			set_temp_variable = { fallout_event_100_cohesion_delta = constant:fallout_event_100_decision.hunger_mission_cohesion_gain }
 			fallout_survival_apply_cohesion_delta = yes
 			fallout_orientation_clamp_resources = yes
-			clear_temp_variable = fallout_event_100_cohesion_delta
+			set_temp_variable = { fallout_event_100_cohesion_delta = 0 }
 		}
 		fire_only_once = yes
-		ai_will_do = { base = 5 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals } } }
+		ai_will_do = { base = 5 modifier = { factor = 2 check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals } } }
 	}
 }
 
@@ -1570,12 +1585,12 @@ fallout_nzl_lifeboat_category = {
 		available = {
 			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_medium } }
 			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
-			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+			NOT = { check_variable = { var = army_experience value = constant:fallout_nzl_cost.army_experience compare = less_than } }
 		}
 		custom_cost_trigger = {
 			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_medium } }
 			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
-			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+			NOT = { check_variable = { var = army_experience value = constant:fallout_nzl_cost.army_experience compare = less_than } }
 		}
 		custom_cost_text = fallout_nzl_cost_port_militia
 		days_mission_timeout = constant:fallout_nzl_duration.standard
@@ -1657,11 +1672,11 @@ fallout_nzl_lifeboat_category = {
 		}
 		available = {
 			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
-			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+			NOT = { check_variable = { var = navy_experience value = constant:fallout_nzl_cost.navy_experience compare = less_than } }
 		}
 		custom_cost_trigger = {
 			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
-			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+			NOT = { check_variable = { var = navy_experience value = constant:fallout_nzl_cost.navy_experience compare = less_than } }
 		}
 		custom_cost_text = fallout_nzl_cost_rescue_cutters
 		days_remove = constant:fallout_nzl_duration.standard
@@ -1864,13 +1879,13 @@ fallout_nzl_lifeboat_category = {
 			NOT = { has_country_flag = fallout_nzl_home_guard_mobilization_active }
 			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_low } }
 			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_low }
-			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+			NOT = { check_variable = { var = army_experience value = constant:fallout_nzl_cost.army_experience compare = less_than } }
 			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.strained }
 		}
 		custom_cost_trigger = {
 			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_low } }
 			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_low }
-			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+			NOT = { check_variable = { var = army_experience value = constant:fallout_nzl_cost.army_experience compare = less_than } }
 			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.strained }
 		}
 		custom_cost_text = fallout_nzl_cost_home_guard
@@ -2147,17 +2162,19 @@ fallout_nzl_lifeboat_category = {
 			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.command_power_low }
 			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
 			add_command_power = fallout_nzl_cost_value
-			diplomatic_relation = {
-				country = var:fallout_nzl_pirate_aggressor
-				relation = military_access
-				active = no
-			}
-			diplomatic_relation = {
-				country = var:fallout_nzl_pirate_aggressor
-				relation = docking_rights
-				active = no
-			}
 			var:fallout_nzl_pirate_aggressor = {
+				ROOT = {
+					diplomatic_relation = {
+						country = PREV
+						relation = military_access
+						active = no
+					}
+					diplomatic_relation = {
+						country = PREV
+						relation = docking_rights
+						active = no
+					}
+				}
 				diplomatic_relation = {
 					country = ROOT
 					relation = military_access
@@ -2194,7 +2211,7 @@ fallout_nzl_lifeboat_category = {
 			NOT = { fallout_nzl_pirate_settlement_is_current = yes }
 		}
 		available = {
-			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+			NOT = { check_variable = { var = navy_experience value = constant:fallout_nzl_cost.navy_experience compare = less_than } }
 			OR = {
 				AND = {
 					fallout_nzl_sea_road_licensing_is_current = yes
@@ -2207,7 +2224,7 @@ fallout_nzl_lifeboat_category = {
 			}
 		}
 		custom_cost_trigger = {
-			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+			NOT = { check_variable = { var = navy_experience value = constant:fallout_nzl_cost.navy_experience compare = less_than } }
 			OR = {
 				AND = {
 					fallout_nzl_sea_road_licensing_is_current = yes
@@ -2284,12 +2301,6 @@ fallout_nzl_lifeboat_category = {
 #
 
 fallout_usa_continuity_projects_category = {
-	visible = {
-		fallout_successor_b7_usa_package_receipts_are_current = yes
-	}
-	icon = GFX_decision_category_fallout_usa_continuity_projects
-	priority = 96
-
 	fallout_usa_repair_inland_depot = {
 		name = fallout_usa_repair_inland_depot
 		desc = fallout_usa_repair_inland_depot_desc
@@ -2302,7 +2313,7 @@ fallout_usa_continuity_projects_category = {
 		available = { fallout_successor_b7_usa_depot_project_is_available = yes }
 		custom_cost_trigger = { fallout_successor_b7_usa_depot_project_is_available = yes }
 		custom_cost_text = fallout_usa_repair_inland_depot_cost
-		modifier = { civilian_factory_use = constant:fallout_successor_b7_project.depot_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_FALLOUT_SUCCESSOR_B7_PROJECT_DEPOT_CIVILIAN_FACTORIES }
 		days_remove = constant:fallout_successor_b7_project.depot_duration
 		complete_effect = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fallout_successor_b7_project.depot_infantry_spend }
@@ -2453,7 +2464,7 @@ fallout_usa_continuity_projects_category = {
 		available = { fallout_successor_b7_usa_reconstruction_project_is_available = yes }
 		custom_cost_trigger = { fallout_successor_b7_usa_reconstruction_project_is_available = yes }
 		custom_cost_text = fallout_usa_launch_federal_reconstruction_drive_cost
-		modifier = { civilian_factory_use = constant:fallout_successor_b7_project.reconstruction_civilian_factories }
+		modifier = { civilian_factory_use = @CR_SC_FALLOUT_SUCCESSOR_B7_PROJECT_RECONSTRUCTION_CIVILIAN_FACTORIES }
 		days_remove = constant:fallout_successor_b7_project.reconstruction_duration
 		complete_effect = {
 			add_equipment_to_stockpile = { type = train_equipment amount = constant:fallout_successor_b7_project.reconstruction_train_spend }
@@ -2476,5 +2487,352 @@ fallout_usa_continuity_projects_category = {
 			base = constant:fallout_successor_b7_project_ai.reconstruction
 			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
 		}
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/decisions/fallout_generic_survivor_decisions.txt
+# ============================================================================
+# Universal post-Fallout actions. These decisions turn focus commitments into
+# map targets, border pressure, faction recruitment, and long state recovery.
+# ============================================================================
+
+fallout_generic_survivor_mandate_category = {
+	fallout_generic_survey_frontier_corridors = {
+		icon = GFX_decision_generic_operation
+		visible = { has_country_flag = fallout_generic_frontier_claims_open }
+		available = { fallout_generic_focus_runtime_is_current = yes }
+		cost = constant:fallout_generic_decision.cost_none
+		days_remove = constant:fallout_generic_decision.duration_survey_days
+		days_re_enable = constant:fallout_generic_decision.frontier_cooldown_days
+		modifier = { civilian_factory_use = @CR_SC_FALLOUT_GENERIC_DECISION_SURVEY_CIVILIAN_FACTORIES }
+		fire_only_once = no
+		remove_effect = {
+			fallout_generic_focus_claim_frontier = yes
+			fallout_generic_focus_frontier_gain = yes
+		}
+		cancel_trigger = { NOT = { fallout_generic_focus_runtime_is_current = yes } }
+		ai_will_do = {
+			base = constant:fallout_generic_decision.ai_normal
+			modifier = { factor = constant:fallout_generic_decision.ai_war_factor has_war = yes }
+		}
+	}
+
+	fallout_generic_consolidate_government_route = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			fallout_generic_has_government_route = yes
+			NOT = { has_country_flag = fallout_generic_government_route_consolidated }
+		}
+		available = { fallout_generic_focus_runtime_is_current = yes }
+		cost = constant:fallout_generic_decision.cost_low
+		days_remove = constant:fallout_generic_decision.duration_route_days
+		modifier = { civilian_factory_use = @CR_SC_FALLOUT_GENERIC_DECISION_ROUTE_CIVILIAN_FACTORIES }
+		fire_only_once = yes
+		remove_effect = { fallout_generic_decision_consolidate_route = yes }
+		cancel_trigger = { NOT = { fallout_generic_focus_runtime_is_current = yes } }
+		ai_will_do = { base = constant:fallout_generic_decision.ai_high }
+	}
+
+	fallout_generic_restore_a_state_corridor = {
+		icon = GFX_decision_generic_construction
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { fallout_generic_focus_runtime_is_current = yes }
+		target_trigger = {
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				is_claimed_by = ROOT
+				NOT = { has_state_flag = fallout_generic_corridor_restored }
+				NOT = { has_state_flag = fallout_generic_corridor_work_active }
+				check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.wasteland compare = less_than }
+			}
+		}
+		visible = {
+			OR = {
+				has_country_flag = fallout_generic_power_grid_reopened
+				has_country_flag = fallout_generic_rail_spine_repaired
+			}
+		}
+		available = { fallout_generic_focus_runtime_is_current = yes }
+		cost = constant:fallout_generic_decision.cost_none
+		days_remove = constant:fallout_generic_decision.duration_corridor_days
+		modifier = { civilian_factory_use = @CR_SC_FALLOUT_GENERIC_DECISION_CORRIDOR_CIVILIAN_FACTORIES }
+		fire_only_once = no
+		complete_effect = { FROM = { set_state_flag = fallout_generic_corridor_work_active } }
+		remove_effect = {
+			FROM = {
+				clr_state_flag = fallout_generic_corridor_work_active
+				set_state_flag = fallout_generic_corridor_restored
+				add_building_construction = { type = infrastructure level = constant:fallout_generic_decision.state_infrastructure_gain instant_build = yes }
+			}
+			fallout_generic_focus_recovery_gain = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_generic_focus_runtime_is_current = yes }
+				FROM = {
+					OR = {
+						NOT = { is_owned_by = ROOT }
+						NOT = { is_controlled_by = ROOT }
+						NOT = { is_claimed_by = ROOT }
+						check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.wasteland compare = greater_than_or_equals }
+					}
+				}
+			}
+		}
+		cancel_effect = { FROM = { clr_state_flag = fallout_generic_corridor_work_active } }
+		ai_will_do = {
+			base = constant:fallout_generic_decision.ai_high
+			modifier = { factor = constant:fallout_generic_decision.ai_war_factor has_war = yes }
+		}
+	}
+
+	fallout_generic_integrate_a_reclaimed_state = {
+		icon = GFX_decision_INS_core_state
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { fallout_generic_focus_runtime_is_current = yes }
+		target_trigger = {
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				NOT = { is_core_of = ROOT }
+				NOT = { has_state_flag = fallout_generic_integration_active }
+				check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.wasteland compare = less_than }
+				OR = {
+					is_claimed_by = ROOT
+					has_state_flag = fallout_generic_corridor_restored
+				}
+			}
+		}
+		visible = { has_country_flag = fallout_generic_new_border_settled }
+		available = {
+			fallout_generic_focus_runtime_is_current = yes
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_integration_requirements_tt
+				check_variable = { var = fallout_generic_authority value = constant:fallout_generic_decision.integration_authority_required compare = greater_than_or_equals }
+				has_stability > constant:fallout_generic_decision.integration_stability_required
+			}
+		}
+		cost = constant:fallout_generic_decision.cost_medium
+		days_remove = constant:fallout_generic_decision.duration_integration_days
+		modifier = { civilian_factory_use = @CR_SC_FALLOUT_GENERIC_DECISION_INTEGRATION_CIVILIAN_FACTORIES }
+		fire_only_once = no
+		complete_effect = { FROM = { set_state_flag = fallout_generic_integration_active } }
+		remove_effect = {
+			FROM = {
+				clr_state_flag = fallout_generic_integration_active
+				add_core_of = ROOT
+				set_state_flag = fallout_generic_reclaimed_state_integrated
+			}
+			fallout_generic_focus_standard_gain = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_generic_focus_runtime_is_current = yes }
+				FROM = {
+					OR = {
+						NOT = { is_owned_by = ROOT }
+						NOT = { is_controlled_by = ROOT }
+						is_core_of = ROOT
+						check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.wasteland compare = greater_than_or_equals }
+						AND = {
+							NOT = { is_claimed_by = ROOT }
+							NOT = { has_state_flag = fallout_generic_corridor_restored }
+						}
+					}
+				}
+				check_variable = { var = fallout_generic_authority value = constant:fallout_generic_decision.integration_authority_required compare = less_than }
+				NOT = { has_stability > constant:fallout_generic_decision.integration_stability_required }
+			}
+		}
+		cancel_effect = { FROM = { clr_state_flag = fallout_generic_integration_active } }
+		ai_will_do = {
+			base = constant:fallout_generic_decision.ai_normal
+			modifier = { factor = constant:fallout_generic_decision.ai_war_factor has_war = yes }
+		}
+	}
+
+	fallout_generic_pressure_a_frontier_neighbor = {
+		icon = GFX_decision_border_war
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { fallout_generic_focus_runtime_is_current = yes }
+		target_trigger = {
+			FROM = {
+				exists = yes
+				fallout_generic_focus_runtime_is_current = yes
+				is_neighbor_of = ROOT
+				is_subject = no
+				has_capitulated = no
+				has_war = no
+				NOT = { tag = ROOT }
+				NOT = { has_war_with = ROOT }
+				NOT = { is_in_faction_with = ROOT }
+			}
+			var:fallout_generic_border_target_state = {
+				is_owned_by = FROM
+				is_claimed_by = ROOT
+				any_neighbor_state = { is_owned_by = ROOT }
+			}
+		}
+		visible = { has_country_flag = fallout_generic_border_ultimatum_issued }
+		available = {
+			fallout_generic_focus_runtime_is_current = yes
+			NOT = { has_war = yes }
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_frontier_pressure_required_tt
+				check_variable = { var = fallout_generic_frontier_pressure value = constant:fallout_generic_decision.frontier_pressure_action_cost compare = greater_than_or_equals }
+			}
+		}
+		cost = constant:fallout_generic_decision.cost_medium
+		days_remove = constant:fallout_generic_decision.duration_pressure_days
+		days_re_enable = constant:fallout_generic_decision.frontier_cooldown_days
+		fire_only_once = no
+		complete_effect = {
+			subtract_from_variable = { fallout_generic_frontier_pressure = constant:fallout_generic_decision.frontier_pressure_action_cost }
+		}
+		remove_effect = {
+			create_wargoal = {
+				type = annex_everything
+				target = FROM
+				expire = constant:fallout_generic_focus.wargoal_expiry_days
+			}
+			fallout_generic_focus_standard_gain = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_generic_focus_runtime_is_current = yes }
+				has_war = yes
+				FROM = {
+					OR = {
+						exists = no
+						NOT = { fallout_generic_focus_runtime_is_current = yes }
+						NOT = { is_neighbor_of = ROOT }
+						is_subject = yes
+						has_capitulated = yes
+						has_war = yes
+						has_war_with = ROOT
+						is_in_faction_with = ROOT
+						NOT = {
+							var:ROOT.fallout_generic_border_target_state = {
+								is_owned_by = PREV
+								is_claimed_by = ROOT
+								any_neighbor_state = { is_owned_by = ROOT }
+							}
+						}
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			add_to_variable = { fallout_generic_frontier_pressure = constant:fallout_generic_decision.frontier_pressure_action_cost }
+			clamp_variable = { var = fallout_generic_frontier_pressure min = constant:fallout_generic_focus.minimum max = constant:fallout_generic_focus.maximum }
+		}
+		ai_will_do = {
+			base = constant:fallout_generic_decision.ai_normal
+			modifier = { factor = constant:fallout_generic_decision.ai_high has_country_flag = fallout_generic_command_route }
+		}
+	}
+
+	fallout_generic_offer_a_frontier_compact = {
+		icon = GFX_decision_gre_faction_management
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			fallout_generic_focus_runtime_is_current = yes
+			has_country_flag = fallout_generic_frontier_pact_active
+			is_faction_leader = yes
+			NOT = { has_war = yes }
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				fallout_generic_focus_runtime_is_current = yes
+				is_neighbor_of = ROOT
+				is_ai = yes
+				is_subject = no
+				has_capitulated = no
+				is_in_faction = no
+				has_war = no
+				NOT = { tag = ROOT }
+				NOT = { has_war_with = ROOT }
+				has_opinion = { target = ROOT value > constant:fallout_generic_decision.pact_opinion_required }
+				check_variable = { var = fallout_region_id value = ROOT.fallout_region_id compare = equals }
+			}
+		}
+		visible = { has_country_flag = fallout_generic_neighbor_compacts_open }
+		available = {
+			fallout_generic_focus_runtime_is_current = yes
+			has_country_flag = fallout_generic_frontier_pact_active
+			is_faction_leader = yes
+			NOT = { has_war = yes }
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_frontier_pact_requirements_tt
+				check_variable = { var = fallout_generic_cohesion value = constant:fallout_generic_decision.pact_cohesion_required compare = greater_than_or_equals }
+			}
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { support_equipment_1 < constant:fallout_generic_decision.pact_support_equipment_cost } }
+		}
+		custom_cost_text = fallout_generic_frontier_compact_cost
+		days_remove = constant:fallout_generic_decision.duration_pact_days
+		days_re_enable = constant:fallout_generic_decision.frontier_cooldown_days
+		fire_only_once = no
+		complete_effect = {
+			fallout_generic_frontier_pact_record_payment = yes
+		}
+		remove_effect = {
+			fallout_generic_frontier_pact_clear_one_payment = yes
+			FROM = {
+				add_opinion_modifier = { target = ROOT modifier = fallout_generic_frontier_pact_invitation }
+				add_to_faction = ROOT
+				set_country_flag = fallout_generic_joined_frontier_pact
+			}
+			fallout_generic_focus_recovery_gain = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_generic_focus_runtime_is_current = yes }
+				NOT = { is_faction_leader = yes }
+				has_war = yes
+				FROM = {
+					OR = {
+						exists = no
+						NOT = { fallout_generic_focus_runtime_is_current = yes }
+						NOT = { is_neighbor_of = ROOT }
+						is_ai = no
+						is_subject = yes
+						has_capitulated = yes
+						has_war = yes
+						has_war_with = ROOT
+						is_in_faction = yes
+						NOT = { has_opinion = { target = ROOT value > constant:fallout_generic_decision.pact_opinion_required } }
+						NOT = { check_variable = { var = fallout_region_id value = ROOT.fallout_region_id compare = equals } }
+					}
+				}
+			}
+		}
+		cancel_effect = { fallout_generic_frontier_pact_refund_one_payment = yes }
+		ai_will_do = {
+			base = constant:fallout_generic_decision.ai_normal
+			modifier = { factor = constant:fallout_generic_decision.ai_peace_factor NOT = { has_war = yes } }
+		}
+	}
+
+	fallout_generic_extend_the_regional_network = {
+		icon = GFX_decision_generic_research
+		visible = {
+			fallout_generic_has_regional_program = yes
+			NOT = { has_country_flag = fallout_generic_regional_network_extended }
+		}
+		available = { fallout_generic_focus_runtime_is_current = yes }
+		cost = constant:fallout_generic_decision.cost_low
+		days_remove = constant:fallout_generic_decision.duration_region_days
+		modifier = { civilian_factory_use = @CR_SC_FALLOUT_GENERIC_DECISION_REGION_CIVILIAN_FACTORIES }
+		fire_only_once = yes
+		remove_effect = { fallout_generic_decision_extend_regional_network = yes }
+		cancel_trigger = { NOT = { fallout_generic_focus_runtime_is_current = yes } }
+		ai_will_do = { base = constant:fallout_generic_decision.ai_high }
 	}
 }

@@ -208,7 +208,7 @@ History `9169` records explicit opening choice, branch-specific success, partial
 
 The country is the primary actor. The authenticated state is the secondary actor. The selected native resource class may appear through dedicated scripted localisation, but no Event Log text may claim a specific company, union, people, commodity grade, or political institution without a country-memory receipt.
 
-The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. The workbook should be updated only after gameplay and player-facing wording are final, followed by `python .tools/export_event_catalog_csv.py`. The export CSV files must not be edited directly.
+This Fallout chain has no workbook or catalog row. Its internal candidate identity remains documented only in the Fallout specs and proofs.
 
 ## Cleanup and refund proof
 

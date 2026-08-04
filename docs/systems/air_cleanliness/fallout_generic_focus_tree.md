@@ -1,40 +1,83 @@
 # Fallout generic survivor focus tree
 
-The Fallout rewrite grants one shared focus tree to every country after the map-return phase. The tree is deliberately loaded after survivor and fracture assignment, so every retained tag and every dynamic Independence Wave template receives the same playable decision surface without loading an Independence Wave tree.
+The Fallout rewrite grants one shared focus tree and decision category to every surviving country after map return. Original countries and new fracture countries receive the same package. Independence Wave trees are never loaded by this system.
 
 ## Runtime contract
 
-The transition success branch in `common/scripted_effects/fallout_consolidated_effects.txt` sets `fallout_active`, iterates every country once, and calls `fallout_generic_focus_activate`. The effect is idempotent for the current `global.fallout_transition_generation`. It loads `fallout_generic_focus_tree` with `keep_completed = no`, marks the layout dirty, sets `fallout_generic_focus_tree_loaded`, and initializes the country values.
+`fallout_apply_transition_phase_map_return` calls `fallout_generic_focus_clear_state_runtime` once, then calls `fallout_generic_focus_activate` for every country carrying `fallout_country_survives`. Activation is idempotent for `global.fallout_transition_generation`, loads `fallout_generic_focus_tree` with `keep_completed = no`, marks the layout dirty, initializes the country values, and opens the generation-bound decision category.
 
-The tree is in `common/national_focus/fallout_consolidated_focus.txt`. Its country weight is zero because it is a runtime tree. The activation effect is the only active loader. The retained NZL and USA package tree definitions are legacy dormant content with no active loader and are not used as the universal Fallout tree.
+The tree is defined in `common/national_focus/fallout_consolidated_focus.txt`. Its country weight is zero because only the Fallout transition loads it. Retained bespoke pilot tree definitions have no active loader and are not part of the universal package.
 
-## Player-facing routes
+## Player routes
 
-The opening counts survivors, maps usable frontier, and secures the capital. Four mutually exclusive government routes then shape the campaign:
+The opening counts survivors, maps usable land, and secures the capital. Four mutually exclusive government routes represent civic councils, ration administration, military command, and shelter rule. All twelve Fallout government archetypes map to one of those routes through explicit AI weights.
 
-- Civic Compact restores elections and builds cohesion through councils.
-- Ration Congress centralizes food and workshop capacity.
-- Command Directorate turns the frontier into a military chain of orders.
-- Shelter Council protects sealed stores before it permits elections.
+The recovery and military layers reopen one power loop, repair one rail spine, reclaim workshops, equip a survivor guard, train frontier columns, and fortify one controlled frontier state. The diplomacy layer opens radio links, permits an independent country outside every faction to found the Frontier Pact, and allows its leader to invite neighbouring survivor governments.
 
-After the route split, every country can reopen power, repair rails, reclaim workshops, raise and train a survivor guard, arm a cordon, open a radio net, found the Frontier Pact, claim adjacent states, issue a state-targeted annexation ultimatum, and settle the resulting border. The Pact is a real faction and its invitation focus records an opinion invitation for eligible Fallout countries.
+The expansion layer claims eligible adjacent ash zones and dead cities. Issuing an ultimatum records the exact target country, target state, and Fallout generation. Border settlement remains unavailable until the acting country owns and controls that recorded state. The separate heartland campaign records its own target and generation. The Year Ten capstone requires either the survivor federation or ownership and control of the recorded heartland target, a completed regional programme, the configured memory and regional influence floors, and exactly ten years of elapsed availability.
 
-The regional branch uses the assigned `fallout_region_id` and exposes one of nine concrete lanes. North America receives relay work, Europe receives water councils, the Eurasian interior receives inland roads, East Asia receives seed banks, South Asia receives delta routes, the Middle East and North Africa receive quarantine roads, sub-Saharan Africa receives river wards, Latin America and the Caribbean receive water charters, and Oceania receives remote stations. The late branch federates survivor leagues, reclaims the heartland, and records the Year Ten order.
+The regional ledger exposes one of nine authored lanes through `fallout_region_id`: North America relays, European water councils, Eurasian inland roads, East Asian seed banks, South Asian delta routes, Middle East and North African quarantine roads, sub-Saharan river wards, Latin American water charters, and Oceanian remote stations.
 
-## Dynamic state values
+## Decision layer
 
-`fallout_generic_authority`, `fallout_generic_cohesion`, `fallout_generic_frontier_pressure`, `fallout_generic_regional_influence`, and `fallout_generic_memory` are country values initialized from `fallout_generic_focus` constants and clamped to zero through one hundred. Route identity is recorded in `fallout_generic_route_id`. Frontier focuses add claims to adjacent owned-state neighbours with a valid owner. The ultimatum helper selects one adjacent owner at completion and creates an `annex_everything` wargoal with the shared expiry constant.
+`fallout_generic_survivor_mandate_category` displays authority, cohesion, frontier pressure, regional influence, and memory. Its actions survey adjacent claims, consolidate the chosen government, repair one selected corridor, integrate a controlled state, pressure a selected neighbour, negotiate a Frontier Pact membership, and extend the assigned regional network.
 
-## Asset and localisation contract
+The Frontier Pact mission debits support equipment when negotiations start. It refunds the same receipt on cancellation and consumes one payment on success. Border pressure refunds its pressure payment if the mission cancels. Tree reset refunds every unresolved Pact payment before removing the old decisions.
 
-Every focus title and description is in `localisation/english/fallout_consolidated_l_english.yml`. The tree uses confirmed vanilla goal sprites only. No Fallout-specific focus sprite, folder, or asset is required. The reused icon names are `GFX_goal_generic_national_unity`, `GFX_goal_generic_more_territorial_claims`, `GFX_goal_generic_defence`, `GFX_goal_generic_production`, `GFX_goal_generic_major_war`, `GFX_goal_generic_alliance`, `GFX_goal_generic_scientific_exchange`, `GFX_goal_generic_construct_infrastructure`, `GFX_goal_generic_construct_mil_factory`, `GFX_goal_generic_allies_build_infantry`, `GFX_goal_generic_army_motorized`, `GFX_goal_generic_radar`, `GFX_goal_generic_major_alliance`, `GFX_goal_generic_territory_or_war`, `GFX_goal_generic_demand_territory`, and `GFX_goal_generic_build_navy`.
+## State helper contracts
+
+The following subsystem-private effects are defined in `common/scripted_effects/fallout_consolidated_effects.txt`.
+
+### `fallout_generic_focus_improve_one_service_state`
+
+Purpose: add one infrastructure level to one random owned and controlled state below the wasteland grade.
+
+Scope: country.
+
+Inputs and defaults: no temporary input is required. If no valid service state exists, the effect does nothing.
+
+Side effects: at most one state receives immediate infrastructure construction. No target or receipt is retained.
+
+Usage: `fallout_generic_focus_improve_one_service_state = yes`.
+
+### `fallout_generic_focus_improve_one_border_state`
+
+Purpose: add one infrastructure level to one owned and controlled state adjacent to foreign land.
+
+Scope: country.
+
+Inputs and defaults: no temporary input is required. The controlled capital is the fallback when no foreign frontier exists.
+
+Side effects: at most one state receives immediate infrastructure construction. No target or receipt is retained.
+
+Usage: `fallout_generic_focus_improve_one_border_state = yes`.
+
+### `fallout_generic_focus_fortify_one_frontier_state`
+
+Purpose: add the centralized bunker level to one owned and controlled state adjacent to foreign land.
+
+Scope: country.
+
+Inputs and defaults: no temporary input is required. The controlled capital is the fallback when no foreign frontier exists.
+
+Side effects: at most one state receives immediate bunker construction. No target or receipt is retained.
+
+Usage: `fallout_generic_focus_fortify_one_frontier_state = yes`.
+
+## Values and cleanup
+
+Authority, cohesion, frontier pressure, regional influence, and memory are initialized from shared constants and clamped from zero through one hundred. Government route, regional lane, and campaign targets are generation-bound. Tree reset removes late ideas, clears pending targets and state flags, refunds unresolved Pact payments, and removes stale decisions. The map-return state cleanup scans the state collection once per Fallout generation so flags cannot survive an ownership change.
+
+## Assets and localisation
+
+Every focus, decision, tooltip, cost, and late idea has English localisation in `localisation/english/fallout_consolidated_l_english.yml`. The package uses installed vanilla goal, decision, and idea sprites. It adds no Fallout-specific focus artwork.
 
 ## Review evidence
 
-Static review found thirty-two focus nodes plus the tree id, unique Fallout focus ids, balanced source braces, a cost, icon, AI weight, and localisation title and description for every focus. The nine regional branches all use `allow_branch` against the assigned region enum. Vanilla evidence for `load_focus_tree` and `mark_focus_tree_layout_dirty` is recorded in the accepted engine-reference notes and the official effects documentation.
+The installed focus renderer found thirty-three nodes, no node intersections, six connector crossings, twelve long connectors, and a maximum vertical connector span of five rows. Every focus has a title, description, icon, cost, and AI surface. All sixteen referenced goal sprites are present in installed vanilla `interface/goals.gfx`.
 
-The installed focus MCP was attempted against the consolidated source, but its workspace scan returned `SCAN_BYTE_LIMIT` before reading any file. No live Hearts of Iron IV execution was performed, as live validation belongs to the user.
+The current tree consumes all twelve government archetypes and all nine regions. State rewards are bounded to one state per helper call. Border and heartland progress use exact state-result receipts rather than treating an issued wargoal as a completed expansion.
 
 ## Future extension
 
-Country-memory overlays can later be layered on this tree through additional reviewed focus branches or decisions. That is intentionally outside this tranche. The generic tree already supplies government, regional, pact, war, border, industry, military, and late-order mechanics for every Fallout country.
+Bespoke country trees remain outside this package. Country-memory overlays and later authored event content can deepen individual identities without replacing the universal campaign surface.

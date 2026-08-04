@@ -355,7 +355,6 @@ Run:
 - decision-mission audit
 - localisation audit
 - documentation curation
-- spreadsheet update
 - event-completion audit
 - improvement-loop closure pass
 
@@ -363,7 +362,7 @@ Run:
 
 Do not claim completion if:
 
-- the event catalogue is still mostly categories
+- Fallout content is registered in the ordinary event catalogue
 - successor events are copied
 - AI is missing
 - visible cold exists only in the mapmode

@@ -2,17 +2,17 @@
 
 Canonical status: accepted baseline design, corrected for independent Fallout ownership and extended by the living-world specs in this package.
 
-Working scenario label, not final localisation: manual Fallout scenario. The public padded id is assigned only after the live registry is scanned.
+Working scenario label, not final localisation: manual Fallout scenario. The internal reservation is assigned only after the live registry is scanned.
 
-Current consequence correction: Fallout is not an ordinary Event Log row, evolution, ordinary super-event, or ordinary Event Details card. It replaces the retired Final Silence world-end selector row. The reserved id and Fallout-owned manual launch contract remain design inputs. The manual sandbox row may be present while its launch gate stays dormant until the exact native province sweep is proven.
+Current consequence correction: Fallout is not an ordinary Event Log row, evolution, ordinary super-event, ordinary Event Details card, or world-end selector row. The Fallout-owned manual launch uses raw id 14. The active substrate contains the exact 10,154-province, 41-batch sweep, completion receipts, and seven-day handoff. Runtime observation belongs to the user and is not a source release gate.
 
 ## Scenario purpose
 
-The Fallout scenario is designed as a manual sandbox trigger for a total world rewrite. Its launch row may be exposed in the Triggerable Scenarios menu, but the exact native province-sweep release gate remains closed until the engine-sensitive proof is complete.
+The Fallout scenario is a manual sandbox trigger for a total world rewrite. Its Fallout-owned launch surface uses raw id 14. The static map ledger, native call construction, completion barrier, and seven-day handoff are recorded in the implementation proof and wired into the active launch path.
 
 ## Manual scenario rules
 
-Once proven, the scenario must be directly launchable unless a world-end scenario is already active. It must not require chaos value, previous nuclear use, air contamination level, date, country route, or event history.
+The scenario is directly launchable unless a world-end scenario is already active. It does not require chaos value, previous nuclear use, air contamination level, date, country route, or event history.
 
 ## Launch sequence
 
