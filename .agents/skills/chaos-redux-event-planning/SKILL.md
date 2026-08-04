@@ -857,6 +857,25 @@ Formation routes should interact with focus trees and decisions. A focus can rev
 
 When an event creates, releases, transforms, restores, or revives a country that is expected to fight, survive, defend itself, or matter militarily, the spec must define its starting forces. Newly appearing countries should not spawn as empty tags unless they are explicitly non-military administrative placeholders and the spec explains why.
 
+### Distinct army identity and new unit-type gate
+
+When an event introduces a new type of country with its own army, explicitly assess whether that army needs new unit types instead of only renamed vanilla division templates. Plan at least one distinct unit family when the country's biology, doctrine, recruitment source, battlefield role, equipment relationship, movement, supply behavior, or visual silhouette differs materially from an ordinary national army.
+
+A renamed division template made entirely from ordinary vanilla battalions does not count as a new unit type. If vanilla battalions are sufficient, the spec must explain why their mechanics accurately represent the country and must still define distinct templates, recruitment rules, caps, costs, AI use, progression, and visible identity. Do not let implementation silently substitute renamed infantry for a military concept that calls for custom behavior.
+
+For every planned new unit family, define:
+
+- gameplay role, battlefield strengths, weaknesses, and intended counterplay
+- custom sub-unit, support unit, unit category, equipment, or modifier needs
+- division-template consumers and the countries, routes, evolutions, or decisions that can use them
+- manpower, population, equipment, supply, fuel, training, and reinforcement rules
+- availability gates, formation caps, upgrade or conversion paths, and cleanup behavior
+- AI template priorities, role ratios, production needs, recruitment limits, and operational use
+- localisation, map-counter, icon, technology, doctrine, modifier, and script-enum implications
+- 3D entity, model, material, idle, movement, attack, death, and runtime-consumer requirements when the unit should look different on the map
+
+Treat the unit package as part of the country package. A new military country archetype with an army represented only by renamed vanilla formations is a planning failure unless the spec gives a concrete mechanical and visual justification for reusing those formations.
+
 Starting units must be dynamic. Do not define one flat number of divisions for every country. The spec should explain what makes the starting force stronger, weaker, larger, smaller, better equipped, more irregular, more professional, more defensive, more foreign-backed, or stranger.
 
 Useful scaling factors include:
@@ -1724,6 +1743,7 @@ Reject the draft if it has any of these problems:
 - newly appearing crisis countries without dynamic starting unit packages or a clear reason why they start without troops
 - country-created crisis specs without decisions, focuses, objectives, depots, volunteers, or faction systems that let those countries gain more units later
 - new fighting countries without starting force plans, dynamic unit scaling, or reinforcement pathways
+- new military country archetypes whose armies use only renamed vanilla division templates without an explicit unit-type assessment and a concrete mechanical and visual justification
 - long-lived new countries without dynamically scaled starting units or credible reinforcement routes
 - newly appearing or transformed countries without mapped starting divisions, unit templates, equipment/manpower assumptions, and dynamic scaling factors
 - countries with no designed way to gain, improve, convert, or coordinate more units through focuses, decisions, objectives, volunteers, depots, or faction mechanics
