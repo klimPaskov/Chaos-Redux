@@ -9,6 +9,7 @@ It introduces:
 - an `Air Cleanliness` tab in the Chaos Meter popup,
 - a `Condemnation` tab for country-level diplomatic blame tracking,
 - persistent global contamination tracking (`global.air_contamination_bp`),
+- a persistent clickable source ledger with per-source additions, clearing, pressure decay, current contribution, and observation dates,
 - monthly contamination accumulation/decay logic,
 - threshold-driven escalation at 25%, 50%, 75%, and 100%,
 - a 75%+ Air Cleanliness Treaty system with invitations and member decisions,
@@ -21,11 +22,10 @@ It introduces:
 On monthly host tick (`on_monthly`), `air_contamination_monthly_update` runs and computes contamination delta in basis points (`bp`, where `100 bp = 1%`):
 
 - Chemical contaminated state (`chem_state_contamination`): `+1 bp` each (`+0.01%`).
+- Biological outbreak states: agent and intensity-driven changes are applied when the affected state contribution changes.
 - Irradiated fallout state (`nuclear_fallout_state`): `+3 bp` per current fallout intensity (`+0.03%` per intensity, up to `+0.21%` at the current intensity cap).
 - Large wildfire smoke and volcanic ash: a decaying severity-scaled reservoir, limited to `+4 bp` monthly (`+0.04%`).
 - Natural recovery while reversible: `-3 bp` below 25%, `-2 bp` from 25%, `-1 bp` from 50%, and `-0.5 bp` from 75%.
-
-Biological outbreak states do not add air contamination. They remain part of the biological warfare and deaths systems, but they are excluded from Air Cleanliness growth.
 
 Regional or stronger wildfires contribute. Volcanic eruptions, ashfall, and massive eruptions contribute at every resolved severity. Severe or stronger volcanic eruptions, regional or stronger ashfall, and severe or stronger massive eruptions also add one small settled-ash aftermath receipt when their recovery card opens. Each physical Event 013 impact is registered once by state, sequence, impact index, and family, while each aftermath sequence is registered once by its stored disaster id. The reservoir loses `0.25 bp` of monthly pressure after each host tick, which lets widespread ash linger without allowing the natural source to scale without limit. See `docs/systems/air_cleanliness/natural_sources.md`.
 
@@ -96,7 +96,7 @@ The full lifecycle, tuning, cleanup behavior, and remaining treaty omissions are
 	- fallout modifiers are applied globally,
 	- state categories degrade over time toward wasteland,
 	- `fallout_evaluate_air_contamination_request` can submit the gradual-air-collapse request when Fallout is enabled and no other world end is active.
-- Final Silence forces contamination to exactly `100%` and locks future contamination changes at that value for the terminal branch.
+- A committed Fallout transition fixes contamination at `99%` and preserves that value against later growth or recovery.
 
 One-time global threshold news events are fired from `events/chemical_warfare_events.txt` (`chaosx_contamination.1` to `.6`) for:
 
@@ -133,17 +133,16 @@ The Chaos Meter popup has five tabs:
 
 The contamination tab displays:
 
-- contamination %, cleanliness %, monthly net delta,
-- natural recovery amount,
-- wildfire-smoke and volcanic-ash contribution,
-- chemical/irradiated state counts and contribution,
-- one consolidated contamination stage status line,
-- winter state,
-- one plain-language summary sentence explaining that each 1% contamination adds environmental attrition pressure across all states, regardless of owner type,
-- progress to the fallout world-end threshold,
-- right-side quick overview text with tooltip help.
+- contamination, remaining clean air, last net change, and exact atmospheric recovery used,
+- the combined current source footprint and number of permanent source records,
+- exact recorded rises and falls in the global contamination value,
+- one consolidated contamination stage status line and current Air Winter peak phase,
+- a scrollable source ledger ordered by the date each source first contributed,
+- a clickable detail overlay with current contribution, lifetime additions, direct clearing, net delta, observed pressure decay, latest applied change, latest pressure change, and first and latest observation dates.
 
-The right-side monthly-model and threshold reference values are refreshed whenever the Chaos Meter popup is opened and whenever the `Air Cleanliness` tab is selected, so the UI does not depend on stale cached globals after loading a save.
+The source ledger never removes a source after its first contribution. Chemical contamination, biological outbreaks, fallout and nuclear effects, and smoke, ash, and aerosols each own a stable source id. The full accounting contract and GUI wiring are documented in `docs/systems/air_cleanliness/contamination_source_ledger.md`.
+
+The compact summary and source read model are refreshed whenever the Chaos Meter popup is opened and whenever the `Air Cleanliness` tab is selected, so the UI does not depend on stale cached globals after loading a save.
 
 The condemnation tab displays:
 
@@ -199,6 +198,7 @@ Static control flow requires complete callback and state-count verification, app
 - Treaty decisions use `GFX_decision_category_contamination_defense` from `interface/chaosx_decisions.gfx` and vanilla `GFX_decision_generic_operation`.
 - No new treaty sprite or texture is required by the implemented tranche.
 - Natural smoke and ash uses the existing monthly model line and requires no icon or sprite registration.
+- The Air Contamination source ledger reuses `GFX_tiled_plain_bg`, `GFX_chaosx_chaos_meter_entry`, `GFX_closebutton_small`, and the existing Chaos Meter checkbox sprites. It requires no new texture or `.gfx` registration.
 
 ## Future Plans
 

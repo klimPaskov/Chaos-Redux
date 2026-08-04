@@ -104,6 +104,7 @@ scripted_gui = {
 						set_country_flag = chaos_meter_air_tab
 						clr_country_flag = chaos_meter_condemnation_tab
 						clr_country_flag = chaos_meter_deaths_tab
+						close_air_contamination_source_details = yes
 						clr_country_flag = chaos_meter_deaths_details_open
 						set_variable = { chaos_meter_deaths_selected_index = -1 }
 						air_contamination_refresh_values = yes
@@ -378,9 +379,19 @@ scripted_gui = {
 			air_system_checkbox_click = {
 				toggle_air_cleanliness_system_disabled = yes
 			}
+
+			air_source_entry_plate_button_click = {
+				open_air_contamination_source_details = yes
+			}
 		}
 
 		triggers = {
+			air_source_no_entries_info_visible = {
+				check_variable = { global.air_contamination_source_log_entries^num < constant:air_contamination_source.one }
+			}
+			air_source_entry_plate_button_click_enabled = {
+				always = yes
+			}
 			air_system_checkbox_click_enabled = {
 				# Fallout fixes Air Contamination at 99 percent. The setting is
 				# presentation-only after that permanent ownership is committed.
@@ -391,6 +402,59 @@ scripted_gui = {
 		properties = {
 			air_system_checkbox = {
 				image = "[GetAirCleanlinessSystemCheckboxSprite]"
+			}
+		}
+
+		dynamic_lists = {
+			chaos_air_source_dynamic_list = {
+				array = global.air_contamination_source_log_entries
+				value = air_source_id
+				index = air_source_index
+				change_scope = no
+				entry_container = "chaos_meter_air_source_entry"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	chaos_meter_popup_air_source_details_gui = {
+		context_type = player_context
+		parent_scripted_gui = "chaos_meter_popup_shell_gui"
+		window_name = "chaos_meter_air_source_details_overlay"
+
+		visible = {
+			has_country_flag = chaos_meter_window_open
+			has_country_flag = chaos_meter_air_tab
+			has_country_flag = chaos_meter_air_source_details_open
+			check_variable = {
+				var = chaos_meter_air_selected_source
+				value = constant:air_contamination_source.zero
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = chaos_meter_air_selected_source
+				value = constant:air_contamination_source.count
+				compare = less_than
+			}
+			check_variable = {
+				var = global.air_contamination_source_logged_entries^chaos_meter_air_selected_source
+				value = constant:air_contamination_source.one
+				compare = greater_than_or_equals
+			}
+		}
+
+		effects = {
+			air_source_details_close_button_click = {
+				close_air_contamination_source_details = yes
+			}
+		}
+
+		triggers = {
+			air_source_details_close_button_click_enabled = {
+				always = yes
 			}
 		}
 
