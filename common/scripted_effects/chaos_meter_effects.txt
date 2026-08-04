@@ -60,6 +60,26 @@ initialize_chaos_meter_system = {
     set_variable = { global.air_contamination_decay_percent = 0 }
     set_variable = { global.air_contamination_last_delta_percent = 0 }
     set_variable = { global.air_contamination_last_nuke_percent = 0 }
+	set_variable = { global.air_contamination_source_current_total_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_added_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_removed_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_pressure_decay_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_net_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_current_total_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_added_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_removed_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_pressure_decay_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_net_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_lifetime_rise_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_lifetime_fall_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_lifetime_recovery_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_last_recovery_applied_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_lifetime_rise_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_lifetime_fall_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_lifetime_recovery_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_last_recovery_applied_percent = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_count = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_ledger_last_total_bp = global.air_contamination_bp }
     set_variable = { global.chaos_meter_deaths_total = 0 }
     set_variable = { global.chaos_meter_deaths_civilian_total = 0 }
     set_variable = { global.chaos_meter_deaths_military_total = 0 }
@@ -121,6 +141,24 @@ initialize_chaos_meter_system = {
     clear_array = global.chaos_meter_deaths_detail_reason_entries
     clear_array = global.chaos_meter_deaths_detail_civilian_entries
     clear_array = global.chaos_meter_deaths_detail_military_entries
+	clear_array = global.air_contamination_source_log_entries
+	clear_array = global.air_contamination_source_logged_entries
+	clear_array = global.air_contamination_source_current_bp_entries
+	clear_array = global.air_contamination_source_lifetime_added_bp_entries
+	clear_array = global.air_contamination_source_lifetime_removed_bp_entries
+	clear_array = global.air_contamination_source_pressure_decay_bp_entries
+	clear_array = global.air_contamination_source_last_delta_bp_entries
+	clear_array = global.air_contamination_source_last_pressure_change_bp_entries
+	clear_array = global.air_contamination_source_first_date_entries
+	clear_array = global.air_contamination_source_last_date_entries
+	clear_array = global.air_contamination_source_current_percent_entries
+	clear_array = global.air_contamination_source_lifetime_added_percent_entries
+	clear_array = global.air_contamination_source_lifetime_removed_percent_entries
+	clear_array = global.air_contamination_source_pressure_decay_percent_entries
+	clear_array = global.air_contamination_source_lifetime_net_percent_entries
+	clear_array = global.air_contamination_source_last_delta_percent_entries
+	clear_array = global.air_contamination_source_last_pressure_change_percent_entries
+	air_contamination_prepare_source_ledger_arrays = yes
 
     clr_global_flag = air_contamination_threshold_25
     clr_global_flag = air_contamination_threshold_50
@@ -148,6 +186,8 @@ initialize_chaos_meter_system = {
 	every_country = {
 		clr_country_flag = air_cleanliness_treaty_member
 		clr_country_flag = air_cleanliness_treaty_banned
+		clr_country_flag = chaos_meter_air_source_details_open
+		set_variable = { chaos_meter_air_selected_source = constant:air_contamination_source.negative_one }
 		set_variable = { chaos_meter_last_casualty_count = casualties }
 		set_variable = { chaos_meter_deaths_country_total = 0 }
 		set_variable = { chaos_meter_deaths_country_civilian_total = 0 }
@@ -1426,6 +1466,16 @@ rebuild_chaos_meter_condemnation_detail_snapshot = {
 		}
 		ROOT = { set_country_flag = chaos_meter_condemnation_detail_evasion_visible }
 	}
+}
+
+open_air_contamination_source_details = {
+	set_variable = { chaos_meter_air_selected_source = air_source_id }
+	set_country_flag = chaos_meter_air_source_details_open
+}
+
+close_air_contamination_source_details = {
+	clr_country_flag = chaos_meter_air_source_details_open
+	set_variable = { chaos_meter_air_selected_source = constant:air_contamination_source.negative_one }
 }
 
 open_chaos_meter_condemnation_details = {
@@ -4564,7 +4614,215 @@ update_chaos_meter_tier = {
     }
 }
 
+air_contamination_prepare_source_ledger_arrays = {
+	resize_array = {
+		array = global.air_contamination_source_logged_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_current_bp_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_lifetime_added_bp_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_lifetime_removed_bp_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_pressure_decay_bp_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_last_delta_bp_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_last_pressure_change_bp_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_first_date_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_last_date_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_current_percent_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_lifetime_added_percent_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_lifetime_removed_percent_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_pressure_decay_percent_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_lifetime_net_percent_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_last_delta_percent_entries
+		size = constant:air_contamination_source.count
+	}
+	resize_array = {
+		array = global.air_contamination_source_last_pressure_change_percent_entries
+		size = constant:air_contamination_source.count
+	}
+
+	if = {
+		limit = { NOT = { has_global_flag = air_contamination_source_ledger_initialized } }
+		set_global_flag = air_contamination_source_ledger_initialized
+		set_variable = { global.air_contamination_ledger_last_total_bp = global.air_contamination_bp }
+	}
+}
+
+air_contamination_register_source_activity = {
+	air_contamination_prepare_source_ledger_arrays = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = air_contamination_source_id
+				value = constant:air_contamination_source.zero
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = air_contamination_source_id
+				value = constant:air_contamination_source.count
+				compare = less_than
+			}
+			OR = {
+				check_variable = { global.air_contamination_source_logged_entries^air_contamination_source_id > constant:air_contamination_source.zero }
+				check_variable = { air_contamination_source_current_bp > constant:air_contamination_source.zero }
+				check_variable = { air_contamination_source_applied_delta_bp > constant:air_contamination_source.zero }
+				check_variable = { air_contamination_source_applied_delta_bp < constant:air_contamination_source.zero }
+			}
+		}
+
+		set_temp_variable = { air_contamination_source_previous_current_bp = global.air_contamination_source_current_bp_entries^air_contamination_source_id }
+		set_temp_variable = { air_contamination_source_pressure_change_bp = air_contamination_source_current_bp }
+		subtract_from_temp_variable = { air_contamination_source_pressure_change_bp = air_contamination_source_previous_current_bp }
+
+		if = {
+			limit = {
+				check_variable = {
+					var = global.air_contamination_source_logged_entries^air_contamination_source_id
+					value = constant:air_contamination_source.one
+					compare = less_than
+				}
+			}
+			set_variable = { global.air_contamination_source_logged_entries^air_contamination_source_id = constant:air_contamination_source.one }
+			add_to_array = {
+				array = global.air_contamination_source_log_entries
+				value = air_contamination_source_id
+			}
+			set_variable = { global.air_contamination_source_first_date_entries^air_contamination_source_id = global.date }
+			set_variable = { global.air_contamination_source_last_date_entries^air_contamination_source_id = global.date }
+		}
+
+		set_variable = { global.air_contamination_source_current_bp_entries^air_contamination_source_id = air_contamination_source_current_bp }
+		set_variable = { global.air_contamination_source_last_pressure_change_bp_entries^air_contamination_source_id = air_contamination_source_pressure_change_bp }
+
+		if = {
+			limit = { check_variable = { air_contamination_source_applied_delta_bp > constant:air_contamination_source.zero } }
+			add_to_variable = { global.air_contamination_source_lifetime_added_bp_entries^air_contamination_source_id = air_contamination_source_applied_delta_bp }
+		}
+		else_if = {
+			limit = { check_variable = { air_contamination_source_applied_delta_bp < constant:air_contamination_source.zero } }
+			set_temp_variable = { air_contamination_source_removed_bp = air_contamination_source_applied_delta_bp }
+			multiply_temp_variable = { air_contamination_source_removed_bp = constant:air_contamination_source.negative_one }
+			add_to_variable = { global.air_contamination_source_lifetime_removed_bp_entries^air_contamination_source_id = air_contamination_source_removed_bp }
+		}
+
+		if = {
+			limit = { check_variable = { air_contamination_source_pressure_change_bp < constant:air_contamination_source.zero } }
+			set_temp_variable = { air_contamination_source_pressure_decay_bp = air_contamination_source_pressure_change_bp }
+			multiply_temp_variable = { air_contamination_source_pressure_decay_bp = constant:air_contamination_source.negative_one }
+			add_to_variable = { global.air_contamination_source_pressure_decay_bp_entries^air_contamination_source_id = air_contamination_source_pressure_decay_bp }
+		}
+
+		if = {
+			limit = {
+				OR = {
+					check_variable = { air_contamination_source_applied_delta_bp > constant:air_contamination_source.zero }
+					check_variable = { air_contamination_source_applied_delta_bp < constant:air_contamination_source.zero }
+					check_variable = { air_contamination_source_pressure_change_bp > constant:air_contamination_source.zero }
+					check_variable = { air_contamination_source_pressure_change_bp < constant:air_contamination_source.zero }
+				}
+			}
+			set_variable = { global.air_contamination_source_last_delta_bp_entries^air_contamination_source_id = air_contamination_source_applied_delta_bp }
+			set_variable = { global.air_contamination_source_last_date_entries^air_contamination_source_id = global.date }
+		}
+
+		set_variable = { global.air_contamination_source_current_percent_entries^air_contamination_source_id = global.air_contamination_source_current_bp_entries^air_contamination_source_id }
+		divide_variable = { global.air_contamination_source_current_percent_entries^air_contamination_source_id = constant:air_contamination_source.basis_points_per_percent }
+		set_variable = { global.air_contamination_source_lifetime_added_percent_entries^air_contamination_source_id = global.air_contamination_source_lifetime_added_bp_entries^air_contamination_source_id }
+		divide_variable = { global.air_contamination_source_lifetime_added_percent_entries^air_contamination_source_id = constant:air_contamination_source.basis_points_per_percent }
+		set_variable = { global.air_contamination_source_lifetime_removed_percent_entries^air_contamination_source_id = global.air_contamination_source_lifetime_removed_bp_entries^air_contamination_source_id }
+		divide_variable = { global.air_contamination_source_lifetime_removed_percent_entries^air_contamination_source_id = constant:air_contamination_source.basis_points_per_percent }
+		set_variable = { global.air_contamination_source_pressure_decay_percent_entries^air_contamination_source_id = global.air_contamination_source_pressure_decay_bp_entries^air_contamination_source_id }
+		divide_variable = { global.air_contamination_source_pressure_decay_percent_entries^air_contamination_source_id = constant:air_contamination_source.basis_points_per_percent }
+		set_temp_variable = { air_contamination_source_lifetime_net_bp = global.air_contamination_source_lifetime_added_bp_entries^air_contamination_source_id }
+		subtract_from_temp_variable = { air_contamination_source_lifetime_net_bp = global.air_contamination_source_lifetime_removed_bp_entries^air_contamination_source_id }
+		set_variable = { global.air_contamination_source_lifetime_net_percent_entries^air_contamination_source_id = air_contamination_source_lifetime_net_bp }
+		divide_variable = { global.air_contamination_source_lifetime_net_percent_entries^air_contamination_source_id = constant:air_contamination_source.basis_points_per_percent }
+		set_variable = { global.air_contamination_source_last_delta_percent_entries^air_contamination_source_id = global.air_contamination_source_last_delta_bp_entries^air_contamination_source_id }
+		divide_variable = { global.air_contamination_source_last_delta_percent_entries^air_contamination_source_id = constant:air_contamination_source.basis_points_per_percent }
+		set_variable = { global.air_contamination_source_last_pressure_change_percent_entries^air_contamination_source_id = global.air_contamination_source_last_pressure_change_bp_entries^air_contamination_source_id }
+		divide_variable = { global.air_contamination_source_last_pressure_change_percent_entries^air_contamination_source_id = constant:air_contamination_source.basis_points_per_percent }
+	}
+}
+
 air_contamination_refresh_values = {
+	air_contamination_prepare_source_ledger_arrays = yes
+
+	set_temp_variable = { air_contamination_ledger_total_change_bp = global.air_contamination_bp }
+	subtract_from_temp_variable = { air_contamination_ledger_total_change_bp = global.air_contamination_ledger_last_total_bp }
+	if = {
+		limit = { check_variable = { air_contamination_ledger_total_change_bp > constant:air_contamination_source.zero } }
+		add_to_variable = { global.air_contamination_lifetime_rise_bp = air_contamination_ledger_total_change_bp }
+	}
+	else_if = {
+		limit = { check_variable = { air_contamination_ledger_total_change_bp < constant:air_contamination_source.zero } }
+		set_temp_variable = { air_contamination_ledger_total_fall_bp = air_contamination_ledger_total_change_bp }
+		multiply_temp_variable = { air_contamination_ledger_total_fall_bp = constant:air_contamination_source.negative_one }
+		add_to_variable = { global.air_contamination_lifetime_fall_bp = air_contamination_ledger_total_fall_bp }
+	}
+	set_variable = { global.air_contamination_ledger_last_total_bp = global.air_contamination_bp }
+
+	set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.chemical }
+	set_temp_variable = { air_contamination_source_applied_delta_bp = constant:air_contamination_source.zero }
+	set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_chem_bp }
+	air_contamination_register_source_activity = yes
+	set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.biological }
+	set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_bio_bp }
+	air_contamination_register_source_activity = yes
+	set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.fallout }
+	set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_fallout_bp }
+	if = {
+		limit = { has_global_flag = fallout_air_contamination_permanent_99 }
+		set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_bp }
+		if = {
+			limit = { check_variable = { air_contamination_ledger_total_change_bp > constant:air_contamination_source.zero } }
+			set_temp_variable = { air_contamination_source_applied_delta_bp = air_contamination_ledger_total_change_bp }
+		}
+	}
+	air_contamination_register_source_activity = yes
+	set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.aerosols }
+	set_temp_variable = { air_contamination_source_applied_delta_bp = constant:air_contamination_source.zero }
+	set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_natural_source_bp }
+	air_contamination_register_source_activity = yes
+
     set_variable = { global.air_contamination_percent = global.air_contamination_bp }
     divide_variable = { global.air_contamination_percent = 100 }
 
@@ -4607,6 +4865,51 @@ air_contamination_refresh_values = {
     divide_variable = { global.air_contamination_threshold_severe_winter_percent = 100 }
     set_variable = { global.air_contamination_threshold_irreversible_percent = constant:air_contamination_threshold_bp.irreversible_100 }
     divide_variable = { global.air_contamination_threshold_irreversible_percent = 100 }
+
+	set_variable = { global.air_contamination_source_current_total_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_added_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_lifetime_removed_bp = constant:air_contamination_source.zero }
+	set_variable = { global.air_contamination_source_pressure_decay_bp = constant:air_contamination_source.zero }
+	set_temp_variable = { air_contamination_source_summary_index = constant:air_contamination_source.zero }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = air_contamination_source_summary_index
+				value = constant:air_contamination_source.count
+				compare = less_than
+			}
+		}
+		add_to_variable = { global.air_contamination_source_current_total_bp = global.air_contamination_source_current_bp_entries^air_contamination_source_summary_index }
+		add_to_variable = { global.air_contamination_source_lifetime_added_bp = global.air_contamination_source_lifetime_added_bp_entries^air_contamination_source_summary_index }
+		add_to_variable = { global.air_contamination_source_lifetime_removed_bp = global.air_contamination_source_lifetime_removed_bp_entries^air_contamination_source_summary_index }
+		add_to_variable = { global.air_contamination_source_pressure_decay_bp = global.air_contamination_source_pressure_decay_bp_entries^air_contamination_source_summary_index }
+		add_to_temp_variable = { air_contamination_source_summary_index = constant:air_contamination_source.one }
+	}
+	set_variable = { global.air_contamination_source_lifetime_net_bp = global.air_contamination_source_lifetime_added_bp }
+	subtract_from_variable = { global.air_contamination_source_lifetime_net_bp = global.air_contamination_source_lifetime_removed_bp }
+	set_variable = { global.air_contamination_source_count = global.air_contamination_source_log_entries^num }
+
+	set_variable = { global.air_contamination_source_current_total_percent = global.air_contamination_source_current_total_bp }
+	divide_variable = { global.air_contamination_source_current_total_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_source_lifetime_added_percent = global.air_contamination_source_lifetime_added_bp }
+	divide_variable = { global.air_contamination_source_lifetime_added_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_source_lifetime_removed_percent = global.air_contamination_source_lifetime_removed_bp }
+	divide_variable = { global.air_contamination_source_lifetime_removed_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_source_pressure_decay_percent = global.air_contamination_source_pressure_decay_bp }
+	divide_variable = { global.air_contamination_source_pressure_decay_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_source_lifetime_net_percent = global.air_contamination_source_lifetime_net_bp }
+	divide_variable = { global.air_contamination_source_lifetime_net_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_lifetime_rise_percent = global.air_contamination_lifetime_rise_bp }
+	divide_variable = { global.air_contamination_lifetime_rise_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_lifetime_fall_percent = global.air_contamination_lifetime_fall_bp }
+	divide_variable = { global.air_contamination_lifetime_fall_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_lifetime_recovery_percent = global.air_contamination_lifetime_recovery_bp }
+	divide_variable = { global.air_contamination_lifetime_recovery_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_variable = { global.air_contamination_last_recovery_applied_percent = global.air_contamination_last_recovery_applied_bp }
+	divide_variable = { global.air_contamination_last_recovery_applied_percent = constant:air_contamination_source.basis_points_per_percent }
+	set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.negative_one }
+	set_temp_variable = { air_contamination_source_applied_delta_bp = constant:air_contamination_source.zero }
+	set_temp_variable = { air_contamination_source_current_bp = constant:air_contamination_source.zero }
 }
 
 air_contamination_update_threshold_flags = {
@@ -4818,6 +5121,24 @@ air_contamination_apply_delta_bp = {
     set_temp_variable = { air_contamination_delta_bp = global.air_contamination_bp }
     subtract_from_temp_variable = { air_contamination_delta_bp = air_contamination_previous_bp }
     set_variable = { global.air_contamination_last_delta_bp = air_contamination_delta_bp }
+	if = {
+		limit = {
+			has_variable = air_contamination_source_id
+			has_variable = air_contamination_source_current_bp
+			check_variable = {
+				var = air_contamination_source_id
+				value = constant:air_contamination_source.zero
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = air_contamination_source_id
+				value = constant:air_contamination_source.count
+				compare = less_than
+			}
+		}
+		set_temp_variable = { air_contamination_source_applied_delta_bp = air_contamination_delta_bp }
+		air_contamination_register_source_activity = yes
+	}
 
 	track_contamination_achievement_failure = yes
     air_contamination_sync_chaos_from_delta = yes
@@ -5158,6 +5479,7 @@ air_contamination_monthly_update = {
     set_variable = { global.air_contamination_fallout_states = 0 }
     set_variable = { global.air_contamination_fallout_bp = 0 }
     set_variable = { global.air_contamination_decay_bp = 0 }
+	set_variable = { global.air_contamination_last_recovery_applied_bp = constant:air_contamination_source.zero }
 
     set_temp_variable = { air_monthly_fallout_bp = 0 }
     set_temp_variable = { air_cleanliness_system_enabled = 1 }
@@ -5313,6 +5635,16 @@ air_contamination_monthly_update = {
 			set_variable = { global.air_contamination_fallout_bp = air_monthly_fallout_bp }
 			set_variable = { global.air_contamination_natural_source_bp = air_monthly_natural_bp }
 
+			set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.fallout }
+			set_temp_variable = { air_contamination_source_applied_delta_bp = air_monthly_fallout_bp }
+			set_temp_variable = { air_contamination_source_current_bp = air_monthly_fallout_bp }
+			air_contamination_register_source_activity = yes
+			set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.aerosols }
+			set_temp_variable = { air_contamination_source_applied_delta_bp = air_monthly_natural_bp }
+			set_temp_variable = { air_contamination_source_current_bp = air_monthly_natural_bp }
+			air_contamination_register_source_activity = yes
+			set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.negative_one }
+
 			set_temp_variable = { air_contamination_delta_bp = air_monthly_fallout_bp }
 			add_to_temp_variable = { air_contamination_delta_bp = air_monthly_natural_bp }
 
@@ -5357,6 +5689,17 @@ air_contamination_monthly_update = {
 			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
 			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
 			air_contamination_apply_delta_bp = yes
+
+			set_temp_variable = { air_contamination_monthly_gross_source_bp = air_monthly_fallout_bp }
+			add_to_temp_variable = { air_contamination_monthly_gross_source_bp = air_monthly_natural_bp }
+			set_temp_variable = { air_contamination_monthly_recovery_applied_bp = air_contamination_monthly_gross_source_bp }
+			subtract_from_temp_variable = { air_contamination_monthly_recovery_applied_bp = global.air_contamination_last_delta_bp }
+			clamp_temp_variable = {
+				var = air_contamination_monthly_recovery_applied_bp
+				min = constant:air_contamination_source.zero
+			}
+			set_variable = { global.air_contamination_last_recovery_applied_bp = air_contamination_monthly_recovery_applied_bp }
+			add_to_variable = { global.air_contamination_lifetime_recovery_bp = air_contamination_monthly_recovery_applied_bp }
 
 			if = {
 				limit = { has_global_flag = air_contamination_irreversible }
