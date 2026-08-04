@@ -1,0 +1,338 @@
+# ============================================================================
+# CHAOS REDUX - HISTORICAL CHAOS WARFARE AND CBRN SPECIALISTS
+# ============================================================================
+# Overview:
+# - Promotes selected existing named scientists into dual-role static characters.
+# - Reuses their accepted scientist portraits and adds dedicated advisor cards.
+# - Doctrine gates only explicitly aggressive weaponization appointments.
+# ============================================================================
+
+@CBRN_HISTORICAL_ADVISOR_COST = 100
+@CBRN_HISTORICAL_THEORIST_COST = 150
+@CBRN_HISTORICAL_AI_BASE = 1
+@CBRN_HISTORICAL_AI_MAJOR_BASE = 2
+@CBRN_HISTORICAL_AI_PROFILE_FACTOR = 3
+@CBRN_HISTORICAL_AI_PRIORITY_FACTOR = 4
+@CBRN_HISTORICAL_AI_DOCTRINE_FACTOR = 2
+
+characters = {
+	AST_howard_florey = {
+		name = AST_howard_florey
+		portraits = {
+			army = {
+				large = GFX_portrait_AST_howard_florey
+				small = GFX_idea_AST_howard_florey
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_fast_learner }
+			skills = { specialization_biowarfare = 3 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_ADVISOR_COST
+			slot = political_advisor
+			idea_token = AST_howard_florey
+			allowed = { original_tag = AST }
+			traits = { cbrn_medical_countermeasure_pioneer_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_defensive_cbrn_profile = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_PRIORITY_FACTOR has_active_biowarfare_outbreak = yes }
+			}
+		}
+	}
+
+	ENG_paul_fildes = {
+		name = ENG_paul_fildes
+		portraits = {
+			army = {
+				large = GFX_portrait_ENG_paul_fildes
+				small = GFX_idea_ENG_paul_fildes
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_bright }
+			skills = { specialization_biowarfare = 2 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_THEORIST_COST
+			slot = theorist
+			idea_token = ENG_paul_fildes
+			ledger = army
+			allowed = { original_tag = ENG }
+			available = { has_doctrine = chaos_warfare }
+			traits = { chaos_warfare_biological_theorist_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_profile_is_prepared_power = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+
+	ENG_alexander_fleming = {
+		name = ENG_alexander_fleming
+		portraits = {
+			army = {
+				large = GFX_portrait_ENG_alexander_fleming
+				small = GFX_idea_ENG_alexander_fleming
+			}
+		}
+		scientist = { skills = { specialization_biowarfare = 2 } }
+		advisor = {
+			cost = @CBRN_HISTORICAL_ADVISOR_COST
+			slot = political_advisor
+			idea_token = ENG_alexander_fleming
+			allowed = { original_tag = ENG }
+			traits = { cbrn_medical_countermeasure_pioneer_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_defensive_cbrn_profile = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_PRIORITY_FACTOR has_active_biowarfare_outbreak = yes }
+			}
+		}
+	}
+
+	GER_gerhard_schrader = {
+		name = GER_gerhard_schrader
+		portraits = {
+			army = {
+				large = GFX_portrait_GER_gerhard_schrader
+				small = GFX_idea_GER_gerhard_schrader
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_brilliant_theorist }
+			skills = { specialization_cw = 3 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_THEORIST_COST
+			slot = theorist
+			idea_token = GER_gerhard_schrader
+			ledger = army
+			allowed = { original_tag = GER }
+			available = { has_doctrine = chaos_warfare }
+			traits = { chaos_warfare_chemical_theorist_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_DOCTRINE_FACTOR has_doctrine = chaos_warfare }
+			}
+		}
+	}
+
+	GER_kurt_blome = {
+		name = GER_kurt_blome
+		portraits = {
+			army = {
+				large = GFX_portrait_GER_kurt_blome
+				small = GFX_idea_GER_kurt_blome
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_fast_learner }
+			skills = { specialization_biowarfare = 3 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_ADVISOR_COST
+			slot = political_advisor
+			idea_token = GER_kurt_blome
+			allowed = { original_tag = GER }
+			available = { has_doctrine = chaos_warfare }
+			traits = { cbrn_biological_weaponization_director_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PRIORITY_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+
+	JAP_shiro_ishii = {
+		name = JAP_shiro_ishii
+		portraits = {
+			army = {
+				large = GFX_portrait_JAP_shiro_ishii
+				small = GFX_idea_JAP_shiro_ishii
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_resourceful scientist_trait_fast_learner scientist_trait_brilliant_theorist scientist_trait_genius scientist_trait_inhumane }
+			skills = { specialization_biowarfare = 4 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_THEORIST_COST
+			slot = theorist
+			idea_token = JAP_shiro_ishii
+			ledger = army
+			allowed = { original_tag = JAP }
+			available = { has_doctrine = chaos_warfare }
+			traits = { chaos_warfare_weaponization_theorist_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_MAJOR_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PRIORITY_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+
+	JAP_masaji_kitano = {
+		name = JAP_masaji_kitano
+		portraits = {
+			army = {
+				large = GFX_portrait_JAP_masaji_kitano
+				small = GFX_idea_JAP_masaji_kitano
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_inhumane }
+			skills = { specialization_biowarfare = 2 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_ADVISOR_COST
+			slot = political_advisor
+			idea_token = JAP_masaji_kitano
+			allowed = { original_tag = JAP }
+			available = { has_doctrine = chaos_warfare }
+			traits = { cbrn_biological_weaponization_director_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PRIORITY_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+
+	POL_franciszek_witaszek = {
+		name = POL_franciszek_witaszek
+		portraits = {
+			army = {
+				large = GFX_portrait_POL_franciszek_witaszek
+				small = GFX_idea_POL_franciszek_witaszek
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_resourceful }
+			skills = { specialization_biowarfare = 2 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_ADVISOR_COST
+			slot = political_advisor
+			idea_token = POL_franciszek_witaszek
+			allowed = { original_tag = POL }
+			available = { has_doctrine = chaos_warfare }
+			traits = { cbrn_resistance_biological_sabotage_director_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_defensive_cbrn_profile = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_PRIORITY_FACTOR has_active_biowarfare_outbreak = yes }
+			}
+		}
+	}
+
+	SOV_grigory_mairanovsky = {
+		name = SOV_grigory_mairanovsky
+		portraits = {
+			army = {
+				large = GFX_portrait_SOV_grigory_mairanovsky
+				small = GFX_idea_SOV_grigory_mairanovsky
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_brilliant_theorist scientist_trait_inhumane }
+			skills = { specialization_biowarfare = 2 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_ADVISOR_COST
+			slot = political_advisor
+			idea_token = SOV_grigory_mairanovsky
+			allowed = { original_tag = SOV }
+			available = { has_doctrine = chaos_warfare }
+			traits = { cbrn_toxicological_weaponization_director_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PRIORITY_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+
+	SOV_ivan_mikhailovich_velikanov = {
+		name = SOV_ivan_mikhailovich_velikanov
+		portraits = {
+			army = {
+				large = GFX_portrait_SOV_ivan_mikhailovich_velikanov
+				small = GFX_idea_SOV_ivan_mikhailovich_velikanov
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_genius }
+			skills = { specialization_biowarfare = 3 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_THEORIST_COST
+			slot = theorist
+			idea_token = SOV_ivan_mikhailovich_velikanov
+			ledger = army
+			allowed = { original_tag = SOV }
+			available = { has_doctrine = chaos_warfare }
+			traits = { chaos_warfare_biological_theorist_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_profile_is_prepared_power = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+
+	USA_frank_olson = {
+		name = USA_frank_olson
+		portraits = {
+			army = {
+				large = GFX_portrait_USA_frank_olson
+				small = GFX_idea_USA_frank_olson
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_bright }
+			skills = { specialization_biowarfare = 2 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_ADVISOR_COST
+			slot = political_advisor
+			idea_token = USA_frank_olson
+			allowed = { original_tag = USA }
+			available = { has_doctrine = chaos_warfare }
+			traits = { cbrn_biological_program_director_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_profile_is_prepared_power = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+
+	USA_ira_baldwin = {
+		name = USA_ira_baldwin
+		portraits = {
+			army = {
+				large = GFX_portrait_USA_ira_baldwin
+				small = GFX_idea_USA_ira_baldwin
+			}
+		}
+		scientist = {
+			traits = { scientist_trait_resourceful }
+			skills = { specialization_biowarfare = 3 }
+		}
+		advisor = {
+			cost = @CBRN_HISTORICAL_THEORIST_COST
+			slot = theorist
+			idea_token = USA_ira_baldwin
+			ledger = army
+			allowed = { original_tag = USA }
+			available = { has_doctrine = chaos_warfare }
+			traits = { chaos_warfare_biological_theorist_trait }
+			ai_will_do = {
+				base = @CBRN_HISTORICAL_AI_BASE
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_profile_is_prepared_power = yes }
+				modifier = { factor = @CBRN_HISTORICAL_AI_PROFILE_FACTOR cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+	}
+}

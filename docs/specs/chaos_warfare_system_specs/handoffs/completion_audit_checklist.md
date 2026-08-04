@@ -26,6 +26,7 @@ The supported-core checklist is reconciled against source evidence and explicit 
 - [x] mastery pacing depends on equipped participation
 - [x] doctrine-only technologies are correctly gated
 - [x] officer corps spirits are bounded and mutually exclusive where intended
+- [x] named historical CBRN theorists and advisors preserve scientist identity, use selective Chaos Warfare gating, and have route-aware AI weights
 
 ## Army Headquarters
 
@@ -134,6 +135,7 @@ Generic achievement registry `possible = { always = yes }` is presentation-only;
 - [!] window-only animation concepts are omitted because the accepted native-category presentation has no animation consumer
 - [x] no placeholder art remains on active CBRN surfaces
 - [x] asset types are not resized substitutes for one another
+- [x] named advisor and theorist portraits use independently reviewed native 65x67 dossier cards and 4x inspection evidence
 
 ## Documentation
 

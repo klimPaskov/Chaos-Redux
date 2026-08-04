@@ -406,7 +406,10 @@ cbrn_calculate_chemical_action_outputs = {
 		}
 		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_munitions_designer_effect.stable_choking_dose_mult }
 	}
+	cbrn_apply_historical_actor_chemical_advisor_modifiers = yes
+	cbrn_apply_historical_target_chemical_advisor_modifiers = yes
 	clamp_temp_variable = { var = cbrn_action_dose_mult min = constant:cbrn_action_input_bounds.dose_mult_min max = constant:cbrn_action_input_bounds.dose_mult_max }
+	clamp_temp_variable = { var = cbrn_action_doctrine_condemnation_mult_local min = constant:cbrn_doctrine_condemnation.minimum_mult max = constant:cbrn_doctrine_condemnation.maximum_mult }
 
 	set_temp_variable = { cbrn_action_disruption = cbrn_route_base_disruption }
 	multiply_temp_variable = { cbrn_action_disruption = cbrn_class_disruption_mult }
@@ -507,6 +510,7 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_agent_persistence_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_dose_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_civilian_contamination_mult }
+	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_historical_contamination_mult }
 	if = {
 		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
 		multiply_temp_variable = { cbrn_action_contamination_points = constant:cbrn_doctrine_spirit.terminal_hazard.contamination_points_mult }
@@ -571,6 +575,7 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_class_medical_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_dose_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_civilian_casualty_mult }
+	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_historical_medical_saturation_mult }
 	if = {
 		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
 		multiply_temp_variable = { cbrn_action_medical_saturation_points = constant:cbrn_doctrine_spirit.terminal_hazard.medical_saturation_mult }

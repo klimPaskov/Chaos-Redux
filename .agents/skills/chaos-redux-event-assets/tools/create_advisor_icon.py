@@ -3,8 +3,8 @@
 The entire source portrait is first resized to the native 65x67 advisor canvas.
 That complete intermediate is then transformed to the requested fractional
 size, rotation, and opening-center offset. The supplied template is composited
-unchanged over the portrait. The script writes a review PNG and a one-level
-32-bit BGRA DDS.
+unchanged over the portrait. The script writes a native review PNG, an optional
+nearest-neighbour 4x review PNG, and a one-level 32-bit BGRA DDS.
 """
 
 from __future__ import annotations
@@ -35,6 +35,11 @@ def parse_args() -> argparse.Namespace:
 	parser.add_argument("--source", type=Path, required=True)
 	parser.add_argument("--template", type=Path, default=DEFAULT_TEMPLATE)
 	parser.add_argument("--preview", type=Path, required=True)
+	parser.add_argument(
+		"--review-preview",
+		type=Path,
+		help="Optional nearest-neighbour 4x review PNG for visual inspection.",
+	)
 	parser.add_argument("--output", type=Path, required=True)
 	parser.add_argument(
 		"--template-center",
@@ -190,7 +195,8 @@ def write_bgra_dds(image: Image.Image, output: Path) -> None:
 		raise AssertionError(f"Unexpected DDS header size: {len(header)}")
 
 	raw = bytearray()
-	for red, green, blue, alpha in image.get_flattened_data():
+	pixels = image.get_flattened_data() if hasattr(image, "get_flattened_data") else image.getdata()
+	for red, green, blue, alpha in pixels:
 		raw.extend((blue, green, red, alpha))
 
 	output.parent.mkdir(parents=True, exist_ok=True)
@@ -214,6 +220,10 @@ def main() -> None:
 	output = args.output.resolve()
 	preview.parent.mkdir(parents=True, exist_ok=True)
 	card.save(preview)
+	if args.review_preview:
+		review_preview = args.review_preview.resolve()
+		review_preview.parent.mkdir(parents=True, exist_ok=True)
+		card.resize((CARD_SIZE[0] * 4, CARD_SIZE[1] * 4), Image.Resampling.NEAREST).save(review_preview)
 	write_bgra_dds(card, output)
 
 	reopened = Image.open(output).convert("RGBA")

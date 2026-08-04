@@ -179,7 +179,9 @@ cbrn_modify_chemical_readiness = {
 	cbrn_initialize_country_data = yes
 	if = {
 		limit = { has_variable = cbrn_readiness_delta }
-		add_to_variable = { chemical_readiness = cbrn_readiness_delta }
+		set_temp_variable = { cbrn_readiness_delta_local = cbrn_readiness_delta }
+		cbrn_apply_historical_readiness_advisor_modifiers = yes
+		add_to_variable = { chemical_readiness = cbrn_readiness_delta_local }
 		clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = chemical_readiness_cap }
 	}
 }

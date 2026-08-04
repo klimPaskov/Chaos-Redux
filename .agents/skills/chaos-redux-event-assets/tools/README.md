@@ -70,8 +70,11 @@ python -B .agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py `
 	--rotation <degrees> `
 	--portrait-offset <right> <down> `
 	--preview <review.png> `
+	--review-preview <review_4x.png> `
 	--output <runtime.dds>
 ```
+
+`--review-preview` is optional and writes the required nearest-neighbour `4x` inspection copy without changing runtime pixels.
 
 Negative `--portrait-offset` values move left or up.
 
