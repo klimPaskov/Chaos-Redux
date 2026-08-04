@@ -24,13 +24,16 @@ precedent, then create an original or properly sourced Chaos Redux asset.
 - Review format: lossless RGBA PNG decoded from source DDS, TGA, or PNG
 - Pixel policy: preserve the source texture canvas exactly; do not crop,
   stretch, repaint, or normalize transparent bounds during extraction
-- Inventory: 287 allowlisted reference PNGs across 37 semantic folders
+- Inventory: 434 allowlisted reference PNGs across 37 semantic folders
 - Rebuild and validation tool: `.tools/extract_hoi4_asset_references.py`
 
 The generated [CATALOG.md](CATALOG.md) records the exact source, source kind,
 native dimensions, related definition, and local contact sheet for every
 reference. Vanilla HOI4 entries are distinguished from explicitly marked Chaos
 Redux source and migrated legacy review copies.
+
+The checksum- and frame-level provenance for the 147 references added in the
+2026-08-04 audit is recorded in [REFERENCE_MANIFEST.md](REFERENCE_MANIFEST.md).
 
 Common icon families — national focus, ideas, decisions, decision categories,
 technologies, and achievement states — contain at least 15 references. Every
@@ -65,7 +68,7 @@ Portrait references:
 - `portraits/leaders/`
 - `portraits/commanders/`
 - `portraits/operatives/`
-- `portraits/advisors/` (native `65x67` advisor and high-command dossier cards)
+- `portraits/advisors/` (native advisor, theorist, and high-command dossier canvases)
 
 Flags and event art:
 
@@ -102,5 +105,5 @@ or concept sheets.
 The allowlist is maintained by `.tools/extract_hoi4_asset_references.py`.
 When adding a reference, record its exact provenance, choose the correct
 semantic folder, keep the coverage floor, regenerate that folder’s contact
-sheet, and update the catalog. Do not recreate the old shared contact-sheet
-directory or add new reference images beside this tree.
+sheet, and update the catalog or the checksum manifest. Do not recreate the old
+shared contact-sheet directory or add new reference images beside this tree.
