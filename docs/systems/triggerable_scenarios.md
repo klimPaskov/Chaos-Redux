@@ -38,7 +38,7 @@ Type controls cycle scenario-specific type variables:
 - Zombie Apocalypse: diverse outbreaks, random outbreaks, standard everywhere, special-profile everywhere, or connected outbreak.
 - Army of Clones: standard clone army or Aryan variant.
 - Soviet Collapse: ordinary republics or chaos republics.
-- Final Silence: nuclear or thermonuclear payload.
+- Final Silence: compatibility-only cause-memory route; it no longer owns a manual selector payload.
 - Death: Instant Outbreak only.
 - Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
 - Every Banner Rises: Sovereign Scatter, Common Congress, Wars of Separation, three bounded Universal Belligerence rules, Patron Worlds, or Great Partition.
@@ -73,11 +73,11 @@ The ordinary type uses the terminal-collapse ordinary republic release path. The
 
 Intensity adds an extra one-time army package after all breakaways exist. Each breakaway receives additional field brigades, manpower, infantry equipment, support equipment, artillery, and motorized equipment. The number of extra brigades scales from the selected intensity, controlled-state count, civilian factories, military factories, and existing divisions, so stronger republics naturally receive much larger starting forces without tag-specific scenario tables.
 
-### SCN-004: Final Silence
+### Retired Final Silence compatibility
 
-The Final Silence scenario starts the Event 003 terminal world-end branch immediately from the current player country. The launcher becomes the surviving Realm-side authority for the strike sequence, sets `world_end` and `world_end_final_silence`, displays the matching Final Silence super event, locks global air contamination at `100%`, sends witness popups to other countries, applies the first strike wave, and schedules the existing follow-up wave event until the world-end branch completes. The shared wave logic queues visible `launch_nuke` effects for every state in the world. Lethal population and wasteland processing remains on the non-Realm target states.
+Final Silence no longer owns an independent triggerable-scenario row, strike sequence, world-end selector, super-event, Event Log entry, evolution, or Event Details card. Its completed cause-memory identity remains available to historical text and achievements, while active legacy runtime flags and callers redirect into the Fallout consequence coordinator. Fallout is the consequence transition and remains outside ordinary catalog registration.
 
-The nuclear type uses the normal Final Silence payload and removes `75%` of affected non-Realm state population. The thermonuclear type sets `world_end_final_silence_thermonuclear`, uses the thermonuclear super-event/audio ID, launches thermonuclear visual strikes, and removes `95%` of affected non-Realm state population. It also applies the stronger thermonuclear fallout values already defined by the Holy Realm system. Intensity does not change this scenario. It keeps the canonical four-wave Final Silence sequence intact.
+The Fallout-owned manual sandbox uses raw id `14` after the previous live maximum. Its active source path contains the static 10,154-province sweep, seven-day barrier, and completion receipts. This compatibility note is not a public `SCN-004` or Fallout catalog row.
 
 ### SCN-005: The World in Fury
 
@@ -156,3 +156,9 @@ Low, Medium, High, and Maximum intensity scale the share of countries processed,
 The shared window stores the type and intensity until confirmation. Its pure eligibility bridge checks those persistent selectors and the same host, terminal, setup, and duplicate-launch conditions as direct Event 019 callers without writing temporary variables. Confirmation alone copies the live selectors into the raw Event 019 launch effect, so the shared path shows exactly one confirmation. The row sorts at name value `5.75`, after The Hunger Lines and before The World in Fury. Its stable numeric identity is `SCN-013`.
 
 The current registry/scenario specialist reaudit and live-final AI, balance, performance, isolation, scenario-safety, and exploit reaudit are clean with zero P0, P1, or P2 findings. Every gameplay specialist gate is closed. The catalog workbook marks SCN-013 and Event 19 `Fully Functional`. The 7/18 regional flag package has 91 separate full-flag ImageGen raws, 91 deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs. Visual and runtime rows pass, and the independent remediation re-audit handoff `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS, clearing the regional asset gate for parent-owned package promotion. The machine JSON retains its immutable literal `candidate_requires_independent_visual_review` processor-state value. Parent workbook/catalog export and reconciliation are complete, SCN-013 and Event 19 now read `Fully Functional`, and package inventory is complete at 33/33 current files. The final completion audit is PASS with P0/P1/P2 = 0, so no closure gate remains. The old `regional_variants/` seven-motif composite pipeline and its 7/16 validation records are archival evidence only.
+
+### SCN-014: Fallout manual consequence sandbox
+
+The Fallout-owned manual sandbox uses raw id `14`, one above the previous live maximum. Its active source path expands 10,154 valid assigned land provinces across 1,081 states into 41 native thermonuclear batches, verifies issued and observed callbacks, reconciles Fallout Deaths, and starts the exact seven-day handoff before requesting the standard Fallout consequence coordinator. Runtime observation remains user-owned and is not a source launch gate.
+
+This row is a triggerable-scenario sandbox surface only. Fallout remains absent from the world-end selector, ordinary Event Log, evolution, Event Details, and ordinary super-event registries. Retired Final Silence compatibility does not own this launch.

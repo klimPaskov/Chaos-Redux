@@ -31,4 +31,4 @@ The chain owns event ids `chaosx.fallout.534` through `chaosx.fallout.540`, cand
 
 ## Review boundary
 
-This tranche is implemented and dormant. It is not release-floor credit until the Fallout scheduler activation proof, human review, hidden-AI review, Event Log presentation, and runtime receipt behavior are accepted. The exact engine-native manual all-valid-province thermonuclear sweep remains a separate blocker.
+This tranche is implemented and dormant. It is not release-floor credit until the Fallout scheduler activation proof, human review, hidden-AI review, Event Log presentation, and ordinary receipt behavior are accepted. The exact engine-native manual all-valid-province thermonuclear sweep belongs to the completed consequence core.

@@ -41,7 +41,7 @@ The report-event sprite is defined in `interface/fallout_consolidated.gfx` and r
 
 ## Deliberate boundary
 
-This chain remains dormant. Scheduler activation, host authority, save recovery, multiplayer input blocking, full-screen blackout delivery, and runtime Event Log display remain engine-sensitive surfaces without live proof. The migration route records native state population and does not create a new tag. The exact engine-native all-valid-province thermonuclear sweep for the manual scenario remains separately blocked.
+This chain remains dormant because scheduler release receipts, reviewed producers, and activation setters are absent. The migration route records native state population and does not create a new tag. The full-screen blackout and exact engine-native all-valid-province thermonuclear sweep belong to the completed consequence core.
 
 ## Future extension
 

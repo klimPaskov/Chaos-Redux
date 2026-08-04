@@ -221,7 +221,7 @@ Each resolved chain commits one Fallout country-memory record rather than one re
 
 Every record stores the Fallout transition generation, country-memory id, chain type, result band, selected policy token, completion date, NZL as primary actor, an optional exact external partner, route token, and snapshots of Harbor Capacity, Food Security, Parliament Trust, and Sea-Lane Security. Stale callbacks may clean their chain state but cannot commit or duplicate history. Package cleanup may remove pending selection state but does not rewrite committed snapshots.
 
-The Event Log exposes these records through a Fallout country-memory subsection, newest first, without placing them in the ordinary Events list. Each compact History row shows its result band. A partnered external row also shows the exact partner name and a second clickable flag. A selected record opens its stored choice, result, date, route, actor, partner, and four value readings. Domestic details also preserve the preceding Harbour Law result. A future post-consequence package view may summarize the exact five-state identity, both routes, the four chain outcomes, valid partner or aggressor memory, and Year 10 order for every human viewer. It must not be attached to the Fallout world-end selector row because that row describes the consequence rather than a survivor memory record.
+The Event Log exposes these records through a Fallout country-memory subsection, newest first, without placing them in the ordinary Events list. Each compact History row shows its result band. A partnered external row also shows the exact partner name and a second clickable flag. A selected record opens its stored choice, result, date, route, actor, partner, and four value readings. Domestic details also preserve the preceding Harbour Law result. A future post-consequence package view may summarize the exact five-state identity, both routes, the four chain outcomes, valid partner or aggressor memory, and Year 10 order for every human viewer. It must not create a Fallout consequence row in the world-end selector, Event Details, evolution, or ordinary Event Log registries.
 
 The presentation is not an evolution row, an ordinary Chaos event, a super-event, or a living-world ledger entry. Event 2 remains Zombie-only. The 26 NZL blocks remain outside the 660 release floor. No ordinary Fallout workbook row and no SCN-014 row may be created by this pilot presentation.
 
@@ -256,7 +256,7 @@ Activation requires all of these facts in one current transition generation:
 - the Aotearoa overlap is resolved
 - one approved capital row proves owner, controller, hostability, and assigned-capital membership
 - all five package flags and package generations are written by the allocator after their surfaces pass
-- the package's focus, decision, character, idea, force, AI, localisation, asset, event, event-log, Event Details, spreadsheet, and audit surfaces are complete
+- the package's focus, decision, character, idea, force, AI, localisation, asset, event, event-log, Event Details, and audit surfaces are complete
 - map return accepts the country package receipt
 
 The package helper never finalizes the global allocation transaction.

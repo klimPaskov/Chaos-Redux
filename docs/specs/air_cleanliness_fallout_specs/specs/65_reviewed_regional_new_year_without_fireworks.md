@@ -121,7 +121,7 @@ The deterministic tie order is Quiet Remembrance, Local Festivals, Hold a Ration
 
 History `9170` records branch-specific success, partial, and failure payloads, callback success, partial, and failure, and the country as the primary actor. The Event Log detail and name routers use the dedicated `fallout.event_log.new_year_without_fireworks` keys.
 
-The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. The row uses the final title, branch wording, 21-day result, 330-day callback, and no self-rescheduling. The export is regenerated with `python .tools/export_event_catalog_csv.py` after workbook updates.
+This Fallout chain has no workbook or catalog row. Its final title, branch wording, 21-day result, 330-day callback, and no-self-rescheduling contract remain in the Fallout-owned source and proof files.
 
 ## Cleanup proof
 

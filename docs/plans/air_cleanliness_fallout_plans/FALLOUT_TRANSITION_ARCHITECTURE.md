@@ -8,9 +8,9 @@ Create one reusable aftermath framework that can be called by gradual Air collap
 
 This document records both the required architecture and the current implementation boundary. The source specifications under `docs/specs/air_cleanliness_fallout_specs/` remain design authority.
 
-The live foundation includes the request envelope, once-per-date project coordinator, schema-12 transition with guarded legacy migration gates, transactional blackout lock, Air Winter-owned snapshot provenance, frozen live category and specialty-source capture, blackout phase events, row-proven snapshot, grading, 90 to 95 percent population-loss, physical-collapse barriers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first source and state reservation, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, identity-first and numerical survival-ledger transactions, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
+The live foundation includes the request envelope, once-per-date project coordinator, schema-12 transition with guarded legacy migration gates, transactional blackout lock and GUI dirty/phase ledger, Air Winter-owned snapshot provenance, frozen live category and specialty-source capture, blackout phase events, row-proven snapshot, grading, 90 to 95 percent population-loss, physical-collapse barriers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first source and state reservation, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, identity-first and numerical survival-ledger transactions, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, persisted commit reconstruction, the exact static 10,154-province manual sweep with its 41 batches and seven-day barrier, the thirty-tag fracture ledger and materializers, and the universal generic focus and decision package with its Year Ten route.
 
-The transition is not complete. General successor allocation, country-package producers, focus-package producers, player-successor materialization, and candidate-choice UI are not implemented. A player can be committed only to an already existing target with current-transition packages and an exact valid reservation. Immediate `is_ai` observation after `change_tag_from` remains statically unresolved. The old-world diplomacy proof gate is also unresolved. Map return therefore remains intentionally fail closed.
+The static core completes successor allocation, player continuation, thirty-tag fracture materialization, universal generic package assignment, diplomacy reset, and map return. Bespoke country packages and a player candidate-choice UI are explicitly outside the current goal. The ordinary post-Fallout 660-event scheduler remains deliberately dormant because its release receipts and reviewed content producers are absent. Immediate field-by-field `copy_tag` behavior and same-chain human-control observation remain user-owned engine observations rather than source release gates.
 
 ## Namespace and ownership
 
@@ -163,7 +163,7 @@ Applies one-time population mutation, permanent state-building level loss, categ
 
 Classifier schema 2 assigns one deterministic provisional origin archetype before ownership changes. State signals come from the Fallout snapshot and the completed state rewrite, and aggregate into the frozen original owner rather than the mutable live owner. The result is stored separately from the final applied archetype package. The fixed specificity order resolves eleven live archetypes. Machine Protocol stays future-only until its machine-survival inputs have real producers. A partial machine claim or any unmatched surviving country raises error 16 and keeps the blackout active.
 
-This step does not change politics or activate successor content. A future allocator must still choose and apply the final archetype package, regional layer, country-memory layer, focus content, leaders, units, decisions, diplomacy, and AI.
+This classifier does not change politics by itself. The active allocator consumes the result, applies the universal government and generic focus and decision package, resets diplomacy, and writes the current package generations. Bespoke regional, country-memory, leader, and unit layers remain future content.
 
 ### `fallout_reset_old_world_diplomacy`
 
@@ -175,13 +175,13 @@ Builds candidate pools from state clusters, old governments, tag availability, m
 
 Live boundary: `fallout_build_successor_conflict_ledger` implements the generation-bound inventory that must precede this helper. It records every live country, every possible country scope, every state, player reservations, known event-package ownership, and exact safe-candidate membership. A separate schema-2 output contract consumes that frozen inventory. Every non-retired source and committed output must link to each other and match result, generation, and cleanup owner. Continued, converted, released, dynamically created, retired, protected-package, and player-reserved outcomes each have a distinct provenance contract. Releasing a possible-country scope requires a current release receipt. Membership in `game:all_possible_countries` is not availability proof. Retired sources must be landless and must not name an output. The contract also validates unique assigned countries, unique capitals, exact live-landholder coverage, current package layers, and origin states. The guarded finalizer is the only setter for `fallout_successor_allocation_complete`.
 
-No allocator calls the transaction initializer or finalizer. No assignment or package producer exists. The transition therefore remains in survivor allocation.
+The active allocator calls the transaction initializer and guarded finalizer, produces reciprocal assignment rows, applies universal package generations, and advances through survivor allocation only after the postconditions pass.
 
 The accepted ordering requires a committed nine-resource survival ledger after final allocation. The survivor-allocation phase stages the identity transaction, then produces and replays state and country numerical rows before it writes the sole global ready flag. It covers every assigned successor and every state through aligned generation and physical-index arrays. State rows freeze snapshot, Air Winter, grading, population, rewrite, supply, and owner provenance. Country rows freeze allocation, state-count, region, archetype, and country-memory provenance. Separate exact single-error recovery wrappers own malformed identity payloads and malformed numerical payloads. The accepted formulas and static arithmetic cases are recorded in [FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md](FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md) and [FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md](FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md).
 
 ### `fallout_apply_country_packages`
 
-Applies country identity, politics, ideas, units, focus tree, AI, and starting mechanic values.
+The static core applies the universal `fallout_generic_focus_tree` and `fallout_generic_survivor_mandate_category` after map return. Bespoke country identity, leader, unit, AI, and focus-package production remains a future expansion boundary and is not silently represented by the generic package.
 
 ### `fallout_initialize_survival_ledger`
 
@@ -191,7 +191,7 @@ The live two-stage transaction runs after successor allocation and package assig
 
 Keeps the player in a valid surviving government when possible. Otherwise opens a controlled successor selection surface.
 
-The live pre-allocation barrier separates reservation from destination materialization. It reserves every snapshot-origin player state before the general inventory, preserves landless human sources, and records one explicit materialization branch when no in-place target is ready. The future allocator must supply the missing target, capital, packages, and reciprocal assignment row, rebuild the player planning ledger, then finalize general allocation. Once allocation initialization consumes the reservation ledger, those inputs become immutable. Any later reservation drift records `player_reservation_changed_after_allocation` and remains fail closed. This removes the earlier circular dependency without pretending the missing allocator exists.
+The live pre-allocation barrier reserves every snapshot-origin player state before the general inventory and preserves landless human sources. The allocator then supplies the continuation target, capital, universal package generations, reciprocal assignment row, and completed player ledger before finalizing general allocation. Once allocation initialization consumes the reservation ledger, those inputs become immutable. Any later reservation drift records `player_reservation_changed_after_allocation` and remains fail closed.
 
 ### `fallout_finish_transition`
 
@@ -487,9 +487,9 @@ The snapshot records each human country, original identity, optional source anch
 
 `fallout_preflight_player_commit_targets` performs a global two-pass preflight over existing commits and proposed targets before any switch occurs. It proves that every snapshotted player has one ready and unique target. The source's `player_reserved` conflict output must equal that same primary target. `fallout_commit_current_player_primary_target` then writes the final target, commit generation, durable assignment origin, and durable assignment generation before an optional `change_tag_from`. Retry logic permits re-entry only for an exact single recoverable error signature, clears only those errors, and revalidates every commit and cross-player assignment before map return. A cleared reservation may be rebuilt from a durable assignment only before allocation initialization. Consumed reservations are never rebuilt.
 
-This is a real commit path for already materialized, current-generation targets. It is not a materialization or package-production path. No active effect creates a missing player successor, applies the required country and focus packages with their transition generations, fills a candidate list, presents a candidate-choice UI, or completes general successor allocation. The source-reservation ledger can safely reach the allocator when a destination is missing. `fallout_player_materialization_required` remains set until that allocator supplies and proves the destination.
+This commit path consumes the active allocator's current-generation targets and universal package receipts. The allocator can preserve the original country, allocate a valid existing successor, or use a conflict-ledger-approved fracture output. A player candidate-choice UI and bespoke country packages are future content, not requirements for the universal generic core.
 
-Static inspection cannot prove that `change_tag_from` makes the destination observe `is_ai = no` immediately in the same effect chain. The commit effect checks that condition immediately after the switch and fails closed if it is not yet visible. No Hearts of Iron IV run was authorized, so this timing remains unresolved.
+Static inspection cannot observe same-chain human-control state after `change_tag_from`. The commit effect checks that condition and fails closed if it is not visible. This remains a user-owned engine observation.
 
 ### Required continuation priority
 
@@ -544,7 +544,7 @@ The transition records `global.fallout_event_timeline_generation`, `global.fallo
 - each country receives its opening orientation event or mechanic panel
 - mapmodes refresh
 - severe state modifiers and wasteland rules remain active
-- delayed regional wars and diplomacy begin after a grace period
+- delayed regional wars and diplomacy begin only after their own release receipts and producers exist; the ordinary 660-event living-world scheduler remains dormant in the current core tranche
 
 Do not start every war, focus event, and flavour incident on the reveal day.
 
@@ -565,3 +565,5 @@ Do not start every war, focus event, and flavour incident on the reveal day.
 - every direct caller reaches the same transition framework
 
 These are release gates. They are not all satisfied by the current implementation.
+
+The current static-core acceptance is narrower: Air Cleanliness and Air Winter consumers, the Fallout consequence boundary, the exact 10,154-province/41-batch manual substrate and seven-day barrier, the thirty-tag fracture contract, the universal generic focus and decision package, the Year Ten route, and the GUI phase/dirty ledger are source-reconciled. Live HOI4 behavior, native callback load, multiplayer timing, literal host authority, bespoke country trees, and ordinary post-Fallout scheduler activation remain outside this acceptance claim.

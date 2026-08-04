@@ -8858,10 +8858,8 @@ fallout_technology_regression = {
 	zero = 0
 }
 
-# Dynamic Independence Wave fracture is intentionally release-gated. The
-# reserved tags and random state transfer are implemented in the Fallout-owned
-# fracture effect, but the gate stays unset until a live conflict ledger and
-# dynamic-country readback prove that no original tag is lost.
+# Dynamic Independence Wave fracture uses a live template-conflict ledger and
+# generation-bound output readback before survivor allocation can begin.
 fallout_fracture_contract = {
 	schema = {
 		any_key = yes
@@ -8872,7 +8870,7 @@ fallout_fracture_contract = {
 	release_gate = 0
 	zero = 0
 	minimum_source_states = 1
-	maximum_outputs_per_transition = 9
+	maximum_outputs_per_transition = 6
 	seed_modulus = 997
 }
 
@@ -41874,8 +41872,81 @@ fallout_generic_focus = {
 	support_equipment_gain = 100
 	tech_bonus_uses = 1
 	wargoal_expiry_days = 180
+	year_ten_delay_days = 3650
+	year_ten_memory_required = 70
+	year_ten_influence_required = 45
 	ai_low = 5
 	ai_normal = 10
 	ai_high = 20
 	ai_urgent = 40
+}
+
+fallout_generic_late_idea = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	federation_stability = 0.05
+	federation_organization = 0.05
+	federation_supply = -0.08
+	heartland_war_support = 0.05
+	heartland_speed = 0.08
+	heartland_planning = 0.10
+	heartland_supply = -0.05
+	year_ten_stability = 0.10
+	year_ten_factory_output = 0.10
+	year_ten_construction = 0.10
+	year_ten_supply = -0.10
+}
+
+# ============================================================================
+# Consolidated source: common/script_constants/fallout_generic_decision_constants.txt
+# ============================================================================
+# Tuning for the universal post-Fallout decision layer. The costs deliberately
+# mix political authority, factory time, equipment, and long integration work.
+# ============================================================================
+
+fallout_generic_decision = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cost_none = 0
+	cost_low = 20
+	cost_medium = 35
+	duration_survey_days = 30
+	duration_corridor_days = 45
+	duration_integration_days = 120
+	duration_pressure_days = 30
+	duration_pact_days = 21
+	duration_route_days = 60
+	duration_region_days = 60
+	frontier_cooldown_days = 180
+	integration_authority_required = 60
+	integration_stability_required = 0.35
+	frontier_pressure_action_cost = 20
+	pact_support_equipment_cost = 50
+	pact_opinion_required = 15
+	pact_cohesion_required = 45
+	state_infrastructure_gain = 1
+	state_bunker_gain = 1
+	state_factory_gain = 1
+	state_radar_gain = 1
+	state_naval_base_gain = 1
+	state_anti_air_gain = 1
+	route_stability_gain = 0.03
+	route_war_support_gain = 0.05
+	route_manpower_gain = 15000
+	route_equipment_gain = 250
+	route_convoy_gain = 5
+	regional_tech_bonus = 0.50
+	region_cohesion_gain = 6
+	region_influence_gain = 10
+	ai_low = 5
+	ai_normal = 10
+	ai_high = 20
+	ai_war_factor = 0.25
+	ai_peace_factor = 1.5
 }

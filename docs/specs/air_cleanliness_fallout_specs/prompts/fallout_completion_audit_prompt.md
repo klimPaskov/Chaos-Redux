@@ -11,7 +11,7 @@ Read:
 - `AGENTS.md`
 - all files under `docs/specs/air_cleanliness_fallout_specs/`
 - all accepted and unresolved files under `docs/plans/air_cleanliness_fallout_plans/`
-- current gameplay, localisation, GUI, GFX, asset, audio, docs, spreadsheet, and catalog files
+- current gameplay, localisation, GUI, GFX, asset, audio, and documentation files, plus workbook and catalog exclusion evidence
 - relevant local engine documentation and vanilla precedents
 - prior implementation handoffs and audit reports
 
@@ -215,14 +215,14 @@ Confirm:
 - no placeholders on completed visible content
 - no normal Fallout super-event image or audio slot
 
-## Documentation and spreadsheet audit
+## Documentation and catalog-exclusion audit
 
 Confirm:
 
-- source specs, plans, event docs, system docs, asset manifests, handoffs, catalog CSVs, and event workbook agree
+- source specs, plans, event docs, system docs, asset manifests, and handoffs agree
+- the event workbook and exported catalogs contain no Fallout rows or Fallout-specific fields
 - every accepted plan has a disposition
 - no stale event-numbered Fallout folder, fixed scenario id, zombie ownership, 1000-percent-only trigger, or super-event claim remains as current guidance
-- player-facing spreadsheet fields mirror final in-game wording where required
 
 ## Output
 
@@ -235,7 +235,7 @@ Provide:
 - accepted-plan disposition table
 - engine proof results
 - task-specific validation performed
-- asset, localisation, AI, documentation, and spreadsheet gaps
+- asset, localisation, AI, and documentation gaps
 - blockers
 - recommended next actions
 - closure recommendation only when no accepted requirement, fallback, placeholder, or blocker remains

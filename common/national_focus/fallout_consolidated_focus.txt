@@ -1,3 +1,26 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH = 20
+@CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL = 10
+@CR_SC_FALLOUT_GENERIC_FOCUS_AI_URGENT = 40
+@CR_SC_FALLOUT_GENERIC_FOCUS_COST_LONG = 15
+@CR_SC_FALLOUT_GENERIC_FOCUS_COST_SHORT = 5
+@CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD = 10
+@CR_SC_FALLOUT_GENERIC_FOCUS_TECH_BONUS_USES = 1
+@CR_SC_FALLOUT_NZL_AI_HIGH = 20
+@CR_SC_FALLOUT_NZL_AI_NORMAL = 10
+@CR_SC_FALLOUT_NZL_AI_URGENT = 40
+@CR_SC_FALLOUT_NZL_FOCUS_COST_LONG = 10
+@CR_SC_FALLOUT_NZL_FOCUS_COST_SHORT = 5
+@CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD = 7
+@CR_SC_FALLOUT_SUCCESSOR_B7_AI_CAPSTONE = 2
+@CR_SC_FALLOUT_SUCCESSOR_B7_AI_CONTINUITY = 2
+@CR_SC_FALLOUT_SUCCESSOR_B7_AI_DIPLOMACY = 1.25
+@CR_SC_FALLOUT_SUCCESSOR_B7_AI_INDUSTRY = 1.25
+@CR_SC_FALLOUT_SUCCESSOR_B7_AI_SECURITY = 1.5
+@CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_LONG_WEEKS = 15
+@CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_SHORT_WEEKS = 5
+@CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_STANDARD_WEEKS = 10
 # ============================================================================
 # CHAOS REDUX - FALLOUT_CONSOLIDATED_FOCUS.TXT
 # Consolidated Fallout and Air Cleanliness loader surface.
@@ -24,10 +47,6 @@ focus_tree = {
 
 	country = {
 		factor = 0
-		modifier = {
-			add = constant:fallout_nzl_ai.tree_weight
-			fallout_nzl_lifeboat_package_is_current = yes
-		}
 	}
 
 	focus = {
@@ -36,7 +55,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 18
 		y = 0
-		cost = constant:fallout_nzl_focus_cost.short
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_SHORT
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = {
@@ -44,7 +63,7 @@ focus_tree = {
 			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.127 } }
 			else = { country_event = { id = chaosx.fallout.128 } }
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.urgent }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_URGENT }
 	}
 
 	focus = {
@@ -53,7 +72,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 1
-		cost = constant:fallout_nzl_focus_cost.short
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_nzl_count_the_living }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -63,7 +82,7 @@ focus_tree = {
 			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
 			fallout_nzl_change_parliament_trust = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.urgent }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_URGENT }
 	}
 
 	focus = {
@@ -72,7 +91,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 12
 		y = 2
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_seat_the_lifeboat_parliament }
 		available = { fallout_nzl_lifeboat_package_is_current = yes 284 = { is_owned_and_controlled_by = ROOT } }
 		cancel_if_invalid = yes
@@ -81,7 +100,7 @@ focus_tree = {
 			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
 			fallout_nzl_change_harbor_capacity = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_harbor_is_critical = yes } }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_harbor_is_critical = yes } }
 	}
 
 	focus = {
@@ -90,7 +109,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		x = 16
 		y = 2
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_seat_the_lifeboat_parliament }
 		available = { fallout_nzl_lifeboat_package_is_current = yes 1079 = { is_owned_and_controlled_by = ROOT } }
 		cancel_if_invalid = yes
@@ -99,7 +118,7 @@ focus_tree = {
 			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
 			fallout_nzl_change_sea_lane_security = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -108,7 +127,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 20
 		y = 2
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_seat_the_lifeboat_parliament }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -119,7 +138,7 @@ focus_tree = {
 			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.133 } }
 			else = { country_event = { id = chaosx.fallout.134 } }
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes } }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes } }
 	}
 
 	focus = {
@@ -128,7 +147,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 18
 		y = 3
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_open_wellington_quays }
 		prerequisite = { focus = fallout_nzl_relay_auckland_radio }
 		prerequisite = { focus = fallout_nzl_measure_the_dairy_stores }
@@ -143,7 +162,7 @@ focus_tree = {
 			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
 			fallout_nzl_change_harbor_capacity = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.urgent }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_URGENT }
 	}
 
 	# Humanitarian route
@@ -153,14 +172,14 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 4
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_bind_the_two_islands }
 		mutually_exclusive = { focus = fallout_nzl_draw_the_southern_cordon }
 		available = { fallout_nzl_lifeboat_package_is_current = yes fallout_nzl_values_support_open_harbors = yes }
 		cancel_if_invalid = yes
 		completion_reward = { fallout_nzl_commit_humanitarian_route = yes }
 		ai_will_do = {
-			factor = constant:fallout_nzl_ai.normal
+			factor = @CR_SC_FALLOUT_NZL_AI_NORMAL
 			modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_values_support_open_harbors = yes NOT = { has_war = yes } }
 		}
 	}
@@ -171,12 +190,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_keep_the_harbor_lights }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_refugee_fleet_mission_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal modifier = { factor = constant:fallout_nzl_ai.deferred fallout_nzl_food_is_critical = yes } }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL modifier = { factor = constant:fallout_nzl_ai.deferred fallout_nzl_food_is_critical = yes } }
 	}
 
 	focus = {
@@ -185,7 +204,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.short
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_nzl_keep_the_harbor_lights }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -194,7 +213,7 @@ focus_tree = {
 			fallout_nzl_change_parliament_trust = yes
 			add_political_power = constant:fallout_nzl_effect.political_power_small
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -203,7 +222,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_POLITICAL_CHARACTER }
 		x = 10
 		y = 6
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_admit_the_first_rescue_fleet }
 		prerequisite = { focus = fallout_nzl_publish_the_berth_ledger }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
@@ -213,7 +232,7 @@ focus_tree = {
 			set_country_flag = fallout_nzl_relief_speaker_elected
 			add_stability = constant:fallout_nzl_effect.stability_moderate
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -222,7 +241,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 7
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_elect_the_relief_speaker }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -232,7 +251,7 @@ focus_tree = {
 			add_ideas = fallout_nzl_open_berth_covenant
 			set_country_flag = fallout_nzl_lifeboat_rights_guaranteed
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -241,12 +260,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 12
 		y = 8
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_guarantee_lifeboat_rights }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { fallout_nzl_apply_humanitarian_identity = yes }
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	# Isolation route
@@ -256,14 +275,14 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
 		x = 24
 		y = 4
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_bind_the_two_islands }
 		mutually_exclusive = { focus = fallout_nzl_keep_the_harbor_lights }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { fallout_nzl_commit_isolation_route = yes }
 		ai_will_do = {
-			factor = constant:fallout_nzl_ai.normal
+			factor = @CR_SC_FALLOUT_NZL_AI_NORMAL
 			modifier = {
 				factor = constant:fallout_nzl_ai.preferred
 				OR = {
@@ -281,7 +300,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.short
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_nzl_draw_the_southern_cordon }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -292,7 +311,7 @@ focus_tree = {
 			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
 			fallout_nzl_change_parliament_trust = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -301,7 +320,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_NAVY_XP }
 		x = 26
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_draw_the_southern_cordon }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -312,7 +331,7 @@ focus_tree = {
 			custom_effect_tooltip = fallout_nzl_open_numbered_sea_roads_tt
 			hidden_effect = { fallout_nzl_activate_sea_road_licensing = yes }
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -321,7 +340,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_POLITICAL_CHARACTER }
 		x = 24
 		y = 6
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_close_unregistered_anchorages }
 		prerequisite = { focus = fallout_nzl_license_every_sea_road }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
@@ -331,7 +350,7 @@ focus_tree = {
 			set_country_flag = fallout_nzl_harbor_constable_appointed
 			add_war_support = constant:fallout_nzl_effect.war_support_moderate
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -340,7 +359,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 24
 		y = 7
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_appoint_the_harbor_constable }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -350,7 +369,7 @@ focus_tree = {
 			add_ideas = fallout_nzl_last_berth_doctrine
 			set_country_flag = fallout_nzl_last_berths_reserved
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -359,12 +378,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
 		x = 24
 		y = 8
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_reserve_the_last_berths }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { fallout_nzl_apply_isolation_identity = yes }
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	# Economy and survival
@@ -374,7 +393,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_INTERNATIONAL_TRADE }
 		x = 32
 		y = 4
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_bind_the_two_islands }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -384,7 +403,7 @@ focus_tree = {
 			add_ideas = fallout_nzl_dairy_relief_fleet_idea
 			set_country_flag = fallout_nzl_dairy_convoy_decisions_open
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes } }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes } }
 	}
 
 	focus = {
@@ -393,7 +412,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 30
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_dairy_relief_fleet }
 		available = { fallout_nzl_lifeboat_package_is_current = yes 723 = { is_owned_and_controlled_by = ROOT } }
 		cancel_if_invalid = yes
@@ -402,7 +421,7 @@ focus_tree = {
 			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
 			fallout_nzl_change_food_security = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -411,12 +430,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
 		x = 34
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.short
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_nzl_dairy_relief_fleet }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_fishery_compact_decision_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -425,7 +444,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 32
 		y = 6
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_repair_the_milk_rail }
 		prerequisite = { focus = fallout_nzl_fishery_quota_compacts }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
@@ -435,7 +454,7 @@ focus_tree = {
 			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
 			fallout_nzl_change_food_security = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -444,12 +463,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
 		x = 36
 		y = 4
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_bind_the_two_islands }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_devonport_repair_mission_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.high modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_harbor_is_critical = yes } }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_harbor_is_critical = yes } }
 	}
 
 	focus = {
@@ -458,7 +477,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
 		x = 38
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_rebuild_devonport }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -471,7 +490,7 @@ focus_tree = {
 			}
 			set_country_flag = fallout_nzl_storm_port_engineers_available
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -480,7 +499,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		x = 36
 		y = 6
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_storm_port_engineers }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -489,7 +508,7 @@ focus_tree = {
 			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
 			fallout_nzl_change_sea_lane_security = yes
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -498,7 +517,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 34
 		y = 7
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_weatherproof_the_grain_sheds }
 		prerequisite = { focus = fallout_nzl_radio_weather_chain }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
@@ -511,7 +530,7 @@ focus_tree = {
 			add_ideas = fallout_nzl_two_island_supply_ring_idea
 			set_country_flag = fallout_nzl_two_island_supply_ring_complete
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	# Military branch
@@ -521,12 +540,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 2
 		y = 4
-		cost = constant:fallout_nzl_focus_cost.short
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_nzl_bind_the_two_islands }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_home_guard_decision_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal modifier = { factor = constant:fallout_nzl_ai.preferred has_war = yes } }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL modifier = { factor = constant:fallout_nzl_ai.preferred has_war = yes } }
 	}
 
 	focus = {
@@ -535,12 +554,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 0
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_home_guard_rolls }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_port_militia_drill_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -549,12 +568,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 4
 		y = 5
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_home_guard_rolls }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_convoy_volunteer_mission_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -563,7 +582,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_NAVY_XP }
 		x = 2
 		y = 6
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_port_militia_drill }
 		prerequisite = { focus = fallout_nzl_convoy_volunteer_corps }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
@@ -573,7 +592,7 @@ focus_tree = {
 			fallout_nzl_change_sea_lane_security = yes
 			navy_experience = constant:fallout_nzl_effect.navy_experience_small
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -582,12 +601,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_RESEARCH }
 		x = 0
 		y = 7
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_southern_cross_patrols }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_anti_piracy_decision_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -596,12 +615,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_NAVY_XP }
 		x = 4
 		y = 7
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_southern_cross_patrols }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_rescue_cutter_decision_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -610,7 +629,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_NAVY_XP }
 		x = 2
 		y = 8
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_pirate_bearing_rooms }
 		prerequisite = { focus = fallout_nzl_armed_rescue_cutters }
 		available = { fallout_nzl_lifeboat_package_is_current = yes 284 = { is_owned_and_controlled_by = ROOT } 1079 = { is_owned_and_controlled_by = ROOT } }
@@ -620,7 +639,7 @@ focus_tree = {
 			1079 = { add_building_construction = { type = anti_air_building level = 1 instant_build = yes } }
 			set_country_flag = fallout_nzl_coastal_batteries_complete
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -629,7 +648,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_NAVY_XP }
 		x = 2
 		y = 9
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_coastal_denial_batteries }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -640,7 +659,7 @@ focus_tree = {
 			add_ideas = fallout_nzl_lifeboat_navy_idea
 			set_country_flag = fallout_nzl_lifeboat_navy_complete
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	# External and late identity branch
@@ -650,7 +669,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
 		x = 18
 		y = 9
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_pacific_relief_republic focus = fallout_nzl_southern_refuge }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
@@ -665,7 +684,7 @@ focus_tree = {
 				country_event = { id = chaosx.fallout.140 }
 			}
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -674,7 +693,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
 		x = 14
 		y = 10
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_call_the_island_radios }
 		available = {
 			fallout_nzl_lifeboat_package_is_current = yes
@@ -689,7 +708,7 @@ focus_tree = {
 				set_country_flag = fallout_nzl_rescue_passage_decision_open
 			}
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal modifier = { factor = constant:fallout_nzl_ai.deferred fallout_nzl_food_is_critical = yes } }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL modifier = { factor = constant:fallout_nzl_ai.deferred fallout_nzl_food_is_critical = yes } }
 	}
 
 	focus = {
@@ -698,12 +717,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 12
 		y = 11
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_offer_rescue_passages }
 		available = { fallout_nzl_lifeboat_package_is_current = yes fallout_nzl_has_two_current_relief_partners = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_pacific_rescue_mandate_complete }
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -712,12 +731,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
 		x = 14
 		y = 12
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_pacific_rescue_mandate }
 		available = { fallout_nzl_lifeboat_package_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_postwar_relief_decisions_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -726,12 +745,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
 		x = 22
 		y = 10
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_call_the_island_radios }
 		available = { fallout_nzl_lifeboat_package_is_current = yes has_country_flag = fallout_nzl_isolation_route }
 		cancel_if_invalid = yes
 		completion_reward = { set_country_flag = fallout_nzl_quiet_seas_decisions_open }
-		ai_will_do = { factor = constant:fallout_nzl_ai.normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
 	}
 
 	focus = {
@@ -740,12 +759,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_NAVY_XP }
 		x = 24
 		y = 11
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_demand_quiet_seas }
 		available = { fallout_nzl_lifeboat_package_is_current = yes fallout_nzl_pirate_aggressor_is_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = { fallout_nzl_authorize_bounded_pirate_wargoal = yes }
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -754,7 +773,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
 		x = 22
 		y = 12
-		cost = constant:fallout_nzl_focus_cost.standard
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_nzl_demand_quiet_seas focus = fallout_nzl_punitive_anti_piracy_patrols }
 		available = {
 			fallout_nzl_lifeboat_package_is_current = yes
@@ -782,7 +801,7 @@ focus_tree = {
 				fallout_nzl_change_sea_lane_security = yes
 			}
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_HIGH }
 	}
 
 	focus = {
@@ -791,7 +810,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 13
-		cost = constant:fallout_nzl_focus_cost.long
+		cost = @CR_SC_FALLOUT_NZL_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_nzl_relief_ports_without_annexation focus = fallout_nzl_southern_sea_exclusion_zone }
 		available = {
 			fallout_nzl_lifeboat_package_is_current = yes
@@ -806,7 +825,7 @@ focus_tree = {
 			if = { limit = { is_ai = no } country_event = { id = chaosx.fallout.147 } }
 			else = { country_event = { id = chaosx.fallout.148 } }
 		}
-		ai_will_do = { factor = constant:fallout_nzl_ai.urgent }
+		ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_URGENT }
 	}
 }
 
@@ -830,10 +849,6 @@ focus_tree = {
 
 	country = {
 		factor = 0
-		modifier = {
-			add = constant:fallout_successor_b7_ai.continuity
-			fallout_successor_b7_usa_package_receipts_are_current = yes
-		}
 	}
 
 	focus = {
@@ -842,14 +857,14 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 0
-		cost = constant:fallout_successor_b7_focus.short_weeks
+		cost = @CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_SHORT_WEEKS
 		available = { fallout_successor_b7_usa_package_receipts_are_current = yes }
 		cancel_if_invalid = yes
 		completion_reward = {
 			set_country_flag = fallout_usa_continuity_census_open
 			add_stability = 0.05
 		}
-		ai_will_do = { factor = constant:fallout_successor_b7_ai.continuity }
+		ai_will_do = { factor = @CR_SC_FALLOUT_SUCCESSOR_B7_AI_CONTINUITY }
 	}
 
 	focus = {
@@ -858,7 +873,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 1
-		cost = constant:fallout_successor_b7_focus.standard_weeks
+		cost = @CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_STANDARD_WEEKS
 		prerequisite = { focus = fallout_usa_federal_continuity_ledger }
 		available = { fallout_successor_b7_usa_package_receipts_are_current = yes }
 		cancel_if_invalid = yes
@@ -867,7 +882,7 @@ focus_tree = {
 			capital_scope = { add_building_construction = { type = bunker level = 1 instant_build = yes } }
 			add_ideas = fallout_usa_shelter_registry_idea
 		}
-		ai_will_do = { factor = constant:fallout_successor_b7_ai.industry }
+		ai_will_do = { factor = @CR_SC_FALLOUT_SUCCESSOR_B7_AI_INDUSTRY }
 	}
 
 	focus = {
@@ -876,7 +891,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
 		x = 10
 		y = 1
-		cost = constant:fallout_successor_b7_focus.standard_weeks
+		cost = @CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_STANDARD_WEEKS
 		prerequisite = { focus = fallout_usa_federal_continuity_ledger }
 		available = { fallout_successor_b7_usa_package_receipts_are_current = yes }
 		cancel_if_invalid = yes
@@ -887,7 +902,7 @@ focus_tree = {
 				add_building_construction = { type = rail_way level = 1 instant_build = yes }
 			}
 		}
-		ai_will_do = { factor = constant:fallout_successor_b7_ai.industry }
+		ai_will_do = { factor = @CR_SC_FALLOUT_SUCCESSOR_B7_AI_INDUSTRY }
 	}
 
 	focus = {
@@ -896,7 +911,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
 		x = 14
 		y = 1
-		cost = constant:fallout_successor_b7_focus.standard_weeks
+		cost = @CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_STANDARD_WEEKS
 		prerequisite = { focus = fallout_usa_federal_continuity_ledger }
 		available = { fallout_successor_b7_usa_package_receipts_are_current = yes }
 		cancel_if_invalid = yes
@@ -906,7 +921,7 @@ focus_tree = {
 			add_war_support = 0.05
 			add_ideas = fallout_usa_guard_compact_idea
 		}
-		ai_will_do = { factor = constant:fallout_successor_b7_ai.security }
+		ai_will_do = { factor = @CR_SC_FALLOUT_SUCCESSOR_B7_AI_SECURITY }
 	}
 
 	focus = {
@@ -915,7 +930,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
 		x = 6
 		y = 2
-		cost = constant:fallout_successor_b7_focus.standard_weeks
+		cost = @CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_STANDARD_WEEKS
 		prerequisite = { focus = fallout_usa_shelter_registry }
 		available = { fallout_successor_b7_usa_package_receipts_are_current = yes }
 		cancel_if_invalid = yes
@@ -923,7 +938,7 @@ focus_tree = {
 			set_country_flag = fallout_usa_bilateral_reconstruction_open
 			add_stability = 0.05
 		}
-		ai_will_do = { factor = constant:fallout_successor_b7_ai.diplomacy }
+		ai_will_do = { factor = @CR_SC_FALLOUT_SUCCESSOR_B7_AI_DIPLOMACY }
 	}
 
 	focus = {
@@ -932,7 +947,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
 		x = 14
 		y = 2
-		cost = constant:fallout_successor_b7_focus.standard_weeks
+		cost = @CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_STANDARD_WEEKS
 		prerequisite = { focus = fallout_usa_guard_compacts }
 		available = { fallout_successor_b7_usa_package_receipts_are_current = yes }
 		cancel_if_invalid = yes
@@ -940,7 +955,7 @@ focus_tree = {
 			set_country_flag = fallout_usa_continental_radio_net_complete
 			army_experience = 5
 		}
-		ai_will_do = { factor = constant:fallout_successor_b7_ai.diplomacy }
+		ai_will_do = { factor = @CR_SC_FALLOUT_SUCCESSOR_B7_AI_DIPLOMACY }
 	}
 
 	focus = {
@@ -949,7 +964,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
 		x = 10
 		y = 3
-		cost = constant:fallout_successor_b7_focus.long_weeks
+		cost = @CR_SC_FALLOUT_SUCCESSOR_B7_FOCUS_LONG_WEEKS
 		prerequisite = { focus = fallout_usa_supply_corridors }
 		prerequisite = { focus = fallout_usa_bilateral_reconstruction }
 		prerequisite = { focus = fallout_usa_continental_radio_net }
@@ -967,7 +982,7 @@ focus_tree = {
 			add_war_support = 0.05
 			set_country_flag = fallout_usa_federal_reconstruction_complete
 		}
-		ai_will_do = { factor = constant:fallout_successor_b7_ai.capstone }
+		ai_will_do = { factor = @CR_SC_FALLOUT_SUCCESSOR_B7_AI_CAPSTONE }
 	}
 }
 # ============================================================================
@@ -996,7 +1011,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 20
 		y = 0
-		cost = constant:fallout_generic_focus.cost_short
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_SHORT
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
 		completion_reward = {
 			fallout_generic_focus_initialize_values = yes
@@ -1005,7 +1020,7 @@ focus_tree = {
 			add_war_support = constant:fallout_generic_focus.war_support_small
 			fallout_generic_focus_standard_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_urgent }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_URGENT }
 	}
 
 	focus = {
@@ -1014,7 +1029,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
 		x = 20
 		y = 1
-		cost = constant:fallout_generic_focus.cost_short
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_generic_wake_the_survivors }
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
 		completion_reward = {
@@ -1022,7 +1037,7 @@ focus_tree = {
 			set_country_flag = fallout_generic_frontier_claims_open
 			fallout_generic_focus_frontier_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
@@ -1031,7 +1046,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
 		x = 20
 		y = 2
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_map_the_ruins }
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
 		completion_reward = {
@@ -1042,7 +1057,7 @@ focus_tree = {
 			set_country_flag = fallout_generic_capital_secured
 			fallout_generic_focus_recovery_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
@@ -1051,7 +1066,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 4
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_hold_the_capital }
 		mutually_exclusive = { focus = fallout_generic_ration_congress focus = fallout_generic_command_directorate focus = fallout_generic_shelter_council }
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
@@ -1064,9 +1079,11 @@ focus_tree = {
 			fallout_generic_focus_recovery_gain = yes
 		}
 		ai_will_do = {
-			factor = constant:fallout_generic_focus.ai_normal
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.continuity_government } }
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant } }
+			factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.continuity_government } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol } }
 		}
 	}
 
@@ -1074,9 +1091,9 @@ focus_tree = {
 		id = fallout_generic_ration_congress
 		icon = GFX_goal_generic_production
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 14
+		x = 16
 		y = 4
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_hold_the_capital }
 		mutually_exclusive = { focus = fallout_generic_civic_compact focus = fallout_generic_command_directorate focus = fallout_generic_shelter_council }
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
@@ -1090,9 +1107,10 @@ focus_tree = {
 			fallout_generic_focus_recovery_gain = yes
 		}
 		ai_will_do = {
-			factor = constant:fallout_generic_focus.ai_normal
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.food_compact } }
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state } }
+			factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.food_compact } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.scavenger_syndicate } }
 		}
 	}
 
@@ -1100,9 +1118,9 @@ focus_tree = {
 		id = fallout_generic_command_directorate
 		icon = GFX_goal_generic_major_war
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 20
+		x = 24
 		y = 4
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_hold_the_capital }
 		mutually_exclusive = { focus = fallout_generic_civic_compact focus = fallout_generic_ration_congress focus = fallout_generic_shelter_council }
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
@@ -1116,9 +1134,10 @@ focus_tree = {
 			fallout_generic_focus_frontier_gain = yes
 		}
 		ai_will_do = {
-			factor = constant:fallout_generic_focus.ai_normal
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } }
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.mutant_polity } }
+			factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.mutant_polity } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.nomad_convoy } }
 		}
 	}
 
@@ -1126,9 +1145,9 @@ focus_tree = {
 		id = fallout_generic_shelter_council
 		icon = GFX_goal_generic_alliance
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 26
+		x = 32
 		y = 4
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_hold_the_capital }
 		mutually_exclusive = { focus = fallout_generic_civic_compact focus = fallout_generic_ration_congress focus = fallout_generic_command_directorate }
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
@@ -1141,9 +1160,9 @@ focus_tree = {
 			fallout_generic_focus_standard_gain = yes
 		}
 		ai_will_do = {
-			factor = constant:fallout_generic_focus.ai_normal
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.bunker_authority } }
-			modifier = { factor = constant:fallout_generic_focus.ai_high has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } }
+			factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.bunker_authority } }
+			modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } }
 		}
 	}
 
@@ -1153,14 +1172,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
 		x = 20
 		y = 5
-		cost = constant:fallout_generic_focus.cost_short
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_SHORT
 		prerequisite = {
-			OR = {
-				focus = fallout_generic_civic_compact
-				focus = fallout_generic_ration_congress
-				focus = fallout_generic_command_directorate
-				focus = fallout_generic_shelter_council
-			}
+			focus = fallout_generic_civic_compact
+			focus = fallout_generic_ration_congress
+			focus = fallout_generic_command_directorate
+			focus = fallout_generic_shelter_council
 		}
 		available = { has_global_flag = fallout_active has_country_flag = fallout_generic_focus_tree_loaded }
 		completion_reward = {
@@ -1169,16 +1186,16 @@ focus_tree = {
 			add_research_slot = constant:fallout_generic_focus.research_slot_gain
 			fallout_generic_focus_standard_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_reopen_power_grid
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
-		x = 4
+		x = 2
 		y = 7
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_publish_survival_charter }
 		completion_reward = {
 			capital_scope = {
@@ -1188,19 +1205,19 @@ focus_tree = {
 			set_country_flag = fallout_generic_power_grid_reopened
 			fallout_generic_focus_recovery_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_repair_rail_spine
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
-		x = 10
+		x = 8
 		y = 7
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_publish_survival_charter }
 		completion_reward = {
-			every_owned_state = {
+			random_owned_state = {
 				limit = { is_controlled_by = ROOT }
 				add_building_construction = { type = infrastructure level = constant:fallout_generic_focus.infrastructure_level instant_build = yes }
 			}
@@ -1208,16 +1225,16 @@ focus_tree = {
 			set_country_flag = fallout_generic_rail_spine_repaired
 			fallout_generic_focus_recovery_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL }
 	}
 
 	focus = {
 		id = fallout_generic_reclaim_workshops
 		icon = GFX_goal_generic_construct_mil_factory
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 16
+		x = 14
 		y = 7
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_publish_survival_charter }
 		completion_reward = {
 			capital_scope = {
@@ -1228,16 +1245,16 @@ focus_tree = {
 			set_country_flag = fallout_generic_workshops_reclaimed
 			fallout_generic_focus_recovery_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_raise_survivor_guard
 		icon = GFX_goal_generic_allies_build_infantry
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 22
+		x = 32
 		y = 7
-		cost = constant:fallout_generic_focus.cost_short
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_generic_publish_survival_charter }
 		completion_reward = {
 			add_manpower = constant:fallout_generic_focus.manpower_gain
@@ -1246,16 +1263,16 @@ focus_tree = {
 			set_country_flag = fallout_generic_survivor_guard_raised
 			fallout_generic_focus_frontier_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_train_frontier_columns
 		icon = GFX_goal_generic_army_motorized
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 28
-		y = 7
-		cost = constant:fallout_generic_focus.cost_standard
+		x = 30
+		y = 8
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_raise_survivor_guard }
 		completion_reward = {
 			army_experience = constant:fallout_generic_focus.army_xp_medium
@@ -1263,7 +1280,7 @@ focus_tree = {
 			set_country_flag = fallout_generic_frontier_columns_trained
 			fallout_generic_focus_frontier_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
@@ -1271,119 +1288,188 @@ focus_tree = {
 		icon = GFX_goal_generic_defence
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 34
-		y = 7
-		cost = constant:fallout_generic_focus.cost_standard
+		y = 8
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_raise_survivor_guard }
 		completion_reward = {
-			every_owned_state = {
-				limit = { is_controlled_by = ROOT }
-				add_building_construction = { type = bunker level = constant:fallout_generic_focus.bunker_level instant_build = yes }
-			}
+			fallout_generic_focus_fortify_one_frontier_state = yes
 			add_war_support = constant:fallout_generic_focus.war_support_medium
 			set_country_flag = fallout_generic_cordon_armed
 			fallout_generic_focus_standard_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL }
 	}
 
 	focus = {
 		id = fallout_generic_open_radio
 		icon = GFX_goal_generic_radar
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
-		x = 10
-		y = 9
-		cost = constant:fallout_generic_focus.cost_short
+		x = 16
+		y = 7
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_SHORT
 		prerequisite = { focus = fallout_generic_publish_survival_charter }
 		completion_reward = {
-			add_tech_bonus = { name = fallout_generic_open_radio bonus = 0.5 uses = constant:fallout_generic_focus.tech_bonus_uses category = electronics }
+			add_tech_bonus = { name = fallout_generic_open_radio bonus = 0.5 uses = @CR_SC_FALLOUT_GENERIC_FOCUS_TECH_BONUS_USES category = electronics }
 			add_command_power = constant:fallout_generic_focus.command_power_gain
 			set_country_flag = fallout_generic_radio_open
 			fallout_generic_focus_recovery_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL }
 	}
 
 	focus = {
 		id = fallout_generic_found_frontier_pact
 		icon = GFX_goal_generic_major_alliance
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 20
-		y = 9
-		cost = constant:fallout_generic_focus.cost_standard
+		x = 16
+		y = 8
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_open_radio }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_pact_focus_requirements_tt
+				fallout_generic_focus_runtime_is_current = yes
+				is_subject = no
+				NOT = { is_in_faction = yes }
+			}
+		}
+		cancel_if_invalid = yes
 		completion_reward = {
 			fallout_generic_focus_create_pact = yes
 			set_country_flag = fallout_generic_frontier_pact_open
 			fallout_generic_focus_recovery_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_invite_neighbor_compacts
 		icon = GFX_goal_generic_alliance
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 30
+		x = 14
 		y = 9
-		cost = constant:fallout_generic_focus.cost_standard
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_found_frontier_pact }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_pact_leader_requirements_tt
+				has_country_flag = fallout_generic_frontier_pact_active
+				is_faction_leader = yes
+			}
+		}
+		cancel_if_invalid = yes
 		completion_reward = {
-			if = { limit = { is_in_faction = yes } every_country = { limit = { has_country_flag = fallout_generic_focus_tree_loaded NOT = { is_in_faction = yes } NOT = { has_war_with = ROOT } } add_opinion_modifier = { target = ROOT modifier = fallout_generic_frontier_pact_invitation } } }
+			if = {
+				limit = {
+					has_country_flag = fallout_generic_frontier_pact_active
+					is_faction_leader = yes
+				}
+				every_country = {
+					limit = {
+						fallout_generic_focus_runtime_is_current = yes
+						is_neighbor_of = ROOT
+						is_subject = no
+						has_capitulated = no
+						is_in_faction = no
+						has_war = no
+						NOT = { has_war_with = ROOT }
+						check_variable = { var = fallout_region_id value = ROOT.fallout_region_id compare = equals }
+					}
+					add_opinion_modifier = { target = ROOT modifier = fallout_generic_frontier_pact_invitation }
+				}
+			}
 			set_country_flag = fallout_generic_neighbor_compacts_open
 			add_command_power = constant:fallout_generic_focus.command_power_gain
 			fallout_generic_focus_standard_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL }
 	}
 
 	focus = {
 		id = fallout_generic_claim_the_empty_belt
 		icon = GFX_goal_generic_more_territorial_claims
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
-		x = 4
-		y = 9
-		cost = constant:fallout_generic_focus.cost_standard
+		x = 24
+		y = 7
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_publish_survival_charter }
 		completion_reward = {
 			fallout_generic_focus_claim_frontier = yes
 			set_country_flag = fallout_generic_empty_belt_claimed
 			fallout_generic_focus_frontier_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_issue_border_ultimatum
 		icon = GFX_goal_generic_territory_or_war
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
-		x = 4
-		y = 10
-		cost = constant:fallout_generic_focus.cost_long
+		x = 24
+		y = 8
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_generic_claim_the_empty_belt }
-		available = { has_country_flag = fallout_generic_empty_belt_claimed }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_border_ultimatum_requirements_tt
+				fallout_generic_focus_runtime_is_current = yes
+				has_country_flag = fallout_generic_empty_belt_claimed
+				fallout_generic_has_empty_belt_target = yes
+			}
+		}
+		cancel_if_invalid = yes
 		completion_reward = {
 			fallout_generic_focus_issue_border_ultimatum = yes
 			set_country_flag = fallout_generic_border_ultimatum_issued
 			add_war_support = constant:fallout_generic_focus.war_support_medium
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_settle_the_new_border
 		icon = GFX_goal_generic_demand_territory
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_STABILITY }
-		x = 10
-		y = 11
-		cost = constant:fallout_generic_focus.cost_standard
+		x = 26
+		y = 9
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
 		prerequisite = { focus = fallout_generic_issue_border_ultimatum }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_border_settlement_requirements_tt
+				fallout_generic_border_campaign_resolved = yes
+			}
+		}
+		cancel_if_invalid = yes
 		completion_reward = {
-			every_owned_state = { limit = { is_controlled_by = ROOT } add_building_construction = { type = infrastructure level = constant:fallout_generic_focus.infrastructure_level instant_build = yes } }
+			fallout_generic_focus_improve_one_border_state = yes
 			add_stability = constant:fallout_generic_focus.stability_medium
 			set_country_flag = fallout_generic_new_border_settled
 			fallout_generic_focus_recovery_gain = yes
+			var:fallout_generic_border_target_state = { clr_state_flag = fallout_generic_border_target_state }
+			clr_country_flag = fallout_generic_border_campaign_active
+			clr_country_flag = fallout_generic_border_ultimatum_issued
+			clear_variable = fallout_generic_border_target_country
+			clear_variable = fallout_generic_border_target_state
+			clear_variable = fallout_generic_border_campaign_generation
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL }
+	}
+
+	focus = {
+		id = fallout_generic_open_the_regional_ledger
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 20
+		y = 10
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_SHORT
+		prerequisite = { focus = fallout_generic_publish_survival_charter }
+		completion_reward = {
+			fallout_generic_focus_assign_region = yes
+			set_country_flag = fallout_generic_regional_ledger_open
+			fallout_generic_focus_standard_gain = yes
+		}
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
@@ -1391,151 +1477,169 @@ focus_tree = {
 		icon = GFX_goal_generic_radar
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
 		x = 4
-		y = 13
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.north_america compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
 		completion_reward = { capital_scope = { add_building_construction = { type = radar_station level = constant:fallout_generic_focus.radar_level instant_build = yes } } set_country_flag = fallout_generic_region_north_america fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.north_america compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_europe_water_councils
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 10
-		y = 13
+		x = 8
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.europe compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
-		completion_reward = { every_owned_state = { limit = { is_controlled_by = ROOT } add_building_construction = { type = infrastructure level = constant:fallout_generic_focus.infrastructure_level instant_build = yes } } set_country_flag = fallout_generic_region_europe fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
+		completion_reward = { fallout_generic_focus_improve_one_service_state = yes add_stability = constant:fallout_generic_focus.stability_small set_country_flag = fallout_generic_region_europe fallout_generic_focus_regional_gain = yes }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.europe compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_eurasian_inland_road
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
-		x = 16
-		y = 13
+		x = 12
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.eurasian_interior compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
-		completion_reward = { every_owned_state = { limit = { is_controlled_by = ROOT } add_building_construction = { type = rail_way level = constant:fallout_generic_focus.rail_level instant_build = yes } } set_country_flag = fallout_generic_region_eurasian_interior fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
+		completion_reward = { fallout_generic_focus_improve_one_service_state = yes add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fallout_generic_focus.train_equipment_gain } set_country_flag = fallout_generic_region_eurasian_interior fallout_generic_focus_regional_gain = yes }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.eurasian_interior compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_east_asia_seed_banks
 		icon = GFX_goal_generic_production
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
-		x = 22
-		y = 13
+		x = 16
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.east_asia compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
-		completion_reward = { capital_scope = { add_building_construction = { type = synthetic_refinery level = constant:fallout_generic_focus.industry_level instant_build = yes } } set_country_flag = fallout_generic_region_east_asia fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
+		completion_reward = { capital_scope = { add_building_construction = { type = synthetic_refinery level = constant:fallout_generic_focus.industry_level instant_build = yes } } add_tech_bonus = { name = fallout_generic_seed_bank_agronomy bonus = constant:fallout_generic_decision.regional_tech_bonus uses = @CR_SC_FALLOUT_GENERIC_FOCUS_TECH_BONUS_USES category = industry } set_country_flag = fallout_generic_region_east_asia fallout_generic_focus_regional_gain = yes }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.east_asia compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_south_asia_delta_routes
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
-		x = 28
-		y = 13
+		x = 20
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.south_asia compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
-		completion_reward = { every_owned_state = { limit = { is_controlled_by = ROOT } add_building_construction = { type = infrastructure level = constant:fallout_generic_focus.infrastructure_level instant_build = yes } } set_country_flag = fallout_generic_region_south_asia fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
+		completion_reward = { fallout_generic_focus_improve_one_service_state = yes add_manpower = constant:fallout_generic_decision.route_manpower_gain set_country_flag = fallout_generic_region_south_asia fallout_generic_focus_regional_gain = yes }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.south_asia compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_mena_quarantine_roads
 		icon = GFX_goal_generic_defence
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
-		x = 4
-		y = 14
+		x = 24
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.middle_east_north_africa compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
-		completion_reward = { every_owned_state = { limit = { is_controlled_by = ROOT } add_building_construction = { type = bunker level = constant:fallout_generic_focus.bunker_level instant_build = yes } } set_country_flag = fallout_generic_region_mena fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
+		completion_reward = { fallout_generic_focus_fortify_one_frontier_state = yes add_stability = constant:fallout_generic_focus.stability_small set_country_flag = fallout_generic_region_mena fallout_generic_focus_regional_gain = yes }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.middle_east_north_africa compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_africa_river_wards
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
-		x = 10
-		y = 14
+		x = 28
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
-		completion_reward = { every_owned_state = { limit = { is_controlled_by = ROOT } add_building_construction = { type = infrastructure level = constant:fallout_generic_focus.infrastructure_level instant_build = yes } } set_country_flag = fallout_generic_region_africa fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
+		completion_reward = { fallout_generic_focus_improve_one_service_state = yes add_manpower = constant:fallout_generic_decision.route_manpower_gain set_country_flag = fallout_generic_region_africa fallout_generic_focus_regional_gain = yes }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_latin_america_water_charters
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
-		x = 16
-		y = 14
+		x = 32
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
-		completion_reward = { every_owned_state = { limit = { is_controlled_by = ROOT } add_building_construction = { type = infrastructure level = constant:fallout_generic_focus.infrastructure_level instant_build = yes } } set_country_flag = fallout_generic_region_latin_america fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
+		completion_reward = { fallout_generic_focus_improve_one_service_state = yes add_stability = constant:fallout_generic_focus.stability_small set_country_flag = fallout_generic_region_latin_america fallout_generic_focus_regional_gain = yes }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_oceania_remote_stations
 		icon = GFX_goal_generic_build_navy
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
-		x = 22
-		y = 14
+		x = 36
+		y = 11
 		allow_branch = { check_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands compare = equals } }
-		cost = constant:fallout_generic_focus.cost_standard
-		prerequisite = { focus = fallout_generic_publish_survival_charter }
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_STANDARD
+		prerequisite = { focus = fallout_generic_open_the_regional_ledger }
 		completion_reward = { capital_scope = { add_building_construction = { type = naval_base level = constant:fallout_generic_focus.naval_base_level instant_build = yes } } add_equipment_to_stockpile = { type = convoy_1 amount = constant:fallout_generic_focus.convoy_gain } set_country_flag = fallout_generic_region_oceania fallout_generic_focus_regional_gain = yes }
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_normal }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_NORMAL modifier = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH check_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands compare = equals } } }
 	}
 
 	focus = {
 		id = fallout_generic_federate_survivor_leagues
 		icon = GFX_goal_generic_major_alliance
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 16
-		y = 16
-		cost = constant:fallout_generic_focus.cost_long
-		prerequisite = { focus = fallout_generic_found_frontier_pact }
+		x = 14
+		y = 13
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_LONG
+		prerequisite = { focus = fallout_generic_invite_neighbor_compacts }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_federation_requirements_tt
+				has_country_flag = fallout_generic_frontier_pact_active
+				is_faction_leader = yes
+				any_allied_country = { has_country_flag = fallout_generic_joined_frontier_pact }
+			}
+		}
+		cancel_if_invalid = yes
 		completion_reward = {
-			fallout_generic_focus_create_pact = yes
 			set_country_flag = fallout_generic_survivor_federation
+			add_ideas = fallout_generic_survivor_federation_idea
 			add_stability = constant:fallout_generic_focus.stability_large
 			fallout_generic_focus_recovery_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
 		id = fallout_generic_reclaim_the_heartland
 		icon = GFX_goal_generic_territory_or_war
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
-		x = 24
-		y = 16
-		cost = constant:fallout_generic_focus.cost_long
+		x = 26
+		y = 13
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_LONG
 		prerequisite = { focus = fallout_generic_settle_the_new_border }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_heartland_requirements_tt
+				fallout_generic_focus_runtime_is_current = yes
+				fallout_generic_has_heartland_target = yes
+			}
+		}
+		cancel_if_invalid = yes
 		completion_reward = {
-			fallout_generic_focus_claim_frontier = yes
-			fallout_generic_focus_issue_border_ultimatum = yes
+			fallout_generic_focus_claim_heartland = yes
+			fallout_generic_focus_issue_heartland_ultimatum = yes
 			add_war_support = constant:fallout_generic_focus.war_support_large
 			set_country_flag = fallout_generic_heartland_reclamation
+			add_ideas = fallout_generic_heartland_reclamation_idea
 			fallout_generic_focus_frontier_gain = yes
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_high }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_HIGH }
 	}
 
 	focus = {
@@ -1543,18 +1647,49 @@ focus_tree = {
 		icon = GFX_goal_generic_national_unity
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
 		x = 20
-		y = 18
-		cost = constant:fallout_generic_focus.cost_long
-		prerequisite = { focus = fallout_generic_federate_survivor_leagues }
-		prerequisite = { focus = fallout_generic_reclaim_the_heartland }
+		y = 15
+		cost = @CR_SC_FALLOUT_GENERIC_FOCUS_COST_LONG
+		prerequisite = {
+			focus = fallout_generic_federate_survivor_leagues
+			focus = fallout_generic_reclaim_the_heartland
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fallout_generic_year_ten_requirements_tt
+				fallout_generic_focus_runtime_is_current = yes
+				has_country_flag = fallout_generic_regional_program_complete
+				OR = {
+					has_country_flag = fallout_generic_survivor_federation
+					fallout_generic_heartland_campaign_resolved = yes
+				}
+				check_variable = { var = global.num_days value = global.fallout_generic_year_ten_open_day compare = greater_than_or_equals }
+				check_variable = { var = fallout_generic_memory value = constant:fallout_generic_focus.year_ten_memory_required compare = greater_than_or_equals }
+				check_variable = { var = fallout_generic_regional_influence value = constant:fallout_generic_focus.year_ten_influence_required compare = greater_than_or_equals }
+			}
+		}
+		cancel_if_invalid = yes
 		completion_reward = {
+			if = {
+				limit = { has_country_flag = fallout_generic_heartland_campaign_active }
+				var:fallout_generic_heartland_target_state = { clr_state_flag = fallout_generic_heartland_target_state }
+				clr_country_flag = fallout_generic_heartland_campaign_active
+				clear_variable = fallout_generic_heartland_target_country
+				clear_variable = fallout_generic_heartland_target_state
+				clear_variable = fallout_generic_heartland_campaign_generation
+			}
 			set_country_flag = fallout_generic_year_ten_order_reached
+			add_ideas = fallout_generic_year_ten_order_idea
 			add_stability = constant:fallout_generic_focus.stability_large
 			add_war_support = constant:fallout_generic_focus.war_support_small
 			add_political_power = constant:fallout_generic_focus.political_power_medium
 			fallout_generic_focus_recovery_gain = yes
 			fallout_generic_focus_frontier_gain = yes
+			if = {
+				limit = { is_ai = no }
+				country_event = { id = chaosx.fallout.1058 }
+			}
+			else = { country_event = { id = chaosx.fallout.1059 } }
 		}
-		ai_will_do = { factor = constant:fallout_generic_focus.ai_urgent }
+		ai_will_do = { factor = @CR_SC_FALLOUT_GENERIC_FOCUS_AI_URGENT }
 	}
 }

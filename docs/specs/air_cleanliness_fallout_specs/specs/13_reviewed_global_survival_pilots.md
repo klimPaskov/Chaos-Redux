@@ -38,6 +38,6 @@ Result and callback history are idempotent. Cleanup releases delayed receipts, c
 
 ## Implementation and proof boundary
 
-Gameplay files, Event Log mappings, localisation, the dedicated report picture, and the asset crosswalk are wired. The candidate remains dormant. Live ordinary receipt production, delayed dispatch, host authority, save recovery, multiplayer input blocking, and runtime Event Log delivery remain unobserved. The exact native all-valid-province thermonuclear sweep is separately blocked and is not implied by this pilot.
+Gameplay files, Event Log mappings, localisation, the dedicated report picture, and the asset crosswalk are wired. The candidate remains dormant because ordinary scheduler producers, release receipts, and activation setters are absent. The exact native all-valid-province thermonuclear sweep belongs to the completed consequence core and is not owned by this pilot.
 
 The global family matrix still lists memorial, archive, and family-reunion follow-ups as future consumers. Those consumers are queued until a later reviewed tranche and are not counted as implemented by candidate 269.

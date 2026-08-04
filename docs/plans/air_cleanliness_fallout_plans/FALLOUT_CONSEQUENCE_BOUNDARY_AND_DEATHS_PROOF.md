@@ -2,17 +2,17 @@
 
 ## Scope
 
-This record covers the accepted correction that Fallout is a consequence transition rather than a normal event, ordinary Event Log row, evolution, or ordinary super-event. Fallout replaces the retired Final Silence world-end selector row. It also records the permanent 99 percent Air Contamination lock and the state population loss routing.
+This record covers the accepted correction that Fallout is a consequence transition rather than a normal event, ordinary Event Log row, evolution, world-end selector row, or ordinary super-event. It also records the permanent 99 percent Air Contamination lock and the state population loss routing.
 
 ## Public registration proof
 
 The ordinary super-event GUI now rejects `world_end_fallout` in its visibility trigger. A prior generic overlay therefore cannot remain visible over the Fallout-owned full-screen blackout. The dedicated blackout GUI and dramatic audio are the only transition presentation surfaces.
 
-Static source inspection shows that `initialize_world_end_scenario_registry` in `common/scripted_effects/chaosx_events_log_effects.txt` registers Fallout as the appended replacement for the retired Final Silence world-end row. Fallout has no ordinary Event Log row or evolution branch. The Fallout-specific ordinary Event Details card preparation hooks remain absent from the registry refresh, detail open, and toggle paths.
+Static source inspection shows that `initialize_world_end_scenario_registry` in `common/scripted_effects/chaosx_events_log_effects.txt` does not register Fallout. The registry has no Fallout row, owner, title, details key, or active-state branch. The Event Details scripted-localisation selectors and GUI localisation also have no Fallout consequence mapping. Fallout has no ordinary Event Log row or evolution branch.
 
-The stable settings-ledger value `fallout_consequence_id.settings_ledger = 2` lives in `common/script_constants/fallout_consolidated_constants.txt`. The world-end selector uses appended Fallout id 13, while ordinary Event Log and evolution registries remain untouched. The dedicated blackout GUI uses its own sequential display text. Fallout blackout audio remains owned by `fallout_dispatch_blackout_audio` in `common/scripted_effects/fallout_consolidated_effects.txt`.
+The stable settings-ledger value `fallout_consequence_id.settings_ledger = 2` lives in `common/script_constants/fallout_consolidated_constants.txt`. It is internal save and settings state, not a public event identity. The dedicated blackout GUI uses its own sequential display text. Fallout blackout audio remains owned by `fallout_dispatch_blackout_audio` in `common/scripted_effects/fallout_consolidated_effects.txt`.
 
-The separate manual sandbox launch surface uses raw triggerable-scenario id 14, the next live id after 13. It is not an ordinary Fallout Event Log row, evolution, Event Details card, or ordinary super-event and remains launch-gated by the exact native province-sweep proof.
+The manual scenario replaces the retired Final Silence launch role and uses raw id 14, the next live id after 13. It is not an ordinary Fallout Event Log row, evolution, Event Details card, world-end selector row, or ordinary super-event. The exact native province sweep is wired and statically proven.
 
 Fallout post-consequence survivor chains still use normal country events and their own event history. This is intentional. Those are ordinary survivor stories after the consequence and are not a registration of the consequence itself.
 
@@ -73,7 +73,7 @@ After each state records its synthetic Fallout intensity and expiry ledger, `fal
 
 ## Engine-sensitive blocker
 
-The source contract proves the state population mutation, the 90 to 95 percent target band, and the reconciled Deaths receipt. The vanilla documentation describes `launch_nuke` inputs but does not prove the exact engine-native sweep across every valid installed-map province. The manual scenario remains dormant behind its static proof gate because no verified native all-province sweep surface has been found. No fallback sweep is being claimed. Live playtesting remains a later user validation handoff and is not a completion condition for the static core-mechanics tranche.
+The source contract proves the state population mutation, the 90 to 95 percent target band, and the reconciled Deaths receipt. Static map proof now records 10,154 unique valid land provinces across 1,081 states, 41 native batch effects, and the exact seven-day callback barrier. The vanilla documentation describes `launch_nuke` inputs but does not prove native acceptance for every target class, callback synchrony, callback load, save recovery, or multiplayer timing. The manual scenario therefore remains launch-gated for live validation, while its static sweep substrate is implemented. No fallback sweep is being claimed. Live playtesting remains a later user validation handoff and is not a completion condition for the static core-mechanics tranche.
 
 ## Static checks performed
 

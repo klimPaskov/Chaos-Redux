@@ -16,7 +16,7 @@ Live code does not silently override accepted design. A difference between code 
 
 ## System identity and path ownership
 
-Air Cleanliness and Fallout are an unnumbered global system package. Fallout is a terminal consequence and world rewrite with a dormant manual trigger, not ordinary numbered random-event content.
+Air Cleanliness and Fallout are an unnumbered global system package. Fallout is a terminal consequence and world rewrite with a statically implemented but runtime-gated manual sweep substrate, not ordinary numbered random-event content.
 
 Canonical working paths use the system slug:
 
@@ -30,7 +30,7 @@ Fallout has no numbered random-event identity and no ownership relationship with
 
 ## Public registry boundary
 
-The accepted correction supersedes older plans that proposed a public Fallout scenario row or registry sort branch. Fallout remains absent from ordinary Event Details, evolution, ordinary event-log, and ordinary super-event registries. A separate Fallout-owned sandbox launch row uses the next live triggerable-scenario id in `fallout_manual_scenario_identity.triggerable_scenario_id`, which is currently raw id `14`. That row is launch-gated by the exact native sweep proof and is not an ordinary event, evolution, Event Details card, or super-event registration. The generic framework may dispatch a Fallout-owned bootstrap callback after an authorized manual request. That callback starts the strike transaction and does not register Fallout as an event.
+The accepted correction supersedes older plans that proposed an ordinary Fallout event, Event Details row, evolution, or super-event registration. Fallout remains absent from those registries. A separate Fallout-owned manual sandbox row uses the next live triggerable-scenario id in `fallout_manual_scenario_identity.triggerable_scenario_id`, which is raw id `14`. Its exact native sweep proof is complete. The generic framework dispatches a Fallout-owned bootstrap callback after an authorized manual request. That callback starts the strike transaction and does not register Fallout as an event or catalog entry.
 
 ## Reconciled design decisions
 
@@ -104,33 +104,37 @@ Decision for implementation planning:
 
 ### Successor countries
 
-Accepted rule:
+Accepted rule for the full successor design:
 
 - Many successor identities use existing base tags, releasables, dynamic civil-war tags, and cosmetic tags.
 - The 99-row matrix is a candidate pool.
 - It is not a requirement to spawn every candidate at once.
-- Every active survivor receives non-generic focus content.
+- Bespoke country identity and focus overlays remain a future expansion surface.
+
+Accepted core simplification:
+
+- Every surviving original tag and completed fracture output receives the universal `fallout_generic_focus_tree` and `fallout_generic_survivor_mandate_category` package.
+- The shared package is the complete focus and decision surface for this static core tranche, including the Year Ten route; it does not claim bespoke country trees.
 
 Implementation interpretation:
 
 - No base tag is repurposed until its current package and event ownership are recorded.
 - Cosmetic tags provide visible identity without requiring a unique base tag for every identity.
 - Dynamic tags are used only after pool capacity and crash risk are verified.
-- Country packages are implemented and audited in regional batches.
+- Bespoke country packages are not a release prerequisite for the current universal package, and their absence must remain visible in status docs.
 
 ### Focus architecture
 
-Accepted rule:
+Accepted full-design rule:
 
-- Every selected country uses an archetype skeleton, regional overlay, and country memory overlay.
-- Each country is manually customized.
+- The source design retains archetype, regional, and country-memory overlays for future bespoke packages.
+- Each future bespoke country tree is manually customized.
 
-Implementation interpretation:
+Accepted core implementation:
 
-- The three layers are design composition layers.
-- Engine implementation uses either verified shared-focus composition or a compiled reviewed full tree.
-- Each active tree contains at least one unique country-memory branch with its own gameplay consequences.
-- A pair of token focuses does not satisfy the country-memory requirement.
+- The universal generic tree and decision category are the current complete playable surface for every survivor.
+- Its four government routes, nine regional lanes, target receipts, and Year Ten route provide shared consequences without pretending to be bespoke identity content.
+- A later bespoke package may add country-memory depth without replacing or silently changing the universal core.
 
 ### Mutant identities
 
@@ -154,9 +158,9 @@ Implementation interpretation:
 | Winter | persistent phases 0 through 6 drive state ledgers, consequences, mapmodes, ordinary-map visuals, responses, and a reviewed event pilot | persistent state phases and phase-specific effects | finish the remaining treaty and event work while preserving the single monthly host |
 | Treaty | one host-owned bounded lifecycle, paid cleanup project, paid filter convoy, paid verification mission, founder succession, cause-aware violation sanctions, annex cleanup, pre-pressure route reconciliation, exact donor and inspector cleanup, and silent Fallout pause | active severe-contamination diplomacy and mitigation layer | expand evacuation, relief votes, major-burner policy, direct successor memory, and manually reviewed treaty event families |
 | Air docs | current system docs describe the live partial implementation and identify remaining work | must describe live and accepted implementation | update the current system docs and proof index after each reviewed tranche |
-| Scenario registry | the writable checkout reaches SCN-013 while raw id 12 remains separately reserved | Fallout keeps the next live id as an internal reservation without becoming a public registry row | SCN-014 is reserved in Fallout-owned constants without renumbering existing ids. It remains outside public scenario, Event Details, evolution, ordinary event-log, and super-event registries |
+| Manual sandbox | the Fallout-owned runtime row uses raw id 14, one above the former live maximum | Fallout keeps that id without renumbering existing rows | retain raw id 14 in the triggerable-scenario runtime, while keeping Fallout absent from the event workbook, Event Details, evolution, ordinary event-log, and ordinary super-event registries |
 | Mapmode strip | the selected and deselected strips are 380 by 18 with 19 exact 20-pixel frames | Deaths owns slot 18, contaminated states owns slot 19, and Air Winter uses dedicated per-mode sprites | resolved in `AIR_WINTER_MAPMODE_ICON_PROOF.md` without changing an asset |
-| Province sweep | 41 dormant batches expand the installed map into 10,154 native province calls | every valid province receives a thermonuclear strike before the seven-day clock | static route and ledger proven, with native acceptance and callback load retained as runtime blockers |
+| Province sweep | 41 static batches expand the installed map into 10,154 native province calls | every valid province receives a thermonuclear strike before the seven-day clock | target expansion, native call construction, receipts, and the seven-day barrier are complete; runtime observation belongs to the user and is not a source completion gate |
 
 ## Documentation disposition
 
@@ -198,7 +202,10 @@ Current implementation authority:
 - `docs/systems/air_contamination_mechanic.md` describes the live Air Contamination system.
 - `docs/systems/air_cleanliness/winter.md` describes the live Air Winter implementation and its reported gaps.
 - `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md` records the overall partial status and hard blockers.
+- `docs/plans/air_cleanliness_fallout_plans/CORE_MECHANICS_READINESS_AND_CONTENT_HANDOFF.md` records the accepted static-core boundary: the exact 10,154-province sweep and seven-day barrier, thirty-tag fracture, universal focus/decision package, Year Ten route, and GUI phase/dirty ledger.
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md` owns Fallout file, namespace, asset, and audio boundaries.
+
+The ordinary post-Fallout living-world scheduler remains deliberately dormant at `0 of 660`. Its release receipts, reviewed content producers, and activation setters are not present, so dormant event blocks do not count as active campaign delivery.
 
 Historical notes remain evidence only when they conflict with those current sources. Any remaining world-end overview that states every ending requires Chaos above 1000 or every ending uses an ordinary super-event must identify Fallout as the dedicated exception. Scenario documentation may name SCN-014 only as a reserved identity until the exact native sweep release gate passes.
 
