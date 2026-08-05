@@ -1,6 +1,6 @@
 # Fallout generic focus tree proof
 
-Date: 2026-08-04
+Date: 2026-08-05
 
 ## Outcome
 
@@ -34,17 +34,27 @@ The heartland route uses separate `fallout_generic_heartland_*` variables, flag,
 
 ## AI and region proof
 
-All twelve government archetypes appear exactly once in the four route weight families. Every regional focus has a matching region-id AI modifier. Diplomacy and expansion keep their own validity gates, so an AI cannot complete them against a stale faction or state target.
+All twelve government archetypes appear in the four opening route weight families. The middle and late AI surfaces now also use those archetype values. Infrastructure favors continuity, ration, bunker, quarantine, machine, and technate governments. Security favors bunker, warlord, mutant, and nomad governments, with an additional active-war weight. Diplomacy favors maritime, continuity, technate, and religious governments when they are not at war. Expansion favors warlord, mutant, and nomad governments, while settlement favors continuity, ration, bunker, quarantine, and technate governments. The federation route favors continuity, maritime, religious, and bunker governments. Every regional focus has a matching region-id AI modifier. Diplomacy and expansion keep their own validity gates, so an AI cannot complete them against a stale faction or state target.
 
 ## Localisation and assets
 
-All focus titles, descriptions, requirement tooltips, decision text, custom costs, and late ideas resolve in the UTF-8 BOM English localisation file. The package uses sixteen confirmed vanilla focus sprites and existing vanilla decision and idea sprites. No new focus artwork is required.
+All focus titles, descriptions, requirement tooltips, decision text, custom costs, and late ideas resolve in the UTF-8 BOM English localisation file. The package uses sixteen Fallout-owned goal sprite aliases in `interface/fallout_consolidated.gfx`. Those aliases reuse sixteen confirmed vanilla focus textures and existing vanilla decision and idea sprites. No new focus artwork is required.
 
-## Renderer proof
+## Historical renderer proof
 
 The latest installed renderer pass found thirty-three nodes, thirty-six connectors, no node intersections, six connector crossings, twelve long connectors, and a maximum vertical span of five. The HTML artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/022e833f45abc67b804ea0ade2edf9557a4f82ff39fde46e75c3123b81117eaa/9f5d6e0123117cbae7d5a49704c9e8f76ce3d56de75cf966847deb4e43e04184/fallout_generic_focus_tree.focus.html` and the SVG artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8e378fa977ef9c393eda4fe44d05e48bd6f16b9ee28361ab880370281df106a8/ad9b0c25128f71d77cb729b1228afa469e54527f637400341b1ce1a2afa833d7/fallout_generic_focus_tree.focus.svg`.
 
 The renderer reports missing generic icons because its mod-only scan does not index installed vanilla GFX. Direct installed-game inspection found every referenced goal sprite in `interface/goals.gfx`.
+
+## Current MCP renderer proof
+
+MCP metrics: thirty-three focuses, thirty-six connectors, zero crossings, zero node intersections, zero same-row spacing violations, and three regional fan connectors above the long-span threshold.
+
+The visible long edge is `fallout_generic_open_the_regional_ledger -> fallout_generic_africa_river_wards`, at ten columns and two rows. The latest HTML artifact is the MCP render `fallout_generic_focus_tree.focus.html` with SVG companion `fallout_generic_focus_tree.focus.svg` in the workspace artifact set.
+
+The MCP validation summary remains false because fourteen blocking icon diagnostics belong to the installed game's generic continuous-focus palette. The Fallout tree itself has no missing icon symbols. Helper references are reported as partial because the MCP source inventory does not index every scripted effect file. Source inspection confirms the helpers and the generation-bound loader.
+
+The final MCP render used the post-AI source revision and produced HTML artifact hash `3ba5c9b528b7a80ce9d59a1e74d5f35bc187a76e754ff06ac0a0a44c6e1996d1` and SVG artifact hash `a50d2b67e3925a53d28985457f280548f404b353c0b02d84bd818cd5687efd0f`.
 
 ## Scope boundary
 
