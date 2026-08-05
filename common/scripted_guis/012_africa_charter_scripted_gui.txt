@@ -232,11 +232,66 @@ scripted_gui = {
 			africa_charter_state_3_visible = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.two } }
 			africa_charter_state_4_visible = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.three } }
 			africa_charter_state_5_visible = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.four } }
-			africa_charter_state_1_click_enabled = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.zero } }
-			africa_charter_state_2_click_enabled = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.one } }
-			africa_charter_state_3_click_enabled = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.two } }
-			africa_charter_state_4_click_enabled = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.three } }
-			africa_charter_state_5_click_enabled = { check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.four } }
+			africa_charter_state_1_click_enabled = {
+				africa_has_current_action_quote = yes
+				OR = {
+					check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+					AND = {
+						check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+						check_variable = { africa_selected_action_state_targets^num < constant:africa_action_capacity.maximum_region_state_targets }
+					}
+				}
+				check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.zero }
+				NOT = { is_in_array = { array = africa_selected_action_state_targets value = africa_selected_action_state_candidates^0 } }
+			}
+			africa_charter_state_2_click_enabled = {
+				africa_has_current_action_quote = yes
+				OR = {
+					check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+					AND = {
+						check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+						check_variable = { africa_selected_action_state_targets^num < constant:africa_action_capacity.maximum_region_state_targets }
+					}
+				}
+				check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.one }
+				NOT = { is_in_array = { array = africa_selected_action_state_targets value = africa_selected_action_state_candidates^1 } }
+			}
+			africa_charter_state_3_click_enabled = {
+				africa_has_current_action_quote = yes
+				OR = {
+					check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+					AND = {
+						check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+						check_variable = { africa_selected_action_state_targets^num < constant:africa_action_capacity.maximum_region_state_targets }
+					}
+				}
+				check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.two }
+				NOT = { is_in_array = { array = africa_selected_action_state_targets value = africa_selected_action_state_candidates^2 } }
+			}
+			africa_charter_state_4_click_enabled = {
+				africa_has_current_action_quote = yes
+				OR = {
+					check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+					AND = {
+						check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+						check_variable = { africa_selected_action_state_targets^num < constant:africa_action_capacity.maximum_region_state_targets }
+					}
+				}
+				check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.three }
+				NOT = { is_in_array = { array = africa_selected_action_state_targets value = africa_selected_action_state_candidates^3 } }
+			}
+			africa_charter_state_5_click_enabled = {
+				africa_has_current_action_quote = yes
+				OR = {
+					check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.state }
+					AND = {
+						check_variable = { africa_quote_target_mode = constant:africa_action_target_mode.region }
+						check_variable = { africa_selected_action_state_targets^num < constant:africa_action_capacity.maximum_region_state_targets }
+					}
+				}
+				check_variable = { africa_selected_action_state_candidates^num > constant:africa_value.four }
+				NOT = { is_in_array = { array = africa_selected_action_state_targets value = africa_selected_action_state_candidates^4 } }
+			}
 
 			africa_charter_selected_member_flag_visible = { check_variable = { africa_selected_country_targets^num > constant:africa_value.zero } }
 			africa_charter_selected_member_name_visible = { check_variable = { africa_selected_country_targets^num > constant:africa_value.zero } }
@@ -262,14 +317,17 @@ scripted_gui = {
 			}
 			africa_charter_rival_warning_visible = { OR = { has_country_flag = africa_rival_crisis_escalated check_variable = { africa_rival_bloc_countries^num > constant:africa_value.zero } check_variable = { africa_warning_ledger^num > constant:africa_value.zero } } }
 
-			africa_charter_family_protection_click_enabled = { always = yes }
-			africa_charter_family_accession_click_enabled = { always = yes }
-			africa_charter_family_congress_click_enabled = { always = yes }
-			africa_charter_family_integration_click_enabled = { always = yes }
-			africa_charter_family_economy_click_enabled = { always = yes }
-			africa_charter_family_diaspora_click_enabled = { always = yes }
-			africa_charter_family_rival_click_enabled = { always = yes }
-			africa_charter_family_chaos_click_enabled = { always = yes }
+			africa_charter_family_protection_click_enabled = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.protection } } }
+			africa_charter_family_accession_click_enabled = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.accession } } }
+			africa_charter_family_congress_click_enabled = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.regional_congress } } }
+			africa_charter_family_integration_click_enabled = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.integration } } }
+			africa_charter_family_economy_click_enabled = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.economy } } }
+			africa_charter_family_diaspora_click_enabled = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.diaspora } } }
+			africa_charter_family_rival_click_enabled = { NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.rival_bloc } } }
+			africa_charter_family_chaos_click_enabled = {
+				has_global_flag = africa_evolution_iii_logged
+				NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.high_chaos } }
+			}
 
 			africa_charter_diaspora_origin_1_click_enabled = { always = yes }
 			africa_charter_diaspora_origin_2_click_enabled = { always = yes }
