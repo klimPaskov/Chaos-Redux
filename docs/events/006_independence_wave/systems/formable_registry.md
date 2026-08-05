@@ -141,25 +141,9 @@ FORM-48 uses the same directional-ownership rule through its private `has_indepe
 
 ### FORM-07 Iberian adapter (current, fail-closed)
 
-FORM-07 binds only the researched CAT/NAV/GLC corridor: CAT state 165, NAV
-state 172, and GLC state 171. The adapter requires each package's exact
-original tag, package ID, Event 006 setup marker, anchor ownership/control,
-regional-power proof, compatible constitutional or popular-council route,
-bilateral connection, frozen invitation consent, and the negotiated or
-revolutionary method/consent policy. It stages autonomous-member relations
-with directional ownership markers and provides generation-checked integration,
-rollback, and cleanup effects over the frozen member ledger.
+FORM-07 binds only the researched CAT/NAV/GLC corridor: CAT state 165, NAV state 792 (the installed-map País Vasco compact anchor), and GLC state 171. Navarra state 172 and French Basque state 806 remain optional NAV extension objectives rather than the compact release/readiness anchor. The adapter requires each package's exact original tag, package ID, Event 006 setup marker, anchor ownership/control, regional-power proof, compatible constitutional or popular-council route, bilateral connection, frozen invitation consent, and the negotiated or revolutionary method/consent policy. It stages autonomous-member relations with directional ownership markers and provides generation-checked integration, rollback, and cleanup effects over the frozen member ledger.
 
-The adapter deliberately does not invent an Iberian X-ending identity or flag.
-Its readiness registration, identity adapter, commit proof, and integration
-adapter therefore remain false until a source-approved identity, flag triplet,
-and identity review set the explicit FORM-07 flags. The all-three corridor
-proof also remains false while the NAV/IW-013 and GLC/IW-015 package adapters
-are incomplete. CAT stays outside content attestation and cannot enter
-automatic or scenario release capacity through this source surface. The
-implementation files are
-`common/scripted_triggers/006_independence_wave_form07_triggers.txt` and
-`common/scripted_effects/006_independence_wave_form07_effects.txt`.
+The adapter deliberately does not invent an Iberian X-ending identity or flag. Its readiness registration, identity adapter, commit proof, and integration adapter therefore remain false until a source-approved identity, flag triplet, and identity review set the explicit FORM-07 flags. The all-three corridor proof now has source-level NAV/IW-013 and GLC/IW-015 adapter surfaces, but their independent source/identity/flag/portrait audits and central content attestation remain open. CAT stays outside content attestation and cannot enter automatic or scenario release capacity through this source surface. The implementation files are `common/scripted_triggers/006_independence_wave_form07_triggers.txt` and `common/scripted_effects/006_independence_wave_form07_effects.txt`.
 
 ## Family adapter contract
 

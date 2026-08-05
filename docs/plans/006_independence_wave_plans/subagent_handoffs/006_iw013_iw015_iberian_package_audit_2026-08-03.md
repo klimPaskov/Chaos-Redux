@@ -1,5 +1,7 @@
 # Event 006 IW-013 and IW-015 Iberian country-package audit
 
+> Historical snapshot notice (2026-08-05): This audit preserves the pre-adapter map-contract and package-coverage findings. Its missing-adapter and NAV-172 wording are superseded only by the current amendment at the end of this file; the HOLD/fail-closed admission conclusion remains current.
+
 Audit date: 2026-08-03.
 
 Scope: IW-013 Basque Country (`NAV`) and IW-015 Galicia (`GLC`) country-package surfaces used by Event 006 Independence Wave and FORM-07 Iberian Federation.
@@ -131,3 +133,13 @@ The current FORM-07 contract therefore has two independent blockers: no NAV/GLC 
 Read-only validation covered the accepted registry, research, reservation, force-mapping, current-map binding, region-02 loaders, dispatch allowlists, FORM-07 triggers/effects, vanilla country histories, state histories, country files, flags, and leader GFX references. No gameplay files were changed. No map write, tag allocation, focus rewrite, event mutation, asset generation, or in-game test was performed.
 
 Remaining risks are the unresolved NAV `792` versus `172` anchor contract, absent sourced identity and flag manifests, absent NAV/GLC runtime adapters, absent package gameplay surfaces, and FORM-07's deliberate fail-closed state. This handoff is not a completion or attestation claim.
+
+## Current amendment — 2026-08-05
+
+The installed-map contract is now authoritative for this tranche: IW-013/NAV uses compact anchor state 792 (País Vasco), with states 172 (Navarra) and 806 (French Basque) retained only as optional extension objectives, and IW-015/GLC uses compact anchor state 171 (Galicia).
+
+The NAV and GLC package setup, final-validation, and cleanup adapters are source-wired and dispatchable through the Iberian package effects and central Event 006 package dispatch, but they do not authorize execution by themselves.
+
+Independent source, identity, flag, portrait, and country-package audits remain open, so IW-013 and IW-015 stay outside central content attestation and the runtime/scenario execution gate remains fail-closed.
+
+No advisor icons or advisor portrait assets were created or authorized, no X identity or flag fallback was introduced, and FORM-07 remains fail-closed pending its researched Iberian identity and member/integration contract.

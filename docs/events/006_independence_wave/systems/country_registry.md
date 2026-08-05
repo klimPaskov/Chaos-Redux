@@ -41,6 +41,15 @@ excluded) are:
 | `southeast_asia_east_asia_oceania` | Southeast Asia, East Asia, and Oceania | 29 |
 | `americas_and_caribbean` | Americas and Caribbean | 24 |
 
+The current registered Iberian carriers are resolved by package ID rather than by tag alone:
+
+| Package | Carrier | Compact anchor | Optional extension | Region | Shared consumer |
+| --- | --- | ---: | --- | --- | --- |
+| IW-013 | `NAV` Basque Country | 792 País Vasco | 172 Navarra; 806 French Basque | Mediterranean and Iberia | FORM-07 Iberian Federation |
+| IW-015 | `GLC` Galicia | 171 Galicia | none | Mediterranean and Iberia | FORM-07 Iberian Federation |
+
+`NAV` and `GLC` are registered vanilla carriers, not new Chaos Redux tags. Their Event 006 setup, final-validation, and cleanup adapters are source-wired in the Iberian package dispatch and preserve vanilla history and leader rosters while loading the shared generic tree and package-specific ledgers only after the exact package ID, anchor, former-host, and origin proofs pass. Other events may reuse these carriers through `chaosx_country_independence_wave_registered`, but must record their own origin and load their own overlay instead of calling the Event 006 setup dispatcher by tag alone.
+
 ## Static groups versus collections
 
 The named collections in
@@ -66,6 +75,7 @@ gives every later event a discoverable collection name.
 | `chaosx_country_independence_wave` | All 191 resolved Event 006 carriers, including registered reuse | Any event that wants a researched independence identity |
 | `chaosx_country_independence_wave_owned` | The 102 Event 006-owned X tags | New-country admission and dormant reservation checks |
 | `chaosx_country_independence_wave_registered` | Registered vanilla carriers reused by the ledger | Overlay and existing-country content loaders |
+| `chaosx_country_independence_wave_iberian` | `NAV` and `GLC` registered Iberian carriers | FORM-07 and later Iberian overlays |
 | `chaosx_country_africa` | The four African Event 006 region arrays (45 carriers) | Event 012 and later African regional crises |
 | `chaosx_country_africa_overlap` | The 12 Africa/Event 006 identity overlaps | Direct Africa package reuse decisions |
 | `chaosx_country_soviet_collapse` | The 34 Event 005 successor carriers | Soviet Collapse follow-up systems and later Eurasian crises |

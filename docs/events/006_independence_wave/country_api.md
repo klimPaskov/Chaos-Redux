@@ -28,6 +28,12 @@ The registry has 206 package rows: 102 Event 006-owned `X` tags, 91 rows that in
 
 Every new Event 006 country, formable, and cosmetic tag ends in `X`. Reused carriers retain their vanilla history, flag, meaningful focus tree, and real identity. A later event may add its own origin-gated package to a reused carrier only after it proves that the current country is not living under a protected origin, does not own a meaningful incompatible tree, and has a unique anchor and reservation receipt.
 
+### Registered Iberian carriers
+
+The current Iberian reuse rows are resolved by package ID and anchor, never by tag alone: IW-013 is vanilla `NAV` with compact anchor state 792 (País Vasco) and optional extension states 172 (Navarra) and 806 (French Basque), while IW-015 is vanilla `GLC` with compact anchor state 171 (Galicia). Both Event 006 setup, final-validation, and cleanup adapters are source-wired and preserve vanilla history and leader rosters while applying their package-specific framework only after exact package, anchor, former-host, and origin proofs pass.
+
+These adapters do not create a new country, identity, flag, leader, portrait, or advisor asset. IW-013 and IW-015 remain outside central content attestation until independent source, identity, flag, portrait, and country-package audits are promoted, and FORM-07 remains fail-closed until its Iberian X identity, flag package, and member/integration contract are approved.
+
 The inert reservations in `common/countries/006_independence_wave_unresearched_reservations.txt` are parser-safe declarations only. They intentionally have no history or country localisation and must remain outside every content-ready gate until the accepted research dossier names the community, territory, symbol, leader path, and public identity.
 
 ## Origin and focus dispatch

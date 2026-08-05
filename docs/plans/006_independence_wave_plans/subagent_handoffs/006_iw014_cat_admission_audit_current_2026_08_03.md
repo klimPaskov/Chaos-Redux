@@ -1,5 +1,7 @@
 # IW-014 Catalonia current admission audit
 
+> Current-status amendment notice (2026-08-05): This dated audit remains the CAT admission authority, but the NAV/GLC adapter wording in its original blockers is updated by the amendment at the end of this file. CAT remains HOLD/fail-closed.
+
 Date: 2026-08-03
 
 Verdict: **HOLD / fail-closed; no CAT promotion is safe in this tranche.**
@@ -23,4 +25,12 @@ Removing the formable readiness predicate or adding `iw_014` to the attestation 
 
 ## Parent-owned next gate
 
-Complete and independently review the Iberian identity/flag/member package and NAV/GLC runtime adapters, then rerun the full CAT package audit and promote `iw_014` only if the complete country, formable, asset, force, AI, localisation, cleanup, and collision contracts pass together. Until then, CAT remains a registered reusable API carrier with fail-closed runtime admission.
+Complete and independently review the Iberian identity/flag/member package and the source-wired NAV/GLC package surfaces, then rerun the full CAT package audit and promote `iw_014` only if the complete country, formable, asset, force, AI, localisation, cleanup, and collision contracts pass together. Until then, CAT remains a registered reusable API carrier with fail-closed runtime admission.
+
+## Current amendment — 2026-08-05
+
+IW-013/NAV and IW-015/GLC now have source-level setup, final-validation, and cleanup adapters, with NAV compact anchor 792 and optional 172/806 extensions and GLC compact anchor 171.
+
+The central content-attestation, independent source/identity/flag/portrait, and country-package gates remain unresolved, so the adapters do not promote NAV, GLC, CAT, or FORM-07 to runtime or scenario capacity.
+
+No advisor icons or advisor portrait assets were created or authorized, and no generic identity, flag, portrait, or attestation fallback is permitted.
