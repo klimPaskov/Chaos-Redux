@@ -1,6 +1,6 @@
 # Event 012 elephant equipment/technology icon handoff — 2026-08-05
 
-Status: `needs_user_review` pending parent contact-sheet review and parent-owned `.gfx`/subunit wiring.
+Status: `parent_reviewed_and_wired` after contact-sheet inspection and parent-owned `.gfx`/subunit wiring.
 
 ## Deliverable
 
@@ -22,11 +22,11 @@ No second model, generic fallback, copied vanilla icon, unrelated unit art, game
 - Manifest and QA record: `docs/assets/012_africa/models_3d/elephant_shared_base/evidence/equipment/manifest.md`.
 - Final runtime DDS: `gfx/interface/technologies/012_africa/chaosx_elephant_equipment.dds`.
 
-## Proposed wiring
+## Runtime wiring
 
-- Proposed stable sprite: `GFX_chaosx_elephant_equipment_medium`.
-- Proposed texture path: `gfx/interface/technologies/012_africa/chaosx_elephant_equipment.dds`.
-- Suggested existing `.gfx` owner: `interface/chaosx_equipment.gfx`; use the parent-selected technology `.gfx` instead if the technology consumer is registered there.
+- Registered stable sprite: `GFX_chaosx_elephant_equipment_medium`.
+- Runtime texture path: `gfx/interface/technologies/012_africa/chaosx_elephant_equipment.dds`.
+- Registered `.gfx` owner: `interface/012_africa_elephant.gfx`.
 - Parent-owned consumer: the separate `chaosx_elephant` equipment/technology and subunit definitions.
 - This handoff does not authorize editing the shared elephant counters or model entity package.
 
@@ -63,6 +63,6 @@ Reference pixels were not copied, traced, recoloured, or resized into the final 
 
 ## Parent action
 
-Review `chaosx_elephant_equipment_contact_sheet.png`, register `GFX_chaosx_elephant_equipment_medium` in the appropriate existing `.gfx`, and bind the DDS to the parent-owned `chaosx_elephant` equipment/technology consumer.
+The parent inspected `chaosx_elephant_equipment_contact_sheet.png`, registered `GFX_chaosx_elephant_equipment_medium`, `GFX_chaosx_elephant_equipment_1_medium`, and `GFX_technology_chaosx_africa_elephant_warfare_tech_medium` in `interface/012_africa_elephant.gfx`, and bound the DDS to the parent-owned `chaosx_elephant` equipment and technology consumers.
 
-Do not claim in-game completion until `.gfx` and gameplay wiring are added and the parent confirms the reviewed sprite in the target consumer.
+The `.gfx` registration and gameplay wiring are now present; this handoff records the reviewed asset package, while live-save achievement acceptance remains a separate owner-system gate.

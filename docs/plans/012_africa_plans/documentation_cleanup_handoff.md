@@ -6,6 +6,10 @@ Date: 2026-08-01.
 
 This dated reconciliation predates the direct-tag/source-locked portrait tranche, six external package identity assets, and seven named W5 source receipts. Its historical counts and Event 006 receipt wording are retained only as provenance; the active source-of-truth map is now `docs/events/012_africa/overview.md`, `docs/events/012_africa/world_order.md`, the current acceptance ledger, and the current W5/portrait handoffs.
 
+## Superseding implementation note (2026-08-06)
+
+The historical visual counts and no-model statement below predate the shared armoured elephant tranche. Current source-of-truth status is `52 installed_runtime`, `28 installed_dormant`, `12 deferred_runtime_gated`, `133 deferred_controlled_pool`, `14 deferred_model_required`, and `0 deferred_unique_package_required`; matrix rows 203–204 are installed through one shared `chaosx_elephant` body with static host and Action 102 consumers. The elephant achievement remains runtime-evidence-gated until its achievement owners and live movement, supply, destruction, and war-purpose witnesses are accepted. Preserve the dated counts below as provenance rather than current release status.
+
 Scope: final bounded reconciliation of Event 012 documentation, dated plans, subagent handoffs, the authoritative visual matrix, and the shared acceptance ledger. This handoff does not change gameplay, localisation, GFX, GUI, binary assets, spreadsheets, or the event catalog workbook.
 
 ## Source-of-truth map

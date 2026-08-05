@@ -2,11 +2,13 @@
 
 Date: 2026-08-01
 
-Status: blocked by the explicit no-model instruction. This document records the exact model work that can begin later. No model, entity, `.mesh`, `.anim`, unit template, or readiness flag was created by this handoff.
+Status: historical baseline for the deferred country packages and remaining unit rows. This document records the exact model work that could begin later; the shared elephant package is a documented exception promoted through the parent wiring tranche on 2026-08-06.
+
+> Superseding implementation note (2026-08-06): `unit_identity_elephant_logistics` and `unit_identity_elephant_shock` (matrix rows 203–204) now use the shared `chaosx_elephant` model/entity, custom unit/equipment/technology bridge, counters, sounds, and host/Action 102 consumers documented in `docs/events/012_africa/elephant_warfare.md` and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_elephant_unit_wiring_2026-08-05.md`. Rows 197–202 and 205–212 remain deferred; the achievement route remains runtime-evidence-gated rather than model-gated.
 
 ## Production boundary
 
-Event 012's current gameplay core is model-safe. The model-dependent action selectors remain behind `africa_strange_formation_package_ready`, and the four model-gated achievement rows remain closed. No generic infantry, recoloured vanilla entity, static portrait, or 2D formation substitute is allowed to satisfy these rows.
+Event 012's current gameplay core is model-safe. The model-dependent action selectors remain behind `africa_strange_formation_package_ready`, three model-gated achievement rows remain closed, and the elephant achievement remains runtime-evidence-gated with its static model/entity consumer present. No generic infantry, recoloured vanilla entity, static portrait, or 2D formation substitute is allowed to satisfy these rows.
 
 Use the Chaos Redux 3D model pipeline for every package. Each job needs one approved reference image, a vanilla scale crosswalk, source and final texture evidence, a real exported `.mesh`, a real exported `.anim` for every requested action, reimport evidence, and a parent-owned runtime consumer review. Runtime wiring remains parent-owned after the model handoff.
 
@@ -27,12 +29,12 @@ The six packages are distinct fictional or nonhuman actors. They must not be rep
 
 ## Unit and entity packages
 
-These are rows 203-212 of the asset matrix. Each unit needs a complete unit-consumer crosswalk and a real runtime entity rather than an icon-only implementation.
+These are rows 203-212 of the asset matrix. Rows 203–204 are implemented through the shared elephant package; rows 205–212 still need the complete unit-consumer crosswalk and a real runtime entity rather than an icon-only implementation.
 
 | Asset ID | Gameplay action or consumer | Required model work | Required action roles |
 |---|---|---|---|
-| `unit_identity_elephant_logistics` | Evolution I elephant logistics | Elephant logistics body, cargo and water equipment, unit emblem, technology/decision art, registered sub-unit consumer | Idle, move, deploy, and supply-load action as required by the selected entity |
-| `unit_identity_elephant_shock` | Evolution I elephant shock | Armoured or protected shock elephant silhouette, equipment profile, unit emblem, technology/decision art | Idle, move, attack, and impact action |
+| `unit_identity_elephant_logistics` | Evolution I elephant logistics | Shared `chaosx_elephant` body, cargo and water equipment, unit emblem, technology/decision art, and registered sub-unit consumer; implemented in the parent wiring tranche | Idle, move, deploy, and supply-load action as required by the selected entity |
+| `unit_identity_elephant_shock` | Evolution I elephant shock | Shared `chaosx_elephant` body parameterized for the armoured role, equipment profile, unit emblem, technology/decision art, and registered sub-unit consumer; implemented in the parent wiring tranche | Idle, move, attack, and impact action |
 | `unit_identity_gorilla_heavy_infantry` | Action 75 | Distinct heavy infantry creature body, weapon/equipment silhouette, unit emblem, technology/decision art | Idle, move, attack, and recovery action |
 | `unit_identity_pan_sappers` | Action 76 | Pan sapper silhouette with functional engineering equipment and nonhuman anatomy | Idle, move, sabotage, and construction action |
 | `unit_identity_stone_cohorts` | Action 74 and achievement 40 | Stone cohort bodies with readable joints, mass, damage state, and charter-safe identity | Idle, move, attack, and collapse/recovery action |
@@ -48,8 +50,8 @@ Every new sub-unit identifier must also receive its emitted `unit_<subunit_id>_i
 
 For each country or unit package, the future job must retain the one-image source reference, provenance and rights status, provider lineage, Blender checkpoints, measured geometry and material reports, vanilla scale comparison, processed DDS files, exported `.mesh`, exported `.anim` actions, checksums, reimport or parser evidence, and a runtime crosswalk. Any missing action, unavailable exporter, absent reimport proof, or unresolved identity issue keeps the item blocked.
 
-The parent implementation pass must later wire the selected files into the owning entity, `.asset`, `.gfx`, unit or country consumer, localisation, manifest, and acceptance ledger surfaces. Models must not be wired by changing the three formation gates early.
+For the remaining deferred country and unit packages, the parent implementation pass must later wire the selected files into the owning entity, `.asset`, `.gfx`, unit or country consumer, localisation, manifest, and acceptance ledger surfaces. The elephant package already has those static bindings and does not change the three formation gates early.
 
 ## Explicit omissions
 
-No model generation, paid provider call, Blender job, texture conversion, entity registration, unit-template registration, or gameplay readiness setter was performed in this tranche. The current Event 012 core remains playable without these consumers, with the model-dependent paths closed and documented.
+No model generation, paid provider call, Blender job, texture conversion, entity registration, unit-template registration, or gameplay readiness setter was performed in this original 2026-08-01 tranche. The later elephant package is documented separately and does not imply achievement completion or live-save validation for any route.

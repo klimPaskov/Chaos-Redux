@@ -1,0 +1,90 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 ARMOURED ELEPHANT RUNTIME WIRING
+# ============================================================================
+# Overview:
+# - Grants vanilla elephantry and the custom armoured elephant technology only
+#   when Event 012 opens the host or a priority member package is activated.
+# - Seeds an idempotent stockpile and a named host guard formation.
+# - Gives Action 102 members one custom elephant battalion through their own
+#   package-named templates; no recurring world scan is introduced.
+# - Uses the single approved chaosx_elephant_shared_base_entity model, counter,
+#   animation, and sound package for every consumer.
+# ============================================================================
+
+# COUNTRY scope. Shared unlock bridge for the host and priority members.
+africa_elephant_unlock_warfare = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = africa_elephant_warfare_unlocked }
+		}
+		set_technology = { elephantry = 1 popup = no }
+		set_technology = { chaosx_africa_elephant_warfare_tech = 1 popup = no }
+		set_country_flag = africa_elephant_warfare_unlocked
+		set_country_flag = africa_elephant_model_runtime_consumer
+	}
+}
+
+# COUNTRY scope. The original host receives a dedicated named guard at opening.
+# The helper is idempotent and only spawns on owned, controlled territory.
+africa_elephant_prepare_host_guard = {
+	if = {
+		limit = {
+			has_country_flag = africa_unifier_host
+			NOT = { has_country_flag = africa_elephant_host_guard_spawned }
+			any_owned_state = { is_owned_and_controlled_by = ROOT }
+		}
+		africa_elephant_unlock_warfare = yes
+		add_equipment_to_stockpile = {
+			type = chaosx_elephant_equipment_1
+			amount = constant:africa_elephant.host_equipment_stockpile
+		}
+		set_temp_variable = { africa_elephant_host_experience = constant:africa_elephant.host_guard_experience_factor }
+		set_temp_variable = { africa_elephant_host_equipment = constant:africa_elephant.host_guard_equipment_factor }
+		set_temp_variable = { africa_elephant_host_manpower = constant:africa_elephant.host_guard_manpower_factor }
+		division_template = {
+			name = "Africa Charter Elephant Guard"
+			override_model = chaosx_elephant_shared_base_entity
+			regiments = {
+				chaosx_elephant = { x = 0 y = 0 }
+				chaosx_elephant = { x = 0 y = 1 }
+			}
+			support = {
+				recon = { x = 0 y = 0 }
+				engineer = { x = 0 y = 1 }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { is_owned_and_controlled_by = ROOT }
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Africa Charter Elephant Guard\" division_template = \"Africa Charter Elephant Guard\" start_experience_factor = [ELEPHANT_EXPERIENCE] start_equipment_factor = [ELEPHANT_EQUIPMENT] start_manpower_factor = [ELEPHANT_MANPOWER]"
+						owner = ROOT
+						allow_spawning_on_enemy_provs = no
+					}
+				}
+				ELEPHANT_EXPERIENCE = "[?africa_elephant_host_experience|.2]"
+				ELEPHANT_EQUIPMENT = "[?africa_elephant_host_equipment|.2]"
+				ELEPHANT_MANPOWER = "[?africa_elephant_host_manpower|.2]"
+			}
+		}
+		set_country_flag = africa_elephant_host_guard_spawned
+	}
+}
+
+# COUNTRY scope. Action 102 members receive a single seed stockpile; their
+# package force initializer adds the elephant regiment to the proper template.
+africa_elephant_prepare_member_guard = {
+	if = {
+		limit = {
+			africa_priority_member_has_package = yes
+			NOT = { has_country_flag = africa_elephant_member_stockpile_granted }
+		}
+		africa_elephant_unlock_warfare = yes
+		add_equipment_to_stockpile = {
+			type = chaosx_elephant_equipment_1
+			amount = constant:africa_elephant.member_equipment_stockpile
+		}
+		set_country_flag = africa_elephant_member_stockpile_granted
+	}
+}

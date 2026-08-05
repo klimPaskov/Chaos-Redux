@@ -99,15 +99,14 @@ africa_priority_member_portrait_runtime_is_approved = {
 	}
 }
 
-# COUNTRY scope. These seven identities are Event 006-owned carriers that
-# Event 012 may reuse additively. Membership is an identity lookup only; the
-# focus loader still protects a live Event 006/Soviet origin and any meaningful
-# existing tree before it can install the Africa surface.
+# COUNTRY scope. These seven identities are existing carrier tags that Event
+# 012 may reuse additively. Membership is an identity lookup only; the focus
+# loader still protects a live origin or meaningful existing tree before it can
+# install the Africa surface.
 africa_priority_member_uses_independence_wave_country_collection = {
 	AND = {
-		# The intersection keeps this API consumer limited to Event 006-owned
-		# Africa carriers; registered vanilla carriers remain on their own
-		# identity and focus-preservation paths below.
+		# This optional API intersection is retained for callers that need the
+		# Event 006-owned collection, but it is not part of the direct-tag gate.
 		collection_contains = {
 			collection = collection:chaosx_country_independence_wave_owned
 			country = THIS
@@ -120,24 +119,13 @@ africa_priority_member_uses_independence_wave_country_collection = {
 }
 
 africa_priority_member_uses_independence_wave_country_tag = {
-	OR = {
-		africa_priority_member_uses_independence_wave_country_collection = yes
-		is_independence_wave_registry_africa_asante_carrier = yes
-		is_independence_wave_registry_africa_oyo_carrier = yes
-		is_independence_wave_registry_africa_kanem_bornu_carrier = yes
-		is_independence_wave_registry_africa_luba_carrier = yes
-		is_independence_wave_registry_africa_lunda_carrier = yes
-		is_independence_wave_registry_africa_kilwa_carrier = yes
-		is_independence_wave_registry_africa_zulu_carrier = yes
-	}
+	africa_priority_member_has_direct_niche_carrier = yes
 }
 
-# COUNTRY scope. The seven Event 006-owned shells are actionable for Africa
-# only while their live Event 006 origin receipt exists. A bare registered X
-# tag cannot masquerade as an Africa promotion target.
+# COUNTRY scope. Compatibility-named helper retained for older callers. The
+# current contract is direct existing-tag identity, not an Event 006 receipt.
 africa_priority_member_has_active_event6_shell_receipt = {
-	is_independence_wave_registry_event6_origin = yes
-	NOT = { has_country_flag = independence_wave_origin_ended }
+	africa_priority_member_has_direct_niche_carrier = yes
 }
 
 # COUNTRY scope. Event 006 and Soviet Collapse own their active focus surface.
@@ -201,7 +189,22 @@ africa_priority_member_has_direct_carrier_tag = {
 # It deliberately does not read another event's registry, receipt, or origin
 # lifecycle.
 africa_priority_member_has_direct_niche_carrier = {
-	africa_priority_member_has_direct_carrier_tag = yes
+	OR = {
+		original_tag = DOX
+		tag = DOX
+		original_tag = DSX
+		tag = DSX
+		original_tag = DUX
+		tag = DUX
+		original_tag = DYX
+		tag = DYX
+		original_tag = DZX
+		tag = DZX
+		original_tag = EMX
+		tag = EMX
+		original_tag = EQX
+		tag = EQX
+	}
 }
 
 # COUNTRY scope. These nine package identities retain their normal live
@@ -224,7 +227,7 @@ africa_priority_member_is_vanilla_sovereign_carrier = {
 # COUNTRY scope. Valid asante formation or release identity.
 africa_priority_member_origin_is_asante = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
-	africa_priority_member_has_active_event6_shell_receipt = yes
+	africa_priority_member_has_direct_niche_carrier = yes
 	OR = {
 		original_tag = DOX
 		tag = DOX
@@ -235,7 +238,7 @@ africa_priority_member_origin_is_asante = {
 # COUNTRY scope. Valid oyo formation or release identity.
 africa_priority_member_origin_is_oyo = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
-	africa_priority_member_has_active_event6_shell_receipt = yes
+	africa_priority_member_has_direct_niche_carrier = yes
 	OR = {
 		original_tag = DSX
 		tag = DSX
@@ -255,7 +258,7 @@ africa_priority_member_origin_is_sokoto = {
 # COUNTRY scope. Valid kanem bornu formation or release identity.
 africa_priority_member_origin_is_kanem_bornu = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
-	africa_priority_member_has_active_event6_shell_receipt = yes
+	africa_priority_member_has_direct_niche_carrier = yes
 	OR = {
 		original_tag = DUX
 		tag = DUX
@@ -311,7 +314,7 @@ africa_priority_member_origin_is_harar = {
 # COUNTRY scope. Valid kilwa formation or release identity.
 africa_priority_member_origin_is_kilwa = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
-	africa_priority_member_has_active_event6_shell_receipt = yes
+	africa_priority_member_has_direct_niche_carrier = yes
 	OR = {
 		original_tag = EMX
 		tag = EMX
@@ -331,7 +334,7 @@ africa_priority_member_origin_is_nubia = {
 # COUNTRY scope. Valid luba formation or release identity.
 africa_priority_member_origin_is_luba = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
-	africa_priority_member_has_active_event6_shell_receipt = yes
+	africa_priority_member_has_direct_niche_carrier = yes
 	OR = {
 		original_tag = DYX
 		tag = DYX
@@ -342,7 +345,7 @@ africa_priority_member_origin_is_luba = {
 # COUNTRY scope. Valid lunda formation or release identity.
 africa_priority_member_origin_is_lunda = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
-	africa_priority_member_has_active_event6_shell_receipt = yes
+	africa_priority_member_has_direct_niche_carrier = yes
 	OR = {
 		original_tag = DZX
 		tag = DZX
@@ -371,7 +374,7 @@ africa_priority_member_origin_is_merina = {
 # COUNTRY scope. Valid zulu formation or release identity.
 africa_priority_member_origin_is_zulu = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
-	africa_priority_member_has_active_event6_shell_receipt = yes
+	africa_priority_member_has_direct_niche_carrier = yes
 	OR = {
 		original_tag = EQX
 		tag = EQX
@@ -380,8 +383,8 @@ africa_priority_member_origin_is_zulu = {
 }
 
 # COUNTRY scope. Vanilla identities resolve from their existing country tag or a
-# same-country Event 012 origin flag; the seven Event 006 X shells additionally
-# require their live Event 006 receipt. Surveying records no territory or cores.
+# same-country Event 012 origin flag; the seven niche carriers resolve from their
+# exact existing tags. Surveying records no territory or cores.
 africa_priority_member_has_supported_carrier_identity = {
 	NOT = { is_independence_wave_registry_soviet_origin = yes }
 	OR = {
@@ -553,7 +556,7 @@ africa_priority_member_can_register_package = {
 	# after the independent Action 102 promotion and local ratification gates.
 	has_country_flag = africa_priority_package_promotion_approved
 	africa_priority_member_has_valid_origin = yes
-	# The origin receipt is not enough on its own: the final registration gate
+	# Origin validation is not enough on its own: the final registration gate
 	# must still prove that the current scope is one of Event 012's sixteen
 	# recognised existing carriers. This keeps stale or copied origin flags from
 	# loading the package onto an unowned tag.
