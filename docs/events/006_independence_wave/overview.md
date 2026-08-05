@@ -16,6 +16,14 @@ The reusable tag and region contract is documented in [Country API and regional 
 
 The Africa priority-member route now consumes the Event 006-owned/Africa-overlap collection intersection through `africa_priority_member_uses_independence_wave_country_collection`; the package's own origin, map, focus-preservation, and readiness gates remain authoritative. See the current runtime-consumer handoff in `../../plans/006_independence_wave_plans/subagent_handoffs/006_country_api_runtime_consumer_2026_08_03.md`.
 
+## Current package-admission override (2026-08-05)
+
+The current whole-event authority is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md`. Event 006 remains **HOLD / PARTIAL**. The central execution boundary is 16 content-attested selectable packages out of 193 non-overlay rows, leaving 177 unattested rows, with 15 compatible reservation groups. The 16 admitted IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184.
+
+IW-014 Catalonia (`CAT`) is admitted as a standalone vanilla-carrier package. IW-013 NAV, IW-015 GLC, and IW-030 MNT remain fail-closed pending their independent identity, source, flag, portrait, and package gates. IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM remain adapter-only and fail-closed. FORM-07 remains closed behind its X-ending identity, flag, member, territory, and readiness contract. Super-event `6001` remains incomplete and absent from runtime. No Event 006 advisor icons are required or authorized.
+
+Any later paragraph that still reports the pre-CAT 15-package/14-group boundary is dated traceability only and is superseded by this override. Static allocator, scenario, flag, GUI, and tag-audit evidence remains valid only at the counts stated by the current handoff; no live-game or obsolete pasted-log evidence is used.
+
 ## Current package-admission override (2026-08-03)
 
 IW-023 Transylvania (`TRA`) is now admitted after its independent source-local package audit and exact runtime/scenario dispatch wiring. The current exact compile-time set is fifteen packages across fourteen compatible reservation groups and fifteen distinct anchors: IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184. FORM-08 remains separately fail-closed for the accepted Vojvodina/Slavonia member, consent, and anchor proof. Any undated paragraph below that still says fourteen packages, thirteen groups, or fourteen anchors is superseded by this override; dated snapshots remain historical traceability only. The whole event is still HOLD / PARTIAL, with the doubled 14/20 bands, unadmitted package pool, asset/AI/balance work, FORM-08, and `6001` rights remaining open.

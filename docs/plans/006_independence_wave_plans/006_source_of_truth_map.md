@@ -1,8 +1,22 @@
 # Event 006 source-of-truth map
 
-Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v106_2026_08_03.md`, the post-TRA completion audit, and `subagent_handoffs/006_event6_post_tra_documentation_reconciliation_2026_08_03.md`, read together with v105/v104/v103 for their underlying static checks; it supersedes no accepted design and records only current static checks and remaining gates.
+## Current authority override (2026-08-05)
 
-Pre-TRA standalone capacity witness (dated 2026-08-03): `subagent_handoffs/006_event6_14_package_static_witness_2026_08_03.md` records a source-backed fourteen-package frozen allocation from the pre-TRA admitted tranche. It remains static allocation evidence only. The current attestation authority is the fifteen-package TRA-inclusive set in the IW-023 override below, and this witness does not claim live execution, package-wide readiness, or twenty-country capacity.
+The authoritative whole-event status is the read-only `subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md`, with the bounded package authorities listed below. Event 006 remains **HOLD / PARTIAL** and this map does not claim whole-event completion.
+
+The exact current boundary is 16 content-attested selectable packages out of 193 non-overlay rows, leaving 177 unattested selectable packages. The 16 attested IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184.
+
+The current central dispatcher has 25 adapter IDs, of which nine are adapter-only and fail closed: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. The unchanged 14-package static witness is evidence only and does not replace the 16-package attestation count.
+
+IW-014 CAT is admitted as a standalone vanilla-carrier package. IW-013 NAV and IW-015 GLC are source-wired but remain fail-closed pending independent identity, flag, grounded portrait, and country-package evidence. IW-030 MNT remains fail-closed on its grounded roster and source gates. FORM-07 remains fail-closed on its X-ending identity, flag family, member and territory contract, integration adapter, and readiness proof. Super-event `6001` remains incomplete and absent from runtime. No Event 006 advisor icons are required or authorized.
+
+Authority order for current routing is: accepted Event 006 specifications for design intent, the post-Iberian completion audit for whole-event evidence, the CAT standalone admission handoff for IW-014, the current NAV/GLC package and portrait-source handoffs for IW-013/IW-015, and the current MNT package/source handoffs for IW-030. This map and the resume packet summarize those authorities and do not override them.
+
+All earlier current-status paragraphs in this file that retain 14/13, 15/14, 178, 179, 23-adapter, or source-placeholder-completion arithmetic are dated traceability only and are superseded by this override.
+
+The earlier v106 and post-TRA completion evidence remain useful for their bounded static checks, but they are not the current package-count authority after the 2026-08-05 CAT admission and Iberian tranche.
+
+Pre-TRA standalone capacity witness (dated 2026-08-03): `subagent_handoffs/006_event6_14_package_static_witness_2026_08_03.md` records a source-backed fourteen-package frozen allocation from the pre-TRA admitted tranche. It remains static allocation evidence only. The current attestation authority is the 16-package CAT-inclusive set stated in the override above, and this witness does not claim live execution, package-wide readiness, or twenty-country capacity.
 
 Current-count override: any historical paragraph below that says 80/74/6, 81, or 82 portrait masters or 295/111/50 focus arithmetic is traceability only. The current shelf is 83 original-size portrait evidence/candidate masters, and the current generic focus inspection is 184 direct plus 134 shared definitions with 27 imports, 318 unique definitions and 345 raw entries. Use v106, the fresh whole-event audit, and the current dated package/portrait handoffs for admission decisions.
 
@@ -14,7 +28,7 @@ Current overlay-watch override: `subagent_handoffs/006_overlay_watch_permanent_i
 
 Current IW-020 override: `subagent_handoffs/006_atx_venice_country_package_audit_2026_08_03.md` is the package authority and `subagent_handoffs/006_iw020_atx_venice_source_clearance_2026_08_03.md` is the source-only visual authority. The Volpi candidate and Venetian maritime references remain `needs_user_review`; ATX has no runtime package adapter or attestation and remains fail-closed.
 
-Current IW-014 override: `subagent_handoffs/006_iw014_cat_admission_audit_current_2026_08_03.md` records a coherent dormant CAT carrier but keeps it fail-closed because FORM-07 identity, flag, member, and central attestation gates are unresolved. The NAV/GLC corridor adapters are now source-implemented, but their own packages remain outside central attestation pending independent source, identity, flag, and asset evidence. No CAT-local patch or fallback is authorized.
+Historical IW-014 wording (2026-08-03): `subagent_handoffs/006_iw014_cat_admission_audit_current_2026_08_03.md` records the pre-admission CAT HOLD. The 2026-08-05 standalone admission handoff supersedes that package disposition and admits CAT independently, while FORM-07, NAV, and GLC remain fail-closed. No CAT-local fallback or admission bypass is authorized.
 
 Current IW-013/IW-015 override (2026-08-05): `iberian_registered_packages.md` and `subagent_handoffs/006_iberian_documentation_reconciliation_2026_08_05.md` are the current package/documentation authorities for source-level adapters for vanilla NAV and GLC. NAV uses the installed-map compact País Vasco anchor at state 792, with states 172 and 806 retained only as optional extension objectives; GLC uses state 171. Both adapters preserve vanilla history and leaders, assign the shared Event 006 full framework, publish package-specific ledgers, forces, route governments, host/network/league/formable hooks, AI, decisions, and generation-safe cleanup. They remain fail-closed at the central execution gate until independent source/identity/flag/portrait evidence and package audits are promoted.
 
@@ -22,7 +36,7 @@ Current IW-003 override: `subagent_handoffs/006_iw003_acx_admission_audit_curren
 
 Current IW-073 override: `subagent_handoffs/006_iw073_cux_admission_audit_current_2026_08_03.md` confirms the CUX binding (679/856 with 855 optional) is map-coherent but the package remains dormant. No runtime adapter, sourced leader/identity package, forces, politics, mechanics, focus/decision/AI/host surfaces, or cleanup exists; no attestation or generic fallback is authorized.
 
-Current IW-023 override (2026-08-03): the independent Transylvania source-admission audit is source-local PASS and the runtime/scenario dispatch contract is now wired for the vanilla `TRA` identity. The exact compile-time attestation set is fifteen packages (`IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-018`, `IW-019`, `IW-023`, `IW-173`, and `IW-184`) across fourteen compatible reservation groups and fifteen distinct anchors. FORM-08 remains a separate fail-closed Vojvodina/Slavonia member, consent, and anchor gate; no formable readiness follows from the TRA admission. Any undated paragraph below that retains the former fourteen-package/13-group/14-anchor counts is superseded by this override; dated snapshots remain historical traceability only.
+Historical IW-023 override (2026-08-03): the independent Transylvania source-admission audit remains source-local PASS and the runtime/scenario dispatch contract remains wired for vanilla `TRA`. Its fifteen-package and fourteen-group arithmetic is retained as dated pre-CAT evidence only. The current 16-package and 15-group boundary is stated in the 2026-08-05 authority override above. FORM-08 remains a separate fail-closed Vojvodina/Slavonia member, consent, and anchor gate.
 
 Current COG cost override: `subagent_handoffs/006_cog_overlay_cost_localisation_repair_2026_08_03.md` and its PASS re-audit `subagent_handoffs/006_cog_overlay_cost_localisation_reaudit_2026_08_03.md` supersede the narrow P3 literal-cost drift note in the dated decision/mission audit. The twelve COG displayed values and the sibling reusable-region overlay values now resolve from their centralized cost constants and canonical installed icon tokens; payment and affordability effects remain unchanged.
 
@@ -34,7 +48,7 @@ The 2026-08-03 overlay-watch repair is recorded in `subagent_handoffs/006_overla
 
 The current IW-017/IW-018 package re-audit is `subagent_handoffs/006_iw017_iw018_current_package_reaudit_2026_08_03.md`. It retains both content attestations, reconciles the current shared-tree geometry and grounded portrait-placeholder review, and records no gameplay promotion or fallback. ARX date-bound portrait disclosures remain visible, while the whole-event capacity and runtime boundaries remain fail-closed.
 
-Portrait policy supersession: grounded historical portraits now use unchanged source placeholders (exact head-and-shoulders crop, deterministic `156x210` fit, DDS) by default. The immutable source archive is `docs/assets/portraits/006_independence_wave/` and the current converted tranche is `docs/assets/006_independence_wave/source_placeholder_2026_08_03/`. Earlier HOI4-repaint descriptions remain evidence history and do not describe the current placeholder runtime files unless an explicit later styled-replacement request is recorded.
+Historical portrait-policy wording (2026-08-03): the unchanged-source placeholder tranche and its byte audit remain evidence for the rows they cover, but they do not close the current Iberian or Montenegro admission gates. For the current NAV/GLC tranche, final admission requires the grounded source review, locked RunPod provider-final master and game-size output, independent review, and DDS validation recorded by the current audit. The Iberian source package is still `needs_runpod` with no provider-final master or runtime DDS. No Event 006 advisor icon is required or authorized.
 
 The current 15-row source-placeholder crosswalk and independent byte audit are `docs/assets/006_independence_wave/source_placeholder_2026_08_03/manifest.md` and `subagent_handoffs/006_grounded_portrait_placeholder_audit_2026_08_03.md`. All crop and DDS chains pass; DOX is placeholder-only and SOK Dikko remains `NEEDS_REVIEW` for rights and era fit. This evidence does not promote a package or clear any runtime admission gate.
 
@@ -52,7 +66,7 @@ The vanilla-formable reproducibility defect identified by the 2026-08-02 continu
 
 The 2026-08-03 field-compatibility repair in commit `dcb35cf966993d1a34fc5516492cb33724ac27d0` is recorded in `subagent_handoffs/006_field_compatibility_repair_2026_08_03.md`. It preserves hidden-event roster recruitment and the original train-strategy semantics, adds the three missing decision-category description keys, and records scoped static checks. It does not change package attestation, capacity, or the whole-event **HOLD / PARTIAL** disposition.
 
-<!-- Documentation reconciliation: the current allocator passes fifteen attested packages across fourteen compatible reservation groups and fifteen distinct anchors; allocator, crisis, registry, evolution, and ledger cores are source-closed; v67 Universal Former Hosts target uniqueness is implemented while Wars of Separation remains per-release; global completion remains open. -->
+<!-- Documentation reconciliation: the current allocator passes sixteen attested packages across fifteen compatible reservation groups and sixteen distinct admitted rows; allocator, crisis, registry, evolution, and ledger cores are source-closed; v67 Universal Former Hosts target uniqueness is implemented while Wars of Separation remains per-release; global completion remains open. -->
 
 ## 2026-08-03 current authority continuation: v106, package gates, focus spacing, MNT, FSM, and portrait policy
 
