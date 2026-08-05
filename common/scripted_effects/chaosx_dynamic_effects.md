@@ -396,3 +396,32 @@ set_temp_variable = { independence_wave_nav_fueros_delta = constant:independence
 set_temp_variable = { independence_wave_nav_industry_delta = constant:independence_wave_iberian_pressure.standard_gain }
 independence_wave_change_nav_compact_values = yes
 ```
+
+## Event 016 reusable custom technology grants
+
+Purpose: award only the eighteen Event 016 custom technologies to another event's country without creating Kruger ownership, Directorate state, project history, facilities, free formations, equipment stockpiles, vanilla technologies, or Event 016 log history.
+
+Scope: country.
+
+Inputs:
+
+- `chaosx_grant_custom_operational_technology` reads temporary `chaosx_custom_technology_family` from `constant:chaosx_custom_technology_family.*`.
+- `chaosx_grant_custom_technology_upgrade` reads temporary `chaosx_custom_technology_upgrade` from `constant:chaosx_custom_technology_upgrade.*`.
+- `chaosx_grant_random_custom_operational_technology` takes no selector and considers only unresearched base operational families.
+
+Outputs:
+
+- `chaosx_custom_technology_grant_applied` is `1` for a valid operational selector.
+- `chaosx_custom_technology_upgrade_applied` is `1` for a valid upgrade selector.
+- `chaosx_custom_technology_random_grant_applied` is `1` when the random pool selected an unresearched family.
+
+Defaults: invalid selectors and an exhausted random pool are safe no-ops. No vanilla technology or substitute family is inferred.
+
+Side effects: a valid grant records an external knowledge ledger flag, restores the selected custom technology after Event 016 runtime rebuilds, recreates the existing locked and capped template, reopens matching custom-equipment production, and registers the existing Event 019 provider row. Upgrade grants award their operational dependency first. Portal weaponization also unlocks the existing portal facility raid; Kruger changes its AI weight but is not an access requirement.
+
+Example:
+
+```txt
+set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.exotic }
+chaosx_grant_custom_operational_technology = yes
+```
