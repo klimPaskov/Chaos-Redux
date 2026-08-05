@@ -1,5 +1,7 @@
 # Event 006 super-event 6001 audio research v112
 
+> Superseded identifier note (2026-08-06): live Event 006 uses ordinary super-event ID 23 for League of New States. The legacy 6001 label is retained only for historical audit traceability.
+
 Research date: 2026-08-03.
 
 Scope: source, rights, provenance, duration, and suitability research for Event 006 super-event `6001`, **The League of New States**. This handoff does not edit event scripts, scripted localisation, `.gfx`, GUI, sound definitions, the canonical music catalogue, spreadsheets, slot dispatch, or firing logic.
