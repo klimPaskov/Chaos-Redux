@@ -34,3 +34,7 @@ IW-013/NAV and IW-015/GLC now have source-level setup, final-validation, and cle
 The central content-attestation, independent source/identity/flag/portrait, and country-package gates remain unresolved, so the adapters do not promote NAV, GLC, CAT, or FORM-07 to runtime or scenario capacity.
 
 No advisor icons or advisor portrait assets were created or authorized, and no generic identity, flag, portrait, or attestation fallback is permitted.
+
+## Current amendment — 2026-08-05
+
+The standalone CAT country contract is now separated from FORM-07 readiness. IW-014 is admitted through the current source-complete vanilla-carrier receipt `006_iw014_cat_standalone_admission_2026-08-05.md`; the central attestation set therefore contains 16 packages across 15 compatible reservation groups. FORM-07 remains fail-closed: CAT retains only family-registration metadata, the shared formable focus branch now requires `has_independence_wave_formable_commit_readiness = yes`, and the Mediterranean network effect writes `independence_wave_unlock_formable_discovery` only when that same gate passes. NAV and GLC remain outside attestation. The original HOLD verdict above is preserved as the dated pre-admission snapshot.

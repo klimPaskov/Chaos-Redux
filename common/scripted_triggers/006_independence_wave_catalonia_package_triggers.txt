@@ -34,6 +34,18 @@ has_independence_wave_cat_command_roster = {
 	has_character = CAT_lluis_companys
 }
 
+# CAT is a complete standalone Event 006 carrier even while FORM-07 remains
+# fail-closed. Keep the family registration proof in the country package, but
+# leave identity, flag, member, territory, and integration readiness to the
+# generic formable discovery/commit gate below. This lets CAT be released and
+# played without exposing an unresearched Iberian federation transaction.
+has_independence_wave_cat_formable_registration = {
+	has_country_flag = independence_wave_formable_family_registered
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.iberian_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+}
+
 has_independence_wave_cat_active_package_project = {
 	OR = {
 		has_decision = independence_wave_cat_reopen_barcelona_depots
@@ -111,14 +123,12 @@ has_prepared_independence_wave_iw_014_package_setup = {
 	check_variable = { independence_wave_power_struggle_type = constant:independence_wave_power_struggle.municipal_commission_vs_industrial_security }
 	has_country_flag = independence_wave_ambition_family_registered
 	has_country_flag = independence_wave_league_route_available
-	has_country_flag = independence_wave_formable_family_registered
-	has_country_flag = independence_wave_formable_family_selected
-	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.iberian_federation }
-	has_country_flag = independence_wave_formable_profile_loaded
-	# The Iberian row remains reserved until its X-ending identity, flag
-	# package, territory adapter, and consenting-member integration adapter are
-	# independently audited. Never expose an unimplemented transaction.
-	has_independence_wave_formable_commit_readiness = yes
+	# The family is registered for CAT's regional ambition ledger, but FORM-07
+	# itself remains a separate fail-closed transaction. Its X-ending identity,
+	# flag package, territory adapter, and consenting-member integration adapter
+	# are still enforced by `can_independence_wave_discover_selected_formable_family`
+	# and every later formable transaction trigger.
+	has_independence_wave_cat_formable_registration = yes
 	has_country_flag = independence_wave_force_mapping_loaded
 	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_014 }
 	check_variable = { independence_wave_force_profile = constant:independence_wave_force_package_profile.p14 }

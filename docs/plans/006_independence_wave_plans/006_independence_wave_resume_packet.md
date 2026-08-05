@@ -640,10 +640,13 @@ and player-owned observation are optional future QA.
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
   army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- The fourteen exact package attestations remain binding runtime gates; a broad
+- The sixteen exact package attestations remain binding runtime gates; a broad
   identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,
   commit, or `006_source_of_truth_map.md` narrows it.
 - Do not rewrite accepted specs to match partial implementation.
 - Do not add a fallback for Cornwall or `6001` without explicit user approval.
+## Current admission amendment — 2026-08-05
+
+IW-014 CAT is now the sixteenth exact Event 006 content-attested package. Its vanilla carrier package is source-complete independently of FORM-07: the CAT country receives its state, Companys identity, vanilla flag family, force mapping, generic tree, route decisions, AI, host ledger, and cleanup. CAT's Iberian family registration remains an ambition ledger value only. The shared formable focus branch and discovery/commit transaction continue to require `has_independence_wave_formable_commit_readiness = yes`, so FORM-07, NAV, and GLC remain fail-closed. The current compatible-group count is 15, while the static standalone witness remains 14 packages. See `subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md` for the bounded receipt and validation.

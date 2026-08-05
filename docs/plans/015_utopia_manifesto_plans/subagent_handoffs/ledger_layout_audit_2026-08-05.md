@@ -6,7 +6,7 @@ Audited the Event 015 Commonwealth Ledger scripted-GUI surface, its nine decisio
 
 Patched one concrete UI defect: long live accounting strings were placed in fixed `118x58`, `306x204`, and `268x204` text boxes, so routine long bands and the detailed contribution/calling breakdowns clipped.
 
-The compact visible summary now fits the surface and retains every live number in a hover tooltip.
+The compact visible summary now fits the surface and retains every live number in a hover tooltip. The active tab also has a persistent, non-interactive selection cue.
 
 No decision reward, cost, duration, mission, route gate, or AI score was changed.
 
@@ -14,7 +14,7 @@ No decision reward, cost, duration, mission, route gate, or AI score was changed
 
 | File | Changed identifiers | Before | After |
 | --- | --- | --- | --- |
-| `interface/015_utopia_manifesto_ledger.gui` | `utopia_ledger_need_value`, `utopia_ledger_plenty_value`, `utopia_ledger_concord_value`, `utopia_ledger_assignment_value`, `utopia_ledger_overview_right`, `utopia_ledger_callings_left`, `utopia_ledger_callings_right` | Detailed, variable-length content relied on fixed-size visible boxes. | Each affected text box has a matching `pdx_tooltip`; the existing GUI layout and scripted actions are unchanged. |
+| `interface/015_utopia_manifesto_ledger.gui` | `utopia_ledger_need_value`, `utopia_ledger_plenty_value`, `utopia_ledger_concord_value`, `utopia_ledger_assignment_value`, `utopia_ledger_overview_right`, `utopia_ledger_callings_left`, `utopia_ledger_callings_right`, `utopia_ledger_tab_*_selected` | Detailed, variable-length content relied on fixed-size visible boxes, and the active tab had no persistent cue. | Each affected text box has a matching `pdx_tooltip`; four non-interactive `GFX_chaosx_checkbox_checked` markers follow the selected tab without changing click regions. |
 | `localisation/english/015_utopia_manifesto_l_english.yml` | `utopia_manifesto_ledger_gui_need[_tt]`, `plenty[_tt]`, `concord[_tt]`, `assignment[_tt]`, `overview_right[_tt]`, `callings_left[_tt]`, `callings_right[_tt]` | Top values showed label, value, band, and delta in 58 pixels; two panels showed thousands of characters of contribution data. | Top values show their label and current number; compact panels show the current method/summary; the original current band, delta, and accounting details are available on hover. |
 | `common/on_actions/015_utopia_manifesto_on_actions.txt` | `on_puppet`, `on_release_as_puppet`, `on_release_as_free`, `on_subject_free`, `on_subject_autonomy_level_change`, `on_subject_annexed` | Subject-derived Need and Concord values could remain stale until Recount or another unrelated Event 015 callback. | Each bounded subject lifecycle callback refreshes the accepted ROOT and accepted FROM countries without a recurring scan. |
 
@@ -26,7 +26,7 @@ The decision category `utopia_manifesto_ledger_category` correctly loads `utopia
 
 The ledger has five actionable GUI buttons, all with a matching scripted GUI effect and click gate: `Recount` calls `utopia_manifesto_refresh_ledger` plus the three proof refreshes, and the four tabs set `utopia_manifesto_ledger_tab` to an existing script constant.
 
-There are no fake action buttons, orphaned effects, or decorative elements over a control in this surface.
+There are no fake action buttons or orphaned effects. The four selected-tab markers are explicitly non-interactive and do not intercept any button click region.
 
 The background asset is an exact `700x500` panel, matching the clipping container.
 
@@ -34,7 +34,7 @@ The background asset is an exact `700x500` panel, matching the clipping containe
 | --- | --- | --- |
 | Header | `0,0` through `700,96` | Header art, title, subtitle, identity marks, and formation state are contained. |
 | Status strip | `0,96` through `700,154` | Four value slots use `118x58` boxes; the patch removes their variable band/delta overflow. |
-| Tab rail | `31..646,156..190` | Four `123x34` buttons have 41-pixel gaps and matching tab effects. |
+| Tab rail | `31..646,156..190` | Four `123x34` buttons have 41-pixel gaps and matching tab effects; the selected marker stays inside the left padding of each button. |
 | Active panel | `24,202` through `676,424` | Exactly one tab panel is visible; the long overview and Calling detail text was the concrete clipping defect fixed here. |
 | Footer | `0,430` through `700,486` | Warning art/text and `Recount` do not exceed the panel bounds. |
 
@@ -54,13 +54,11 @@ These are bounded engine callbacks for the exact countries whose subject status 
 
 The GUI remains intentionally human-only (`is_ai = no`, `ai_enabled = no`); AI ledger consumers receive the same event-scoped refreshes without a fake GUI action.
 
-### Medium — selected tabs lack a persistent selected treatment
+### Resolved — selected tab treatment is persistent and click-safe
 
-The selected tab changes panel visibility but the four tab buttons all use the same normal static button sprite and do not expose a selected overlay/frame.
+Each tab now has a compact non-interactive check marker whose visibility follows the same single `utopia_manifesto_ledger_tab` variable that selects the active panel.
 
-This is a readability gap, not a broken action.
-
-It requires a small visual-state/art decision rather than a safe audit-only source tweak, so it remains unpatched.
+The marker is positioned inside the tab's left padding, uses an existing registered HOI4-style checkbox sprite, and is marked `alwaystransparent = yes`, so it adds a selected cue without changing the button's click box or introducing a dead control.
 
 ### Resolved — variable ledger data clipped in fixed text boxes
 
@@ -70,7 +68,7 @@ The visible text has been reduced to readable current summaries and all removed 
 
 ### Low — offline GUI fidelity has unrelated repository limitations
 
-The post-patch inspector reports `585` modelled, `2` approximated, `41` ignored, `1` missing, and `12` unresolved nodes.
+The tooltip-patch inspector reported `585` modelled, `2` approximated, `41` ignored, `1` missing, and `12` unresolved nodes; the final marker patch was re-inspected and rendered successfully with the same unrelated graph limitations.
 
 Its source graph also has global diagnostics and overlap findings from unrelated scripted GUI files.
 
@@ -108,9 +106,11 @@ Post-patch inspection and rendering used workspace `mod_chaos_redux_ea3b2d67c2c0
 
 The render matrix covered `normal`, `hover`, `selected`, `warning`, `long-text`, and `missing-localisation` at `1280x720` and `1920x1080`, both at UI scale `1`.
 
+The final selected-marker patch was re-inspected with artifact `322b7bb3afb407a4ffdd4b8c255b773385f77bce32dea9c7144b43287f3ee907` and rendered with state-matrix SHA-256 `c4598a709b7875e5aec379681f9a464d125fd0ae325fbcb9057a5e3a78289852`, resolution-scale SHA-256 `9cb082dfaf6b71e0e046b6ccfe6ecfde2da427b03577f6efc2b15134497edcc5`, and fidelity SHA-256 `436ede05761c609651c0323b2684a7ecb1a95471987ea1edcc6887e2cc238e25`.
+
 The generic offline scenario produced `stateCount = 6`, `resolutionCount = 2`, and no pixel difference between its generic states.
 
-This confirms the render requests and geometry traversal, but it does not simulate a live Event 015 country with active variables, warning flags, or a selected-tab sprite state.
+This confirms the render requests, geometry traversal, and final selected-marker source wiring, but it does not simulate a live Event 015 country with active variables or warning flags.
 
 ## Validation and limits
 
@@ -124,4 +124,4 @@ No new fallback, mechanic, asset, mission, or broad event chain was introduced.
 
 ## Recommended parent follow-up
 
-1. Decide whether the four tabs need a selected-state frame/overlay and, if accepted, source/register the needed state treatment before a narrow GUI patch.
+No remaining Event 015 GUI source patch was identified by the final bounded audit. Live consumer validation should exercise all four tab selections with populated Ledger variables and warning states.
