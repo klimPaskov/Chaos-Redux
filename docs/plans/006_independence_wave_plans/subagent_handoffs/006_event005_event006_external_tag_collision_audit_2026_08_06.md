@@ -6,7 +6,7 @@ Scope: the Event 005 Soviet Collapse tags and Event 006 Independence Wave tags o
 
 ## Result
 
-The audit found **no external country-tag definition or country-history filename collision** for the 34 Event 005 Soviet Collapse tags or the 102 Event 006 Independence Wave tags across the installed vanilla directory, 122 Workshop directories, and sibling local mods other than Chaos Redux.
+The audit found **no external country-tag definition or country-history filename collision** for the 34 Event 005 Soviet Collapse tags or the 102 Event 006 Independence Wave tags across the installed vanilla directory, 122 Workshop directories, and sibling local mods other than Chaos Redux. The repository's focused checker confirms the same boundary: `python -B .tools/audit_chaosx_country_tags.py` reports `Protected Event 006/Soviet tags: 136; external country-definition collisions: 0; external identity-surface collisions: 0; random-event roots skipped: 1`.
 
 The scan checked 136 target tags. It inspected literal three-character definitions under `common/country_tags/` and three-character prefixes in `history/countries` filenames. It skipped the Chaos Redux repository itself when deciding external collisions and skipped the configured Random Events Mod directory (`3199436992`, `Random Events Mod`) per scope.
 
