@@ -22,7 +22,7 @@ The shared Event 006 allocator and registry core retains its static PASS. The re
 | `12a525752` | **Accepted focused audit evidence** | Adds `006_event005_event006_external_tag_collision_audit_2026_08_06.md`; no remap is required for the 136 protected Event 005/Event 006 tags. |
 | `11e359d42` | **Accepted blocker audit** | Adds the current IW-003 country-package audit with `HOLD / fail-closed`; it is not an implementation plan or admission receipt. |
 | `b7cd05d01` | **Accepted source-placeholder asset tranche** | Replaces the stable unwired ACX readiness-candidate DDS with an attributed Quiller-Couch source placeholder. It adds no sprite, character, leader role, adapter, or attestation. |
-| `31b2095fb` | **Accepted research boundary with one checksum defect** | St Piran's Cross is accepted only as a period civic-motif baseline. It is not proof of a sovereign 1936 Cornish flag and does not admit ACX. The normal runtime TGA checksum printed in the handoff is incomplete and must be corrected before treating that table as exact checksum evidence. |
+| `31b2095fb` | **Accepted research boundary; checksum repaired in `e3bd2b966`** | St Piran's Cross is accepted only as a period civic-motif baseline. It is not proof of a sovereign 1936 Cornish flag and does not admit ACX. The follow-up corrected the normal runtime TGA checksum before this audit handoff was committed. |
 
 ## Ordinary super-event 23/24 verification
 
@@ -129,12 +129,12 @@ None of the five reviewed commits changes a weighted source, so no new probabili
 
 The top-level current overrides correctly state ordinary IDs `23/24`, counts `21/20/172/30`, the 20-package static witness, the external-versus-internal collision distinction, and whole-event **HOLD / PARTIAL**.
 
-Documentation reconciliation is still incomplete:
+Documentation reconciliation is materially improved by the parent follow-up:
 
-- `006_source_of_truth_map.md:47` points only to the August 3 ACX audit and does not yet index the August 6 country, portrait, and flag handoffs.
-- Current-sounding downstream paragraphs such as `docs/events/006_independence_wave/overview.md:149` and several older source-map/resume rows still say the 14/20 bands have no admitted capacity route, contradicting the maintained 20-package witness. They must distinguish static capacity from live/factual preflight gates.
+- `006_source_of_truth_map.md` now indexes the August 6 country, portrait, and flag handoffs under the current IW-003 override.
+- Current-sounding capacity paragraphs now distinguish the maintained 20-package static witness from live/factual world-state preflight gates; dated historical rows remain traceability only.
 - Current portrait-policy wording still automatically marks some grounded source placeholders `REPLACEMENT_PENDING`; the August 6 reusable policy permits that state only after an explicit styled-final request. This does not change ACX's unwired/role/map/package blockers.
-- The ACX flag handoff normal checksum must be corrected to the exact current SHA-256 above.
+- The ACX flag handoff normal checksum now matches the exact current SHA-256 above.
 
 These are documentation/evidence defects, not authorization for gameplay admission.
 
@@ -147,14 +147,13 @@ These are documentation/evidence defects, not authorization for gameplay admissi
 5. **AI and balance:** complete typed scenarios, normalized probability claims, dominance/starvation/repetition/timing proof, and several adapter surfaces remain unavailable.
 6. **Assets and source proof:** multiple package identities, portraits, flags, and exact roles remain blocked or evidence-only. No Event 006 advisor icons are required or authorized.
 7. **MCP evidence:** Event Chain Viewer results remain partial; weighted results remain state-incomplete. Source review is not presented as equivalent runtime proof.
-8. **Documentation:** current overrides are accurate on the requested tranche, but downstream capacity, portrait-state, ACX indexing, and one ACX checksum statement remain stale or defective.
+8. **Documentation:** current overrides and the August 6 ACX index/checksum are reconciled; a separate portrait-state wording review remains open for earlier grounded placeholders.
 
 ## Recommended next actions
 
-1. Apply a documentation-only correction for the ACX normal flag checksum and add the three August 6 ACX handoffs to the current source-of-truth routing.
-2. Retain ACX as reserved and dormant. Reopen gameplay only after an accepted installed-map rebind and a complete country-package design; do not invent a filler state, sovereign flag history, provisional office, or generic package fallback.
-3. Reconcile downstream 14/20 capacity wording against the maintained 20-package witness while preserving the live/factual preflight limitations.
-4. Keep Event 006 **HOLD / PARTIAL** until package, formable, `23` audio/firing, AI/balance, asset/source, and required MCP evidence gates close.
+1. Retain ACX as reserved and dormant. Reopen gameplay only after an accepted installed-map rebind and a complete country-package design; do not invent a filler state, sovereign flag history, provisional office, or generic package fallback.
+2. Continue the separate portrait-state wording review for earlier grounded placeholders without changing the accepted source-placeholder policy.
+3. Keep Event 006 **HOLD / PARTIAL** until package, formable, `23` audio/firing, AI/balance, asset/source, and required MCP evidence gates close.
 
 ## Simplifications and omissions
 
