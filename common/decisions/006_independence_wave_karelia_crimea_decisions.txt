@@ -1,0 +1,475 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 KARELIA / CRIMEAN TATAR STATE DECISIONS
+# ============================================================================
+# Material-costed regional survival, former-host, government, sovereignty,
+# network, and 210-day founding actions for IW-033 and IW-041.
+# ============================================================================
+
+independence_wave_karelia_crimea_category = {
+	independence_wave_kar_hold_statehood_foundation = {
+		name = independence_wave_kar_hold_statehood_foundation
+		desc = independence_wave_kar_hold_statehood_foundation_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_kar_package = yes
+			has_country_flag = independence_wave_iw_033_setup_complete
+			NOT = { has_country_flag = independence_wave_kc_foundation_settled }
+			NOT = { has_country_flag = independence_wave_kc_foundation_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_karelia_crimea_duration.founding
+		cancel_trigger = { OR = { NOT = { is_independence_wave_kar_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } AND = { has_stable_independence_wave_kar_ledgers = yes has_independence_wave_karelia_crimea_route_government = yes } } }
+		cancel_effect = {
+			if = { limit = { is_independence_wave_kar_package = yes has_stable_independence_wave_kar_ledgers = yes has_independence_wave_karelia_crimea_route_government = yes } independence_wave_kc_resolve_foundation = yes }
+			else_if = { limit = { is_independence_wave_kar_package = yes } set_country_flag = independence_wave_kc_foundation_failed independence_wave_kc_apply_failure = yes }
+		}
+		timeout_effect = { custom_effect_tooltip = independence_wave_kc_foundation_failure_effect_tt set_country_flag = independence_wave_kc_foundation_failed independence_wave_kc_apply_failure = yes }
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_karelia_crimea_ai.urgent }
+	}
+
+	independence_wave_cri_hold_statehood_foundation = {
+		name = independence_wave_cri_hold_statehood_foundation
+		desc = independence_wave_cri_hold_statehood_foundation_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_cri_package = yes
+			has_country_flag = independence_wave_iw_041_setup_complete
+			NOT = { has_country_flag = independence_wave_kc_foundation_settled }
+			NOT = { has_country_flag = independence_wave_kc_foundation_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_karelia_crimea_duration.founding
+		cancel_trigger = { OR = { NOT = { is_independence_wave_cri_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } AND = { has_stable_independence_wave_cri_ledgers = yes has_independence_wave_karelia_crimea_route_government = yes } } }
+		cancel_effect = {
+			if = { limit = { is_independence_wave_cri_package = yes has_stable_independence_wave_cri_ledgers = yes has_independence_wave_karelia_crimea_route_government = yes } independence_wave_kc_resolve_foundation = yes }
+			else_if = { limit = { is_independence_wave_cri_package = yes } set_country_flag = independence_wave_kc_foundation_failed independence_wave_kc_apply_failure = yes }
+		}
+		timeout_effect = { custom_effect_tooltip = independence_wave_kc_foundation_failure_effect_tt set_country_flag = independence_wave_kc_foundation_failed independence_wave_kc_apply_failure = yes }
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_karelia_crimea_ai.urgent }
+	}
+
+	independence_wave_kar_reopen_forest_railheads = {
+		name = independence_wave_kar_reopen_forest_railheads
+		desc = independence_wave_kar_reopen_forest_railheads_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_kar_package = yes NOT = { has_country_flag = independence_wave_kar_forest_railheads_reopened } }
+		available = { can_pay_independence_wave_iw033_railheads_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw033_railheads_cost = yes }
+		custom_cost_text = independence_wave_iw033_railheads_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.short
+		complete_effect = { independence_wave_iw033_pay_railheads = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kar_railheads_effect_tt independence_wave_iw033_complete_railheads = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_kar_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_kar_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kar_ai_land_material_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_form_ski_guard = {
+		name = independence_wave_kar_form_ski_guard
+		desc = independence_wave_kar_form_ski_guard_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_kar_package = yes NOT = { has_country_flag = independence_wave_kar_ski_guard_formed } }
+		available = { can_pay_independence_wave_iw033_ski_guard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw033_ski_guard_cost = yes }
+		custom_cost_text = independence_wave_iw033_ski_guard_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_iw033_pay_ski_guard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kar_ski_guard_effect_tt independence_wave_iw033_complete_ski_guard = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_kar_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_kar_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.urgent
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kar_ai_land_material_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_convene_language_commission = {
+		name = independence_wave_kar_convene_language_commission
+		desc = independence_wave_kar_convene_language_commission_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_kar_package = yes NOT = { has_country_flag = independence_wave_kar_language_commission_convened } }
+		available = { can_pay_independence_wave_iw033_commission_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw033_commission_cost = yes }
+		custom_cost_text = independence_wave_iw033_commission_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_iw033_pay_commission = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kar_language_commission_effect_tt independence_wave_iw033_complete_commission = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_kar_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_kar_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kar_ai_command_manpower_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_negotiate_border_transit = {
+		name = independence_wave_kar_negotiate_border_transit
+		desc = independence_wave_kar_negotiate_border_transit_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = { is_independence_wave_kar_package = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_kar_border_transit_open } }
+		available = { can_pay_independence_wave_iw033_transit_cost = yes capital_scope = { is_controlled_by = ROOT } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw033_transit_cost = yes }
+		custom_cost_text = independence_wave_iw033_transit_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.long
+		complete_effect = { independence_wave_iw033_pay_transit = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kar_border_transit_effect_tt independence_wave_iw033_complete_transit = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_kar_package = yes } NOT = { has_independence_wave_living_former_host = yes } var:independence_wave_former_host = { has_war_with = ROOT } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_kar_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.discretionary
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 2 NOT = { has_independence_wave_severe_host_threat = yes } }
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_diplomatic_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_survey_land_claims = {
+		name = independence_wave_cri_survey_land_claims
+		desc = independence_wave_cri_survey_land_claims_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_cri_package = yes NOT = { has_country_flag = independence_wave_cri_land_claims_surveyed } }
+		available = { can_pay_independence_wave_iw041_survey_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw041_survey_cost = yes }
+		custom_cost_text = independence_wave_iw041_survey_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_iw041_pay_survey = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_cri_land_claims_effect_tt independence_wave_iw041_complete_survey = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_cri_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_cri_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_cri_ai_command_manpower_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_organize_return_commission = {
+		name = independence_wave_cri_organize_return_commission
+		desc = independence_wave_cri_organize_return_commission_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_cri_package = yes NOT = { has_country_flag = independence_wave_cri_return_commission_organized } }
+		available = { can_pay_independence_wave_iw041_return_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw041_return_cost = yes }
+		custom_cost_text = independence_wave_iw041_return_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.short
+		complete_effect = { independence_wave_iw041_pay_return = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_cri_return_commission_effect_tt independence_wave_iw041_complete_return = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_cri_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_cri_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_cri_ai_command_manpower_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_screen_peninsular_services = {
+		name = independence_wave_cri_screen_peninsular_services
+		desc = independence_wave_cri_screen_peninsular_services_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_cri_package = yes NOT = { has_country_flag = independence_wave_cri_peninsular_services_screened } }
+		available = { can_pay_independence_wave_iw041_screen_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw041_screen_cost = yes }
+		custom_cost_text = independence_wave_iw041_screen_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_iw041_pay_screen = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_cri_services_effect_tt independence_wave_iw041_complete_screen = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_cri_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_cri_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.urgent
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0 NOT = { independence_wave_cri_ai_land_material_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_open_black_sea_customs = {
+		name = independence_wave_cri_open_black_sea_customs
+		desc = independence_wave_cri_open_black_sea_customs_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = { is_independence_wave_cri_package = yes NOT = { has_country_flag = independence_wave_cri_black_sea_customs_open } }
+		available = { can_pay_independence_wave_iw041_customs_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_iw041_customs_cost = yes }
+		custom_cost_text = independence_wave_iw041_customs_cost
+		days_remove = constant:independence_wave_karelia_crimea_duration.long
+		complete_effect = { independence_wave_iw041_pay_customs = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_cri_customs_effect_tt independence_wave_iw041_complete_customs = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_cri_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_cri_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 0 NOT = { independence_wave_cri_ai_maritime_floor = yes } }
+		}
+	}
+
+	independence_wave_kc_negotiate_former_host = {
+		name = independence_wave_kc_negotiate_former_host
+		desc = independence_wave_kc_negotiate_former_host_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = { is_independence_wave_karelia_crimea_package = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_kc_host_settled } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_karelia_crimea_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_host_settlement_effect_tt independence_wave_kc_apply_former_host_settlement = yes set_country_flag = independence_wave_kc_host_settled independence_wave_focus_progress_host_negotiations = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_karelia_crimea_package = yes } NOT = { has_independence_wave_living_former_host = yes } var:independence_wave_former_host = { has_war_with = ROOT } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.discretionary
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kc_ai_any_lower_ledger = yes }
+			modifier = { factor = 2 NOT = { has_independence_wave_severe_host_threat = yes } }
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_diplomatic_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_ratify_constitutional_mandate = {
+		name = independence_wave_kar_ratify_constitutional_mandate
+		desc = independence_wave_kar_ratify_constitutional_mandate_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_kar_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_kar_route_government = yes } }
+		available = { can_pay_independence_wave_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		days_remove = constant:independence_wave_karelia_crimea_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_kar_constitutional_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.minor_gain } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.minor_loss } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kar_ai_command_manpower_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_convene_workers_council = {
+		name = independence_wave_kar_convene_workers_council
+		desc = independence_wave_kar_convene_workers_council_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_kar_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_kar_route_government = yes } }
+		available = { can_pay_independence_wave_security_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_kar_socialist_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.minor_gain } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.minor_loss } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kar_ai_land_material_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_restore_frontier_authority = {
+		name = independence_wave_kar_restore_frontier_authority
+		desc = independence_wave_kar_restore_frontier_authority_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_kar_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_kar_route_government = yes } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_karelia_crimea_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_kar_traditional_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.minor_gain } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.minor_loss } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.discretionary
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_diplomatic_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_establish_frontier_command = {
+		name = independence_wave_kar_establish_frontier_command
+		desc = independence_wave_kar_establish_frontier_command_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_kar_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_kar_route_government = yes } }
+		available = { can_pay_independence_wave_security_major_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_major = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_kar_emergency_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.major_gain } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.standard_gain } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.urgent
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kar_ai_major_security_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_ratify_constitutional_mandate = {
+		name = independence_wave_cri_ratify_constitutional_mandate
+		desc = independence_wave_cri_ratify_constitutional_mandate_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_cri_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_cri_route_government = yes } }
+		available = { can_pay_independence_wave_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		days_remove = constant:independence_wave_karelia_crimea_duration.short
+		complete_effect = { independence_wave_decision_pay_administration_light = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_cri_constitutional_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.minor_gain } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.minor_loss } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_cri_ai_command_manpower_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_convene_workers_council = {
+		name = independence_wave_cri_convene_workers_council
+		desc = independence_wave_cri_convene_workers_council_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_cri_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_cri_route_government = yes } }
+		available = { can_pay_independence_wave_security_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_cri_socialist_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.minor_gain } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.minor_loss } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0 NOT = { independence_wave_cri_ai_land_material_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_restore_return_authority = {
+		name = independence_wave_cri_restore_return_authority
+		desc = independence_wave_cri_restore_return_authority_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_cri_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_cri_route_government = yes } }
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_karelia_crimea_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_cri_traditional_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.standard_gain } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.minor_gain } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.minor_loss } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.discretionary
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_diplomatic_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_establish_coastal_command = {
+		name = independence_wave_cri_establish_coastal_command
+		desc = independence_wave_cri_establish_coastal_command_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_cri_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_cri_route_government = yes } }
+		available = { can_pay_independence_wave_security_major_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		days_remove = constant:independence_wave_karelia_crimea_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_major = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_route_effect_tt independence_wave_kc_install_cri_emergency_government = yes set_temp_variable = { independence_wave_kc_legitimacy_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_recognition_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_capacity_delta = constant:independence_wave_value.minimum } set_temp_variable = { independence_wave_kc_security_delta = constant:independence_wave_value.major_gain } set_temp_variable = { independence_wave_kc_instability_delta = constant:independence_wave_value.standard_gain } independence_wave_kc_apply_shared_progress = yes }
+		cancel_trigger = { has_invalid_independence_wave_kc_government_action = yes }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.urgent
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0 NOT = { independence_wave_cri_ai_major_security_floor = yes } }
+		}
+	}
+
+	independence_wave_kar_codify_durable_sovereignty = {
+		name = independence_wave_kar_codify_durable_sovereignty
+		desc = independence_wave_kar_codify_durable_sovereignty_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_kar_package = yes has_independence_wave_kar_route_government = yes NOT = { has_country_flag = independence_wave_kar_durable_sovereignty } }
+		available = { has_stable_independence_wave_kar_ledgers = yes has_country_flag = independence_wave_founding_settlement_complete can_pay_independence_wave_strategic_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		complete_effect = { independence_wave_decision_pay_strategic = yes set_country_flag = independence_wave_kar_durable_sovereignty independence_wave_focus_reward_durable_state = yes }
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_diplomatic_floor = yes } }
+		}
+	}
+
+	independence_wave_cri_codify_durable_sovereignty = {
+		name = independence_wave_cri_codify_durable_sovereignty
+		desc = independence_wave_cri_codify_durable_sovereignty_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_cri_package = yes has_independence_wave_cri_route_government = yes NOT = { has_country_flag = independence_wave_cri_durable_sovereignty } }
+		available = { has_stable_independence_wave_cri_ledgers = yes has_country_flag = independence_wave_founding_settlement_complete can_pay_independence_wave_strategic_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		complete_effect = { independence_wave_decision_pay_strategic = yes set_country_flag = independence_wave_cri_durable_sovereignty independence_wave_focus_reward_durable_state = yes }
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.standard
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_cri_ai_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_diplomatic_floor = yes } }
+		}
+	}
+
+	independence_wave_kc_open_regional_network = {
+		name = independence_wave_kc_open_regional_network
+		desc = independence_wave_kc_open_regional_network_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = { is_independence_wave_karelia_crimea_package = yes has_country_flag = independence_wave_network_member has_country_flag = independence_wave_league_route_available NOT = { has_country_flag = independence_wave_kc_network_corridor_open } }
+		available = { has_country_flag = independence_wave_kc_foundation_settled has_independence_wave_kc_live_league_phase = yes can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_karelia_crimea_active_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_karelia_crimea_duration.long
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = { custom_effect_tooltip = independence_wave_kc_network_effect_tt independence_wave_kc_reward_network = yes }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_karelia_crimea_package = yes } NOT = { has_country_flag = independence_wave_network_member } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { if = { limit = { is_independence_wave_karelia_crimea_package = yes } independence_wave_kc_apply_failure = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_karelia_crimea_ai.discretionary
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+			modifier = { factor = 2 independence_wave_kc_ai_any_lower_ledger = yes }
+			modifier = { factor = 0 NOT = { independence_wave_kc_ai_diplomatic_floor = yes } }
+		}
+	}
+}
