@@ -25,4 +25,4 @@ The touched script remains balanced by the repository brace/quote scan. A target
 
 ## Remaining blockers
 
-Civilian disaster damage, model-dependent elephant proofs, forced relocation/scenario proof, other-world-end proof, and terminal super-event proof still have no exact caller. W5, unique continent packages, audio/rights, native-language review, model production, live scenario acceptance, and the existing Event 006 binding gates remain unchanged.
+Civilian disaster damage, elephant formation/terrain/supply/protection proofs, forced relocation/scenario proof, other-world-end proof, and terminal super-event proof still have no exact caller. The elephant package is now statically wired, but its achievement route remains runtime-evidence-gated until live movement, supply, destruction, and war-purpose witnesses exist. W5, unique continent packages, audio/rights, native-language review, remaining model production, live scenario acceptance, and the existing Event 006 binding gates remain unchanged.

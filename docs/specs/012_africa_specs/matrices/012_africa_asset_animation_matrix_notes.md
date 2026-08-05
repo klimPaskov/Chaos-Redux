@@ -147,7 +147,7 @@ The `status` column is a row-level release-candidate disposition, not a generic 
 - `deferred_unique_package_required`: the row belongs to a unique continent-scale or other bespoke package whose political, identity, presentation, and runtime surfaces are not yet complete.
 - `pending_runtime_blocker`: a release-candidate consumer expects the row now, but the exact final file or registration is absent. This value is not used when a dormant gate intentionally explains the absence.
 
-The current 2026-08-01 matrix contains 239 rows with these authoritative counts: `installed_runtime` 50, `installed_dormant` 21, `deferred_runtime_gated` 12, `deferred_controlled_pool` 133, `deferred_model_required` 16, and `deferred_unique_package_required` 7. The historical `pending_runtime_blocker` taxonomy is absent from the current matrix; no row is classified with that status.
+The current 2026-08-06 matrix contains 239 rows with these authoritative counts: `installed_runtime` 52, `installed_dormant` 28, `deferred_runtime_gated` 12, `deferred_controlled_pool` 133, `deferred_model_required` 14, and `deferred_unique_package_required` 0. The two armoured-elephant identity rows are installed through one shared body, while the remaining model-required unit rows remain deferred. The historical `pending_runtime_blocker` taxonomy is absent from the current matrix; no row is classified with that status.
 
 The shared `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` now mirrors these six statuses for all 239 `asset_item` rows in matrix order, preserving its UTF-8 BOM. The ledger carries only matrix-status evidence in this reconciliation and does not add independent binary, GFX, visual, or live-consumer proof.
 

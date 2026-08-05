@@ -6,6 +6,10 @@ Date: 2026-08-01.
 
 The W5 callsite and six external identity package tranche described as queued in this dated addendum have since been implemented at source level. Seven named package-surface receipts, a separate review writer, and the atomic readiness setter now run after roster freeze. Retain the remaining live AI, rights/actor, custom-carrier instantiation, achievement-owner, and model-gated items as open acceptance work; use the current overview and W5 handoff as the active status authority.
 
+## Superseding implementation note (2026-08-06)
+
+The shared armoured elephant model package is now parent-wired as `chaosx_elephant` with a custom unit, equipment and technology bridge, counters, sounds, and host/Action 102 formation consumers. Matrix rows 203–204 therefore moved to `installed_runtime`, and achievement 36 is runtime-evidence-gated rather than model-gated; its achievement owners and live movement, supply, destruction, and war-purpose witnesses remain open. The remaining model-gated rows and unit identities listed below stay deferred, while the current matrix and `docs/events/012_africa/overview.md` supersede the historical counts in this addendum.
+
 Status: Final bounded improvement-loop addendum; broad expansion is closed, implementation and acceptance remain open.
 
 Owner: Main Event 012 implementation agent, with the exact specialist owners named below.
@@ -20,7 +24,7 @@ The remaining value lies in connecting and accepting those systems, not widening
 
 This is not a closure handoff because accepted non-model work remains unresolved: the W5 world-package certification tranche has not been implemented, most achievement rows still lack complete owner and lifetime-disqualifier proof, thirteen priority packages still need end-to-end acceptance, and the sixty-four AI rows retain two evidence blockers. The Event 012 release documents and shared asset ledger are reconciled by the 2026-08-01 documentation cleanup; the workbook and export surfaces remain parent-owned.
 
-The next implementation sequence must therefore finish the accepted integration work in this file and in `012_africa_non_model_world_package_implementation_addendum_2026-07-30.md`, leave every model and external-review gate closed, run the bounded acceptance scenarios, reconcile the release surfaces, and then stop the improvement loop.
+The next implementation sequence must therefore finish the accepted integration work in this file and in `012_africa_non_model_world_package_implementation_addendum_2026-07-30.md`, leave every remaining model and external-review gate closed, keep the elephant achievement behind its runtime-evidence gate, run the bounded acceptance scenarios, reconcile the release surfaces, and then stop the improvement loop.
 
 ## 2. Scope and ownership boundary
 
@@ -64,13 +68,13 @@ The following facts are current enough to guide the final tranche.
 | Main focus source | 276 focus IDs, 54 regional-overlay nodes, seven route families, 36 support nodes, and no dangling static prerequisite or mutual-exclusion reference | The renderer's overlay collisions are branch-unaware evidence, not a confirmed runtime defect. |
 | Priority members | All sixteen package IDs and content surfaces exist; thirteen are conditionally reachable and DYX/Luba, DZX/Lunda, and EMX/Kilwa are deliberately dormant | Accept the thirteen reachable packages through B2; keep the three Event 006 map gates closed under D. |
 | Host playbooks | The accepted 51-row host matrix has 48 live source rows; HZX/Basotho, EUX/Eswatini, and ELX/Zanzibar are the three rows without an approved Event 006 map package | Keep the three shells external and fail-closed; the matrix count remains 22 full plus 29 compact playbooks. |
-| Achievements | Forty-four definitions, localisation contracts, and 132 DDS files exist; the A1 audit still classifies most live rows as partial and four rows as model-gated | Implement exact owners and disqualifiers in B3; do not infer proof from proxies. |
+| Achievements | Forty-four definitions, localisation contracts, and 132 DDS files exist; the A1 audit still classifies most live rows as partial, three rows as model-gated, and the elephant row as runtime-evidence-gated | Implement exact owners and disqualifiers in B3; do not infer proof from proxies. |
 | AI | Sixty-four profiles, activation predicates, loaders, policy vectors, 102-action dispatch, route plans, host plans, and world plans exist | Run B4 scenario acceptance; only patch weights or factors when a named scenario demonstrates a defect. |
 | Scramble | Five participant-interest classes, bounded coalition membership, material response consequences, and cleanup are source-present | Validate response classification and cleanup in B4; do not create a second participant system. |
 | World order | W0-W4 source is present and `africa_world_package_implementation_ready` has no initial atomic certification writer | Implement W5 B1; keep terminal presentation independently gated. |
 | Charter GUI | Twelve static textures, two real frame sheets with static fallbacks, and the decision-category GUI are present | No new GUI page. Accept the existing eight recurring families and the six late list-only families under B2. |
 | Route identities | Seven final route flag ladders and seven emblem DDS files were installed and wired by commit `79dbdbac7` | Treat older pending-art language as stale evidence. |
-| Asset matrix | The current 239-row matrix records 50 `installed_runtime`, 21 `installed_dormant`, 12 `deferred_runtime_gated`, 133 `deferred_controlled_pool`, 16 `deferred_model_required`, and 7 `deferred_unique_package_required` | The shared acceptance ledger now mirrors these six statuses for all 239 `asset_item` rows; the prior 225 queued/14 blocked vocabulary is superseded. |
+| Asset matrix | The current 239-row matrix records 52 `installed_runtime`, 28 `installed_dormant`, 12 `deferred_runtime_gated`, 133 `deferred_controlled_pool`, 14 `deferred_model_required`, and 0 `deferred_unique_package_required` | The shared acceptance ledger now mirrors these six statuses for all 239 `asset_item` rows; the prior 225 queued/14 blocked vocabulary is superseded. |
 
 Read-only `hoi4.event_inspect` returned `EVENT_INSPECTED_PARTIAL` for the Event 12 namespace and produced no direct blocker in its bounded response.
 
@@ -113,11 +117,11 @@ Implement in this order:
 The following remain behind `africa_strange_formation_package_ready` or their exact model/package review gates:
 
 - Actions 74 `awaken_stone_cohort`, 75 `train_gorilla_heavy_infantry`, and 76 `organise_pan_sappers`;
-- achievements 18 `africa_covenant_with_the_impossible`, 35 `africa_beasts_but_not_caricatures`, 36 `africa_elephants_crossed_the_desert`, and 40 `africa_stone_walks_into_parliament`;
+- achievements 18 `africa_covenant_with_the_impossible`, 35 `africa_beasts_but_not_caricatures`, and 40 `africa_stone_walks_into_parliament` remain model-gated; achievement 36 `africa_elephants_crossed_the_desert` is runtime-evidence-gated after the shared elephant consumer wiring;
 - AI profile 16 and profiles 30-35 where their accepted consumer requires a nonhuman or strange-formation package;
 - the six country visual packages Pan, Gorilla Kingdom, The Green, Living Rivers, Stoneborn, and Ancient Hosts;
-- the ten unit identities elephant logistics, elephant shock, gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, and plague carriers;
-- the sixteen asset-matrix rows marked `deferred_model_required`.
+- the eight remaining unit identities gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, and plague carriers; elephant logistics and shock are installed through one shared body;
+- the fourteen asset-matrix rows marked `deferred_model_required`.
 
 No free infantry, recoloured vanilla entity, 2D-only formation proxy, generic creature, or readiness flag may substitute for those packages.
 
@@ -148,7 +152,7 @@ The main agent should not schedule these as missing mechanics:
 - the Charter static assets and two semantic frame animations;
 - the seven constitutional route flag ladders and emblems from commit `79dbdbac7`;
 - the in-flight 102-row duration/objective contract, which records 90 implemented rows and preserves twelve deliberate gates;
-- the current asset matrix's 50 installed-runtime and 21 installed-dormant rows.
+- the current asset matrix's 52 installed-runtime and 28 installed-dormant rows.
 
 The following documentation is specifically stale or historical:
 
@@ -498,7 +502,7 @@ Do not promote transient completion counts, dirty-worktree status, or stale-docu
 
 No gameplay, asset, localisation, workbook, or spec file was edited by this planning pass.
 
-No model, tag, map package, or fallback was produced.
+No model, tag, map package, or fallback was produced by this planning pass; the later shared elephant package is documented in its own production and runtime handoffs.
 
 The Event Chain Viewer result was partial, the focus inspection was not branch-aware, no separate Technology Tree Viewer workflow was available, and no live Hearts of Iron IV session was run.
 

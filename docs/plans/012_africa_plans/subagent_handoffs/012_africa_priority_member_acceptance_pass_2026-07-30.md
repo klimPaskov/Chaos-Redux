@@ -6,6 +6,10 @@ Scope: P1 acceptance audit of the sixteen rows in `docs/specs/012_africa_specs/m
 
 This handoff is an acceptance record, not a whole-country completion claim. It keeps the existing niche tags and vanilla carriers, makes no map or country-history changes, and records the three unbound packages as dormant.
 
+> Superseding implementation note (2026-08-06): The later shared armoured elephant tranche adds one parent-owned `chaosx_elephant` consumer to the host and Action 102 member guard templates without changing the sixteen package identities or their dormant Event 006 carrier gates. The model-boundary statements below remain valid for the package force visuals in this dated pass, while the elephant exception is documented in `docs/events/012_africa/elephant_warfare.md`.
+
+> Superseding direct-tag decision (2026-08-06): The seven existing niche carrier tags (`DOX`, `DSX`, `DUX`, `DYX`, `DZX`, `EMX`, and `EQX`) are accepted by their exact carrier identity. Event 006 content and a live Event 006 receipt are not required for Event 012 loading. Action 102, host commitment, capital/origin, consent, and package-safety gates remain mandatory; the receipt-gated observations below are retained as audit history.
+
 ## Disposition summary
 
 Thirteen rows are reachable candidates on an existing live carrier, but remain pending end-to-end runtime acceptance because this agent cannot launch Hearts of Iron IV and the parent still owns the final campaign scenarios.

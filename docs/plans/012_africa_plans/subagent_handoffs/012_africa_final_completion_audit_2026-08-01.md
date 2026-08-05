@@ -4,6 +4,10 @@ Date: 2026-08-01
 
 Status: **Incomplete. No hard static load blocker was found, but accepted gameplay, presentation, and acceptance work remains open.**
 
+## Superseding implementation note (2026-08-06)
+
+This read-only audit predates the parent-wired shared armoured elephant package. Matrix rows 203–204 are now `installed_runtime` through one `chaosx_elephant` unit/entity body with host and Action 102 consumers, reducing the remaining `deferred_model_required` rows from 16 to 14. Achievement 36 is runtime-evidence-gated rather than model-gated; its achievement owners and live movement, supply, destruction, and war-purpose witnesses remain open. The dated audit findings below remain historical evidence and do not claim current gameplay completion.
+
 Mode: Read-only completion audit.
 
 Audited revision: current Event 012 gameplay source at `b3bc0f9c1`; the Event 012 scoped source is clean against that revision. The later documentation-only reconciliations recorded in `c0eef39c4`, `f8cf61798`, `5249bf888`, and `b3bc0f9c1` do not alter gameplay claims.
@@ -18,7 +22,7 @@ Event 012 is a broad source implementation with a coherent playable core, but it
 
 The entry event, core Charter state machine, full action inventory, focus-tree inventory, priority-package scaffolding, RSA and diaspora branches, W0-W4 world-order source, event-log/detail/evolution surfaces, localisation coverage, achievement registry, AI registry, and most registered 2D presentation assets exist. The B3 resource-concession, raw-export, development-fund, common-reserve, weather-owner, and achievement-kernel tranches are also present in the current source.
 
-Completion is blocked by W5 initial certification, thirteen priority-package end-to-end acceptance paths plus three dormant package/host bindings, achievement owner and lifetime-disqualifier closure, two AI acceptance blockers, unresolved action/runtime acceptance, missing model packages, incomplete four-role super-event audio, external-package identities, native-language review, branch-aware focus/UI acceptance, and committed catalog/spec promotion.
+Completion is blocked by W5 initial certification, thirteen priority-package end-to-end acceptance paths plus three dormant package/host bindings, achievement owner and lifetime-disqualifier closure, two AI acceptance blockers, unresolved action/runtime acceptance, remaining model packages, incomplete four-role super-event audio, external-package identities, native-language review, branch-aware focus/UI acceptance, and committed catalog/spec promotion.
 
 The current source itself describes the same boundary: `docs/events/012_africa/overview.md` does not claim gameplay, live behavior, or presentation completion, and `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md` marks implementation and acceptance open.
 
@@ -72,7 +76,7 @@ The catalog handoff in `docs/plans/012_africa_plans/subagent_handoffs/012_africa
 | W0-W5 and terminal World | W0-W4 source-complete; W5 blocked | W0-W4 include roster, consent/refusal/counterterms/withdrawal/coercion, six continent loops, four sponsorship modes, union, war, succession, exile, breakup, and terminal lifecycle. There is no initial all-six certification trigger/setter for W5. The only writer of `africa_world_package_implementation_ready` serves successor continuity, not initial package certification. `africa_the_world_super_event_package_ready` remains unset. |
 | 44 achievements | Registry/art and source-owner tranches present; gameplay acceptance blocked | All 44 definitions, localisation triplets, and 132 three-state DDS files exist. B3 now has source owners for rows 24, 28, 30, 32, 33, and 38, with direct host, measured concession, development-fund, reserve-deployment, diaspora-ownership, and weather-capitulation callsites. Row 37 deliberately remains fail-closed because no exact civilian-damage owner exists. Remaining proof includes live positive paths, lifetime disqualifiers, six-war reserve evidence, three-target weather evidence, and the model/world-gated rows. |
 | 64 AI profiles | Static registry complete; acceptance blocked | All 64 profiles have exact predicates, loader/registry calls, and action revalidation: nine overlays, 22 hosts, seven routes, eight member/rival, five external, six high-chaos, and seven world profiles. Profile 42 is the intentional terminal exception. The Scramble material-readiness/rank-starvation issue and the strategy-plan probability adapter's `PROBABILITY_SURFACE_EMPTY` result remain blockers. No 64-scenario campaign proof exists. |
-| 239 asset rows | Fully dispositioned, not fully delivered | The authoritative matrix records 50 `installed_runtime`, 21 `installed_dormant`, 133 `deferred_controlled_pool`, 12 `deferred_runtime_gated`, 16 `deferred_model_required`, and seven `deferred_unique_package_required`. No matrix row is undispositioned, but 168 rows remain deliberately deferred. |
+| 239 asset rows | Fully dispositioned, not fully delivered | The current authoritative matrix records 52 `installed_runtime`, 28 `installed_dormant`, 133 `deferred_controlled_pool`, 12 `deferred_runtime_gated`, 14 `deferred_model_required`, and zero `deferred_unique_package_required`. No matrix row is undispositioned, but 159 rows remain deliberately deferred. |
 | Charter animations | File-complete; runtime acceptance open | The seal is an eight-frame 512x64 sheet at 8 fps and the authority ring is a ten-frame 640x64 sheet at 6 fps. Source frames, final DDS files, registrations, static fallbacks, parity/header/alpha/checksum evidence, and a handoff exist. Runtime animation, scaling, and click proof remain user-owned. |
 | Four super-event roles | Partial / blocked | The four image/text roles have documented presentation surfaces. Audio 59 and 60 exist as runtime WAVs and sound registrations but remain dormant because the four-role package is atomic. Audio 58 and 61 lack commissioned original lossless masters and rights-chain evidence. No role is accepted as runtime-wired, and the terminal role remains separately blocked by W5 and presentation readiness. |
 | Localisation, event log, details, evolutions, cluster UI | Source-complete with wording/native-review gaps | Required keys resolve and the 2026-08-01 collision repair removed the identified world-order duplicate-key conflict. Exact Afaan Oromoo strings remain absent pending native review. Some player-facing world-order strings still expose implementation language such as ledger, array, target-pool, dossier, or fallback concepts. The implemented objective taxonomy is exposed dynamically in the Charter summary, active mission text, and result log; the remaining rows still rely on the shared timing/outcome kernel and remain acceptance-gated. |
@@ -80,7 +84,7 @@ The catalog handoff in `docs/plans/012_africa_plans/subagent_handoffs/012_africa
 
 ## 4. Exact model and unique-package needs
 
-No model package was found or accepted for any of the 16 `deferred_model_required` rows.
+No model package was found or accepted for the remaining 14 `deferred_model_required` rows; the shared elephant package now covers rows 203–204 through one installed body.
 
 The six missing country visual/model packages are:
 
@@ -91,10 +95,8 @@ The six missing country visual/model packages are:
 - `country_package_stoneborn`
 - `country_package_ancient_hosts`
 
-The ten missing unit/model identities are:
+The original audit listed ten unit/model identities; the elephant logistics and shock entries are superseded by the shared package handoff and the eight remaining missing identities are:
 
-- `unit_identity_elephant_logistics`
-- `unit_identity_elephant_shock`
 - `unit_identity_gorilla_heavy_infantry`
 - `unit_identity_pan_sappers`
 - `unit_identity_stone_cohorts`
@@ -132,7 +134,7 @@ The B3 source-owner tranche is now implemented for the existing non-model, non-w
 
 The exact highest-confidence B3 owner is `africa_priority_member_record_rival_bloc_victory`, which now has a bounded `on_capitulation` caller when a rival priority member directly defeats the current host. The remaining gap is live positive/disqualifier acceptance, not a missing source callsite.
 
-The current source now has literal callsites for the development-project, diaspora-owned, disease-containment, common-reserve, socialised-resource, and weather-army recorders. Model-gated elephant recorders remain intentionally dormant until the approved model packages and exact combat owners exist.
+The current source now has literal callsites for the development-project, diaspora-owned, disease-containment, common-reserve, socialised-resource, and weather-army recorders. Elephant recorders remain runtime-evidence-gated until their exact achievement owners and live combat witnesses exist; the other model-gated recorders remain intentionally dormant until their approved packages are accepted.
 
 Rows 30, 32, 33, and 38 have exact source owners. They still need live positive and negative acceptance, and row 30 retains its forced-resource-seizure disqualifier gap.
 
@@ -259,7 +261,7 @@ The achievement recorders, first-proof orchestration, RSA proof helpers, package
 2. Keep row 37 fail-closed until a real civilian-damage owner exists; do not infer it from hostile disaster use, wrath, or war presence.
 3. Obtain the authoritative six-package receipts before implementing B1 W5 certification; do not infer readiness from source existence.
 4. Run the thirteen reachable priority-package and 64-profile acceptance scenarios, including Scramble material-readiness/rank-starvation and terminal isolation.
-5. Produce the 16 required model packages through the approved 3D pipeline and obtain the seven unique external identity packages.
+5. Produce the 14 remaining required model packages through the approved 3D pipeline and obtain the seven unique external identity packages.
 6. Complete audio 58 and 61 with rights evidence, then validate all four super-event roles atomically.
 7. Finish native-language and player-facing wording review, promote accepted W0-W5 rules into the source specs, and preserve the clean authoritative workbook plus regenerated exports when future gameplay facts change.
 8. Rerun the focus, decision, country-package, localisation, and final event-completion audits before any completion claim.

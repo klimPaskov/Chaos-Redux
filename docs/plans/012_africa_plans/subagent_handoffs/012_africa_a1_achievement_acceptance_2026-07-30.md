@@ -87,6 +87,8 @@ Package-specific identity and corridor writes remain in their owning package com
 
 `Model-gated` and `World-gated` are intentional package barriers and were not opened by this tranche.
 
+`Runtime-evidence-gated` means the static unit/entity package is present, but exact achievement owners and live movement, supply, destruction, and war-purpose witnesses remain absent.
+
 | # | Achievement | Disposition | Exact owner or callsite evidence and remaining blocker |
 |---:|---|---|---|
 | 1 | `africa_guardians_without_borders` | Implemented / partial | Protection-war and live snapshot helpers are active; archive destruction and some partner-loss owners remain absent. |
@@ -124,7 +126,7 @@ Package-specific identity and corridor writes remain in their owning package com
 | 33 | `africa_common_reserve_answers` | Blocked | The reserve helper remains definition-only because no authoritative six-war deployment result or deadline/capital/offensive-abuse owners are exposed. |
 | 34 | `africa_no_foreign_boot_remains` | Implemented / partial | Scramble settlement and external-puppet callback are active; African-core cession and unreversed-capitulation owners remain absent. |
 | 35 | `africa_beasts_but_not_caricatures` | Model-gated | Strange formation package readiness remains unset and no fallback unit family was created. |
-| 36 | `africa_elephants_crossed_the_desert` | Model-gated | Elephant formation, supply, and entity package owners remain deferred. |
+| 36 | `africa_elephants_crossed_the_desert` | Runtime-evidence-gated | The `chaosx_elephant` unit/entity package and host/Action 102 consumers are statically wired; achievement owners and live movement, supply, destruction, and war-purpose witnesses remain blocked. |
 | 37 | `africa_the_forest_kept_its_word` | Implemented / partial | Ecological bargain and accepted hostile-disaster writers are active; forest-rampage ownership remains absent. |
 | 38 | `africa_rain_on_command` | Blocked | Weather-army defeat, weather-war victory, and the three weather invalidation owners remain definition-only; readiness stays unset. |
 | 39 | `africa_disease_made_and_unmade` | Implemented / partial | Disease branch, outbreak, and containment counters are active; uncontrolled-release, irreversible-outcome, and terminal-disease owners remain absent. |
@@ -150,7 +152,8 @@ The following scenarios were checked against source conditions and writer presen
 | Common reserve | No authoritative reserve-arrival result is exposed. | Any inferred war answer would be a proxy and is intentionally rejected. | Blocked with readiness unset. |
 | Weather | No authoritative weather-army defeat or weather-war result is exposed. | Generic action success, weather value, or war presence cannot create the proof. | Blocked with readiness unset. |
 | Diaspora rows 25–28 | G1 consent, capacity, origin, skill, project, and trust writers remain the source of truth. | No duplicate achievement writer was added from non-diaspora files. | Preserved for the active G1 owner. |
-| Model rows 18, 35, 36, 40 | Model/package readiness remains absent. | No synthetic unit, tag, or fallback proof can pass. | Model-gated. |
+| Model rows 18, 35, 40 | Model/package readiness remains absent. | No synthetic unit, tag, or fallback proof can pass. | Model-gated. |
+| Elephant row 36 | Shared unit/entity package and host/Action 102 consumers are statically wired. | Achievement owners and live movement, supply, destruction, and war-purpose witnesses remain absent. | Runtime-evidence-gated. |
 | World rows 41–44 | World-package and terminal readiness remain absent. | No world scan, external focus edit, or terminal fallback can pass. | World-gated. |
 
 ## Validation evidence

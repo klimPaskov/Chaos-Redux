@@ -2,7 +2,9 @@
 
 Date: 2026-08-03.
 
-Status: Event 012 catalog row updated from the accepted non-model source surfaces and regenerated through the repository exporter. No live in-game validation is claimed.
+Status: Historical Event 012 catalog row snapshot updated from the accepted non-model source surfaces and regenerated through the repository exporter. No live in-game validation is claimed.
+
+> Superseding implementation note (2026-08-06): The workbook's broad intentional model boundary now applies to the remaining deferred country and unit rows; the shared armoured elephant package has a static `chaosx_elephant` unit/entity consumer through host and Action 102 formation paths. This dated workbook handoff and its hashes remain historical catalog evidence, while the current visual disposition is the 239-row matrix and the current Event 012 overview. No workbook or export file was edited in this documentation reconciliation.
 
 ## Workbook changes
 

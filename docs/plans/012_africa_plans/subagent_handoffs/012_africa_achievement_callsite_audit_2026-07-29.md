@@ -43,6 +43,7 @@ The most important distinction is that model and world achievements are safely d
 - `REACHABLE/PARTIAL`: active positive path exists, but exact-result, disqualifier, or cleanup evidence is incomplete.
 - `ACTIVE/BLOCKED`: the owner system is active, but a required positive writer is absent.
 - `MODEL-GATED`: the accepted requirement depends on a deferred nonhuman actor, unit, or model package and remains unreachable.
+- `RUNTIME-EVIDENCE-GATED`: the static unit/entity consumer exists, but exact achievement owners or live witnesses remain absent and the row stays unreachable.
 - `WORLD-GATED`: the accepted requirement depends on deferred external-continent or terminal super-event packages and remains unreachable.
 
 For disqualifiers, `runtime` means a helper has a real caller, `definition-only` means the helper exists without a caller, and `no writer` means no literal result setter exists under `common/` or `events/`.
@@ -86,7 +87,7 @@ For disqualifiers, `runtime` means a helper has a real caller, `definition-only`
 | 33 | `africa_common_reserve_answers` | Reserve-war helper exists but has no caller, so the six-war counter never increases. | Deadline miss, protected-capital loss, and offensive abuse have no writers. | `ACTIVE/BLOCKED`. Call the helper from the real reserve-arrival success result and add the three exact failure dispositions. |
 | 34 | `africa_no_foreign_boot_remains` | Scramble victory/settlement and current hostile-control checks are active. | African-core cession, unreversed member capitulation, and external puppet creation have no writers. | `REACHABLE/PARTIAL`. Persist all three postwar settlement failures; do not infer them only from current hostile-control count. |
 | 35 | `africa_beasts_but_not_caricatures` | Three strange formation actions are explicitly ready-gated; elephant/weather families and the great-power-war milestone have no active callsites. | Rights violation is runtime; caricature use and extermination have no writers. | `MODEL-GATED`. Keep dormant until four genuine formation families, their actor rights, combat participation, and war-victory result exist. |
-| 36 | `africa_elephants_crossed_the_desert` | Elephant formation, terrain, supply, and protection-victory helpers exist without callers or a runtime elephant formation package. | All three elephant failure DQs have no writers. | `MODEL-GATED`. Wire only after the real unit/entity package can prove identity, movement, supply, destruction, and war purpose. |
+| 36 | `africa_elephants_crossed_the_desert` | Elephant formation, terrain, supply, and protection-victory helpers remain without achievement callers, but the `chaosx_elephant` unit/entity package and host/Action 102 formation consumers are now statically wired. | All three elephant failure DQs still have no writers, and no live movement, supply, destruction, or war-purpose witness has been accepted. | `RUNTIME-EVIDENCE-GATED`. The model package is available, but keep the achievement dormant until its exact owners and live witnesses exist. |
 | 37 | `africa_the_forest_kept_its_word` | Ecological-bargain and drought/disaster full actions count distinct targets and drive the five-year wrath window. | Broken bargain is runtime; disaster weaponisation and forest rampage have no writers. | `REACHABLE/PARTIAL`. Add exact civilian-weaponisation and actor-rampage DQs and reset the duration on those results. |
 | 38 | `africa_rain_on_command` | Weather action surfaces are active, but weather-army defeat and weather-war milestone helpers have no callers. | Maximum member disaster, neutral-African targeting, and wrath collapse have no writers. | `ACTIVE/BLOCKED`, not protected by a package-ready gate. Wire hostile-army defeat and campaign victory from actual weather combat outcomes, or explicitly gate the route until those outcomes exist. |
 | 39 | `africa_disease_made_and_unmade` | Disease actions record branch/create/countermeasure; a failed weaponisation records an outbreak and full containment decrements active outbreaks. | Uncontrolled civilian release, irreversible outcome, and terminal disease outcome have no writers. | `REACHABLE/PARTIAL`. Wire the three disease severity/end-state DQs from the disease system’s final dispositions. |
@@ -106,7 +107,7 @@ For disqualifiers, `runtime` means a helper has a real caller, `definition-only`
 | Core positive ledger | Partial | Action, focus, and on-action dispatch exists, but nine active rows lack required positive writers. |
 | Disqualifier ledger | Partial | A small set of shared DQs is active; most route-, restoration-, military-, disaster-, and world-specific DQs have no result owner. |
 | Cleanup and duration reset | Partial | Some shared failure helpers reset clocks, but member loss, court loss, region loss, capital loss, corridor loss, and many constitutional failures do not. |
-| Model/nonhuman achievements | Blocked | Rows 18, 35, 36, and 40 remain unavailable pending actor/unit/model packages; row 18 is implicitly blocked by absent actor registration rather than a named ready flag. |
+| Model/nonhuman achievements | Blocked | Rows 18, 35, and 40 remain unavailable pending actor/unit/model packages; row 36 has a static unit/entity consumer but remains unavailable until achievement owners and live movement, supply, destruction, and war-purpose witnesses exist. Row 18 is implicitly blocked by absent actor registration rather than a named ready flag. |
 | World-order achievements | Blocked safely | Rows 41-44 cannot reach installed external packages or terminal identity without intentionally unset readiness flags. |
 | Localisation | Finished for the registered package | Names, descriptions, and tooltips exist for all 44 rows. |
 | Achievement assets | Finished for file presence | 132 DDS files exist, exactly three named variants per row. Visual quality was outside this callsite audit. |
@@ -123,7 +124,7 @@ The registry, trigger, localisation, and icon portion of `docs/plans/012_africa_
 
 The handoff’s prose claims that owner systems set milestones and disqualifiers, but the row table above demonstrates that many of those owners are definition-only or absent.
 
-Rows 18, 35, 36, and 40 should remain queued behind the nonhuman/model packages.
+Rows 18, 35, and 40 should remain queued behind the nonhuman/model packages. Row 36 has cleared the model-package barrier but remains queued behind its achievement callsites and live movement, supply, destruction, and war-purpose evidence.
 
 Rows 41-44 should remain queued behind the six external continent packages and terminal super-event package.
 
@@ -155,7 +156,8 @@ That absence is meaningful because the accepted achievement prompt requires at l
 
 ## Remaining blockers
 
-- Nonhuman country and unit/model packages for rows 18, 35, 36, and 40.
+- Nonhuman country and unit/model packages for rows 18, 35, and 40.
+- Achievement owners and live movement, supply, destruction, and war-purpose evidence for row 36 after the `chaosx_elephant` unit/entity package wiring.
 - Six external continent packages for rows 41-43.
 - Terminal The World text/image/music/audio/scenario package for row 44.
 - Missing active owner callsites for rows 19-24, 32-33, and 38.
