@@ -6,15 +6,25 @@ Current super-event identifier override (2026-08-05): Event 006 uses ordinary pr
 
 ## Current authority override (2026-08-05)
 
-The current whole-event authority is `subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md`; Event 006 remains **HOLD / PARTIAL**. The current allocator boundary is 19 content-attested selectable packages out of 193 non-overlay rows, leaving 174 unattested selectable packages across 18 compatible reservation groups. The attested IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-070, IW-071, IW-072, IW-173, and IW-184.
+The read-only `subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md` remains the latest whole-event completion evidence baseline and keeps Event 006 at **HOLD / PARTIAL**. Its package arithmetic is superseded for current routing by `subagent_handoffs/006_documentation_curator_iw033_iw041_post_promotion_reconciliation_current_2026_08_05.md`, which records the owner-promoted IW-033/IW-041 tranche after the admitted Transcaucasus tranche. The current allocator boundary is 21 content-attested selectable packages out of 193 non-overlay rows, leaving 172 unattested selectable packages across 20 compatible reservation groups. The attested IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184.
 
-The central dispatcher has 25 adapter IDs and nine adapter-only fail-closed IDs: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. CAT is admitted standalone; NAV, GLC, MNT, and FIJ remain fail-closed; FORM-07 remains fail-closed; ordinary super-event `23` remains incomplete at runtime because its rights-cleared audio, wrappers, and firing are blocked; no Event 006 advisor icons are required or authorized.
+The central dispatcher has 30 adapter IDs and nine adapter-only fail-closed IDs: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. CAT, KAR, CRI, ARM, GEO, and AZR are centrally content-attested under their package contracts; NAV, GLC, MNT, and FIJ remain fail-closed; FORM-07 and FORM-16 remain fail-closed; ordinary super-event `23` remains incomplete at runtime because its rights-cleared audio, wrappers, and firing are blocked, while ordinary super-event `24` is source-wired with partial reachability; no Event 006 advisor icons are required or authorized.
 
-The current bounded package authorities are `subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md`, `subagent_handoffs/006_iw013_iw015_iberian_package_current_audit_2026-08-05.md`, `subagent_handoffs/006_iw030_mnt_package_audit_current_2026_08_05.md`, `subagent_handoffs/006_iw177_fij_package_audit_current_2026_08_05.md`, and `subagent_handoffs/006_iw070_iw072_transcaucasus_country_package_audit_current_2026_08_05.md`. The unchanged fourteen-package witness is static evidence only and does not replace the nineteen-package attestation count.
+The current bounded package authorities are `subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md`, `subagent_handoffs/006_iw013_iw015_iberian_package_current_audit_2026-08-05.md`, `subagent_handoffs/006_iw030_mnt_package_audit_current_2026_08_05.md`, `subagent_handoffs/006_iw177_fij_package_audit_current_2026_08_05.md`, `subagent_handoffs/006_iw070_iw072_transcaucasus_country_package_audit_current_2026_08_05.md`, and `subagent_handoffs/006_documentation_curator_iw033_iw041_post_promotion_reconciliation_current_2026_08_05.md`. The current static standalone witness contains 20 packages and excludes only self-hosting IW-012 ICE because its single vanilla state cannot leave a former-host remnant. This is static capacity evidence only and does not replace the 21-package attestation count or live transaction checks.
+
+Current IW-033/IW-041 owner-patch and promotion status: `subagent_handoffs/006_documentation_curator_iw033_iw041_owner_patch_reconciliation_current_2026_08_05.md` records a source-complete repair of the Karelia and Crimean Tatar State package lifecycle, and `subagent_handoffs/006_documentation_curator_iw033_iw041_post_promotion_reconciliation_current_2026_08_05.md` records the subsequent central content-attestation promotion. The founding missions are passive deadlines outside the active-project lock; stable-ledger cancellation waits for a route government; government actions cancel on capital loss; former-host settlement is idempotent and its decision plus `independence_wave_kc_host_settled` flag are removed by cleanup; the network route requires a live League phase and passes shared-reserve/member-confidence helper inputs; and the package localisation exposes dynamic normal, blocked, hover costs and dynamic ledger values. IW-033 and IW-041 are now centrally content-attested. The parent-waived Level 2 focus expectation remains a documented shared-tree breadth limitation, and probability inspection still lacks a complete typed KAR/CRI scenario contract and same-scenario `probability_compare` receipt.
+
+The 2026-08-05 owner AI tranche adds executable package-scoped decision selection: regular actions wait for foundation settlement, prefer the lower regional ledger, and receive zero-weight reserve-floor gates for command power, manpower, equipment, trains, convoys, fuel, and major security actions. The thresholds are centralized in `independence_wave_karelia_crimea_ai_floor` and the trigger contract is documented in `common/scripted_effects/chaosx_dynamic_effects.md`; the required post-patch MCP comparison remains pending and may still be typed-state partial.
 
 The ordinary super-event identifiers are `23` for The League of New States and `24` for Every Border a Casus Belli. The `23` image/text dispatch is registered, but rights-cleared audio, sound wrappers, and firing remain blocked; `24` is source-wired with final WAV, base sound, wrappers, slot dispatch, predicates, and queued playback, while whole reachability remains partial under capacity and formable gates. Four-digit identifiers in dated entries below are historical traceability only.
 
 All later paragraphs carrying 2026-08-03 or earlier “current” labels are dated evidence and are superseded for current routing by this 2026-08-05 override; their bounded receipts remain preserved for traceability.
+
+## Current 2026-08-06 continuation
+
+The 2026-08-06 allocator witness handoff widens the static standalone witness to 20 packages by excluding only IW-012 ICE, whose one vanilla state is also its former-host remnant; this remains source/static capacity evidence and does not change the 21-package attestation boundary or claim live transaction completion. The 2026-08-06 Iberian network-cancellation patch adds the missing League-route cancellation guard to both NAV/IW-013 and GLC/IW-015 `open_iberian_network` projects while preserving their paid costs, failure effects, and fail-closed central-attestation gates. The 2026-08-05 portrait handoff leaves NAV and GLC at `SOURCE_PLACEHOLDER_READY / REPLACEMENT_PENDING`: runtime source placeholders exist, but no final HOI4-style replacement, independent reviewer PASS, package admission, advisor icon, or gameplay completion follows. Ordinary super-event `23` remains blocked on rights-cleared audio, wrappers, and firing; ordinary super-event `24` is source-wired with partial reachability under capacity and formable gates. Event 006 remains **HOLD / PARTIAL**.
+
+The detailed reconciliation receipt is `subagent_handoffs/006_documentation_curator_resume_authority_reconciliation_2026_08_06.md`; it records the source paths, unchanged historical arithmetic, exact current blockers, and the MCP evidence limitations without rewriting the accepted specification or source map.
 
 ## Historical authority records through 2026-08-03
 
@@ -32,7 +42,7 @@ Current portrait rule: grounded historical identities use unchanged sourced orig
 
 Current IW-020 Venice boundary: `subagent_handoffs/006_atx_venice_country_package_audit_2026_08_03.md` keeps ATX fail-closed because its runtime package adapter and complete country surfaces are absent. The source-only Volpi portrait crop and Venetian maritime-standard references are documented in `subagent_handoffs/006_iw020_atx_venice_source_clearance_2026_08_03.md`; they do not grant runtime character, flag, or attestation promotion.
 
-Current IW-023 Transylvania boundary (2026-08-03): the independent source-admission audit is source-local PASS, and the vanilla `TRA` runtime and SCN-008 dispatch branches are now admitted and wired. The current exact attestation set is fifteen packages across fourteen compatible reservation groups and fifteen distinct anchors, including `IW-023`; FORM-08 remains separately fail-closed for its accepted Vojvodina/Slavonia member, consent, and anchor proof. Any undated fourteen-package/13-group/14-anchor statement below is superseded by this paragraph, while dated snapshots remain historical evidence.
+Historical IW-023 Transylvania boundary (2026-08-03): the independent source-admission audit is source-local PASS, and the vanilla `TRA` runtime and SCN-008 dispatch branches are now admitted and wired. That dated snapshot recorded fifteen packages across fourteen compatible reservation groups and fifteen distinct anchors, including `IW-023`; FORM-08 remains separately fail-closed for its accepted Vojvodina/Slavonia member, consent, and anchor proof. The 2026-08-05 Transcaucasus amendment supersedes this snapshot for current package arithmetic, while the bounded TRA receipt remains historical evidence.
 
 Current COG cost boundary: `subagent_handoffs/006_cog_overlay_cost_localisation_repair_2026_08_03.md` records the centralized constant substitutions for all twelve COG overlay cost strings and the sibling reusable-region overlay family; its PASS re-audit is `subagent_handoffs/006_cog_overlay_cost_localisation_reaudit_2026_08_03.md`, and the current post-icon-fix display audit is `subagent_handoffs/006_cog_overlay_cost_localisation_post_icon_fix_audit_2026_08_03.md`. Commits `a6f123a86` and `b47f595ff` establish canonical installed icon tokens and remove the previously observed bare equipment-icon tokens; the older bare-token note is historical. The overlay origin and package admission boundaries are unchanged.
 
@@ -129,8 +139,7 @@ The v105 whole-event snapshot in this dated paragraph has status **partial and b
 
 IW-043 CHU, IW-058 ASY, IW-179 FSM, IW-093 DOX, and IW-098 SOK remain outside the current attestation gate with their existing fail-closed package, sourced-roster, or role evidence blockers. No custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier portraits, or small derivatives are authorized.
 
-The bounded v49 core-contract re-audit and hidden-event character-recruit repair
-are recorded in `subagent_handoffs/006_core_contract_reaudit_v49_2026_08_01.md`.
+The bounded v49 core-contract re-audit and hidden-event character-recruit repair are recorded in `subagent_handoffs/006_core_contract_reaudit_v49_2026_08_01.md`.
 
 ### Shared core and registry API milestone closed
 
@@ -156,10 +165,7 @@ The doubled automatic ladder is 6/8/10/14/20, with World Collapse targeting 20. 
 
 The 2026-07-29 grounded CHU portrait tranche adds Musa Dzhalil as the current Bolgar civic-presidium candidate and Ahmet Zeki Velidi Togan as the current river-security-directorate candidate. Both preserved their archival male identities through exact crop and HOI4-style repaint processing and passed the independent visual audit; Commons/museum rights, provenance, and the Bashkir-to-CHU route-role decision remain open, so both candidates stay evidence-only with no DDS or `.gfx` wiring.
 
-The 2026-07-28 doubled-ladder and pre-wave crisis evidence is bounded by
-`subagent_handoffs/006_pre_wave_crisis_and_doubled_ladder_2026_07_28.md` and the
-focused completion audit
-`subagent_handoffs/006_automatic_ladder_host_crisis_completion_audit_2026_07_28.md`.
+The 2026-07-28 doubled-ladder and pre-wave crisis evidence is bounded by `subagent_handoffs/006_pre_wave_crisis_and_doubled_ladder_2026_07_28.md` and the focused completion audit `subagent_handoffs/006_automatic_ladder_host_crisis_completion_audit_2026_07_28.md`.
 
 This dated routing snapshot used `subagent_handoffs/006_event6_current_completion_evidence_v105_2026_08_03.md`; current routing is v106 above, and older v104/v103/v102/v97/v96/v33/v32/v31/v30 references below are retained only as dated traceability. The dated shelf snapshot recorded 81 original-size PNG masters in one flat directory, with all 81 indexed or explicitly recorded; the current shelf is 83 masters under the override above. The v90 source/repaint handoff remains `needs_user_review` with no wire or admission. The package-local v3 prompt is retained at `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v3.txt`; v3 passes identity/style/provenance under v95 but remains rights/date HOLD. The ASY Haydo repaint evidence passes visual likeness, HOI4 style, and provenance under v92 but remains rights/date HOLD. ASY Barsoum v93 passes its independent audit, and v94 promotes only the existing concordat-council DDS consumer; the wider IW-058 package remains unadmitted with no advisor or small/dossier portrait and no additional runtime admission.
 
@@ -185,70 +191,19 @@ The v47 focus audit closes a shared-tree import gap without changing route seman
 
 The current country-tag scope is deliberately narrower than the broad Chaos Redux registry. The protected set is the 102 Event 006 reservations plus the 34 Soviet Collapse carriers; the scoped audit reports zero external country-definition collisions, excludes the Random Events Mod by accepted scope, and does not remap the unrelated `REV`, `ZIN`, or `ZZZ` carriers. No unadmitted package currently satisfies the complete admission contract; the ranked blocker matrix is `subagent_handoffs/006_next_event6_soviet_tag_admission_matrix_2026_07_29.md`.
 
-Current portrait authority is the sourced-only gate in the accepted specification and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`.
-Earlier generated grounded-polity portrait packages are provenance evidence only.
+Current portrait authority is the sourced-only gate in the accepted specification and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`. Earlier generated grounded-polity portrait packages are provenance evidence only.
 
-The 2026-07-26 HAW source tranche is now admitted after the v46 independent
-likeness/style/provenance audit and v45 post-wire package audit. Its unchanged
-Hawai'i State Archives source, exact head-and-shoulders crop proof, source-locked
-ImageGen repaint, deterministic 156x210 candidate, durable ComfyUI pair, DDS,
-`.gfx`, additive character role, and localisation are aligned. Samuel Wilder
-King is non-ruling and does not replace the vanilla David Kalakaua Kawananakoa
-roster; no advisor, dossier, commander, operative, or `_small` derivative is
-authorized. IW-179 FSM remains withdrawn pending a sourced grounded
-Micronesian replacement.
+The 2026-07-26 HAW source tranche is now admitted after the v46 independent likeness/style/provenance audit and v45 post-wire package audit. Its unchanged Hawai'i State Archives source, exact head-and-shoulders crop proof, source-locked ImageGen repaint, deterministic 156x210 candidate, durable ComfyUI pair, DDS, `.gfx`, additive character role, and localisation are aligned. Samuel Wilder King is non-ruling and does not replace the vanilla David Kalakaua Kawananakoa roster; no advisor, dossier, commander, operative, or `_small` derivative is authorized. IW-179 FSM remains withdrawn pending a sourced grounded Micronesian replacement.
 
-The 2026-07-27 IW-177 Fiji tranche is implemented but fail-closed. It reuses
-vanilla `FIJ` at state 636 with `RG-PACIFIC-ISLANDS`, retains the vanilla flag
-and history baseline, and adds a sourced male Ratu Sir Lala Sukuna
-country-leader consumer, founding-congress ledger, six paid/timed decisions,
-six connected focuses, lifecycle ideas, coastal-maritime force mapping, AI,
-cleanup, and a generic-tree protection guard. The source-derived portrait has a
-bounded likeness/style/provenance PASS, but its circa-1940s archive date is
-still gated against the 1936-centered event baseline. FIJ selects FORM-39
-Melanesian Federation. The named FIJ/PNG/WPG consent-led adapter, exact member
-and anchor arrays, MFX X-tag identity surface, autonomous-member cleanup,
-staged anchor integration, and paid post-formation projects are implemented
-and documented in `docs/events/006_independence_wave/form39_melanesian_federation.md`. FIJ is not
-in runtime attestation until the IW-157/IW-178 research flags, MFX collision
-reservation and flat-flag review, and the source/date decision are accepted.
-The dated durable pre-DDS portrait snapshot records 81 original-size PNG
-source-derived masters directly in one flat directory after the CHU Bolgar v90
-v1/v2/v3, ASY Haydo, ASY Barsoum, first DOX Prempeh-II, and the Znaci 8889 Jovanović original-size repaint copies. All 81
-masters are indexed or explicitly recorded in the two flat-shelf manifests.
-There are no nested folders, no normalized 156x210 PNGs, and no advisor or
-small/dossier derivatives authorized. The v90 Karim Tinchurin source/repaint
-evidence remains `needs_user_review` with no DDS, `.gfx`, character, or
-content-attestation promotion; its package-local v3 prompt is
-`docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v3.txt`
-(SHA-256 `c0c370e6346e79c6f3b1373e8b18754edaae3afcfa49be19d7a6bf74ffd435ba`),
-and v3 passes identity/style/provenance under v95 but remains rights/date HOLD
-(`needs_user_review`). The v2 candidate remains HOLD/evidence-only under the v94
-audit. See
-`docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/` and
-`subagent_handoffs/006_iw043_chu_bolgar_civic_portrait_source_v90_2026_08_01.md`.
-ASY Shamoun Hanne Haydo's raw repaint and deterministic candidate are under
-`docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/`;
-the v92 audit passes visual likeness, HOI4 style, and provenance, but rights/date
-remains HOLD (`needs_user_review`), with no DDS, `.gfx`, character, or
-content-attestation promotion. ASY Barsoum v93 passes the independent audit, and
-v94 promotes only the existing concordat-council DDS consumer; the Barsoum v2
-evidence package remains unadmitted with no advisor or small/dossier portrait and
-no wider IW-058/package admission.
+The 2026-07-27 IW-177 Fiji tranche is implemented but fail-closed. It reuses vanilla `FIJ` at state 636 with `RG-PACIFIC-ISLANDS`, retains the vanilla flag and history baseline, and adds a sourced male Ratu Sir Lala Sukuna country-leader consumer, founding-congress ledger, six paid/timed decisions, six connected focuses, lifecycle ideas, coastal-maritime force mapping, AI, cleanup, and a generic-tree protection guard. The source-derived portrait has a bounded likeness/style/provenance PASS, but its circa-1940s archive date is still gated against the 1936-centered event baseline. FIJ selects FORM-39 Melanesian Federation. The named FIJ/PNG/WPG consent-led adapter, exact member and anchor arrays, MFX X-tag identity surface, autonomous-member cleanup, staged anchor integration, and paid post-formation projects are implemented and documented in `docs/events/006_independence_wave/form39_melanesian_federation.md`. FIJ is not in runtime attestation until the IW-157/IW-178 research flags, MFX collision reservation and flat-flag review, and the source/date decision are accepted. The dated durable pre-DDS portrait snapshot records 81 original-size PNG source-derived masters directly in one flat directory after the CHU Bolgar v90 v1/v2/v3, ASY Haydo, ASY Barsoum, first DOX Prempeh-II, and the Znaci 8889 Jovanović original-size repaint copies. All 81 masters are indexed or explicitly recorded in the two flat-shelf manifests. There are no nested folders, no normalized 156x210 PNGs, and no advisor or small/dossier derivatives authorized. The v90 Karim Tinchurin source/repaint evidence remains `needs_user_review` with no DDS, `.gfx`, character, or content-attestation promotion; its package-local v3 prompt is `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v3.txt` (SHA-256 `c0c370e6346e79c6f3b1373e8b18754edaae3afcfa49be19d7a6bf74ffd435ba`), and v3 passes identity/style/provenance under v95 but remains rights/date HOLD (`needs_user_review`). The v2 candidate remains HOLD/evidence-only under the v94 audit. See `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/` and `subagent_handoffs/006_iw043_chu_bolgar_civic_portrait_source_v90_2026_08_01.md`. ASY Shamoun Hanne Haydo's raw repaint and deterministic candidate are under `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/`; the v92 audit passes visual likeness, HOI4 style, and provenance, but rights/date remains HOLD (`needs_user_review`), with no DDS, `.gfx`, character, or content-attestation promotion. ASY Barsoum v93 passes the independent audit, and v94 promotes only the existing concordat-council DDS consumer; the Barsoum v2 evidence package remains unadmitted with no advisor or small/dossier portrait and no wider IW-058/package admission.
 
 The source-research handoff `subagent_handoffs/006_iw157_iw178_new_guinea_source_research_2026_07_26.md` keeps IW-157/WPG and IW-178/PNG fail-closed. Yapen/Serui, Biak/Supiori, Dogura/Milne Bay, and related leads are research candidates only; exact district containment, rights-cleared period leadership or institutional evidence, and community-specific symbol validation remain outstanding.
 
 The FORM-39 v17 reconciliation and MFX identity handoff confirm that the FIJ/PNG/WPG adapter corrections are source-implemented but runtime admission remains fail-closed. The three member-research gates, MFX reservation, flat-flag readiness, and identity-review inputs remain unset; the 2026-07-28 installed-mod audit now includes MFX and reports zero reserved/custom-cosmetic collisions, while the `needs_user_review` flag package is not a readiness fallback. No generic Papuan package, flag, or portrait is authorized.
 
-IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool.
-The canonical runtime content-attestation set is IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-018 Sardinia, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California after their current package and sourced real-male portrait audits.
-The current IW-184 authority is `subagent_handoffs/006_iw184_california_postwire_country_package_audit_2026_07_24.md`, which records William D. Stephens, the byte-identical runtime/package DDS hash `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor/dossier derivative.
-Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending.
-Every other package remains closed until its complete current admission contract is implemented and independently re-audited.
+IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool. The canonical runtime content-attestation set is IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-018 Sardinia, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California after their current package and sourced real-male portrait audits. The current IW-184 authority is `subagent_handoffs/006_iw184_california_postwire_country_package_audit_2026_07_24.md`, which records William D. Stephens, the byte-identical runtime/package DDS hash `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor/dossier derivative. Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending. Every other package remains closed until its complete current admission contract is implemented and independently re-audited.
 
-The 2026-07-22 source-mode decision supersedes the admission disposition, but
-not the gameplay findings, in earlier country-package and portrait handoffs.
-This packet and `006_source_of_truth_map.md` carry the current source/runtime-gate state; live execution is optional future QA. Any dated v102 or v96 authority wording in the following historical block is superseded by the v106 continuation above.
+The 2026-07-22 source-mode decision supersedes the admission disposition, but not the gameplay findings, in earlier country-package and portrait handoffs. This packet and `006_source_of_truth_map.md` carry the current source/runtime-gate state; live execution is optional future QA. Any dated v102 or v96 authority wording in the following historical block is superseded by the v106 continuation above.
 
 The following v102 completion paragraph is retained as dated historical traceability only. Its old 80-master shelf count and v102 authority label are superseded by v106 and the current 83-master shelf override above.
 
@@ -266,13 +221,7 @@ The current flat shelf check is `root_pngs=63`, `child_dirs=0`, and `normalized=
 
 `006_galimzhan_portrait_v2_independent_audit_2026_07_28.md` supersedes the v1 bounded visual audit for the portrait candidate. `006_decision_mission_reaudit_2026_07_28.md`, `006_shared_focus_reaudit_2026_07_28.md`, `006_dm58_participant_invalidation_repair_2026_07_28.md`, and `006_event_completion_audit_v31_2026_07_28.md` supersede their older bounded surfaces; v30 remains historical traceability only. The post-commit IW-012 route-arbitration handoffs are static source evidence. The whole goal remains HOLD / PARTIAL for the static blockers; live runtime evidence is optional future QA.
 
-Any remaining v23/v28/v30/v31/v32, 49/50/51/54/56/61-master, or pre-repair wording later in this packet is
-historical traceability rather than current authority. Use the v106 completion
-evidence handoff, the current 83-master all-indexed-or-explicitly-recorded shelf
-authority described above, and the bounded 2026-07-28/29 handoffs above for the
-current status. The installed-mod scan includes MFX and reports
-zero reserved/custom-cosmetic collisions, but that result does not admit FORM-39
-or make its `needs_user_review` package a readiness fallback.
+Any remaining v23/v28/v30/v31/v32, 49/50/51/54/56/61-master, or pre-repair wording later in this packet is historical traceability rather than current authority. Use the v106 completion evidence handoff, the current 83-master all-indexed-or-explicitly-recorded shelf authority described above, and the bounded 2026-07-28/29 handoffs above for the current status. The installed-mod scan includes MFX and reports zero reserved/custom-cosmetic collisions, but that result does not admit FORM-39 or make its `needs_user_review` package a readiness fallback.
 
 ## Read first
 
@@ -300,153 +249,62 @@ or make its `needs_user_review` package a readiness fallback.
 22. `subagent_handoffs/006_form48_postformation_and_human_invitation_2026_07_18.md`
 23. `tag_audit/006_installed_tag_collision_audit_2026_07_18.md`
 
-The seven specification parts remain the design authority. Use the source-of-
-truth map for current implementation status and handoff dispositions.
+The seven specification parts remain the design authority. Use the source-of- truth map for current implementation status and handoff dispositions.
 
-For country identity, tag representation, and current map bindings, use this
-three-file authority set before consulting historical handoffs:
+For country identity, tag representation, and current map bindings, use this three-file authority set before consulting historical handoffs:
 
 - `../../specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`
-  (206 package rows and accepted resolved identities);
+(206 package rows and accepted resolved identities);
 - `package_bindings/006_current_installed_map_package_bindings.csv`
-  (current anchors, hosts, and binding/readiness evidence);
+(current anchors, hosts, and binding/readiness evidence);
 - `../../specs/006_independence_wave_specs/research/006_tag_collision_and_reuse_audit.md`
-  (tag safety, vanilla-identity reuse, overlays, and intentional shared-tag
-  rules).
+(tag safety, vanilla-identity reuse, overlays, and intentional shared-tag rules).
 
-The old `006_country_tag_registry_handoff.md`, explorer snapshot, and first-pass
-identity audit retain historical `128/107/21`, `128/78`, and `103/90` ledgers;
-they are not current routing documents.
+The old `006_country_tag_registry_handoff.md`, explorer snapshot, and first-pass identity audit retain historical `128/107/21`, `128/78`, and `103/90` ledgers; they are not current routing documents.
 
 ## Safe current facts
 
 - The event source and localisation are substantial implementations, not
-  placeholders.
+placeholders.
 - The 206 accepted packages resolve to 102 custom `X`-shell rows, 91 registered
-  vanilla-tag reuse rows (89 unique reused carriers), and 13 overlay-only rows:
-  191 unique nonblank carrier tags overall, with only `CHU` and `BIA`
-  intentionally shared.
+vanilla-tag reuse rows (89 unique reused carriers), and 13 overlay-only rows: 191 unique nonblank carrier tags overall, with only `CHU` and `BIA` intentionally shared.
 - The 2026-07-22 installed-mod audit covers 108 Event 006-owned identifiers,
-  122 Workshop directories, eight archives, three sibling local mods, and
-  reports zero tag and custom-cosmetic collisions.
+122 Workshop directories, eight archives, three sibling local mods, and reports zero tag and custom-cosmetic collisions.
 - The installed-map registry has 138 selectable bound packages, 55 selectable
-  unbound packages, and 13 overlays.
+unbound packages, and 13 overlays.
 - Trabzon state 354 and Kashmir state 441 have implemented cross-group
-  reservation protection. Their old unresolved status is superseded.
+reservation protection. Their old unresolved status is superseded.
 - The synchronized Event 005 and Event 006 release transaction, rollback ledger,
-  point-of-no-return, sponsorship transaction, and Liberations cluster capacity
-  surface are implemented.
+point-of-no-return, sponsorship transaction, and Liberations cluster capacity surface are implemented.
 - FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed for readiness, with the bounded FORM-39 FIJ/PNG/WPG adapter source and v17 cancellation, cost-gate, and threshold repairs implemented but not promoted. FORM-39 still has six writerless admission inputs, MFX remains `needs_user_review`, and the current installed-mod audit reports zero reserved/custom-cosmetic collisions for its identity; no flag or identity fallback is authorized. FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
 - IW-043/058, IW-179, IW-093, and IW-098 retain implemented gameplay adapters, but their generated, generic, or incomplete grounded-polity portrait rosters withdraw visual readiness and runtime content attestation. IW-018 ARX is admitted after the sourced Lussu, Mella, and Verne roster replacements and post-wire package audit; IW-173 HAW is admitted after the sourced Samuel Wilder King v46 portrait PASS and v45 package audit. HAW's additive non-ruling role preserves vanilla David Kalakaua Kawananakoa.
-  The compile-time package content-attestation set contains IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-018, IW-019, IW-173, and IW-184.
+The compile-time package content-attestation set contains IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-018, IW-019, IW-173, and IW-184.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched.
-  RHI's complete replacement roster is admitted. BAY is also admitted after the
-  Held and Dollmann exact-source portrait chains and its fresh post-wire package
-  audit; the superseded Dollmann trial-02 safety block and Lossow provenance
-  failure remain historical evidence only.
+RHI's complete replacement roster is admitted. BAY is also admitted after the Held and Dollmann exact-source portrait chains and its fresh post-wire package audit; the superseded Dollmann trial-02 safety block and Lossow provenance failure remain historical evidence only.
 - IW-173 HAW is admitted after the sourced Samuel Wilder King v46 independent likeness/style/provenance PASS and v45 post-wire package audit. King is an additive non-ruling civilian-large territorial-delegate role with aligned source PNG, prompt, DDS, `.gfx`, character, and localisation; vanilla David Kalakaua Kawananakoa remains the ruling roster entry. The earlier trial 01 likeness failure and retry 03 rights block remain historical evidence only.
 - FORM-12/13/18 and FORM-48 remain implemented system contracts, but the FORM-48 carrier cannot execute while FSM remains HOLD/blocked for sourced identity admission. Its dormant carrier uses the full generic tree because vanilla FSM exposes only `generic_focus`.
 - IW-184 HBX is admitted after the full post-wire country-package audit. William D. Stephens is the sourced real-male civic leader with the exact identity-preserving HOI4 repaint wired to the stable civilian-large consumer. The package/runtime DDS is byte-identical at SHA-256 `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor, dossier, operative, commander, or `_small` derivative is authorized. Exact content attestation, automatic readiness, and the Event 005-aware capacity witness are implemented; live execution evidence remains pending.
 - Fourteen attested packages across thirteen compatible reservation groups and fourteen distinct anchors can conditionally supply the six-, eight-, and ten-country automatic waves when the required number independently pass their source-level host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates. The fourteen- and twenty-country bands remain accepted design targets and stay source fail-closed until the complete package pool and reservation capacity expand. Live execution and save/load observation are optional future QA.
-  Candidate weight now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but unadmitted IDs stay at zero weight instead of invalidating the later synchronized transaction.
-  The ten-country bands now have a source-level pair-capacity path: IW-008 RHI and IW-010 AJX share RG-RHINE-SAAR but reserve distinct anchors (51 and 42). The central reservation effect admits only that exact counterpart pair; host protection remains per affected host and may share GER's protected-remnant row when both anchors have the same owner. Every other group remains one-package-only. Static ten-country disjoint-reservation, host-survival, and synchronized-transaction source proof remains required; live execution, save/load, and player-owned observation are optional future QA.
-  The later user decision supersedes the earlier ladder: automatic waves target 6/8/10/14/20, including a twenty-country World Collapse band. The current attested pool remains far below the doubled upper-band capacity, so those bands stay fail-closed until additional complete packages and compatible reservation groups are admitted.
-  FORM-48's proof writers own `independence_wave_form48_registry_surface_registered` and `independence_wave_form48_readiness_attested`; no annexation or integration fallback is used.
+Candidate weight now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but unadmitted IDs stay at zero weight instead of invalidating the later synchronized transaction. The ten-country bands now have a source-level pair-capacity path: IW-008 RHI and IW-010 AJX share RG-RHINE-SAAR but reserve distinct anchors (51 and 42). The central reservation effect admits only that exact counterpart pair; host protection remains per affected host and may share GER's protected-remnant row when both anchors have the same owner. Every other group remains one-package-only. Static ten-country disjoint-reservation, host-survival, and synchronized-transaction source proof remains required; live execution, save/load, and player-owned observation are optional future QA. The later user decision supersedes the earlier ladder: automatic waves target 6/8/10/14/20, including a twenty-country World Collapse band. The current attested pool remains far below the doubled upper-band capacity, so those bands stay fail-closed until additional complete packages and compatible reservation groups are admitted. FORM-48's proof writers own `independence_wave_form48_registry_surface_registered` and `independence_wave_form48_readiness_attested`; no annexation or integration fallback is used.
 - The IW-043/IW-058 package manifests record final reviewed non-portrait assets:
-  27 static icons including the three-state Assyria survival triplet, ten flat
-  flags, and two report images. Mirsaid Sultan-Galiev and Gallo Shabo are the
-  two source-cleared opening portraits; Galimzhan now has a source-locked
-  HOI4-style v2 repaint and 156x210 candidate with independent visual and
-  provenance PASS, parent-promoted to the existing CHU federal-presidium DDS
-  consumer at SHA-256
-  `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5` with no
-  `.gfx` rename or duplicate consumer. The other five institutional route
-  portraits remain source-gated or invalid. No custom Event 006 advisor asset
-  exists. The post-1968/1973 modern Assyrian flag is explicitly excluded.
+27 static icons including the three-state Assyria survival triplet, ten flat flags, and two report images. Mirsaid Sultan-Galiev and Gallo Shabo are the two source-cleared opening portraits; Galimzhan now has a source-locked HOI4-style v2 repaint and 156x210 candidate with independent visual and provenance PASS, parent-promoted to the existing CHU federal-presidium DDS consumer at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5` with no `.gfx` rename or duplicate consumer. The other five institutional route portraits remain source-gated or invalid. No custom Event 006 advisor asset exists. The post-1968/1973 modern Assyrian flag is explicitly excluded.
 - The allocator audit passes 149 publishers, 126 automatic/high-chaos
-  selectable packages, 138 SCN-008 ranked packages, the doubled 6/8/10/14/20
-  ladder, and Event 005-first joint reservation ordering. Runtime host,
-  anchor, reservation, and wave-size gates remain binding.
+selectable packages, 138 SCN-008 ranked packages, the doubled 6/8/10/14/20 ladder, and Event 005-first joint reservation ordering. Runtime host, anchor, reservation, and wave-size gates remain binding.
 - SCN-008's current acceptance cardinality is eight player-facing modes by four intensities, or 32 cells. The six numeric families remain the implementation enum, while Universal Belligerence contributes separate Former Hosts, Neighboring Releases, and Nearby Nonleague States rules. The current localisation and catalog mirror expose all eight modes. The v98/v99 32-cell and edge-case receipts pass non-live source validation; broader static source/MCP collision, selector, rollback, persistence, balance, package-capacity, and live evidence remain separate boundaries, so SCN-008 remains `Needs Testing`; live cell playback and save/load observation are optional future QA.
 - The dated documentation-curator reconciliation at
-  `subagent_handoffs/006_documentation_curator_scn008_mode_cardinality_2026_07_28.md`
-  is the current bounded handoff for this matrix clarification. Historical
-  completion audits retain their older shorthand for traceability.
+`subagent_handoffs/006_documentation_curator_scn008_mode_cardinality_2026_07_28.md` is the current bounded handoff for this matrix clarification. Historical completion audits retain their older shorthand for traceability.
 - Pacific assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for
-  HBX, the audited flat ImageGen PFX flag, and a fail-closed flat ImageGen MFX
-  candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`. MFX remains `needs_user_review`, its three identity/readiness inputs remain unset, and the 2026-07-28 installed-mod audit reports zero reserved/custom-cosmetic collisions; the runtime TGAs are not a readiness fallback.
-  Exactly zero custom Event 006
-  advisor icons or advisor portrait/sprite blocks are present; the accepted male
-  large portraits are separate country-leader assets and protected BAY/RHI
-  hashes are unchanged.
+HBX, the audited flat ImageGen PFX flag, and a fail-closed flat ImageGen MFX candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`. MFX remains `needs_user_review`, its three identity/readiness inputs remain unset, and the 2026-07-28 installed-mod audit reports zero reserved/custom-cosmetic collisions; the runtime TGAs are not a readiness fallback. Exactly zero custom Event 006 advisor icons or advisor portrait/sprite blocks are present; the accepted male large portraits are separate country-leader assets and protected BAY/RHI hashes are unchanged.
 - Commit `a2c274d1e` contains the independently audited living-BEL IW-005
-  Flanders overlay. It preserves Belgium and is not a selectable Event 006
-  release package. Its one-day timeout versus `on_daily_BEL` edge remains a
-  documented static ordering caveat because engine order is unspecified, and AI
-  completion still depends on opportunistic placement of garrisons in states 6
-  and 977.
+Flanders overlay. It preserves Belgium and is not a selectable Event 006 release package. Its one-day timeout versus `on_daily_BEL` edge remains a documented static ordering caveat because engine order is unspecified, and AI completion still depends on opportunistic placement of garrisons in states 6 and 977.
 - The current portrait authority is the sourced-only workflow in the event-asset
-  skill. The flat reference shelf at
-  `docs/assets/006_independence_wave/portraits_generated_png/` now records 80
-  original-size pre-resize PNG masters directly in one directory after the CHU
-  Bolgar v90 v1/v2/v3, ASY Haydo, ASY Barsoum, and first DOX Prempeh-II copies;
-  all 80 are indexed or explicitly recorded, represented by 79 table rows plus the
-  retry-2 tail record. There are no
-  nested folders, normalized 156x210 PNGs, or advisor/small/dossier derivatives;
-  the manifest records the byte/hash inventory. The v90 Karim Tinchurin
-  source/repaint package is
-  `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/`
-  with `needs_user_review` status and no DDS, `.gfx`, character, or attestation
-  promotion. Its package-local v3 prompt is
-  `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v3.txt`
-  (SHA-256 `c0c370e6346e79c6f3b1373e8b18754edaae3afcfa49be19d7a6bf74ffd435ba`),
-  and v3 passes identity/style/provenance under v95 but remains rights/date HOLD
-  (`needs_user_review`). The v2 candidate remains HOLD/evidence-only under the v94
-  audit. The
-  source/repaint handoff is
-  `subagent_handoffs/006_iw043_chu_bolgar_civic_portrait_source_v90_2026_08_01.md`.
-  ASY Shamoun Hanne Haydo's raw repaint and deterministic candidate are under
-  `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/`;
-  the v92 audit passes visual likeness, HOI4 style, and provenance, but rights/date
-  remains HOLD (`needs_user_review`), with no DDS, `.gfx`, character, or attestation
-  promotion. ASY Barsoum v93 passes the independent audit, and v94 promotes only
-  the existing concordat-council DDS consumer; the Barsoum v2 evidence package
-  remains unadmitted with no advisor or small/dossier portrait and no wider
-  IW-058/package admission.
-  Galimzhan v2 is the bounded exception with an independent visual/provenance PASS
-  and parent-promoted existing CHU DDS consumer at SHA-256
-  `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`; the shelf
-  remains evidence-only. Other candidates remain evidence only until independent
-  review. The
-  ARX's former candidate-only portrait paragraph is superseded by the promoted sourced roster: Emilio Lussu, Luigi Arborio Mella di Sant'Elia, and Vittorio Verne each have an explicit crop, source-locked HOI4 repaint, deterministic processing record, approved full-size consumer, and runtime DDS evidence.
-  Exact Vittorio Pala and Gavino Piras identities remain blocked and are not relabelled; the stable ARX_gavino_piras script key is retained only for compatibility while its visible role names Vittorio Verne.
-  The Solinas portrait is evidence-only under its PD-Italy-only rights hold and has no runtime DDS. No advisor, dossier, operative, or small portrait assets are authorized.
-  The historical `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`
-  family:
-  twenty-four attributed real-male treatments preserve their source identities,
-  crops, DDS conversions, and pixel equality, but the user rejected the whole
-  family because it remains photographic rather than HOI4-painted. Three also
-  fail the separate active-character ownership
-  gate: vanilla recruits Konrad Adenauer and Franz Ritter von Epp for GER and
-  Edmund Ironside for ENG. Those treatments remain rejected evidence pending
-  different sourced replacements. Rupprecht and Matthes remain protected. ACX and
-  AEX are unregistered readiness-pool art only. Earlier fictional portrait and
-  army-small checksum ledgers are historical and superseded; Event 6 has no
-  commander miniatures.
+skill. The flat reference shelf at `docs/assets/006_independence_wave/portraits_generated_png/` now records 80 original-size pre-resize PNG masters directly in one directory after the CHU Bolgar v90 v1/v2/v3, ASY Haydo, ASY Barsoum, and first DOX Prempeh-II copies; all 80 are indexed or explicitly recorded, represented by 79 table rows plus the retry-2 tail record. There are no nested folders, normalized 156x210 PNGs, or advisor/small/dossier derivatives; the manifest records the byte/hash inventory. The v90 Karim Tinchurin source/repaint package is `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/` with `needs_user_review` status and no DDS, `.gfx`, character, or attestation promotion. Its package-local v3 prompt is `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v3.txt` (SHA-256 `c0c370e6346e79c6f3b1373e8b18754edaae3afcfa49be19d7a6bf74ffd435ba`), and v3 passes identity/style/provenance under v95 but remains rights/date HOLD (`needs_user_review`). The v2 candidate remains HOLD/evidence-only under the v94 audit. The source/repaint handoff is `subagent_handoffs/006_iw043_chu_bolgar_civic_portrait_source_v90_2026_08_01.md`. ASY Shamoun Hanne Haydo's raw repaint and deterministic candidate are under `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/`; the v92 audit passes visual likeness, HOI4 style, and provenance, but rights/date remains HOLD (`needs_user_review`), with no DDS, `.gfx`, character, or attestation promotion. ASY Barsoum v93 passes the independent audit, and v94 promotes only the existing concordat-council DDS consumer; the Barsoum v2 evidence package remains unadmitted with no advisor or small/dossier portrait and no wider IW-058/package admission. Galimzhan v2 is the bounded exception with an independent visual/provenance PASS and parent-promoted existing CHU DDS consumer at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`; the shelf remains evidence-only. Other candidates remain evidence only until independent review. The ARX's former candidate-only portrait paragraph is superseded by the promoted sourced roster: Emilio Lussu, Luigi Arborio Mella di Sant'Elia, and Vittorio Verne each have an explicit crop, source-locked HOI4 repaint, deterministic processing record, approved full-size consumer, and runtime DDS evidence. Exact Vittorio Pala and Gavino Piras identities remain blocked and are not relabelled; the stable ARX_gavino_piras script key is retained only for compatibility while its visible role names Vittorio Verne. The Solinas portrait is evidence-only under its PD-Italy-only rights hold and has no runtime DDS. No advisor, dossier, operative, or small portrait assets are authorized. The historical `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/` family: twenty-four attributed real-male treatments preserve their source identities, crops, DDS conversions, and pixel equality, but the user rejected the whole family because it remains photographic rather than HOI4-painted. Three also fail the separate active-character ownership gate: vanilla recruits Konrad Adenauer and Franz Ritter von Epp for GER and Edmund Ironside for ENG. Those treatments remain rejected evidence pending different sourced replacements. Rupprecht and Matthes remain protected. ACX and AEX are unregistered readiness-pool art only. Earlier fictional portrait and army-small checksum ledgers are historical and superseded; Event 6 has no commander miniatures.
 - Commit `7368cc0bf` contains the bounded IW-004 BRI and IW-010 AJX packages and
-  the repaired FORM transaction integration. Exact promotions are committed in
-  `5d17e55b3` and `f64d9640e`.
+the repaired FORM transaction integration. Exact promotions are committed in `5d17e55b3` and `f64d9640e`.
 - Static icon families, current sourced portraits, country flags, FORM-01
-  through FORM-04 flags, report scenes,
-  super-event art, and final `6002` audio files materially exist. Gameplay
-  advisor offices are asset-neutral after the user-directed withdrawal of all
-  custom Event 006 advisor icons.
+through FORM-04 flags, report scenes, super-event art, and final `6002` audio files materially exist. Gameplay advisor offices are asset-neutral after the user-directed withdrawal of all custom Event 006 advisor icons.
 - `6002` WAV and sound wrappers,
-  slot-24 localisation/image dispatch, five factual predicates, Event Log
-  payload, and settings-aware queued presentation are implemented. Packages 1,
-  2, 3, and 5 are reachable; the hidden-formable predicate now has a promoted
-  FORM-48 carrier but remains conditional on its high-chaos league/action proof.
-  FORM-42 remains fail-closed.
+slot-24 localisation/image dispatch, five factual predicates, Event Log payload, and settings-aware queued presentation are implemented. Packages 1, 2, 3, and 5 are reachable; the hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league/action proof. FORM-42 remains fail-closed.
   - `6001` remains blocked on exact recording rights and the accepted brass-and-organ tone. v110 identifies Ivo Muhvić's *Mačekova koračnica* as a conditional candidate only; v109's Navy Band 1992 candidate and Marine Band 2018 candidate remain historical research. The Muhvić cue is not selected, globally cleared, phrase-trimmed, converted, or wired; explicit user approval under the accepted specification is required before replacement work.
 
 The bounded RG-RHINE-SAAR re-audit `006_rhine_saar_shared_group_capacity_reaudit_v22_2026_07_27.md` is source-level PASS / runtime HOLD: the exact IW-008/IW-010 pair is admitted only with distinct anchors, while same-host protected-remnant, both-order, Event 005 collision, rollback/save-load, and exact-ten execution evidence remain open.
@@ -479,16 +337,7 @@ In the package rows below, “live allocation proof” means the source-level ho
 | IW-098 SOK | Signature focus/decision/idea/AI/icon, date-aware leadership logic, route politics, bilateral host settlement, command, and starting-force tranches implemented; v51 source research and package-readiness audit keep the package **HOLD / fail-closed** | Preserve the dormant vanilla SOK identity, runtime state-902 contract, automatic-if-not-living rule, Event-012 flags, the 17 June 1938 Hasan-to-Siddiq boundary, visible values, compatible shared/package route locks, host-answer receipt rule, 57-icon shared package, force row 98, and generation-bound mounted opening force. `subagent_handoffs/006_iw093_iw098_source_research_v51_2026_08_02.md` records pre-cutover Hasan as veiled and Northwestern-restricted, post-cutover Siddiq as date/source/rights-blocked, Dikko as rights/age/treatment-blocked, and Bayero/Bello Rabah as requiring an explicit replacement decision plus a face-visible, rights-clear source; exact 1936 flag ownership/geometry is unproven. `006_iw093_iw098_package_readiness_audit_2026_08_02.md` records absent FORM-25 family adapters, absent runtime content-attestation receipts, and the stale candidate-registry baseline (`DTX`/state 558 versus runtime `SOK`/state 902). Do not promote portrait, flag, `.gfx`, character, FORM-25, or SCN-008 attestation without the complete sourced roster, exact flag, family adapter, and final country audits; no fallback is authorized |
 | Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set contains IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-018, IW-019, IW-173, and IW-184 |
 
-An exact compile-time attestation never guarantees a valid wave. The allocator
-must still satisfy exact source-level host, anchor, reservation, Event 005 collision,
-  chaos-band, and wave-size gates. The current fourteen-ID set exposes thirteen compatible reservation-group IDs because RHI and AJX share RG-RHINE-SAAR, but that pair now has a narrow two-package capacity rule because anchors 51 and 42 are distinct
-and each row still passes the ordinary per-host protected-remnant check. The
-6-, 8-, and 10-country bands remain conditionally viable pending static disjoint
-reservation and synchronized transaction source proof. The 14- and 20-country bands
-are design targets with no currently admitted capacity route and remain
-source fail-closed; World Collapse targets twenty and also fails closed when source
-availability cannot satisfy the synchronized frozen plan. Live execution, save/load,
-and player-owned observation are optional future QA.
+An exact compile-time attestation never guarantees a valid wave. The allocator must still satisfy exact source-level host, anchor, reservation, Event 005 collision, chaos-band, and wave-size gates. The current fourteen-ID set exposes thirteen compatible reservation-group IDs because RHI and AJX share RG-RHINE-SAAR, but that pair now has a narrow two-package capacity rule because anchors 51 and 42 are distinct and each row still passes the ordinary per-host protected-remnant check. The 6-, 8-, and 10-country bands remain conditionally viable pending static disjoint reservation and synchronized transaction source proof. The 14- and 20-country bands are design targets with no currently admitted capacity route and remain source fail-closed; World Collapse targets twenty and also fails closed when source availability cannot satisfy the synchronized frozen plan. Live execution, save/load, and player-owned observation are optional future QA.
 
 ## Completed tranches not to repeat
 
@@ -502,175 +351,98 @@ and player-owned observation are optional future QA.
 - Liberations cluster integration.
 - Installed-map binding and installed-mod tag audits; the 2026-07-25 snapshot scans 122 Workshop directories, four sibling local mods, and 108 Event 006-owned identifiers with zero reserved/custom-cosmetic collisions.
 - FORM-01 through FORM-05 implementation, tags, flags, identity aliases, and
-  readiness promotion.
+readiness promotion.
 - The 2026-07-18 male portrait regeneration remains historical production
-  evidence, not current readiness authority. The 2026-07-22 sourced-only gate
-  supersedes every generated portrait for a grounded country. Custom Event 6
-  advisor-icon withdrawal remains final.
+evidence, not current readiness authority. The 2026-07-22 sourced-only gate supersedes every generated portrait for a grounded country. Custom Event 6 advisor-icon withdrawal remains final.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
 - AGX gameplay and AFX's Level 2 Sambre-Meuse lane, three incidents, and exact-ID
-  audit remain implemented. AGX's two-person roster is source-cleared; AFX now
-  has sourced Jules Destrée and the independently approved Louis Hubert baron
-  Ruquoy/Rucquoy commander repaint wired to the stable full-size consumer. AFX
-  has passed its fresh post-wire package audit for exact admission; every live
-  allocation proof remains pending.
+audit remain implemented. AGX's two-person roster is source-cleared; AFX now has sourced Jules Destrée and the independently approved Louis Hubert baron Ruquoy/Rucquoy commander repaint wired to the stable full-size consumer. AFX has passed its fresh post-wire package audit for exact admission; every live allocation proof remains pending.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
-  `a2c274d1e`.
+`a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2` remains historical
-  implementation evidence only. Event 6 has no runtime commander miniatures,
-  `_small` files, sprite registrations, or consumers.
+implementation evidence only. Event 6 has no runtime commander miniatures, `_small` files, sprite registrations, or consumers.
 - Bounded IW-004 BRI and IW-010 AJX gameplay and commit-readiness closeout remain implemented. Both packages are exact compile-time attested after their sourced real-male portrait and current full-package audits.
 - RHI and BAY Level 2 lanes, incidents, FORM-04 delegation, and the South German settlement remain implemented. RHI uses protected Matthes plus sourced Wilhelm Marx and Gustav-Adolf von Zangen; BAY uses protected Rupprecht plus sourced Heinrich Held and Friedrich Dollmann. Their independently approved full-size repaints are wired to the audited consumers, and both packages retain exact compile-time attestation. Adenauer, Epp, and the superseded Harpe direction remain rejected rather than serving as fallbacks.
 - SCO/WLS congress preparation remains implemented. Scotland uses sourced Robert Bontine Cunninghame Graham and Victor Morven Fortune; Wales uses sourced J. H. Thomas and George Frederick Myddleton Cornwallis-West. Both current full-size portrait pairs and post-wiring package audits support exact compile-time attestation and SCN-008 eligibility. Ironside and the superseded David Grenfell direction remain rejected and unwired.
 - Mediterranean IW-017 through IW-019 gameplay, historical flat flag families,
-  and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and
-  Chiappe roster now passes source, crop, ownership, identity, and HOI4 painted-
-  style review and is wired to pixel-identical runtime DDS files; its fresh package
-  audit passes and exact IW-017 is admitted. Sicily's Sturzo, Lanza, Rizzo, and Di
-  Benedetto refinishes pass independent source, identity, male-only, crop, and
-  HOI4-style review and are wired to role-correct full-size consumers. Rizzo is
-  the civilian-large Straits Security Directorate political leader; Di Benedetto
-  is the sole army-large corps commander. Exact IW-019 is admitted.
-  Sardinia's Lussu, Mella, and Verne roster is sourced, independently reviewed, and wired to the three role-correct full-size consumers. Exact Pala and Piras identities remain blocked and are not relabelled; Solinas remains evidence-only under its rights hold. No advisor icons were created.
+and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and Chiappe roster now passes source, crop, ownership, identity, and HOI4 painted- style review and is wired to pixel-identical runtime DDS files; its fresh package audit passes and exact IW-017 is admitted. Sicily's Sturzo, Lanza, Rizzo, and Di Benedetto refinishes pass independent source, identity, male-only, crop, and HOI4-style review and are wired to role-correct full-size consumers. Rizzo is the civilian-large Straits Security Directorate political leader; Di Benedetto is the sole army-large corps commander. Exact IW-019 is admitted. Sardinia's Lussu, Mella, and Verne roster is sourced, independently reviewed, and wired to the three role-correct full-size consumers. Exact Pala and Piras identities remain blocked and are not relabelled; Solinas remains evidence-only under its rights hold. No advisor icons were created.
 - Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon, architecture, decision/mission, localisation, flags, and postformation logic remain implemented.
-  HAW is admitted after the v45 package and v46 Samuel Wilder King portrait audits; FSM remains HOLD/blocked for source research, making FORM-48 unreachable until its sourced replacement passes. The dormant FSM carrier uses the full generic tree because vanilla FSM exposes only `generic_focus`.
-  HBX is admitted after its full post-wire country-package PASS, and its William D. Stephens portrait is sourced, independently approved, wired, and byte-identical to the runtime DDS.
-  Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending.
-  HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS. Retry 03 remains rejected on archive rights despite its strong adult visual match and supplies no crop, repaint, or DDS.
-  HAW/FSM remain sovereign autonomous members and HBX remains the PFX carrier contract.
-  No custom Event 006 advisor icons or advisor portrait/sprite blocks were created; the Statehood Ledger status-panel and animation assets are source-wired by `de36a366e`. The GUI and achievement handoff records the Statehood Ledger and explicit League selector as source PASS after the parent phase-group patch; the current GUI/render semantic matrix and row-level achievement receipt remain bounded. The live semantic strips remain the default readout, the explicit `Animate` toggle selects the frame-animated siblings, and the static DDS files remain the non-animated fallback; focused interaction, threshold presentation, click-region, return-to-state, and playback evidence remain optional runtime QA.
+HAW is admitted after the v45 package and v46 Samuel Wilder King portrait audits; FSM remains HOLD/blocked for source research, making FORM-48 unreachable until its sourced replacement passes. The dormant FSM carrier uses the full generic tree because vanilla FSM exposes only `generic_focus`. HBX is admitted after its full post-wire country-package PASS, and its William D. Stephens portrait is sourced, independently approved, wired, and byte-identical to the runtime DDS. Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending. HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS. Retry 03 remains rejected on archive rights despite its strong adult visual match and supplies no crop, repaint, or DDS. HAW/FSM remain sovereign autonomous members and HBX remains the PFX carrier contract. No custom Event 006 advisor icons or advisor portrait/sprite blocks were created; the Statehood Ledger status-panel and animation assets are source-wired by `de36a366e`. The GUI and achievement handoff records the Statehood Ledger and explicit League selector as source PASS after the parent phase-group patch; the current GUI/render semantic matrix and row-level achievement receipt remain bounded. The live semantic strips remain the default readout, the explicit `Animate` toggle selects the frame-animated siblings, and the static DDS files remain the non-animated fallback; focused interaction, threshold presentation, click-region, return-to-state, and playback evidence remain optional runtime QA.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in
-  `879e511cc`, including the corrected negative Wallonia/Frisia war restraint
-  and distinct standard versus major focus rewards.
+`879e511cc`, including the corrected negative Wallonia/Frisia war restraint and distinct standard versus major focus rewards.
 - Evolution incident resolution core in `9231c15f5`: five paid, generation-scoped
-  decisions, two-option events `.360` through `.364`, shared ledger effects,
-   and generation/origin cleanup. Do not repeat this tranche. The frontier
-   reserve materialization is handled through the existing paid DM-22 decision
-   and remains separate from the one-shot opening-force transaction.
+decisions, two-option events `.360` through `.364`, shared ledger effects, and generation/origin cleanup. Do not repeat this tranche. The frontier reserve materialization is handled through the existing paid DM-22 decision and remains separate from the one-shot opening-force transaction.
 
 ## Immediate continuation order
 
 1. Complete sourced real male portrait replacements for every grounded live
-   leader, route leader, commander, and institutional role, preserving the
-   approved BAY/RHI files.
+leader, route leader, commander, and institutional role, preserving the approved BAY/RHI files.
 2. Re-audit and restore exact package content attestations only after each
-   complete portrait roster passes source, style, consumer, and package checks.
+complete portrait roster passes source, style, consumer, and package checks.
 3. Preserve and re-audit the implemented Event 006 slot-24/`6002` package as
-   later league, scenario, formable, sponsorship, and achievement work lands.
-   Keep `6001` absent.
+later league, scenario, formable, sponsorship, and achievement work lands. Keep `6001` absent.
 4. Preserve the implemented FORM-48 plan with HBX as carrier, autonomous
-   HAW/FSM members, and collision-cleared PFX identity, but keep it unreachable
-   until all required packages pass current admission. Keep FORM-42 and FORM-06
-   through FORM-47 fail-closed. Then continue the remaining packages with
-   bespoke gameplay, AI, localisation, assets, and audits.
+HAW/FSM members, and collision-cleared PFX identity, but keep it unreachable until all required packages pass current admission. Keep FORM-42 and FORM-06 through FORM-47 fail-closed. Then continue the remaining packages with bespoke gameplay, AI, localisation, assets, and audits.
 5. Preserve the tracked vanilla decision mirror and its audited three-guard
-   compatibility contract alongside the exact CHU/ASY signature tranche. Keep FORM-12/13/18 transactions, paid 180-day
-   consent and anchor ledgers, staged integration, and sole proof writers
-   scoped to their implemented carriers while runtime admission remains closed.
-   Preserve the sovereign-autonomy
-   former-host-or-regional-partner transaction, its locked counterpart, five
-   treaty records, permanent terminal-choice lock, and terminal `.5810`
-   presentation ordering; rerun the scoped
-   closeout audits without promoting wider Event 006 formable families from
-   this tranche.
+compatibility contract alongside the exact CHU/ASY signature tranche. Keep FORM-12/13/18 transactions, paid 180-day consent and anchor ledgers, staged integration, and sole proof writers scoped to their implemented carriers while runtime admission remains closed. Preserve the sovereign-autonomy former-host-or-regional-partner transaction, its locked counterpart, five treaty records, permanent terminal-choice lock, and terminal `.5810` presentation ordering; rerun the scoped closeout audits without promoting wider Event 006 formable families from this tranche.
 6. Preserve ASSET-040 through ASSET-043 as the current authored frame packages
-   with static fallbacks, runtime DDS files, manifests, and semantic Statehood
-   Ledger frame mapping. The persistent readout uses the semantic strips by
-   default; `de36a366e` wires an explicit `Animate` toggle to the four looping
-   animated siblings, while the static DDS files remain the non-animated
-   fallback. The explicit League phase-group selector is source-corrected under
-   `subagent_handoffs/006_gui_achievement_core_closure_2026_08_02.md`; focused
-   GUI/render semantic interaction, threshold presentation, click-region,
-   return-to-state, and playback evidence remain bounded or optional runtime QA.
+with static fallbacks, runtime DDS files, manifests, and semantic Statehood Ledger frame mapping. The persistent readout uses the semantic strips by default; `de36a366e` wires an explicit `Animate` toggle to the four looping animated siblings, while the static DDS files remain the non-animated fallback. The explicit League phase-group selector is source-corrected under `subagent_handoffs/006_gui_achievement_core_closure_2026_08_02.md`; focused GUI/render semantic interaction, threshold presentation, click-region, return-to-state, and playback evidence remain bounded or optional runtime QA.
 7. Preserve the verified Event Details, five evolution mirrors, Liberations
-   cluster wording, SCN-008 wording, and workbook alignment while later package
-   tranches land. The generic catalog surface must not enumerate hidden package
-   or formable IDs.
- 8. Preserve the current v97 focus-ownership audit, v66 COR, v70 historical focus
-    baseline, v71 decision/mission, and v72 localisation audits as bounded
-    evidence. Record the 2026-08-03 focus repair receipt: normal inspection resolves 184 nodes and 192 connectors with zero Event 006 crossings, node intersections, long connectors, too-close pairs, and layout warnings. Retain the explicit `nodeSpacing=80` artifact as a threshold record with 164 below-threshold pairs and 19 warnings and no movable focus IDs. The parent-reflow 186-connector and v111 geometry results remain dated traceability. Do not rerun the earlier byte-limited focus inspection merely to repeat a completed source scan; re-audit only after the owning source changes, and
-   keep the remaining package, focus, formable, asset, AI, balance, super-event,
-   catalog/source, package-capacity, and live scenario gaps in the whole-event report.
+cluster wording, SCN-008 wording, and workbook alignment while later package tranches land. The generic catalog surface must not enumerate hidden package or formable IDs.
+ 8. Preserve the current v97 focus-ownership audit, v66 COR, v70 historical focus baseline, v71 decision/mission, and v72 localisation audits as bounded evidence. Record the 2026-08-03 focus repair receipt: normal inspection resolves 184 nodes and 192 connectors with zero Event 006 crossings, node intersections, long connectors, too-close pairs, and layout warnings. Retain the explicit `nodeSpacing=80` artifact as a threshold record with 164 below-threshold pairs and 19 warnings and no movable focus IDs. The parent-reflow 186-connector and v111 geometry results remain dated traceability. Do not rerun the earlier byte-limited focus inspection merely to repeat a completed source scan; re-audit only after the owning source changes, and
+keep the remaining package, focus, formable, asset, AI, balance, super-event, catalog/source, package-capacity, and live scenario gaps in the whole-event report.
 9. Preserve the Armed Birth civilian-command and frontier-mobilization split.
-   The frontier outcome must continue to expose only the paid DM-22 reserve
-   decision, while the audited one-shot opening-force transaction remains
-   unchanged.
+The frontier outcome must continue to expose only the paid DM-22 reserve decision, while the audited one-shot opening-force transaction remains unchanged.
 
 ## Hard blockers and missing completion evidence
 
 - IW-003 has no legal current-map state binding.
 - `6001` lacks verified worldwide redistribution rights for the specified recording. The later v111 CC0/public-domain *Defilier-Marsch* / Anker-Orchester candidate is the newest research-only evidence; v110's Ivo Muhvić *Mačekova koračnica* and v109's United States Navy Band 1992 candidate remain dated research evidence. No candidate is selected or wired, and explicit user approval under the accepted specification, human listening, tonal fit, composition-jurisdiction review, parent selection, conversion, and runtime wiring remain required. No replacement work is authorized without that approval or a rights waiver.
 - The parent-wide achievement definition, proof, localisation, visibility, and
-  icon audit is complete in
-  `subagent_handoffs/006_parent_achievement_system_audit_2026_07_22.md`.
-  All sixteen definitions and all forty-eight runtime icon states are present.
-  `subagent_handoffs/006_gui_achievement_core_closure_2026_08_02.md` confirms
-  the source-wired Statehood Ledger and explicit League selector after the
-  parent phase-group patch, plus the concrete expulsion writer; its GUI/render
-  semantic matrix and current row-level achievement receipt remain bounded.
-  The audited DM-60 charter-expulsion vote writes the arbitration-term
-  expulsion disqualifier through
-  `independence_wave_achievement_record_member_expulsion`. Signature
-  achievements remain unreachable while their country portrait admission
-  gates are closed. Radical Bloc is source-reachable through admitted IW-184/HBX
-  under its existing route, League, danger, containment, and survival gates;
-  no live completion or current row-level proof receipt follows.
+icon audit is complete in `subagent_handoffs/006_parent_achievement_system_audit_2026_07_22.md`. All sixteen definitions and all forty-eight runtime icon states are present. `subagent_handoffs/006_gui_achievement_core_closure_2026_08_02.md` confirms the source-wired Statehood Ledger and explicit League selector after the parent phase-group patch, plus the concrete expulsion writer; its GUI/render semantic matrix and current row-level achievement receipt remain bounded. The audited DM-60 charter-expulsion vote writes the arbitration-term expulsion disqualifier through `independence_wave_achievement_record_member_expulsion`. Signature achievements remain unreachable while their country portrait admission gates are closed. Radical Bloc is source-reachable through admitted IW-184/HBX under its existing route, League, danger, containment, and survival gates; no live completion or current row-level proof receipt follows.
 - ASSET-040 through ASSET-043 are produced and wired for the persistent semantic
-  readout and the explicit `Animate` toggle by `de36a366e`. Static DDS files are
-  the non-animated fallback. The Statehood Ledger and explicit League selector
-  pass source review under `subagent_handoffs/006_gui_achievement_core_closure_2026_08_02.md`.
-  Focused toggle interaction, semantic threshold playback, and return-to-current-state runtime proof remain open as bounded or optional future QA; the earlier
-  “no animation consumer” wording is superseded by the v23 audit.
+readout and the explicit `Animate` toggle by `de36a366e`. Static DDS files are the non-animated fallback. The Statehood Ledger and explicit League selector pass source review under `subagent_handoffs/006_gui_achievement_core_closure_2026_08_02.md`. Focused toggle interaction, semantic threshold playback, and return-to-current-state runtime proof remain open as bounded or optional future QA; the earlier “no animation consumer” wording is superseded by the v23 audit.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
-  specifically blocked. FORM-48 remains implemented but unreachable through its
-  complete required HAW/FSM member set because FSM remains unadmitted.
+specifically blocked. FORM-48 remains implemented but unreachable through its complete required HAW/FSM member set because FSM remains unadmitted.
 - The five evolution incident families and their paid frontier-reserve
-  follow-through are no longer an implementation blocker. Package-specific
-  admission, focus, asset, and balance work still remains.
+follow-through are no longer an implementation blocker. Package-specific admission, focus, asset, and balance work still remains.
 - The dated v96 completion authority and bounded post-v96 handoffs retain
-  **partial and blocked** status for whole-event completion; no overall
-  completion claim is authorized.
+**partial and blocked** status for whole-event completion; no overall completion claim is authorized.
 - The `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`
-  is **IMPLEMENTED / FINAL AUDIT** for the exact CHU/ASY signature tranche:
-  package identity, centralized politics and institutional leaders,
-  FORM-12/13/18 transactions and attestations, paid congress ledgers,
-  staged sovereignty-preserving integration, and sole proof writers are
-  recorded. This is not an overall Event 006 completion claim; parent-wide
-  balance, runtime scenario evidence, and remaining family audits are still
-  open. The bounded Event Details/evolution/cluster/SCN-008 workbook mirror and
-  non-portrait visual families have dated parent PASS records.
+is **IMPLEMENTED / FINAL AUDIT** for the exact CHU/ASY signature tranche: package identity, centralized politics and institutional leaders, FORM-12/13/18 transactions and attestations, paid congress ledgers, staged sovereignty-preserving integration, and sole proof writers are recorded. This is not an overall Event 006 completion claim; parent-wide balance, runtime scenario evidence, and remaining family audits are still open. The bounded Event Details/evolution/cluster/SCN-008 workbook mirror and non-portrait visual families have dated parent PASS records.
 - The earlier catalog verification recorded exact Event Details, five evolution
-  mirrors, Liberations cluster text, and SCN-008 workbook fields. The later
-  doubled-ladder/crisis tranche updated `Events!C7` from the final static Event
-  Details wording and regenerated `docs/spreadsheets/chaos_redux_events_catalog.csv`
-  with `.tools/export_event_catalog_csv.py`; the workbook-to-localisation
-  comparison now matches for the repaired Event 006 cell. Future player-facing
-  catalog edits must repeat the workbook-source/export workflow.
+mirrors, Liberations cluster text, and SCN-008 workbook fields. The later doubled-ladder/crisis tranche updated `Events!C7` from the final static Event Details wording and regenerated `docs/spreadsheets/chaos_redux_events_catalog.csv` with `.tools/export_event_catalog_csv.py`; the workbook-to-localisation comparison now matches for the repaired Event 006 cell. Future player-facing catalog edits must repeat the workbook-source/export workflow.
 - No final balance and Event 006 completion audit covers the whole accepted spec.
 
 ## Do not infer
 
 - A tag, history shell, portrait, flag, focus, or adapter does not make a package
-  runtime-ready.
+runtime-ready.
 - ACX and AEX visual files do not authorize standalone releases.
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
-  army-small hash/approval record is current portrait authority.
+army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- The nineteen exact package attestations remain binding runtime gates; a broad
-  identity helper or preflight branch does not admit any additional package.
+- The 21 exact package attestations remain binding runtime gates; a broad
+identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,
-  commit, or `006_source_of_truth_map.md` narrows it.
+commit, or `006_source_of_truth_map.md` narrows it.
 - Do not rewrite accepted specs to match partial implementation.
 - Do not add a fallback for Cornwall or `6001` without explicit user approval.
-## Current admission amendment — 2026-08-05
+## Historical CAT admission amendment — 2026-08-05 (superseded by the Transcaucasus tranche)
 
-IW-014 CAT is now the sixteenth exact Event 006 content-attested package. IW-070 ARM, IW-071 GEO, and IW-072 AZR are now independently attested Transcaucasus vanilla-carrier packages. Their exact state anchors are 230, 231, and 229; FORM-16 remains fail-closed behind its researched member, consent, territory, and integration contract. CAT's Iberian family registration remains an ambition ledger value only. The shared formable focus branch and discovery/commit transaction continue to require `has_independence_wave_formable_commit_readiness = yes`, so FORM-07, FORM-16, NAV, and GLC remain fail-closed. The current compatible-group count is 18, while the static standalone witness remains 14 packages. See `subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md` and `subagent_handoffs/006_iw070_iw072_transcaucasus_country_package_audit_current_2026_08_05.md` for the bounded receipts and validation.
+IW-014 CAT is independently admitted, and IW-070 ARM, IW-071 GEO, and IW-072 AZR are independently attested Transcaucasus vanilla-carrier packages. Their exact state anchors are 230, 231, and 229; FORM-16 remains fail-closed behind its researched member, consent, territory, and integration contract. CAT's Iberian family registration remains an ambition ledger value only. The shared formable focus branch and discovery/commit transaction continue to require `has_independence_wave_formable_commit_readiness = yes`, so FORM-07, FORM-16, NAV, and GLC remain fail-closed. This paragraph is a dated CAT/Transcaucasus snapshot; its 19/18 boundary and 14-package witness are superseded by the current 21/20 boundary and 16-package witness below. See `subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md` and `subagent_handoffs/006_iw070_iw072_transcaucasus_country_package_audit_current_2026-08_05.md` for the bounded receipts and validation.
 
 ## Current authority amendment - 2026-08-05
 
-This amendment supersedes the preceding CAT-only amendment for current documentation routing. The current boundary is 19 content-attested selectable packages out of 193 non-overlay rows, leaving 174 unattested selectable packages across 18 compatible reservation groups. The central dispatcher has 25 adapter IDs and nine adapter-only fail-closed IDs: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM.
+This amendment superseded the preceding CAT-only amendment for its dated documentation routing. At that tranche the boundary was 19 content-attested selectable packages out of 193 non-overlay rows, leaving 174 unattested selectable packages across 18 compatible reservation groups; the current boundary is the 21/20/172 set stated in the post-promotion amendment below. The central dispatcher now has 30 adapter IDs and nine adapter-only fail-closed IDs: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM.
 
-The current bounded package handoffs are `subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md`, `subagent_handoffs/006_iw013_iw015_iberian_package_current_audit_2026-08-05.md`, `subagent_handoffs/006_iw030_mnt_package_audit_current_2026_08_05.md`, `subagent_handoffs/006_iw177_fij_package_audit_current_2026_08_05.md`, and `subagent_handoffs/006_iw070_iw072_transcaucasus_country_package_audit_current_2026_08_05.md`. CAT, ARM, GEO, and AZR are admitted standalone; NAV, GLC, MNT, and FIJ remain fail-closed; FORM-07 and FORM-16 remain fail-closed; ordinary super-event `23` remains incomplete at runtime because its rights-cleared audio, wrappers, and firing are blocked; no Event 006 advisor icons are required or authorized.
+The bounded package handoffs for that tranche are `subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md`, `subagent_handoffs/006_iw013_iw015_iberian_package_current_audit_2026-08-05.md`, `subagent_handoffs/006_iw030_mnt_package_audit_current_2026_08_05.md`, `subagent_handoffs/006_iw177_fij_package_audit_current_2026_08_05.md`, and `subagent_handoffs/006_iw070_iw072_transcaucasus_country_package_audit_current_2026_08_05.md`. CAT, ARM, GEO, and AZR are admitted standalone; NAV, GLC, MNT, and FIJ remain fail-closed; FORM-07 and FORM-16 remain fail-closed; ordinary super-event `23` remains incomplete at runtime because its rights-cleared audio, wrappers, and firing are blocked; no Event 006 advisor icons are required or authorized.
 
 The ordinary super-event identifiers are `23` for The League of New States and `24` for Every Border a Casus Belli. The `23` image/text dispatch is registered, but rights-cleared audio, sound wrappers, and firing remain blocked; `24` is source-wired with final WAV, base sound, wrappers, slot dispatch, predicates, and queued playback, while whole reachability remains partial under capacity and formable gates. Four-digit identifiers in dated entries are historical traceability only.
+
+## Current post-promotion amendment — 2026-08-05
+
+The owner promotion adds IW-033 KAR and IW-041 CRI to the central content-attestation OR-list at `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt:113-118`. The allocator audit now reports 21 content-attested selectable packages across 20 compatible reservation groups, 172 unattested selectable rows out of 193 non-overlay rows, and a 20-package static standalone witness that excludes only self-hosting IW-012 ICE. The current 21-ID set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184.
+
+The parent has waived the Level 2 country-specific-focus expectation for KAR and CRI in favor of the accepted shared generic tree; the absence of KAR/CRI-specific focus IDs remains a documented breadth limitation rather than a current admission gate. Probability inspection remains bounded: the current shared decision/mission source receipts show parser-clean, runtime-dependent pools, but no complete typed KAR/CRI scenario contract or same-scenario `probability_compare` receipt exists. Exact IW-033/IW-041 planner wrappers are now wired; technology inheritance, leader-date coverage, AI ledger weighting, country-name policy, and concise custom trigger tooltips remain separate risks. Ordinary runtime identifiers remain `23` for The League of New States and `24` for Every Border a Casus Belli; dated `6001`/`6002` entries remain traceability only.
