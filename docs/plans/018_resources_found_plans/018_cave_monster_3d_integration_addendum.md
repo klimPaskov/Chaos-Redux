@@ -2,13 +2,13 @@
 
 ## Disposition
 
-Status: `bounded_integration_required`.
+Status: `implemented_pending_live_review`.
 
 Broad Event 018 expansion remains closed.
 
 The earlier RF-018-01 through RF-018-08 addendum is fully resolved, and this review does not reopen any of those mechanics or propose another route, country, doctrine, focus family, unit family, model variant, or visual layer.
 
-The new 3D tranche is materially complete at the package level, but it is not ready for a closure handoff because the shared map entity does not currently resolve from any of the five brood `sprite` tokens and the installed audio hooks do not yet demonstrate the synchronization contract recorded by the audio handoff.
+The two bounded integration items are implemented. Five lightweight sprite-to-entity aliases now resolve all brood tokens to the canonical model, and movement, attack, and death audio use mechanically trimmed derivatives with timed entity hooks. Only user-owned live consumer validation remains.
 
 The parent should implement or explicitly reject the two bounded integration items below, refresh the affected crosswalk rows, obtain the user-owned live-consumer evidence, and then close this tranche without another broad improvement-loop pass.
 
@@ -32,7 +32,7 @@ The nearest installed-vanilla precedent is `common/units/infantry.txt` with `spr
 
 ## RF-018-3D-01 — Resolve every brood sprite token to the shared entity
 
-The preferred repair is to retain `resources_found_cave_monster_entity` as the canonical authored entity and add five lightweight entity aliases in `gfx/entities/018_resources_found_cave_monster.asset`:
+The implemented repair retains `resources_found_cave_monster_entity` as the canonical authored entity and adds five lightweight entity aliases in `gfx/entities/018_resources_found_cave_monster.asset`:
 
 | Sub-unit consumer | Declared sprite | Required resolving entity | Canonical clone target |
 | --- | --- | --- | --- |
@@ -58,7 +58,7 @@ The same review must confirm that each of the five templates retains its distinc
 
 ## RF-018-3D-02 — Reconcile the sound handoff with the action timeline
 
-The audio provenance and runtime hashes are complete, but the synchronization evidence is not yet aligned.
+The audio provenance, runtime hashes, derivative durations, and synchronization evidence are aligned.
 
 `evidence/audio/sound_design_handoff.md:10-12` assigns movement one-shots to four planted-foot phases in frames 0-24, attack onset shortly before the action midpoint, and the strongest death slide across frames 18-36.
 
@@ -66,15 +66,15 @@ The audio provenance and runtime hashes are complete, but the synchronization ev
 
 The action lengths are approximately 1.000 second for move, 1.333 seconds for attack, and 1.500 seconds for death at 24 FPS, while the installed clips are 6.384, 9.020, and 6.000 seconds respectively.
 
-Closure therefore requires one of two explicit outcomes for each action.
+The preferred outcome is implemented for movement, attack, and death. Idle remains the explicitly accepted state-entry ambience described below.
 
-The preferred outcome is mechanically trimmed derivatives from the same licensed originals plus timed entity events derived from the reviewed action frames, with no new generated, synthesized, recorded, placeholder, or unlicensed audio.
+Mechanically trimmed derivatives from the same licensed originals plus timed entity events derived from the reviewed action frames are wired, with no new generated, synthesized, recorded, placeholder, or unlicensed audio.
 
 For movement, this means a short stone-contact derivative used at the four reviewed planted-foot phases rather than replaying a six-second bed as if it were four one-shots.
 
 For attack and death, this means aligning the audible onset to the reviewed attack midpoint and collapse interval instead of relying on an undocumented state-entry offset.
 
-The alternative outcome is an explicit user-approved revision of the sound-design handoff that defines the current files as state-entry ambient beds and records their intended overlap, interruption, and repetition behavior.
+The alternative state-entry ambient-bed outcome was not used for movement, attack, or death. It remains only for the long idle ambience, whose stop-on-state-change behavior is recorded in the handoff.
 
 That alternative is a design change and must not be silently treated as though the existing four-phase and midpoint contract were implemented.
 
@@ -92,7 +92,7 @@ The coherent shared creature model with five role-specific counters is the corre
 
 Historical or regional research does not add useful value here because the issue is an engine consumer contract, not an unsourced cultural or historical design claim.
 
-After RF-018-3D-01 and RF-018-3D-02 are implemented or explicitly rejected with reasons, the only remaining tasks should be the user-owned live consumer review, documentation reconciliation, a focused asset/runtime re-audit, and parent final review.
+RF-018-3D-01 and RF-018-3D-02 are implemented. The only remaining tasks are the user-owned live consumer review, documentation reconciliation, a focused asset/runtime re-audit, and parent final review.
 
 Additional models, route-specific skins, particles, new combat states, extra creature families, or more cave-unit types would add maintenance cost without closing either identified defect and should not be added in this pass.
 
@@ -116,10 +116,10 @@ The installed-package limitation specified for this planner remains recorded: no
 
 ## Promotion and parent handoff
 
-This file should remain under `docs/plans/018_resources_found_plans/` while either bounded item is unresolved.
+This file remains under `docs/plans/018_resources_found_plans/` as the bounded implementation record while live review is pending.
 
 It should not be promoted into the source specification because it does not change the accepted Event 018 design.
 
 After implementation and live review, durable consumer, synchronization, hash, provenance, and validation facts should be reconciled into `docs/assets/018_resources_found/models_3d/cave_monster/manifest.md`, `runtime/crosswalk.md`, `runtime/handoff.md`, `evidence/audio/sound_design_handoff.md`, and the current model handoff.
 
-The parent should then mark this addendum implemented, rejected, or superseded with a reason and issue a narrow 3D-tranche closure note rather than running another broad Event 018 improvement pass.
+The parent should issue a narrow 3D-tranche closure note after the live review rather than running another broad Event 018 improvement pass.

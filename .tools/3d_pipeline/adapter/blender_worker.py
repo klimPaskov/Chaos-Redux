@@ -1441,7 +1441,11 @@ def evaluated_action_metrics() -> List[Dict[str, Any]]:
         actions = [
             action
             for action in bpy.data.actions
-            if "WORKING" in action.name and action.name.startswith("Armature|")
+            if (
+                ("WORKING" in action.name and action.name.startswith("Armature|"))
+                or action.name.startswith("creature_")
+                or action.name.startswith("black_plague_rat_")
+            )
         ]
         for action in actions:
             rig.animation_data.action = action
@@ -2287,6 +2291,146 @@ def select_armature_and_action(action_name: str) -> Tuple[bpy.types.Object, bpy.
     return rig, action, int(math.floor(start)), int(math.ceil(end))
 
 
+def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Transfer one provider skeletal action onto the approved working rig.
+
+    Provider animation files are imported only long enough to read their real
+    bone channels. The source armature and mesh are removed after the action
+    is copied onto the calibrated candidate, so the runtime scene retains one
+    model and one armature. This is deliberately a named adapter operation,
+    rather than an arbitrary Blender script, because the action transfer is a
+    repeatable part of the locked HOI4 asset pipeline.
+    """
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    source = within(job, payload["source_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    action_name = str(payload.get("action_name") or "chaos_assault_battalion_action")
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", action_name):
+        raise ValueError("Imported runtime action names must use stable alphanumeric, dot, dash, or underscore identifiers.")
+
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    target_rigs = armatures()
+    if len(target_rigs) != 1:
+        raise RuntimeError(
+            "Animation transfer requires exactly one calibrated working armature; "
+            f"found {len(target_rigs)}."
+        )
+    target_rig = target_rigs[0]
+    before_objects = set(bpy.data.objects)
+    before_actions = set(bpy.data.actions)
+    imported = import_candidate(source)
+    imported_rigs = [obj for obj in imported if obj.type == "ARMATURE"]
+    if len(imported_rigs) != 1:
+        raise RuntimeError(
+            "Provider animation import must expose exactly one source armature; "
+            f"found {len(imported_rigs)} from {source.name}."
+        )
+    source_rig = imported_rigs[0]
+    source_armature_name = source_rig.name
+    source_action = source_rig.animation_data.action if source_rig.animation_data else None
+    if source_action is None:
+        source_actions = [action for action in bpy.data.actions if action not in before_actions]
+        if len(source_actions) == 1:
+            source_action = source_actions[0]
+    if source_action is None:
+        raise RuntimeError(f"Provider animation import exposed no action: {source}")
+    source_action_name = source_action.name
+
+    source_curves = list(action_fcurves(source_action))
+    if not source_curves:
+        raise RuntimeError(f"Provider animation action contains no F-curves: {source_action.name}")
+    bone_names = sorted(
+        {
+            match.group(1)
+            for fcurve, _ in source_curves
+            for match in [re.search(r'pose\.bones\["([^"]+)"\]', fcurve.data_path)]
+            if match is not None
+        }
+    )
+    target_bone_names = {bone.name for bone in target_rig.data.bones}
+    missing_bones = sorted(set(bone_names) - target_bone_names)
+    if len(bone_names) < 6:
+        raise RuntimeError(
+            f"Provider animation action is not a usable skeletal action: only {len(bone_names)} driven bones."
+        )
+    if missing_bones:
+        raise RuntimeError(
+            "Provider animation bone channels do not match the calibrated rig: "
+            + json.dumps({"missing_bones": missing_bones, "source_action": source_action.name}, sort_keys=True)
+        )
+
+    existing = bpy.data.actions.get(action_name)
+    if existing is not None:
+        for obj in bpy.context.scene.objects:
+            if obj.animation_data and obj.animation_data.action == existing:
+                obj.animation_data.action = None
+        bpy.data.actions.remove(existing)
+    transferred = source_action.copy()
+    transferred.name = action_name
+    transferred.use_fake_user = True
+    target_rig.animation_data_create()
+    target_rig.animation_data.action = transferred
+    bpy.context.view_layer.objects.active = target_rig
+    target_rig.select_set(True)
+
+    scale_cleanup = sanitize_action_scale_channels()
+    root_cleanup = sanitize_root_translation_channels()
+    start, end = transferred.frame_range
+    frame_start = int(math.floor(float(start)))
+    frame_end = int(math.ceil(float(end)))
+    if frame_end <= frame_start:
+        raise RuntimeError(f"Provider animation action has no usable frame span: {transferred.name}")
+    bpy.context.scene.frame_start = frame_start
+    bpy.context.scene.frame_end = frame_end
+    bpy.context.scene.frame_set(frame_start)
+    bpy.context.view_layer.update()
+
+    imported_object_names = [obj.name for obj in imported]
+    for obj in list(imported):
+        if obj.name in {item.name for item in bpy.context.scene.objects if item is target_rig}:
+            continue
+        if obj.name in bpy.data.objects:
+            bpy.data.objects.remove(obj, do_unlink=True)
+    removed_provider_actions: List[str] = []
+    for action in list(bpy.data.actions):
+        if action == transferred or action == existing:
+            continue
+        if action == source_action or action.name.startswith("Armature.002|"):
+            removed_provider_actions.append(action.name)
+            action.user_clear()
+            bpy.data.actions.remove(action)
+
+    save_blend(checkpoint)
+    result = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "source": str(source.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "target_armature": target_rig.name,
+        "source_armature": source_armature_name,
+        "source_action": source_action_name,
+        "action": transferred.name,
+        "frame_start": frame_start,
+        "frame_end": frame_end,
+        "fps": bpy.context.scene.render.fps,
+        "source_fcurves": len(source_curves),
+        "driven_bones": bone_names,
+        "imported_objects_removed": imported_object_names,
+        "provider_actions_removed": removed_provider_actions,
+        "scale_cleanup": scale_cleanup,
+        "root_cleanup": root_cleanup,
+        "policy": "provider_skeletal_action_transferred_to_single_calibrated_working_rig",
+        "new_provider_call": False,
+        "warnings": [],
+    }
+    report = job / "blender" / "reports" / f"import_animation_{safe_name(action_name)}.json"
+    report.parent.mkdir(parents=True, exist_ok=True)
+    report.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return result
+
+
 def normalize_exported_animation_scales(
     output: Path,
     pdx: Dict[str, Any],
@@ -3070,7 +3214,7 @@ def _creature_bone_name_for_vertex(
 
 
 def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
-    """Create a bounded elephant armature and rigidly bind separated components to semantic bones."""
+    """Create a bounded creature armature and bind the approved mesh to semantic bones."""
 
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
@@ -3078,6 +3222,7 @@ def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     rider_names = {str(name) for name in payload.get("rider_component_names", [])}
     weight_mode = str(payload.get("weight_mode") or "semantic").casefold()
+    rig_name = safe_name(str(payload.get("rig_name") or "elephant_shared_base_armature"))
     if weight_mode not in {"semantic", "automatic_body", "automatic_semantic"}:
         raise ValueError(f"Unsupported creature rig weight mode: {weight_mode}")
     bpy.ops.wm.open_mainfile(filepath=str(blend))
@@ -3093,8 +3238,8 @@ def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
     height = max(dimensions.z, 1e-6)
     length = max(dimensions.y, 1e-6)
     width = max(dimensions.x, 1e-6)
-    armature_data = bpy.data.armatures.new("elephant_shared_base_armature")
-    rig = bpy.data.objects.new("elephant_shared_base_armature", armature_data)
+    armature_data = bpy.data.armatures.new(rig_name)
+    rig = bpy.data.objects.new(rig_name, armature_data)
     _working_collection().objects.link(rig)
     rig["chaosx_working"] = True
     rig["chaosx_custom_creature_rig"] = True
@@ -3214,7 +3359,7 @@ def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
             binding_policy = "spatial_semantic_weights"
         modifier = next((item for item in obj.modifiers if item.type == "ARMATURE"), None)
         if modifier is None:
-            modifier = obj.modifiers.new("CHAOSX_ELEPHANT_ARMATURE", "ARMATURE")
+            modifier = obj.modifiers.new("CHAOSX_CREATURE_ARMATURE", "ARMATURE")
         modifier.object = rig
         world_matrix = obj.matrix_world.copy()
         obj.parent = rig
@@ -3236,7 +3381,7 @@ def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
         "bones": [bone.name for bone in armature_data.bones],
         "component_bindings": records,
         "rider_components": sorted(rider_names),
-        "rig_map": "custom_elephant_semantic_bones_v1",
+        "rig_map": f"{rig_name}_semantic_bones_v1",
         "requested_weight_mode": weight_mode,
         "weight_policy": "one full influence per vertex; explicitly segmented semantic objects use rigid component bindings and rider remains distinct",
         "status": "pass",
@@ -3259,8 +3404,8 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     role = str(payload.get("action_role") or "").casefold()
-    action_name = safe_name(str(payload.get("action_name") or f"elephant_{role}"))
-    allowed_roles = {"idle", "move", "deploy", "supply_load", "attack", "impact"}
+    action_name = safe_name(str(payload.get("action_name") or f"creature_{role}"))
+    allowed_roles = {"idle", "move", "retreat", "deploy", "supply_load", "attack", "impact", "death"}
     if role not in allowed_roles:
         raise ValueError(f"Unsupported creature action role: {role}")
     bpy.ops.wm.open_mainfile(filepath=str(blend))
@@ -3277,7 +3422,7 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
     rig.animation_data.action = action
     if role == "idle":
         frames = [0, 12, 24, 36, 48]
-    elif role == "move":
+    elif role in {"move", "retreat"}:
         frames = [0, 6, 12, 18, 24]
     elif role == "deploy":
         frames = [0, 12, 24, 36]
@@ -3285,6 +3430,8 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
         frames = [0, 10, 20, 30, 40]
     elif role == "attack":
         frames = [0, 8, 16, 24, 32]
+    elif role == "death":
+        frames = [0, 12, 24, 36]
     else:
         frames = [0, 6, 12, 18, 24]
     scene = bpy.context.scene
@@ -3296,7 +3443,7 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     def phase(frame: int) -> float:
-        if role in {"idle", "move"}:
+        if role in {"idle", "move", "retreat"}:
             return math.sin(2.0 * math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
         if role == "deploy":
             return (frame - frames[0]) / max(frames[-1] - frames[0], 1)
@@ -3304,6 +3451,8 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
             return math.sin(math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
         if role == "attack":
             return math.sin(math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
+        if role == "death":
+            return (frame - frames[0]) / max(frames[-1] - frames[0], 1)
         return math.sin(math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
 
     keyed = 0
@@ -3317,22 +3466,23 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
             bone.rotation_quaternion = rotation.copy()
             if role == "idle":
                 if bone.name in {"body", "neck"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.05 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.6 * p)
                 if bone.name in {"trunk_01", "trunk_02"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.30 * p)
-            elif role == "move":
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 1.2 * p)
+            elif role in {"move", "retreat"}:
+                cycle_phase = p if role == "move" else -p
                 if bone.name == "body":
-                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.03 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.5 * cycle_phase)
                 if bone.name in {"front_left_lower", "rear_right_lower"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.15 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.0 * cycle_phase)
                 if bone.name in {"front_right_lower", "rear_left_lower"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.15 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 1.0 * cycle_phase)
                 if bone.name in {"front_left_upper", "rear_right_upper"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.25 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 1.5 * cycle_phase)
                 if bone.name in {"front_right_upper", "rear_left_upper"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.25 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.5 * cycle_phase)
                 if bone.name in {"neck", "trunk_01", "trunk_02"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.10 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.8 * cycle_phase)
             elif role == "deploy":
                 if bone.name == "body":
                     bone.rotation_quaternion = rotation @ _action_delta("x", -0.05 * p)
@@ -3347,11 +3497,22 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
                     bone.rotation_quaternion = rotation @ _action_delta("x", 0.05 * p)
             elif role == "attack":
                 if bone.name in {"body", "neck", "head"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.10 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.0 * p)
                 if bone.name in {"trunk_01", "trunk_02"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.00 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -2.0 * p)
                 if bone.name in {"front_left_lower", "front_right_lower"}:
-                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.15 * p)
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.0 * p)
+            elif role == "death":
+                if bone.name in {"body", "neck", "head"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.5 * p)
+                if bone.name in {"trunk_01", "trunk_02"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -2.5 * p)
+                if bone.name in {"front_left_upper", "rear_right_upper"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.0 * p)
+                if bone.name in {"front_right_upper", "rear_left_upper"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 1.0 * p)
+                if bone.name in {"front_left_lower", "front_right_lower", "rear_left_lower", "rear_right_lower"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 1.5 * p)
             elif role == "impact":
                 if bone.name in {"body", "neck", "head"}:
                     bone.rotation_quaternion = rotation @ _action_delta("x", 0.04 * p)
@@ -3377,14 +3538,14 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
     maximum_ground = max(item["ground_contact_z"] for item in ground_samples)
     grounding_correction = {
         "applied": False,
-        "root_bone": "body",
+        "root_bone": "root",
         "epsilon_m": 0.001,
         "maximum_translation_m": 0.0,
         "samples_before": ground_samples,
     }
-    root = rig.pose.bones.get("body")
+    root = rig.pose.bones.get("root") or rig.pose.bones.get("body")
     if root is None:
-        raise RuntimeError("Creature action authoring requires the semantic body bone.")
+        raise RuntimeError("Creature action authoring requires a semantic root bone.")
     # Ground every sampled frame with an explicit root translation channel.
     # This preserves the authored rotations and avoids feet/underside sinking
     # below the map plane after large elephant rotations.
@@ -3398,17 +3559,15 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
         # remains visible as a failed contact sample instead of a silent fix.
         correction = max(0.0, -float(current_minimum.z) - 0.01)
         if correction:
-            # The semantic body bone is the common parent of the elephant's
-            # weighted branches.  Lift this one parent so the correction is
-            # represented once in the exported skeleton and is not multiplied
-            # down the child hierarchy.
-            root.location.z = base["body"][0].z + correction
-            root.keyframe_insert(data_path="location", index=2, frame=frame, group="body")
+            # Lift the common root so the correction is represented once in
+            # the exported skeleton and is not multiplied down child bones.
+            root.location.z = base[root.name][0].z + correction
+            root.keyframe_insert(data_path="location", index=2, frame=frame, group=root.name)
             grounding_correction["applied"] = True
             grounding_correction["maximum_translation_m"] = max(
                 float(grounding_correction["maximum_translation_m"]), correction
             )
-        root.keyframe_insert(data_path="location", index=2, frame=frame, group="root")
+        root.keyframe_insert(data_path="location", index=2, frame=frame, group=root.name)
     for fcurve, _ in action_fcurves(action):
         if fcurve.data_path.endswith(".location") and fcurve.array_index == 2:
             for keyframe in fcurve.keyframe_points:
@@ -3444,7 +3603,7 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "frame_start": frames[0],
         "frame_end": frames[-1],
         "fps": scene.render.fps,
-        "loop": role in {"idle", "move"},
+        "loop": role in {"idle", "move", "retreat"},
         "keyed_bones": keyed,
         "keyed_channels": keyed * 2,
         "ground_contact": {
@@ -3632,7 +3791,12 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     mesh = within(job, payload["mesh_rel"])
     anim = within(job, payload["anim_rel"]) if payload.get("anim_rel") else None
     texture_staging = []
-    for texture_name in (
+    requested_texture_names = tuple(
+        str(name)
+        for name in (payload.get("texture_names") or [])
+        if str(name).casefold().endswith(".dds")
+    )
+    default_texture_names = (
         "texture_0.dds",
         "texture_specular.dds",
         "texture_normal.dds",
@@ -3644,7 +3808,8 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "Image_2.dds",
         "Image_3.dds",
         "normal.dds",
-    ):
+    )
+    for texture_name in tuple(dict.fromkeys(requested_texture_names + default_texture_names)):
         source = job / "textures" / "dds" / texture_name
         if not source.is_file():
             continue
@@ -3829,6 +3994,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return export_mesh(req, pdx)
     if operation == "export_animation":
         return export_animation(req, pdx)
+    if operation == "import_animation_action":
+        return import_animation_action(req)
     if operation == "author_locomotion_action":
         return author_locomotion_action(req)
     if operation == "segment_creature_components":
