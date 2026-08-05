@@ -106,10 +106,24 @@ class BlenderAdapterClient:
             },
         )
 
-    def process_textures(self, job_id: str, blend_rel: str) -> Dict[str, Any]:
+    def process_textures(
+        self,
+        job_id: str,
+        blend_rel: str,
+        *,
+        rewrite_to_dds: bool = False,
+        dds_map: Optional[Dict[str, str]] = None,
+        rename_images: bool = False,
+    ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_process_textures",
-            {"job_id": job_id, "blend_rel": blend_rel},
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "rewrite_to_dds": rewrite_to_dds,
+                "dds_map": dds_map or {},
+                "rename_images": rename_images,
+            },
         )
 
     def export_mesh(self, job_id: str, blend_rel: str, output_rel: str) -> Dict[str, Any]:
@@ -156,6 +170,98 @@ class BlenderAdapterClient:
             },
         )
 
+    def segment_creature_components(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        region_mode: str = "loose",
+        rider_z_min_fraction: float = 0.72,
+        rider_z_max_fraction: float = 1.0,
+        rider_x_center_fraction: float = 0.5,
+        rider_x_half_fraction: float = 0.38,
+        rider_y_center_fraction: float = 0.5,
+        rider_y_half_fraction: float = 0.42,
+        rider_object_name: str = "elephant_rider_region",
+        body_object_name: str = "elephant_body_region",
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_segment_creature_components",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "region_mode": region_mode,
+                "rider_z_min_fraction": rider_z_min_fraction,
+                "rider_z_max_fraction": rider_z_max_fraction,
+                "rider_x_center_fraction": rider_x_center_fraction,
+                "rider_x_half_fraction": rider_x_half_fraction,
+                "rider_y_center_fraction": rider_y_center_fraction,
+                "rider_y_half_fraction": rider_y_half_fraction,
+                "rider_object_name": rider_object_name,
+                "body_object_name": body_object_name,
+            },
+        )
+
+    def calibrate_creature_scale(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        rider_component_names: list[str],
+        target_rider_runtime_height_m: float,
+        runtime_entity_scale: float = 0.8,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_calibrate_creature_scale",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "rider_component_names": rider_component_names,
+                "target_rider_runtime_height_m": target_rider_runtime_height_m,
+                "runtime_entity_scale": runtime_entity_scale,
+            },
+        )
+
+    def author_creature_rig(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        rider_component_names: Optional[list[str]] = None,
+        weight_mode: str = "semantic",
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_author_creature_rig",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "rider_component_names": rider_component_names or [],
+                "weight_mode": weight_mode,
+            },
+        )
+
+    def author_creature_action(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        action_role: str,
+        action_name: str,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_author_creature_action",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "action_role": action_role,
+                "action_name": action_name,
+            },
+        )
+
     def correct_action_grounding(
         self,
         job_id: str,
@@ -192,10 +298,27 @@ class BlenderAdapterClient:
             },
         )
 
-    def inspect_scene(self, job_id: str, blend_rel: str) -> Dict[str, Any]:
+    def inspect_scene(
+        self,
+        job_id: str,
+        blend_rel: str,
+        render_previews: bool = False,
+        runtime_stem: str = "",
+        action_name: str = "",
+        preview_frame: int = -1,
+        preview_view_names: Optional[list[str]] = None,
+    ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_inspect_scene",
-            {"job_id": job_id, "blend_rel": blend_rel},
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "render_previews": render_previews,
+                "runtime_stem": runtime_stem,
+                "action_name": action_name,
+                "preview_frame": preview_frame,
+                "preview_view_names": preview_view_names or [],
+            },
         )
 
     def save_checkpoint(self, job_id: str, blend_rel: str, stage: str) -> Dict[str, Any]:

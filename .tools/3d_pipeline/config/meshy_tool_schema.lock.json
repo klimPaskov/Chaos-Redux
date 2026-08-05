@@ -3,27 +3,54 @@
   "server_package": "@meshy-ai/meshy-mcp-server",
   "server_version": "0.4.0",
   "server_git_head": "d8c77d1cb897e345eb41d38b510b8391b1664346",
-  "verified_at": "2026-07-22T00:00:00Z",
+  "verified_at": "2026-08-05T13:30:00Z",
+  "schema_source": "live_mcp_tool_declarations",
+  "schema_revision": "live-declaration-2026-08-05",
   "required_tools": {
     "meshy_check_balance": {
+      "required_arguments": [],
+      "optional_arguments": [
+        "response_format"
+      ],
       "paid": false
     },
     "meshy_image_to_3d": {
-      "required_arguments": [
-        "file_path",
-        "ai_model",
-        "model_type",
-        "enable_pbr",
-        "topology",
-        "target_polycount",
-        "should_texture",
-        "multi_view_thumbnails",
-        "target_formats",
-        "response_format"
+      "required_arguments": [],
+      "required_argument_groups": [
+        [
+          "file_path",
+          "image_url",
+          "input_task_id"
+        ]
       ],
       "input_image_exclusivity": [
         "file_path",
-        "image_url"
+        "image_url",
+        "input_task_id"
+      ],
+      "optional_arguments": [
+        "ai_model",
+        "alpha_thumbnail",
+        "auto_size",
+        "decimation_mode",
+        "enable_pbr",
+        "hd_texture",
+        "image_enhancement",
+        "model_type",
+        "multi_view_thumbnails",
+        "origin_at",
+        "pose_mode",
+        "remove_lighting",
+        "response_format",
+        "save_pre_remeshed_model",
+        "should_remesh",
+        "should_texture",
+        "symmetry_mode",
+        "target_formats",
+        "target_polycount",
+        "texture_image_url",
+        "texture_prompt",
+        "topology"
       ],
       "multi_view_thumbnails": false,
       "paid": true
@@ -32,16 +59,27 @@
       "required_arguments": [
         "task_id"
       ],
+      "optional_arguments": [
+        "response_format",
+        "task_type",
+        "timeout_seconds",
+        "wait"
+      ],
       "timeout_argument": "timeout_seconds",
       "paid": false
     },
     "meshy_download_model": {
       "required_arguments": [
-        "task_id",
-        "task_type",
+        "task_id"
+      ],
+      "optional_arguments": [
         "format",
         "include_textures",
-        "save_to"
+        "parent_task_id",
+        "print_height_mm",
+        "print_ready",
+        "save_to",
+        "task_type"
       ],
       "paid": false
     },
@@ -50,12 +88,20 @@
         "input_task_id",
         "model_url"
       ],
-      "required_arguments": [
+      "required_arguments": [],
+      "optional_arguments": [
+        "auto_size",
+        "convert_format_only",
+        "decimation_mode",
         "input_task_id",
+        "model_url",
+        "origin_at",
+        "resize_height",
+        "resize_longest_side",
+        "response_format",
         "target_formats",
-        "topology",
         "target_polycount",
-        "response_format"
+        "topology"
       ],
       "target_polycount_max": 300000,
       "paid": true
@@ -65,10 +111,16 @@
         "input_task_id",
         "model_url"
       ],
-      "required_arguments": [
-        "input_task_id"
+      "required_arguments": [],
+      "optional_arguments": [
+        "height_meters",
+        "input_task_id",
+        "model_url",
+        "response_format",
+        "texture_image_url"
       ],
-      "paid": true
+      "paid": true,
+      "estimate_credits": 5
     },
     "meshy_convert": {
       "input_exclusivity": [
@@ -76,8 +128,17 @@
         "model_url"
       ],
       "required_arguments": [
+        "target_formats"
+      ],
+      "required_argument_groups": [
+        [
+          "input_task_id",
+          "model_url"
+        ]
+      ],
+      "optional_arguments": [
         "input_task_id",
-        "target_formats",
+        "model_url",
         "response_format"
       ],
       "paid": true,
@@ -88,9 +149,14 @@
         "rig_task_id",
         "action_id"
       ],
+      "optional_arguments": [
+        "post_process",
+        "response_format"
+      ],
       "paid": true,
       "verified_action_library": "https://docs.meshy.ai/en/api/animation-library",
-      "pilot_action_id": 4
+      "pilot_action_id": 4,
+      "estimate_credits": 3
     }
   },
   "forbidden_provider_inputs": [

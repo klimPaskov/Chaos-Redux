@@ -1710,7 +1710,7 @@ def camera_point_at(camera: bpy.types.Object, target: Vector) -> None:
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
 
 
-def render_previews(job: Path, runtime_stem: str) -> List[str]:
+def render_previews(job: Path, runtime_stem: str, view_names: List[str] | None = None) -> List[str]:
     scene = bpy.context.scene
     scene.render.engine = "BLENDER_EEVEE"
     scene.render.resolution_x = 512
@@ -1780,8 +1780,7 @@ def render_previews(job: Path, runtime_stem: str) -> List[str]:
     fit_distance = object_height / (2.0 * math.tan(preview_angle * 0.5) * 0.78)
     fit_distance = max(fit_distance, float(max(dimensions.x, dimensions.y)) * 1.5, 4.0)
 
-    for index, location in enumerate(
-        [
+    available_views = [
             ("front", (center.x, center.y - fit_distance, center.z)),
             ("rear", (center.x, center.y + fit_distance, center.z)),
             ("left", (center.x - fit_distance, center.y, center.z)),
@@ -1790,6 +1789,9 @@ def render_previews(job: Path, runtime_stem: str) -> List[str]:
             ("underside", (center.x, center.y - fit_distance * 0.7, minimum.z - fit_distance * 0.35)),
             ("three_quarter", (center.x + fit_distance * 0.75, center.y - fit_distance * 0.75, center.z + object_height * 0.08)),
         ]
+    selected_views = set(view_names or [])
+    for index, location in enumerate(
+        [item for item in available_views if not selected_views or item[0] in selected_views]
     ):
         name, location = location
         camera.location = location
@@ -2099,6 +2101,24 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
             "chaosx_source_object": obj.get("chaosx_source_object"),
         }
 
+    preview_paths = []
+    if req["payload"].get("render_previews"):
+        action_name = str(req["payload"].get("action_name") or "")
+        if action_name:
+            rigs = armatures()
+            action = bpy.data.actions.get(action_name)
+            if len(rigs) != 1 or action is None:
+                raise RuntimeError(f"Preview action selection failed for {action_name}.")
+            rigs[0].animation_data_create()
+            rigs[0].animation_data.action = action
+            requested_frame = int(req["payload"].get("preview_frame", -1))
+            if requested_frame < 0:
+                start, end = action.frame_range
+                requested_frame = int(round((start + end) * 0.5))
+            bpy.context.scene.frame_set(requested_frame)
+            bpy.context.view_layer.update()
+        runtime_stem = safe_name(str(req["payload"].get("runtime_stem") or blend.stem))
+        preview_paths = render_previews(job, runtime_stem, req["payload"].get("preview_view_names") or None)
     return {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "objects": [
@@ -2124,6 +2144,7 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
         "evaluated_actions": evaluated_action_metrics(),
         "weights": weight_metrics(),
         "materials": materials,
+        "previews": preview_paths,
     }
 
 
@@ -2166,10 +2187,15 @@ def extract_textures(req: Dict[str, Any]) -> Dict[str, Any]:
             )
     if payload.get("rewrite_to_dds"):
         dds_map = payload.get("dds_map", {})
-        for _, image in image_nodes():
-            dds_rel = dds_map.get(image.name)
+        rename_images = bool(payload.get("rename_images", False))
+        for _, image in list(image_nodes()):
+            original_name = image.name
+            dds_rel = dds_map.get(original_name)
             if dds_rel:
                 image.filepath = str(within(job, dds_rel))
+                image.source = "FILE"
+                if rename_images:
+                    image.name = Path(dds_rel).stem
     save_blend(blend)
     report = {"blend": str(blend.relative_to(job)).replace("\\", "/"), "textures": records}
     report_path = job / "blender" / "reports" / "textures.json"
@@ -2512,8 +2538,932 @@ def author_locomotion_action(req: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
+def _working_collection() -> bpy.types.Collection:
+    collection = bpy.data.collections.get("WORKING")
+    if collection is None:
+        raise RuntimeError("Creature operation requires the WORKING collection.")
+    return collection
+
+
+def _component_record(obj: bpy.types.Object, index: int) -> Dict[str, Any]:
+    minimum, maximum = world_bounds([obj])
+    dimensions = maximum - minimum
+    return {
+        "index": index,
+        "name": obj.name,
+        "bounds_min": list(minimum),
+        "bounds_max": list(maximum),
+        "center": list((minimum + maximum) * 0.5),
+        "dimensions": list(dimensions),
+        "vertices": len(obj.data.vertices),
+        "polygons": len(obj.data.polygons),
+        "volume_proxy": float(max(dimensions.x, 0.0) * max(dimensions.y, 0.0) * max(dimensions.z, 0.0)),
+        "materials": [material.name for material in obj.data.materials if material is not None],
+    }
+
+
+def _creature_spatial_profile(obj: bpy.types.Object, z_bins: int = 20, xy_bins: int = 8) -> Dict[str, Any]:
+    """Return a deterministic face-centroid profile for a fused creature mesh.
+
+    Meshy can return a single topologically connected shell even when the image
+    clearly contains an elephant, howdah, and rider.  A profile lets the parent
+    choose an explicit, reviewable spatial rider mask instead of silently
+    treating the whole shell as a miniature.  This is diagnostic only; it does
+    not infer a rider from a machine-learning classifier.
+    """
+
+    minimum, maximum = world_bounds([obj])
+    dimensions = maximum - minimum
+    safe_z = max(float(dimensions.z), 1e-9)
+    safe_x = max(float(dimensions.x), 1e-9)
+    safe_y = max(float(dimensions.y), 1e-9)
+    profile_z = [0 for _ in range(max(1, z_bins))]
+    profile_xy = [[0 for _ in range(max(1, xy_bins))] for _ in range(max(1, xy_bins))]
+    z_area = [0.0 for _ in range(max(1, z_bins))]
+    z_min = [float("inf") for _ in range(max(1, z_bins))]
+    z_max = [float("-inf") for _ in range(max(1, z_bins))]
+    high_centers: List[Vector] = []
+    high_slices: Dict[int, List[Vector]] = {}
+    high_face_counts: Dict[str, int] = {}
+    for polygon in obj.data.polygons:
+        center = obj.matrix_world @ polygon.center
+        fraction_z = min(0.999999, max(0.0, (center.z - minimum.z) / safe_z))
+        fraction_x = min(0.999999, max(0.0, (center.x - minimum.x) / safe_x))
+        fraction_y = min(0.999999, max(0.0, (center.y - minimum.y) / safe_y))
+        zi = min(len(profile_z) - 1, int(fraction_z * len(profile_z)))
+        xi = min(len(profile_xy) - 1, int(fraction_x * len(profile_xy)))
+        yi = min(len(profile_xy) - 1, int(fraction_y * len(profile_xy)))
+        area = float(polygon.area)
+        profile_z[zi] += 1
+        profile_xy[xi][yi] += 1
+        z_area[zi] += area
+        z_min[zi] = min(z_min[zi], float(center.z))
+        z_max[zi] = max(z_max[zi], float(center.z))
+        if fraction_z >= 0.70:
+            high_centers.append(center)
+            high_bin = f"z_{int(fraction_z * 10):02d}"
+            high_face_counts[high_bin] = high_face_counts.get(high_bin, 0) + 1
+            high_slices.setdefault(int(fraction_z * 10), []).append(center)
+    high_minimum = Vector((
+        min((point.x for point in high_centers), default=minimum.x),
+        min((point.y for point in high_centers), default=minimum.y),
+        min((point.z for point in high_centers), default=minimum.z),
+    ))
+    high_maximum = Vector((
+        max((point.x for point in high_centers), default=maximum.x),
+        max((point.y for point in high_centers), default=maximum.y),
+        max((point.z for point in high_centers), default=maximum.z),
+    ))
+    high_mean = Vector((
+        sum(point.x for point in high_centers) / max(1, len(high_centers)),
+        sum(point.y for point in high_centers) / max(1, len(high_centers)),
+        sum(point.z for point in high_centers) / max(1, len(high_centers)),
+    ))
+    return {
+        "object": obj.name,
+        "bounds_min": list(minimum),
+        "bounds_max": list(maximum),
+        "dimensions": list(dimensions),
+        "z_bins": [
+            {
+                "index": index,
+                "fraction_min": index / max(1, len(profile_z)),
+                "fraction_max": (index + 1) / max(1, len(profile_z)),
+                "face_count": profile_z[index],
+                "surface_area": z_area[index],
+                "center_z_min": None if z_min[index] == float("inf") else z_min[index],
+                "center_z_max": None if z_max[index] == float("-inf") else z_max[index],
+            }
+            for index in range(len(profile_z))
+        ],
+        "xy_face_bins": profile_xy,
+        "face_count": len(obj.data.polygons),
+        "high_region_centroid_stats": {
+            "threshold_fraction_z": 0.70,
+            "face_count": len(high_centers),
+            "bounds_min": list(high_minimum),
+            "bounds_max": list(high_maximum),
+            "mean": list(high_mean),
+            "z_decile_face_counts": high_face_counts,
+            "z_decile_bounds": {
+                str(decile): {
+                    "face_count": len(points),
+                    "bounds_min": [
+                        min(point.x for point in points),
+                        min(point.y for point in points),
+                        min(point.z for point in points),
+                    ],
+                    "bounds_max": [
+                        max(point.x for point in points),
+                        max(point.y for point in points),
+                        max(point.z for point in points),
+                    ],
+                    "mean": [
+                        sum(point.x for point in points) / len(points),
+                        sum(point.y for point in points) / len(points),
+                        sum(point.z for point in points) / len(points),
+                    ],
+                }
+                for decile, points in sorted(high_slices.items())
+                if points
+            },
+        },
+    }
+
+
+def _duplicate_spatial_region(
+    source: bpy.types.Object,
+    name: str,
+    keep_face,
+) -> Dict[str, Any]:
+    """Copy a fused mesh and retain only faces accepted by a bounded mask."""
+
+    data = source.data.copy()
+    region = bpy.data.objects.new(name, data)
+    _working_collection().objects.link(region)
+    region.matrix_world = source.matrix_world.copy()
+    region["chaosx_working"] = True
+    region["chaosx_creature_component"] = True
+    bm = bmesh.new()
+    bm.from_mesh(data)
+    bm.faces.ensure_lookup_table()
+    removed_faces = [face for face in bm.faces if not keep_face(source.matrix_world @ face.calc_center_median())]
+    if removed_faces:
+        bmesh.ops.delete(bm, geom=removed_faces, context="FACES")
+    bm.verts.ensure_lookup_table()
+    loose_vertices = [vertex for vertex in bm.verts if not vertex.link_faces]
+    if loose_vertices:
+        bmesh.ops.delete(bm, geom=loose_vertices, context="VERTS")
+    bm.to_mesh(data)
+    bm.free()
+    data.update()
+    region.hide_set(False)
+    return {
+        "object": region,
+        "removed_faces": len(removed_faces),
+        "kept_faces": len(data.polygons),
+        "geometry": geometry_metrics_for_object(region),
+    }
+
+
+def segment_creature_components(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Separate a provider creature into loose or explicitly spatial components."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    working = mesh_objects()
+    if not working:
+        raise RuntimeError("Creature segmentation found no working meshes.")
+    region_mode = str(payload.get("region_mode") or "loose").casefold()
+    if region_mode == "profile":
+        profiles = [_creature_spatial_profile(obj) for obj in working]
+        report_path = job / "blender" / "reports" / "creature_components.json"
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report = {
+            "blend": str(blend.relative_to(job)).replace("\\", "/"),
+            "checkpoint": None,
+            "source_working_objects": sorted(obj.name for obj in working),
+            "component_count": len(working),
+            "components": [_component_record(obj, index) for index, obj in enumerate(working)],
+            "spatial_profiles": profiles,
+            "method": "diagnostic polygon-centroid spatial profile; no geometry mutation",
+            "status": "profile_only",
+        }
+        report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        return report
+    before_names = {obj.name for obj in working}
+    spatial_mask_applied = False
+    spatial_mask = None
+    if region_mode in {"spatial_rider", "spatial_semantic"}:
+        if len(working) != 1:
+            raise RuntimeError("Spatial rider segmentation requires exactly one fused source mesh.")
+        source = working[0]
+        minimum, maximum = world_bounds([source])
+        dimensions = maximum - minimum
+        z_min_fraction = float(payload.get("rider_z_min_fraction", 0.72))
+        z_max_fraction = float(payload.get("rider_z_max_fraction", 1.0))
+        x_center_fraction = float(payload.get("rider_x_center_fraction", 0.5))
+        x_half_fraction = float(payload.get("rider_x_half_fraction", 0.38))
+        y_center_fraction = float(payload.get("rider_y_center_fraction", 0.5))
+        y_half_fraction = float(payload.get("rider_y_half_fraction", 0.42))
+        if not (0.0 <= z_min_fraction < z_max_fraction <= 1.0):
+            raise ValueError("Rider z fractions must satisfy 0 <= min < max <= 1.")
+        if x_half_fraction <= 0.0 or y_half_fraction <= 0.0:
+            raise ValueError("Rider spatial half-width fractions must be positive.")
+        x_center = minimum.x + dimensions.x * x_center_fraction
+        y_center = minimum.y + dimensions.y * y_center_fraction
+        z_min = minimum.z + dimensions.z * z_min_fraction
+        z_max = minimum.z + dimensions.z * z_max_fraction
+        x_half = dimensions.x * x_half_fraction
+        y_half = dimensions.y * y_half_fraction
+
+        def is_rider(center: Vector) -> bool:
+            return (
+                z_min <= center.z <= z_max
+                and abs(center.x - x_center) <= x_half
+                and abs(center.y - y_center) <= y_half
+            )
+
+        rider_name = str(payload.get("rider_object_name") or "elephant_rider_region")
+        body_name = str(payload.get("body_object_name") or "elephant_body_region")
+        if region_mode == "spatial_semantic":
+            def semantic_region(center: Vector) -> str:
+                if is_rider(center):
+                    return rider_name
+                fx = (center.x - minimum.x) / max(float(dimensions.x), 1e-9)
+                fy = (center.y - minimum.y) / max(float(dimensions.y), 1e-9)
+                fz = (center.z - minimum.z) / max(float(dimensions.z), 1e-9)
+                side = "left" if fx < 0.5 else "right"
+                if fy > 0.82 and 0.20 <= fz <= 0.68:
+                    return "tail"
+                if fy < 0.24 and fz < 0.30 and 0.28 <= fx <= 0.72:
+                    return "trunk_02"
+                if fy < 0.30 and 0.30 <= fz < 0.54 and 0.25 <= fx <= 0.75:
+                    return "trunk_01"
+                if fy < 0.34 and fz >= 0.48:
+                    return "head"
+                if fz < 0.52 and (fx < 0.38 or fx > 0.62):
+                    end = "front" if fy < 0.5 else "rear"
+                    section = "lower" if fz < 0.25 else "upper"
+                    return f"{end}_{side}_{section}"
+                if fz > 0.68 and 0.25 <= fy <= 0.78:
+                    return "howdah"
+                return body_name
+
+            semantic_names = [
+                rider_name,
+                body_name,
+                "head",
+                "trunk_01",
+                "trunk_02",
+                "tail",
+                "howdah",
+                "front_left_upper",
+                "front_left_lower",
+                "front_right_upper",
+                "front_right_lower",
+                "rear_left_upper",
+                "rear_left_lower",
+                "rear_right_upper",
+                "rear_right_lower",
+            ]
+            semantic_components = []
+            semantic_records = {}
+            for semantic_name in semantic_names:
+                record = _duplicate_spatial_region(
+                    source,
+                    semantic_name,
+                    lambda center, expected=semantic_name: semantic_region(center) == expected,
+                )
+                if record["kept_faces"]:
+                    semantic_components.append(record["object"])
+                    semantic_records[semantic_name] = {
+                        "faces": record["kept_faces"],
+                        "geometry": record["geometry"],
+                    }
+                else:
+                    bpy.data.objects.remove(record["object"], do_unlink=True)
+            if rider_name not in semantic_records or body_name not in semantic_records:
+                raise RuntimeError("Spatial semantic segmentation produced an empty rider or body region; adjust the explicit mask.")
+            rider = {"object": next(obj for obj in semantic_components if obj.name == rider_name), "kept_faces": semantic_records[rider_name]["faces"], "geometry": semantic_records[rider_name]["geometry"]}
+            body = {"object": next(obj for obj in semantic_components if obj.name == body_name), "kept_faces": semantic_records[body_name]["faces"], "geometry": semantic_records[body_name]["geometry"]}
+            components = semantic_components
+        else:
+            rider = _duplicate_spatial_region(source, rider_name, is_rider)
+            body = _duplicate_spatial_region(source, body_name, lambda center: not is_rider(center))
+            if rider["kept_faces"] == 0 or body["kept_faces"] == 0:
+                raise RuntimeError("Spatial rider segmentation produced an empty rider or body region; adjust the explicit mask.")
+            components = [rider["object"], body["object"]]
+        bpy.data.objects.remove(source, do_unlink=True)
+        spatial_mask_applied = True
+        spatial_mask = {
+            "region_mode": region_mode,
+            "rider_z_min_fraction": z_min_fraction,
+            "rider_z_max_fraction": z_max_fraction,
+            "rider_x_center_fraction": x_center_fraction,
+            "rider_x_half_fraction": x_half_fraction,
+            "rider_y_center_fraction": y_center_fraction,
+            "rider_y_half_fraction": y_half_fraction,
+            "rider_object": rider_name,
+            "body_object": body_name,
+            "rider_faces": rider["kept_faces"],
+            "body_faces": body["kept_faces"],
+            "rider_geometry": rider["geometry"],
+            "body_geometry": body["geometry"],
+            "semantic_regions": semantic_records if region_mode == "spatial_semantic" else None,
+        }
+    elif len(working) == 1:
+        target = working[0]
+        bpy.ops.object.select_all(action="DESELECT")
+        target.select_set(True)
+        bpy.context.view_layer.objects.active = target
+        bpy.ops.object.mode_set(mode="EDIT")
+        bpy.ops.mesh.select_all(action="SELECT")
+        bpy.ops.mesh.separate(type="LOOSE")
+        bpy.ops.object.mode_set(mode="OBJECT")
+    collection = _working_collection()
+    if not spatial_mask_applied:
+        components = [obj for obj in collection.objects if obj.type == "MESH"]
+    if not components:
+        raise RuntimeError("Creature segmentation produced no mesh components.")
+    for obj in components:
+        obj["chaosx_working"] = True
+        obj["chaosx_creature_component"] = True
+        obj.hide_set(False)
+    components.sort(key=lambda obj: _component_record(obj, 0)["volume_proxy"], reverse=True)
+    records = []
+    for index, obj in enumerate(components):
+        if not spatial_mask_applied:
+            obj.name = f"elephant_component_{index:03d}"
+        records.append(_component_record(obj, index))
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "source_working_objects": sorted(before_names),
+        "component_count": len(records),
+        "components": records,
+        "method": (
+            "explicit polygon-centroid spatial rider/semantic mask on a fused approved working mesh"
+            if spatial_mask_applied
+            else "Blender mesh separate by loose parts on the approved working mesh"
+        ),
+        "spatial_mask": spatial_mask,
+        "status": "review_required",
+    }
+    report_path = job / "blender" / "reports" / "creature_components.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
+def calibrate_creature_scale(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Scale the complete creature around its ground centre so the rider is infantry-sized."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    rider_names = [str(name) for name in payload.get("rider_component_names", [])]
+    if not rider_names:
+        raise RuntimeError("Creature scale calibration requires rider component names.")
+    target_runtime = float(payload["target_rider_runtime_height_m"])
+    entity_scale = float(payload.get("runtime_entity_scale", 0.8))
+    if target_runtime <= 0.0 or entity_scale <= 0.0:
+        raise RuntimeError("Creature scale calibration requires positive target and entity scale.")
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    working = mesh_objects()
+    by_name = {obj.name: obj for obj in working}
+    missing = sorted(set(rider_names) - set(by_name))
+    if missing:
+        raise RuntimeError(f"Rider component names were not found: {missing}")
+    rider_objects = [by_name[name] for name in rider_names]
+    rider_minimum, rider_maximum = world_bounds(rider_objects)
+    rider_source_height = float(rider_maximum.z - rider_minimum.z)
+    if rider_source_height <= 0.0:
+        raise RuntimeError("Rider component height is not positive.")
+    target_source_height = target_runtime / entity_scale
+    scale_factor = target_source_height / rider_source_height
+    all_minimum, all_maximum = world_bounds(working)
+    pivot = Vector(((all_minimum.x + all_maximum.x) * 0.5, (all_minimum.y + all_maximum.y) * 0.5, all_minimum.z))
+    scale_matrix = Matrix.Translation(pivot) @ Matrix.Scale(scale_factor, 4) @ Matrix.Translation(-pivot)
+    for obj in working:
+        obj.matrix_world = scale_matrix @ obj.matrix_world
+    bpy.context.view_layer.update()
+    for obj in working:
+        bpy.ops.object.select_all(action="DESELECT")
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    bpy.context.view_layer.update()
+    rider_minimum_after, rider_maximum_after = world_bounds(rider_objects)
+    final_minimum, final_maximum = world_bounds(working)
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "rider_components": rider_names,
+        "rider_source_height_before_m": rider_source_height,
+        "target_rider_source_height_m": target_source_height,
+        "target_rider_runtime_height_m": target_runtime,
+        "runtime_entity_scale": entity_scale,
+        "uniform_scale_factor": scale_factor,
+        "pivot": list(pivot),
+        "rider_source_height_after_m": float(rider_maximum_after.z - rider_minimum_after.z),
+        "rider_runtime_height_after_m": float(rider_maximum_after.z - rider_minimum_after.z) * entity_scale,
+        "final_bounds_min": list(final_minimum),
+        "final_bounds_max": list(final_maximum),
+        "final_dimensions": list(final_maximum - final_minimum),
+        "policy": "rider-calibrated-uniform-creature-scale-around-ground-centre",
+        "status": "pass" if abs(float(rider_maximum_after.z - rider_minimum_after.z) * entity_scale - target_runtime) <= 0.01 else "fail",
+    }
+    report_path = job / "blender" / "reports" / "creature_scale.json"
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if report["status"] != "pass":
+        raise RuntimeError("Rider runtime height did not meet the requested infantry calibration.")
+    return report
+
+
+def _creature_bone_name_for_component(
+    center: Vector,
+    dimensions: Vector,
+    bounds_minimum: Vector,
+    bounds_maximum: Vector,
+    rider_names: set[str],
+    object_name: str,
+    total_minimum: Vector,
+    total_maximum: Vector,
+) -> str:
+    semantic_object_names = {
+        "body",
+        "head",
+        "trunk_01",
+        "trunk_02",
+        "tail",
+        "howdah",
+        "front_left_upper",
+        "front_left_lower",
+        "front_right_upper",
+        "front_right_lower",
+        "rear_left_upper",
+        "rear_left_lower",
+        "rear_right_upper",
+        "rear_right_lower",
+    }
+    if object_name in semantic_object_names:
+        return object_name
+    if object_name == "elephant_body_region":
+        return "body"
+    total_dimensions = total_maximum - total_minimum
+    total_height = max(total_dimensions.z, 1e-6)
+    total_length = max(total_dimensions.y, 1e-6)
+    centre = (total_minimum + total_maximum) * 0.5
+    if object_name in rider_names or center.z > total_minimum.z + total_height * 0.86:
+        return "rider"
+    if center.z > total_minimum.z + total_height * 0.72 and dimensions.z < total_height * 0.35:
+        return "howdah"
+    if center.y < centre.y - total_length * 0.23:
+        if center.z > total_minimum.z + total_height * 0.45:
+            return "head"
+        return "trunk_02"
+    if center.y > centre.y + total_length * 0.25:
+        return "tail"
+    if center.z < total_minimum.z + total_height * 0.45 and dimensions.z < total_height * 0.55:
+        side = "left" if center.x < centre.x else "right"
+        end = "front" if center.y < centre.y else "rear"
+        return f"{end}_{side}_lower"
+    return "body"
+
+
+def _creature_bone_name_for_vertex(
+    world_position: Vector,
+    minimum: Vector,
+    maximum: Vector,
+    rider_names: set[str],
+    object_name: str,
+) -> str:
+    """Assign one deterministic semantic bone to a creature vertex.
+
+    The provider is a fused shell, so object-level rigid binding would leave
+    every leg, trunk, and tail action inert.  This spatial rigid weighting is
+    intentionally conservative: each vertex receives one full influence, with
+    body fallback at ambiguous seams.  It is a real skeletal rig, not a
+    transform-only animation substitute.
+    """
+
+    if object_name in rider_names:
+        return "rider"
+    dimensions = maximum - minimum
+    centre = (minimum + maximum) * 0.5
+    height = max(float(dimensions.z), 1e-6)
+    length = max(float(dimensions.y), 1e-6)
+    width = max(float(dimensions.x), 1e-6)
+    z_fraction = (world_position.z - minimum.z) / height
+    y_fraction = (world_position.y - centre.y) / length
+    x_fraction = (world_position.x - centre.x) / width
+    # Highest forward geometry is the head and trunk.  The trunk is divided
+    # into two bones to give attack/impact/deploy actions visible articulation.
+    if y_fraction < -0.23:
+        if z_fraction > 0.47:
+            return "head"
+        return "trunk_02"
+    if y_fraction < -0.10 and z_fraction > 0.44:
+        return "trunk_01"
+    # The rearward elevated geometry is the tail/harness area.
+    if y_fraction > 0.30 and z_fraction > 0.35:
+        return "tail"
+    if z_fraction > 0.70 and abs(x_fraction) < 0.28:
+        return "howdah"
+    # Legs are split into four quadrants, then upper/lower sections.  Use the
+    # wider body fallback for belly vertices so no thin sliver is assigned to a
+    # leg bone by accident.
+    if z_fraction < 0.43 and abs(x_fraction) > 0.16:
+        side = "left" if x_fraction < 0.0 else "right"
+        end = "front" if y_fraction < 0.0 else "rear"
+        if z_fraction < 0.22:
+            return f"{end}_{side}_lower"
+        return f"{end}_{side}_upper"
+    return "body"
+
+
+def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Create a bounded elephant armature and rigidly bind separated components to semantic bones."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    rider_names = {str(name) for name in payload.get("rider_component_names", [])}
+    weight_mode = str(payload.get("weight_mode") or "semantic").casefold()
+    if weight_mode not in {"semantic", "automatic_body", "automatic_semantic"}:
+        raise ValueError(f"Unsupported creature rig weight mode: {weight_mode}")
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    working = mesh_objects()
+    if not working:
+        raise RuntimeError("Creature rigging found no working meshes.")
+    existing = armatures()
+    for rig in existing:
+        bpy.data.objects.remove(rig, do_unlink=True)
+    minimum, maximum = world_bounds(working)
+    dimensions = maximum - minimum
+    centre = (minimum + maximum) * 0.5
+    height = max(dimensions.z, 1e-6)
+    length = max(dimensions.y, 1e-6)
+    width = max(dimensions.x, 1e-6)
+    armature_data = bpy.data.armatures.new("elephant_shared_base_armature")
+    rig = bpy.data.objects.new("elephant_shared_base_armature", armature_data)
+    _working_collection().objects.link(rig)
+    rig["chaosx_working"] = True
+    rig["chaosx_custom_creature_rig"] = True
+    bpy.context.view_layer.objects.active = rig
+    rig.select_set(True)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bones: Dict[str, bpy.types.EditBone] = {}
+
+    def add_bone(name: str, head: Vector, tail: Vector, parent: str | None = None) -> None:
+        bone = armature_data.edit_bones.new(name)
+        bone.head = head
+        bone.tail = tail
+        if parent:
+            bone.parent = bones[parent]
+            bone.use_connect = False
+        bones[name] = bone
+
+    z0 = minimum.z
+    add_bone("root", Vector((centre.x, centre.y, z0)), Vector((centre.x, centre.y, z0 + height * 0.18)))
+    add_bone("body", Vector((centre.x, centre.y, z0 + height * 0.38)), Vector((centre.x, centre.y, z0 + height * 0.68)), "root")
+    add_bone("neck", Vector((centre.x, minimum.y + length * 0.17, z0 + height * 0.62)), Vector((centre.x, minimum.y + length * 0.06, z0 + height * 0.79)), "body")
+    add_bone("head", Vector((centre.x, minimum.y + length * 0.06, z0 + height * 0.76)), Vector((centre.x, minimum.y - length * 0.12, z0 + height * 0.73)), "neck")
+    add_bone("trunk_01", Vector((centre.x, minimum.y - length * 0.10, z0 + height * 0.71)), Vector((centre.x, minimum.y - length * 0.22, z0 + height * 0.47)), "head")
+    add_bone("trunk_02", Vector((centre.x, minimum.y - length * 0.22, z0 + height * 0.47)), Vector((centre.x, minimum.y - length * 0.27, z0 + height * 0.16)), "trunk_01")
+    add_bone("tail", Vector((centre.x, maximum.y - length * 0.12, z0 + height * 0.56)), Vector((centre.x, maximum.y + length * 0.08, z0 + height * 0.48)), "body")
+    for end, y in (("front", minimum.y + length * 0.30), ("rear", maximum.y - length * 0.28)):
+        for side, x in (("left", centre.x - width * 0.30), ("right", centre.x + width * 0.30)):
+            upper = f"{end}_{side}_upper"
+            lower = f"{end}_{side}_lower"
+            add_bone(upper, Vector((x, y, z0 + height * 0.48)), Vector((x, y, z0 + height * 0.20)), "body")
+            add_bone(lower, Vector((x, y, z0 + height * 0.20)), Vector((x, y, z0 + height * 0.04)), upper)
+    add_bone("howdah", Vector((centre.x, centre.y, z0 + height * 0.75)), Vector((centre.x, centre.y, z0 + height * 0.90)), "body")
+    add_bone("rider", Vector((centre.x, centre.y, z0 + height * 0.88)), Vector((centre.x, centre.y, z0 + height * 1.08)), "howdah")
+    bpy.ops.object.mode_set(mode="OBJECT")
+    rig.show_in_front = True
+    armature_data.display_type = "BBONE"
+    records = []
+    rigid_semantic_objects = {
+        "elephant_body_region", "head", "trunk_01", "trunk_02", "tail", "howdah",
+        "front_left_upper", "front_left_lower", "front_right_upper", "front_right_lower",
+        "rear_left_upper", "rear_left_lower", "rear_right_upper", "rear_right_lower",
+    }
+    for obj in working:
+        obj_minimum, obj_maximum = world_bounds([obj])
+        obj_center = (obj_minimum + obj_maximum) * 0.5
+        for group in list(obj.vertex_groups):
+            obj.vertex_groups.remove(group)
+        groups = {
+            bone.name: obj.vertex_groups.new(name=bone.name)
+            for bone in armature_data.bones
+        }
+        counts: Dict[str, int] = {name: 0 for name in groups}
+        if weight_mode in {"automatic_body", "automatic_semantic"} and obj.name == "elephant_body_region":
+            bpy.ops.object.select_all(action="DESELECT")
+            obj.select_set(True)
+            rig.select_set(True)
+            bpy.context.view_layer.objects.active = rig
+            bpy.ops.object.parent_set(type="ARMATURE_AUTO")
+            for vertex in obj.data.vertices:
+                influence_map = {item.group: float(item.weight) for item in vertex.groups if item.weight > 0.0}
+                if weight_mode == "automatic_semantic":
+                    primary_name = _creature_bone_name_for_vertex(
+                        obj.matrix_world @ vertex.co,
+                        minimum,
+                        maximum,
+                        rider_names,
+                        obj.name,
+                    )
+                    primary_group = obj.vertex_groups.get(primary_name)
+                    influence_map = {group_index: weight * 0.30 for group_index, weight in influence_map.items()}
+                    if primary_group is not None:
+                        influence_map[primary_group.index] = influence_map.get(primary_group.index, 0.0) + 0.70
+                influences = sorted(influence_map.items(), key=lambda item: item[1], reverse=True)[:4]
+                total_weight = sum(weight for _, weight in influences)
+                keep = {group_index for group_index, _ in influences}
+                for group in obj.vertex_groups:
+                    if group.index not in keep:
+                        group.remove([vertex.index])
+                if total_weight > 0.0:
+                    for group_index, weight in influences:
+                        obj.vertex_groups[group_index].add([vertex.index], weight / total_weight, "REPLACE")
+            counts = {
+                group.name: sum(1 for vertex in obj.data.vertices if any(item.group == group.index and item.weight > 0.0 for item in vertex.groups))
+                for group in obj.vertex_groups
+            }
+            binding_policy = "blender_automatic_body_weights"
+        elif obj.name in rigid_semantic_objects or obj.name in rider_names:
+            bone_name = _creature_bone_name_for_component(
+                obj_center,
+                obj_maximum - obj_minimum,
+                obj_minimum,
+                obj_maximum,
+                rider_names,
+                obj.name,
+                minimum,
+                maximum,
+            )
+            if bone_name not in groups:
+                bone_name = "body"
+            groups[bone_name].add(list(range(len(obj.data.vertices))), 1.0, "REPLACE")
+            counts[bone_name] = len(obj.data.vertices)
+            binding_policy = "rigid_semantic_component"
+        else:
+            for vertex in obj.data.vertices:
+                world_position = obj.matrix_world @ vertex.co
+                bone_name = _creature_bone_name_for_vertex(
+                    world_position,
+                    minimum,
+                    maximum,
+                    rider_names,
+                    obj.name,
+                )
+                if bone_name not in groups:
+                    bone_name = "body"
+                groups[bone_name].add([vertex.index], 1.0, "REPLACE")
+                counts[bone_name] += 1
+            binding_policy = "spatial_semantic_weights"
+        modifier = next((item for item in obj.modifiers if item.type == "ARMATURE"), None)
+        if modifier is None:
+            modifier = obj.modifiers.new("CHAOSX_ELEPHANT_ARMATURE", "ARMATURE")
+        modifier.object = rig
+        world_matrix = obj.matrix_world.copy()
+        obj.parent = rig
+        obj.parent_type = "OBJECT"
+        obj.matrix_world = world_matrix
+        records.append(
+            {
+                "object": obj.name,
+                "bone": binding_policy,
+                "vertices": len(obj.data.vertices),
+                "vertex_group_counts": {name: count for name, count in counts.items() if count},
+            }
+        )
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "armature": rig.name,
+        "bones": [bone.name for bone in armature_data.bones],
+        "component_bindings": records,
+        "rider_components": sorted(rider_names),
+        "rig_map": "custom_elephant_semantic_bones_v1",
+        "requested_weight_mode": weight_mode,
+        "weight_policy": "one full influence per vertex; explicitly segmented semantic objects use rigid component bindings and rider remains distinct",
+        "status": "pass",
+    }
+    report_path = job / "blender" / "reports" / "creature_rig.json"
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
+def _action_delta(axis: str, degrees: float) -> Quaternion:
+    vector = {"x": Vector((1.0, 0.0, 0.0)), "y": Vector((0.0, 1.0, 0.0)), "z": Vector((0.0, 0.0, 1.0))}[axis]
+    return Quaternion(vector, math.radians(degrees))
+
+
+def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Author one semantic skeletal action for the custom creature rig."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    role = str(payload.get("action_role") or "").casefold()
+    action_name = safe_name(str(payload.get("action_name") or f"elephant_{role}"))
+    allowed_roles = {"idle", "move", "deploy", "supply_load", "attack", "impact"}
+    if role not in allowed_roles:
+        raise ValueError(f"Unsupported creature action role: {role}")
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError(f"Creature action authoring requires exactly one armature, found {len(rigs)}.")
+    rig = rigs[0]
+    rig.animation_data_create()
+    action = bpy.data.actions.get(action_name)
+    if action is not None:
+        bpy.data.actions.remove(action)
+    action = bpy.data.actions.new(action_name)
+    action.use_fake_user = True
+    rig.animation_data.action = action
+    if role == "idle":
+        frames = [0, 12, 24, 36, 48]
+    elif role == "move":
+        frames = [0, 6, 12, 18, 24]
+    elif role == "deploy":
+        frames = [0, 12, 24, 36]
+    elif role == "supply_load":
+        frames = [0, 10, 20, 30, 40]
+    elif role == "attack":
+        frames = [0, 8, 16, 24, 32]
+    else:
+        frames = [0, 6, 12, 18, 24]
+    scene = bpy.context.scene
+    scene.frame_start = frames[0]
+    scene.frame_end = frames[-1]
+    base = {
+        bone.name: (bone.location.copy(), bone.rotation_quaternion.copy())
+        for bone in rig.pose.bones
+    }
+
+    def phase(frame: int) -> float:
+        if role in {"idle", "move"}:
+            return math.sin(2.0 * math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
+        if role == "deploy":
+            return (frame - frames[0]) / max(frames[-1] - frames[0], 1)
+        if role == "supply_load":
+            return math.sin(math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
+        if role == "attack":
+            return math.sin(math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
+        return math.sin(math.pi * (frame - frames[0]) / max(frames[-1] - frames[0], 1))
+
+    keyed = 0
+    for frame in frames:
+        scene.frame_set(frame)
+        p = phase(frame)
+        for bone in rig.pose.bones:
+            location, rotation = base[bone.name]
+            bone.rotation_mode = "QUATERNION"
+            bone.location = location.copy()
+            bone.rotation_quaternion = rotation.copy()
+            if role == "idle":
+                if bone.name in {"body", "neck"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.05 * p)
+                if bone.name in {"trunk_01", "trunk_02"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.30 * p)
+            elif role == "move":
+                if bone.name == "body":
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.03 * p)
+                if bone.name in {"front_left_lower", "rear_right_lower"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.15 * p)
+                if bone.name in {"front_right_lower", "rear_left_lower"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.15 * p)
+                if bone.name in {"front_left_upper", "rear_right_upper"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.25 * p)
+                if bone.name in {"front_right_upper", "rear_left_upper"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.25 * p)
+                if bone.name in {"neck", "trunk_01", "trunk_02"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.10 * p)
+            elif role == "deploy":
+                if bone.name == "body":
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.05 * p)
+                if bone.name in {"neck", "head"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.20 * p)
+                if bone.name in {"trunk_01", "trunk_02"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.50 * p)
+            elif role == "supply_load":
+                if bone.name in {"neck", "head", "trunk_01", "trunk_02"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 1.00 * p)
+                if bone.name == "body":
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.05 * p)
+            elif role == "attack":
+                if bone.name in {"body", "neck", "head"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.10 * p)
+                if bone.name in {"trunk_01", "trunk_02"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -1.00 * p)
+                if bone.name in {"front_left_lower", "front_right_lower"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.15 * p)
+            elif role == "impact":
+                if bone.name in {"body", "neck", "head"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.04 * p)
+                if bone.name in {"trunk_01", "trunk_02"}:
+                    bone.rotation_quaternion = rotation @ _action_delta("x", 0.08 * p)
+                if bone.name.startswith("front_"):
+                    bone.rotation_quaternion = rotation @ _action_delta("x", -0.05 * p)
+            bone.keyframe_insert(data_path="location", frame=frame, group=bone.name)
+            bone.keyframe_insert(data_path="rotation_quaternion", frame=frame, group=bone.name)
+            keyed += 1
+    for fcurve, _ in action_fcurves(action):
+        for keyframe in fcurve.keyframe_points:
+            keyframe.interpolation = "LINEAR"
+    scene.frame_set(frames[0])
+    bpy.context.view_layer.update()
+    ground_samples = []
+    for frame in range(frames[0], frames[-1] + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        minimum, maximum = evaluated_world_bounds(mesh_objects())
+        ground_samples.append({"frame": frame, "ground_contact_z": float(minimum.z), "bounds_max_z": float(maximum.z)})
+    minimum_ground = min(item["ground_contact_z"] for item in ground_samples)
+    maximum_ground = max(item["ground_contact_z"] for item in ground_samples)
+    grounding_correction = {
+        "applied": False,
+        "root_bone": "body",
+        "epsilon_m": 0.001,
+        "maximum_translation_m": 0.0,
+        "samples_before": ground_samples,
+    }
+    root = rig.pose.bones.get("body")
+    if root is None:
+        raise RuntimeError("Creature action authoring requires the semantic body bone.")
+    # Ground every sampled frame with an explicit root translation channel.
+    # This preserves the authored rotations and avoids feet/underside sinking
+    # below the map plane after large elephant rotations.
+    for frame in range(frames[0], frames[-1] + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        current_minimum, _ = evaluated_world_bounds(mesh_objects())
+        # Treat one centimetre as the contact tolerance used by the report.
+        # Do not claim a lift when the semantic body channel cannot move the
+        # rigidly separated shell in Blender's evaluated armature; such a case
+        # remains visible as a failed contact sample instead of a silent fix.
+        correction = max(0.0, -float(current_minimum.z) - 0.01)
+        if correction:
+            # The semantic body bone is the common parent of the elephant's
+            # weighted branches.  Lift this one parent so the correction is
+            # represented once in the exported skeleton and is not multiplied
+            # down the child hierarchy.
+            root.location.z = base["body"][0].z + correction
+            root.keyframe_insert(data_path="location", index=2, frame=frame, group="body")
+            grounding_correction["applied"] = True
+            grounding_correction["maximum_translation_m"] = max(
+                float(grounding_correction["maximum_translation_m"]), correction
+            )
+        root.keyframe_insert(data_path="location", index=2, frame=frame, group="root")
+    for fcurve, _ in action_fcurves(action):
+        if fcurve.data_path.endswith(".location") and fcurve.array_index == 2:
+            for keyframe in fcurve.keyframe_points:
+                keyframe.interpolation = "LINEAR"
+            fcurve.update()
+    scene.frame_set(frames[0])
+    bpy.context.view_layer.update()
+    corrected_samples = []
+    for frame in range(frames[0], frames[-1] + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        current_minimum, current_maximum = evaluated_world_bounds(mesh_objects())
+        corrected_samples.append(
+            {
+                "frame": frame,
+                "ground_contact_z": float(current_minimum.z),
+                "bounds_max_z": float(current_maximum.z),
+            }
+        )
+    ground_samples = corrected_samples
+    minimum_ground = min(item["ground_contact_z"] for item in ground_samples)
+    maximum_ground = max(item["ground_contact_z"] for item in ground_samples)
+    grounding_correction["samples_after"] = ground_samples
+    grounding_correction["minimum_after_m"] = minimum_ground
+    grounding_correction["maximum_after_m"] = maximum_ground
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "armature": rig.name,
+        "action": action.name,
+        "role": role,
+        "frame_start": frames[0],
+        "frame_end": frames[-1],
+        "fps": scene.render.fps,
+        "loop": role in {"idle", "move"},
+        "keyed_bones": keyed,
+        "keyed_channels": keyed * 2,
+        "ground_contact": {
+            "minimum_z": minimum_ground,
+            "maximum_z": maximum_ground,
+            "sample_count": len(ground_samples),
+            "samples": ground_samples,
+        },
+        "grounding_correction": grounding_correction,
+        "policy": "blender-authored-semantic-skeletal-action-no-scale-channels",
+        "status": "pass" if minimum_ground >= -0.01 else "needs_grounding_review",
+    }
+    report_path = job / "blender" / "reports" / f"creature_action_{safe_name(role)}.json"
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
 def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
-    """Correct only the existing attack action's root contact, preserving body keys."""
+    """Correct one existing skeletal action's root contact, preserving body keys."""
 
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
@@ -2521,10 +3471,6 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     action_name = str(payload.get("action_name") or "")
     root_bone_name = str(payload.get("root_bone") or "Hips")
-    if "attack" not in action_name.casefold():
-        raise ValueError("Grounding correction is restricted to an attack action.")
-    if root_bone_name != "Hips":
-        raise ValueError("Grounding correction is restricted to the Hips root bone.")
 
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     rigs = armatures()
@@ -2543,7 +3489,7 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
             None,
         )
     if action is None:
-        raise RuntimeError(f"Requested attack action was not found: {action_name}")
+        raise RuntimeError(f"Requested action was not found: {action_name}")
     rig.animation_data.action = action
     root = rig.pose.bones.get(root_bone_name)
     if root is None:
@@ -2560,27 +3506,43 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     scene.frame_start = start
     scene.frame_end = end
 
-    # Add one Hips-Z key per integer frame so the correction cannot introduce
-    # an unmeasured Bezier overshoot between sparse provider keys.
+    # Blender pose-bone location channels use bone-local axes. Detect which
+    # local channel produces the strongest world-Z response, then key that
+    # channel at every integer frame so no sparse-key overshoot is introduced.
+    scene.frame_set(start)
+    bpy.context.view_layer.update()
+    baseline_minimum, _ = evaluated_world_bounds(meshes)
+    axis_responses = []
+    for axis_index in range(3):
+        original_axis_value = float(root.location[axis_index])
+        root.location[axis_index] = original_axis_value + 1.0
+        bpy.context.view_layer.update()
+        test_minimum, _ = evaluated_world_bounds(meshes)
+        root.location[axis_index] = original_axis_value
+        bpy.context.view_layer.update()
+        axis_responses.append(float(test_minimum.z - baseline_minimum.z))
+    correction_axis = max(range(3), key=lambda index: abs(axis_responses[index]))
+    if abs(axis_responses[correction_axis]) <= 1e-8:
+        raise RuntimeError("Grounding correction found no usable pose-location response on any local axis.")
     for frame in range(start, end + 1):
         scene.frame_set(frame)
         bpy.context.view_layer.update()
-        root.keyframe_insert(data_path="location", index=2, frame=frame, group=root_bone_name)
+        root.keyframe_insert(data_path="location", index=correction_axis, frame=frame, group=root_bone_name)
 
     z_path = f'pose.bones["{root_bone_name}"].location'
-    z_curve = next(
+    correction_curve = next(
         (
             fcurve
             for fcurve, _ in action_fcurves(action)
-            if fcurve.data_path == z_path and fcurve.array_index == 2
+            if fcurve.data_path == z_path and fcurve.array_index == correction_axis
         ),
         None,
     )
-    if z_curve is None or len(z_curve.keyframe_points) < end - start + 1:
-        raise RuntimeError("Grounding correction could not create the Hips Z action channel.")
-    for keyframe in z_curve.keyframe_points:
+    if correction_curve is None or len(correction_curve.keyframe_points) < end - start + 1:
+        raise RuntimeError("Grounding correction could not create the selected root location channel.")
+    for keyframe in correction_curve.keyframe_points:
         keyframe.interpolation = "LINEAR"
-    z_curve.update()
+    correction_curve.update()
 
     frame_records: List[Dict[str, Any]] = []
     max_correction = 0.0
@@ -2588,23 +3550,23 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     after_values: List[float] = []
 
     def write_root_z(frame: int, value: float) -> None:
-        root.location.z = value
-        root.keyframe_insert(data_path="location", index=2, frame=frame, group=root_bone_name)
-        z_curve.update()
+        root.location[correction_axis] = value
+        root.keyframe_insert(data_path="location", index=correction_axis, frame=frame, group=root_bone_name)
+        correction_curve.update()
         bpy.context.view_layer.update()
 
     for frame in range(start, end + 1):
         scene.frame_set(frame)
         bpy.context.view_layer.update()
         before_minimum, _ = evaluated_world_bounds(meshes)
-        original_value = float(root.location.z)
+        original_value = float(root.location[correction_axis])
         test_step = 1.0
         write_root_z(frame, original_value + test_step)
         test_minimum, _ = evaluated_world_bounds(meshes)
         write_root_z(frame, original_value)
         derivative = float(test_minimum.z - before_minimum.z) / test_step
         if abs(derivative) <= 1e-8:
-            raise RuntimeError(f"Grounding correction found no usable Hips-Z response at frame {frame}.")
+            raise RuntimeError(f"Grounding correction found no usable root-Z response at frame {frame}.")
         correction = -float(before_minimum.z) / derivative
         write_root_z(frame, original_value + correction)
         after_minimum, _ = evaluated_world_bounds(meshes)
@@ -2629,6 +3591,8 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
         "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
         "action": action.name,
         "root_bone": root_bone_name,
+        "root_location_axis_index": correction_axis,
+        "root_location_axis_world_z_responses": axis_responses,
         "frame_start": start,
         "frame_end": end,
         "fps": scene.render.fps,
@@ -2643,7 +3607,7 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
             "maximum": max(after_values),
         },
         "action_preservation": {
-            "policy": "existing_attack_action_root_z_only",
+            "policy": "existing_action_root_z_only",
             "body_motion_replaced": False,
             "new_model_created": False,
             "new_rig_created": False,
@@ -2652,7 +3616,7 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
         "frames": frame_records,
         "status": "pass" if max(after_values) <= 0.001 and min(after_values) >= -0.001 else "fail",
     }
-    report_path = job / "blender" / "reports" / "correct_action_grounding.json"
+    report_path = job / "blender" / "reports" / f"correct_action_grounding_{safe_name(action.name)}.json"
     report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     if report["status"] != "pass":
         raise RuntimeError(
@@ -2672,9 +3636,14 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "texture_0.dds",
         "texture_specular.dds",
         "texture_normal.dds",
+        "elephant_shared_base_diff.dds",
+        "elephant_shared_base_spec.dds",
+        "elephant_shared_base_n.dds",
         "Image_0.dds",
         "Image_1.dds",
         "Image_2.dds",
+        "Image_3.dds",
+        "normal.dds",
     ):
         source = job / "textures" / "dds" / texture_name
         if not source.is_file():
@@ -2862,6 +3831,14 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return export_animation(req, pdx)
     if operation == "author_locomotion_action":
         return author_locomotion_action(req)
+    if operation == "segment_creature_components":
+        return segment_creature_components(req)
+    if operation == "calibrate_creature_scale":
+        return calibrate_creature_scale(req)
+    if operation == "author_creature_rig":
+        return author_creature_rig(req)
+    if operation == "author_creature_action":
+        return author_creature_action(req)
     if operation == "correct_action_grounding":
         return correct_action_grounding(req)
     if operation == "reimport_export":
