@@ -1,0 +1,288 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 NEUTRAL CUSTOM TECHNOLOGY API
+# ============================================================================
+# Public country-scope effects expose only the eighteen existing Event 016
+# custom technology IDs through selector variables. They never grant vanilla
+# technology, Event 016 project history, project facilities, opening units, or
+# stockpiles. External grant flags are a durable knowledge ledger: the Event
+# 016 runtime rebuild preserves them, recreates the matching capped locked
+# template, reopens matching custom-equipment production, and registers the
+# neutral Event 019 provider row.
+#
+# Public inputs:
+#   chaosx_grant_custom_operational_technology:
+#       chaosx_custom_technology_family = constant:chaosx_custom_technology_family.*
+#   chaosx_grant_custom_technology_upgrade:
+#       chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.*
+#   chaosx_grant_random_custom_operational_technology:
+#       no selector; chooses one unresearched operational family.
+# Public outputs:
+#   chaosx_custom_technology_grant_applied (temporary 0/1) for an operational
+#   grant; chaosx_custom_technology_upgrade_applied (temporary 0/1) for an
+#   upgrade grant; chaosx_custom_technology_random_grant_applied (temporary
+#   0/1) for the random effect. Invalid selectors are safe no-ops.
+# ============================================================================
+
+# COUNTRY scope. Internal core used by the public operational and upgrade
+# effects and by the runtime reapply helper. It deliberately does not rebuild
+# templates or providers so a compound upgrade grant rebuilds exactly once.
+chaosx_grant_custom_operational_technology_core = {
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.portal } }
+		if = { limit = { NOT = { has_tech = brilliant_scientist_portal_warfare_tech } } set_technology = { brilliant_scientist_portal_warfare_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_portal_operational
+		set_country_flag = chaosx_custom_technology_portal_warfare_granted
+		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.clone } }
+		if = { limit = { NOT = { has_tech = brilliant_scientist_clone_formations_tech } } set_technology = { brilliant_scientist_clone_formations_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_clone_operational
+		set_country_flag = chaosx_custom_technology_clone_formations_granted
+		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.robot } }
+		if = { limit = { NOT = { has_tech = brilliant_scientist_robot_formations_tech } } set_technology = { brilliant_scientist_robot_formations_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_robot_operational
+		set_country_flag = chaosx_custom_technology_robot_formations_granted
+		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.paleogenetic } }
+		if = { limit = { NOT = { has_tech = brilliant_scientist_paleogenetic_formations_tech } } set_technology = { brilliant_scientist_paleogenetic_formations_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_paleogenetic_operational
+		set_country_flag = chaosx_custom_technology_paleogenetic_formations_granted
+		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological } }
+		if = { limit = { NOT = { has_tech = brilliant_scientist_xenobiological_formations_tech } } set_technology = { brilliant_scientist_xenobiological_formations_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_xenobiological_operational
+		set_country_flag = chaosx_custom_technology_xenobiological_formations_granted
+		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.exotic } }
+		if = { limit = { NOT = { has_tech = brilliant_scientist_exotic_guard_tech } } set_technology = { brilliant_scientist_exotic_guard_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_exotic_operational
+		set_country_flag = chaosx_custom_technology_exotic_guard_granted
+		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.temporal } }
+		if = { limit = { NOT = { has_tech = brilliant_scientist_temporal_guard_tech } } set_technology = { brilliant_scientist_temporal_guard_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_temporal_operational
+		set_country_flag = chaosx_custom_technology_temporal_guard_granted
+		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
+	}
+}
+
+# COUNTRY scope. Grants one operational family and immediately reconciles the
+# existing Event 016 runtime consumers. No project-history flags are created.
+chaosx_grant_custom_operational_technology = {
+	set_temp_variable = { chaosx_custom_technology_grant_applied = 0 }
+	chaosx_grant_custom_operational_technology_core = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_custom_technology_grant_applied
+				value = 1
+				compare = greater_than_or_equals
+			}
+		}
+		brilliant_scientist_rebuild_project_force_runtime_package = yes
+	}
+}
+
+# COUNTRY scope. Grants one dependency-safe weaponization refinement or one
+# xenobiological control refinement. The operational family is always granted
+# first, so an upgrade can never orphan its static technology dependency.
+chaosx_grant_custom_technology_upgrade = {
+	set_temp_variable = { chaosx_custom_technology_upgrade_applied = 0 }
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.portal_weaponization } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.portal }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_portal_warfare_weaponization_tech } } set_technology = { brilliant_scientist_portal_warfare_weaponization_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_portal_warfare_weaponization_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.clone_weaponization } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.clone }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_clone_formations_weaponization_tech } } set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_clone_formations_weaponization_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.robot_weaponization } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.robot }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_robot_formations_weaponization_tech } } set_technology = { brilliant_scientist_robot_formations_weaponization_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_robot_formations_weaponization_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.paleogenetic_weaponization } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.paleogenetic }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_paleogenetic_formations_weaponization_tech } } set_technology = { brilliant_scientist_paleogenetic_formations_weaponization_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_paleogenetic_formations_weaponization_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.xenobiological_weaponization } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_xenobiological_formations_weaponization_tech } } set_technology = { brilliant_scientist_xenobiological_formations_weaponization_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_xenobiological_formations_weaponization_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.exotic_weaponization } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.exotic }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_exotic_guard_weaponization_tech } } set_technology = { brilliant_scientist_exotic_guard_weaponization_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_exotic_guard_weaponization_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.temporal_weaponization } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.temporal }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_temporal_guard_weaponization_tech } } set_technology = { brilliant_scientist_temporal_guard_weaponization_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_temporal_guard_weaponization_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.xeno_chemical_control } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_chemical_control_tech } } set_technology = { brilliant_scientist_xeno_chemical_control_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_xeno_control_chemical
+		set_country_flag = chaosx_custom_technology_xeno_chemical_control_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.xeno_neural_control } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_neural_control_tech } } set_technology = { brilliant_scientist_xeno_neural_control_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_xeno_control_neural
+		set_country_flag = chaosx_custom_technology_xeno_neural_control_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.xeno_machine_control } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_machine_control_tech } } set_technology = { brilliant_scientist_xeno_machine_control_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_xeno_control_machine
+		set_country_flag = chaosx_custom_technology_xeno_machine_control_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.xeno_researched_control } }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological }
+		chaosx_grant_custom_operational_technology_core = yes
+		if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_researched_control_tech } } set_technology = { brilliant_scientist_xeno_researched_control_tech = 1 popup = no } }
+		set_country_flag = chaosx_custom_technology_xeno_control_researched
+		set_country_flag = chaosx_custom_technology_xeno_researched_control_granted
+		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_custom_technology_upgrade_applied
+				value = 1
+				compare = greater_than_or_equals
+			}
+		}
+		brilliant_scientist_rebuild_project_force_runtime_package = yes
+	}
+}
+
+# COUNTRY scope. Chooses exactly one unresearched base operational family. A
+# zero-weight pool safely does nothing when every base family is already held.
+chaosx_grant_random_custom_operational_technology = {
+	set_temp_variable = { chaosx_custom_technology_random_grant_applied = 0 }
+	set_temp_variable = { chaosx_custom_technology_random_weight_portal = 0 }
+	set_temp_variable = { chaosx_custom_technology_random_weight_clone = 0 }
+	set_temp_variable = { chaosx_custom_technology_random_weight_robot = 0 }
+	set_temp_variable = { chaosx_custom_technology_random_weight_paleogenetic = 0 }
+	set_temp_variable = { chaosx_custom_technology_random_weight_xenobiological = 0 }
+	set_temp_variable = { chaosx_custom_technology_random_weight_exotic = 0 }
+	set_temp_variable = { chaosx_custom_technology_random_weight_temporal = 0 }
+	if = { limit = { NOT = { has_tech = brilliant_scientist_portal_warfare_tech } } set_temp_variable = { chaosx_custom_technology_random_weight_portal = constant:chaosx_custom_technology_tuning.random_candidate_weight } }
+	if = { limit = { NOT = { has_tech = brilliant_scientist_clone_formations_tech } } set_temp_variable = { chaosx_custom_technology_random_weight_clone = constant:chaosx_custom_technology_tuning.random_candidate_weight } }
+	if = { limit = { NOT = { has_tech = brilliant_scientist_robot_formations_tech } } set_temp_variable = { chaosx_custom_technology_random_weight_robot = constant:chaosx_custom_technology_tuning.random_candidate_weight } }
+	if = { limit = { NOT = { has_tech = brilliant_scientist_paleogenetic_formations_tech } } set_temp_variable = { chaosx_custom_technology_random_weight_paleogenetic = constant:chaosx_custom_technology_tuning.random_candidate_weight } }
+	if = { limit = { NOT = { has_tech = brilliant_scientist_xenobiological_formations_tech } } set_temp_variable = { chaosx_custom_technology_random_weight_xenobiological = constant:chaosx_custom_technology_tuning.random_candidate_weight } }
+	if = { limit = { NOT = { has_tech = brilliant_scientist_exotic_guard_tech } } set_temp_variable = { chaosx_custom_technology_random_weight_exotic = constant:chaosx_custom_technology_tuning.random_candidate_weight } }
+	if = { limit = { NOT = { has_tech = brilliant_scientist_temporal_guard_tech } } set_temp_variable = { chaosx_custom_technology_random_weight_temporal = constant:chaosx_custom_technology_tuning.random_candidate_weight } }
+
+	random_list = {
+		chaosx_custom_technology_random_weight_portal = {
+			set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.portal }
+			chaosx_grant_custom_operational_technology = yes
+			set_temp_variable = { chaosx_custom_technology_random_grant_applied = 1 }
+		}
+		chaosx_custom_technology_random_weight_clone = {
+			set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.clone }
+			chaosx_grant_custom_operational_technology = yes
+			set_temp_variable = { chaosx_custom_technology_random_grant_applied = 1 }
+		}
+		chaosx_custom_technology_random_weight_robot = {
+			set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.robot }
+			chaosx_grant_custom_operational_technology = yes
+			set_temp_variable = { chaosx_custom_technology_random_grant_applied = 1 }
+		}
+		chaosx_custom_technology_random_weight_paleogenetic = {
+			set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.paleogenetic }
+			chaosx_grant_custom_operational_technology = yes
+			set_temp_variable = { chaosx_custom_technology_random_grant_applied = 1 }
+		}
+		chaosx_custom_technology_random_weight_xenobiological = {
+			set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological }
+			chaosx_grant_custom_operational_technology = yes
+			set_temp_variable = { chaosx_custom_technology_random_grant_applied = 1 }
+		}
+		chaosx_custom_technology_random_weight_exotic = {
+			set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.exotic }
+			chaosx_grant_custom_operational_technology = yes
+			set_temp_variable = { chaosx_custom_technology_random_grant_applied = 1 }
+		}
+		chaosx_custom_technology_random_weight_temporal = {
+			set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.temporal }
+			chaosx_grant_custom_operational_technology = yes
+			set_temp_variable = { chaosx_custom_technology_random_grant_applied = 1 }
+		}
+	}
+}
+
+# COUNTRY scope. Re-applies only external-grant ledger entries after the
+# Event 016 runtime clear. This is called by the existing rebuild before it
+# defines templates; it does not create internal project-history flags.
+chaosx_reapply_custom_technology_grants = {
+	if = { limit = { has_country_flag = chaosx_custom_technology_portal_warfare_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.portal } chaosx_grant_custom_operational_technology_core = yes }
+	if = { limit = { has_country_flag = chaosx_custom_technology_clone_formations_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.clone } chaosx_grant_custom_operational_technology_core = yes }
+	if = { limit = { has_country_flag = chaosx_custom_technology_robot_formations_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.robot } chaosx_grant_custom_operational_technology_core = yes }
+	if = { limit = { has_country_flag = chaosx_custom_technology_paleogenetic_formations_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.paleogenetic } chaosx_grant_custom_operational_technology_core = yes }
+	if = { limit = { has_country_flag = chaosx_custom_technology_xenobiological_formations_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological } chaosx_grant_custom_operational_technology_core = yes }
+	if = { limit = { has_country_flag = chaosx_custom_technology_exotic_guard_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.exotic } chaosx_grant_custom_operational_technology_core = yes }
+	if = { limit = { has_country_flag = chaosx_custom_technology_temporal_guard_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.temporal } chaosx_grant_custom_operational_technology_core = yes }
+
+	if = { limit = { has_country_flag = chaosx_custom_technology_portal_warfare_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_portal_warfare_weaponization_tech } } set_technology = { brilliant_scientist_portal_warfare_weaponization_tech = 1 popup = no } } }
+	if = { limit = { has_country_flag = chaosx_custom_technology_clone_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_clone_formations_weaponization_tech } } set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 1 popup = no } } }
+	if = { limit = { has_country_flag = chaosx_custom_technology_robot_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_robot_formations_weaponization_tech } } set_technology = { brilliant_scientist_robot_formations_weaponization_tech = 1 popup = no } } }
+	if = { limit = { has_country_flag = chaosx_custom_technology_paleogenetic_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_paleogenetic_formations_weaponization_tech } } set_technology = { brilliant_scientist_paleogenetic_formations_weaponization_tech = 1 popup = no } } }
+	if = { limit = { has_country_flag = chaosx_custom_technology_xenobiological_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_xenobiological_formations_weaponization_tech } } set_technology = { brilliant_scientist_xenobiological_formations_weaponization_tech = 1 popup = no } } }
+	if = { limit = { has_country_flag = chaosx_custom_technology_exotic_guard_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_exotic_guard_weaponization_tech } } set_technology = { brilliant_scientist_exotic_guard_weaponization_tech = 1 popup = no } } }
+	if = { limit = { has_country_flag = chaosx_custom_technology_temporal_guard_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_temporal_guard_weaponization_tech } } set_technology = { brilliant_scientist_temporal_guard_weaponization_tech = 1 popup = no } } }
+	if = { limit = { has_country_flag = chaosx_custom_technology_xeno_chemical_control_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_chemical_control_tech } } set_technology = { brilliant_scientist_xeno_chemical_control_tech = 1 popup = no } } set_country_flag = chaosx_custom_technology_xeno_control_chemical }
+	if = { limit = { has_country_flag = chaosx_custom_technology_xeno_neural_control_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_neural_control_tech } } set_technology = { brilliant_scientist_xeno_neural_control_tech = 1 popup = no } } set_country_flag = chaosx_custom_technology_xeno_control_neural }
+	if = { limit = { has_country_flag = chaosx_custom_technology_xeno_machine_control_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_machine_control_tech } } set_technology = { brilliant_scientist_xeno_machine_control_tech = 1 popup = no } } set_country_flag = chaosx_custom_technology_xeno_control_machine }
+	if = { limit = { has_country_flag = chaosx_custom_technology_xeno_researched_control_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_xeno_researched_control_tech } } set_technology = { brilliant_scientist_xeno_researched_control_tech = 1 popup = no } } set_country_flag = chaosx_custom_technology_xeno_control_researched }
+}
