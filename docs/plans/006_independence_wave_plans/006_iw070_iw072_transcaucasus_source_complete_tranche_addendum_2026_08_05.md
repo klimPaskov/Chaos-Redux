@@ -2,13 +2,13 @@
 
 Date: 2026-08-05.
 
-Status: proposed bounded implementation tranche.
+Status: implemented and audited bounded implementation tranche.
 
 Owner: parent implementation agent, with package, focus, decision, localisation, and completion auditors required before admission.
 
 Decision: implement `IW-070` Armenia (`ARM`), `IW-071` Georgia (`GEO`), and `IW-072` Azerbaijan (`AZR`) as three independently attested Level 2 packages, then late-bind `FORM-16` Transcaucasian Federation to the installed `transcaucasia_unified` cosmetic identity.
 
-This addendum plans source work only and does not authorize gameplay or asset edits by the planner.
+This addendum records the accepted source implementation and its audit boundary. The package and FORM-16 gameplay files are now admitted; no new art assets were required.
 
 ## Why this is the next tranche
 
@@ -284,21 +284,21 @@ The design uses the short-lived 1917–1918 Transcaucasian Commissariat, Sejm, a
 
 The rapid collapse of the historical federation supports the three-consent rule, high risk, border-arbitration receipts, corridor proof, language settlement, army integration, and oil-revenue settlement rather than an easy map-painting decision.
 
-The package-specific problems use durable regional distinctions already accepted in the Event 006 research: Armenian mountain defense and diaspora legitimacy, Georgian mountain and Black Sea corridors, and Azerbaijani oil, rail, and Caspian security.
+The package-specific problems use durable regional distinctions already accepted in the Event 006 research: Armenian mountain defense and diaspora legitimacy, Georgian mountain and Black Sea corridors, and Azerbaijani oil, rail, and Caspian security. A failed or cancelled founding action also damages shared Recognition, Security, Network standing, and the former-host hostility and pressure ledgers.
 
 The historical connection is used as design inspiration rather than a claim that a stable 1936 federation was inevitable.
 
 ## Promotion rule and parent handoff
 
-This file remains in `docs/plans/006_independence_wave_plans/` until all three packages and `FORM-16` are implemented, audited, and accepted.
+This file remains in `docs/plans/006_independence_wave_plans/` as the implementation receipt for the admitted tranche.
 
-If accepted, merge the package contracts, exact mechanics, asset reuse, AI rules, and `FORM-16` restrictions into the relevant Event 006 country-package, formable, and AI/acceptance specs, then mark this addendum implemented or superseded.
+The package contracts, exact mechanics, asset reuse, AI rules, and `FORM-16` restrictions are merged into the current country-package, formable, and AI/acceptance documentation. Future changes must update those current surfaces rather than reopening this completed addendum.
 
-Do not run another improvement pass for `IW-070` through `IW-072` or `FORM-16` while this addendum is unresolved.
+Do not run another improvement pass for `IW-070` through `IW-072` or `FORM-16` without a new accepted addendum.
 
-Design problem: the best-researched coherent regional trio is fully scaffolded but still excluded by content attestation, and its accepted formable family has no executable adapter.
+Resolution: the best-researched coherent regional trio is admitted by content attestation, and its accepted formable family now has an executable adapter.
 
-Proposed expansion: three independent Level 2 Transcaucasus packages plus a unanimous, exact-anchor, vanilla-cosmetic `FORM-16` implementation.
+Implemented expansion: three independent Level 2 Transcaucasus packages plus a unanimous, exact-anchor, vanilla-cosmetic `FORM-16` implementation.
 
 Research basis: accepted Event 006 registries and bindings, installed region-06 planner source, installed force mapping, vanilla ARM/GEO/AZR histories and assets, vanilla Transcaucasian formable precedent, and the current completion audit.
 
@@ -308,4 +308,4 @@ Open questions: none are required to begin implementation, but any installed-sou
 
 Prior addendum unresolved: no prior standalone admission addendum for this trio or `FORM-16` was found.
 
-Promotion recommendation: keep this file in plans during implementation and promote accepted design facts into the Event 006 specs only after the independent package and formable audits pass.
+Promotion record: accepted design facts are now reflected in the current Event 006 package and formable documentation; this file remains as the dated implementation receipt.
