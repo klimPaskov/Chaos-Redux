@@ -130,4 +130,4 @@ The next improvement-loop pass should occur only after the release planner, orig
 
 ## Research closure addendum
 
-The package resolves the tag, package-identity, signature-country, sensitive-identity, and quote research. The 2026-07-14 reconciliation also records the installed-map and current-registry results. The exact `6001` recording-rights gate remains blocked. No broad mechanic expansion is recommended. The remaining work is explicit collision handling, rights-cleared asset production, implementation, and the required post-implementation audits.
+The package resolves the tag, package-identity, signature-country, sensitive-identity, and quote research. The 2026-07-14 reconciliation also records the installed-map and current-registry results. The exact `23` recording-rights gate remains blocked. No broad mechanic expansion is recommended. The remaining work is explicit collision handling, rights-cleared asset production, implementation, and the required post-implementation audits.

@@ -50,7 +50,7 @@ transactions, is maintained in
 | Formables require territory, politics, recognition, or league proof | Part 6 formation methods and discovery | Complete in source design | Implement readable requirements and staged integration |
 | A league or coalition can form among released countries | Part 6 network and league | Complete in source design | Implement faction, charter, goals, AI, and cleanup |
 | The league has goals, values, membership rules, and failure states | Part 6 | Complete in source design | Scripted GUI or decision presentation and AI equivalence |
-| A super-event marks league formation | Part 6, approved text research, corrected audio-rights research | Complete in source design, text research complete | Clear the exact `6001` recording rights before audio production or wiring, then produce the remaining package |
+| A super-event marks league formation | Part 6, approved text research, corrected audio-rights research | Complete in source design, text research complete | Clear the exact `23` recording rights before audio production or wiring, then produce the remaining package |
 | A second super-event marks a dangerous global milestone | Part 6 dangerous milestone, super-event prompt | Complete in source design | Select the qualifying milestone during implementation |
 | Ordinary waves do not receive super-events | Part 6 trigger thresholds | Complete in source design | Audit visibility flags and call sites |
 | The event has five evolutions | Part 2 | Complete in source design | Implement enable gates, MTTH, logging, and active actor updates |
@@ -68,7 +68,7 @@ transactions, is maintained in
 | Difficult achievements cover survival, league, formables, signature packages, and scenario play | Part 7 and achievement matrix | Implemented in bounded source and proof writers | Parent-wide completion audit and static proof/source matrix; live validation is optional future QA |
 | Event log, docs, catalog, and workbook alignment are planned | Part 7, catalog handoff, and dated direct comparison | Shared Event 6 mirror fields aligned | Recheck when player-facing localisation changes and finish parent-wide documentation |
 | Final player-facing text is direction-only in the source spec | All spec parts and prompts | Complete in source design | Implementation writes final localisation and runs text audit |
-| Final super-event titles, descriptions, buttons, quotes, and musical selections are sourced | Approved text research and corrected audio-rights research | Text complete, `6002` source verified, `6001` blocked | Preserve approved wording and attribution, do not process `6001` without clearance |
+| Final super-event titles, descriptions, buttons, quotes, and musical selections are sourced | Approved text research and corrected audio-rights research | Text complete, `24` source verified, `23` blocked | Preserve approved wording and attribution, do not process `23` without clearance |
 | Completion requires focused audits across all major surfaces | Part 7 acceptance and subagent briefs | Complete in source design | Run the named auditors after implementation |
 
 
@@ -82,8 +82,8 @@ transactions, is maintained in
 - [x] Broad and sensitive packages are converted into explicit automatic, conditional, formable, community-specific, or scenario outcomes.
 - [x] Both super-event text packages are sourced and approved.
 - [x] Both super-event musical selections and edit plans are recorded.
-- [x] The `6002` source and rights basis are verified.
-- [ ] The exact `6001` recording has United States redistribution clearance.
+- [x] The `24` source and rights basis are verified.
+- [ ] The exact `23` recording has United States redistribution clearance.
 - [x] The source register records core, regional, signature, sensitive-identity, quote, and audio sources.
 
 ## Dated reconciliation gates

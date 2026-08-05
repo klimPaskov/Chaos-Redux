@@ -90,7 +90,7 @@ The production prompt and research files contain two distinct approved packages:
    - Hosea 8:7 King James Version quote and attribution recorded
    - Tchaikovsky United States Marine Band recording, segment, rights basis, preserved source checksum, final path, and suggested audio ID recorded
 
-The two reserved OGG paths and IDs are distinct. Both selected edit plans use 110-second segments. Only `6002` has a cleared source and produced runtime derivative; `6001` remains blocked and absent.
+The two reserved OGG paths and IDs are distinct. Both selected edit plans use 110-second segments. Only `24` has a cleared source and produced runtime derivative; `23` remains blocked and absent.
 
 ## Package integrity checks
 
@@ -98,7 +98,7 @@ The two reserved OGG paths and IDs are distinct. Both selected edit plans use 11
 - All package text files decode as UTF-8.
 - Every path listed in the README exists.
 - The goal prompt remains inside the required 3,500 to 4,000 character range.
-- No package-disposition or quote-source placeholder remains. The later `6001` recording-rights verification is an explicit blocker, not a hidden source assumption.
+- No package-disposition or quote-source placeholder remains. The later `23` recording-rights verification is an explicit blocker, not a hidden source assumption.
 - New research prose avoids em dashes and semicolons.
 
 ## Remaining boundary
@@ -111,8 +111,8 @@ The remaining tasks are implementation, production, and explicit blocker resolut
 - Clausewitz implementation
 - final ordinary localisation
 - visual asset sourcing and generation
-- obtain rights clearance for the accepted `6001` recording, or ask the user before reopening selection
-- retain and audit the implemented `6002` derivative, trigger, history, and queued playback wiring
+- obtain rights clearance for the accepted `23` recording, or ask the user before reopening selection
+- retain and audit the implemented `24` derivative, trigger, history, and queued playback wiring
 - gameplay, AI, map, scenario, focus, decision, GUI, and super-event validation
 
 The map scan is complete for the 2026-07-14 snapshot and the tag architecture is locked for the 2026-07-15 scan universe. The scans must be repeated if the installed build or registries change. Adapter and overlay implementation remains unproven until gameplay files and route preservation are audited. No fallback recording is authorized.

@@ -4,7 +4,12 @@ Research completed: 2026-07-10
 
 Rights verification reconciled: 2026-07-14
 
-Two distinct musical selections remain accepted. Their recording-rights status is not equal. The exact `6001` London Brass Players recording is blocked for United States redistribution. The `6002` United States Marine Band source is verified on its stated United States federal public-domain basis and preserved locally. No substitute recording has been selected.
+Current identifier policy: the league package uses ordinary audio ID 23 and
+the dangerous package uses ordinary audio ID 24. Display slots and Event Log
+payloads use the matching numbers. Older four-digit references belong to dated
+research evidence only.
+
+Two distinct musical selections remain accepted. Their recording-rights status is not equal. The exact `23` London Brass Players recording is blocked for United States redistribution. The `24` United States Marine Band source is verified on its stated United States federal public-domain basis and preserved locally. No substitute recording has been selected.
 
 ## Super-event 1, league formation
 
@@ -24,9 +29,9 @@ Two distinct musical selections remain accepted. Their recording-rights status i
 
 **Edit plan:** Preserve the original source. Trim to the selected segment, apply a 1.5 second fade-in and 2 second fade-out, normalize loudness conservatively, and export as a 44.1 kHz stereo WAV.
 
-**Final path:** `sound/006_independence_wave/super_event_006_01_league_of_new_states.wav`
+**Final path:** `sound/006_independence_wave/super_event_23_league_of_new_states.wav` (reserved; not produced while the accepted recording is rights-blocked)
 
-**Suggested audio ID:** `6001`, subject to the implementation collision check.
+**Suggested audio ID:** `23`, subject to the implementation collision check.
 
 **Fit:** The brass and organ ceremonial character supports a treaty proclamation, public institution, and new diplomatic order without sounding like a victory march for one country.
 
@@ -52,9 +57,9 @@ Two distinct musical selections remain accepted. Their recording-rights status i
 
 **Edit plan:** Preserve the original source. Trim the final 110 seconds, apply a 1.5 second fade-in and 2 second fade-out, control the loudest peaks so the cue does not overwhelm the super-event UI, and export as a 44.1 kHz stereo WAV.
 
-**Final path:** `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
+**Final path:** `sound/006_independence_wave/super_event_24_every_border_a_casus_belli.wav`
 
-**Runtime audio ID:** `6002`; the implementation collision check found no conflicting super-event audio registration.
+**Runtime audio ID:** `24`; the implementation collision check found no conflicting super-event audio registration.
 
 **Fit:** The final escalation communicates organized military confidence and a widening war. It is reserved for the frightening coordinated threshold and cannot play for an ordinary release wave.
 
@@ -64,10 +69,10 @@ Two distinct musical selections remain accepted. Their recording-rights status i
 
 ## Production handoff status
 
-The cleared `6002` derivative has been produced from the preserved source, post-encode verified, and registered through the unique sound wrapper family. Its exact measurements and checksums are recorded in `../../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
-The dangerous-bloc firing effect submits audio ID `6002` and display slot 24 to
+The cleared `24` derivative has been produced from the preserved source, post-encode verified, and registered through the unique sound wrapper family. Its exact measurements and checksums are recorded in `../../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
+The dangerous-bloc firing effect submits audio ID `24` and display slot 24 to
 the shared settings-aware FIFO; the dispatcher assigns the ID when the entry
-becomes visible and calls the playback helper. `6001` remains unwired until its
+becomes visible and calls the playback helper. `23` remains unwired until its
 blocker is cleared. A different recording is not authorized without explicit
 user approval.
 

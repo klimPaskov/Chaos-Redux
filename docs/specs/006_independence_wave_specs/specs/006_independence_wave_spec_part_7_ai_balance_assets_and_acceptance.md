@@ -653,7 +653,7 @@ Confident, strange, revisionist, or frightening according to route. Avoid generi
 
 ### Completed research handoff
 
-The two final super-event text packages and musical selections are approved in `research/006_super_event_text_research.md` and `research/006_super_event_audio_research.md`. The corrected descriptions preserve the accepted triggers and tone. The `6002` United States Marine Band source is verified and preserved for production. The accepted `6001` London Brass Players recording is blocked for United States redistribution and must not be processed or wired without permission or a waiver. A replacement quote or recording requires explicit user approval and a new verified source note.
+The two final super-event text packages and musical selections are approved in `research/006_super_event_text_research.md` and `research/006_super_event_audio_research.md`. The corrected descriptions preserve the accepted triggers and tone. The `24` United States Marine Band source is verified and preserved for production. The accepted `23` London Brass Players recording is blocked for United States redistribution and must not be processed or wired without permission or a waiver. A replacement quote or recording requires explicit user approval and a new verified source note.
 
 ## Event log and catalog direction
 

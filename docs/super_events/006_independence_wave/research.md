@@ -1,18 +1,23 @@
 # Event 006 Independence Wave super-events
 
+Identifier policy (2026-08-05): Event 006 uses the ordinary project-wide
+super-event numbers 23 (The League of New States) and 24 (Every Border a Casus
+Belli) for display slots, audio IDs, and Event Log payloads. Older research
+handoffs may retain superseded internal identifiers for traceability only.
+
 Status: dangerous milestone runtime implemented; hidden-formable route wired but dormant; league-formation package blocked
 
 ## Runtime allocation
 
 | Package | Display slot | Audio ID | Runtime status |
 | --- | ---: | ---: | --- |
-| The League of New States | 23 | 6001 | Blocked and absent |
-| Every Border a Casus Belli | 24 | 6002 | Runtime implemented; hidden-formable route dormant |
+| The League of New States | 23 | 23 | Blocked and absent |
+| Every Border a Casus Belli | 24 | 24 | Runtime implemented; hidden-formable route dormant |
 
 Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID
-6002 is registered only as a zero-random-play super-event cue. Slot 23 and
-audio ID 6001 remain reserved but have no image dispatch, localisation
-dispatch, audio assets, wrapper definitions, or firing effect.
+Audio ID 24 is registered only as a zero-random-play super-event cue. Slot 23
+and audio ID 23 are reserved; their image and localisation dispatch are now
+registered, but the recording, wrappers, and firing effect remain blocked.
 
 Current package boundary (2026-08-01): the allocator admits fourteen packages
 across thirteen compatible reservation groups and fourteen distinct anchors,
@@ -31,7 +36,7 @@ The public package is fixed to the accepted design:
 - button: **They have sown the wind.**;
 - quote: Hosea 8:7, King James Version;
 - display sprite: `GFX_super_event_006_asset_006_revisionist_milestone`;
-- history payload: `6002` under Event 006;
+- history payload: `24` under Event 006;
 - audio: the final 110 seconds of Tchaikovsky's *1812 Overture, Op. 49*,
   United States Marine Band, conducted by Col. Jason K. Fettig, 26 May 2019,
   transcription by MGySgt Donald Patterson.
@@ -94,7 +99,7 @@ one action toward package 1's three-action gate.
 ## One-shot presentation and history
 
 The selected actor immediately receives the durable reason record. A separate
-Event 006 history row is appended with payload 6002; it is not a sixth Event 006
+Event 006 history row is appended with payload 24; it is not a sixth Event 006
 evolution and does not change the repeatable event's firing counter. Event Log
 title and detail branches use the accepted milestone wording.
 
@@ -124,8 +129,8 @@ worldwide CC0 waiver.
 
 | File | Profile | SHA-256 |
 | --- | --- | --- |
-| `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav` | Ogg Vorbis, 44.1 kHz stereo, 109.992517 s | `6B62C5AFA03E83C5BEB7D36E203E41BDC1EE51AEDD89269410A48BA0FCBC0DF0` |
-| `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav` | PCM S16LE, 44.1 kHz stereo, 109.992517 s | `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08` |
+| `sound/006_independence_wave/super_event_24_every_border_a_casus_belli.wav` | Ogg Vorbis, 44.1 kHz stereo, 109.992517 s | `6B62C5AFA03E83C5BEB7D36E203E41BDC1EE51AEDD89269410A48BA0FCBC0DF0` |
+| `sound/006_independence_wave/super_event_24_every_border_a_casus_belli.wav` | PCM S16LE, 44.1 kHz stereo, 109.992517 s | `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08` |
 
 The preserved source, exact interval, fades, loudness measurements, and wrapper
 identifiers are recorded in
@@ -135,17 +140,17 @@ identifiers are recorded in
 
 The accepted 1949 London Brass Players recording for **The League of New
 States** has no verified permission or waiver covering United States
-redistribution. No substitute is authorized. Audio ID 6001 and display slot 23
+redistribution. No substitute is authorized. Audio ID 23 and display slot 23
 therefore remain absent from runtime until the exact recording is cleared or
 the user approves a newly researched replacement.
 
 ### 2026-08-02 pending replacement research
 
-The accepted 6001 recording remains blocked and absent from runtime. A bounded
+The accepted audio-23 recording remains blocked and absent from runtime. A bounded
 audio-research pass documented John Philip Sousa's *Hands Across the Sea* (1899),
 performed by the United States Marine Band in 2018, as a possible replacement.
 The source has a documented U.S. federal public-domain basis and is preserved
-under `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_6001_audio_research_v101_2026_08_02.md`, but worldwide redistribution, tonal fit, phrase-safe trimming, and explicit selection approval remain open. No final WAV, sound definition, wrapper, catalogue entry, or runtime dispatch was created, and this candidate is not an implicit fallback.
+under `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_research_v113_2026_08_05.md`, but worldwide redistribution, tonal fit, phrase-safe trimming, and explicit selection approval remain open. No final WAV, sound definition, wrapper, catalogue entry, or runtime dispatch was created, and this candidate is not an implicit fallback.
 
 ## Primary implementation surfaces
 

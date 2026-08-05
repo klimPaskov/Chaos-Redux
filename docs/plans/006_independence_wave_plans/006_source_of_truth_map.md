@@ -8,13 +8,19 @@ The exact current boundary is 16 content-attested selectable packages out of 193
 
 The current central dispatcher has 25 adapter IDs, of which nine are adapter-only and fail closed: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. The unchanged 14-package static witness is evidence only and does not replace the 16-package attestation count.
 
-IW-014 CAT is admitted as a standalone vanilla-carrier package. IW-013 NAV and IW-015 GLC are source-wired but remain fail-closed pending independent identity, flag, grounded portrait, and country-package evidence. IW-030 MNT remains fail-closed on its grounded roster and source gates. FORM-07 remains fail-closed on its X-ending identity, flag family, member and territory contract, integration adapter, and readiness proof. Super-event `6001` remains incomplete and absent from runtime. No Event 006 advisor icons are required or authorized.
+IW-014 CAT is admitted as a standalone vanilla-carrier package. IW-013 NAV and IW-015 GLC are source-wired but remain fail-closed pending independent identity, flag, grounded portrait, and country-package evidence. IW-030 MNT remains fail-closed on its grounded roster and source gates. FORM-07 remains fail-closed on its X-ending identity, flag family, member and territory contract, integration adapter, and readiness proof. The League super-event (slot/audio `23`) remains incomplete and absent from runtime; no Event 006 advisor icons are required or authorized.
 
 Authority order for current routing is: accepted Event 006 specifications for design intent, the post-Iberian completion audit for whole-event evidence, the CAT standalone admission handoff for IW-014, the current NAV/GLC package and portrait-source handoffs for IW-013/IW-015, and the current MNT package/source handoffs for IW-030. This map and the resume packet summarize those authorities and do not override them.
 
 All earlier current-status paragraphs in this file that retain 14/13, 15/14, 178, 179, 23-adapter, or source-placeholder-completion arithmetic are dated traceability only and are superseded by this override.
 
 The earlier v106 and post-TRA completion evidence remain useful for their bounded static checks, but they are not the current package-count authority after the 2026-08-05 CAT admission and Iberian tranche.
+
+## Current super-event identifier override (2026-08-05)
+
+Event 006 uses ordinary project-wide super-event numbers for all active runtime identifiers. The League of New States package uses slot, audio ID, and Event Log history payload `23`; its image and text dispatch are registered, but its rights-cleared audio, sound wrappers, and firing package remain blocked. The Every Border a Casus Belli package uses slot, audio ID, and Event Log history payload `24`; its final WAV, base sound, wrappers, slot dispatch, presentation predicates, and queued playback are source-wired.
+
+Dated paragraphs below may retain the superseded four-digit research identifiers for traceability. They are historical evidence only and must not be used for current runtime wiring, localisation, sound, or Event Log registration.
 
 Pre-TRA standalone capacity witness (dated 2026-08-03): `subagent_handoffs/006_event6_14_package_static_witness_2026_08_03.md` records a source-backed fourteen-package frozen allocation from the pre-TRA admitted tranche. It remains static allocation evidence only. The current attestation authority is the 16-package CAT-inclusive set stated in the override above, and this witness does not claim live execution, package-wide readiness, or twenty-country capacity.
 

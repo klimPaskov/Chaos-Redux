@@ -8,7 +8,7 @@ Tag architecture alignment: 2026-07-15
 
 ## Completed scope
 
-The package identity, disposition, historical, and text research gates are closed. The exact `6001` recording-rights gate remains explicit.
+The package identity, disposition, historical, and text research gates are closed. The exact audio-23 recording-rights gate remains explicit; Event 006 uses ordinary super-event identifiers 23 and 24.
 
 - All **206** candidate packages have a resolved representation, tag or route policy, automatic-pool disposition, baseline state anchor or explicit no-anchor outcome, reservation group, modern political bridge, leadership rule, symbol rule, sensitivity rule, and source packet.
 - The tag audit resolves **102** packages as custom Event 6 countries, **91** as registered vanilla-tag reuses, and **13** as non-selectable vanilla route overlays. Every custom Event 6 tag is unique, collision-free in the accepted scan universe, and ends in `X`.
@@ -16,7 +16,7 @@ The package identity, disposition, historical, and text research gates are close
 - All ten Level 3 packages have signature dossiers.
 - Broad and community-sensitive packages have explicit automatic, conditional, formable, or scenario dispositions.
 - Both super-event text packages have final titles, descriptions, buttons, short sourced quotes, attribution, and copyright notes.
-- Both super-events have distinct musical selections, segment plans, final path direction, and suggested audio IDs. The exact `6001` London Brass Players recording is blocked for United States redistribution. The `6002` United States Marine Band source is verified and preserved.
+- Both super-events have distinct musical selections, segment plans, final path direction, and ordinary audio IDs. The audio-23 London Brass Players recording is blocked for United States redistribution. The audio-24 United States Marine Band source is verified and preserved.
 
 ## Candidate disposition totals
 
@@ -60,13 +60,13 @@ The following work remains:
 - implement and validate the thirteen exact additive overlay hooks without adding them to the release pool
 - writing Clausewitz country, state, focus, decision, AI, GUI, event, and localisation files
 - sourcing or producing final flags, portraits, icons, super-event images, and other visual assets
-- obtain permission or a waiver for the accepted `6001` recording, or ask the user before reopening selection
-- retain and re-audit the completed `6002` derivative, checksum, registries,
+- obtain permission or a waiver for the accepted audio-23 recording, or ask the user before reopening selection
+- retain and re-audit the completed audio-24 derivative, checksum, registries,
   slot-24 dispatch, and settings-aware FIFO wiring
 - live balance, map safety, AI, scenario, and UI validation
 - writing final localisation for ordinary event surfaces from the existing direction
 
-The map snapshot is complete for 2026-07-14 and the accepted tag architecture is locked for the 2026-07-15 scan universe. Identifier resolution does not mean that compatibility adapters or overlays are implemented. Those obligations, the two cross-group collision gates, and the `6001` recording right are explicit blockers, not permission to simplify the package.
+The map snapshot is complete for 2026-07-14 and the accepted tag architecture is locked for the 2026-07-15 scan universe. Identifier resolution does not mean that compatibility adapters or overlays are implemented. Those obligations, the two cross-group collision gates, and the audio-23 recording right are explicit blockers, not permission to simplify the package.
 
 ## Honest boundary
 
