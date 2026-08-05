@@ -4,25 +4,45 @@ Date: 2026-08-05
 
 Mode: read-only event completion audit of the current repository state.
 
+## Current-status override (2026-08-05; authoritative)
+
+IW-014 CAT is now admitted as a standalone source-complete vanilla-carrier package.
+
+The current content-attestation set is 16 packages across 15 compatible reservation groups, while the unchanged static standalone witness remains 14 packages.
+
+IW-013 NAV and IW-015 GLC remain source-wired but fail-closed because their independent source, identity, flag, portrait, country-package, and central-attestation gates are not complete.
+
+FORM-07 remains fail-closed because its X-ending identity, flag family, member and territory contract, integration adapter, and shared readiness proof remain open; CAT admission does not expose the formable branch.
+
+The pre-CAT body and dated evidence below are retained for traceability, but any 15-attestation, 14-group, 178-unattested, or CAT-adapter-only wording is superseded by this override and must not be used as current authority.
+
 ## Verdict
 
 **HOLD / PARTIAL.**
 
 The Event 006 shared coordinator, frozen allocator, dynamic value systems, registry API, event presentation, five evolutions, accepted one-tree focus framework, shared decisions and missions, and Statehood Ledger have substantial source implementation and current static evidence.
 
-The Iberian tranche does not change whole-event completion or executable package capacity.
+The CAT admission changes the executable package boundary from 15 to 16 attested packages and from 14 to 15 compatible reservation groups, but it does not change whole-event completion.
 
 IW-013 NAV and IW-015 GLC now have source-level setup, validation, cleanup, shared-focus assignment, package values, force handoff, decisions, ideas, AI, localisation, and central adapter branches.
 
-IW-014 CAT already has its dormant carrier package.
+IW-014 CAT is admitted through the central content-attestation gate as a standalone vanilla-carrier package.
 
-All three remain outside compile-time content attestation.
+NAV and GLC remain outside compile-time content attestation; FORM-07 remains a separate fail-closed formable surface.
 
-The exact executable boundary therefore remains 15 of 193 selectable non-overlay packages, with 178 unattested packages.
+The exact executable boundary is now 16 of 193 selectable non-overlay packages, with 177 unattested packages.
 
-There are now 25 central adapter IDs, of which 10 are adapter-only and fail closed.
+There are now 25 central adapter IDs, of which 9 are adapter-only and fail closed.
 
 No fallback, generic package substitute, source-placeholder completion claim, advisor icon requirement, or admission bypass is accepted by this audit.
+
+## 2026-08-05 follow-up evidence
+
+The current static checks were rerun after the CAT-inclusive authority and supported-effect corrections. `python -B .tools/audit_event6_allocator.py` passes 149 publishers, 126 automatic/high-chaos candidates, 138 SCN-008-ranked candidates, 16 attested packages, 15 compatible reservation groups, the 14-package static witness, and the 6/8/10/14/20 automatic ladder. `python -B .tools/audit_event6_flags.py --strict` passes all 102 registered Event 006 flag families, `python -B .tools/audit_event6_scenario_matrix.py` passes all 32 SCN-008 cells plus eight edge cases, and `python -B .tools/audit_event6_gui_matrix.py` passes the five Statehood Ledger tabs, frame families, cleanup variables, and static/animated sibling pairs.
+
+The current read-only MCP decision/mission probability receipt is `subagent_handoffs/006_event6_probability_inspect_current_2026_08_05.md`; it reports 10 decision candidates and 54 mission candidates with zero unresolved source diagnostics, while correctly leaving world-state pools incomplete. The supported-effect correction is recorded in `subagent_handoffs/006_event6_supported_effects_correction_2026_08_05.md` and commit `6d5504070`; the authority graph reconciliation is recorded in `subagent_handoffs/006_event6_authority_reconciliation_current_2026_08_05.md` and commits `bf35c7a4b`/`a88c026a0`.
+
+These receipts strengthen source and documentation evidence only. They do not promote any package, open FORM-07, complete 6001, add advisor icons, replace unresolved portraits/flags, or claim whole-event completion. No obsolete pasted runtime logs were used.
 
 ## Accepted authority and current-state method
 
@@ -37,6 +57,8 @@ No gameplay, asset, localisation, spreadsheet, or runtime file was changed by th
 No live testing was awaited or required under the accepted source and static-evidence authority.
 
 ## Completion status by surface
+
+The table below retains the pre-CAT admission surface snapshot; its count and CAT-admission wording is superseded by the current-status override above, while the non-count findings remain useful dated evidence.
 
 | Surface | Status | Current evidence | Remaining boundary |
 | --- | --- | --- | --- |
