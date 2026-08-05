@@ -1,0 +1,441 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-070/IW-071/IW-072 TRANSCAUCASUS TRIGGERS
+# ============================================================================
+# Exact carrier, anchor, roster, route, project, mission, force, and cleanup
+# contracts for the three vanilla Caucasus carriers. No trigger creates a tag
+# or substitutes a missing vanilla asset.
+# ============================================================================
+
+is_independence_wave_iw070_country = {
+	exists = yes
+	original_tag = ARM
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_070 }
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	has_country_flag = independence_wave_package_iw070_armenia
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+}
+
+is_independence_wave_iw071_country = {
+	exists = yes
+	original_tag = GEO
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_071 }
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	has_country_flag = independence_wave_package_iw071_georgia
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+}
+
+is_independence_wave_iw072_country = {
+	exists = yes
+	original_tag = AZR
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_072 }
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	has_country_flag = independence_wave_package_iw072_azerbaijan
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+}
+
+is_independence_wave_exact_package_iw_070_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = ARM
+}
+
+is_independence_wave_exact_package_iw_071_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = GEO
+}
+
+is_independence_wave_exact_package_iw_072_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = AZR
+}
+
+is_independence_wave_exact_package_iw_070_runtime_ready = {
+	is_independence_wave_iw070_country = yes
+	has_country_flag = independence_wave_iw070_setup_complete
+	has_country_flag = independence_wave_iw070_force_receipts_recorded
+	has_independence_wave_force_package_for_current_generation = yes
+	230 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 230 }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+}
+
+is_independence_wave_exact_package_iw_071_runtime_ready = {
+	is_independence_wave_iw071_country = yes
+	has_country_flag = independence_wave_iw071_setup_complete
+	has_country_flag = independence_wave_iw071_force_receipts_recorded
+	has_independence_wave_force_package_for_current_generation = yes
+	231 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 231 }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+}
+
+is_independence_wave_exact_package_iw_072_runtime_ready = {
+	is_independence_wave_iw072_country = yes
+	has_country_flag = independence_wave_iw072_setup_complete
+	has_country_flag = independence_wave_iw072_force_receipts_recorded
+	has_independence_wave_force_package_for_current_generation = yes
+	229 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 229 }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+}
+
+can_initialize_independence_wave_iw070_package = {
+	exists = yes
+	original_tag = ARM
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_070 }
+	check_variable = { independence_wave_region = constant:independence_wave_region.caucasus_anatolia_mesopotamia }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.regional }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.mountain_or_frontier }
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_anchor_state = { state = 230 is_owned_and_controlled_by = ROOT }
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	capital_scope = { state = 230 }
+}
+
+can_initialize_independence_wave_iw071_package = {
+	exists = yes
+	original_tag = GEO
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_071 }
+	check_variable = { independence_wave_region = constant:independence_wave_region.caucasus_anatolia_mesopotamia }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.regional }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.mountain_or_frontier }
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_anchor_state = { state = 231 is_owned_and_controlled_by = ROOT }
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	capital_scope = { state = 231 }
+}
+
+can_initialize_independence_wave_iw072_package = {
+	exists = yes
+	original_tag = AZR
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_072 }
+	check_variable = { independence_wave_region = constant:independence_wave_region.caucasus_anatolia_mesopotamia }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.regional }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.industrial_breakaway }
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_anchor_state = { state = 229 is_owned_and_controlled_by = ROOT }
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	capital_scope = { state = 229 }
+}
+
+has_independence_wave_iw070_command_roster = {
+	OR = {
+		has_country_leader = { ruling_only = no name = "Drastamat Kanayan" }
+		has_country_leader = { ruling_only = no name = "Hovhannes Kajaznuni" }
+		has_country_leader = { ruling_only = no name = "Grigor Harutyunyan" }
+	}
+}
+
+has_independence_wave_iw071_command_roster = {
+	OR = {
+		has_character = GEO_giorgi_kvinitadze
+		has_character = GEO_noe_zhordania
+		has_character = GEO_george_bagration
+	}
+}
+
+has_independence_wave_iw072_command_roster = {
+	OR = {
+		has_country_leader = { ruling_only = no name = "Mir Jafar Baghirov" }
+		has_country_leader = { ruling_only = no name = "Mammad Amin Rasulzade" }
+		has_country_leader = { ruling_only = no name = "Gara Garabeyov" }
+	}
+}
+
+has_independence_wave_transcaucasus_force_contract = {
+	has_country_flag = independence_wave_force_mapping_loaded
+	has_country_flag = independence_wave_force_package_applied
+	has_independence_wave_force_package_for_current_generation = yes
+	has_country_flag = independence_wave_reinforce_secure_depots
+	has_country_flag = independence_wave_reinforce_convert_defectors
+	has_country_flag = independence_wave_reinforce_terrain_units
+	has_country_flag = independence_wave_reinforce_professional_officers
+	check_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.expected_reinforcement_pathway_count }
+}
+
+has_independence_wave_iw070_force_contract = {
+	has_independence_wave_transcaucasus_force_contract = yes
+	has_country_flag = independence_wave_reinforce_regional_guards
+	NOT = { has_country_flag = independence_wave_reinforce_factory_rail_guards }
+	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_070 }
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mountain_frontier }
+	NOT = { has_country_flag = independence_wave_force_navy_inheritance_enabled }
+	has_country_flag = independence_wave_force_air_inheritance_enabled
+	has_independence_wave_iw070_command_roster = yes
+}
+
+has_independence_wave_iw071_force_contract = {
+	has_independence_wave_transcaucasus_force_contract = yes
+	has_country_flag = independence_wave_reinforce_regional_guards
+	NOT = { has_country_flag = independence_wave_reinforce_factory_rail_guards }
+	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_071 }
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mountain_frontier }
+	NOT = { has_country_flag = independence_wave_force_navy_inheritance_enabled }
+	has_country_flag = independence_wave_force_air_inheritance_enabled
+	has_independence_wave_iw071_command_roster = yes
+}
+
+has_independence_wave_iw072_force_contract = {
+	has_independence_wave_transcaucasus_force_contract = yes
+	NOT = { has_country_flag = independence_wave_reinforce_regional_guards }
+	has_country_flag = independence_wave_reinforce_factory_rail_guards
+	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_072 }
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors }
+	has_country_flag = independence_wave_force_navy_inheritance_enabled
+	has_country_flag = independence_wave_force_air_inheritance_enabled
+	has_independence_wave_iw072_command_roster = yes
+}
+
+has_independence_wave_transcaucasus_focus_contract = {
+	has_country_flag = independence_wave_full_focus_framework
+	has_country_flag = independence_wave_generic_focus_tree_assigned
+	has_focus_tree = independence_wave_focus_tree
+	check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+	has_country_flag = independence_wave_generic_ai_profile
+	has_country_flag = independence_wave_route_constitutional_available
+	has_country_flag = independence_wave_route_popular_council_available
+	has_country_flag = independence_wave_route_emergency_military_available
+	has_country_flag = independence_wave_route_patron_client_available
+	OR = {
+		AND = {
+			OR = { is_independence_wave_iw070_country = yes is_independence_wave_iw071_country = yes }
+			has_country_flag = independence_wave_route_traditional_available
+		}
+		AND = {
+			is_independence_wave_iw072_country = yes
+			NOT = { has_country_flag = independence_wave_route_traditional_available }
+		}
+	}
+	has_country_flag = independence_wave_ambition_family_registered
+	has_country_flag = independence_wave_formable_family_registered
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.transcaucasian_federation }
+}
+
+has_independence_wave_iw070_route_contract = {
+	is_independence_wave_iw070_country = yes
+	has_independence_wave_transcaucasus_focus_contract = yes
+	has_country_flag = independence_wave_iw070_route_set_complete
+}
+
+has_independence_wave_iw071_route_contract = {
+	is_independence_wave_iw071_country = yes
+	has_independence_wave_transcaucasus_focus_contract = yes
+	has_country_flag = independence_wave_iw071_route_set_complete
+}
+
+has_independence_wave_iw072_route_contract = {
+	is_independence_wave_iw072_country = yes
+	has_independence_wave_transcaucasus_focus_contract = yes
+	has_country_flag = independence_wave_iw072_route_set_complete
+}
+
+has_stable_independence_wave_iw070_settlement = {
+	is_independence_wave_iw070_country = yes
+	check_variable = { iw070_mountain_supply = constant:independence_wave_transcaucasus_value.stable_threshold compare = greater_than_or_equals }
+	check_variable = { iw070_civic_legitimacy = constant:independence_wave_transcaucasus_value.stable_threshold compare = greater_than_or_equals }
+	230 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 230 }
+}
+
+has_stable_independence_wave_iw071_settlement = {
+	is_independence_wave_iw071_country = yes
+	check_variable = { iw071_corridor_access = constant:independence_wave_transcaucasus_value.stable_threshold compare = greater_than_or_equals }
+	check_variable = { iw071_federal_mediation = constant:independence_wave_transcaucasus_value.stable_threshold compare = greater_than_or_equals }
+	231 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 231 }
+}
+
+has_stable_independence_wave_iw072_settlement = {
+	is_independence_wave_iw072_country = yes
+	check_variable = { iw072_oil_security = constant:independence_wave_transcaucasus_value.stable_threshold compare = greater_than_or_equals }
+	check_variable = { iw072_export_legitimacy = constant:independence_wave_transcaucasus_value.stable_threshold compare = greater_than_or_equals }
+	229 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 229 }
+}
+
+has_independence_wave_iw070_active_project = {
+	OR = {
+		has_decision = independence_wave_arm_reopen_yerevan_depots
+		has_decision = independence_wave_arm_integrate_mountain_garrisons
+		has_decision = independence_wave_arm_assemble_civic_mandate
+		has_decision = independence_wave_arm_arbitrate_transcaucasian_frontier
+	}
+}
+
+has_independence_wave_iw071_active_project = {
+	OR = {
+		has_decision = independence_wave_geo_restore_transcaucasian_rail
+		has_decision = independence_wave_geo_organize_mountain_command
+		has_decision = independence_wave_geo_balance_port_customs
+		has_decision = independence_wave_geo_host_border_conference
+	}
+}
+
+has_independence_wave_iw072_active_project = {
+	OR = {
+		has_decision = independence_wave_azr_guard_baku_oil_fields
+		has_decision = independence_wave_azr_restore_caspian_rail
+		has_decision = independence_wave_azr_negotiate_export_recognition
+		has_decision = independence_wave_azr_submit_corridor_guarantees
+	}
+}
+
+# The project UI must show and gate every material commitment that its
+# completion effect pays. These wrappers keep the shared safety floors and the
+# package-specific command/manpower/factory reserves in one auditable place.
+can_pay_independence_wave_iw070_depots_cost = {
+	can_pay_independence_wave_administration_standard_cost = yes
+	has_manpower > constant:independence_wave_transcaucasus_cost.administration_manpower_minimum
+	command_power > constant:independence_wave_transcaucasus_cost.arm_frontier_command_power_minimum
+	has_equipment = { train_equipment > constant:independence_wave_transcaucasus_cost.arm_frontier_trains }
+}
+
+can_pay_independence_wave_iw070_garrison_cost = {
+	can_pay_independence_wave_security_standard_cost = yes
+	has_manpower > constant:independence_wave_transcaucasus_cost.security_manpower_minimum
+	command_power > constant:independence_wave_transcaucasus_cost.arm_garrison_command_power_minimum
+	has_equipment = { infantry_equipment > constant:independence_wave_transcaucasus_cost.arm_garrison_infantry_minimum }
+	has_equipment = { support_equipment > constant:independence_wave_transcaucasus_cost.arm_frontier_support_minimum }
+}
+
+can_pay_independence_wave_iw070_civic_cost = {
+	political_power > constant:independence_wave_transcaucasus_cost.arm_civic_mandate_political_power_minimum
+	has_manpower > constant:independence_wave_transcaucasus_cost.arm_civic_manpower_minimum
+}
+
+can_pay_independence_wave_iw071_rail_cost = {
+	can_pay_independence_wave_administration_standard_cost = yes
+	has_manpower > constant:independence_wave_transcaucasus_cost.administration_manpower_minimum
+	command_power > constant:independence_wave_transcaucasus_cost.geo_rail_command_power_minimum
+	has_equipment = { train_equipment > constant:independence_wave_transcaucasus_cost.geo_rail_trains }
+}
+
+can_pay_independence_wave_iw071_command_cost = {
+	can_pay_independence_wave_security_standard_cost = yes
+	has_manpower > constant:independence_wave_transcaucasus_cost.security_manpower_minimum
+	command_power > constant:independence_wave_transcaucasus_cost.geo_command_command_power_minimum
+	has_equipment = { infantry_equipment > constant:independence_wave_transcaucasus_cost.geo_command_infantry_minimum }
+	has_equipment = { support_equipment > constant:independence_wave_transcaucasus_cost.geo_command_support_minimum }
+}
+
+can_pay_independence_wave_iw071_customs_cost = {
+	political_power > constant:independence_wave_transcaucasus_cost.geo_port_customs_political_power_minimum
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_transcaucasus_cost.geo_port_factory_minimum
+	command_power > constant:independence_wave_transcaucasus_cost.geo_customs_command_power_minimum
+}
+
+can_pay_independence_wave_iw072_oil_cost = {
+	can_pay_independence_wave_security_standard_cost = yes
+	has_manpower > constant:independence_wave_transcaucasus_cost.security_manpower_minimum
+	command_power > constant:independence_wave_transcaucasus_cost.azr_guard_command_power_minimum
+	has_equipment = { infantry_equipment > constant:independence_wave_transcaucasus_cost.azr_oil_infantry_minimum }
+	has_equipment = { support_equipment > constant:independence_wave_transcaucasus_cost.azr_oil_support_minimum }
+}
+
+can_pay_independence_wave_iw072_rail_cost = {
+	can_pay_independence_wave_administration_standard_cost = yes
+	has_manpower > constant:independence_wave_transcaucasus_cost.administration_manpower_minimum
+	command_power > constant:independence_wave_transcaucasus_cost.azr_rail_command_power_minimum
+	has_equipment = { train_equipment > constant:independence_wave_transcaucasus_cost.azr_rail_trains }
+}
+
+can_pay_independence_wave_iw072_export_cost = {
+	political_power > constant:independence_wave_transcaucasus_cost.azr_export_political_power_minimum
+	has_fuel > constant:independence_wave_transcaucasus_cost.azr_export_fuel
+	command_power > constant:independence_wave_transcaucasus_cost.azr_export_command_power_minimum
+}
+
+can_pay_independence_wave_transcaucasus_arbitration_cost = {
+	command_power > constant:independence_wave_transcaucasus_cost.arbitration_command_power_minimum
+	OR = {
+		has_equipment = { convoy > constant:independence_wave_transcaucasus_cost.arbitration_convoy_or_train_minimum }
+		has_equipment = { train_equipment > constant:independence_wave_transcaucasus_cost.arbitration_convoy_or_train_minimum }
+	}
+}
+
+has_independence_wave_form16_member_candidate = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		AND = { is_independence_wave_iw070_country = yes has_country_flag = independence_wave_iw070_founding_success has_country_flag = iw070_arbitration_receipt }
+		AND = { is_independence_wave_iw071_country = yes has_country_flag = independence_wave_iw071_founding_success has_country_flag = iw071_arbitration_receipt }
+		AND = { is_independence_wave_iw072_country = yes has_country_flag = independence_wave_iw072_founding_success has_country_flag = iw072_arbitration_receipt }
+	}
+}
+
+has_independence_wave_form16_all_members_live = {
+	ARM = { is_independence_wave_iw070_country = yes has_country_flag = independence_wave_iw070_founding_success has_country_flag = iw070_arbitration_receipt 230 = { is_owned_and_controlled_by = PREV } }
+	GEO = { is_independence_wave_iw071_country = yes has_country_flag = independence_wave_iw071_founding_success has_country_flag = iw071_arbitration_receipt 231 = { is_owned_and_controlled_by = PREV } }
+	AZR = { is_independence_wave_iw072_country = yes has_country_flag = independence_wave_iw072_founding_success has_country_flag = iw072_arbitration_receipt 229 = { is_owned_and_controlled_by = PREV } }
+}
+
+has_independence_wave_form16_member_peace = {
+	ARM = { NOT = { has_war = yes } }
+	GEO = { NOT = { has_war = yes } }
+	AZR = { NOT = { has_war = yes } }
+}
+
+has_independence_wave_form16_identity_clearance = {
+	NOT = { has_global_flag = form_transcaucasia_flag }
+	NOT = { has_global_flag = independence_wave_form16_transcaucasia_identity_in_use }
+	NOT = { any_country = { has_cosmetic_tag = transcaucasia_unified } }
+}
+
+has_independence_wave_form16_route_compatibility = {
+	OR = {
+		has_country_flag = independence_wave_route_constitutional_republic
+		has_country_flag = independence_wave_league_member
+	}
+}
+
+has_independence_wave_form16_anchor_control = {
+	230 = { is_owned_and_controlled_by = ROOT }
+	231 = { is_owned_and_controlled_by = ROOT }
+	229 = { is_owned_and_controlled_by = ROOT }
+}
+
+has_independence_wave_form16_arbitration_receipt = {
+	OR = { has_country_flag = iw070_arbitration_receipt has_country_flag = iw071_arbitration_receipt has_country_flag = iw072_arbitration_receipt }
+}
+
+has_independence_wave_form16_commit_proof = {
+	has_independence_wave_form16_all_members_live = yes
+	has_independence_wave_form16_member_peace = yes
+	has_independence_wave_form16_identity_clearance = yes
+	has_independence_wave_form16_route_compatibility = yes
+	has_country_flag = independence_wave_formable_mutation_prevalidated
+	has_country_flag = independence_wave_formable_territory_adapter_ready
+	has_country_flag = independence_wave_formable_member_policy_audited
+	has_country_flag = independence_wave_form16_readiness_receipt
+}

@@ -1,0 +1,27 @@
+# Event 006 Transcaucasus packages and FORM-16
+
+The Transcaucasus tranche adapts the vanilla ARM, GEO, and AZR carriers to the shared Independence Wave framework. The adapters never create a replacement tag and never overwrite vanilla history, portraits, or leader rosters. A release keeps State 230 for Armenia, State 231 for Georgia, and State 229 for Azerbaijan as the surviving capital anchor.
+
+The Region 06 planner reserves the exact tag and anchor before release. The central package dispatcher then calls the Transcaucasus setup, final-validation, and cleanup adapters. Setup records the immutable package ID, region, archetype, host target, two package ledgers, force mapping, the shared generic focus tree, route family, league route, and founding mission. A package cannot publish its setup receipt unless its current-generation force and focus contracts pass.
+
+Armenia tracks mountain supply and civic legitimacy. Georgia tracks corridor access and federal mediation. Azerbaijan tracks oil security and export legitimacy. Each carrier has a founding mission plus four costed projects that consume command power, manpower, Army Experience, political power, trains, fuel, infantry equipment, support equipment, and civilian construction capacity. Command- and political-power actions use explicit minimum-reserve thresholds in the shared Transcaucasus constants so a project cannot start when its payment would exhaust the package's operating reserve. Projects serialize against one another while the automatic founding mission runs in parallel, allowing the ledgers to reach the settlement threshold before the mission expires. Success publishes a founding receipt; failure or cancellation lowers both affected ledgers by the configured failure loss. The package ideas reflect the current ledger state and refresh after every change.
+
+The carriers share the full Event 006 focus tree. Armenia and Georgia expose constitutional, council, traditional, emergency, patron, host, ambition, league, and formable lanes. Azerbaijan exposes constitutional, council, emergency, patron, radical, host, ambition, league, and formable lanes while keeping the traditional lane closed.
+
+## FORM-16 contract
+
+FORM-16 is the researched Transcaucasian Federation registry family. It accepts only ARM, GEO, and AZR as exact members, requires each member's founding-success and arbitration receipts, requires all three anchors to remain owned and controlled, and requires peace plus a compatible constitutional or league route. Negotiated federation and league transformation use the generic congress and consent transaction. Human members receive an explicit generation-bound invitation reply; AI members must have a neighbor, faction, non-aggression pact, military-access, or guarantee connection to the carrier, be recognized, and not be in severe instability before they consent. The family adapter reserves the existing `transcaucasia_unified` cosmetic identity, transfers and cores only States 230, 231, and 229, ends only consenting member origins, and records identity, territory, integration, map, member-policy, connection, and rollback receipts.
+
+After formation, the federal charter tracks cohesion, transport integration, and revenue settlement. The carrier can choose Yerevan, Tbilisi, or Baku as the capital at a material political and command cost after post-formation initialization, then fund the language commission, unified rail command, Baku revenue settlement, and federal army standardization while all three anchor states remain under federal control. Cleanup removes all package and FORM-16 decisions, ideas, flags, variables, cosmetic identity, global identity, and transaction receipts, with generation checks preventing stale cleanup from touching a newer carrier.
+
+## Files and assets
+
+Gameplay tuning is centralized in `common/script_constants/006_independence_wave_transcaucasus_constants.txt`. Package effects and triggers live in `common/scripted_effects/006_independence_wave_transcaucasus_package_effects.txt` and `common/scripted_triggers/006_independence_wave_transcaucasus_package_triggers.txt`. FORM-16 effects and triggers live in `common/scripted_effects/006_independence_wave_form16_effects.txt` and `common/scripted_triggers/006_independence_wave_form16_triggers.txt`.
+
+Decision categories and decisions are defined in `common/decisions/categories/006_independence_wave_transcaucasus_categories.txt` and `common/decisions/006_independence_wave_transcaucasus_decisions.txt`. The human FORM-16 invitation reply is `events/006_independence_wave_form16_events.txt`. AI strategy is additive in `common/ai_strategy/006_independence_wave_transcaucasus.txt`. Ideas are defined in `common/ideas/006_independence_wave_transcaucasus_ideas.txt`, with player-facing text in `localisation/english/006_independence_wave_transcaucasus_l_english.yml`.
+
+No new portraits, flags, advisor icons, or other art assets are required. ARM, GEO, and AZR reuse their vanilla historical identity and flag surfaces. Existing shared Event 006 decision icons are used for government, force integration, arbitration, and formable actions.
+
+## Future extensions
+
+The three regional ledgers can later feed a dedicated Caucasus crisis incident or a researched patron network without changing the package contract. Any extension must preserve the exact anchor set, current-generation receipts, no-vanilla-overwrite rule, and FORM-16 rollback boundary.

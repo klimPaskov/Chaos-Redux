@@ -12,7 +12,7 @@ This addendum plans source work only and does not authorize gameplay or asset ed
 
 ## Why this is the next tranche
 
-The current Event 006 authority is 16 attested packages across 15 compatible reservation groups, while MNT, FIJ, and every other unaudited package remain fail-closed.
+The current Event 006 authority is 19 attested packages across 18 compatible reservation groups after this tranche, while MNT, FIJ, and every other unaudited package remain fail-closed.
 
 The three candidates already have registered vanilla tags, unique anchors and reservation groups, planner loaders, allocator weights, exact reservation publishers, SCN-008 ranking entries, force-profile rows, vanilla country histories, vanilla OOBs, registered leaders, registered portrait sprites, complete ideological flag triplets, and accepted high-confidence research rows.
 
@@ -110,7 +110,7 @@ The force setup must validate `regular_defectors`, cavalry and oil-security path
 
 Each founding mission succeeds only after its two local values reach the centralized stable thresholds, its anchor is owned and controlled, the capital remains on the anchor, and the package has no missing focus or force receipt.
 
-Mission success replaces the crisis idea with a stable package idea, raises the appropriate shared Recognition, Network, and Security outcomes through existing Event 006 helpers, and unlocks the package's border-arbitration action.
+Mission success replaces the crisis idea with a stable package idea, raises the appropriate shared Recognition, Network, and Security outcomes through existing Event 006 helpers, and unlocks the package's border-arbitration action. Paid project success scales those shared outcomes by minor, standard, or major project tier; failure or cancellation lowers Recognition and Security, raises Instability, and damages Network standing through the same helpers.
 
 Mission failure must apply a stronger crisis tier and shared hostility or dependency pressure without deleting the country, annexing territory, fabricating a leader, or silently selecting a patron.
 
@@ -132,7 +132,7 @@ Discovery requires a carrier on its federal or league-compatible route, all thre
 
 Identity clearance must also require the vanilla global `form_transcaucasia_flag` to be absent and the Event 006 global `independence_wave_form16_transcaucasia_identity_in_use` to be absent.
 
-`independence_wave_form16_register_readiness` writes readiness only after territory, identity, flag, member-policy, progression, and integration audits are all represented by explicit receipts.
+`independence_wave_form16_register_readiness` writes readiness only after territory, identity, flag, member-policy, progression, and integration audits are all represented by explicit receipts. It records a generation-bound connection receipt when every exact member has a controlled-border, faction, access, guarantee, or non-aggression connection to the carrier; this receipt is required for the post-formation AI gate.
 
 `independence_wave_formable_identity_adapter_16` applies `set_cosmetic_tag = transcaucasia_unified` only after shared mutation prevalidation and `has_independence_wave_form16_runtime_commit_proof` succeed.
 
@@ -140,7 +140,7 @@ Identity clearance must also require the vanilla global `form_transcaucasia_flag
 
 The carrier retains its pre-congress capital during commit, and the post-formation capital settlement decisions are `independence_wave_form16_confirm_yerevan_capital`, `independence_wave_form16_confirm_tbilisi_capital`, and `independence_wave_form16_confirm_baku_capital`.
 
-The capital choices are mutually exclusive, require ownership and control of all three anchors, and change only the capital and the federal-balance ledger.
+The capital choices are mutually exclusive, require post-formation initialization and ownership and control of all three anchors, and change only the federal capital.
 
 Post-formation integration uses `independence_wave_form16_federal_cohesion`, `independence_wave_form16_transport_integration`, and `independence_wave_form16_revenue_settlement`.
 
@@ -152,7 +152,7 @@ Rollback must clear the cosmetic only when the current transaction owns the iden
 
 The copied vanilla `form_transcaucasian_republic` decision must receive the same narrow Event 006-origin compatibility guard used for other reconciled vanilla formables, while ordinary vanilla and Event 5 formation behavior remains unchanged.
 
-No super-event is added for `FORM-16` in this tranche because the accepted registry marks it optional and `6001` still requires human audio selection and runtime wiring.
+No additional super-event is added for `FORM-16` in this tranche because the accepted registry marks it optional and the ordinary Event 006 super-event slots are already reserved for the two researched super-events.
 
 ## Exact implementation surfaces
 
@@ -212,7 +212,7 @@ At war, ARM and GEO prioritize mountain command and depot or rail survival, whil
 
 AI must not spend a decision cost when its equipment, train, fuel, political-power, or administration reserve would fall below the centralized safety floor.
 
-AI must not pursue `FORM-16` until all three exact members are present, peaceful, connected through faction, access, guarantee, non-aggression, or controlled border proof, and have published arbitration receipts.
+AI must not pursue `FORM-16` until all three exact members are present, peaceful, the carrier is on the constitutional or league route, and all three members have published arbitration receipts.
 
 AI must strongly reject the congress when route compatibility fails, a peer is at war with it, an anchor is occupied, a competing formable is active, or the identity clearance is blocked.
 
@@ -248,7 +248,7 @@ High willingness applies only after disputes are settled, matching the accepted 
 
 14. The focus-tree viewer verifies that all three carriers receive the existing shared full framework and no new tree, duplicate overlay, missing carrier, or invalid prerequisite is introduced.
 
-15. The decision and completion auditors accept costs, tooltips, cancellation, cleanup, AI, package independence, and `FORM-16` integration before content attestation is edited.
+15. The decision and completion auditors accept costs, tooltips, cancellation, cleanup, AI, package independence, human three-consent replies, member connection proof, and `FORM-16` integration before content attestation is edited.
 
 ## Assets and localisation
 
@@ -266,7 +266,7 @@ Localisation must name real player choices and visible state, must not expose im
 
 - Do not claim or unlock the 20-band.
 
-- Do not implement `6001`, `6002`, a `FORM-16` super-event, audio, or any user-run portrait work.
+- Do not add another super-event, audio, or any user-run portrait work in this tranche; the researched Event 006 super-events already use ordinary slots 23 and 24.
 
 - Do not create a new `X` tag because the accepted vanilla cosmetic identity is reused without adding a country tag.
 
