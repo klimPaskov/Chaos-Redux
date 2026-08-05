@@ -4,7 +4,7 @@ Date: 2026-05-29
 
 ## Scope
 
-Focus-tree-only audit and bounded patch for `common/national_focus/003_holy_realm.txt` against the non-Soviet Holy Realm focus requirements in `tmp/chaos_redux_multi_system_fix_spec.md`.
+Focus-tree-only audit and bounded patch for `common/national_focus/003_holy_realm.txt` against the non-Soviet Holy Realm focus requirements in `.tmp/chaos_redux_multi_system_fix_spec.md`.
 
 The worktree was already dirty before this audit, including `common/national_focus/003_holy_realm.txt`. This handoff only describes the bounded focus-file edits made in this pass.
 

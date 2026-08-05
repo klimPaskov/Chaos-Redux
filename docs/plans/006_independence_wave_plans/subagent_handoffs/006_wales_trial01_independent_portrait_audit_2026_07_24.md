@@ -130,7 +130,7 @@ Cornwallis-West overall disposition: `FAIL / export-only` because exact identity
 
 ## Validation performed
 
-- Ran `python -B tmp/verify_wales_audit_20260724.py` from the mod root.
+- Ran `python -B .tmp/verify_wales_audit_20260724.py` from the mod root.
 - The verifier recomputed package, prompt, master, crop, equality JSON, raw repaint, candidate, metadata, and review-sheet hashes; confirmed `decoded_crop_equal=True` for both packages; confirmed raw and candidate dimensions; and confirmed `candidate_requires_visual_approval` metadata.
 - Inspected master, crop, raw repaint, processed candidate, metadata-linked review sheet, and canonical role references at native size with `view_image`.
 - Read both identity-preserving prompts and confirmed their crop-only identity authority, role restrictions, and explicit anti-symmetrization and anti-moustache-drift instructions before judging the repaint.

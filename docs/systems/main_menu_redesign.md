@@ -2,7 +2,7 @@
 
 ## Overview
 
-The main menu is implemented through `interface/frontendmainview.gui` with assets registered in `interface/frontendmainviewbg.gfx`. The layout follows the style reference in `tmp/maxresdefault.jpg`: a full-screen background, a large centered mod logo that overlaps the lower overlay, and a wide lower menu panel with an about text on the left, main navigation in the middle, and the Discord community button on the right.
+The main menu is implemented through `interface/frontendmainview.gui` with assets registered in `interface/frontendmainviewbg.gfx`. The layout follows the style reference in `.tmp/maxresdefault.jpg`: a full-screen background, a large centered mod logo that overlaps the lower overlay, and a wide lower menu panel with an about text on the left, main navigation in the middle, and the Discord community button on the right.
 
 ## Structure
 

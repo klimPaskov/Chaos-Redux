@@ -2,7 +2,7 @@
 
 Date: 2026-05-29
 
-Scope: bounded decision/mission audit and patch for the non-Soviet Holy Realm items in `tmp/chaos_redux_multi_system_fix_spec.md`. Soviet collapse files and `common/national_focus/003_holy_realm.txt` were not edited.
+Scope: bounded decision/mission audit and patch for the non-Soviet Holy Realm items in `.tmp/chaos_redux_multi_system_fix_spec.md`. Soviet collapse files and `common/national_focus/003_holy_realm.txt` were not edited.
 
 ## Changed Files
 

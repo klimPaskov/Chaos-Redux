@@ -19,7 +19,7 @@ Audit date: 2026-07-28
 - Embedded ZIP archives containing tag-bearing surfaces: **1**.
 - Country-tag definitions parsed from embedded ZIP archives: **0**.
 - Alias/cosmetic/history/localisation/flag surfaces parsed from embedded ZIP archives: **10**.
-- Sibling local mod directories scanned: **17** (.agents, .codex, .git, .tools, .vscode, common, content_dump, docs, events, gfx, history, interface, localisation, music, paradox_wiki, sound, tmp).
+- Sibling local mod directories scanned: **17** (.agents, .codex, .git, .tools, .vscode, common, content_dump, docs, events, gfx, history, interface, localisation, music, paradox_wiki, sound, .tmp).
 - Sibling local mods containing country-tag or extended tag surfaces: **0**.
 - Literal country-tag definitions parsed from sibling local mods: **0**.
 - Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **0**.
