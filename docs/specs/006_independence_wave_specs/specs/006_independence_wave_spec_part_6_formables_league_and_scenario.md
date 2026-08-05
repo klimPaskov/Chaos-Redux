@@ -550,6 +550,10 @@ The formal league can use a faction when military cooperation becomes real. Its 
 
 ## League formation super-event
 
+Event 006 uses the ordinary project-wide super-event numbers 23 (league
+formation) and 24 (dangerous coordinated revisionism) for display slots, audio
+IDs, and Event Log payloads.
+
 A super-event fires when the first durable formal league is proclaimed.
 
 ### Trigger meaning
@@ -586,7 +590,7 @@ Final button: **Small states, one covenant.**
 
 Final quote excerpt: **“A general association of nations must be formed under specific covenants…”** Woodrow Wilson, Fourteen Points, Point XIV, 8 January 1918.
 
-Selected music: Jeremiah Clarke, **A Trumpet Voluntary**, London Brass Players recording. The selection and 110-second edit plan remain accepted, but the exact recording is blocked for United States redistribution. Do not process or wire audio ID `6001` without permission or a waiver. Reopening recording selection requires explicit user approval.
+Selected music: Jeremiah Clarke, **A Trumpet Voluntary**, London Brass Players recording. The selection and 110-second edit plan remain accepted, but the exact recording is blocked for United States redistribution. Do not process or wire audio ID `23` without permission or a waiver. Reopening recording selection requires explicit user approval.
 
 ### Image direction
 

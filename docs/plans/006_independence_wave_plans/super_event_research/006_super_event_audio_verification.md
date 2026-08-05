@@ -3,11 +3,11 @@
 Research date: 2026-07-14
 
 > Runtime reconciliation, 2026-07-16: this file preserves the original research
-> and identifier audit. Audio 6002 has since been produced, registered, and
+> and identifier audit. Audio 24 has since been produced, registered, and
 > wired through slot 24 and the settings-aware FIFO. Any statement below that
-> calls 6002 absent or future work is superseded by
+> calls 24 absent or future work is superseded by
 > `docs/super_events/006_independence_wave/research.md` and the final
-> production manifest. Audio 6001 remains blocked and absent from runtime.
+> production manifest. Audio 23 remains blocked and absent from runtime.
 
 This note independently verifies the two accepted Event 006 super-event recordings. It records source identity, rights evidence, preserved-source state, timing, technical measurements, audio identifiers, and the exact production/wiring handoff. It does not change the accepted music choices, process final WAV derivatives, or wire gameplay.
 
@@ -15,10 +15,10 @@ This note independently verifies the two accepted Event 006 super-event recordin
 
 | Audio ID | Super-event | Accepted recording | Rights verdict | Preserved source | Production state |
 | ---: | --- | --- | --- | --- | --- |
-| `6001` | The League of New States | Jeremiah Clarke, *A Trumpet Voluntary*, London Brass Players (1948 recording; 1949 release) | **Blocked.** The composition is public domain, but the exact recording is not cleared for United States redistribution. | Not downloaded | Do not process or wire |
-| `6002` | Every Border a Casus Belli | Tchaikovsky, *1812 Overture*, United States Marine Band (2019) | **Verified on the stated U.S. federal-government public-domain basis.** | Downloaded and checksum-verified | Final WAV produced and sound wrappers wired |
+| `23` | The League of New States | Jeremiah Clarke, *A Trumpet Voluntary*, London Brass Players (1948 recording; 1949 release) | **Blocked.** The composition is public domain, but the exact recording is not cleared for United States redistribution. | Not downloaded | Do not process or wire |
+| `24` | Every Border a Casus Belli | Tchaikovsky, *1812 Overture*, United States Marine Band (2019) | **Verified on the stated U.S. federal-government public-domain basis.** | Downloaded and checksum-verified | Final WAV produced and sound wrappers wired |
 
-The `6001` finding corrects the recording-rights conclusion in the accepted research without replacing the accepted selection. No substitute has been researched or proposed. The Event 006 two-track audio package therefore remains incomplete.
+The `23` finding corrects the recording-rights conclusion in the accepted research without replacing the accepted selection. No substitute has been researched or proposed. The Event 006 two-track audio package therefore remains incomplete.
 
 ## References and precedents consulted
 
@@ -32,12 +32,12 @@ Current Chaos Redux precedent was taken from:
 - `common/scripted_effects/chaosx_settings_effects.txt`
 
 At research time, the registered super-event audio surface topped out at ID
-`56`; neither 6001 nor 6002 was registered. That collision finding established
-both IDs as available. Audio 6002 is now registered. The unrelated
+`56`; neither 23 nor 24 was registered. That collision finding established
+both IDs as available. Audio 24 is now registered. The unrelated
 `priority = 6001` and `priority = 6002` values in `common/units/zombies.txt` are
 not audio identifiers and do not collide.
 
-## Audio ID 6001: The League of New States
+## Audio ID 23: The League of New States
 
 ### Recording identity
 
@@ -71,7 +71,7 @@ Accordingly:
 - no local SHA-256 exists;
 - no loudness or stream analysis was performed;
 - no final derivative or wrapper may be created from this recording;
-- no Event 006 implementation should set `global.current_super_event_audio_id = 6001` until the recording right is cleared.
+- no Event 006 implementation should set `global.current_super_event_audio_id = 23` until the recording right is cleared.
 
 Unblocking requires either explicit permission/waiver covering redistribution of this exact recording in the United States, or user approval to reopen selection research. The latter would be a replacement, so it has not been attempted here.
 
@@ -82,13 +82,13 @@ Unblocking requires either explicit permission/waiver covering redistribution of
 - Accepted fade-out: `2.000 s`, beginning at excerpt time `108.000 s`
 - Playback: one-shot; no loop
 - Reserved WAV path: `sound/006_independence_wave/super_event_006_01_league_of_new_states.wav`
-- Reserved audio ID: `6001`
+- Reserved audio ID: `23`
 
 Courtesy attribution to carry if the recording is later cleared:
 
 > Jeremiah Clarke, *A Trumpet Voluntary*; London Brass Players; Harry Mortimer, trumpet; Reginald Foort, organ; George Weldon, conductor; recorded 8 November 1948 and released on Columbia DX 1536 in 1949; source via the Public Domain Project and Wikimedia Commons; edited excerpt.
 
-## Audio ID 6002: Every Border a Casus Belli
+## Audio ID 24: Every Border a Casus Belli
 
 ### Recording identity and rights
 
@@ -165,7 +165,7 @@ The measured values are reproducible with the current preserved source and local
 Reserved final derivatives:
 
 - Runtime WAV: `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
-- Audio ID: `6002`
+- Audio ID: `24`
 - WAV delivery: PCM signed 16-bit little-endian, `44,100 Hz`, stereo
 
 The final WAV was produced in the implementation pass from the preserved source and exact accepted interval. Post-encode verification found `109.992517 s`, PCM signed 16-bit little-endian, 44.1 kHz stereo, `-18.00 LUFS`, `-4.27 dBTP`, `16.30 LU`, SHA-256 `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08`.
@@ -173,9 +173,9 @@ The final WAV was produced in the implementation pass from the preserved source 
 The full production record is in
 `docs/assets/006_independence_wave/super_events/audio/production_manifest.md`.
 
-## Implemented 6002 wiring record
+## Implemented 24 wiring record
 
-The current settings helper is already dynamic. `play_dynamic_super_event_sound` builds `chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]`. No helper rewrite is required for IDs `6001` or `6002`.
+The current settings helper is already dynamic. `play_dynamic_super_event_sound` builds `chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]`. No helper rewrite is required for IDs `23` or `24`.
 
 For each cleared audio ID, register the six established suffixes and volumes:
 
@@ -190,21 +190,21 @@ For each cleared audio ID, register the six established suffixes and volumes:
 
 For the verified cue, the required identifiers are:
 
-- sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
-- raw sound name: `chaosx_super_event_6002_track`;
-- sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
+- sound wrappers: `chaosx_super_event_24_sound_0_5` through `chaosx_super_event_24_sound_3_0`;
+- raw sound name: `chaosx_super_event_24_track`;
+- sound wrappers: `chaosx_super_event_24_sound_0_5` through `chaosx_super_event_24_sound_3_0`;
 - each sound wrapper should retain `max_audible = 1` and `max_audible_behaviour = fail` and should not enable looping.
 
-The implemented dangerous-milestone publisher submits audio ID 6002 and slot 24
+The implemented dangerous-milestone publisher submits audio ID 24 and slot 24
 to the settings-aware FIFO; its dispatcher assigns the ID immediately before
-the existing playback call. Do not register or fire the parallel 6001 audio
+the existing playback call. Do not register or fire the parallel 23 audio
 identifiers while its recording license is blocked.
 
 ## Remaining uncertainties and blockers
 
-1. Audio ID `6001` has no verified United States redistribution right for the accepted 1949 recording. This is a material blocker, not an attribution omission.
-2. Audio ID `6002` rests on the U.S. federal public-domain basis stated by Commons and used by current repository precedent; it is not accompanied by a worldwide CC0 waiver.
-3. The `6002` gameplay threshold submits the registered ID and slot 24 to the
+1. Audio ID `23` has no verified United States redistribution right for the accepted 1949 recording. This is a material blocker, not an attribution omission.
+2. Audio ID `24` rests on the U.S. federal public-domain basis stated by Commons and used by current repository precedent; it is not accompanied by a worldwide CC0 waiver.
+3. The `24` gameplay threshold submits the registered ID and slot 24 to the
    settings-aware FIFO; its dispatcher assigns the ID immediately before the
    playback call.
 4. No fallback, replacement, or substitute recording was used.

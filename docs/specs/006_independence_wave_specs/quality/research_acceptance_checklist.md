@@ -44,8 +44,8 @@ Implementation reconciliation: 2026-07-14
 - [x] League formation title, description, button, quote, and attribution are approved.
 - [x] Dangerous bloc title, description, button, quote, and attribution are approved.
 - [x] Two distinct musical selections, segment plans, final paths, and suggested audio IDs are documented.
-- [x] The `6002` United States Marine Band source, rights basis, checksum, and exact segment are verified.
-- [ ] The exact `6001` London Brass Players recording has United States redistribution clearance.
+- [x] The `24` United States Marine Band source, rights basis, checksum, and exact segment are verified.
+- [ ] The exact `23` London Brass Players recording has United States redistribution clearance.
 
 ## Remaining implementation checks
 
@@ -56,8 +56,8 @@ Implementation reconciliation: 2026-07-14
 - [ ] Implement and validate the thirteen exact additive overlay hooks without adding standalone countries.
 - [ ] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
 - [ ] Produce and document all final visual assets.
-- [ ] Obtain permission or a waiver for `6001`, or obtain user approval before reopening its recording selection.
-- [x] Trim, convert, checksum, and wire the verified `6002` source.
+- [ ] Obtain permission or a waiver for `23`, or obtain user approval before reopening its recording selection.
+- [x] Trim, convert, checksum, and wire the verified `24` source.
 - [ ] Validate release safety, AI, focus, decision, scenario, and super-event behavior in the implemented mod.
 
 The unchecked items are implementation, production, or explicit rights gates. No replacement recording or fallback package is authorized by this checklist.
