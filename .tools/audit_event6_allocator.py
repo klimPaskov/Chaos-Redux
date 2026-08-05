@@ -2,7 +2,7 @@
 """Audit the Event 006 anchor-first frozen-plan contract.
 
 This is a mechanical source audit. It does not simulate HOI4 or live map
-ownership; the static fourteen-package witness checks only the current source
+ownership; the static twenty-package witness checks only the current source
 bindings, attestation gate, and vanilla history needed for that witness.
 """
 
@@ -18,7 +18,28 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PUBLISHER_GLOB = "006_independence_wave_packages_region_*_effects.txt"
 OVERLAY_ONLY_IDS = {5, 22, 25, 35, 59, 85, 101, 102, 105, 156, 196, 197, 204}
-STATIC_14_WITNESS_IDS = {1, 2, 4, 6, 7, 8, 9, 10, 17, 18, 19, 23, 173, 184}
+STATIC_20_WITNESS_IDS = {
+	1,
+	2,
+	4,
+	6,
+	7,
+	8,
+	9,
+	10,
+	14,
+	17,
+	18,
+	19,
+	23,
+	33,
+	41,
+	70,
+	71,
+	72,
+	173,
+	184,
+}
 
 
 def read(relative: str) -> str:
@@ -190,7 +211,7 @@ def load_vanilla_owned_states(errors: list[str]) -> dict[str, set[int]]:
 	state_root = vanilla_root / "history" / "states"
 	if not state_root.is_dir():
 		errors.append(
-			"14-country static witness requires the installed vanilla history/states root: "
+			"20-country static witness requires the installed vanilla history/states root: "
 			+ str(state_root)
 		)
 		return {}
@@ -207,7 +228,7 @@ def load_vanilla_owned_states(errors: list[str]) -> dict[str, set[int]]:
 	return owned
 
 
-def validate_static_14_witness(
+def validate_static_20_witness(
 	binding_rows: list[dict[str, str]],
 	installed_reservation_rows: list[dict[str, str]],
 	attested_ids: list[int],
@@ -215,7 +236,7 @@ def validate_static_14_witness(
 	dispatch: str,
 	errors: list[str],
 ) -> dict[str, int]:
-	"""Validate one source-backed fourteen-package standalone allocation.
+	"""Validate one source-backed twenty-package standalone allocation.
 
 	This is deliberately a static acceptance witness, not a live-game
 	simulation. It proves that the currently admitted packages can be frozen
@@ -244,7 +265,7 @@ def validate_static_14_witness(
 	selected_anchors: set[int] = set()
 	selected_states: set[int] = set()
 	selected_tags: set[str] = set()
-	for package_id in sorted(STATIC_14_WITNESS_IDS):
+	for package_id in sorted(STATIC_20_WITNESS_IDS):
 		row = binding_by_id.get(package_id)
 		require(row is not None, f"IW{package_id:03d} static witness row is missing", errors)
 		if row is None:
@@ -355,8 +376,8 @@ def validate_static_14_witness(
 				f"static witness did not prefer surviving capital {capital} for {host}",
 				errors,
 			)
-	require(len(selected_anchors) == 14, f"static witness contains {len(selected_anchors)} anchors instead of 14", errors)
-	require(len(selected_tags) == 14, f"static witness contains {len(selected_tags)} tags instead of 14", errors)
+	require(len(selected_anchors) == 20, f"static witness contains {len(selected_anchors)} anchors instead of 20", errors)
+	require(len(selected_tags) == 20, f"static witness contains {len(selected_tags)} tags instead of 20", errors)
 	return protected_states
 
 
@@ -466,7 +487,7 @@ def main() -> int:
 			)
 		}
 	)
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 70, 71, 72, 173, 184}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 33, 41, 70, 71, 72, 173, 184}
 	require(
 		set(attested_ids) == expected_attested_ids,
 		"content-attestation set changed without updating the accepted Event 006 closure: "
@@ -508,8 +529,8 @@ def main() -> int:
 			attested_anchors[package_id] = int(anchor_match.group(1))
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
-			len(set(attested_groups.values())) == 18,
-			"accepted nineteen-package closure no longer exposes exactly eighteen compatible reservation groups: "
+			len(set(attested_groups.values())) == 20,
+			"accepted twenty-one-package closure no longer exposes exactly twenty compatible reservation groups: "
 		+ repr(attested_groups),
 		errors,
 		)
@@ -520,7 +541,7 @@ def main() -> int:
 		errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 19,
+			len(set(attested_anchors.values())) == 21,
 			"attested package anchors are not pairwise unique: " + repr(attested_anchors),
 		errors,
 	)
@@ -606,7 +627,7 @@ def main() -> int:
 			)
 
 	execution = read("common/scripted_effects/006_independence_wave_execution_effects.txt")
-	static_witness_protected_states = validate_static_14_witness(
+	static_witness_protected_states = validate_static_20_witness(
 		binding_rows,
 		installed_reservation_rows,
 		attested_ids,
@@ -928,7 +949,7 @@ def main() -> int:
 	print(f"- SCN-008 ranked selectable packages: {len(ranked_ids)}")
 	print(f"- attested packages: {len(attested_ids)}; compatible reservation groups: {len(set(attested_groups.values()))}")
 	print(
-		"- static standalone witness: 14 admitted packages; protected former-host states "
+		"- static standalone witness: 20 admitted packages; protected former-host states "
 		+ ", ".join(f"{host}={state_id}" for host, state_id in sorted(static_witness_protected_states.items()))
 	)
 	print("- RG-RHINE-SAAR pair capacity: 2 distinct packages (IW-008 anchor 51; IW-010 anchor 42)")
