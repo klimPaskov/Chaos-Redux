@@ -48,6 +48,35 @@ independence_wave_transcaucasus_frontier_survival = {
 	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_RESTRAINT }
 }
 
+# A functioning carrier that has not yet earned de-facto recognition still
+# needs an explicit founding posture. Keep it separate from reconstruction so
+# the AI does not fall back to the vanilla profile while the first settlement
+# receipt is pending.
+independence_wave_transcaucasus_foundation = {
+	allowed = {
+		OR = { original_tag = ARM original_tag = GEO original_tag = AZR }
+	}
+	enable = {
+		OR = {
+			is_independence_wave_iw070_country = yes
+			is_independence_wave_iw071_country = yes
+			is_independence_wave_iw072_country = yes
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_independence_wave_functioning_capacity = yes
+		NOT = { has_independence_wave_de_facto_recognition = yes }
+		NOT = { has_independence_wave_severe_instability = yes }
+		NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+		NOT = { has_country_flag = independence_wave_formable_active }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCUS_SURVIVAL_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCUS_SURVIVAL_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCUS_SURVIVAL_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCUS_SURVIVAL_INFRASTRUCTURE }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCUS_RESTRAINT }
+}
+
 independence_wave_transcaucasus_reconstruction = {
 	allowed = {
 		OR = { original_tag = ARM original_tag = GEO original_tag = AZR }
