@@ -2,10 +2,7 @@
 
 ## Super-event identifier policy
 
-Event 006 uses ordinary project-wide super-event numbers: slot/audio/history
-23 for The League of New States and 24 for Every Border a Casus Belli. Dated
-research notes may retain superseded internal identifiers for traceability, but
-current runtime source and active documentation use 23 and 24.
+Event 006 uses ordinary project-wide super-event numbers: slot/audio/history 23 for The League of New States and 24 for Every Border a Casus Belli. Dated research notes may retain superseded internal identifiers for traceability, but current runtime source and active documentation use 23 and 24.
 
 ## Purpose
 
@@ -25,13 +22,13 @@ The Africa priority-member route now consumes the Event 006-owned/Africa-overlap
 
 ## Current package-admission override (2026-08-05)
 
-The current whole-event authority is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md`. Event 006 remains **HOLD / PARTIAL**. The central execution boundary is 16 content-attested selectable packages out of 193 non-overlay rows, leaving 177 unattested rows, with 15 compatible reservation groups. The 16 admitted IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184.
+The current whole-event authority is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md`. Event 006 remains **HOLD / PARTIAL**. The central execution boundary is 16 content-attested selectable packages out of 193 non-overlay rows, leaving 177 unattested selectable packages across 15 compatible reservation groups. The 16 admitted IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184.
 
-IW-014 Catalonia (`CAT`) is admitted as a standalone vanilla-carrier package. IW-013 NAV, IW-015 GLC, and IW-030 MNT remain fail-closed pending their independent identity, source, flag, portrait, and package gates. IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM remain adapter-only and fail-closed. FORM-07 remains closed behind its X-ending identity, flag, member, territory, and readiness contract. Super-event `23` remains incomplete and absent from runtime. No Event 006 advisor icons are required or authorized.
+IW-014 Catalonia (`CAT`) is admitted as a standalone vanilla-carrier package. The current bounded package handoffs are `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md`, `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw013_iw015_iberian_package_current_audit_2026-08-05.md`, `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw030_mnt_package_audit_current_2026_08_05.md`, and `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw177_fij_package_audit_current_2026_08_05.md`. IW-013 NAV, IW-015 GLC, IW-030 MNT, and IW-177 FIJ remain fail-closed; IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, and IW-179 FSM remain adapter-only and fail-closed. FORM-07 remains closed behind its X-ending identity, flag, member, territory, and readiness contract. Super-event `23` has registered image/text dispatch but its rights-cleared audio, wrappers, and firing remain blocked; super-event `24` is source-wired with partial reachability under capacity and formable gates. No Event 006 advisor icons are required or authorized.
 
 Any later paragraph that still reports the pre-CAT 15-package/14-group boundary is dated traceability only and is superseded by this override. Static allocator, scenario, flag, GUI, and tag-audit evidence remains valid only at the counts stated by the current handoff; no live-game or obsolete pasted-log evidence is used.
 
-## Current package-admission override (2026-08-03)
+## Historical package-admission snapshot (2026-08-03; superseded 2026-08-05)
 
 IW-023 Transylvania (`TRA`) is now admitted after its independent source-local package audit and exact runtime/scenario dispatch wiring. The current exact compile-time set is fifteen packages across fourteen compatible reservation groups and fifteen distinct anchors: IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184. FORM-08 remains separately fail-closed for the accepted Vojvodina/Slavonia member, consent, and anchor proof. Any undated paragraph below that still says fourteen packages, thirteen groups, or fourteen anchors is superseded by this override; dated snapshots remain historical traceability only. The whole event is still HOLD / PARTIAL, with the doubled 14/20 bands, unadmitted package pool, asset/AI/balance work, FORM-08, and `23` rights remaining open.
 
@@ -43,7 +40,7 @@ The Statehood Ledger source-semantic receipt is `../../plans/006_independence_wa
 
 SCN-008 now has a non-live static acceptance receipt for all eight player-facing modes at four intensities, plus eight edge cases covering zero-ready and mixed readiness, anchor and Event 005 collisions, protected-host survival, repeated launches, former-host uniqueness, and alternate belligerence target/ledger alignment. The receipts are `../../plans/006_independence_wave_plans/subagent_handoffs/006_scn008_32_cell_static_acceptance_2026_08_02.md` and `../../plans/006_independence_wave_plans/subagent_handoffs/006_scn008_edge_case_static_matrix_2026_08_02.md`, checked by `.tools/audit_event6_scenario_matrix.py`. The failure-summary repair is recorded in `../../plans/006_independence_wave_plans/subagent_handoffs/006_scn008_failure_summary_ledger_repair_2026_08_02.md`; failed selections stay in the unavailable ledger with matching country scopes and reasons. They do not promote packages or claim 14/20 admitted capacity.
 
-## 2026-08-03 documentation continuation
+## 2026-08-03 dated documentation continuation (superseded 2026-08-05)
 
 The whole-event disposition remains **HOLD / PARTIAL**. This continuation records static evidence only and does not change the accepted specification, package attestation, readiness, catalog, gameplay, asset production, or runtime-wiring boundary.
 
@@ -55,7 +52,7 @@ The current ordinary-number audio handoff `../../plans/006_independence_wave_pla
 
 The ordinary-number handoff preserves the earlier CC0/public-domain *Defilier-Marsch* / Anker-Orchester candidate as research-only evidence. It is not selected, converted, wired, or treated as a fallback; parent approval, human listening, tonal fit, and composition-jurisdiction review remain required.
 
-## 2026-08-03 current authority continuation: v106, package gates, focus spacing, MNT, FSM, and portrait policy
+## 2026-08-03 dated authority continuation (superseded 2026-08-05): v106, package gates, focus spacing, MNT, FSM, and portrait policy
 
 Event 006 remains incomplete and active with a whole-event **HOLD / PARTIAL** disposition. This continuation is the current overview authority for the v106 static checks, the dated v105/v104/v103 underlying evidence, the TRA/FORM-08/MNT package gates, current CHU portrait source research, current FIJ package audit, focus inspection, IW-030 Montenegro, IW-179 FSM, the flag atlas, the grounded-portrait placeholder policy, and the rival-bloc gate repair. It does not change the accepted specification, package attestation, readiness, catalog, gameplay, asset production, runtime wiring, or live-validation boundary.
 
@@ -423,16 +420,9 @@ DM-57's sponsorship transaction uses the existing decision and route art. It int
 
 ## Dangerous milestone super-event
 
-`Every Border a Casus Belli` uses display slot 24, audio ID 24, and
-`GFX_super_event_006_asset_006_revisionist_milestone`. It is a one-shot OR
-across five factual predicates: a seven-member radical offensive league meeting the
-75 common-cause, 60 reserve, and three-action gates; an exact twenty-country
-Totalen Chaos or World Collapse wave that creates at least three distinct
-verified former-host border claims for armed or radical actors; at least three
-successful released-country declarations against former hosts in one accepted
-Maximum scenario batch; a hidden-high-chaos formable carried by the exact
-leader of a qualifying radical league; or three successfully committed
-league-backed DM-57 sponsorship contracts.
+Current runtime authority: ordinary super-event `24` is source-wired with final WAV, base sound, wrappers, slot dispatch, predicates, and queued playback, while reachability remains partial under capacity and formable gates. Ordinary super-event `23` has registered image/text dispatch, but rights-cleared audio, sound wrappers, and firing remain blocked; the older absent-from-runtime wording below is dated traceability only.
+
+`Every Border a Casus Belli` uses display slot 24, audio ID 24, and `GFX_super_event_006_asset_006_revisionist_milestone`. It is a one-shot OR across five factual predicates: a seven-member radical offensive league meeting the 75 common-cause, 60 reserve, and three-action gates; an exact twenty-country Totalen Chaos or World Collapse wave that creates at least three distinct verified former-host border claims for armed or radical actors; at least three successful released-country declarations against former hosts in one accepted Maximum scenario batch; a hidden-high-chaos formable carried by the exact leader of a qualifying radical league; or three successfully committed league-backed DM-57 sponsorship contracts.
 
 The slot, audio, wrappers, Event Log payload, settings-aware FIFO, and five factual predicates are implemented. Current reachability is partial: the hidden-formable predicate remains unavailable while FORM-48 has no complete admitted carrier/member set, and the twenty-country predicate has no currently admitted capacity path. The IW-008/IW-010 pair exception supports only the exact-ten route; the 14/20 bands remain source fail-closed because their admitted pool and reservation capacity are incomplete. FORM-42 remains fail-closed and no ordinary formable is accepted as a substitute. Live playback and player-owned achievement observation are optional future QA. Revisionist pressure is a visible scalar, while each completed high-chaos focus or qualifying league operation adds exactly one completed action to the separate three-action gate.
 

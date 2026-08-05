@@ -4,13 +4,15 @@
 
 The authoritative whole-event status is the read-only `subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md`, with the bounded package authorities listed below. Event 006 remains **HOLD / PARTIAL** and this map does not claim whole-event completion.
 
-The exact current boundary is 16 content-attested selectable packages out of 193 non-overlay rows, leaving 177 unattested selectable packages. The 16 attested IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184.
+The exact current boundary is 16 content-attested selectable packages out of 193 non-overlay rows, leaving 177 unattested selectable packages across 15 compatible reservation groups. The 16 attested IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-173, and IW-184.
 
 The current central dispatcher has 25 adapter IDs, of which nine are adapter-only and fail closed: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. The unchanged 14-package static witness is evidence only and does not replace the 16-package attestation count.
 
-IW-014 CAT is admitted as a standalone vanilla-carrier package. IW-013 NAV and IW-015 GLC are source-wired but remain fail-closed pending independent identity, flag, grounded portrait, and country-package evidence. IW-030 MNT remains fail-closed on its grounded roster and source gates. FORM-07 remains fail-closed on its X-ending identity, flag family, member and territory contract, integration adapter, and readiness proof. The League super-event (slot/audio `23`) remains incomplete and absent from runtime; no Event 006 advisor icons are required or authorized.
+IW-014 CAT is admitted as a standalone vanilla-carrier package. IW-013 NAV, IW-015 GLC, IW-030 MNT, and IW-177 FIJ remain fail-closed on their independent identity, flag, grounded portrait, source, and country-package gates. IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, and IW-179 FSM remain adapter-only and fail-closed. FORM-07 remains fail-closed on its X-ending identity, flag family, member and territory contract, integration adapter, and readiness proof. The League super-event (slot/audio `23`) has registered image/text dispatch but rights-cleared audio, wrappers, and firing remain blocked; super-event `24` is source-wired with partial reachability under capacity and formable gates. No Event 006 advisor icons are required or authorized.
 
-Authority order for current routing is: accepted Event 006 specifications for design intent, the post-Iberian completion audit for whole-event evidence, the CAT standalone admission handoff for IW-014, the current NAV/GLC package and portrait-source handoffs for IW-013/IW-015, and the current MNT package/source handoffs for IW-030. This map and the resume packet summarize those authorities and do not override them.
+Authority order for current routing is: accepted Event 006 specifications for design intent, the post-Iberian completion audit for whole-event evidence, the CAT standalone admission handoff for IW-014, the current NAV/GLC package and portrait-source handoffs for IW-013/IW-015, the current MNT package/source handoffs for IW-030, and the current FIJ package handoff for IW-177. This map and the resume packet summarize those authorities and do not override them.
+
+The latest bounded country-package authorities are `subagent_handoffs/006_iw030_mnt_package_audit_current_2026_08_05.md` for IW-030 MNT and `subagent_handoffs/006_iw177_fij_package_audit_current_2026_08_05.md` for IW-177 FIJ. Both supersede their 2026-08-03 package snapshots for current routing, while preserving the same fail-closed admission result.
 
 All earlier current-status paragraphs in this file that retain 14/13, 15/14, 178, 179, 23-adapter, or source-placeholder-completion arithmetic are dated traceability only and are superseded by this override.
 
@@ -74,7 +76,7 @@ The 2026-08-03 field-compatibility repair in commit `dcb35cf966993d1a34fc5516492
 
 <!-- Documentation reconciliation: the current allocator passes sixteen attested packages across fifteen compatible reservation groups and sixteen distinct admitted rows; allocator, crisis, registry, evolution, and ledger cores are source-closed; v67 Universal Former Hosts target uniqueness is implemented while Wars of Separation remains per-release; global completion remains open. -->
 
-## 2026-08-03 current authority continuation: v106, package gates, focus spacing, MNT, FSM, and portrait policy
+## 2026-08-03 dated authority continuation (superseded 2026-08-05): v106, package gates, focus spacing, MNT, FSM, and portrait policy
 
 Event 006 remains incomplete and active with a whole-event **HOLD / PARTIAL** disposition. This continuation is the current routing authority for the v106 source checks, the dated v105/v104/v103 underlying evidence, the TRA/FORM-08/MNT package gates, current CHU portrait source research, current FIJ package audit, current focus inspection, IW-030 Montenegro, IW-179 FSM, the flag atlas, the grounded-portrait placeholder policy, and the rival-bloc gate repair. It records static evidence only and does not change the accepted specification, package attestation, readiness, catalog, gameplay, asset production, runtime wiring, or live-validation boundary.
 
@@ -102,7 +104,7 @@ The current decision and mission narrow audit is `subagent_handoffs/006_event6_d
 
 Historical sourced portrait placeholders follow `subagent_handoffs/006_historical_portrait_placeholder_workflow_2026_08_03.md` and the row-level audit `subagent_handoffs/006_grounded_portrait_placeholder_audit_2026_08_03.md`: preserve the attributed original source and exact crop, perform deterministic `156x210` processing, complete an independent identity/crop/provenance audit, and then convert to DDS when authorized. No ImageGen repaint is required or permitted for this placeholder workflow unless the user explicitly requests that additional art pass. Use the current manifest status `source_placeholder`; the older `historical_source_placeholder` wording is retained only in dated evidence. This is a visual-provenance workflow rule, not a rights, runtime, package, attestation, or reachability promotion; fictional high-chaos generated portraits remain a separate rule set.
 
-## 2026-08-03 documentation continuation: flags, FIJ, and 6001
+## 2026-08-03 dated documentation continuation (superseded 2026-08-05): flags, FIJ, and 6001
 
 The whole-event status remains **HOLD / PARTIAL**. This continuation reconciles static documentation after the flag-atlas repair, the IW-177 FIJ audit closure, and the v110 `6001` research handoff; it does not change the accepted specification, package attestation, readiness, catalog, gameplay, asset-production, or runtime-wiring boundary.
 
@@ -412,6 +414,8 @@ The `chaosx_country_*` collection namespace in `common/collections/chaosx_countr
 
 ## Current state at a glance
 
+Current super-event row override (2026-08-05): active runtime identifiers are ordinary `23` and `24`. The League (`23`) image/text dispatch is registered but rights-cleared audio, sound wrappers, and firing remain blocked; Every Border (`24`) is source-wired with partial reachability under capacity and formable gates. Any four-digit super-event row below is dated traceability only.
+
 Current correction for the CAT rows below: the FORM-07 territory, route, consent, integration, rollback, and cleanup adapter is implemented and documented, and the NAV/GLC package setup, final-validation, and cleanup adapters are source-wired. Their identity/flag/portrait/source contracts and central attestation remain unresolved. The dated `subagent_handoffs/006_form07_iberian_adapter_implementation_2026-08-01.md` preserves the pre-adapter wording and its amendment records the current source surface; neither supersedes the identity/NAV/GLC holds or the fail-closed capacity boundary.
 
 In the table below, any unresolved live, in-game, save/load, runtime-consumer, or player-owned observation is optional future QA under the controlling acceptance authority. Required completion evidence remains static source/MCP inspection, transaction/source audits, asset audits, documentation reconciliation, catalog alignment, and the source-level predicates that gate package admission. The table retains dated audit wording where it is historical evidence, but no historical runtime-only hold blocks source/static completion.
@@ -609,6 +613,8 @@ described as absent:
 | Round-number progression and balance normalization | `879e511cc` and `006_round_number_balance_preflight_2026_07_15.md` |
 
 ## Asset and super-event boundary
+
+Current super-event identifier override (2026-08-05): use ordinary `23` for The League of New States and ordinary `24` for Every Border a Casus Belli in runtime and active documentation. The four-digit identifiers in older asset paragraphs are historical traceability only; current status is image/text registered but audio/wrappers/firing blocked for `23`, and source-wired with partial reachability for `24`.
 
 The authoritative current static asset ledger is
 `../../assets/006_independence_wave/manifest.md`. It records final static focus,
