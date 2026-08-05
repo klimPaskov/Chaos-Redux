@@ -38,6 +38,87 @@ on_actions = {
 		}
 	}
 
+	# Subject status changes alter the public Need and Concord accounting. These
+	# hooks refresh only the two countries involved in the engine callback; no
+	# recurring country or world scan is required.
+	on_puppet = {
+		effect = {
+			if = {
+				limit = { has_country_flag = utopia_manifesto_accepted }
+				utopia_manifesto_refresh_ledger = yes
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_refresh_ledger = yes }
+			}
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			if = {
+				limit = { has_country_flag = utopia_manifesto_accepted }
+				utopia_manifesto_refresh_ledger = yes
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_refresh_ledger = yes }
+			}
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			if = {
+				limit = { has_country_flag = utopia_manifesto_accepted }
+				utopia_manifesto_refresh_ledger = yes
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_refresh_ledger = yes }
+			}
+		}
+	}
+
+	on_subject_free = {
+		effect = {
+			if = {
+				limit = { has_country_flag = utopia_manifesto_accepted }
+				utopia_manifesto_refresh_ledger = yes
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_refresh_ledger = yes }
+			}
+		}
+	}
+
+	on_subject_autonomy_level_change = {
+		effect = {
+			if = {
+				limit = { has_country_flag = utopia_manifesto_accepted }
+				utopia_manifesto_refresh_ledger = yes
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_refresh_ledger = yes }
+			}
+		}
+	}
+
+	on_subject_annexed = {
+		effect = {
+			if = {
+				limit = { has_country_flag = utopia_manifesto_accepted }
+				utopia_manifesto_refresh_ledger = yes
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_refresh_ledger = yes }
+			}
+		}
+	}
+
 	# ROOT is the attacking side and FROM is the defending side.
 	on_war_relation_added = {
 		effect = {
