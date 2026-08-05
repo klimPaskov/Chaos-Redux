@@ -1,5 +1,7 @@
 # Event 006 super-event 6001 audio research v101
 
+> Superseded identifier note (2026-08-06): live Event 006 uses ordinary super-event ID 23 for League of New States. The legacy 6001 label is retained only for historical audit traceability.
+
 > **Superseded audio research candidate (2026-08-03):** v109 replaces this Marine Band 2018 candidate as the strongest current research record and preserves v101 as historical evidence. No candidate is approved or wired. Use `006_super_event_6001_audio_research_v109_2026_08_02.md` for current rights, provenance, jurisdiction, and tonal-fit routing.
 
 Research date: 2026-08-02.

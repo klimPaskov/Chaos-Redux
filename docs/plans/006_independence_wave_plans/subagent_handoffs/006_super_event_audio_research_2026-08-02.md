@@ -1,5 +1,7 @@
 # Event 006 super-event 6001 audio rights decision
 
+> Superseded identifier note (2026-08-06): live Event 006 uses ordinary super-event ID 23 for League of New States and ID 24 for Every Border a Casus Belli. Any legacy 6001/6002 labels below are historical audit references only.
+
 Research date: 2026-08-02.
 
 Scope: bounded audio-rights research for Event 006 super-event `6001`, The League of New States. No sound definition, event, localisation, `.gfx`, GUI, or spreadsheet file was edited. No replacement was wired.
