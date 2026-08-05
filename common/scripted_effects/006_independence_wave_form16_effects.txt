@@ -1,0 +1,246 @@
+# ============================================================================
+# CHAOS REDUX - FORM-16 TRANSCAUCASIAN FEDERATION EFFECTS
+# ============================================================================
+# Late-binding adapter for the vanilla ARM/GEO/AZR member set. The carrier
+# keeps its existing capital during the congress and receives only states
+# 230, 231, and 229. Identity, flag, integration, post-formation progression,
+# and rollback are all receipt-bound to the current generation.
+# ============================================================================
+
+independence_wave_form16_refresh_charter_tier = {
+	clamp_variable = { var = form16_federal_cohesion min = constant:independence_wave_transcaucasus_value.minimum max = constant:independence_wave_transcaucasus_value.maximum }
+	clamp_variable = { var = form16_transport_integration min = constant:independence_wave_transcaucasus_value.minimum max = constant:independence_wave_transcaucasus_value.maximum }
+	clamp_variable = { var = form16_revenue_settlement min = constant:independence_wave_transcaucasus_value.minimum max = constant:independence_wave_transcaucasus_value.maximum }
+	if = {
+		limit = {
+			check_variable = { form16_federal_cohesion = constant:independence_wave_transcaucasus_value.form16_settled_threshold compare = greater_than_or_equals }
+			check_variable = { form16_transport_integration = constant:independence_wave_transcaucasus_value.form16_settled_threshold compare = greater_than_or_equals }
+			check_variable = { form16_revenue_settlement = constant:independence_wave_transcaucasus_value.form16_settled_threshold compare = greater_than_or_equals }
+		}
+		set_variable = { independence_wave_form16_charter_tier = constant:independence_wave_transcaucasus_value.form16_tier_settled }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { form16_federal_cohesion = constant:independence_wave_transcaucasus_value.form16_coordinated_threshold compare = greater_than_or_equals }
+				check_variable = { form16_transport_integration = constant:independence_wave_transcaucasus_value.form16_coordinated_threshold compare = greater_than_or_equals }
+				check_variable = { form16_revenue_settlement = constant:independence_wave_transcaucasus_value.form16_coordinated_threshold compare = greater_than_or_equals }
+			}
+		}
+		set_variable = { independence_wave_form16_charter_tier = constant:independence_wave_transcaucasus_value.form16_tier_coordinated }
+	}
+	else = { set_variable = { independence_wave_form16_charter_tier = constant:independence_wave_transcaucasus_value.form16_tier_provisional } }
+	remove_ideas = {
+		independence_wave_form16_federal_charter_provisional
+		independence_wave_form16_federal_charter_coordinated
+		independence_wave_form16_federal_charter_settled
+	}
+	if = {
+		limit = { has_country_flag = independence_wave_form16_postformation_initialized }
+		if = {
+			limit = { check_variable = { independence_wave_form16_charter_tier = constant:independence_wave_transcaucasus_value.form16_tier_settled } }
+			add_ideas = independence_wave_form16_federal_charter_settled
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_form16_charter_tier = constant:independence_wave_transcaucasus_value.form16_tier_coordinated } }
+			add_ideas = independence_wave_form16_federal_charter_coordinated
+		}
+		else = { add_ideas = independence_wave_form16_federal_charter_provisional }
+	}
+}
+
+independence_wave_form16_register_readiness = {
+	if = {
+		limit = {
+			is_independence_wave_form16_carrier = yes
+			has_independence_wave_form16_all_members_live = yes
+			has_independence_wave_form16_member_peace = yes
+			has_independence_wave_form16_identity_clearance = yes
+			has_independence_wave_form16_route_compatibility = yes
+			has_independence_wave_form16_arbitration_receipt = yes
+		}
+		set_variable = { form16_federal_cohesion = constant:independence_wave_transcaucasus_value.form16_federal_cohesion_start }
+		set_variable = { form16_transport_integration = constant:independence_wave_transcaucasus_value.form16_transport_integration_start }
+		set_variable = { form16_revenue_settlement = constant:independence_wave_transcaucasus_value.form16_revenue_settlement_start }
+		set_variable = { independence_wave_formable_readiness_family = independence_wave_formable_profile_family }
+		set_country_flag = independence_wave_formable_territory_adapter_ready
+		set_country_flag = independence_wave_formable_x_tag_reserved
+		set_country_flag = independence_wave_formable_flag_package_ready
+		set_country_flag = independence_wave_formable_identity_adapter_ready
+		set_country_flag = independence_wave_formable_integration_adapter_ready
+		set_country_flag = independence_wave_formable_member_policy_audited
+		set_country_flag = independence_wave_formable_signature_receipts_valid
+		set_country_flag = independence_wave_formable_map_reveal_ready
+		set_country_flag = independence_wave_unlock_formable_discovery
+		set_country_flag = independence_wave_form16_readiness_receipt
+		set_country_flag = independence_wave_form16_congress_ready
+		set_variable = { independence_wave_form16_readiness_generation = independence_wave_generation_id }
+		set_variable = { independence_wave_form16_readiness_family = independence_wave_formable_profile_family }
+		if = {
+			limit = { has_independence_wave_form16_member_connection_proof = yes }
+			set_country_flag = independence_wave_form16_ai_connection_receipt
+			set_variable = { independence_wave_form16_ai_connection_generation = independence_wave_generation_id }
+		}
+		independence_wave_form16_refresh_charter_tier = yes
+		mark_focus_tree_layout_dirty = yes
+	}
+}
+
+# Candidate-country scope with ROOT as the carrier. Human candidates receive a
+# dedicated reply event; AI candidates resolve immediately to a concrete
+# consent or refusal and never remain silent observers in the frozen ledger.
+independence_wave_form16_resolve_ai_invitation_from_root = {
+	if = {
+		limit = {
+			is_ai = yes
+			has_pending_independence_wave_formable_founding_invitation = yes
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.transcaucasian_federation }
+		}
+		if = {
+			limit = {
+				has_independence_wave_form16_connection_to_root = yes
+				is_independence_wave_recognized_or_later = yes
+				NOT = { has_independence_wave_severe_instability = yes }
+			}
+			independence_wave_formable_declare_consent_for_selected_family = yes
+		}
+		else = { independence_wave_formable_withhold_consent_for_selected_family = yes }
+	}
+}
+
+independence_wave_formable_identity_adapter_16 = {
+	if = {
+		limit = { has_independence_wave_form16_runtime_commit_prevalidation = yes NOT = { has_country_flag = independence_wave_form16_identity_committed } }
+		if = { limit = { has_cosmetic_tag = transcaucasia_unified } drop_cosmetic_tag = yes }
+		set_cosmetic_tag = transcaucasia_unified
+		set_country_flag = independence_wave_form16_identity_committed
+		set_country_flag = independence_wave_form16_identity_receipt
+		set_country_flag = independence_wave_formable_identity_committed
+		set_variable = { independence_wave_form16_identity_generation = independence_wave_generation_id }
+	}
+}
+
+independence_wave_form16_add_member_cores_and_transfer_states = {
+	230 = {
+		transfer_state_to = ROOT
+		add_core_of = ROOT
+	}
+	231 = {
+		transfer_state_to = ROOT
+		add_core_of = ROOT
+	}
+	229 = {
+		transfer_state_to = ROOT
+		add_core_of = ROOT
+	}
+}
+
+independence_wave_formable_integration_adapter_16 = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_form16_identity_committed
+			has_independence_wave_form16_runtime_commit_prevalidation = yes
+			has_independence_wave_form16_all_members_live = yes
+		}
+		independence_wave_form16_add_member_cores_and_transfer_states = yes
+		set_global_flag = form_transcaucasia_flag
+		set_global_flag = independence_wave_form16_transcaucasia_identity_in_use
+		set_country_flag = independence_wave_formable_integration_committed
+		set_country_flag = independence_wave_form16_integration_receipt
+		set_variable = { independence_wave_form16_integration_generation = independence_wave_generation_id }
+		ARM = { if = { limit = { NOT = { tag = ROOT } } independence_wave_formable_end_consenting_member_origin = yes } }
+		GEO = { if = { limit = { NOT = { tag = ROOT } } independence_wave_formable_end_consenting_member_origin = yes } }
+		AZR = { if = { limit = { NOT = { tag = ROOT } } independence_wave_formable_end_consenting_member_origin = yes } }
+	}
+}
+
+independence_wave_form16_initialize_postformation = {
+	if = {
+		limit = { has_country_flag = independence_wave_formable_active has_country_flag = independence_wave_form16_integration_receipt }
+		set_variable = { form16_federal_cohesion = constant:independence_wave_transcaucasus_value.form16_federal_cohesion_start }
+		set_variable = { form16_transport_integration = constant:independence_wave_transcaucasus_value.form16_transport_integration_start }
+		set_variable = { form16_revenue_settlement = constant:independence_wave_transcaucasus_value.form16_revenue_settlement_start }
+		set_country_flag = independence_wave_form16_postformation_initialized
+		independence_wave_form16_refresh_charter_tier = yes
+	}
+}
+
+independence_wave_form16_complete_congress_action = {
+	set_country_flag = independence_wave_form16_congress_action_complete
+	set_country_flag = independence_wave_form16_progression_receipt
+	independence_wave_form16_refresh_charter_tier = yes
+}
+
+independence_wave_form16_rollback_transaction = {
+	if = { limit = { has_country_flag = independence_wave_form16_identity_committed has_country_flag = independence_wave_form16_integration_receipt } clr_global_flag = form_transcaucasia_flag clr_global_flag = independence_wave_form16_transcaucasia_identity_in_use }
+	if = {
+		limit = {
+			has_country_flag = independence_wave_form16_identity_committed
+			has_cosmetic_tag = transcaucasia_unified
+			OR = {
+				NOT = { has_country_flag = independence_wave_formable_active }
+				has_country_flag = independence_wave_formable_committed
+				has_country_flag = independence_wave_formable_commit_pending
+			}
+		}
+		drop_cosmetic_tag = yes
+	}
+	clr_country_flag = independence_wave_form16_identity_committed
+	clr_country_flag = independence_wave_form16_integration_receipt
+	clr_country_flag = independence_wave_form16_identity_receipt
+	clr_country_flag = independence_wave_form16_readiness_receipt
+	clr_country_flag = independence_wave_form16_congress_ready
+	clr_country_flag = independence_wave_form16_ai_connection_receipt
+	clr_country_flag = independence_wave_form16_integration_committed
+	clr_country_flag = independence_wave_form16_progression_receipt
+	clear_variable = independence_wave_form16_identity_generation
+	clear_variable = independence_wave_form16_integration_generation
+	clear_variable = independence_wave_form16_ai_connection_generation
+	set_country_flag = independence_wave_form16_transaction_rolled_back
+}
+
+independence_wave_form16_cleanup_runtime = {
+	remove_decision = independence_wave_form16_confirm_yerevan_capital
+	remove_decision = independence_wave_form16_confirm_tbilisi_capital
+	remove_decision = independence_wave_form16_confirm_baku_capital
+	remove_decision = independence_wave_form16_convene_language_commission
+	remove_decision = independence_wave_form16_unify_transcaucasian_rail_command
+	remove_decision = independence_wave_form16_settle_baku_oil_revenue
+	remove_decision = independence_wave_form16_standardize_federal_army
+	remove_ideas = {
+		independence_wave_form16_federal_charter_provisional
+		independence_wave_form16_federal_charter_coordinated
+		independence_wave_form16_federal_charter_settled
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = independence_wave_formable_commit_pending
+				has_country_flag = independence_wave_formable_committed
+				AND = {
+					NOT = { has_country_flag = independence_wave_formable_active }
+					has_country_flag = independence_wave_form16_identity_committed
+				}
+			}
+		}
+		independence_wave_form16_rollback_transaction = yes
+	}
+	clr_country_flag = independence_wave_form16_readiness_receipt
+	clr_country_flag = independence_wave_form16_congress_ready
+	clr_country_flag = independence_wave_form16_ai_connection_receipt
+	clr_country_flag = independence_wave_form16_postformation_initialized
+	clr_country_flag = independence_wave_form16_capital_yerevan
+	clr_country_flag = independence_wave_form16_capital_tbilisi
+	clr_country_flag = independence_wave_form16_capital_baku
+	clr_country_flag = independence_wave_form16_language_commission_complete
+	clr_country_flag = independence_wave_form16_rail_command_complete
+	clr_country_flag = independence_wave_form16_revenue_settlement_complete
+	clr_country_flag = independence_wave_form16_federal_army_complete
+	clr_country_flag = independence_wave_form16_congress_action_complete
+	clr_country_flag = independence_wave_form16_transaction_rolled_back
+	clear_variable = form16_federal_cohesion
+	clear_variable = form16_transport_integration
+	clear_variable = form16_revenue_settlement
+	clear_variable = independence_wave_form16_charter_tier
+	clear_variable = independence_wave_form16_ai_connection_generation
+}
