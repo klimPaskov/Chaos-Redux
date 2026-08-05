@@ -23,11 +23,11 @@ All six required sound roles are covered by preserved CC0/public-domain original
 - Full source pages, direct-download URLs, authors, licenses, usage terms, transformations, hashes, and synchronization points: `evidence/audio/source_urls.json`, `evidence/audio/audio_manifest.json`, and `evidence/audio/sound_design_handoff.md`.
 - The first public-domain casket candidate remains documented as a rejected HTTP 429 download; it is not used.
 
-## Needs review and parent work
+## Dormant handoff status
 
-- Parent-owned runtime copies and registrations now exist under `gfx/models/units/chaosx_elephants/`, `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `sound/chaosx_elephants_sound.asset`; no unit-template or country-tag changes were made.
+- Parent-owned runtime copies and registrations now exist under `gfx/models/units/chaosx_elephants/`, `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `sound/chaosx_elephants_sound.asset`; no unit-template or country-tag changes were made. Per the current Event 012 direction, the package remains intentionally dormant and has no live unit consumer.
 - The bespoke large and on-map counter DDS files are copied under `gfx/interface/counters/divisions_large/` and `gfx/interface/counters/divisions_small/`, with their `noOfFrames = 2` sprite registrations in `interface/chaosx_subuniticons.gfx`.
 - The exported semantic partition reports 4,998 boundary edges, although it reports no degenerate or non-manifold faces. Keep this as a topology review item.
 - The single shared export has the cargo/howdah silhouette by approved design; logistics and shock use one shared body, action set, texture set, and counter package.
-- Parent owns runtime file copying and hash synchronization, `.asset`/entity/animation/material/sound/soundeffect/unit-template wiring, and live in-game validation.
+- Parent owns any future runtime hash synchronization, `.asset`/entity/animation/material/sound/soundeffect/unit-template wiring, and live in-game validation if the dormant package is later approved for use.
 - No gameplay, GFX, entity, sound-definition, localisation, or spreadsheet file was edited. This package does not claim in-game completion.
