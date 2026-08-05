@@ -189,3 +189,11 @@ Event 006 is **not complete**.
 The Iberian tranche is meaningful source implementation, but it is deliberately non-executable and does not change the exact 15-package content-attestation set.
 
 The correct whole-event disposition remains **HOLD / PARTIAL**.
+
+## Current amendment — CAT standalone admission (2026-08-05)
+
+IW-014 CAT is now admitted as a standalone source-complete vanilla-carrier package. The central content-attestation set is 16 packages, not 15; compatible reservation groups are 15 and the unchanged static standalone witness remains 14 packages. The current CAT admission handoff is `006_iw014_cat_standalone_admission_2026-08-05.md`.
+
+This admission does not promote FORM-07, NAV, or GLC. CAT's package setup uses a registration-only Iberian family invariant, while the generic formable focus branch and discovery trigger require the full FORM-07 commit-readiness contract. The current package implementation and country audit files for NAV/GLC are `006_iw013_iw015_iberian_package_current_audit_2026-08-05.md` and `006_iw013_iw015_iberian_portrait_symbol_source_handoff_2026-08-05.md`; the earlier statement that no current handoff exists is superseded by those files.
+
+Fresh allocator, SCN-008, flag, GUI, and country-tag audits pass with the 16-package CAT admission. The whole-event disposition remains **HOLD / PARTIAL** because the remaining package, formable, asset, super-event, AI/balance, documentation, and catalog completion gates are still open.

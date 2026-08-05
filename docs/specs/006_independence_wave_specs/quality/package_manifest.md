@@ -114,3 +114,6 @@ This table is retained as historical packaging evidence. Its byte counts, line c
 | `specs/006_independence_wave_spec_part_5_country_packages_and_regional_overlays.md` | 24522 | 999 | `9024df2ebe19e0925a6863f7d546b3ab34ab56bff2350e8d634bb0b8f8714727` |
 | `specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md` | 23014 | 816 | `c0e848682bf91ee7c325471722590b1ba111d4395487566b792a81bd4bf7541e` |
 | `specs/006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md` | 20661 | 761 | `c32b544572dd4bd9f690d96a9cac738336b0193276c30e019283f95a6d303278` |
+## Current admission amendment — 2026-08-05
+
+IW-014 CAT is independently admitted as the sixteenth source-complete vanilla-carrier package. This does not promote FORM-07: the Iberian X identity, flag family, territory adapter, member-policy audit, and integration adapter remain behind the shared fail-closed formable readiness gate. NAV and GLC remain source-wired but unattested. The current package receipt is `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw014_cat_standalone_admission_2026-08-05.md`; current allocator arithmetic is 16 attestations across 15 compatible reservation groups with the unchanged 14-package static witness.
