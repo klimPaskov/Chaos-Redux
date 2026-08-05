@@ -3,8 +3,8 @@
 # ============================================================================
 # Read-only decision-category dashboard for the Directorate and the sovereign
 # Kruger State. Ordinary decisions retain every gameplay action, cost, mission,
-# duration, map requirement, and AI path. The GUI owns only view state and calls
-# country-scoped refresh helpers which do not depend on event targets.
+# duration, map requirement, and AI path. The GUI owns only view state;
+# authoritative gameplay effects own persistent record reconciliation.
 # ============================================================================
 
 scripted_gui = {
@@ -24,19 +24,9 @@ scripted_gui = {
 		effects = {
 			kruger_directorate_open_button_click = {
 				clr_country_flag = brilliant_scientist_directorate_gui_collapsed
-				brilliant_scientist_refresh_government_control = yes
-				brilliant_scientist_refresh_project_counts = yes
-				brilliant_scientist_refresh_containment_facility_count = yes
-				brilliant_scientist_refresh_kruger_portrait_stage = yes
 			}
 			kruger_directorate_close_button_click = {
 				set_country_flag = brilliant_scientist_directorate_gui_collapsed
-			}
-			kruger_directorate_refresh_button_click = {
-				brilliant_scientist_refresh_government_control = yes
-				brilliant_scientist_refresh_project_counts = yes
-				brilliant_scientist_refresh_containment_facility_count = yes
-				brilliant_scientist_refresh_kruger_portrait_stage = yes
 			}
 			kruger_directorate_animation_button_click = {
 				if = {
@@ -88,14 +78,27 @@ scripted_gui = {
 		triggers = {
 			kruger_directorate_open_button_click_enabled = { always = yes }
 			kruger_directorate_close_button_click_enabled = { always = yes }
-			kruger_directorate_refresh_button_click_enabled = { always = yes }
 			kruger_directorate_animation_button_click_enabled = { always = yes }
-			kruger_directorate_tab_overview_button_click_enabled = { always = yes }
-			kruger_directorate_tab_projects_button_click_enabled = { always = yes }
-			kruger_directorate_tab_facilities_button_click_enabled = { always = yes }
-			kruger_directorate_tab_foreign_button_click_enabled = { always = yes }
+			kruger_directorate_tab_overview_button_click_enabled = {
+				OR = {
+					has_country_flag = brilliant_scientist_directorate_gui_tab_projects
+					has_country_flag = brilliant_scientist_directorate_gui_tab_facilities
+					has_country_flag = brilliant_scientist_directorate_gui_tab_foreign
+					has_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty
+				}
+			}
+			kruger_directorate_tab_projects_button_click_enabled = {
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_tab_projects }
+			}
+			kruger_directorate_tab_facilities_button_click_enabled = {
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_tab_facilities }
+			}
+			kruger_directorate_tab_foreign_button_click_enabled = {
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_tab_foreign }
+			}
 			kruger_directorate_tab_sovereignty_button_click_enabled = {
 				brilliant_scientist_directorate_sovereignty_surface_is_available = yes
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty }
 			}
 			kruger_directorate_tab_sovereignty_button_visible = {
 				brilliant_scientist_directorate_sovereignty_surface_is_available = yes

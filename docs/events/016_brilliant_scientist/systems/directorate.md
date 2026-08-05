@@ -8,14 +8,16 @@ This implementation owns the host framework around projects. The fifteen native 
 
 ## Activation and visible state
 
-`brilliant_scientist_directorate_category` is visible only to the country accepted by `brilliant_scientist_is_current_host`. Its category description exposes the four player-readable variables as integers:
+`brilliant_scientist_directorate_category` is visible to the country accepted by `brilliant_scientist_is_current_host` and to the sovereign Kruger State. Its embedded dashboard exposes the four player-readable variables as integers:
 
 - `brilliant_scientist_mandate`: formal authority granted to Kruger and the Directorate.
 - `brilliant_scientist_dependence`: reliance on Kruger's personal methods and command.
 - `brilliant_scientist_exposure`: foreign and public visibility of the programme.
 - `brilliant_scientist_project_capacity`: institutional bandwidth available for ambitious work.
 
-Independent Capacity and Grievance remain hidden. Decisions alter them through the shared measure helpers, while their consequences are communicated through requirements, incidents, control-state triggers, and player-facing warnings elsewhere in Event 016. The header also resolves a broad Government Control label from the shared stable, strained, compromised, and lost flags. Named appointment, institutional, priority, security, and authority fragments explain the visible causal direction without printing either hidden value. The latest loyalty-review and relocation records remain visible after their transient request context has been cleared.
+Independent Capacity and Grievance remain hidden. Decisions alter them through the shared measure helpers, while their consequences are communicated through requirements, incidents, control-state triggers, and player-facing warnings elsewhere in Event 016. The header resolves a broad Government Control label from the shared stable, strained, compromised, and lost flags, then presents Mandate, Dependence, and Exposure as its three supporting values. Capacity remains visible in the Projects tab. Named appointment, institutional, priority, security, and authority fragments explain the visible causal direction without printing either hidden value.
+
+The scripted GUI is authored for the vanilla country-decision grid: a 500-pixel-wide full panel and compact header fit inside the 502-pixel host slot. The full panel reserves x=14-181, y=74-309 for Kruger's profile; x=192-485, y=74-205 for telemetry and Control; x=14-485, y=316-345 for five navigation tabs; x=14-485, y=352-573 for tab content; and x=14-485, y=584-609 for presentation controls and context-sensitive guidance. Ordinary decisions remain the only gameplay action surface. Opening, collapsing, changing tabs, and switching animation presentation alter only GUI preference flags; persistent project, facility, portrait, and control reconciliation remains in authoritative gameplay effects.
 
 At appointment and ordinary transfer, the host receives one mutually exclusive archetype flag from its current country facts: refugee network, colonial or overseas empire, strong university system, industrial power, militarized state, small threatened state, or a neutral default. The archetype is presentation state rather than a fifth Directorate meter. It supplies a country-shaped clause in the existing `.4`, `.5`, `.6`, `.7`, `.8`, `.9`, `.10`, and `.11` reports and gives their AI choices a modest preference for universities, factories, security offices, emergency survival, or diplomacy. The same preference now reaches the four initial institutional-form decisions: university and refugee hosts favor the Public Science Council, militarized and threatened hosts favor the Compartmentalized Military Office, industrial and colonial hosts favor the Private Industrial Concession, and refugee or colonial hosts favor the Exile Scholar Network. The six existing facility decisions also use the archetype: university and industrial hosts favor formalizing the primary campus, industrial and militarized hosts favor prototype works, university and refugee hosts favor a secondary laboratory, threatened and refugee hosts favor relocation, militarized and threatened hosts favor hardening, and industrial and colonial hosts favor repair mobilization. These are bounded AI weights on existing choices, not new routes or meters. The assignment is repeated for a transfer recipient, so a former host's presentation never leaks into the new country.
 
@@ -188,7 +190,7 @@ Ordinary decisions deliberately use verified existing vanilla sprite identifiers
 
 | Use | Sprite identifier |
 | --- | --- |
-| Directorate category | `GFX_decision_category_SOV_soviet_academy_of_sciences` |
+| Directorate category | `GFX_decision_category_brilliant_scientist_directorate` |
 | Civil governance and foreign frameworks | `GFX_decision_generic_political_discourse` |
 | Military institutional form | `GFX_decision_generic_army_support` |
 | Industrial commitments | `GFX_decision_generic_industry` |
@@ -208,7 +210,6 @@ Implementation was checked against the offline wiki snapshot pages for Data stru
 ## Future plans and suggestions
 
 - Replace generic sprites with a coordinated bespoke Directorate icon family only after the asset manifest and stable sprite IDs are approved.
-- Give the richer scripted Directorate window its own bounded implementation tranche; ordinary decisions must remain the gameplay authority and AI entry point.
 - Add family-specific warnings to the project cards once all fifteen native families expose stable status contracts.
 - Connect foreign-framework invalidation to the shared Event 016 cleanup effect so partner defeat, host transfer, and terminal branches cannot retain stale global targets.
 - Use Event 016 incidents to surface hidden Independent Capacity and Grievance consequences without exposing exact values.

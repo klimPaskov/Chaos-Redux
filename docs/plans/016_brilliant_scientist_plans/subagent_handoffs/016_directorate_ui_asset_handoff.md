@@ -1,6 +1,6 @@
 # Event 016 Directorate UI asset handoff
 
-Status: complete for the 64 runtime texture paths in the binding contract. The package is ready for the parent agent to review and consume through the existing `.gfx` and `.gui` files. No gameplay, localisation, `.gfx`, `.gui`, scripted GUI, or spreadsheet files were edited by this asset pass.
+Status: superseded in part on 2026-08-05. The state-card, meter, control, portrait-frame, and animation evidence below remains authoritative, but the original 700-pixel shell and refresh-control contract does not. `016_directorate_background_refresh_handoff.md` owns the replacement `500x620` full panel and `500x58` compact header, while the revised GUI removes the refresh control and fits vanilla's 502-pixel decision grid.
 
 ## Runtime files and exact dimensions
 
