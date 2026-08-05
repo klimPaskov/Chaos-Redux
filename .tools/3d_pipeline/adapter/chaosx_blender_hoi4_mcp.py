@@ -327,17 +327,53 @@ def chaosx_blender_hoi4_prepare_candidate(
 
 
 @mcp.tool()
-def chaosx_blender_hoi4_inspect_scene(job_id: str, blend_rel: str) -> Dict[str, Any]:
-    """Inspect a saved checkpoint without mutating the scene."""
+def chaosx_blender_hoi4_inspect_scene(
+    job_id: str,
+    blend_rel: str,
+    render_previews: bool = False,
+    runtime_stem: str = "",
+    action_name: str = "",
+    preview_frame: int = -1,
+    preview_view_names: list[str] | None = None,
+) -> Dict[str, Any]:
+    """Inspect a saved checkpoint, optionally writing review previews."""
 
-    return _run(job_id, "inspect_scene", {"blend_rel": blend_rel})
+    return _run(
+        job_id,
+        "inspect_scene",
+        {
+            "blend_rel": blend_rel,
+            "render_previews": render_previews,
+            "runtime_stem": runtime_stem,
+            "action_name": action_name,
+            "preview_frame": preview_frame,
+            "preview_view_names": preview_view_names or [],
+        },
+    )
 
 
 @mcp.tool()
-def chaosx_blender_hoi4_process_textures(job_id: str, blend_rel: str) -> Dict[str, Any]:
-    """Extract embedded or linked source textures into the job evidence root."""
+def chaosx_blender_hoi4_process_textures(
+    job_id: str,
+    blend_rel: str,
+    rewrite_to_dds: bool = False,
+    dds_map: Dict[str, str] | None = None,
+    rename_images: bool = False,
+) -> Dict[str, Any]:
+    """Extract textures, or relink approved DDS maps in a bounded saved scene."""
 
-    return _process_textures(job_id, blend_rel)
+    if not rewrite_to_dds:
+        return _process_textures(job_id, blend_rel)
+    return _run(
+        job_id,
+        "process_textures",
+        {
+            "blend_rel": blend_rel,
+            "rewrite_to_dds": True,
+            "dds_map": dds_map or {},
+            "rename_images": rename_images,
+        },
+    )
 
 
 @mcp.tool()
@@ -390,6 +426,110 @@ def chaosx_blender_hoi4_author_locomotion_action(
         {
             "blend_rel": blend_rel,
             "checkpoint_rel": checkpoint_rel,
+            "action_name": action_name,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_segment_creature_components(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    region_mode: str = "loose",
+    rider_z_min_fraction: float = 0.72,
+    rider_z_max_fraction: float = 1.0,
+    rider_x_center_fraction: float = 0.5,
+    rider_x_half_fraction: float = 0.38,
+    rider_y_center_fraction: float = 0.5,
+    rider_y_half_fraction: float = 0.42,
+    rider_object_name: str = "elephant_rider_region",
+    body_object_name: str = "elephant_body_region",
+) -> Dict[str, Any]:
+    """Split a nonhumanoid candidate into loose, rider-region, or semantic spatial components."""
+
+    return _run(
+        job_id,
+        "segment_creature_components",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "region_mode": region_mode,
+            "rider_z_min_fraction": rider_z_min_fraction,
+            "rider_z_max_fraction": rider_z_max_fraction,
+            "rider_x_center_fraction": rider_x_center_fraction,
+            "rider_x_half_fraction": rider_x_half_fraction,
+            "rider_y_center_fraction": rider_y_center_fraction,
+            "rider_y_half_fraction": rider_y_half_fraction,
+            "rider_object_name": rider_object_name,
+            "body_object_name": body_object_name,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_calibrate_creature_scale(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    rider_component_names: list[str],
+    target_rider_runtime_height_m: float,
+    runtime_entity_scale: float = 0.8,
+) -> Dict[str, Any]:
+    """Scale a creature and rider together so the rider matches the measured infantry runtime height."""
+
+    return _run(
+        job_id,
+        "calibrate_creature_scale",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "rider_component_names": rider_component_names,
+            "target_rider_runtime_height_m": target_rider_runtime_height_m,
+            "runtime_entity_scale": runtime_entity_scale,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_author_creature_rig(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    rider_component_names: list[str] | None = None,
+    weight_mode: str = "semantic",
+) -> Dict[str, Any]:
+    """Create and checkpoint a bounded custom rig for a nonhumanoid creature candidate."""
+
+    return _run(
+        job_id,
+        "author_creature_rig",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "rider_component_names": rider_component_names or [],
+            "weight_mode": weight_mode,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_author_creature_action(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    action_role: str,
+    action_name: str,
+) -> Dict[str, Any]:
+    """Author one real skeletal creature action and checkpoint its contact-checked result."""
+
+    return _run(
+        job_id,
+        "author_creature_action",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_role": action_role,
             "action_name": action_name,
         },
     )
