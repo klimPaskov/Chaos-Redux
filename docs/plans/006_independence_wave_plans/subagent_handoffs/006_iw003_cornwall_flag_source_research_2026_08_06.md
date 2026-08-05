@@ -36,7 +36,7 @@ These files already exist in the asset package and were not changed for this res
 | Processed normal preview | `docs/assets/006_independence_wave/processed_png/generated_nwe/flags/normal/ACX.png` | 82x52 | `726e91c832ce4644a20bc3a7b36c701f38b6372f13ee89e3c63691702ca44d65` |
 | Processed medium preview | `docs/assets/006_independence_wave/processed_png/generated_nwe/flags/medium/ACX.png` | 41x26 | `4a7119cb141557b9df1ba83452befaf6b7744652d576c94ff48ba3bf342b44f1` |
 | Processed small preview | `docs/assets/006_independence_wave/processed_png/generated_nwe/flags/small/ACX.png` | 10x7 | `dcb5a8f6de252a857950db90ecc9d2559813020df3a804c69346e0d2ba5bb524` |
-| Runtime normal flag | `gfx/flags/ACX.tga` | 82x52, 32-bit BGRA | `e44993e121278c5d5dd72d51cd78d47c66f34f256e12e3c80e4fcfaad` |
+| Runtime normal flag | `gfx/flags/ACX.tga` | 82x52, 32-bit BGRA | `e44993e121278c5d5dd72d51cd78d47c66f34f256e12e3c80e4fc11af70cfaad` |
 | Runtime medium flag | `gfx/flags/medium/ACX.tga` | 41x26, 32-bit BGRA | `38aa26dad200038e0bb3db84d651227312ea9941e31505f49541cb100b2fe1fb` |
 | Runtime small flag | `gfx/flags/small/ACX.tga` | 10x7, 32-bit BGRA | `c47d991628fe98cc8b7c6c669521530319cc4b8f35b06c5aff23a93dd0bfa718` |
 
