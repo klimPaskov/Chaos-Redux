@@ -1,6 +1,6 @@
 ---
 name: chaos-redux-3d-model-pipeline
-description: Use when creating, rigging, animating, converting, exporting, auditing, or documenting a custom Hearts of Iron IV 3D model for a Chaos Redux unit, building, vehicle, aircraft, ship, creature, or articulated asset.
+description: Use when creating, rigging, animating, converting, exporting, auditing, or documenting a custom Hearts of Iron IV 3D model and its companion sound-design handoff for a Chaos Redux unit, building, vehicle, aircraft, ship, creature, or articulated asset.
 ---
 
 # Chaos Redux 3D Model Pipeline
@@ -13,9 +13,13 @@ Do not use it for 2D equipment illustrations, map counters, focus or idea icons,
 
 A provider result is a source candidate, a `.blend` is a working artifact, and a `.mesh` or `.anim` is a runtime candidate. The package is not complete merely because a provider task, Blender preview, or export succeeded. Completion requires the exact runtime registration, a live consumer, and in-game evidence owned by the parent implementation agent.
 
-The 3D worker may create source files, Blender checkpoints, textures, `.mesh`, `.anim`, previews, manifests, reports, and handoffs. It must not edit gameplay, localisation, `.gfx`, `.gui`, `.asset`, entity, event, focus, decision, country, history, AI, on-action, or spreadsheet files unless the parent grants a narrow exception explicitly. The parent owns runtime identifiers, source wiring, live consumer validation, and the overall completion claim.
+The 3D worker may create source files, Blender checkpoints, textures, `.mesh`, `.anim`, sourced unit-audio candidates, mechanically derived audio, previews, manifests, reports, and handoffs. It must not edit gameplay, sound definitions, localisation, `.gfx`, `.gui`, `.asset`, entity, event, focus, decision, country, history, AI, on-action, or spreadsheet files unless the parent grants a narrow exception explicitly. The parent owns runtime identifiers, source wiring, live consumer validation, and the overall completion claim.
 
 `chaos-redux-event-assets` remains the owner of broad asset inventories, source provenance conventions, texture/DDS conventions, and requirement-to-runtime coverage across asset types. Keep model geometry, model materials, entity wiring, and any separate 2D concept reference distinct. `chaos-redux-frame-animation` governs 2D frame-sheet animation; it does not replace skeletal 3D `.anim` production.
+
+Every new custom unit, custom subunit, creature, vehicle, aircraft, or ship also requires a custom sound-design package. The 3D worker must research the Internet for legally usable sourced audio, preserve the original downloads and licensing evidence, define the required sound roles, map animation synchronization points, inspect vanilla precedents, propose runtime identifiers, and write the handoff. The parent owns final sound definitions, runtime wiring, and in-game validation, while mechanical trimming or format conversion remains allowed only when it preserves the sourced file and its license permits the transformation.
+
+Final unit audio is source-only. The worker must never create, synthesize, record, generate, or manually author sound, and must never replace a missing source with test tones, primitive waveforms, placeholder beeps, noise beds, or an unlicensed stock effect. If a suitable sourced file cannot be found and licensed, mark the affected role or package `blocked`.
 
 ## Hard start gates
 
@@ -51,6 +55,7 @@ Before 3D work, read:
 - Relevant character or interface pages when the target consumes those systems.
 - Relevant documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`.
 - Local vanilla `.mesh`, `.anim`, `.asset`, entity, material, texture, and model precedents for the exact domain, plus existing Chaos Redux model precedents.
+- For custom units, the exact installed vanilla sound, voice, soundeffect, and entity precedents used by the closest matching unit surface.
 
 Use existing Chaos Redux paths under `gfx/models/` and `gfx/entities/` as local precedents where applicable, but confirm the final path, shader, material channels, scale, axes, skeleton, action names, and entity structure against the installed vanilla version. Do not lock tutorial values or assume that a nearby asset belongs to the same runtime surface. Treat tutorial polygon counts, texture dimensions, and provider defaults as starting heuristics only; the installed game and latest verified toolchain decide acceptance.
 
@@ -70,6 +75,7 @@ Validate the job before any paid work. The parent must provide:
 - named vanilla reference paths and the expected scale relationship
 - for buildings, the measured runtime footprint budget and whether the consumer is a dedicated provincial map building or a state-level gameplay building with a provincial visual anchor
 - required action roles, runtime consumer, credit hard/soft limits, and paid-attempt limit
+- for every custom unit, a sound-design brief covering applicable voice, selection, movement, idle or engine loop, attack, impact, special-action, and death or destruction roles, plus the selected vanilla precedent and animation synchronization points
 - the locked provider, Blender, adapter, and `io_pdx_mesh` dependencies
 - the deterministic job root and exact handoff path
 
@@ -183,9 +189,48 @@ For humanoids, provider rigging is a candidate only for a clear standard humanoi
 
 If a custom `common/units` subunit identifier is introduced, the parent runtime handoff must register its generated `unit_<subunit_id>_icon_small` texticon (and any other emitted icon token) against a verified vanilla sprite. A missing custom texticon is a runtime failure even when the `.mesh` loads.
 
+Before claiming family-wide model or sound coverage, enumerate every `common/units` subunit that resolves the custom `sprite` token. An entity-state sound package reaches only consumers that resolve that entity, so intended shared-family consumers must share the binding and deliberate exclusions must be recorded in the handoff.
+
 Require no zero-weight deforming vertices, normalized weights, influence counts within local precedent, no unapproved opposite-side stretch, rigid assignment for rigid parts, and deformation tests in representative poses. Automatic weights are only a seed where the profile allows them.
 
 Every requested action must have a semantic role, final name, source route, FPS, frame range, loop state, root policy, preview, exported `.anim`, proposed runtime binding, and validation result. For humanoid animation candidates, clean, retarget, and bake the action in Blender, normalize armature object and pose transforms deliberately, inspect and sanitize scale F-curves, and scale keyed location channels deliberately when the provider and calibrated mesh units differ. Define in-place or root-motion policy before editing keys, apply any location conversion exactly once, and record the factor and before/after channels. Check foot and ground contacts at representative frames and validate the required idle, move, and attack roles as real skeletal actions. Provider animations are source candidates and missing actions must be authored in Blender when the job allows it. Do not replace a requested action with a static pose. For loops, compare first and last evaluated poses, root/contact drift, and the result at normal HOI4 map zoom. A skeleton change invalidates weights, actions, exports, and downstream evidence.
+
+## Custom unit sound-design companion
+
+Every new custom unit package must define a coherent custom sound identity. Do not leave a distinctive unit silent or attach an unrelated default sound family. A vanilla sound family may be reused only when the accepted design says it genuinely matches the unit.
+
+Inspect the exact vanilla consumer before planning the package because land units, creatures, vehicles, aircraft, and ships do not necessarily expose the same sound roles. Include the applicable roles:
+
+- selection and order acknowledgements or unit voice
+- idle, ambient, engine, rotor, mechanical, or creature loops
+- movement
+- weapon discharge and attack
+- impact, hit, or contact
+- special actions
+- death, destruction, shutdown, or disappearance
+
+Use the repository web-search workflow to locate candidate files on the Internet, inspect the source page and direct download terms, and save only approved candidates under the deterministic job evidence root. Prefer public-domain, Creative Commons, official archive, institutional, user-authorized, or otherwise clearly licensed sources. Reject unclear provenance, unclear recording rights, unclear modification rights, vague royalty-free claims, and sources that do not permit the intended mod use.
+
+Download and preserve the original source file under the deterministic job evidence root. Record the source page URL, direct download URL when distinct, title, creator or performer, license, usage terms, download date, original format and duration, and SHA-256 checksum. Keep the source file immutable and link every derived file back to it.
+
+Mechanical transformations such as trimming, fading, silence removal, normalization, channel conversion, resampling, and codec conversion are permitted only when the source license allows them. Keep the original source, transformation recipe, derived checksum, and final format in the evidence package. These operations must never become a way to create audio from scratch.
+
+The sound handoff must define:
+
+- the unit or subunit id and runtime consumer
+- the chosen vanilla sound and voice precedents
+- proposed sound, soundeffect, wrapper, and file identifiers
+- one-shot or loop behavior
+- the animation action and exact frame or phase that each sound should follow
+- source mode, provenance, licence status, and forbidden substitutions
+- expected final file format and runtime path based on verified local precedent
+- any volume, range, variation, or randomization behavior supported by that precedent
+- the Internet source URL, attribution, license, original file path, derived file path, and checksums for every sourced audio candidate
+- the parent-owned files that must be wired and the validation still required
+
+Custom vocal units should have voice direction that matches their culture, language, body, and role. Nonhuman or impossible units should use purpose-built, sourced vocalizations or mechanical sounds instead of ordinary soldier acknowledgements. Do not manufacture final audio from test tones, primitive oscillators, placeholder beeps, or unrelated stock effects.
+
+The model worker does not claim the sound package complete merely because synchronization points and identifiers are documented. It must provide sourced audio candidates and licensing evidence or mark the role blocked. Sound definitions, entity or unit wiring, and in-game playback validation remain parent-owned unless the task explicitly grants that production scope.
 
 ## PDX export and reimport evidence
 
@@ -205,11 +250,13 @@ The job package must contain, as applicable:
 - source and checkpoint `.blend` files
 - geometry, material, rig, weight, action, and export reports
 - source and final textures, animation previews, `.mesh`, and `.anim`
+- immutable Internet-sourced unit audio candidates, licensing records, derived files, transformations, and checksums
 - export/reimport evidence, manifest, and requirement-to-runtime crosswalk
 - a runtime handoff with proposed stable names, paths, material/shader mapping, action mapping, and the exact files/identifiers the parent must wire
+- for every custom unit, a sound-design handoff with sourced audio files, source URLs, attribution, licensing evidence, sound roles, voice direction where applicable, vanilla precedents, animation synchronization points, proposed runtime identifiers, and remaining parent-owned wiring
 - for static buildings, footprint/scale evidence, meshsettings object-name evidence, dedicated spawn or provincial-anchor evidence, and runtime-consumer evidence
 
-Each model manifest entry records the asset ID/slug, profile, source reference and checksum, provider lineage, selected candidate, checkpoint, geometry counts, objects/materials, armature/bones, actions/frame data, source/final textures, exports/checksums, exporter version/settings, proposed runtime identifiers, actual runtime registration only after parent wiring, live consumer, in-game evidence only after parent validation, and status. Use `complete`, `needs_user_review`, `blocked`, or `canceled`; never create a fallback completion state.
+Each model manifest entry records the asset ID/slug, profile, source reference and checksum, provider lineage, selected candidate, checkpoint, geometry counts, objects/materials, armature/bones, actions/frame data, custom-unit sound requirements and synchronization points where applicable, source/final textures, exports/checksums, exporter version/settings, proposed runtime identifiers, actual runtime registration only after parent wiring, live consumer, in-game evidence only after parent validation, and status. Use `complete`, `needs_user_review`, `blocked`, or `canceled`; never create a fallback completion state.
 
 When the event/system owner and slug are known, place the subagent handoff under the parent-provided `docs/plans/<owner_id>_<owner_slug>_plans/subagent_handoffs/` path. The parent must review every artifact and either wire it, queue it with a reason, reject it with a reason, or carry its blocker forward.
 
@@ -219,10 +266,10 @@ Treat the selected source exports, staged runtime copies, and active consumer fi
 
 ## Bounded subagent route
 
-Use `chaosx_3d_model_pipeline` only when the parent provides the exact job root, reference path or asset brief, output folders, handoff path, profile, named vanilla references, scale relationship, required actions, source permissions, credit and attempt limits, dependency lock, and forbidden simplifications. Spawn it with `fork_context=false`; put every needed conversation constraint into the prompt or named repository files.
+Use `chaosx_3d_model_pipeline` only when the parent provides the exact job root, reference path or asset brief, output folders, handoff path, profile, named vanilla references, scale relationship, required actions, custom-unit sound roles and Internet-source requirements, synchronization requirements where applicable, source permissions, credit and attempt limits, dependency lock, and forbidden simplifications. Spawn it with `fork_context=false`; put every needed conversation constraint into the prompt or named repository files.
 
-The subagent may produce source models, Blender files, textures, `.mesh`, `.anim`, previews, manifests, reports, crosswalk rows, and handoffs. It must not perform final gameplay/GFX/entity/localisation/spreadsheet wiring or claim in-game completion. The parent owns those changes, the live consumer, in-game evidence, and the overall completion claim.
+The subagent may produce source models, Blender files, textures, `.mesh`, `.anim`, sourced unit-audio candidates, mechanically derived audio, previews, manifests, reports, crosswalk rows, and handoffs. It must not perform final gameplay/GFX/entity/sound-definition/localisation/spreadsheet wiring or claim in-game completion. The parent owns those changes, the live consumer, in-game evidence, and the overall completion claim.
 
 ## Final state and fallback disclosure
 
-Mark each requested 3D requirement as `complete`, `needs_user_review`, `blocked`, or `canceled` in the package. A package-level `complete` means the worker's requested source, processing, export, and evidence outputs are present; it does not mean the Chaos Redux runtime feature is complete. Report every omitted component, rejected candidate, unverified capability, budget stop, missing reimport proof, and proposed static companion explicitly. Never hide a simplification behind a successful export or a parent-owned runtime handoff.
+Mark each requested 3D requirement as `complete`, `needs_user_review`, `blocked`, or `canceled` in the package. For a custom unit, the package must also record the sourced sound candidates, licensing evidence, synchronization handoff, and the status of parent-owned audio wiring. A package-level `complete` means the worker's requested source, processing, export, sound-source research, and evidence outputs are present; it does not mean the Chaos Redux runtime feature is complete. Report every omitted component, rejected candidate, unverified capability, budget stop, missing reimport proof, missing sound source, and proposed static companion explicitly. Never hide a simplification behind a successful export or a parent-owned runtime handoff.

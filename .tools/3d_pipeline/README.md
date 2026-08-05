@@ -9,6 +9,7 @@ one approved reference image
   -> repository-owned allowlisted Blender HOI4 adapter
   -> Blender checkpoints, PDX material processing, and texture QA
   -> checksum-locked io_pdx_mesh .mesh/.anim export
+  -> sourced unit-audio package and licensing evidence when the asset is a unit
   -> reimport proof, validation evidence, and parent runtime handoff
 ~~~
 
@@ -133,6 +134,18 @@ Clean, retarget, and bake humanoid animation candidates, normalize armature tran
 Never substitute a static still for a requested skeletal action.
 
 Export `.mesh` and `.anim` only with the locked `io_pdx_mesh` setup, then reimport or parse the actual exported bytes and save proof with output checksums.
+
+## Custom-unit sound-design handoff
+
+Every custom unit job must include a source-only sound package with applicable voice, idle or creature loop, movement, attack, impact, special-action, and death roles.
+
+Use the exact installed vanilla land-unit consumer as the wiring precedent, including `sound/*.asset` source declarations, `soundeffect` wrappers, and entity `state` events in `gfx/entities/*.asset`.
+
+Research and preserve legally usable source audio under the deterministic job root, record the source page, direct download, creator, license, original checksum, derived checksum, and permitted mechanical conversion, and never synthesize a test tone or placeholder effect.
+
+The parent must enumerate every `common/units` sub-unit that resolves the custom `sprite` token before claiming family-wide audio coverage. A sound event attached to one entity reaches only the unit consumers that resolve that entity, so deliberate exclusions must be documented and every intended family member must share the sprite binding.
+
+The parent owns final `sound/*.asset` definitions, runtime WAV copies, entity-state wiring, and live playback validation. The worker handoff must leave exact sound and soundeffect identifiers, state synchronization points, source evidence, and remaining parent checks.
 
 ## Runtime handoff and ownership
 
