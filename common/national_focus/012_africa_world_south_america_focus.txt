@@ -47,7 +47,7 @@ focus_tree = {
 		id = africa_south_america_andean_transport_and_mountain_supply
 			icon = GFX_goal_012_africa_continent_sponsorship_south_america_andean_transport
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 14 y = 1 cost = @world_package_cost
+		x = 22 y = 1 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_convene_three_regions_balance }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_andes }
@@ -67,7 +67,7 @@ focus_tree = {
 		id = africa_south_america_amazon_river_and_forest_compact
 			icon = GFX_goal_012_africa_continental_representation_south_america_amazon_river
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 22 y = 1 cost = @world_package_cost
+		x = 24 y = 1 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_convene_three_regions_balance }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_amazon }
@@ -87,7 +87,7 @@ focus_tree = {
 		id = africa_south_america_plata_ports_and_two_ocean_system
 			icon = GFX_goal_012_africa_continent_sponsorship_south_america_plata_ports
 		search_filters = { FOCUS_FILTER_NAVY FOCUS_FILTER_INDUSTRY }
-		x = 30 y = 1 cost = @world_package_cost
+		x = 26 y = 1 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_convene_three_regions_balance }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_plata }
@@ -107,7 +107,7 @@ focus_tree = {
 		id = africa_south_america_resource_concessions_and_debt_audit
 			icon = GFX_goal_012_africa_continental_representation_south_america_resource_debt_audit
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 38 y = 1 cost = @world_package_cost
+		x = 28 y = 1 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_convene_three_regions_balance }
 		completion_reward = {
 			add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
@@ -122,9 +122,10 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_congress_of_republics
 			icon = GFX_goal_012_africa_continent_union_south_america_republics
-		x = 6 y = 2 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18 y = 2 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
-		prerequisite = { focus = africa_south_america_plata_ports_and_two_ocean_system }
+		available = { has_completed_focus = africa_south_america_plata_ports_and_two_ocean_system }
 		mutually_exclusive = { focus = africa_south_america_plural_federation focus = africa_south_america_socialist_continental_union focus = africa_south_america_continental_command focus = africa_south_america_restored_concert focus = africa_south_america_sun_covenant }
 		completion_reward = {
 			set_country_flag = africa_south_america_republics_route
@@ -140,9 +141,13 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_plural_federation
 			icon = GFX_goal_012_africa_continent_union_south_america_plural_federation
-		x = 14 y = 2 cost = @world_package_cost
-		prerequisite = { focus = africa_south_america_amazon_river_and_forest_compact }
-		prerequisite = { focus = africa_south_america_resource_concessions_and_debt_audit }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 24 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
+		available = {
+			has_completed_focus = africa_south_america_amazon_river_and_forest_compact
+			has_completed_focus = africa_south_america_resource_concessions_and_debt_audit
+		}
 		mutually_exclusive = { focus = africa_south_america_congress_of_republics focus = africa_south_america_socialist_continental_union focus = africa_south_america_continental_command focus = africa_south_america_restored_concert focus = africa_south_america_sun_covenant }
 		completion_reward = {
 			set_country_flag = africa_south_america_federation_route
@@ -159,9 +164,13 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_socialist_continental_union
 			icon = GFX_goal_012_africa_continent_union_south_america_socialist_union
-		x = 22 y = 2 cost = @world_package_cost
-		prerequisite = { focus = africa_south_america_amazon_river_and_forest_compact }
-		prerequisite = { focus = africa_south_america_plata_ports_and_two_ocean_system }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 21 y = 2 cost = @world_package_cost
+		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
+		available = {
+			has_completed_focus = africa_south_america_amazon_river_and_forest_compact
+			has_completed_focus = africa_south_america_plata_ports_and_two_ocean_system
+		}
 		mutually_exclusive = { focus = africa_south_america_congress_of_republics focus = africa_south_america_plural_federation focus = africa_south_america_continental_command focus = africa_south_america_restored_concert focus = africa_south_america_sun_covenant }
 		completion_reward = {
 			set_country_flag = africa_south_america_socialist_union_route
@@ -177,9 +186,10 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_continental_command
 			icon = GFX_goal_012_africa_continent_union_south_america_continental_command
-		x = 30 y = 2 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_MILITARY FOCUS_FILTER_POLITICAL }
+		x = 26 y = 2 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
-		prerequisite = { focus = africa_south_america_plata_ports_and_two_ocean_system }
+		available = { has_completed_focus = africa_south_america_plata_ports_and_two_ocean_system }
 		mutually_exclusive = { focus = africa_south_america_congress_of_republics focus = africa_south_america_plural_federation focus = africa_south_america_socialist_continental_union focus = africa_south_america_restored_concert focus = africa_south_america_sun_covenant }
 		completion_reward = {
 			set_country_flag = africa_south_america_command_route
@@ -196,9 +206,10 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_restored_concert
 			icon = GFX_goal_012_africa_continent_union_south_america_restored_concert
-		x = 38 y = 2 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30 y = 2 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
-		prerequisite = { focus = africa_south_america_resource_concessions_and_debt_audit }
+		available = { has_completed_focus = africa_south_america_resource_concessions_and_debt_audit }
 		mutually_exclusive = { focus = africa_south_america_congress_of_republics focus = africa_south_america_plural_federation focus = africa_south_america_socialist_continental_union focus = africa_south_america_continental_command focus = africa_south_america_sun_covenant }
 		completion_reward = {
 			set_country_flag = africa_south_america_royal_concert_route
@@ -214,9 +225,10 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_sun_covenant
 			icon = GFX_goal_012_africa_continent_union_south_america_sun_covenant
-		x = 46 y = 2 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28 y = 2 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
-		prerequisite = { focus = africa_south_america_amazon_river_and_forest_compact }
+		available = { has_completed_focus = africa_south_america_amazon_river_and_forest_compact }
 		mutually_exclusive = { focus = africa_south_america_congress_of_republics focus = africa_south_america_plural_federation focus = africa_south_america_socialist_continental_union focus = africa_south_america_continental_command focus = africa_south_america_restored_concert }
 		available = { has_global_flag = africa_south_america_high_chaos_package_reviewed check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
 		completion_reward = {
@@ -234,7 +246,8 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_republican_chamber
 			icon = GFX_goal_012_africa_continental_representation_south_america_republican_chamber
-		x = 6 y = 3 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18 y = 3 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_congress_of_republics }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_congress }
@@ -253,7 +266,8 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_council_of_three_regions
 			icon = GFX_goal_012_africa_continental_representation_south_america_three_regions_council
-		x = 14 y = 3 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24 y = 3 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_plural_federation }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_congress }
@@ -273,7 +287,8 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_congress_of_workers_and_communes
 			icon = GFX_goal_012_africa_continental_representation_south_america_workers_communes
-		x = 22 y = 3 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 21 y = 3 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_socialist_continental_union }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_congress }
@@ -292,7 +307,8 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_civilian_command_statute
 			icon = GFX_goal_012_africa_continental_representation_south_america_command_statute
-		x = 30 y = 3 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_MILITARY FOCUS_FILTER_POLITICAL }
+		x = 26 y = 3 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_continental_command }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_congress }
@@ -312,7 +328,8 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_council_of_realms
 			icon = GFX_goal_012_africa_continental_representation_south_america_council_of_realms
-		x = 38 y = 3 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30 y = 3 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_restored_concert }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_congress }
@@ -331,7 +348,8 @@ focus_tree = {
 	focus = {
 		id = africa_south_america_publish_sun_covenant_law
 			icon = GFX_goal_012_africa_continental_representation_south_america_sun_covenant_law
-		x = 46 y = 3 cost = @world_package_cost
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28 y = 3 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_sun_covenant }
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_congress }
@@ -352,8 +370,8 @@ focus_tree = {
 			icon = GFX_goal_012_africa_continental_representation_south_america_resource_sovereignty
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 26 y = 4 cost = @world_package_cost
-		prerequisite = { focus = africa_south_america_republican_chamber focus = africa_south_america_council_of_three_regions focus = africa_south_america_congress_of_workers_and_communes focus = africa_south_america_civilian_command_statute focus = africa_south_america_council_of_realms focus = africa_south_america_publish_sun_covenant_law }
-		prerequisite = { focus = africa_south_america_resource_concessions_and_debt_audit }
+		prerequisite = { OR = { focus = africa_south_america_republican_chamber focus = africa_south_america_council_of_three_regions focus = africa_south_america_congress_of_workers_and_communes focus = africa_south_america_civilian_command_statute focus = africa_south_america_council_of_realms focus = africa_south_america_publish_sun_covenant_law } }
+		available = { has_completed_focus = africa_south_america_resource_concessions_and_debt_audit }
 		completion_reward = {
 			africa_south_america_apply_resource_and_debt_law_w2 = yes
 			custom_effect_tooltip = africa_south_america_resource_debt_law_proof_tt
@@ -365,11 +383,13 @@ focus_tree = {
 		id = africa_south_america_continental_defence_and_corridors
 			icon = GFX_goal_012_africa_continent_sponsorship_south_america_defence_corridors
 		search_filters = { FOCUS_FILTER_MILITARY FOCUS_FILTER_NAVY FOCUS_FILTER_INDUSTRY }
-		x = 26 y = 5 cost = @world_package_cost
+		x = 30 y = 5 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_resource_and_debt_sovereignty_law }
-		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
-		prerequisite = { focus = africa_south_america_amazon_river_and_forest_compact }
-		prerequisite = { focus = africa_south_america_plata_ports_and_two_ocean_system }
+		available = {
+			has_completed_focus = africa_south_america_andean_transport_and_mountain_supply
+			has_completed_focus = africa_south_america_amazon_river_and_forest_compact
+			has_completed_focus = africa_south_america_plata_ports_and_two_ocean_system
+		}
 		completion_reward = {
 			africa_south_america_apply_defence_and_corridors_w2 = yes
 			custom_effect_tooltip = africa_south_america_defence_corridor_proof_tt
@@ -381,7 +401,7 @@ focus_tree = {
 		id = africa_south_america_south_atlantic_partnership
 			icon = GFX_goal_012_africa_continent_union_south_america_south_atlantic_partnership
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
-		x = 26 y = 6 cost = @world_package_cost
+		x = 30 y = 6 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_continental_defence_and_corridors }
 		completion_reward = {
 			africa_south_america_apply_south_atlantic_partnership_w2 = yes
@@ -394,7 +414,7 @@ focus_tree = {
 		id = africa_south_america_ratify_three_regions_settlement
 			icon = GFX_goal_012_africa_continent_union_south_america_ratification
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 26 y = 7 cost = @world_package_final_cost
+		x = 30 y = 7 cost = @world_package_final_cost
 		prerequisite = { focus = africa_south_america_south_atlantic_partnership }
 		available = {
 			has_country_flag = africa_world_package_withdrawal_law_ratified
