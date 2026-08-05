@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CANNIBALISM_AI_NONE = 0
 # Event 014 Cannibalism national focus trees
 # Consolidated by loader surface. Identifiers, ordering, and gameplay content are preserved.
 
@@ -21,7 +24,7 @@ focus_tree = {
 	id = cannibalism_unified_focus_tree
 
 	country = {
-		factor = constant:cannibalism_ai.none
+		factor = @CR_SC_CANNIBALISM_AI_NONE
 		modifier = {
 			add = constant:cannibalism_ai.maximum
 			tag = CBL
@@ -345,7 +348,17 @@ focus_tree = {
 		x = 24
 		y = 11
 		cost = @cannibalism_unified_focus_short
-		prerequisite = { focus = CBL_council_of_retained_hosts focus = CBL_authority_without_rivals focus = CBL_dominion_of_chains }
+		# OR alternatives stay in available so the route remains reachable without crossing the three disposition columns.
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_supreme_hierarchy_routes_ready_tt
+				OR = {
+					has_completed_focus = CBL_council_of_retained_hosts
+					has_completed_focus = CBL_authority_without_rivals
+					has_completed_focus = CBL_dominion_of_chains
+				}
+			}
+		}
 		mutually_exclusive = { focus = CBL_many_jaws focus = CBL_ritual_administration }
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
 		completion_reward = { custom_effect_tooltip = CBL_one_command_tt hidden_effect = { cannibalism_unified_focus_one_command = yes cannibalism_unified_focus_finalize_reward = yes } }
@@ -406,7 +419,17 @@ focus_tree = {
 		x = 28
 		y = 11
 		cost = @cannibalism_unified_focus_short
-		prerequisite = { focus = CBL_council_of_retained_hosts focus = CBL_authority_without_rivals focus = CBL_dominion_of_chains }
+		# OR alternatives stay in available so the route remains reachable without crossing the three disposition columns.
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_supreme_hierarchy_routes_ready_tt
+				OR = {
+					has_completed_focus = CBL_council_of_retained_hosts
+					has_completed_focus = CBL_authority_without_rivals
+					has_completed_focus = CBL_dominion_of_chains
+				}
+			}
+		}
 		mutually_exclusive = { focus = CBL_one_command focus = CBL_ritual_administration }
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MILITARY_CHARACTER }
 		completion_reward = { custom_effect_tooltip = CBL_many_jaws_tt hidden_effect = { cannibalism_unified_focus_many_jaws = yes cannibalism_unified_focus_finalize_reward = yes } }
@@ -467,7 +490,17 @@ focus_tree = {
 		x = 32
 		y = 11
 		cost = @cannibalism_unified_focus_short
-		prerequisite = { focus = CBL_council_of_retained_hosts focus = CBL_authority_without_rivals focus = CBL_dominion_of_chains }
+		# OR alternatives stay in available so the route remains reachable without crossing the three disposition columns.
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_supreme_hierarchy_routes_ready_tt
+				OR = {
+					has_completed_focus = CBL_council_of_retained_hosts
+					has_completed_focus = CBL_authority_without_rivals
+					has_completed_focus = CBL_dominion_of_chains
+				}
+			}
+		}
 		mutually_exclusive = { focus = CBL_one_command focus = CBL_many_jaws }
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
 		completion_reward = { custom_effect_tooltip = CBL_ritual_administration_tt hidden_effect = { cannibalism_unified_focus_ritual_administration = yes cannibalism_unified_focus_finalize_reward = yes } }
@@ -580,9 +613,18 @@ focus_tree = {
 		x = 36
 		y = 16
 		cost = @cannibalism_unified_focus_normal
-		prerequisite = { focus = CBL_build_the_storage_network }
-		prerequisite = { focus = CBL_boards_of_captured_industry }
-		prerequisite = { focus = CBL_the_single_operational_will focus = CBL_confederation_under_one_name focus = CBL_the_state_of_the_last_table }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_continental_larder_routes_ready_tt
+				has_completed_focus = CBL_build_the_storage_network
+				has_completed_focus = CBL_boards_of_captured_industry
+				OR = {
+					has_completed_focus = CBL_the_single_operational_will
+					has_completed_focus = CBL_confederation_under_one_name
+					has_completed_focus = CBL_the_state_of_the_last_table
+				}
+			}
+		}
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		completion_reward = { custom_effect_tooltip = CBL_continental_larder_doctrine_tt hidden_effect = { cannibalism_unified_focus_continental_larder_doctrine = yes cannibalism_unified_focus_finalize_reward = yes } }
 		ai_will_do = { base = constant:cannibalism_ai.maximum modifier = { factor = constant:cannibalism_ai.resource_poor_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_abundant } } }
@@ -791,7 +833,17 @@ focus_tree = {
 		x = 38
 		y = 21
 		cost = @cannibalism_unified_focus_normal
-		prerequisite = { focus = CBL_short_horizon_continent focus = CBL_managed_continental_reserve focus = CBL_the_larder_that_moves focus = CBL_harvest_follows_victory }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_continental_supply_routes_ready_tt
+				OR = {
+					has_completed_focus = CBL_short_horizon_continent
+					has_completed_focus = CBL_managed_continental_reserve
+					has_completed_focus = CBL_the_larder_that_moves
+					has_completed_focus = CBL_harvest_follows_victory
+				}
+			}
+		}
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
 		completion_reward = { custom_effect_tooltip = CBL_continents_as_supply_regions_tt hidden_effect = { cannibalism_unified_focus_continents_as_supply_regions = yes cannibalism_unified_focus_finalize_reward = yes } }
 		ai_will_do = { base = constant:cannibalism_ai.maximum modifier = { factor = constant:cannibalism_ai.terminal_factor has_war_with_major = yes } }
@@ -816,10 +868,19 @@ focus_tree = {
 	focus = {
 		id = CBL_integrate_the_warbands
 		icon = GFX_goal_CBL_integrate_the_warbands
-		x = 26
+		x = 22
 		y = 7
 		cost = @cannibalism_unified_focus_short
-		prerequisite = { focus = CBL_keep_the_lieutenants focus = CBL_break_the_warlords focus = CBL_chain_the_rivals }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_warlord_disposition_routes_ready_tt
+				OR = {
+					has_completed_focus = CBL_keep_the_lieutenants
+					has_completed_focus = CBL_break_the_warlords
+					has_completed_focus = CBL_chain_the_rivals
+				}
+			}
+		}
 		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
 		completion_reward = { custom_effect_tooltip = CBL_integrate_the_warbands_tt hidden_effect = { cannibalism_unified_focus_integrate_the_warbands = yes cannibalism_unified_focus_finalize_reward = yes } }
 		ai_will_do = { base = constant:cannibalism_ai.maximum modifier = { factor = constant:cannibalism_ai.terminal_factor has_war = yes } }
@@ -828,7 +889,7 @@ focus_tree = {
 	focus = {
 		id = CBL_map_the_origin_templates
 		icon = GFX_goal_CBL_map_the_origin_templates
-		x = 18
+		x = 16
 		y = 8
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_integrate_the_warbands }
@@ -840,7 +901,7 @@ focus_tree = {
 	focus = {
 		id = CBL_standardize_captured_calibers
 		icon = GFX_goal_CBL_standardize_captured_calibers
-		x = 22
+		x = 16
 		y = 9
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_map_the_origin_templates }
@@ -990,7 +1051,7 @@ focus_tree = {
 	focus = {
 		id = CBL_captured_shipyards
 		icon = GFX_goal_CBL_captured_shipyards
-		x = 4
+		x = 8
 		y = 9
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_map_the_origin_templates }
@@ -1091,7 +1152,7 @@ focus_tree = {
 	focus = {
 		id = CBL_repair_the_captured_airframes
 		icon = GFX_goal_CBL_repair_the_captured_airframes
-		x = 10
+		x = 12
 		y = 9
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_map_the_origin_templates }
@@ -1188,8 +1249,17 @@ focus_tree = {
 		x = 33
 		y = 16
 		cost = @cannibalism_unified_focus_short
-		prerequisite = { focus = CBL_bind_the_network_territories }
-		prerequisite = { focus = CBL_the_single_operational_will focus = CBL_confederation_under_one_name focus = CBL_the_state_of_the_last_table }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_global_courier_routes_ready_tt
+				has_completed_focus = CBL_bind_the_network_territories
+				OR = {
+					has_completed_focus = CBL_the_single_operational_will
+					has_completed_focus = CBL_confederation_under_one_name
+					has_completed_focus = CBL_the_state_of_the_last_table
+				}
+			}
+		}
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
 		completion_reward = { custom_effect_tooltip = CBL_global_courier_network_tt hidden_effect = { cannibalism_unified_focus_global_courier_network = yes cannibalism_unified_focus_finalize_reward = yes } }
 		ai_will_do = { base = constant:cannibalism_ai.maximum modifier = { factor = constant:cannibalism_ai.network_response_factor check_variable = { global.cannibalism_network_reach < constant:cannibalism_meter.critical } } }
@@ -1210,7 +1280,7 @@ focus_tree = {
 	focus = {
 		id = CBL_corrupt_the_enemy_officers
 		icon = GFX_goal_CBL_corrupt_the_enemy_officers
-		x = 34
+		x = 30
 		y = 18
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_prison_and_port_cells }
@@ -1222,7 +1292,7 @@ focus_tree = {
 	focus = {
 		id = CBL_perfect_the_false_surrender
 		icon = GFX_goal_CBL_perfect_the_false_surrender
-		x = 34
+		x = 28
 		y = 19
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_corrupt_the_enemy_officers }
@@ -1234,7 +1304,7 @@ focus_tree = {
 	focus = {
 		id = CBL_sleep_beneath_retreat
 		icon = GFX_goal_CBL_sleep_beneath_retreat
-		x = 34
+		x = 28
 		y = 20
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_perfect_the_false_surrender }
@@ -1290,7 +1360,12 @@ focus_tree = {
 		y = 18
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_prison_and_port_cells }
-		prerequisite = { focus = CBL_standardize_captured_calibers }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_continental_weakness_routes_ready_tt
+				has_completed_focus = CBL_standardize_captured_calibers
+			}
+		}
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
 		completion_reward = { custom_effect_tooltip = CBL_read_the_continental_weakness_tt hidden_effect = { cannibalism_unified_focus_read_the_continental_weakness = yes cannibalism_unified_focus_finalize_reward = yes } }
 		ai_will_do = { base = constant:cannibalism_ai.maximum modifier = { factor = constant:cannibalism_ai.terminal_factor has_war = no } }
@@ -1299,7 +1374,7 @@ focus_tree = {
 	focus = {
 		id = CBL_terror_ultimata
 		icon = GFX_goal_CBL_terror_ultimata
-		x = 30
+		x = 26
 		y = 19
 		cost = @cannibalism_unified_focus_short
 		prerequisite = { focus = CBL_read_the_continental_weakness }
@@ -1311,7 +1386,7 @@ focus_tree = {
 	focus = {
 		id = CBL_cell_backed_border_incidents
 		icon = GFX_goal_CBL_cell_backed_border_incidents
-		x = 30
+		x = 24
 		y = 20
 		cost = @cannibalism_unified_focus_normal
 		prerequisite = { focus = CBL_terror_ultimata }
@@ -1323,7 +1398,7 @@ focus_tree = {
 	focus = {
 		id = CBL_host_theaters_without_borders
 		icon = GFX_goal_CBL_host_theaters_without_borders
-		x = 30
+		x = 26
 		y = 21
 		cost = @cannibalism_unified_focus_terminal
 		prerequisite = { focus = CBL_cell_backed_border_incidents }
@@ -1396,11 +1471,14 @@ focus_tree = {
 		x = 32
 		y = 26
 		cost = @cannibalism_unified_focus_terminal
-		prerequisite = { focus = CBL_abolish_the_old_supply_ceiling }
-		prerequisite = { focus = CBL_the_army_that_does_not_end }
-		prerequisite = { focus = CBL_host_theaters_without_borders }
 		prerequisite = { focus = CBL_consume_the_counterwar }
 		available = {
+			custom_trigger_tooltip = {
+				tooltip = CBL_final_mobilization_routes_ready_tt
+				has_completed_focus = CBL_abolish_the_old_supply_ceiling
+				has_completed_focus = CBL_the_army_that_does_not_end
+				has_completed_focus = CBL_host_theaters_without_borders
+			}
 			cannibalism_can_complete_ordinary_world_end = yes
 			check_variable = { global.chaos_meter_value > constant:cannibalism_evolution_threshold.world_end_chaos }
 		}
@@ -1449,7 +1527,7 @@ focus_tree = {
 	id = cannibalism_warlord_focus_tree
 
 	country = {
-		factor = constant:cannibalism_ai.none
+		factor = @CR_SC_CANNIBALISM_AI_NONE
 		modifier = {
 			add = constant:cannibalism_ai.maximum
 			is_cannibalism_warlord_country = yes
@@ -1597,7 +1675,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_seize_the_knives
 		icon = GFX_goal_cannibalism_warlord_seize_the_knives
-		x = 10
+		x = 12
 		y = 6
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_the_host_endures }
@@ -1618,7 +1696,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_break_the_captains
 		icon = GFX_goal_cannibalism_warlord_break_the_captains
-		x = 10
+		x = 12
 		y = 7
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_seize_the_knives }
@@ -1637,7 +1715,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_bind_the_guard_to_one_mouth
 		icon = GFX_goal_cannibalism_warlord_bind_the_guard_to_one_mouth
-		x = 10
+		x = 12
 		y = 8
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_break_the_captains }
@@ -1656,7 +1734,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_personal_dominion
 		icon = GFX_goal_cannibalism_warlord_personal_dominion
-		x = 10
+		x = 12
 		y = 9
 		cost = @cannibalism_warlord_focus_normal
 		prerequisite = { focus = cannibalism_warlord_bind_the_guard_to_one_mouth }
@@ -1679,7 +1757,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_divide_the_first_table
 		icon = GFX_goal_cannibalism_warlord_divide_the_first_table
-		x = 13
+		x = 14
 		y = 6
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_the_host_endures }
@@ -1699,7 +1777,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_recognize_the_captains
 		icon = GFX_goal_cannibalism_warlord_recognize_the_captains
-		x = 13
+		x = 14
 		y = 7
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_divide_the_first_table }
@@ -1718,7 +1796,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_assign_feeding_districts
 		icon = GFX_goal_cannibalism_warlord_assign_feeding_districts
-		x = 13
+		x = 14
 		y = 8
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_recognize_the_captains }
@@ -1737,7 +1815,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_council_of_hosts
 		icon = GFX_goal_cannibalism_warlord_council_of_hosts
-		x = 13
+		x = 14
 		y = 9
 		cost = @cannibalism_warlord_focus_normal
 		prerequisite = { focus = cannibalism_warlord_assign_feeding_districts }
@@ -2324,7 +2402,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_siege_fortify_feeding_districts
 		icon = GFX_goal_cannibalism_warlord_siege_fortify_feeding_districts
-		x = 27
+		x = 26
 		y = 6
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_the_host_endures }
@@ -2346,7 +2424,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_siege_open_the_tunnels
 		icon = GFX_goal_cannibalism_warlord_siege_open_the_tunnels
-		x = 27
+		x = 26
 		y = 7
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_siege_fortify_feeding_districts }
@@ -2365,7 +2443,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_siege_take_the_workshops
 		icon = GFX_goal_cannibalism_warlord_siege_take_the_workshops
-		x = 27
+		x = 26
 		y = 8
 		cost = @cannibalism_warlord_focus_normal
 		prerequisite = { focus = cannibalism_warlord_siege_open_the_tunnels }
@@ -2384,7 +2462,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_siege_city_that_eats
 		icon = GFX_goal_cannibalism_warlord_siege_city_that_eats
-		x = 27
+		x = 26
 		y = 9
 		cost = @cannibalism_warlord_focus_normal
 		prerequisite = { focus = cannibalism_warlord_siege_take_the_workshops }
@@ -2407,7 +2485,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_march_seize_wheels_and_mounts
 		icon = GFX_goal_cannibalism_warlord_march_seize_wheels_and_mounts
-		x = 30
+		x = 28
 		y = 6
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_the_host_endures }
@@ -2429,7 +2507,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_march_raid_the_depots
 		icon = GFX_goal_cannibalism_warlord_march_raid_the_depots
-		x = 30
+		x = 28
 		y = 7
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_march_seize_wheels_and_mounts }
@@ -2448,7 +2526,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_march_sabotage_the_rails
 		icon = GFX_goal_cannibalism_warlord_march_sabotage_the_rails
-		x = 30
+		x = 28
 		y = 8
 		cost = @cannibalism_warlord_focus_short
 		prerequisite = { focus = cannibalism_warlord_march_raid_the_depots }
@@ -2467,7 +2545,7 @@ focus_tree = {
 	focus = {
 		id = cannibalism_warlord_march_moving_front
 		icon = GFX_goal_cannibalism_warlord_march_moving_front
-		x = 30
+		x = 28
 		y = 9
 		cost = @cannibalism_warlord_focus_normal
 		prerequisite = { focus = cannibalism_warlord_march_sabotage_the_rails }
@@ -2875,7 +2953,7 @@ focus_tree = {
 	id = cannibalism_wendigo_focus_tree
 
 	country = {
-		factor = constant:cannibalism_ai.none
+		factor = @CR_SC_CANNIBALISM_AI_NONE
 		modifier = {
 			add = constant:cannibalism_ai.maximum
 			original_tag = ZZZ
@@ -3020,7 +3098,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_open_the_winter_hunt
 		icon = GFX_goal_ZZZ_wendigo_open_the_winter_hunt
-		x = 22
+		x = 32
 		y = 4
 		cost = @cannibalism_wendigo_focus_short
 		prerequisite = { focus = ZZZ_wendigo_raise_the_first_anchors }
@@ -3039,7 +3117,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_freeze_the_supply_corridors
 		icon = GFX_goal_ZZZ_wendigo_freeze_the_supply_corridors
-		x = 22
+		x = 32
 		y = 5
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_open_the_winter_hunt }
@@ -3058,7 +3136,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_march_through_the_blizzard
 		icon = GFX_goal_ZZZ_wendigo_march_through_the_blizzard
-		x = 22
+		x = 32
 		y = 6
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_freeze_the_supply_corridors }
@@ -3077,7 +3155,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_count_the_winter_victories
 		icon = GFX_goal_ZZZ_wendigo_count_the_winter_victories
-		x = 22
+		x = 32
 		y = 7
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_march_through_the_blizzard }
@@ -3099,7 +3177,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_raise_the_winter_network
 		icon = GFX_goal_ZZZ_wendigo_raise_the_winter_network
-		x = 22
+		x = 32
 		y = 8
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_count_the_winter_victories }
@@ -3125,7 +3203,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_drill_the_original_pack
 		icon = GFX_goal_ZZZ_wendigo_drill_the_original_pack
-		x = 34
+		x = 36
 		y = 4
 		cost = @cannibalism_wendigo_focus_short
 		prerequisite = { focus = ZZZ_wendigo_raise_the_first_anchors }
@@ -3144,7 +3222,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_open_the_pack_musters
 		icon = GFX_goal_ZZZ_wendigo_open_the_pack_musters
-		x = 34
+		x = 36
 		y = 5
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_drill_the_original_pack }
@@ -3163,7 +3241,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_feed_the_anchor_guardians
 		icon = GFX_goal_ZZZ_wendigo_feed_the_anchor_guardians
-		x = 34
+		x = 36
 		y = 6
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_open_the_pack_musters }
@@ -3182,7 +3260,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_expand_the_hunting_packs
 		icon = GFX_goal_ZZZ_wendigo_expand_the_hunting_packs
-		x = 34
+		x = 36
 		y = 7
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_feed_the_anchor_guardians }
@@ -3201,7 +3279,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_army_of_the_frozen_larder
 		icon = GFX_goal_ZZZ_wendigo_army_of_the_frozen_larder
-		x = 34
+		x = 36
 		y = 8
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_expand_the_hunting_packs }
@@ -3224,7 +3302,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_keep_the_cannibal_legions
 		icon = GFX_goal_ZZZ_wendigo_keep_the_cannibal_legions
-		x = 46
+		x = 40
 		y = 4
 		cost = @cannibalism_wendigo_focus_short
 		prerequisite = { focus = ZZZ_wendigo_raise_the_first_anchors }
@@ -3246,7 +3324,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_retain_the_warlord_captains
 		icon = GFX_goal_ZZZ_wendigo_retain_the_warlord_captains
-		x = 46
+		x = 40
 		y = 5
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_keep_the_cannibal_legions }
@@ -3265,7 +3343,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_keep_the_foreign_cells
 		icon = GFX_goal_ZZZ_wendigo_keep_the_foreign_cells
-		x = 46
+		x = 40
 		y = 6
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_retain_the_warlord_captains }
@@ -3287,7 +3365,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_join_the_larder_routes
 		icon = GFX_goal_ZZZ_wendigo_join_the_larder_routes
-		x = 46
+		x = 40
 		y = 7
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_keep_the_foreign_cells }
@@ -3309,7 +3387,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_all_inheritances_intact
 		icon = GFX_goal_ZZZ_wendigo_all_inheritances_intact
-		x = 46
+		x = 40
 		y = 8
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_join_the_larder_routes }
@@ -3335,7 +3413,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_link_the_transformation_anchors
 		icon = GFX_goal_ZZZ_wendigo_link_the_transformation_anchors
-		x = 58
+		x = 44
 		y = 4
 		cost = @cannibalism_wendigo_focus_short
 		prerequisite = { focus = ZZZ_wendigo_raise_the_first_anchors }
@@ -3357,7 +3435,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_mark_the_irreversible_road
 		icon = GFX_goal_ZZZ_wendigo_mark_the_irreversible_road
-		x = 58
+		x = 44
 		y = 5
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_link_the_transformation_anchors }
@@ -3373,7 +3451,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_accelerate_the_transformation
 		icon = GFX_goal_ZZZ_wendigo_accelerate_the_transformation
-		x = 54
+		x = 42
 		y = 6
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_mark_the_irreversible_road }
@@ -3395,7 +3473,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_stabilize_the_anchor_chain
 		icon = GFX_goal_ZZZ_wendigo_stabilize_the_anchor_chain
-		x = 62
+		x = 46
 		y = 6
 		cost = @cannibalism_wendigo_focus_normal
 		prerequisite = { focus = ZZZ_wendigo_mark_the_irreversible_road }
@@ -3417,14 +3495,20 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_begin_the_countdown
 		icon = GFX_goal_ZZZ_wendigo_begin_the_countdown
-		x = 58
+		x = 46
 		y = 9
 		cost = @cannibalism_wendigo_focus_normal
-		prerequisite = { focus = ZZZ_wendigo_accelerate_the_transformation }
 		prerequisite = { focus = ZZZ_wendigo_stabilize_the_anchor_chain }
-		prerequisite = { focus = ZZZ_wendigo_raise_the_winter_network }
-		prerequisite = { focus = ZZZ_wendigo_army_of_the_frozen_larder }
-		prerequisite = { focus = ZZZ_wendigo_all_inheritances_intact }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = ZZZ_wendigo_begin_the_countdown_available_tt
+				has_completed_focus = ZZZ_wendigo_accelerate_the_transformation
+				has_completed_focus = ZZZ_wendigo_stabilize_the_anchor_chain
+				has_completed_focus = ZZZ_wendigo_raise_the_winter_network
+				has_completed_focus = ZZZ_wendigo_army_of_the_frozen_larder
+				has_completed_focus = ZZZ_wendigo_all_inheritances_intact
+			}
+		}
 		available_if_capitulated = no
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		completion_reward = {
@@ -3447,7 +3531,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_designate_the_last_hunt
 		icon = GFX_goal_ZZZ_wendigo_designate_the_last_hunt
-		x = 58
+		x = 46
 		y = 10
 		cost = @cannibalism_wendigo_focus_terminal
 		prerequisite = { focus = ZZZ_wendigo_begin_the_countdown }
@@ -3473,7 +3557,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_hunt_every_remaining_capital
 		icon = GFX_goal_ZZZ_wendigo_hunt_every_remaining_capital
-		x = 58
+		x = 46
 		y = 11
 		cost = @cannibalism_wendigo_focus_terminal
 		prerequisite = { focus = ZZZ_wendigo_designate_the_last_hunt }
@@ -3496,7 +3580,7 @@ focus_tree = {
 	focus = {
 		id = ZZZ_wendigo_the_world_beneath_winter
 		icon = GFX_goal_ZZZ_wendigo_the_world_beneath_winter
-		x = 58
+		x = 46
 		y = 12
 		cost = @cannibalism_wendigo_focus_terminal
 		prerequisite = { focus = ZZZ_wendigo_hunt_every_remaining_capital }
