@@ -1,5 +1,7 @@
 # FORM-07 Iberian Federation adapter implementation handoff — 2026-08-01
 
+> Historical snapshot notice (2026-08-05): The body below records the pre-IW-013/IW-015 adapter state and remains preserved as dated implementation evidence. The current source-wired NAV/GLC package state and unchanged fail-closed gates are recorded in the amendment at the end of this file.
+
 ## Scope and disposition
 
 This tranche adds the bounded FORM-07 registry surface for the installed CAT/NAV/GLC map crosswalk while keeping identity attestation fail-closed.
@@ -65,3 +67,15 @@ Identity remains intentionally blocked because no source-approved FORM-07 X tag 
 NAV/IW-013 and GLC/IW-015 currently have binding rows but no complete runtime package setup/adapters, so the all-three corridor proof remains false.
 
 No FORM-07-specific post-formation progression, idea, localisation, GUI, or decision surface was invented; those require a separate approved design and identity package.
+
+## Current amendment — 2026-08-05
+
+The dated implementation body remains historical for its missing-adapter wording and does not describe the current runtime source surface.
+
+IW-013/NAV now uses installed-map state 792 (País Vasco) as its compact anchor, with states 172 (Navarra) and 806 (French Basque) retained as optional extension objectives; IW-015/GLC uses state 171 (Galicia).
+
+Source-level NAV and GLC setup, final-validation, and cleanup adapters are wired through `common/scripted_effects/006_independence_wave_iberian_package_effects.txt` and the central package dispatch, while the shared generic Event 006 framework and package-specific ledgers, routes, decisions, AI, forces, host/network/league/formable hooks, and generation-safe cleanup remain package-owned surfaces.
+
+Central execution and scenario admission remain fail-closed because independent source, identity, flag, portrait, and country-package audits are not promoted and neither IW-013 nor IW-015 is in the central content-attestation set.
+
+No advisor icons or advisor portrait assets were created or authorized, and FORM-07 remains fail-closed pending its researched Iberian X identity, flag package, and member/integration contract.

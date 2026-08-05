@@ -372,3 +372,27 @@ remove_support_equipment_from_stockpile = yes
 set_temp_variable = { fuel_stockpile_removal_amount = 500 }
 remove_fuel_from_stockpile = yes
 ```
+
+## Event 006 Iberian compact ledger helpers
+
+Purpose: apply one bounded ledger transaction for the registered NAV or GLC carrier while refreshing its lifecycle idea.
+
+Scope: country.
+
+Inputs: NAV callers supply temporary `independence_wave_nav_fueros_delta` and `independence_wave_nav_industry_delta`; GLC callers supply `independence_wave_glc_council_delta` and `independence_wave_glc_port_delta`.
+
+Helpers: `independence_wave_change_nav_compact_values` and `independence_wave_change_glc_compact_values`.
+
+Outputs: the two carrier-specific values are added and clamped to the centralized Iberian pressure range, then the contested/compact idea lifecycle is refreshed.
+
+Defaults: callers must supply both temporary deltas. The helpers do not perform a world scan or create a country.
+
+Side effects: only the active matching registered carrier is changed. A failed project can use the same helpers with negative deltas, and generation cleanup clears both variables and all carrier-owned ideas.
+
+Example:
+
+```txt
+set_temp_variable = { independence_wave_nav_fueros_delta = constant:independence_wave_iberian_pressure.minor_gain }
+set_temp_variable = { independence_wave_nav_industry_delta = constant:independence_wave_iberian_pressure.standard_gain }
+independence_wave_change_nav_compact_values = yes
+```
