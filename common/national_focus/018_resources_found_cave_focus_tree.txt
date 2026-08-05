@@ -8,6 +8,10 @@
 # AI objectives, and cleanup remain centralized outside the graph.
 # ============================================================================
 
+# These are HOI4 focus-cost units (seven days each), not player-facing reward
+# values. The 35/49/70/84/98-day bands deliberately preserve the architecture's
+# emergency, short, normal, project, and long pacing instead of flattening every
+# route into one duration.
 @cave_focus_emergency = 5
 @cave_focus_short = 7
 @cave_focus_normal = 10
@@ -16,6 +20,10 @@
 
 # File-scoped focus-selection tuning. Structural x/y coordinates remain literal;
 # every strategic weight and threshold is centralized here for balance passes.
+# The 42-100 AI tiers are route and milestone priorities, not bonuses; their
+# fine-grained spacing preserves route-specific selection when the conditional
+# factors below are active. The state-count and bunker thresholds are technical
+# engine gates (less-than-20 versus greater-than-19, and bunker level 2).
 @cave_ai_disabled = 0
 @cave_ai_route_gate = 30
 @cave_ai_adaptation_gate = 35
@@ -580,7 +588,8 @@ focus_tree = {
 		ai_will_do = {
 			base = @cave_ai_route_gate
 			modifier = { factor = @cave_ai_favored_factor any_enemy_country = { is_major = yes } }
-			modifier = { factor = @cave_ai_favored_factor any_enemy_country = { any_controlled_state = { fort_level > @cave_ai_fort_level_threshold } } }
+			# State bunker levels are engine building values, not script variables.
+			modifier = { factor = @cave_ai_favored_factor any_enemy_country = { any_controlled_state = { bunker > @cave_ai_fort_level_threshold } } }
 		}
 	}
 
@@ -679,7 +688,7 @@ focus_tree = {
 		}
 		ai_will_do = {
 			base = @cave_ai_route_gate
-			modifier = { factor = @cave_ai_favored_factor any_controlled_state = { OR = { terrain = mountain terrain = urban } } }
+			modifier = { factor = @cave_ai_favored_factor OR = { has_terrain = mountain has_terrain = urban } }
 			modifier = { factor = @cave_ai_favored_factor resources_found_cave_has_fought_piercing_enemy = yes }
 		}
 	}
