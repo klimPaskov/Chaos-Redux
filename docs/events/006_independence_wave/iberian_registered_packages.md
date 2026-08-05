@@ -11,7 +11,7 @@ Both carriers receive the shared Event 006 full framework because their vanilla 
 1. The frozen allocator publishes package ID, anchor, former host, region, depth, archetype, and force level before the synchronized release transaction.
 2. `independence_wave_dispatch_iberian_package_setup` initializes the matching carrier only when the package's prepared anchor and former-host targets remain valid.
 3. NAV tracks `independence_wave_nav_fueros_legitimacy` and `independence_wave_nav_industrial_capacity`; GLC tracks `independence_wave_glc_council_legitimacy` and `independence_wave_glc_port_capacity`. Each lifecycle swaps its contested or compact idea at the shared stability threshold.
-4. Paid decisions and the founding mission write country, host, Network, and League ledgers. Route decisions lock constitutional, popular-council, traditional, emergency, or patron-client government ideas.
+4. Paid decisions and the founding mission write country, host, Network, and League ledgers. Route decisions lock constitutional, popular-council, traditional, emergency, or patron-client government ideas. The NAV and GLC Iberian Network projects cancel if League-route availability is withdrawn while they are running, so a completed project cannot outlive its route gate.
 5. The package loads the centralized force mapping (`p13` mountain-frontier for NAV and `p15` territorial-defense for GLC) and materializes the generation-aware dynamic starting force when the reviewed roster gate is present.
 6. Generation cleanup removes only the package's own decisions, ideas, variables, and flags. It does not remove vanilla history, leaders, or unrelated diplomatic relations.
 
