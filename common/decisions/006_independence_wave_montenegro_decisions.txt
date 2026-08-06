@@ -125,7 +125,21 @@ independence_wave_mnt_mountain_compact_category = {
 			independence_wave_mnt_focus_settle_host = yes
 		}
 		cancel_trigger = { OR = { NOT = { is_independence_wave_mnt_package = yes } NOT = { has_independence_wave_living_former_host = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } var:independence_wave_former_host = { has_war_with = ROOT } } }
-		cancel_effect = { if = { limit = { is_independence_wave_mnt_package = yes } independence_wave_mnt_apply_project_failure = yes } }
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_mnt_project_ready = yes
+					capital_scope = { is_controlled_by = ROOT }
+					has_independence_wave_mnt_unsettled_host = yes
+				}
+				custom_effect_tooltip = independence_wave_mnt_host_loss_effect_tt
+				independence_wave_mnt_focus_settle_host = yes
+			}
+			else_if = {
+				limit = { is_independence_wave_mnt_package = yes }
+				independence_wave_mnt_apply_project_failure = yes
+			}
+		}
 		ai_will_do = { base = constant:independence_wave_decision_ai.standard modifier = { factor = constant:independence_wave_decision_ai.modifier_double NOT = { has_independence_wave_severe_host_threat = yes } } }
 	}
 
