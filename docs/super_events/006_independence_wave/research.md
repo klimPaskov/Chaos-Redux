@@ -4,14 +4,14 @@ Identifier policy (2026-08-05): Event 006 uses the ordinary project-wide super-e
 
 Current package cross-reference (2026-08-06): the allocator records 23 content-attested selectable packages across 22 compatible reservation groups, 170 unattested selectable rows out of 193 non-overlay rows, and a 20-package static standalone witness excluding the self-hosting ICE anchor. This super-event research authority does not claim whole-event completion.
 
-Status: dangerous milestone runtime implemented; hidden-formable route wired but dormant; league-formation package blocked
+Status: dangerous milestone runtime source-wired with a passing static 20-package capacity witness and partial live reachability under factual gates; hidden-formable route wired but dormant; league-formation package blocked
 
 ## Runtime allocation
 
 | Package | Display slot | Audio ID | Runtime status |
 | --- | ---: | ---: | --- |
 | The League of New States | 23 | 23 | Blocked and absent |
-| Every Border a Casus Belli | 24 | 24 | Runtime implemented; hidden-formable route dormant |
+| Every Border a Casus Belli | 24 | 24 | Source-wired; static capacity witness passes; live reachability partial under host, collision, transaction, and formable gates |
 
 Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID 24 is registered only as a zero-random-play super-event cue. Slot 23 and audio ID 23 are reserved; their image and localisation dispatch are now registered, but the recording, wrappers, and firing effect remain blocked.
 
