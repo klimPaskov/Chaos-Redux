@@ -4,7 +4,15 @@ Date: 2026-08-05
 
 Mode: read-only event completion audit of the current repository state.
 
-## Current-status override (2026-08-05; authoritative)
+## Current package and AI override (2026-08-05; supersedes dated CAT/Iberian arithmetic)
+
+The later IW-033/IW-041, IW-026 MAC, and IW-029 BOS promotions supersede the dated CAT/Iberian package arithmetic below for current routing. Event 006 currently has 23 content-attested selectable packages across 22 compatible reservation groups, 170 unattested selectable rows, and 32 central package adapters, of which nine remain adapter-only and fail closed; the current static standalone witness contains 20 packages and excludes only self-hosting IW-012 ICE, and the whole-event disposition remains **HOLD / PARTIAL**.
+
+The allocator witness was subsequently widened by source audit without changing gameplay admission: 20 of the 23 attested packages form a unique-anchor, non-overlapping, host-surviving standalone baseline. IW-012 ICE is intentionally excluded because its single vanilla state is also its former-host remnant. The 20-package result is static capacity evidence, not live transaction evidence, and the current whole-event disposition remains **HOLD / PARTIAL**.
+
+The active ordinary super-event identifiers remain `23` for The League of New States and `24` for Every Border a Casus Belli; four-digit labels in this audit are historical traceability only. The later owner-AI handoff adds executable foundation-settlement gating, lower-ledger preference, and zero-weight post-spend reserve floors for command power, manpower, equipment, trains, convoys, fuel, and major security actions in regular IW-033/IW-041 decisions. The required same-scenario MCP probability comparison and live runtime evidence remain pending.
+
+## Dated post-Iberian status (superseded for current package routing)
 
 IW-014 CAT is now admitted as a standalone source-complete vanilla-carrier package.
 
@@ -42,7 +50,7 @@ No fallback, generic package substitute, source-placeholder completion claim, ad
 
 ## 2026-08-05 follow-up evidence
 
-The current static checks were rerun after the CAT-inclusive authority and supported-effect corrections. `python -B .tools/audit_event6_allocator.py` passes 149 publishers, 126 automatic/high-chaos candidates, 138 SCN-008-ranked candidates, 16 attested packages, 15 compatible reservation groups, the 14-package static witness, and the 6/8/10/14/20 automatic ladder. `python -B .tools/audit_event6_flags.py --strict` passes all 102 registered Event 006 flag families, `python -B .tools/audit_event6_scenario_matrix.py` passes all 32 SCN-008 cells plus eight edge cases, and `python -B .tools/audit_event6_gui_matrix.py` passes the five Statehood Ledger tabs, frame families, cleanup variables, and static/animated sibling pairs.
+The current static checks were rerun after the CAT-inclusive authority and supported-effect corrections. `python -B .tools/audit_event6_allocator.py` now passes 149 publishers, 126 automatic/high-chaos candidates, 138 SCN-008-ranked candidates, 21 attested packages, 20 compatible reservation groups, the 20-package static witness, and the 6/8/10/14/20 automatic ladder. `python -B .tools/audit_event6_flags.py --strict` passes all 102 registered Event 006 flag families, `python -B .tools/audit_event6_scenario_matrix.py` passes all 32 SCN-008 cells plus eight edge cases, and `python -B .tools/audit_event6_gui_matrix.py` passes the five Statehood Ledger tabs, frame families, cleanup variables, and static/animated sibling pairs.
 
 The current read-only MCP decision/mission probability receipt is `subagent_handoffs/006_event6_probability_inspect_current_2026_08_05.md`; it reports 10 decision candidates and 54 mission candidates with zero unresolved source diagnostics, while correctly leaving world-state pools incomplete. The supported-effect correction is recorded in `subagent_handoffs/006_event6_supported_effects_correction_2026_08_05.md` and commit `6d5504070`; the authority graph reconciliation is recorded in `subagent_handoffs/006_event6_authority_reconciliation_current_2026_08_05.md` and commits `bf35c7a4b`/`a88c026a0`.
 
@@ -62,7 +70,7 @@ No live testing was awaited or required under the accepted source and static-evi
 
 ## Completion status by surface
 
-The table below retains the pre-CAT admission surface snapshot; its count and CAT-admission wording is superseded by the current-status override above, while the non-count findings remain useful dated evidence.
+The table below retains the pre-CAT/Iberian admission surface snapshot; all package counts, capacity statements, and CAT/Iberian wording in the table are superseded by the current-status override above, while the non-count findings remain useful dated evidence.
 
 | Surface | Status | Current evidence | Remaining boundary |
 | --- | --- | --- | --- |
@@ -83,23 +91,23 @@ The table below retains the pre-CAT admission surface snapshot; its count and CA
 | Documentation and handoffs | **PARTIAL / stale authority graph** | `docs/events/006_independence_wave/iberian_registered_packages.md` accurately describes source wiring and the fail-closed boundary. The source-of-truth map has a 2026-08-05 IW-013 and IW-015 override. | The source-of-truth map still routes through v106 and post-TRA files as current whole-event authority, retains stale counts later in the same file, and refers to a dated Iberian package handoff that does not exist. The resume packet, package manifest, asset manifest, catalog handoff, and current-named audits do not consistently describe the new 25-adapter and 10-adapter-only boundary or the provider-final portrait rule. |
 | AI and balance | **BLOCKED** | Shared and Iberian files contain guarded AI weights and additive AI strategies. Source discovery succeeds. | No final named-world-state focus, decision, mission, or strategy-factor evaluation covers route ordering, dominance, starvation, 14 and 20 capacity behavior, package comparison, or whole-event balance. |
 
-## Exact post-Iberian package boundary
+## Historical exact post-Iberian package boundary (superseded by the current package override)
 
-The current central runtime adapter allowlist contains 25 package IDs.
+The current central runtime adapter allowlist contains 30 package IDs.
 
-The exact 15-ID attested set is unchanged from the post-TRA boundary.
+The exact 21-ID attested set is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184.
 
-The ten adapter-only IDs are IW-013 NAV, IW-014 CAT, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM.
+The nine adapter-only IDs are IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM.
 
-Of the 178 unattested selectable packages, ten have central adapters and 168 do not.
+Of the 172 unattested selectable packages, nine have central adapters and 163 do not.
 
 The new NAV and GLC branches are therefore dormant source surfaces.
 
 They cannot be selected by ordinary waves or SCN-008 because preflight requires both the adapter and the exact immutable attestation at `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt:102-105` and `:225-226`.
 
-The 14-package witness remains available from the existing 15 attestations.
+The 20-package witness contains every attested package except self-hosting IW-012 ICE, whose single vanilla state cannot leave a former-host remnant.
 
-The 20-package band still needs at least five more mutually compatible, fully attested packages.
+The 20-country band therefore has a source/static capacity witness. Live execution still requires the ordinary tag, host-survival, anchor, collision, force, and transaction gates.
 
 ## Iberian source, asset, and portrait gates
 
@@ -204,7 +212,7 @@ The documentation graph still needs a current reconciliation tranche.
 5. Add IW-013, IW-014, or IW-015 to content attestation only after the exact package and asset gates pass. Rerun the allocator and SCN-008 matrices after every promotion.
 6. Keep the 20-country band fail closed until at least five additional compatible packages are fully attested from the current 15-package baseline.
 7. Reconcile the source-of-truth map, resume packet, package and asset manifests, current-named audits, and stale catalog handoff to the new 25-adapter and 10-adapter-only boundary while preserving the correct unavailable catalog status.
-8. Complete the remaining country packages, 43 unreachable or incomplete formables, ASSET-045, ASSET-046, ASSET-048, and super-event `6001` without fallback substitutions.
+8. Complete the remaining country packages, 43 unreachable or incomplete formables, ASSET-045, ASSET-046, ASSET-048, and super-event `23` without fallback substitutions.
 9. Run the accepted named-world-state focus, decision, mission, package, strategy-factor, capacity, and whole-event balance evidence after the missing package tranches exist.
 10. Repeat the final country, formable, focus, decision and mission, localisation, asset, catalog, AI and balance, super-event, and event-completion audits before any completion claim.
 

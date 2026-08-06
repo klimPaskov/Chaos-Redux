@@ -4,6 +4,10 @@ Date: 2026-08-06
 
 Mode: read-only completion audit
 
+## Post-MNT current authority override
+
+This Bosnia audit records an earlier 22/21/171 package snapshot. Current Event 006 routing is 23 content-attested selectable packages across 22 compatible reservation groups, 170 unattested selectable rows out of 193 non-overlay rows, 32 central adapters, and nine adapter-only fail-closed rows. The static standalone witness contains 20 packages and excludes only self-hosting IW-012 ICE; it proves static package/group capacity for one frozen subset, not live transaction success. Ordinary super-event slot/audio/history identifiers are `23` and `24`, with `23` rights-blocked and `24` source-wired but only partially reachable under factual gates. The old arithmetic below is retained as dated audit evidence; use this override for current routing.
+
 Audited repository snapshot: `6226c6f3091f103c5b4ec134ae4d7be87bd0884a` plus the shared working-tree state visible during the audit
 
 Disposition: **HOLD / PARTIAL — do not claim Event 006 complete**
@@ -12,9 +16,9 @@ Disposition: **HOLD / PARTIAL — do not claim Event 006 complete**
 
 Event 006 remains incomplete.
 
-The current source does prove the shared release framework, the 206-row registry, the dynamic ledger systems, a 22-package compile-time content-attestation set across 21 compatible reservation groups, 32 central package adapters, the 6/8/10/14/20 allocation ladder, a 20-package static standalone witness, the complete 32-cell SCN-008 source matrix, the accepted one-tree focus architecture, five evolution incidents, 16 achievement definitions with 48 icon states, ordinary super-event identifiers 23 and 24, and a source-admitted IW-029 Bosnia adapter with three explicit YUG former-host assertions.
+At the audited snapshot, the source proved the shared release framework, the 206-row registry, the dynamic ledger systems, a 22-package compile-time content-attestation set across 21 compatible reservation groups, 32 central package adapters, the 6/8/10/14/20 allocation ladder, a 20-package static standalone witness, the complete 32-cell SCN-008 source matrix, the accepted one-tree focus architecture, five evolution incidents, 16 achievement definitions with 48 icon states, ordinary super-event identifiers 23 and 24, and a source-admitted IW-029 Bosnia adapter with three explicit YUG former-host assertions.
 
-The whole event is still blocked by 171 unattested selectable packages, only five of 48 formables being operationally reachable, incomplete typed probability evidence, ordinary super-event 23 lacking an approved runtime audio and firing package, partial portrait/formable/report asset families, a blocked Statehood Ledger rewrite, partial Event MCP analysis, unavailable Event MCP revision comparison, and current documentation contradictions.
+At the audited snapshot, the whole event was blocked by 171 unattested selectable packages, only five of 48 formables being operationally reachable, incomplete typed probability evidence, ordinary super-event 23 lacking an approved runtime audio and firing package, partial portrait/formable/report asset families, a blocked Statehood Ledger rewrite, partial Event MCP analysis, unavailable Event MCP revision comparison, and current documentation contradictions.
 
 The most important Bosnia-specific completion finding is not the former-host assertion, which is present. The source assigns BOS the full shared Event 006 focus tree and executes `load_focus_tree` with `keep_completed = no`, while the package documentation and source comments say the meaningful vanilla BOS carrier tree remains intact. Installed vanilla includes BOS in `austro_hungarian_releasable_focus` when Götterdämmerung is active. The implementation follows the accepted one-tree specification, but the claimed vanilla-tree preservation is false and the replacement is an undisclosed package-level simplification until the owner explicitly dispositions it.
 
@@ -28,9 +32,9 @@ No gameplay, asset, localisation, spreadsheet, or source specification file was 
 - **Blocked** means an accepted requirement or mandatory evidence route cannot currently close.
 - **Missing** means accepted content has no completion-grade implementation or evidence.
 
-## Current arithmetic and package boundary
+## Historical audited arithmetic and package boundary (superseded by the post-MNT override)
 
-| Surface | Current result | Completion status |
+| Surface | Audited snapshot result | Completion status |
 |---|---:|---|
 | Registry | 206 total rows: 193 selectable and 13 overlay-only | Proven static registry projection; not package completion |
 | Content-attested selectable packages | 22 | Partial |
@@ -69,7 +73,7 @@ The admitted-depth boundary is five Level 1 packages, 17 Level 2 packages, and z
 | Volga, Urals, Siberia, and Far East | 15 |
 | West and Central Africa | 12 |
 
-`.tools/audit_event6_allocator.py` passes the current 22-attested / 21-group boundary, 149 publishers, 126 automatic/high-chaos candidates, 138 SCN-008-ranked candidates, the 20-package static witness, the two-slot IW-008/IW-010 `RG-RHINE-SAAR` exception, and the 6/8/10/14/20 ladder. This is capacity evidence for one frozen subset, not a receipt that every host, anchor, Event 005 collision, force, claim, and synchronized transaction predicate succeeds in a live world state.
+At the audited snapshot, `.tools/audit_event6_allocator.py` passed the 22-attested / 21-group boundary, 149 publishers, 126 automatic/high-chaos candidates, 138 SCN-008-ranked candidates, the 20-package static witness, the two-slot IW-008/IW-010 `RG-RHINE-SAAR` exception, and the 6/8/10/14/20 ladder. This is capacity evidence for one frozen subset, not a receipt that every host, anchor, Event 005 collision, force, claim, and synchronized transaction predicate succeeds in a live world state.
 
 ## IW-029 Bosnia admission audit
 
@@ -295,9 +299,9 @@ This audit added only:
 
 Finished work is limited to the bounded static/source surfaces stated above.
 
-Partial work includes the central event chain, the 22 admitted packages, shared focus and decision systems, evolutions, localisation consumers, achievements, asset families, SCN-008, the Statehood Ledger, and super-event 24.
+At the audited snapshot, partial work included the central event chain, the 22 admitted packages, shared focus and decision systems, evolutions, localisation consumers, achievements, asset families, SCN-008, the Statehood Ledger, and super-event 24.
 
-Blocked or missing work includes 171 packages, 43 formables, ordinary super-event 23, complete typed probability and comparison evidence, the broader portrait/formable/report asset families, a successful GUI rewrite/dynamic consumer proof, and the current documentation contradictions.
+At the audited snapshot, blocked or missing work included 171 packages, 43 formables, ordinary super-event 23, complete typed probability and comparison evidence, the broader portrait/formable/report asset families, a successful GUI rewrite/dynamic consumer proof, and the current documentation contradictions.
 
 Event 006 must remain **HOLD / PARTIAL**.
 

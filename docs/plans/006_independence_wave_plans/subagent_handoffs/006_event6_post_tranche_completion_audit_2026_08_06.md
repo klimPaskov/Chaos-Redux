@@ -10,7 +10,11 @@ Audit mode: read-only. This handoff is the only file authored by this audit. No 
 
 Event 006 remains **HOLD / PARTIAL**.
 
-The five commits close a documentation distinction, add a focused external-collision receipt, and improve ACX/Cornwall source evidence. They do not change the 21-package content-attestation boundary, the 20 compatible reservation groups, the 172 unattested selectable rows, the 30 runtime adapter IDs, or ACX's fail-closed package state.
+## Post-MNT current authority override
+
+The reviewed tranche predates the current MNT boundary. Current Event 006 routing is 23 content-attested selectable packages across 22 compatible reservation groups, 170 unattested selectable rows out of 193 non-overlay rows, 32 central adapters, and nine adapter-only fail-closed rows. The static standalone witness contains 20 packages and excludes only self-hosting IW-012 ICE; it proves static package/group capacity for one frozen subset, not live transaction success. Ordinary super-event slot/audio/history identifiers are `23` and `24`; `23` remains rights-blocked, while `24` is source-wired with partial live reachability under factual host, collision, transaction, force, and formable gates. The older 21/20/172/30 arithmetic in this audit is retained as requested-baseline evidence.
+
+At the reviewed pre-MNT/MAC snapshot, the five commits closed a documentation distinction, added a focused external-collision receipt, and improved ACX/Cornwall source evidence. They did not change the 21-package content-attestation boundary, the 20 compatible reservation groups, the 172 unattested selectable rows, the 30 runtime adapter IDs, or ACX's fail-closed package state.
 
 The shared Event 006 allocator and registry core retains its static PASS. The remaining completion blockers are country-package coverage, formable coverage, package-specific AI and balance proof, ordinary super-event `23` audio/firing, asset and source gates, stale authority prose, and partial MCP event/probability evidence.
 
@@ -35,7 +39,7 @@ Status: **PASS for current identifier wording; `23` remains blocked and `24` rem
 
 The current status wording is therefore materially accurate: `23` has registered image/text dispatch but remains blocked on final user-owned audio selection/approval, wrappers, and firing; `24` has its WAV, wrappers, slot dispatch, predicates, Event Log payload, and queued presentation. No dated `6001` or `6002` filename is an active runtime identifier.
 
-## Current 21/20/172/30 boundary
+## Historical requested-baseline 21/20/172/30 boundary (superseded by the post-MNT override)
 
 Status: **PASS as an exact source/static boundary.**
 
@@ -127,20 +131,20 @@ None of the five reviewed commits changes a weighted source, so no new probabili
 
 ## Current documentation status
 
-The top-level current overrides correctly state ordinary IDs `23/24`, counts `21/20/172/30`, the 20-package static witness, the external-versus-internal collision distinction, and whole-event **HOLD / PARTIAL**.
+The top-level current overrides now state ordinary IDs `23/24`, counts `23/22/170/32/9`, the 20-package static witness, the external-versus-internal collision distinction, and whole-event **HOLD / PARTIAL**.
 
 Documentation reconciliation is materially improved by the parent follow-up:
 
 - `006_source_of_truth_map.md` now indexes the August 6 country, portrait, and flag handoffs under the current IW-003 override.
 - Current-sounding capacity paragraphs now distinguish the maintained 20-package static witness from live/factual world-state preflight gates; dated historical rows remain traceability only.
-- Current portrait-policy wording still automatically marks some grounded source placeholders `REPLACEMENT_PENDING`; the August 6 reusable policy permits that state only after an explicit styled-final request. This does not change ACX's unwired/role/map/package blockers.
+- Current portrait-policy wording uses `source_placeholder` for the selected requirement and permits `replacement_pending` only after an explicit styled-final request. This does not change ACX's unwired/role/map/package blockers.
 - The ACX flag handoff normal checksum now matches the exact current SHA-256 above.
 
 These are documentation/evidence defects, not authorization for gameplay admission.
 
 ## Remaining whole-event blockers
 
-1. **Country packages:** 172 selectable rows remain unattested; nine existing adapters remain adapter-only. Reserved shells, source candidates, flags, or generic focus availability do not satisfy package admission.
+1. **Country packages:** 170 selectable rows remain unattested; nine existing adapters remain adapter-only. Reserved shells, source candidates, flags, or generic focus availability do not satisfy package admission.
 2. **Formables:** most of FORM-06 through FORM-47 remain fail-closed; FORM-07, FORM-16, FORM-39, and FORM-48 retain their specific identity/member/territory/consent/integration or admitted-member blockers. No generic substitute is authorized.
 3. **ACX Cornwall:** no accepted map rebind, protected ENG remnant, package gameplay, leader role/consumer, AI, forces, decisions, focuses, cleanup, adapter, or attestation exists.
 4. **Super-event 23:** final selected rights-cleared audio, user audition/tonal approval, wrappers, and firing remain absent. Research candidates are not fallbacks.
