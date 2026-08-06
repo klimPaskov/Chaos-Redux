@@ -1536,6 +1536,22 @@ africa_apply_covenant_focus_route_reward = {
 		set_country_flag = africa_covenant_define_nonhuman_forces
 		add_to_variable = { africa_regional_equality = constant:africa_focus_route_tuning.institution_gain }
 		add_to_variable = { africa_integration_burden = constant:africa_focus_route_tuning.tradeoff_cost }
+		# Living Rivers is a route/region consumer rather than a direct action.
+		# Existing overlay flags are the only region proof; no fictional country
+		# tag is introduced. The shared strange-force guard still owns all package
+		# and model manifest gates.
+		if = {
+			limit = {
+				has_country_flag = africa_covenant_route_committed
+				OR = {
+					has_country_flag = africa_congo_basin_overlay_active
+					has_country_flag = africa_great_lakes_overlay_active
+					has_country_flag = africa_nile_horn_overlay_active
+					has_country_flag = africa_sahel_lake_chad_overlay_active
+				}
+			}
+			africa_strange_force_spawn_riverborn = yes
+		}
 	}
 	else_if = {
 		limit = { check_variable = { africa_focus_route_step = constant:africa_focus_route_step.node_11 } }
