@@ -8,6 +8,10 @@ Audit mode: read-only. No gameplay, localisation, asset, workbook, or runtime so
 
 This focused audit captured the pre-MAC/MNT package arithmetic. Current Event 006 routing is 23 content-attested selectable packages across 22 compatible reservation groups, 170 unattested selectable rows out of 193 non-overlay rows, 32 central adapters, and nine adapter-only fail-closed rows. The static standalone witness contains 20 packages and excludes only self-hosting IW-012 ICE; it proves static package/group capacity for one frozen subset, not live transaction success. Ordinary super-event slot/audio/history identifiers are `23` and `24`, with `23` rights-blocked and `24` source-wired but only partially reachable under factual gates. The evidence table below remains a dated audit snapshot; use this override for current routing.
 
+### Current post-audit amendment
+
+The later IW-026 Macedonia and IW-029 Bosnia promotions are included in the current 23-package/22-group arithmetic above. The 20-package standalone witness remains a static capacity proof and does not promote the remaining adapter-only rows. The later NAV/GLC command-roster tranche is source-complete at the consumer boundary: `chaosx.nr6.350` recruits one sourced male corps-command role per carrier, setup gates force mapping on that role plus the vanilla ruling leader, and cleanup retires the additive role while clearing the shared `independence_wave_command_roster_ready` bit. These closures do not change the audit's HOLD / PARTIAL whole-event verdict or waive identity, flag, rights, package, formable, audio, probability, or MCP evidence gates.
+
 ## Disposition
 
 Event 006 remains **HOLD / PARTIAL** as a whole event.
