@@ -71,7 +71,7 @@ gives every later event a discoverable collection name.
 
 | API collection | Contents | Intended consumers |
 | --- | --- | --- |
-| `chaosx_country_all` | Every country declared by Chaos Redux | Fallout rebuilds, crisis release helpers, and generic carrier lookup |
+| `chaosx_country_all` | Every Chaos Redux-declared tag, including the complete 191-carrier Event 006 surface and Soviet Collapse carriers | Fallout rebuilds, crisis release helpers, and generic carrier lookup |
 | `chaosx_country_independence_wave` | All 191 resolved Event 006 carriers, including registered reuse | Any event that wants a researched independence identity |
 | `chaosx_country_independence_wave_owned` | The 102 Event 006-owned X tags | New-country admission and dormant reservation checks |
 | `chaosx_country_independence_wave_registered` | Registered vanilla carriers reused by the ledger | Overlay and existing-country content loaders |
