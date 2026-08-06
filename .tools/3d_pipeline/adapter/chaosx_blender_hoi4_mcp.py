@@ -412,6 +412,28 @@ def chaosx_blender_hoi4_export_animation(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_import_animation_action(
+    job_id: str,
+    blend_rel: str,
+    source_rel: str,
+    checkpoint_rel: str,
+    action_name: str,
+) -> Dict[str, Any]:
+    """Transfer one real provider skeletal action onto the approved rig."""
+
+    return _run(
+        job_id,
+        "import_animation_action",
+        {
+            "blend_rel": blend_rel,
+            "source_rel": source_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_name": action_name,
+        },
+    )
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_author_locomotion_action(
     job_id: str,
     blend_rel: str,
@@ -498,6 +520,7 @@ def chaosx_blender_hoi4_author_creature_rig(
     checkpoint_rel: str,
     rider_component_names: list[str] | None = None,
     weight_mode: str = "semantic",
+    rig_name: str = "",
 ) -> Dict[str, Any]:
     """Create and checkpoint a bounded custom rig for a nonhumanoid creature candidate."""
 
@@ -509,6 +532,7 @@ def chaosx_blender_hoi4_author_creature_rig(
             "checkpoint_rel": checkpoint_rel,
             "rider_component_names": rider_component_names or [],
             "weight_mode": weight_mode,
+            "rig_name": rig_name,
         },
     )
 
