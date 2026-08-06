@@ -2,6 +2,8 @@
 
 ## Scope
 
+The current whole-event authority is 24 content-attested packages across 22 compatible reservation groups with 169 selectable rows still unattested; this regional document's older 23/22/170 arithmetic is dated traceability only. IW-024 Banat is the latest Danube sibling promotion and is documented in the source map and resume packet.
+
 This document records the IW-033 Karelia and IW-041 Crimean Tatar State package adapters. Both use the registered vanilla carriers `KAR` and `CRI`; the event never creates a replacement tag or overwrites vanilla history. A release must first reserve the anchor and former-host state, then run the package setup inside the synchronized Event 006 transaction.
 
 ## Current source status (2026-08-06)
