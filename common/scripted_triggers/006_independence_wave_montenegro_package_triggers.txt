@@ -11,6 +11,48 @@ is_independence_wave_mnt_package = {
 	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_030 }
 }
 
+# A project may only be exposed after the complete setup receipt exists. This
+# keeps partial roster, ledger, force, and focus setup from opening paid work.
+is_independence_wave_mnt_project_ready = {
+	is_independence_wave_mnt_package = yes
+	has_country_flag = independence_wave_iw_030_setup_complete
+	NOT = { has_country_flag = independence_wave_mnt_compact_crisis_failed }
+}
+
+# A living former host at war cannot settle its bilateral ledgers. In that
+# case the depot authority provides the additional crown legitimacy needed to
+# carry the compact through a local settlement instead of deadlocking.
+has_independence_wave_mnt_unsettled_host = {
+	OR = {
+		NOT = { has_independence_wave_living_former_host = yes }
+		AND = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { has_war_with = ROOT }
+		}
+	}
+}
+
+# MNT is a one-state carrier. Its single opening civilian factory is the
+# committed project burden; no second unowned reserve factory exists at setup.
+can_pay_independence_wave_mnt_administration_light_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_montenegro_cost.civilian_factory_floor
+	command_power > constant:independence_wave_decision_cost.command_power_light
+	has_manpower > constant:independence_wave_decision_cost.manpower_light
+}
+
+can_pay_independence_wave_mnt_administration_standard_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_montenegro_cost.civilian_factory_floor
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+}
+
+can_pay_independence_wave_mnt_strategic_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_montenegro_cost.civilian_factory_floor
+	has_stability > constant:independence_wave_decision_cost.stability_standard
+	has_war_support > constant:independence_wave_decision_cost.war_support_minor
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
 # COUNTRY scope after the MNT release has been instantiated. This is deliberately
 # separate from the dormant candidate wrapper: the planner cannot evaluate active
 # setup receipts on an absent country, while post-release validation must not

@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT = 1
+@CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD = 1
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-030 MONTENEGRO DECISIONS
 # ============================================================================
@@ -51,11 +55,11 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_reopen_mountain_depots
 		desc = independence_wave_mnt_reopen_mountain_depots_desc
 		icon = GFX_decision_independence_wave_government_actions
-		visible = { is_independence_wave_mnt_package = yes NOT = { has_country_flag = independence_wave_mnt_depots_reopened } }
-		available = { can_pay_independence_wave_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
-		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
-		custom_cost_text = independence_wave_cost_administration_light
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		visible = { is_independence_wave_mnt_project_ready = yes NOT = { has_country_flag = independence_wave_mnt_depots_reopened } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_mnt_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_mnt_administration_light_cost = yes }
+		custom_cost_text = independence_wave_mnt_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.short
 		complete_effect = { independence_wave_decision_pay_administration_light = yes }
 		remove_effect = {
@@ -71,8 +75,8 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_integrate_regional_guards
 		desc = independence_wave_mnt_integrate_regional_guards_desc
 		icon = GFX_decision_independence_wave_army_integration_actions
-		visible = { is_independence_wave_mnt_package = yes NOT = { has_country_flag = independence_wave_mnt_guards_integrated } }
-		available = { can_pay_independence_wave_security_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		visible = { is_independence_wave_mnt_project_ready = yes NOT = { has_country_flag = independence_wave_mnt_guards_integrated } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_security_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_security_standard
 		days_remove = constant:independence_wave_decision_duration.standard
@@ -90,11 +94,11 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_reconcile_cetinje_podgorica_offices
 		desc = independence_wave_mnt_reconcile_cetinje_podgorica_offices_desc
 		icon = GFX_decision_independence_wave_government_actions
-		visible = { is_independence_wave_mnt_package = yes NOT = { has_country_flag = independence_wave_mnt_offices_reconciled } }
-		available = { can_pay_independence_wave_administration_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
-		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
-		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		visible = { is_independence_wave_mnt_project_ready = yes NOT = { has_country_flag = independence_wave_mnt_offices_reconciled } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_mnt_administration_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_mnt_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_mnt_cost_administration_standard
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = {
@@ -110,8 +114,8 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_settle_former_host_ledgers
 		desc = independence_wave_mnt_settle_former_host_ledgers_desc
 		icon = GFX_decision_independence_wave_former_host_negotiations
-		visible = { is_independence_wave_mnt_package = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_mnt_host_ledgers_settled } }
-		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		visible = { is_independence_wave_mnt_project_ready = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_mnt_host_ledgers_settled } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } NOT = { has_independence_wave_mnt_active_package_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
 		days_remove = constant:independence_wave_decision_duration.long
@@ -129,10 +133,11 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_ratify_constitutional_charter
 		desc = independence_wave_mnt_ratify_constitutional_charter_desc
 		icon = GFX_decision_independence_wave_government_actions
-		visible = { is_independence_wave_mnt_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
-		available = { can_pay_independence_wave_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
-		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
-		custom_cost_text = independence_wave_cost_administration_light
+		visible = { is_independence_wave_mnt_project_ready = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_mnt_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_mnt_administration_light_cost = yes }
+		custom_cost_text = independence_wave_mnt_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.short
 		complete_effect = { independence_wave_decision_pay_administration_light = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_mnt_route_effect_tt independence_wave_install_mnt_constitutional_government = yes independence_wave_mnt_apply_administrative_progress = yes }
@@ -144,10 +149,11 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_convene_workers_council
 		desc = independence_wave_mnt_convene_workers_council_desc
 		icon = GFX_decision_independence_wave_government_actions
-		visible = { is_independence_wave_mnt_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
-		available = { can_pay_independence_wave_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
-		custom_cost_trigger = { can_pay_independence_wave_administration_light_cost = yes }
-		custom_cost_text = independence_wave_cost_administration_light
+		visible = { is_independence_wave_mnt_project_ready = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_mnt_administration_light_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		custom_cost_trigger = { can_pay_independence_wave_mnt_administration_light_cost = yes }
+		custom_cost_text = independence_wave_mnt_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.short
 		complete_effect = { independence_wave_decision_pay_administration_light = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_mnt_route_effect_tt independence_wave_install_mnt_socialist_government = yes independence_wave_mnt_apply_administrative_progress = yes }
@@ -159,8 +165,8 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_restore_crown_compact
 		desc = independence_wave_mnt_restore_crown_compact_desc
 		icon = GFX_decision_independence_wave_government_actions
-		visible = { is_independence_wave_mnt_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
-		available = { can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		visible = { is_independence_wave_mnt_project_ready = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
 		days_remove = constant:independence_wave_decision_duration.long
@@ -174,8 +180,8 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_establish_mountain_command
 		desc = independence_wave_mnt_establish_mountain_command_desc
 		icon = GFX_decision_independence_wave_army_integration_actions
-		visible = { is_independence_wave_mnt_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
-		available = { can_pay_independence_wave_security_major_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		visible = { is_independence_wave_mnt_project_ready = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_mnt_route_government = yes } }
+		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_security_major_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
 		custom_cost_text = independence_wave_cost_security_major
 		days_remove = constant:independence_wave_decision_duration.standard
@@ -189,10 +195,11 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_codify_durable_sovereignty
 		desc = independence_wave_mnt_codify_durable_sovereignty_desc
 		icon = GFX_decision_independence_wave_government_actions
-		visible = { is_independence_wave_mnt_package = yes has_independence_wave_mnt_route_government = yes NOT = { has_country_flag = independence_wave_mnt_durable_sovereignty } }
-		available = { is_independence_wave_mnt_package = yes has_stable_independence_wave_mnt_compact = yes has_country_flag = independence_wave_founding_settlement_complete capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } can_pay_independence_wave_strategic_cost = yes }
-		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
-		custom_cost_text = independence_wave_cost_strategic
+		visible = { is_independence_wave_mnt_project_ready = yes has_independence_wave_mnt_route_government = yes NOT = { has_country_flag = independence_wave_mnt_durable_sovereignty } }
+		available = { is_independence_wave_mnt_project_ready = yes has_stable_independence_wave_mnt_compact = yes has_country_flag = independence_wave_founding_settlement_complete capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } can_pay_independence_wave_mnt_strategic_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_mnt_strategic_cost = yes }
+		custom_cost_text = independence_wave_mnt_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		complete_effect = { custom_effect_tooltip = independence_wave_mnt_sovereignty_effect_tt independence_wave_decision_pay_strategic = yes set_country_flag = independence_wave_mnt_durable_sovereignty independence_wave_mnt_apply_major_settlement = yes }
 		fire_only_once = yes
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
@@ -202,8 +209,8 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_open_balkan_network_corridor
 		desc = independence_wave_mnt_open_balkan_network_corridor_desc
 		icon = GFX_decision_independence_wave_league_votes
-		visible = { is_independence_wave_mnt_package = yes has_country_flag = independence_wave_network_member has_country_flag = independence_wave_league_route_available NOT = { has_country_flag = independence_wave_mnt_balkan_corridor_open } }
-		available = { has_stable_independence_wave_mnt_compact = yes can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		visible = { is_independence_wave_mnt_project_ready = yes has_country_flag = independence_wave_network_member has_country_flag = independence_wave_league_route_available NOT = { has_country_flag = independence_wave_mnt_balkan_corridor_open } }
+		available = { is_independence_wave_mnt_project_ready = yes has_stable_independence_wave_mnt_compact = yes can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_mnt_active_package_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
 		days_remove = constant:independence_wave_decision_duration.long
