@@ -157,3 +157,7 @@ Do not promote central IW-013/IW-015 admission based on this audit.
 The existing source-placeholder portrait status remains pending its separate final-image and attestation work.
 
 No gameplay patch remains for this finding. The source-placeholder portrait, flag identity, command-roster, package-attestation, and named-scenario probability gates remain open; a probability comparison is required only if a future AI weight changes.
+
+## Post-fix MCP re-inspection
+
+After the route-cancellation repair, the `mission_ai_will_do` adapter inspected the current Iberian decision source successfully (`sourceHash=32a71a8f91b4e65ee386b18f93fe45498d7ecef941485f378880888945a3fe9d`, 22 candidates, 12 required inputs, unresolved=0, `poolComplete=false`). A parallel `decision_ai_will_do` request returned the installed adapter's `INTERNAL_ERROR` without an artifact; no normalized score or probability claim is made from that failed request.
