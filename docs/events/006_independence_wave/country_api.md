@@ -6,8 +6,11 @@ This document is the implementation-facing reference for reusing Independence Wa
 
 Use the named collections in `common/collections/chaosx_country_collections.txt` when a later event needs a country scope. These collections are active views over the declared static arrays, so a dormant reservation is absent until the tag exists in the current game.
 
+The broad `collection:chaosx_country_all` view now includes the complete resolved Event 006 carrier surface (191 unique carriers) alongside the other Chaos Redux and Soviet Collapse tags. This makes a later event's generic tag lookup complete without granting package readiness, origin ownership, or permission to overwrite a carrier's history or focus tree.
+
 | Collection | Contents | Intended consumer |
 | --- | --- | --- |
+| `collection:chaosx_country_all` | All Chaos Redux-declared tags, including registered Event 006 carriers and Soviet Collapse carriers | Cross-event registries and collision-aware lookup before origin/package gates |
 | `collection:chaosx_country_independence_wave` | Every resolved Event 006 carrier, including registered vanilla-tag reuse and Event 006-owned `X` tags | Generic Event 006-aware systems that still apply origin and readiness gates |
 | `collection:chaosx_country_independence_wave_owned` | The 102 Event 006-owned `X` tags | New-country release, tag collision, and custom-history consumers |
 | `collection:chaosx_country_independence_wave_registered` | Registered vanilla carriers reused by Event 006 | Additive overlays that must preserve vanilla history and identity |
