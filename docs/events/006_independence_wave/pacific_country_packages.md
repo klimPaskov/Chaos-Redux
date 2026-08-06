@@ -49,7 +49,7 @@ after the coordinated PASS audits, sets all six shared adapter readiness flags,
 `independence_wave_form48_readiness_attested`. No annexation or integration
 fallback is used. FORM-06 through FORM-47 remain fail-closed, including
 FORM-42. The current whole-event evidence authority is the source map and resume packet under
-`../../plans/006_independence_wave_plans/`; the post-TRA admission handoff records the latest package delta.
+`../../plans/006_independence_wave_plans/`; the owner-promoted MAC/BOS tranche is the current package-count delta: 23 content-attested packages across 22 compatible reservation groups, with 170 selectable rows still unattested. The central dispatcher exposes 32 package adapters, while nine adapter-only rows remain fail-closed.
 The narrowed v98 handoff remains generic-focus evidence only. The whole event stays
 **HOLD / PARTIAL** while FSM admission, live allocation, scenario, AI, and
 synchronized transaction evidence remain open. The v105 normal-spacing receipt
@@ -61,9 +61,8 @@ dedicated Iceland package reference rather than duplicated in this Pacific
 package document.
 
 The current allocator audit passes 149 publishers, 126 automatic/high-chaos
-selectable packages, 138 SCN-008 ranked packages, fifteen exact attestations
-across fourteen compatible reservation groups and fifteen distinct anchors, the
-doubled 6/8/10/14/20 ladder, and
+selectable packages, 138 SCN-008 ranked packages, twenty-three exact attestations
+across twenty-two compatible reservation groups, the doubled 6/8/10/14/20 ladder, and
 Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
 covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
 local mods, archives, and reports zero collisions; it remains historical scan
