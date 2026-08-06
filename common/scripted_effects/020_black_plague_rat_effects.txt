@@ -36,6 +36,8 @@ black_plague_rat_initialize_runtime = {
 		clr_global_flag = black_plague_rat_king_defeat_resolved
 		clr_global_flag = black_plague_rat_king_defeated
 		clr_global_flag = black_plague_rat_king_defeat_aftermath_emitted
+		clr_global_flag = black_plague_rat_king_aftermath_dispatched
+		clr_global_flag = black_plague_rat_king_aftermath_actor_unavailable
 		clr_global_flag = black_plague_rat_king_reconstruction_reported
 		clr_global_flag = black_plague_rat_king_restoration_used
 		clr_global_flag = black_plague_rat_king_restored
@@ -863,7 +865,10 @@ black_plague_rat_record_defeat_participant = {
 			add_to_array = { array = global.black_plague_rat_king_defeat_participants value = THIS }
 			add_to_variable = { global.black_plague_rat_king_defeat_participant_count = constant:black_plague_value.one }
 		}
-		save_global_event_target_as = black_plague_rat_king_defeat_actor
+		if = {
+			limit = { NOT = { has_event_target = black_plague_rat_king_defeat_actor } }
+			save_global_event_target_as = black_plague_rat_king_defeat_actor
+		}
 	}
 }
 
@@ -984,7 +989,10 @@ black_plague_rat_king_resolve_defeat = {
 			}
 		}
 		if = {
-			limit = { NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched } }
+			limit = {
+				NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched }
+				NOT = { has_global_flag = black_plague_rat_king_aftermath_actor_unavailable }
+			}
 			if = {
 				limit = {
 					has_event_target = black_plague_rat_king_defeat_actor
@@ -994,41 +1002,14 @@ black_plague_rat_king_resolve_defeat = {
 						black_plague_country_is_human_host = yes
 					}
 				}
-				event_target:black_plague_rat_king_defeat_actor = {
+					event_target:black_plague_rat_king_defeat_actor = {
 					set_global_flag = black_plague_rat_king_aftermath_dispatched
 					set_country_flag = black_plague_rat_king_aftermath_open
 					country_event = { id = chaosx.nr20.73 }
 				}
 			}
-		}
-		if = {
-			limit = { NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched } }
-			for_each_scope_loop = {
-				array = global.black_plague_response_countries
-				if = {
-					limit = {
-						exists = yes
-						is_ai = no
-						NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched }
-					}
-					set_global_flag = black_plague_rat_king_aftermath_dispatched
-					set_country_flag = black_plague_rat_king_aftermath_open
-					country_event = { id = chaosx.nr20.73 }
-				}
-			}
-		}
-		if = {
-			limit = { NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched } }
-			every_country = {
-				limit = {
-					exists = yes
-					is_ai = no
-					black_plague_country_is_human_host = yes
-					NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched }
-				}
-				set_global_flag = black_plague_rat_king_aftermath_dispatched
-				set_country_flag = black_plague_rat_king_aftermath_open
-				country_event = { id = chaosx.nr20.73 }
+			else = {
+				set_global_flag = black_plague_rat_king_aftermath_actor_unavailable
 			}
 		}
 	}
@@ -2552,6 +2533,8 @@ black_plague_rat_initialize_king_country = {
 	set_variable = { global.black_plague_rat_king_peak_continent_ratio = constant:black_plague_value.zero }
 	set_variable = { global.black_plague_rat_king_defeat_participant_count = constant:black_plague_value.zero }
 	clr_global_flag = black_plague_rat_king_defeat_aftermath_emitted
+	clr_global_flag = black_plague_rat_king_aftermath_dispatched
+	clr_global_flag = black_plague_rat_king_aftermath_actor_unavailable
 	clr_global_flag = black_plague_rat_king_reconstruction_reported
 	clr_global_flag = black_plague_rat_king_defeat_resolved
 	clr_global_flag = black_plague_rat_king_defeated

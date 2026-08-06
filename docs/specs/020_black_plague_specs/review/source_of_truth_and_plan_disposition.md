@@ -19,7 +19,7 @@ When two files appear to conflict, the later user corrections and Part 9 control
 
 The 2026-07-29 two-tag correction supersedes every earlier multi-tag Rat Nation pool: `RTA` is the only reusable Rat Nation carrier, `RTX` is the separate Rat King, and additional broods are state-level markers, infestation, mass, and pulse state inside `RTA`.
 
-The current static runtime ledger records 51 RTA focus nodes and 71 RTX focus nodes, native `activate_mission`/`days_mission_timeout` declarations for Hold the Line, Secure the Refuge, Crown Strike, and Seal Royal Burrows, five paid post-defeat recovery, inspection, condemnation, population, and memorial projects, the dedicated weapon-delivery icon, promoted source-frame Rat King, Royal Burrows, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages, and three 44.1 kHz Event 020 WAVs. No bespoke 3D models are required or planned; the registered infantry entity is the accepted Rat visual consumer. Live playback, scenario rollback, mission, balance, rights, and whole-spec validation remain open.
+The current static runtime ledger records 52 RTA focus nodes and 71 RTX focus nodes, native `activate_mission`/`days_mission_timeout` declarations for Hold the Line, Secure the Refuge, Crown Strike, and Seal Royal Burrows, five paid post-defeat recovery, inspection, condemnation, population, and memorial projects, the dedicated weapon-delivery icon, promoted source-frame Rat King, Royal Burrows, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages, and three 44.1 kHz Event 020 WAVs. One shared rat ground-unit model/entity package is promoted for six RTA/RTX subunits and five locked division templates; no per-subtype or separate Rat King model is authorized. Sound-definition wiring, counter review, live playback, scenario rollback, mission, balance, rights, and whole-spec validation remain open.
 
 ## Plan disposition
 
@@ -52,7 +52,7 @@ The current static runtime ledger records 51 RTA focus nodes and 71 RTX focus no
 | Source-frame Rat King portrait and Royal Burrows seal | promoted and wired through their manifests and GFX entries; static fallbacks remain registered where documented |
 | Severe/Collapsed crisis seal and Rat King terminal-readiness seal packages | promoted and wired through `interface/020_black_plague_rat_identity.gfx`; the crisis pair is gated by the shared-board Severe/Collapsed trigger and tooltip, while the terminal pair is consumed by the RTX final-order decision; no separate terminal-readiness scripted-GUI panel is present |
 | Event 020 audio | three promoted WAVs (IDs 101, 102, and 103) are 44.1 kHz stereo; release attribution and live playback remain open |
-| Bespoke Rat 3D models | rejected as unnecessary for the current runtime; the registered infantry entity is the accepted visual consumer and no model-production plan is active |
+| Shared rat ground-unit model package | promoted from `rat_ground_unit_shared_3d_model_brief.md` and the 2026-08-05 worker handoff; one `black_plague_rat_mesh`/`black_plague_rat_entity` package serves six RTA/RTX subunits and five locked templates, while per-subtype and separate Rat King models remain rejected | Parent-owned sound-definition wiring, counter visual review, and live in-game consumer validation remain open |
 
 ## Future addenda
 

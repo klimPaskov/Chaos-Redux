@@ -1,6 +1,6 @@
 # Asset Inventory
 
-> Runtime reconciliation, 2026-08-02: the accepted runtime identity is exactly two tags, reusable `RTA` and separate `RTX`. The former twelve-design Rat Nation pool is historical planning residue and must not be produced or wired. Current flag production covers the two live identities plus route/cosmetic variants owned by `RTX`; no bespoke 3D model is required or planned for Event 020. The crisis-board `black_plague_crisis_seal` and terminal `black_plague_rat_king_terminal_readiness` packages now have promoted eight-frame runtime DDS sheets, static fallbacks, manifests, and parent-owned GFX consumers. The organized-rat news surface also has a promoted 397x153 black-and-white `news_event_020_rat_nations` strip consumed by `chaosx.nr20.41`.
+> Runtime reconciliation, 2026-08-06: the accepted runtime identity is exactly two tags, reusable `RTA` and separate `RTX`. The former twelve-design Rat Nation pool is historical planning residue and must not be produced or wired. Current flag production covers the two live identities plus route/cosmetic variants owned by `RTX`. One shared rat ground-unit model/entity package is promoted for the six locked RTA/RTX unit consumers; no per-subtype or separate Rat King model is authorized. The crisis-board `black_plague_crisis_seal` and terminal `black_plague_rat_king_terminal_readiness` packages now have promoted eight-frame runtime DDS sheets, static fallbacks, manifests, and parent-owned GFX consumers. The organized-rat news surface also has a promoted 397x153 black-and-white `news_event_020_rat_nations` strip consumed by `chaosx.nr20.41`. Sound-definition wiring, counter visual review, and live in-game validation remain open.
 
 Every name is a proposed stable working name. Preserve any live-repository sprite name that already exists. Final files must follow the event-scoped asset folder rules.
 
@@ -106,6 +106,14 @@ Report images must receive the project report-card treatment. News images must b
 | `leader_rat_king_world_end_variant` | 156 by 210 | optional high-chaos variant | final sovereign identity after terminal readiness |
 
 Every one-person portrait handoff must record apparent presentation and matching nonhuman name-pool metadata.
+
+## Shared rat ground-unit model
+
+| Asset | Runtime IDs | Consumers | Status |
+| --- | --- | --- | --- |
+| `rat_ground_unit_shared` | `black_plague_rat_mesh`, `black_plague_rat_entity` | six RTA/RTX rat subunits and five locked division templates in the RTA/RTX histories | Worker package production-complete with Meshy/Blender/export/reimport evidence and static runtime registration; parent-owned sound definitions, counter review, and live in-game validation remain open |
+
+The authoritative production handoff is [`docs/plans/020_black_plague_plans/subagent_handoffs/2026-08-05_event020_rat_shared_3d_model_handoff.md`](../../../plans/020_black_plague_plans/subagent_handoffs/2026-08-05_event020_rat_shared_3d_model_handoff.md). The shared entity is intentionally reused across the six subunits; no per-subtype, Rat King-specific, or second model package is part of the accepted scope.
 
 ## Flags
 

@@ -1,6 +1,6 @@
 # Package Validation
 
-> Historical planning validation note, reconciled 2026-08-02: this file records archive and specification checks, not live gameplay proof. The former independent-Rat-Nation and unresolved registry wording is superseded by the registered Diseases cluster `8`, scenario `SCN-012`, and the two-tag `RTA`/`RTX` contract.
+> Historical planning validation note, reconciled 2026-08-06: this file records archive and specification checks, not live gameplay proof. The former independent-Rat-Nation and unresolved registry wording is superseded by the registered Diseases cluster `8`, scenario `SCN-012`, the two-tag `RTA`/`RTX` contract, and the separately promoted shared rat ground-unit model/entity package. Model playback, sound-definition, counter-review, and live consumer results are not represented here.
 
 ## Result
 
@@ -43,4 +43,4 @@ The final ZIP is built from the `docs/` tree. The archive receives a CRC test, e
 
 ## Boundaries
 
-No gameplay code, final visual asset, audio file, spreadsheet edit, or in-game balance result is represented as complete. The live mapmode resolver, scenario transaction behavior, black fog, and performance remain user-owned validation surfaces. The scenario registry identifiers and two-tag capacity are recorded as current static evidence, not unresolved planning work.
+No gameplay code, final visual asset, audio file, spreadsheet edit, or in-game balance result is represented as complete. The shared rat model package is recorded only as static worker/runtime evidence; sound definitions, counter review, and live playback remain open. The live mapmode resolver, scenario transaction behavior, black fog, and performance remain user-owned validation surfaces. The scenario registry identifiers and two-tag capacity are recorded as current static evidence, not unresolved planning work.

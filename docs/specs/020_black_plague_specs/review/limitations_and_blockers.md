@@ -1,6 +1,6 @@
 # Limitations, Blockers, and Honest Scope Disclosure
 
-> Documentation reconciliation, 2026-08-02: the unavailable-source statements below preserve the historical planning-package context. Current static evidence supersedes any blanket no-implementation reading: exactly `RTA` and `RTX` remain the only runtime Rat tags, the RTA/RTX focus surfaces are documented as 51/71 nodes, the last-response pair is native mission data, the dedicated weapon-delivery icon, Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages are promoted, and three Event 020 WAVs are 44.1 kHz. No bespoke 3D models are required or planned. Live game, playback, balance, and release-attribution checks remain open.
+> Documentation reconciliation, 2026-08-06: the unavailable-source statements below preserve the historical planning-package context. Current static evidence supersedes any blanket no-implementation reading: exactly `RTA` and `RTX` remain the only runtime Rat tags, the RTA/RTX focus surfaces are documented as 52/71 nodes, the last-response pair is native mission data, the dedicated weapon-delivery icon, Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages are promoted, and three Event 020 WAVs are 44.1 kHz. One shared rat ground-unit model/entity package is promoted for six RTA/RTX subunits and five locked templates, with no per-subtype or separate Rat King model. Sound-definition wiring, counter review, live game, playback, balance, and release-attribution checks remain open.
 
 ## Fully read sources
 
@@ -61,6 +61,6 @@ Deliberate design boundaries are:
 - black fog remains an engine-dependent enhancement
 - the triggerable scenario starts Evolutions I through IV but does not grant Evolution V or terminal victory
 - the defeat aftermath super-event remains gated behind global-crisis conditions
-- no bespoke 3D models are required or planned; the registered infantry entity remains the accepted Rat visual consumer
+- one shared rat ground-unit model/entity package is promoted for the six locked RTA/RTX unit consumers; per-subtype and separate Rat King models remain out of scope, and parent-owned sound definitions, counter review, and live in-game validation are still open
 
 No requested correction was omitted from the revised planning package.

@@ -281,7 +281,14 @@ black_plague_scenario_seed_state = {
 		black_plague_set_current_state_phase = yes
 		set_state_flag = black_plague_scenario_seeded
 	}
-	if = { limit = { black_plague_state_is_infected_or_worse = yes } set_state_flag = black_plague_scenario_rat_candidate add_to_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS } }
+	if = {
+		limit = {
+			black_plague_state_is_infected_or_worse = yes
+			NOT = { is_in_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS } }
+		}
+		set_state_flag = black_plague_scenario_rat_candidate
+		add_to_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS }
+	}
 	if = {
 		limit = {
 			check_variable = { global.black_plague_scenario_rat_candidate_states^num = constant:black_plague_value.zero }
