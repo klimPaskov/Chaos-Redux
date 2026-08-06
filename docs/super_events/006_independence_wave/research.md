@@ -78,7 +78,7 @@ The preserved source, exact interval, fades, loudness measurements, and wrapper 
 
 ## Blocked league-formation package
 
-The accepted 1949 London Brass Players recording for **The League of New States** has no verified permission or waiver covering United States redistribution. No substitute is authorized. Audio ID 23 and display slot 23 therefore remain absent from runtime until the exact recording is cleared or the user approves a newly researched replacement.
+The accepted 1949 London Brass Players recording for **The League of New States** has no verified permission or waiver covering United States redistribution. No substitute is authorized. Audio ID 23, its sound wrappers, and firing therefore remain absent from runtime until the exact recording is cleared or the user approves a newly researched replacement; image and text dispatch for display slot 23 is registered.
 
 ### 2026-08-06 pending replacement research
 
