@@ -80,9 +80,9 @@ The preserved source, exact interval, fades, loudness measurements, and wrapper 
 
 The accepted 1949 London Brass Players recording for **The League of New States** has no verified permission or waiver covering United States redistribution. No substitute is authorized. Audio ID 23 and display slot 23 therefore remain absent from runtime until the exact recording is cleared or the user approves a newly researched replacement.
 
-### 2026-08-02 pending replacement research
+### 2026-08-06 pending replacement research
 
-The accepted audio-23 recording remains blocked and absent from runtime. A bounded audio-research pass documented John Philip Sousa's *Hands Across the Sea* (1899), performed by the United States Marine Band in 2018, as a possible replacement. The source has a documented U.S. federal public-domain basis and is preserved under `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_research_v113_2026_08_05.md`, but worldwide redistribution, tonal fit, phrase-safe trimming, and explicit selection approval remain open. No final WAV, sound definition, wrapper, catalogue entry, or runtime dispatch was created, and this candidate is not an implicit fallback.
+The accepted audio-23 recording remains blocked and absent from runtime. The current bounded research pass documents *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as a possible CC BY-SA 4.0 replacement, with preserved source and audition derivatives under `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_research_v116_2026_08_06.md`. Worldwide redistribution is supported by the recorded Ministry of Defence permission basis, but attribution/ShareAlike integration, human audition, and explicit selection approval remain open. No runtime sound definition, wrapper, catalogue row, or firing dispatch was created, and this candidate is not an implicit fallback.
 
 ## Primary implementation surfaces
 
