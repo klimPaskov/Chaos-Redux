@@ -24,6 +24,18 @@ The read-only `hoi4.map_inspect` pass inspected states 45, 76, 82, 84, 106, 109,
 * The deleted MAC state-106 branch also disappears from every caller that consumes the eligibility trigger, including the shared member and member-candidate ledger paths. No new Vojvodina or Slavonia branch was added.
 * `independence_wave_formable_integration_adapter_8` no longer transfers MAC state 106 or selects it as the post-formation capital. It still transfers only the explicit TRA 84/76 and AXX 82 rows when a frozen consenting member has full-integration authorization.
 
+## Helper map and call-site contract
+
+* `is_independence_wave_form08_eligible_member` is a country-scope, no-argument read-only trigger. It consumes the active-origin flag, selected-family variable, anchor variable, original tag, anchor ownership/control, and capital scope, and returns a boolean admission result to `is_independence_wave_form08_member`, `has_independence_wave_form08_exact_carrier_anchor`, and `has_independence_wave_form08_member_candidate`. The generic formable ledger builder and recount effects consume those wrappers; the trigger has no side effects.
+* `independence_wave_form08_register_readiness` remains a country-scope, no-argument adapter. It reads the TRA/state-84 territory and capital proof and emits the family, territory, identity, flag, integration, and readiness receipt flags. The generic family-registration dispatcher calls it before identity mutation; this patch does not widen that call site.
+* `independence_wave_formable_integration_adapter_8` remains a country-scope, no-argument effect. It consumes mutation proof, identity commitment, aligned frozen member/consent arrays, and full-integration authorization, then transfers only the TRA/AXX states listed above or installs the existing autonomous-member idea. It emits the existing integration and post-formation flags and is dispatched by the shared formable integration adapter.
+
+No event target is created, renamed, or persisted by this guard. Existing parallel ledger arrays, generation variables, identity flags, and autonomous-member ideas retain their current cleanup order through `independence_wave_form08_cleanup_runtime` and the generic Event 006 teardown.
+
+## Migration plan
+
+No cross-file helper migration is required. The eligibility branch removal automatically propagates through the existing member, carrier, candidate, registry-ledger, identity-proof, and integration call sites. The parent should update stale FORM-08 prose that still names MAC after reviewing the package and compatible-member gates; adding a new geography branch before those gates are attested would be an unsafe migration.
+
 ## Readiness, identity, and cleanup
 
 The generic ledger builder and recount effects remain unchanged and continue to iterate only active Event 006 origins with aligned parallel arrays. The FORM-08 readiness adapter remains TRA/state-84-specific, and the HUN_EMPIRE identity clearance, mutation proof, rollback, and cleanup helpers were not weakened or bypassed. Runtime commit proof still reads the registry constants `minimum_members = 3`, `minimum_consents = 3`, and `minimum_anchors = 3`; the intermediate two-anchor corridor threshold was not changed.
