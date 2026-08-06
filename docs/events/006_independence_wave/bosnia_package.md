@@ -11,7 +11,7 @@ IW-029 is the Bosnia carrier overlay for the Independence Wave. It reuses the va
 - Setup adapter: `independence_wave_setup_iw_029_bosnia`.
 - Final validation: `independence_wave_validate_iw_029_bosnia`.
 - Cleanup adapter: `independence_wave_cleanup_iw_029_bosnia`.
-- Event 006 uses the shared generic focus framework with all five government routes, four host routes, the Danube formable family, the ambition ledger, the internal power-struggle type, signature module, league route, and p29 mountain-frontier force mapping.
+- Event 006 uses the shared generic focus framework with all five government routes, four host routes, the Danube formable family, the ambition ledger, the internal power-struggle type, signature module, league route, and p29 mountain-frontier force mapping. When the installed carrier exposes `austro_hungarian_releasable_focus`, setup selects the additive overlay so the meaningful vanilla BOS tree is preserved; otherwise it selects the full shared framework. The five BOS focus hooks are called from the shared overlay completion rewards.
 
 ## Visible mechanics
 
@@ -32,4 +32,4 @@ The force mapping is p29 (`mountain_frontier`, military tradition 66) with the d
 
 ## Future deepening
 
-The shared generic tree can later add BOS-specific signature focuses that call the five `independence_wave_bos_focus_*` hooks. A later accepted package tranche may add researched historical flags or additional sourced male consumers, but this carrier remains fail-closed until those assets and the independent country, decision, localisation, AI, host-survival, and MCP checks are recorded.
+The shared generic overlay currently calls the five `independence_wave_bos_focus_*` hooks at its founding, administration, force, former-host, and network milestones. A later accepted package tranche may add researched historical flags or additional sourced male consumers, but this carrier remains fail-closed until those assets and the independent country, decision, localisation, AI, host-survival, and MCP checks are recorded.
