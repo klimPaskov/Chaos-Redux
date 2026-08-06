@@ -22,7 +22,7 @@ The accepted IW-033/IW-041 package promotion, the IW-026 Macedonia package promo
 - Superseded 2026-07-14 all-row map result: **149 bound, 57 unbound**
 - All-row state collision ledger: **14**
 - Current accepted custom-tag collisions: **0**
-- Blocked exact recording: **23**
+- Blocked exact recording runtime slot/audio ID: **23** (ordinary project-wide identifier)
 
 ## Current research dispositions
 
@@ -120,7 +120,7 @@ This table is retained as historical packaging evidence. Its byte counts, line c
 | `specs/006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md` | 20661 | 761 | `c32b544572dd4bd9f690d96a9cac738336b0193276c30e019283f95a6d303278` |
 ## Historical admission amendments — 2026-08-05 (superseded for current routing)
 
-Historical CAT/Transcaucasus admission amendment — 2026-08-05. IW-014 CAT was independently admitted as the sixteenth source-complete vanilla-carrier package, followed by IW-070 ARM, IW-071 GEO, and IW-072 AZR. This did not promote FORM-07 or FORM-16. The later IW-033/IW-041 promotion supersedes this amendment for current arithmetic; the static witness is now 20 packages across the current 21-attestation/20-group boundary, excluding only self-hosting IW-012 ICE at the vanilla baseline.
+Historical CAT/Transcaucasus admission amendment — 2026-08-05. IW-014 CAT was independently admitted as the sixteenth source-complete vanilla-carrier package, followed by IW-070 ARM, IW-071 GEO, and IW-072 AZR. This did not promote FORM-07 or FORM-16. The later IW-033/IW-041 promotion supersedes this amendment for current arithmetic; at that dated snapshot, the static witness was 20 packages across the then-current 21-attestation/20-group boundary, excluding only self-hosting IW-012 ICE at the vanilla baseline.
 
 ## Current authority boundary - 2026-08-06
 
@@ -133,5 +133,9 @@ The IW-029 Bosnia admission handoff is `../../plans/006_independence_wave_plans/
 The ordinary super-event identifiers are `23` for The League of New States and `24` for Every Border a Casus Belli. The `23` image/text dispatch is registered, but rights-cleared audio, sound wrappers, and firing remain blocked; `24` is source-wired with final WAV, base sound, wrappers, slot dispatch, predicates, and queued playback, with package/group capacity supported by the passing static 20-package witness, while its hidden-formable predicate remains blocked by the unadmitted FORM-48 carrier/member set and its twenty-country predicate remains gated by factual host, collision, claimable-border, and synchronized-transaction checks. Four-digit identifiers in dated manifest evidence are historical traceability only.
 
 Current continuation: the 2026-08-06 MAC admission changes the active boundary to 23 content-attested packages across 22 compatible reservation groups, 170 unattested selectable rows, 32 adapters, and nine adapter-only fail-closed rows. The static 20-package witness remains a capacity witness and does not claim live transaction qualification. MAC is admitted under its vanilla-carrier package contract; NAV, GLC, MNT, and FIJ remain independently gated. Grounded source-placeholder portraits are complete for their selected placeholder requirement and do not imply package admission or a styled-final request.
+
+The 2026-08-06 MNT repair only restores a local former-host ledger fallback after depots reopen when the former host is absent or hostile; capital, cost, one-project, readiness, admission, and fail-closed gates remain unchanged. See `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw030_mnt_host_ledger_fallback_repair_2026_08_06.md`.
+
+The 2026-08-06 FORM-16 carrier-refresh repair fans readiness refresh across the exact ARM/GEO/AZR carrier candidates after every arbitration completion without loosening member, peace, identity, route, or arbitration predicates. See `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw006_form16_carrier_refresh_repair_2026_08_06.md`; FORM-16 remains fail-closed and no live/save-load evidence is claimed.
 
 The current owner-AI handoff for IW-033/KAR and IW-041/CRI adds executable foundation-settlement gating, lower-ledger preference, and centralized zero-weight post-spend reserve floors for command power, manpower, infantry equipment, support equipment, trains, convoys, fuel, and major security actions. This source behavior is distinct from the still-pending typed-state probability comparison and live runtime evidence.
