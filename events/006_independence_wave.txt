@@ -199,14 +199,38 @@ country_event = {
 		}
 		if = {
 			# MAC uses the sourced Metodija Andonov-Cento identity as its
-			# provisional leader and corps commander. Keep the checkpoint
-			# explicit so package setup cannot claim a roster that failed to
-			# load the guarded character consumer.
+			# provisional leader and corps commander. Attach the additive
+			# character here because the vanilla carrier history must remain
+			# untouched, then publish the checkpoint only after attachment.
+			limit = {
+				is_independence_wave_mac_package = yes
+				NOT = { has_character = MAC_independence_wave_vardar_presidium }
+			}
+			recruit_character = MAC_independence_wave_vardar_presidium
+		}
+		if = {
 			limit = {
 				is_independence_wave_mac_package = yes
 				has_independence_wave_mac_command_roster = yes
 			}
 			set_country_flag = independence_wave_mac_roster_checkpoint
+		}
+		if = {
+			# BOS uses the sourced Mehmed Spaho council role. Attach it from this
+			# synchronous event so vanilla BOS history stays authoritative, then
+			# publish a separate checkpoint only after the role is present.
+			limit = {
+				is_independence_wave_bos_package = yes
+				NOT = { has_character = BOS_independence_wave_drina_council }
+			}
+			recruit_character = BOS_independence_wave_drina_council
+		}
+		if = {
+			limit = {
+				is_independence_wave_bos_package = yes
+				has_independence_wave_bos_command_roster = yes
+			}
+			set_country_flag = independence_wave_bos_roster_checkpoint
 		}
 	}
 }

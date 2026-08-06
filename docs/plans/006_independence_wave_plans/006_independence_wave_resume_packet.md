@@ -4,7 +4,13 @@ The long provenance list below preserves dated implementation history. Current r
 
 Current super-event identifier override (2026-08-05): Event 006 uses ordinary project-wide identifiers `23` for the League of New States and `24` for Every Border a Casus Belli across display slots, audio, and Event Log history payloads. The danger package is source-wired; the league image/text dispatch is registered but its rights-cleared audio, wrappers, and firing remain blocked. Four-digit identifiers in dated entries below are traceability only.
 
-## Current authority override (2026-08-06)
+## Current authority override continuation (2026-08-06)
+
+The latest source closure admits 22 content-attested selectable packages across 21 compatible reservation groups, leaving 171 unattested rows out of 193. The exact IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-029, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184. The central dispatcher exposes 32 adapters. Ten remain adapter-only and fail closed: IW-013 NAV, IW-015 GLC, IW-026 MAC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM.
+
+IW-029 Bosnia (`BOS`) is admitted on states 104 and 804 in `RG-104`, with YUG as the former host. The p29 mountain-frontier force mapping, package ledgers, five government routes, paid project and mission surface, AI layers, shared generic focus assignment, localisation, source-placeholder Mehmed Spaho portrait, and cleanup adapters are wired. The synchronous `chaosx.nr6.350` event attaches the additive character without changing vanilla BOS history, and all three fixed setup/runtime proofs require `tag = YUG` for the former host. The only remaining IW-029 package evidence blocker is the MCP `ai_strategy_factor` result `PROBABILITY_SURFACE_EMPTY` for the BOS strategy file. The package promotion does not close the broader Event 006 **HOLD / PARTIAL** status.
+
+## Historical authority override (2026-08-06; superseded by the continuation above)
 
 The read-only `subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md` remains the latest whole-event completion evidence baseline and keeps Event 006 at **HOLD / PARTIAL**. Its package arithmetic is superseded for current routing by `subagent_handoffs/006_documentation_curator_iw033_iw041_post_promotion_reconciliation_current_2026_08_05.md`, which records the owner-promoted IW-033/IW-041 tranche after the admitted Transcaucasus tranche. The current allocator boundary is 21 content-attested selectable packages out of 193 non-overlay rows, leaving 172 unattested selectable packages across 20 compatible reservation groups. The attested IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184.
 
@@ -22,7 +28,7 @@ The ordinary super-event identifiers are `23` for The League of New States and `
 
 All later paragraphs carrying 2026-08-03 or earlier “current” labels are dated evidence and are superseded for current routing by this 2026-08-05 override; their bounded receipts remain preserved for traceability.
 
-## Current 2026-08-06 continuation
+## Historical 2026-08-06 continuation (superseded by the current package admission above)
 
 The 2026-08-06 IW-026 MAC adapter tranche adds guarded recruitment and valid leader promotion, cleanup, and Danube phase/route gating while keeping MAC source-wired, adapter-only, fail-closed, and outside central attestation. Its country-package audit records the current role and planner proof, the decision/mission audit remains a bounded semantic authority, the localisation audit covers all 60 visible keys, and the portrait handoff remains an explicit grounded `source_placeholder`; the delegated MAC probability evidence is still open.
 

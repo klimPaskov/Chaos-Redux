@@ -1,0 +1,70 @@
+# Some fields reject script-constant tokens; these file-scoped values mirror
+# the central Bosnia package constants for AI strategy compatibility.
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARMY_PRIORITY = 94
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARTILLERY_PRIORITY = 22
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_DEFENSE_PRIORITY = 90
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_EMERGENCY_ARMY_PRIORITY = 122
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_FOUNDING_RESTRAINT = -245
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_INFRASTRUCTURE_PRIORITY = 72
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_PRODUCTION_PRIORITY = 38
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SETTLED_RESTRAINT = -440
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SUPPORT_PRIORITY = 52
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_TRADITIONAL_ARMY_PRIORITY = 112
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-029 BOSNIA AI
+# ============================================================================
+# The vanilla BOS baseline remains active. These additive strategies protect
+# the Sarajevo/104 anchor, vet the Yugoslav former-host relationship, and use
+# the mountain-frontier force profile before a settled expansion route.
+# ============================================================================
+
+independence_wave_bos_sarajevo_survival = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_iw_029_setup_complete
+		has_country_flag = independence_wave_bos_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bos_host_restraint = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_iw_029_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bos_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bos_settled_drina = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_bos_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_bos_emergency_command = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_bos_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_DEFENSE_PRIORITY }
+}

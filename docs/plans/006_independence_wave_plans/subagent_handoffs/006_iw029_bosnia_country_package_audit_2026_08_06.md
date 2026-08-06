@@ -1,84 +1,176 @@
-# Event 006 IW-029 Bosnia country-package audit — 2026-08-06
+# Event 006 IW-029 Bosnia country-package audit — 2026-08-06 re-audit
 
-## Status
+## Verdict
 
-IW-029 (Bosnia, carrier `BOS`) is HOLD / fail-closed. The region-03 planner knows the package, anchor, and reservation group, but the package is not an admitted runtime country package. No gameplay file was changed in this audit. This handoff is the only file added.
+IW-029 (Bosnia, carrier `BOS`) is conditionally wired and content-complete at source level after the parent moved BOS character attachment into the synchronous `chaosx.nr6.350` roster event. This audit made no gameplay edits. The only file changed by this subagent is this handoff, which replaces the stale pre-adapter audit.
 
-The current central admission surface contains no `iw_029` package adapter, no `iw_029` content attestation, and no BOS package setup or cleanup call. The shared candidate gate also requires `independence_wave_package_content_ready`, but no repository effect currently sets that flag. Adding the flag alone would violate the package readiness contract and was not attempted.
+Admission remains **HOLD / fail-closed** for one exact package evidence reason: the required MCP `ai_strategy_factor` route returns `PROBABILITY_SURFACE_EMPTY` for the Bosnia AI strategy file. The fixed package contract now explicitly requires the former host to remain `YUG` in all three runtime/setup proofs. This is an evidence blocker, not a claim that the package source is absent. The shared focus, event, map, and Technology Tree Viewer limitations listed later are non-BOS evidence boundaries, not additional IW-029 package blockers.
 
-## Identity and registry coverage
+The earlier handoff statements that no BOS adapter, package files, portrait, or central attestation existed are superseded by this re-audit.
+
+## Scope and references
+
+The audited package surfaces are `common/scripted_triggers/006_independence_wave_bosnia_package_triggers.txt`, `common/scripted_effects/006_independence_wave_bosnia_package_effects.txt`, `common/decisions/006_independence_wave_bosnia_decisions.txt`, `common/ideas/006_independence_wave_bosnia_ideas.txt`, `common/script_constants/006_independence_wave_bosnia_constants.txt`, `common/characters/006_independence_wave_bosnia_characters.txt`, `common/ai_strategy/006_independence_wave_bosnia.txt`, `localisation/english/006_independence_wave_bosnia_l_english.yml`, `interface/006_independence_wave_iw029_bosnia_portraits.gfx`, the Event 006 roster event in `events/006_independence_wave.txt`, and the central package dispatch and region-03 binding files.
+
+The exact localization path is `localisation/english/006_independence_wave_bosnia_l_english.yml`; the similarly named `006_independence_wave_iw029_bosnia_l_english.yml` path is not present.
+
+Required offline Paradox wiki pages, relevant character, country, state, focus, decision, event, map, portrait, interface, and AI pages, and the corresponding vanilla documentation files were read before this audit. Vanilla Bosnia and state history were used as the country and map precedent.
+
+## Country-package coverage checklist
 
 | Surface | Evidence | Result |
 |---|---|---|
-| Tag registration | Vanilla `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/country_tags/00_countries.txt:189` maps `BOS` to `countries/Bosnia.txt`; vanilla country definition has eastern-European graphical culture and color only. | Reusable vanilla tag exists. No mod country-definition override exists. |
-| Registry constants | `common/script_constants/006_independence_wave_package_constants.txt:80` defines `iw_029 = 29`; `:485` defines `rg_104 = 3`; `common/script_constants/006_independence_wave_country_registry_constants.txt:22,30,47,63,129` includes `BOS` in resolved/registered/bound and Balkans-Danube groups. | Registry/API membership is present, but this is not content readiness. |
-| Research contract | `docs/specs/006_independence_wave_specs/research/006_package_research_resolution.csv:30` requires sourced local institutions and a defensible sourced real male leader or authentic institution, and explicitly blocks the package until that evidence exists. | Leader/institution source gate remains open. |
-| Candidate row | `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv:30` identifies Bosnia as a Level 2 multiethnic mountain state with mountain infantry and regular defectors, Sarajevo/Bosnian core, and Balkan/Danubian ambitions. | Design direction exists; implementation does not. |
+| Tag and country identity | Vanilla `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/country_tags/00_countries.txt:189` maps `BOS` to `countries/Bosnia.txt`; the package deliberately reuses the vanilla carrier. | PASS |
+| Package registry and central admission | `iw_029` is present in the region-03 loader/reservation, central setup/final-validation/cleanup dispatch, runtime adapter, content attestation, exact `BOS` preflight, and scenario preflight. | PASS |
+| Candidate anchor | `common/scripted_triggers/006_independence_wave_bosnia_package_triggers.txt:15-23` requires exact BOS, capital/state 104, and an available non-BOS owner; region-03 uses reservation group `rg_104`. | PASS |
+| State and map binding | Vanilla states 104 and 804 are YUG-owned with BOS cores; state 104 is Sarajevo and the package capital anchor. Current map MCP inspected both states and region 3. | PASS for current map; no write performed |
+| Former-host relationship | Setup/runtime triggers require a living `YUG` former host with `liberation_release_protected_state` owned by the released country. | PASS after parent added the explicit fixed-host assertion to all three proofs |
+| Character and commander | `BOS_independence_wave_drina_council` has male metadata, two large portrait consumers, five country-leader ideologies, and a corps-commander role. | PASS |
+| Character attachment | `events/006_independence_wave.txt:219-233` idempotently recruits BOS from `chaosx.nr6.350` and sets the BOS checkpoint only after `has_independence_wave_bos_command_roster`. The BOS scripted setup effect no longer calls `recruit_character`. | PASS after parent correction |
+| Portrait and source state | The sourced male Mehmed Spaho source-placeholder handoff, runtime DDS, and portrait-specific GFX sprite are present and wired. | PASS as `source_placeholder`; not a styled final |
+| Flags | Vanilla BOS flag families remain the carrier flags; no unsupported route-specific flag art is claimed. | PASS for reuse |
+| Parties and politics | Setup initializes democratic, communist, neutrality, and fascist party names and route effects set five route ideologies and popularity profiles. | PASS |
+| Ideas and lifecycle | Two lifecycle ideas plus five mutually exclusive route ideas are defined, localized, added, refreshed, and removed by the package effects. | PASS |
+| Decisions and mission | One 420-day founding mission and eleven paid projects are defined in the BOS category with availability, cancellation, timeout, cost, AI, and localized tooltip surfaces. | PASS |
+| Focus contract | Setup assigns the shared full Event 006 focus framework and registers all five government routes, four host routes, power struggle, ambition, signature, league, and formable surfaces. | PASS at package source level; shared-tree MCP has unrelated diagnostics |
+| Formable and network contract | Setup selects the Danubian Confederation family and registers the league/network route. | PASS |
+| Force package | Setup loads p29 `mountain_frontier`, military tradition 66, and exactly five documented reinforcement pathways before applying the dynamic starting force. | PASS at source level; live force receipt not run |
+| Technology, industry, supply | Vanilla BOS has three research slots and Yugoslav-clone starting technology; dynamic force setup supplies package opening forces and stockpiles. States 104/804 have current vanilla infrastructure and supply data. | PASS for intended shared contract; no Technology Tree Viewer is installed |
+| AI | Four route-aware BOS AI strategy blocks are present with centralized priorities and host restraint. | HOLD for quantitative evidence because the required probability adapter is empty |
+| Cleanup | BOS cleanup removes its mission, decisions, ideas, variables, and flags; shared reset clears force, focus, host, network, and generation state. | PASS at source level |
+| Localization and assets | All package decision, idea, character, party, and tooltip keys resolve in the actual BOM-encoded localization file; the portrait GFX texture exists. | PASS |
 
-## Region, map, and host setup
+## File-surface checklist
 
-The region-03 loader and reservation publisher are present in `common/scripted_effects/006_independence_wave_packages_region_03_effects.txt:73-83,113-146`, and the candidate gate is present in `common/scripted_triggers/006_independence_wave_packages_region_03_triggers.txt:56-63`. `BOS` points to state 104 and optional extension state 804, reservation group `RG-104`.
+The package-specific gameplay files are present at the paths listed below.
 
-The current binding ledger `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv:30` records `104=YUG|804=YUG`, BOS cores on 104 and 804, and a YUG host-remnant count of 107 states. `docs/plans/006_independence_wave_plans/package_bindings/006_current_map_reservation_groups.csv:4` repeats the 104/804 compact-anchor rule and protected-host requirement.
+- `common/scripted_triggers/006_independence_wave_bosnia_package_triggers.txt` defines package identity, exact candidate/runtime/setup gates, roster, ledgers, active projects, live league phase, and complete setup proof.
+- `common/scripted_effects/006_independence_wave_bosnia_package_effects.txt` defines setup, politics, route effects, focus signatures, lifecycle, decisions, dynamic-force calls, final validation, and cleanup.
+- `common/decisions/006_independence_wave_bosnia_decisions.txt` defines `independence_wave_bos_drina_council_category`, the founding mission, and eleven BOS projects.
+- `common/ideas/006_independence_wave_bosnia_ideas.txt` defines `bos_divided_drina_authority`, `bos_drina_compact`, and five route ideas.
+- `common/script_constants/006_independence_wave_bosnia_constants.txt` centralizes politics, ledger thresholds, mission duration, and AI tuning.
+- `common/characters/006_independence_wave_bosnia_characters.txt` defines `BOS_independence_wave_drina_council`.
+- `common/ai_strategy/006_independence_wave_bosnia.txt` defines the Sarajevo survival, host restraint, settled Drina, and emergency command strategy blocks.
+- `localisation/english/006_independence_wave_bosnia_l_english.yml` contains the package-facing names, descriptions, route strings, character strings, and tooltips.
+- `interface/006_independence_wave_iw029_bosnia_portraits.gfx` registers `GFX_portrait_BOS_independence_wave_mehmed_spaho`.
+- `events/006_independence_wave.txt:184-236` owns the synchronous roster checkpoint event used by BOS and other fixed-tag Event 006 packages.
+- `common/scripted_effects/006_independence_wave_package_dispatch_effects.txt` dispatches BOS setup, final validation, and cleanup.
+- `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt` admits `iw_029` in runtime, content-attestation, exact-origin, and scenario preflight surfaces.
+- `common/scripted_effects/006_independence_wave_packages_region_03_effects.txt` and `common/scripted_triggers/006_independence_wave_packages_region_03_triggers.txt` bind BOS to state 104, optional state 804, YUG host data, and `rg_104`.
 
-Vanilla state history confirms the binding: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/history/states/104-Bosnia.txt:2-36` has owner YUG, BOS and YUG cores, Sarajevo victory points, infrastructure 3, two industrial complexes, an air base, aluminium, coal, and local supplies; `804-Herzegovina.txt:2-31` has owner YUG, BOS/YUG/HRZ cores, one victory point, infrastructure 2, aluminium, and no local supplies. No mod state history overrides these states.
+## Detailed findings
 
-Read-only MCP map evidence inspected states 104 and 804 successfully. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/10ea072ded18f43bba714f874a87a7f8a424261cc99c148954302cf21d647dea/178f35e3e74e863b068e06ffddabfbd8d8f0e5017be2082607d4f9630e43261c/map-inspect.9589ad18ae326c0c.json`. State/region membership, bitmap geometry, networks, adjacencies, supply nodes, and railways passed. The global map inspector remains red because unrelated `map/buildings.txt` contains 1,323 invalid building positions and 1,331 invalid floating-harbor sea-adjacency records; no Bosnia-specific geometry defect was reported. State-layer render passed: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9c8a38f2a0c09e2af8e7995c5a27803696c79c642b4d19a9fb7e001d8d2e9ae9/76be5a8587047afc61d3737309aa042f08bfbd656a5eaa8cbd3ecea643b836ff/map-state.png`.
+### Map, state, and host setup
 
-No `hoi4.map_rewrite` was run. The current task has no approved map mutation, and the existing compact anchor plus host-protection contract is safe to preserve until a complete adapter exists.
+Vanilla `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/history/states/104-Bosnia.txt:16-36` has YUG ownership, Sarajevo victory points, infrastructure 3, two civilian factories, an air base, BOS/YUG cores, and local supplies 7.
 
-## Politics, leaders, portraits, flags, and parties
+Vanilla `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/history/states/804-Herzegovina.txt:15-31` has YUG ownership, a victory point, infrastructure 2, BOS/YUG/HRZ cores, and no local supplies.
 
-Vanilla `history/countries/BOS - Bosnia.txt:1-83` supplies capital 104, three research slots, generic Yugoslav-clone starting technologies, democratic ruling party, 1936 election, and popularity democratic 33 / neutrality 33 / communism 34. It contains no BOS units, production lines, leader roster, characters, advisors, commander roster, Event 006 ideas, or Event 006 diplomacy.
+The region-03 package loader saves BOS as the candidate country and state 104 as the anchor with its owner as the primary host, while reservation includes optional state 804. The current installed-map package-binding documents also record `104=YUG|804=YUG`.
 
-The installed vanilla country/leader/character sources contain no BOS-specific character or country-leader definition. There is no defensible sourced real male leader or exact archival institution portrait in the current package surface. The research row therefore remains a blocking identity issue; no invented name, opposite-gender name pool, generic portrait, or generated institutional portrait was installed.
+The fixed binding is now explicit and fail-closed. `is_independence_wave_exact_package_iw_029_runtime_ready`, `can_initialize_independence_wave_iw_029_package`, and `has_prepared_independence_wave_iw_029_package_setup` each require the former-host target to be `tag = YUG`, not ROOT, living, and still owning the protected state. This preserves the installed `104=YUG|804=YUG` binding rather than accepting an arbitrary protected host.
 
-Vanilla provides complete reusable flag families `BOS_communism`, `BOS_democratic`, `BOS_fascism`, and `BOS_neutrality` in normal, medium, and small sizes under the installed game `gfx/flags` folders. The mod has no BOS flag override. `docs/plans/006_independence_wave_plans/asset_research/006_package_asset_coverage.md:74-76` allows Group A base-flag reuse only after identity and route review, and the package-specific research row still requires provenance for any route variant. No portrait, advisor icon, or commander asset is wired for BOS.
+Current map MCP evidence is authoritative for the installed map but not a substitute for the missing fail-closed trigger. `hoi4.map_inspect` inspected states 104 and 804 and region 3 at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7a1f85c08fc487192e39673c54c476cfbe09659e3d19bb8575470884b3309591/355a9e9025b7dc5151950f33c72a42a77ab2a5fffc38c534e2ce097c287143d9/map-inspect.181a16b4b11bb771.json`.
 
-Vanilla English localisation covers `BOS`, party names, adjectives, and cosmetic variants in `localisation/english/countries_l_english.yml:3011-3027` and related cosmetic localisation. There is no IW-029 route, provisional-government, leader, advisor, decision, mission, or focus localisation in the mod.
+The selected state/region geometry, membership, networks, adjacencies, supply nodes, and railways were valid. Global map validation is false because unrelated `map/buildings.txt` records contain 1,323 `MAP_BUILDING_POSITION_INVALID` and 1,331 `MAP_PORT_ADJACENT_SEA_INVALID` diagnostics; no Bosnia-specific geometry error was reported.
 
-## Focus, decisions, ideas, technology, forces, and economy
+The deterministic state render passed at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b11da464a58a00f392d20160c03b0af4a5e89f3dc88629a12e57291b26e12dba/c29a962b4fbcd0ad05c6046e2c407cdb3cd1fa8add2345add4eea7047f4b69f9/map-state.png`.
 
-The shared tree `independence_wave_focus_tree` is structurally present, but it does not grant BOS a focus contract. `common/scripted_triggers/006_independence_wave_focus_triggers.txt:55-66` requires the full-tree flags plus `has_focus_tree = independence_wave_focus_tree`, or a reviewed additive carrier; `common/scripted_effects/006_independence_wave_focus_effects.txt:33-62` assigns those flags only through an admitted package adapter. BOS has no such assignment. The central final-validation barrier in `common/scripted_effects/006_independence_wave_package_dispatch_effects.txt:38-64` would reject a package lacking this focus contract and the generic AI profile.
+No `hoi4.map_rewrite` was run because this audit had no approved map mutation.
 
-Read-only focus MCP inspection succeeded for `common/national_focus/006_independence_wave_focus.txt`, tree `independence_wave_focus_tree`, with 184 nodes and 193 connectors. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ada913c4a0200681251b701941d86f7130f78c7a601fee08e6d7304c28c16793/52c930b9c682a9e96c86fb9e7cb5900bd7f038e8b6b12d6727c378c469f24f50/focus-inspect.08877a307b338d93.json`. The inspector reports 14 blocking missing vanilla generic-focus icon diagnostics and five Event 006 layout warnings; these are shared-tree diagnostics, not evidence of a BOS assignment. Render artifacts are available at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4d0a9699de3bed2979acd7edfaec33d0329bb3b929bf39b4713db192ea82735c/f6f927b1a96645bafd04e8a1c5a79de09920c97466bbd66aef714ccbb8fb33ac/independence_wave_focus_tree.focus.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/99315e3b89510ee95475cdcaa004b6120834db4ffe96f9ca9e101b1bae25ff3/a7cdc0c10c7a60567c2b5b990ae9269e6a6e7b02f67beeffcd60d6a17a98cdf0/independence_wave_focus_tree.focus.svg`.
+### Politics, leaders, portraits, flags, and parties
 
-No BOS/IW-029-owned decision, mission, idea, starting spirit, AI strategy, force setup, unit template, production setup, or Event 006 technology adapter exists under `common/decisions`, `common/ideas`, `common/ai_strategy`, `common/units`, `history/units`, or `common/technologies`. BOS mentions in broad shared target lists, vanilla formables, or `austro_hungarian_releasable_shared.txt` are not a Bosnia package. The force plan `docs/plans/006_independence_wave_plans/006_force_package_mapping.csv:30` still requires mountain infantry and regular defectors, depot and militia integration, unified mountain logistics/hospitals, and a multi-community officer-vetting board; none is wired.
+The parent correction now attaches `BOS_independence_wave_drina_council` from the hidden country event only when the active BOS package lacks the character. The following checkpoint requires the character to exist and be a corps commander, so the dynamic force and setup proof cannot silently pass a missing roster.
 
-Vanilla history gives BOS three research slots and generic starting technologies only. The installed package exposes no Technology Tree Viewer, so no technology-tree engine artifact can be supplied; this remains an unresolved limitation rather than a completion claim.
+The character is explicitly male and uses the male localized identity “Mehmed Spaho” for all five country-leader ideologies and the corps-commander role. The portrait pairing therefore satisfies the gender and source requirements. The council name is an institutional role key while the localized identity is a sourced real male, not an opposite-gender or generic pool pairing.
 
-## Dispatch, admission, AI, diplomacy, and cleanup blockers
+The portrait worker handoff is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw029_bosnia_portrait_source_placeholder_2026_08_06.md`. It records the Wikimedia Commons source, exact crop, processed 156x210 candidate, DDS checksum, source-placeholder state, and the runtime sprite path. The runtime texture is `gfx/leaders/006_independence_wave/portrait_BOS_independence_wave_mehmed_spaho.dds`.
 
-`common/scripted_effects/006_independence_wave_package_dispatch_effects.txt:14-31,38-55,68-89` calls only the existing package setup, final-validation, and cleanup adapters; there is no Bosnia/IW-029 call. `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt:10-83` has no `iw_029` runtime adapter branch, and `:88-122` has no `iw_029` content-attestation branch. The preflight at `:125-130` requires both branches, so IW-029 cannot pass preflight or commit a release.
+No advisor, dossier, commander-small, or alternate portrait asset is defined. This is an explicit bounded asset surface, not an unreported missing consumer.
 
-The shared planner also checks `has_independence_wave_runtime_package_content_attestation_for_execution_id = yes` before reservation (`common/scripted_effects/006_independence_wave_package_planner_effects.txt:106` and `:519`). The candidate trigger requires `has_country_flag = independence_wave_package_content_ready` (`common/scripted_triggers/006_independence_wave_package_triggers.txt:46-49`), but the repository has no setter for that flag; the only occurrences are this gate and a fail-closed comment. Therefore the apparent region-03 candidate cannot become a live country.
+Setup starts democratic with elections disabled during the provisional authority, sets all four party names, and assigns popularity profiles that sum to 100 for the initial state and each of the constitutional, workers, traditional, emergency, and patron routes. Route effects promote the same male character under conservatism, marxism, centrism, despotism, or liberalism as appropriate and replace the route idea atomically.
 
-The generic AI file requires the generic focus flags and `independence_wave_generic_ai_profile` before any strategy profile can enable. No BOS adapter sets these flags or supplies Bosnia-specific route weights, diplomacy, host relation, patron, formable, or cleanup behavior. A read-only probability inspection of `common/ai_strategy/006_independence_wave_generic.txt` returned exact blocker `PROBABILITY_SURFACE_EMPTY: No weighted blocks matched this request`; no AI ranking or survival claim is made. The region-03 custom-pool inspection returned `PROBABILITY_SOURCE_INSPECTED` with zero discovered candidates and eight unresolved inputs, `poolComplete = false`, artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/227d6a69147c51cb9e88ced984fded9a5b2d115381ce64a16a24ce6664f6b913/8da4ae9d4096b7be8df8559aafea888965f06c5821be50692eb39a8b32176330/probability-inspect-ff114c943bad.json`. No normalized package-selection probability is claimed.
+Vanilla BOS flag families remain the carrier flags. No unsupported generated route flag is claimed.
 
-## Event MCP evidence
+### Focus, decisions, ideas, and assets
 
-The read-only Event Chain Viewer inspected root `chaosx.nr6.1` and returned `EVENT_INSPECTED_PARTIAL` with no blocking diagnostics; artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/341091c4a9cb4dd4398c4eb5cb87845dbe6472213f7c56ee62a04d03e45e522c/3512af83729e5f2653a604b578eacdabc451c7466cfca4f3c98134c5cd4eb5c5/event-scan-04e76dcf50ae.json`. Deterministic overview render returned `EVENT_RENDERED_PARTIAL`; overview JSON artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/0a4529e1f560eb1199c280a1a0976b62bd60bb081bf7cf65daa77afc8d0d7fda/13b4d7564b877a759c0b3610663caa151d81f9dc2b62d382e9b7aca97c3767a9/event-overview-04e76dcf50ae.json`. The result explicitly deferred workspace-wide helper projections; this is a viewer boundary, not evidence that IW-029 is complete.
+The package setup effect registers the shared `independence_wave_focus_tree` with `independence_wave_focus_assignment.full_framework`, all five government routes, all four host routes, the municipal-commission-versus-industrial-security power struggle, ambition family, signature module, league route, and Danubian Confederation formable family.
 
-## Coverage checklist
+The national focus MCP inspection resolved 184 focus nodes and 193 connectors. Its only blocking diagnostics are 14 missing generic/continuous vanilla focus sprites outside the BOS adapter, with five layout warnings; no BOS-specific node, icon, or assignment diagnostic was reported. Evidence is at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/918a982825834dff2be33825a8dab8aa4adf75b3ac038322e3de5e84ebaccb1f/fdde78743cc460de47946a863aedd1e44175cb281bbb139677996fb379298dcb/focus-inspect.5d8e1a3b15608287.json`.
 
-| Required package surface | Current state |
-|---|---|
-| Tag, country definition, registry, anchor, reservation group | Present as reusable/registry metadata. |
-| State ownership, cores, capital, host remnant, map geometry | Vanilla 104/804 binding is coherent; no Bosnia map defect; runtime reservation remains unadmitted. |
-| Provisional government, party setup, elections, laws, diplomacy | Only vanilla dormant BOS politics; no Event 006 package layer. |
-| Leader, characters, commanders, advisors, portraits | Missing defensible sourced leader/institution and all BOS package wiring; blocking. |
-| Flags and localisation | Vanilla base flags and country localisation exist; no Event 006 route variants or package strings. |
-| Focus tree and AI | Shared tree exists, but BOS has no assignment/carrier and no BOS AI profile. |
-| Decisions, missions, ideas, spirits | No BOS/IW-029-owned surfaces. |
-| Forces, templates, equipment, production, supply | No Event 006 setup; force-mapping requirements remain unimplemented. |
-| Technology and research | Vanilla three-slot/technology baseline only; no package technology surface and no Technology Tree Viewer. |
-| Host relations, cleanup, release/annexation/puppet behavior | No Bosnia adapter, final validation, or cleanup path. |
-| Asset provenance and manifests | Reusable flags only; no leader/portrait/commander package. |
+The focus render completed with shared-tree diagnostics at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4d0a9699de3bed2979acd7edfaec33d0329bb3b929bf39b4713db192ea82735c/be7435c0da6502ec73db5a4367d8e25516b0097d5e4eb7e15b41b5079227cb61/independence_wave_focus_tree.focus.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/99315e3b89510ee95475cdcaa004b6120834db4ffe96f9ca9e101b1bae25ff3e/22f99073165243293e92eb2743e8d2eca07279603d622def8fbc4c88fa352239/independence_wave_focus_tree.focus.svg`.
 
-## Required next work and disposition
+The BOS decision category contains the 420-day `independence_wave_bos_hold_drina_council_together` mission plus eleven projects covering administration, security, host settlement, five government routes, sovereignty, and the Danube network. All decision names, descriptions, custom-cost text, effect tooltips, and cancellation/failure strings resolve in the package localization.
 
-Do not add a readiness flag, invent a leader, reuse an unreviewed portrait, remap BOS, seize a different anchor, or create a shallow fallback package. A future implementation tranche must provide a sourced male period leader or exact archival institution, portrait and role wiring, Bosnia-specific setup/forces/ideas/decisions/AI/diplomacy/host/cleanup, full or explicitly reviewed safe focus assignment, package localisation/assets, and the central `iw_029` adapter, preflight, content-attestation, final-validation, and cleanup branches. Only after independent package and asset audits should the parent add attestation and rerun the same map, focus, event, and probability evidence.
+The two lifecycle ideas are refreshed from civic and mountain-defence ledgers at the 60-point stability threshold. Five route ideas are removed and replaced by route effects, and cleanup removes every package decision, mission, idea, route flag, ledger variable, and BOS lifecycle flag.
 
-## Validation and limits
+### Starting military, technology, industry, supply, and production
 
-`python -B .tools/audit_chaosx_country_tags.py --surface-scan` passed with 136 protected Event 006/Soviet tags, zero external country-definition collisions, and zero external identity-surface collisions. No gameplay source was patched, no map write was attempted, and Hearts of Iron IV was not launched. Live execution, save/load, and player-owned in-game validation remain outside this audit.
+Vanilla Bosnia supplies three research slots and the Yugoslav-clone support, engineer, mountaineer, infantry, truck, train, and DLC-gated tank/ship/air technology baseline. The package does not replace vanilla history or add a copied OOB.
+
+The package loads `independence_wave_package_id.iw_029`, `independence_wave_force_profile.mountain_frontier`, `independence_wave_force_package_military_tradition.p29` (66), and five pathways: integrate militias, secure depots, convert defecting host units, recruit terrain units, and create a professional officer corps. It then calls the shared dynamic starting-force allocator, which owns the researched template, opening divisions, stockpiles, and inherited technology/slots.
+
+The complete setup trigger requires the roster checkpoint, loaded p29 mapping, current-generation force receipt, applied force flag, exact five-pathway mask, no unsupported inheritance paths, and one of the two lifecycle ideas. The source chain is therefore fail-closed when the roster or allocator receipt is absent.
+
+No package-specific production-line override, navy, air wing, or direct unit-history file is claimed. The vanilla starting history and shared allocator are the intended surfaces.
+
+The installed package exposes no Technology Tree Viewer. Technology-tree engine inspection is therefore an unresolved limitation, not a pass claim.
+
+### AI and playability
+
+`common/ai_strategy/006_independence_wave_bosnia.txt` defines four route-aware strategies: Sarajevo survival, host restraint, settled Drina, and emergency command. Their enables require BOS package/setup flags and the relevant lifecycle or route state, and their priorities are centralized in `006_independence_wave_bosnia_constants.txt` with file-local mirrors where the AI fields require them.
+
+The mandatory probability pass was attempted against `{ "path": "common/ai_strategy/006_independence_wave_bosnia.txt" }` with adapter `ai_strategy_factor`. The installed MCP returned `PROBABILITY_SURFACE_EMPTY` with blocker `No weighted blocks matched this request`, no artifacts, and no scenario ranking. Do not claim quantitative AI survival, strategy-factor balance, or allocator probability evidence until the adapter can discover this source or a supported source adapter is supplied.
+
+The package is playable by source contract only after the host assertion and probability evidence blockers are resolved. Live game launch, save/load, and player-owned in-game validation were not performed.
+
+### Event and checkpoint evidence
+
+The current `chaosx.nr6.350` event owns the idempotent MAC/BOS runtime attachment and post-attachment checkpoints. The focused Event Chain Viewer lint inspection of `chaosx.nr6.350` returned no blocking diagnostics at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/56d43f8e2179998c77f2ff0c19c887f7cc3585ecfa5e616709a2a2eb8a13a0d0/85c169c6631d3c2ca61d78d1eb408f56fee19de0b3c2edebc27cd0c5ec3f5594/event-lint-be8a459e7129.json`.
+
+The current root Event 006 lint inspection also returned no blocking diagnostics at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1ced480db025918ed14d60fd9b42e0835b96c2f0eafe37c26ef5c29acfe9d446/1d24b95e46b2c79505c430a5f9f4aa960dde313a3e2f2f1c55fd889f20d4b9d2/event-lint-be8a459e7129.json`.
+
+The event render is partial because the large workspace defers helper/lifecycle projections, not because the BOS checkpoint has a reported blocking diagnostic. Current root render evidence is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/94fc1f3ca4e352d19dc559ea2c326211272021fe93bb167ebed303145895f6c8/0890e1434733c19891ba55e67603847b644d5bc331e623c205cd07c187c2dcd3/event-overview-be8a459e7129.json`.
+
+## Parent correction re-audit
+
+The parent moved `recruit_character = BOS_independence_wave_drina_council` from the BOS scripted setup effect into `events/006_independence_wave.txt:223-226`, matching the repository rule that scripted effects do not own dynamic character recruitment. The event now checks the roster at `:230-233` and only publishes `independence_wave_bos_roster_checkpoint` after the character has the required corps-commander role.
+
+The BOS setup effect at `common/scripted_effects/006_independence_wave_bosnia_package_effects.txt:331-384` now calls `chaosx.nr6.350`, initializes politics and ledgers, sets the generic focus contract, registers routes and formable family, loads the p29 force mapping, applies the dynamic starting force, enables the AI profile, and publishes package setup only when `has_prepared_independence_wave_iw_029_package_setup` is true.
+
+The current source audit confirms that `recruit_character` is absent from the BOS scripted effect and present only in the event checkpoint contract. This removes the earlier gameplay blocker.
+
+## Cleanup and lifecycle
+
+`independence_wave_cleanup_iw_029_bosnia` removes the BOS mission and eleven decisions, all package ideas, the two ledger variables, the roster/setup/lifecycle/AI flags, and every BOS route/project flag. The shared `independence_wave_reset_current_generation` and `independence_wave_end_active_origin` paths also clear generation variables, force mapping, focus runtime, host/network arrays, league membership, former-host ledgers, and origin ideas before provenance is reset.
+
+No stale package-specific cleanup omission was found after accounting for the shared reset contract.
+
+## Validation performed
+
+- `python -B .tools/audit_chaosx_country_tags.py --surface-scan` passed with 136 protected Event 006/Soviet tags, zero external country-definition collisions, and zero external identity-surface collisions.
+- All audited BOS package scripts and the touched Event 006 event file were brace-balanced by a read-only structural check.
+- The actual BOS localization file begins with UTF-8 BOM `EF BB BF`, and all package decision, idea, character, party, and tooltip keys resolved in the package localization scan.
+- The BOS portrait DDS has valid `DDS ` magic and 156x210 dimensions, and the exact sprite texture path exists.
+- The current map MCP inspected states 104/804 and region 3 and rendered the state-layer evidence; unrelated global map diagnostics are recorded above.
+- The current focus MCP inspected and rendered `independence_wave_focus_tree`; 14 generic missing-icon diagnostics and five layout warnings are recorded as shared-tree issues.
+- The current Event Chain Viewer inspected and rendered both `chaosx.nr6.350` and root `chaosx.nr6.1`; both returned no blocking diagnostics but partial workspace analysis.
+- The mandatory AI probability MCP route was attempted and is explicitly unresolved with `PROBABILITY_SURFACE_EMPTY`.
+- No map write, gameplay runtime launch, save/load, or live AI simulation was performed.
+
+## Changed files and handoff
+
+This subagent changed only `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw029_bosnia_country_package_audit_2026_08_06.md` by replacing the stale audit. No gameplay, map, localization, portrait, focus, decision, event, character, or AI source file was edited by this subagent.
+
+The parent’s re-audit correction changed the BOS roster ownership in `events/006_independence_wave.txt` and removed the recruit call from `common/scripted_effects/006_independence_wave_bosnia_package_effects.txt`; those gameplay edits are parent-owned and are described here for evidence only.
+
+## Simplifications, omissions, and blockers
+
+- **Only remaining IW-029 package evidence blocker:** the installed MCP `ai_strategy_factor` probability adapter cannot discover the BOS strategy file and returned `PROBABILITY_SURFACE_EMPTY`; no quantitative AI claim is made.
+- Shared focus MCP validation remains false because of 14 unrelated generic/continuous focus icon references and five layout warnings; no BOS-specific focus diagnostic was found.
+- Event MCP validation is partial because workspace-wide helper/lifecycle projections are deferred; no blocking diagnostic was returned for the inspected roots.
+- Global map validation remains false because of unrelated `map/buildings.txt` position and floating-harbor diagnostics; no Bosnia-specific map error was reported.
+- The installed package has no Technology Tree Viewer, so technology-tree engine evidence is unavailable.
+- The portrait is intentionally a grounded source placeholder rather than a styled HOI4 final; its provenance, wiring, and placeholder state are documented and no fallback is claimed.
+
+No other simplification, fallback, identity invention, unsupported gender pairing, missing package localization, or gameplay edit was made by this subagent.
