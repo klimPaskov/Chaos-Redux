@@ -286,7 +286,14 @@ independence_wave_mnt_focus_settle_host = {
 independence_wave_mnt_focus_open_balkan_corridor = {
 	set_country_flag = independence_wave_mnt_balkan_corridor_open
 	if = {
-		limit = { has_country_flag = independence_wave_formable_family_registered }
+		# MNT has no family in the current readiness registry. Keep the generic
+		# discovery flag fail-closed unless a future adapter has selected a valid
+		# family and loaded the matching profile before opening this corridor.
+		limit = {
+			has_country_flag = independence_wave_formable_family_registered
+			has_valid_independence_wave_formable_family_selection = yes
+			independence_wave_formable_profile_matches_selected_family = yes
+		}
 		set_country_flag = independence_wave_unlock_formable_discovery
 	}
 	independence_wave_focus_reward_network_cooperation = yes
