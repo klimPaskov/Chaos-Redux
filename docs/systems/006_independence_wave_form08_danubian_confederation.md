@@ -1,6 +1,6 @@
 # Event 006 FORM-08: Danubian Confederation
 
-FORM-08 is the researched Danubian Confederation family in the Event 006 regional formable registry. Its scope is the Danube corridor and the compact anchors in the accepted registry: Transylvania (TRA, state 84 with optional North Transylvania state 76), Banat (AXX, state 82), and Macedonia (MAC, state 106). The Vojvodina row remains the vanilla HUN-origin dynamic-country overlay and is not converted into a new Event 006 country.
+FORM-08 is the researched Danubian Confederation family in the Event 006 regional formable registry. The current geography guard exposes two selectable Event 006 anchors: Transylvania (TRA, state 84 with optional North Transylvania state 76) and Banat (AXX, state 82). Vojvodina remains the vanilla HUN-origin dynamic-country overlay, Slavonia has no bound installed-map anchor, and Macedonia (MAC, state 106) is a separate Event 006 package anchor rather than a current FORM-08 selectable member.
 
 ## Identity and admission
 
@@ -10,9 +10,9 @@ The family is fail-closed until the shared registry has at least three active Ev
 
 ## Formation and protected origins
 
-The carrier receives `HUN_EMPIRE` only after the generic transaction lock and FORM-08 runtime proof pass. A consenting member with explicit full-integration authorization can transfer only its researched anchor states: TRA 84/76, AXX 82, or MAC 106. A consenting member without that authorization enters autonomous membership through directional military-access and guarantee relations. Its Event 006 origin, focus content, ideas, territory, and national identity remain intact. Cleanup removes only relations and ideas created by this generation.
+The carrier receives `HUN_EMPIRE` only after the generic transaction lock and FORM-08 runtime proof pass. A consenting member with explicit full-integration authorization can transfer only the current FORM-08 anchor states: TRA 84/76 or AXX 82. MAC state 106 remains a separate package anchor and is not transferred by the current FORM-08 geography guard. A consenting member without that authorization enters autonomous membership through directional military-access and guarantee relations. Its Event 006 origin, focus content, ideas, territory, and national identity remain intact. Cleanup removes only relations and ideas created by this generation.
 
-The carrier keeps the best surviving member capital in deterministic order: state 84, then 82, then 106. The generic allocator and congress vote remain responsible for host survival, reserve-state protection, unique-anchor allocation, and collision rerolls.
+The carrier keeps the best surviving member capital in deterministic order: state 84, then 82. The generic allocator and congress vote remain responsible for host survival, reserve-state protection, unique-anchor allocation, and collision rerolls.
 
 ## Visible post-formation system
 
@@ -26,7 +26,7 @@ The decisions alter Event 006 country values as well as the FORM-08 ledgers; the
 
 ## Registry reconciliation still required
 
-The accepted registry names Transylvania, Banat, Vojvodina, Slavonia, and compatible members. The current audited adapter remains narrower (TRA, AXX, and MAC anchors) because the Vojvodina/Slavonia package and installed-map crosswalk are not yet attested. This tranche makes the existing four-ledger loop visible and meaningful without admitting an unresearched member or silently changing the accepted geography.
+The accepted registry names Transylvania, Banat, Vojvodina, Slavonia, and compatible members. The current geography-guarded adapter admits selectable TRA and AXX anchors only. Vojvodina remains the HUN-origin dynamic overlay, Slavonia remains unbound because no unique installed-map anchor is attested, and MAC state 106 remains a separate package anchor rather than a current FORM-08 member. This tranche makes the existing four-ledger loop visible and meaningful without admitting an unresearched member or silently changing the accepted geography.
 
 ## Asset and localisation wiring
 
@@ -34,4 +34,4 @@ FORM-08 intentionally reuses the vanilla `HUN_EMPIRE` identity and flags. Its li
 
 ## Future work
 
-The family remains runtime-inadmissible until Banat and Macedonia have complete researched Event 006 package adapters and their source, territory, symbols, leaders, and collision evidence. The adapter does not claim live-game, save/load, or whole-event AI validation.
+The family remains runtime-inadmissible until a third in-scope FORM-08 member and anchor is researched and admitted under explicit source, territory, identity, and collision evidence. MAC package readiness remains a separate Event 006 surface and does not widen the current FORM-08 geography guard. The adapter does not claim live-game, save/load, or whole-event AI validation.
