@@ -4,6 +4,8 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 
 The controlling 2026-07-29 acceptance decision makes source and static evidence the completion authority. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static package capacity, incomplete package or formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain in force.
 
+Current collision-gate continuation (2026-08-06): the cross-group Trabzon conflict is guarded by `is_independence_wave_region_06_state_354_mutex_open` and both IW-067/IW-068 planners. The Kashmir/Himalayan conflict is guarded by `is_independence_wave_region_12_state_441_mutex_open` and both IW-139/IW-149 planners. These source gates preserve the separate reservation groups and reject a state-441 reservation already held by the other package; they do not promote either package or formable.
+
 ## 2026-07-29 shared core and registry API milestone
 
 The following bounded implementation milestone is closed under source and static evidence. It does not mark the full Event 006 specification complete and does not promote country-specific package content.
@@ -96,5 +98,5 @@ transactions, is maintained in
 - [x] All thirteen additive vanilla route-overlay hooks are implemented and kept out of the release selector; the final IW-156/IW-196/IW-197/IW-204 adapters are source-validated but not package-admitted.
 
 IW-022 has a bounded CRO-origin `dalmatia` source adapter, IW-025 has a bounded HUN-origin `vojvodina` source adapter, IW-035 has a bounded living-LIT `LIVONIA` adapter, IW-059 has a bounded formed `neo_mesopotamia` adapter, IW-085 has a bounded Italian-autonomy `LBA` adapter, IW-101/IW-102/IW-105 have bounded mutually exclusive COG cosmetic adapters, and IW-156/IW-196/IW-197/IW-204 have bounded TNE, Antilles, and Chilean vanilla overlays. Their meaningful-tree, network, league, formable, symbol, save/load, and live-runtime evidence are intentionally not counted toward either unchecked acceptance gate; no exact route-overlay hook remains absent.
-- [ ] Parent chooses an explicit state-level mutual exclusion for the Trabzon cross-group automatic conflict.
-- [ ] Parent requires the Himalayan confederation route to consume or exclude the Kashmir reservation.
+- [x] An explicit state-level mutual exclusion guards the Trabzon cross-group automatic conflict.
+- [x] The Himalayan confederation route consumes or excludes the Kashmir reservation through the shared state-441 mutex.

@@ -4,7 +4,17 @@
 # Static current-map readiness contracts for bound region 12 packages.
 # Unbound IW-146 is intentionally absent.
 # Route-only packages remain callable but are not automatic-pool candidates.
+# State 441 is an explicit cross-group mutex: automatic Kashmir (IW-139) and
+# the route-only Himalayan Confederation (IW-149) may not reserve it together.
 # ============================================================================
+
+is_independence_wave_region_12_state_441_mutex_open = {
+	441 = {
+		NOT = { is_liberation_release_current_reserved_state = yes }
+	}
+	NOT = { is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_139 } }
+	NOT = { is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_149 } }
+}
 
 can_plan_independence_wave_package_iw_133 = {
 	is_liberation_release_plan_open = yes
@@ -68,6 +78,7 @@ can_plan_independence_wave_package_iw_139 = {
 	has_independence_wave_remaining_plan_slot = yes
 	NOT = { is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_139 } }
 	NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_northwest_south_asia } }
+	is_independence_wave_region_12_state_441_mutex_open = yes
 	KAS = { is_independence_wave_candidate_tag_available = yes }
 	441 = { is_independence_wave_candidate_anchor_available = yes }
 }
@@ -149,6 +160,7 @@ can_plan_independence_wave_package_iw_149 = {
 	has_independence_wave_remaining_plan_slot = yes
 	NOT = { is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_149 } }
 	NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_northeast_himalaya } }
+	is_independence_wave_region_12_state_441_mutex_open = yes
 	FSX = { is_independence_wave_candidate_tag_available = yes }
 	441 = { is_independence_wave_candidate_anchor_available = yes }
 }
