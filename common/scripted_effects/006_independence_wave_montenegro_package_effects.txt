@@ -93,15 +93,19 @@ independence_wave_mnt_apply_major_settlement = {
 }
 
 independence_wave_mnt_apply_project_failure = {
-	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
-	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
-	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
-	independence_wave_decision_apply_country_deltas = yes
-	set_temp_variable = { independence_wave_mnt_cohesion_delta = constant:independence_wave_montenegro_pressure.standard_loss }
-	set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.minor_loss }
-	independence_wave_change_mnt_compact_values = yes
+	if = {
+		limit = { NOT = { has_country_flag = independence_wave_mnt_project_failure_applied } }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+		independence_wave_decision_apply_country_deltas = yes
+		set_temp_variable = { independence_wave_mnt_cohesion_delta = constant:independence_wave_montenegro_pressure.standard_loss }
+		set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.minor_loss }
+		independence_wave_change_mnt_compact_values = yes
+		set_country_flag = independence_wave_mnt_project_failure_applied
+	}
 }
 
 independence_wave_mnt_apply_former_host_settlement = {
@@ -235,6 +239,10 @@ independence_wave_install_mnt_emergency_government = {
 independence_wave_mnt_focus_reopen_depots = {
 	set_temp_variable = { independence_wave_mnt_cohesion_delta = constant:independence_wave_montenegro_pressure.major_gain }
 	set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.minor_gain }
+	if = {
+		limit = { has_independence_wave_mnt_unsettled_host = yes }
+		set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.decisive_gain }
+	}
 	independence_wave_change_mnt_compact_values = yes
 	independence_wave_focus_reward_administration = yes
 	set_country_flag = independence_wave_mnt_depots_reopened
@@ -267,7 +275,10 @@ independence_wave_mnt_focus_settle_host = {
 
 independence_wave_mnt_focus_open_balkan_corridor = {
 	set_country_flag = independence_wave_mnt_balkan_corridor_open
-	set_country_flag = independence_wave_unlock_formable_discovery
+	if = {
+		limit = { has_country_flag = independence_wave_formable_family_registered }
+		set_country_flag = independence_wave_unlock_formable_discovery
+	}
 	independence_wave_focus_reward_network_cooperation = yes
 	independence_wave_focus_reward_ambition = yes
 }
@@ -279,6 +290,7 @@ independence_wave_mnt_focus_open_balkan_corridor = {
 independence_wave_setup_iw_030_montenegro = {
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_030_setup_complete
+	clr_country_flag = independence_wave_mnt_project_failure_applied
 	if = {
 		limit = { can_initialize_independence_wave_iw_030_package = yes }
 		country_event = { id = chaosx.nr6.350 }
@@ -357,6 +369,7 @@ independence_wave_cleanup_iw_030_montenegro = {
 		independence_wave_remove_mnt_package_ideas = yes
 		clear_variable = independence_wave_mnt_mountain_cohesion
 		clear_variable = independence_wave_mnt_crown_legitimacy
+		clr_country_flag = independence_wave_mnt_project_failure_applied
 		clr_country_flag = independence_wave_iw_030_setup_complete
 		clr_country_flag = independence_wave_iw_030_lifecycle_initialized
 		clr_country_flag = independence_wave_mnt_ai_profile
