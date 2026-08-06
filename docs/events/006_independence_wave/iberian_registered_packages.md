@@ -37,6 +37,10 @@ The decisions reuse the audited Event 006 decision sprites `GFX_decision_indepen
 
 The package adapters and dispatch hooks are source-wired, but central content attestation remains fail-closed until the grounded leader/flag provenance, identity review, and independent country-package audit are complete. FORM-07 remains separately fail-closed until its X-ending identity, flag package, and all-member integration proof are reviewed. This boundary is intentional and prevents a partial package from entering the automatic ladder.
 
+## Current portrait-source policy
+
+NAV and GLC have bounded runtime `source_placeholder` outputs using unchanged attributed sources, exact crops, deterministic `156x210` processing, and DDS conversion. No explicit `styled_final` request is recorded, so a provider-backed replacement is optional rather than automatically pending. Independent source, identity, rights, flag, role, package, central-attestation, and gameplay gates remain open, and no Event 006 advisor icons are authorized. The source handoff is `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw013_iw015_iberian_portrait_source_placeholder_2026-08-05.md`.
+
 ## Future depth
 
-The next approved tranche is the grounded source and portrait chain for the existing NAV and GLC leader rosters, followed by package-specific historical flag review and a country-package audit. Optional NAV extension states should only be added through the current-map binding after a fresh host-survival and reservation-group check.
+The next approved tranche is package-specific historical flag review, independent role and rights review, and a country-package audit for the existing NAV and GLC rosters. A styled replacement is only an explicit-request work item; optional NAV extension states should only be added through the current-map binding after a fresh host-survival and reservation-group check.

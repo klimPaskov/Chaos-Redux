@@ -12,6 +12,10 @@ IW-029 Bosnia (`BOS`) is admitted on states 104 and 804 in `RG-104`, with YUG as
 
 IW-026 Macedonia (`MAC`) is admitted on state 106 in `RG-106`, with YUG as the former host. The p26 mountain-frontier force mapping, Vardar ledgers, five government routes, paid project and mission surface, shared focus framework, sourced male roster, cleanup adapters, and Danube phase/route guards are wired. Its content-attestation entry is active, while the fresh probability receipt records `PROBABILITY_SURFACE_EMPTY` for `ai_strategy_factor`, source-inspected but incomplete decision/mission pools, and no quantitative AI-balance claim. FORM-08 remains a separate fail-closed route, and every live allocation still requires exact host, anchor, reservation, collision, force, and synchronized-transaction preflight.
 
+The current MNT repair is limited to former-host ledger visibility: after depots reopen, a local fallback can appear when the former host is absent or hostile, without changing capital, cost, one-project, readiness, admission, or fail-closed gates. See `subagent_handoffs/006_iw030_mnt_host_ledger_fallback_repair_2026_08_06.md`; MNT remains outside attestation and runtime completion.
+
+The current FORM-16 carrier-refresh repair fans readiness refresh across exact ARM/GEO/AZR carrier candidates after every arbitration completion, without loosening member, peace, identity, route, or arbitration predicates. See `subagent_handoffs/006_iw006_form16_carrier_refresh_repair_2026_08_06.md`; FORM-16 remains fail-closed and no live/save-load evidence is claimed.
+
 ## Historical authority override (2026-08-06; superseded by the continuation above)
 
 The read-only `subagent_handoffs/006_event6_current_completion_audit_post_iberian_2026_08_05.md` remains the dated whole-event completion evidence baseline and keeps Event 006 at **HOLD / PARTIAL**. Its package arithmetic is superseded for current routing by `subagent_handoffs/006_documentation_curator_iw033_iw041_post_promotion_reconciliation_current_2026_08_05.md`, which records the owner-promoted IW-033/IW-041 tranche after the admitted Transcaucasus tranche. The historical allocator boundary was 21 content-attested selectable packages out of 193 non-overlay rows, leaving 172 unattested selectable packages across 20 compatible reservation groups; this 21/20/172 arithmetic is dated traceability only, and current routing uses the 23/22/170 authority above. The attested IDs are IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184.
@@ -395,7 +399,7 @@ decisions, two-option events `.360` through `.364`, shared ledger effects, and g
 2. Re-audit and restore exact package content attestations only after each
 complete portrait roster passes source, style, consumer, and package checks.
  3. Preserve and re-audit the implemented Event 006 ordinary super-event `24`
- package as later league, scenario, formable, sponsorship, and achievement work lands. Keep ordinary super-event `23` absent until its rights-cleared audio and firing package is approved and wired.
+ package as later league, scenario, formable, sponsorship, and achievement work lands. Keep ordinary super-event `23` runtime-incomplete: its image/text dispatch is registered, but rights-cleared audio, sound wrappers, and firing remain blocked until approved and wired.
 4. Preserve the implemented FORM-48 plan with HBX as carrier, autonomous
 HAW/FSM members, and collision-cleared PFX identity, but keep it unreachable until all required packages pass current admission. Keep FORM-42 and FORM-06 through FORM-47 fail-closed. Then continue the remaining packages with bespoke gameplay, AI, localisation, assets, and audits.
 5. Preserve the tracked vanilla decision mirror and its audited three-guard

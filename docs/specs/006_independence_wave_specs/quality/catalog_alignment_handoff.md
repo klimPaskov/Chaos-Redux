@@ -8,7 +8,9 @@
 > for current implementation status. This documentation reconciliation does
 > not edit or export the workbook.
 
-## Current catalog state
+Current documentation authority (2026-08-06): this file remains accepted catalog direction and historical workbook input, not a current workbook-status claim. Current Event 006 package, super-event, portrait-placeholder, MNT, and FORM-16 routing is recorded in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`, and the current event overview; the workbook and export mirrors are outside this cleanup.
+
+## Historical catalog state
 
 The uploaded Event 6 row is marked `To Be Reworked`. It currently describes evolution wave ranges of 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16. Those ranges are stale against the accepted doubled automatic wave ladder.
 
