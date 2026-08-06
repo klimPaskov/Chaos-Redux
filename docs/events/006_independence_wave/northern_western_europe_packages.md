@@ -11,6 +11,8 @@ Package sections:
 - Saar (IW-010)
 - Iceland (IW-012; exact vanilla-path carrier)
 
+The current whole-event authority is 24 content-attested packages across 22 compatible reservation groups with 169 selectable rows still unattested. Any 23/22/170 arithmetic in the dated regional snapshot below is historical traceability only; IW-024 Banat is the latest package promotion outside this region.
+
 Current portrait authority is the sourced-only gate in the accepted specification and event-asset skill.
 The earlier twenty generated large portraits remain consumer/provenance evidence but no longer satisfy grounded country readiness.
 IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, and IW-010 Saar have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested. IW-012 Iceland is also statically admitted through its registered vanilla `ICE` tag, exact vanilla-path `iceland_tree` carrier, four ICE route consumers, supported AI profile, and Nordic-precedence formable guard; its runtime release and host-survival evidence remain open.

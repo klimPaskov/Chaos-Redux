@@ -6,7 +6,7 @@ The source masters are separate ImageGen outputs constrained by the cited histor
 | --- | --- | --- | --- | --- |
 | AKX | Faroe Islands | [Flag of the Faroe Islands](https://en.wikipedia.org/wiki/Flag_of_the_Faroe_Islands) | Blue field; white Nordic cross with red inner cross, hoist offset. | documented national flag |
 | ATX | Venice | [Flag of the Republic of Venice](https://en.wikipedia.org/wiki/Flag_of_the_Republic_of_Venice) | Venetian red field; centered golden winged Lion of Saint Mark and open book. | historic civic flag |
-| AXX | Banat | [Banat](https://en.wikipedia.org/wiki/Banat) | Red-white-blue field with Banat lion/river heraldic shield; regional synthesis. | historically grounded synthesis |
+| AXX | Banat | [Banat](https://en.wikipedia.org/wiki/Banat) | Red-white-blue field with a restrained gold lion silhouette over two blue river bars; alternate-history civic synthesis, not an attested flag or coat-of-arms reproduction. | alternate-history civic synthesis; historical geometry uncertain |
 | BAX | Thrace | [Thrace](https://en.wikipedia.org/wiki/Thrace) | Red-and-gold field with restrained Thracian horse/griffin heraldic device. | historically grounded synthesis |
 | BBX | Epirus | [Epirus](https://en.wikipedia.org/wiki/Epirus_(ancient_region)) | Deep blue field with white double-headed eagle and restrained gold details. | historically grounded synthesis |
 | BFX | Slavonia | [Coat of arms of Slavonia](https://en.wikipedia.org/wiki/Coat_of_arms_of_Slavonia) | Red-white-blue bands with golden marten and star heraldry. | documented heraldic basis |

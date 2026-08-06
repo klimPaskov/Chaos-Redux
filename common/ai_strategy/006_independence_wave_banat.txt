@@ -1,0 +1,73 @@
+Exit code: 0
+Wall time: 0.4 seconds
+Output:
+# Some fields reject script-constant tokens; these file-scoped values mirror
+# the package constants and are kept here for AI strategy compatibility.
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARMY_PRIORITY = 92
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARTILLERY_PRIORITY = 20
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_DEFENSE_PRIORITY = 86
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_EMERGENCY_ARMY_PRIORITY = 118
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_FOUNDING_RESTRAINT = -235
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_INFRASTRUCTURE_PRIORITY = 68
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_PRODUCTION_PRIORITY = 36
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SETTLED_RESTRAINT = -430
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SUPPORT_PRIORITY = 48
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_TRADITIONAL_ARMY_PRIORITY = 108
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-024 BANAT AI
+# ============================================================================
+# Additive strategy layers for the AXX carrier. The vanilla baseline remains
+# active; these strategies protect the Banat anchor, screen the former host,
+# and prefer the mountain-frontier force profile before expansion.
+# ============================================================================
+
+independence_wave_axx_banat_survival = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_iw_024_setup_complete
+		has_country_flag = independence_wave_axx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_axx_host_restraint = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_iw_024_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_axx_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_axx_settled_banat = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_axx_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_axx_emergency_commission = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_axx_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_DEFENSE_PRIORITY }
+}

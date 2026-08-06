@@ -487,7 +487,7 @@ def main() -> int:
 			)
 		}
 	)
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 26, 29, 33, 41, 70, 71, 72, 173, 184}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 24, 26, 29, 33, 41, 70, 71, 72, 173, 184}
 	require(
 		set(attested_ids) == expected_attested_ids,
 		"content-attestation set changed without updating the accepted Event 006 closure: "
@@ -530,7 +530,7 @@ def main() -> int:
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
 			len(set(attested_groups.values())) == 22,
-			"accepted twenty-three-package closure no longer exposes exactly twenty-two compatible reservation groups: "
+			"accepted twenty-four-package closure no longer exposes exactly twenty-two compatible reservation groups: "
 		+ repr(attested_groups),
 		errors,
 		)
@@ -541,7 +541,7 @@ def main() -> int:
 		errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 23,
+			len(set(attested_anchors.values())) == 24,
 			"attested package anchors are not pairwise unique: " + repr(attested_anchors),
 		errors,
 	)

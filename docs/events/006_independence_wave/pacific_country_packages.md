@@ -2,6 +2,8 @@
 
 ## Scope
 
+The current whole-event authority is 24 content-attested packages across 22 compatible reservation groups with 169 selectable rows still unattested. The older 23/22/170 arithmetic in this Pacific reference is dated traceability only; IW-024 Banat is the latest package promotion outside this region.
+
 Current visual status (2026-08-01): IW-173 HAW has passed the independent v46
 portrait audit and is wired as an additive runtime package. Samuel Wilder King
 is a sourced male Hawaiian-born territorial delegate who served in 1936. His
