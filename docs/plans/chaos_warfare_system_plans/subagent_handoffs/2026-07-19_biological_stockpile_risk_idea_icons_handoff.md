@@ -2,16 +2,27 @@
 
 Date: 2026-07-19
 
-## Scope completed
+## Runtime retirement notice
 
-Produced a bounded five-asset package for Stage 7 biological warfare:
+The four national-spirit stockpile-risk markers in this historical handoff are
+retired. They were removed from runtime because they exposed private monitoring
+state as persistent country ideas and unnecessarily occupied the national-spirit
+view. Their idea definitions, runtime DDS files, GFX registrations, and refresh
+calls are no longer active. The underlying risk-band variables, accident
+weighting, and exact-arsenal monitoring remain active. The national-arsenal
+decision icon remains in use.
 
-- Four independent 60x68 idea / national-spirit icons for `controlled`, `strained`, `dangerous`, and `critical` stockpile-risk bands.
-- One independent 32x32 decision icon for exact national biological arsenal designation and relocation.
+## Historical scope
+
+Produced a bounded five-asset package for Stage 7 biological warfare. Only the
+decision asset remains active:
+
+- Four independent 60x68 idea / national-spirit icons for `controlled`, `strained`, `dangerous`, and `critical` stockpile-risk bands (retired).
+- One independent 32x32 decision icon for exact national biological arsenal designation and relocation (active).
 
 All art was generated with built-in `$imagegen`. The four idea icons were designed as a coordinated family but generated separately; the decision icon was generated from a separate decision-specific brief and was not resized from the idea family.
 
-## Final DDS files and exact parent sprite names
+## Historical DDS files and former parent sprite names
 
 | Asset | Final DDS | Sprite | Target | Related id |
 | --- | --- | --- | ---: | --- |
