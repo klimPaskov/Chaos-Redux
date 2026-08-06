@@ -14,6 +14,8 @@ IW-026 Macedonia (`MAC`) is admitted on state 106 in `RG-106`, with YUG as the f
 
 The current MNT repair is limited to former-host ledger visibility: after depots reopen, a local fallback can appear when the former host is absent or hostile, without changing capital, cost, one-project, readiness, admission, or fail-closed gates. See `subagent_handoffs/006_iw030_mnt_host_ledger_fallback_repair_2026_08_06.md`; MNT remains outside attestation and runtime completion.
 
+The 2026-08-06 Iberian command-roster tranche completes the missing source-level corps-command proof for the two vanilla carriers without changing their ruling leaders, history, flags, or meaningful trees. `chaosx.nr6.350` recruits the sourced male Aguirre and Castelao command consumers, NAV/GLC setup requires the recruited corps commander before force mapping, and cleanup retires only those additive roles. The tranche remains outside central attestation while independent identity, flag, rights, package, and weighted-evidence gates remain open; see `subagent_handoffs/006_iw013_iw015_command_roster_completion_2026_08_06.md`.
+
 The current FORM-16 carrier-refresh repair fans readiness refresh across exact ARM/GEO/AZR carrier candidates after every arbitration completion, without loosening member, peace, identity, route, or arbitration predicates. See `subagent_handoffs/006_iw006_form16_carrier_refresh_repair_2026_08_06.md`; FORM-16 remains fail-closed and no live/save-load evidence is claimed.
 
 ## Historical authority override (2026-08-06; superseded by the continuation above)
