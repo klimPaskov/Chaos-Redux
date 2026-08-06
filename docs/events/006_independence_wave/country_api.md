@@ -33,7 +33,7 @@ Every new Event 006 country, formable, and cosmetic tag ends in `X`. Reused carr
 
 ### Registered Iberian carriers
 
-The current Iberian reuse rows are resolved by package ID and anchor, never by tag alone: IW-013 is vanilla `NAV` with compact anchor state 792 (País Vasco) and optional extension states 172 (Navarra) and 806 (French Basque), while IW-015 is vanilla `GLC` with compact anchor state 171 (Galicia). Both Event 006 setup, final-validation, and cleanup adapters are source-wired and preserve vanilla history and leader rosters while applying their package-specific framework only after exact package, anchor, former-host, and origin proofs pass.
+The current Iberian reuse rows are resolved by package ID and anchor, never by tag alone: IW-013 is vanilla `NAV` with compact anchor state 792 (País Vasco) and optional extension states 172 (Navarra) and 806 (French Basque), while IW-015 is vanilla `GLC` with compact anchor state 171 (Galicia). Both Event 006 setup, final-validation, and cleanup adapters are source-wired and preserve vanilla history and ruling-leader rosters while applying their package-specific framework only after exact package, anchor, former-host, origin, and additive corps-command proofs pass. The roster checkpoint recruits the sourced male Aguirre and Castelao command consumers and retires them during generation cleanup.
 
 These adapters do not create a new country, identity, flag, leader, portrait, or advisor asset. IW-013 and IW-015 remain outside central content attestation until independent source, identity, flag, portrait, and country-package audits are promoted, and FORM-07 remains fail-closed until its Iberian X identity, flag package, and member/integration contract are approved.
 

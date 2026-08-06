@@ -4,7 +4,7 @@
 
 IW-013 Basque Country reuses the vanilla `NAV` carrier and the installed-map País Vasco state 792 as its compact release anchor. Navarra 172 and French Basque 806 are optional territorial objectives after release. IW-015 Galicia reuses the vanilla `GLC` carrier and state 171 as its compact anchor. Neither package creates a country, history file, replacement tag, advisor, or new leader identity.
 
-Both carriers receive the shared Event 006 full framework because their vanilla carrier histories expose only the generic focus surface. The setup adapter preserves their vanilla history, flag, existing leader roster, and non-Event-006 identity surfaces.
+Both carriers receive the shared Event 006 full framework because their vanilla carrier histories expose only the generic focus surface. The setup adapter preserves their vanilla history, flag, existing ruling-leader roster, and non-Event-006 identity surfaces. A synchronous Event 006 roster checkpoint recruits one additive sourced male corps-command consumer for each carrier: José Antonio Aguirre for NAV and Alfonso Daniel Castelao for GLC. These command roles do not replace the vanilla leaders or create advisor art.
 
 ## Runtime flow
 
@@ -12,8 +12,8 @@ Both carriers receive the shared Event 006 full framework because their vanilla 
 2. `independence_wave_dispatch_iberian_package_setup` initializes the matching carrier only when the package's prepared anchor and former-host targets remain valid.
 3. NAV tracks `independence_wave_nav_fueros_legitimacy` and `independence_wave_nav_industrial_capacity`; GLC tracks `independence_wave_glc_council_legitimacy` and `independence_wave_glc_port_capacity`. Each lifecycle swaps its contested or compact idea at the shared stability threshold.
 4. Paid decisions and the founding mission write country, host, Network, and League ledgers. Route decisions lock constitutional, popular-council, traditional, emergency, or patron-client government ideas. The NAV and GLC Iberian Network projects cancel if League-route availability is withdrawn while they are running, so a completed project cannot outlive its route gate.
-5. The package loads the centralized force mapping (`p13` mountain-frontier for NAV and `p15` territorial-defense for GLC) and materializes the generation-aware dynamic starting force when the reviewed roster gate is present.
-6. Generation cleanup removes only the package's own decisions, ideas, variables, and flags. It does not remove vanilla history, leaders, or unrelated diplomatic relations.
+5. The package loads the centralized force mapping (`p13` mountain-frontier for NAV and `p15` territorial-defense for GLC) and materializes the generation-aware dynamic starting force only after the country leader and additive corps-command roster gates are present.
+6. Generation cleanup retires only the additive Event 006 corps-command consumer and removes the package's own decisions, ideas, variables, and flags. It does not remove vanilla history, ruling leaders, flags, or unrelated diplomatic relations.
 
 ## Politics and parties
 
@@ -35,7 +35,7 @@ The decisions reuse the audited Event 006 decision sprites `GFX_decision_indepen
 
 ## Admission boundary
 
-The package adapters and dispatch hooks are source-wired, but central content attestation remains fail-closed until the grounded leader/flag provenance, identity review, and independent country-package audit are complete. FORM-07 remains separately fail-closed until its X-ending identity, flag package, and all-member integration proof are reviewed. This boundary is intentional and prevents a partial package from entering the automatic ladder.
+The package adapters and dispatch hooks are source-wired, and the command-roster gate now proves both the vanilla ruling leader and an active corps commander before force mapping. Central content attestation remains fail-closed until the grounded leader/flag provenance, identity review, and independent country-package audit are complete. FORM-07 remains separately fail-closed until its X-ending identity, flag package, and all-member integration proof are reviewed. This boundary is intentional and prevents a partial package from entering the automatic ladder.
 
 ## Current portrait-source policy
 
@@ -43,4 +43,4 @@ NAV and GLC have bounded runtime `source_placeholder` outputs using unchanged at
 
 ## Future depth
 
-The next approved tranche is package-specific historical flag review, independent role and rights review, and a country-package audit for the existing NAV and GLC rosters. A styled replacement is only an explicit-request work item; optional NAV extension states should only be added through the current-map binding after a fresh host-survival and reservation-group check.
+The next approved tranche is package-specific historical flag review, independent role and rights review, and a country-package audit for the existing NAV and GLC rosters. The current command consumers use the archived source-placeholder portraits and remain replacement-pending under the source-placeholder policy. A styled replacement is only an explicit-request work item; optional NAV extension states should only be added through the current-map binding after a fresh host-survival and reservation-group check.
