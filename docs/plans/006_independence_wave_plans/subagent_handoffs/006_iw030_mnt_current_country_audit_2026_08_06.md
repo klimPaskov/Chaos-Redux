@@ -4,9 +4,13 @@ Date: 2026-08-06.
 
 Scope: read-only audit of the registered vanilla `MNT` carrier and Event 006 adapter for state `105` / reservation group `rg_105`. This tranche made no gameplay, portrait, flag, localisation, map, attestation, or runtime-asset changes.
 
+## Current authority override (2026-08-06 decision repair)
+
+The prior 420-day versus 495-day mission timing finding, missing setup-complete gates, mismatched factory thresholds, and duplicate capital-loss failure finding are superseded by `subagent_handoffs/006_iw030_mnt_decision_repair_2026_08_06.md`. The parent repair sets a 540-day founding window, applies the setup-ready gate to all ten projects, aligns the one-factory MNT cost profile and factory commitments, deduplicates failure penalties, and adds the guarded former-host loss path. IW-030 remains HOLD / fail-closed: grounded portrait identity, rights, and runtime promotion remain blocked; the missing `MNT_1936` OOB still requires dynamic-force/runtime evidence; typed AI probability, release, host-survival, cleanup, and save-load evidence remain open; and central attestation must not be changed by this documentation update.
+
 ## Verdict
 
-`HOLD` / fail-closed. The MNT adapter is structurally coherent, but it cannot proceed to package admission after the portrait tranche alone. Portrait source and rights gates, runtime force/carrier evidence, decision balance defects, and typed AI evidence remain open. Central attestation intentionally omits `iw_030` and must not be changed by this audit.
+`HOLD` / fail-closed. The MNT adapter is structurally coherent, but it cannot proceed to package admission after the portrait tranche alone. Portrait source, rights and runtime promotion, dynamic-force/OOB evidence, typed AI evidence, and parent-owned release, host-survival, cleanup, and save-load checks remain open; the 2026-08-06 decision/setup/factory/duplicate-failure defects are repaired under the current override. Central attestation intentionally omits `iw_030` and must not be changed by this audit.
 
 ## Coverage checklist
 
@@ -19,7 +23,7 @@ Scope: read-only audit of the registered vanilla `MNT` carrier and Event 006 ada
 | Portraits | BLOCKED | Current v110 and source-placeholder handoffs retain `SAFE_PACKAGE_PROMOTION = NO`; no DDS, `.gfx`, or runtime consumer was promoted. Male-only original-source placeholder policy remains in force. |
 | Politics and parties | PASS source-level | MNT baseline democratic setup and four named route parties are wired in `006_independence_wave_montenegro_package_effects.txt`. Runtime route execution is unobserved. |
 | Focus tree | PASS for MNT assignment; shared warnings remain | MNT receives `independence_wave_focus_assignment.full_framework`. Current MCP focus inspect/render reports 184 nodes and 193 connectors, no crossings or node intersections, and only non-blocking Event 006 layout warnings. The same run reports 14 unrelated generic/vanilla missing-icon errors, so it is not a clean whole-tree validation. |
-| Decisions and mission | BLOCKED | Source lifecycle is present, but the founding mission is mathematically unwinnable: 420-day timeout versus a 495-day minimum serialized critical path. Project decisions also lack a setup-complete gate, factory thresholds exceed their wording, and capital-loss failure can be applied twice. See the decision audit receipt. |
+| Decisions and mission | PASS source after 2026-08-06 repair; runtime unobserved | `006_iw030_mnt_decision_repair_2026_08_06.md` records the 540-day founding window, setup-ready gates on all ten projects, the one-factory MNT cost profile and commitments, duplicate-failure prevention, and the guarded former-host loss path. Live timing, balance, and runtime behavior remain unobserved. |
 | Ideas and icons | PASS source-level | Six MNT ideas have MNT-only scope and resolve to existing shared icon pictures. Runtime lifecycle remains unobserved. |
 | Map | PASS for state anchor; global MCP limitation | State 105 map inspection found the native anchor and connected state data; state render passed. Whole-map inspect remains false because the installed workspace reports unrelated global building-position and port-adjacency diagnostics. No MNT-specific map write was made. |
 | AI and weighted logic | UNRESOLVED | `ai_strategy_factor` inspection returned `PROBABILITY_SURFACE_EMPTY`; decision/mission and allocator pools are incomplete or unresolved under empty-state evaluation. No quantitative balance or live-AI claim is justified. |
@@ -37,9 +41,9 @@ Scope: read-only audit of the registered vanilla `MNT` carrier and Event 006 ada
 
 `history/countries/MNT - Montenegro.txt:3` references `MNT_1936`, while the installed vanilla `history/units` directory contains no `MNT_1936.txt`. The Event 006 adapter instead applies a dynamic `mountain_frontier` p30 force mapping with bounded manpower, stockpile, equipment, and technology. Copying a missing OOB or inventing a replacement would exceed this audit scope. The parent must obtain runtime evidence that the dynamic force path fully supersedes the dangling carrier reference before admission.
 
-### Founding mission cannot succeed on its own timing
+### Historical founding-mission timing finding (superseded by the 2026-08-06 repair)
 
-`common/decisions/006_independence_wave_montenegro_decisions.txt:15-48` gives `independence_wave_mnt_hold_mountain_compact_together` the constant `founding_crisis = 420` from `common/script_constants/006_independence_wave_montenegro_constants.txt:62`. Starting cohesion/crown are 34/31 and stable compact requires 60/60. The four serialized projects that raise both values require 75 + 120 + 120 + 180 = 495 days before reaction margin, so the mission times out even on an ideal path. The decision audit also identified missing setup-complete gates on project visibility/availability, civilian-factory thresholds stricter than the player-facing wording, and duplicate capital-loss failure application.
+The pre-repair source used `founding_crisis = 420` against a 495-day serialized critical path, with missing setup-complete gates, mismatched civilian-factory thresholds, and duplicate capital-loss failure application. The 2026-08-06 decision repair handoff supersedes those findings with a 540-day window, setup-ready gates, aligned factory costs, duplicate-failure prevention, and a guarded host-loss path.
 
 ## MCP evidence and limitations
 
@@ -54,9 +58,8 @@ Workspace: `mod_chaos_redux_ea3b2d67c2c0`.
 
 ## Read-only outcome and parent actions
 
-No gameplay or asset files were changed. The parent should keep IW-030 outside central attestation until all of the following are closed: native MNT portrait source/rights and runtime wiring; dynamic force/carrier runtime evidence; the 420/495-day mission design defect and related decision gates; the generic formable unlock guard; typed AI/probability evidence; release/cleanup/save-load checks; and a clean package-level event/focus/map review. Even a complete portrait tranche is insufficient for admission by itself.
+No gameplay or asset files were changed. The parent should keep IW-030 outside central attestation until all of the following are closed: native MNT portrait source/rights and runtime wiring; dynamic force/carrier evidence around the missing OOB reference; typed AI/probability evidence; the generic formable unlock guard; release/cleanup/save-load checks; and a clean package-level event/focus/map review. The former 420/495-day mission defect and related decision gates are repaired under the 2026-08-06 handoff, but live timing and balance evidence remain unobserved. Even a complete portrait tranche is insufficient for admission by itself.
 
 ## Files changed
 
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw030_mnt_current_country_audit_2026_08_06.md` (this docs-only handoff).
-
