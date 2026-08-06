@@ -2,7 +2,7 @@
 
 Research date: 2026-07-14
 
-Current runtime cross-reference (2026-08-06): Event 006 uses ordinary super-event identifiers `23` for The League of New States and `24` for Every Border a Casus Belli across display slots, audio, and Event Log payloads. The current allocator boundary is 23 content-attested packages across 22 compatible reservation groups, with 170 unattested selectable rows and a 20-package static standalone witness; this text note remains research evidence and does not alter that package boundary.
+Current runtime cross-reference (2026-08-06): Event 006 uses ordinary super-event identifiers `23` for The League of New States and `24` for Every Border a Casus Belli across display slots, audio, and Event Log payloads. The current allocator boundary is 25 content-attested packages across 23 compatible reservation groups, with 168 unattested selectable rows and a 20-package static standalone witness; this text note remains research evidence and does not alter that package boundary.
 
 This note verifies the accepted text sources for the two Event 006 super-events and provides implementation-ready localisation values. The accepted title, button, and quotation selections remain unchanged. The recommended descriptions apply narrow voice and trigger-coverage corrections found during verification.
 
