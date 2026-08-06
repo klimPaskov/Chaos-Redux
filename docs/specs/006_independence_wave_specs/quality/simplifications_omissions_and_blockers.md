@@ -6,7 +6,7 @@ This package is the accepted source specification; implementation status is reco
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
-## Current post-TRA implementation reconciliation (2026-08-03)
+## Historical post-TRA implementation reconciliation (2026-08-03; superseded for package counts by the 2026-08-05 Transcaucasus amendment)
 
 The current whole-event status is **HOLD / PARTIAL**. The exact compile-time content-attestation set is fifteen packages (`IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-018`, `IW-019`, `IW-023`, `IW-173`, and `IW-184`) across fourteen compatible reservation groups and fifteen distinct anchors. The registry contains 193 selectable non-overlay rows, leaving 178 unattested. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by `006_iw023_tra_runtime_scenario_admission_reconciliation_2026_08_03.md` and gameplay commit `712c7c868`.
 
@@ -221,3 +221,19 @@ Bounded Event 6 map, architecture, collision, asset, and super-event research ha
 ## Packaging status
 
 The 2026-07-10 package manifest is reconciled in the same change as the promoted documentation. Plan artifacts and preserved source media remain outside that specification-package checksum boundary.
+
+## Current package-admission amendment — 2026-08-05 Transcaucasus tranche
+
+The whole-event status remains **HOLD / PARTIAL**. The current Transcaucasus package audit admits IW-070 ARM, IW-071 GEO, and IW-072 AZR as independent vanilla-carrier packages, raising the content-attestation boundary to 19 of 193 selectable non-overlay rows across 18 compatible reservation groups and leaving 174 rows unattested. The central dispatcher now exposes 28 package adapters, with nine adapter-only rows still fail-closed. FORM-16 remains fail-closed behind its exact member, founding, consent, territory, identity, and integration receipts. This amendment records implementation evidence only and does not rewrite the accepted specification or claim whole-event completion.
+
+## Current package-admission and AI amendment — 2026-08-05 IW-033/IW-041 promotion
+
+The later IW-033/IW-041 promotion supersedes the preceding CAT and Transcaucus arithmetic for current routing: Event 006 has 21 content-attested selectable packages across 20 compatible reservation groups, 172 unattested selectable rows, and 30 central package adapters, with a 20-package static standalone witness. The witness excludes only self-hosting IW-012 ICE because its single vanilla state cannot leave a former-host remnant. Ordinary super-events are `23` for The League of New States and `24` for Every Border a Casus Belli; four-digit labels in dated sections remain traceability only. The whole-event disposition remains **HOLD / PARTIAL**.
+
+The owner-AI reserve-floor handoff adds executable foundation-settlement gating, lower-ledger preference, and centralized zero-weight post-spend floors for command power, manpower, infantry equipment, support equipment, trains, convoys, fuel, and major security actions in regular IW-033/IW-041 decisions. This source behavior is not a probability or live-runtime completion claim; same-scenario MCP comparison and live evidence remain open. The preceding CAT/Transcaucus amendment remains preserved as dated evidence rather than being rewritten.
+
+## Current package-admission amendment — 2026-08-06 IW-026 MAC tranche
+
+The IW-026 Macedonia package is now source-attested, raising the boundary to 23 of 193 selectable non-overlay rows across 22 compatible reservation groups and leaving 170 rows unattested. MAC preserves the vanilla carrier/history, state-106 anchor, YUG host-remnant contract, p26 mountain-frontier forces, shared generic framework, costed decision/mission surface, sourced male placeholder portrait, and generation-safe cleanup. The central allocator and scenario preflight still enforce exact host, anchor, reservation, Event 005 collision, force, and synchronized-transaction checks; FORM-08 remains separately fail-closed.
+
+The fresh MAC probability handoff records `PROBABILITY_SURFACE_EMPTY` for `ai_strategy_factor`, source-inspected but incomplete decision/mission pools, and unresolved typed-state evaluations. No quantitative MAC AI-balance, timing, dominance, starvation, or live-runtime claim is made. The whole-event disposition remains **HOLD / PARTIAL** for the broader unattested package pool, formable reachability, assets, audio, typed probability, GUI, and runtime evidence blockers.
