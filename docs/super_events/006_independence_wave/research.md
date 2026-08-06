@@ -2,7 +2,7 @@
 
 Identifier policy (2026-08-05): Event 006 uses the ordinary project-wide super-event numbers 23 (The League of New States) and 24 (Every Border a Casus Belli) for display slots, audio IDs, and Event Log payloads. Older research handoffs may retain superseded internal identifiers for traceability only.
 
-Current package cross-reference (2026-08-06): the allocator records 21 content-attested selectable packages across 20 compatible reservation groups, 172 unattested selectable rows out of 193 non-overlay rows, and a 20-package static standalone witness excluding the self-hosting ICE anchor. This super-event research authority does not claim whole-event completion.
+Current package cross-reference (2026-08-06): the allocator records 23 content-attested selectable packages across 22 compatible reservation groups, 170 unattested selectable rows out of 193 non-overlay rows, and a 20-package static standalone witness excluding the self-hosting ICE anchor. This super-event research authority does not claim whole-event completion.
 
 Status: dangerous milestone runtime implemented; hidden-formable route wired but dormant; league-formation package blocked
 
@@ -72,7 +72,6 @@ Wikimedia Commons identifies the composition as public domain and the transcript
 
 | File | Profile | SHA-256 |
 | --- | --- | --- |
-| `sound/006_independence_wave/super_event_24_every_border_a_casus_belli.wav` | Ogg Vorbis, 44.1 kHz stereo, 109.992517 s | `6B62C5AFA03E83C5BEB7D36E203E41BDC1EE51AEDD89269410A48BA0FCBC0DF0` |
 | `sound/006_independence_wave/super_event_24_every_border_a_casus_belli.wav` | PCM S16LE, 44.1 kHz stereo, 109.992517 s | `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08` |
 
 The preserved source, exact interval, fades, loudness measurements, and wrapper identifiers are recorded in `docs/assets/006_independence_wave/super_events/audio/production_manifest.md`.
