@@ -320,3 +320,9 @@ The previous BOS focus contradiction and dormant-hook wording are dated findings
 The current generic-tree MCP inspection reports 184 Event 006 focus nodes, 193 connectors, zero crossings, zero node intersections, one intentional long connector, and five known layout diagnostics. Its 14 blocking diagnostics belong to unrelated vanilla continuous-focus icon references. The current Event MCP lint remains partial with zero blocking diagnostics.
 
 The current KAR/CRI decision probability inspection is source-inspected but incomplete with 18 unresolved inputs, and the package AI strategy inspection returned an MCP internal error. No quantitative package AI or live selection claim is added.
+
+## Parent follow-up after cross-group state mutex repair
+
+Commit `ce24ce19f` adds the explicit state-441 Kashmir/Himalayan mutex in `common/scripted_triggers/006_independence_wave_packages_region_12_triggers.txt`. Both IW-139 and IW-149 now reject a state-441 reservation already held by the other package or by the current release plan. The existing state-354 Trabzon mutex remains in force for IW-067/IW-068. The acceptance checklists now record both collision gates as source-closed without promoting either package or changing reservation groups.
+
+Fresh `hoi4.map_inspect` evidence for states 354 and 441 is recorded in `006_state_mutex_cross_group_repair_2026_08_06.md`. The allocator, SCN-008, and external-tag audits continue to pass at 23 attested packages, 22 compatible groups, 20 static-witness packages, 32 scenario cells, and zero external collisions. The whole-event HOLD / PARTIAL disposition is unchanged by this narrow reservation repair.
