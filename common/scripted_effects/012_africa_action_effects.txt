@@ -9,6 +9,8 @@
 #   quote and target record while retaining the shared mission routing bands.
 # - Resolves full, partial, failure, and cancellation outcomes idempotently.
 # - Keeps AI and player execution on the same begin/resolve/cleanup effects.
+# - Routes eight model-gated strange formations through exact templates,
+#   manifest receipts, cap/cooldown guards, and explicit refusal flags.
 # ============================================================================
 
 # Input: temporary africa_requested_action_id.
@@ -6411,6 +6413,504 @@ africa_build_selected_port_modernisation = {
 	}
 }
 
+# COUNTRY scope. The caller selects one Event 012 strange-force family in
+# africa_strange_force_requested_kind. This guard owns the global package gate,
+# per-family model/entity/counter/audio manifest contract, the eight-formation
+# cap, and the exact template/entity consumer. It never sets the package-ready
+# flag and never substitutes a vanilla or generic formation when a manifest is
+# absent.
+africa_strange_force_spawn_guard = {
+	save_event_target_as = africa_strange_force_spawn_owner
+	set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.zero }
+	set_temp_variable = { africa_strange_force_spawn_refusal = constant:africa_value.zero }
+	if = {
+		limit = { NOT = { has_variable = global.africa_strange_force_formation_count } }
+		set_variable = { global.africa_strange_force_formation_count = constant:africa_value.zero }
+	}
+	set_temp_variable = { africa_strange_force_equipment_factor = constant:africa_strange_force.formation_equipment_factor }
+	set_temp_variable = { africa_strange_force_manpower_factor = constant:africa_strange_force.formation_manpower_factor }
+	set_temp_variable = { africa_strange_force_experience_factor = constant:africa_strange_force.formation_experience_factor }
+	if = {
+		limit = {
+			has_global_flag = africa_strange_formation_package_ready
+			check_variable = { var = global.africa_strange_force_formation_count value = constant:africa_strange_force.formation_cap compare = less_than }
+			any_owned_state = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+		}
+		if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.stone_cohorts }
+				has_global_flag = africa_strange_force_stone_cohorts_model_manifest_ready
+				has_global_flag = africa_strange_force_stone_cohorts_entity_manifest_ready
+				has_global_flag = africa_strange_force_stone_cohorts_counter_manifest_ready
+				has_global_flag = africa_strange_force_stone_cohorts_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_stone_cohorts_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_stone_cohorts_cooldown }
+			}
+			set_technology = { africa_stone_cohorts_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_stone_cohorts_equipment_1
+				amount = constant:africa_strange_force.stone_cohorts_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Stone Cohorts"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = chaosx_stone_cohorts
+				regiments = {
+					stone_cohorts = { x = 0 y = 0 }
+					stone_cohorts = { x = 0 y = 1 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Stone Cohorts\" division_template = \"Africa Strange Stone Cohorts\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.gorilla_heavy_infantry }
+				has_global_flag = africa_strange_force_gorilla_heavy_infantry_model_manifest_ready
+				has_global_flag = africa_strange_force_gorilla_heavy_infantry_entity_manifest_ready
+				has_global_flag = africa_strange_force_gorilla_heavy_infantry_counter_manifest_ready
+				has_global_flag = africa_strange_force_gorilla_heavy_infantry_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_gorilla_heavy_infantry_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_gorilla_heavy_infantry_cooldown }
+			}
+			set_technology = { africa_gorilla_heavy_infantry_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_gorilla_heavy_infantry_equipment_1
+				amount = constant:africa_strange_force.gorilla_heavy_infantry_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Gorilla Heavy Infantry"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = chaosx_gorilla_heavy_infantry
+				regiments = {
+					gorilla_heavy_infantry = { x = 0 y = 0 }
+					gorilla_heavy_infantry = { x = 0 y = 1 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Gorilla Heavy Infantry\" division_template = \"Africa Strange Gorilla Heavy Infantry\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.pan_sappers }
+				has_global_flag = africa_strange_force_pan_sappers_model_manifest_ready
+				has_global_flag = africa_strange_force_pan_sappers_entity_manifest_ready
+				has_global_flag = africa_strange_force_pan_sappers_counter_manifest_ready
+				has_global_flag = africa_strange_force_pan_sappers_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_pan_sappers_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_pan_sappers_cooldown }
+			}
+			set_technology = { africa_pan_sappers_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_pan_sappers_equipment_1
+				amount = constant:africa_strange_force.pan_sappers_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Pan Sappers"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = chaosx_pan_sappers
+				regiments = {
+					infantry = { x = 0 y = 0 }
+				}
+				support = {
+					pan_sappers = { x = 0 y = 0 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Pan Sappers\" division_template = \"Africa Strange Pan Sappers\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.riverborn }
+				has_global_flag = africa_strange_force_riverborn_model_manifest_ready
+				has_global_flag = africa_strange_force_riverborn_entity_manifest_ready
+				has_global_flag = africa_strange_force_riverborn_counter_manifest_ready
+				has_global_flag = africa_strange_force_riverborn_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_riverborn_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_riverborn_cooldown }
+			}
+			set_technology = { africa_riverborn_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_riverborn_equipment_1
+				amount = constant:africa_strange_force.riverborn_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Riverborn"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = riverborn
+				regiments = {
+					riverborn = { x = 0 y = 0 }
+					riverborn = { x = 0 y = 1 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Riverborn\" division_template = \"Africa Strange Riverborn\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.forest_giants }
+				has_global_flag = africa_strange_force_forest_giants_model_manifest_ready
+				has_global_flag = africa_strange_force_forest_giants_entity_manifest_ready
+				has_global_flag = africa_strange_force_forest_giants_counter_manifest_ready
+				has_global_flag = africa_strange_force_forest_giants_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_forest_giants_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_forest_giants_cooldown }
+			}
+			set_technology = { africa_forest_giants_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_forest_giants_equipment_1
+				amount = constant:africa_strange_force.forest_giants_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Forest Giants"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = chaosx_forest_giants
+				regiments = {
+					forest_giants = { x = 0 y = 0 }
+					forest_giants = { x = 0 y = 1 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Forest Giants\" division_template = \"Africa Strange Forest Giants\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.oracle_recon }
+				has_global_flag = africa_strange_force_oracle_recon_model_manifest_ready
+				has_global_flag = africa_strange_force_oracle_recon_entity_manifest_ready
+				has_global_flag = africa_strange_force_oracle_recon_counter_manifest_ready
+				has_global_flag = africa_strange_force_oracle_recon_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_oracle_recon_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_oracle_recon_cooldown }
+			}
+			set_technology = { africa_oracle_recon_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_oracle_recon_equipment_1
+				amount = constant:africa_strange_force.oracle_recon_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Oracle Recon"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = chaosx_oracle_recon
+				regiments = {
+					infantry = { x = 0 y = 0 }
+				}
+				support = {
+					oracle_recon = { x = 0 y = 0 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Oracle Recon\" division_template = \"Africa Strange Oracle Recon\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.disaster_wardens }
+				has_global_flag = africa_strange_force_disaster_wardens_model_manifest_ready
+				has_global_flag = africa_strange_force_disaster_wardens_entity_manifest_ready
+				has_global_flag = africa_strange_force_disaster_wardens_counter_manifest_ready
+				has_global_flag = africa_strange_force_disaster_wardens_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_disaster_wardens_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_disaster_wardens_cooldown }
+			}
+			set_technology = { africa_disaster_wardens_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_disaster_wardens_equipment_1
+				amount = constant:africa_strange_force.disaster_wardens_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Disaster Wardens"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = disaster_wardens
+				regiments = {
+					infantry = { x = 0 y = 0 }
+				}
+				support = {
+					disaster_wardens = { x = 0 y = 0 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Disaster Wardens\" division_template = \"Africa Strange Disaster Wardens\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.plague_carriers }
+				has_global_flag = africa_strange_force_plague_carriers_model_manifest_ready
+				has_global_flag = africa_strange_force_plague_carriers_entity_manifest_ready
+				has_global_flag = africa_strange_force_plague_carriers_counter_manifest_ready
+				has_global_flag = africa_strange_force_plague_carriers_audio_manifest_ready
+				NOT = { has_country_flag = africa_strange_force_plague_carriers_spawned_once }
+				NOT = { has_country_flag = africa_strange_force_plague_carriers_cooldown }
+			}
+			set_technology = { africa_plague_carriers_tech = 1 popup = no }
+			add_equipment_to_stockpile = {
+				type = africa_plague_carriers_equipment_1
+				amount = constant:africa_strange_force.plague_carriers_stockpile
+			}
+			division_template = {
+				name = "Africa Strange Plague Carriers"
+				is_locked = yes
+				force_allow_recruiting = no
+				override_model = plague_carriers
+				regiments = {
+					plague_carriers = { x = 0 y = 0 }
+					plague_carriers = { x = 0 y = 1 }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_owned_and_controlled_by = event_target:africa_strange_force_spawn_owner }
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"Africa Strange Plague Carriers\" division_template = \"Africa Strange Plague Carriers\" start_experience_factor = [STRANGE_FORCE_EXPERIENCE] start_equipment_factor = [STRANGE_FORCE_EQUIPMENT] start_manpower_factor = [STRANGE_FORCE_MANPOWER]"
+						}
+						owner = event_target:africa_strange_force_spawn_owner
+						allow_spawning_on_enemy_provs = no
+					}
+					STRANGE_FORCE_EXPERIENCE = "[?africa_strange_force_experience_factor|.2]"
+					STRANGE_FORCE_EQUIPMENT = "[?africa_strange_force_equipment_factor|.2]"
+					STRANGE_FORCE_MANPOWER = "[?africa_strange_force_manpower_factor|.2]"
+				}
+			}
+			set_temp_variable = { africa_strange_force_spawn_result = constant:africa_value.one }
+		}
+	}
+	africa_strange_force_finalize_result = yes
+}
+
+# COUNTRY scope. Finalises one guarded formation attempt. The permanent
+# receipt prevents duplicate templates for the same family; the short timed
+# receipt also protects repeated action/focus callbacks during the same chain.
+africa_strange_force_finalize_result = {
+	if = {
+		limit = { check_variable = { africa_strange_force_spawn_result > constant:africa_value.zero } }
+		add_to_variable = { global.africa_strange_force_formation_count = constant:africa_value.one }
+		set_temp_variable = { africa_strange_force_cooldown_days = constant:africa_action_threshold.cooldown_days }
+		if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.stone_cohorts } }
+			set_country_flag = africa_strange_force_stone_cohorts_spawned_once
+			set_country_flag = { flag = africa_strange_force_stone_cohorts_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.gorilla_heavy_infantry } }
+			set_country_flag = africa_strange_force_gorilla_heavy_infantry_spawned_once
+			set_country_flag = { flag = africa_strange_force_gorilla_heavy_infantry_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.pan_sappers } }
+			set_country_flag = africa_strange_force_pan_sappers_spawned_once
+			set_country_flag = { flag = africa_strange_force_pan_sappers_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.riverborn } }
+			set_country_flag = africa_strange_force_riverborn_spawned_once
+			set_country_flag = { flag = africa_strange_force_riverborn_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.forest_giants } }
+			set_country_flag = africa_strange_force_forest_giants_spawned_once
+			set_country_flag = { flag = africa_strange_force_forest_giants_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.oracle_recon } }
+			set_country_flag = africa_strange_force_oracle_recon_spawned_once
+			set_country_flag = { flag = africa_strange_force_oracle_recon_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.disaster_wardens } }
+			set_country_flag = africa_strange_force_disaster_wardens_spawned_once
+			set_country_flag = { flag = africa_strange_force_disaster_wardens_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.plague_carriers } }
+			set_country_flag = africa_strange_force_plague_carriers_spawned_once
+			set_country_flag = { flag = africa_strange_force_plague_carriers_cooldown days = var:africa_strange_force_cooldown_days }
+		}
+		clear_variable = africa_strange_force_cooldown_days
+	}
+	else = {
+		set_temp_variable = { africa_strange_force_spawn_refusal = constant:africa_value.one }
+		set_country_flag = africa_strange_force_runtime_refused
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.stone_cohorts } } set_country_flag = africa_strange_force_stone_cohorts_runtime_refused }
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.gorilla_heavy_infantry } } set_country_flag = africa_strange_force_gorilla_heavy_infantry_runtime_refused }
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.pan_sappers } } set_country_flag = africa_strange_force_pan_sappers_runtime_refused }
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.riverborn } } set_country_flag = africa_strange_force_riverborn_runtime_refused }
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.forest_giants } } set_country_flag = africa_strange_force_forest_giants_runtime_refused }
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.oracle_recon } } set_country_flag = africa_strange_force_oracle_recon_runtime_refused }
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.disaster_wardens } } set_country_flag = africa_strange_force_disaster_wardens_runtime_refused }
+		if = { limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.plague_carriers } } set_country_flag = africa_strange_force_plague_carriers_runtime_refused }
+	}
+}
+
+# Narrow callers keep route/action semantics readable and make each exact
+# consumer auditable without allowing a dynamic unit or entity fallback.
+africa_strange_force_spawn_stone_cohorts = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.stone_cohorts }
+	africa_strange_force_spawn_guard = yes
+}
+
+africa_strange_force_spawn_gorilla_heavy_infantry = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.gorilla_heavy_infantry }
+	africa_strange_force_spawn_guard = yes
+}
+
+africa_strange_force_spawn_pan_sappers = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.pan_sappers }
+	africa_strange_force_spawn_guard = yes
+}
+
+africa_strange_force_spawn_riverborn = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.riverborn }
+	africa_strange_force_spawn_guard = yes
+}
+
+africa_strange_force_spawn_forest_giants = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.forest_giants }
+	africa_strange_force_spawn_guard = yes
+}
+
+africa_strange_force_spawn_oracle_recon = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.oracle_recon }
+	africa_strange_force_spawn_guard = yes
+}
+
+africa_strange_force_spawn_disaster_wardens = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.disaster_wardens }
+	africa_strange_force_spawn_guard = yes
+}
+
+africa_strange_force_spawn_plague_carriers = {
+	set_temp_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.plague_carriers }
+	africa_strange_force_spawn_guard = yes
+}
+
+# COUNTRY scope on the active target after the shared Event 013 bridge. The
+# natural-disaster API remains authoritative: Wardens are attempted only after
+# an accepted call and are owned by the exact registered actor when present.
+africa_strange_force_spawn_disaster_wardens_after_natural_disaster = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { africa_active_action_id = constant:africa_action.petition_the_rain }
+				check_variable = { africa_active_action_id = constant:africa_action.defy_the_drought }
+			}
+			has_country_flag = africa_natural_disaster_call_accepted_recorded
+		}
+		if = {
+			limit = { has_event_target = africa_natural_disaster_action_actor }
+			event_target:africa_natural_disaster_action_actor = { africa_strange_force_spawn_disaster_wardens = yes }
+		}
+		else_if = {
+			limit = { has_event_target = africa_host }
+			event_target:africa_host = { africa_strange_force_spawn_disaster_wardens = yes }
+		}
+	}
+}
+
 africa_apply_action_full_semantics = {
 	# Protection: concrete guarantees, material corridors, rescue records, and
 	# bounded state or naval access projects.
@@ -6855,10 +7355,12 @@ africa_apply_action_full_semantics = {
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.consult_oracle_network } }
 		set_country_flag = africa_oracle_network_consulted
+		africa_strange_force_spawn_oracle_recon = yes
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.bargain_with_the_green } }
 		set_country_flag = africa_green_compact_bounded
+		africa_strange_force_spawn_forest_giants = yes
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.petition_the_rain } }
@@ -6882,18 +7384,31 @@ africa_apply_action_full_semantics = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.weaponise_fictional_pathogen } }
 		set_country_flag = africa_fictional_pathogen_stockpile_bounded
 		set_country_flag = africa_fictional_pathogen_consequence_review_due
+		africa_strange_force_spawn_plague_carriers = yes
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.awaken_stone_cohort } }
-		set_country_flag = africa_stone_cohort_raised_once
+		africa_strange_force_spawn_stone_cohorts = yes
+		if = {
+			limit = { check_variable = { africa_strange_force_spawn_result > constant:africa_value.zero } }
+			set_country_flag = africa_stone_cohort_raised_once
+		}
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.train_gorilla_heavy_infantry } }
-		set_country_flag = africa_gorilla_heavy_infantry_raised_once
+		africa_strange_force_spawn_gorilla_heavy_infantry = yes
+		if = {
+			limit = { check_variable = { africa_strange_force_spawn_result > constant:africa_value.zero } }
+			set_country_flag = africa_gorilla_heavy_infantry_raised_once
+		}
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.organise_pan_sappers } }
-		set_country_flag = africa_pan_sappers_raised_once
+		africa_strange_force_spawn_pan_sappers = yes
+		if = {
+			limit = { check_variable = { africa_strange_force_spawn_result > constant:africa_value.zero } }
+			set_country_flag = africa_pan_sappers_raised_once
+		}
 	}
 
 	# Scramble, world order, route crises, and expansion rows write exact staged
@@ -7696,6 +8211,7 @@ africa_apply_current_action_outcome = {
 		africa_apply_full_action_family_values = yes
 		africa_apply_action_full_semantics = yes
 		africa_call_hostile_natural_disaster_from_action = yes
+		africa_strange_force_spawn_disaster_wardens_after_natural_disaster = yes
 		africa_achievement_record_full_action = yes
 	}
 	else_if = {
