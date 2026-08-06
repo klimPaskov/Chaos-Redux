@@ -26,7 +26,7 @@ No fallback content or gameplay change was introduced.
 - None in the Event 006 scoped localisation set.
 - The compatibility decision references vanilla `form_idel_uralic_republic` and `form_idel_uralic_republic_desc`; those are intentional external vanilla localisation dependencies, not missing Chaos Redux keys.
 - The shared focus tree has no consumed `independence_wave_focus_tree_desc`; `independence_wave_focus_tree` is the actual tree key and is present.
-- Event-log scripted localisation resolves all 15 Event 006-specific event/evolution/history keys, including `chaosx.events_log.window.event_details.independence_wave`, all five evolution titles, all five evolution bodies, the evolution type, summary, and the 6002 history title/description.
+- Event-log scripted localisation resolves all 15 Event 006-specific event/evolution/history keys, including `chaosx.events_log.window.event_details.independence_wave`, all five evolution titles, all five evolution bodies, the evolution type, summary, and the historical pre-normalization danger-milestone history title/description (active payload 24).
 
 ### Duplicate key list
 
@@ -53,7 +53,7 @@ No fallback content or gameplay change was introduced.
 - AGX mandate and dossier text correctly distinguish authorization from federation consent and ratification; no hidden route name is revealed before the relevant overlay stage.
 - The shared Liberations cluster resolves to `chaosx.event_cluster.liberations.name`, and the Event Details window resolves to `chaosx.events_log.window.event_details.independence_wave`.
 - Achievement surface: all 16 `chaosx_006_*` IDs have `_NAME` and `_DESC` strings, and all 17 source tooltip references resolve.
-- Super-event 6002 has all four presentation strings (`chaosx_super_event.24.t`, `.d`, `.a`, `.q`) plus its Event 006 history title/description. Super-event 6001 remains intentionally absent because the approved rights/audio gate is blocked; this is a non-localisation blocker, not a missing-key defect.
+- The danger milestone uses ordinary super-event 24 and has all four presentation strings (`chaosx_super_event.24.t`, `.d`, `.a`, `.q`) plus its Event 006 history title/description. The historical 6002 label is retained only in dated traceability. League slot 23 remains intentionally audio-blocked because the approved rights/audio gate is unresolved; this is a non-localisation blocker, not a missing-key defect.
 - No Event 006 player-facing string exposes portrait, asset-pipeline, provenance, rights, attestation, or visual-audit gates. The remaining `asset ledger` wording is in-world public-property language, not an implementation leak.
 - The SCN-008 scenario ledger intentionally exposes its frozen-plan rejection categories, but the former package-unready wording leaked implementation terms and was repaired below.
 
@@ -91,7 +91,7 @@ The before text exposed registry, force-mapping, and shallow-content implementat
 - The optional AGX custom trigger tooltip would require a gameplay decision-file edit and is therefore left with the owning decision agent.
 - SCN-008 still contains intentionally technical ledger terms such as package, registry row, frozen plan, and transaction proof in its diagnostics; no further wording change was made because that surface is explicitly a launch/readiness ledger and its values correspond to the current planner vocabulary.
 - Portrait and asset admission gates remain runtime/docs concerns and are correctly absent from player-facing localisation.
-- Super-event 6001 remains rights-blocked, and 6002 live playback remains unproved; neither is a localisation key gap.
+- League slot 23 remains rights-blocked, and danger-milestone slot 24 live playback remains unproved; neither is a localisation key gap.
 
 ## Handoff path
 
