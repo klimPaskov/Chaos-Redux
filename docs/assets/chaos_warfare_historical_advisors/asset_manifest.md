@@ -1,5 +1,7 @@
 # Chaos Warfare Historical Advisor Asset Manifest
 
+This historical manifest is superseded by `v2_actual_workflow/manifest.md`. The v2 package is the current production, conversion, and visual-review record.
+
 ## Shared production settings
 
 - Source family: accepted existing Chaos Redux scientist DDS portraits.

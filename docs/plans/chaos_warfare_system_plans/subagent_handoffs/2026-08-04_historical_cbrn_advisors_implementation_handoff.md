@@ -2,6 +2,12 @@
 
 Date: 2026-08-04.
 
+## Supersession notice
+
+The advisor-card production and review claims in this handoff are superseded by the actual-workflow re-audit under `docs/assets/chaos_warfare_historical_advisors/v2_actual_workflow/` and its follow-up handoff. Keep this file as the historical implementation record, but use the v2 package for current asset provenance, conversion, and review status.
+
+The current correction also assigns political-advisor cards through `portraits.civilian.small` and theorist cards through `portraits.army.small`; all twelve cards retain their existing `portraits.army.large` scientist consumers.
+
 ## Implemented scope
 
 - Converted twelve existing startup-generated scientists into static dual-role scientist/advisor characters without creating duplicate identities.

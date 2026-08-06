@@ -51,7 +51,9 @@ Other named scientists remain on the existing generation path.
 
 The accepted large portraits remain under `gfx/leaders/scientists/` and remain registered by the existing scientist portrait file.
 Advisor DDS files live under `gfx/interface/advisors/cbrn/` and are registered by `interface/cbrn_historical_advisors.gfx`.
-Native and 4x review PNGs, exact transforms, source hashes, template hash, and runtime hashes are recorded under `docs/assets/chaos_warfare_historical_advisors/`.
+Political-advisor cards are assigned through `portraits.civilian.small`; theorist cards are assigned through `portraits.army.small`; the full scientist portrait remains `portraits.army.large`.
+The accepted actual-workflow package contains decoded source portraits, native and 4x review PNGs, the canonical-template composition, explicit transform parameters, source/template/processed/runtime hashes, and an independent visual review under `docs/assets/chaos_warfare_historical_advisors/v2_actual_workflow/`.
+The older top-level card evidence remains preserved for comparison and is not the current production record.
 
 ## Future extensions
 
