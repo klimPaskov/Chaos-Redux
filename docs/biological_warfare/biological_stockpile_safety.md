@@ -4,9 +4,9 @@
 
 Biological payload production creates a domestic storage problem before it
 creates a delivery option. The stockpile-safety subsystem binds one exact state
-as the national arsenal, reads the four live payload inventories, exposes a
-player-facing risk band, and resolves ordinary accidents through the shared
-ordinary-pathogen lifecycle.
+as the national arsenal, reads the four live payload inventories, stores a
+private risk band for scripted decisions and accident weighting, and resolves
+ordinary accidents through the shared ordinary-pathogen lifecycle.
 
 The arsenal decision is management only.
 
@@ -56,8 +56,8 @@ explicit matrix conditions and does not reduce them to score cutoffs.
 
 There is no all-country daily, weekly, or monthly pulse. A delayed hidden event
 is scheduled only for a country with a verified arsenal pointer. Every thirty
-days it reads the current equipment and facility values, updates the visible
-risk idea, and performs the band-specific ordinary-accident roll. A due-day
+days it reads the current equipment and facility values, refreshes the private
+risk snapshot, and performs the band-specific ordinary-accident roll. A due-day
 record makes delayed events from an old designation inert after relocation.
 If the exact state is temporarily uncontrolled or its facility is disabled, the
 same country-specific monitor remains armed but performs no roll. It resumes on
@@ -109,17 +109,12 @@ proxy is used for frontline distance.
 
 ## Assets and wiring
 
-| Gameplay id | Sprite | Runtime DDS |
-|---|---|---|
-| `bio_stockpile_risk_controlled` | `GFX_idea_bio_stockpile_risk_controlled` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_controlled.dds` |
-| `bio_stockpile_risk_strained` | `GFX_idea_bio_stockpile_risk_strained` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_strained.dds` |
-| `bio_stockpile_risk_dangerous` | `GFX_idea_bio_stockpile_risk_dangerous` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_dangerous.dds` |
-| `bio_stockpile_risk_critical` | `GFX_idea_bio_stockpile_risk_critical` | `gfx/interface/ideas/cbrn/idea_bio_stockpile_risk_critical.dds` |
 | `bio_designate_national_biological_arsenal` | `GFX_decision_bio_designate_national_biological_arsenal` | `gfx/interface/decisions/biowarfare/bio_designate_national_biological_arsenal.dds` |
 
-All sprites are registered in `interface/biological_warfare.gfx`. Source PNGs,
-processed PNGs, contact sheet, DDS validation, hashes, and prompts live under
-`docs/assets/chaos_warfare_system/stage_7_biological_warfare/stockpile_risk_ideas/`.
+The decision sprite is registered in `interface/biological_warfare.gfx`. Risk
+bands remain available to scripted logic through
+`bio_stockpile_safety_risk_band` and its private score/component variables; no
+national-spirit marker is created for them.
 The existing native raid icons under `gfx/interface/military_raids/` are
 unchanged.
 

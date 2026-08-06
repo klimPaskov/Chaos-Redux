@@ -148,7 +148,7 @@ bio_stockpile_safety_capture_handling_state = {
 	}
 }
 
-# Country scope. Refreshes the visible risk score and one of the four bands.
+# Country scope. Refreshes the private risk score and one of the four bands.
 # It does not decide whether an incident is an ordinary accident; callers must
 # set bio_stockpile_safety_incident_kind and use the dedicated immunity trigger.
 bio_stockpile_safety_refresh_risk_band = {
@@ -442,38 +442,6 @@ bio_stockpile_safety_prepare_stock_loss_amount = {
 	}
 }
 
-# Country scope. Removes only the four mutually exclusive visible risk ideas.
-bio_stockpile_safety_remove_risk_ideas = {
-	remove_ideas = {
-		bio_stockpile_risk_controlled
-		bio_stockpile_risk_strained
-		bio_stockpile_risk_dangerous
-		bio_stockpile_risk_critical
-	}
-}
-
-# Country scope. Keeps the visible national spirit synchronized with the exact
-# current band. Invalid pointers expose no risk idea and are never substituted.
-bio_stockpile_safety_refresh_risk_idea = {
-	bio_stockpile_safety_remove_risk_ideas = yes
-	if = {
-		limit = { bio_stockpile_safety_is_controlled = yes }
-		add_ideas = bio_stockpile_risk_controlled
-	}
-	else_if = {
-		limit = { bio_stockpile_safety_is_strained = yes }
-		add_ideas = bio_stockpile_risk_strained
-	}
-	else_if = {
-		limit = { bio_stockpile_safety_is_dangerous = yes }
-		add_ideas = bio_stockpile_risk_dangerous
-	}
-	else_if = {
-		limit = { bio_stockpile_safety_is_critical = yes }
-		add_ideas = bio_stockpile_risk_critical
-	}
-}
-
 # Country scope. Prepares one targeted monthly check from the current visible
 # band. These weights are evaluated only by the private scheduled country event.
 bio_stockpile_safety_prepare_monitor_weights = {
@@ -760,7 +728,6 @@ bio_stockpile_safety_resolve_selected_ordinary_accident = {
 			set_country_flag = bio_stockpile_safety_accident_notification_pending
 			bio_stockpile_safety_dispatch_selected_accident = yes
 			bio_stockpile_safety_refresh_risk_band = yes
-			bio_stockpile_safety_refresh_risk_idea = yes
 			if = {
 				limit = { check_variable = { var = bio_stockpile_safety_selected_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
 				country_event = { id = chaosx_bioweapon.4 }
@@ -824,7 +791,6 @@ bio_stockpile_safety_clear_arsenal_designation = {
 	clr_country_flag = bio_stockpile_safety_arsenal_designated
 	clr_country_flag = bio_stockpile_safety_monitor_scheduled
 	clr_country_flag = bio_stockpile_safety_monitor_suspended
-	bio_stockpile_safety_remove_risk_ideas = yes
 }
 
 # Country scope. Clears incident-selection variables and private input flags.
