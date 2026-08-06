@@ -114,8 +114,33 @@ independence_wave_mnt_mountain_compact_category = {
 		name = independence_wave_mnt_settle_former_host_ledgers
 		desc = independence_wave_mnt_settle_former_host_ledgers_desc
 		icon = GFX_decision_independence_wave_former_host_negotiations
-		visible = { is_independence_wave_mnt_project_ready = yes has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_mnt_host_ledgers_settled } }
-		available = { is_independence_wave_mnt_project_ready = yes can_pay_independence_wave_diplomatic_standard_cost = yes capital_scope = { is_controlled_by = ROOT } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } NOT = { has_independence_wave_mnt_active_package_project = yes } }
+		visible = {
+			is_independence_wave_mnt_project_ready = yes
+			NOT = { has_country_flag = independence_wave_mnt_host_ledgers_settled }
+			OR = {
+				has_independence_wave_living_former_host = yes
+				AND = {
+					has_country_flag = independence_wave_mnt_depots_reopened
+					has_independence_wave_mnt_unsettled_host = yes
+				}
+			}
+		}
+		available = {
+			is_independence_wave_mnt_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_mnt_active_package_project = yes }
+			OR = {
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				AND = {
+					has_country_flag = independence_wave_mnt_depots_reopened
+					has_independence_wave_mnt_unsettled_host = yes
+				}
+			}
+		}
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard
 		days_remove = constant:independence_wave_decision_duration.long
