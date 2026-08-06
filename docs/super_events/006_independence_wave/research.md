@@ -10,10 +10,10 @@ Status: dangerous milestone runtime source-wired with a passing static 20-packag
 
 | Package | Display slot | Audio ID | Runtime status |
 | --- | ---: | ---: | --- |
-| The League of New States | 23 | 23 | Blocked and absent |
+| The League of New States | 23 | 23 | Image/text dispatch registered; audio, wrappers, and firing blocked |
 | Every Border a Casus Belli | 24 | 24 | Source-wired; static capacity witness passes; live reachability partial under host, collision, transaction, and formable gates |
 
-Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID 24 is registered only as a zero-random-play super-event cue. Slot 23 and audio ID 23 are reserved; their image and localisation dispatch are now registered, but the recording, wrappers, and firing effect remain blocked.
+Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID 24 is registered only as a zero-random-play super-event cue. Slot 23 and audio ID 23 are reserved; their image and localisation dispatch are registered, but the recording, wrappers, and firing effect remain blocked.
 
 Historical package boundary (2026-08-01): the allocator admitted fourteen packages across thirteen compatible reservation groups and fourteen distinct anchors, including IW-018 ARX and IW-173 HAW. FORM-48 has its HBX carrier and HAW member admitted, while IW-179 FSM remains withdrawn; the hidden-formable route therefore remains dormant and no synthetic readiness flag or ordinary formable substitutes for the missing complete carrier/member set. IW-043 CHU and IW-058 ASY remain outside runtime attestation even though Luka Semyonovich Spasov has a v45 visual PASS and parent-owned runtime replacement.
 
