@@ -1,0 +1,89 @@
+# Some AI strategy fields reject script-constant tokens, so these file-scoped
+# values mirror the shared IW-033/IW-041 tuning constants.
+@CR_SC_INDEPENDENCE_WAVE_KC_ARMY = 95
+@CR_SC_INDEPENDENCE_WAVE_KC_PRODUCTION = 45
+@CR_SC_INDEPENDENCE_WAVE_KC_SUPPORT = 50
+@CR_SC_INDEPENDENCE_WAVE_KC_INFRASTRUCTURE = 70
+@CR_SC_INDEPENDENCE_WAVE_KC_DEFENSE = 90
+@CR_SC_INDEPENDENCE_WAVE_KC_MARITIME = 65
+@CR_SC_INDEPENDENCE_WAVE_KC_FOUNDING_RESTRAINT = -240
+@CR_SC_INDEPENDENCE_WAVE_KC_SETTLED_RESTRAINT = -420
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 KARELIA / CRIMEAN TATAR STATE AI
+# ============================================================================
+# AI layers prioritize the lower package ledger, then reserve material for the
+# founding mission, route selection, and host/network obligations.
+# ============================================================================
+
+independence_wave_kar_forest_survival = {
+	allowed = { original_tag = KAR }
+	enable = {
+		is_independence_wave_kar_package = yes
+		has_country_flag = independence_wave_iw_033_setup_complete
+		has_country_flag = independence_wave_kar_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_KC_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_KC_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_KC_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_KC_DEFENSE }
+}
+
+independence_wave_kar_host_restraint = {
+	allowed = { original_tag = KAR }
+	enable = {
+		is_independence_wave_kar_package = yes
+		has_country_flag = independence_wave_iw_033_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kc_host_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_FOUNDING_RESTRAINT }
+}
+
+independence_wave_kar_settled_frontier = {
+	allowed = { original_tag = KAR }
+	enable = { is_independence_wave_kar_package = yes has_country_flag = independence_wave_kar_ledgers_stabilized }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_SETTLED_RESTRAINT }
+}
+
+independence_wave_cri_peninsula_survival = {
+	allowed = { original_tag = CRI }
+	enable = {
+		is_independence_wave_cri_package = yes
+		has_country_flag = independence_wave_iw_041_setup_complete
+		has_country_flag = independence_wave_cri_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_KC_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_KC_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_KC_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_KC_DEFENSE }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_KC_MARITIME }
+}
+
+independence_wave_cri_host_restraint = {
+	allowed = { original_tag = CRI }
+	enable = {
+		is_independence_wave_cri_package = yes
+		has_country_flag = independence_wave_iw_041_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kc_host_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_FOUNDING_RESTRAINT }
+}
+
+independence_wave_cri_settled_black_sea = {
+	allowed = { original_tag = CRI }
+	enable = { is_independence_wave_cri_package = yes has_country_flag = independence_wave_cri_ledgers_stabilized }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_KC_MARITIME }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_SETTLED_RESTRAINT }
+}
