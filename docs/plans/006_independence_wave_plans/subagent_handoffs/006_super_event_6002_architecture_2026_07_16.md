@@ -1,10 +1,10 @@
 # Event 6 Dangerous Super-Event 6002 Architecture Handoff
 
-> Superseded identifier note (2026-08-06): live Event 006 uses ordinary super-event ID 24 for Every Border a Casus Belli. The legacy 6002 label is retained only for historical audit traceability.
+> Superseded identifier note (2026-08-06): live Event 006 uses ordinary super-event ID 24 for Every Border a Casus Belli, including slot, audio, and history payload. Every `6002` identifier below is a historical pre-normalization proposal retained only for audit traceability; it is not an active runtime identifier.
 
 **Date:** 2026-07-16
 **Scope:** Read-only architecture audit for Event 6, Independence Wave
-**Reserved runtime identity:** display slot `24`, audio id `6002`
+**Historical proposal identity:** display slot `24`, audio id `6002`; current runtime identity is display slot/audio/history payload `24`.
 **Dangerous super-event:** **Every Border a Casus Belli**
 **Original audit verdict:** **NOT READY for gameplay implementation**
 **Parent closeout:** **RESOLVED; the implemented contract in `docs/super_events/006_independence_wave/research.md` is authoritative**
