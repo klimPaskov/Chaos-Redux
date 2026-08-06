@@ -24,7 +24,7 @@ The package-specific ledgers are `independence_wave_mac_civic_mandate` and `inde
 
 The package-local project lock serializes MAC's own timed projects. It intentionally does not join the shared Event 006 diplomatic/security operation locks, so a MAC founding crisis or host settlement can progress alongside a shared operation. The Danube action is gated to live league phases where the shared league-value writer consumes its deltas, and it cancels if that phase or the league route is withdrawn.
 
-MAC registers the researched `danubian_confederation` formable family for discovery and regional ambition, but FORM-08's three-member identity, anchor, consent, and integration proof remains a separate fail-closed gate. MAC is not added to central content attestation by this package implementation alone.
+MAC registers the researched `danubian_confederation` formable family for discovery and regional ambition, but FORM-08's three-member identity, anchor, consent, and integration proof remains a separate fail-closed gate. The package is now included in the central content-attestation set; exact host, anchor, reservation, collision, force, and synchronized-transaction preflight still decide every live release.
 
 ## Leader and asset gate
 
@@ -32,4 +32,4 @@ The package uses the sourced, male, period-compatible Metodija Andonov-Cento con
 
 ## Admission status
 
-IW-026 is **SOURCE-WIRED / HOLD / FAIL-CLOSED**. The registry, state binding, package gameplay surfaces, sourced leader/commander consumer, shared-tree assignment, force mapping, AI, localisation, and cleanup adapters are present. Central runtime adapter registration is present so the package can be audited, but content attestation and scenario execution remain closed until the independent package evidence and all admission contracts are accepted. No static implementation claim promotes MAC into the automatic `6 / 8 / 10 / 14 / 20` ladder.
+IW-026 is **SOURCE-ATTESTED / CONDITIONAL**. The registry, state binding, package gameplay surfaces, sourced leader/commander consumer, shared-tree assignment, force mapping, AI, localisation, cleanup adapters, and central content attestation are present. The installed MCP probability adapter cannot expose the MAC `ai_strategy_factor` surface, so no quantitative AI-balance claim is made; the package remains subject to the normal exact runtime preflight and its Danubian formable remains separately fail-closed. MAC may therefore enter the automatic `6 / 8 / 10 / 14 / 20` ladder only when the frozen world-state plan satisfies every shared host, anchor, reservation, collision, force, and synchronized transaction predicate.

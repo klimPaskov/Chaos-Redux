@@ -105,3 +105,9 @@ Targeted validation covered MCP map/focus/event/technology inspection and render
 ## Simplifications, omissions, and blockers
 
 No unapproved fallback, generic leader, opposite-gender pairing, advisor-icon substitution, tag remap, map write, history copy, or central admission change was made. The package remains incomplete for runtime promotion because content attestation and independent audit gates are intentionally unresolved; the global map diagnostics and missing MAC-specific Technology Tree Viewer are documented limitations rather than MAC-specific map/technology defects.
+
+## Parent follow-up after the source-attestation tranche
+
+The parent reviewed the current source surfaces and the fresh probability handoff `006_iw026_macedonia_probability_audit_current_2026_08_06.md`. The central content-attestation OR-list now includes `independence_wave_package_id.iw_026`, so MAC is source-attested and conditionally selectable behind the normal exact host, anchor, reservation, Event 005 collision, force, and synchronized-transaction preflight. The sourced male `source_placeholder` portrait remains the accepted historical placeholder mode; no advisor icon or generated substitute was introduced.
+
+The installed MCP reports `PROBABILITY_SURFACE_EMPTY` for `ai_strategy_factor`, while the decision and mission surfaces are source-inspected but runtime-incomplete. This is retained as an evidence boundary: no quantitative MAC AI-balance, dominance, starvation, or timing claim is made. FORM-08 remains separately fail-closed. The package page and current source-of-truth/resume authorities now describe this conditional admission and the 23-package/22-group/170-unattested boundary.
