@@ -543,6 +543,9 @@ independence_wave_cleanup_iw_013_basque = {
 		clear_variable = independence_wave_nav_industrial_capacity
 		clr_country_flag = independence_wave_iw_013_setup_complete
 		clr_country_flag = independence_wave_iw_013_lifecycle_initialized
+		# The shared readiness bit is package-local at runtime; clear it with the
+		# NAV package so a failed retry cannot inherit a prior command roster.
+		clr_country_flag = independence_wave_command_roster_ready
 		clr_country_flag = independence_wave_nav_ai_profile
 		clr_country_flag = independence_wave_nav_compact_stabilized
 		clr_country_flag = independence_wave_nav_compact_crisis_resolved
@@ -582,6 +585,9 @@ independence_wave_cleanup_iw_015_galicia = {
 		clear_variable = independence_wave_glc_port_capacity
 		clr_country_flag = independence_wave_iw_015_setup_complete
 		clr_country_flag = independence_wave_iw_015_lifecycle_initialized
+		# Keep GLC retries fail-closed if the prior package generation ended
+		# before the central cleanup pass observed its shared readiness bit.
+		clr_country_flag = independence_wave_command_roster_ready
 		clr_country_flag = independence_wave_glc_ai_profile
 		clr_country_flag = independence_wave_glc_compact_stabilized
 		clr_country_flag = independence_wave_glc_compact_crisis_resolved
