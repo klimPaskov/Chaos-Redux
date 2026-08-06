@@ -31,14 +31,16 @@ readiness, map binding, collision safety, and meaningful-tree preservation.
 
 The parsed array comparison reports 242 unique tags in `all_chaosx_country_tags`,
 191 unique tags in `all_resolved_carrier_tags`, and an empty resolved-carrier
-set difference. The unrelated Soviet and other Chaos Redux entries remain in
-the broad array. No Event 006 package attestation or scenario allowlist was
-expanded by this repair.
+set difference. The reusable check is now `.tools/audit_event6_country_api.py`
+and reports `missing=0; duplicates=0`. The unrelated Soviet and other Chaos
+Redux entries remain in the broad array. No Event 006 package attestation or
+scenario allowlist was expanded by this repair.
 
 ## Files
 
 - `common/script_constants/chaosx_country_registry_constants.txt`
 - `docs/events/006_independence_wave/country_api.md`
+- `.tools/audit_event6_country_api.py`
 
 The whole Event 006 goal remains active and incomplete; this handoff closes
 only the broad reusable country-API omission.
