@@ -170,6 +170,25 @@ class BlenderAdapterClient:
             },
         )
 
+    def import_animation_action(
+        self,
+        job_id: str,
+        blend_rel: str,
+        source_rel: str,
+        checkpoint_rel: str,
+        action_name: str,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_import_animation_action",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "source_rel": source_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "action_name": action_name,
+            },
+        )
+
     def segment_creature_components(
         self,
         job_id: str,
@@ -231,6 +250,7 @@ class BlenderAdapterClient:
         checkpoint_rel: str,
         rider_component_names: Optional[list[str]] = None,
         weight_mode: str = "semantic",
+        rig_name: str = "",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_author_creature_rig",
@@ -240,6 +260,7 @@ class BlenderAdapterClient:
                 "checkpoint_rel": checkpoint_rel,
                 "rider_component_names": rider_component_names or [],
                 "weight_mode": weight_mode,
+                "rig_name": rig_name,
             },
         )
 
