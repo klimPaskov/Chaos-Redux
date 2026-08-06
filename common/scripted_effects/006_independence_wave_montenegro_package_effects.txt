@@ -110,7 +110,10 @@ independence_wave_mnt_apply_project_failure = {
 
 independence_wave_mnt_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes }
+		limit = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+		}
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -267,9 +270,16 @@ independence_wave_mnt_focus_reconcile_offices = {
 independence_wave_mnt_focus_settle_host = {
 	set_temp_variable = { independence_wave_mnt_cohesion_delta = constant:independence_wave_montenegro_pressure.minor_gain }
 	set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.standard_gain }
+	if = {
+		limit = { has_independence_wave_mnt_unsettled_host = yes }
+		set_temp_variable = { independence_wave_mnt_crown_delta = constant:independence_wave_montenegro_pressure.decisive_gain }
+	}
 	independence_wave_change_mnt_compact_values = yes
-	independence_wave_mnt_apply_former_host_settlement = yes
-	independence_wave_focus_progress_host_negotiations = yes
+	if = {
+		limit = { NOT = { has_independence_wave_mnt_unsettled_host = yes } }
+		independence_wave_mnt_apply_former_host_settlement = yes
+		independence_wave_focus_progress_host_negotiations = yes
+	}
 	set_country_flag = independence_wave_mnt_host_ledgers_settled
 }
 
