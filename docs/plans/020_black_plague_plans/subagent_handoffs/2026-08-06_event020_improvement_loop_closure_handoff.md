@@ -243,6 +243,10 @@ Keep this closure handoff in `docs/plans/020_black_plague_plans/subagent_handoff
 
 Promote only the accepted controlling facts and limitations into `docs/specs/020_black_plague_specs/` and the current Event 020 overview documents: the installed shared model, 52/71 focus counts, accepted retry-only SCN-012 failure semantics, accepted `.73` human fallback, accepted Hold/Refuge concurrency, and exact tool/evidence limits.
 
+## Parent follow-up supersession
+
+The parent audit pass tightened `.73` after this closure snapshot: the valid saved defeat actor is now the sole audience, and an unavailable actor records an undeliverable aftermath instead of using the previously accepted unrelated-human fallback. The active overview, addendum, and readiness report now reflect this stricter contract; the fallback wording above remains historical closure evidence.
+
 Do not promote this file as a new gameplay specification because it closes expansion rather than defining new content.
 
 The parent should finish P0, either finish or explicitly dispose every P1 evidence task, rerun the final bounded audits on one stable worktree, and mark Event 020 complete only when no unresolved accepted plan, source defect, unapproved fallback, missing durable asset record, or required validation blocker remains.

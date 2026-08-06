@@ -25,4 +25,4 @@ The touched Clausewitz files have balanced braces and no unsupported comparison 
 
 ## Open boundary
 
-SCN-012 still fails closed on preflight and clears reservations on downstream failure, but a complete journaled rollback of every already-applied disease, transfer, country, and Chaos mutation is not yet proven. Live mission, mapmode, audio, balance, and release-rights validation remain user-owned checks. No 3D models were created or added.
+SCN-012 still fails closed on preflight and clears reservations on downstream failure, but a complete journaled rollback of every already-applied disease, transfer, country, and Chaos mutation is not yet proven. Live mission, mapmode, audio, balance, model playback, and release-rights validation remain user-owned checks. This recovery tranche did not modify the separately promoted shared rat ground-unit model/entity package.

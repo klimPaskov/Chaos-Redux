@@ -39,7 +39,7 @@ After the Rat King loses every controlled state, the idempotent defeat resolver 
 
 ## UI and asset contract
 
-The route modules reuse the existing RTA focus icons and shared disease mapmode overlays. No new category, mapmode colour, 3D model, unit entity, or decision icon is required for this runtime tranche. If route-specific icons are added later, place final DDS files under `gfx/interface/goals/020_black_plague/`, register them in the existing Event 20 GFX file, and keep each icon tied to the route's actual mechanic.
+The route modules reuse the existing RTA focus icons and shared disease mapmode overlays. The route consumes the shared `black_plague_rat_mesh`/`black_plague_rat_entity` package already registered for the six RTA/RTX subunits; it does not add a category, mapmode colour, unit entity, per-subtype model, or decision icon. If route-specific icons are added later, place final DDS files under `gfx/interface/goals/020_black_plague/`, register them in the existing Event 20 GFX file, and keep each icon tied to the route's actual mechanic.
 
 ## Future extension
 

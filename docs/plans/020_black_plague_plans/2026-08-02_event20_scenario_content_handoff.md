@@ -4,7 +4,7 @@ Date: 2026-08-02
 
 ## Scope
 
-This tranche adds intensity-aware player-facing text to the existing SCN-012 launch report and reconciles the Event 020 source matrices with the live two-tag runtime. It does not add a country tag, disease category, model, or alternate launch path.
+This tranche adds intensity-aware player-facing text to the existing SCN-012 launch report and reconciles the Event 020 source matrices with the live two-tag runtime. It does not add a country tag, disease category, or alternate launch path, and it does not modify the separately promoted shared rat model/entity package.
 
 ## Runtime changes
 
@@ -30,4 +30,4 @@ This tranche adds intensity-aware player-facing text to the existing SCN-012 lau
 
 ## Remaining boundary
 
-Live scenario intensity, save/reload, and user-facing report playback remain user-owned because the repository forbids launching the Hearts of Iron IV executable from this workflow. Rat unit models remain explicitly outside the goal.
+Live scenario intensity, save/reload, model playback, and user-facing report playback remain user-owned because the repository forbids launching the Hearts of Iron IV executable from this workflow. The shared rat model/entity package is separate evidence; no per-subtype or Rat King-specific model is part of this scenario tranche.

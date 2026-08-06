@@ -4,7 +4,7 @@
 
 This handoff covers the two Event 020 Rat Nation focus trees and the shared disease-containment scripted GUI presentation surface.
 
-It does not close the Event 020 scenario tranche, produce rat models, or claim live Hearts of Iron IV validation.
+It does not close the Event 020 scenario tranche, modify the separately promoted shared rat model package, or claim live Hearts of Iron IV validation.
 
 The offline Paradox wiki pages for focus trees, interface modding, scripted GUI modding, decisions, triggers, effects, scopes, localisation, and on actions were consulted alongside the vanilla focus and GUI documentation and vanilla precedents.
 
@@ -69,7 +69,7 @@ The renderer reports the vanilla tiled-window texture and animated-sprite limita
 ## Remaining blockers and deviations
 
 - Live Hearts of Iron IV testing is still required by the user and was not run because repository instructions reserve live consumer validation for the user.
-- Rat unit and Rat King 3D models are intentionally not produced in this pass, as requested.
+- The separately promoted shared rat model/entity package is outside this layout pass; no per-subtype or Rat King-specific model is produced here, and sound-definition wiring, counter review, and live model playback remain open.
 - Part 9 scenario content remains a separate partial tranche and is not claimed complete by this handoff.
 - Full unbounded Rat Nation probability analysis timed out, so the committed evidence uses the bounded candidate pool with complete adapter coverage.
 - The shared disease board could not receive a full popup render artifact because the MCP scanner stopped at `SCAN_BYTE_LIMIT`; the source geometry and header evidence remain available.

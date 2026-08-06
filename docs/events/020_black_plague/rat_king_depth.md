@@ -28,4 +28,4 @@ All added focus names and descriptions are in `localisation/english/020_black_pl
 
 ## Future depth
 
-Further depth can add route-specific crisis art without changing the three-route or two-tag contract. No bespoke 3D models are required or planned for this route. Live in-game focus timing, AI completion order, and visual spacing remain user-side validation surfaces because the repository workflow does not launch Hearts of Iron IV.
+Further depth can add route-specific crisis art without changing the three-route or two-tag contract. The RTX route reuses the shared rat model/entity package and does not authorize a Rat King-specific model. Live in-game focus timing, AI completion order, model playback, and visual spacing remain user-side validation surfaces because the repository workflow does not launch Hearts of Iron IV.
