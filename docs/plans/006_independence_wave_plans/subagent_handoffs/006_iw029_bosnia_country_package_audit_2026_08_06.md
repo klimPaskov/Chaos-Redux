@@ -32,7 +32,7 @@ Required offline Paradox wiki pages, relevant character, country, state, focus, 
 | Parties and politics | Setup initializes democratic, communist, neutrality, and fascist party names and route effects set five route ideologies and popularity profiles. | PASS |
 | Ideas and lifecycle | Two lifecycle ideas plus five mutually exclusive route ideas are defined, localized, added, refreshed, and removed by the package effects. | PASS |
 | Decisions and mission | One 420-day founding mission and eleven paid projects are defined in the BOS category with availability, cancellation, timeout, cost, AI, and localized tooltip surfaces. | PASS |
-| Focus contract | Setup assigns the shared full Event 006 focus framework and registers all five government routes, four host routes, power struggle, ambition, signature, league, and formable surfaces. | PASS at package source level; shared-tree MCP has unrelated diagnostics |
+| Focus contract | Setup selects the additive shared overlay when the installed carrier exposes `austro_hungarian_releasable_focus`, otherwise the full Event 006 framework, and registers all five government routes, four host routes, power struggle, ambition, signature, league, and formable surfaces. The overlay calls all five BOS focus hooks. | PASS at package source level; shared-tree MCP has unrelated diagnostics |
 | Formable and network contract | Setup selects the Danubian Confederation family and registers the league/network route. | PASS |
 | Force package | Setup loads p29 `mountain_frontier`, military tradition 66, and exactly five documented reinforcement pathways before applying the dynamic starting force. | PASS at source level; live force receipt not run |
 | Technology, industry, supply | Vanilla BOS has three research slots and Yugoslav-clone starting technology; dynamic force setup supplies package opening forces and stockpiles. States 104/804 have current vanilla infrastructure and supply data. | PASS for intended shared contract; no Technology Tree Viewer is installed |
@@ -94,7 +94,7 @@ Vanilla BOS flag families remain the carrier flags. No unsupported generated rou
 
 ### Focus, decisions, ideas, and assets
 
-The package setup effect registers the shared `independence_wave_focus_tree` with `independence_wave_focus_assignment.full_framework`, all five government routes, all four host routes, the municipal-commission-versus-industrial-security power struggle, ambition family, signature module, league route, and Danubian Confederation formable family.
+The package setup effect registers the shared `independence_wave_focus_tree` dynamically: it selects `independence_wave_focus_assignment.additive_overlay` when the installed BOS carrier exposes `austro_hungarian_releasable_focus`, preserving the meaningful vanilla tree, and selects `independence_wave_focus_assignment.full_framework` otherwise. Both branches register all five government routes, all four host routes, the municipal-commission-versus-industrial-security power struggle, ambition family, signature module, league route, and Danubian Confederation formable family. The shared overlay completion rewards now call the five `independence_wave_bos_focus_*` hooks for BOS.
 
 The national focus MCP inspection resolved 184 focus nodes and 193 connectors. Its only blocking diagnostics are 14 missing generic/continuous vanilla focus sprites outside the BOS adapter, with five layout warnings; no BOS-specific node, icon, or assignment diagnostic was reported. Evidence is at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/918a982825834dff2be33825a8dab8aa4adf75b3ac038322e3de5e84ebaccb1f/fdde78743cc460de47946a863aedd1e44175cb281bbb139677996fb379298dcb/focus-inspect.5d8e1a3b15608287.json`.
 
@@ -139,6 +139,8 @@ The parent moved `recruit_character = BOS_independence_wave_drina_council` from 
 The BOS setup effect at `common/scripted_effects/006_independence_wave_bosnia_package_effects.txt:331-384` now calls `chaosx.nr6.350`, initializes politics and ledgers, sets the generic focus contract, registers routes and formable family, loads the p29 force mapping, applies the dynamic starting force, enables the AI profile, and publishes package setup only when `has_prepared_independence_wave_iw_029_package_setup` is true.
 
 The current source audit confirms that `recruit_character` is absent from the BOS scripted effect and present only in the event checkpoint contract. This removes the earlier gameplay blocker.
+
+The parent focus-preservation correction also removes the earlier false full-framework claim. `can_attach_independence_wave_additive_focus_carrier` now admits BOS when `austro_hungarian_releasable_focus` is present; the BOS setup effect selects the additive assignment in that case and the complete-setup proof accepts either the additive or full assignment. The latest focus MCP inspection resolved 184 nodes and 193 connectors after this change, with no new BOS-specific diagnostic. This correction preserves the documented vanilla carrier tree while still delivering the shared Event 006 overlay and its five BOS hook calls.
 
 ## Cleanup and lifecycle
 
