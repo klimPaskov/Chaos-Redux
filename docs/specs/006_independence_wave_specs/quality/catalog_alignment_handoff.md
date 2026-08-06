@@ -8,7 +8,7 @@
 > for current implementation status. This documentation reconciliation does
 > not edit or export the workbook.
 
-Current documentation authority (2026-08-06): this file remains accepted catalog direction and historical workbook input, not a current workbook-status claim. Current Event 006 package, super-event, portrait-placeholder, MNT, and FORM-16 routing is recorded in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`, and the current event overview; the workbook and export mirrors are outside this cleanup.
+Current documentation authority (2026-08-06): this file remains accepted catalog direction and historical workbook input, not a current workbook-status claim. Current Event 006 package, super-event, portrait-placeholder, MNT, and FORM-16 routing is recorded in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`, and the current event overview; the workbook and export mirrors are outside this cleanup. The current catalog status is unchanged: Event 006 remains `Partially Available`, SCN-008 remains `Unavailable`, and the mixed Liberations cluster remains `Partially Available`.
 
 ## Historical catalog state
 
