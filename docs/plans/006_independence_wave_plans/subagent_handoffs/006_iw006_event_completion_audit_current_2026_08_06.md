@@ -306,3 +306,17 @@ Event 006 must remain **HOLD / PARTIAL**.
 This audit predates the MAC source-attestation tranche. The current boundary is 23 content-attested selectable packages across 22 compatible reservation groups, leaving 170 unattested selectable rows, with 32 adapters and nine adapter-only fail-closed rows. IW-026 MAC is now included in the central content-attestation OR-list after its source-level package, decision/mission, localisation, portrait-placeholder, host-survival, force, cleanup, and current-map review. The fresh MAC probability handoff records `PROBABILITY_SURFACE_EMPTY` for `ai_strategy_factor`, source-inspected but incomplete decision/mission pools, and no quantitative AI-balance claim.
 
 The prior BOS preservation wording in this dated audit is superseded by commit `554f676d3`, which adds the additive carrier assignment and five hook calls when the installed BOS carrier exposes `austro_hungarian_releasable_focus`; the full shared framework remains the fallback for carriers without that meaningful tree. The catalog authority is `6226c6f30`, and ordinary super-event identifiers remain 23 and 24. All broader HOLD/PARTIAL blockers in this audit remain open.
+
+## Parent follow-up after IW-033 / IW-041 source admission
+
+The current parent admission receipt is `006_iw033_iw041_source_admission_current_2026_08_06.md`, and commit `37d52a11e` records the missing KAR/CRI AI, ideas, decision-category, package-effect, and package-localisation source files.
+
+The current static boundary remains 23 content-attested selectable packages across 22 compatible reservation groups, leaving 170 unattested selectable rows.
+
+The current allocator, scenario, flag-family, and external-tag audits remain passing at 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, 20 static standalone witness packages, 102 complete Event 006 flag families, and zero external country-definition or identity-surface collisions.
+
+The previous BOS focus contradiction and dormant-hook wording are dated findings. Current source assigns the additive overlay when BOS exposes `austro_hungarian_releasable_focus`, falls back to the shared framework only for a plain carrier, and calls the five BOS hooks from the shared overlay reward blocks.
+
+The current generic-tree MCP inspection reports 184 Event 006 focus nodes, 193 connectors, zero crossings, zero node intersections, one intentional long connector, and five known layout diagnostics. Its 14 blocking diagnostics belong to unrelated vanilla continuous-focus icon references. The current Event MCP lint remains partial with zero blocking diagnostics.
+
+The current KAR/CRI decision probability inspection is source-inspected but incomplete with 18 unresolved inputs, and the package AI strategy inspection returned an MCP internal error. No quantitative package AI or live selection claim is added.
