@@ -1,5 +1,7 @@
 # Research acceptance checklist
 
+Current collision-gate continuation (2026-08-06): the accepted state-354 and state-441 cross-group conflicts are source-closed without changing reservation groups. `common/scripted_triggers/006_independence_wave_packages_region_06_triggers.txt` guards IW-067/IW-068 with the Trabzon mutex, and `common/scripted_triggers/006_independence_wave_packages_region_12_triggers.txt` guards IW-139/IW-149 with the Kashmir/Himalayan mutex. The remaining research gates below are unchanged.
+
 Audit date: 2026-07-10
 
 Implementation reconciliation: 2026-07-14
@@ -54,7 +56,7 @@ Implementation reconciliation: 2026-07-14
 - [x] Reconcile the selectable map pool to 138 bound and 55 unbound country packages after excluding all 13 overlay rows.
 - [ ] Implement and validate the thirteen registered-tag compatibility adapters, including `POK` history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` preservation.
 - [ ] Implement and validate the thirteen exact additive overlay hooks without adding standalone countries.
-- [ ] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
+- [x] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
 - [ ] Produce and document all final visual assets.
 - [ ] Obtain permission or a waiver for `23`, or obtain user approval before reopening its recording selection.
 - [x] Trim, convert, checksum, and wire the verified `24` source.
