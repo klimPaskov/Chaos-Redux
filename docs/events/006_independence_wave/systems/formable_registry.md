@@ -13,12 +13,7 @@ exists. FORM-07 now
 has a bounded Iberian adapter surface for CAT/NAV/GLC, but remains fail-closed
 until its researched X identity, flag package, and identity contract are
 approved. FORM-06 and FORM-09 through FORM-47 remain fail-closed, including
-FORM-42. FORM-08 now has a reviewed Danubian adapter and framework readiness,
-but remains runtime-inadmissible until its three researched member packages
-are present in one generation. No formable or cosmetic
-tag is assigned by this shared registry; a family still requires its owning
-package's audited territory, collision-safe X-ending identity, complete flag
-package, identity adapter, and reviewed integration policy.
+FORM-42. FORM-08 now has a reviewed Danubian adapter and framework readiness, but the current geography guard exposes only the TRA 84/76 and AXX 82 selectable anchors. Vojvodina remains the vanilla HUN-origin dynamic overlay, Slavonia remains unbound without an installed-map anchor, and MAC state 106 is a separate Event 006 package anchor rather than a current FORM-08 member. The family therefore remains runtime-inadmissible until a third in-scope member and anchor are explicitly researched and admitted in one generation. No formable or cosmetic tag is assigned by this shared registry; a family still requires its owning package's audited territory, collision-safe X-ending identity, complete flag package, identity adapter, and reviewed integration policy.
 
 The design authority remains docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md and docs/specs/006_independence_wave_specs/matrices/006_formable_family_registry.csv.
 
@@ -107,7 +102,7 @@ independence_wave_integrate_member_region targets only independence_wave_formabl
 - FORM-02 requires GZX and any two of ICE, scenario-created AKX, and SCO. Every accepted member must control its certified port anchor and have a verified treaty relation with the carrier; the carrier must also possess nonzero convoy capacity. The accepted sources do not define a larger safe-reserve threshold or an engine-computable pairwise sea-route formula, so none is invented. AKX is admitted only with independence_wave_scenario_origin and package IW-011. The carrier and every fully integrating founder prevalidate its full compact: SCO states 121 and 133 and the other compact states 100, 337, and 331.
 - FORM-03 requires an AFX or AGX carrier and at least one connected, exact invited consent from the other core carrier or BEL_flanders. Only the second AFX or AGX core anchor can integrate. BEL remains sovereign at founding, and HOL/LUX remain post-charter sovereign associates; states 6, 7, 8, 35, 977, and 980 are outside the transfer contract.
 - FORM-04 requires living RHI and AJX, capitals in states 51 and 42, direct capital-state adjacency, national adjacency, peace between the founders, and German non-control of both states. A stronger living Germany is not a player-facing prohibition. AI carriers avoid the proposal when carrier-to-Germany strength is below 0.67, meaning Germany is roughly one-and-a-half times stronger, unless the accepted Rhenish/Bavarian high-chaos action gate is open.
-- FORM-08 requires the researched Danube anchors: TRA state 84 (with optional state 76), AXX state 82, and MAC state 106. It reuses the existing vanilla HUN_EMPIRE cosmetic identity, requires three members, three anchors, and three consents, and integrates only explicit full-integration rows. Non-integrating consenting members retain sovereign Event 006 origins with directional access and guarantees. The Vojvodina HUN-origin dynamic overlay is not treated as a new country.
+- FORM-08 currently admits only the researched selectable Danube anchors TRA state 84 (with optional state 76) and AXX state 82. MAC state 106 remains a separate Event 006 package anchor and is not a current FORM-08 member under the geography guard. Vojvodina remains the HUN-origin dynamic overlay, Slavonia remains unbound without a unique installed-map anchor, and the family requires three in-scope members, three anchors, and three consents before commit. It reuses the existing vanilla HUN_EMPIRE cosmetic identity and integrates only explicit full-integration rows; non-integrating consenting members retain sovereign Event 006 origins with directional access and guarantees.
 
 ## Costs, time, and risk
 
@@ -170,13 +165,7 @@ registration binds family 48, sets the six shared adapter flags, sets
 `independence_wave_form48_registry_surface_registered`, and sets
 `independence_wave_form48_readiness_attested` only after the coordinated Pacific
 PASS audits. The live commit gate still requires the exact active HBX/HAW/FSM
-member set, so the family is not currently operational. FORM-07 remains
-fail-closed under its identity, flag, and NAV/GLC package contract. FORM-08 has
-a reviewed identity, territory, member-policy, and dynamic post-formation
-adapter through the Transylvania carrier, but its minimum three-member proof
-intentionally remains fail-closed until Banat and Macedonia have their own
-admitted packages. FORM-06 and FORM-09 through FORM-47 remain fail-closed,
-including FORM-42.
+member set, so the family is not currently operational. FORM-07 remains fail-closed under its identity, flag, and NAV/GLC package contract. FORM-08 has a reviewed identity, territory, member-policy, and dynamic post-formation adapter through the Transylvania carrier, but its minimum three-member proof intentionally remains fail-closed because the current geography guard exposes only TRA/AXX and does not count separate MAC package readiness; Vojvodina is an overlay and Slavonia is unbound. FORM-06 and FORM-09 through FORM-47 remain fail-closed, including FORM-42.
 Earlier FORM-48 handoffs that recorded unset flags are preserved as historical
 evidence, not current status.
 
