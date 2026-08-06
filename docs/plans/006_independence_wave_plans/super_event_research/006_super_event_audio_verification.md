@@ -11,7 +11,7 @@ Research date: 2026-07-14
 
 This note independently verifies the two accepted Event 006 super-event recordings. It records source identity, rights evidence, preserved-source state, timing, technical measurements, audio identifiers, and the exact production/wiring handoff. It does not change the accepted music choices, process final WAV derivatives, or wire gameplay.
 
-Current package cross-reference (2026-08-06): active runtime identifiers are ordinary audio/display/Event Log IDs `23` for The League of New States and `24` for Every Border a Casus Belli. The allocator currently records 23 content-attested packages across 22 compatible reservation groups, 170 unattested selectable rows, and a 20-package static standalone witness; this audio note does not change package admission.
+Current package cross-reference (2026-08-06): active runtime identifiers are ordinary audio/display/Event Log IDs `23` for The League of New States and `24` for Every Border a Casus Belli. The allocator currently records 25 content-attested packages across 23 compatible reservation groups, 168 unattested selectable rows, and a 20-package static standalone witness; this audio note does not change package admission.
 
 ## Outcome
 
