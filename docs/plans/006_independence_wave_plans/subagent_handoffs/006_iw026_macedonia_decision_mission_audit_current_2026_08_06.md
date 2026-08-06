@@ -129,3 +129,9 @@ No decision, mission, scripted GUI, localisation, effect, trigger, or central-ad
 ## Remaining follow-up
 
 Parent should decide the intended shared-operation concurrency model, apply the high cleanup correction and Danube cancellation fix if accepted, and reconcile the network action's promise with its allowed global league phases. Read the independent probability handoff before accepting or changing AI behavior.
+
+## Parent follow-up after source refresh
+
+The cleanup and Danube lifecycle recommendations in this handoff are now closed in the current source. `independence_wave_cleanup_iw_026_macedonia` clears the six one-shot mission/project flags listed in the earlier finding, and `independence_wave_mac_open_danube_network` cancels when the League route, live League phase, network membership, package identity, or capital-control proof is lost. The phase gate also prevents the action from promising league-wide deltas before the shared league-value writer is active. The remaining shared-operation concurrency note is intentional package policy and is documented in `docs/events/006_independence_wave/macedonia_package.md`.
+
+The fresh probability handoff `006_iw026_macedonia_probability_audit_current_2026_08_06.md` is the current weighted-logic authority: MAC strategy inspection returns `PROBABILITY_SURFACE_EMPTY`; decision and mission scans are source-inspected with incomplete runtime pools; named state evaluations retain unresolved inputs; and no normalized AI, timing, dominance, or starvation claim is made. The parent therefore promotes MAC as source-attested/conditional under the central package gate without changing any AI weights. FORM-08 remains a separate fail-closed route.
