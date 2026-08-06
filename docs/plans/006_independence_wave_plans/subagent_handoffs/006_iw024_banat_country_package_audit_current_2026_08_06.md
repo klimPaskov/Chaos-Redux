@@ -40,6 +40,13 @@ The base flag ladder is `gfx/flags/AXX.tga`, `gfx/flags/medium/AXX.tga`, and `gf
 - `hoi4.focus_inspect` for `common/national_focus/006_independence_wave_focus.txt` returned `FOCUS_INSPECTED`; the five reported layout warnings and fourteen unrelated vanilla continuous-focus icon diagnostics are not AXX-specific runtime blockers.
 - Targeted source scans found balanced braces, no unsupported `<=`/`>=`, no whole-world on-action iteration, no undefined AXX-prefixed scripted calls, and no missing AXX decision icon sprites.
 
+## Current MCP evidence
+
+- `hoi4.probability_inspect` with adapter `decision_ai_will_do` and source `{ "path": "common/decisions/006_independence_wave_banat_decisions.txt" }` returned `PROBABILITY_SOURCE_INSPECTED`, one candidate, ten required inputs, zero unresolved diagnostics, and `poolComplete = false`. The source hash is `ab8595935e7f95aaa473fd4f9085486cb4036e125fc381852c7e5370e8a20457`; artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5de510e2e32e7af0a733d2583e8cee238d39c707095c08ab78bba1b38654ebd9/3b792a0979c1fea3743e81041e17c511b33e4dc24aced9e776b5f8097a1d2e3b/probability-inspect-ab8595935e7f.json`.
+- `hoi4.probability_inspect` with adapter `mission_ai_will_do` against the same source returned `PROBABILITY_SOURCE_INSPECTED`, eleven candidates, thirteen required inputs, zero unresolved diagnostics, and `poolComplete = false`; artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c36dd5dc3d33d64082b448f726aeb6bd7c1ac7082a3fb4b39ce6f8d947714877/1dda72f2a49b549dc0e1c2224bbbd0ee8617cb43fb6becf3bd55ac769b2d879e/probability-inspect-ab8595935e7f.json`.
+- `hoi4.probability_inspect` with adapter `ai_strategy_factor` and source `{ "path": "common/ai_strategy/006_independence_wave_banat.txt" }` returned `PROBABILITY_SURFACE_EMPTY` with the exact blocker `No weighted blocks matched this request`; no strategy ranking or quantitative AXX balance claim is made.
+- Focused `hoi4.event_inspect` lint for `chaosx.nr6.350` returned `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics; the workspace-wide helper/lifecycle projection was deferred by the installed MCP. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b88d56605efd2c666ed70571dee0f4b350a5a7dec9dcaa6d7f3870ecfd06a499/a58df4c4e1ae89d1db1577fa52ac51e07a612a1db3adffe0206321bfd5203f22/event-lint-944ba605ebe4.json`.
+
 ## Remaining limits
 
 The AXX probability surface is typed-state incomplete in the installed MCP adapter, so no normalized AI ranking, survival, timing, or route-dominance claim is made. Live game execution, save/load, and player-owned transition evidence remain outside this handoff. The Danubian FORM-08 family remains separately fail-closed and does not inherit AXX package admission.
