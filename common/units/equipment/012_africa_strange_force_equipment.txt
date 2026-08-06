@@ -1,0 +1,554 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 STRANGE FORMATION EQUIPMENT
+# ============================================================================
+# Each strange formation has an isolated equipment archetype and a disabled
+# buildable variant. The global package gate is the only production trigger;
+# the parent-owned effects seed stockpiles after the model package is ready.
+# The equipment names are stable contracts for the eight subunits and their
+# hidden bridge technologies. This file never sets the readiness gate.
+# ============================================================================
+
+@AFRICA_STRANGE_START_YEAR = 1936
+
+@AFRICA_GORILLA_SPEED = 4.20
+@AFRICA_GORILLA_RELIABILITY = 0.70
+@AFRICA_GORILLA_DEFENSE = 18
+@AFRICA_GORILLA_BREAKTHROUGH = 26
+@AFRICA_GORILLA_HARDNESS = 0.25
+@AFRICA_GORILLA_ARMOR = 18
+@AFRICA_GORILLA_SOFT = 30
+@AFRICA_GORILLA_HARD = 12
+@AFRICA_GORILLA_PIERCING = 24
+@AFRICA_GORILLA_LEND = 3
+@AFRICA_GORILLA_COST = 18
+@AFRICA_GORILLA_STEEL = 2
+@AFRICA_GORILLA_RUBBER = 1
+@AFRICA_GORILLA_TUNGSTEN = 1
+@AFRICA_GORILLA_FUEL = 0.15
+
+@AFRICA_PAN_SPEED = 4.60
+@AFRICA_PAN_RELIABILITY = 0.72
+@AFRICA_PAN_DEFENSE = 12
+@AFRICA_PAN_BREAKTHROUGH = 16
+@AFRICA_PAN_HARDNESS = 0.12
+@AFRICA_PAN_ARMOR = 6
+@AFRICA_PAN_SOFT = 14
+@AFRICA_PAN_HARD = 8
+@AFRICA_PAN_PIERCING = 18
+@AFRICA_PAN_LEND = 2
+@AFRICA_PAN_COST = 9
+@AFRICA_PAN_STEEL = 1
+@AFRICA_PAN_RUBBER = 1
+@AFRICA_PAN_TUNGSTEN = 1
+
+@AFRICA_STONE_SPEED = 2.80
+@AFRICA_STONE_RELIABILITY = 0.60
+@AFRICA_STONE_DEFENSE = 28
+@AFRICA_STONE_BREAKTHROUGH = 18
+@AFRICA_STONE_HARDNESS = 0.82
+@AFRICA_STONE_ARMOR = 80
+@AFRICA_STONE_SOFT = 26
+@AFRICA_STONE_HARD = 24
+@AFRICA_STONE_PIERCING = 60
+@AFRICA_STONE_LEND = 6
+@AFRICA_STONE_COST = 44
+@AFRICA_STONE_STEEL = 4
+@AFRICA_STONE_CHROMIUM = 3
+@AFRICA_STONE_TUNGSTEN = 2
+
+@AFRICA_RIVER_SPEED = 4.90
+@AFRICA_RIVER_RELIABILITY = 0.68
+@AFRICA_RIVER_DEFENSE = 20
+@AFRICA_RIVER_BREAKTHROUGH = 22
+@AFRICA_RIVER_HARDNESS = 0.18
+@AFRICA_RIVER_ARMOR = 12
+@AFRICA_RIVER_SOFT = 25
+@AFRICA_RIVER_HARD = 10
+@AFRICA_RIVER_PIERCING = 20
+@AFRICA_RIVER_LEND = 4
+@AFRICA_RIVER_COST = 20
+@AFRICA_RIVER_STEEL = 1
+@AFRICA_RIVER_RUBBER = 2
+@AFRICA_RIVER_CHROMIUM = 1
+
+@AFRICA_FOREST_SPEED = 3.30
+@AFRICA_FOREST_RELIABILITY = 0.62
+@AFRICA_FOREST_DEFENSE = 24
+@AFRICA_FOREST_BREAKTHROUGH = 28
+@AFRICA_FOREST_HARDNESS = 0.40
+@AFRICA_FOREST_ARMOR = 32
+@AFRICA_FOREST_SOFT = 34
+@AFRICA_FOREST_HARD = 16
+@AFRICA_FOREST_PIERCING = 30
+@AFRICA_FOREST_LEND = 5
+@AFRICA_FOREST_COST = 34
+@AFRICA_FOREST_STEEL = 2
+@AFRICA_FOREST_CHROMIUM = 2
+@AFRICA_FOREST_RUBBER = 2
+
+@AFRICA_ORACLE_SPEED = 4.00
+@AFRICA_ORACLE_RELIABILITY = 0.76
+@AFRICA_ORACLE_DEFENSE = 8
+@AFRICA_ORACLE_BREAKTHROUGH = 6
+@AFRICA_ORACLE_HARDNESS = 0.05
+@AFRICA_ORACLE_ARMOR = 2
+@AFRICA_ORACLE_SOFT = 8
+@AFRICA_ORACLE_HARD = 2
+@AFRICA_ORACLE_PIERCING = 8
+@AFRICA_ORACLE_LEND = 2
+@AFRICA_ORACLE_COST = 10
+@AFRICA_ORACLE_STEEL = 1
+@AFRICA_ORACLE_RUBBER = 1
+
+@AFRICA_DISASTER_SPEED = 3.70
+@AFRICA_DISASTER_RELIABILITY = 0.74
+@AFRICA_DISASTER_DEFENSE = 22
+@AFRICA_DISASTER_BREAKTHROUGH = 8
+@AFRICA_DISASTER_HARDNESS = 0.15
+@AFRICA_DISASTER_ARMOR = 8
+@AFRICA_DISASTER_SOFT = 12
+@AFRICA_DISASTER_HARD = 4
+@AFRICA_DISASTER_PIERCING = 14
+@AFRICA_DISASTER_LEND = 3
+@AFRICA_DISASTER_COST = 15
+@AFRICA_DISASTER_STEEL = 1
+@AFRICA_DISASTER_RUBBER = 2
+
+@AFRICA_PLAGUE_SPEED = 4.10
+@AFRICA_PLAGUE_RELIABILITY = 0.50
+@AFRICA_PLAGUE_DEFENSE = 10
+@AFRICA_PLAGUE_BREAKTHROUGH = 14
+@AFRICA_PLAGUE_HARDNESS = 0.08
+@AFRICA_PLAGUE_ARMOR = 0
+@AFRICA_PLAGUE_SOFT = 20
+@AFRICA_PLAGUE_HARD = 6
+@AFRICA_PLAGUE_PIERCING = 12
+@AFRICA_PLAGUE_LEND = 3
+@AFRICA_PLAGUE_COST = 11
+@AFRICA_PLAGUE_STEEL = 1
+@AFRICA_PLAGUE_CHROMIUM = 1
+@AFRICA_PLAGUE_RUBBER = 1
+
+equipments = {
+	africa_gorilla_heavy_infantry_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_gorilla_heavy_infantry_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_GORILLA_SPEED
+		reliability = @AFRICA_GORILLA_RELIABILITY
+		defense = @AFRICA_GORILLA_DEFENSE
+		breakthrough = @AFRICA_GORILLA_BREAKTHROUGH
+		hardness = @AFRICA_GORILLA_HARDNESS
+		armor_value = @AFRICA_GORILLA_ARMOR
+		soft_attack = @AFRICA_GORILLA_SOFT
+		hard_attack = @AFRICA_GORILLA_HARD
+		ap_attack = @AFRICA_GORILLA_PIERCING
+		lend_lease_cost = @AFRICA_GORILLA_LEND
+		build_cost_ic = @AFRICA_GORILLA_COST
+		fuel_consumption = @AFRICA_GORILLA_FUEL
+		resources = {
+			steel = @AFRICA_GORILLA_STEEL
+			rubber = @AFRICA_GORILLA_RUBBER
+			tungsten = @AFRICA_GORILLA_TUNGSTEN
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_gorilla_heavy_infantry_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_gorilla_heavy_infantry_equipment
+		active = no
+		is_buildable = yes
+		priority = 120
+		build_cost_ic = @AFRICA_GORILLA_COST
+		reliability = @AFRICA_GORILLA_RELIABILITY
+		maximum_speed = @AFRICA_GORILLA_SPEED
+		defense = @AFRICA_GORILLA_DEFENSE
+		breakthrough = @AFRICA_GORILLA_BREAKTHROUGH
+		hardness = @AFRICA_GORILLA_HARDNESS
+		armor_value = @AFRICA_GORILLA_ARMOR
+		soft_attack = @AFRICA_GORILLA_SOFT
+		hard_attack = @AFRICA_GORILLA_HARD
+		ap_attack = @AFRICA_GORILLA_PIERCING
+		fuel_consumption = @AFRICA_GORILLA_FUEL
+		resources = {
+			steel = @AFRICA_GORILLA_STEEL
+			rubber = @AFRICA_GORILLA_RUBBER
+			tungsten = @AFRICA_GORILLA_TUNGSTEN
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+
+	africa_pan_sappers_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_pan_sappers_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_PAN_SPEED
+		reliability = @AFRICA_PAN_RELIABILITY
+		defense = @AFRICA_PAN_DEFENSE
+		breakthrough = @AFRICA_PAN_BREAKTHROUGH
+		hardness = @AFRICA_PAN_HARDNESS
+		armor_value = @AFRICA_PAN_ARMOR
+		soft_attack = @AFRICA_PAN_SOFT
+		hard_attack = @AFRICA_PAN_HARD
+		ap_attack = @AFRICA_PAN_PIERCING
+		lend_lease_cost = @AFRICA_PAN_LEND
+		build_cost_ic = @AFRICA_PAN_COST
+		resources = {
+			steel = @AFRICA_PAN_STEEL
+			rubber = @AFRICA_PAN_RUBBER
+			tungsten = @AFRICA_PAN_TUNGSTEN
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_pan_sappers_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_pan_sappers_equipment
+		active = no
+		is_buildable = yes
+		priority = 121
+		build_cost_ic = @AFRICA_PAN_COST
+		reliability = @AFRICA_PAN_RELIABILITY
+		maximum_speed = @AFRICA_PAN_SPEED
+		defense = @AFRICA_PAN_DEFENSE
+		breakthrough = @AFRICA_PAN_BREAKTHROUGH
+		hardness = @AFRICA_PAN_HARDNESS
+		armor_value = @AFRICA_PAN_ARMOR
+		soft_attack = @AFRICA_PAN_SOFT
+		hard_attack = @AFRICA_PAN_HARD
+		ap_attack = @AFRICA_PAN_PIERCING
+		resources = {
+			steel = @AFRICA_PAN_STEEL
+			rubber = @AFRICA_PAN_RUBBER
+			tungsten = @AFRICA_PAN_TUNGSTEN
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+
+	africa_stone_cohorts_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_stone_cohorts_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_STONE_SPEED
+		reliability = @AFRICA_STONE_RELIABILITY
+		defense = @AFRICA_STONE_DEFENSE
+		breakthrough = @AFRICA_STONE_BREAKTHROUGH
+		hardness = @AFRICA_STONE_HARDNESS
+		armor_value = @AFRICA_STONE_ARMOR
+		soft_attack = @AFRICA_STONE_SOFT
+		hard_attack = @AFRICA_STONE_HARD
+		ap_attack = @AFRICA_STONE_PIERCING
+		lend_lease_cost = @AFRICA_STONE_LEND
+		build_cost_ic = @AFRICA_STONE_COST
+		resources = {
+			steel = @AFRICA_STONE_STEEL
+			chromium = @AFRICA_STONE_CHROMIUM
+			tungsten = @AFRICA_STONE_TUNGSTEN
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_stone_cohorts_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_stone_cohorts_equipment
+		active = no
+		is_buildable = yes
+		priority = 122
+		build_cost_ic = @AFRICA_STONE_COST
+		reliability = @AFRICA_STONE_RELIABILITY
+		maximum_speed = @AFRICA_STONE_SPEED
+		defense = @AFRICA_STONE_DEFENSE
+		breakthrough = @AFRICA_STONE_BREAKTHROUGH
+		hardness = @AFRICA_STONE_HARDNESS
+		armor_value = @AFRICA_STONE_ARMOR
+		soft_attack = @AFRICA_STONE_SOFT
+		hard_attack = @AFRICA_STONE_HARD
+		ap_attack = @AFRICA_STONE_PIERCING
+		resources = {
+			steel = @AFRICA_STONE_STEEL
+			chromium = @AFRICA_STONE_CHROMIUM
+			tungsten = @AFRICA_STONE_TUNGSTEN
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+
+	africa_riverborn_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_riverborn_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_RIVER_SPEED
+		reliability = @AFRICA_RIVER_RELIABILITY
+		defense = @AFRICA_RIVER_DEFENSE
+		breakthrough = @AFRICA_RIVER_BREAKTHROUGH
+		hardness = @AFRICA_RIVER_HARDNESS
+		armor_value = @AFRICA_RIVER_ARMOR
+		soft_attack = @AFRICA_RIVER_SOFT
+		hard_attack = @AFRICA_RIVER_HARD
+		ap_attack = @AFRICA_RIVER_PIERCING
+		lend_lease_cost = @AFRICA_RIVER_LEND
+		build_cost_ic = @AFRICA_RIVER_COST
+		resources = {
+			steel = @AFRICA_RIVER_STEEL
+			rubber = @AFRICA_RIVER_RUBBER
+			chromium = @AFRICA_RIVER_CHROMIUM
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_riverborn_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_riverborn_equipment
+		active = no
+		is_buildable = yes
+		priority = 123
+		build_cost_ic = @AFRICA_RIVER_COST
+		reliability = @AFRICA_RIVER_RELIABILITY
+		maximum_speed = @AFRICA_RIVER_SPEED
+		defense = @AFRICA_RIVER_DEFENSE
+		breakthrough = @AFRICA_RIVER_BREAKTHROUGH
+		hardness = @AFRICA_RIVER_HARDNESS
+		armor_value = @AFRICA_RIVER_ARMOR
+		soft_attack = @AFRICA_RIVER_SOFT
+		hard_attack = @AFRICA_RIVER_HARD
+		ap_attack = @AFRICA_RIVER_PIERCING
+		resources = {
+			steel = @AFRICA_RIVER_STEEL
+			rubber = @AFRICA_RIVER_RUBBER
+			chromium = @AFRICA_RIVER_CHROMIUM
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+
+	africa_forest_giants_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_forest_giants_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_FOREST_SPEED
+		reliability = @AFRICA_FOREST_RELIABILITY
+		defense = @AFRICA_FOREST_DEFENSE
+		breakthrough = @AFRICA_FOREST_BREAKTHROUGH
+		hardness = @AFRICA_FOREST_HARDNESS
+		armor_value = @AFRICA_FOREST_ARMOR
+		soft_attack = @AFRICA_FOREST_SOFT
+		hard_attack = @AFRICA_FOREST_HARD
+		ap_attack = @AFRICA_FOREST_PIERCING
+		lend_lease_cost = @AFRICA_FOREST_LEND
+		build_cost_ic = @AFRICA_FOREST_COST
+		resources = {
+			steel = @AFRICA_FOREST_STEEL
+			chromium = @AFRICA_FOREST_CHROMIUM
+			rubber = @AFRICA_FOREST_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_forest_giants_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_forest_giants_equipment
+		active = no
+		is_buildable = yes
+		priority = 124
+		build_cost_ic = @AFRICA_FOREST_COST
+		reliability = @AFRICA_FOREST_RELIABILITY
+		maximum_speed = @AFRICA_FOREST_SPEED
+		defense = @AFRICA_FOREST_DEFENSE
+		breakthrough = @AFRICA_FOREST_BREAKTHROUGH
+		hardness = @AFRICA_FOREST_HARDNESS
+		armor_value = @AFRICA_FOREST_ARMOR
+		soft_attack = @AFRICA_FOREST_SOFT
+		hard_attack = @AFRICA_FOREST_HARD
+		ap_attack = @AFRICA_FOREST_PIERCING
+		resources = {
+			steel = @AFRICA_FOREST_STEEL
+			chromium = @AFRICA_FOREST_CHROMIUM
+			rubber = @AFRICA_FOREST_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+
+	africa_oracle_recon_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_oracle_recon_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_ORACLE_SPEED
+		reliability = @AFRICA_ORACLE_RELIABILITY
+		defense = @AFRICA_ORACLE_DEFENSE
+		breakthrough = @AFRICA_ORACLE_BREAKTHROUGH
+		hardness = @AFRICA_ORACLE_HARDNESS
+		armor_value = @AFRICA_ORACLE_ARMOR
+		soft_attack = @AFRICA_ORACLE_SOFT
+		hard_attack = @AFRICA_ORACLE_HARD
+		ap_attack = @AFRICA_ORACLE_PIERCING
+		lend_lease_cost = @AFRICA_ORACLE_LEND
+		build_cost_ic = @AFRICA_ORACLE_COST
+		resources = {
+			steel = @AFRICA_ORACLE_STEEL
+			rubber = @AFRICA_ORACLE_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_oracle_recon_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_oracle_recon_equipment
+		active = no
+		is_buildable = yes
+		priority = 125
+		build_cost_ic = @AFRICA_ORACLE_COST
+		reliability = @AFRICA_ORACLE_RELIABILITY
+		maximum_speed = @AFRICA_ORACLE_SPEED
+		defense = @AFRICA_ORACLE_DEFENSE
+		breakthrough = @AFRICA_ORACLE_BREAKTHROUGH
+		hardness = @AFRICA_ORACLE_HARDNESS
+		armor_value = @AFRICA_ORACLE_ARMOR
+		soft_attack = @AFRICA_ORACLE_SOFT
+		hard_attack = @AFRICA_ORACLE_HARD
+		ap_attack = @AFRICA_ORACLE_PIERCING
+		resources = {
+			steel = @AFRICA_ORACLE_STEEL
+			rubber = @AFRICA_ORACLE_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+
+	africa_disaster_wardens_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_disaster_wardens_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_DISASTER_SPEED
+		reliability = @AFRICA_DISASTER_RELIABILITY
+		defense = @AFRICA_DISASTER_DEFENSE
+		breakthrough = @AFRICA_DISASTER_BREAKTHROUGH
+		hardness = @AFRICA_DISASTER_HARDNESS
+		armor_value = @AFRICA_DISASTER_ARMOR
+		soft_attack = @AFRICA_DISASTER_SOFT
+		hard_attack = @AFRICA_DISASTER_HARD
+		ap_attack = @AFRICA_DISASTER_PIERCING
+		lend_lease_cost = @AFRICA_DISASTER_LEND
+		build_cost_ic = @AFRICA_DISASTER_COST
+		resources = {
+			steel = @AFRICA_DISASTER_STEEL
+			rubber = @AFRICA_DISASTER_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_disaster_wardens_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_disaster_wardens_equipment
+		active = no
+		is_buildable = yes
+		priority = 126
+		build_cost_ic = @AFRICA_DISASTER_COST
+		reliability = @AFRICA_DISASTER_RELIABILITY
+		maximum_speed = @AFRICA_DISASTER_SPEED
+		defense = @AFRICA_DISASTER_DEFENSE
+		breakthrough = @AFRICA_DISASTER_BREAKTHROUGH
+		hardness = @AFRICA_DISASTER_HARDNESS
+		armor_value = @AFRICA_DISASTER_ARMOR
+		soft_attack = @AFRICA_DISASTER_SOFT
+		hard_attack = @AFRICA_DISASTER_HARD
+		ap_attack = @AFRICA_DISASTER_PIERCING
+		resources = {
+			steel = @AFRICA_DISASTER_STEEL
+			rubber = @AFRICA_DISASTER_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+
+	africa_plague_carriers_equipment = {
+		year = @AFRICA_STRANGE_START_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = infantry
+		group_by = archetype
+		sprite = africa_plague_carriers_equipment
+		can_license = no
+		interface_category = interface_category_land
+		maximum_speed = @AFRICA_PLAGUE_SPEED
+		reliability = @AFRICA_PLAGUE_RELIABILITY
+		defense = @AFRICA_PLAGUE_DEFENSE
+		breakthrough = @AFRICA_PLAGUE_BREAKTHROUGH
+		hardness = @AFRICA_PLAGUE_HARDNESS
+		armor_value = @AFRICA_PLAGUE_ARMOR
+		soft_attack = @AFRICA_PLAGUE_SOFT
+		hard_attack = @AFRICA_PLAGUE_HARD
+		ap_attack = @AFRICA_PLAGUE_PIERCING
+		lend_lease_cost = @AFRICA_PLAGUE_LEND
+		build_cost_ic = @AFRICA_PLAGUE_COST
+		resources = {
+			steel = @AFRICA_PLAGUE_STEEL
+			chromium = @AFRICA_PLAGUE_CHROMIUM
+			rubber = @AFRICA_PLAGUE_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+		can_be_lend_leased = { always = no }
+	}
+
+	africa_plague_carriers_equipment_1 = {
+		year = @AFRICA_STRANGE_START_YEAR
+		archetype = africa_plague_carriers_equipment
+		active = no
+		is_buildable = yes
+		priority = 127
+		build_cost_ic = @AFRICA_PLAGUE_COST
+		reliability = @AFRICA_PLAGUE_RELIABILITY
+		maximum_speed = @AFRICA_PLAGUE_SPEED
+		defense = @AFRICA_PLAGUE_DEFENSE
+		breakthrough = @AFRICA_PLAGUE_BREAKTHROUGH
+		hardness = @AFRICA_PLAGUE_HARDNESS
+		armor_value = @AFRICA_PLAGUE_ARMOR
+		soft_attack = @AFRICA_PLAGUE_SOFT
+		hard_attack = @AFRICA_PLAGUE_HARD
+		ap_attack = @AFRICA_PLAGUE_PIERCING
+		resources = {
+			steel = @AFRICA_PLAGUE_STEEL
+			chromium = @AFRICA_PLAGUE_CHROMIUM
+			rubber = @AFRICA_PLAGUE_RUBBER
+		}
+		can_be_produced = { has_global_flag = africa_strange_formation_package_ready }
+	}
+}
