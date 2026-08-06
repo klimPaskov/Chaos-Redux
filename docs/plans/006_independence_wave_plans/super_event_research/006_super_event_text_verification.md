@@ -2,6 +2,8 @@
 
 Research date: 2026-07-14
 
+Current runtime cross-reference (2026-08-06): Event 006 uses ordinary super-event identifiers `23` for The League of New States and `24` for Every Border a Casus Belli across display slots, audio, and Event Log payloads. The current allocator boundary is 23 content-attested packages across 22 compatible reservation groups, with 170 unattested selectable rows and a 20-package static standalone witness; this text note remains research evidence and does not alter that package boundary.
+
 This note verifies the accepted text sources for the two Event 006 super-events and provides implementation-ready localisation values. The accepted title, button, and quotation selections remain unchanged. The recommended descriptions apply narrow voice and trigger-coverage corrections found during verification.
 
 No gameplay file, localisation file, spreadsheet, asset, audio file, interface file, or source specification was changed in this pass.
@@ -90,13 +92,13 @@ This package announces the first durable Event 006 league after a successful con
 
 ### Final localisation-ready recommendation
 
-The parent should replace `<slot>` with the verified final super-event slot.
+The accepted ordinary slot for The League of New States is `23`.
 
 ```yaml
-chaosx_super_event.<slot>.t: "The League of New States"
-chaosx_super_event.<slot>.d: "Delegates from the newest states have ratified a common charter and chosen the league's leadership. The signatories promise arbitration, mutual aid, and collective resistance to any former host or foreign patron that attempts to extinguish a member.\n\nThe league can speak for its members, bargain in their name, and coordinate shared aid or mobilization."
-chaosx_super_event.<slot>.a: "Small states, one covenant."
-chaosx_super_event.<slot>.q: "\"A general association of nations must be formed under specific covenants...\"\n §Y-Woodrow Wilson, Fourteen Points, Point XIV, 8 January 1918-§!"
+chaosx_super_event.23.t: "The League of New States"
+chaosx_super_event.23.d: "Delegates from the newest states have ratified a common charter and chosen the league's leadership. The signatories promise arbitration, mutual aid, and collective resistance to any former host or foreign patron that attempts to extinguish a member.\n\nThe league can speak for its members, bargain in their name, and coordinate shared aid or mobilization."
+chaosx_super_event.23.a: "Small states, one covenant."
+chaosx_super_event.23.q: "\"A general association of nations must be formed under specific covenants...\"\n §Y-Woodrow Wilson, Fourteen Points, Point XIV, 8 January 1918-§!"
 ```
 
 ### Title and button
@@ -128,13 +130,13 @@ This package announces an Independence Wave outcome with coordinated revisionist
 
 ### Final localisation-ready recommendation
 
-The parent should replace `<slot>` with the verified final super-event slot.
+The accepted ordinary slot for Every Border a Casus Belli is `24`.
 
 ```yaml
-chaosx_super_event.<slot>.t: "Every Border a Casus Belli"
-chaosx_super_event.<slot>.d: "New-state governments coordinate claims, ultimatums, arms shipments, and mobilization schedules across several regions. Their border commands follow shared timetables, and governments pledge arms or troops to support one another's territorial demands.\n\nFormer hosts reinforce several fronts as they prepare for wars that may begin on the same day."
-chaosx_super_event.<slot>.a: "They have sown the wind."
-chaosx_super_event.<slot>.q: "\"For they have sown the wind, and they shall reap the whirlwind...\"\n §Y-Hosea 8:7, King James Version-§!"
+chaosx_super_event.24.t: "Every Border a Casus Belli"
+chaosx_super_event.24.d: "New-state governments coordinate claims, ultimatums, arms shipments, and mobilization schedules across several regions. Their border commands follow shared timetables, and governments pledge arms or troops to support one another's territorial demands.\n\nFormer hosts reinforce several fronts as they prepare for wars that may begin on the same day."
+chaosx_super_event.24.a: "They have sown the wind."
+chaosx_super_event.24.q: "\"For they have sown the wind, and they shall reap the whirlwind...\"\n §Y-Hosea 8:7, King James Version-§!"
 ```
 
 ### Title and button
@@ -160,7 +162,7 @@ No historical speaker, composition date, or single delivery place should be adde
 
 1. Review and accept the two description corrections.
 2. Fold accepted wording into `docs/specs/006_independence_wave_specs/research/006_super_event_text_research.md` or the appropriate source specification before treating this working note as final design authority.
-3. Assign and verify the two final super-event slots. This research pass intentionally did not invent slot numbers.
+3. Verify the ordinary super-event slots `23` and `24` against the current runtime source.
 4. Copy the localisation-ready values into the final UTF-8 with BOM localisation file and keep the `.t`, `.d`, `.a`, and `.q` suffixes aligned with each slot.
 5. Preserve the full source attributions in the final super-event documentation.
 6. Keep charter-specific league tone in the follow-up event unless final architecture provides a clean dynamic localisation branch.
@@ -170,6 +172,6 @@ No historical speaker, composition date, or single delivery place should be adde
 - Text source verification has no blocker.
 - The corrected descriptions remain a working-plan recommendation until the parent adopts them into the source specification.
 - Static UI fit has high confidence from exact shipped font metrics. No localisation or gameplay slot existed in scope for a final integrated render.
-- The separate Event 006 audio verification still blocks the full League super-event package on the accepted `6001` recording's United States redistribution rights. That blocker does not affect the text verdict.
+- The separate Event 006 audio verification still blocks the full League super-event package on the accepted audio-`23` recording's United States redistribution rights. That blocker does not affect the text verdict.
 - No fallback title, quotation, button, source, or substitute wording package was used.
 - No simplification was made within the assigned text-research scope.
