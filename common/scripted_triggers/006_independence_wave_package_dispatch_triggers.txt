@@ -39,8 +39,11 @@ has_independence_wave_runtime_package_adapter_for_execution_id = {
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_030 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_014 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_023 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_026 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_013 }
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_015 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_033 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_041 }
 	}
 }
 
@@ -108,6 +111,12 @@ has_independence_wave_runtime_package_content_attestation_for_execution_id = {
 		# FORM-07 remains protected by its own identity/member/flag/territory
 		# readiness gate and is not promoted by this country admission.
 		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_014 }
+		# IW-033 KAR and IW-041 CRI are source-complete vanilla carriers. Their
+		# package contracts, localization, route decisions, force mappings, and
+		# host-survival cleanup are independently audited; exact preflight still
+		# rejects a living carrier, an occupied anchor, or an origin collision.
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_033 }
+		check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_041 }
 	}
 }
 
@@ -220,6 +229,10 @@ is_independence_wave_runtime_package_preflight_ready = {
 			original_tag = TRA
 		}
 		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_026 }
+			original_tag = MAC
+		}
+		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_070 }
 			original_tag = ARM
 		}
@@ -238,6 +251,16 @@ is_independence_wave_runtime_package_preflight_ready = {
 		AND = {
 			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_015 }
 			original_tag = GLC
+		}
+		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_033 }
+			exists = no
+			is_independence_wave_exact_package_iw_033_tag_available = yes
+		}
+		AND = {
+			check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_041 }
+			exists = no
+			is_independence_wave_exact_package_iw_041_tag_available = yes
 		}
 	}
 }
@@ -355,6 +378,14 @@ is_independence_wave_scenario_package_preflight_ready = {
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_015 }
 			is_independence_wave_exact_package_iw_015_tag_available = yes
+		}
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_033 }
+			is_independence_wave_exact_package_iw_033_tag_available = yes
+		}
+		AND = {
+			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_041 }
+			is_independence_wave_exact_package_iw_041_tag_available = yes
 		}
 		AND = {
 			check_variable = { independence_wave_scenario_dispatch_package_id = constant:independence_wave_package_id.iw_070 }
