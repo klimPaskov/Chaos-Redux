@@ -4,7 +4,7 @@
 
 This package is the source design handoff for Chaos Redux Event 018, Resources Found.
 
-The event remains Minor Repeatable and is not assigned to an event cluster. Its ordinary firing is a large strategic-resource discovery. Repeated investment can turn that discovery into a trade center, a concession struggle, a border crisis, a lethal excavation, a public monster emergency, and finally a playable nonhuman cave country. The world-end branch begins only after the cave country consumes a continent and global chaos is above 1000.
+The event remains Minor Repeatable and is assigned to Economy (pos), cluster 7, at Medium severity. Its ordinary firing is a large strategic-resource discovery. Repeated investment can turn that discovery into a trade center, a concession struggle, a border crisis, a lethal excavation, a public monster emergency, and finally a playable nonhuman cave country. The world-end branch begins only after the cave country consumes a continent and global chaos is above 1000.
 
 All labels described as working labels are internal design handles, not final localisation. Final event titles, options, descriptions, focus text, decision text, achievement text, GUI labels, super-event titles, quotes, remarks, and audio selections must be written or researched during implementation.
 

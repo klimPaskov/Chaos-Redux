@@ -31,7 +31,7 @@ Use `chaosx_repo_explorer` with `fork_context=false` if exact files, IDs, slots,
 
 Preserve these non-negotiable rules:
 
-1. Event 018 remains Minor Repeatable and outside the event-cluster system.
+1. Event 018 remains Minor Repeatable and is an Economy (pos) member at Medium severity.
 2. The ordinary event selects one valid state and one completely random standard strategic resource.
 3. The baseline deposit is centered around 100.
 4. Event-owned resource additions are stored separately for all six resource types.
@@ -58,7 +58,7 @@ Preserve these non-negotiable rules:
 
 - map current Event 018 files and status
 - map event registration and default-enabled allowlist
-- preserve Event 018's exclusion from event-cluster mappings and member arrays
+- preserve Event 018's Economy (pos) mapping, member registration, and Medium severity
 - map event-log and evolution surfaces
 - reserve country tag, focus tree ID, decision IDs, helper names, achievement IDs, super-event slots, image sprites, and audio IDs
 - write an implementation ledger under `docs/plans/018_resources_found_plans/`
