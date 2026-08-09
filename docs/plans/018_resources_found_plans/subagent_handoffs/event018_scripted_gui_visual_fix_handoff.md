@@ -34,7 +34,7 @@ Baseline cropped reference supplied by the parent: `C:/Users/klimp/AppData/Local
 
 The final root remains 470x304 with clipping enabled.
 
-- Header title is centered in `x=24..272`, `y=4..24` using `hoi_20bs`.
+- Header title is centered in `x=24..272`, `y=7..27` using `hoi_18mbs`, keeping the full native glyph box inside the engraved top rail.
 - Active and closed headers use the same centered `x=24..272`, `y=28..66` two-line band, with short `Field`/`Sealed` prefixes and the active one-based position in the active state.
 - Both active and closed content containers are `x=16..454`, `y=72..252`, `438x180`, clipped independently.
 - Left content stays in `x=24..272`. The compact summary is at local `y=2`, the four metric lines occupy local `y=22..88`, conditional Disturbance and Breach rows occupy local `y=92..110` and `y=112..130`, and the dedicated status band occupies local `y=132..180`.
@@ -65,7 +65,7 @@ The compact on-panel summary keeps the left column readable. `resources_found.gu
 Static font/width evidence from the final source review:
 
 - Panel: 470x304.
-- `hoi_20bs` title width: 189/248 px.
+- `hoi_18mbs` title uses a native 18 px line height inside the 248x20 title bound.
 - Long tested closed header (`Sealed: Equatorial Guinea and Sao Tome`): 234/248 px.
 - Long tested active header: 224/248 px.
 - Nine-digit compact summary: 221/248 px.
@@ -97,9 +97,26 @@ An interim post-change inspect also completed before the final edits:
 
 That inspect reported 34 Event 018 elements and correctly resolved the revised left/right geometry, but its global graph contained unrelated repository diagnostics and it predates the final corrections.
 
-### Final-revision MCP limitation
+### Final-revision MCP evidence
 
-After the final font, header, row-gap, four-well, sprite-type, and tooltip corrections, a fresh `hoi4.gui_inspect` call for `resources_found_field_window` and a bounded `hoi4.gui_render` call for the normal state at 1280x720/UI scale 1.0 each failed with the exact MCP error `tool call failed for hoi4_agent_tools/hoi4.gui_inspect` or `hoi4_agent_tools/hoi4.gui_render`, `Caused by: timed out awaiting tools/call after 180s`. No final-revision MCP artifact was produced. I therefore do not claim final visual render or final click-region comparison evidence; the final audit relies on source geometry, sprite dimensions, font measurements, and the interim artifacts explicitly marked above. In-game consumer validation was not run because agents do not launch Hearts of Iron IV.
+A final `hoi4.gui_inspect` completed after the title, bounds, sprites, tooltips, and four-well control layout were settled. It inspected all 34 Event 018 elements with a complete source graph and no Event 018-local diagnostic returned inline:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/af65f01433f093d8e876c1a6acb462a7c5b98e7194d5243ea7d2b51619e39121/8865916154548f3bbebe8c7d748681c3f4a068e1ee9f2433a2ae3db9694e973b/gui-inspect.07ea06f0b395f66c.json`
+
+The final inspect reported no text overflow, no child outside a clipped parent, no click-bounds mismatch, no invisible or conflicting click region, no missing sprite, texture, font, or localisation, no resolution drift, and no missing button effect or trigger. Its failed headline validation is repository-global: the full GUI source graph retained 2,000 unrelated blocking diagnostics before the Event 018 projection, while the Event 018 render itself returned no local blocker. The offline renderer also cannot infer the country-flag toggle pairing between the five animated sprites and their five named static alternatives, although both sides are explicitly registered and gated in the scripted GUI.
+
+The final active maximum-content render used realistic longest English field/status values, explicit runtime-exclusive visibility, all interactive button states, and the supported 1280x720, 1366x768, 1920x1080, and 2560x1440 resolution probes. It completed with `GUI_RENDERED`; its sole warning was response-wire truncation because the linked SVG exceeded the inline result budget:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5c43cdb1bdae94790dd1a56ecf96fb772a3622ba65a87fe01787a907b6b6e81b/c21ccb6ec66cb82ac34db23852951e08a7fe7bd2b6f9d8298abbacf01ed6c38d/resources_found_field_window-full.svg`
+
+Dedicated final state renders also completed for the condition-specific surfaces:
+
+- Evolution II disturbance: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f22f22b44e3d664502459ddaaa2cbbb2eabe36270522e8073796fb4fd9d0f2b8/2a1b01a40241fe9fdc2a0272cd202715d21ce90cc56e09a4889893c975751859/resources_found_field_window-full.svg`.
+- Full sealing: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/01db343073f597dd17e961220e28dadb1784e979f471ba19f63fe3e9d3201953/44817f53396febff755e607573b0d0361bf29731b73c65e40abe91b23bf59032/resources_found_field_window-full.svg`.
+- Suspended field: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6f6c49589dee7a4adcad42c0964fab197ca5a2e8d13224a4d1f07e5f8c3797ba/806c89d58e2cf9ff38f21c7c3232966f405181d2fa7db2bdc88a2cc1890cf955/resources_found_field_window-full.svg`.
+- Exact-seal history: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/28ce774794195a6506c6687e47d0de3761c183705486f9d2d2a3f5bd6ea142ea/8f7aa55aa1963460becd4b3c5fbbe99d81235363ba0baea54a3af1be8282ae64/resources_found_field_window-full.svg`.
+
+The MCP places an `OFFLINE APPROXIMATION - NOT HOI4` banner over the top rail in rendered evidence. That review watermark is not part of the game GUI and is why the final title is partially obscured in the SVG even though its native 18 px glyph box is wholly within `y=7..27`.
 
 ## Rewrite adapter result
 
@@ -107,9 +124,8 @@ The required `hoi4.gui_rewrite` route was attempted against the owned GUI. Sourc
 
 ## Remaining risks and blockers
 
-- Final-revision MCP inspect/render and post-change comparison are unresolved because the server timed out at 180 seconds twice.
-- The offline inspector's global overlap and unresolved-reference diagnostics include unrelated repository GUI graph issues and can model both mutually exclusive Event 018 containers together. They are not evidence of simultaneous runtime visibility.
-- The final source has static bounds and sprite/font evidence, but no final rendered screenshot exists after the last correction.
+- The offline inspector's repository-global overlap and unresolved-reference diagnostics include unrelated GUI files and can model both mutually exclusive Event 018 containers together when their child visibility is not mocked explicitly. Every final Event 018 render used explicit active/history and art-state visibility.
+- The MCP cannot display native scripted-localisation results without scenario overrides. Final renders therefore used concrete maximum-length English values matching the live keys and thresholds.
 - In-game visual and interaction behavior remains outside agent validation; no Hearts of Iron IV runtime was launched.
 
 No gameplay costs, effects, balance, AI, decision outcomes, or shared interfaces were changed by this UI pass.
