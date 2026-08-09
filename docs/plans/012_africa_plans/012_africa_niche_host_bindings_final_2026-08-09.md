@@ -6,7 +6,7 @@ Scope: final host-admission patch for the existing Event 006 shell tags HZX (Bas
 
 ## Outcome
 
-Event 012 now admits one of these three shells only when all of the following are true: the live country keeps its original HZX/EUX/ELX identity, Event 006 has recorded the active-origin receipt, and the country owns and controls its own African core capital. The admission is deliberately state-ID-free because the installed map has no authoritative unique Basutoland, Swaziland, or Zanzibar state. A borrowed, acquired, occupied, or guessed fallback state cannot satisfy the gate.
+Event 012 now admits one of these three shells only when all of the following are true: the live country keeps its original HZX/EUX/ELX identity, the Event 006 registry confirms a live, scenario, or ended origin receipt, and the country owns and controls its own African core capital. The admission is deliberately state-ID-free because the installed map has no authoritative unique Basutoland, Swaziland, or Zanzibar state. A borrowed, acquired, occupied, or guessed fallback state cannot satisfy the gate.
 
 Once the gate passes, the existing Event 012 initializer remains the sole content path. It preserves the selected country as `event_target:africa_host`, applies the existing compact playbook, and calls `africa_load_continental_focus_tree`; no cosmetic tag or country identity replacement is applied. The 22 full and 29 compact playbook definitions are unchanged.
 
@@ -17,7 +17,7 @@ Once the gate passes, the existing Event 012 initializer remains the sole conten
 | Event 006 tag registration | present | present | present |
 | Event 006 country definition | shell only; runtime-owned map setup | shell only; runtime-owned map setup | shell only; runtime-owned map setup |
 | Event 006 history | politics/popularity only; no start state | politics/popularity only; no start state | politics/popularity only; no start state |
-| Event 006 origin receipt required | `is_independence_wave_registry_event6_origin` | same | same |
+| Event 006/scenario origin receipt required | `africa_is_valid_independence_wave_niche_host_binding` | same | same |
 | Current-state admission | own and controlled African core capital | own and controlled African core capital | own and controlled African core capital |
 | Event 012 playbook | `africa_host_playbook.basutoland` | `africa_host_playbook.swaziland` | `africa_host_playbook.zanzibar` |
 | Depth/overlay | compact / southern Africa | compact / southern Africa | compact / Swahili and Indian Ocean |
@@ -48,7 +48,7 @@ Once the gate passes, the existing Event 012 initializer remains the sole conten
 
 ## Event 006 evidence
 
-The three tags are registered in `common/country_tags/006_independence_wave_countries.txt` as IW-124 Basotho (HZX), IW-125 Eswatini (EUX), and IW-116 Zanzibar (ELX). Their definitions and histories intentionally omit runtime state setup. The installed Event 006 scenario initializer places all three in blocked package arrays, and `is_independence_wave_registry_event6_origin` resolves to the active Event 006 origin receipt (`independence_wave_active_origin` plus `liberation_origin = independence_wave`).
+The three tags are registered in `common/country_tags/006_independence_wave_countries.txt` as IW-124 Basotho (HZX), IW-125 Eswatini (EUX), and IW-116 Zanzibar (ELX). Their definitions and histories intentionally omit runtime state setup. The installed Event 006 scenario initializer places all three in blocked package arrays. The admission helper accepts the active Event 006 receipt (`independence_wave_active_origin` plus `liberation_origin = independence_wave`), an explicit scenario release receipt (`independence_wave_scenario_origin`), or the persistent ended-origin marker (`independence_wave_origin_ended`) left by Event 006 cleanup.
 
 The current Event 006 package-binding ledger remains unchanged: HZX and EUX are `disabled_no_unique_current_state`; ELX is `scenario_only_unbound`. Existing Event 006 and Event 012 handoffs explicitly prohibit a generic South Africa, Natal, Tanganyika, Mauritius, Comoro, or other substitute state. The new trigger therefore waits for a future approved runtime to materialise the exact shell rather than inventing map ownership.
 
@@ -69,7 +69,7 @@ No map write was requested or performed. There is no rollback surface because no
 ## MCP event, focus, and map evidence
 
 - Event 012 inspection: `EVENT_INSPECTED_PARTIAL`, artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/dfaea4ed09e60c34d810ba6d86ad77393cb42527aa70871ef8693fb316140e2f/196e09aad90cfdea6d46dd594124dc5a0ebe01ecb8d201179ee22a61a0203d9a/event-lint-08357425bddf.json`. The linked report is authoritative; inline inventory was truncated at 64 paths.
-- Post-patch Event 012 scan: `EVENT_INSPECTED_PARTIAL`, artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/629e4ba01e5acace271fd36454e6800122feaf48da9268592cb876bf82ad85fe/0a8151b3611adb107f0b5ef79ad939a3ee6f74214bb044afd43a7bac1d2981c3/event-scan-a7b6a678b2d8.json`. The focused graph returned no MCP blocker; the linked workspace inventory remains authoritative.
+- Post-patch Event 012 scan: `EVENT_INSPECTED_PARTIAL`, artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6d249a5b6bd1f059d741b034ac33477915910dff5ae76a7ba34dda7771b433ae/2739e55fe11fefa692a2ac2ad53214f8f9fd4b39beab13bcb80c768df6875ce2/event-scan-ca11a1b480a2.json`. The focused graph returned no MCP blocker; the linked workspace inventory remains authoritative.
 - Event 012 render: `EVENT_RENDERED_PARTIAL`, overview artifacts include `event-overview-08357425bddf.svg` and `.png` under workspace artifact `f40169734f73a25fdf583971548de66de6f590753d0a71362868960f7b13260b`.
 - Event 006 inspection: `EVENT_INSPECTED_PARTIAL`, artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/0cd50a6bc8525bfb08756bb43927cb3772e8f76c7068dcd38d399a7b9569aadb/b217c36efabe49188d7bd8b104361547bb004834a2ac8bf3b5b92e7f60d0652a/event-scan-08357425bddf.json`.
 - Event 006 render: `EVENT_RENDERED_PARTIAL`, overview artifacts include `event-overview-08357425bddf.svg` and `.png` under workspace artifact `8100fa0499e97814c887d5e2a7365913c78c4005e7d4fa7687fa55f23f7bfbb6`.
@@ -89,7 +89,7 @@ The installed package exposes no Technology Tree Viewer. Technology evidence was
 
 ## Remaining risks and blockers
 
-- HZX, EUX, and ELX remain dormant on the installed map until an approved Event 006 or later scenario runtime supplies a real country with an African owned-and-controlled core capital and the Event 006 origin receipt. This is intentional fail-closed behavior, not a fallback.
+- HZX, EUX, and ELX remain dormant on the installed map until an approved Event 006 or later scenario runtime supplies a real country with an African owned-and-controlled core capital and a valid Event 006/scenario origin receipt. This is intentional fail-closed behavior, not a fallback.
 - The pre-existing Event 012 focus renderer reports 14 blocking layout diagnostics; this patch does not alter the continental tree.
 - The map renderer reports unrelated workspace-wide building/port locator diagnostics; no state or map source changed here.
 - Final live campaign, save/reload, and runtime event acceptance remain parent-owned.
