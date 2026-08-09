@@ -55,7 +55,7 @@ The planning output was not shortened for speed. It includes nine main spec part
 
 Deliberate design boundaries are:
 
-- no dedicated Black Plague decision category, while Black Plague-specific decisions appear inside the shared disease category
+- one dedicated Black Plague national-response category reuses the shared runtime, while Black Plague-specific state decisions remain inside the shared disease category
 - one shared base Rat Nation tree with four archetypes instead of one full tree per reusable tag
 - no normal human diplomacy for rat countries
 - black fog remains an engine-dependent enhancement

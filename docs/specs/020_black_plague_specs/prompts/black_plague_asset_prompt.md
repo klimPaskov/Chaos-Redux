@@ -29,7 +29,8 @@ Inspect these folders before work:
 Create separate source art for:
 
 - one 64 by 64 Black Plague disease or idea icon
-- one Black Plague disease selector icon using the exact live disease-selector size, with no dedicated Black Plague category icon
+- one Black Plague disease selector icon using the exact live disease-selector size
+- one final 114×101 dedicated decision-category picture showing plague doctors or protected medical workers treating a patient, with no text or simulated UI
 - state-status UI icons for Threatened, known Incubating, Infected, Severe Crisis, Collapsed, Contained, Recovery, Cured, known Weaponized, and Rat-Controlled
 - value icons for Disease Load, Mortality Pressure, Spread Pressure, Containment, Treatment Coverage, and Relapse Risk
 - six countermeasure milestone states designed for the live progress surface

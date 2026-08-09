@@ -25,8 +25,8 @@ A completion auditor should mark each item Complete, Partial, Blocked, or Missin
 
 ## Shared crisis board
 
-- [ ] no duplicate disease decision category
-- [ ] separate Black Plague-specific decisions appear inside the general disease category
+- [ ] one dedicated Black Plague national-response category coexists with the general disease-containment category and reuses the same cure/state systems
+- [ ] separate Black Plague-specific state decisions appear inside the general disease category
 - [ ] city rat clearing, granary and warehouse sealing, sewer and burrow clearance, shelter treatment, transport-hub vermin purge, and infested-block demolition are implemented
 - [ ] global strain, country, state, and list views align
 - [ ] mapmode refreshes on every relevant transition

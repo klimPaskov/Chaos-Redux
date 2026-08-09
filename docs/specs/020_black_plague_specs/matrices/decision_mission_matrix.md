@@ -31,9 +31,9 @@ All labels are working labels. Exact costs should be dynamic and centralized in 
 | Evacuate Threatened Perimeter | selected region | safe receiving states | trains, trucks, convoys, receiving-state disruption | lowers exposure to future mass death | moves disease if screening fails | one-time per eligible population band |
 | Foreign Medical Mission | allied or neighboring state | access and acceptance | supplies, convoys, civilian industry | treatment and research progress | domestic exposure and capture risk | ends if relations or access fail |
 
-## Black Plague-specific decisions inside the general disease category
+## Black Plague-specific state decisions inside the general disease category
 
-These are separate decision entries shown only when Black Plague is selected and the target qualifies. They supplement the generic disease actions above. They do not create a dedicated category.
+These are separate state decision entries shown only when Black Plague is selected and the target qualifies. They supplement the generic disease actions above. National cure, medical logistics, knowledge policy, cooperation, and recovery use the dedicated Black Plague category without duplicating these state actions.
 
 | Working action | Target | Main requirements | Main costs | Main benefits | Failure or tradeoff | AI use |
 | --- | --- | --- | --- | --- | --- | --- |

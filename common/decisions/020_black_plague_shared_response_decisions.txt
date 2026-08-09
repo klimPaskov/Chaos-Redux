@@ -8,17 +8,18 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 020 SHARED DISEASE RESPONSE DECISIONS
 # ============================================================================
-# These entries extend the existing chaosx_disease_containment_category. They
-# are deliberately state-selected and phase-gated, with no duplicate category.
+# Selected-state entries extend the existing disease-containment category.
+# National cure, knowledge, and recovery programmes use Event 020's dedicated
+# Black Plague response category while consuming the same shared mechanics.
 # ============================================================================
 
-chaosx_disease_containment_category = {
+black_plague_response_category = {
 	black_plague_shared_emergency_countermeasure_drive = {
 		name = black_plague_shared_emergency_countermeasure_drive
 		desc = black_plague_shared_emergency_countermeasure_drive_desc
 		icon = GFX_decision_soviet_collapse_medical_missions
 		activation = {
-			black_plague_response_decisions_are_visible = yes
+			black_plague_strategic_response_category_is_visible = yes
 			black_plague_country_has_active_severe_state = yes
 			NOT = { has_country_flag = black_plague_shared_emergency_countermeasure_drive_active }
 			NOT = { has_country_flag = black_plague_shared_emergency_countermeasure_drive_failed }
@@ -57,7 +58,9 @@ chaosx_disease_containment_category = {
 		is_good = yes
 		ai_will_do = { base = constant:black_plague_response_ai.critical }
 	}
+}
 
+chaosx_disease_containment_category = {
 	# Evolution V opens two human-only last-response projects. They remain in
 	# this shared disease category and are deliberately not a third category.
 	black_plague_shared_start_last_response_hold = {
@@ -904,8 +907,11 @@ chaosx_disease_containment_category = {
 		}
 	}
 
-	# Country-level knowledge actions remain in this shared category so the
-	# disease board presents one coherent response surface.
+}
+
+black_plague_response_category = {
+	# Country-level knowledge and reconstruction actions remain on the dedicated
+	# Black Plague response surface while using the shared response mechanics.
 	black_plague_shared_publish_findings = {
 		name = black_plague_shared_publish_findings
 		desc = black_plague_shared_publish_findings_desc

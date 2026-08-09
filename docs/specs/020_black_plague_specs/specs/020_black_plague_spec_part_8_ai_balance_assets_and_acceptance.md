@@ -583,7 +583,7 @@ The full asset inventory is in the asset matrix and prompt. The core package inc
 ### Disease presentation
 
 - Black Plague disease icon
-- decision category icon or selected disease icon
+- dedicated Black Plague category picture depicting plague doctors treating a patient, plus the selected-disease icon used by the shared board
 - state status icons for Threatened, Infected, Severe Crisis, Collapsed, Contained, Recovery, Cured, weaponized, and Rat-Controlled
 - mapmode legend assets
 - disease board panel elements
@@ -724,8 +724,8 @@ Event 20 is complete only when every requested surface is implemented or explici
 
 ### Shared response
 
-- no duplicate disease category
-- Black Plague-specific decisions appear as separate entries inside the general disease category
+- one dedicated Black Plague national cure and strategic-management category coexists with the shared disease-containment category
+- Black Plague-specific state decisions appear as separate entries inside the general disease category
 - city rat clearing, granary and warehouse sealing, sewer and burrow clearance, shelter treatment, transport-hub vermin control, and harsh district demolition are implemented
 - dynamic crisis board
 - state-targeted actions with real costs

@@ -586,4 +586,4 @@ This surface is complete only when:
 - stockpile accidents use the same outbreak state machine
 - delivery uses existing biowarfare systems
 - condemnation, air cleanliness, deaths, chaos, and world threat are aligned
-- no duplicate disease category, contamination meter, death effect, or doomsday decision is created
+- the dedicated Black Plague strategic-response category reuses the existing disease state, contamination, death, countermeasure, and world-end systems instead of duplicating them

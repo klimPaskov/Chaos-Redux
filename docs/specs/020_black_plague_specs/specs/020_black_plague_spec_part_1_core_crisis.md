@@ -302,7 +302,7 @@ The normal random-event opening still begins in one mainland state. The triggera
 The baseline event connects to the following shared systems immediately.
 
 - biological warfare disease registry
-- shared disease prevention and containment decisions plus Black Plague-specific decision entries inside the same category
+- shared disease prevention and selected-state containment decisions plus one dedicated Black Plague national cure and strategic-management category
 - disease mapmode and selected state UI
 - real population deaths and death log
 - Chaos Meter deaths conversion

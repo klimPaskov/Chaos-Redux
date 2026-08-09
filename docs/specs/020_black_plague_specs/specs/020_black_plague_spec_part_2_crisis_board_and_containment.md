@@ -6,9 +6,9 @@ All labels in this file are working labels, not final localisation.
 
 ## Design rule
 
-The Black Plague does not receive a duplicate decision category. It registers as a disease inside the existing biological warfare and disease containment interface. Generic disease actions remain shared. The Black Plague also adds its own separate decision entries inside that general category when the selected disease and target state make them relevant. These include city rat clearing, food-store sealing, sewer and burrow clearance, shelter treatment, transport-hub vermin control, and harsh district demolition.
+The Black Plague registers as a disease inside the existing biological warfare and disease-containment interface and also receives one dedicated national cure and strategic-management category. Generic disease actions and Black Plague state containment remain shared. The dedicated category owns cure research, medical logistics, knowledge policy, cooperation, and recovery, while city rat clearing, food-store sealing, sewer and burrow clearance, shelter treatment, transport-hub vermin control, and harsh district demolition remain separate selected-state entries inside the shared category.
 
-Shared and Black Plague-specific actions read the selected disease, selected country, selected state, local status, nearby exposure, cure progress, Rat Infestation, and current evolution stage. The category should feel like a changing crisis board. It must not show a permanent wall of every possible response. The visible action set changes as the country moves from Prepared to Threatened, Infected, Contained, Recovery, or Cured status.
+The two categories share the same disease state, selected country, selected state, local status, nearby exposure, cure progress, Rat Infestation, and evolution data. The shared category should feel like a changing state crisis board, while the dedicated category should feel like a national command surface. Neither should show a permanent wall of every possible response. Their visible action sets change as the country moves from Prepared to Threatened, Infected, Contained, Recovery, or Cured status.
 
 ## Interface layout
 
@@ -454,7 +454,7 @@ This remains a generic shared disease action. When Black Plague is selected, the
 
 ## Black Plague-specific urban and rat-control decisions
 
-These decisions appear only inside the general disease category while Black Plague is selected. They supplement shared quarantine, hospitals, relief, and treatment. They never create a dedicated Black Plague category.
+These state-targeted decisions appear only inside the general disease category while Black Plague is selected. They supplement shared quarantine, hospitals, relief, and treatment. The separate national category does not duplicate or alias them.
 
 ### Clean the City of Rats
 
@@ -780,7 +780,7 @@ Available when the shared world-threat flag is active. It supports intelligence,
 
 ## Cleanup and category lifecycle
 
-The shared category must remove or convert obsolete actions.
+Both decision surfaces must remove or convert obsolete actions.
 
 - Prepared actions are hidden while emergency actions are active when they would duplicate stronger versions.
 - Threatened actions disappear when the exposure route is gone.
@@ -790,7 +790,7 @@ The shared category must remove or convert obsolete actions.
 - Anti-rat actions disappear when no rat country or eligible resurgence basin remains.
 - Weaponization actions stay in the existing biowarfare project and delivery surfaces, not in the containment list.
 
-The category remains available as a prevention surface after eradication only when the country has chosen a continuing prevention law or has another active disease.
+The shared category remains available as a prevention surface after eradication only when the country has chosen a continuing prevention law or has another active disease. The dedicated Black Plague category remains only while its strategic response trigger is valid and shows post-crisis recovery actions when their gates are met.
 
 ## AI equivalence
 
@@ -806,7 +806,7 @@ The crisis board is complete only when:
 - known Incubating states are visible only to authorized countries
 - Prepared, Exposed, Infected, Containment, and Recovery action sets change dynamically
 - Black Plague-specific city, rat, sewer, shelter, warehouse, transport, and liberation decisions appear inside the shared category
-- no dedicated Black Plague category is created
+- one dedicated Black Plague category presents national cure progress, deaths, reserves, response capacity, cooperation, knowledge policy, and recovery without replacing the shared category
 - costs use real resources and strategic sacrifices
 - quarantine without relief can increase mortality
 - cordons require unit or military commitment

@@ -58,7 +58,7 @@ The live implementation uses `SCN-012` and the two-tag correction below is autho
 
 ## Black Plague-specific decisions initialized by scenario
 
-These appear as separate decision entries inside the general disease category.
+State containment entries appear inside the general disease category. National cure, logistics, cooperation, knowledge, and recovery entries appear inside the dedicated Black Plague category.
 
 | Decision family | Immediate scenario use |
 | --- | --- |
@@ -101,6 +101,6 @@ Royal King Hunger crises are country events rather than ordinary disease phases.
 | Rat King already active | existing King retained, no duplicate Evolution IV row |
 | small or altered map | targets scale down after minimum validity, no invalid state or capital |
 | mapmode | every established Black Plague state is black immediately after launch |
-| decisions | Black Plague-specific rows appear in shared category, no dedicated category exists |
+| decisions | dedicated national-response category and shared state-containment category both initialize, with no duplicate decisions or progress producers |
 | repeat launch | reconciliation-only idempotent path with clear terminal/unavailable reason when blocked |
 | save and reload | scenario state, actors, mapmode, decisions, and pulses remain valid |

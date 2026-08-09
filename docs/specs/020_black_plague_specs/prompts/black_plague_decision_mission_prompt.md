@@ -1,12 +1,12 @@
 # Black Plague Decision and Mission Implementation Prompt
 
-> Historical accepted-design prompt, reconciled 2026-08-06: Crown Strike and Seal Royal Burrows now use state-selected zero-day launchers backed by native `activate_mission`/`days_mission_timeout` owners with explicit state markers and shared-action resolvers. Hold the Line and Secure the Refuge remain native `activate_mission`/`days_mission_timeout` missions. SCN-012 repeat signals are reconciliation-only and its live intensity postcondition verifies RTA/RTX floors. The current two-tag boundary and separately promoted shared rat ground-unit model/entity package are recorded in the source-of-truth map and model handoff; no per-subtype or Rat King-specific model is authorized, and sound-definition wiring, counter review, and live model validation remain open. The promoted weapon-delivery icon/source-frame Rat King-seal packages and implemented `.57-.59`, `.64-.65`, and `.71-.75` surfaces are recorded in the consequence/aftermath addendum.
+> Historical accepted-design prompt, reconciled 2026-08-09: the dedicated-response-category correction supersedes the single-category instructions below. National cure, logistics, cooperation, knowledge, and recovery use `black_plague_response_category`; selected-state containment and anti-rat actions remain in `chaosx_disease_containment_category`. Crown Strike and Seal Royal Burrows use state-selected zero-day launchers backed by native `activate_mission`/`days_mission_timeout` owners with explicit state markers and shared-action resolvers. Hold the Line and Secure the Refuge remain native `activate_mission`/`days_mission_timeout` missions. SCN-012 repeat signals are reconciliation-only and its live intensity postcondition verifies RTA/RTX floors. The current two-tag boundary and separately promoted shared rat ground-unit model/entity package are recorded in the source-of-truth map and model handoff; no per-subtype or Rat King-specific model is authorized, and sound-definition wiring, counter review, and live model validation remain open. The promoted weapon-delivery icon/source-frame Rat King-seal packages and implemented `.57-.59`, `.64-.65`, and `.71-.75` surfaces are recorded in the consequence/aftermath addendum.
 
 Implement the full Event 20 decision and mission system from the accepted spec and `matrices/decision_mission_matrix.md`. Read `AGENTS.md`, `chaos-redux-events`, and `hoi4-decisions-missions` first. Inspect the live shared biological warfare and disease category before editing.
 
 ## Core ownership rule
 
-Do not create a separate Black Plague decision category. Register Event 20 inside the existing disease and biological warfare UI. Generic disease actions remain shared. Implement separate Black Plague-specific decision entries inside that general category when Black Plague is selected. Shared and disease-specific actions must read the selected disease, selected state, country phase, local status, exposure routes, countermeasure progress, Rat Infestation, and evolution stage.
+Register Event 20 in both the dedicated Black Plague response category and the existing disease-containment UI. National cure, medical logistics, cooperation, knowledge policy, and recovery belong to the dedicated category. Generic disease actions and Black Plague state containment remain shared and selected-state gated. Both surfaces read the appropriate country phase, local status, exposure routes, countermeasure progress, Rat Infestation, and evolution stage without duplicating cure progress or payment effects.
 
 ## Required phase behavior
 
@@ -27,7 +27,7 @@ Hide obsolete actions and replace weaker versions as the crisis progresses. The 
 
 Implement every generic action family in the decision matrix, including surveillance, reserves, inspections, targeted border and port controls, troop restrictions, field hospitals, quarantine, army cordons, emergency hospitals, relief corridors, burial and sanitation crews, vector control, treatment distribution, evacuation, controlled reopening, residual tracing, recovery, foreign medical aid, countermeasure exchange, and anti-rat clearance.
 
-Also implement the separate Black Plague-specific entries inside the same category:
+Also implement the separate Black Plague-specific state entries inside the shared containment category:
 
 - Clean the City of Rats
 - Seal Granaries, Markets, and Warehouses
@@ -94,7 +94,7 @@ Name real dynamic states, ports, capitals, corridors, or selected regions in too
 
 ## Countermeasure actions
 
-Implement beginning, sharing, hoarding, stealing, and international cooperation through the shared disease system. Full progress reduces mortality and spread and allows cleanup. It never removes active disease instantly.
+Implement beginning, sharing, hoarding, stealing, and international cooperation through the dedicated Black Plague category while reusing the shared disease effects and progress producer. Full progress reduces mortality and spread and allows cleanup. It never removes active disease instantly.
 
 ## Rat Nation mechanics
 
@@ -106,7 +106,7 @@ Implement royal pulse doctrine, regional brood administration, population policy
 
 ## Triggerable scenario initialization
 
-After the Black Plague triggerable scenario launches, every affected human country must immediately see the correct Prepared, Exposed, Infected, or anti-rat action set. The scenario can seed many states and actors in one bootstrap, so decision activation must batch safely and avoid duplicate targets, duplicate missions, or a second category. The full disease mapmode rebuild and decision refresh must complete before ordinary weekly processing resumes.
+After the Black Plague triggerable scenario launches, every affected human country must immediately see the dedicated national-response category and the correct Prepared, Exposed, Infected, or anti-rat set in the shared containment category. The scenario can seed many states and actors in one bootstrap, so decision activation must batch safely and avoid duplicate targets or missions. The full disease mapmode rebuild and decision refresh must complete before ordinary weekly processing resumes.
 
 ## AI
 
@@ -130,4 +130,4 @@ Use icon-first costs and dynamic state or country names. Long requirements need 
 
 ## Completion audit
 
-After implementation, run the decision and mission auditor. Report the shared category lifecycle, all Black Plague-specific action IDs, mission owners and targets, durations, success and failure behavior, Rat Infestation changes, scenario initialization, AI validity, cleanup, exploit findings, and every simplification.
+After implementation, run the decision and mission auditor. Report both category lifecycles, every Black Plague-specific action ID and its owning category, mission owners and targets, durations, success and failure behavior, Rat Infestation changes, scenario initialization, AI validity, cleanup, exploit findings, and every simplification.
