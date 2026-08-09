@@ -42,6 +42,10 @@ The reusable achievement not-eligible overlay is stored beside these examples
 at `icons/achievements/overlay.png`, but is a workflow input and is excluded
 from the contact sheet and inventory count.
 
+The `icons/decision_categories/pictures/` family is a separate review shelf for larger decision-category pictures.
+It currently contains exactly 13 user-provided vanilla reference PNGs, each lossless RGBA at the native `114x101` reference canvas.
+These are not the small decision-category icons in `icons/decision_categories/` and are not a universal runtime-size prescription.
+
 ## Contact sheets
 
 Every semantic folder owns one labeled `contact_sheet.png` beside its reference
@@ -55,6 +59,7 @@ Examples:
 - `icons/national_focus/contact_sheet.png`
 - `icons/ideas/contact_sheet.png`
 - `icons/decisions/contact_sheet.png`
+- `icons/decision_categories/pictures/contact_sheet.png`
 - `icons/technologies/contact_sheet.png`
 - `event_art/report/contact_sheet.png`
 - `event_art/news/contact_sheet.png`
@@ -79,6 +84,7 @@ Gameplay icons:
 
 - `icons/national_focus/`, `icons/ideas/`, `icons/technologies/`
 - `icons/decisions/`, `icons/missions/`, and `icons/decision_categories/`
+- `icons/decision_categories/pictures/` (larger decision-category pictures)
 - `icons/achievements/`, `icons/officer_corps_spirits/`, and
   `icons/special_projects/`
 - `icons/balance_of_power/`, `icons/intelligence_agency/`, and
@@ -99,6 +105,20 @@ These families are not interchangeable. Follow the cataloged native canvas,
 transparency, frame order, and owning definition. Model materials are UV
 references paired with mesh/entity definitions; they are not 2D icons, renders,
 or concept sheets.
+
+### Decision category picture references
+
+The canonical decision-category picture family lives at `icons/decision_categories/pictures/`.
+Its owning UI surface is the larger decision-category `picture` field, normally consumed through a `GFX_decision_cat_*` sprite in Vanilla HOI4's `interface/decisions.gfx`; it is not a small category icon, a decision icon, a scripted-GUI background, or a full mechanic-window asset.
+
+The 13 PNGs in this shelf were provided by the user as vanilla references.
+Each is a lossless `114x101` RGBA review copy whose decoded pixels match the corresponding installed Vanilla HOI4 DDS after the source DDS BGRA channels are decoded to RGBA.
+The installed source path, matching sprite/category identity, native dimensions, contact sheet, and PNG SHA-256 are recorded in `CATALOG.md`.
+The source identity is treated as Vanilla HOI4 only where the installed files expose the corresponding DDS, `.gfx` sprite, and decision category consumer; no identity is inferred from filename alone.
+
+These user-provided PNGs and `contact_sheet.png` are review-only reference material.
+Do not wire, recolour, trace, ship, or copy them into runtime GFX, and do not infer a runtime redistribution licence from their presence here.
+The local contact sheet labels every filename and native dimension and is also review-only.
 
 ## Maintenance
 
