@@ -22,19 +22,19 @@ State-specific render links and final geometry are retained in `subagent_handoff
 
 ## Focus tree
 
-The current tree contains 67 focuses, 67 resolved titles, and 81 connectors. The focused inspect reports zero crossings, node intersections, long connectors, or Event 018 tree diagnostics, with minimum same-row spacing of two.
+The current tree contains 67 focuses, 67 resolved titles, and 81 connectors. After the hostile-air response gate was removed from `DHO_harden_against_the_sky`, the focused inspect still reports zero crossings, node intersections, long connectors, or Event 018 tree diagnostics, with minimum same-row spacing of two. Sky hardening is now a proactive adaptation after Surface Senses, so the shared continental and world-end route cannot be stranded by an ordinary country declining one specific response-event option.
 
 Inspect:
 
-`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bb0645a451210ef2af5b65442b548b375da5d40300ded574a36781ec8ba7bb46/ff9b9f727145bbbc0dc413789806bb10eb4fc1345dc317282af7e6bf1312ad87/focus-inspect.7c624b34eb586778.json`
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6fde52f83f338e2239e0f7f4fc09397c692b5389d95f1be8389968c98161be8c/22a178972ecffca07fbcf0fcb776a265999116ac8f33922c8db3659dc5c65eaf/focus-inspect.6c0c228a72f5e3d4.json`
 
 Rendered SVG:
 
-`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/950b2c347d41e4654e4e797ea8e7a3431ad8aad3f1fe705fdb9803a77d4799c1/12139bebcd5cc2a56d5270e53126352b7acd03149ee2cc3f16ae6b2bdc11703f/018_resources_found_cave_focus_tree.focus.svg`
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1bbe413dc31ffc8000592b4d838f820e76b0f98253601d7bc68473317ef6a7a7/fe68dfef3c5b7d3783b866713a77fedd74180098f2ea4d4795cc1335e0446f7c/018_resources_found_cave_focus_tree.focus.svg`
 
 Raster PNG:
 
-`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8718d70597f38ee474726b8cf1638e44cea4e6d203d974ce25d3847c41e95019/aaf2d2b8c68e9e51dd9d19edacf51eea08812617eaae73cae461dfbdc2fe5df4/018_resources_found_cave_focus_tree.focus.png`
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f4617b133acbca732022fe675803fea2b8e5783d93d03ff18fc9b4b92b945d98/1602391e3937e40001fd62f6f16a83610671586a23fef5c40ddd78b38e408b81/018_resources_found_cave_focus_tree.focus.png`
 
 The MCP compact rewrite proposal was rejected by its own `FOCUS_COMPACT_QUALITY_BLOCKED` gate because it would regress authored node separation and symmetry. It made no source change.
 
