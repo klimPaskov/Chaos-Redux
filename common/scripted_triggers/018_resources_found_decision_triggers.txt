@@ -19,6 +19,72 @@ resources_found_decision_has_selected_field = {
 	}
 }
 
+# COUNTRY scope. These presentation-only gates keep the selected-field
+# category within the decision-panel action budget. AI countries bypass the
+# page state and continue to evaluate every mechanically valid project.
+resources_found_decision_player_workboard_page_administration = {
+	OR = {
+		is_ai = yes
+		var:resources_found_selected_field = {
+			OR = {
+				NOT = { has_variable = resources_found_field_workboard_page }
+				check_variable = { resources_found_field_workboard_page = constant:resources_found_workboard_page.administration }
+			}
+		}
+	}
+}
+
+resources_found_decision_player_workboard_page_development = {
+	OR = {
+		is_ai = yes
+		var:resources_found_selected_field = {
+			check_variable = { resources_found_field_workboard_page = constant:resources_found_workboard_page.development }
+		}
+	}
+}
+
+resources_found_decision_player_workboard_page_infrastructure = {
+	OR = {
+		is_ai = yes
+		var:resources_found_selected_field = {
+			check_variable = { resources_found_field_workboard_page = constant:resources_found_workboard_page.infrastructure }
+		}
+	}
+}
+
+resources_found_decision_player_workboard_page_safety = {
+	OR = {
+		is_ai = yes
+		var:resources_found_selected_field = {
+			check_variable = { resources_found_field_workboard_page = constant:resources_found_workboard_page.safety }
+		}
+	}
+}
+
+resources_found_decision_player_workboard_page_operations = {
+	OR = {
+		is_ai = yes
+		var:resources_found_selected_field = {
+			check_variable = { resources_found_field_workboard_page = constant:resources_found_workboard_page.operations }
+		}
+	}
+}
+
+# COUNTRY scope. Routine extraction and reserve controls yield to casualty
+# response or reactivation controls for human players. AI evaluation remains
+# unchanged and continues to see every valid response.
+resources_found_decision_player_operations_routine_visible = {
+	OR = {
+		is_ai = yes
+		AND = {
+			NOT = { resources_found_decision_field_has_recorded_casualties = yes }
+			var:resources_found_selected_field = {
+				NOT = { has_state_flag = resources_found_field_suspended }
+			}
+		}
+	}
+}
+
 # COUNTRY scope. All five project families share one exact project kind, state,
 # cost, and duration record, so only one of those family missions may own the
 # runtime at once. Contract, commission, border, recapture, and evolution clocks
