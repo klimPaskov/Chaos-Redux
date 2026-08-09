@@ -89,9 +89,35 @@ The country arrays reserve and queue reports while a host owns the Directorate. 
 | Temporal | `sp_brilliant_scientist_temporal_mechanics` | Authenticated anchor, immutable target uses, synchronization, and debt | Existing temporal ledger plus `brilliant_scientist_temporal_guard_tech`; Event 030's one-time contact receipt may preserve the warning after its timed idea expires |
 | Strategic Singularity | Six `sp_brilliant_scientist_singularity_*` components | Six components, two command nodes, two power links, then guarded certification | Component array, exact component flags, site counts, and nonterminal preparation flags |
 
-Paleogenetics and Xenobiological Synthesis do not share sites, control flags, maintenance assumptions, or incident state. Biological Weapons do not infer an agent from the family stage. The exact character flags are:
+Paleogenetics and Xenobiological Synthesis do not share sites, control flags, maintenance assumptions, or incident state. Biological Weapons do not infer an agent from the family stage. Its exact biological-agent flags remain separate from the stage reward.
 
-Xenobiological control remains mechanically exclusive. Chemical signaling improves specialist defense at an added supply burden. Neural bonding improves organization and soft attack. Machine mediation emphasizes hard attack and breakthrough. The researched protocol takes longer and costs more to select, then produces the most supply-efficient balanced package. The base `brilliant_scientist_xenobiological_formations_tech` remains the stable family output, while exactly one `brilliant_scientist_xeno_<method>_control_tech` records and applies the selected control architecture.
+## Project reward power profile
+
+Each family stage applies a cumulative persistent modifier while the country remains the current Event 016 host. These rewards use a late-game prize scale. Theory bonuses are normally 12% or 18%, prototype bonuses are 12% to 35%, deployment bonuses are 18% to 50%, and weaponization bonuses are 30% to 100%.
+
+| Family | Cumulative strategic identity at Weaponization |
+| --- | --- |
+| Computation | +12% research speed, +18% intelligence-network growth, +25% encryption and decryption, -35% agency upgrade time, +35% planning speed, +78% maximum planning, +0.35 command-power gain, +30% army organization, and +30% reinforcement rate |
+| Electronics | +12% research speed, -50% air accidents, +35% decryption, +107% air-mission efficiency, +95% static anti-air hit chance, +18% army air-superiority benefit, and +30% army attack |
+| Advanced Materials | +18% production-efficiency growth and cap, -35% resource shortage penalty, +25% local resources, +35% factory output and repair speed, +18% construction speed, +60% conversion speed and maximum entrenchment, and +30% army defense |
+| Rocketry | +18% special-project speed, +138% air range, +90% air-mission efficiency, and +48% army attack |
+| High Energy | +12% research speed, +53% fuel gain, +103% special-project speed, +125% nuclear production, +18% factory output, and +30% army attack |
+| Biomedical | +12% research speed, +2,500 weekly manpower, +65% reinforcement rate, -35% experience loss, +18% army organization, -15% training time, -35% supply consumption, and +60% recovery rate |
+| Teleportation | +12% research speed, +90% planning speed, +48% army speed, -70% out-of-supply penalty, -15% supply consumption, and +60% maximum planning |
+| Cloning | +2,500 weekly manpower, +9% recruitable population, -50% training time, +47% reinforcement rate, +18% army organization, and -35% experience loss |
+| Robotics | +18% production-efficiency growth, +43% production-efficiency cap, +42% factory output, +18% army organization, -15% supply consumption and out-of-supply penalty, and +60% army attack and defense |
+| Paleogenetics | +12% research speed, +30% recovery rate, +72% army attack, +30% army defense, +18% army organization, and +48% army speed at a 15% supply burden |
+| Xenobiological Synthesis | +12% research speed, +30% recovery rate, +72% army attack, +60% army defense, +48% army organization, and +18% army speed at a 15% supply burden |
+| Biological Weapons | +12% research speed, +78% intelligence-network growth, +25% decryption, +30% special-project speed, +78% army attack, and +78% maximum planning |
+| Alien Arms | +12% research speed, +43% special-project speed, +25% decryption, +78% army attack and air-mission efficiency, +60% army defense, and +48% army speed |
+| Temporal | +12% research speed, +18% reinforcement rate, +125% planning speed, -70% experience loss, +35% maximum planning, +0.35 command-power gain, +18% army organization, and +30% army speed |
+| Strategic Singularity | +18% research speed, +35% special-project speed, +25% factory output, +150% planning speed, +60% army attack and defense, +30% army organization, +18% maximum planning, +35% maximum command power, and +1.10 command-power gain at a 15% consumer-goods burden |
+
+The mapped vanilla technologies remain unchanged. The powerful identity comes from the Event 016 persistent project modifiers and the hidden reusable operational technologies, so other events can grant the custom API rewards without globally rewriting vanilla research.
+
+Xenobiological control remains mechanically exclusive. Chemical signaling improves specialist defense, reliability, and supply economy. Neural bonding improves organization and soft attack. Machine mediation emphasizes hard attack and breakthrough. The researched protocol takes longer and costs more to select, then produces the most supply-efficient balanced package. The base `brilliant_scientist_xenobiological_formations_tech` remains the stable family output, while exactly one `brilliant_scientist_xeno_<method>_control_tech` records and applies the selected control architecture.
+
+The exact biological-agent character flags are:
 
 - `brilliant_scientist_personal_biological_agent_anthrax`
 - `brilliant_scientist_personal_biological_agent_plague`

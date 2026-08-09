@@ -33,6 +33,22 @@ chaosx_grant_custom_operational_technology = yes
 
 The four xenobiological refinements are `brilliant_scientist_xeno_chemical_control_tech`, `brilliant_scientist_xeno_neural_control_tech`, `brilliant_scientist_xeno_machine_control_tech`, and `brilliant_scientist_xeno_researched_control_tech`.
 
+## Power profile
+
+The operational and weaponization technologies are intentionally late-game prize technologies rather than ordinary research increments. The operational technology makes the associated force immediately exceptional, while the dependency-safe weaponization upgrade creates a second cumulative leap.
+
+| Family | Operational technology effect | Additional weaponization effect |
+| --- | --- | --- |
+| Portal warfare | +12 organization, +30% breakthrough, and -25% supply consumption | +12 organization, +40% breakthrough, and -25% supply consumption |
+| Clone formations | +8 organization, +30% defense, and +30% soft attack | +12 organization, +35% recovery rate, -40% experience loss, and +25% casualty trickleback |
+| Robot formations | +30% hard attack, breakthrough, and defense | +50% hard attack, +50% breakthrough, and +30% reliability |
+| Paleogenetic formations | +30% soft attack, +30% breakthrough, and a 15% supply burden | +50% soft attack, +50% breakthrough, and +15% speed |
+| Xenobiological formations | +30% soft attack, +15% hard attack, +8 organization, and +30% breakthrough | +50% soft attack, +30% hard attack, and +50% breakthrough |
+| Exotic guard | +30% soft attack, hard attack, defense, and breakthrough | +60% hard attack, +50% piercing, and +40% breakthrough |
+| Temporal guard | +12 organization and +30% defense | +12 organization, +50% defense, and -50% experience loss |
+
+The xenobiological control technologies remain mutually exclusive refinements. Their shared combat scale is +15% for a minor bonus, +30% for a standard bonus, +8 or +12 organization, and -25% supply consumption for the chemical control logistics effect.
+
 ## Runtime consumers
 
 An external operational grant recreates the matching locked and capped division template, authorizes recruiting through the existing cap, reopens production of the matching custom equipment where that family uses equipment, and registers the existing Event 019 neutral provider row. Rebuilding Event 016 clears and reconstructs ordinary project-derived runtime state while preserving the independent external knowledge ledger.
