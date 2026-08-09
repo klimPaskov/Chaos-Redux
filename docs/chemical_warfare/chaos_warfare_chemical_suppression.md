@@ -12,17 +12,19 @@ The five mastery rewards are:
 
 1. Sealed Crew Compartments
 2. Armored Agent Delivery
-3. Mobile Nerve Suppression
+3. Gas-Chamber Saturation Drills
 4. Protected Breakthrough Logistics
 5. Catastrophic Shock Breakthrough
 
 The track separates generic Chemical support from armored Chemical delivery by applying its formation modifiers only to `category_chemical_tank_support_companies`. Its mastery units are the light, medium, and heavy CBRN armored delivery detachments plus the independently gated nerve-suppression detachment.
 
-Mobile Nerve Suppression grants only a doctrine eligibility flag. It does not release an agent and does not waive the separate project, protection, occupation-policy, readiness, stock, state, condition, or consequence requirements. A valid later suppression operation must consume equipment and record deaths, contamination, resistance trauma, evidence, attribution, and severe diplomatic consequences.
+Gas-Chamber Saturation Drills authorizes nerve-agent methods in existing extermination camps. Once Tabun, Sarin, or Soman has been researched, the camp can select the strongest matching stocked agent without a separate occupation law, readiness gate, mobile detachment, or special-project prerequisite. The method still consumes real cylinders through the shared chemical pipeline and records deaths, contamination, medical pressure, resistance trauma, evidence, attribution, and Condemnation.
+
+The mastery multiplies nerve-agent killing efficiency by 2.25, reduces activation and monthly payload consumption to 45 percent of standard, reduces generated evidence to 55 percent of standard, and adds agent-scaled resistance suppression. It does not create camp infrastructure.
 
 ## Explicitly absent infrastructure
 
-Toxic Armored Warfare grants no Concentration occupation law, camp, extermination site, experiment site, genocide system, restricted Chemical site, or concealment mechanism. The migration effects clear the obsolete `concentration_occupation_law_unlocked` flag rather than restoring it. Independent camp mechanics can receive the accepted Terminal Hazard killing-efficiency multiplier only after their own infrastructure, ownership, and authorization already exist; doctrine never creates or reveals those systems.
+Toxic Armored Warfare grants no Concentration occupation law, camp, extermination site, experiment site, genocide system, restricted Chemical site, or concealment mechanism. The migration effects clear the obsolete `concentration_occupation_law_unlocked` flag rather than restoring it. Existing extermination camps receive the Gas-Chamber Saturation Drills method only after the mastery and a nerve-agent technology are present; doctrine never creates or reveals those systems.
 
 ## Runtime art
 
@@ -42,4 +44,4 @@ The full doctrine and officer-corps asset package, source PNGs, processed PNGs, 
 
 ## Engine limit
 
-The exact state transaction for nerve-agent suppression remains fail-closed because the current confirmed hook does not provide the required target-loss, weather, and terrain receipts. No decision-click approximation, proxy casualty formula, or hidden periodic fallback is retained.
+The legacy mobile occupation operation remains fail-closed because the current confirmed hook does not provide exact target-loss, weather, and terrain receipts. It is not the gameplay implementation of nerve suppression. The supported route is the Gas-Chamber Saturation Drills mastery, which uses the existing selected-camp transaction as its exact target and release receipt and therefore needs no estimator or proxy casualty formula.

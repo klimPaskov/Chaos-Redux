@@ -453,29 +453,33 @@ camp_repression_network_category = {
 		allowed = { camp_rework_country_uses_generic_kit = yes }
 		visible = {
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
-			camp_rework_country_can_use_radicalized_route = yes
 			OR = {
-				camp_rework_country_has_chemical_escalation_capacity = yes
-				camp_rework_country_has_biological_escalation_capacity = yes
+				camp_rework_country_can_apply_chemical_camp_method = yes
+				AND = {
+					camp_rework_country_can_use_radicalized_route = yes
+					camp_rework_country_has_biological_escalation_capacity = yes
+				}
 			}
 		}
 		target_root_trigger = {
-			camp_rework_country_can_use_radicalized_route = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = {
 				is_ai = no
 				camp_rework_country_under_ai_restricted_method_cap = yes
 			}
 			OR = {
-				camp_rework_country_has_chemical_escalation_capacity = yes
-				camp_rework_country_has_biological_escalation_capacity = yes
+				camp_rework_country_can_apply_chemical_camp_method = yes
+				AND = {
+					camp_rework_country_can_use_radicalized_route = yes
+					camp_rework_country_has_biological_escalation_capacity = yes
+				}
 			}
 		}
 		target_trigger = {
 			OR = {
 				AND = {
-					camp_rework_country_has_chemical_escalation_capacity = yes
-					FROM = { camp_rework_state_is_chemical_escalation_target = yes }
+					camp_rework_country_can_apply_chemical_camp_method = yes
+					FROM = { camp_rework_state_is_available_chemical_method_target = yes }
 				}
 				AND = {
 					camp_rework_country_has_biological_escalation_capacity = yes
@@ -484,7 +488,6 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
-			camp_rework_country_can_use_radicalized_route = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = {
 				is_ai = no
@@ -492,10 +495,11 @@ camp_repression_network_category = {
 			}
 			OR = {
 				AND = {
-					camp_rework_country_has_chemical_escalation_capacity = yes
-					FROM = { camp_rework_state_is_chemical_escalation_target = yes }
+					camp_rework_country_can_apply_chemical_camp_method = yes
+					FROM = { camp_rework_state_is_available_chemical_method_target = yes }
 				}
 				AND = {
+					camp_rework_country_can_use_radicalized_route = yes
 					camp_rework_country_has_biological_escalation_capacity = yes
 					FROM = { camp_rework_state_is_biological_escalation_target = yes }
 				}

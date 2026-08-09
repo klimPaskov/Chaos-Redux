@@ -390,6 +390,57 @@ cbrn_calculate_chemical_action_outputs = {
 		multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_command_mult_local }
 	}
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_agent_potency_mult }
+	set_temp_variable = { cbrn_action_doctrine_potency_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_doctrine_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_operations_potency_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_operations_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_operations_air_dose_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_operations_air_duration_mult = constant:cbrn_math.one }
+	if = {
+		limit = { has_country_flag = cbrn_combat_support_mastery_five }
+		set_temp_variable = { cbrn_action_doctrine_potency_mult = constant:chem_contaminant_firebases.raid_damage_mult.deep_contamination_fireplans }
+		set_temp_variable = { cbrn_action_doctrine_contamination_mult = constant:chem_contaminant_firebases.contamination_mult.deep_contamination_fireplans }
+	}
+	else = {
+		if = {
+			limit = { has_country_flag = cbrn_combat_support_mastery_three }
+			set_temp_variable = { cbrn_action_doctrine_potency_mult = constant:chem_contaminant_firebases.raid_damage_mult.raid_targeting_teams }
+		}
+		if = {
+			limit = { has_country_flag = cbrn_combat_support_mastery_four }
+			set_temp_variable = { cbrn_action_doctrine_contamination_mult = constant:chem_contaminant_firebases.contamination_mult.persistent_agent_distribution }
+		}
+	}
+	if = {
+		limit = { has_country_flag = cbrn_operations_mastery_five }
+		set_temp_variable = { cbrn_action_operations_potency_mult = constant:chem_integrated_operations.raid_effect_mult.theater_intelligence_overmatch }
+		set_temp_variable = { cbrn_action_operations_contamination_mult = constant:chem_integrated_operations.contamination_mult.theater_intelligence_overmatch }
+		set_temp_variable = { cbrn_action_operations_air_dose_mult = constant:chem_integrated_operations.air_bomb_dose_mult.theater_intelligence_overmatch }
+		set_temp_variable = { cbrn_action_operations_air_duration_mult = constant:chem_integrated_operations.air_bomb_duration_mult.theater_intelligence_overmatch }
+	}
+	else_if = {
+		limit = { has_country_flag = cbrn_operations_mastery_four }
+		set_temp_variable = { cbrn_action_operations_potency_mult = constant:chem_integrated_operations.raid_effect_mult.air_surface_chemical_link }
+		set_temp_variable = { cbrn_action_operations_contamination_mult = constant:chem_integrated_operations.contamination_mult.air_surface_chemical_link }
+		set_temp_variable = { cbrn_action_operations_air_dose_mult = constant:chem_integrated_operations.air_bomb_dose_mult.air_surface_chemical_link }
+		set_temp_variable = { cbrn_action_operations_air_duration_mult = constant:chem_integrated_operations.air_bomb_duration_mult.air_surface_chemical_link }
+	}
+	else_if = {
+		limit = { has_country_flag = cbrn_operations_mastery_two }
+		set_temp_variable = { cbrn_action_operations_potency_mult = constant:chem_integrated_operations.raid_effect_mult.signal_intelligence_fusion }
+		set_temp_variable = { cbrn_action_operations_contamination_mult = constant:chem_integrated_operations.contamination_mult.signal_intelligence_fusion }
+	}
+	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_doctrine_potency_mult }
+	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_operations_potency_mult }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+			}
+		}
+		multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_operations_air_dose_mult }
+	}
 	if = {
 		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
 		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_doctrine_spirit.terminal_hazard.operational_effect_mult }
@@ -411,6 +462,18 @@ cbrn_calculate_chemical_action_outputs = {
 	clamp_temp_variable = { var = cbrn_action_dose_mult min = constant:cbrn_action_input_bounds.dose_mult_min max = constant:cbrn_action_input_bounds.dose_mult_max }
 	clamp_temp_variable = { var = cbrn_action_doctrine_condemnation_mult_local min = constant:cbrn_doctrine_condemnation.minimum_mult max = constant:cbrn_doctrine_condemnation.maximum_mult }
 
+	set_temp_variable = { cbrn_action_target_treatment_death_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_target_treatment_medical_mult = constant:cbrn_math.one }
+	if = {
+		limit = { event_target:cbrn_action_target_state = { CONTROLLER = { has_tech = dimercaprol } } }
+		multiply_temp_variable = { cbrn_action_target_treatment_death_mult = constant:chem_dimercaprol_mitigation.generic_death_mult }
+		multiply_temp_variable = { cbrn_action_target_treatment_medical_mult = constant:chem_dimercaprol_mitigation.medical_saturation_mult }
+		if = {
+			limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals } }
+			multiply_temp_variable = { cbrn_action_target_treatment_death_mult = constant:chem_dimercaprol_mitigation.blister_additional_death_mult }
+		}
+	}
+
 	set_temp_variable = { cbrn_action_disruption = cbrn_route_base_disruption }
 	multiply_temp_variable = { cbrn_action_disruption = cbrn_class_disruption_mult }
 	multiply_temp_variable = { cbrn_action_disruption = cbrn_action_dose_mult }
@@ -426,6 +489,7 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_dose_mult }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_military_casualty_mult }
+	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_target_treatment_death_mult }
 	if = {
 		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
 		multiply_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult }
@@ -473,6 +537,7 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_exposed_fraction }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_casualty_mult }
+	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_target_treatment_death_mult }
 	if = {
 		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
 		multiply_temp_variable = { cbrn_action_civilian_death_fraction = constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult }
@@ -509,6 +574,8 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_class_contamination_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_agent_persistence_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_dose_mult }
+	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_doctrine_contamination_mult }
+	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_operations_contamination_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_civilian_contamination_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_historical_contamination_mult }
 	if = {
@@ -541,6 +608,17 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_contamination_duration_days = cbrn_route_duration_days }
 	multiply_temp_variable = { cbrn_action_contamination_duration_days = cbrn_class_duration_mult }
 	multiply_temp_variable = { cbrn_action_contamination_duration_days = cbrn_agent_persistence_mult }
+	multiply_temp_variable = { cbrn_action_contamination_duration_days = cbrn_action_doctrine_contamination_mult }
+	multiply_temp_variable = { cbrn_action_contamination_duration_days = cbrn_action_operations_contamination_mult }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+			}
+		}
+		multiply_temp_variable = { cbrn_action_contamination_duration_days = cbrn_action_operations_air_duration_mult }
+	}
 	if = {
 		limit = { cbrn_action_conditions_are_resolved = yes }
 		multiply_temp_variable = { cbrn_action_contamination_duration_days = cbrn_action_terrain_mult_local }
@@ -575,6 +653,7 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_class_medical_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_dose_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_civilian_casualty_mult }
+	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_target_treatment_medical_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_historical_medical_saturation_mult }
 	if = {
 		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
@@ -970,6 +1049,7 @@ cbrn_reset_action_context = {
 	set_temp_variable = { cbrn_action_payload_required = @CR_SC_CBRN_MATH_ZERO }
 	set_temp_variable = { cbrn_action_payload_consumed = @CR_SC_CBRN_MATH_ZERO }
 	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_legacy_cylinder_source_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_release_efficiency_mult = @CR_SC_CBRN_MATH_ZERO }
 	set_temp_variable = { cbrn_action_dispatch_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_raid_attempt_dispatch_proof = constant:cbrn_proof.missing }

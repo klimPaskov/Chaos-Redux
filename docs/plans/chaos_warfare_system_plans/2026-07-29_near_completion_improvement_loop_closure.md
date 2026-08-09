@@ -4,6 +4,8 @@ Date: 2026-07-29
 
 Status: no new improvement addendum; broad expansion is closed, and the later user-authorized supported-core disposition treats unavailable engine-bound surfaces as explicit omissions
 
+Current-status note: the later camp integration resolves the accepted playable nerve-suppression requirement through Gas-Chamber Saturation Drills and the existing exact camp transaction. References below to the entire nerve-suppression family being blocked are historical; only the separate legacy selected-state occupation operation remains unavailable.
+
 ## Stop or continue recommendation
 
 Stop broad design expansion.

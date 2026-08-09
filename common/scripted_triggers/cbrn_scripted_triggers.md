@@ -403,7 +403,7 @@ These country-scope, side-effect-free triggers are defined in `cbrn_payload_trig
 - `cbrn_action_payload_profile_is_ready`: combines route family, matching profile, and the required shell- or air-delivery technology. Strategic lots need no filling-line profile.
 - `cbrn_action_payload_stock_is_sufficient`: requires positive route demand and enough exact strategic-agent stock, shared shell lots, or class-specific air payload lots for the action.
 
-Inputs are the temporary `cbrn_action_*` metadata and the persistent shell/air profile state. Outputs are boolean only. These triggers never set payload-consumption proof; only `cbrn_try_debit_action_payload` may do that after an exact equipment removal.
+Inputs are the temporary `cbrn_action_*` metadata and the persistent shell/air profile state. Outputs are boolean only. The explicit `cbrn_action_legacy_cylinder_source_proof` receipt selects agent-specific legacy cylinders only for the cylinder-release route; it never supplies consumption proof. Only `cbrn_try_debit_action_payload` may supply consumption proof after exact equipment removal.
 
 Example:
 

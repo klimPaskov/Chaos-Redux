@@ -1418,23 +1418,67 @@ camp_rework_country_has_chemical_lewisite_activation_capacity = {
 
 camp_rework_country_has_chemical_tabun_activation_capacity = {
 	has_tech = tabun
-	has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_cost.tabun_cylinders }
+	OR = {
+		AND = {
+			has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+			has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_mastery_cost.tabun_cylinders }
+		}
+		AND = {
+			NOT = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+			has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_cost.tabun_cylinders }
+		}
+	}
 }
 
 camp_rework_country_has_chemical_sarin_activation_capacity = {
+	has_tech = sarin
 	OR = {
-		has_tech = sarin
-		is_special_project_completed = sp:sp_cw_sarin_program
+		AND = {
+			has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+			has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_mastery_cost.sarin_cylinders }
+		}
+		AND = {
+			NOT = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+			has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_cost.sarin_cylinders }
+		}
 	}
-	has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_cost.sarin_cylinders }
 }
 
 camp_rework_country_has_chemical_soman_activation_capacity = {
+	has_tech = soman
 	OR = {
-		has_tech = soman
-		is_special_project_completed = sp:sp_cw_soman_program
+		AND = {
+			has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+			has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_mastery_cost.soman_cylinders }
+		}
+		AND = {
+			NOT = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+			has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_cost.soman_cylinders }
+		}
 	}
-	has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_cost.soman_cylinders }
+}
+
+camp_rework_country_has_researched_nerve_agent = {
+	OR = {
+		has_tech = tabun
+		has_tech = sarin
+		has_tech = soman
+	}
+}
+
+camp_rework_country_has_nerve_agent_activation_capacity = {
+	OR = {
+		camp_rework_country_has_chemical_tabun_activation_capacity = yes
+		camp_rework_country_has_chemical_sarin_activation_capacity = yes
+		camp_rework_country_has_chemical_soman_activation_capacity = yes
+	}
+}
+
+camp_rework_country_can_use_nerve_camp_mastery_route = {
+	has_active_camp_network = yes
+	NOT = { has_country_flag = camp_rework_expansion_frozen }
+	has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+	camp_rework_country_has_researched_nerve_agent = yes
 }
 
 camp_rework_country_has_chemical_escalation_capacity = {
@@ -1446,6 +1490,20 @@ camp_rework_country_has_chemical_escalation_capacity = {
 		camp_rework_country_has_chemical_tabun_activation_capacity = yes
 		camp_rework_country_has_chemical_sarin_activation_capacity = yes
 		camp_rework_country_has_chemical_soman_activation_capacity = yes
+	}
+}
+
+camp_rework_country_can_apply_chemical_camp_method = {
+	OR = {
+		AND = {
+			camp_rework_country_can_use_restricted_method_route = yes
+			camp_rework_country_has_chemical_escalation_capacity = yes
+			cbrn_camp_restricted_site_release_is_ready = yes
+		}
+		AND = {
+			camp_rework_country_can_use_nerve_camp_mastery_route = yes
+			camp_rework_country_has_nerve_agent_activation_capacity = yes
+		}
 	}
 }
 
@@ -1505,6 +1563,24 @@ camp_rework_state_is_chemical_escalation_target = {
 		has_state_flag = camp_rework_radicalized_site
 		has_state_flag = genocide_auschwitz_experiment_site
 		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+	}
+}
+
+camp_rework_state_is_available_chemical_method_target = {
+	camp_rework_state_is_chemical_escalation_target = yes
+	OR = {
+		ROOT = {
+			camp_rework_country_can_use_restricted_method_route = yes
+			camp_rework_country_has_chemical_escalation_capacity = yes
+			cbrn_camp_restricted_site_release_is_ready = yes
+		}
+		AND = {
+			extermination_camp > 0
+			ROOT = {
+				camp_rework_country_can_use_nerve_camp_mastery_route = yes
+				camp_rework_country_has_nerve_agent_activation_capacity = yes
+			}
+		}
 	}
 }
 

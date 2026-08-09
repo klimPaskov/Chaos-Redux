@@ -1,13 +1,14 @@
 # Chemical warfare on_actions:
-# - Relevant-country field-protection snapshots plus leader-daily tooltip
-#   updates for the retained legacy cylinder UI.
+# - Relevant-country field-protection snapshots for equipment-backed CBRN
+#   readiness and exposure resolution.
 # - Chaos Assault Battalions are protected formations and never release payload passively.
 # - Exact-state chemical delivery remains adapter driven; this file does not
 #   estimate a combat target, run periodic contamination, or register chemical
 #   use from combat outcomes.
-# - The old cylinder, Livens, and tank-shell state scans are intentionally not
-#   called here. A future route must provide the selected state, payload debit,
-#   protection proof, and verified conditions to the shared exposure pipeline.
+# - Retired cylinder, Livens, and tank-shell scans are absent. Every active
+#   route provides a selected state, payload debit, protection proof, and a
+#   verified release receipt. Optional environmental inputs are used only when
+#   an exact current-version route supplies them.
 # - The active Chemical Operations Academy rolls the commander trait only on
 #   unit-leader creation and level-up; it never runs as a periodic country scan.
 on_actions = {
@@ -78,22 +79,8 @@ on_actions = {
 				}
 			}
 
-			if = {
-				limit = {
-					FROM = {
-						OR = {
-							has_tech = chlorine_gas
-							has_tech = phosgene
-							has_tech = mustard_gas
-							has_tech = lewisite
-						}
-					}
-				}
-				chem_update_cylinder_previews = yes
-			}
-
 			# Combat hooks expose leader/combatant values but no verified selected
-			# target state. No legacy support release is inferred from them.
+			# target state. No legacy support release or cylinder preview is inferred.
 		}
 	}
 

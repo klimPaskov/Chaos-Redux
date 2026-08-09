@@ -1,380 +1,65 @@
 # ============================================================================
-# CHAOS REDUX - CHEMICAL WARFARE SCRIPT CONSTANTS
+# CHAOS REDUX - ACTIVE CHEMICAL WARFARE SCRIPT CONSTANTS
 # ============================================================================
-# Shared constants for the chemical warfare / chemical ability system.
-# Keep related values centralized here so multiple files stay in sync.
+# Runtime tuning retained only for active shared-pipeline, doctrine, prototype,
+# doomsday, state-contamination, and Japan-China campaign consumers. Retired
+# direct abilities, synthetic payload paths, legacy weather estimators, and
+# disconnected raid/tank/Livens formulas do not keep dormant tuning tables.
 # ============================================================================
-
-chem_cylinder_ratio = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    empty = 0.05
-    very_low = 0.25
-    low = 0.50
-    lacking = 0.75
-    missing = 0.90
-    almost = 0.99
-}
-
-chem_wind_state = {
-    schema = {
-        any_key = yes
-        data = int
-    }
-
-    strong_favor = 2
-    favor = 1
-    neutral = 0
-    against = -1
-}
 
 chem_type = {
-    schema = {
-        any_key = yes
-        data = int
-    }
+	schema = {
+		any_key = yes
+		data = int
+	}
 
-    chlorine = 1
-    phosgene = 2
-    mustard = 3
-    lewisite = 4
-}
-
-chem_unit_modifier = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    speed_factor = -0.05
-    urban_attack = 0.10
-}
-
-chem_weather_effect = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    blizzard = {
-        offense = -0.02
-        breakthrough = -0.02
-        org_damage = 0.025
-    }
-
-    sandstorm = {
-        offense = -0.02
-        str_damage = 0.03
-        org_damage = 0.025
-    }
-
-    extreme_cold = {
-        offense = -0.02
-        breakthrough = -0.02
-        org_damage = 0.03
-    }
-
-    extreme_heat = {
-        offense = -0.02
-        str_damage = 0.03
-        org_damage = 0.025
-    }
-}
-
-chem_weather_threshold = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    extreme = 0.6
-}
-
-chem_wind = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    core = {
-        chance_scale = 100
-        severe_threshold = 0.35
-        forecast_days = 7
-    }
-
-    favor = {
-        base = 8
-        clear_bonus = 6
-        open_bonus = 6
-        rough_penalty = -6
-        severe_penalty = -7
-        extreme_penalty = -5
-        urban_penalty = -4
-        highland_penalty = -3
-    }
-
-    against = {
-        base = 8
-        clear_penalty = -5
-        severe_bonus = 24
-        extreme_bonus = 12
-        extreme_bonus_extra = 8
-        rough_bonus = 8
-        urban_bonus = 6
-        highland_bonus = 5
-    }
-
-    tech = {
-        favor_vanes = 12
-        favor_stations = 20
-        favor_soundings = 28
-        strong_favor_stations = 10
-        strong_favor_soundings = 18
-        against_vanes = -4
-        against_stations = -8
-        against_soundings = -12
-    }
-
-    mult = {
-        positive_favor = 1.30
-        negative_favor = 0.70
-        positive_strong_favor = 1.60
-        negative_strong_favor = 0.50
-        positive_neutral = 1.0
-        negative_neutral = 1.0
-        positive_against = 0.70
-        negative_against = 1.25
-    }
-
-    miscalc = {
-        base = 0.15
-        vanes = 0.10
-        stations = 0.05
-        soundings = 0.02
-    }
+	chlorine = 1
+	phosgene = 2
+	mustard = 3
+	lewisite = 4
 }
 
 chem_state = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
 
-    core = {
-        strength_scale = 4
-        duration_scale = 4
-
-        max_strength_base = -0.20
-        max_duration_days_base = 21
-    }
-
-    dose_per_div = {
-        chlorine = -0.0010
-        phosgene = -0.0015
-        mustard = -0.0008
-        lewisite = -0.0010
-    }
-
-    duration_add = {
-        chlorine = 4
-        phosgene = 5
-        mustard = 8
-        lewisite = 10
-    }
-
-    mult = {
-        supply = 1.0
-        supply_impact = -2.00
-        speed = 0.35
-        truck_attrition = -0.75
-        attack = 0.80
-        breakthrough = 1.00
-    }
-}
-
-chem_doom = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    acute_weight = {
-        chlorine = 1.0
-        phosgene = 1.6
-        mustard = 0.9
-        lewisite = 1.1
-    }
-
-    persist_weight = {
-        chlorine = 0.2
-        phosgene = 0.3
-        mustard = 1.5
-        lewisite = 1.7
-    }
-
-    scale = {
-        acute_org = 200000
-        acute_str = 420000
-
-        state_dose = 500000
-        state_duration = 2000
-
-        state_max_duration = 4
-    }
-
-    cap = {
-        org_damage_max = 0.65
-        str_damage_max = 0.35
-
-        state_dose_max = 1.20
-        state_duration_add_max = 220
-    }
-
-    base = {
-        state_max_duration_days = 60
-    }
-}
-
-chem_ability_core = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    # Shared ability tuning values used by both:
-    # - `common/abilities/chemical_abilities.txt` (live ability definitions)
-    # - `common/scripted_effects/chemical_ability_effects.txt` (preview/UI math)
-    duration_hours = 168
-    duration_days = 7
-    ratio_min = 0.10
-}
-
-chem_ability_cylinders_per_battalion = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    # Cylinders required per battalion for each gas type.
-    chlorine = 30
-    phosgene = 30
-    mustard = 30
-    lewisite = 30
-}
-
-chem_ability_stat = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    chlorine = {
-        offense = 0.60
-        breakthrough = 0.60
-        defense = 0.15
-        org_damage = 0.40
-        str_damage = 0.18
-        war_support = 0.25
-    }
-
-    phosgene = {
-        offense = 0.85
-        breakthrough = 0.80
-        defense = 0.22
-        org_damage = 0.60
-        str_damage = 0.30
-        war_support = 0.35
-    }
-
-    mustard = {
-        offense = 1.10
-        breakthrough = 1.00
-        defense = 0.30
-        org_damage = 0.80
-        str_damage = 0.40
-        war_support = 0.45
-    }
-
-    lewisite = {
-        offense = 1.30
-        breakthrough = 1.30
-        defense = 0.35
-        org_damage = 0.90
-        str_damage = 0.48
-        war_support = 0.50
-    }
-}
-
-chem_chaos_warfare_doctrine = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    cylinder_ability = {
-        mult = 1.30
-    }
-
-    air_bomb = {
-        dose_mult = 1.35
-        duration_base_mult = 1.30
-        duration_per_pressure_mult = 1.25
-    }
+	mult = {
+		supply = 1.0
+		supply_impact = -2.00
+		speed = 0.35
+		truck_attrition = -0.75
+		attack = 0.80
+		breakthrough = 1.00
+	}
 }
 
 chem_contaminant_firebases = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
 
-    contamination_mult = {
-        persistent_agent_distribution = 1.40
-        deep_contamination_fireplans = 1.80
-    }
+	contamination_mult = {
+		persistent_agent_distribution = 1.40
+		deep_contamination_fireplans = 1.80
+	}
 
-    raid_damage_mult = {
-        raid_targeting_teams = 1.35
-        deep_contamination_fireplans = 1.65
-    }
+	raid_damage_mult = {
+		raid_targeting_teams = 1.35
+		deep_contamination_fireplans = 1.65
+	}
 }
 
 chem_integrated_operations = {
@@ -388,8 +73,9 @@ chem_integrated_operations = {
 		}
 	}
 
-	# Canonical migration-safe doctrine ladder for shared chemical exposure and
-	# legacy chemical/biological adapters. These values modify Condemnation only.
+	# Shared chemical and ordinary biological callers use this ladder only for
+	# Condemnation. It never modifies evidence, attribution, deaths, contamination,
+	# medical load, trauma, or history.
 	condemnation_mult = {
 		operational_recon_grids = 0.75
 		air_surface_chemical_link = 0.55
@@ -419,793 +105,102 @@ chem_integrated_operations = {
 	}
 }
 
-chem_ability_command_power_cost = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    chlorine = 0.20
-    phosgene = 0.30
-    mustard = 0.35
-    lewisite = 0.40
-}
-
-chem_ability_condemnation_base = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    chlorine = 0.35
-    phosgene = 0.55
-    mustard = 0.65
-    lewisite = 0.85
-}
-
-chem_ability_condemnation_per_unit = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    chlorine = 0.0015
-    phosgene = 0.0022
-    mustard = 0.0027
-    lewisite = 0.0032
-}
-
-chem_ability_condemnation_affected_unit_scale = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    chlorine = 4.0
-    phosgene = 4.0
-    mustard = 4.0
-    lewisite = 4.0
-}
-
-chem_ability_ai = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    retaliate_threshold = {
-        considerable = 14
-        very_high = 24
-    }
-    retaliate_add = {
-        considerable = 2.5
-        very_high = 4.0
-    }
-
-    min_command_power = {
-        chlorine = 0.8
-        phosgene = 1.0
-        mustard = 1.0
-        lewisite = 1.25
-    }
-    min_war_support = {
-        chlorine = 0.10
-        phosgene = 0.20
-        mustard = 0.20
-        lewisite = 0.30
-    }
-
-    pressure = {
-        offensive_low = 4
-        offensive_high = 8
-        defensive_low = 6
-        offensive_status_min = 0.45
-        defensive_status_max = 0.35
-        terrain_pressure = 3
-        climate_pressure = 6
-    }
-    pressure_add = {
-        high = 2
-        med = 1
-    }
-    terrain_pressure_add = {
-        value = 0.5
-    }
-    climate_penalty_add = {
-        value = -0.5
-    }
-
-    gas_mask_add = {
-        high = 0.6
-        medium = 0.4
-        low = 0.2
-    }
-
-    ideology_add = {
-        democratic = -1.0
-        communist = 0.3
-        fascist = 0.6
-        neutral = 0.1
-    }
-    wind_add = {
-        strong_favor = 0.8
-        favor = 0.4
-        against = -0.8
-    }
-    country_add = {
-        japan_china_campaign = 2.5
-    }
-    trait_weight = {
-        academy_spirit = 0.2
-    }
-    condemnation_mult = {
-        japan_china_campaign = 0.20
-    }
-}
-
-chem_terrain_effect = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    woods = {
-        offense = -0.005
-        breakthrough = -0.005
-        org_damage = 0.01
-    }
-
-    hills = {
-        breakthrough = -0.006
-        org_damage = 0.01
-    }
-
-    urban = {
-        org_damage = 0.012
-        str_damage = 0.015
-    }
-
-    marsh = {
-        breakthrough = -0.005
-        org_damage = 0.01
-    }
-
-    plains = {
-        offense = -0.004
-        breakthrough = -0.004
-        org_damage = 0.008
-        str_damage = 0.005
-    }
-
-    desert = {
-        offense = -0.005
-        breakthrough = -0.005
-        org_damage = 0.01
-        str_damage = 0.008
-    }
-}
-
-chem_mask_reduction = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    # Legacy combat-ability mitigation is fed by the shared protective-
-    # equipment snapshot. A fully effective issued set retains the former
-    # 75-percent ceiling; partial issue, worn filters, and weaker models scale
-    # beneath it.
-    maximum = 0.75
-}
-
 chem_dimercaprol_mitigation = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
 
-    # Additional mitigation when the dimercaprol tech is researched.
-    # Stacks with regular gas mask mitigation.
-    generic = 0.05
-    blister_bonus = 0.15
+	# Target-country treatment multipliers used by the shared exposure pipeline.
+	# Blister treatment stacks with the generic death multiplier.
+	generic_death_mult = 0.85
+	blister_additional_death_mult = 0.50
+	medical_saturation_mult = 0.65
 }
 
 cbw_doom_decision = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                key = pp_cost
-                data = int
-            }
-            {
-                key = cooldown_days
-                data = int
-            }
-            {
-                key = surrender_threshold
-                data = fixed_point
-            }
-        }
-    }
+	schema = {
+		any_key = yes
+		data = {
+			{
+				key = pp_cost
+				data = int
+			}
+			{
+				key = cooldown_days
+				data = int
+			}
+			{
+				key = surrender_threshold
+				data = fixed_point
+			}
+		}
+	}
 
-    defaults = {
-        pp_cost = 100
-        cooldown_days = 14
-        surrender_threshold = 0.8
-    }
+	defaults = {
+		pp_cost = 100
+		cooldown_days = 14
+		surrender_threshold = 0.8
+	}
 }
 
 chem_doom_ai = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                key = base
-                data = int
-            }
-            {
-                key = add_base
-                data = int
-            }
-            {
-                key = add_high_morale
-                data = int
-            }
-            {
-                key = stability_threshold
-                data = fixed_point
-            }
-            {
-                key = war_support_threshold
-                data = fixed_point
-            }
-            {
-                key = stockpile_threshold
-                data = int
-            }
-            {
-                key = add_big_stockpile
-                data = int
-            }
-        }
-    }
-
-    defaults = {
-        base = 0
-        add_base = 5
-        add_high_morale = 25
-        stability_threshold = 0.60
-        war_support_threshold = 0.60
-        stockpile_threshold = 2500
-        add_big_stockpile = 15
-    }
-}
-
-chem_ai_cylinder = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base_major = 1
-    japan_bonus = 1
-}
-
-chem_ai_cylinder_retaliate_threshold = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    low = 2
-    med = 5
-    high = 10
-}
-
-chem_ai_cylinder_retaliate_add = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    low = 1
-    med = 1
-    high = 1
-}
-
-chem_ai_research_condemnation_threshold = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    low = 2
-    med = 5
-    high = 10
-}
-
-chem_ai_research_weight_gas_masks = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base = 10
-    low = 50
-    med = 100
-    high = 200
-}
-
-chem_ai_research_weight_wind_detection = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base = 5
-    low = 40
-    med = 80
-    high = 160
-}
-
-chem_ai_research_weight_agents = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base = 0
-    low = 40
-    med = 80
-    high = 160
-}
-
-chem_ai_research_weight_japan = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base = 20
-    threat = 120
-}
-
-chem_ai_research_force = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    positive = 100
-}
-
-chem_ai_livens_research = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base = 25
-    threat = 100
-    force = 100
-    japan_bonus = 30
-}
-
-chem_ai_livens_production = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base = 1
-    threat_low = 2
-    threat_med = 3
-    japan_bonus = 1
-}
-
-chem_ai_livens_xp = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    division_template_focus = 40
-}
-
-chem_livens = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    cylinder_mult = {
-        base = 0.95
-        improved = 0.90
-        advanced = 0.85
-    }
-
-    condemnation_mult = {
-        base = 1.05
-        improved = 1.10
-        advanced = 1.15
-    }
-
-    combat_condemnation = {
-        won = 0.12
-        lost = 0.08
-    }
-
-    state_dose_mult = {
-        base = 1.18
-        improved = 1.24
-        advanced = 1.30
-    }
-
-    state_duration_mult = {
-        base = 1.10
-        improved = 1.15
-        advanced = 1.20
-    }
-
-	combat_state = {
-		min_units_in_combat = 1
-		dose_mult = 0.30
-		duration_mult = 0.90
-		max_duration_days = 8
+	schema = {
+		any_key = yes
+		data = {
+			{
+				key = base
+				data = int
+			}
+			{
+				key = add_base
+				data = int
+			}
+			{
+				key = add_high_morale
+				data = int
+			}
+			{
+				key = stability_threshold
+				data = fixed_point
+			}
+			{
+				key = war_support_threshold
+				data = fixed_point
+			}
+			{
+				key = stockpile_threshold
+				data = int
+			}
+			{
+				key = add_big_stockpile
+				data = int
+			}
+		}
 	}
-}
 
-chem_tank_shell = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    # Synthetic fallback stock weights used when no explicit cylinder stock exists.
-    synthetic_stock = {
-        tabun = 30
-        sarin = 35
-        soman = 40
-    }
-
-    # Per-division contamination dose profile before support scaling.
-    dose_per_div = {
-        chlorine = -0.00021
-        phosgene = -0.00030
-        mustard = -0.00025
-        lewisite = -0.00028
-        tabun = -0.00049
-        sarin = -0.00060
-        soman = -0.00066
-    }
-
-    # Base contamination duration profile in days before weather scaling.
-    duration_days = {
-        chlorine = 2.5
-        phosgene = 2.0
-        mustard = 4.5
-        lewisite = 4.0
-        tabun = 1.5
-        sarin = 1.2
-        soman = 1.0
-    }
-
-    condemnation_base = {
-        chlorine = 0.10
-        phosgene = 0.14
-        mustard = 0.18
-        lewisite = 0.22
-        tabun = 0.32
-        sarin = 0.38
-        soman = 0.44
-    }
-
-    condemnation_per_unit = {
-        chlorine = 0.0008
-        phosgene = 0.0011
-        mustard = 0.0013
-        lewisite = 0.0015
-        tabun = 0.0019
-        sarin = 0.0022
-        soman = 0.0025
-    }
-
-    combat_scale = {
-        min_units_in_combat = 1
-        dose_mult = 0.285
-        duration_mult = 1.00
-        max_duration_days = 10
-    }
-
-    condemnation = {
-        won_base_mult = 1.00
-        won_per_unit_mult = 1.00
-        lost_base_mult = 0.80
-        lost_per_unit_mult = 0.80
-        consumed_per_combat_unit = 1.20
-        min_consumed = 1
-        max_consumed = 40
-    }
-
-    temp_threshold = {
-        freezing = -12
-        cold = 2
-        warm = 22
-        hot = 30
-        heatwave = 38
-    }
-
-    weather_mult = {
-        freezing = 1.35
-        cold = 1.20
-        temperate = 1.00
-        warm = 0.85
-        hot = 0.70
-        heatwave = 0.55
-        snow = 1.15
-        blizzard = 1.25
-        sandstorm = 0.70
-    }
-
-    duration_mult_bounds = {
-        min = 0.50
-        max = 1.80
-    }
+	defaults = {
+		base = 0
+		add_base = 5
+		add_high_morale = 25
+		stability_threshold = 0.60
+		war_support_threshold = 0.60
+		stockpile_threshold = 2500
+		add_big_stockpile = 15
+	}
 }
 
 chem_prototype_reward_weight = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    base = 2
-    theme_repeat_factor = 0.25
-}
-
-chem_nerve_raid = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    # Condemnation added on successful nerve raid use.
-    condemnation_base = {
-        sarin = 0.90
-        soman = 1.15
-    }
-
-    condemnation_per_unit = {
-        sarin = 0.0030
-        soman = 0.0038
-    }
-
-    # Abstract "consumed amount" used only for condemnation scaling.
-    consumed = {
-        sarin = 80
-        soman = 70
-    }
-
-    # State contamination impact for nerve raids.
-    state_dose = {
-        sarin = -0.020
-        soman = -0.024
-    }
-
-    state_duration_days = {
-        sarin = 2
-        soman = 2
-    }
-
-    # Immediate unit damage applied in the targeted province by nerve raids.
-    unit_org_damage = {
-        sarin = 0.18
-        soman = 0.24
-    }
-
-    unit_str_damage = {
-        sarin = 0.035
-        soman = 0.045
-    }
-
-    outcome_mult = {
-        limited = 0.65
-        success = 1.00
-        critical = 1.35
-    }
-}
-
-chem_special_raid = {
 	schema = {
 		any_key = yes
-		data = {
-			{
-				any_key = yes
-				data = fixed_point
-			}
-		}
+		data = fixed_point
 	}
 
-	condemnation_base = {
-		malodor = 0
-		aphrodisiac = 0
-	}
-
-	condemnation_per_unit = {
-		malodor = 0
-		aphrodisiac = 0
-	}
-
-	consumed = {
-		malodor = 65
-		aphrodisiac = 55
-	}
-
-	outcome_mult = {
-		limited = 0.65
-		success = 1.00
-		critical = 1.35
-	}
-
-	duration_days = {
-		malodor = 5
-		aphrodisiac = 4
-	}
-
-	immediate_org_damage = {
-		malodor = 0.25
-		aphrodisiac = 0
-	}
-
-	contamination_dose = {
-		malodor = -0.003
-		aphrodisiac = 0
-	}
-
-	contamination_duration_days = {
-		malodor = 1
-		aphrodisiac = 0
-	}
-
-	state_local_supplies = {
-		malodor = -0.10
-		aphrodisiac = 0
-	}
-
-	state_supply_impact = {
-		malodor = -0.20
-		aphrodisiac = 0
-	}
-
-	state_speed = {
-		malodor = -0.35
-		aphrodisiac = 0
-	}
-
-	state_attack = {
-		malodor = -0.20
-		aphrodisiac = 0.10
-	}
-
-	state_defence = {
-		malodor = -0.30
-		aphrodisiac = -0.25
-	}
-
-	state_breakthrough = {
-		malodor = -0.20
-		aphrodisiac = 0.15
-	}
-
-	state_local_org_regain = {
-		malodor = -0.30
-		aphrodisiac = -0.40
-	}
-
-	state_max_dig_in_factor = {
-		malodor = -0.60
-		aphrodisiac = -0.50
-	}
-
-	state_dig_in_speed_factor = {
-		malodor = -0.75
-		aphrodisiac = -0.60
-	}
-
-	state_coordination = {
-		malodor = 0
-		aphrodisiac = -0.50
-	}
-
-	state_land_reinforce_rate = {
-		malodor = 0
-		aphrodisiac = -0.50
-	}
-
-	state_max_planning_factor = {
-		malodor = 0
-		aphrodisiac = -0.60
-	}
-
-	state_local_factories = {
-		malodor = -0.20
-		aphrodisiac = 0
-	}
-
-	state_required_garrison_factor = {
-		malodor = 0.25
-		aphrodisiac = 0
-	}
-
-	state_resistance_target = {
-		malodor = 0.04
-		aphrodisiac = 0.01
-	}
-
-	state_air_mission_efficiency = {
-		malodor = -0.15
-		aphrodisiac = 0
-	}
-
-	state_air_accidents_factor = {
-		malodor = 0.10
-		aphrodisiac = 0
-	}
+	base = 2
+	theme_repeat_factor = 0.25
 }
 
 chem_japan_campaign_decision = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
-
-    defaults = {
-        attack_command_power_cost = 20
-        attack_command_power_cost_trigger = 19
-        attack_command_power_cost_discounted_trigger = 15
-        attack_cooldown_days = 8
-        attack_dose_mult = 1.00
-        attack_duration_mult = 1.00
-
-        target_state_cooldown_days = 24
-
-        attack_cylinder_consumption = 120
-        attack_cylinder_consumption_trigger = 119
-    }
-}
-
-chem_japan_campaign_condemnation = {
 	schema = {
 		any_key = yes
 		data = {
@@ -1216,64 +211,31 @@ chem_japan_campaign_condemnation = {
 		}
 	}
 
-	base = {
-		chlorine = 3.00
-		phosgene = 4.00
-		mustard = 5.00
-		lewisite = 6.00
-	}
-	per_cylinder = {
-		chlorine = 0.010
-		phosgene = 0.012
-		mustard = 0.015
-		lewisite = 0.018
+	defaults = {
+		attack_command_power_cost = 20
+		attack_command_power_cost_discounted = 16
+		attack_command_power_cost_trigger = 19
+		attack_command_power_cost_discounted_trigger = 15
+		attack_cylinder_consumption = 120
+		attack_cylinder_consumption_trigger = 119
 	}
 }
 
 chem_japan_campaign_ai = {
-    schema = {
-        any_key = yes
-        data = {
-            {
-                any_key = yes
-                data = fixed_point
-            }
-        }
-    }
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
 
-    defaults = {
-        attack_base = 4
-        attack_add_core_state = 2
-        treaty_member_factor = 0.30
-    }
-}
-
-chem_japan_campaign_state_dose = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    chlorine = -0.010
-    phosgene = -0.012
-    mustard = -0.013
-    lewisite = -0.014
-    tabun = -0.015
-    sarin = -0.017
-    soman = -0.019
-}
-
-chem_japan_campaign_state_duration_days = {
-    schema = {
-        any_key = yes
-        data = fixed_point
-    }
-
-    chlorine = 8
-    phosgene = 9
-    mustard = 10
-    lewisite = 11
-    tabun = 10
-    sarin = 9
-    soman = 9
+	defaults = {
+		attack_base = 4
+		attack_add_core_state = 2
+		treaty_member_factor = 0.30
+		selector_recovery_add = 100
+	}
 }

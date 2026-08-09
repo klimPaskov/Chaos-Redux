@@ -183,7 +183,7 @@ Compliance actions recognize strategic-agent lots, filled shells, prepared air p
 
 `cbrn_migrate_legacy_payload_stockpiles` is idempotent and converts legacy cylinders, malodor bombs, and behavioral bombs to their exact strategic-agent lots at the centralized recovery ratio. It also chooses an initial shell and air profile when none exists.
 
-The migration helper is deliberately not called while legacy delivery consumers remain active. The formerly direct Sarin, Soman, Malodor, and Behavioral-Agent raid identifiers are now selected-state adapter surfaces. Older compatibility effect definitions remain load-safe for identifier and save compatibility, but their direct delivery callers are closed or inactive and do not mutate the canonical contamination ledger. Until each old route is retired, doctrine reserves, AI readiness checks, and sanctions accept both old and new stock. Activating migration earlier would remove equipment still referenced by legacy mechanics.
+The migration helper is deliberately not called while cylinder-backed consumers remain active. The formerly direct Sarin, Soman, Malodor, and Behavioral-Agent raid identifiers are selected-state adapters into the shared pipeline; their old direct-delivery helper bodies have been removed. Japan's historical China campaign, camp nerve employment, doomsday preparation, and mapped formations still draw cylinder equipment, so doctrine reserves, AI readiness checks, sanctions, and destruction actions continue to recognize both cylinders and the newer payload families. Activating broad migration now would remove equipment still consumed by live routes.
 
 ## Engine boundaries
 

@@ -291,7 +291,82 @@ bio_lifecycle_prepare_actor_doctrine_snapshot = {
 		set_temp_variable = { bio_seed_doctrine_medical_mult = constant:bio_lifecycle_doctrine.theater_contamination.medical_mult }
 		set_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
 	}
+
+	# Integrated CBRN Command mastery is a permanent operational layer. It
+	# strengthens every accepted ordinary-pathogen route while the officer-corps
+	# spirit above remains a separate strategic posture choice.
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_country_flag = integrated_chemical_operations_theater_intelligence_overmatch_unlocked }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:bio_integrated_operations.outbreak_potency_mult.theater_intelligence_overmatch }
+		multiply_temp_variable = { bio_seed_doctrine_duration_mult = constant:bio_integrated_operations.outbreak_duration_mult.theater_intelligence_overmatch }
+		set_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:chem_integrated_operations.condemnation_mult.theater_intelligence_overmatch }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:bio_integrated_operations.outbreak_potency_mult.air_surface_chemical_link }
+		multiply_temp_variable = { bio_seed_doctrine_duration_mult = constant:bio_integrated_operations.outbreak_duration_mult.air_surface_chemical_link }
+		set_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:chem_integrated_operations.condemnation_mult.air_surface_chemical_link }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked }
+		}
+		multiply_temp_variable = { bio_seed_doctrine_potency_mult = constant:bio_integrated_operations.outbreak_potency_mult.signal_intelligence_fusion }
+		multiply_temp_variable = { bio_seed_doctrine_duration_mult = constant:bio_integrated_operations.outbreak_duration_mult.signal_intelligence_fusion }
+	}
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			event_target:bio_seed_actor = { has_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked }
+			check_variable = { var = bio_seed_doctrine_condemnation_mult value = constant:chem_integrated_operations.condemnation_mult.operational_recon_grids compare = greater_than }
+		}
+		set_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:chem_integrated_operations.condemnation_mult.operational_recon_grids }
+	}
 	bio_lifecycle_apply_historical_actor_advisor_modifiers = yes
+}
+
+# Called only after the canonical seed record has been accepted. Deliberate and
+# doomsday deployments can recover command power; accidents and natural spread
+# never do. The exact actor receipt remains mandatory.
+bio_lifecycle_grant_integrated_operations_release_command_recovery = {
+	if = {
+		limit = {
+			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_actor
+			OR = {
+				check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.deliberate compare = equals }
+				check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.doomsday compare = equals }
+			}
+		}
+		set_temp_variable = { bio_release_command_recovery = constant:bio_lifecycle_math.zero }
+		if = {
+			limit = { event_target:bio_seed_actor = { has_country_flag = integrated_chemical_operations_theater_intelligence_overmatch_unlocked } }
+			set_temp_variable = { bio_release_command_recovery = constant:bio_integrated_operations.outbreak_command_power_refund.theater_intelligence_overmatch }
+		}
+		else_if = {
+			limit = { event_target:bio_seed_actor = { has_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked } }
+			set_temp_variable = { bio_release_command_recovery = constant:bio_integrated_operations.outbreak_command_power_refund.air_surface_chemical_link }
+		}
+		else_if = {
+			limit = { event_target:bio_seed_actor = { has_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked } }
+			set_temp_variable = { bio_release_command_recovery = constant:bio_integrated_operations.outbreak_command_power_refund.signal_intelligence_fusion }
+		}
+		if = {
+			limit = { check_variable = { bio_release_command_recovery > constant:bio_lifecycle_math.zero } }
+			event_target:bio_seed_actor = { add_command_power = bio_release_command_recovery }
+		}
+	}
 }
 
 bio_lifecycle_prepare_result_multipliers = {
@@ -775,6 +850,7 @@ bio_lifecycle_dispatch_seed = {
 		limit = { bio_lifecycle_seed_record_is_valid = yes }
 		cbrn_diplomacy_classify_biological_seed_retaliation = yes
 		bio_lifecycle_store_seed_in_current_agent_record = yes
+		bio_lifecycle_grant_integrated_operations_release_command_recovery = yes
 		if = {
 			limit = {
 				check_variable = { var = bio_seed_batch_condemnation_proof value = constant:bio_lifecycle_proof.supplied compare = equals }

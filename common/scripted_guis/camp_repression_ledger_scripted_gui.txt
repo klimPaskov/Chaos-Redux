@@ -287,7 +287,7 @@ scripted_gui = {
 								NOT = { extermination_camp > 0 }
 							}
 							NOT = { has_political_power < constant:camp_rework_cost.expansion_pp }
-							manpower > constant:camp_rework_cost.expansion_manpower
+							check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
 							command_power > constant:camp_rework_cost.expansion_command
 							has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 							has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
@@ -301,7 +301,7 @@ scripted_gui = {
 								NOT = { concentration_camp > 0 }
 							}
 							NOT = { has_political_power < constant:camp_rework_cost.activation_pp }
-							manpower > constant:camp_rework_cost.activation_manpower
+							check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
 							command_power > constant:camp_rework_cost.activation_command
 							has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 						}
@@ -336,7 +336,7 @@ scripted_gui = {
 					has_active_camp_network = yes
 					NOT = { has_country_flag = camp_rework_guards_allocated }
 					NOT = { has_political_power < constant:camp_rework_cost.guard_pp }
-					manpower > constant:camp_rework_cost.guard_manpower
+					check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
 					command_power > constant:camp_rework_cost.guard_command
 					has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 				}
@@ -364,7 +364,7 @@ scripted_gui = {
 					camp_rework_country_can_reform = yes
 					NOT = { has_country_flag = camp_rework_gui_dismantlement_active }
 					NOT = { has_political_power < constant:camp_rework_cost.dismantle_pp }
-					manpower > constant:camp_rework_cost.dismantle_manpower
+					check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
 					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 					var:camp_selected_state_id = { is_valid_camp_dismantlement_state = yes }
 				}
@@ -374,7 +374,7 @@ scripted_gui = {
 					camp_rework_country_can_destroy_retreat_evidence = yes
 					has_variable = camp_selected_state_id
 					NOT = { has_political_power < constant:camp_rework_cost.evidence_pp }
-					manpower > constant:camp_rework_cost.activation_manpower
+					check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
 					command_power > constant:camp_rework_cost.evidence_command
 					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 					var:camp_selected_state_id = { is_valid_camp_enemy_proximity_state = yes }
@@ -382,14 +382,12 @@ scripted_gui = {
 			}
 			camp_gui_chemical_method_click_enabled = {
 				ROOT = {
-					camp_rework_country_can_use_restricted_method_route = yes
+					camp_rework_country_can_apply_chemical_camp_method = yes
 					has_variable = camp_selected_state_id
 					NOT = { has_country_flag = camp_rework_expansion_frozen }
 					OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
 					NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
-					camp_rework_country_has_chemical_escalation_capacity = yes
-					cbrn_camp_restricted_site_release_is_ready = yes
-					var:camp_selected_state_id = { camp_rework_state_is_chemical_escalation_target = yes }
+					var:camp_selected_state_id = { camp_rework_state_is_available_chemical_method_target = yes }
 				}
 			}
 			camp_gui_biological_method_click_enabled = {

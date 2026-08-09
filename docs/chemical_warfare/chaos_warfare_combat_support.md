@@ -1,105 +1,35 @@
-# Chaos Warfare: Combat Support Subdoctrine (Contaminant Firebases)
+# Chaos Warfare: Contaminant Fire Support
 
-## Overview
-This mechanic adds the `contaminant_firebases` subdoctrine to the Chaos Warfare `combat_support` track.
+## Purpose
 
-Design goal:
-- Improve Livens projector support and artillery support performance.
-- Increase chemical raid impact.
-- Increase chemical contamination potency (stronger contamination and longer persistence).
-- Avoid special unlocks (no unit/law/tactic unlocks tied to this subdoctrine).
+`contaminant_firebases` is the Combat Support track of Chaos Warfare. It rewards divisions built around chemical projectors, ammunition trains, and artillery, while its later masteries make paid chemical releases substantially more destructive. It never manufactures payload, selects a target, or writes consequences outside the shared exposure pipeline.
 
-## Implemented Structure
-Primary doctrine file:
-- `common/doctrines/subdoctrines/land/chaos_warfare_combat_support_subdoctrines.txt`
+## Adoption reward
 
-Subdoctrine:
-- Key: `contaminant_firebases`
-- Track: `combat_support`
-- Mastery override:
-  - `multiplier = 10.0`
-  - Categories:
-    - `category_line_artillery`
-    - `category_artillery`
-    - `category_support_battalions`
-    - `category_chemical_support_companies`
+The track grants 25% soft attack, breakthrough, and defense to chemical support companies; 20% soft attack to line artillery; 25% soft attack and 30% breakthrough to support artillery; and 15% reliability to CBRN artillery logistics. Its mastery multiplier is 16, so units built around the mapped projector and ammunition-train sub-units advance the track rapidly enough to feel like a deliberate force-design route.
 
-## Activation Effects
-- `category_chemical_support_companies`:
-  - `soft_attack = 0.10`
-  - `breakthrough = 0.10`
-  - `defense = 0.10`
-- `category_line_artillery`:
-  - `soft_attack = 0.10`
-- `category_support_artillery`:
-  - `soft_attack = 0.10`
-  - `breakthrough = 0.15`
+## Mastery ladder
 
-## Mastery Rewards
-1. `livens_fire_control_cells`
-- Chemical support soft attack and organization gains.
-- Support artillery soft attack gain.
+1. `livens_fire_control_cells` adds 20% offensive-delivery reliability, 25% chemical-support soft attack, 20 organization, and 25% support-artillery soft attack.
+2. `counterbattery_gas_synchronization` adds 15% coordination, 30% line-artillery soft attack and breakthrough, 25% support-artillery soft attack, and 25% chemical-support defense.
+3. `raid_targeting_teams` adds 15% coordination and multiplies shared-pipeline chemical operational effect by 1.35.
+4. `persistent_agent_distribution` adds 20% artillery-logistics reliability, 30% line-artillery soft attack, and multiplies contamination output by 1.40.
+5. `deep_contamination_fireplans` adds 30% chemical-support soft attack and breakthrough, 40% support-artillery soft attack, multiplies shared-pipeline chemical operational effect by 1.65, and multiplies contamination output by 1.80.
 
-2. `counterbattery_gas_synchronization`
-- Line artillery soft attack and breakthrough gains.
-- Support artillery soft attack gain.
-- Chemical support defense gain.
+The operational multipliers increase disruption and downstream exposure potency only after a route has supplied its exact target, real payload debit, protection, conditions, and accepted action record. They do not lower evidence, attribution, deaths, contamination, medical load, or history.
 
-3. `raid_targeting_teams`
-- Chemical support coordination gain.
-- Sets `contaminant_firebases_raid_targeting_teams_unlocked`.
-- Increases chemical nerve raid unit damage.
+## Implementation map
 
-4. `persistent_agent_distribution`
-- Line artillery soft attack gain.
-- Sets `contaminant_firebases_persistent_agent_distribution_unlocked`.
-- Increases contamination strength and contamination duration.
+- Doctrine and mastery stats: `common/doctrines/subdoctrines/land/chaos_warfare_combat_support_subdoctrines.txt`
+- Central tuning: `common/script_constants/chemical_warfare_constants.txt` and `common/script_constants/cbrn_doctrine_constants.txt`
+- Shared chemical application: `common/scripted_effects/cbrn_exposure_effects.txt`
+- Milestone receipts: `common/scripted_effects/cbrn_doctrine_effects.txt`
+- Localisation: `localisation/english/chaosx_doctrines_l_english.yml`
 
-5. `deep_contamination_fireplans`
-- Additional chemical support and support artillery combat gains.
-- Sets `contaminant_firebases_deep_contamination_fireplans_unlocked` (and keeps reward 3/4 flags aligned).
-- Further increases both raid damage and contamination potency.
+## Icon
 
-## Script Integration
-Shared tuning constants:
-- `common/script_constants/chemical_warfare_constants.txt`
-- New constant group: `chem_contaminant_firebases`
-  - `contamination_mult.persistent_agent_distribution = 1.20`
-  - `contamination_mult.deep_contamination_fireplans = 1.40`
-  - `raid_damage_mult.raid_targeting_teams = 1.20`
-  - `raid_damage_mult.deep_contamination_fireplans = 1.40`
+The dedicated doctrine-family asset is `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_contaminant_fire_support.dds`, registered as `GFX_doctrine_contaminant_firebases_medium` in `interface/chaosx_doctrines.gfx`. It is not a generic or cross-type substitute.
 
-Shared helper effects:
-- `common/scripted_effects/chemical_warfare_effects.txt`
-  - `chem_set_contaminant_firebases_contamination_mult_from_owner_target`
-  - `chem_set_contaminant_firebases_contamination_mult_from_actor_country`
-  - `chem_set_contaminant_firebases_raid_damage_mult_from_actor_country`
+## Engine boundary
 
-Hook points updated:
-- `common/scripted_effects/chemical_ability_effects.txt`
-- `common/scripted_effects/chemical_livens_support_effects.txt`
-- `common/scripted_effects/chemical_tank_shell_effects.txt`
-- `common/scripted_effects/chemical_infantry_effects.txt`
-- `common/scripted_effects/chemical_warfare_effects.txt` (nerve raid state + unit damage functions)
-
-## Localisation and UI
-Localisation keys added in:
-- `localisation/english/chaosx_doctrines_l_english.yml`
-
-Doctrine icon registration:
-- `interface/chaosx_doctrines.gfx`
-- Sprite key: `GFX_doctrine_contaminant_firebases_medium`
-- Current texture mapping: `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_contaminant_fire_support.dds`
-
-## Icons Needed
-1. Optional dedicated doctrine icon
-- Path: `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_contaminant_fire_support.dds`
-- GFX key: `GFX_doctrine_contaminant_firebases_medium`
-- GFX file: `interface/chaosx_doctrines.gfx`
-
-If no custom icon is provided, the current fallback mapping remains valid.
-
-## Future Plans / Suggestions
-1. Split raid impact into two tunables (direct unit damage and war support shock) for finer balancing.
-2. Add an AI preference modifier for countries with high chemical stockpiles to prioritize this subdoctrine in combat-support track selection.
-3. Add track milestone effects in `chaos_warfare_grand_doctrine.txt` so this subdoctrine can sync with future combat-support milestones.
+Ordinary combat tactics do not expose the exact selected-state, payload-debit, and condition receipt required for a chemical release. The chemical tactics therefore remain fail-closed unless a future verified current-version combat receipt can satisfy the same shared contract; the doctrine's unit and paid-route rewards remain fully active.

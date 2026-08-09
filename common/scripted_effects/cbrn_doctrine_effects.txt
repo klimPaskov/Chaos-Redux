@@ -414,6 +414,7 @@ cbrn_record_armor_mastery_two = {
 
 cbrn_record_armor_mastery_three = {
 	set_country_flag = cbrn_armor_mastery_three
+	set_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
 	cbrn_grant_available_doctrine_technologies = yes
 }
 
@@ -704,4 +705,168 @@ cbrn_migrate_legacy_chaos_warfare = {
 		cbrn_set_chemical_readiness_cap = yes
 		cbrn_grant_available_doctrine_technologies = yes
 	}
+}
+
+# ---------------------------------------------------------------------------
+# Event 019 provider adapter for the owner-defined chaos_battalion token.
+# The CBRN doctrine owns all non-infantry reserve accounting; this provider
+# records manpower and the exact combat token without a generic substitute.
+# ---------------------------------------------------------------------------
+
+cbrn_register_event19_provider = {
+	chaos_unit_family_provider_521_register = yes
+}
+
+chaos_unit_family_provider_521_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event_cbrn_chaos_battalion.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event_cbrn_chaos_battalion.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event_cbrn_chaos_battalion.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event_cbrn_chaos_battalion.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event_cbrn_chaos_battalion.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_521_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			has_country_flag = cbrn_chaos_warfare_adopted
+			has_tech = chaos_battalion_tech
+			cbrn_chaos_warfare_has_fielded_operations_hq = yes
+			NOT = { is_actual_nonhuman_country = yes }
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+}
+
+chaos_unit_family_provider_521_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Chaos Warfare Assault Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					chaos_battalion = { x = 0 y = 0 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event_cbrn_chaos_battalion.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+}
+
+chaos_unit_family_provider_521_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_521_event19_reconcile_sustainment = {
+	# Seven standing rows: manpower, infantry, support, gas masks,
+	# decontamination, CBRN instruments, and trucks. The operation-level
+	# chemical_agent_payload is intentionally not a unit obligation.
+	infantry_spawn_clear_provider_obligation_manifest = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_component_count = constant:chaos_unit_family_event_cbrn_chaos_battalion.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.manpower_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.infantry_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.support_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.gas_mask_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.gas_mask_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.decontamination_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.decontamination_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.cbrn_instrument_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.cbrn_instrument_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.motorized_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.motorized_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
+}
+
+chaos_unit_family_provider_521_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.chaos_assault_battalion }
+}
+
+chaos_unit_family_provider_521_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			has_country_flag = cbrn_chaos_warfare_adopted
+			has_tech = chaos_battalion_tech
+			cbrn_chaos_warfare_has_fielded_operations_hq = yes
+			NOT = { is_actual_nonhuman_country = yes }
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			has_country_flag = cbrn_chaos_warfare_adopted
+			has_tech = chaos_battalion_tech
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_521_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_521_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_521_event19_setup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_521_derivative_noop = 0 }
+}
+chaos_unit_family_provider_521_event19_remove_public_additions = {
+	set_temp_variable = { chaos_unit_family_provider_521_derivative_noop = 0 }
+}
+chaos_unit_family_provider_521_event19_cleanup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_521_derivative_noop = 0 }
 }

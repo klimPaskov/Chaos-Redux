@@ -129,7 +129,7 @@ These helpers do not scan all countries or states periodically, infer a target, 
 
 ## grant_random_chaos_special_project_available_tech
 
-This country-scope effect grants one not-yet-owned biological, chemical, or weaponized-zombie special-project unlock to event-family routes explicitly integrated with the CBRN project pool. It is CBRN-owned and is not a shared cross-system dynamic effect.
+This country-scope effect grants one not-yet-owned biological, chemical, plague-weaponization, or weaponized-zombie special-project unlock to event-family routes explicitly integrated with the CBRN project pool. It is CBRN-owned and is not a shared cross-system dynamic effect.
 
 Inputs: none.
 Output: may complete one special project and set the matching delivery technology.
@@ -142,10 +142,11 @@ Current registry entries:
 - `tularemia_bomb` -> `tularemia_bomb_delivery_systems`
 - `smallpox_bomb` -> `smallpox_bomb_delivery_systems`
 - `weaponize_the_zombies` -> `zombie_disease_bomb_delivery_systems`
+- `black_plague_weaponization_program` -> its native completion output, including `plague_bomb_delivery_systems`
 - `sp_cw_sarin_program` -> `sarin`
 - `sp_cw_soman_program` -> `soman`
 
-When new chaos biological or chemical special projects are added, add their project and delivery tech to this effect so old focus and decision rewards keep rolling from the expanded project pool.
+Every future Chaos Redux special project must be reviewed against this registry when it is added. Add each in-scope CBRN project with its exact completion output and an eligibility gate based on the project itself when technologies are shared; document every intentional exclusion here so no project is silently omitted. This invariant keeps existing focus, decision, and event rewards synchronized with the complete eligible CBRN pool.
 
 Example:
 
@@ -450,7 +451,7 @@ These country-scope effects are defined in `cbrn_payload_effects.txt`. They keep
 | --- | --- |
 | `cbrn_initialize_payload_logistics` | Country scope. No inputs. Initializes persistent shell and air profile variables to `cbrn_agent.none`; creates no equipment. |
 | `cbrn_set_default_payload_requirement_for_action` | Country/enclosing action chain. Reads `cbrn_action_delivery_route`; writes the centralized positive route cost and resets consumed amount/proof. Unknown routes remain at zero. |
-| `cbrn_try_debit_action_payload` | Country scope. Requires validated chemical metadata, unlocked agent, ready matching profile, and exact stock at least equal to `cbrn_action_payload_required`. Debits the exact strategic-agent model, shared shell lot, or class-specific air lot and then writes consumed amount/proof. A failed gate removes nothing. |
+| `cbrn_try_debit_action_payload` | Country scope. Requires validated chemical metadata, unlocked agent, ready matching profile, and exact stock at least equal to `cbrn_action_payload_required`. Debits the exact strategic-agent model, explicitly authorized legacy agent cylinder, shared shell lot, class-specific air lot, or restricted-site cylinder and then writes consumed amount/proof. `cbrn_action_legacy_cylinder_source_proof = supplied` is accepted only with the cylinder-release route; the Japan-China historical decision is its current caller. A failed gate removes nothing. |
 | `cbrn_change_shell_filling_profile` | Country scope. Requires temporary `cbrn_requested_payload_agent`, its unlock, a different current profile, and no active shell reconfiguration. Applies the centralized switch loss to prepared shell stock, stores the new agent, sets the timed line-change flag, and returns `cbrn_payload_profile_change_accepted`. Completed Rapid Front Distribution multiplies the delay by 0.80 before rounding. |
 | `cbrn_change_air_payload_profile` | Same contract for the air line. Wastage is removed only from the old class-specific air payload stock and the longer air reconfiguration delay is applied. Completed Controlled Dispersal multiplies that delay by 1.15 before rounding. |
 | `cbrn_convert_selected_agent_to_shell_lots` | Country scope. Requires a selected ready shell profile and temporary positive `cbrn_payload_conversion_requested`. Clamps the input to exact selected-agent stock, debits that stock, applies the class-specific recovery ratio, adds shell lots, and returns completed proof plus actual input/output. |
@@ -583,7 +584,7 @@ Side effects:
 - adds medical saturation, consumes civilian and military mask/filter stocks, applies cumulative evidence and attribution floors, and schedules state-scoped expiry/recovery/decay events;
 - applies Condemnation with cumulative visibility, raw civilian deaths, contamination, severity, victim, strategic/mass-casualty floors, sanctions, and confirmed treaty breach;
 - records permanent confirmed-use history. Doctrine can reduce only the Condemnation base before the public floor; it never changes the other outputs;
-- applies first-exposure multipliers to the affected state and a short defender adaptation idea. Prior world use and real protection reduce this shock without benefiting the attacker.
+- applies first-exposure multipliers to the affected state and a short defender adaptation idea. Prior world use and real protection reduce this shock. No global attacker first-use buff is granted.
 
 Internal helpers are `cbrn_dispatch_set_source_and_context`, `cbrn_dispatch_set_evidence_floor`, `cbrn_dispatch_apply_first_exposure_shock`, `cbrn_dispatch_apply_unit_damage`, `cbrn_dispatch_apply_mask_losses`, `cbrn_dispatch_apply_state_consequences`, `cbrn_dispatch_apply_condemnation`, and `cbrn_dispatch_record_actor_history`. They share the validated temporary record and must not be called directly by route adapters.
 
@@ -624,21 +625,6 @@ Example:
 
 ```txt
 cbrn_refresh_country_mask_snapshot = yes
-```
-
-### chem_set_equipment_backed_mask_reduction
-
-Adapts the shared field-army protective-equipment snapshot to the legacy cylinder-ability combat modifiers. It replaces the former technology-only 25/50/75-percent lookup.
-
-Scope: army leader. Inputs: the owner country's refreshed `cbrn_military_respiratory_protection` and `cbrn_military_skin_protection`; temporary `chem_mask_blister_bonus` selects the blister composite when positive. Defaults: missing snapshot values produce zero mask mitigation. Output: temporary `chem_mask_reduction_fraction`, using the equipment-backed score directly as a percentage and clamped from zero to the centralized 75-percent legacy ceiling. Side effects: none; it neither creates nor consumes equipment.
-
-The leader-daily preview adapter refreshes the owning country's snapshot once before rebuilding all cylinder previews. Each ability activation refreshes again and rebuilds its selected preview so deployed manpower, issued models, divisional equipment, and filter condition are current at use time.
-
-Example:
-
-```txt
-set_temp_variable = { chem_mask_blister_bonus = 1 }
-chem_set_equipment_backed_mask_reduction = yes
 ```
 
 ### cbrn_refresh_state_civilian_mask_snapshot
@@ -938,7 +924,7 @@ complete_effect = { hidden_effect = { cbrn_begin_hazard_assault_training = yes }
 
 ### Exact-state decontamination
 
-`cbrn_apply_theater_decontamination_assignment` is state scoped. The caller must pass `cbrn_state_can_receive_theater_decontamination`; its country wrapper first charges 5 Political Power, 4 Command Power, 40 Decontamination Equipment, 100 Gas Masks, 20 Support Equipment, 2 Motorized Equipment, and 300 Fuel. Decontamination stock and masks are debited oldest-first, and any missing payment blocks the assignment. After payment, it refreshes the exact state's contamination class, selects 10/8/5/3 cleanup points for Trace-or-Local/Serious/Severe/Catastrophic, applies the Theater Contamination Doctrine 1.25 multiplier when present, calls `cbrn_apply_state_contamination_delta_internal`, records only the actual removed amount on the controller, and applies a 28-day state lock. Missing or clean state input produces no useful cleanup. It never alters evidence, attribution, deaths, Condemnation, or use history.
+`cbrn_apply_theater_decontamination_assignment` is state scoped. The caller must pass `cbrn_state_can_receive_theater_decontamination`; its country wrapper first charges 5 Political Power, 4 Command Power, 40 Decontamination Equipment, 100 Gas Masks, 20 Support Equipment, 2 Motorized Equipment, and 300 Fuel. Decontamination stock and masks are debited oldest-first, and any missing payment blocks the assignment. After payment, it refreshes the exact state's contamination class, selects 10/8/5/3 cleanup points for Trace-or-Local/Serious/Severe/Catastrophic, applies the Theater Contamination Doctrine 1.75 multiplier when present, calls `cbrn_apply_state_contamination_delta_internal`, records only the actual removed amount on the controller, and applies a 28-day state lock. Missing or clean state input produces no useful cleanup. It never alters evidence, attribution, deaths, Condemnation, or use history.
 
 Example:
 
@@ -1014,7 +1000,7 @@ These effects are defined in `cbrn_hq_effects.txt`. Character-scope effects expe
 | `cbrn_hq_calculate_preparation_days` | Character scope. Required temporary inputs: base, minimum, and maximum preparation days. Reads owner Chemical Readiness, applies the centralized readiness multiplier, rounds, and clamps into the accepted range. |
 | `cbrn_hq_apply_operations_section_preparation_discount` | Character scope. Inputs: calculated preparation plus the same minimum and maximum temporary bounds. Applies the Operations Section's ten-percent preparation reduction, then reclamps and rounds. Call only for abilities that require that company. |
 | `cbrn_hq_apply_high_protection_preparation_discount` | Character scope. Refreshes the owner's real military-mask snapshot and applies the accepted five-percent preparation reduction only at the high-protection threshold, then reclamps. It does not change exposure protection itself. |
-| `cbrn_hq_apply_operations_commander_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the doctrine-independent commander's ten-percent reduction only when the leader has `chemical_operations_commander`, then reclamps and rounds. It changes no cost, duration, cooldown, or exposure output. The trait is manually assignable without the doctrine and can be granted by the active Chemical Operations Academy on leader creation or level-up. |
+| `cbrn_hq_apply_operations_commander_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the doctrine-independent commander's thirty-percent reduction only when the leader has `chemical_operations_commander`, then reclamps and rounds. It changes no cost, duration, cooldown, or exposure output. The trait is manually assignable without the doctrine and can be granted by the active Chemical Operations Academy on leader creation or level-up. |
 | `cbrn_hq_apply_offensive_doctrine_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the mutually exclusive Theater Contamination or Terminal Hazard preparation multiplier, reclamps, and rounds. Call only from Prepare Chemical Offensive and Combined CBRN Overmatch; it does not accelerate protective, cleanup, medical, or containment orders and changes no cost, active duration, cooldown, or exposure record. |
 | `cbrn_hq_add_preparing_trait_for_current_duration` | Character scope. Reads the exact rounded `cbrn_hq_preparation_days` value and injects it into the otherwise static timed-trait field through a CBRN-local meta effect. |
 | `cbrn_hq_schedule_current_event` | Character scope. Requires `cbrn_hq_scheduled_event_id` from `cbrn_hq_event_id` and exact rounded `cbrn_hq_scheduled_event_days`. It binds the calling commander as `cbrn_hq_commander` and injects both values into the unit-leader event call because installed documentation does not verify bare dynamic durations for that field. Each event resumes inside that exact commander target before reading variables or changing traits. |
@@ -1092,7 +1078,7 @@ The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`.
 | `cbrn_chemical_cleanup_state_receipt` | State scope. Removes only the state-owned chemical receipt and its Air Cleanliness contribution, then clears the state-owned continuing-death schedule. An older cleanup event cannot erase a newer receipt. |
 | `cbrn_chemical_rebuild_air_cleanliness_contributions` | Country scope. Explicit settings-reenable repair for states with live canonical chemical receipts. It is called only from the bounded repair path and is not a recurring world scan. |
 
-The legacy `chem_state_contamination_*` variables and presentation modifier remain compatibility mirrors. The legacy `chem_apply_state_contamination` writer is structurally unreachable, and active shared chemical dispatch no longer mutates the legacy helper or applies a broad chemical pulse. The canonical state receipt is the only source for chemical Air Cleanliness, expiry, and continuing deaths.
+`chem_state_contamination` is the presentation modifier for the canonical receipt. No legacy contamination writer or parallel state ledger remains. The canonical state receipt is the only source for chemical Air Cleanliness, expiry, and continuing deaths.
 
 ## Biological Air Cleanliness receipts
 

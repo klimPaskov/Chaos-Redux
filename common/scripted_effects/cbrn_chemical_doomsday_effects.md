@@ -16,7 +16,7 @@ The committed terminal release order supplies release efficiency only. The engin
 
 Accepted dispatches use the shared chemical exposure pipeline for disruption, protection-adjusted deaths, contamination, medical saturation, evidence, attribution, history, treaty response, and Condemnation. The adapter supplies one bounded batch Condemnation amount, prorated across agent lots and attached to the first accepted state for each agent.
 
-The original identifier `chem_apply_state_contamination_doomsday` remains inert for compatibility. The former direct doomsday implementation is retained as an unreachable legacy block and is not an active consequence path.
+The original identifier `chem_apply_state_contamination_doomsday` remains inert for compatibility. The former direct doomsday implementation was removed; no alternate contamination or consequence path remains in that compatibility surface.
 
 ## Private helpers
 

@@ -524,6 +524,11 @@ bio_resolve_battlefield_dissemination = {
 				if = {
 					limit = { check_variable = { var = bio_battlefield_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
 					bio_battlefield_attempt_friendly_blowback_internal = yes
+					if = {
+						limit = { event_target:bio_battlefield_actor = { tag = UWR } }
+						event_target:bio_battlefield_actor = { save_event_target_as = soviet_collapse_uwr_contamination_actor }
+						event_target:bio_battlefield_target_state = { soviet_collapse_mark_uwr_contaminated_state_for_aftermath = yes }
+					}
 					event_target:bio_battlefield_actor = {
 						bio_battlefield_record_actor_history_internal = yes
 						bio_battlefield_apply_command_refund_internal = yes

@@ -1,67 +1,39 @@
-# Chemical First-Use Surprise
+# Chemical First-Exposure Adaptation
 
 ## Overview
 
-This mechanic adds a one-time, temporary combat spike when a country first uses chemical weapons in real combat.
+Chemical first-use surprise belongs to the defender's adaptation state. A validated chemical release can magnify the immediate disruption and casualties in its exact target state when the victim has no prior chemical-exposure awareness. It does not grant a national combat buff to the attacker.
 
-- On first eligible chemical combat use, the country gains `chemical_first_use_surprise_idea` for 30 days.
-- The idea grants:
-  - `+5%` `army_attack_factor`
-  - `+5%` `breakthrough_factor`
-- While the idea is active:
-  - Cylinder ability final values are multiplied by `1.5` (offense, breakthrough, defense, org damage, str damage, war support damage).
-  - Cylinder preview values are multiplied by the same `1.5` so UI matches actual behavior.
-  - Chemical tank-shell and Livens support profile values are multiplied by `1.5` (dose, duration, condemnation base, condemnation per-unit).
-- The effect is strictly one-time per country and can never be earned again after expiration.
+The canonical implementation is `cbrn_dispatch_apply_first_exposure_shock` in `common/scripted_effects/cbrn_consequence_effects.txt`. Every supported chemical route reaches it only through `cbrn_dispatch_chemical_consequences` after target, payload, protection, and route receipts have been accepted.
 
-## Trigger Logic
+## First exposure
 
-The surprise is granted by `chem_grant_first_use_surprise` and guarded by a permanent country flag:
+An unprepared victim receives the full first-exposure multipliers from `cbrn_chemical_first_use`:
 
-- `chem_first_use_surprise_consumed` (set permanently on first grant)
+- disruption: 150% of the prepared action value;
+- military casualties: 140%;
+- civilian casualties: 130%;
+- a fourteen-day national adaptation penalty through `cbrn_first_chemical_shock_idea`.
 
-Grant is attempted from combat-use paths only:
+Real high protection lowers the immediate multipliers to 115%, 112%, and 110%. Prior confirmed world use lowers them to 125%, 118%, and 115%, representing warnings learned from foreign use without treating unrelated countries as already exposed.
 
-1. `on_army_leader_won_combat` / `on_army_leader_lost_combat` when:
-   - `num_units_offensive_combats > 0`, and
-   - leader has an active chemical cylinder trait (`chlorine`, `phosgene`, `mustard`, `lewisite`).
-2. `chem_tank_shell_register_combat_condemnation_won/lost` when guaranteed chemical tank support offensive participation is greater than zero.
-3. `chem_livens_support_register_combat_condemnation_won/lost` when guaranteed Livens support offensive participation is greater than zero.
+After the first accepted exposure, the victim receives permanent `cbrn_chemical_exposure_awareness`. Later attacks still pass through the full chemical consequence pipeline but do not repeat the first-exposure shock.
 
-## Files Changed
+## Consequences and protection
 
-- `common/scripted_effects/chemical_warfare_effects.txt`
-  - Added `chem_grant_first_use_surprise` and duration constant.
-- `common/on_actions/chaosx_on_actions_chemical_warfare.txt`
-  - Added cylinder-active combat grant checks in won/lost combat hooks.
-- `common/scripted_effects/chemical_tank_shell_effects.txt`
-  - Added active-idea support profile multiplier and surprise grant calls.
-- `common/scripted_effects/chemical_livens_support_effects.txt`
-  - Added active-idea support profile multiplier and surprise grant calls.
-- `common/scripted_effects/chemical_ability_effects.txt`
-  - Added active-idea `1.5x` multiplier to both preview and final cylinder bonus functions.
-- `common/ideas/cbw_ideas.txt`
-  - Added `chemical_first_use_surprise_idea`.
-- `localisation/english/chaosx_ideas_l_english.yml`
-  - Added name/description localisation for `chemical_first_use_surprise_idea`.
+The shock modifies only the immediate disruption and casualty calculations. It does not alter payload debit, contamination, medical saturation, mask loss, evidence, attribution, death recording, confirmed-use history, Condemnation, treaty breach, sanctions, or retaliation classification.
 
-## Icons
+Protective equipment and the target country's readiness remain active inputs. Headquarters warning, gas-mask reserves, issue policy, decontamination, and medical preparation therefore reduce the harm of first exposure through the same shared calculation used for later attacks.
 
-### Current implementation
+## Assets and wiring
 
-- Idea icon uses existing vanilla icon token: `generic_infantry_bonus`.
-- No new sprite or texture registration is required for this implementation.
+- idea icon: `gfx/interface/ideas/stage_6_chemical_delivery/cbrn_first_chemical_shock.dds`;
+- sprite: `GFX_idea_cbrn_first_chemical_shock` in `interface/cbrn_chemical_delivery.gfx`;
+- idea: `cbrn_first_chemical_shock_idea` in `common/ideas/cbw_ideas.txt`;
+- localisation: `localisation/english/cbrn_chemical_delivery_l_english.yml`.
 
-### Optional future custom icon
+No attacker-side first-use idea or icon is active.
 
-If you want a custom icon later:
+## Future extensions
 
-1. Place texture in: `gfx/interface/ideas/`
-2. Register sprite in an ideas `.gfx` file (for example an existing Chaos Redux interface gfx file).
-3. Update `picture = ...` in `chemical_first_use_surprise_idea` to the new sprite token.
-
-## Future Extensions
-
-1. Split surprise into two tiers based on delivery mode (cylinder-only first use vs support-company first use).
-2. Add AI caution memory to reduce repeated risky assaults immediately after enemy surprise proc.
-3. Add defender-side temporary adaptation event chain after first exposure.
+If a current-version native warning-sharing hook exposes exact participating allies, chemical awareness could be shared through that proven relationship. It must not be approximated with a world pulse or faction-wide estimator.

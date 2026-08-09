@@ -8,7 +8,7 @@ This reconciliation is bounded to the five user-authorized Markdown surfaces nam
 
 The user subsequently authorized unsupported content to be skipped so the supported core mechanics can close without proxies or fallbacks.
 
-- Ground Chemical operations, continuous Chemical air missions, and nerve-agent suppression remain inactive behind verified-current-version hooks. Their orphan player-facing selectors and commissioning controls are hidden by the same hooks.
+- Ground Chemical operations and continuous Chemical air missions remain inactive behind verified-current-version hooks. The separate legacy selected-state occupation operation is also inactive, but nerve-agent camp suppression is supported through Gas-Chamber Saturation Drills and the existing camp transaction.
 - `Air Is Still Breathable`, `No Wind Is Friendly`, `The Antidote Arrived`, and `Unbroken Supply Corridor` were removed from the active achievement registry because their exact required receipts are unavailable.
 - Hardened Mobile Plant was removed rather than replaced with a reliability, cost, bombing-loss, or capture-loss approximation.
 - Historically sourced unique national MIO names and exact live production-share claims are skipped as non-core work. Generic functional MIO families and route-aware AI remain active.
@@ -39,7 +39,7 @@ The user subsequently authorized unsupported content to be skipped so the suppor
 | `2026-07-14_stage_5_completion_audit.md` | promoted as local evidence | Stage 5 doctrine and balance tranche passed its bounded audit; it does not close package completion. |
 | Stage 6 chemical migration and doctrine addenda | core implemented; unsupported routes omitted | Doctrine potency and Condemnation boundary is implemented; ground Chemical exact HQ/weather/terrain operations and continuous air remain inactive without verified hooks. |
 | Stage 7 biological lifecycle and route validations | promoted as bounded evidence | Native raids, operative release, battlefield dissemination, sabotage, bounded historical decisions, doomsday, countermeasures, potency hierarchy, and agent-neutral native raid odds are recorded; final package scenarios remain open. |
-| Stage 9 decision/mission audit | promoted as bounded evidence | Supported decision/mission surfaces passed the scoped audit; nerve suppression remains inactive and its commissioning control is hidden. |
+| Stage 9 decision/mission audit | historical bounded evidence, superseded for nerve suppression | Supported decision/mission surfaces passed the scoped audit. The later camp integration supplies the accepted playable nerve-agent route; only the separate legacy occupation operation remains inactive. |
 | Stage 10 AI/country handoffs | core implemented; non-core identities skipped | Country profiles, route-aware AI, generic MIO families, and MIO visibility are source-audited; exact live production shares and historically sourced unique national MIO identities are not claimed. |
 | `2026-07-29_near_completion_improvement_loop_closure.md` | accepted closure; no new addendum | Broad expansion is closed, and no estimator, proxy, neutral receipt, fallback, or scope reduction is authorized. |
 | `2026-07-29_stage_14_package_scenario_evidence.md` | promoted as source evidence | Deterministic supported-core scenarios and AI score evidence are recorded; unsupported scenarios and achievements are explicit omissions. |
@@ -66,7 +66,7 @@ The user subsequently authorized unsupported content to be skipped so the suppor
 ## Contradictions still open
 
 - Ground Chemical exact-state HQ/weather/terrain receipt remains unavailable.
-- Nerve suppression exact state/weather/terrain/target-loss receipt remains unavailable.
+- The legacy selected-state occupation operation lacks exact weather, terrain, and target-loss receipts. The accepted camp nerve-suppression route is implemented independently and does not infer those inputs.
 - Hardened Mobile Plant lacks an exact bombing/capture equipment-loss transaction.
 - Historically sourced unique national MIO identities remain unresolved.
 - Precise live production shares, long-run AI pacing, and user-owned runtime validation remain unresolved.
@@ -81,7 +81,7 @@ The user subsequently authorized unsupported content to be skipped so the suppor
 
 ## Recommended parent decisions
 
-1. Supply an exact current-version ground Chemical, nerve, or bombing/capture transaction receipt before reopening those omitted surfaces.
+1. Supply an exact current-version ground Chemical, legacy occupation-operation, or bombing/capture transaction receipt before reopening those omitted surfaces.
 2. Reopen any of the four omitted achievements only if its exact required receipt becomes available; no proxy or narrowed replacement is authorized.
 3. Decide whether historically sourced unique national MIO identities and precise live production shares are required for a later non-core tranche; no generic substitute is being promoted as equivalent.
 

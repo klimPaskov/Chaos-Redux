@@ -54,7 +54,7 @@ Designer, headquarters, protective-equipment, biological-lifecycle, and conseque
 ## Explicit omissions and engine-boundary items
 
 - Ground Chemical exact-state Army Headquarters/weather/terrain receipt remains unavailable, so ground release-bearing routes and their agent selector remain inactive behind the false verified-current-version hook.
-- Nerve suppression exact state/weather/terrain/target-loss receipt remains unavailable, so its commissioning and operation controls remain inactive behind the false verified-current-version hook.
+- The separate legacy selected-state occupation suppression operation remains unavailable because exact weather, terrain, and target-loss receipts are not exposed. The accepted nerve-agent camp route is supported independently: Gas-Chamber Saturation Drills need an existing camp network plus a researched and stocked nerve agent, then use the camp's exact target, payload, death, contamination, evidence, trauma, responsibility, and consequence transaction.
 - Air Is Still Breathable, No Wind Is Friendly, The Antidote Arrived, and Unbroken Supply Corridor are absent from the active achievement registry because their exact receipts or reusable eligibility gate are unavailable. No proxy receipt replaces them.
 - The current engine does not expose a verified continuous-air eligible-activity callback, so that route remains intentionally unavailable.
 - The current engine does not expose a bombing or facility-capture transaction carrying the exact national decontamination equipment loss, so Hardened Mobile Plant is omitted from the active MIO tree rather than receiving a substitute bonus.
@@ -69,18 +69,14 @@ Designer, headquarters, protective-equipment, biological-lifecycle, and conseque
 
 ## Legacy migration state
 
-Legacy chemical helper definitions remain load-safe compatibility surfaces while targeted reachability audits continue.
+The four old army-leader chemical ability identifiers remain load-safe and permanently unavailable because that surface cannot supply an exact selected state or a verified release receipt. Their obsolete wind, synthetic-stockpile, preview, direct-contamination, Livens, tank-shell, and passive-battalion helper implementations and localisation were removed.
 
-The active shared chemical dispatcher no longer mutates legacy state contamination or continuing-death helpers. The legacy `chem_apply_state_contamination` writer is structurally unreachable, so old callers cannot bypass the canonical payload, protection, evidence, attribution, medical, Air Cleanliness, death, and Condemnation receipts.
+The active shared dispatcher is the only chemical consequence writer. It owns payload debit, protection, disruption, deaths, contamination, medical saturation, evidence, attribution, history, treaty response, and Condemnation. The doomsday and Japan-China campaign routes are explicit adapters into that dispatcher rather than retained direct bodies.
 
-The generic Livens profile and old doomsday direct body are structurally unreachable, and commander-cylinder abilities remain unavailable until their exact target and condition contract is proven.
-
-The remaining legacy definitions must not be described as active delivery routes unless a current caller is found and migrated.
-
-The two ledgers still require a final identifier audit before the migration helper can be activated broadly.
+Compatibility state modifiers and stable identifiers remain only where current saves or GFX references can resolve them without creating an active delivery route. They must not be described as active chemical use.
 
 ## Completion status
 
-This file is a current-state handoff, not a completion claim.
+The supported-core checklist and package scenarios are reconciled to current source. The current reward-density and bloat audit is recorded in `docs/plans/chaos_warfare_system_plans/2026-08-09_reward_density_and_bloat_audit.md`.
 
-The decision/mission, country-package, and localisation specialist audits, improvement-loop closure, and final incapacitating-agent asset integration are complete. Final supported-core completion auditing, scenario reconciliation, and checklist closure remain required.
+The remaining implementation limits are the disclosed exact-engine surfaces above and user-owned live consumer validation. Fresh specialist audit workers were rejected by the platform before producing reports, so the parent source audit and available MCP evidence are recorded without representing those unavailable worker passes as completed.
