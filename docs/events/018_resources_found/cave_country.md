@@ -67,7 +67,7 @@ When DHO loses an active anchor, that capacity enters a 21-day grace period. Rec
 
 ## Focus architecture
 
-`common/national_focus/018_resources_found_cave_focus_tree.txt` defines 65 focuses. Every reward changes an idea, decision unlock, anchor rule, AI target, map objective, spawn preference, capacity rule, or terminal preparation surface. Focus-only completion markers are not used as substitute rewards.
+`common/national_focus/018_resources_found_cave_focus_tree.txt` defines 67 focuses. Every reward changes an idea, decision unlock, anchor rule, AI target, map objective, spawn preference, capacity rule, or terminal preparation surface. Focus-only completion markers are not used as substitute rewards.
 
 The opening lane secures the origin, creates commanders, initializes the brood network, and teaches the AI to identify resource-bearing surface routes.
 
@@ -162,7 +162,7 @@ Visual identity:
 - cave ideas and countermeasure ideas: `gfx/interface/ideas/018_resources_found/`, registered in the same GFX file;
 - cave and anti-cave decision/category art: `gfx/interface/decisions/018_resources_found/`, registered in the same GFX file.
 
-The exhaustive provenance, prompts, dimensions, frame plans, processed intermediates, DDS/TGA paths, and sprite identifiers are maintained in `docs/assets/018_resources_found/manifest.md` and `docs/assets/018_resources_found/gfx_handoff.md`.
+The permanent runtime inventory, provenance conclusions, dimensions, frame counts, DDS/TGA paths, sprite identifiers, and specialist evidence links are maintained in `docs/events/018_resources_found/assets.md`.
 
 ## Future extension rules
 
