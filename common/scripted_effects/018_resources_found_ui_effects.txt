@@ -2,9 +2,19 @@
 # CHAOS REDUX - EVENT 018 FIELD UI EFFECTS
 # ============================================================================
 # Country-scope helpers for rebuilding the valid field view, cycling the
-# selected persistent state record, and moving the map camera to that state.
+# selected persistent state record, maintaining its one-based display position,
+# and moving the map camera to that state.
 # The physical record remains state-owned in every case.
 # ============================================================================
+
+resources_found_gui_update_display_position = {
+	if = {
+		limit = { check_variable = { resources_found_gui_fields^num > constant:resources_found_value.zero } }
+		set_variable = { resources_found_gui_selected_display_index = resources_found_gui_selected_index }
+		add_to_variable = { resources_found_gui_selected_display_index = constant:resources_found_value.one }
+	}
+	else = { clear_variable = resources_found_gui_selected_display_index }
+}
 
 resources_found_gui_rebuild_field_list = {
 	resize_array = { resources_found_gui_fields = 0 }
@@ -36,6 +46,7 @@ resources_found_gui_rebuild_field_list = {
 		}
 		set_variable = { resources_found_selected_field = resources_found_gui_fields^resources_found_gui_selected_index }
 	}
+	resources_found_gui_update_display_position = yes
 }
 
 resources_found_gui_select_next_field = {
@@ -56,6 +67,7 @@ resources_found_gui_select_next_field = {
 		}
 		set_variable = { resources_found_selected_field = resources_found_gui_fields^resources_found_gui_selected_index }
 	}
+	resources_found_gui_update_display_position = yes
 	resources_found_refresh_decision_cost_previews = yes
 }
 
@@ -72,6 +84,7 @@ resources_found_gui_select_previous_field = {
 		}
 		set_variable = { resources_found_selected_field = resources_found_gui_fields^resources_found_gui_selected_index }
 	}
+	resources_found_gui_update_display_position = yes
 	resources_found_refresh_decision_cost_previews = yes
 }
 
