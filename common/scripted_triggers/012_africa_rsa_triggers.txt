@@ -187,6 +187,46 @@ africa_rsa_allied_branch_can_start = {
 	}
 }
 
+# COUNTRY scope on the original SAF host immediately after the civil war has
+# been created. The Republican Nationalist side is deliberately fail-closed:
+# it needs the documented high anti-war threshold, an absent ESX carrier, and
+# one state selected by the pre-war SAF ownership/control scan. The saved state
+# must still belong to either principal RSA side and cannot overlap the
+# reserved EQX anchor or either principal capital/port corridor.
+africa_rsa_republican_breakaway_can_start = {
+	check_variable = {
+		var = africa_rsa_prewar_neutrality_support
+		value = constant:africa_rsa_pressure.high_anti_war
+		compare = greater_than_or_equals
+	}
+	ESX = { exists = no }
+	has_global_event_target = africa_rsa_republican_state
+	event_target:africa_rsa_republican_state = {
+		exists = yes
+		is_on_continent = africa
+		is_capital = no
+		naval_base < constant:africa_rsa_count.one
+		NOT = { is_core_of = EQX }
+		NOT = { is_owned_by = EQX }
+		OR = {
+			is_owned_by = event_target:africa_rsa_continental_coalition
+			is_owned_by = event_target:africa_rsa_allied_union_government
+		}
+		OR = {
+			is_controlled_by = event_target:africa_rsa_continental_coalition
+			is_controlled_by = event_target:africa_rsa_allied_union_government
+		}
+	}
+}
+
+africa_rsa_republican_breakaway_is_active = {
+	has_global_event_target = africa_rsa_republican_breakaway_country
+	event_target:africa_rsa_republican_breakaway_country = {
+		exists = yes
+		has_country_flag = africa_rsa_republican_breakaway
+	}
+}
+
 africa_rsa_is_continental_coalition = {
 	has_country_flag = africa_rsa_continental_coalition
 	has_event_target = africa_rsa_continental_coalition
