@@ -48,6 +48,8 @@ The canonical reference family inspected was `.agents/skills/chaos-redux-event-a
 
 ## Parent action
 
+Commit note: commit `bee47f138` contains the intended four DDS replacements and this handoff, plus three unrelated files that were already staged by concurrent work before the narrow asset commit. Those unrelated files were not edited or reverted by this agent and remain parent-owned.
+
 Review the contact sheet and the final DDS textures, then retain the stable sprite names and existing texture path contracts during runtime wiring. The image package is complete within this bounded asset scope; final in-game presentation and consumer validation remain parent-owned.
 
 
