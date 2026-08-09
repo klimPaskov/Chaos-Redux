@@ -21,7 +21,7 @@ The normal visual language should remain political, social, military, and infras
 
 ## Player-facing text contract
 
-All final player-facing text remains an implementation task. This specification defines direction and dynamic content requirements only.
+The specification remains the source of direction and dynamic content requirements. The release-candidate text and media records for the four Event 012 super-event roles are installed, while final localisation and event-completion review remain open.
 
 Final text must follow the project writing standard:
 
@@ -33,7 +33,7 @@ Final text must follow the project writing standard:
 - no implementation notes or rework history
 - no direct announcement that an incident is a warning
 - no generic office-paperwork mystery as the default frame
-- no final super-event title, quote, button line, cultural reference, or audio choice without the super-event research workflow
+- no future super-event title, quote, button line, cultural reference, or audio choice without the super-event research workflow
 
 ## Core localisation registers
 
@@ -252,7 +252,7 @@ The news should explain the belligerents, union names, and stakes. It should not
 
 ## Super-event roles
 
-### Africa is one super-event candidate
+### Africa is one super-event role
 
 Role:
 
@@ -272,16 +272,12 @@ Presentation direction:
 - visible continental breadth through people, flags, routes, or architecture rather than a flat map
 - confidence and unresolved burden
 
-Research gates:
+Installed research record:
 
-- final title required
-- final description required
-- final button remark required
-- final quote required
-- final audio required
-- final image source mode decision required
+- final title, description, button remark, quote, audio, and image source records are installed
+- final playback, localisation, and event-completion review remain open
 
-### Scramble for Africa response super-event candidate
+### Scramble for Africa response super-event role
 
 Role:
 
@@ -300,16 +296,12 @@ Presentation direction:
 - foreign fleets, mobilised troops, closed markets, crowded ports, anti-intervention demonstrations, or diplomatic confrontation
 - Africa remains the active subject rather than a passive prize
 
-Research gates:
+Installed research record:
 
-- final title required
-- final description required
-- final button remark required
-- final quote required
-- final audio required
-- final image source mode decision required
+- final title, description, button remark, quote, audio, and image source records are installed
+- final playback, localisation, and event-completion review remain open
 
-### Continental wars super-event candidate
+### Continental wars super-event role
 
 Role:
 
@@ -329,9 +321,9 @@ Presentation direction:
 - no generic burning globe
 - use distinct military, political, and symbolic identities
 
-Research gates remain mandatory.
+The researched title, description, button remark, quote, audio, image, and source records are installed. Final playback, localisation, and event-completion review remain open.
 
-### The World terminal super-event
+### The World terminal super-event role
 
 Role:
 
@@ -351,7 +343,7 @@ Presentation direction:
 - the surviving identity visibly absorbing, federating, or ruling the defeated world
 - route-sensitive visual treatment when feasible
 
-Research gates remain mandatory. This super-event cannot use placeholder music, default audio, an invented quote, or an unresearched cultural line.
+The researched title, description, button remark, quote, audio, image, and source records are installed. This role cannot use placeholder music, default audio, an invented quote, or an unresearched cultural line. Final playback, localisation, and event-completion review remain open.
 
 ## Defeat and aftermath presentation
 
@@ -485,7 +477,7 @@ A historical polity can use sourced symbols and generated alternate-history scen
 
 ## Required event-picture package
 
-Minimum planned set:
+Installed event-picture package:
 
 - entry proclamation report image
 - first protection request report image
@@ -503,8 +495,8 @@ Minimum planned set:
 - Africa is one news image
 - Scramble response news image
 - continental war news image
-- Africa is one super-event image if approved
-- Scramble super-event image if approved
+- Africa is one super-event image
+- Scramble super-event image
 - continental wars super-event image
 - The World terminal super-event image
 
@@ -522,7 +514,7 @@ The final implementation needs:
 - rival bloc emblems when those blocs have a persistent identity
 - real portraits for real leaders
 - generated portraits for fictional leaders
-- collective portraits for councils
+- institutional emblems and text for councils, congresses, juntas, and symbolic bodies
 - high-chaos portraits for nonhuman or supernatural actors
 - portrait frames for continental, restored, rival, and high-chaos status
 
@@ -651,7 +643,7 @@ The regional view should show:
 
 Animation is useful because the system has changing states that need attention.
 
-Planned animated assets:
+Installed animated assets:
 
 - Charter seal activation loop
 - Charter Authority ring
@@ -663,6 +655,8 @@ Planned animated assets:
 - Africa-is-one completion seal
 - Ecological Wrath active emblem
 - terminal continent-war emblem
+
+The full Event 012 animation tranche contains 18 installed frame-animation packages with real source frames, frame sheets, DDS outputs, review GIFs, registrations, consumers, and static fallbacks. The list above remains the role-level presentation set, not a claim that the package is still only planned.
 
 Each animation requires:
 
@@ -720,7 +714,7 @@ Potential sound roles:
 - Africa is one completion
 - high-chaos manifestation
 
-Super-event music remains blocked until licensed or public-domain research is complete.
+The four super-event roles have installed researched music and audio records in their canonical settings-aware chain. Final playback, localisation, and event-completion review remain open.
 
 ## Spoiler boundaries
 
@@ -772,9 +766,9 @@ Final implementation documentation should include:
 
 ## Catalog reconciliation
 
-The current catalogs describe Event 12 as reserved and the Formables cluster as an unregistered placeholder.
+The release-candidate catalog records Event 12 as the Fire-Once entry `chaosx.nr12.1` in Formables cluster `6` with severe member status.
 
-Implementation must decide and then align:
+Final review must preserve and align:
 
 - final Event 12 status
 - final Formables cluster ID
@@ -786,17 +780,19 @@ Implementation must decide and then align:
 - super-event entries
 - triggerable scenario status if one is later approved
 
-The planning package does not invent a scenario ID or cluster ID.
+The planning package does not invent a second scenario ID or cluster ID. The workbook remains owned by the spreadsheet worker.
 
 ## Completion conditions for this part
 
-This presentation layer is ready for implementation planning when:
+This presentation layer is aligned for release-candidate review when:
 
 - every player-facing surface has a tone and spoiler direction
-- super-event roles are defined without final unresearched text
+- four super-event roles have researched text and media records
 - achievement conditions are mapped in the matrix
 - every visible system has an asset family
 - source mode is clear for historical and fictional assets
 - scripted GUI state and animation needs are explicit
 - accessibility and static fallback rules are preserved
-- catalog placeholders are recorded for reconciliation
+- catalog membership and Event Details wording are recorded for reconciliation
+
+Final playback, localisation, achievement, AI, and Event 012 completion audits remain open.

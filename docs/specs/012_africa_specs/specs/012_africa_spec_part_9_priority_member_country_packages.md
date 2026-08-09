@@ -2,7 +2,9 @@
 
 ## Priority restored and regional member country packages
 
-Public country names in this file are working candidates. Historical borders, titles, institutions, symbols, and claim overlap require final specialist review. These packages deepen selected Tier A identities from part 4 and the polity catalog. They do not promote every catalog entry to the same scope.
+Public country names in this file are direct readable names in the current 16-package registry. Technical slugs remain separate from player-facing localisation. Historical borders, titles, institutions, symbols, and claim overlap still require final specialist review. These packages deepen selected Tier A identities from part 4 and the polity catalog. They do not promote every catalog entry to the same scope.
+
+The 16 priority packages and six promoted Tier A visual and runtime packages are installed on approved existing carriers. The remaining polity catalog is a controlled pool and does not create new country tags.
 
 ## First deep implementation tranche
 
@@ -10,7 +12,7 @@ The first tranche should cover a geographically and politically diverse set of c
 
 A full priority package normally contains:
 
-- a safe territorial and capital plan with reduced-map fallbacks
+- a bounded territorial and capital plan with compact or negotiated outcomes
 - a starting political problem and idea lifecycle
 - six to twelve country focuses or a regional overlay with equivalent depth
 - one distinctive decision or mechanic family
@@ -29,7 +31,7 @@ Asante is a wealthy and politically prestigious inland-coastal power whose campa
 
 ### Safe formation and territory
 
-The preferred formation uses Kumasi and a compact historical-cultural core. Wider claims are negotiated through the regional congress. Coastal ports, northern territories, and neighbouring states are never automatic core territory. If Kumasi is unavailable, the restoration can remain a cultural council, autonomous member, or deferred claimant.
+The preferred formation uses Kumasi and a compact historical-cultural core. Wider claims are negotiated through the regional congress. Coastal ports, northern territories, and neighbouring states are never automatic core territory. If Kumasi is unavailable, the package resolves through a cultural council, autonomous member, or compact claim outcome.
 
 ### Starting problem and idea lifecycle
 

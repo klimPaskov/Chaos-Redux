@@ -10,13 +10,15 @@ Read all nine spec parts, every matrix and note, every diagram, all three resear
 
 Event ID 12 remains a severe Fire-Once event in the Formables cluster. Select a valid country whose capital is in Africa. Give it a country-aware host overlay, direct public identity, a large non-linear continental focus tree, Charter League system, protection and intervention tools, regional congresses, staged integration, restored polities, resource and corridor development, diaspora return, military growth, rival blocs, RSA civil-war handling, post-unification Scramble crisis, optional high-chaos content, other continent unifiers, and the rare terminal The World route.
 
+The current release-candidate already has nine 3D packages, 18 full frame-animation packages, six promoted Tier A visual and runtime packages on existing carriers, 16 priority-member packages, 16 historical male sourced placeholder portraits, six fictional male portraits, three no-person evolution images, four super-event roles, all 102 actions, RSA Allied civil-war handling, W5 certification, and world-order packages installed. Final achievement, AI, localisation, live-consumer, and event-completion audits remain open.
+
 Do not begin with instant conquest or instant continent-wide cores. African states retain agency. They can accept protection, negotiate clauses, refuse integration, leave, form rival blocs, or fight.
 
 ## Country-specific host layer
 
 Implement the 22 full host dossiers and 29 compact signatures in the host-country playbook matrix. A full dossier changes the starting problem, first proof mission, corridor, route biases, early rivals, military geography, AI priorities, high-chaos gate, and post-unification legacy. A compact signature changes a smaller bounded set without creating a parallel tree.
 
-Use the regional AI profile as fallback. Do not reduce a full host to a cosmetic tag. Do not create a separate large tree for every valid start.
+Use the regional AI profile as the bounded base profile. Do not reduce a full host to a cosmetic tag. Do not create a separate large tree for every valid start.
 
 ## Focus tree depth
 
@@ -26,7 +28,7 @@ The six grounded constitutions must have distinct representation, executive, fis
 
 ## Country packages
 
-Use the 215-entry polity catalog as a candidate pool. Implement the first 16 priority packages from part 9 and the priority-member matrix as complete playable countries when selected or promoted. Each needs safe territory, a starting problem, staged ideas, focus modules, a distinct decision family, forces, reinforcement, League relationships, refusal behaviour, AI, localisation, assets, and post-settlement play.
+Use the 215-entry polity catalog as a candidate pool. The first 16 priority packages from part 9 and the priority-member matrix are installed as complete playable packages on approved existing carriers. Each retains safe territory, a starting problem, staged ideas, focus modules, a distinct decision family, forces, reinforcement, League relationships, refusal behaviour, AI, localisation, assets, and post-settlement play, with final scenario and audit evidence still open.
 
 Other candidates remain compact countries, autonomous regions, cultural bodies, associated councils, or dormant candidates until promoted. Do not activate overlapping maximum borders at once.
 
@@ -43,8 +45,8 @@ Other candidates remain compact countries, autonomous regions, cultural bodies, 
 - dynamic starting forces and reinforcement paths for fighting countries
 - flag, leader, portrait, party, advisor, unit, AI, and localisation coverage
 - 44 achievements
-- 239 planned asset work items, produced in implementation tranches
-- super-events only after dedicated quote, remark, image, and audio research is complete
+- 239 release-ledger rows, with required model, animation, portrait, and presentation packages installed and controlled-pool rows explicitly disposed
+- four super-event roles with dedicated quote, remark, image, audio, source, slot, and wiring records installed, with final playback and localisation review open
 - catalog, event doc, music doc, manifests, and spreadsheet alignment
 
 ## Evolution interpretation

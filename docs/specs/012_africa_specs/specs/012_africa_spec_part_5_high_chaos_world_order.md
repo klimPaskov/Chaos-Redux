@@ -2,7 +2,7 @@
 
 ## High-chaos actors, Scramble response, continent unifiers, and The World
 
-All route, actor, super-event, focus, and mechanic names in this file are working labels, not final localisation. Historical African identities remain grounded. Impossible actors are explicitly fictional, nonhuman, elemental, or supernatural.
+Public country, route, actor, super-event, focus, and mechanic names in this file use direct readable names in the current package. Technical slugs remain separate from player-facing localisation. Historical African identities remain grounded. Impossible actors are explicitly fictional, nonhuman, elemental, or supernatural.
 
 ## Escalation boundary
 
@@ -443,7 +443,7 @@ The crisis qualifies for super-event treatment when at least one of these is tru
 - Africa defeats the principal coalition
 - a treaty forces broad recognition of the unified continent
 
-Final title, button text, quote, cultural reference, image, and audio require the separate super-event research workflow. The spec provides only role and tone direction.
+Final title, button text, quote, cultural reference, image, and audio records are installed through the separate super-event research workflow. The spec remains the role and tone authority, while final playback, localisation, and event-completion review remain open.
 
 ## Other continent unifiers
 
@@ -789,7 +789,7 @@ A peaceful world union can be attempted only if every continent actor accepts an
 
 ### The World super-event
 
-The final presentation requires a dedicated research package for title, button, quote, image, and audio. It should feel terminal and should not reuse the Scramble or Africa is one presentation.
+The final presentation has an installed researched package for title, button, quote, image, and audio. It should feel terminal and should not reuse the Scramble or Africa is one presentation. Final playback, localisation, and event-completion review remain open.
 
 ## Anti-bloat limits
 

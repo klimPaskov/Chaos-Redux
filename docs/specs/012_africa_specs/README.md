@@ -1,6 +1,6 @@
 # Event 12 Africa planning package, expanded second edition
 
-> Documentation reconciliation, 2026-07-29: this package remains the accepted Event 012 design source. The current release-candidate status, installed/deferred asset boundaries, and open owner decisions are recorded in [`docs/events/012_africa/overview.md`](../../events/012_africa/overview.md) and [`docs/plans/012_africa_plans/documentation_cleanup_handoff.md`](../../plans/012_africa_plans/documentation_cleanup_handoff.md). The package's planning-only wording is provenance, not a claim that no implementation exists.
+> Documentation reconciliation, 2026-08-09: this package remains the accepted Event 012 design source. The current release-candidate status, installed asset packages, controlled-pool dispositions, and open owner decisions are recorded in [`docs/events/012_africa/overview.md`](../../events/012_africa/overview.md) and the [dated reconciliation handoff](../../plans/012_africa_plans/subagent_handoffs/012_africa_documentation_reconcile_2026-08-09.md). The package's planning-only wording is provenance, not a claim that no implementation exists.
 
 ## Purpose
 
@@ -72,7 +72,7 @@ Use the narrower prompt files when routing assets, achievements, decisions, miss
 
 ### `specs/`
 
-The accepted source design. Working labels are not final localisation.
+The accepted source design. Its working labels are planning provenance, while the current implementation uses direct public country names and keeps technical slugs separate.
 
 ### `research/`
 
@@ -108,7 +108,7 @@ Source reading record, package revision review, catalog reconciliation, implemen
 - High-chaos actors are visibly nonhuman or supernatural and never stand in for human African identities.
 - Event 12 begins at tier 4, so requested Evolution IV content is preserved as a post-unification escalation layer under the current evolution framework.
 - Other continent unifiers require unique packages before world-order use.
-- Super-event titles, quotes, remarks, and audio remain research-gated.
+- Four current super-event roles have installed researched title, quote, remark, image, audio, and source records. Future additions remain research-gated.
 
 ## Known gates
 
@@ -118,9 +118,9 @@ Implementation still requires:
 - specialist review of historical overlaps and final selected packages
 - source and license verification for historical flags, symbols, portraits, and audio
 - native-speaker review of the required source-language ruler flavour
-- final super-event research and slot allocation
-- final Formables cluster ID and registry wiring
-- selection and disposition of the first Tier A, Tier B, and Tier C implementation tranche
+- final super-event playback and localisation review
+- final achievement, AI, and Event 012 completion audits
+- selection and disposition of future controlled-pool Tier A, Tier B, and Tier C rows
 - full repository audits after gameplay exists
 
 ## Improvement-loop status

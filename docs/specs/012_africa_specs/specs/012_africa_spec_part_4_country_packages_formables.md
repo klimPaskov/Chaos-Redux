@@ -2,7 +2,7 @@
 
 ## Country packages, restored polities, formables, names, leaders, and starting forces
 
-Country names in this file are public-name candidates. Internal route labels are working labels, not final localisation. Historical identities must be reviewed against the final map, surviving institutions, local claims, and tag availability before implementation.
+Country names in this file are direct public names in the current package. Internal route labels and technical slugs remain separate from final localisation. Historical identities must still be reviewed against the final map, surviving institutions, local claims, and tag availability during the release audit.
 
 ## Country package philosophy
 
@@ -15,7 +15,7 @@ A Tier A country can survive for a long campaign and may lead a region, oppose t
 - stable tag or cosmetic-tag plan
 - direct public names and ideology variants
 - base and route flags
-- leader or council package
+- one adult male ruler package, with distinct adult male advisors and commanders only where the polity exposes those roles
 - starting politics and parties
 - starting ideas with lifecycles
 - dynamic starting forces
@@ -805,7 +805,7 @@ Fictional leaders can represent local organisers, soldiers, scholars, monarchs, 
 
 ### Councils and collective bodies
 
-Councils, congresses, juntas, and symbolic institutions should use institutional names and collective portraits. Their names remain internal leadership names and do not replace the public country name.
+Councils, congresses, juntas, and symbolic institutions should use institutional names, emblems, and text rather than collective portraits. Their names remain internal leadership names and do not replace the public country name.
 
 ### Absurd source-language regnal flavour
 
@@ -878,7 +878,7 @@ A country package is incomplete unless:
 - its states and capital are valid
 - its name is direct and readable
 - it has base and route flags
-- it has a leader or council with a valid portrait plan
+- it has a leader or institution with a valid portrait, emblem, or text presentation record
 - it has politics, parties, and ideology behavior
 - it has starting ideas with a lifecycle
 - it has starting forces and a reinforcement path when it fights

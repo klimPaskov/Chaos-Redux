@@ -1,5 +1,7 @@
 Implement the complete Chaos Redux Event 12 Africa package. Read all specs, matrices, diagrams, research, handoffs, and prompts. Matrix rows are acceptance criteria.
 
+The current release-candidate has the required nine 3D packages, 18 full frame-animation packages, six promoted Tier A visual and runtime packages on existing carriers, 16 priority-member packages, 16 historical male sourced placeholder portraits, six fictional male portraits, three no-person evolution images, four super-event roles, all 102 actions, RSA Allied civil-war handling, W5 certification, and world-order packages installed. Final achievement, AI, localisation, live-consumer, and Event 012 completion audits remain open.
+
 Keep Event 12 a severe Fire-Once Formables member. Select one valid African-capital country, preserve the original host, and apply one of 22 full or 29 compact playbooks. Each opening needs its mapped weakness, proof mission, leverage, and rival risk. Promote compact hosts only when documented conditions are met.
 
 Open with protection before integration. The host defends African states, sends aid, recognises liberation movements, and invites governments into the Charter League. No instant annexation or continent-wide cores. Members can negotiate clauses, refuse integration, leave, form rivals, or fight. Opinion alone cannot cause integration.
@@ -16,7 +18,7 @@ Use Baseline and Evolutions I to III as logged layers for an event starting at t
 
 After Africa is one, trigger the Scramble response with recognition, sanctions, ultimatums, expedition plans, war, negotiation, and aftermath. Require unique packages for every other continent before world-order use. Support sponsorship, rivalry, readable unions, continental wars, and the rare terminal The World identity.
 
-Implement all 44 difficult achievements, 64 AI profiles, and 239 asset and animation items, or record each disposition. Every animation needs source frames, fallback, frame sheet, DDS, and review GIF. Keep four super-event roles. Research final text, images, licensed music, slots, and unique audio IDs before wiring.
+Keep the installed 44 achievement definitions and visual records, 64 AI profiles, and 239-row asset and animation ledger aligned with their owner audits. Every installed animation retains source frames, static fallback, frame sheet, DDS, and review GIF evidence. Keep four super-event roles with installed researched text, images, licensed music, slots, and unique audio IDs, and require that evidence for any future change.
 
 Use direct public country names. Keep the two required Afaan Oromoo strings untranslated as fictional ruler or court flavour. Never use them in technical identifiers. Add no further obscene source-language names without full-string verification and native-speaker review.
 

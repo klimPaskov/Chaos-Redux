@@ -53,6 +53,8 @@ The identifiers are registered in `interface/012_africa_evolutions.gfx`. They ar
 | Evolution II log detail | `GFX_portrait_012_africa_evolution_continental_secretariat` | `gfx/leaders/012_africa/evolutions/portrait_012_africa_evolution_continental_secretariat.dds` | 156×210 BGRA DDS |
 | Evolution III log detail | `GFX_portrait_012_africa_evolution_world_pole_delegation` | `gfx/leaders/012_africa/evolutions/portrait_012_africa_evolution_world_pole_delegation.dds` | 156×210 BGRA DDS |
 
+The three evolution incident images are installed no-person report compositions, and the 18 full frame-animation packages used by Event 012 are installed with their source frames, sheets, static fallbacks, review GIFs, registrations, and consumers. Event 012 uses institutional text and emblems rather than council or group portraits.
+
 Each asset still requires an original or verified source, provenance, processed PNG, final DDS, contact-sheet review, and manifest entry under `docs/assets/012_africa/`. The scenes should show institutions, logistics, diplomacy, and visible obligations without treating African peoples as interchangeable or using cultural caricature.
 
 ## Future depth

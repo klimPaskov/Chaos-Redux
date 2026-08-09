@@ -20,7 +20,7 @@ Read:
 
 Inspect the matching repository reference folder before creating each asset type.
 
-The asset matrix contains 239 planned work items. Production should proceed in reviewed tranches. The ledger remains the coverage source even when later rows are deferred with a reason.
+The asset matrix contains 239 release-ledger rows. The required Event 012 packages are installed, including nine 3D model packages, 18 full frame-animation packages, six promoted Tier A visual and runtime packages, 16 historical male sourced placeholder portraits, six fictional male portraits, and three no-person evolution images. Controlled-pool and optional rows retain explicit dispositions rather than representing missing required outputs.
 
 ## Routing
 
@@ -58,16 +58,16 @@ Do not mark an item complete when only a source image or prompt exists.
 1. Charter GUI static package, primary Charter values, and four route-commitment values.
 2. Host overlay motif kits, first-proof state kit, regional controls, and selected-member states.
 3. Entry, protection, congress, restoration, diaspora, corridor, League, Africa is one, and Scramble presentation images.
-4. Host constitutional flags, Charter League emblem, portrait frames, and core leader or council portraits.
+4. Host constitutional flags, Charter League emblem, portrait frames, and core leader portraits or institutional presentation records.
 5. Focus, idea, and decision icon families required by the first implementable route tranche.
 6. The seven constitutional dilemma state families and postwar review family.
 7. The 16 priority-member visual packages and their distinct-mechanic icons.
-8. Other Tier A restored-polity packages selected for implementation.
+8. Other Tier A restored-polity packages selected for implementation, with the six promoted packages already installed on existing carriers.
 9. Achievement icons.
 10. High-chaos actors and strange-unit packages.
 11. Continent-unifier and terminal identity packages.
 
-Prioritisation does not remove later rows. Record every deferred row with its reason.
+Prioritisation does not remove later rows. Record every controlled-pool or optional row with its explicit disposition.
 
 ## Host and country visual rules
 
@@ -75,7 +75,7 @@ A country-specific host overlay should communicate the starting problem without 
 
 The first-proof state kit must show active, succeeded, failed, recovery, and recovered states. The post-unification host legacy card should preserve the origin country without placing its flag over the whole continental identity.
 
-Priority-member packages need direct flags, a leader or council portrait, route identity variants when government changes, and a compact icon family for the distinct mechanic. Do not turn every prose detail into a new asset. Reuse the package’s coherent visual language.
+Priority-member packages need direct flags, a leader portrait or institutional emblem and text, route identity variants when government changes, and a compact icon family for the distinct mechanic. Do not turn every prose detail into a new asset. Reuse the package’s coherent visual language.
 
 ## Historical and identity safeguards
 
@@ -86,7 +86,7 @@ Priority-member packages need direct flags, a leader or council portrait, route 
 - Keep public country names direct and readable.
 - Never use the required obscene ruler strings in filenames, paths, sprite names, tags, or technical identifiers.
 - For one-person fictional portraits, record apparent gender presentation and require a matching regional name pool and leader metadata.
-- Use institutional names for council, crowd, committee, and symbolic-body portraits.
+- Use institutional names, emblems, and text for councils, crowds, committees, and symbolic bodies rather than council or group portraits.
 - Keep nonhuman actors visibly nonhuman. Do not turn a human African ethnic identity into an animal or supernatural caricature.
 
 ## Icon rules
@@ -130,5 +130,5 @@ Return:
 - manifests and handoffs written
 - animations completed with frame evidence
 - blocked and needs-review items
-- visible assets still missing for gameplay completion
+- controlled-pool or review items still open, with no required model, animation, portrait, or super-event media package missing
 - no claim of full Event 12 completion
