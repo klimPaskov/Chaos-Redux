@@ -1,3 +1,10 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_RESOURCES_FOUND_CAVE_EFFECT_INDUSTRIAL_CONVERSION_DAMAGE = 0.50
+@CR_SC_RESOURCES_FOUND_CAVE_RUNTIME_ANCHOR_FORT_LEVEL = 2
+@CR_SC_RESOURCES_FOUND_CAVE_RUNTIME_ANCHOR_VAULT_EXTRA_FORT_LEVEL = 1
+@CR_SC_RESOURCES_FOUND_CAVE_RUNTIME_ORIGIN_FORT_LEVEL = 3
+@CR_SC_RESOURCES_FOUND_VALUE_ONE = 1
 # ============================================================================
 # CHAOS REDUX - EVENT 018 OTH-KESH CAVE EFFECTS
 # ============================================================================
@@ -15,9 +22,6 @@
 # parsers require preprocessed literals. All other tuning uses script constants.
 # ============================================================================
 
-@CAVE_DEFAULT_BROOD_WEIGHT = 50
-@CAVE_DOCTRINE_BROOD_WEIGHT = 15
-@CAVE_GUARD_BROOD_WEIGHT = 5
 @CAVE_NOTICE_HOURS = 1
 @CAVE_FOLLOWUP_HOURS = 2
 @CAVE_FIRST_BATTLE_ANALYSIS_DAYS = 14
@@ -201,24 +205,33 @@ resources_found_cave_spawn_selected_brood_here = {
 		resources_found_cave_spawn_scree_brood_here = yes
 	}
 	else = {
+		set_temp_variable = { resources_found_cave_default_brood_weight = constant:resources_found_cave_random_weight.default_brood }
+		set_temp_variable = { resources_found_cave_stone_brood_weight = constant:resources_found_value.zero }
+		set_temp_variable = { resources_found_cave_burrow_brood_weight = constant:resources_found_value.zero }
+		set_temp_variable = { resources_found_cave_scree_brood_weight = constant:resources_found_value.zero }
+		set_temp_variable = { resources_found_cave_guard_brood_weight = constant:resources_found_value.zero }
+		if = {
+			limit = { DHO = { has_country_flag = cave_stone_phalanx_doctrine } }
+			set_temp_variable = { resources_found_cave_stone_brood_weight = constant:resources_found_cave_random_weight.doctrine_brood }
+		}
+		if = {
+			limit = { DHO = { has_country_flag = cave_burrow_war_doctrine } }
+			set_temp_variable = { resources_found_cave_burrow_brood_weight = constant:resources_found_cave_random_weight.doctrine_brood }
+		}
+		if = {
+			limit = { DHO = { has_country_flag = cave_scree_tide_doctrine } }
+			set_temp_variable = { resources_found_cave_scree_brood_weight = constant:resources_found_cave_random_weight.doctrine_brood }
+		}
+		if = {
+			limit = { DHO = { has_country_flag = cave_feeding_chamber_guards_unlocked } }
+			set_temp_variable = { resources_found_cave_guard_brood_weight = constant:resources_found_cave_random_weight.guard_brood }
+		}
 		random_list = {
-			@CAVE_DEFAULT_BROOD_WEIGHT = { resources_found_cave_spawn_war_brood_here = yes }
-			@CAVE_DOCTRINE_BROOD_WEIGHT = {
-				trigger = { DHO = { has_country_flag = cave_stone_phalanx_doctrine } }
-				resources_found_cave_spawn_stone_brood_here = yes
-			}
-			@CAVE_DOCTRINE_BROOD_WEIGHT = {
-				trigger = { DHO = { has_country_flag = cave_burrow_war_doctrine } }
-				resources_found_cave_spawn_burrow_brood_here = yes
-			}
-			@CAVE_DOCTRINE_BROOD_WEIGHT = {
-				trigger = { DHO = { has_country_flag = cave_scree_tide_doctrine } }
-				resources_found_cave_spawn_scree_brood_here = yes
-			}
-			@CAVE_GUARD_BROOD_WEIGHT = {
-				trigger = { DHO = { has_country_flag = cave_feeding_chamber_guards_unlocked } }
-				resources_found_cave_spawn_guard_brood_here = yes
-			}
+			resources_found_cave_default_brood_weight = { resources_found_cave_spawn_war_brood_here = yes }
+			resources_found_cave_stone_brood_weight = { resources_found_cave_spawn_stone_brood_here = yes }
+			resources_found_cave_burrow_brood_weight = { resources_found_cave_spawn_burrow_brood_here = yes }
+			resources_found_cave_scree_brood_weight = { resources_found_cave_spawn_scree_brood_here = yes }
+			resources_found_cave_guard_brood_weight = { resources_found_cave_spawn_guard_brood_here = yes }
 		}
 	}
 }
@@ -226,7 +239,7 @@ resources_found_cave_spawn_selected_brood_here = {
 # STATE origin scope.
 resources_found_cave_spawn_opening_allocation = {
 	set_temp_variable = { resources_found_opening_broods_remaining = DHO.resources_found_cave_starting_divisions }
-	while = {
+	while_loop_effect = {
 		limit = { check_variable = { resources_found_opening_broods_remaining > constant:resources_found_value.zero } }
 		resources_found_cave_spawn_war_brood_here = yes
 		subtract_from_temp_variable = { resources_found_opening_broods_remaining = constant:resources_found_value.one }
@@ -308,7 +321,7 @@ resources_found_complete_first_cave_emergence = {
 		force_update_dynamic_modifier = yes
 		if = {
 			limit = { NOT = { supply_node > constant:resources_found_value.zero } }
-			add_building_construction = { type = supply_node level = constant:resources_found_value.one instant_build = yes }
+			add_building_construction = { type = supply_node level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
 		}
 		DHO = {
 			set_capital = {
@@ -994,7 +1007,7 @@ resources_found_cave_secure_origin = {
 				limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_cave_origin_chamber } } }
 				add_dynamic_modifier = { modifier = resources_found_cave_origin_chamber }
 			}
-			add_building_construction = { type = bunker level = constant:resources_found_cave_runtime.origin_fort_level instant_build = yes }
+			add_building_construction = { type = bunker level = @CR_SC_RESOURCES_FOUND_CAVE_RUNTIME_ORIGIN_FORT_LEVEL instant_build = yes }
 			force_update_dynamic_modifier = yes
 		}
 	}
@@ -1145,7 +1158,7 @@ resources_found_cave_refresh_anchor_benefits = {
 			add_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified }
 			if = {
 				limit = { NOT = { has_state_flag = resources_found_cave_anchor_fortifications_built } }
-				add_building_construction = { type = bunker level = constant:resources_found_cave_runtime.anchor_fort_level instant_build = yes }
+				add_building_construction = { type = bunker level = @CR_SC_RESOURCES_FOUND_CAVE_RUNTIME_ANCHOR_FORT_LEVEL instant_build = yes }
 				set_state_flag = resources_found_cave_anchor_fortifications_built
 			}
 			force_update_dynamic_modifier = yes
@@ -1155,7 +1168,7 @@ resources_found_cave_refresh_anchor_benefits = {
 				ROOT = { has_country_flag = cave_deep_anchor_vaults_unlocked }
 				NOT = { has_state_flag = resources_found_cave_anchor_vaulted }
 			}
-			add_building_construction = { type = bunker level = constant:resources_found_cave_runtime.anchor_vault_extra_fort_level instant_build = yes }
+			add_building_construction = { type = bunker level = @CR_SC_RESOURCES_FOUND_CAVE_RUNTIME_ANCHOR_VAULT_EXTRA_FORT_LEVEL instant_build = yes }
 			set_state_flag = resources_found_cave_anchor_vaulted
 		}
 	}
@@ -1191,8 +1204,8 @@ resources_found_cave_convert_secure_industry = {
 				OR = { industrial_complex > constant:resources_found_value.zero arms_factory > constant:resources_found_value.zero }
 			}
 			set_state_flag = resources_found_cave_industry_converted
-			damage_building = { type = industrial_complex damage = constant:resources_found_cave_effect.industrial_conversion_damage }
-			damage_building = { type = arms_factory damage = constant:resources_found_cave_effect.industrial_conversion_damage }
+			damage_building = { type = industrial_complex damage = @CR_SC_RESOURCES_FOUND_CAVE_EFFECT_INDUSTRIAL_CONVERSION_DAMAGE }
+			damage_building = { type = arms_factory damage = @CR_SC_RESOURCES_FOUND_CAVE_EFFECT_INDUSTRIAL_CONVERSION_DAMAGE }
 			ROOT = { resources_found_cave_refresh_spawn_interval = yes }
 		}
 	}
@@ -1741,7 +1754,7 @@ resources_found_cave_fortify_coastal_anchors = {
 			is_coastal = yes
 			NOT = { has_state_flag = resources_found_cave_coastal_anchor }
 		}
-		add_building_construction = { type = coastal_bunker level = constant:resources_found_cave_runtime.anchor_fort_level instant_build = yes }
+		add_building_construction = { type = coastal_bunker level = @CR_SC_RESOURCES_FOUND_CAVE_RUNTIME_ANCHOR_FORT_LEVEL instant_build = yes }
 		set_state_flag = resources_found_cave_coastal_anchor
 	}
 }
@@ -2076,7 +2089,7 @@ resources_found_cave_create_world_end_foothold_here = {
 			limit = { check_variable = { resources_found_world_end_broods_remaining > constant:resources_found_cave_runtime.foothold_initial_brood_cap } }
 			set_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_cave_runtime.foothold_initial_brood_cap }
 		}
-		while = {
+		while_loop_effect = {
 			limit = { check_variable = { resources_found_world_end_broods_remaining > constant:resources_found_value.zero } }
 			resources_found_cave_spawn_selected_brood_here = yes
 			subtract_from_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_value.one }

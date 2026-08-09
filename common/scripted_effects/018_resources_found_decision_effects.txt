@@ -1,3 +1,13 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_MINIMUM_DURATION_DAYS = 14
+@CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_COMBAT_WIDTH = 80
+@CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_CLAIMANT_MODIFIER = 0.05
+@CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_PROVINCES = 4
+@CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_OWNER_MODIFIER = 0.05
+@CR_SC_RESOURCES_FOUND_DECISION_FACTOR_STANDARD = 1.00
+@CR_SC_RESOURCES_FOUND_VALUE_ONE = 1
+@CR_SC_RESOURCES_FOUND_VALUE_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - EVENT 018 DECISION AND MISSION EFFECTS
 # ============================================================================
@@ -343,7 +353,7 @@ resources_found_store_decision_cost_preview = {
 resources_found_calculate_and_store_decision_cost_preview = {
 	set_temp_variable = { resources_found_project_kind = constant:resources_found_value.zero }
 	set_temp_variable = { resources_found_project_profile = resources_found_decision_preview_profile }
-	set_temp_variable = { resources_found_project_base_days = constant:resources_found_value.one }
+	set_temp_variable = { resources_found_project_base_days = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 	set_temp_variable = { resources_found_project_family = resources_found_decision_preview_family }
 	resources_found_prepare_decision_project = yes
 	resources_found_store_decision_cost_preview = yes
@@ -553,7 +563,7 @@ resources_found_pay_decision_project_cost = {
 	add_command_power = resources_found_decision_spend
 	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_army_xp }
 	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
-	add_army_experience = resources_found_decision_spend
+	army_experience = resources_found_decision_spend
 	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_manpower }
 	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
 	add_manpower = resources_found_decision_spend
@@ -784,8 +794,8 @@ resources_found_complete_selected_field_project = {
 				set_state_flag = resources_found_commission_quotas_confirmed
 				set_state_flag = resources_found_demilitarized_field
 				set_demilitarized_zone = yes
-				set_building_level = { type = bunker level = constant:resources_found_value.zero }
-				set_building_level = { type = coastal_bunker level = constant:resources_found_value.zero }
+				set_building_level = { type = bunker level = @CR_SC_RESOURCES_FOUND_VALUE_ZERO }
+				set_building_level = { type = coastal_bunker level = @CR_SC_RESOURCES_FOUND_VALUE_ZERO }
 				if = {
 					limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_demilitarized_commission } } }
 					add_dynamic_modifier = { modifier = resources_found_demilitarized_commission }
@@ -842,7 +852,7 @@ resources_found_complete_selected_field_project = {
 			var:resources_found_active_project_field = {
 				resources_found_begin_field_transaction = yes
 				if = {
-					limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } }
+					limit = { check_variable = { resources_found_transaction_acquired = @CR_SC_RESOURCES_FOUND_VALUE_ONE } }
 					set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.baseline_min }
 					set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.baseline_max_exclusive }
 					resources_found_add_random_standard_resource_roll_unlocked = yes
@@ -875,7 +885,7 @@ resources_found_complete_selected_field_project = {
 		else_if = {
 			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.extend_corridor } }
 			var:resources_found_active_project_field = {
-				add_building_construction = { type = infrastructure level = constant:resources_found_value.one instant_build = yes }
+				add_building_construction = { type = infrastructure level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
 				set_state_flag = resources_found_integrated_transport_route
 				set_state_flag = resources_found_corridor_route_held
 			}
@@ -892,7 +902,7 @@ resources_found_complete_selected_field_project = {
 		else_if = {
 			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.build_processing } }
 			var:resources_found_active_project_field = {
-				add_building_construction = { type = industrial_complex level = constant:resources_found_value.one instant_build = yes }
+				add_building_construction = { type = industrial_complex level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
 				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.processing_yield }
 				set_state_flag = resources_found_local_processing_complete
 			}
@@ -908,8 +918,8 @@ resources_found_complete_selected_field_project = {
 		else_if = {
 			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.integrated_corridor } }
 			var:resources_found_active_project_field = {
-				add_building_construction = { type = infrastructure level = constant:resources_found_value.one instant_build = yes }
-				add_building_construction = { type = industrial_complex level = constant:resources_found_value.one instant_build = yes }
+				add_building_construction = { type = infrastructure level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
+				add_building_construction = { type = industrial_complex level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
 				set_state_flag = resources_found_compound_corridor_complete
 				set_state_flag = resources_found_major_development_completed
 				if = { limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_compound_corridor } } } add_dynamic_modifier = { modifier = resources_found_compound_corridor } }
@@ -1206,8 +1216,8 @@ resources_found_complete_selected_field_project = {
 				set_state_flag = resources_found_commission_compliance_restored
 				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
 				set_demilitarized_zone = yes
-				set_building_level = { type = bunker level = constant:resources_found_value.zero }
-				set_building_level = { type = coastal_bunker level = constant:resources_found_value.zero }
+				set_building_level = { type = bunker level = @CR_SC_RESOURCES_FOUND_VALUE_ZERO }
+				set_building_level = { type = coastal_bunker level = @CR_SC_RESOURCES_FOUND_VALUE_ZERO }
 			}
 			country_event = { id = chaosx.nr18.31 }
 		}
@@ -2052,7 +2062,7 @@ resources_found_foreign_raise_field_pressure = {
 		}
 		var:resources_found_foreign_interest_field = {
 			add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_growth }
-			add_to_variable = { resources_found_interested_country_count = constant:resources_found_value.one }
+			add_to_variable = { resources_found_interested_country_count = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 			set_state_flag = resources_found_foreign_interest_open
 			set_state_flag = resources_found_foreign_bid_registered
 			resources_found_refresh_field_record = yes
@@ -2068,7 +2078,7 @@ resources_found_foreign_request_purchase_agreement = {
 			set_state_flag = resources_found_purchase_agreement_requested
 			set_state_flag = resources_found_foreign_bid_registered
 			set_variable = { resources_found_purchase_requester = ROOT }
-			add_to_variable = { resources_found_interested_country_count = constant:resources_found_value.one }
+			add_to_variable = { resources_found_interested_country_count = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 			OWNER = { set_country_flag = resources_found_foreign_commercial_offer_pending }
 			resources_found_refresh_field_record = yes
 		}
@@ -2351,23 +2361,23 @@ resources_found_start_field_border_war = {
 		limit = { resources_found_decision_can_start_field_border_war = yes }
 		start_border_war = {
 			change_state_after_war = no
-			combat_width = constant:resources_found_border_conflict.combat_width
-			minimum_duration_in_days = constant:resources_found_border_conflict.minimum_duration_days
+			combat_width = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_COMBAT_WIDTH
+			minimum_duration_in_days = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_MINIMUM_DURATION_DAYS
 			attacker = {
 				state = var:resources_found_border_owner_state
-				num_provinces = constant:resources_found_border_conflict.provinces
+				num_provinces = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_PROVINCES
 				on_win = chaosx.nr18.26
 				on_lose = chaosx.nr18.27
 				on_cancel = chaosx.nr18.28
-				modifier = constant:resources_found_border_conflict.owner_modifier
+				modifier = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_OWNER_MODIFIER
 			}
 			defender = {
 				state = var:resources_found_border_claimant_state
-				num_provinces = constant:resources_found_border_conflict.provinces
+				num_provinces = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_PROVINCES
 				on_win = chaosx.nr18.27
 				on_lose = chaosx.nr18.26
 				on_cancel = chaosx.nr18.28
-				modifier = constant:resources_found_border_conflict.claimant_modifier
+				modifier = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_CLAIMANT_MODIFIER
 			}
 		}
 		if = {
@@ -2419,9 +2429,9 @@ resources_found_escalate_field_border_war = {
 		set_border_war_data = {
 			attacker = var:resources_found_border_owner_state
 			defender = var:resources_found_border_claimant_state
-			attacker_modifier = constant:resources_found_border_conflict.owner_modifier
-			defender_modifier = constant:resources_found_border_conflict.claimant_modifier
-			combat_width = constant:resources_found_border_conflict.combat_width
+			attacker_modifier = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_OWNER_MODIFIER
+			defender_modifier = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_CLAIMANT_MODIFIER
+			combat_width = @CR_SC_RESOURCES_FOUND_BORDER_CONFLICT_COMBAT_WIDTH
 		}
 		set_country_flag = resources_found_border_war_escalated
 	}
@@ -2459,7 +2469,7 @@ resources_found_record_border_transfer_result = {
 resources_found_queue_evolution_reschedule = {
 	if = {
 		limit = { NOT = { has_active_mission = resources_found_evolution_reschedule_mission } }
-		set_variable = { resources_found_evolution_reschedule_days = constant:resources_found_value.one }
+		set_variable = { resources_found_evolution_reschedule_days = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 		activate_mission = resources_found_evolution_reschedule_mission
 	}
 }
@@ -2940,7 +2950,7 @@ resources_found_decision_guard_feeding_chamber = {
 			is_controlled_by = DHO
 		}
 		set_state_flag = resources_found_feeding_chamber_guarded
-		add_building_construction = { type = bunker level = constant:resources_found_value.one instant_build = yes }
+		add_building_construction = { type = bunker level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
 		if = { limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } } } add_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } }
 		force_update_dynamic_modifier = yes
 	}
@@ -2970,7 +2980,7 @@ resources_found_complete_cave_project = {
 		if = {
 			limit = { has_variable = resources_found_cave_origin_state }
 			var:resources_found_cave_origin_state = { resources_found_cave_spawn_war_brood_here = yes }
-			add_to_variable = { resources_found_protected_origin_allocation = constant:resources_found_value.one }
+			add_to_variable = { resources_found_protected_origin_allocation = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 			resources_found_cave_refresh_division_and_capacity_totals = yes
 		}
 	}
@@ -3024,7 +3034,7 @@ resources_found_complete_cave_project = {
 		if = {
 			limit = { has_event_target = resources_found_cave_spawn_state }
 			event_target:resources_found_cave_spawn_state = { resources_found_cave_spawn_scree_brood_here = yes }
-			set_temp_variable = { resources_found_scree_release_spawned = constant:resources_found_value.one }
+			set_temp_variable = { resources_found_scree_release_spawned = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 		}
 		resources_found_cave_refresh_division_and_capacity_totals = yes
 		resources_found_refresh_active_raiding_brood_formations = yes
@@ -3040,7 +3050,7 @@ resources_found_complete_cave_project = {
 				NOT = { resources_found_cave_is_over_capacity = yes }
 				NOT = { has_global_flag = resources_found_cave_world_end }
 			}
-			add_to_variable = { resources_found_rapid_route_attempt_sequence = constant:resources_found_value.one }
+			add_to_variable = { resources_found_rapid_route_attempt_sequence = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 			set_variable = { resources_found_rapid_route_states_captured = constant:resources_found_value.zero }
 			set_variable = { resources_found_rapid_route_countries_defeated = constant:resources_found_value.zero }
 			set_temp_variable = { resources_found_rapid_route_days = constant:resources_found_decision_duration.rapid_route_window }
@@ -3115,8 +3125,8 @@ resources_found_complete_anti_cave_project = {
 		if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
 		add_tech_bonus = {
 			name = resources_found_anti_armor_contract_bonus
-			bonus = constant:resources_found_decision_factor.standard
-			uses = constant:resources_found_value.one
+			bonus = @CR_SC_RESOURCES_FOUND_DECISION_FACTOR_STANDARD
+			uses = @CR_SC_RESOURCES_FOUND_VALUE_ONE
 			category = cat_anti_tank
 		}
 	}
@@ -3134,8 +3144,8 @@ resources_found_complete_anti_cave_project = {
 		if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
 		add_tech_bonus = {
 			name = resources_found_shared_hard_attack_bonus
-			bonus = constant:resources_found_decision_factor.standard
-			uses = constant:resources_found_value.one
+			bonus = @CR_SC_RESOURCES_FOUND_DECISION_FACTOR_STANDARD
+			uses = @CR_SC_RESOURCES_FOUND_VALUE_ONE
 			category = cat_anti_tank
 		}
 	}
@@ -3215,12 +3225,12 @@ resources_found_complete_anti_cave_project = {
 			}
 			var:resources_found_active_response_state = {
 				remove_dynamic_modifier = { modifier = resources_found_sealed_field_scar }
-				add_building_construction = { type = infrastructure level = constant:resources_found_value.one instant_build = yes }
+				add_building_construction = { type = infrastructure level = @CR_SC_RESOURCES_FOUND_VALUE_ONE instant_build = yes }
 				set_state_flag = resources_found_liberated_resources_restored
 				set_state_flag = resources_found_post_cave_restoration_complete
 				force_update_dynamic_modifier = yes
 			}
-			add_to_variable = { resources_found_reconstruction_contribution = constant:resources_found_value.one }
+			add_to_variable = { resources_found_reconstruction_contribution = @CR_SC_RESOURCES_FOUND_VALUE_ONE }
 		}
 	}
 	resources_found_clear_decision_project_runtime = yes

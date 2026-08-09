@@ -8,6 +8,7 @@
 @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_FIELD_FACTORY_OUTPUT = -0.03
 @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_TRADE_CONSUMER_GOODS = 0.03
 @CR_SC_RESOURCES_FOUND_DECISION_GATE_COMMISSION_TROOP_LIMIT_DIVISIONS = 3
+@CR_SC_RESOURCES_FOUND_VALUE_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - EVENT 018 RESOURCES FOUND DECISIONS AND MISSIONS
 # ============================================================================
@@ -323,7 +324,7 @@ resources_found_trade_and_security_category = {
 	resources_found_grant_foreign_concession = {
 		icon = GFX_decision_resources_found_foreign_concession
 		target_root_trigger = { resources_found_decision_trade_queue_available = yes var:resources_found_selected_field = { resources_found_field_can_accept_contract = yes } }
-		target_trigger = { resources_found_decision_is_valid_foreign_partner = yes }
+		target_trigger = { FROM = { resources_found_decision_is_valid_foreign_partner = yes } }
 		visible = { FROM = { exists = yes } }
 		available = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_diplomacy_inputs = yes }
@@ -345,7 +346,7 @@ resources_found_trade_and_security_category = {
 	resources_found_sign_long_term_export_contract = {
 		icon = GFX_decision_resources_found_export_contract
 		target_root_trigger = { resources_found_decision_trade_queue_available = yes var:resources_found_selected_field = { resources_found_field_can_accept_contract = yes } }
-		target_trigger = { resources_found_decision_is_valid_foreign_partner = yes }
+		target_trigger = { FROM = { resources_found_decision_is_valid_foreign_partner = yes } }
 		visible = { FROM = { exists = yes } }
 		available = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_diplomacy_inputs = yes }
@@ -477,7 +478,7 @@ resources_found_trade_and_security_category = {
 	resources_found_name_border_claimant = {
 		icon = GFX_decision_resources_found_border_claim
 		target_root_trigger = { resources_found_decision_trade_queue_available = yes resources_found_decision_field_ready_for_claimant = yes }
-		target_trigger = { resources_found_decision_is_valid_foreign_partner = yes any_owned_state = { is_owned_and_controlled_by = PREV any_neighbor_state = { state = var:ROOT.resources_found_selected_field } } }
+		target_trigger = { FROM = { resources_found_decision_is_valid_foreign_partner = yes any_owned_state = { is_owned_and_controlled_by = PREV any_neighbor_state = { state = var:ROOT.resources_found_selected_field } } } }
 		visible = { FROM = { exists = yes } }
 		available = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_diplomacy_inputs = yes }
@@ -533,7 +534,7 @@ resources_found_trade_and_security_category = {
 		available = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c7_immediate
-		complete_effect = { custom_effect_tooltip = resources_found_negotiate_demilitarized_field_tt hidden_effect = { set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.negotiate_demilitarized_field } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.diplomacy } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.diplomacy } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.trade } resources_found_pay_immediate_decision_project = yes if = { limit = { has_country_flag = resources_found_immediate_project_payment_succeeded } var:resources_found_selected_field = { set_demilitarized_zone = yes set_building_level = { type = bunker level = constant:resources_found_value.zero } set_building_level = { type = coastal_bunker level = constant:resources_found_value.zero } } country_event = { id = chaosx.nr18.44 } } clr_country_flag = resources_found_immediate_project_payment_succeeded } }
+		complete_effect = { custom_effect_tooltip = resources_found_negotiate_demilitarized_field_tt hidden_effect = { set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.negotiate_demilitarized_field } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.diplomacy } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.diplomacy } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.trade } resources_found_pay_immediate_decision_project = yes if = { limit = { has_country_flag = resources_found_immediate_project_payment_succeeded } var:resources_found_selected_field = { set_demilitarized_zone = yes set_building_level = { type = bunker level = @CR_SC_RESOURCES_FOUND_VALUE_ZERO } set_building_level = { type = coastal_bunker level = @CR_SC_RESOURCES_FOUND_VALUE_ZERO } } country_event = { id = chaosx.nr18.44 } } clr_country_flag = resources_found_immediate_project_payment_succeeded } }
 		ai_will_do = { base = constant:resources_found_decision_ai.medium modifier = { add = constant:resources_found_decision_ai.high NOT = { is_major = yes } } }
 	}
 
@@ -1002,7 +1003,7 @@ resources_found_cave_brood_network_category = {
 		icon = GFX_decision_resources_found_resource_anchor
 		state_target = yes
 		target_root_trigger = { resources_found_decision_cave_queue_available = yes has_country_flag = cave_anchor_activation_unlocked }
-		target_trigger = { resources_found_decision_state_is_anchor_candidate = yes }
+		target_trigger = { FROM = { resources_found_decision_state_is_anchor_candidate = yes } }
 		visible = { FROM = { resources_found_decision_state_is_anchor_candidate = yes } }
 		available = { resources_found_decision_has_base_cave_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_cave_inputs = yes }
@@ -1015,7 +1016,7 @@ resources_found_cave_brood_network_category = {
 		icon = GFX_decision_resources_found_resource_anchor
 		state_target = yes
 		target_root_trigger = { resources_found_decision_cave_queue_available = yes NOT = { has_country_flag = resources_found_anchor_acceleration_cooldown } }
-		target_trigger = { has_state_flag = resources_found_cave_anchor_activating is_controlled_by = ROOT }
+		target_trigger = { FROM = { has_state_flag = resources_found_cave_anchor_activating is_controlled_by = ROOT } }
 		visible = { FROM = { has_state_flag = resources_found_cave_anchor_activating } }
 		available = { resources_found_decision_has_base_cave_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_cave_inputs = yes }
@@ -1028,7 +1029,7 @@ resources_found_cave_brood_network_category = {
 		icon = GFX_decision_resources_found_anchor_guard
 		state_target = yes
 		target_root_trigger = { resources_found_decision_cave_queue_available = yes has_country_flag = cave_feeding_chamber_guards_unlocked }
-		target_trigger = { has_state_flag = resources_found_cave_anchor_active NOT = { has_state_flag = resources_found_cave_anchor_disrupted } is_controlled_by = ROOT NOT = { has_state_flag = resources_found_feeding_chamber_guarded } }
+		target_trigger = { FROM = { has_state_flag = resources_found_cave_anchor_active NOT = { has_state_flag = resources_found_cave_anchor_disrupted } is_controlled_by = ROOT NOT = { has_state_flag = resources_found_feeding_chamber_guarded } } }
 		visible = { FROM = { has_state_flag = resources_found_cave_anchor_active } }
 		available = { resources_found_decision_has_base_cave_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_cave_inputs = yes }
@@ -1260,7 +1261,7 @@ resources_found_anti_cave_response_category = {
 		icon = GFX_decision_resources_found_resource_denial
 		state_target = yes
 		target_root_trigger = { resources_found_decision_anti_cave_queue_available = yes has_war_with = DHO }
-		target_trigger = { is_owned_and_controlled_by = ROOT resources_found_state_has_standard_resource_presence = yes NOT = { has_state_flag = resources_found_cave_denial_prepared } any_neighbor_state = { is_controlled_by = DHO } }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT resources_found_state_has_standard_resource_presence = yes NOT = { has_state_flag = resources_found_cave_denial_prepared } any_neighbor_state = { is_controlled_by = DHO } } }
 		visible = { FROM = { is_owned_and_controlled_by = ROOT resources_found_state_has_standard_resource_presence = yes } }
 		available = { resources_found_decision_has_base_anti_cave_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_anti_cave_inputs = yes }
@@ -1273,7 +1274,7 @@ resources_found_anti_cave_response_category = {
 		icon = GFX_decision_resources_found_cave_assault
 		state_target = yes
 		target_root_trigger = { resources_found_decision_anti_cave_queue_available = yes has_war_with = DHO NOT = { has_active_mission = resources_found_liberate_activating_anchor_mission } }
-		target_trigger = { resources_found_decision_state_is_activating_anchor = yes }
+		target_trigger = { FROM = { resources_found_decision_state_is_activating_anchor = yes } }
 		visible = { FROM = { resources_found_decision_state_is_activating_anchor = yes } }
 		available = { resources_found_decision_has_base_anti_cave_inputs = yes num_divisions > constant:resources_found_value.zero }
 		custom_cost_trigger = { resources_found_decision_has_base_anti_cave_inputs = yes }
@@ -1286,7 +1287,7 @@ resources_found_anti_cave_response_category = {
 		icon = GFX_decision_resources_found_anchor_cleanup
 		state_target = yes
 		target_root_trigger = { resources_found_decision_anti_cave_queue_available = yes }
-		target_trigger = { resources_found_decision_state_needs_anchor_cleanup = yes }
+		target_trigger = { FROM = { resources_found_decision_state_needs_anchor_cleanup = yes } }
 		visible = { FROM = { resources_found_decision_state_needs_anchor_cleanup = yes } }
 		available = { resources_found_decision_has_base_anti_cave_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_anti_cave_inputs = yes }
@@ -1328,7 +1329,7 @@ resources_found_anti_cave_response_category = {
 	resources_found_send_anti_cave_aid = {
 		icon = GFX_decision_resources_found_threat_cooperation
 		target_root_trigger = { resources_found_decision_anti_cave_queue_available = yes }
-		target_trigger = { exists = yes NOT = { tag = ROOT } NOT = { is_resources_found_cave_country = yes } has_war_with = DHO }
+		target_trigger = { FROM = { exists = yes NOT = { tag = ROOT } NOT = { is_resources_found_cave_country = yes } has_war_with = DHO } }
 		visible = { FROM = { exists = yes has_war_with = DHO } }
 		available = { resources_found_decision_has_base_anti_cave_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_anti_cave_inputs = yes }
@@ -1341,7 +1342,7 @@ resources_found_anti_cave_response_category = {
 		icon = GFX_decision_resources_found_threat_cooperation
 		state_target = yes
 		target_root_trigger = { resources_found_decision_anti_cave_queue_available = yes has_global_flag = resources_found_cave_defeated }
-		target_trigger = { resources_found_decision_state_needs_post_cave_restoration = yes }
+		target_trigger = { FROM = { resources_found_decision_state_needs_post_cave_restoration = yes } }
 		visible = { FROM = { resources_found_decision_state_needs_post_cave_restoration = yes } }
 		available = { resources_found_decision_has_base_anti_cave_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_anti_cave_inputs = yes }
