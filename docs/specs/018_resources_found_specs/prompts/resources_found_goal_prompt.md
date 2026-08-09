@@ -2,7 +2,7 @@
 
 Implement Event 018 from the package under `docs/specs/018_resources_found_specs/`. Read the full package and follow `AGENTS.md`, all named Chaos Redux skills, required offline wiki pages and vanilla documentation.
 
-Keep Event 018 Minor Repeatable and outside the event-cluster system. Select a valid owned state, choose one completely random standard strategic resource, and add a deposit centered around 100. Store Event 018 additions separately for all six resources. Repeated firings can enrich the same persistent field and duplicate rolls stack. Implement the complete field lifecycle, trade, foreign pressure, commission, border conflict, transfer, suspension, and exact closure. The baseline must work with evolutions disabled.
+Keep Event 018 Minor Repeatable in Economy (pos) with Medium severity. Select a valid owned state, choose one completely random standard strategic resource, and add a deposit centered around 100. Store Event 018 additions separately for all six resources. Repeated firings can enrich the same persistent field and duplicate rolls stack. Implement the complete field lifecycle, trade, foreign pressure, commission, border conflict, transfer, suspension, and exact closure. The baseline must work with evolutions disabled.
 
 Create a compact selected-field category showing Developed Yield, Excavation Depth, Workforce Safety, and Foreign Pressure. Reveal Subsurface Disturbance in Evolution II and Breach Pressure in Evolution III. Use dynamic costs, durations, AI weights, and thresholds with concrete industrial, military, transport, safety, and time commitments.
 
