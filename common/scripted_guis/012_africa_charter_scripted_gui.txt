@@ -5,7 +5,8 @@
 # state buttons consume the already prepared selected-target/state arrays and
 # then call the existing cursor refresh/quote effects. No world scan, opinion
 # check, event-target creation, action execution, or new gameplay action is
-# performed here.
+# performed here. Animated status elements read the same existing relationship,
+# congress, pressure, constitution, unification, and war receipts.
 # ============================================================================
 
 scripted_gui = {
@@ -312,6 +313,212 @@ scripted_gui = {
 						var = africa_charter_authority
 						value = constant:africa_measure.medium
 						compare = greater_than_or_equals
+					}
+				}
+			}
+			africa_charter_host_overlay_animated_visible = {
+				NOT = { has_country_flag = africa_constitutional_route_committed }
+				OR = {
+					check_variable = { africa_host_depth = constant:africa_host_depth.full }
+					check_variable = { africa_host_depth = constant:africa_host_depth.promoted }
+				}
+			}
+			africa_charter_host_overlay_static_visible = {
+				NOT = { has_country_flag = africa_constitutional_route_committed }
+				check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+			}
+			africa_charter_route_capstone_animated_visible = {
+				has_country_flag = africa_constitutional_route_committed
+				NOT = { has_global_flag = africa_is_one }
+			}
+			africa_charter_route_capstone_static_visible = {
+				has_country_flag = africa_constitutional_route_committed
+				has_global_flag = africa_is_one
+			}
+
+			africa_charter_selected_departure_animated_visible = {
+				check_variable = { africa_selected_country_targets^num > constant:africa_value.zero }
+				var:africa_selected_country_targets^0 = {
+					OR = {
+						africa_relationship_is_leaving = yes
+						has_country_flag = africa_departure_pressure_active
+					}
+				}
+			}
+			africa_charter_selected_departure_static_visible = {
+				check_variable = { africa_selected_country_targets^num > constant:africa_value.zero }
+				var:africa_selected_country_targets^0 = {
+					has_country_flag = africa_relationship_transition_pending_notice
+					NOT = {
+						OR = {
+							africa_relationship_is_leaving = yes
+							has_country_flag = africa_departure_pressure_active
+						}
+					}
+				}
+			}
+			africa_charter_selected_confidence_animated_visible = {
+				check_variable = { africa_selected_country_targets^num > constant:africa_value.zero }
+				var:africa_selected_country_targets^0 = {
+					NOT = {
+						OR = {
+							africa_relationship_is_leaving = yes
+							has_country_flag = africa_departure_pressure_active
+							has_country_flag = africa_relationship_transition_pending_notice
+						}
+					}
+					check_variable = {
+						var = africa_member_confidence
+						value = constant:africa_measure.high
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			africa_charter_selected_confidence_static_visible = {
+				check_variable = { africa_selected_country_targets^num > constant:africa_value.zero }
+				var:africa_selected_country_targets^0 = {
+					NOT = {
+						OR = {
+							africa_relationship_is_leaving = yes
+							has_country_flag = africa_departure_pressure_active
+							has_country_flag = africa_relationship_transition_pending_notice
+						}
+					}
+					NOT = {
+						check_variable = {
+							var = africa_member_confidence
+							value = constant:africa_measure.high
+							compare = greater_than_or_equals
+						}
+					}
+				}
+			}
+
+			africa_charter_ecological_wrath_animated_visible = {
+				check_variable = {
+					var = africa_ecological_wrath
+					value = constant:africa_measure.high
+					compare = greater_than_or_equals
+				}
+			}
+			africa_charter_ecological_wrath_static_visible = {
+				check_variable = {
+					var = africa_ecological_wrath
+					value = constant:africa_measure.medium
+					compare = greater_than_or_equals
+				}
+				NOT = {
+					check_variable = {
+						var = africa_ecological_wrath
+						value = constant:africa_measure.high
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			africa_charter_colonial_pressure_animated_visible = {
+				NOT = {
+					check_variable = {
+						var = africa_ecological_wrath
+						value = constant:africa_measure.medium
+						compare = greater_than_or_equals
+					}
+				}
+				check_variable = {
+					var = africa_colonial_pressure
+					value = constant:africa_measure.high
+					compare = greater_than_or_equals
+				}
+			}
+			africa_charter_colonial_pressure_static_visible = {
+				NOT = {
+					check_variable = {
+						var = africa_ecological_wrath
+						value = constant:africa_measure.medium
+						compare = greater_than_or_equals
+					}
+				}
+				check_variable = {
+					var = africa_colonial_pressure
+					value = constant:africa_measure.medium
+					compare = greater_than_or_equals
+				}
+				NOT = {
+					check_variable = {
+						var = africa_colonial_pressure
+						value = constant:africa_measure.high
+						compare = greater_than_or_equals
+					}
+				}
+			}
+
+			africa_charter_congress_ready_animated_visible = {
+				has_country_flag = africa_league_congress_unlocked
+				check_variable = { africa_selected_action_family = constant:africa_action_family.regional_congress }
+			}
+			africa_charter_congress_ready_static_visible = {
+				has_country_flag = africa_league_congress_unlocked
+				NOT = { check_variable = { africa_selected_action_family = constant:africa_action_family.regional_congress } }
+			}
+
+			africa_charter_continent_war_animated_visible = {
+				OR = {
+					has_global_flag = africa_continental_wars_active
+					has_country_flag = africa_continental_war_active
+					has_country_flag = africa_world_continental_war_protocol_active
+				}
+			}
+			africa_charter_continent_war_static_visible = {
+				has_global_flag = africa_world_continental_war_protocol_open
+				NOT = {
+					OR = {
+						has_global_flag = africa_continental_wars_active
+						has_country_flag = africa_continental_war_active
+						has_country_flag = africa_world_continental_war_protocol_active
+					}
+				}
+			}
+			africa_charter_africa_is_one_animated_visible = {
+				has_global_flag = africa_is_one
+				NOT = {
+					OR = {
+						has_global_flag = africa_world_order_open
+						has_global_flag = africa_world_continental_war_protocol_open
+						has_global_flag = africa_continental_wars_active
+					}
+				}
+			}
+			africa_charter_africa_is_one_static_visible = {
+				has_global_flag = africa_is_one
+				has_global_flag = africa_world_order_open
+				NOT = {
+					OR = {
+						has_global_flag = africa_world_continental_war_protocol_open
+						has_global_flag = africa_continental_wars_active
+					}
+				}
+			}
+
+			africa_charter_rival_alert_animated_visible = {
+				OR = {
+					has_country_flag = africa_rival_crisis_escalated
+					AND = {
+						check_variable = { africa_selected_country_targets^num > constant:africa_value.zero }
+						var:africa_selected_country_targets^0 = { africa_relationship_is_rival_bloc = yes }
+					}
+				}
+			}
+			africa_charter_rival_alert_static_visible = {
+				OR = {
+					check_variable = { africa_rival_bloc_countries^num > constant:africa_value.zero }
+					check_variable = { africa_warning_ledger^num > constant:africa_value.zero }
+				}
+				NOT = {
+					OR = {
+						has_country_flag = africa_rival_crisis_escalated
+						AND = {
+							check_variable = { africa_selected_country_targets^num > constant:africa_value.zero }
+							var:africa_selected_country_targets^0 = { africa_relationship_is_rival_bloc = yes }
+						}
 					}
 				}
 			}
