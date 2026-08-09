@@ -74,6 +74,84 @@ africa_world_emit_the_world_super_event = {
 	}
 }
 
+# COUNTRY scope on the Event 012 host. This is an explicit source registrar
+# for the four accepted terminal super-event roles. A role receives five
+# global receipts only when its slot, image, unique audio id, localisation/text
+# records, and runtime consumer are all named below. No fallback presentation
+# or generic global claim is used; removing any role's source mapping leaves
+# africa_the_world_super_event_package_ready unset.
+africa_world_register_terminal_super_event_runtime_surfaces = {
+	if = {
+		limit = {
+			africa_is_current_host = yes
+			NOT = { has_global_flag = africa_the_world_super_event_package_ready }
+			NOT = { has_global_flag = world_end }
+		}
+		# Role 101: Africa Is One. Slot 101/audio id 58; the exact image sprite
+		# and DDS, audio track/wrappers, localisation records, scripted text
+		# selectors, and africa_world_emit_africa_is_one_super_event consumer are
+		# all present in the Event 012 source package.
+		if = {
+			limit = { NOT = { has_global_flag = africa_world_super_event_101_slot_receipt } }
+			set_global_flag = africa_world_super_event_101_slot_receipt
+			set_global_flag = africa_world_super_event_101_image_receipt
+			set_global_flag = africa_world_super_event_101_audio_receipt
+			set_global_flag = africa_world_super_event_101_localisation_receipt
+			set_global_flag = africa_world_super_event_101_consumer_receipt
+		}
+		# Role 102: Scramble Response. Slot 102/audio id 59; the exact image
+		# sprite/DDS, audio track/wrappers, chaosx_super_event.102.t/q/a/d and
+		# scripted selectors, and africa_world_emit_scramble_response_super_event
+		# consumer are all present in the Event 012 source package.
+		if = {
+			limit = { NOT = { has_global_flag = africa_world_super_event_102_slot_receipt } }
+			set_global_flag = africa_world_super_event_102_slot_receipt
+			set_global_flag = africa_world_super_event_102_image_receipt
+			set_global_flag = africa_world_super_event_102_audio_receipt
+			set_global_flag = africa_world_super_event_102_localisation_receipt
+			set_global_flag = africa_world_super_event_102_consumer_receipt
+		}
+		# Role 103: Continental Wars. Slot 103/audio id 60; the exact image
+		# sprite/DDS, audio track/wrappers, chaosx_super_event.103.t/q/a/d and
+		# scripted selectors, and africa_world_emit_continental_wars_super_event
+		# consumer are all present in the Event 012 source package.
+		if = {
+			limit = { NOT = { has_global_flag = africa_world_super_event_103_slot_receipt } }
+			set_global_flag = africa_world_super_event_103_slot_receipt
+			set_global_flag = africa_world_super_event_103_image_receipt
+			set_global_flag = africa_world_super_event_103_audio_receipt
+			set_global_flag = africa_world_super_event_103_localisation_receipt
+			set_global_flag = africa_world_super_event_103_consumer_receipt
+		}
+		# Role 104: The World. Slot 104/audio id 61; the exact image
+		# sprite/DDS, audio track/wrappers, chaosx_super_event.104.t/q/a/d and
+		# scripted selectors, and africa_world_emit_the_world_super_event consumer
+		# are all present in the Event 012 source package.
+		if = {
+			limit = { NOT = { has_global_flag = africa_world_super_event_104_slot_receipt } }
+			set_global_flag = africa_world_super_event_104_slot_receipt
+			set_global_flag = africa_world_super_event_104_image_receipt
+			set_global_flag = africa_world_super_event_104_audio_receipt
+			set_global_flag = africa_world_super_event_104_localisation_receipt
+			set_global_flag = africa_world_super_event_104_consumer_receipt
+		}
+	}
+}
+
+# COUNTRY scope on the Event 012 host. The readiness writer is intentionally
+# separate from the source registrar above. It can set the terminal package
+# flag only after the trigger has evaluated every role receipt and it does not
+# write any receipt itself.
+africa_world_certify_terminal_super_event_runtime_surfaces = {
+	if = {
+		limit = {
+			africa_world_terminal_super_event_runtime_surfaces_are_registered = yes
+			NOT = { has_global_flag = africa_the_world_super_event_package_ready }
+		}
+		set_global_flag = africa_the_world_super_event_package_ready
+	}
+}
+
 # ---------------------------------------------------------------------------
 # One-time external roster and continent-package candidate registration
 # ---------------------------------------------------------------------------
@@ -389,23 +467,158 @@ africa_world_finalize_package_roster = {
 	}
 }
 
-# COUNTRY scope on the Event 12 host. This records the seven named source
-# receipts that W5 accepts: route/protocol, focus, decisions, ideas, AI,
-# identity, and localisation. The flags are documentation-backed registration
-# receipts; they do not install a package or alter a country.
+# COUNTRY scope on a frozen candidate. These are seven candidate-owned
+# receipts, not host-wide claims. Each branch names the concrete Event 012
+# package surfaces that already exist in source; it never installs a focus
+# tree, activates a decision, grants an idea, changes identity, or mutates
+# territory.
+africa_world_register_current_candidate_runtime_receipts = {
+	if = {
+		limit = {
+			africa_world_package_is_candidate = yes
+			NOT = { africa_world_candidate_runtime_surfaces_are_registered = yes }
+		}
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } }
+			# Route/protocol: common/scripted_effects/012_africa_world_crossroads_europe_effects.txt
+			# africa_crossroads_apply_command_settlement and africa_crossroads_apply_red_sea_nile_treaty.
+			# Focus: africa_middle_east_convene_crossroads_balance in
+			# common/national_focus/012_africa_world_middle_east_focus.txt.
+			# Decision: africa_crossroads_convene_mandate_exit_board in common/decisions/012_africa_decisions.txt.
+			# Idea: africa_world_middle_east_founding_problem in common/ideas/012_africa_world_order_ideas.txt.
+			# AI: africa_ai_profile_world_middle_east_is_active and
+			# africa_world_middle_east_arab_federal_focus_plan in the Event 012 AI files.
+			# Identity: africa_world_finalize_distinct_package_identity maps this package's route tags.
+			# Localisation: africa_middle_east_world_focus_tree and package idea keys in
+			# localisation/english/012_africa_world_order_l_english.yml.
+			set_country_flag = africa_world_candidate_middle_east_route_protocol_receipt
+			set_country_flag = africa_world_candidate_middle_east_focus_receipt
+			set_country_flag = africa_world_candidate_middle_east_decision_receipt
+			set_country_flag = africa_world_candidate_middle_east_idea_receipt
+			set_country_flag = africa_world_candidate_middle_east_ai_receipt
+			set_country_flag = africa_world_candidate_middle_east_identity_receipt
+			set_country_flag = africa_world_candidate_middle_east_localisation_receipt
+		}
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } }
+			# Route/protocol: africa_europe_apply_common_defence_law and
+			# africa_europe_apply_withdrawal_crisis_law in the Event 012 Europe effects.
+			# Focus: africa_europe_convene_continental_settlement in
+			# common/national_focus/012_africa_world_europe_focus.txt.
+			# Decision: africa_europe_arbitrate_border_and_minority_guarantees in common/decisions/012_africa_decisions.txt.
+			# Idea: africa_world_europe_founding_problem in common/ideas/012_africa_world_order_ideas.txt.
+			# AI: africa_ai_profile_world_europe_is_active and
+			# africa_world_europe_democratic_federation_focus_plan in the Event 012 AI files.
+			# Identity: africa_world_finalize_distinct_package_identity maps this package's route tags.
+			# Localisation: africa_europe_world_focus_tree and package idea keys in
+			# localisation/english/012_africa_world_order_l_english.yml.
+			set_country_flag = africa_world_candidate_europe_route_protocol_receipt
+			set_country_flag = africa_world_candidate_europe_focus_receipt
+			set_country_flag = africa_world_candidate_europe_decision_receipt
+			set_country_flag = africa_world_candidate_europe_idea_receipt
+			set_country_flag = africa_world_candidate_europe_ai_receipt
+			set_country_flag = africa_world_candidate_europe_identity_receipt
+			set_country_flag = africa_world_candidate_europe_localisation_receipt
+		}
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } }
+			# Route/protocol: africa_asia_apply_food_river_monsoon_board and
+			# africa_asia_apply_rail_maritime_corridors in common/scripted_effects/012_africa_world_asia_north_america_effects.txt.
+			# Focus: africa_asia_convene_regional_congresses in
+			# common/national_focus/012_africa_world_asia_focus.txt.
+			# Decision: africa_asia_seat_the_regional_centres in common/decisions/012_africa_decisions.txt.
+			# Idea: africa_world_asia_founding_problem in common/ideas/012_africa_world_order_ideas.txt.
+			# AI: africa_ai_profile_world_asia_is_active and
+			# africa_world_asia_plural_federation_focus_plan in the Event 012 AI files.
+			# Identity: africa_world_finalize_distinct_package_identity maps this package's route tags.
+			# Localisation: africa_asia_world_focus_tree and package idea keys in
+			# localisation/english/012_africa_world_order_l_english.yml.
+			set_country_flag = africa_world_candidate_asia_route_protocol_receipt
+			set_country_flag = africa_world_candidate_asia_focus_receipt
+			set_country_flag = africa_world_candidate_asia_decision_receipt
+			set_country_flag = africa_world_candidate_asia_idea_receipt
+			set_country_flag = africa_world_candidate_asia_ai_receipt
+			set_country_flag = africa_world_candidate_asia_identity_receipt
+			set_country_flag = africa_world_candidate_asia_localisation_receipt
+		}
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } }
+			# Route/protocol: africa_north_america_negotiate_caribbean_central_membership and
+			# africa_north_america_balance_industry_mobility_command in common/scripted_effects/012_africa_world_asia_north_america_effects.txt.
+			# Focus: africa_north_america_convene_continental_bargain in
+			# common/national_focus/012_africa_world_north_america_focus.txt.
+			# Decision: africa_north_america_negotiate_caribbean_and_central_membership in common/decisions/012_africa_decisions.txt.
+			# Idea: africa_world_north_america_founding_problem in common/ideas/012_africa_world_order_ideas.txt.
+			# AI: africa_ai_profile_world_north_america_is_active and
+			# africa_world_north_america_republics_focus_plan in the Event 012 AI files.
+			# Identity: africa_world_finalize_distinct_package_identity maps this package's route tags.
+			# Localisation: africa_north_america_world_focus_tree and package idea keys in
+			# localisation/english/012_africa_world_order_l_english.yml.
+			set_country_flag = africa_world_candidate_north_america_route_protocol_receipt
+			set_country_flag = africa_world_candidate_north_america_focus_receipt
+			set_country_flag = africa_world_candidate_north_america_decision_receipt
+			set_country_flag = africa_world_candidate_north_america_idea_receipt
+			set_country_flag = africa_world_candidate_north_america_ai_receipt
+			set_country_flag = africa_world_candidate_north_america_identity_receipt
+			set_country_flag = africa_world_candidate_north_america_localisation_receipt
+		}
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } }
+			# Route/protocol: africa_south_america_apply_resource_and_debt_law_w2 and
+			# africa_south_america_apply_defence_and_corridors_w2 in common/scripted_effects/012_africa_world_south_america_oceania_effects.txt.
+			# Focus: africa_south_america_convene_three_regions_balance in
+			# common/national_focus/012_africa_world_south_america_focus.txt.
+			# Decision: africa_south_america_balance_the_three_regions in common/decisions/012_africa_decisions.txt.
+			# Idea: africa_world_south_america_founding_problem in common/ideas/012_africa_world_order_ideas.txt.
+			# AI: africa_ai_profile_world_south_america_is_active and
+			# africa_world_south_america_republics_focus_plan in the Event 012 AI files.
+			# Identity: africa_world_finalize_distinct_package_identity maps this package's route tags.
+			# Localisation: africa_south_america_world_focus_tree and package idea keys in
+			# localisation/english/012_africa_world_order_l_english.yml.
+			set_country_flag = africa_world_candidate_south_america_route_protocol_receipt
+			set_country_flag = africa_world_candidate_south_america_focus_receipt
+			set_country_flag = africa_world_candidate_south_america_decision_receipt
+			set_country_flag = africa_world_candidate_south_america_idea_receipt
+			set_country_flag = africa_world_candidate_south_america_ai_receipt
+			set_country_flag = africa_world_candidate_south_america_identity_receipt
+			set_country_flag = africa_world_candidate_south_america_localisation_receipt
+		}
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } }
+			# Route/protocol: africa_oceania_apply_constitution_and_withdrawal_law_w2 and
+			# africa_oceania_apply_pacific_defence_and_disaster_reserve_w2 in common/scripted_effects/012_africa_world_south_america_oceania_effects.txt.
+			# Focus: africa_oceania_convene_ocean_network in
+			# common/national_focus/012_africa_world_oceania_focus.txt.
+			# Decision: africa_oceania_seat_the_island_congress in common/decisions/012_africa_decisions.txt.
+			# Idea: africa_world_oceania_founding_problem in common/ideas/012_africa_world_order_ideas.txt.
+			# AI: africa_ai_profile_world_oceania_is_active and
+			# africa_world_oceania_maritime_federation_focus_plan in the Event 012 AI files.
+			# Identity: africa_world_finalize_distinct_package_identity maps this package's route tags.
+			# Localisation: africa_oceania_world_focus_tree and package idea keys in
+			# localisation/english/012_africa_world_order_l_english.yml.
+			set_country_flag = africa_world_candidate_oceania_route_protocol_receipt
+			set_country_flag = africa_world_candidate_oceania_focus_receipt
+			set_country_flag = africa_world_candidate_oceania_decision_receipt
+			set_country_flag = africa_world_candidate_oceania_idea_receipt
+			set_country_flag = africa_world_candidate_oceania_ai_receipt
+			set_country_flag = africa_world_candidate_oceania_identity_receipt
+			set_country_flag = africa_world_candidate_oceania_localisation_receipt
+		}
+	}
+}
+
+# COUNTRY scope on the Event 12 host. Every candidate in the frozen array is
+# handed to the explicit continent mapper above; no global receipt is written.
 africa_world_register_package_surface_receipts = {
 	if = {
 		limit = {
 			africa_is_current_host = yes
 			NOT = { has_global_flag = africa_world_package_runtime_surfaces_certified }
 		}
-		set_global_flag = africa_world_package_route_surfaces_registered
-		set_global_flag = africa_world_package_focus_surfaces_registered
-		set_global_flag = africa_world_package_decision_surfaces_registered
-		set_global_flag = africa_world_package_idea_surfaces_registered
-		set_global_flag = africa_world_package_ai_surfaces_registered
-		set_global_flag = africa_world_package_identity_surfaces_registered
-		set_global_flag = africa_world_package_localisation_surfaces_registered
+		for_each_scope_loop = {
+			array = africa_world_package_candidates
+			africa_world_register_current_candidate_runtime_receipts = yes
+		}
 	}
 }
 
@@ -417,13 +630,6 @@ africa_world_review_runtime_surface_registry = {
 	if = {
 		limit = {
 			africa_world_all_package_runtime_surfaces_are_certified = yes
-			has_global_flag = africa_world_package_route_surfaces_registered
-			has_global_flag = africa_world_package_focus_surfaces_registered
-			has_global_flag = africa_world_package_decision_surfaces_registered
-			has_global_flag = africa_world_package_idea_surfaces_registered
-			has_global_flag = africa_world_package_ai_surfaces_registered
-			has_global_flag = africa_world_package_identity_surfaces_registered
-			has_global_flag = africa_world_package_localisation_surfaces_registered
 			NOT = { has_global_flag = africa_world_package_runtime_surfaces_reviewed }
 		}
 		set_global_flag = africa_world_package_runtime_surfaces_reviewed
@@ -440,13 +646,6 @@ africa_world_certify_all_package_runtime_surfaces = {
 		limit = {
 			africa_world_all_package_runtime_surfaces_are_certified = yes
 			has_global_flag = africa_world_package_runtime_surfaces_reviewed
-			has_global_flag = africa_world_package_route_surfaces_registered
-			has_global_flag = africa_world_package_focus_surfaces_registered
-			has_global_flag = africa_world_package_decision_surfaces_registered
-			has_global_flag = africa_world_package_idea_surfaces_registered
-			has_global_flag = africa_world_package_ai_surfaces_registered
-			has_global_flag = africa_world_package_identity_surfaces_registered
-			has_global_flag = africa_world_package_localisation_surfaces_registered
 			NOT = { has_global_flag = africa_world_package_runtime_surfaces_certified }
 		}
 		for_each_scope_loop = {
@@ -732,8 +931,10 @@ africa_initialize_scramble_and_world_packages = {
 		africa_world_certify_all_package_runtime_surfaces = yes
 		# The four terminal presentation roles are source-locked in this package:
 		# slots 101-104, unique audio ids 58-61, localised text, and registered
-		# images. Their readiness is separate from the gameplay terminal proof.
-		set_global_flag = africa_the_world_super_event_package_ready
+		# images. Their explicit source registrar is separate from the gameplay
+		# terminal proof and leaves readiness unset if any role is incomplete.
+		africa_world_register_terminal_super_event_runtime_surfaces = yes
+		africa_world_certify_terminal_super_event_runtime_surfaces = yes
 		africa_ai_refresh_host_policy_snapshot = yes
 		africa_world_emit_scramble_response_super_event = yes
 		activate_mission = africa_scramble_recognition_window

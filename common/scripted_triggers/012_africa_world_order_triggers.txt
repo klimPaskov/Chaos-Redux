@@ -73,6 +73,106 @@ africa_world_package_is_candidate = {
 	NOT = { has_global_flag = world_end }
 }
 
+# COUNTRY scope on a frozen candidate. This is deliberately separate from
+# africa_world_package_candidate_base_is_valid because that nomination trigger
+# rejects countries that already carry the candidate flag. W5 runs after the
+# flag is set and therefore needs the equivalent live-sovereign proof without
+# excluding the recorded candidate itself.
+africa_world_package_candidate_runtime_base_is_valid = {
+	exists = yes
+	has_capitulated = no
+	NOT = { has_country_flag = africa_unifier_host }
+	NOT = { has_country_flag = africa_world_package_actor }
+	NOT = { has_country_flag = africa_world_package_successor_candidate }
+	NOT = { has_country_flag = africa_world_package_successor_review_open }
+	NOT = { has_country_flag = africa_world_package_exile_path_resolved }
+	NOT = { has_country_flag = africa_world_package_breakup_recorded }
+	NOT = { has_country_flag = africa_world_package_terminally_resolved }
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	is_subject = no
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_government_in_exile = yes }
+	capital_scope = {
+		is_controlled_by = PREV
+		NOT = { is_on_continent = africa }
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope on a frozen candidate. Every branch is an explicit continental
+# package mapping. The seven receipts are country flags, so no host-wide flag
+# can certify a candidate that did not receive this package's route/protocol,
+# focus, decision, idea, AI, identity, and localisation registration.
+africa_world_candidate_runtime_surfaces_are_registered = {
+	africa_world_package_is_candidate = yes
+	africa_world_package_candidate_runtime_base_is_valid = yes
+	has_variable = africa_world_package_status
+	check_variable = { africa_world_package_status = constant:africa_world_package_status.candidate }
+	OR = {
+		AND = {
+			check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east }
+			has_country_flag = africa_world_candidate_middle_east_route_protocol_receipt
+			has_country_flag = africa_world_candidate_middle_east_focus_receipt
+			has_country_flag = africa_world_candidate_middle_east_decision_receipt
+			has_country_flag = africa_world_candidate_middle_east_idea_receipt
+			has_country_flag = africa_world_candidate_middle_east_ai_receipt
+			has_country_flag = africa_world_candidate_middle_east_identity_receipt
+			has_country_flag = africa_world_candidate_middle_east_localisation_receipt
+		}
+		AND = {
+			check_variable = { africa_world_continent_id = constant:africa_world_continent.europe }
+			has_country_flag = africa_world_candidate_europe_route_protocol_receipt
+			has_country_flag = africa_world_candidate_europe_focus_receipt
+			has_country_flag = africa_world_candidate_europe_decision_receipt
+			has_country_flag = africa_world_candidate_europe_idea_receipt
+			has_country_flag = africa_world_candidate_europe_ai_receipt
+			has_country_flag = africa_world_candidate_europe_identity_receipt
+			has_country_flag = africa_world_candidate_europe_localisation_receipt
+		}
+		AND = {
+			check_variable = { africa_world_continent_id = constant:africa_world_continent.asia }
+			has_country_flag = africa_world_candidate_asia_route_protocol_receipt
+			has_country_flag = africa_world_candidate_asia_focus_receipt
+			has_country_flag = africa_world_candidate_asia_decision_receipt
+			has_country_flag = africa_world_candidate_asia_idea_receipt
+			has_country_flag = africa_world_candidate_asia_ai_receipt
+			has_country_flag = africa_world_candidate_asia_identity_receipt
+			has_country_flag = africa_world_candidate_asia_localisation_receipt
+		}
+		AND = {
+			check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america }
+			has_country_flag = africa_world_candidate_north_america_route_protocol_receipt
+			has_country_flag = africa_world_candidate_north_america_focus_receipt
+			has_country_flag = africa_world_candidate_north_america_decision_receipt
+			has_country_flag = africa_world_candidate_north_america_idea_receipt
+			has_country_flag = africa_world_candidate_north_america_ai_receipt
+			has_country_flag = africa_world_candidate_north_america_identity_receipt
+			has_country_flag = africa_world_candidate_north_america_localisation_receipt
+		}
+		AND = {
+			check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america }
+			has_country_flag = africa_world_candidate_south_america_route_protocol_receipt
+			has_country_flag = africa_world_candidate_south_america_focus_receipt
+			has_country_flag = africa_world_candidate_south_america_decision_receipt
+			has_country_flag = africa_world_candidate_south_america_idea_receipt
+			has_country_flag = africa_world_candidate_south_america_ai_receipt
+			has_country_flag = africa_world_candidate_south_america_identity_receipt
+			has_country_flag = africa_world_candidate_south_america_localisation_receipt
+		}
+		AND = {
+			check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania }
+			has_country_flag = africa_world_candidate_oceania_route_protocol_receipt
+			has_country_flag = africa_world_candidate_oceania_focus_receipt
+			has_country_flag = africa_world_candidate_oceania_decision_receipt
+			has_country_flag = africa_world_candidate_oceania_idea_receipt
+			has_country_flag = africa_world_candidate_oceania_ai_receipt
+			has_country_flag = africa_world_candidate_oceania_identity_receipt
+			has_country_flag = africa_world_candidate_oceania_localisation_receipt
+		}
+	}
+}
+
 # COUNTRY scope on a nominated actor. The long comparison form is used because
 # the package registry includes the final Oceania identifier.
 africa_world_package_has_valid_identifier = {
@@ -162,6 +262,7 @@ africa_world_all_package_runtime_surfaces_are_certified = {
 			array = africa_world_package_candidates
 			OR = {
 				NOT = { africa_world_package_is_candidate = yes }
+				NOT = { africa_world_candidate_runtime_surfaces_are_registered = yes }
 				has_capitulated = yes
 				is_subject = yes
 				is_government_in_exile = yes
@@ -184,31 +285,37 @@ africa_world_all_package_runtime_surfaces_are_certified = {
 	any_of_scopes = {
 		array = africa_world_package_candidates
 		africa_world_package_is_candidate = yes
+		africa_world_candidate_runtime_surfaces_are_registered = yes
 		check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east }
 	}
 	any_of_scopes = {
 		array = africa_world_package_candidates
 		africa_world_package_is_candidate = yes
+		africa_world_candidate_runtime_surfaces_are_registered = yes
 		check_variable = { africa_world_continent_id = constant:africa_world_continent.europe }
 	}
 	any_of_scopes = {
 		array = africa_world_package_candidates
 		africa_world_package_is_candidate = yes
+		africa_world_candidate_runtime_surfaces_are_registered = yes
 		check_variable = { africa_world_continent_id = constant:africa_world_continent.asia }
 	}
 	any_of_scopes = {
 		array = africa_world_package_candidates
 		africa_world_package_is_candidate = yes
+		africa_world_candidate_runtime_surfaces_are_registered = yes
 		check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america }
 	}
 	any_of_scopes = {
 		array = africa_world_package_candidates
 		africa_world_package_is_candidate = yes
+		africa_world_candidate_runtime_surfaces_are_registered = yes
 		check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america }
 	}
 	any_of_scopes = {
 		array = africa_world_package_candidates
 		africa_world_package_is_candidate = yes
+		africa_world_candidate_runtime_surfaces_are_registered = yes
 		check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania }
 	}
 }
@@ -911,6 +1018,44 @@ africa_world_defeated_continent_is_eligible = {
 		has_country_flag = africa_defeated_continent_power
 	}
 	NOT = { has_country_flag = africa_world_submission_settlement }
+}
+
+# COUNTRY scope on the Event 012 host. The four terminal presentation roles
+# are certified independently of gameplay terminal proof. Each role must have
+# an explicit slot, image, unique audio id, localisation/text record, and
+# runtime consumer receipt before the readiness flag can be written.
+africa_world_terminal_super_event_runtime_surfaces_are_registered = {
+	africa_is_current_host = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = africa_the_world_super_event_package_ready }
+	AND = {
+		has_global_flag = africa_world_super_event_101_slot_receipt
+		has_global_flag = africa_world_super_event_101_image_receipt
+		has_global_flag = africa_world_super_event_101_audio_receipt
+		has_global_flag = africa_world_super_event_101_localisation_receipt
+		has_global_flag = africa_world_super_event_101_consumer_receipt
+	}
+	AND = {
+		has_global_flag = africa_world_super_event_102_slot_receipt
+		has_global_flag = africa_world_super_event_102_image_receipt
+		has_global_flag = africa_world_super_event_102_audio_receipt
+		has_global_flag = africa_world_super_event_102_localisation_receipt
+		has_global_flag = africa_world_super_event_102_consumer_receipt
+	}
+	AND = {
+		has_global_flag = africa_world_super_event_103_slot_receipt
+		has_global_flag = africa_world_super_event_103_image_receipt
+		has_global_flag = africa_world_super_event_103_audio_receipt
+		has_global_flag = africa_world_super_event_103_localisation_receipt
+		has_global_flag = africa_world_super_event_103_consumer_receipt
+	}
+	AND = {
+		has_global_flag = africa_world_super_event_104_slot_receipt
+		has_global_flag = africa_world_super_event_104_image_receipt
+		has_global_flag = africa_world_super_event_104_audio_receipt
+		has_global_flag = africa_world_super_event_104_localisation_receipt
+		has_global_flag = africa_world_super_event_104_consumer_receipt
+	}
 }
 
 # COUNTRY scope on the host.
