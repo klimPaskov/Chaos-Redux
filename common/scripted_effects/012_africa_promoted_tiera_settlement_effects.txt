@@ -1,0 +1,213 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 PROMOTED TIER A SETTLEMENT EFFECTS
+# ============================================================================
+# League, refusal/rival, overlap consent/autonomy, post-settlement play, and
+# defeat cleanup for the six additive carriers. Relationship transitions use
+# the existing Africa Charter state machine; no second relationship ledger is
+# created.
+
+africa_promoted_tiera_accept_league = {
+	if = {
+		limit = { africa_promoted_tiera_package_is_pan = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.protected }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_pan_league_protected
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_gorilla_kingdom = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.chartered }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_gorilla_league_guardian
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_the_green = yes }
+		if = { limit = { africa_member_can_enter_autonomous_federal = yes } set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.autonomous_federal } }
+		else = { set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.chartered } }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_green_league_covenant
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_living_rivers = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.protected }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_rivers_league_waterway
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_stoneborn = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_stoneborn_league_heritage
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_ancient_hosts = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.chartered }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_ancient_league_relic
+	}
+	set_country_flag = africa_promoted_tiera_league_settled
+	set_country_flag = africa_promoted_tiera_league_accepted
+	set_country_flag = africa_member_allied_settlement_accepted
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_charter_authority = constant:africa_value.one africa_consent_commitment = constant:africa_value.one } } }
+}
+
+africa_promoted_tiera_counter_league = {
+	if = {
+		limit = { africa_promoted_tiera_package_is_pan = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_pan_countercharter
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_gorilla_kingdom = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.protected }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_gorilla_noninterference
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_the_green = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.autonomous_federal }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_green_extraction_limit
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_living_rivers = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.associate }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_rivers_bank_sovereignty
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_stoneborn = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.protected }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_stoneborn_ruin_charter
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_ancient_hosts = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.autonomous_federal }
+		africa_apply_relationship_transition = yes
+		set_country_flag = africa_promoted_ancient_memory_autonomy
+	}
+	set_country_flag = africa_promoted_tiera_league_settled
+	set_country_flag = africa_promoted_tiera_league_countered
+}
+
+africa_promoted_tiera_refuse_league = {
+	set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.resistant }
+	africa_apply_relationship_transition = yes
+	set_country_flag = africa_promoted_tiera_league_settled
+	set_country_flag = africa_promoted_tiera_league_refused
+	if = { limit = { africa_promoted_tiera_package_is_pan = yes } set_country_flag = africa_promoted_pan_forest_refusal }
+	if = { limit = { africa_promoted_tiera_package_is_gorilla_kingdom = yes } set_country_flag = africa_promoted_gorilla_isolation }
+	if = { limit = { africa_promoted_tiera_package_is_the_green = yes } set_country_flag = africa_promoted_green_wild_refusal }
+	if = { limit = { africa_promoted_tiera_package_is_living_rivers = yes } set_country_flag = africa_promoted_riverbank_refusal }
+	if = { limit = { africa_promoted_tiera_package_is_stoneborn = yes } set_country_flag = africa_promoted_stoneborn_silence }
+	if = { limit = { africa_promoted_tiera_package_is_ancient_hosts = yes } set_country_flag = africa_promoted_ancient_unquiet }
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_rival_pressure = constant:africa_value.one } } }
+}
+
+africa_promoted_tiera_rival_bloc = {
+	set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.rival_bloc }
+	africa_apply_relationship_transition = yes
+	set_country_flag = africa_promoted_tiera_rival_bloc
+	if = { limit = { africa_promoted_tiera_package_is_pan = yes } set_country_flag = africa_promoted_pan_toolmaker_bloc }
+	if = { limit = { africa_promoted_tiera_package_is_gorilla_kingdom = yes } set_country_flag = africa_promoted_gorilla_guardian_bloc }
+	if = { limit = { africa_promoted_tiera_package_is_the_green = yes } set_country_flag = africa_promoted_green_rewilding_bloc }
+	if = { limit = { africa_promoted_tiera_package_is_living_rivers = yes } set_country_flag = africa_promoted_river_crossing_bloc }
+	if = { limit = { africa_promoted_tiera_package_is_stoneborn = yes } set_country_flag = africa_promoted_stoneborn_heritage_bloc }
+	if = { limit = { africa_promoted_tiera_package_is_ancient_hosts = yes } set_country_flag = africa_promoted_ancient_relic_bloc }
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_rival_pressure = constant:africa_value.one } } }
+}
+
+africa_promoted_tiera_overlap_congress = {
+	set_country_flag = africa_promoted_tiera_overlap_settled
+	set_country_flag = africa_promoted_tiera_overlap_congress
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_value.one africa_regional_equality = constant:africa_value.one } } }
+}
+
+africa_promoted_tiera_overlap_local_consent = {
+	set_country_flag = africa_promoted_tiera_overlap_settled
+	set_country_flag = africa_promoted_tiera_overlap_local_consent
+	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_consent_commitment = constant:africa_value.one } } }
+}
+
+africa_promoted_tiera_overlap_autonomy = {
+	set_country_flag = africa_promoted_tiera_overlap_settled
+	set_country_flag = africa_promoted_tiera_overlap_autonomy
+	if = {
+		limit = { africa_member_can_enter_autonomous_federal = yes }
+		set_temp_variable = { africa_requested_relationship_state = constant:africa_relationship.autonomous_federal }
+		africa_apply_relationship_transition = yes
+	}
+	if = { limit = { NOT = { africa_member_can_enter_autonomous_federal = yes } } set_country_flag = africa_promoted_tiera_autonomy_deferred }
+}
+
+africa_promoted_tiera_overlap_rival = {
+	africa_promoted_tiera_rival_bloc = yes
+	set_country_flag = africa_promoted_tiera_overlap_settled
+	set_country_flag = africa_promoted_tiera_overlap_rival
+}
+
+africa_promoted_tiera_post_settlement = {
+	if = {
+		limit = { africa_promoted_tiera_package_is_pan = yes }
+		set_country_flag = africa_promoted_pan_toolmaker_expansion
+		add_army_experience = 8
+		add_political_power = 10
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_gorilla_kingdom = yes }
+		set_country_flag = africa_promoted_gorilla_sanctuary_guard
+		add_war_support = 0.10
+		add_stability = 0.05
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_the_green = yes }
+		set_country_flag = africa_promoted_green_biome_restoration
+		add_stability = 0.10
+		add_war_support = 0.03
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_living_rivers = yes }
+		set_country_flag = africa_promoted_rivers_basin_works
+		add_command_power = 10
+		add_political_power = 5
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_stoneborn = yes }
+		set_country_flag = africa_promoted_stoneborn_monument_restoration
+		add_army_experience = 10
+		add_stability = 0.05
+	}
+	if = {
+		limit = { africa_promoted_tiera_package_is_ancient_hosts = yes }
+		set_country_flag = africa_promoted_ancient_relic_network_complete
+		add_war_support = 0.10
+		add_political_power = 10
+	}
+	set_country_flag = africa_promoted_tiera_post_settlement_complete
+}
+
+africa_promoted_tiera_cleanup_on_defeat = {
+	if = {
+		limit = { africa_promoted_tiera_is_active = yes }
+		drop_cosmetic_tag = yes
+		africa_promoted_tiera_clear_lifecycle_ideas = yes
+		clr_country_flag = africa_promoted_tiera_active
+		clr_country_flag = africa_promoted_tiera_revealed
+		clr_country_flag = africa_promoted_tiera_politics_complete
+		clr_country_flag = africa_promoted_tiera_mechanic_complete
+		clr_country_flag = africa_promoted_tiera_league_settled
+		clr_country_flag = africa_promoted_tiera_overlap_settled
+		clr_country_flag = africa_promoted_tiera_post_settlement_complete
+		clr_variable = africa_promoted_tiera_package_id
+		clr_variable = africa_promoted_tiera_mechanic_progress
+		clr_variable = africa_promoted_tiera_politics_choice
+		set_country_flag = africa_promoted_tiera_contained
+		if = { limit = { africa_promoted_tiera_carrier_is_pan = yes } clr_global_flag = africa_promoted_tiera_state_claimed_900 }
+		if = { limit = { africa_promoted_tiera_carrier_is_gorilla_kingdom = yes } clr_global_flag = africa_promoted_tiera_state_claimed_768 }
+		if = { limit = { africa_promoted_tiera_carrier_is_the_green = yes } clr_global_flag = africa_promoted_tiera_state_claimed_298 }
+		if = { limit = { africa_promoted_tiera_carrier_is_living_rivers = yes } clr_global_flag = africa_promoted_tiera_state_claimed_548 }
+		if = { limit = { africa_promoted_tiera_carrier_is_stoneborn = yes } clr_global_flag = africa_promoted_tiera_state_claimed_460 }
+		if = { limit = { africa_promoted_tiera_carrier_is_ancient_hosts = yes } clr_global_flag = africa_promoted_tiera_state_claimed_448 clr_global_flag = africa_promoted_tiera_state_claimed_661 }
+	}
+}

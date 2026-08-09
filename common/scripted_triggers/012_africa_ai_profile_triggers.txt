@@ -984,6 +984,25 @@ africa_ai_high_chaos_family_has_bounded_candidate = {
 	}
 }
 
+# COUNTRY scope on the host. The three model-backed high-chaos actions are
+# sampled only while their shared package, formation cap, and owned/controlled
+# deployment preflight are open. Their family-specific manifest and cooldown
+# checks remain in africa_ai_selected_target_is_candidate_for_action.
+africa_ai_strange_force_action_pool_is_open = {
+	has_global_flag = africa_evolution_iii_logged
+	has_global_flag = africa_strange_formation_package_ready
+	check_variable = { africa_active_action_count < africa_active_action_cap }
+	OR = {
+		NOT = { has_variable = global.africa_strange_force_formation_count }
+		check_variable = {
+			var = global.africa_strange_force_formation_count
+			value = constant:africa_strange_force.formation_cap
+			compare = less_than
+		}
+	}
+	any_owned_state = { is_owned_and_controlled_by = ROOT }
+}
+
 africa_ai_constitutional_crisis_family_has_bounded_candidate = {
 	OR = {
 		has_country_flag = africa_federal_deadlock_active
@@ -1103,18 +1122,82 @@ africa_ai_selected_target_is_candidate_for_action = {
 		}
 		AND = {
 			ROOT = {
-				OR = {
-					check_variable = { africa_requested_action_id = constant:africa_action.contain_emergent_disease }
-					check_variable = { africa_requested_action_id = constant:africa_action.research_disease_countermeasure }
-				}
+				check_variable = { africa_requested_action_id = constant:africa_action.contain_emergent_disease }
+				has_country_flag = africa_fictional_pathogen_review_authorized
 			}
-			ROOT = { has_country_flag = africa_fictional_pathogen_review_authorized }
-			OR = { has_country_flag = africa_disease_crisis_active has_country_flag = africa_disease_research_site }
+			africa_disease_target_has_episode = yes
 		}
 		AND = {
-			ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.weaponise_fictional_pathogen } }
-			ROOT = { has_country_flag = africa_fictional_pathogen_review_authorized }
-			OR = { has_country_flag = africa_disease_crisis_active has_country_flag = africa_disease_research_site }
+			ROOT = {
+				check_variable = { africa_requested_action_id = constant:africa_action.research_disease_countermeasure }
+				has_country_flag = africa_fictional_pathogen_review_authorized
+				NOT = { has_country_flag = africa_disease_countermeasure_researched }
+			}
+			OR = {
+				africa_is_current_host = yes
+				has_country_flag = africa_disease_crisis_active
+				has_country_flag = africa_disease_research_site
+			}
+		}
+		AND = {
+			ROOT = {
+				check_variable = { africa_requested_action_id = constant:africa_action.weaponise_fictional_pathogen }
+				has_country_flag = africa_fictional_pathogen_review_authorized
+				has_country_flag = africa_disease_countermeasure_researched
+				africa_disease_host_has_payload = yes
+				NOT = { has_country_flag = africa_disease_weapon_cooldown }
+			}
+			africa_disease_weapon_target_is_valid = yes
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { africa_requested_action_id = constant:africa_action.awaken_stone_cohort }
+					check_variable = { africa_requested_action_id = constant:africa_action.train_gorilla_heavy_infantry }
+					check_variable = { africa_requested_action_id = constant:africa_action.organise_pan_sappers }
+				}
+				has_global_flag = africa_evolution_iii_logged
+				has_global_flag = africa_strange_formation_package_ready
+				check_variable = { africa_active_action_count < africa_active_action_cap }
+				OR = {
+					NOT = { has_variable = global.africa_strange_force_formation_count }
+					check_variable = {
+						var = global.africa_strange_force_formation_count
+						value = constant:africa_strange_force.formation_cap
+						compare = less_than
+					}
+				}
+			}
+			any_owned_state = { is_owned_and_controlled_by = ROOT }
+			OR = {
+				AND = {
+					ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.awaken_stone_cohort } }
+					has_global_flag = africa_strange_force_stone_cohorts_model_manifest_ready
+					has_global_flag = africa_strange_force_stone_cohorts_entity_manifest_ready
+					has_global_flag = africa_strange_force_stone_cohorts_counter_manifest_ready
+					has_global_flag = africa_strange_force_stone_cohorts_audio_manifest_ready
+					NOT = { has_country_flag = africa_strange_force_stone_cohorts_spawned_once }
+					NOT = { has_country_flag = africa_strange_force_stone_cohorts_cooldown }
+				}
+				AND = {
+					ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.train_gorilla_heavy_infantry } }
+					has_global_flag = africa_strange_force_gorilla_heavy_infantry_model_manifest_ready
+					has_global_flag = africa_strange_force_gorilla_heavy_infantry_entity_manifest_ready
+					has_global_flag = africa_strange_force_gorilla_heavy_infantry_counter_manifest_ready
+					has_global_flag = africa_strange_force_gorilla_heavy_infantry_audio_manifest_ready
+					NOT = { has_country_flag = africa_strange_force_gorilla_heavy_infantry_spawned_once }
+					NOT = { has_country_flag = africa_strange_force_gorilla_heavy_infantry_cooldown }
+				}
+				AND = {
+					ROOT = { check_variable = { africa_requested_action_id = constant:africa_action.organise_pan_sappers } }
+					has_global_flag = africa_strange_force_pan_sappers_model_manifest_ready
+					has_global_flag = africa_strange_force_pan_sappers_entity_manifest_ready
+					has_global_flag = africa_strange_force_pan_sappers_counter_manifest_ready
+					has_global_flag = africa_strange_force_pan_sappers_audio_manifest_ready
+					NOT = { has_country_flag = africa_strange_force_pan_sappers_spawned_once }
+					NOT = { has_country_flag = africa_strange_force_pan_sappers_cooldown }
+				}
+			}
 		}
 		AND = {
 			ROOT = {
@@ -1224,6 +1307,9 @@ africa_ai_selected_target_is_candidate_for_action = {
 						check_variable = { africa_requested_action_id = constant:africa_action.contain_emergent_disease }
 						check_variable = { africa_requested_action_id = constant:africa_action.research_disease_countermeasure }
 						check_variable = { africa_requested_action_id = constant:africa_action.weaponise_fictional_pathogen }
+						check_variable = { africa_requested_action_id = constant:africa_action.awaken_stone_cohort }
+						check_variable = { africa_requested_action_id = constant:africa_action.train_gorilla_heavy_infantry }
+						check_variable = { africa_requested_action_id = constant:africa_action.organise_pan_sappers }
 						check_variable = { africa_requested_action_id = constant:africa_action.monitor_rival_bloc }
 						check_variable = { africa_requested_action_id = constant:africa_action.offer_rival_arbitration }
 						check_variable = { africa_requested_action_id = constant:africa_action.support_rival_member_defection }
