@@ -23,7 +23,7 @@ The optional Republican Nationalist side is implemented with the existing `ESX` 
   - Snapshots one candidate state from current SAF-owned/controlled African SAF cores, excluding capital, naval-port states, ESX, and the reserved EQX anchor.
   - Adds `africa_rsa_initialize_republican_breakaway`, pairwise `africa_rsa_settle_republican_breakaway`, and `africa_rsa_republican_breakaway_cleanup`.
   - Removes the branch-only prepare-for-war and antagonize strategy entries before either principal settlement clears the coalition and Allied event targets.
-  - Releases only the saved state to ESX, sets the branch cosmetic identity, creates one named male Xhosa king/paramount-chief leader (`King Archie Velile Sandile`), assigns independent AI hostility, and issues separate war declarations when legal.
+  - Releases only the saved state to ESX, sets the branch cosmetic identity, creates one named male Xhosa king/paramount-chief leader (`King Mgolombane Sandile`), assigns independent AI hostility, and issues separate war declarations when legal.
   - Cleanup restores ESX to its normal Xhosa cosmetic/political identity, retires only the branch-created king/paramount-chief leader, and clears all branch targets/flags while retaining the legitimate ESX core.
 - `common/on_actions/012_africa_rsa_on_actions.txt`
   - Cleans the branch when ESX capitulates without altering the principal civil-war settlement bridge.
@@ -69,7 +69,9 @@ Mandatory `hoi4.map_inspect` was run for states `275, 541, 681, 719, 893, 894, 8
 
 ## Documentation/assets
 
-No new sprites or portraits are required. `King Archie Velile Sandile` is a single male Xhosa king/paramount-chief identity grounded in the historical AmaRharhabe leader (South African Government determination: https://www.gov.za/sites/default/files/gcis_document/201409/determinaion-amarharhabe-and-amagcaleka-paramountcies.pdf; Saflii constitutional history: https://www.saflii.org/za/journals/SPECJU/2013/4.pdf). `GFX_portrait_generic_africa_male_01` is an installed vanilla single-male African portrait used as the runtime placeholder; it is not a council or group portrait, and no runtime reference points into the durable portrait archive. The cosmetic tag is defined in `common/countries/012_africa_cosmetic.txt` and all player-facing keys are in the RSA localisation file.
+The Republican Nationalist branch uses the individually archived adult-male portrait `King Mgolombane Sandile` (`GFX_portrait_012_africa_rsa_mgolombane_sandile`) from `gfx/leaders/012_africa/rsa/portrait_012_africa_rsa_mgolombane_sandile.dds`. Source provenance is the Cape Colony Archives Depot image published as [Mgolombane Sandile - Xhosa Chief](https://commons.wikimedia.org/wiki/File:Mgolombane_Sandile_-_Xhosa_Chief.jpg), archived as `docs/assets/portraits/012_africa/source_master_rsa_mgolombane_sandile_archival.jpg` with the source crop and rights note beside it. The image is public-domain in the United States under the archival record, while Commons cautions that reuse terms can vary outside the United States.
+
+This is an explicitly recorded alternate-history casting because no individually attributable archival portrait of the fictional `Archie Velile Sandile` was located. The branch identity, leader name, event text, sprite, and handoff therefore use the documented Xhosa king Mgolombane Sandile consistently; no generic vanilla portrait remains wired for RSA. The cosmetic tag is defined in `common/countries/012_africa_cosmetic.txt` and all player-facing keys are in the RSA localisation file.
 
 ## Remaining risks and review points
 
