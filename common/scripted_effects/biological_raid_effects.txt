@@ -716,6 +716,11 @@ bio_resolve_strategic_raid_outcome = {
 				bio_strategic_raid_dispatch_target_release_internal = yes
 				if = {
 					limit = { check_variable = { var = bio_raid_release_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+					if = {
+						limit = { event_target:bio_raid_actor = { tag = UWR } }
+						event_target:bio_raid_actor = { save_event_target_as = soviet_collapse_uwr_contamination_actor }
+						event_target:bio_raid_target_state = { soviet_collapse_mark_uwr_contaminated_state_for_aftermath = yes }
+					}
 					set_temp_variable = { bio_raid_resolution_status = constant:bio_lifecycle_proof.supplied }
 				}
 				else = {

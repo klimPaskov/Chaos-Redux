@@ -2,68 +2,122 @@
 # JAPAN CHEMICAL CAMPAIGN SCRIPTED EFFECTS
 # ============================================================================
 # State-targeted cylinder operations used by Japan decisions during the China
-# war. The player can rotate the prepared attack agent for free. The historical
-# attack identifier remains as a migration-safe surface, but its old direct
-# contamination and Condemnation body is retired until an exact shared-pipeline
-# adapter can prove target, payload, protection, and conditions.
+# war. The player can rotate the prepared agent for free. Each attack consumes
+# the exact selected legacy cylinder model, resolves protection in the selected
+# state, and enters the canonical chemical exposure dispatcher. Weather and
+# terrain remain absent rather than estimated because condition receipts are an
+# optional enhancement to a proven selected-state release.
 # ============================================================================
 
 @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS = 24
+@JAPAN_CHEMICAL_CAMPAIGN_ATTACK_COOLDOWN_DAYS = 8
 
 japan_finalize_targeted_chemical_campaign = {
-	# Stable legacy identifier. The retired direct body intentionally performs no
-	# release, resource debit, contamination, Deaths, or Condemnation.
-	set_temp_variable = { japan_campaign_dispatch_status = constant:cbrn_proof.missing }
+	# Stable legacy entry point for older delayed callers.
+	japan_apply_targeted_chemical_campaign_attack = yes
 }
 
 japan_set_default_targeted_chemical_campaign_agent = {
-    if = {
-        limit = { NOT = { has_variable = japan_chemical_campaign_selected_agent } }
-        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
-    }
+	if = {
+		limit = { NOT = { has_variable = japan_chemical_campaign_selected_agent } }
+		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
+	}
 }
 
 japan_cycle_targeted_chemical_campaign_agent = {
-    japan_set_default_targeted_chemical_campaign_agent = yes
+	japan_set_default_targeted_chemical_campaign_agent = yes
 
-    if = {
-        limit = {
-            check_variable = {
-                var = japan_chemical_campaign_selected_agent
-                value = constant:chem_type.mustard
-                compare = equals
-            }
-        }
-        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine }
-    }
-    else_if = {
-        limit = {
-            check_variable = {
-                var = japan_chemical_campaign_selected_agent
-                value = constant:chem_type.chlorine
-                compare = equals
-            }
-        }
-        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene }
-    }
-    else_if = {
-        limit = {
-            check_variable = {
-                var = japan_chemical_campaign_selected_agent
-                value = constant:chem_type.phosgene
-                compare = equals
-            }
-        }
-        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.lewisite }
-    }
-    else = {
-        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
-    }
+	if = {
+		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard compare = equals } }
+		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine }
+	}
+	else_if = {
+		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine compare = equals } }
+		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene }
+	}
+	else_if = {
+		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene compare = equals } }
+		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.lewisite }
+	}
+	else = {
+		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
+	}
+}
+
+japan_set_targeted_chemical_campaign_action_agent = {
+	set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.mustard }
+	if = {
+		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine compare = equals } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.chlorine }
+	}
+	else_if = {
+		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene compare = equals } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.phosgene }
+	}
+	else_if = {
+		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.lewisite compare = equals } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.lewisite }
+	}
+}
+
+japan_set_targeted_chemical_campaign_action_class = {
+	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
+	}
+}
+
+japan_pay_targeted_chemical_campaign_command_power = {
+	set_temp_variable = { var = japan_campaign_command_power_cost value = constant:chem_japan_campaign_decision.defaults.attack_command_power_cost }
+	if = {
+		limit = { has_idea = chemical_command_reagent_optimization_spirit }
+		set_temp_variable = { var = japan_campaign_command_power_cost value = constant:chem_japan_campaign_decision.defaults.attack_command_power_cost_discounted }
+	}
+	set_temp_variable = { var = japan_campaign_command_power_debit value = japan_campaign_command_power_cost }
+	multiply_temp_variable = { var = japan_campaign_command_power_debit value = constant:cbrn_payload_math.negation_multiplier }
+	add_command_power = japan_campaign_command_power_debit
 }
 
 japan_apply_targeted_chemical_campaign_attack = {
-	# Stable migration identifier. The former direct state-scan, cylinder debit,
-	# contamination, Deaths, and Condemnation body is retired until an exact
-	# shared-pipeline adapter can prove every required input.
+	japan_set_default_targeted_chemical_campaign_agent = yes
 	set_temp_variable = { japan_campaign_dispatch_status = constant:cbrn_proof.missing }
+
+	if = {
+		limit = { has_event_target = japan_chemical_campaign_target_state }
+		save_event_target_as = cbrn_action_actor
+		event_target:japan_chemical_campaign_target_state = { save_event_target_as = cbrn_action_target_state }
+		cbrn_reset_action_context = yes
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+		set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.cylinder_release }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.prepared }
+		set_temp_variable = { cbrn_action_payload_required = constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption }
+		set_temp_variable = { cbrn_action_legacy_cylinder_source_proof = constant:cbrn_proof.supplied }
+		japan_set_targeted_chemical_campaign_action_agent = yes
+		japan_set_targeted_chemical_campaign_action_class = yes
+		cbrn_try_debit_action_payload = yes
+
+		if = {
+			limit = { check_variable = { var = cbrn_action_payload_consumed_proof value = constant:cbrn_proof.supplied compare = equals } }
+			set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.one }
+			cbrn_resolve_action_target_protection = yes
+			cbrn_prepare_chemical_action_record = yes
+			if = {
+				limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+				japan_pay_targeted_chemical_campaign_command_power = yes
+				set_country_flag = { flag = japan_chemical_campaign_attack_cooldown days = @JAPAN_CHEMICAL_CAMPAIGN_ATTACK_COOLDOWN_DAYS }
+				event_target:cbrn_action_target_state = {
+					set_state_flag = { flag = japan_chemical_campaign_recently_targeted days = @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS }
+				}
+				cbrn_dispatch_chemical_action_record = yes
+				set_temp_variable = { japan_campaign_dispatch_status = constant:cbrn_proof.supplied }
+			}
+		}
+	}
 }

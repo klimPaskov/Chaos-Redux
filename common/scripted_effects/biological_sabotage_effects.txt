@@ -505,6 +505,14 @@ bio_sabotage_resolve_operation = {
 				}
 			}
 		}
+		if = {
+			limit = {
+				event_target:bio_sabotage_actor_target = { tag = UWR }
+				check_variable = { var = bio_sabotage_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			}
+			event_target:bio_sabotage_actor_target = { save_event_target_as = soviet_collapse_uwr_contamination_actor }
+			event_target:bio_sabotage_state_target = { soviet_collapse_mark_uwr_contaminated_state_for_aftermath = yes }
+		}
 		event_target:bio_sabotage_actor_target = { bio_sabotage_record_resolution_history_internal = yes }
 		if = {
 			limit = { check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.rejected compare = equals } }

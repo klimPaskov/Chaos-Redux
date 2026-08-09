@@ -1,192 +1,63 @@
-Summary: Player-facing and technical chemical warfare guide for Chaos Redux, covering delivery systems, contamination rules, logistics, and diplomatic consequences.
-
 # Chemical Warfare System
 
-## Overview
+## Gameplay identity
 
-Chemical warfare is implemented as one connected gameplay package:
+Chemical warfare is an equipment-backed exact-state system. The player researches an agent, produces its real payload and protective equipment, establishes Chemical Readiness and a use policy, selects a supported delivery route, and receives disruption and area-denial power in exchange for deaths, contamination, medical load, evidence, attribution, Condemnation, treaty response, and sanctions risk.
 
-1. Chemical cylinder abilities for generals.
-2. CBRN regimental support and Army Headquarters operating packages.
-3. Retained chemical Livens and tank identifiers as compatibility surfaces until an exact current-version combat receipt is available.
-4. Nerve-agent raid options (Sarin and Soman).
-5. US special-project payload options (Malodor and behavioral agents).
-6. Shared condemnation and sanctions consequences.
-7. Chemical air bomb modules as explicit-raid eligibility equipment.
+Chaos Warfare makes this route substantially faster, more lethal, and more persistent. Its Integrated CBRN Command ladder can reduce Condemnation impact, but doctrine never erases payload expenditure, protection failure, evidence, attribution, deaths, contamination, medical saturation, resistance trauma, confirmed-use history, or responsibility.
 
-The system rewards preparation and logistics while making repeated chemical use politically costly. A delivery is consequential only after the shared exposure record accepts its exact target, payload, protection, and condition receipt.
+## Active delivery routes
 
-## Genocide Crisis Restricted Site Bridge
+- Selected-state chemical air raids cover Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, Soman, Malodor, and Behavioral Agent payloads. Sarin and Soman also have strategic-rocket variants. Every native outcome reserves exact class equipment; only partial, successful, and catastrophic releases enter exposure. Aborted and failed attempts record bounded evidence and Condemnation without fabricating toxic effects.
+- Japan's China campaign provides a visible agent selector and an exact selected-state attack decision. It consumes 120 matching legacy cylinders, pays 20 command power or 16 with Reagent Optimization, and dispatches through the canonical exposure pipeline.
+- The chemical doomsday decision consumes the real national legacy-cylinder arsenal once, allocates each supported agent across exact eligible controlled states, and dispatches every accepted state through the same pipeline.
+- The restricted-site nerve route consumes researched Sarin or Soman stock inside an already authorized extermination, gulag, or experiment site. Nerve-agent doctrine mastery increases camp killing efficiency and chemical consequences; it does not create or authorize camp infrastructure and does not conceal the result.
+- Special Malodor and Behavioral-Agent raids use distinct payloads and state modifiers focused on disruption. They retain evidence and Condemnation through the common consequence contract.
 
-The genocide crisis system can consume restricted nerve-agent stockpiles through `genocide_restricted_chemical_site_escalation`.
+## Shared release contract
 
-- Gate: existing sarin or soman technology/special-project completion, a matching cylinder stockpile, operational readiness, Chemical Readiness, command integration, and the existing camp system's exact restricted-site authorization.
-- Target: an already responsible extermination, gulag, or experiment site; this bridge does not create, unlock, or authorize that infrastructure.
-- Effects: consumes the tier-specific cylinder through the shared payload ledger, resolves the contained restricted-site condition profile, and dispatches the shared CBRN record for disruption, deaths, contamination, medical saturation, evidence, attribution, and Condemnation before the camp system records its site-specific aftermath.
-- Condemnation: the restricted-site route uses its dedicated Condemnation context and remains discoverable through the existing genocide evidence path. Monthly camp processing remains camp-owned and is not a second chemical exposure dispatch.
+Every release-bearing adapter must supply an exact state, a researched and route-valid agent, a real payload debit or authoritative native equipment reservation, target protection, positive release efficiency, and policy/readiness authorization. It then calls `cbrn_prepare_chemical_action_record` and `cbrn_dispatch_chemical_action_record` exactly once.
 
-## System Structure and Behavior
+The dispatcher records hostile disruption, friendly exposure where applicable, civilian deaths, canonical state contamination, continuing deaths, medical saturation, evidence, attribution, confirmed-use history, treaty response, Condemnation, and victim memory. Dimercaprol reduces general chemical deaths by 15%, adds a further 50% reduction against blister-agent deaths, and reduces medical saturation by 35%; it does not protect against political or evidentiary consequences.
 
-- CBRN regimental support is type-specific where the accepted support package exposes an exact equipment and readiness contract.
-- The retained Livens and chemical-tank definitions are parser-compatible legacy surfaces, not an active generic combat contamination path.
-- Their old direct release helpers are not called by the current CBRN on-action, ability, raid, operation, or decision surfaces; no combat target is inferred from an acting unit.
-- Army Headquarters operating packages use real essential equipment, finite preparation, active duration, weekly upkeep, cooldown, shortage scaling, AI gates, and cleanup.
-- The nerve branch uses G-series progression:
-  - GA (Tabun) -> GB (Sarin) -> GD (Soman).
-- Nerve raids are tactical and short-lived in contamination persistence.
-- US special-project payloads are short-lived and focus on disruption rather than direct casualties.
-- Chemical air-delivered operations require an explicit selected-state raid, an eligible CAS or tactical-bomber design carrying the exact agent module, and reserved payload equipment.
-- Every completed release passes through the shared chemical exposure pipeline. Ordinary air missions and idle chemical-capable aircraft never release an agent or contaminate a region.
-- The retained legacy Sarin, Soman, Malodor, and behavioral-agent raid identifiers are migration surfaces, not alternate delivery paths; they remain unavailable until their replacements satisfy the shared accounting contract.
+The canonical contract and complete source map are documented in `docs/systems/cbrn_chemical_delivery.md`.
 
-## Core Gameplay Flow
+## Equipment and formations
 
-1. Research a chemical type.
-2. Unlock the matching chemical payload family.
-3. Choose a delivery method:
-   - General or support-company route only when its exact combat receipt is valid,
-   - explicit chemical raid with a selected-state release receipt,
-   - restricted-site camp route,
-   - occupation nerve suppression after its exact state-condition adapter is supplied,
-   - chemical air-bomb raid with verified selected-state eligibility.
-4. Execute usage while managing condemnation growth and the real payload ledger.
-5. Adjust operations around verified conditions, stockpiles, and diplomatic pressure.
+Strategic agent lots, filled shell lots, and four class-specific prepared air-payload families are producible equipment. Exact-agent aircraft racks fit CAS and tactical-bomber designs; an installed rack is eligibility equipment, not proof that a release occurred.
 
-## Cylinder Abilities (General Abilities)
+The division layer uses CBRN regimental support formations with essential-equipment shortage scaling. Projector batteries, ammunition trains, armored delivery detachments, and nerve-suppression detachments carry real standing payload loads but do not pay for an operation; an adapter must also debit the national route cost.
 
-These are command abilities tied to generals.
+Army Headquarters is the theater preparation layer. Its powerful packages have real essential equipment, preparation, duration, cooldown, upkeep, AI gating, and cleanup. A headquarters does not manufacture an exact target receipt where the engine does not expose one.
 
-- Provide fast tactical impact.
-- Performance depends on stockpile depth and combat conditions.
-- The current selected-state route derives release efficiency from the native outcome. No verified current-version weather or terrain hook is exposed to the adapter, so it supplies no environmental receipt.
-- The visible ability timer matches the full active window of the applied 7-day chemical attack buff.
-- The legacy cylinder ability cannot dispatch until the active combat or selected-state receipt exposes an exact target, payload debit, protection result, and verified condition set.
-- No leader-border, capital, enemy-adjacent, or other inferred state is used when the exact target cannot be resolved.
-- Usage against human targets contributes to international condemnation after the shared record is accepted; zombie-held-front exceptions remain explicit policy gates rather than target fallbacks.
-- Japan's China campaign has a separate visible selector and attack decision, but its attack remains unavailable until the current-version selected-state adapter supplies the same exact inputs.
+## Protection and recovery
 
-## Livens Support Companies
+Gas masks are producible model-progressing equipment. The national ledger distinguishes reserves, military issue, divisional equipment, civilian distribution, fitting, filters, stock loss, and population-scaled demand. Target protection is refreshed from those real ledgers at release time rather than inferred from technology alone.
 
-Livens support is separated by chemical type.
+Chemical contamination is state-owned. Overlapping exposure refreshes the canonical receipt, Air Cleanliness contribution, expiry, and continuing-death schedule. State-targeted recovery events reduce medical saturation and evidence without adding a broad all-country daily, weekly, or monthly pulse.
 
-- Legacy division templates may still contain one chemical-specific Livens support identifier for save and parser compatibility.
-- The legacy variant definitions do not currently prove a live exact-state combat release or debit matching payload stock through the active dispatcher.
-- The active division layer is the CBRN regimental support package, whose equipment and shortage contract is documented with the HQ support surface.
-- Legacy support-company contamination is not dispatched by the current generic combat path; any future active route must first prove an exact target, payload debit, protection result, and condition receipt and then use the shared dispatcher.
+## Doctrine rewards
 
-## Chemical Tank Support Companies
+Chaos Warfare grants 15% planning speed and 35% soft attack, breakthrough, and defense to chemical support companies at adoption. Combat Support mastery reaches 1.65 chemical operational effect and 1.80 contamination output. Integrated CBRN Command reaches 1.70 operational effect, 1.60 chemical-air dose, 1.50 chemical-air duration, and a 0.35 Condemnation multiplier. Officer-corps postures add strong formation, preparation, cleanup, casualty, contamination, medical-saturation, and camp-efficiency rewards according to the chosen route.
 
-Chemical tank supports are separated by chemical type and chassis class.
+## AI behavior
 
-- Legacy light, medium, and heavy chemical-tank identifiers remain support-role parser surfaces.
-- They do not currently prove a live exact-state combat release or debit matching payload stock through the active dispatcher.
-- The active division layer is the CBRN regimental support package, with essential equipment and shortage scaling owned by its current support triggers.
+AI adoption and escalation are profile-aware. Prepared, military-first, industrial-reserve, retaliation, theater-use, and unrestricted profiles receive different doctrine, policy, production, raid, headquarters, designer, and decision weights. Japan's campaign selector repairs itself toward a researched agent with matching stock and prioritizes Chinese core states. Every active AI route still pays its exact equipment and command cost.
 
-Balance profile:
+## Fail-closed engine boundaries
 
-- Strong offensive support in chemical-favorable engagements.
-- Lower long-fight resilience and staying quality than conventional support paths.
+- Ordinary continuous air missions expose no verified current-version eligible-activity callback. Idle or merely deployed chemical-capable aircraft never contaminate a region, and no estimator is retained.
+- Army-leader abilities and ordinary combat tactics cannot prove an exact selected state, payload debit, and release-condition receipt. Their stable identifiers remain unavailable for compatibility; their old direct helpers and misleading preview localisation were removed.
+- A generic active Army Headquarters-to-formation command relationship is not exposed in script. Unsupported ground release routes remain unavailable instead of choosing a nearby, border, capital, or random target.
+- The selected-state raid outcome scope does not expose verified live target weather or terrain. Active raids use native release efficiency and leave optional environmental inputs absent rather than assigning neutral or estimated values.
 
-## Contamination Behavior
+## Primary implementation surfaces
 
-Any active exact-state chemical route is:
-
-- target-gated,
-- payload-gated,
-- condition-receipt-gated,
-- chemical-profile-dependent.
-
-Practical rule:
-
-- If the route cannot prove its exact target and release receipt, contamination does not trigger.
-
-## Nerve Agent Branch (GA/GB/GD)
-
-Nerve sequence:
-
-1. Tabun (GA): entry point to nerve agents.
-2. Sarin (GB): stronger tactical nerve profile.
-3. Soman (GD): highest short-window tactical pressure.
-
-Nerve agents are high-intensity and lower-persistence battlefield tools.
-
-## Nerve Raids
-
-Sarin and Soman raids are dedicated strike options.
-
-- Strong direct military disruption.
-- Short contamination persistence relative to persistent agents.
-- Significant diplomatic cost when used repeatedly.
-- The direct air-delivered Sarin and Soman strikes do not require deployed bomber wings.
-- The rocket-delivered Sarin and Soman variants still require guided missiles.
-
-## US Special Chemical Raids
-
-The Malodor and Behavioral-Agent payloads are US-only special-project raid payloads.
-
-- Delivered only through raids.
-- Built around temporary state disruption rather than major strength damage.
-- Malodor adds immediate org shock plus severe short-term disruption.
-- The Behavioral-Agent payload focuses on coordination, planning, reinforcement, and defense breakdown.
-- A completed release records evidence and Condemnation through the same consequence contract as every other chemical agent.
-
-## International Condemnation and Diplomacy
-
-Most accepted chemical delivery paths feed the public chemical source in the shared condemnation model:
-
-- exact cylinder or battlefield operation use when its route receipt is available,
-- CBRN regimental support actions when their exact delivery adapter is available,
-- nerve raids,
-- completed selected-state chemical raids,
-- chemical doomsday release.
-
-Exceptions:
-
-- Cylinder abilities used only against zombie-held fronts do not add condemnation.
-- The restricted-site camp bridge uses its own bounded Condemnation context after the shared dispatch; it does not bypass evidence, attribution, deaths, contamination, medical saturation, or discovery.
-- Japan's targeted chemical campaign does not have a separate reduced-consequence path. Its visible attack remains fail-closed until the exact selected-state adapter is verified.
-
-Chemical use records `chemical_combat`, `chemical_air_strike`, or `chemical_doomsday` context. Where a delivery path measures civilian deaths or contamination, the shared helper adds up to `100` from deaths at one point per `10,000`, plus up to `50` from contamination at `0.50` per point, before visibility and severity. Public gains contribute to the seven shared tiers from Normal through Pariah State. Eligible countries can impose scalable arms, strategic, total, and pariah restrictions. Chemical doomsday release applies the centralized gameplay-tuning batch range of `150` base Condemnation plus stock-scaled liability, bounded by the configured `500` total cap, after each accepted state has entered the shared action record.
-
-State-based chemical abilities, CBRN support receipts, restricted-site actions, Japan's campaign action, and nerve-agent raids record the affected controller as the most recent victim only when the engine exposes that exact country scope. This feeds direct-victim and guarantor participant scoring and enables compensation. A combat-result callback that exposes only the acting unit owner cannot name an opponent unless the associated exact-state receipt supplies one.
-
-Integrated Chemical Operations reduces only the Condemnation impact computed for a release. It does not reduce evidence, attribution, deaths, contamination, medical saturation, confirmed-use history, resistance trauma, or other consequence records. Any lower sanctions tier follows only from the ordinary Condemnation thresholds; doctrine does not bypass sanctions rules. The complete model is documented in `docs/systems/condemnation_sanctions.md`.
-
-## Defensive Mitigation
-
-Chemical protection research is a core countermeasure layer.
-
-- Gas masks reduce chemical harm in modeled mitigation paths.
-- Dimercaprol provides additional protection, especially for blister-agent interactions.
-- `Gas Mask Defense` is treated as defensive counterplay and is not intended to add international condemnation by itself.
-
-## AI Behavior
-
-AI treats chemical warfare as a strategic path with tradeoffs.
-
-- It evaluates escalation pressure.
-- It does not use general-led cylinder abilities unless the exact combat receipt and stockpile gates are satisfied.
-- Japan's China campaign selector is retained for historical routing, but the attack is not AI-usable while the exact selected-state condition adapter is unavailable.
-- It still incurs condemnation costs from overuse.
-- It does not proactively select `tactic_chemical_shelling` as a normal combat tactic.
-- `tactic_gas_mask_defense` is reserved for counterplay rather than proactive tactic picks.
-- `tactic_chemical_barrage` remains the doctrine-specific automatic chemical tactic for `chaos_warfare`.
-
-## Chemical Air Bomb Modules
-
-Chemical air bomb modules are active content.
-
-- Seven standard-agent racks and the two project-gated incapacitating-agent racks fit CAS and tactical-bomber designs; strategic bombers are not eligible.
-- They are present in aircraft progression and UI as payload-handling and selected-state-operation eligibility components.
-- Their ordinary CAS and logistics-attack values provide a real combat payload, while toxic consequences still require a selected-state operation and the shared CBRN exposure pipeline.
-- Ordinary missions, deployed aircraft counts, and ground combat never prove chemical release.
-- The former ground-operation-heat and regional aircraft estimator is retired.
-- Only an explicit selected-state raid may reserve payload and enter the shared CBRN exposure and Condemnation pipeline.
-- Aborted or failed raids retain their real payload loss and can create evidence and Condemnation, but their no-release proof prevents deaths, contamination, medical strain, mask loss, treaty-use history, and chemical-use achievements.
-
-## Operational Notes
-
-- Build chemical stockpiles before committing to CBRN support-heavy chemical warfare.
-- Use nerve agents for tempo and disruption rather than persistent area denial, while retaining the exact equipment, death, contamination, medical, resistance-trauma, evidence, attribution, and diplomatic receipts.
-- Track condemnation before running repeated chemical cycles.
-- Account for the route's verified condition receipt; do not treat aircraft presence, idle modules, or an unexposed weather/terrain value as a release proof.
+- Payload and exposure: `common/scripted_effects/cbrn_payload_effects.txt`, `common/scripted_effects/cbrn_exposure_effects.txt`, and `common/scripted_effects/cbrn_consequence_effects.txt`
+- Air raids: `common/raids/cbrn_chemical_air_raids.txt` and `common/scripted_effects/cbrn_chemical_raid_effects.txt`
+- Japan campaign: `common/decisions/japan_chemical_campaign_decisions.txt` and `common/scripted_effects/JAP_chemical_campaign_effects.txt`
+- Doomsday: `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`
+- Restricted sites: `common/scripted_effects/cbrn_camp_effects.txt`
+- Protection and state recovery: `common/scripted_effects/cbrn_protection_effects.txt`, `common/scripted_effects/cbrn_chemical_state_effects.txt`, and `events/cbrn_chemical_delivery_events.txt`
+- Doctrine and officer corps: `common/doctrines/grand_doctrines/chaos_warfare_grand_doctrine.txt`, `common/doctrines/subdoctrines/land/chaos_warfare_*_subdoctrines.txt`, and `common/ideas/cbw_spirits.txt`
+- Consequences: `common/scripted_effects/condemnation_sanctions_effects.txt` and `docs/systems/condemnation_sanctions.md`

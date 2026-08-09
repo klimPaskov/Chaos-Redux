@@ -1322,6 +1322,14 @@ camp_rework_prepare_state_death_multiplier = {
 			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
 			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.chlorine_deaths }
 		}
+		if = {
+			limit = {
+				check_variable = { camp_state_chemical_killing_efficiency > constant:camp_rework_chemical_tier.lewisite }
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+			}
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.nerve_mastery_deaths }
+		}
 	}
 	else_if = {
 		limit = { has_state_flag = camp_rework_biological_method_active }
@@ -1362,28 +1370,42 @@ camp_rework_maintain_restricted_method = {
 			if = {
 				limit = {
 					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+					has_tech = soman
 					OR = {
-						has_tech = soman
-						is_special_project_completed = sp:sp_cw_soman_program
+						AND = {
+							has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+							has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_mastery_cost.soman_monthly_cylinders }
+						}
+						AND = {
+							NOT = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+							has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.soman_cylinders }
+						}
 					}
-					has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.soman_cylinders }
 				}
 				set_temp_variable = { camp_method_maintenance_success = 1 }
 				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.soman_cylinders }
+				if = { limit = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked } multiply_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_factor.nerve_mastery_payload_cost } }
 				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
 				add_equipment_to_stockpile = { type = chemical_soman_payload_cylinder_1 amount = camp_method_stockpile_remove }
 			}
 			else_if = {
 				limit = {
 					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+					has_tech = sarin
 					OR = {
-						has_tech = sarin
-						is_special_project_completed = sp:sp_cw_sarin_program
+						AND = {
+							has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+							has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_mastery_cost.sarin_monthly_cylinders }
+						}
+						AND = {
+							NOT = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+							has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.sarin_cylinders }
+						}
 					}
-					has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.sarin_cylinders }
 				}
 				set_temp_variable = { camp_method_maintenance_success = 1 }
 				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.sarin_cylinders }
+				if = { limit = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked } multiply_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_factor.nerve_mastery_payload_cost } }
 				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
 				add_equipment_to_stockpile = { type = chemical_sarin_payload_cylinder_1 amount = camp_method_stockpile_remove }
 			}
@@ -1391,10 +1413,20 @@ camp_rework_maintain_restricted_method = {
 				limit = {
 					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
 					has_tech = tabun
-					has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.tabun_cylinders }
+					OR = {
+						AND = {
+							has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+							has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_mastery_cost.tabun_monthly_cylinders }
+						}
+						AND = {
+							NOT = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+							has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.tabun_cylinders }
+						}
+					}
 				}
 				set_temp_variable = { camp_method_maintenance_success = 1 }
 				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.tabun_cylinders }
+				if = { limit = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked } multiply_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_factor.nerve_mastery_payload_cost } }
 				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
 				add_equipment_to_stockpile = { type = chemical_tabun_payload_cylinder_1 amount = camp_method_stockpile_remove }
 			}
@@ -1484,6 +1516,27 @@ camp_rework_maintain_restricted_method = {
 				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
 				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.chlorine_suppression }
 				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.chlorine_suppression }
+			}
+			if = {
+				limit = {
+					check_variable = { camp_state_chemical_killing_efficiency > constant:camp_rework_chemical_tier.lewisite }
+					var:genocide_responsible_country = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked }
+				}
+				if = {
+					limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+					add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.soman_mastery_suppression_bonus }
+					if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.soman_mastery_suppression_bonus }
+				}
+				else_if = {
+					limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+					add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.sarin_mastery_suppression_bonus }
+					if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.sarin_mastery_suppression_bonus }
+				}
+				else_if = {
+					limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
+					add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.tabun_mastery_suppression_bonus }
+					if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.tabun_mastery_suppression_bonus }
+				}
 			}
 		}
 		else = {
@@ -3760,14 +3813,12 @@ camp_rework_gui_destroy_selected_evidence = {
 camp_rework_gui_apply_selected_chemical_method = {
 	if = {
 		limit = {
-			camp_rework_country_can_use_restricted_method_route = yes
+			camp_rework_country_can_apply_chemical_camp_method = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
 			NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
-			camp_rework_country_has_chemical_escalation_capacity = yes
-			cbrn_camp_restricted_site_release_is_ready = yes
 			has_variable = camp_selected_state_id
-			var:camp_selected_state_id = { camp_rework_state_is_chemical_escalation_target = yes }
+			var:camp_selected_state_id = { camp_rework_state_is_available_chemical_method_target = yes }
 		}
 		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.restricted_method_pp }
 		camp_rework_gui_pay_political_cost = yes
@@ -4414,6 +4465,15 @@ camp_rework_prepare_chemical_method_outcome = {
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.chlorine_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.chlorine_cylinders }
 	}
+	if = {
+		limit = {
+			has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+			check_variable = { camp_chemical_killing_efficiency > constant:camp_rework_chemical_tier.lewisite }
+		}
+		multiply_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.nerve_mastery_deaths }
+		multiply_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_factor.nerve_mastery_payload_cost }
+		multiply_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.nerve_mastery_evidence }
+	}
 }
 
 camp_rework_consume_chemical_stockpile = {
@@ -4460,11 +4520,10 @@ camp_rework_apply_chemical_escalation_in_action_state = {
 	if = {
 		limit = {
 			has_variable = camp_rework_action_state_id
-			camp_rework_country_can_use_restricted_method_route = yes
+			camp_rework_country_can_apply_chemical_camp_method = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			check_variable = { camp_chemical_killing_efficiency > constant:camp_rework_chemical_tier.none }
-			var:camp_rework_action_state_id = { camp_rework_state_is_chemical_escalation_target = yes }
-			cbrn_camp_restricted_site_release_is_ready = yes
+			var:camp_rework_action_state_id = { camp_rework_state_is_available_chemical_method_target = yes }
 		}
 		camp_rework_prepare_chemical_method_outcome = yes
 		cbrn_reset_action_context = yes

@@ -2,11 +2,17 @@
 
 ## Purpose
 
-The supported occupation CBRN system provides two distinct occupation policies and real protective aid to foreign-occupied civilians. The equipment-backed nerve-suppression design is retained as inactive compatibility code because the installed engine surface does not provide the verified current-version state-condition and target-loss receipts required by the accepted design. Its commissioning and operation controls remain hidden; no estimator, proxy, neutral receipt, or fallback is used.
+The supported occupation CBRN system provides two distinct occupation policies and real protective aid to foreign-occupied civilians. The old mobile nerve-suppression operation is retained as inactive compatibility code because the installed engine surface does not provide its selected-state condition and target-loss receipts. The accepted nerve-suppression gameplay route instead belongs to Gas-Chamber Saturation Drills: the doctrine mastery unlocks nerve-agent camp methods once a nerve agent is researched, and the established camp transaction supplies the exact target, payload debit, deaths, contamination, evidence, and consequence record.
 
-It keeps military occupation separate from camp and genocide systems. Chaos Warfare doctrine does not create camps, extermination buildings, experiment sites, restricted chemical sites, or genocide occupation laws. Terminal Hazard may increase the resolved lethality of a separately active camp system through that system's own bounded hook, but it does not grant the infrastructure or alter the camp system's evidence, responsibility, resistance, discovery, or Condemnation records.
+The doctrine does not create a camp by itself, but its third Toxic Armored Warfare mastery authorizes a stronger and more efficient nerve-agent method in an already active camp network. A researched Tabun, Sarin, or Soman technology and enough matching cylinders are the only additional method requirements. The camp system retains ownership of infrastructure, responsibility, resistance, discovery, evidence, deaths, contamination, and Condemnation.
 
-## Occupation policies
+The mastered nerve method multiplies the selected agent's killing factor by 2.25, reduces activation and monthly payload consumption to 45 percent of standard, reduces generated evidence to 55 percent of standard, and adds agent-scaled resistance suppression. These values are centralized in `common/script_constants/camp_repression_rework_constants.txt`.
+
+## Legacy occupation compatibility
+
+The following occupation-policy and mobile-detachment material describes retained inactive compatibility surfaces. It is not a prerequisite for the supported camp method.
+
+### Occupation policies
 
 ### CBRN Coercive Security
 
@@ -28,7 +34,7 @@ Defensive and democratic AI profiles prefer this law, especially in chemically o
 
 The old `concentration` occupation-law identifier remains as a hidden, unselectable migration token with no gameplay modifiers. Its native fallback is Military Governor. It is not displayed as a doctrine reward and is not an alias for CBRN Coercive Security.
 
-## Nerve Agent Suppression Detachment
+### Nerve Agent Suppression Detachment
 
 The regimental support unit is an eligibility and protection layer rather than a passive state-wide weapon.
 
@@ -52,7 +58,7 @@ Sarin and Soman are separate 21-day targeted preparations. They share one purpos
 
 Starting either preparation reserves the exact state for that preparation window. Completion, cancellation, timed expiry, and state-control change all clear the reservation, so the two agent variants cannot be queued concurrently against one state and the reservation never substitutes for final target revalidation.
 
-## Real operation cost
+### Real operation cost
 
 The selected agent uses the shared `cbrn_payload_route_cost.nerve_suppression` amount from real Sarin or Soman lot stock.
 
@@ -71,7 +77,7 @@ The shared payload debit is the first mutation. The non-payload package is debit
 
 No cancellation or rejection fabricates a replacement payload, alternate agent, alternate state, inferred condition, or refund outside the native reservation contract.
 
-## Shared exposure pipeline
+### Shared exposure pipeline
 
 Nerve suppression uses the same chemical action pipeline as other chemical delivery methods.
 
