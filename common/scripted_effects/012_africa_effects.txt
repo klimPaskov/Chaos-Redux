@@ -741,21 +741,64 @@ africa_register_contact_target = {
 	}
 }
 
-# COUNTRY scope on the host. These are explicit player/AI refreshes, never
-# periodic world scans. Each writes only until the visible roster cap is full.
+# COUNTRY scope on the current target while ROOT remains the host. The source
+# arrays are maintained by relationship, Scramble, and world-package
+# registration/cleanup hooks, so this helper never opens a world scan.
+africa_register_current_ai_african_roster_target = {
+	if = {
+		limit = {
+			africa_is_valid_relationship_target = yes
+			africa_matches_current_host_overlay = yes
+			NOT = { tag = ROOT }
+			ROOT = {
+				OR = {
+					is_in_array = { array = africa_selected_targets value = PREV }
+					africa_has_selected_target_capacity = yes
+				}
+			}
+		}
+		set_country_flag = africa_selected_roster_target
+		ROOT = {
+			if = {
+				limit = { NOT = { is_in_array = { array = africa_selected_targets value = PREV } } }
+				add_to_array = { array = africa_selected_targets value = PREV }
+			}
+		}
+	}
+}
+
+africa_register_current_ai_external_roster_target = {
+	if = {
+		limit = {
+			africa_is_valid_external_action_target = yes
+			NOT = { tag = ROOT }
+			ROOT = {
+				OR = {
+					is_in_array = { array = africa_selected_targets value = PREV }
+					africa_has_selected_target_capacity = yes
+				}
+			}
+		}
+		set_country_flag = africa_selected_roster_target
+		ROOT = {
+			if = {
+				limit = { NOT = { is_in_array = { array = africa_selected_targets value = PREV } } }
+				add_to_array = { array = africa_selected_targets value = PREV }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the host. These are explicit player/AI refreshes over
+# maintained bounded rosters, never recurring world scans. Relationship
+# members, world-package actors/candidates, Scramble participants, and world
+# sponsorship targets all have registration/removal/host-transfer hooks.
 africa_refresh_bounded_african_target_roster = {
 	if = {
 		limit = { africa_is_current_host = yes }
-		every_country = {
-			limit = {
-				africa_is_valid_relationship_target = yes
-				africa_matches_current_host_overlay = yes
-				NOT = { tag = ROOT }
-				ROOT = { africa_has_selected_target_capacity = yes }
-				NOT = { has_country_flag = africa_selected_roster_target }
-			}
-			set_country_flag = africa_selected_roster_target
-			ROOT = { add_to_array = { array = africa_selected_targets value = PREV } }
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			africa_register_current_ai_african_roster_target = yes
 		}
 	}
 }
@@ -769,14 +812,25 @@ africa_refresh_bounded_external_target_roster = {
 				has_global_flag = africa_world_order_open
 			}
 		}
-		every_country = {
-			limit = {
-				africa_is_valid_external_action_target = yes
-				ROOT = { africa_has_selected_target_capacity = yes }
-				NOT = { has_country_flag = africa_selected_roster_target }
-			}
-			set_country_flag = africa_selected_roster_target
-			ROOT = { add_to_array = { array = africa_selected_targets value = PREV } }
+		for_each_scope_loop = {
+			array = africa_world_package_candidates
+			africa_register_current_ai_external_roster_target = yes
+		}
+		for_each_scope_loop = {
+			array = africa_world_package_actors
+			africa_register_current_ai_external_roster_target = yes
+		}
+		for_each_scope_loop = {
+			array = africa_scramble_participants
+			africa_register_current_ai_external_roster_target = yes
+		}
+		for_each_scope_loop = {
+			array = africa_world_sponsorship_targets
+			africa_register_current_ai_external_roster_target = yes
+		}
+		for_each_scope_loop = {
+			array = africa_world_war_registered_partners
+			africa_register_current_ai_external_roster_target = yes
 		}
 	}
 }

@@ -2746,8 +2746,9 @@ africa_refresh_selected_action_quote = {
 }
 
 # COUNTRY scope on a priority member. This is an explicit refresh requested by
-# the member's decision surface, not a recurring world scan. Rain and drought
-# share one bounded enemy roster and one target proof flag.
+# the member's decision surface. Rain and drought share one bounded enemy
+# roster and one target proof flag; registration reads only maintained Event 012
+# relationship, Scramble, package, sponsorship, and war-partner arrays.
 africa_clear_priority_member_natural_disaster_targets = {
 	for_each_scope_loop = {
 		array = africa_natural_disaster_enemy_targets
@@ -2756,14 +2757,60 @@ africa_clear_priority_member_natural_disaster_targets = {
 	clear_array = africa_natural_disaster_enemy_targets
 }
 
+africa_register_current_natural_disaster_roster_target = {
+	if = {
+		limit = {
+			africa_natural_disaster_member_target_is_valid = yes
+			ROOT = {
+				OR = {
+					is_in_array = { array = africa_natural_disaster_enemy_targets value = PREV }
+					check_variable = {
+						var = africa_natural_disaster_enemy_targets^num
+						value = constant:africa_capacity.maximum_selected_target_cap
+						compare = less_than
+					}
+				}
+			}
+		}
+		set_country_flag = africa_natural_disaster_member_target_validated
+		ROOT = {
+			if = {
+				limit = { NOT = { is_in_array = { array = africa_natural_disaster_enemy_targets value = PREV } } }
+				add_to_array = { array = africa_natural_disaster_enemy_targets value = PREV }
+			}
+		}
+	}
+}
+
 africa_refresh_priority_member_natural_disaster_targets = {
 	if = {
 		limit = { africa_natural_disaster_member_actor_is_eligible = yes }
 		africa_clear_priority_member_natural_disaster_targets = yes
-		every_country = {
-			limit = { africa_natural_disaster_member_target_is_valid = yes }
-			set_country_flag = africa_natural_disaster_member_target_validated
-			ROOT = { add_to_array = { array = africa_natural_disaster_enemy_targets value = PREV } }
+		event_target:africa_host = {
+			for_each_scope_loop = {
+				array = africa_relationship_countries
+				africa_register_current_natural_disaster_roster_target = yes
+			}
+			for_each_scope_loop = {
+				array = africa_world_package_candidates
+				africa_register_current_natural_disaster_roster_target = yes
+			}
+			for_each_scope_loop = {
+				array = africa_world_package_actors
+				africa_register_current_natural_disaster_roster_target = yes
+			}
+			for_each_scope_loop = {
+				array = africa_scramble_participants
+				africa_register_current_natural_disaster_roster_target = yes
+			}
+			for_each_scope_loop = {
+				array = africa_world_sponsorship_targets
+				africa_register_current_natural_disaster_roster_target = yes
+			}
+			for_each_scope_loop = {
+				array = africa_world_war_registered_partners
+				africa_register_current_natural_disaster_roster_target = yes
+			}
 		}
 	}
 }
@@ -2833,9 +2880,9 @@ africa_begin_priority_member_natural_disaster_action = {
 	}
 }
 
-# COUNTRY scope on a priority member. The AI uses the same explicit target
-# roster and shared action entry point as the player; it never creates a
-# second action ledger or scans the world on an on_action.
+# COUNTRY scope on a priority member. The AI uses the same explicitly
+# registered target roster and shared action entry point as the player; it
+# never creates a second action ledger or scans the world on a timer/on_action.
 africa_priority_member_run_natural_disaster_ai_action = {
 	if = {
 		limit = { africa_natural_disaster_member_actor_is_eligible = yes }
@@ -8591,6 +8638,13 @@ africa_cancel_action = {
 			clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
 		}
 		africa_handle_first_proof_action_resolution = yes
+		set_variable = { africa_last_action_id = africa_active_action_id }
+		set_variable = { africa_last_action_outcome = africa_active_action_outcome }
+		set_variable = { africa_last_action_objective = africa_active_action_objective }
+		set_variable = { africa_last_action_generation = africa_active_action_generation }
+		set_country_flag = africa_has_action_history
+		save_event_target_as = africa_action_result_target
+		event_target:africa_host = { country_event = { id = chaosx.nr12.220 } }
 		africa_cleanup_action = yes
 		event_target:africa_host = { africa_focus_ai_retry_pending_route_action = yes }
 		event_target:africa_host = { africa_focus_ai_retry_overlay_corridor_action = yes }
