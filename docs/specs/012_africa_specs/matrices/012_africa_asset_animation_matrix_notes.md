@@ -47,7 +47,6 @@ Every added animation candidate is state-driven and requires a static fallback. 
 
 Use the sourced visual asset worker for:
 
-- real historical leaders
 - historical flags
 - historically attested symbols
 - archival photographs that must depict a real person, place, object, or event
@@ -56,10 +55,11 @@ Use the sourced visual asset worker for:
 Use the generated event-art worker for:
 
 - fictional and alternate-history report, news, and super-event scenes
-- fictional leaders and councils
 - fictional flags and faction emblems
 - high-chaos actors
 - UI panel art and portrait frames
+
+Use the portrait worker for every character portrait. Historical rulers receive an archived real source image cropped and processed as a clearly documented placeholder. Fictional rulers receive a single adult male subject on a plain background with one unmistakable regnal, ritual, natural, or high-chaos distinction. Council, group, and female portraits are outside the accepted Event 12 portrait package.
 
 Use the icon artist for:
 
@@ -78,13 +78,13 @@ Every Tier A row is a package, not a promise that one flag completes the country
 
 - normal, medium, and small flags
 - ideology or route variants where the public identity changes
-- leader, council, advisor, commander, and high-command portraits
+- one adult male ruler portrait plus distinct adult male advisor, commander, and high-command portraits where the package actually exposes those roles
 - a faction or court emblem
 - focus, idea, decision, and achievement motifs
 - report or news imagery for major reveal moments
 - sourced-symbol notes
 - generated-variant notes
-- gender presentation and matching name-pool instructions for fictional one-person portraits
+- adult-male presentation and matching name-pool instructions for fictional one-person portraits
 
 Tier B and Tier C polities remain in the polity catalog. Asset work for them should be promoted only when implementation selects them for a real tag, persistent subject, or visible restoration.
 
@@ -96,7 +96,7 @@ Each final focus must receive a distinct 94x86 icon assignment. The 42 focus row
 
 ## Animation standard
 
-Every animated item, including the 10 original animation rows and any approved state-driven addition, requires:
+Every animated item, including the 10 original animation rows and the eight approved state-driven additions, requires:
 
 - a written brief
 - a frame plan
@@ -114,13 +114,13 @@ No final animation may be produced by shifting, scaling, rotating, warping, blur
 
 ## Flag and name discipline
 
-Country names remain direct public country names. Asset filenames and sprite identifiers use stable technical slugs. The user-mandated obscene ruler strings never enter filenames, paths, sprite names, tags, or script identifiers.
+Country names remain direct public country names. Asset filenames and sprite identifiers use stable technical slugs. The two required Afaan Oromoo court-flavour strings never enter filenames, paths, sprite names, tags, or script identifiers.
 
 Historical flags must be sourced or designed from documented motifs with uncertainty recorded. Fictional route flags may be generated. Ideology variants need distinct intentional designs rather than palette swaps.
 
 ## Super-event boundary
 
-The matrix reserves images for four super-event roles. Image work can begin from the direction in the package, but title, button, quote, and audio remain blocked until the dedicated research workflow verifies them. A completed super-event needs the final image, audio, text, slot, settings-aware playback, docs, and catalog alignment.
+The matrix reserves images for exactly four super-event roles. Their final images, licensed or public-domain audio, researched title/button/quote text, slots 101–104, audio IDs 58–61, settings-aware playback, documentation, and catalog records are installed; no fifth role is introduced.
 
 ## Validation handoff
 
@@ -147,8 +147,8 @@ The `status` column is a row-level release-candidate disposition, not a generic 
 - `deferred_unique_package_required`: the row belongs to a unique continent-scale or other bespoke package whose political, identity, presentation, and runtime surfaces are not yet complete.
 - `pending_runtime_blocker`: a release-candidate consumer expects the row now, but the exact final file or registration is absent. This value is not used when a dormant gate intentionally explains the absence.
 
-The current 2026-08-06 matrix contains 239 rows with these authoritative counts: `installed_runtime` 52, `installed_dormant` 28, `deferred_runtime_gated` 12, `deferred_controlled_pool` 133, `deferred_model_required` 14, and `deferred_unique_package_required` 0. The two armoured-elephant identity rows are installed through one shared body, while the remaining model-required unit rows remain deferred. The historical `pending_runtime_blocker` taxonomy is absent from the current matrix; no row is classified with that status.
+The current 2026-08-09 matrix contains 239 rows with these authoritative counts: `installed_runtime` 84, `installed_dormant` 28, `deferred_runtime_gated` 10, `deferred_controlled_pool` 117, `deferred_model_required` 0, and `deferred_unique_package_required` 0. All 18 animation rows have separately authored source frames, processed frames, a sheet, a static fallback, runtime DDS files, review GIFs, registrations, and decision or Charter consumers. The six promoted Tier A visual packages and all eight strange-force identity/model packages are installed on their approved existing Independence Wave carriers and runtime formations. The historical `pending_runtime_blocker` taxonomy is absent from the current matrix; no row is classified with that status.
 
-The shared `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` now mirrors these six statuses for all 239 `asset_item` rows in matrix order, preserving its UTF-8 BOM. The ledger carries only matrix-status evidence in this reconciliation and does not add independent binary, GFX, visual, or live-consumer proof.
+The shared `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` mirrors these six statuses for all 239 `asset_item` rows in matrix order, preserving its UTF-8 BOM. The 32 promoted animation, Tier A, and strange-force rows also carry their binary, GFX, consumer, source-frame, visual-review, and model-package evidence; the other rows retain their existing row-specific disposition evidence.
 
 The current matrix retains two suggested-filename aliases that do not erase installed runtime evidence: the Africa-is-one news and super-event rows omit the `africa_` segment in their suggested filenames. The Charter header has no remaining path drift; its exact registered/runtime file is `gfx/interface/012_africa/charter_header_plate.dds`. The registered `.gfx` paths remain authoritative.
