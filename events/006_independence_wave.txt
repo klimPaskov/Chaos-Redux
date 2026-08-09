@@ -178,9 +178,10 @@ country_event = {
 }
 
 # Internal synchronous roster checkpoint for Event 006 package rosters.
-# Fixed-tag characters are attached during game history initialization. The
-# Transylvania branch retains its explicit vanilla-roster receipt because no
-# generated character handoff is required there.
+# Fixed-tag characters are normally attached during game history initialization.
+# Release-time adapters may attach one approved additive character behind an
+# idempotent package guard; the Transylvania branch retains its explicit
+# vanilla-roster receipt because no generated character handoff is required.
 country_event = {
 	id = chaosx.nr6.350
 	hidden = yes
@@ -196,6 +197,53 @@ country_event = {
 				has_independence_wave_tra_command_roster = yes
 			}
 			set_country_flag = independence_wave_tra_vanilla_roster_checkpoint
+		}
+		if = {
+			# MNT preserves its vanilla roster, but the Event 006 emergency
+			# route uses the separately sourced Mitar Martinovic identity rather
+			# than the uncertain vanilla Blazo Dukanovic portrait. Attach the
+			# distinct character only after the package is selected and never
+			# duplicate it when setup is retried.
+			limit = {
+				is_independence_wave_mnt_package = yes
+				NOT = { has_character = MNT_independence_wave_mitar_martinovic }
+			}
+			recruit_character = MNT_independence_wave_mitar_martinovic
+		}
+		if = {
+			# Event 006 uses dedicated source placeholders for the two vanilla
+			# MNT political carriers without mutating their shared vanilla
+			# portraits. Keep this override character-scoped and leave Dukanovic
+			# untouched; Martinovic owns his dedicated portraits in his character
+			# definition above.
+			limit = {
+				is_independence_wave_mnt_package = yes
+			}
+			set_portraits = {
+				character = MNT_kristo_popovic
+				civilian = {
+					large = GFX_portrait_MNT_independence_wave_kristo_popovic
+				}
+				army = {
+					large = GFX_portrait_MNT_independence_wave_kristo_popovic
+				}
+			}
+			set_portraits = {
+				character = MNT_blazo_jovanovic
+				civilian = {
+					large = GFX_portrait_MNT_independence_wave_blazo_jovanovic
+				}
+				army = {
+					large = GFX_portrait_MNT_independence_wave_blazo_jovanovic
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_independence_wave_mnt_package = yes
+				has_independence_wave_mnt_command_roster = yes
+			}
+			set_country_flag = independence_wave_mnt_roster_checkpoint
 		}
 		if = {
 			# MAC uses the sourced Metodija Andonov-Cento identity as its
