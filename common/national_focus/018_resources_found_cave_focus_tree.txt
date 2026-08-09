@@ -57,7 +57,7 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 018 OTH-KESH HOST FOCUS TREE
 # ============================================================================
-# Sixty-five focuses teach and extend the origin, hierarchy, resource-anchor,
+# Sixty-seven focuses teach and extend the origin, hierarchy, resource-anchor,
 # doctrine, adaptation, continental objective, and world-end systems. Hierarchy
 # and doctrine roots are mutually exclusive. Every reward changes Event 018
 # mechanics, templates, decisions, anchors, targets, map state, or AI behavior.
@@ -188,9 +188,9 @@ focus_tree = {
 		icon = GFX_focus_DHO_directed_war_broods
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 		x = 3
-		y = 7
+		y = 8
 		cost = @cave_focus_normal
-		prerequisite = { focus = DHO_central_resonance }
+		prerequisite = { focus = DHO_count_every_vein }
 		completion_reward = {
 			custom_effect_tooltip = DHO_directed_war_broods_tt
 			resources_found_cave_refresh_ai_targets = yes
@@ -199,13 +199,31 @@ focus_tree = {
 	}
 
 	focus = {
+		id = DHO_count_every_vein
+		icon = GFX_focus_DHO_count_every_vein
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_central_resonance }
+		completion_reward = {
+			custom_effect_tooltip = DHO_count_every_vein_tt
+			resources_found_cave_enable_capacity_accounting = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_high
+			modifier = { factor = @cave_ai_favored_factor resources_found_cave_has_capacity_deficit = yes }
+		}
+	}
+
+	focus = {
 		id = DHO_origin_above_all
 		icon = GFX_focus_DHO_origin_above_all
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		x = 6
-		y = 8
+		x = 5
+		y = 9
 		cost = @cave_focus_project
-		prerequisite = { focus = DHO_central_resonance }
+		prerequisite = { focus = DHO_count_every_vein }
 		prerequisite = { focus = DHO_directed_war_broods }
 		completion_reward = {
 			custom_effect_tooltip = DHO_origin_above_all_tt
@@ -218,8 +236,8 @@ focus_tree = {
 		id = DHO_the_singular_hunger
 		icon = GFX_focus_DHO_the_singular_hunger
 		search_filters = { FOCUS_FILTER_ANNEXATION }
-		x = 6
-		y = 9
+		x = 5
+		y = 10
 		cost = @cave_focus_long
 		prerequisite = { focus = DHO_origin_above_all }
 		completion_reward = {
@@ -237,7 +255,7 @@ focus_tree = {
 		id = DHO_many_chambers
 		icon = GFX_focus_DHO_many_chambers
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 7
 		y = 5
 		cost = @cave_focus_normal
 		prerequisite = { focus = DHO_read_the_surface_veins }
@@ -257,7 +275,7 @@ focus_tree = {
 		id = DHO_local_brood_memory
 		icon = GFX_focus_DHO_local_brood_memory
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		x = 8
+		x = 7
 		y = 6
 		cost = @cave_focus_short
 		prerequisite = { focus = DHO_many_chambers }
@@ -273,10 +291,10 @@ focus_tree = {
 		id = DHO_distributed_command
 		icon = GFX_focus_DHO_distributed_command
 		search_filters = { FOCUS_FILTER_ARMY_XP }
-		x = 7
-		y = 7
+		x = 6
+		y = 8
 		cost = @cave_focus_normal
-		prerequisite = { focus = DHO_local_brood_memory }
+		prerequisite = { focus = DHO_chamber_autonomy }
 		completion_reward = {
 			custom_effect_tooltip = DHO_distributed_command_tt
 			resources_found_cave_refresh_ai_targets = yes
@@ -285,13 +303,31 @@ focus_tree = {
 	}
 
 	focus = {
+		id = DHO_chamber_autonomy
+		icon = GFX_focus_DHO_chamber_autonomy
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 7
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_local_brood_memory }
+		completion_reward = {
+			custom_effect_tooltip = DHO_chamber_autonomy_tt
+			resources_found_cave_enable_chamber_autonomy = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_high
+			modifier = { factor = @cave_ai_favored_factor has_country_flag = cave_origin_threatened }
+		}
+	}
+
+	focus = {
 		id = DHO_a_second_deep_capital
 		icon = GFX_focus_DHO_a_second_deep_capital
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 8
-		y = 8
+		y = 9
 		cost = @cave_focus_long
-		prerequisite = { focus = DHO_local_brood_memory }
+		prerequisite = { focus = DHO_chamber_autonomy }
 		prerequisite = { focus = DHO_distributed_command }
 		available = { resources_found_cave_has_secondary_capital_candidate = yes }
 		completion_reward = {
@@ -306,7 +342,7 @@ focus_tree = {
 		icon = GFX_focus_DHO_the_host_without_a_head
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 8
-		y = 9
+		y = 10
 		cost = @cave_focus_long
 		prerequisite = { focus = DHO_a_second_deep_capital }
 		completion_reward = {

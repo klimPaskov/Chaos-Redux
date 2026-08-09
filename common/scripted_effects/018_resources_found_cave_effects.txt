@@ -517,6 +517,13 @@ resources_found_cave_begin_anchor_activation = {
 		add_to_variable = { resources_found_cave_anchor_activation_date = resources_found_anchor_activation_delay }
 		if = {
 			limit = {
+				NOT = { resources_found_is_cave_origin_state = yes }
+				DHO = { has_country_flag = cave_chamber_autonomy }
+			}
+			subtract_from_variable = { resources_found_cave_anchor_activation_date = constant:resources_found_cave_runtime.chamber_autonomy_activation_reduction_days }
+		}
+		if = {
+			limit = {
 				has_state_flag = resources_found_cave_denial_prepared
 				has_variable = resources_found_cave_denial_capacity_penalty
 			}
@@ -874,6 +881,30 @@ resources_found_cave_select_spawn_state = {
 	clear_global_event_target = resources_found_cave_spawn_state
 	if = {
 		limit = {
+			has_country_flag = cave_chamber_autonomy
+			any_controlled_state = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+				any_neighbor_state = {
+					impassable = no
+					NOT = { is_controlled_by = DHO }
+				}
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+				any_neighbor_state = {
+					impassable = no
+					NOT = { is_controlled_by = DHO }
+				}
+			}
+			save_global_event_target_as = resources_found_cave_spawn_state
+		}
+	}
+	else_if = {
+		limit = {
 			has_country_flag = cave_continental_network
 			any_controlled_state = {
 				has_state_flag = resources_found_cave_anchor_active
@@ -942,6 +973,14 @@ resources_found_cave_spawn_one_if_below_capacity = {
 			}
 			set_variable = { resources_found_active_brood_divisions = num_divisions }
 			set_temp_variable = { resources_found_spawn_delay = resources_found_spawn_interval_days }
+			if = {
+				limit = { has_country_flag = cave_count_every_vein }
+				subtract_from_temp_variable = { resources_found_spawn_delay = constant:resources_found_cave_runtime.count_every_vein_spawn_reduction_days }
+				if = {
+					limit = { check_variable = { resources_found_spawn_delay < constant:resources_found_cave_runtime.minimum_spawn_interval_days } }
+					set_temp_variable = { resources_found_spawn_delay = constant:resources_found_cave_runtime.minimum_spawn_interval_days }
+				}
+			}
 			set_country_flag = { flag = resources_found_cave_spawn_cooldown days = resources_found_spawn_delay }
 		}
 	}
@@ -1091,6 +1130,22 @@ resources_found_cave_choose_hoard_the_veins = {
 
 # DHO country scope.
 resources_found_cave_refresh_command_network = {
+	resources_found_cave_refresh_ai_targets = yes
+}
+
+# DHO country scope. Central accounting does not change the exact per-state
+# floor(total strategic resources / 10), cap-10 capacity rule. It shortens only
+# the automatic replacement cooldown and forces an exact capacity refresh.
+resources_found_cave_enable_capacity_accounting = {
+	set_country_flag = cave_count_every_vein
+	resources_found_cave_recalculate_capacity = yes
+}
+
+# DHO country scope. Distributed chambers shorten non-origin activation and
+# prefer active frontier anchors when selecting the next automatic spawn state.
+resources_found_cave_enable_chamber_autonomy = {
+	set_country_flag = cave_chamber_autonomy
+	resources_found_cave_extend_anchor_grace = yes
 	resources_found_cave_refresh_ai_targets = yes
 }
 
