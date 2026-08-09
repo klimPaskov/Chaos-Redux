@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_RESOURCES_FOUND_DECISION_GATE_COMMISSION_TROOP_LIMIT_DIVISIONS = 3
+@CR_SC_RESOURCES_FOUND_VALUE_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - EVENT 018 DECISION AND MISSION TRIGGERS
 # ============================================================================
@@ -313,8 +317,8 @@ resources_found_decision_has_remote_security_inputs = {
 # these engine fields do not accept a variable value directly.
 resources_found_decision_has_dynamic_project_inputs = {
 	resources_found_decision_cost_preview_context_current = yes
-	check_variable = { resources_found_active_project_cost_preview_slot > constant:resources_found_value.zero }
-	check_variable = { resources_found_active_project_duration_preview_slot > constant:resources_found_value.zero }
+	check_variable = { resources_found_active_project_cost_preview_slot > @CR_SC_RESOURCES_FOUND_VALUE_ZERO }
+	check_variable = { resources_found_active_project_duration_preview_slot > @CR_SC_RESOURCES_FOUND_VALUE_ZERO }
 	meta_trigger = {
 		text = {
 			check_variable = { var = resources_found_decision_cost_pp value = resources_found_decision_preview_[COST_SLOT]_pp compare = equals }
@@ -392,7 +396,7 @@ resources_found_decision_field_has_recorded_casualties = {
 	resources_found_decision_has_selected_field = yes
 	var:resources_found_selected_field = {
 		OR = {
-			check_variable = { resources_found_field_deaths > constant:resources_found_value.zero }
+			check_variable = { resources_found_field_deaths > @CR_SC_RESOURCES_FOUND_VALUE_ZERO }
 			has_state_flag = resources_found_achievement_field_death_recorded
 			has_state_flag = resources_found_casualties_concealed
 		}
@@ -508,12 +512,12 @@ resources_found_decision_border_pair_has_forces = {
 	divisions_in_border_state = {
 		state = var:resources_found_border_owner_state
 		border_state = var:resources_found_border_claimant_state
-		size > constant:resources_found_value.zero
+		size > @CR_SC_RESOURCES_FOUND_VALUE_ZERO
 	}
 	var:resources_found_border_claimant_country = {
 		divisions_in_state = {
 			state = var:ROOT.resources_found_border_claimant_state
-			size > constant:resources_found_value.zero
+			size > @CR_SC_RESOURCES_FOUND_VALUE_ZERO
 		}
 	}
 }
@@ -598,7 +602,7 @@ resources_found_decision_commission_compliance_met = {
 		coastal_bunker < constant:resources_found_decision_gate.commission_forbidden_fort_threshold
 		divisions_in_state = {
 			state = var:ROOT.resources_found_selected_field
-			size < constant:resources_found_decision_gate.commission_troop_limit_divisions
+			size < @CR_SC_RESOURCES_FOUND_DECISION_GATE_COMMISSION_TROOP_LIMIT_DIVISIONS
 		}
 	}
 }
@@ -615,7 +619,7 @@ resources_found_decision_commission_observation_context_valid = {
 		coastal_bunker < constant:resources_found_decision_gate.commission_forbidden_fort_threshold
 		divisions_in_state = {
 			state = var:ROOT.resources_found_commission_observation_field
-			size < constant:resources_found_decision_gate.commission_troop_limit_divisions
+			size < @CR_SC_RESOURCES_FOUND_DECISION_GATE_COMMISSION_TROOP_LIMIT_DIVISIONS
 		}
 	}
 }

@@ -499,7 +499,7 @@ resources_found_add_random_standard_resource_roll_unlocked = {
 
 # STATE scope, internal. Inputs temp roll count/min/max. Lock must be held.
 resources_found_apply_random_roll_batch_unlocked = {
-	while = {
+	while_loop_effect = {
 		limit = { check_variable = { resources_found_rolls_remaining > constant:resources_found_value.zero } }
 		resources_found_add_random_standard_resource_roll_unlocked = yes
 		subtract_from_temp_variable = { resources_found_rolls_remaining = constant:resources_found_value.one }
@@ -1196,7 +1196,7 @@ resources_found_refresh_captured_state_capacity = {
 	add_to_variable = { resources_found_capacity_source_total = resource@chromium }
 	set_temp_variable = { resources_found_capacity_remainder = resources_found_capacity_source_total }
 	set_temp_variable = { resources_found_capacity_result = constant:resources_found_value.zero }
-	while = {
+	while_loop_effect = {
 		limit = {
 			check_variable = { var = resources_found_capacity_remainder value = constant:resources_found_capacity.resources_per_division compare = greater_than_or_equals }
 			check_variable = { resources_found_capacity_result < constant:resources_found_capacity.per_state_cap }
@@ -1335,7 +1335,7 @@ resources_found_calculate_cave_starting_strength = {
 
 	set_temp_variable = { resources_found_strength_remainder = resources_found_strength_score }
 	set_temp_variable = { resources_found_strength_divisions = constant:resources_found_strength.minimum_divisions }
-	while = {
+	while_loop_effect = {
 		limit = {
 			check_variable = { var = resources_found_strength_remainder value = constant:resources_found_strength.score_per_division compare = greater_than_or_equals }
 			check_variable = { resources_found_strength_divisions < constant:resources_found_strength.maximum_divisions }
