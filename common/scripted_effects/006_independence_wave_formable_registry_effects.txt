@@ -892,12 +892,17 @@ independence_wave_formable_issue_founding_invitations = {
 									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation } }
 									has_independence_wave_form08_member_candidate = yes
 								}
+								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
+									has_independence_wave_form09_member_candidate = yes
+								}
 							}
 						}
 						independence_wave_formable_store_founding_invitation_from_root = yes
 						independence_wave_form48_resolve_ai_invitation_from_root = yes
 						independence_wave_form39_resolve_ai_invitation_from_root = yes
 						independence_wave_form16_resolve_ai_invitation_from_root = yes
+						independence_wave_form09_resolve_ai_invitation_from_root = yes
 						# Reviewed-family human members receive the exact reply event
 						# after their invitation snapshot is stored. AI members never
 						# receive a human event; each family adapter resolves them to
@@ -1045,6 +1050,7 @@ independence_wave_formable_evaluate_candidate_consent = {
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation }
+				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
 			}
 			NOT = { has_war_with = ROOT }
 		}
@@ -1153,12 +1159,23 @@ independence_wave_formable_build_member_and_anchor_ledgers = {
 								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation } }
 								is_independence_wave_form08_member = yes
 							}
+							AND = {
+								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
+								is_independence_wave_form09_member = yes
+							}
 						}
 					}
 					save_event_target_as = independence_wave_formable_candidate_country
 					set_temp_variable = { independence_wave_formable_candidate_anchor = independence_wave_anchor_state }
 					independence_wave_formable_clear_frozen_consent_snapshot = yes
 					independence_wave_formable_evaluate_candidate_consent = yes
+					if = {
+						limit = {
+							tag = ROOT
+							ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
+						}
+						set_temp_variable = { independence_wave_formable_candidate_consent = constant:independence_wave_formable_consent.consenting_member }
+					}
 					if = {
 						limit = {
 							check_variable = { independence_wave_formable_candidate_consent = constant:independence_wave_formable_consent.consenting_member }
@@ -1380,6 +1397,10 @@ independence_wave_formable_fail_transaction = {
 	if = {
 		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation } }
 		independence_wave_form08_rollback_identity = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
+		independence_wave_form09_rollback_identity = yes
 	}
 	if = {
 		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation } }
@@ -1636,6 +1657,10 @@ independence_wave_formable_cleanup_runtime = {
 	if = {
 		limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.danubian_confederation } }
 		independence_wave_form08_cleanup_runtime = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.balkan_federation } }
+		independence_wave_form09_cleanup_runtime = yes
 	}
 	independence_wave_form0124_cleanup_runtime = yes
 	independence_wave_form07_cleanup_runtime = yes
