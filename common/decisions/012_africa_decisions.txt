@@ -1163,7 +1163,7 @@ africa_economy_actions_category = {
 	}
 
 	africa_select_expand_river_transport = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_riverborn
 		visible = {
 			africa_is_current_host = yes
 			africa_action_phase_has_reached_regional = yes
@@ -1456,7 +1456,7 @@ africa_rival_bloc_actions_category = {
 
 africa_high_chaos_actions_category = {
 	africa_select_consult_oracle_network = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_oracle_recon
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
@@ -1468,7 +1468,7 @@ africa_high_chaos_actions_category = {
 	}
 
 	africa_select_bargain_with_the_green = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_forest_giants
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
@@ -1480,7 +1480,7 @@ africa_high_chaos_actions_category = {
 	}
 
 	africa_select_petition_the_rain = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_disaster_wardens
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
@@ -1494,7 +1494,7 @@ africa_high_chaos_actions_category = {
 	}
 
 	africa_select_defy_the_drought = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_disaster_wardens
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
@@ -1505,6 +1505,35 @@ africa_high_chaos_actions_category = {
 		cost = 0
 		complete_effect = { set_temp_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought } africa_select_action_for_quote = yes }
 		ai_will_do = { base = 0 }
+	}
+
+	africa_authorize_fictional_pathogen_review = {
+		icon = GFX_decision_012_africa_charter_ledger
+		fixed_random_seed = no
+		visible = { africa_disease_review_authorization_is_available = yes }
+		available = {
+			africa_disease_review_authorization_is_available = yes
+			custom_trigger_tooltip = {
+				tooltip = africa_disease_review_command_power_tt
+				NOT = { command_power < constant:africa_disease.review_cost_cp }
+			}
+		}
+		cost = constant:africa_disease.review_cost_pp
+		complete_effect = {
+			set_temp_variable = { africa_disease_review_command_power = constant:africa_disease.review_cost_cp }
+			multiply_temp_variable = { africa_disease_review_command_power = constant:africa_action_cost.negation_multiplier }
+			add_command_power = africa_disease_review_command_power
+			africa_disease_authorize_review = yes
+			set_temp_variable = { africa_disease_review_command_power = constant:africa_value.zero }
+			custom_effect_tooltip = africa_disease_review_effect_tt
+		}
+		ai_will_do = {
+			base = constant:africa_disease.review_ai_base
+			modifier = {
+				factor = constant:africa_disease.review_ai_wartime_factor
+				has_war = yes
+			}
+		}
 	}
 
 	africa_select_contain_emergent_disease = {
@@ -1528,6 +1557,7 @@ africa_high_chaos_actions_category = {
 			has_global_flag = africa_evolution_iii_logged
 			# Disease actions remain dormant until the separately reviewed fictional-disease package is authorised.
 			has_country_flag = africa_fictional_pathogen_review_authorized
+			NOT = { has_country_flag = africa_disease_countermeasure_researched }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.research_disease_countermeasure } } }
 		cost = 0
@@ -1536,11 +1566,14 @@ africa_high_chaos_actions_category = {
 	}
 
 	africa_select_weaponise_fictional_pathogen = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_plague_carriers
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
 			has_country_flag = africa_fictional_pathogen_review_authorized
+			has_country_flag = africa_disease_countermeasure_researched
+			africa_disease_host_has_payload = yes
+			NOT = { has_country_flag = africa_disease_weapon_cooldown }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.weaponise_fictional_pathogen } } }
 		cost = 0
@@ -1549,11 +1582,12 @@ africa_high_chaos_actions_category = {
 	}
 
 	africa_select_awaken_stone_cohort = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_stone_cohorts
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
 			has_global_flag = africa_strange_formation_package_ready
+			check_variable = { africa_active_action_count < africa_active_action_cap }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.awaken_stone_cohort } } }
 		cost = 0
@@ -1562,11 +1596,12 @@ africa_high_chaos_actions_category = {
 	}
 
 	africa_select_train_gorilla_heavy_infantry = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_gorilla_heavy_infantry
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
 			has_global_flag = africa_strange_formation_package_ready
+			check_variable = { africa_active_action_count < africa_active_action_cap }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.train_gorilla_heavy_infantry } } }
 		cost = 0
@@ -1575,11 +1610,12 @@ africa_high_chaos_actions_category = {
 	}
 
 	africa_select_organise_pan_sappers = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_pan_sappers
 		visible = {
 			africa_is_current_host = yes
 			has_global_flag = africa_evolution_iii_logged
 			has_global_flag = africa_strange_formation_package_ready
+			check_variable = { africa_active_action_count < africa_active_action_cap }
 		}
 		available = { NOT = { check_variable = { africa_selected_action_id = constant:africa_action.organise_pan_sappers } } }
 		cost = 0
@@ -1601,7 +1637,7 @@ africa_priority_member_natural_disaster_actions_category = {
 	}
 
 	africa_priority_member_petition_the_rain = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_disaster_wardens
 		target_array = africa_natural_disaster_enemy_targets
 		activation = { africa_natural_disaster_member_actor_is_eligible = yes }
 		target_root_trigger = { africa_natural_disaster_member_actor_is_eligible = yes }
@@ -1621,7 +1657,7 @@ africa_priority_member_natural_disaster_actions_category = {
 	}
 
 	africa_priority_member_defy_the_drought = {
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_disaster_wardens
 		target_array = africa_natural_disaster_enemy_targets
 		activation = { africa_natural_disaster_member_actor_is_eligible = yes }
 		target_root_trigger = { africa_natural_disaster_member_actor_is_eligible = yes }

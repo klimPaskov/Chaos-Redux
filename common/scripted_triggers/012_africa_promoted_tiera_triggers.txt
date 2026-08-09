@@ -1,0 +1,283 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 PROMOTED TIER A HIGH-CHAOS PACKAGE TRIGGERS
+# ============================================================================
+# These predicates are deliberately additive. They accept only the six niche
+# tags declared by Event 006 and never create a tag, state, or generic grant.
+# State eligibility is fail-closed: the carrier must already own, control, and
+# use the surveyed capital, and no prior promoted package may have claimed it.
+
+africa_promoted_tiera_package_is_pan = {
+	check_variable = { africa_promoted_tiera_package_id = constant:africa_promoted_tiera_package.pan }
+}
+
+africa_promoted_tiera_package_is_gorilla_kingdom = {
+	check_variable = { africa_promoted_tiera_package_id = constant:africa_promoted_tiera_package.gorilla_kingdom }
+}
+
+africa_promoted_tiera_package_is_the_green = {
+	check_variable = { africa_promoted_tiera_package_id = constant:africa_promoted_tiera_package.the_green }
+}
+
+africa_promoted_tiera_package_is_living_rivers = {
+	check_variable = { africa_promoted_tiera_package_id = constant:africa_promoted_tiera_package.living_rivers }
+}
+
+africa_promoted_tiera_package_is_stoneborn = {
+	check_variable = { africa_promoted_tiera_package_id = constant:africa_promoted_tiera_package.stoneborn }
+}
+
+africa_promoted_tiera_package_is_ancient_hosts = {
+	check_variable = { africa_promoted_tiera_package_id = constant:africa_promoted_tiera_package.ancient_hosts }
+}
+
+africa_promoted_tiera_carrier_is_pan = {
+	OR = {
+		original_tag = EBX
+		tag = EBX
+	}
+}
+
+africa_promoted_tiera_carrier_is_gorilla_kingdom = {
+	OR = {
+		original_tag = EHX
+		tag = EHX
+	}
+}
+
+africa_promoted_tiera_carrier_is_the_green = {
+	OR = {
+		original_tag = DPX
+		tag = DPX
+	}
+}
+
+africa_promoted_tiera_carrier_is_living_rivers = {
+	OR = {
+		original_tag = EEX
+		tag = EEX
+	}
+}
+
+africa_promoted_tiera_carrier_is_stoneborn = {
+	OR = {
+		original_tag = DFX
+		tag = DFX
+	}
+}
+
+africa_promoted_tiera_carrier_is_ancient_hosts = {
+	OR = {
+		original_tag = DHX
+		tag = DHX
+	}
+}
+
+africa_promoted_tiera_state_pan_is_eligible = {
+	AND = {
+		owns_state = constant:africa_promoted_tiera_state.pan
+		controls_state = constant:africa_promoted_tiera_state.pan
+		capital_scope = { state = constant:africa_promoted_tiera_state.pan }
+		NOT = { has_global_flag = africa_promoted_tiera_state_claimed_900 }
+	}
+}
+
+africa_promoted_tiera_state_gorilla_kingdom_is_eligible = {
+	AND = {
+		owns_state = constant:africa_promoted_tiera_state.gorilla_kingdom
+		controls_state = constant:africa_promoted_tiera_state.gorilla_kingdom
+		capital_scope = { state = constant:africa_promoted_tiera_state.gorilla_kingdom }
+		NOT = { has_global_flag = africa_promoted_tiera_state_claimed_768 }
+	}
+}
+
+africa_promoted_tiera_state_the_green_is_eligible = {
+	AND = {
+		owns_state = constant:africa_promoted_tiera_state.the_green
+		controls_state = constant:africa_promoted_tiera_state.the_green
+		capital_scope = { state = constant:africa_promoted_tiera_state.the_green }
+		NOT = { has_global_flag = africa_promoted_tiera_state_claimed_298 }
+	}
+}
+
+africa_promoted_tiera_state_living_rivers_is_eligible = {
+	AND = {
+		owns_state = constant:africa_promoted_tiera_state.living_rivers
+		controls_state = constant:africa_promoted_tiera_state.living_rivers
+		capital_scope = { state = constant:africa_promoted_tiera_state.living_rivers }
+		NOT = { has_global_flag = africa_promoted_tiera_state_claimed_548 }
+	}
+}
+
+africa_promoted_tiera_state_stoneborn_is_eligible = {
+	AND = {
+		owns_state = constant:africa_promoted_tiera_state.stoneborn
+		controls_state = constant:africa_promoted_tiera_state.stoneborn
+		capital_scope = { state = constant:africa_promoted_tiera_state.stoneborn }
+		NOT = { has_global_flag = africa_promoted_tiera_state_claimed_460 }
+	}
+}
+
+africa_promoted_tiera_state_ancient_hosts_is_eligible = {
+	AND = {
+		owns_state = constant:africa_promoted_tiera_state.ancient_hosts_capital
+		controls_state = constant:africa_promoted_tiera_state.ancient_hosts_capital
+		owns_state = constant:africa_promoted_tiera_state.ancient_hosts_extension
+		controls_state = constant:africa_promoted_tiera_state.ancient_hosts_extension
+		capital_scope = { state = constant:africa_promoted_tiera_state.ancient_hosts_capital }
+		NOT = { has_global_flag = africa_promoted_tiera_state_claimed_448 }
+		NOT = { has_global_flag = africa_promoted_tiera_state_claimed_661 }
+	}
+}
+
+africa_promoted_tiera_carrier_has_eligible_state = {
+	OR = {
+		AND = { africa_promoted_tiera_carrier_is_pan = yes africa_promoted_tiera_state_pan_is_eligible = yes }
+		AND = { africa_promoted_tiera_carrier_is_gorilla_kingdom = yes africa_promoted_tiera_state_gorilla_kingdom_is_eligible = yes }
+		AND = { africa_promoted_tiera_carrier_is_the_green = yes africa_promoted_tiera_state_the_green_is_eligible = yes }
+		AND = { africa_promoted_tiera_carrier_is_living_rivers = yes africa_promoted_tiera_state_living_rivers_is_eligible = yes }
+		AND = { africa_promoted_tiera_carrier_is_stoneborn = yes africa_promoted_tiera_state_stoneborn_is_eligible = yes }
+		AND = { africa_promoted_tiera_carrier_is_ancient_hosts = yes africa_promoted_tiera_state_ancient_hosts_is_eligible = yes }
+	}
+}
+
+africa_promoted_tiera_activation_is_open = {
+	AND = {
+		has_global_flag = africa_event_active
+		has_global_flag = africa_evolution_iii_logged
+		has_event_target = africa_host
+		event_target:africa_host = {
+			has_country_flag = africa_host_commit_completed
+			check_variable = { africa_current_phase value = constant:africa_action_phase.high_chaos compare = greater_than_or_equals }
+		}
+	}
+}
+
+africa_promoted_tiera_can_reveal = {
+	AND = {
+		africa_promoted_tiera_activation_is_open = yes
+		africa_promoted_tiera_carrier_has_eligible_state = yes
+		NOT = { has_country_flag = africa_promoted_tiera_active }
+		NOT = { has_country_flag = africa_promoted_tiera_contained }
+		NOT = { has_country_flag = africa_priority_member_package_active }
+		NOT = { africa_priority_member_focus_surface_is_protected = yes }
+	}
+}
+
+africa_promoted_tiera_is_active = {
+	has_country_flag = africa_promoted_tiera_active
+}
+
+africa_promoted_tiera_can_convene_politics = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		NOT = { has_country_flag = africa_promoted_tiera_politics_complete }
+	}
+}
+
+africa_promoted_tiera_can_advance_mechanic = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		NOT = { has_country_flag = africa_promoted_tiera_mechanic_complete }
+	}
+}
+
+africa_promoted_tiera_can_negotiate_league = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		NOT = { has_country_flag = africa_promoted_tiera_league_settled }
+	}
+}
+
+africa_promoted_tiera_can_settle_overlap = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		NOT = { has_country_flag = africa_promoted_tiera_overlap_settled }
+	}
+}
+
+africa_promoted_tiera_can_post_settle = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		has_country_flag = africa_promoted_tiera_politics_complete
+		has_country_flag = africa_promoted_tiera_mechanic_complete
+		has_country_flag = africa_promoted_tiera_league_settled
+		has_country_flag = africa_promoted_tiera_overlap_settled
+		NOT = { has_country_flag = africa_promoted_tiera_post_settlement_complete }
+	}
+}
+
+africa_promoted_tiera_force_package_is_ready = {
+	has_global_flag = africa_strange_formation_package_ready
+}
+
+africa_promoted_tiera_force_pan_sappers_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		africa_promoted_tiera_package_is_pan = yes
+		NOT = { has_country_flag = africa_promoted_tiera_force_pan_sappers_called }
+	}
+}
+
+africa_promoted_tiera_force_oracle_recon_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		OR = { africa_promoted_tiera_package_is_pan = yes africa_promoted_tiera_package_is_ancient_hosts = yes }
+		NOT = { has_country_flag = africa_promoted_tiera_force_oracle_recon_called }
+	}
+}
+
+africa_promoted_tiera_force_gorilla_heavy_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		africa_promoted_tiera_package_is_gorilla_kingdom = yes
+		NOT = { has_country_flag = africa_promoted_tiera_force_gorilla_heavy_called }
+	}
+}
+
+africa_promoted_tiera_force_forest_giants_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		OR = { africa_promoted_tiera_package_is_the_green = yes africa_promoted_tiera_package_is_pan = yes }
+		NOT = { has_country_flag = africa_promoted_tiera_force_forest_giants_called }
+	}
+}
+
+africa_promoted_tiera_force_riverborn_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		africa_promoted_tiera_package_is_living_rivers = yes
+		NOT = { has_country_flag = africa_promoted_tiera_force_riverborn_called }
+	}
+}
+
+africa_promoted_tiera_force_disaster_wardens_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		africa_promoted_tiera_package_is_the_green = yes
+		NOT = { has_country_flag = africa_promoted_tiera_force_disaster_wardens_called }
+	}
+}
+
+africa_promoted_tiera_force_stone_cohorts_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		africa_promoted_tiera_package_is_stoneborn = yes
+		NOT = { has_country_flag = africa_promoted_tiera_force_stone_cohorts_called }
+	}
+}
+
+africa_promoted_tiera_force_plague_carriers_is_available = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_force_package_is_ready = yes
+		africa_promoted_tiera_package_is_ancient_hosts = yes
+		NOT = { has_country_flag = africa_promoted_tiera_force_plague_carriers_called }
+	}
+}

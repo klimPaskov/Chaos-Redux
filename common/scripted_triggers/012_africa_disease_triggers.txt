@@ -1,0 +1,48 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 FICTIONAL DISEASE ROUTE TRIGGERS
+# ============================================================================
+# All triggers fail closed until Evolution III, explicit review authorisation,
+# and the native ordinary-pathogen state contract are present.
+# ============================================================================
+
+africa_disease_review_authorization_is_available = {
+	africa_is_current_host = yes
+	has_global_flag = africa_evolution_iii_logged
+	NOT = { has_country_flag = africa_fictional_pathogen_review_authorized }
+	NOT = { has_country_flag = africa_disease_research_site }
+}
+
+africa_disease_target_has_eligible_state = {
+	any_controlled_state = {
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	}
+}
+
+africa_disease_target_has_episode = {
+	any_controlled_state = {
+		bio_lifecycle_state_has_any_ordinary_episode = yes
+	}
+}
+
+africa_disease_host_has_payload = {
+	has_variable = africa_disease_payload_available
+	check_variable = {
+		var = africa_disease_payload_available
+		value = constant:africa_disease.payload_unit
+		compare = greater_than_or_equals
+	}
+}
+
+africa_disease_weapon_target_is_valid = {
+	has_event_target = africa_host
+	event_target:africa_host = {
+		africa_is_current_host = yes
+		has_country_flag = africa_fictional_pathogen_review_authorized
+		has_country_flag = africa_disease_countermeasure_researched
+		africa_disease_host_has_payload = yes
+		NOT = { has_country_flag = africa_disease_weapon_cooldown }
+	}
+	NOT = { africa_is_current_host = yes }
+	has_war_with = event_target:africa_host
+	africa_disease_target_has_eligible_state = yes
+}

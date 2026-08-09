@@ -1,0 +1,268 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 FICTIONAL DISEASE ROUTE EFFECTS
+# ============================================================================
+# This adapter connects the Event 012 high-chaos actions to the repository's
+# native ordinary-pathogen lifecycle. It never invents a new biological state
+# machine, never scans the world, and never uses a real-world disease name in
+# player-facing text. Each seed is state-scoped, actor/victim proven, payload
+# debited, and recorded by the native lifecycle history.
+# ============================================================================
+
+@AFRICA_DISEASE_WEAPON_COOLDOWN_DAYS = 45
+
+# COUNTRY scope on the Event 012 host. Explicit one-time review authorisation.
+africa_disease_authorize_review = {
+	if = {
+		limit = { africa_disease_review_authorization_is_available = yes }
+		set_country_flag = africa_fictional_pathogen_review_authorized
+		set_country_flag = africa_disease_research_site
+		set_variable = { africa_disease_payload_available = constant:africa_disease.payload_capacity }
+		set_variable = { africa_disease_research_progress = constant:africa_value.zero }
+		set_variable = { africa_disease_weapon_release_count = constant:africa_value.zero }
+		random_list = {
+			constant:africa_disease.family_weight = { set_variable = { africa_disease_agent_slot = constant:bio_lifecycle_agent.anthrax } }
+			constant:africa_disease.family_weight = { set_variable = { africa_disease_agent_slot = constant:bio_lifecycle_agent.plague } }
+			constant:africa_disease.family_weight = { set_variable = { africa_disease_agent_slot = constant:bio_lifecycle_agent.tularemia } }
+			constant:africa_disease.family_weight = { set_variable = { africa_disease_agent_slot = constant:bio_lifecycle_agent.smallpox } }
+		}
+	}
+}
+
+# STATE scope. The caller has already set the host's seed result. Native
+# dispatch validates the route, actor, victim, debit, and state controller.
+africa_disease_dispatch_seed_from_current_state = {
+	bio_lifecycle_reset_seed_record = yes
+	set_temp_variable = { bio_seed_agent = event_target:africa_host.africa_disease_agent_slot }
+	set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.battlefield_dissemination }
+	set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+	set_temp_variable = { bio_seed_result = event_target:africa_host.africa_disease_seed_result }
+	set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_required = constant:africa_disease.payload_unit }
+	set_temp_variable = { bio_seed_payload_consumed = constant:africa_disease.payload_unit }
+	set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
+	event_target:africa_host = { save_event_target_as = bio_seed_actor }
+	CONTROLLER = { save_event_target_as = bio_seed_victim }
+	bio_lifecycle_dispatch_seed = yes
+	if = {
+		limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+		CONTROLLER = { set_variable = { africa_disease_dispatch_accepted = constant:africa_value.one } }
+	}
+}
+
+# COUNTRY scope on an active action target. Full and partial weapon releases
+# both use the native state lifecycle; a failed action records no seed.
+africa_disease_launch_seed = {
+	set_variable = { africa_disease_dispatch_accepted = constant:africa_value.zero }
+	if = {
+		limit = {
+			has_event_target = africa_host
+			event_target:africa_host = { africa_disease_host_has_payload = yes }
+			africa_disease_target_has_eligible_state = yes
+		}
+		random_controlled_state = {
+			limit = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes }
+			africa_disease_dispatch_seed_from_current_state = yes
+		}
+		if = {
+			limit = { check_variable = { var = africa_disease_dispatch_accepted value = constant:africa_value.one compare = equals } }
+			set_country_flag = africa_disease_crisis_active
+			set_country_flag = africa_disease_weapon_release_recorded
+			if = {
+				limit = { NOT = { has_variable = africa_disease_target_release_count } }
+				set_variable = { africa_disease_target_release_count = constant:africa_value.zero }
+			}
+			add_to_variable = { africa_disease_target_release_count = constant:africa_value.one }
+			scoped_sound_effect = "chaosx_plague_carriers_impact_sfx"
+			event_target:africa_host = {
+				subtract_from_variable = { africa_disease_payload_available = constant:africa_disease.payload_unit }
+				add_to_variable = { africa_disease_weapon_release_count = constant:africa_value.one }
+				set_country_flag = africa_fictional_pathogen_release_recorded
+				set_country_flag = { flag = africa_disease_weapon_cooldown days = @AFRICA_DISEASE_WEAPON_COOLDOWN_DAYS }
+			}
+		}
+		else = {
+			set_country_flag = africa_disease_weapon_dispatch_failed
+			event_target:africa_host = { set_country_flag = africa_fictional_pathogen_dispatch_failed }
+		}
+	}
+	clear_variable = africa_disease_dispatch_accepted
+}
+
+# COUNTRY scope on the Event 012 host. Uses the native ordinary-pathogen
+# laboratory-accident route for a failed research or release attempt. The
+# crisis flag is written only after the native state dispatch is accepted, so
+# a stale flag cannot make containment available without a real episode.
+africa_disease_dispatch_laboratory_accident = {
+	set_variable = { africa_disease_accident_dispatch_accepted = constant:africa_value.zero }
+	if = {
+		limit = {
+			has_event_target = africa_host
+			africa_disease_target_has_eligible_state = yes
+		}
+		random_controlled_state = {
+			limit = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes }
+			bio_lifecycle_reset_seed_record = yes
+			set_temp_variable = { bio_seed_agent = event_target:africa_host.africa_disease_agent_slot }
+			set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.laboratory_accident }
+			set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.accident }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.accident }
+			bio_lifecycle_dispatch_seed = yes
+			if = {
+				limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+				event_target:africa_host = { set_variable = { africa_disease_accident_dispatch_accepted = constant:africa_value.one } }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = africa_disease_accident_dispatch_accepted value = constant:africa_value.one compare = equals } }
+			set_country_flag = africa_disease_crisis_active
+		}
+	}
+	clear_variable = africa_disease_accident_dispatch_accepted
+}
+
+africa_disease_prepare_seed_success = {
+	event_target:africa_host = { set_variable = { africa_disease_seed_result = constant:bio_lifecycle_result.success } }
+	africa_disease_launch_seed = yes
+}
+
+africa_disease_prepare_seed_partial = {
+	event_target:africa_host = { set_variable = { africa_disease_seed_result = constant:bio_lifecycle_result.partial } }
+	africa_disease_launch_seed = yes
+}
+
+# COUNTRY scope on a target with an ordinary episode. Native response values
+# alter every affected controlled state and immediately refresh modifiers.
+africa_disease_apply_containment_full = {
+	if = {
+		limit = { africa_disease_target_has_episode = yes }
+		every_controlled_state = {
+			limit = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			bio_countermeasure_apply_containment_success = yes
+		}
+		clr_country_flag = africa_disease_crisis_active
+		set_country_flag = africa_disease_containment_complete
+	}
+	else = {
+		set_country_flag = africa_disease_containment_failed
+	}
+}
+
+africa_disease_apply_containment_partial = {
+	if = {
+		limit = { africa_disease_target_has_episode = yes }
+		every_controlled_state = {
+			limit = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			bio_countermeasure_apply_containment_partial_success = yes
+		}
+		set_country_flag = africa_disease_containment_partial
+	}
+	else = {
+		set_country_flag = africa_disease_containment_failed
+	}
+}
+
+africa_disease_apply_containment_failure = {
+	set_country_flag = africa_disease_containment_failed
+	if = {
+		limit = { africa_disease_target_has_episode = yes }
+		every_controlled_state = {
+			limit = { bio_lifecycle_state_has_any_ordinary_episode = yes }
+			bio_countermeasure_apply_containment_failure = yes
+		}
+	}
+}
+
+# COUNTRY scope on the Event 012 host. Research progress is an explicit
+# project receipt rather than a free flag; two full bands are required.
+africa_disease_apply_research_full = {
+	if = {
+		limit = { has_country_flag = africa_fictional_pathogen_review_authorized }
+		add_to_variable = { africa_disease_research_progress = constant:africa_disease.research_progress_per_full }
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_disease_research_progress
+					value = constant:africa_disease.research_required
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = africa_disease_countermeasure_researched
+			set_country_flag = africa_disease_research_complete
+		}
+	}
+}
+
+africa_disease_apply_research_partial = {
+	if = {
+		limit = { has_country_flag = africa_fictional_pathogen_review_authorized }
+		add_to_variable = { africa_disease_research_progress = constant:africa_disease.research_progress_per_partial }
+		set_country_flag = africa_disease_research_partial
+	}
+}
+
+africa_disease_apply_research_failure = {
+	set_country_flag = africa_disease_research_failed
+	africa_disease_dispatch_laboratory_accident = yes
+}
+
+africa_disease_apply_weapon_full = {
+	if = {
+		limit = { africa_disease_weapon_target_is_valid = yes }
+		africa_disease_prepare_seed_success = yes
+	}
+	else = {
+		africa_disease_apply_weapon_failure = yes
+	}
+}
+
+africa_disease_apply_weapon_partial = {
+	if = {
+		limit = { africa_disease_weapon_target_is_valid = yes }
+		africa_disease_prepare_seed_partial = yes
+	}
+	else = {
+		africa_disease_apply_weapon_failure = yes
+	}
+}
+
+africa_disease_apply_weapon_failure = {
+	set_country_flag = africa_disease_weapon_release_failed
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			set_country_flag = africa_fictional_pathogen_release_failed
+			set_country_flag = { flag = africa_disease_weapon_cooldown days = @AFRICA_DISEASE_WEAPON_COOLDOWN_DAYS }
+			if = {
+				limit = { africa_disease_host_has_payload = yes }
+				subtract_from_variable = { africa_disease_payload_available = constant:africa_disease.payload_unit }
+				if = {
+					limit = { NOT = { has_variable = africa_disease_weapon_release_count } }
+					set_variable = { africa_disease_weapon_release_count = constant:africa_value.zero }
+				}
+				add_to_variable = { africa_disease_weapon_release_count = constant:africa_value.one }
+				set_country_flag = africa_fictional_pathogen_backfire_payload_spent
+			}
+			africa_disease_dispatch_laboratory_accident = yes
+		}
+	}
+}
+
+# COUNTRY scope on a target during action cleanup. Native episodes remain
+# authoritative; only the Event 012 receipt flags and temporary project marker
+# are removed here.
+africa_disease_cleanup_target_receipts = {
+	clear_variable = africa_disease_dispatch_accepted
+	clear_variable = africa_disease_seed_result
+	clr_country_flag = africa_disease_weapon_dispatch_failed
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = {
+			clear_variable = africa_disease_dispatch_accepted
+			clear_variable = africa_disease_accident_dispatch_accepted
+			clear_variable = africa_disease_seed_result
+		}
+	}
+}
