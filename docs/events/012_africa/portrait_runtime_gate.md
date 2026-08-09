@@ -5,11 +5,11 @@ Event 012 uses one source policy for historical sovereigns and a separate asset 
 ## Runtime flow
 
 1. The package keeps the existing direct carrier tag and never creates a new tag or cosmetic carrier.
-2. The three constitutional installation effects call the shared `africa_priority_member_portrait_runtime_is_approved` trigger before adding a country-leader role.
+2. The three constitutional installation effects always run the accepted settlement installer, which adds the package's stable male sovereign role; `africa_priority_member_portrait_runtime_is_approved` records runtime coverage for audits and is not a politics-only fallback gate.
 3. The source-locked runtime map covers all sixteen male sovereign consumers: named historical rulers where the source is exact, and clearly labelled coin, map, statue, artifact, group, or office placeholders where a face is not safely claimable.
-4. The shared portrait trigger checks the existing runtime sprite and source-backed identity map before a sovereign role is promoted; no generated real-person repaint or generic substitute is used.
+4. The shared portrait trigger remains an audit surface for the existing runtime sprite and source-backed identity map; portrait provenance and final male-actor acceptance are release handoff requirements, not a reason to suppress the sovereign settlement path.
 5. The direct-source map records Ezana of Aksum, Taharqa of Kush, Radama II of Merina, Mansa Musa-associated Catalan Atlas art, the Kilwa map panel, and the Great Zimbabwe Bird artifact without presenting any of them as an invented modern face.
-6. A future source-reviewed row can reuse the same trigger contract; no portrait identifier, tag, or package store needs to change.
+6. The portrait worker can replace each source-locked placeholder with its accepted male ruler/person crop in place; no portrait identifier, tag, or package store needs to change.
 
 Fictional, alternate-history, nonhuman, and supernatural identities use the separate `fictional_high_chaos` asset family. Those portraits remain dormant behind their accepted country, model, and package gates and never relabel a historical source gap.
 
