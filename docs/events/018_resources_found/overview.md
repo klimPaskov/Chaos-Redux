@@ -182,13 +182,13 @@ Event art:
 
 Icons and UI:
 
-- 65 focus icons: `gfx/interface/goals/018_resources_found/`;
+- 67 focus icons: `gfx/interface/goals/018_resources_found/`;
 - cave and countermeasure ideas: `gfx/interface/ideas/018_resources_found/`;
 - decision, category, and category-picture art: `gfx/interface/decisions/018_resources_found/`;
 - selected-field static and animated assets: `gfx/interface/018_resources_found/` and `gfx/interface/animated/018_resources_found/`;
 - 15 achievement complete, grey, and not-eligible triplets: `gfx/achievements/`.
 
-All static sources, generated prompts, processed PNGs, DDS/TGA files, dimensions, animation frame plans, fallbacks, contact sheets, provenance, and sprite identifiers are recorded under `docs/assets/018_resources_found/`.
+The permanent runtime inventory, dimensions, animation frame counts, fallbacks, provenance conclusions, sprite identifiers, licences, and specialist evidence links are recorded in `docs/events/018_resources_found/assets.md`. The event-scoped `docs/assets/018_resources_found/` workspace was temporary and is intentionally absent after its durable facts were promoted.
 
 The exact-estimate refresh controls reuse `GFX_decision_generic_research`. The internal clock category and its nine non-rendered missions require no category art, mission icons, or localisation.
 

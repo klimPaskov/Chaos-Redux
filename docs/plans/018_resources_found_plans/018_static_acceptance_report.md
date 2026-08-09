@@ -1,14 +1,15 @@
 # Event 018 definition-based acceptance report
 
-Date: 2026-07-12  
-Validation mode: static implementation evidence, deterministic arithmetic, asset inspection, and the supplied initialization log  
-Runtime boundary: the user explicitly waived launching Hearts of Iron IV. No live gameplay, combat, GUI-scale, or audio-playback session was run.
+Date: 2026-08-09
+Validation mode: current static implementation evidence, deterministic arithmetic, asset inspection, HOI4 MCP event/focus/GUI/probability evidence, and the previously supplied initialization log
+Runtime boundary: the user explicitly waived launching Hearts of Iron IV. No live gameplay, combat, animation-playback, or audio-playback session was run; supported-resolution GUI layout was inspected through the offline HOI4 MCP renderer.
 
 ## Evidence contract
 
 - **Definition pass** means the final script has a complete, reachable path and its deterministic state transitions or arithmetic satisfy the scenario.
 - **Asset pass** means every required source/runtime/registration surface exists and the final contact sheet or runtime image was visually inspected.
 - **Log support** means the supplied `error.log` contains no Event 018-named diagnostic. The log is an older initialization snapshot and is not current gameplay proof.
+- **MCP support** means the linked read-only analyzer inspected or rendered the current source. Partial MCP results retain their explicit workspace-size, typed-state, timeout, or transport boundary and are not promoted to live-engine proof. Current artifact links are preserved in `018_current_mcp_validation_2026-08-09.md`.
 - A live-engine observation is not inferred from static evidence. The skipped live checks are listed explicitly at the end of this report.
 
 ## Scenario results
@@ -165,7 +166,7 @@ All cave battalions require zero manpower and declare no equipment need. Their l
 | PG-03 combat and route AI | Complete by cumulative route audit, unit-stat balance table, reachable observation events, target consumption, origin/anchor requests, and ordinary anti-armor strategies. Live battle observation was waived. |
 | PG-04 baseline/evolutions/closure | Complete by package arithmetic, safety comparison, global evolution-row guards, transfer traces, and exact six-ledger inverse. |
 | PG-05 terminal and aftermath | Complete by exact truth-table gates, one-shot terminal/defeat/reconstruction flags, valid foothold selection, and bounded cleanup. |
-| PG-06 UI/assets/text | Complete by static evidence. The selected-field package supplies the full durable record, five real-frame animation families at 10/10/12/12/12 frames, five required static fallbacks, Suspended, and a live history-only Closed consumer. All 65 focus icons, 36 unique idea/state icons, 39 action-family plus 5 category icons, 5 category pictures, and 15 achievement triplets are registered and inspected. The final localisation audit proves the four Event Details controls remain usable while unrevealed title/body/summary content and the Stage IV portrait stay chronology-masked. Live scale, playback, and unlock observation was waived. |
+| PG-06 UI/assets/text | Complete by current static and MCP evidence. The selected-field package supplies the full durable record, five real-frame animation families at 10/10/12/12/12 frames, five required static fallbacks, Suspended, and a live history-only Closed consumer. All 67 focus icons, 36 unique idea/state icons, 39 action-family plus 5 category icons, 5 category pictures, and 15 achievement triplets are registered and inspected. The final localisation audit proves the four Event Details controls remain usable while unrevealed title/body/summary content and the Stage IV portrait stay chronology-masked. The selected-field MCP pass covered active, history, empty, full, minimum, maximum, long-text, hover, selected, disabled, and warning probes at 1280 by 720, 1366 by 768, 1920 by 1080, and 2560 by 1440 without an Event 018-local layout or interaction diagnostic. Live playback and unlock observation was waived. |
 
 ## Supplied error-log evidence
 
@@ -185,7 +186,7 @@ At the user's direction, the following were not executed in Hearts of Iron IV:
 - Stone/Burrow/Scree battle matrices against infantry, anti-tank, armor, terrain, and low supply;
 - live multi-front AI observation and origin-retention observation;
 - live state-transfer, mission-timeout, occupation, and terminal-campaign playthroughs;
-- selected-field GUI inspection at multiple UI scales and live animation/fallback switching;
+- live in-engine selected-field animation/fallback switching; offline MCP inspection across the four supported resolution probes is complete;
 - in-engine super-event music playback and loudness transition checks;
 - in-engine achievement unlock attempts.
 
@@ -193,4 +194,4 @@ These are skipped task-specific validations, not claimed engine results. Final a
 
 ## Simplifications, fallbacks, omissions, and blockers
 
-No gameplay simplification or fallback is accepted in this report. The static UI textures are deliberate accessibility fallbacks paired with real multi-frame source animation, not substitutes for missing animation. Asset, localisation, workbook, and improvement-loop blockers are closed. The fresh event-completion, selected-field UI and localisation, and asset and audio audits all returned PASS after the inconsistencies they found were repaired and re-read. No acceptance checkpoint remains open.
+No gameplay simplification or fallback is accepted in this report. The static UI textures are deliberate accessibility fallbacks paired with real multi-frame source animation, not substitutes for missing animation. The selected-field MCP layout gate is closed, and the current 67-focus tree has clean Event 018-local inspect, render, and raster evidence. Final current-source custom focus, weighted-AI, decision, country, localisation, event-completion, and improvement-loop closure evidence remains required before this report can declare that no acceptance checkpoint is open.
