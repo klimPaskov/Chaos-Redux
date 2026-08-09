@@ -87,6 +87,8 @@ Three mutually exclusive warfare doctrines follow:
 
 The adaptation lane records enemy piercing and lets DHO select denser plates or open joints. That selected route remains one spirit while it swaps into a route-specific cumulative Surface Senses stage and then a route-specific cumulative Sky-Hardened stage. The final adaptation helper preserves only the highest route stage and selects Stone automatic broods for dense plates or Scree automatic broods for open joints. A completed focus route therefore has at most one hierarchy spirit, one doctrine spirit, and one adaptation spirit. The continental lane deterministically marks the richest reachable resource state, then marks industrial belts, capitals, coasts, coalitions, and the last eligible resistance. The hidden world-end lane appears only after the continental objective is genuinely relevant and prepares verified distant footholds without opening them early.
 
+`Link the Chambers` deliberately uses one prerequisite group for the three hierarchy capstones and a second group for the three doctrine capstones, so it requires one completed focus from each family. `Surface Senses` deliberately accepts either mutually exclusive body-plan focus. Sky hardening is proactive once Surface Senses is complete; its availability cannot depend on an ordinary country selecting a particular response event, because it gates the shared continental route.
+
 ## Decisions and AI
 
 The Oth-Kesh Brood Network category exposes a bounded set of phase-appropriate actions. It marks rich states, starts or accelerates anchors, guards feeding chambers, selects doctrine-specific automatic spawns, replaces origin broods, consolidates unfed formations, deepens tunnel links, prepares doctrine attacks, converts industry, refreshes queues, fortifies the origin, refreshes continental objectives, begins world-end verification, and prepares resource-weighted footholds.
@@ -99,6 +101,8 @@ The Oth-Kesh Brood Network category exposes a bounded set of phase-appropriate a
 - terminal fronts around anchors and footholds after world end.
 
 The focus AI chooses hierarchy from state spread and origin risk, doctrine from enemy armor, fortification, terrain, and campaign shape, and adaptation from observed piercing. Invalid route focuses and decisions receive zero weight through their availability gates.
+
+The non-round focus AI tiers are intentional ordering values. Adjacent priorities remain distinct so campaign milestones, network work, adaptations, and terminal preparation do not collapse into equal-weight ties.
 
 Every newly adjacent land actor is attacked once. The frontier resolver evaluates both owner and controller across every non-impassable neighboring state of DHO-controlled territory. It therefore catches occupation frontiers before a peace conference changes ownership.
 
