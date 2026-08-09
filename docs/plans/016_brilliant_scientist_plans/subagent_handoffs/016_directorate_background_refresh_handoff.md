@@ -14,7 +14,7 @@ This bounded handoff replaces only the two Event 016 Kruger Directorate scripted
 
 The new art is native built-in ImageGen output for fictional Kruger Directorate UI art, not a resize or crop of the previous `700x500` wallpaper. It uses a blue-black enamel and oxidized-brass wartime laboratory dossier language. Functional bays are dark, matte, quiet, and free of generated text, maps, focal diagrams, portraits, or bright ornament. Laboratory/alchemical detail is restricted to frame hardware, edge tubing, pinlights, rivets, and subtle separators. The compact header is an exact crop of the new full panel top strip.
 
-The fixed parent zones reviewed against the final `500x620` candidate are header `x0-499 y0-67`, profile dossier `x14-181 y74-309`, telemetry/control `x192-485 y74-205`, navigation `x14-485 y316-345`, tab content `x14-485 y352-573`, and footer `x14-485 y584-609`.
+The decoded painted-bay coverage map used by the repaired runtime layout is header `x38-462 y8-65`, profile dossier `x38-163 y72-289`, telemetry `x169-464 y72-225`, government-control status `x169-464 y228-292`, navigation and tab content `x38-462 y301-542`, and footer `x38-449 y552-604`. The darker outer space is ornamental frame and hardware rather than functional placement area.
 
 ## Evidence
 
@@ -39,3 +39,9 @@ Parent should review the contact sheet and decoded DDS, keep the stable sprite n
 Accepted on 2026-08-05 after native-size review of the decoded full panel, compact header, and contact sheet. The shell provides quiet functional bays at the parent-authored coordinates, restricts bright detail to the frame and separators, contains no generated text or focal artwork beneath controls, and matches the existing blue-black enamel and oxidized-brass Directorate assets. The two stable runtime sprites are wired by `interface/016_brilliant_scientist_directorate.gfx` and consumed by the 500-pixel layout in `interface/016_brilliant_scientist_directorate.gui`.
 
 Status: accepted for static runtime use. Live in-game consumer acceptance remains user-owned.
+
+## 2026-08-09 layout repair disposition
+
+The Directorate GUI was realigned to the decoded painted bays after live review found text and controls crossing dividers and the footer. The profile frame and portrait scale together inside the dossier bay. Mandate, Dependence, and Exposure use three separate meter-and-label rows. Government Control text no longer sits on the status art. Five tab controls use equal pitch inside the content bay, and their text is rendered by centered GUI overlays rather than intrinsic button labels. Tab content ends at `y538`, before the painted content bay ends at `y542`, while the Presentation control and footer occupy only the dedicated footer bay.
+
+The tab and Presentation four-frame sheets retain their exact canvases, state order, borders, and state colours, but their interior ornaments were removed because those ornaments occupied the centered text surface. Source frames remain preserved under `docs/assets/016_brilliant_scientist/directorate_ui/source_masters/`. Processed PNGs, decoded DDS previews, a before-and-after contact sheet, and complete DDS validation are recorded under `docs/assets/016_brilliant_scientist/directorate_ui/`.
