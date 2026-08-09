@@ -11,38 +11,48 @@ import path from "node:path";
 const workspace = process.cwd();
 const manifestRoot = path.join(workspace, "docs", "formables", "state_puzzles");
 
-const selectedCategories = new Set([
-	"form_scandinavia_category",
-	"form_north_sea_category",
-	"form_baltic_sea_empire_category",
-	"form_gran_colombia_category",
-	"form_commonwealth_category",
-	"form_united_netherlands_category",
-	"form_baltic_federation_category",
-	"form_mutapa_category",
-	"form_rattanakosin_kingdom_category",
-	"form_turkestan_category",
-	"form_mountainous_republic_category",
-	"form_idel_ural_category",
-	"greater_italy_category",
-	"form_sweden_hungary_category",
-	"latin_africa_category",
-	"neo_assyrian_empire_category",
-	"neo_mesopotamia_category",
-	"maghreb_formable_category",
-	"greater_mongolia_category",
-	"greater_hui_state_category",
-	"GOE_form_hindustan_category",
-]);
-
 const normalise = (value) => value.replace(/[^A-Za-z0-9_]/g, "_").toLowerCase();
+const SCRIPT_IDENTIFIER_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const pascal = (value) => normalise(value).split("_").filter(Boolean).map((part) => part[0].toUpperCase() + part.slice(1)).join("");
 const slash = (value) => value.replaceAll("\\", "/");
 const quote = (value) => `"${value}"`;
 
+function normalisedId(value, field) {
+	if (typeof value !== "string" || !value.trim()) throw new Error(`${field} must be a non-empty string`);
+	const token = normalise(value).replace(/^_+|_+$/g, "");
+	if (!/[a-z0-9]/.test(token)) throw new Error(`${field} normalises to an empty runtime identifier: ${value}`);
+	return token;
+}
+
+function scriptIdentifier(value, field) {
+	if (typeof value !== "string" || !SCRIPT_IDENTIFIER_RE.test(value)) {
+		throw new Error(`${field} must match [A-Za-z_][A-Za-z0-9_]*: ${value}`);
+	}
+	return value;
+}
+
+function runtimePath(value, field) {
+	if (typeof value !== "string" || !value.trim()) throw new Error(`${field} must be a non-empty relative path`);
+	const normalisedPath = slash(value);
+	if (path.isAbsolute(value) || /^[A-Za-z]:[\\/]/.test(value) || normalisedPath.split("/").includes("..")) {
+		throw new Error(`${field} must remain inside the mod workspace: ${value}`);
+	}
+	const absolute = path.resolve(workspace, normalisedPath);
+	const workspacePrefix = workspace.endsWith(path.sep) ? workspace : `${workspace}${path.sep}`;
+	if (absolute !== workspace && !absolute.startsWith(workspacePrefix)) {
+		throw new Error(`${field} escapes the mod workspace: ${value}`);
+	}
+	return absolute;
+}
+
 function normaliseManifest(manifest, manifestPath) {
 	if (manifest.schema === "chaos-redux-formable-state-puzzle/v1") {
-		return { ...manifest, __path: manifestPath, __sourceSchema: manifest.schema };
+		return {
+			...manifest,
+			decision_category: manifest.decision_category || manifest.category_id,
+			__path: manifestPath,
+			__sourceSchema: manifest.schema,
+		};
 	}
 
 	const canvas = manifest.projection?.canvas;
@@ -106,18 +116,26 @@ function readManifests() {
 		if (!entry.isDirectory()) continue;
 		const manifestPath = path.join(manifestRoot, entry.name, "manifest.json");
 		if (!fs.existsSync(manifestPath)) continue;
-		const manifest = normaliseManifest(JSON.parse(fs.readFileSync(manifestPath, "utf8")), manifestPath);
-		if (selectedCategories.has(manifest.decision_category)) manifests.push(manifest);
+		const rawManifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+		if (!rawManifest || typeof rawManifest !== "object" || Array.isArray(rawManifest)) {
+			throw new Error(`${manifestPath}: manifest root must be an object`);
+		}
+		if (rawManifest.status && rawManifest.status !== "complete") continue;
+		const manifest = normaliseManifest(rawManifest, manifestPath);
+		manifests.push(manifest);
 	}
-
-	const seenCategories = new Set(manifests.map((manifest) => manifest.decision_category));
-	const missing = [...selectedCategories].filter((category) => !seenCategories.has(category));
-	if (missing.length) {
-		throw new Error(`Selected categories are missing reviewed manifests: ${missing.join(", ")}`);
+	if (!manifests.length) {
+		throw new Error(`No complete manifests found below ${manifestRoot}`);
 	}
-
-	if (manifests.length !== selectedCategories.size) {
-		throw new Error(`Expected ${selectedCategories.size} selected manifests, found ${manifests.length}`);
+	const seenCategories = new Map();
+	const seenFormables = new Map();
+	for (const manifest of manifests) {
+		const categoryKey = normalisedId(manifest.decision_category, `${manifest.__path}: decision_category`);
+		const formableKey = normalisedId(manifest.formable_id, `${manifest.__path}: formable_id`);
+		if (seenCategories.has(categoryKey)) throw new Error(`Duplicate normalized decision category manifest: ${manifest.decision_category} conflicts with ${seenCategories.get(categoryKey)}`);
+		if (seenFormables.has(formableKey)) throw new Error(`Duplicate normalized formable manifest: ${manifest.formable_id} conflicts with ${seenFormables.get(formableKey)}`);
+		seenCategories.set(categoryKey, manifest.decision_category);
+		seenFormables.set(formableKey, manifest.formable_id);
 	}
 
 	return manifests.sort((left, right) => left.decision_category.localeCompare(right.decision_category));
@@ -127,31 +145,62 @@ function validateManifest(manifest) {
 	if (manifest.schema !== "chaos-redux-formable-state-puzzle/v1") {
 		throw new Error(`${manifest.__path}: unsupported schema ${manifest.schema}`);
 	}
-	if (!manifest.formable_id || !manifest.decision_category || !Array.isArray(manifest.states)) {
+	normalisedId(manifest.formable_id, `${manifest.__path}: formable_id`);
+	normalisedId(manifest.decision_category, `${manifest.__path}: decision_category`);
+	if (!Array.isArray(manifest.states) || !manifest.states.length) {
 		throw new Error(`${manifest.__path}: missing formable_id, decision_category, or states`);
 	}
-	if (manifest.projection?.canvas?.[0] !== 440 || manifest.projection?.canvas?.[1] !== 180) {
-		throw new Error(`${manifest.__path}: runtime projection must be 440x180`);
+	if (manifest.territory_helper !== undefined && manifest.territory_helper !== null) {
+		scriptIdentifier(manifest.territory_helper, `${manifest.__path}: territory_helper`);
 	}
-	if (manifest.states.length !== manifest.state_policy?.required_state_ids?.length) {
-		throw new Error(`${manifest.__path}: states and required_state_ids differ`);
+	if (
+		!Array.isArray(manifest.projection?.canvas)
+		|| manifest.projection.canvas.length !== 2
+		|| !Number.isInteger(manifest.projection.canvas[0])
+		|| !Number.isInteger(manifest.projection.canvas[1])
+		|| manifest.projection.canvas[0] <= 0
+		|| manifest.projection.canvas[1] <= 0
+	) {
+		throw new Error(`${manifest.__path}: runtime projection canvas must contain two positive integers`);
+	}
+	if (!Array.isArray(manifest.state_policy?.required_state_ids)) {
+		throw new Error(`${manifest.__path}: state_policy.required_state_ids is missing`);
 	}
 
 	const ids = new Set();
 	for (const state of manifest.states) {
+		if (!state || typeof state !== "object" || !Number.isInteger(state.state_id) || state.state_id < 1) {
+			throw new Error(`${manifest.__path}: state entries require positive integer state_id`);
+		}
 		if (ids.has(state.state_id)) throw new Error(`${manifest.__path}: duplicate state ${state.state_id}`);
 		ids.add(state.state_id);
+		if ("required" in state && typeof state.required !== "boolean") throw new Error(`${manifest.__path}: state ${state.state_id} required must be boolean`);
+		if (state.required === false && !state.visibility_helper) throw new Error(`${manifest.__path}: optional state ${state.state_id} requires visibility_helper`);
+		for (const field of ["qualification_helper", "visibility_helper"]) {
+			if (field in state && state[field] !== null && state[field] !== undefined) scriptIdentifier(state[field], `${manifest.__path}: state ${state.state_id}.${field}`);
+		}
 		if (!Array.isArray(state.canvas_position) || state.canvas_position.length !== 2) {
 			throw new Error(`${manifest.__path}: state ${state.state_id} lacks canvas_position`);
 		}
+		if (!state.canvas_position.every((value) => Number.isInteger(value))) {
+			throw new Error(`${manifest.__path}: state ${state.state_id} canvas_position must contain integers`);
+		}
 		for (const variant of ["unresolved", "qualifying"]) {
-			const runtimePath = state.runtime_dds?.[variant];
+			const runtimeDds = state.runtime_dds?.[variant];
 			const sprite = state.sprite_names?.[variant];
-			if (!runtimePath || !sprite) throw new Error(`${manifest.__path}: state ${state.state_id} lacks ${variant} runtime data`);
-			if (!fs.existsSync(path.join(workspace, runtimePath))) {
-				throw new Error(`${manifest.__path}: runtime DDS is missing: ${runtimePath}`);
+			if (!runtimeDds || !sprite) throw new Error(`${manifest.__path}: state ${state.state_id} lacks ${variant} runtime data`);
+			const absoluteDds = runtimePath(runtimeDds, `${manifest.__path}: state ${state.state_id}.${variant} runtime_dds`);
+			if (!fs.existsSync(absoluteDds)) {
+				throw new Error(`${manifest.__path}: runtime DDS is missing: ${runtimeDds}`);
 			}
 		}
+	}
+	const requiredStateIds = manifest.state_policy.required_state_ids;
+	if (new Set(requiredStateIds).size !== requiredStateIds.length || requiredStateIds.some((stateId) => !Number.isInteger(stateId) || stateId < 1)) {
+		throw new Error(`${manifest.__path}: required_state_ids must be unique positive integers`);
+	}
+	for (const requiredStateId of manifest.state_policy.required_state_ids) {
+		if (!ids.has(requiredStateId)) throw new Error(`${manifest.__path}: required state ${requiredStateId} is not present in states`);
 	}
 }
 
@@ -180,7 +229,8 @@ function stateNames(manifest, state) {
 		hoverKey: `chaosx_formable_state_puzzle_${form.formableKey}_state_${stateId}_tt`,
 		spriteFunction: `GetChaosxFormable${form.pascalKey}State${stateId}Sprite`,
 		qualificationFunction: `GetChaosxFormable${form.pascalKey}State${stateId}Qualification`,
-		wrapper: `${form.helperBase}_state_${stateId}_qualifies`,
+		wrapper: state.qualification_helper || `${form.helperBase}_state_${stateId}_qualifies`,
+		visibilityHelper: state.visibility_helper || null,
 	};
 }
 
@@ -222,7 +272,7 @@ function generateGui(manifests) {
 		lines.push("\tcontainerWindowType = {");
 		lines.push(`\t\tname = ${quote(form.window)}`);
 		lines.push("\t\tposition = { x = 0 y = 0 }");
-		lines.push("\t\tsize = { width = 100% height = 206 }");
+		lines.push(`\t\tsize = { width = 100% height = ${manifest.projection.canvas[1] + 26} }`);
 		lines.push("\t\tclipping = yes");
 		lines.push("");
 		lines.push("\t\tinstantTextBoxType = {");
@@ -232,13 +282,13 @@ function generateGui(manifests) {
 		lines.push(`\t\t\ttext = ${quote(form.summaryKey)}`);
 		lines.push("\t\t\tformat = center");
 		lines.push("\t\t\tmaxHeight = 22");
-		lines.push("\t\t\tmaxWidth = 440");
+		lines.push(`\t\t\tmaxWidth = ${manifest.projection.canvas[0]}`);
 		lines.push("\t\t}");
 		lines.push("");
 		lines.push("\t\tcontainerWindowType = {");
 		lines.push(`\t\t\tname = ${quote(`${form.formableKey}_map`)}`);
 		lines.push("\t\t\tposition = { x = 0 y = 24 }");
-		lines.push("\t\t\tsize = { width = 440 height = 180 }");
+		lines.push(`\t\t\tsize = { width = ${manifest.projection.canvas[0]} height = ${manifest.projection.canvas[1]} }`);
 		lines.push("\t\t\tclipping = yes");
 		for (const state of manifest.states) {
 			const names = stateNames(manifest, state);
@@ -274,11 +324,21 @@ function generateScriptedGui(manifests) {
 		lines.push(`\t\twindow_name = ${quote(form.window)}`);
 		lines.push("\t\tvisible = { is_ai = no }");
 		lines.push("\t\tproperties = {");
+		const hasVisibilityHooks = manifest.states.some((state) => state.visibility_helper);
 		for (const state of manifest.states) {
 			const names = stateNames(manifest, state);
 			lines.push(`\t\t\t${names.element} = {`);
 			lines.push(`\t\t\t\timage = ${quote(`[${names.spriteFunction}]`)}`);
 			lines.push("\t\t\t}");
+			if (hasVisibilityHooks) {
+				lines.push(`\t\t\t${names.element}_visible = {`);
+				if (state.required || !names.visibilityHelper) {
+					lines.push("\t\t\t\talways = yes");
+				} else {
+					lines.push(`\t\t\t\t${names.visibilityHelper} = yes`);
+				}
+				lines.push("\t\t\t}");
+			}
 		}
 		lines.push("\t\t}");
 		lines.push("\t\tai_enabled = { always = no }");
@@ -329,13 +389,19 @@ function generateScriptedLocalisation(manifests) {
 		}
 		lines.push("defined_text = {");
 		lines.push(`\tname = GetChaosxFormable${form.pascalKey}QualifyingCount`);
+		const optionalVisibleStates = manifest.states.filter((state) => !state.required && state.visibility_helper);
 		for (let count = manifest.states.length; count > 0; count--) {
 			lines.push("\ttext = {");
 			lines.push("\t\ttrigger = {");
 			lines.push("\t\t\tcount_triggers = {");
 			lines.push(`\t\t\t\tamount > ${count - 1}`);
 			for (const countedState of manifest.states) {
-				lines.push(`\t\t\t\t${stateNames(manifest, countedState).wrapper} = yes`);
+				const countedNames = stateNames(manifest, countedState);
+				if (!countedState.required && countedNames.visibilityHelper) {
+					lines.push(`\t\t\t\tAND = { ${countedNames.visibilityHelper} = yes ${countedNames.wrapper} = yes }`);
+				} else {
+					lines.push(`\t\t\t\t${countedNames.wrapper} = yes`);
+				}
 			}
 			lines.push("\t\t\t}");
 			lines.push("\t\t}");
@@ -347,10 +413,37 @@ function generateScriptedLocalisation(manifests) {
 		lines.push("\t\tlocalization_key = chaosx_formable_state_puzzle_count_0");
 		lines.push("\t}");
 		lines.push("}", "");
+		if (optionalVisibleStates.length) {
+			lines.push("defined_text = {");
+			lines.push(`\tname = GetChaosxFormable${form.pascalKey}RelevantCount`);
+			for (let count = optionalVisibleStates.length + manifest.states.filter((state) => state.required).length; count > 0; count--) {
+				lines.push("\ttext = {");
+				lines.push("\t\ttrigger = {");
+				lines.push("\t\t\tcount_triggers = {");
+				lines.push(`\t\t\t\tamount > ${count - 1}`);
+				for (const countedState of manifest.states) {
+					const countedNames = stateNames(manifest, countedState);
+					if (!countedState.required && countedNames.visibilityHelper) {
+						lines.push(`\t\t\t\t${countedNames.visibilityHelper} = yes`);
+					} else {
+						lines.push("\t\t\t\talways = yes");
+					}
+				}
+				lines.push("\t\t\t}");
+				lines.push("\t\t}");
+				lines.push(`\t\tlocalization_key = chaosx_formable_state_puzzle_count_${count}`);
+				lines.push("\t}");
+			}
+			lines.push("\ttext = {");
+			lines.push("\t\ttrigger = { always = yes }");
+			lines.push("\t\tlocalization_key = chaosx_formable_state_puzzle_count_0");
+			lines.push("\t}");
+			lines.push("}", "");
+		}
 		lines.push("defined_text = {");
 		lines.push(`\tname = GetChaosxFormable${form.pascalKey}SummaryStatus`);
 		lines.push("\ttext = {");
-		lines.push(`\t\ttrigger = { ${form.helperBase}_territory_qualifies = yes }`);
+		lines.push(`\t\ttrigger = { ${manifest.territory_helper || `${form.helperBase}_territory_qualifies`} = yes }`);
 		lines.push("\t\tlocalization_key = chaosx_formable_state_puzzle_summary_ready");
 		lines.push("\t}");
 		lines.push("\ttext = {");
@@ -422,6 +515,12 @@ function generateLocalisation(manifests) {
 	for (const stateId of [...uniqueStates].sort((left, right) => left - right)) {
 		lines.push(`chaosx_formable_state_puzzle_state_${stateId}_owner: \"[${stateId}.owner.GetNameWithFlag]\"`);
 		lines.push(`chaosx_formable_state_puzzle_state_${stateId}_controller: \"[${stateId}.controller.GetNameWithFlag]\"`);
+	}
+	for (const manifest of manifests) {
+		if (!manifest.states.some((state) => !state.required && state.visibility_helper)) continue;
+		const form = formableNames(manifest);
+		const index = lines.findIndex((line) => line.startsWith(`${form.summaryKey}:`));
+		if (index >= 0) lines[index] = lines[index].replace(` / ${manifest.states.length}`, ` / [GetChaosxFormable${form.pascalKey}RelevantCount]`);
 	}
 	lines.push("");
 	return `\uFEFF${lines.join("\n")}`;

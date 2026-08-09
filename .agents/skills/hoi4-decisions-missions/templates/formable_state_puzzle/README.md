@@ -1,6 +1,6 @@
 # Formable state-puzzle template package
 
-This directory is reference scaffolding for a formable decision whose central proof is exact control of installed-map states. The files are not loaded by Hearts of Iron IV: copy them into the event- or system-owned `common/`, `interface/`, and `localisation/` paths, replace every `<PLACEHOLDER>`, and keep the manifest beside the owning implementation. Do not wire a skill-local template directly into runtime.
+This directory is reference scaffolding for a formable decision whose central proof is exact control of installed-map states. The files are not loaded by Hearts of Iron IV: copy them into the event- or system-owned `common/`, `interface/`, and `localisation/` paths, replace every `<PLACEHOLDER>`, and keep the manifest beside the owning implementation. Do not wire a skill-local template directly into runtime. For registry-backed consumers, follow [universal_state_registry_workflow.md](universal_state_registry_workflow.md); `state_manifest.*` remains compatibility scaffolding and must not become a second geometry source.
 
 ## Selection gate
 
@@ -15,12 +15,12 @@ If any condition fails, use the state puzzle. A static picture is never a substi
 
 ## Non-negotiable contract
 
-1. **Installed geometry is authoritative.** Derive each state mask from the active installed `map/provinces.bmp`, `definition.csv`, and state history province membership. Never hand-draw outlines, use generated art, use a province blob as a state, or copy geometry from another map version. Record the source revision, province IDs, row-run or mask checksum, projection, and transparent bounding box in the manifest.
-2. **One state, one piece.** Every required state has one manifest entry, one state-piece sprite family, one hover region, and one shared qualification call site. Shared borders must be rendered once or with an explicitly recorded seam rule so neighboring pieces assemble without gaps.
+1. **Installed geometry is authoritative.** For a registry-backed consumer, use `docs/formables/state_registry/generated/state_geometry_registry.json` and its provenance-checked builder output as the only geometry source; otherwise derive each legacy state mask from the active installed `map/provinces.bmp`, `definition.csv`, and state history province membership. Never hand-draw outlines, use generated art, use a province blob as a state, or copy geometry from another map version. Record the source revision, province IDs, row-run or mask checksum, projection, and transparent bounding box in the manifest.
+2. **One state, one piece.** Every required state has one manifest entry, one state-piece sprite family, one hover region, and one shared qualification call site. Shared borders must be rendered once or with an explicitly recorded seam rule so neighboring pieces assemble without gaps. A staged `--no-dds` compiler pass is `assets_pending` and is never runtime-complete.
 3. **Current state drives presentation.** Grey means unresolved and green means qualifying. Both variants retain an outline; the unresolved variant also uses a hatch or texture cue and the qualifying variant uses a check, solid inner keyline, or another non-colour cue. Colour alone is forbidden.
 4. **Hover is factual and dynamic.** Hover text names the state and resolves current owner, controller, control result, and core result. It must handle absent owners/controllers and must not cache a stale country name. The hover area is the tight transparent bounding box for that state mask, not a full-map button or an oversized rectangle.
 5. **One qualification source.** The state trigger is called by each state piece, the live qualifying count, the summary, and the formation decision availability. Do not duplicate owner/control/core logic in GUI-only branches.
-6. **No world scan.** Do not add `on_daily`, `on_weekly`, or another whole-world iterator for this display. Prefer a live scripted-localisation count built from descending `count_triggers` checks over the same generated state wrappers. Use a country-owned count and dirty variable only when every relevant state change has a proven scoped refresh call; otherwise report the count as unresolved instead of scheduling a world scan.
+6. **No world scan.** Do not add `on_daily`, `on_weekly`, or another whole-world iterator for this display. Prefer a live scripted-localisation count built from descending `count_triggers` checks over the same generated state wrappers. Use a country-owned count and dirty variable only when every relevant state change has a proven scoped refresh call; otherwise report the count as unresolved instead of scheduling a world scan. Explicit qualification, visibility, and territory helpers must use valid Clausewitz identifiers (`^[A-Za-z_][A-Za-z0-9_]*$`), and category/formable IDs must normalise to non-empty runtime tokens without collisions.
 7. **AI is not a GUI.** AI uses the same formation trigger and decision conditions without opening or clicking the human-facing puzzle. The puzzle contains informational icons only; it has no fake buttons and no AI-only shortcut.
 8. **No animation.** State pieces, borders, hatches, status icons, and the static alternative are still sprites. Do not add `noOfFrames`, animation blocks, moving elements, pulse effects, or transform-only animation.
 9. **No tuning literals in call sites.** Required counts, alternate-group rules, owner/controller/core policy, thresholds, refresh cadence, and any costs belong in the owning manifest, script constants, or documented tuning files. Layout coordinates are generated from the manifest projection, not hand-tuned independently in each file.
@@ -31,6 +31,7 @@ If any condition fails, use the state puzzle. A static picture is never a substi
 | --- | --- | --- | --- |
 | `state_manifest.schema.json` | Machine-readable contract for map revision, states, counting rules, projection, and sprite names. | Documentation or owner package. | Owner validates and preserves it; no loader is assumed. |
 | `state_manifest.example.json` | Filled three-state example with an alternate group and exact-geometry provenance fields. | Copy, then replace all example IDs and hashes. | Event/system owner. |
+| `universal_state_registry_workflow.md` | Canonical registry/consumer build order, live-helper contract, ordered-map provenance, MCP evidence, and DDS round-trip gates. | Owner plan or handoff reference. | Parent/owner reviewer. |
 | `formable_state_puzzle.gui` | Compact decision-category container plus one generated state-piece entry pattern. | `interface/<owner>_formable_state_puzzle.gui`. | Event/system owner. |
 | `formable_state_puzzle.gfx` | Static unresolved/qualifying/hatch/border sprite registrations and optional category picture registration. | `interface/<owner>_formable_state_puzzle.gfx`. | Event/system owner and asset owner. |
 | `formable_state_puzzle_scripted_gui.txt` | Decision-category scripted-GUI binding, dynamic piece images, summary properties, and presentation-only AI contract. | `common/scripted_guis/<owner>_formable_state_puzzle.txt`. | Event/system owner. |
@@ -47,11 +48,11 @@ If any condition fails, use the state puzzle. A static picture is never a substi
 
 Record the formable decision ID, owning country/route, category ID, state counting rule, alternate groups, required owner/controller/core semantics, subject/ally/occupation policy, route or reveal gates, and cleanup transition. Keep the AI decision trigger independent from the GUI. If a state is counted through a subject, ally, or alternate controller, say so explicitly in `counting_rules` rather than silently broadening a generic helper.
 
-### 2. Build the manifest from the installed map
+### 2. Build or select the registry-backed consumer
 
-Use the currently installed map and the exact state-history file that the active game loads. For each state, preserve the state ID, localisation key, province IDs, geometry source, geometry checksum, map projection, canvas position, transparent bounding box, and all three sprite names. `state_manifest.example.json` shows the minimum record. A state sprite is a preprocessed mask plus the status treatment; it is not an image of a generic tile.
+For a migrated owner, run the ordered-root provenance check and consumer workflow in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). The canonical registry is `docs/formables/state_registry/generated/state_geometry_registry.json`; use `consumer_spec.schema.json` and `consumer_spec.template.json` to declare the finite candidate set, projection, helper policy, and output paths, then run `.tools/build_formable_state_puzzle_consumer.py`. Do not duplicate row runs, state masks, or runtime GUI nodes in an owner manifest.
 
-The canonical geometry evidence should include either the HOI4 MCP `map-province-geometry` artifact (row runs) or an equivalent reproducible extraction report. The manifest's `map_revision` must change when the installed map changes. Rebuild all pieces after such a change; do not stretch an old mask to fit.
+The legacy `state_manifest.example.json` remains useful only for an owner package that has not migrated to the universal registry contract. A map revision or map-changing mod still requires rebuilding the registry, every consumer, and every state-piece asset from the active combined roots.
 
 ### 3. Generate the GUI entries
 
@@ -85,7 +86,7 @@ Do not print raw variable names, map hashes, implementation notes, or hidden fut
 
 ### 8. Validate before handing off
 
-Run every item in `validation_checklist.md`, attach map geometry and GUI inspect/render artifacts, and record skipped checks with the exact reason. A skill-local package is not an in-game completion claim. The parent still owns runtime wiring, final source review, and live-consumer validation.
+Run every item in `validation_checklist.md`, including the universal registry provenance gate, mandatory map/GUI MCP inspect/render artifacts, and DDS decode round-trip evidence described in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). Record skipped checks with the exact reason. A skill-local package is not an in-game completion claim. The parent still owns runtime wiring, final source review, and live-consumer validation.
 
 ## Helper contract and migration map
 

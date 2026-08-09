@@ -8,6 +8,10 @@ Every displayed state uses exact geometry from the installed map, occupies its r
 
 The 21 live displays cover 392 selected formable-state entries and therefore register 784 unresolved/qualifying state-piece sprites. The same installed state can legitimately appear in more than one formable.
 
+The shared geometry registry separately covers all 1,081 states in the active installed map, IDs 1 through 1,081 with no gaps. It stores the exact province-derived geometry and stable live-helper names needed to compile a new display without extending this framework by hand. A consumer spec declares a formable or event's candidate state IDs, projection, qualification policy, and optional live visibility helpers; the consumer compiler creates the fitted PNG/DDS pieces and the runtime manifest.
+
+State geometry and GUI nodes are build-time data because HOI4 cannot create new textures or positioned scripted-GUI nodes during play. State ownership, control, subject status, relevance, qualification, and piece colour are evaluated live. For compatibility with a map-changing mod, rebuild the registry and its consumers against the active combined map roots; provenance mismatches stop the build instead of silently using vanilla geometry.
+
 The display does not create a second formation action.
 The ordinary formation decision remains the only action and the AI uses that decision without interacting with the display.
 
@@ -17,7 +21,7 @@ The ordinary formation decision remains the only action and the AI uses that dec
 - Qualifying state pieces are green with a solid inner keyline.
 - The hatch and keyline are the required non-colour cues.
 - Every hover names the state, current owner, current controller, whether the carrier qualifies for control, and whether the carrier has a core.
-- The state piece, category summary, formation decision, and AI-facing decision availability call the same scripted trigger family.
+- The state piece, category summary, formation decision, and AI-facing decision availability call the same scripted trigger family, either a universal state-registry helper or an explicit consumer-owned wrapper.
 - Status is evaluated directly from live triggers.
 - The panel does not cache formation eligibility or add a daily, weekly, or global refresh scan.
 - The compact summary reports the live qualifying-state numerator and ready/incomplete status by calling the same per-state and territory helpers as the pieces and formation decision.
@@ -26,7 +30,9 @@ The ordinary formation decision remains the only action and the AI uses that dec
 
 ## Applicability gate
 
-A live state puzzle is used when one category exposes one formation decision with a fixed exact-state requirement and the resulting map remains legible in a 440x180 compact panel.
+A live state puzzle is used when one category exposes one formation decision with a bounded candidate-state set and the resulting map remains legible in its reviewed compact panel. A consumer may provide a fixed required set or a predeclared candidate superset whose members use live visibility/relevance helpers.
+
+An event may change which predeclared candidates are currently relevant without regenerating the GUI. An event cannot introduce an arbitrary state ID that was absent from the compiled consumer, because that state would have no positioned GUI node or consumer-scale texture; add it to the consumer spec and rebuild the manifest/assets instead.
 
 The inherited static category picture remains the selected layer when the category contains multiple mutually exclusive formation decisions, the formation rule is not a fixed list of states, or the exact list is too large for individually hoverable pieces to remain compact and legible.
 
@@ -87,6 +93,8 @@ The inherited static category picture remains the selected layer when the catego
 
 Each live category owns a manifest and review projection under `docs/formables/state_puzzles/<manifest_owner_id>/`; the manifest records the exact category and formation ids.
 
+The all-state source registry, schemas, consumer template, and workflow live under `docs/formables/state_registry/`. `.tools/generate_formable_state_geometry_registry.py` rebuilds exact active-map row runs, `.tools/build_formable_state_registry.py` validates provenance and emits the universal live triggers/index, and `.tools/build_formable_state_puzzle_consumer.py` compiles one bounded consumer into projected assets and a runtime-compatible manifest. `.tools/generate_formable_state_puzzle_runtime.mjs` discovers every complete consumer manifest rather than using a hardcoded category allow-list.
+
 Runtime state-piece textures live under `gfx/interface/formables/state_puzzles/<manifest_owner_id>/states/`.
 
 Every required state owns an unresolved and qualifying DDS registered by `interface/chaosx_formable_state_puzzles.gfx`.
@@ -99,9 +107,15 @@ No animated sprite is required for this system.
 
 ## Geometry and GUI validation
 
-HOI4 MCP map inspection validated the installed province geometry and state membership used by the manifests. The shared state-layer render is recorded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4eaf3e38b3ca2b30147f0b469ea118c90b5fa8e84813b9159be3a11c8d316341/5955e67ccdd29a496569e2bc6dad1afad6ec55b3dae8b0f2e1a961f5f7e72c53/map-state.png`.
+HOI4 MCP map inspection validated the installed province geometry and state membership used by the manifests. The fresh post-registry state-layer render is recorded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4eaf3e38b3ca2b30147f0b469ea118c90b5fa8e84813b9159be3a11c8d316341/34b60a19d5307aa50c04bb7afea87075a46f147878b3b5f8974b09c058c8690d/map-state.png`; the renderer reports a passing validation result at the same 5,632×2,048 revision used by the map inspection.
+
+The post-registry map inspection is recorded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f7572f229fdfa3f1d7c4d86b79086b7405952b528a3af0be803846b56ea6ba98/3cd97ea864823b31ac420ba1011270161be002fd5327eb419dd7dae9c4d0f2dc/map-inspect.9438c9fe43fbe756.json`. It reports 1,081 states, 13,414 province definitions, and passing bitmap-geometry, state/region-membership, and network/adjacency checks. Its overall map validation remains false only for the workspace's unrelated building-position and floating-harbor diagnostics.
 
 The post-generation GUI inspection resolved all 21 formable category references and is recorded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d2eb170613915717fe7e0e9c11bd08511f9859eb45e69e157dc6fc4364bd225e/2cb04c228656f2c3b8bebac39201168bb719516de179c7f4c48d2bbe20188ebe/gui-inspect.d60311b14e0ced7d.json`.
+
+The post-registry targeted inspection of the compact Mountainous Republic window is recorded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/85703a7f43be2ce3ea6e0a4b159ad11b8d725e7f9e5e9a8222a5d675ea37ab5a/232195d6f5ef4859500dde7ef6077a8caa6df5d7b3aaf548b2cc24be062a28c5/gui-inspect.dae3dfc0491d53dd.json`. MCP resolved the requested window and its eight inspected elements; its global validation result remains affected by unrelated whole-workspace sprite collisions and diagnostics outside this system.
+
+Fresh post-registry multi-resolution normal, hover, and long-text renders are recorded for the compact Mountainous Republic window at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c7d630f7e60a2edd288ffbf7ee39f91bb60b9a6a6af2b578840e928d08524ee6/6e37ee30036d2fe48e90d14255a2e77158a7c294e0e7a1666b8ecfb1f3c55abf/chaosx_formable_state_puzzle_form_mountainous_re-full.svg` and for the dense Hindustan window at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d8aeb75a73d456b40b55c11d40ada9d776ed47b7516802d3606c859fca853d0b/8feb84a66bcb8860ead22dd266205ac6773e600b37fb2e7aa7c64dc4db1fea4f/chaosx_formable_state_puzzle_goe_form_hindustan_-full.svg`.
 
 The five-state Mountainous Republic display was rendered across 1366x768, 1920x1080, and 2560x1440 in normal, hover, long-text, and missing-localisation states. Its cropped review artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2e860825aa0768072275474b94a966a2b9ece02e288fcd9321311af5fc46e914/6bea71fc96ede58beddd82f849fa0afe05a7390550bfd9ec0d17634c6c9b0ff0/chaosx_formable_state_puzzle_form_mountainous_re-cropped.png`.
 
@@ -111,7 +125,7 @@ The renderer's generic overlap diagnostic counts intentional contacts and overla
 
 Bounded GUI rewrite was attempted, but the live route rejected the requested change with `GUI_UNSAFE_PATCH_RANGE` and `REWRITE_STRUCTURE_LIMIT`; no rewrite output was accepted. The runtime files were therefore edited through the normal repository workflow and then inspected and rendered through MCP.
 
-The manifests are invalidated when the installed map revision changes.
+The source registry and consumer manifests are invalidated when the active combined map revision or state-history provenance changes.
 State pieces must be regenerated from exact geometry rather than stretched or redrawn.
 
 ## Future plans and suggestions
