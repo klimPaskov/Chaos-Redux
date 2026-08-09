@@ -1,0 +1,70 @@
+﻿# Some fields reject script-constant tokens; these file-scoped values mirror
+# the package constants and are kept here for AI strategy compatibility.
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARMY_PRIORITY = 108
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARTILLERY_PRIORITY = 22
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_DEFENSE_PRIORITY = 110
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_EMERGENCY_ARMY_PRIORITY = 132
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_FOUNDING_RESTRAINT = -240
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_INFRASTRUCTURE_PRIORITY = 64
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_PRODUCTION_PRIORITY = 28
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SETTLED_RESTRAINT = -420
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SUPPORT_PRIORITY = 46
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_TRADITIONAL_ARMY_PRIORITY = 116
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-028 EPIRUS AI
+# ============================================================================
+# Additive strategy layers for the BBX carrier. The vanilla baseline remains
+# active; these strategies protect the Epirus anchor, screen the former host,
+# and prefer the mountain-frontier force profile before expansion.
+# ============================================================================
+
+independence_wave_bbx_epirus_survival = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_iw_028_setup_complete
+		has_country_flag = independence_wave_bbx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bbx_host_restraint = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_iw_028_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bbx_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bbx_settled_epirus = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_bbx_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_bbx_emergency_commission = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_bbx_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_DEFENSE_PRIORITY }
+}

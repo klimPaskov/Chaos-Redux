@@ -8,7 +8,7 @@ Each selected design has an ImageGen source master, a documented design referenc
 | `ATX` | Venice | `source_png/ATX_venice_imagegen_raw.png` | `gfx/flags/ATX.tga` | `gfx/flags/medium/ATX.tga` | `gfx/flags/small/ATX.tga` | handed_off |
 | `AXX` | Banat (alternate-history civic synthesis) | `source_png/AXX_banat_imagegen_flat_raw.png` | `gfx/flags/AXX.tga` | `gfx/flags/medium/AXX.tga` | `gfx/flags/small/AXX.tga` | handed_off: parent accepted clearly labeled synthesis |
 | `BAX` | Thrace | `source_png/BAX_thrace_imagegen_raw.png` | `gfx/flags/BAX.tga` | `gfx/flags/medium/BAX.tga` | `gfx/flags/small/BAX.tga` | handed_off |
-| `BBX` | Epirus | `source_png/BBX_epirus_imagegen_raw.png` | `gfx/flags/BBX.tga` | `gfx/flags/medium/BBX.tga` | `gfx/flags/small/BBX.tga` | handed_off |
+| `BBX` | Epirus (historical 1914 Northern Epirus design reconstruction) | `source_png/BBX_epirus_historical_imagegen_raw.png` | `gfx/flags/BBX.tga` | `gfx/flags/medium/BBX.tga` | `gfx/flags/small/BBX.tga` | handed_off: historical design, flat ImageGen reconstruction |
 | `BFX` | Slavonia | `source_png/BFX_slavonia_imagegen_raw.png` | `gfx/flags/BFX.tga` | `gfx/flags/medium/BFX.tga` | `gfx/flags/small/BFX.tga` | handed_off |
 | `BHX` | Ingria | `source_png/BHX_ingria_imagegen_raw.png` | `gfx/flags/BHX.tga` | `gfx/flags/medium/BHX.tga` | `gfx/flags/small/BHX.tga` | handed_off |
 | `BJX` | Courland | `source_png/BJX_courland_imagegen_raw.png` | `gfx/flags/BJX.tga` | `gfx/flags/medium/BJX.tga` | `gfx/flags/small/BJX.tga` | handed_off |
@@ -24,3 +24,7 @@ The remaining Event 006 reservation tags are intentionally blocked in `blockers.
 ## AXX replacement note
 
 The previous `source_png/AXX_banat_imagegen_raw.png` is retained as rejected evidence because it rendered an illustrated heraldic shield and detailed castle/lion artwork rather than a flat flag design. Its source hash is `f71260b9ed1f0710afe213f2f6a47898bde1a990d70b64fb68ccafb1d59cc75c`. The replacement `source_png/AXX_banat_imagegen_flat_raw.png` is a separate ImageGen result with a flat red-white-blue field, restrained gold lion silhouette, and two blue river bars; the regional motifs are documented, but no historically attested Banat flag adoption or exact geometry is claimed. The parent accepted this clearly labeled alternate-history civic synthesis for the IW-024 route; it must never be described as an attested historical Banat flag.
+
+## BBX historical reconstruction note
+
+The BBX ladder reconstructs the flag raised by the Autonomous Republic of Northern Epirus in 1914. The historical geometry is supported by the public-domain surviving flag photograph `historical_sources/BBX_northern_epirus_1914_photo.jpg`, the public-domain period stamp `historical_sources/BBX_epirus_1914_stamp.jpg`, and the public-domain clean reference `historical_sources/BBX_northern_epirus_historical_reference.png`. ImageGen produced `source_png/BBX_epirus_historical_imagegen_raw.png`; post-processing removed generated tonal gradients and reduced the image to a solid blue, white, and black palette without inventing new geometry. The old `source_png/BBX_epirus_imagegen_raw.png` remains rejected comparison evidence and is not a runtime source.

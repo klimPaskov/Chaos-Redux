@@ -1,0 +1,197 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-09 BALKAN FEDERATION TRIGGERS
+# ============================================================================
+# FORM-09 admits only active, fully prepared Event 006 Balkan package rows.
+# BBX (IW-028) and BAX (IW-027) are the only reviewed carrier identities.
+# BLX is their X-ending cosmetic federal identity. BOS (IW-029), MAC (IW-026), and MNT
+# (IW-030) may be invited as sovereign members without selecting family 9.
+# Kosovo has no admitted Event 006 package and is deliberately fail-closed.
+# ============================================================================
+
+is_independence_wave_form09_eligible_member = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	OR = {
+		AND = {
+			is_independence_wave_bbx_package = yes
+			has_complete_independence_wave_iw_028_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bbx }
+			owns_state = constant:independence_wave_form09_anchor.bbx
+			controls_state = constant:independence_wave_form09_anchor.bbx
+			capital_scope = { state = constant:independence_wave_form09_anchor.bbx }
+		}
+		AND = {
+			is_independence_wave_bax_package = yes
+			has_complete_independence_wave_iw_027_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bax }
+			owns_state = constant:independence_wave_form09_anchor.bax
+			controls_state = constant:independence_wave_form09_anchor.bax
+			capital_scope = { state = constant:independence_wave_form09_anchor.bax }
+		}
+		AND = {
+			is_independence_wave_bos_package = yes
+			has_complete_independence_wave_iw_029_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bos }
+			owns_state = constant:independence_wave_form09_anchor.bos
+			controls_state = constant:independence_wave_form09_anchor.bos
+			capital_scope = { state = constant:independence_wave_form09_anchor.bos }
+		}
+		AND = {
+			is_independence_wave_mac_package = yes
+			has_complete_independence_wave_iw_026_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.mac }
+			owns_state = constant:independence_wave_form09_anchor.mac
+			controls_state = constant:independence_wave_form09_anchor.mac
+			capital_scope = { state = constant:independence_wave_form09_anchor.mac }
+		}
+		AND = {
+			is_independence_wave_mnt_package = yes
+			has_complete_independence_wave_iw_030_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.mnt }
+			owns_state = constant:independence_wave_form09_anchor.mnt
+			controls_state = constant:independence_wave_form09_anchor.mnt
+			capital_scope = { state = constant:independence_wave_form09_anchor.mnt }
+		}
+	}
+}
+
+has_independence_wave_form09_member_candidate = {
+	is_independence_wave_form09_eligible_member = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+}
+
+is_independence_wave_form09_member = {
+	OR = {
+		has_independence_wave_form09_exact_carrier_anchor = yes
+		is_independence_wave_form09_eligible_member = yes
+	}
+}
+
+has_independence_wave_form09_exact_carrier_anchor = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	has_country_flag = independence_wave_formable_family_selected
+	has_variable = independence_wave_anchor_state
+	has_variable = independence_wave_formable_family
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.balkan_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
+	OR = {
+		AND = {
+			is_independence_wave_bbx_package = yes
+			has_complete_independence_wave_iw_028_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bbx }
+			owns_state = constant:independence_wave_form09_anchor.bbx
+			controls_state = constant:independence_wave_form09_anchor.bbx
+			capital_scope = { state = constant:independence_wave_form09_anchor.bbx }
+		}
+		AND = {
+			is_independence_wave_bax_package = yes
+			has_complete_independence_wave_iw_027_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bax }
+			owns_state = constant:independence_wave_form09_anchor.bax
+			controls_state = constant:independence_wave_form09_anchor.bax
+			capital_scope = { state = constant:independence_wave_form09_anchor.bax }
+		}
+	}
+}
+
+has_independence_wave_form09_connection_to_inviting_carrier = {
+	has_pending_independence_wave_formable_founding_invitation = yes
+	NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+	OR = {
+		is_in_faction_with = var:independence_wave_formable_inviting_carrier
+		has_non_aggression_pact_with = var:independence_wave_formable_inviting_carrier
+		has_military_access_to = var:independence_wave_formable_inviting_carrier
+		gives_military_access_to = var:independence_wave_formable_inviting_carrier
+		has_guaranteed = var:independence_wave_formable_inviting_carrier
+		is_guaranteed_by = var:independence_wave_formable_inviting_carrier
+		check_variable = { var = independence_wave_region value = var:independence_wave_formable_inviting_carrier.independence_wave_region compare = equals }
+	}
+}
+
+should_independence_wave_form09_ai_consent_to_root = {
+	is_ai = yes
+	has_independence_wave_form09_connection_to_inviting_carrier = yes
+	is_independence_wave_recognized_or_later = yes
+	NOT = { has_independence_wave_severe_instability = yes }
+}
+
+has_independence_wave_form09_identity_clearance = {
+	has_independence_wave_form09_exact_carrier_anchor = yes
+	NOT = { has_cosmetic_tag = UBF }
+	OR = {
+		has_cosmetic_tag = BLX
+		AND = {
+			NOT = { has_global_flag = independence_wave_form09_blx_identity_in_use }
+			NOT = { any_country = { has_cosmetic_tag = BLX } }
+		}
+	}
+}
+
+has_independence_wave_form09_visible_identity = {
+	has_country_flag = independence_wave_form09_blx_identity_attested
+	has_country_flag = independence_wave_formable_flag_package_ready
+	has_country_flag = independence_wave_formable_identity_adapter_ready
+}
+
+has_independence_wave_form09_strict_mutation_preconditions = {
+	has_independence_wave_form09_identity_clearance = yes
+	has_independence_wave_form09_visible_identity = yes
+	independence_wave_formable_profile_matches_selected_family = yes
+	has_country_flag = independence_wave_formable_discovered
+	has_valid_independence_wave_formable_founding_proposal = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	has_independence_wave_formable_commit_readiness = yes
+	check_variable = {
+		var = independence_wave_formable_member_count
+		value = constant:independence_wave_formable_registry.balkan_federation.minimum_members
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_consent_count
+		value = constant:independence_wave_formable_registry.balkan_federation.minimum_consents
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_anchor_count
+		value = constant:independence_wave_formable_registry.balkan_federation.minimum_anchors
+		compare = greater_than_or_equals
+	}
+}
+
+has_independence_wave_form09_runtime_commit_proof = {
+	has_independence_wave_form09_strict_mutation_preconditions = yes
+}
+
+is_independence_wave_form09_postformation_carrier = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_form09_carrier
+	has_cosmetic_tag = BLX
+	has_variable = independence_wave_formable_family
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.balkan_federation }
+}

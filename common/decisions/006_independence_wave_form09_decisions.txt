@@ -1,0 +1,50 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-09 BALKAN FEDERATION DECISIONS
+# ============================================================================
+# One paid project closes the exact-anchor border settlement after formation.
+# It grants no territory, claims, cores, or units beyond the frozen founding
+# transaction and cannot become a repeatable reward loop.
+# ============================================================================
+
+independence_wave_form09_balkan_category = {
+	independence_wave_form09_ratify_border_board = {
+		name = independence_wave_form09_ratify_border_board
+		desc = independence_wave_form09_ratify_border_board_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_form09_postformation_carrier = yes
+			has_country_flag = independence_wave_form09_border_arbitration_open
+			NOT = { has_country_flag = independence_wave_form09_border_arbitration_complete }
+		}
+		available = {
+			is_at_war = no
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form09_ratify_border_board_effect_tt
+			set_country_flag = independence_wave_form09_border_arbitration_complete
+			clr_country_flag = independence_wave_form09_border_arbitration_open
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form09_postformation_carrier = yes } }
+		cancel_effect = {
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+}
