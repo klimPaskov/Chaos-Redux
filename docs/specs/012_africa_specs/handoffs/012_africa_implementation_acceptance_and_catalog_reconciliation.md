@@ -2,14 +2,14 @@
 
 ## Purpose
 
-This handoff converts the expanded planning package into acceptance criteria and records the catalog mismatches that implementation must resolve.
+This handoff converts the expanded planning package into acceptance criteria and records the catalog mismatches that implementation had to resolve.
 
 ## Source identity
 
 - Event ID: `12`
 - Event name: Africa
 - Classification: Minor Fire-Once
-- Required status after implementation: Reworked or the repository's current equivalent
+- Required status after implementation: current repository equivalent
 - Chaos tier: 4
 - Cluster: Formables
 - Member severity: Severe
@@ -19,19 +19,17 @@ Keep the ID and Fire-Once classification stable unless the user explicitly chang
 
 ## Catalog reconciliation
 
-The current event catalog still presents Event 12 as reserved and to be reworked. Update the row only after the event is playable and audited.
+The release-candidate catalog records Event 12 as the Fire-Once Africa entry with canonical event `chaosx.nr12.1`. Final workbook wording and completion status remain owned by the spreadsheet and event-completion audit workflow.
 
-The current Formables cluster entry is a placeholder without a registered member. Implementation must:
+The release-candidate Formables cluster uses cluster `6` and includes Event 12 as a severe member. The implementation record must keep these fields aligned:
 
-1. allocate or confirm the real cluster ID from the registry
-2. register Event 12 as a Formables member
-3. set the member role and severe danger value
-4. align type, tier, cooldown, one-time state, and member order with the final runtime system
-5. update cluster name and description localisation
-6. update cluster Event Details and catalog wording
-7. update the workbook through the spreadsheet worker after in-game wording exists
+1. preserve the registered cluster ID and member order
+2. preserve Event 12's severe member role and Fire-Once classification
+3. align type, tier, cooldown, and one-time state with the final runtime system
+4. keep cluster name, description, Event Details, and catalog wording aligned
+5. update the workbook through the spreadsheet worker after in-game wording exists
 
-Do not guess a cluster ID in the planning package.
+Do not create a second cluster ID or a duplicate Event 12 member.
 
 ## Expanded package counts
 
@@ -79,8 +77,8 @@ A count is not proof of implementation. Every applicable row needs a disposition
 | decisions and missions | decision matrix and parts 2, 7, 8, 9 | all 102 rows disposed, varied costs, outcomes, AI, cleanup |
 | AI | AI matrix and parts 2, 5, 7, 8, 9 | all 64 profiles mapped to valid route and campaign state |
 | achievements | part 6 and achievement matrix | all 44 rows disposed, tracking, icons, tests |
-| visual presentation | part 6 and asset matrix | all 239 rows disposed, files, manifests, GFX handoffs, fallbacks |
-| sourced super-event package | super-event prompt | researched text, image, audio, rights, slot and wiring plan |
+| visual presentation | part 6 and asset matrix | all 239 rows disposed, installed files, manifests, GFX handoffs, and explicit static accessibility paths |
+| sourced super-event package | super-event prompt | installed researched text, image, audio, rights, slot, source, and wiring records |
 | docs and catalog alignment | parts 1 and 6 | event doc, workbook, catalogs, manifests, music table |
 
 ## Host playbook acceptance
@@ -120,7 +118,7 @@ For each selected one of the 16 priority packages:
 
 - use a safe and reviewable territorial scope
 - define valid formation or release origin
-- provide politics, leader or council, parties, flags, and localisation
+- provide politics, one adult male ruler, parties, flags, and localisation
 - implement the distinct mechanic or decision family
 - provide starting forces and reinforcement paths if expected to fight
 - implement League accession, bargaining, refusal, withdrawal, and rivalry
@@ -129,7 +127,7 @@ For each selected one of the 16 priority packages:
 - add route-aware AI
 - dispose every required asset
 
-The package may be queued rather than implemented in the first tranche. A queued row needs a reason and must not be represented by an empty fighting tag.
+All 16 priority package rows have installed package records on approved existing carriers. Final positive and negative scenarios, localisation, AI, and completion audits remain required, and controlled-pool rows retain their explicit dispositions.
 
 ## Evolution acceptance
 
@@ -170,7 +168,7 @@ A simplification that removes distinct play is not anti-bloat. A merge is accept
 
 ## Player-facing text acceptance
 
-- final localisation is written during implementation
+- final localisation is reviewed against the installed implementation during the release-candidate audit
 - planning labels are not pasteable copy
 - Event Details describes the situation rather than effects
 - options, focuses, decisions, and tooltips explain visible choices and requirements

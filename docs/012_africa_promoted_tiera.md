@@ -1,6 +1,6 @@
 # Event 012 Promoted Tier A High-Chaos Packages
 
-Event 012 exposes six additive high-chaos country packages on the existing Event 006 niche carriers. The carrier tags remain EBX Aro Confederacy, EHX Ankole, DPX Fante, EEX Bunyoro, DFX Kabylia, and DHX Tripolitania outside the reveal. No tag, state, portrait binary, model, or fallback package is created here.
+Event 012 exposes six additive high-chaos country packages on the existing Event 006 niche carriers. The carrier tags remain EBX Aro Confederacy, EHX Ankole, DPX Fante, EEX Bunyoro, DFX Kabylia, and DHX Tripolitania outside the reveal. The six promoted Tier A visual and runtime packages, including their male fictional portraits and eight strange-unit consumers, are installed on those existing carriers. No new country tag or cosmetic carrier is created here.
 
 ## Deterministic reveal map
 
@@ -35,10 +35,10 @@ The decision category calls only the existing manifest wrappers after `africa_st
 
 ## Asset and focus boundary
 
-The dormant fictional character IDs and portrait paths in `common/characters/012_africa_fictional_characters.txt` are preserved and assigned at reveal. Portrait binaries and provenance remain owned by the portrait worker. The shared eight-focus priority-member tree was inspected and rendered but not rewritten; the additive decision category owns this package surface so Event 006's live tree remains protected.
+The fictional character IDs and portrait paths in `common/characters/012_africa_fictional_characters.txt` are preserved and assigned at reveal. The six male fictional portrait binaries and provenance records are installed through the portrait handoff. The shared eight-focus priority-member tree was inspected and rendered but not rewritten; the additive decision category owns this package surface so Event 006's live tree remains protected.
 
 The decision category reuses the inspected reveal, settlement, and post-settlement icon family for shared actions. Exact strange-force sprites are used for each of the eight force decisions. No new icon binary is introduced.
 
-## Future plans
+## Remaining acceptance
 
-When model and portrait handoffs become approved, add their runtime manifests without changing the package IDs or reveal map. A later UI pass may expose package-specific event cards, but should retain these decision IDs and strict fail-closed state predicates.
+The installed models, portraits, force sprites, and reveal wiring keep the package IDs and map bindings stable. Final positive and negative package scenarios, localisation review, and the Event 012 completion audit remain open. Any later UI pass must retain these decision IDs and strict fail-closed state predicates.

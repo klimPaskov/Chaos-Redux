@@ -13,7 +13,7 @@ The user brief in `Pasted text(3).txt` is the event-specific design authority. `
 3. `chaos-redux-event-planning.md` for the shape and depth of this deliverable.
 4. System skills for events, focus trees, decisions, assets, animation, super-events, improvement, and subagents.
 5. `CHAOS_REDUX_MECHANICS.md` for current shared mechanics.
-6. Catalog CSVs for current placeholder rows and reconciliation needs.
+6. Catalog snapshots used for the package's initial reconciliation and reading record.
 7. Subagent TOMLs for bounded implementation and audit handoffs.
 8. External research for historical anchors and source-dependent claims.
 
@@ -53,16 +53,18 @@ The user brief in `Pasted text(3).txt` is the event-specific design authority. `
 | `hoi4-decisions-missions.md` | 43,564 | 891 | `04e8fa35106f0557b5e1e313036662747eb180b090a533d59af8830ead801ffa` |
 | `hoi4-focus-trees.md` | 45,298 | 899 | `bebb8e91fbc5f3c013f99a3237458b50ba9278de44f659337100976372f1d824` |
 
-## Catalog findings that affect this package
+## Catalog findings at package creation (historical)
 
-- Event 12 is currently a reserved `Minor Fire-Once` entry with status `To Be Reworked`.
-- The current Formables cluster row has no cluster ID or members. Its placeholder type is `Minor Repeatable` and its placeholder unlock tier is 3.
+- At package creation, Event 12 was a reserved `Minor Fire-Once` entry with status `To Be Reworked`.
+- At package creation, the Formables cluster row had no cluster ID or members. Its placeholder type was `Minor Repeatable` and its placeholder unlock tier was 3.
 - The user brief sets Event 12 to chaos tier 4 and member severity `Severe`.
 - No triggerable scenario is registered for Event 12. This package does not add one because the event already has a large normal campaign system and the user did not request a sandbox launch variant.
 
+The current release-candidate record uses Formables cluster `6`, registers Event 12 as a severe member, and keeps `chaosx.nr12.1` Fire-Once. The status and wording reconciliation is recorded in [`docs/events/012_africa/overview.md`](../../../events/012_africa/overview.md), while the workbook remains owned by the spreadsheet worker.
+
 ## Source conflicts resolved in the package
 
-The Formables cluster remains a repeatable catalogue layer so later formable events can join it. Event 12 remains fire-once. The cluster may unlock at tier 3 while Event 12 itself has a member minimum tier of 4. The implementation handoff recommends assigning the next stable cluster ID and registering Event 12 as the first required member.
+The Formables cluster remains a repeatable catalogue layer so later formable events can join it. Event 12 remains Fire-Once in registered cluster `6`, with member severity `Severe` and the accepted tier relationship. No second cluster ID or duplicate member is needed.
 
 The user brief names four evolutions after the baseline, while the event starts at chaos tier 4 and project guidance normally permits one logged evolution stage per chaos tier. This package preserves all four content layers. Evolutions I to III are normal logged evolutions. Evolution IV is specified as a post-unification escalation phase rather than a second logged evolution at World Collapse. The implementation handoff records this classification explicitly so no content is lost and the event log contract is not violated.
 

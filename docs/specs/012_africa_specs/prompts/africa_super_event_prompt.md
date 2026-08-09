@@ -1,6 +1,6 @@
 # Event 12 Africa super-event research prompt
 
-Research and prepare the text, audio, image direction, and implementation handoff for the Event 12 super-event candidates. Do not edit gameplay, localisation, GFX, GUI, sound definitions, spreadsheet files, or event scripts.
+Research and prepare the text, audio, image direction, and implementation handoff for the four Event 12 super-event roles. The four installed roles have stable slots, audio IDs, text, image, audio, and source records. Retain this prompt for research, audit, and any future role change. Do not edit gameplay, localisation, GFX, GUI, sound definitions, spreadsheet files, or event scripts.
 
 ## Required sources
 
@@ -19,9 +19,9 @@ Read:
 
 The four roles below remain four campaign moments. Do not multiply them into separate super-events for every host, constitution, or restored polity. Route and host identity should appear through dynamic description detail, the winning emblem or institution, selected image variants only where composition materially changes, and the final actor shown in the interface. This keeps the moments responsive without creating an unmaintainable variant grid.
 
-## Candidate roles
+## Installed roles
 
-1. **Africa is one, working role label**
+1. **Africa is one**
    - Role: first continent-wide political completion.
    - Trigger meaning: every required region has reached the accepted settlement threshold and the continental identity is formed.
    - Route variation: the completed constitution should shape the public institution shown, the political vocabulary, and the image composition. A federal congress, elected republic, council of crowns, people’s congress, command order, confederal assembly, and revealed Covenant should not look or read alike.
@@ -29,21 +29,21 @@ The four roles below remain four campaign moments. Do not multiply them into sep
    - Tone: achieved political scale, public consequence, and institutional weight.
    - Avoid: generic apocalypse wording, a title that only says unity, a flat map image, and six or seven separate titles that describe the same threshold.
 
-2. **Scramble response, working role label**
+2. **Scramble response**
    - Role: outside powers react to unified Africa through recognition crisis, sanctions, ultimatums, expedition planning, or war.
    - Trigger meaning: the Scramble crisis reaches a globally visible threshold.
    - Route variation: outside reactions should recognize whether Africa is a federation, republic, plural monarchy, people’s union, command state, confederation, or high-chaos order.
    - Tone: colonial panic, strategic containment, and Africa acting as the subject of the crisis.
    - Avoid: presenting the old colonial scramble as a neutral adventure or repeating its imagery without reversal.
 
-3. **Continental wars, working role label**
+3. **Continental wars**
    - Role: first terminal war between continent-scale powers.
    - Trigger meaning: the world-order path has produced valid rival continent actors and one war becomes campaign-defining.
    - Route variation: show the actual rival continents, alliance method, and constitutional war aim instead of a generic globe at war.
    - Tone: enormous political and military scale with clear human stakes.
    - Avoid: modern science-fiction imagery and vague end-of-the-world language.
 
-4. **The World, working role label**
+4. **The World**
    - Role: terminal world-end identity.
    - Trigger meaning: one eligible continent-scale power remains and every rival identity has been resolved through union, federation, submission, or victory.
    - Route variation: the final institution, title direction, image symbolism, and audio character should match the constitutional route that survived. High-chaos completion may use a distinct image state, but it still occupies the same terminal role.
@@ -68,7 +68,7 @@ For each approved role, compare several candidates and document:
 - fit to the exact campaign moment
 - dynamic route and actor fields required by the final description
 
-Do not invent quotes. Do not use unsourced quote sites as the main evidence. Keep modern copyrighted fragments very short. Do not turn working role labels into final localisation.
+Do not invent quotes. Do not use unsourced quote sites as the main evidence. Keep modern copyrighted fragments very short. The installed roles use direct public names in player-facing records, while technical slot and audio identifiers remain separate.
 
 ## Audio research
 
@@ -102,4 +102,4 @@ Use a small, justified variant set. Prefer one strong base composition with rout
 
 ## Research note
 
-Write one consolidated Event 12 super-event research note with separate sections for each role. Mark a role approved, blocked, or needs user review. The implementation agent must not wire a candidate until its title, quote, remark, image, audio, source notes, dynamic route fields, and slot plan are complete.
+Write one consolidated Event 12 super-event research note with separate sections for each role. The current four roles are wired with complete title, quote, remark, image, audio, source notes, dynamic route fields, and slot plans. Any future change must retain that evidence and still requires final playback, localisation, and event-completion review.

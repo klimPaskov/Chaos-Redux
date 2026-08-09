@@ -199,7 +199,7 @@ The implementation should use:
 - one-time assignment at leader creation
 - fixed assigned names after creation
 - matching portrait gender pools where the leader is a person
-- institutional names for collective portraits
+- institutional names, emblems, and text for councils and symbolic bodies, with no council or group portraits
 - a debug tool that displays neutral keys rather than raw vulgar strings where possible
 
 ## Localisation note
