@@ -34,6 +34,29 @@ africa_is_seychelles_signature_country = {
 	}
 }
 
+# COUNTRY scope. HZX, EUX, and ELX are Event 006 country shells, not current
+# map countries. Event 012 may admit one only after Event 006 has materialised
+# the exact tag and that tag owns and controls its own African core capital.
+# This deliberately uses live state ownership rather than a guessed state ID;
+# the installed map has no unique Basutoland, Swaziland, or Zanzibar state.
+africa_is_independence_wave_niche_host_tag = {
+	OR = {
+		original_tag = HZX
+		original_tag = EUX
+		original_tag = ELX
+	}
+}
+
+africa_is_valid_independence_wave_niche_host_binding = {
+	africa_is_independence_wave_niche_host_tag = yes
+	is_independence_wave_registry_event6_origin = yes
+	capital_scope = {
+		is_on_continent = africa
+		is_owned_and_controlled_by = PREV
+		is_core_of = PREV
+	}
+}
+
 # COUNTRY scope. All accepted full and compact playbooks, including the three
 # state-signature island packages.
 africa_has_mapped_host_playbook = {
@@ -331,6 +354,10 @@ africa_matches_prefire_host_contact_pool = {
 africa_is_eligible_host = {
 	exists = yes
 	africa_has_mapped_host_playbook = yes
+	OR = {
+		NOT = { africa_is_independence_wave_niche_host_tag = yes }
+		africa_is_valid_independence_wave_niche_host_binding = yes
+	}
 	africa_has_prefire_opening_contact = yes
 	has_focus_tree = generic_focus
 	has_capitulated = no
