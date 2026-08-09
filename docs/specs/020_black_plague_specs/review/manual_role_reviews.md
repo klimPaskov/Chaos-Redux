@@ -49,7 +49,7 @@ The live repository, Windows game path, offline wiki, and vanilla files were not
 
 ### Result
 
-The general disease category remains dynamic. It contains shared responses plus separate Black Plague actions such as cleaning city rats, sealing food stores, clearing sewers and burrows, flea control, transport-node purges, and block demolition. Costs use material, logistical, military, economic, political, and social burdens rather than becoming a political-power shop.
+The general disease category remains dynamic and contains shared responses plus separate Black Plague state actions such as cleaning city rats, sealing food stores, clearing sewers and burrows, flea control, transport-node purges, and block demolition. The dedicated Black Plague category owns the national cure, logistics, cooperation, knowledge, and recovery layer. Costs use material, logistical, military, economic, political, and social burdens rather than becoming a political-power shop.
 
 ### High-risk implementation checks
 
@@ -101,7 +101,7 @@ The spec gives direction rather than final copy. It distinguishes shared disease
 ### High-risk implementation checks
 
 - working labels copied into final localisation
-- dedicated-category wording appearing despite shared ownership
+- wording that blurs the dedicated national-response category and shared state-containment ownership boundary
 - raw dynamic triggers in tooltips
 - black mapmode tooltip disagreeing with the actual colour
 - inconsistent scenario names between registry, UI, docs, and catalog
@@ -116,7 +116,7 @@ No real historical rat leader or flag is required. Generated art is appropriate 
 
 ### Icon and UI review
 
-The asset prompt separates disease selector, Black Plague decision, idea, focus, achievement, portrait, flag, report, news, super-event, UI, and animation outputs. It does not request a dedicated Black Plague category icon or separate scenario window art.
+The asset prompt separates the disease selector, dedicated Black Plague category picture, decision, idea, focus, achievement, portrait, flag, report, news, super-event, UI, and animation outputs. The category picture is a standard 114×101 decision-category image rather than a scripted-GUI panel or separate scenario-window asset.
 
 ### Frame animation review
 

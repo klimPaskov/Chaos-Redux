@@ -41,7 +41,7 @@ The current static runtime ledger records 52 RTA focus nodes and 71 RTX focus no
 | Instant-chaos triggerable scenario | promoted into Part 9, scenario matrix, prompts, AI, catalog draft, and acceptance criteria |
 | Triggerable scenario forcing Evolutions I through IV | accepted as a scoped manual bootstrap exception |
 | Triggerable scenario automatically setting Evolution V or world end | rejected so terminal victory remains earned |
-| Dedicated Black Plague decision category | rejected as duplicate UI ownership |
+| Dedicated Black Plague national-response category | accepted by the 2026-08-09 correction; owns cure, logistics, cooperation, knowledge, and recovery while shared selected-state containment remains intact |
 | One bespoke tree per base rat tag | rejected in favor of one deep shared tree with origin archetypes |
 | Ordinary human-rat diplomacy | rejected because it weakens the hostile nonhuman role |
 | Defeat aftermath super-event | implemented statically with an explicit duration/peak/deaths/major-participant gate, slot-087 art/text/audio/sprite/sound wiring, and runtime resolver dispatch; live validation and release attribution remain open |

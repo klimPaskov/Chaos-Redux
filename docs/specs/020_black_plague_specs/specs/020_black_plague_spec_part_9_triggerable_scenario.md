@@ -313,7 +313,7 @@ Human countries must immediately receive the correct shared disease category sta
 - Human countries bordering rat actors see the anti-rat military and liberated-state cleanup families.
 - Countries that retake rat territory still have to clean the plague and Rat Infestation.
 
-The Black Plague-specific decisions remain separate decision entries inside the general disease category. The scenario does not create a dedicated Black Plague category.
+The scenario initializes the dedicated Black Plague national-response category and the Black Plague-specific state decisions in the general disease category. Both surfaces reuse the same cure progress and state machine.
 
 ## Mapmode after launch
 
@@ -459,7 +459,7 @@ Each intensity must be tested as its own start condition.
 - Event 20 history records once
 - initial deaths record once
 - affected Black Plague states show black immediately in the existing mapmode
-- the general disease category shows Black Plague-specific decisions without creating a second category
+- the dedicated Black Plague response category and general disease-containment category both show their owned decisions after initialization
 - scenario bootstrap flags are cleared after launch
 - a repeat launch performs reconciliation only, while terminal or unavailable worlds are blocked with a clear reason
 - save and reload preserves every state, country, decision, and mapmode status

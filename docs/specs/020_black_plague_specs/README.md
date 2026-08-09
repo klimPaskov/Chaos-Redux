@@ -1,5 +1,7 @@
 # Event 20 Black Plague Planning Package
 
+> Accepted correction, 2026-08-09: Event 020 has a dedicated national cure and strategic-management decision category in addition to the shared disease-containment category. State-selected containment remains on the shared board; cure research, medical logistics, cooperation, knowledge policy, and recovery use the dedicated category. This later correction supersedes every older “no dedicated category” statement in the historical design pack. See [`corrections/2026-08-09_dedicated_response_category.md`](corrections/2026-08-09_dedicated_response_category.md).
+
 > Documentation reconciliation, 2026-08-06: this package remains the accepted full-design source. The current gameplay tranche registers the Diseases cluster, the public Black Plague world-end row, exactly two runtime Rat tags (`RTA` and `RTX`), SCN-012, the shared workbook row, the wired report chain, five dedicated Event 020 report-card families plus the Doctor Wu bridge, fourteen public achievement contracts with their icon triplets, and route-gated Rat King policy lanes for all three governments. The source-frame Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages, the dedicated weapon-delivery icon, and the three 44.1 kHz Event 020 audio WAVs are promoted static evidence. Full-design completion remains partial because broader route depth, additional crisis/Doctor Wu/route presentation, release attribution, and live validation still require disposition. One shared rat ground-unit 3D package is now promoted for the RTA/RTX runtime consumers; no per-subtype or separate Rat King model is authorized. Its worker evidence and static runtime registration are recorded in [`docs/plans/020_black_plague_plans/subagent_handoffs/2026-08-05_event020_rat_shared_3d_model_handoff.md`](../../plans/020_black_plague_plans/subagent_handoffs/2026-08-05_event020_rat_shared_3d_model_handoff.md), while sound-definition wiring, counter review, and live in-game validation remain open. Current status is documented in [`docs/events/020_black_plague/overview.md`](../../events/020_black_plague/overview.md) and the dated documentation reconciliation handoff. The package must not be read as either a no-code claim or a whole-spec completion claim.
 
 This folder is the complete source specification for the Black Plague rework.
@@ -10,24 +12,28 @@ Event 20 begins naturally in one weighted vulnerable mainland state. The disease
 
 The later correction in `corrections/2026-07-29_two_rat_tags.md` supersedes all multi-tag Rat Nation requirements. Runtime country identity is limited to the reusable Rat Nation `RTA` and the separate Rat King `RTX`.
 
+The later correction in `corrections/2026-08-09_dedicated_response_category.md` supersedes the historical single-category rule. Runtime response ownership is one dedicated Black Plague national-response category plus the existing shared selected-state disease-containment category.
+
 ## Read order
 
-1. `specs/020_black_plague_spec_part_1_core_crisis.md`
-2. `specs/020_black_plague_spec_part_2_crisis_board_and_containment.md`
-3. `specs/020_black_plague_spec_part_3_cure_spread_and_biowarfare.md`
-4. `specs/020_black_plague_spec_part_4_evolutions_and_rat_emergence.md`
-5. `specs/020_black_plague_spec_part_5_rat_nations.md`
-6. `specs/020_black_plague_spec_part_6_rat_king.md`
-7. `specs/020_black_plague_spec_part_7_world_end_and_aftermath.md`
-8. `specs/020_black_plague_spec_part_8_ai_balance_assets_and_acceptance.md`
-9. `specs/020_black_plague_spec_part_9_triggerable_scenario.md`
-10. supporting matrices and focus graphs
-11. production prompts
-12. research notes
-13. review and limitation files
+1. `corrections/2026-07-29_two_rat_tags.md` and `corrections/2026-08-09_dedicated_response_category.md`
+2. `specs/020_black_plague_spec_part_1_core_crisis.md`
+3. `specs/020_black_plague_spec_part_2_crisis_board_and_containment.md`
+4. `specs/020_black_plague_spec_part_3_cure_spread_and_biowarfare.md`
+5. `specs/020_black_plague_spec_part_4_evolutions_and_rat_emergence.md`
+6. `specs/020_black_plague_spec_part_5_rat_nations.md`
+7. `specs/020_black_plague_spec_part_6_rat_king.md`
+8. `specs/020_black_plague_spec_part_7_world_end_and_aftermath.md`
+9. `specs/020_black_plague_spec_part_8_ai_balance_assets_and_acceptance.md`
+10. `specs/020_black_plague_spec_part_9_triggerable_scenario.md`
+11. supporting matrices and focus graphs
+12. production prompts
+13. research notes
+14. review and limitation files
 
 ## Folder map
 
+- `corrections/`: later acceptance criteria that override conflicting historical text
 - `specs/`: accepted event design
 - `matrices/`: detailed state, decision, evolution, country, AI, triggerable-scenario, achievement, asset, tuning, catalog, and acceptance tables
 - `focus_graphs/`: route and state-flow diagrams

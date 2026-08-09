@@ -1,5 +1,7 @@
 # Event 020 Decision and Mission Audit
 
+> Category-ownership findings in this historical audit are superseded by the accepted 2026-08-09 dedicated-response-category correction and its new decision audit. State containment remains shared; national cure and strategic management use `black_plague_response_category`.
+
 Date: 2026-08-06.
 
 Scope: Event 020's shared disease-containment category, Black Plague response, weaponization, Rat Nation, Rat King, terminal human missions, SCN-012 launch controls, and the shared disease-board and scenario-window hooks that expose those actions.

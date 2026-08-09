@@ -73,7 +73,7 @@ When Evolution V records:
 
 ## World-end readiness panel
 
-The shared board summary should show public progress without revealing hidden implementation details. It is part of the existing disease interface and does not create a second Black Plague category or a dedicated terminal window.
+The shared board summary should show public terminal progress without revealing hidden implementation details. It remains part of the existing disease interface and does not create an additional terminal category or dedicated terminal window; the separate national-response category continues to own cure and strategic management.
 
 ### Rat King view
 

@@ -20,8 +20,8 @@ This audit compares the complete Event 20 request, including later corrections, 
 | state-by-state land and transport spread | Complete in design | Parts 1 and 3, spread matrix |
 | war, refugees, occupation, borders, ports, and troops matter | Complete in design | spread routes and decision matrix |
 | dynamic shared disease crisis board | Complete in design | Part 2 and decision matrix |
-| no dedicated Black Plague decision category | Complete in design | Part 2 ownership rule |
-| Black Plague-specific decisions inside the shared category | Complete in design | Part 2, decision matrix, decision prompt |
+| dedicated Black Plague national cure and strategic-management category | Complete in design | accepted 2026-08-09 correction and Part 2 ownership rule |
+| Black Plague-specific state decisions remain inside the shared category | Complete in design | Part 2, decision matrix, decision prompt |
 | clean cities of rats and related sanitation actions | Complete in design | rat-clearing decision family |
 | Prepared, Threatened, Infected, Contained, and Cured phases | Complete in design | state and country phase matrices |
 | visible Rat Infestation value | Complete in design | Parts 1 and 2, disease matrix |
@@ -114,7 +114,7 @@ No requested design surface or later correction was omitted.
 
 The following remain deliberate anti-duplication choices:
 
-- Black Plague-specific decisions live in the shared disease category instead of a dedicated category
+- Black Plague-specific state decisions stay in the shared disease category while national cure, cooperation, knowledge, logistics, and recovery use one dedicated category backed by the same runtime
 - the event uses the existing disease mapmode instead of a second mapmode
 - base Rat Nations share one deep tree with origin archetypes instead of one full tree per reusable tag
 - the triggerable scenario starts Evolutions I through IV but leaves Evolution V and world end to play

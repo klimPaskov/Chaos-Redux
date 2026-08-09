@@ -31,7 +31,7 @@ The design now includes plague-state sustenance, burrow nodes, clean-territory s
 
 ### Black Plague-specific crisis actions
 
-A shared category alone was too generic. The final spec adds selected-state Black Plague actions for clearing city rats, sealing food stores, clearing sewers and burrows, controlling fleas and bedding, purging rail yards and docks, and demolishing irrecoverable blocks. These remain separate decisions inside the general disease category.
+A shared category alone was too generic. The accepted design uses one dedicated national cure and strategic-management category while retaining selected-state Black Plague actions for clearing city rats, sealing food stores, clearing sewers and burrows, controlling fleas and bedding, purging rail yards and docks, and demolishing irrecoverable blocks inside the general disease category.
 
 ### Mapmode identity
 
@@ -67,9 +67,9 @@ Coronation and world end have separate campaign roles and require unique image, 
 
 ## Anti-bloat findings
 
-The following additions remain rejected because they duplicate or weaken the event:
+The following additions remain rejected because they duplicate or weaken the event. The first item is retained only as a historical record and is superseded by the accepted 2026-08-09 category correction:
 
-- a dedicated Black Plague decision category
+- multiple Black Plague categories or a dedicated category that duplicates the shared state-containment actions; one dedicated national-response category is accepted
 - a second disease mapmode
 - a duplicate contamination or death meter
 - a Black Plague-only doomsday button outside the shared biowarfare structure

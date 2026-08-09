@@ -1,8 +1,20 @@
-# Event 020 RTA hierarchy focus icon asset manifest
+# Event 020 asset manifest
 
 Status: `complete`.
 
-This is the event-root manifest required by `chaos-redux-event-assets`. Detailed generation briefs, source mode, visual directions, and DDS QA are in [`manifests/event020_rat_hierarchy_icons_manifest.md`](manifests/event020_rat_hierarchy_icons_manifest.md). Exact ImageGen prompt text is retained in [`prompts/rat_hierarchy_focus_icons_2026-08-01.md`](prompts/rat_hierarchy_focus_icons_2026-08-01.md).
+This is the event-root manifest required by `chaos-redux-event-assets`. Asset-family sections link to their detailed generation briefs, source mode, visual directions, prompts, and DDS QA.
+
+## Dedicated response-category picture (2026-08-09)
+
+| Asset | Intended use | Source / processed package | Runtime DDS | Size | Sprite / consumer | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `decision_cat_picture_black_plague_response` | Dedicated national cure and strategic-management decision category; plague doctors treating a patient | `decision_category_picture_black_plague_response/` | `gfx/interface/decisions/020_black_plague/decision_cat_picture_black_plague_response.dds` | 114×101, one static frame | `GFX_decision_cat_picture_black_plague_response` in `interface/020_black_plague_response.gfx`; `black_plague_response_category` | complete and wired |
+
+The source is a fictional generated 1930s–WWII treatment scene with no readable text, simulated controls, modern equipment, or gore. The package retains the exact ImageGen prompt, source PNG, processed PNG, DDS round-trip, contact sheet, header QA, and wiring handoff in [`decision_category_picture_black_plague_response/`](decision_category_picture_black_plague_response/).
+
+## RTA hierarchy focus icons
+
+Detailed generation briefs, source mode, visual directions, and DDS QA are in [`manifests/event020_rat_hierarchy_icons_manifest.md`](manifests/event020_rat_hierarchy_icons_manifest.md). Exact ImageGen prompt text is retained in [`prompts/rat_hierarchy_focus_icons_2026-08-01.md`](prompts/rat_hierarchy_focus_icons_2026-08-01.md).
 
 | Asset | Event / slug | Asset type and intended use | Source mode | Source PNG | Processed PNG | Final DDS | Target size | Sprite / `.gfx` |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
