@@ -11,8 +11,8 @@ Every path below exists as a 32-bit uncompressed BGRA DDS under `gfx/interface/0
 | Runtime path | Size |
 | --- | --- |
 | `decision_category_directorate.dds` | 52x40 |
-| `directorate_background.dds` | 700x500 |
-| `directorate_compact_header.dds` | 700x58 |
+| `directorate_background.dds` | 500x620 |
+| `directorate_compact_header.dds` | 500x58 |
 | `profile_frame_human.dds` | 168x218 |
 | `profile_frame_secured.dds` | 168x218 |
 | `profile_frame_sovereign.dds` | 168x218 |
@@ -47,6 +47,8 @@ The existing `effectFile = "gfx/FX/buttonstate.lua"` entries consume horizontal 
 | `directorate_refresh_control.dds` | 496x34 | 124x34 |
 | `directorate_animation_control.dds` | 496x34 | 124x34 |
 
+The 2026-08-09 layout repair preserves the exact frame sizes, order, borders, and state colours of `directorate_tab_button.dds` and `directorate_animation_control.dds`, but clears their interior ornaments so separately centred GUI labels no longer compete with decorative stars or circles. The processed sheets and DDS-decoded matches are recorded in `docs/assets/016_brilliant_scientist/directorate_ui/processed_png/`, `decoded_dds/`, `validation/directorate_control_layout_repair_2026-08-09.json`, and `contact_sheets/directorate_control_layout_repair_2026-08-09.png`.
+
 ### Animated loops and static fallbacks
 
 Each animated registration retains a separately registered static fallback. The static paths are `control_warning_static.dds` (224x32), `active_project_marker_static.dds` (196x214), and `singularity_armed_static.dds` (116x108).
@@ -63,7 +65,7 @@ The warning, active-project, and singularity animations use independent generate
 
 ## Existing consumers
 
-The parent agent should keep the existing consumers unchanged: `interface/016_brilliant_scientist_directorate.gfx` registers all 64 textures and `interface/016_brilliant_scientist_directorate.gui` consumes the shell, profile, meter, control, project, facility, contact, sovereignty, singularity, and animation sprites. The current GUI contract assumes a 700x500 main panel, a 700x58 compact header, 156x210 portrait aperture inside the 168x218 profile frame, five tab slots at the existing pitch, and 480x230 panel surfaces. This handoff does not alter those files.
+`interface/016_brilliant_scientist_directorate.gfx` registers all 64 textures and `interface/016_brilliant_scientist_directorate.gui` consumes the shell, profile, meter, control, project, facility, contact, sovereignty, singularity, and animation sprites. The replacement consumer contract is owned by `016_directorate_background_refresh_handoff.md`: a 500x620 main panel, a 500x58 compact header, a scaled profile aperture inside the left painted bay, five centred tab slots, 420x194 content panels, and a footer isolated below the content divider.
 
 ## Validation evidence
 
