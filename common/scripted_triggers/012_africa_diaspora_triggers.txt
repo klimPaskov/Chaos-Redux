@@ -51,7 +51,10 @@ africa_diaspora_owner_request_surface_is_valid = {
 			check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
 			has_country_flag = africa_voluntary_return_registry_open
 			has_event_target = africa_action_target
-			event_target:africa_action_target = { africa_action_target_is_usable = yes }
+			event_target:africa_action_target = {
+				africa_action_target_is_usable = yes
+				africa_diaspora_target_has_jobs_or_education = yes
+			}
 			check_variable = { africa_action_state_target_valid > constant:africa_value.zero }
 		}
 		AND = {
@@ -84,6 +87,19 @@ africa_diaspora_target_consent_is_current = {
 # flag, even when the standing registry consent remains valid.
 africa_diaspora_target_emergency_is_active = {
 	has_country_flag = africa_diaspora_emergency_active
+}
+
+# COUNTRY scope on a prospective housing target. Returnee housing is opened
+# only where an existing development or education receipt proves that residents
+# will have a livelihood beyond the construction project itself.
+africa_diaspora_target_has_jobs_or_education = {
+	OR = {
+		has_country_flag = africa_local_processing_chain_active
+		has_country_flag = africa_development_fund_member
+		has_country_flag = africa_continental_industrial_plan_member
+		has_country_flag = africa_diaspora_technical_mission_completed
+		has_country_flag = africa_diaspora_technical_mission_partial
+	}
 }
 
 # HOST scope after the action-specific matrix has validated its target. The
