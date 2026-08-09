@@ -211,6 +211,8 @@ africa_rsa_snapshot_prewar_context = {
 	clear_global_event_target = africa_rsa_original_overlord
 	clear_global_event_target = africa_rsa_original_faction_leader
 	clear_global_event_target = africa_rsa_allied_faction_leader
+	clear_global_event_target = africa_rsa_republican_state
+	clear_global_event_target = africa_rsa_republican_breakaway_country
 	clear_global_event_target = africa_rsa_exile_patron
 	clear_array = africa_rsa_inherited_enemies
 	clear_array = africa_rsa_allied_interveners
@@ -234,6 +236,39 @@ africa_rsa_snapshot_prewar_context = {
 	set_variable = { africa_rsa_prewar_communist_support = party_popularity@communism }
 	set_variable = { africa_rsa_prewar_fascist_support = party_popularity@fascism }
 	set_variable = { africa_rsa_prewar_neutrality_support = party_popularity@neutrality }
+	set_variable = { africa_rsa_republican_state_selected = constant:africa_rsa_count.none }
+
+	# Freeze one possible Republican Nationalist heartland before the civil war
+	# reallocates states. This is a current-map scan, not a fallback list: only
+	# an African SAF-owned/controlled core that is not the capital or a naval
+	# port, and not reserved by the Event 006 Zulu anchor, may be selected. The
+	# first qualifying state in the engine's deterministic state order wins.
+	every_owned_state = {
+		limit = {
+			is_on_continent = africa
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+			is_core_of = ROOT
+			is_capital = no
+			naval_base < constant:africa_rsa_count.one
+			NOT = { is_core_of = EQX }
+			NOT = { is_owned_by = EQX }
+			NOT = { is_owned_by = ESX }
+		}
+		if = {
+			limit = {
+				ROOT = {
+					check_variable = {
+						var = africa_rsa_republican_state_selected
+						value = constant:africa_rsa_count.none
+						compare = equals
+					}
+				}
+			}
+			save_global_event_target_as = africa_rsa_republican_state
+			ROOT = { set_variable = { africa_rsa_republican_state_selected = constant:africa_rsa_count.one } }
+		}
+	}
 
 	every_enemy_country = {
 		event_target:africa_rsa_continental_coalition = {
@@ -427,6 +462,7 @@ africa_rsa_start_allied_civil_war = {
 		africa_rsa_end_inherited_coalition_wars = yes
 		africa_rsa_seed_initial_allied_intervention_ledger = yes
 		africa_rsa_prepare_first_proof = yes
+		africa_rsa_initialize_republican_breakaway = yes
 		country_event = { id = chaosx.nr12.1200 }
 		set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.opening_coalition }
 		africa_rsa_record_event_log_history = yes
@@ -441,6 +477,96 @@ africa_rsa_start_allied_civil_war = {
 				event_target:africa_rsa_original_faction_leader = { NOT = { tag = ROOT } }
 			}
 			event_target:africa_rsa_original_faction_leader = { country_event = { id = chaosx.nr12.1209 } }
+		}
+	}
+}
+
+# COUNTRY scope on the original SAF coalition immediately after
+# start_civil_war. The optional ESX side is instantiated only from the frozen
+# state target and only after the high anti-war gate passes. It is independent
+# by construction: no faction join is issued, and each principal relation is
+# handled as a separate war declaration when the engine permits it.
+africa_rsa_initialize_republican_breakaway = {
+	if = {
+		limit = { africa_rsa_republican_breakaway_can_start = yes }
+		event_target:africa_rsa_republican_state = {
+			add_core_of = ESX
+			owner = { release = ESX }
+		}
+		if = {
+			limit = {
+				ESX = { exists = yes }
+				event_target:africa_rsa_republican_state = {
+					is_owned_by = ESX
+					is_controlled_by = ESX
+				}
+			}
+			event_target:africa_rsa_republican_state = {
+				set_state_owner_to = ESX
+				set_state_controller_to = ESX
+			}
+			ESX = {
+				save_global_event_target_as = africa_rsa_republican_breakaway_country
+				set_country_flag = africa_rsa_republican_breakaway
+				set_cosmetic_tag = AFRICA_RSA_REPUBLICAN_NATIONALIST
+				set_capital = { state = event_target:africa_rsa_republican_state remember_old_capital = no }
+				set_politics = { ruling_party = fascism elections_allowed = no }
+				set_popularities = {
+					fascism = constant:africa_rsa_popularity.republican_primary
+					democratic = constant:africa_rsa_popularity.republican_secondary
+					communism = constant:africa_rsa_popularity.republican_secondary
+					neutrality = constant:africa_rsa_popularity.republican_secondary
+				}
+				create_country_leader = {
+					# Single male Xhosa king/paramount-chief identity for the branch.
+					name = "King Archie Velile Sandile"
+					picture = GFX_portrait_generic_africa_male_01
+					ideology = fascism
+					traits = { }
+				}
+				add_ai_strategy = {
+					type = prepare_for_war
+					id = event_target:africa_rsa_continental_coalition
+					value = constant:africa_rsa_ai.republican_war_target
+				}
+				add_ai_strategy = {
+					type = antagonize
+					id = event_target:africa_rsa_continental_coalition
+					value = constant:africa_rsa_ai.republican_war_target
+				}
+				if = {
+					limit = {
+						has_event_target = africa_rsa_continental_coalition
+						event_target:africa_rsa_continental_coalition = {
+							exists = yes
+							can_declare_war_on = ROOT
+						}
+						NOT = { has_war_with = event_target:africa_rsa_continental_coalition }
+						can_declare_war_on = event_target:africa_rsa_continental_coalition
+					}
+					declare_war_on = { target = event_target:africa_rsa_continental_coalition type = annex_everything }
+					set_country_flag = africa_rsa_republican_war_with_coalition
+				}
+				if = {
+					limit = {
+						has_event_target = africa_rsa_allied_union_government
+						event_target:africa_rsa_allied_union_government = {
+							exists = yes
+							can_declare_war_on = ROOT
+						}
+						NOT = { has_war_with = event_target:africa_rsa_allied_union_government }
+						can_declare_war_on = event_target:africa_rsa_allied_union_government
+					}
+					declare_war_on = { target = event_target:africa_rsa_allied_union_government type = annex_everything }
+					set_country_flag = africa_rsa_republican_war_with_allied_union
+				}
+				country_event = { id = chaosx.nr12.1210 }
+			}
+		}
+		else = {
+			# A failed release must not leave an ESX core or a stale branch target.
+			event_target:africa_rsa_republican_state = { remove_core_of = ESX }
+			clear_global_event_target = africa_rsa_republican_state
 		}
 	}
 }
@@ -1117,6 +1243,55 @@ africa_rsa_settle_coalition_interveners = {
 	}
 }
 
+# COUNTRY scope on the principal settlement winner. ESX is intentionally not
+# part of either intervention ledger, so this helper gives the breakaway its
+# own explicit peace/truce disposition instead of silently folding it into the
+# principal civil-war settlement.
+africa_rsa_settle_republican_breakaway = {
+	if = {
+		limit = { africa_rsa_republican_breakaway_is_active = yes }
+		set_temp_variable = { africa_rsa_republican_truce_days = constant:africa_rsa_days.settlement_truce }
+		if = {
+			limit = {
+				has_war_with = event_target:africa_rsa_republican_breakaway_country
+				event_target:africa_rsa_republican_breakaway_country = { exists = yes }
+			}
+			white_peace = event_target:africa_rsa_republican_breakaway_country
+			set_truce = {
+				target = event_target:africa_rsa_republican_breakaway_country
+				days = africa_rsa_republican_truce_days
+			}
+		}
+		event_target:africa_rsa_republican_breakaway_country = {
+			africa_rsa_republican_breakaway_cleanup = yes
+		}
+		clear_variable = africa_rsa_republican_truce_days
+	}
+}
+
+# COUNTRY scope on ESX. Drop only the route-specific public identity and
+# branch-created king/paramount-chief leader; the ESX tag and its now-legitimate Xhosa core are
+# retained so the tag returns to its normal Event 006 identity after the route.
+africa_rsa_republican_breakaway_cleanup = {
+	if = {
+		limit = { has_country_flag = africa_rsa_republican_breakaway }
+		drop_cosmetic_tag = yes
+		clr_country_flag = africa_rsa_republican_breakaway
+		clr_country_flag = africa_rsa_republican_war_with_coalition
+		clr_country_flag = africa_rsa_republican_war_with_allied_union
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		set_popularities = {
+			neutrality = constant:africa_rsa_popularity.restored_neutrality
+			democratic = constant:africa_rsa_popularity.restored_secondary
+			communism = constant:africa_rsa_popularity.restored_secondary
+			fascism = constant:africa_rsa_popularity.restored_secondary
+		}
+		retire_country_leader = yes
+	}
+	clear_global_event_target = africa_rsa_republican_breakaway_country
+	clear_global_event_target = africa_rsa_republican_state
+}
+
 # COUNTRY scope on the coalition winner.
 africa_rsa_restore_original_capital = {
 	if = {
@@ -1156,6 +1331,7 @@ africa_rsa_cleanup_loyalist_runtime = {
 	clear_variable = africa_rsa_prewar_communist_support
 	clear_variable = africa_rsa_prewar_fascist_support
 	clear_variable = africa_rsa_prewar_neutrality_support
+	clear_variable = africa_rsa_republican_state_selected
 	clear_variable = africa_rsa_allied_stockpile_ratio
 	clear_variable = africa_rsa_allied_army_ratio
 	clear_variable = africa_rsa_allied_navy_ratio
@@ -1173,6 +1349,7 @@ africa_rsa_cleanup_loyalist_runtime = {
 africa_rsa_resolve_loyalist_victory = {
 	clr_country_flag = africa_rsa_loyalist_victory_pending
 	africa_rsa_settle_coalition_interveners = yes
+	africa_rsa_clear_republican_ai_strategies = yes
 	clr_global_flag = africa_rsa_civil_war_active
 	set_global_flag = africa_rsa_settlement_completed
 	set_country_flag = africa_rsa_allied_victory
@@ -1223,6 +1400,7 @@ africa_rsa_resolve_loyalist_victory = {
 # COUNTRY scope on the coalition winner. Historical settlement flags remain;
 # transient war, cost, state-proof, target, and participant data are removed.
 africa_rsa_cleanup_continental_crisis = {
+	africa_rsa_clear_republican_ai_strategies = yes
 	if = {
 		limit = { has_active_mission = africa_rsa_first_proof_mission }
 		remove_mission = africa_rsa_first_proof_mission
@@ -1254,6 +1432,7 @@ africa_rsa_cleanup_continental_crisis = {
 	clear_variable = africa_rsa_prewar_communist_support
 	clear_variable = africa_rsa_prewar_fascist_support
 	clear_variable = africa_rsa_prewar_neutrality_support
+	clear_variable = africa_rsa_republican_state_selected
 	clear_variable = africa_rsa_allied_stockpile_ratio
 	clear_variable = africa_rsa_allied_army_ratio
 	clear_variable = africa_rsa_allied_navy_ratio
@@ -1286,6 +1465,43 @@ africa_rsa_cleanup_continental_crisis = {
 		limit = { NOT = { has_country_flag = africa_rsa_temporary_allied_base_lease } }
 		clear_global_event_target = africa_rsa_allied_faction_leader
 		clear_variable = africa_rsa_settlement_truce_days
+	}
+}
+
+# COUNTRY scope on either principal settlement winner. Remove the branch-only
+# hostility entries while the principal event targets still resolve; after the
+# winner clears those targets the ESX branch can no longer address them safely.
+africa_rsa_clear_republican_ai_strategies = {
+	if = {
+		limit = { africa_rsa_republican_breakaway_is_active = yes }
+		event_target:africa_rsa_republican_breakaway_country = {
+			if = {
+				limit = { has_global_event_target = africa_rsa_continental_coalition }
+				add_ai_strategy = {
+					type = prepare_for_war
+					id = event_target:africa_rsa_continental_coalition
+					value = constant:africa_rsa_ai.republican_war_target_negative
+				}
+				add_ai_strategy = {
+					type = antagonize
+					id = event_target:africa_rsa_continental_coalition
+					value = constant:africa_rsa_ai.republican_war_target_negative
+				}
+			}
+			if = {
+				limit = { has_global_event_target = africa_rsa_allied_union_government }
+				add_ai_strategy = {
+					type = prepare_for_war
+					id = event_target:africa_rsa_allied_union_government
+					value = constant:africa_rsa_ai.republican_war_target_negative
+				}
+				add_ai_strategy = {
+					type = antagonize
+					id = event_target:africa_rsa_allied_union_government
+					value = constant:africa_rsa_ai.republican_war_target_negative
+				}
+			}
+		}
 	}
 }
 
