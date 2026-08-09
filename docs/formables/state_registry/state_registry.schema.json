@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "chaos-redux-state-geometry-registry/v1",
+  "title": "Chaos Redux universal state geometry registry",
+  "description": "Build-time registry of every state in the active HOI4 map. Geometry is source-owned; runtime state qualification remains live.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "registry_id",
+    "map",
+    "geometry_encoding",
+    "counts",
+    "states",
+    "registry_content_sha256_algorithm",
+    "registry_content_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "registry_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.-]+$"
+    },
+    "map": {
+      "$ref": "#/$defs/map"
+    },
+    "geometry_encoding": {
+      "$ref": "#/$defs/geometryEncoding"
+    },
+    "counts": {
+      "$ref": "#/$defs/counts"
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/state"
+      }
+    },
+    "registry_content_sha256_algorithm": {
+      "type": "string",
+      "const": "sha256-canonical-json-v1"
+    },
+    "registry_content_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "portablePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$))[^\\r\\n]+$"
+    },
+    "mapFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/portablePath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "definition_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "map": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["provinces_bmp", "definition_csv", "state_history_root", "state_history_bundle_sha256"],
+      "properties": {
+        "mcp_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "width": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "provinces_bmp": {
+          "$ref": "#/$defs/mapFile"
+        },
+        "definition_csv": {
+          "$ref": "#/$defs/mapFile"
+        },
+        "state_history_root": {
+          "$ref": "#/$defs/portablePath"
+        },
+        "state_history_bundle_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "mcp_artifact_uris": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "geometryEncoding": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type", "row_format", "x_start_inclusive", "length_positive", "y_ascending", "x_ascending", "map_wrap"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "absolute_row_runs"
+        },
+        "row_format": {
+          "type": "string",
+          "const": "[y, [x_start, length, x_start, length, ...]]"
+        },
+        "x_start_inclusive": {
+          "type": "boolean",
+          "const": true
+        },
+        "length_positive": {
+          "type": "boolean",
+          "const": true
+        },
+        "y_ascending": {
+          "type": "boolean",
+          "const": true
+        },
+        "x_ascending": {
+          "type": "boolean",
+          "const": true
+        },
+          "map_wrap": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["world_width"],
+          "properties": {
+            "horizontal": {
+              "type": "boolean",
+              "const": true
+            },
+            "axis": {
+              "type": "string",
+              "const": "x"
+            },
+            "world_width": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            },
+            "canonical_runs_do_not_unwrap": {
+              "type": "boolean"
+            },
+            "unwrap_rule": {
+              "type": "string"
+            }
+          },
+          "anyOf": [
+            {"required": ["horizontal"]},
+            {"required": ["axis"]}
+          ]
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["state_count", "state_id_range"],
+      "properties": {
+        "state_count": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "states": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "state_id_range": {
+          "type": "array",
+          "prefixItems": [
+            {"type": "integer", "minimum": 1},
+            {"type": "integer", "minimum": 1}
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "state_ids_sha256": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["state_id", "name_key", "source_state_file", "source_state_file_sha256", "province_ids", "province_count", "pixel_count", "row_count", "run_count", "circular_x_interval", "row_runs", "geometry_sha256"],
+      "properties": {
+        "state_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "name_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_state_file": {
+          "$ref": "#/$defs/portablePath"
+        },
+        "source_state_file_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "province_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "province_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "pixel_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "row_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "run_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tight_bbox": {
+          "type": "array",
+          "prefixItems": [
+            {"type": "integer", "minimum": 0},
+            {"type": "integer", "minimum": 0},
+            {"type": "integer", "minimum": 0},
+            {"type": "integer", "minimum": 0}
+          ],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "circular_x_interval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["start_x", "length", "end_x_unwrapped", "wraps_x_seam", "unwrap_offset"],
+          "properties": {
+            "start_x": {"type": "integer", "minimum": 0},
+            "length": {"type": "integer", "minimum": 1},
+            "end_x_unwrapped": {"type": "integer", "minimum": 0},
+            "wraps_x_seam": {"type": "boolean"},
+            "unwrap_offset": {"type": "integer"}
+          }
+        },
+        "geometry_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "row_runs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {"type": "integer", "minimum": 0},
+              {
+                "type": "array",
+                "minItems": 2,
+                "items": {"type": "integer"}
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "qualification_policy": {
+          "type": ["string", "object"]
+        },
+        "visibility_policy": {
+          "type": ["string", "object"]
+        }
+      }
+    }
+  }
+}
