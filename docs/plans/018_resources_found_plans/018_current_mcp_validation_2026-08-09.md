@@ -8,6 +8,14 @@ No Hearts of Iron IV process was launched. Live game execution remains waived by
 
 ## Scripted GUI
 
+The current post-workboard inspect retained all 34 Event 018 elements under scenario `event018_resources_found`:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9cd3aca9fb9f2f5caa9f5cab064224a8c4887234702a0d8b5180ba3f12972d0a/38a46e5f974ec4fa90a4bb70c0bc2b40c4470b8452396828824236feb3c3d365/gui-inspect.fa2d32d2408b7d9a.json`
+
+The current supported-resolution and interaction-state render completed with only a response-wire truncation warning:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/65f260e93b8b02003e0d5a02f453a755dbc8582a27ec45fb9de593cac0f4310a/1d84ec006e8779141c212e97a7586830837bad1abd27761b486b795a6b6d840c/resources_found_field_window-full.svg`
+
 The final selected-field inspect artifact is:
 
 `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/af65f01433f093d8e876c1a6acb462a7c5b98e7194d5243ea7d2b51619e39121/8865916154548f3bbebe8c7d748681c3f4a068e1ee9f2433a2ae3db9694e973b/gui-inspect.07ea06f0b395f66c.json`
@@ -67,6 +75,10 @@ Focused state-flow artifacts were produced for the baseline, Evolution I, Evolut
 The event analyzer deferred workspace-wide helper projection and lifecycle passes because of the repository size. The focused reports therefore support the chain audit but do not prove live delayed-event delivery, saved-scope recovery, or engine execution.
 
 ## Weighted-surface inventory
+
+The complete selected-field workboard subset has 29 decision candidates. A current bounded `decision_ai_will_do` inspection returned `poolComplete=true`, eight required inputs, zero unresolved constructs, and no diagnostics. The new human-only page control has a zero AI weight, while every gameplay decision keeps its previous AI weight and bypasses the page presentation gates:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8a205eeded51bf7653fb51f73b4b98e22fda39ef19cc1777b3050a2011780302/8448b525fc55e2bd08176187552c7292883a5aef637b8b48080ad31a4576a37f/probability-inspect-dd2e5ef3aa15.json`
 
 Current `hoi4.probability_inspect` results are:
 

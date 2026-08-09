@@ -20,9 +20,17 @@
 @RESOURCES_FOUND_SCHEDULE_REENABLE_DAYS = 30
 
 resources_found_field_management_category = {
+	resources_found_cycle_field_workboard = {
+		icon = GFX_decision_resources_found_selected_field
+		visible = { resources_found_country_has_valid_selected_field = yes NOT = { is_ai = yes } }
+		available = { resources_found_decision_has_selected_field = yes }
+		complete_effect = { custom_effect_tooltip = resources_found_cycle_field_workboard_tt hidden_effect = { resources_found_cycle_selected_field_workboard = yes } }
+		ai_will_do = { base = constant:resources_found_decision_ai.never }
+	}
+
 	resources_found_refresh_field_project_estimates = {
 		icon = GFX_decision_resources_found_selected_field
-		visible = { resources_found_decision_project_queue_available = yes resources_found_country_has_valid_selected_field = yes NOT = { resources_found_decision_cost_preview_context_current = yes } }
+		visible = { resources_found_decision_player_workboard_page_administration = yes resources_found_decision_project_queue_available = yes resources_found_country_has_valid_selected_field = yes NOT = { resources_found_decision_cost_preview_context_current = yes } }
 		available = { always = yes }
 		complete_effect = { custom_effect_tooltip = resources_found_refresh_project_estimates_tt hidden_effect = { resources_found_refresh_decision_cost_previews = yes } }
 		ai_will_do = { base = constant:resources_found_decision_ai.critical }
@@ -30,7 +38,7 @@ resources_found_field_management_category = {
 
 	resources_found_cycle_selected_field = {
 		icon = GFX_decision_resources_found_selected_field
-		visible = { check_variable = { resources_found_owned_fields^num > constant:resources_found_value.one } }
+		visible = { resources_found_decision_player_workboard_page_administration = yes check_variable = { resources_found_owned_fields^num > constant:resources_found_value.one } }
 		available = { any_owned_state = { resources_found_is_active_field = yes } }
 		complete_effect = { custom_effect_tooltip = resources_found_cycle_selected_field_tt hidden_effect = { resources_found_gui_select_next_field = yes resources_found_schedule_evolution_paths = yes } }
 		ai_will_do = { base = constant:resources_found_decision_ai.never }
@@ -38,7 +46,7 @@ resources_found_field_management_category = {
 
 	resources_found_refresh_evolution_clocks = {
 		icon = GFX_decision_resources_found_selected_field
-		visible = { resources_found_country_has_valid_selected_field = yes }
+		visible = { resources_found_decision_player_workboard_page_administration = yes resources_found_country_has_valid_selected_field = yes }
 		available = { resources_found_decision_has_selected_field = yes }
 		days_re_enable = @RESOURCES_FOUND_SCHEDULE_REENABLE_DAYS
 		complete_effect = { custom_effect_tooltip = resources_found_refresh_evolution_clocks_tt hidden_effect = { resources_found_schedule_evolution_paths = yes } }
@@ -47,7 +55,7 @@ resources_found_field_management_category = {
 
 	resources_found_establish_national_authority = {
 		icon = GFX_decision_resources_found_field_authority
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { check_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority } } } }
+		visible = { resources_found_decision_player_workboard_page_administration = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { check_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority } } } }
 		available = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c1_d3
@@ -57,7 +65,7 @@ resources_found_field_management_category = {
 
 	resources_found_charter_domestic_operators = {
 		icon = GFX_decision_resources_found_field_authority
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { check_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter } } } }
+		visible = { resources_found_decision_player_workboard_page_administration = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { check_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter } } } }
 		available = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c1_d3
@@ -67,7 +75,7 @@ resources_found_field_management_category = {
 
 	resources_found_place_field_in_strategic_reserve = {
 		icon = GFX_decision_resources_found_suspension
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { resources_found_can_suspend_field = yes } }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_player_operations_routine_visible = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { resources_found_can_suspend_field = yes } }
 		available = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c6_d3
@@ -77,7 +85,7 @@ resources_found_field_management_category = {
 
 	resources_found_commission_geological_appraisal = {
 		icon = GFX_decision_resources_found_geological_appraisal
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_geological_appraisal_complete } } }
+		visible = { resources_found_decision_player_workboard_page_development = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_geological_appraisal_complete } } }
 		available = { resources_found_decision_has_base_survey_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_survey_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c2_d4
@@ -87,7 +95,7 @@ resources_found_field_management_category = {
 
 	resources_found_drill_deeper_test = {
 		icon = GFX_decision_resources_found_deeper_test
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { check_variable = { resources_found_excavation_depth < constant:resources_found_field_value.maximum } } }
+		visible = { resources_found_decision_player_workboard_page_development = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { check_variable = { resources_found_excavation_depth < constant:resources_found_field_value.maximum } } }
 		available = { resources_found_decision_has_base_survey_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_survey_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c2_d3
@@ -97,7 +105,7 @@ resources_found_field_management_category = {
 
 	resources_found_map_surrounding_basin = {
 		icon = GFX_decision_resources_found_geological_appraisal
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_basin_mapped } } }
+		visible = { resources_found_decision_player_workboard_page_development = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_basin_mapped } } }
 		available = { resources_found_decision_has_base_survey_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_survey_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c2_d5
@@ -107,7 +115,7 @@ resources_found_field_management_category = {
 
 	resources_found_open_primary_works = {
 		icon = GFX_decision_resources_found_primary_works
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { has_state_flag = resources_found_geological_appraisal_complete NOT = { has_state_flag = resources_found_primary_works_open } } }
+		visible = { resources_found_decision_player_workboard_page_development = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { has_state_flag = resources_found_geological_appraisal_complete NOT = { has_state_flag = resources_found_primary_works_open } } }
 		available = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c3_d7
@@ -117,7 +125,7 @@ resources_found_field_management_category = {
 
 	resources_found_extend_rail_road_corridor = {
 		icon = GFX_decision_resources_found_transport_corridor
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_integrated_transport_route } } }
+		visible = { resources_found_decision_player_workboard_page_infrastructure = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_integrated_transport_route } } }
 		available = { resources_found_decision_has_base_transport_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_transport_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c4_d9
@@ -127,7 +135,7 @@ resources_found_field_management_category = {
 
 	resources_found_install_heavy_machinery = {
 		icon = GFX_decision_resources_found_heavy_machinery
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { has_state_flag = resources_found_primary_works_open NOT = { has_state_flag = resources_found_heavy_machinery_installed } } }
+		visible = { resources_found_decision_player_workboard_page_development = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { has_state_flag = resources_found_primary_works_open NOT = { has_state_flag = resources_found_heavy_machinery_installed } } }
 		available = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c3_d5
@@ -137,7 +145,7 @@ resources_found_field_management_category = {
 
 	resources_found_build_local_processing = {
 		icon = GFX_decision_resources_found_local_processing
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { has_state_flag = resources_found_primary_works_open NOT = { has_state_flag = resources_found_local_processing_complete } } }
+		visible = { resources_found_decision_player_workboard_page_infrastructure = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { has_state_flag = resources_found_primary_works_open NOT = { has_state_flag = resources_found_local_processing_complete } } }
 		available = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c3_d8
@@ -147,7 +155,7 @@ resources_found_field_management_category = {
 
 	resources_found_expand_worker_settlement = {
 		icon = GFX_decision_resources_found_worker_settlement
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_worker_settlement_expanded } } }
+		visible = { resources_found_decision_player_workboard_page_safety = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_worker_settlement_expanded } } }
 		available = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c5_d7
@@ -157,7 +165,7 @@ resources_found_field_management_category = {
 
 	resources_found_build_integrated_processing_corridor = {
 		icon = GFX_decision_resources_found_local_processing
-		visible = { resources_found_decision_field_has_compound_resources = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_compound_corridor_complete } } }
+		visible = { resources_found_decision_player_workboard_page_infrastructure = yes resources_found_decision_field_has_compound_resources = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_compound_corridor_complete } } }
 		available = { resources_found_decision_has_base_transport_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_transport_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c4_d8
@@ -167,7 +175,7 @@ resources_found_field_management_category = {
 
 	resources_found_unify_compound_authority = {
 		icon = GFX_decision_resources_found_field_authority
-		visible = { resources_found_decision_field_has_compound_resources = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_commission_active } NOT = { has_state_flag = resources_found_unified_compound_authority } } }
+		visible = { resources_found_decision_player_workboard_page_infrastructure = yes resources_found_decision_field_has_compound_resources = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_commission_active } NOT = { has_state_flag = resources_found_unified_compound_authority } } }
 		available = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c1_d3
@@ -177,7 +185,7 @@ resources_found_field_management_category = {
 
 	resources_found_split_resource_concessions = {
 		icon = GFX_decision_resources_found_foreign_concession
-		visible = { resources_found_decision_field_has_compound_resources = yes var:resources_found_selected_field = { check_variable = { var = resources_found_interested_country_count value = constant:resources_found_threshold.commission_minimum_interested_countries compare = greater_than_or_equals } NOT = { has_state_flag = resources_found_split_resource_concessions } } }
+		visible = { resources_found_decision_player_workboard_page_infrastructure = yes resources_found_decision_field_has_compound_resources = yes var:resources_found_selected_field = { check_variable = { var = resources_found_interested_country_count value = constant:resources_found_threshold.commission_minimum_interested_countries compare = greater_than_or_equals } NOT = { has_state_flag = resources_found_split_resource_concessions } } }
 		available = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c7_d4
@@ -187,7 +195,7 @@ resources_found_field_management_category = {
 
 	resources_found_recruit_regional_labor = {
 		icon = GFX_decision_resources_found_labor_recruitment
-		visible = { resources_found_decision_field_can_be_developed = yes }
+		visible = { resources_found_decision_player_workboard_page_safety = yes resources_found_decision_field_can_be_developed = yes }
 		available = { resources_found_decision_has_base_labor_inputs = yes var:resources_found_selected_field = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_3 } } }
 		custom_cost_trigger = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c5_d4
@@ -197,7 +205,7 @@ resources_found_field_management_category = {
 
 	resources_found_shorten_shifts_rotate_crews = {
 		icon = GFX_decision_resources_found_safety_rotation
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_4 } } }
+		visible = { resources_found_decision_player_workboard_page_safety = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_4 } } }
 		available = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c5_d4
@@ -207,7 +215,7 @@ resources_found_field_management_category = {
 
 	resources_found_reinforce_shafts_ventilation = {
 		icon = GFX_decision_resources_found_shaft_reinforcement
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.maximum } } }
+		visible = { resources_found_decision_player_workboard_page_safety = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.maximum } } }
 		available = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c3_d5
@@ -217,7 +225,7 @@ resources_found_field_management_category = {
 
 	resources_found_establish_field_hospital = {
 		icon = GFX_decision_resources_found_field_hospital
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_field_hospital_established } } }
+		visible = { resources_found_decision_player_workboard_page_safety = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_field_hospital_established } } }
 		available = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c5_d7
@@ -227,7 +235,7 @@ resources_found_field_management_category = {
 
 	resources_found_compensate_affected_families = {
 		icon = GFX_decision_resources_found_casualty_response
-		visible = { resources_found_decision_field_has_recorded_casualties = yes resources_found_decision_field_queue_available = yes }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_field_has_recorded_casualties = yes resources_found_decision_field_queue_available = yes }
 		available = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c1_d4
@@ -237,7 +245,7 @@ resources_found_field_management_category = {
 
 	resources_found_conceal_casualty_reports = {
 		icon = GFX_decision_resources_found_casualty_response
-		visible = { resources_found_decision_field_has_recorded_casualties = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { resources_found_is_evolution_ii_enabled = yes } }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_field_has_recorded_casualties = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { resources_found_is_evolution_ii_enabled = yes } }
 		available = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c6_d3
@@ -247,7 +255,7 @@ resources_found_field_management_category = {
 
 	resources_found_regulated_output = {
 		icon = GFX_decision_resources_found_output_policy
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_regulated_output } } }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_player_operations_routine_visible = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_regulated_output } } }
 		available = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_administration_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c1_d3
@@ -257,7 +265,7 @@ resources_found_field_management_category = {
 
 	resources_found_maximum_shifts = {
 		icon = GFX_decision_resources_found_output_policy
-		visible = { resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_maximum_shifts_active } } }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_player_operations_routine_visible = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_maximum_shifts_active } } }
 		available = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_labor_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c5_d7
@@ -267,7 +275,7 @@ resources_found_field_management_category = {
 
 	resources_found_wartime_requisition = {
 		icon = GFX_decision_resources_found_output_policy
-		visible = { has_war = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_wartime_requisition_active } } }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_player_operations_routine_visible = yes has_war = yes resources_found_decision_field_can_be_developed = yes var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_wartime_requisition_active } } }
 		available = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c6_d7
@@ -277,7 +285,7 @@ resources_found_field_management_category = {
 
 	resources_found_emergency_suspension = {
 		icon = GFX_decision_resources_found_suspension
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { resources_found_can_suspend_field = yes } }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { resources_found_can_suspend_field = yes } }
 		available = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_security_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c6_d3
@@ -287,7 +295,7 @@ resources_found_field_management_category = {
 
 	resources_found_reactivate_suspended_field = {
 		icon = GFX_decision_resources_found_output_policy
-		visible = { resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { has_state_flag = resources_found_field_suspended NOT = { has_state_flag = resources_found_full_seal_active } } }
+		visible = { resources_found_decision_player_workboard_page_operations = yes resources_found_decision_field_queue_available = yes var:resources_found_selected_field = { has_state_flag = resources_found_field_suspended NOT = { has_state_flag = resources_found_full_seal_active } } }
 		available = { var:resources_found_selected_field = { resources_found_can_resume_field = yes } resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_trigger = { resources_found_decision_has_base_industry_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c3_immediate

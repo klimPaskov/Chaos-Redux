@@ -20,6 +20,22 @@
 # Dynamic project preparation and payment
 # ---------------------------------------------------------------------------
 
+# COUNTRY scope. Advances the selected field's presentation-only workboard
+# page. The page is field-local so a player managing several deposits returns
+# to the last view used for each one.
+resources_found_cycle_selected_field_workboard = {
+	if = {
+		limit = { resources_found_decision_has_selected_field = yes }
+		var:resources_found_selected_field = {
+			add_to_variable = { resources_found_field_workboard_page = constant:resources_found_value.one }
+			if = {
+				limit = { check_variable = { resources_found_field_workboard_page > constant:resources_found_workboard_page.operations } }
+				set_variable = { resources_found_field_workboard_page = constant:resources_found_workboard_page.administration }
+			}
+		}
+	}
+}
+
 # COUNTRY scope. Clears all exact project inputs and outputs.
 resources_found_clear_decision_project_costs = {
 	set_variable = { resources_found_decision_cost_pp = constant:resources_found_value.zero }
