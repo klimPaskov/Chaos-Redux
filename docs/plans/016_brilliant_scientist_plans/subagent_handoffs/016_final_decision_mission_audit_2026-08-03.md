@@ -1,5 +1,12 @@
 # Event 016 final decision and mission audit
 
+> **Superseded provider-inventory notice (2026-08-09):** This audit predates
+> provider 522, the expanded 18-ID Event 19 census, and the provider-side
+> management-cost display/profile-cache callback. Its `504-510` statements are
+> historical evidence only; use `016_core_runtime_handoff_map.md`,
+> `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and
+> `.tmp/event19_docs_curator_current.md` for current provider facts.
+
 Date: 2026-08-03
 
 Mode: read-only final audit.

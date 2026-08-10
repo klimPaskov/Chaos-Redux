@@ -1,12 +1,16 @@
 # Event 016 unit-model backlog reconciliation handoff
 
+> Current-status correction, 2026-08-09: the clone infantry model/entity package is installed and reusable, and Portal Raider counter art is complete and wired. The Portal Raider runtime model/entity, actions, and sounds remain rejected and unwired pending user-approved paid recovery; the remaining route-specific packages stay queued. The older seven-package inventory below remains future production evidence and does not override the current mixed status.
+
+> **Superseded provider-inventory notice (2026-08-09):** Provider 522 was added after this backlog reconciliation. It uses the existing Aryan clone infantry presentation and does not add a bespoke 3D package; the seven-package backlog remains the current Event 016 bespoke-model scope. Use `016_event19_generic_unit_family_3d_model_backlog.md` and `.tmp/event19_docs_curator_current.md` for the current bridge facts.
+
 ## Scope
 
 This handoff records the deferred visual package inventory requested for Event 016. It is documentation-only. No model, texture, `.asset`, `.mesh`, `.anim`, entity binding, or gameplay reference was created or changed.
 
 ## Evidence reviewed
 
-- `common/units/016_brilliant_scientist_project_forces.txt` defines seven Event 016 project-force consumers: `kruger_portal_raider`, `kruger_clone_infantry`, `kruger_robot_frame`, `kruger_paleogenetic_beast`, `kruger_xenobiological_assault`, `kruger_exotic_guard`, and `kruger_temporal_guard`.
+- Event 016 defines six route-specific project-force consumers and reuses the shared `clone_infantry` consumer for cloning: `kruger_portal_raider`, `kruger_robot_frame`, `kruger_paleogenetic_beast`, `kruger_xenobiological_assault`, `kruger_exotic_guard`, and `kruger_temporal_guard`.
 - `common/units/equipment/016_brilliant_scientist_project_force_equipment.txt` supplies the corresponding portal, clone, robot, paleogenetic, xenobiological, alien-arms, and temporal equipment archetypes.
 - `common/scripted_effects/016_brilliant_scientist_project_force_event19_effects.txt` exposes Event 019 provider identities 504-508 for clone, robot, paleogenetic, xenobiological, and alien-interface families only.
 - Portal-raider and temporal-guard units remain native Event 016 consumers. Their future infantry-spawn provider contracts are documented as targets, not runtime references.

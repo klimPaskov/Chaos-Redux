@@ -1,5 +1,7 @@
 # Event 016 Event 019 portal and temporal provider extension
 
+> **Superseded provider-inventory notice (2026-08-09):** This handoff closes the historical portal and temporal extension to providers `504-510`. Provider 522 and the expanded owner-adapter census were added later; use `016_core_runtime_handoff_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider facts.
+
 ## Scope
 
 This tranche closes the missing shared-infantry-spawn coverage for the two Event 016 project-force families that were still native-only: Portal Raider and Temporal Guard. It does not create models, entities, animations, or a presentation fallback.

@@ -21,7 +21,7 @@ Event 16 may be marked Reworked only when every required surface below is comple
 ## Baseline event
 
 - [ ] Event 16 remains registered as a minor fire-once event.
-- [ ] The default-enabled core stays safe for ordinary fire-once play while optional country flavour, quantitative balance evidence, live acceptance, and the seven deferred 3D packages remain explicitly outside the core load contract.
+- [ ] The default-enabled core stays safe for ordinary fire-once play while optional country flavour, quantitative balance evidence, live acceptance, the rejected and unwired Portal Raider runtime model/entity, and the remaining queued 3D packages remain explicitly outside the core load contract; the installed clone infantry model/entity package and wired Portal Raider counters do not by themselves satisfy whole-event completion.
 - [ ] Host selection supports eligible AI and human countries rather than only majors or players.
 - [ ] Host selection excludes invalid, capitulated, nonhuman, and incompatible special chaos actors.
 - [ ] A valid laboratory state can be selected and persisted.

@@ -34,10 +34,10 @@ brilliant_scientist_portal_raid_actor_is_ready = {
 	has_template = "Quantum Transit Raiders"
 }
 
-# COUNTRY/raid target context. The target must be a hostile country and the
-# selected state must remain owned and controlled by that country while the
-# raid is prepared or launched. Factories and strategic facilities are valid
-# targets; successful operations can seize a province and extract a factory.
+# COUNTRY/raid target context. State targets cover state-level factories,
+# reactors, and rocket sites. Provincial special-project facilities use the
+# dedicated facility target below so removal always addresses the exact building
+# province selected by the native raid UI.
 brilliant_scientist_portal_raid_target_is_valid = {
 	FROM = {
 		exists = yes
@@ -50,9 +50,58 @@ brilliant_scientist_portal_raid_target_is_valid = {
 			industrial_complex > 0
 			arms_factory > 0
 			dockyard > 0
-			rocket_site > 0
-			nuclear_reactor > 0
-			commercial_nuclear_reactor > 0
+			AND = {
+				rocket_site > 0
+				ROOT = { any_owned_state = { is_controlled_by = ROOT free_building_slots = { building = rocket_site size > 0 } } }
+			}
+			AND = {
+				nuclear_reactor > 0
+				ROOT = { any_owned_state = { is_controlled_by = ROOT free_building_slots = { building = nuclear_reactor size > 0 } } }
+			}
+			AND = {
+				commercial_nuclear_reactor > 0
+				ROOT = { any_owned_state = { is_controlled_by = ROOT free_building_slots = { building = commercial_nuclear_reactor size > 0 } } }
+			}
+		}
+	}
+}
+
+# COUNTRY/raid target context. The building-target raid supplies the exact
+# facility province through var:target_province. Destination checks happen by
+# facility family so the source is never removed unless it can be rebuilt.
+brilliant_scientist_portal_facility_raid_target_is_valid = {
+	FROM = {
+		exists = yes
+		has_war_with = ROOT
+	}
+	var:target_state = {
+		is_owned_by = FROM
+		is_controlled_by = FROM
+		OR = {
+			AND = {
+				land_facility > 0
+				ROOT = { any_owned_state = { is_controlled_by = ROOT land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+			AND = {
+				air_facility > 0
+				ROOT = { any_owned_state = { is_controlled_by = ROOT land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+			AND = {
+				naval_facility > 0
+				ROOT = { any_owned_state = { is_controlled_by = ROOT is_coastal = yes land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+			AND = {
+				nuclear_facility > 0
+				ROOT = { any_owned_state = { is_controlled_by = ROOT land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+		}
+	}
+	var:target_province = {
+		OR = {
+			land_facility > 0
+			air_facility > 0
+			naval_facility > 0
+			nuclear_facility > 0
 		}
 	}
 }

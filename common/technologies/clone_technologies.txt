@@ -1,0 +1,66 @@
+# ============================================================================
+# CHAOS REDUX - SHARED CLONE INFANTRY TECHNOLOGIES
+# ============================================================================
+# Hidden provider-neutral access and Mengele-specific refinement bridges.
+# Event 016 retains its own operational and weaponization technologies, while
+# every provider shares the same equipment and battalion ids.
+# ============================================================================
+
+@CLONE_TECH_RESEARCH_COST = 1
+@CLONE_TECH_START_YEAR = 1936
+@MENGELE_CLONE_ORGANISATION = 10
+@MENGELE_CLONE_ATTACK = 0.20
+@MENGELE_CLONE_DEFENCE = 0.15
+@MENGELE_CLONE_MORALE = 0.20
+@MENGELE_CLONE_TRICKLEBACK = 0.20
+@MENGELE_CLONE_EXPERIENCE_LOSS = -0.20
+@MENGELE_ARYAN_CLONE_ORGANISATION = 15
+@MENGELE_ARYAN_CLONE_ATTACK = 0.30
+@MENGELE_ARYAN_CLONE_DEFENCE = 0.25
+@MENGELE_ARYAN_CLONE_MORALE = 0.30
+@MENGELE_ARYAN_CLONE_TRICKLEBACK = 0.30
+@MENGELE_ARYAN_CLONE_EXPERIENCE_LOSS = -0.30
+
+technologies = {
+	clone_infantry_access_tech = {
+		allow = { always = no }
+		research_cost = @CLONE_TECH_RESEARCH_COST
+		start_year = @CLONE_TECH_START_YEAR
+		enable_equipments = { clone_equipment_1 }
+		enable_subunits = { clone_infantry }
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+
+	mengele_clone_refinement_tech = {
+		allow = { always = no }
+		research_cost = @CLONE_TECH_RESEARCH_COST
+		start_year = @CLONE_TECH_START_YEAR
+		dependencies = { clone_infantry_access_tech = 1 }
+		clone_infantry = {
+			max_organisation = @MENGELE_CLONE_ORGANISATION
+			soft_attack = @MENGELE_CLONE_ATTACK
+			defense = @MENGELE_CLONE_DEFENCE
+			default_morale = @MENGELE_CLONE_MORALE
+			casualty_trickleback = @MENGELE_CLONE_TRICKLEBACK
+			experience_loss_factor = @MENGELE_CLONE_EXPERIENCE_LOSS
+		}
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+
+	mengele_aryan_clone_refinement_tech = {
+		allow = { always = no }
+		research_cost = @CLONE_TECH_RESEARCH_COST
+		start_year = @CLONE_TECH_START_YEAR
+		dependencies = { mengele_clone_refinement_tech = 1 }
+		enable_subunits = { aryan_clone_infantry }
+		aryan_clone_infantry = {
+			max_organisation = @MENGELE_ARYAN_CLONE_ORGANISATION
+			soft_attack = @MENGELE_ARYAN_CLONE_ATTACK
+			defense = @MENGELE_ARYAN_CLONE_DEFENCE
+			default_morale = @MENGELE_ARYAN_CLONE_MORALE
+			casualty_trickleback = @MENGELE_ARYAN_CLONE_TRICKLEBACK
+			experience_loss_factor = @MENGELE_ARYAN_CLONE_EXPERIENCE_LOSS
+		}
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+}

@@ -7,17 +7,41 @@
 # shared disease-board delivery route.
 # ============================================================================
 
+# COUNTRY scope. A live Kruger biological program and the reusable Directorate
+# provider can expose this project without waiting for Event 020. They still
+# use the same project, runtime, payload, delivery, and accident systems.
+black_plague_weaponization_directorate_has_access = {
+	OR = {
+		AND = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_biological_weapons_theory_completed
+		}
+		AND = {
+			is_mengele_clone_directorate_country = yes
+			OR = {
+				has_country_flag = directorate_special_projects_all_available
+				has_country_flag = directorate_special_project_black_plague_available
+			}
+		}
+	}
+}
+
 # COUNTRY scope.
 black_plague_weaponization_actor_is_valid = {
 	exists = yes
-	uses_normal_civilian_systems = yes
-	NOT = { is_actual_nonhuman_country = yes }
-	NOT = { is_special_chaos_country = yes }
 	NOT = { has_global_flag = world_end }
-	has_global_flag = black_plague_system_active
 	OR = {
-		black_plague_country_has_active_severe_state = yes
-		any_controlled_state = { black_plague_state_is_infected_or_worse = yes }
+		AND = {
+			uses_normal_civilian_systems = yes
+			NOT = { is_actual_nonhuman_country = yes }
+			NOT = { is_special_chaos_country = yes }
+			has_global_flag = black_plague_system_active
+			OR = {
+				black_plague_country_has_active_severe_state = yes
+				any_controlled_state = { black_plague_state_is_infected_or_worse = yes }
+			}
+		}
+		black_plague_weaponization_directorate_has_access = yes
 	}
 }
 
@@ -35,13 +59,18 @@ black_plague_weaponization_has_sample_access = {
 
 black_plague_weaponization_project_is_available = {
 	black_plague_weaponization_actor_is_valid = yes
-	black_plague_weaponization_has_sample_access = yes
 	NOT = { is_special_project_completed = sp:black_plague_weaponization_program }
 	NOT = { has_country_flag = black_plague_weaponization_condemned }
 	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
 	OR = {
-		is_special_project_completed = sp:plague_bomb
-		has_tech = plague_bomb_delivery_systems
+		AND = {
+			black_plague_weaponization_has_sample_access = yes
+			OR = {
+				is_special_project_completed = sp:plague_bomb
+				has_tech = plague_bomb_delivery_systems
+			}
+		}
+		black_plague_weaponization_directorate_has_access = yes
 	}
 }
 
@@ -77,11 +106,19 @@ black_plague_weaponization_can_begin = {
 # ordinary Event 020 exposure lifecycle.
 black_plague_weaponization_delivery_actor_is_valid = {
 	exists = yes
-	uses_normal_civilian_systems = yes
-	NOT = { is_actual_nonhuman_country = yes }
-	NOT = { is_special_chaos_country = yes }
 	NOT = { has_global_flag = world_end }
 	has_global_flag = black_plague_system_active
+	OR = {
+		AND = {
+			uses_normal_civilian_systems = yes
+			NOT = { is_actual_nonhuman_country = yes }
+			NOT = { is_special_chaos_country = yes }
+		}
+		AND = {
+			has_country_flag = directorate_special_project_black_plague_completed
+			has_country_flag = black_plague_weaponization_complete
+		}
+	}
 }
 
 # COUNTRY scope. Native delivery integration remains mandatory: a completed

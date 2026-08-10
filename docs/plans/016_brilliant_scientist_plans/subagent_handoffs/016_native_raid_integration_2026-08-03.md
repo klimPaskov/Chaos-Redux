@@ -1,5 +1,7 @@
 # Event 016 native raid integration handoff
 
+> Historical implementation note superseded by the 2026-08-09 documentation reconciliation: native Event 016 raids are the current architecture and are not blocked by the optional native CBRN callback. Portal Facility Raid now uses seven-day preparation, ten Command Power, sixty Teleportation Equipment, hostile-province seizure, fully supplied unit spawn, and eligible building transfer; the separate KRG stockpile and delivery ledger remains queued. See `docs/events/016_brilliant_scientist/systems/portal_raider_api.md` and `docs/plans/016_brilliant_scientist_plans/016_portal_plague_documentation_reconciliation_2026-08-09.md` for current status.
+
 Date: 2026-08-03
 
 ## Scope

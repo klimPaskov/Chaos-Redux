@@ -1,5 +1,7 @@
 # Event 016 portal-calibration documentation reconciliation
 
+> Current-status correction, 2026-08-09: the native raid framework is the Event 016 raid architecture, and the missing native CBRN callback blocks only the optional KRG biological stockpile and delivery ledger. Portal Raider counters are complete and wired, the clone infantry model/entity package is installed and reusable, and the Portal Raider runtime model/entity remains rejected and unwired pending user-approved paid recovery. The older seven-package and callback wording below is historical evidence.
+
 Date: 2026-08-03
 
 Status: documentation-only reconciliation complete. No gameplay, localisation, assets, models, spreadsheets, or unrelated event files were changed.
@@ -19,4 +21,3 @@ The decision-cost repair is also current: Event 016 decision sources contain no 
 ## Remaining boundary
 
 This reconciliation does not claim whole-event completion. Targeted transfer, cleanup, probability, affordability, quantitative-balance, Event 019 isolation, and live acceptance remain open. The KRG biological stockpile remains blocked by the native CBRN callback contract, and the seven generic 3D unit packages remain deferred under the user's no-model instruction.
-

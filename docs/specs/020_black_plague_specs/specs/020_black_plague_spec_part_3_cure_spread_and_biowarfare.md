@@ -243,7 +243,7 @@ Convoys and port traffic are the main overseas mechanism. The player should be a
 
 ## Biological warfare registration
 
-Once Event 20 fires, the Black Plague becomes a valid disease object for the existing biological warfare system.
+Event 20 normally registers the Black Plague as a valid disease object for the existing biological warfare system. A live Kruger Directorate with Biological Weapons Theory, or a Mengele Directorate with the Black Plague project exposed through the reusable Directorate registry, may initialize the same disease runtime by entering the existing weaponization project before Event 20 fires.
 
 Registration should provide:
 
@@ -264,6 +264,8 @@ The ordinary bubonic plague disease remains separate. A country can know, cure, 
 
 A country can begin serious countermeasure or weaponization work only after gaining valid access.
 
+Kruger and Mengele Directorates are the deliberate provider exceptions. Their project authorization substitutes for Event 20 sample access, but it does not substitute a new project, payload, accident system, condemnation ledger, or delivery route.
+
 ### Valid access paths
 
 - own or control an infected state
@@ -272,6 +274,7 @@ A country can begin serious countermeasure or weaponization work only after gain
 - steal samples through intelligence
 - recover material after a foreign biological strike
 - obtain samples from a rat-controlled state through a successful military operation
+- receive authorization from the Kruger or Mengele Directorate project registry
 
 ### Sample risks
 
@@ -294,7 +297,7 @@ The project converts medical and military knowledge into a stable deployable pay
 
 ### Entry requirements
 
-- Event 20 has fired and the disease exists in the world knowledge registry
+- Event 20 has fired and the disease exists in the world knowledge registry, or a Kruger or Mengele Directorate has the explicit provider authorization
 - country has biological warfare capability
 - country has valid sample access
 - country has a suitable special-project facility

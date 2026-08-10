@@ -17,6 +17,9 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [Stockpile debit helpers](#stockpile-debit-helpers)
+- [Shared clone equipment and infantry helpers](#shared-clone-equipment-and-infantry-helpers)
+- [Mengele Directorate Event 016 prototype bridge](#mengele-directorate-event-016-prototype-bridge)
+- [Event 19 integration obligation for new custom units](#event-19-integration-obligation-for-new-custom-units)
 
 ## modify_value_based_on_chaos_tier
 
@@ -417,7 +420,7 @@ Outputs:
 
 Defaults: invalid selectors and an exhausted random pool are safe no-ops. No vanilla technology or substitute family is inferred.
 
-Side effects: a valid grant records an external knowledge ledger flag, restores the selected custom technology after Event 016 runtime rebuilds, recreates the existing locked and capped template, reopens matching custom-equipment production, and registers the existing Event 019 provider row. Upgrade grants award their operational dependency first. Portal weaponization also unlocks the existing portal facility raid; Kruger changes its AI weight but is not an access requirement.
+Side effects: a valid grant records an external knowledge ledger flag, restores the selected custom technology after Event 016 runtime rebuilds, recreates the existing locked and capped template, reopens matching custom-equipment production, and registers the existing Event 019 provider row. Clone grants select Mengele refinement for a Mengele Directorate country and Kruger refinement otherwise. Upgrade grants award their operational dependency first. Portal weaponization also unlocks the existing portal facility raid; Kruger changes its AI weight but is not an access requirement.
 
 Example:
 
@@ -425,3 +428,82 @@ Example:
 set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.exotic }
 chaosx_grant_custom_operational_technology = yes
 ```
+
+## Shared clone equipment and infantry helpers
+
+Purpose: grant provider-neutral clone manufacture and recruitment, select one provider refinement, create the reusable editable 20-width template, and derive reserve manpower from the physical clone-equipment stockpile.
+
+Scope: country.
+
+Inputs: none. `clone_refresh_reserve_manpower` reads `num_equipment@clone_equipment` directly.
+
+Helpers: `clone_ensure_infantry_template`, `clone_grant_infantry_access`, `clone_select_kruger_refinement`, `clone_select_kruger_weaponization`, `clone_select_mengele_refinement`, and `clone_refresh_reserve_manpower`.
+
+Outputs: access helpers grant the hidden shared technology and template; provider selectors grant their matching refinement while removing the incompatible refinement; the refresh helper stores the rounded stockpile and weekly output in `clone_equipment_stockpile` and `clone_reserve_weekly_manpower`.
+
+Defaults: no provider refinement is inferred by `clone_grant_infantry_access`. A country with no physical clone equipment has no reserve modifier.
+
+Side effects: `clone_refresh_reserve_manpower` adds, updates, or removes `clone_reserve_manpower`. Provider selectors deliberately enforce ordinary Kruger/Mengele refinement exclusivity.
+
+Example:
+
+```txt
+clone_grant_infantry_access = yes
+add_equipment_to_stockpile = { type = clone_equipment_1 amount = 10 }
+clone_refresh_reserve_manpower = yes
+```
+
+## Mengele Directorate Event 016 prototype bridge
+
+Purpose: expose the nine non-cloning Event 016 native prototype projects to the Mengele Directorate without making it an Event 016 host or creating Event 016 project-ledger state.
+
+Scope: country.
+
+Inputs: `brilliant_scientist_record_mengele_project_prototype` reads temporary `brilliant_scientist_project_family` using the existing `constant:brilliant_scientist_project_family.*` enum.
+
+Outputs: a valid computation, materials, or biomedical completion sets a provider-owned `directorate_special_project_*_completed` flag and its provider dynamic modifier; teleportation, robotics, paleogenetics, xenobiological synthesis, alien arms, and temporal completion grants the mapped neutral custom operational technology through `chaosx_grant_custom_operational_technology` and sets the matching completion flag.
+
+Defaults: an invalid provider, cloning family, Singularity family, or unknown family is a no-op. Cloning remains owned by `sp_mengele_cloning` and its Mengele refinement effect. Strategic Singularity remains Kruger State-only.
+
+Side effects: completed-family availability flags are cleared, the temporary family selector is cleared, and dynamic modifiers are refreshed. The bridge never mutates `brilliant_scientist_project_stage_entries`, `brilliant_scientist_project_capacity`, Event 016 facility targets, event history, evolution state, containment state, or Singularity state. Public operational grants may rebuild the neutral custom-technology runtime consumers required for capped templates and provider rows, but do not create Event 016 project history.
+
+Example:
+
+```txt
+set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics }
+brilliant_scientist_record_new_project_prototype = yes
+```
+
+`brilliant_scientist_record_new_project_prototype` dispatches to the bridge only for a Mengele Directorate country; Kruger and other Event 016 host callers keep the existing ledger path.
+
+## Event 19 integration obligation for new custom units
+
+Any event, doctrine, technology, country package, or shared mechanic that adds a combat-capable custom land unit must update its Event 19 integration in the same change. The owning feature is not complete until the new unit can be discovered through the shared Chaos unit-family registry and can pass Event 19 generation, management, accounting, derivative, cleanup, AI, and player-facing documentation checks.
+
+The integration is owner-side. Do not add a fixed family list to Event 19, do not create another Event 19 registry file, and do not append a provider directly inside `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`. A future family contributes one idempotent registration effect from its existing owner integration file and calls that registration from the owner's bounded startup or runtime rebuild path. Registration uses `chaos_unit_family_register_current_provider` from `common/scripted_effects/chaos_unit_family_registry_effects.txt`. It must not introduce a recurring whole-world scan.
+
+When a new unit belongs to an already registered family, extend that family's owner adapter, template builder, token coverage, obligation manifest, and cleanup contract instead of allocating a second provider merely to enumerate another battalion. When the unit has a distinct availability, lot, sustainment, containment, derivative, AI, visual, cleanup, or parent-isolation identity, register one new family and provider ID.
+
+Every new Event 19-capable family must provide one registration surface and all eleven provider callbacks:
+
+- `chaos_unit_family_provider_N_event19_evaluate_eligibility`
+- `chaos_unit_family_provider_N_event19_build_template`
+- `chaos_unit_family_provider_N_event19_spawn_unit`
+- `chaos_unit_family_provider_N_event19_reconcile_sustainment`
+- `chaos_unit_family_provider_N_event19_get_management_cost_display`
+- `chaos_unit_family_provider_N_event19_evaluate_management`
+- `chaos_unit_family_provider_N_event19_pay_management_action`
+- `chaos_unit_family_provider_N_event19_refund_management_action`
+- `chaos_unit_family_provider_N_event19_setup_derivative`
+- `chaos_unit_family_provider_N_event19_remove_public_additions`
+- `chaos_unit_family_provider_N_event19_cleanup_derivative`
+
+The callbacks must preserve the owner's real technology, source-event, train-versus-spawn, parent-isolation, and equipment rules. They must not substitute ordinary infantry, borrow another family's presentation, activate parent stages or evolutions, or propagate parent counts, wars, deaths, super-events, or world-end progression. A future provider uses the neutral army visual profile unless it owns a separately supported profile. Support-only definitions are not registered as standalone families because HOI4 cannot create a division without a combat regiment. They remain parent-owned obligations or join an inseparable provider formation that contains a valid combat component.
+
+The owner must publish exact manpower and equipment requirements through the Event 19 obligation manifest. A provider with no separate standing stockpile debit must explicitly commit a zero-row manifest and select the ledger-backed zero-debit cost-display profile. `event19_get_management_cost_display` is presentation-only. Payment occurs only through `event19_pay_management_action`, and a failed build or spawn must restore the same resources through `event19_refund_management_action`.
+
+The same change must add or update family names, descriptions, selection text, management costs, blocked tooltips, AI eligibility, and any derivative identity text exposed to the player. It must also update `docs/systems/chaos_unit_family_registry.md` and `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`. If the event catalog describes the affected family coverage, update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and regenerate its CSV exports through the repository exporter.
+
+Before the owning feature is considered complete, verify that the registry arrays remain aligned, every registered provider has exactly one registration and eleven callbacks, every installed combat token is covered, manifest row counts and liabilities match the real formation, trainable and spawn-only policies are enforced, management payment and refund are symmetric, derivative setup and defeat cleanup prove their owner surfaces, and Event 19 does not inherit the parent feature's progression. Run the applicable HOI4 MCP event and weighted-logic inspections for the changed provider paths. An unresolved provider, missing callback, stale cost display, generic equipment substitute, undocumented support-only exclusion, or unvalidated registry row is a blocker rather than an allowed fallback.
+
+The complete field, callback, accounting, isolation, and lifecycle contract is maintained in `docs/systems/chaos_unit_family_registry.md`. The current unit census and provider-to-token mapping are maintained in `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`.

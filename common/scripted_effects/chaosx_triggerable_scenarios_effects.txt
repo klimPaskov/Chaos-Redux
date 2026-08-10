@@ -2246,6 +2246,7 @@ triggerable_scenario_setup_clone_country = {
 	set_variable = { triggerable_clone_artillery = ROOT.triggerable_clone_artillery }
 	set_variable = { triggerable_clone_manpower = ROOT.triggerable_clone_manpower }
 	set_country_flag = mengele_clone_army_scenario_country
+	clone_select_mengele_refinement = yes
 	clr_country_flag = events_activated
 	save_global_event_target_as = mengele_clone_army_scenario_country
 	set_cosmetic_tag = mengele_clone_army
@@ -2308,6 +2309,11 @@ triggerable_scenario_setup_clone_country = {
 		amount = triggerable_clone_artillery
 		producer = GER
 	}
+	set_temp_variable = { triggerable_clone_equipment = triggerable_clone_units }
+	multiply_temp_variable = { triggerable_clone_equipment = constant:clone_system.default_template_clone_equipment }
+	round_temp_variable = triggerable_clone_equipment
+	add_equipment_to_stockpile = { type = clone_equipment_1 amount = triggerable_clone_equipment producer = ROOT }
+	clone_refresh_reserve_manpower = yes
 }
 
 triggerable_scenario_transfer_state_to_clone_army = {

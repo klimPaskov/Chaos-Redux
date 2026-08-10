@@ -9,6 +9,8 @@
 
 # COUNTRY scope. Initializes the shared countermeasure/condemnation ledger.
 black_plague_weaponization_initialize_country = {
+	if = { limit = { NOT = { has_global_flag = black_plague_system_started } } black_plague_initialize_runtime = yes }
+	disease_containment_board_initialize_country = yes
 	if = { limit = { NOT = { has_variable = black_plague_weaponization_progress } } set_variable = { black_plague_weaponization_progress = constant:black_plague_weaponization_program.minimum_progress } }
 	if = { limit = { NOT = { has_variable = black_plague_weaponization_risk } } set_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.initial_risk } }
 	if = { limit = { NOT = { has_variable = black_plague_weaponization_iteration_count } } set_variable = { black_plague_weaponization_iteration_count = constant:black_plague_weaponization_program.zero } }
@@ -179,6 +181,12 @@ black_plague_weaponization_choose_defensive_conversion = {
 black_plague_weaponization_complete_program = {
 	black_plague_weaponization_initialize_country = yes
 	black_plague_achievement_record_weaponization_started = yes
+	clr_country_flag = directorate_special_project_black_plague_available
+	set_country_flag = directorate_special_project_black_plague_completed
+	if = {
+		limit = { brilliant_scientist_is_current_host = yes }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_black_plague }
+	}
 	set_variable = { black_plague_weaponization_progress = constant:black_plague_weaponization_program.maximum_progress }
 	if = {
 		limit = { has_country_flag = black_plague_weaponization_defensive_conversion }

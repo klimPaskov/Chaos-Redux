@@ -1,5 +1,7 @@
 # Event 016 Brilliant Scientist completion audit, round 2
 
+> **Superseded provider-inventory notice (2026-08-09):** This round-2 audit predates provider 522 and the expanded Event 19 owner-adapter census. Its `504-508` and seven-family statements remain historical evidence only; use `016_core_runtime_handoff_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider facts.
+
 Date: 2026-08-02
 
 Mode: read-only gameplay audit; this handoff is the only file written.

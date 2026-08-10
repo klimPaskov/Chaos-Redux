@@ -35,7 +35,7 @@ The late branch begins after `MCL_the_numbered_future`:
 
 Foreign host acceptance is event-driven and weighted toward countries under pressure. Accepted countries receive hidden markers but are not puppeted until the final launch.
 
-`make_random_directorate_special_project_researchable` and `make_all_directorate_special_projects_researchable` are the update points for future Directorate special-project access. Add future clone, replication, biomedical, or biowarfare projects to those effects and to the matching project `visible` or `available` gates when new special projects enter the mod.
+`make_random_directorate_special_project_researchable` and `make_all_directorate_special_projects_researchable` are the Directorate special-project registry. They cover weaponized zombies, Mengele's dedicated cloning project, and the nine reusable non-cloning Event 016 prototype families. Earlier calls reveal one fresh project; the all-project calls guarantee eventual access to the complete portfolio. Future project families must still be added to these effects and to matching provider-specific project gates instead of being wired directly into individual focuses.
 
 ## Clone Deployment Branch
 

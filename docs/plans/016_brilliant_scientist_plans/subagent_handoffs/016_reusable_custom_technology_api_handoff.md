@@ -40,7 +40,7 @@ External ledger flags use the neutral `chaosx_custom_technology_*` namespace. Ea
 
 No event targets are required. The grant ledger is country-scoped and persistent, while the existing runtime rebuild is the single reconstruction boundary. This avoids global event-target cleanup and keeps project history separate from external knowledge.
 
-External operational flags extend the existing seven template creation/cap branches, six custom-equipment `can_be_produced` gates, Event 019 provider registration, and Event 019 provider-unlocked triggers. Suspended, damaged, and dismantled-family locks remain active. External grants bypass only project-stage, facility, and Kruger-owner gates, so the matching package is immediately usable by a recipient country.
+External operational flags extend the existing seven template creation/cap branches, six custom-equipment `can_be_produced` gates, Event 019 provider registration, and Event 019 provider-unlocked triggers. Suspended, damaged, and dismantled-family locks remain active. External grants bypass only project-stage, facility, and Kruger-owner gates, so the matching package is immediately usable by a recipient country. Clone operational and upgrade selectors choose Mengele refinement for `is_mengele_clone_directorate_country` and Kruger refinement otherwise.
 
 ## Migration plan
 

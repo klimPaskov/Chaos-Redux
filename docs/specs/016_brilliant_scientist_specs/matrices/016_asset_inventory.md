@@ -2,7 +2,15 @@
 
 ## Binding reconciliation
 
-> Core-runtime inventory reconciled 2026-08-02. The exact stage-0 `156x210` leader or scientist DDS and `65x67` advisor DDS are produced and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. The fourteen Stage I through IV leader or scientist portraits and matching advisor cards are present under registered sprite contracts, and every advisor card uses the canonical advisor-template workflow. Six severe route animation sheets contain real frame-by-frame art and have registered static fallbacks. The Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, twenty-five report images, six super-event images, seven news images, and six sound cues are present and wired. Eight breakthrough-family cards and eight incident/security cards are dynamically routed, with four aftermath-family cards and the shared remnant card retained for surviving-ledger hearings; all seven 3D entity packages remain blocked.
+> Core-runtime inventory reconciled 2026-08-09. The exact stage-0 `156x210` leader or scientist DDS and `65x67` advisor DDS are produced and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. The fourteen Stage I through IV leader or scientist portraits and matching advisor cards are present under registered sprite contracts, and every advisor card uses the canonical advisor-template workflow. Six severe route animation sheets contain real frame-by-frame art and have registered static fallbacks. The Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, twenty-five report images, six super-event images, seven news images, and six sound cues are present and wired. Eight breakthrough-family cards and eight incident/security cards are dynamically routed, with four aftermath-family cards and the shared remnant card retained for surviving-ledger hearings. The clone infantry model/entity package is installed and reusable, and Portal Raider counter art is complete and wired through `interface/portal_raider_system.gfx`; the Portal Raider runtime model/entity, actions, and sounds remain rejected and unwired pending user-approved paid recovery, while the other route-specific 3D packages remain queued. These package statuses do not claim model, final GUI, or whole-event completion.
+
+## Unit-model and counter status
+
+| Consumer | Static status | Runtime boundary |
+| --- | --- | --- |
+| Clone Infantry | Installed and reusable generic model/entity package | Parent-owned live playback and any remaining action review stay separate from Event 016 completion. |
+| Portal Raider | Counter art complete and wired through `interface/portal_raider_system.gfx` | Runtime model/entity, actions, and sounds are rejected and unwired pending user-approved paid recovery after the failed semantic generation task. |
+| Autonomous Robot, Paleogenetic Creature, Xenobiological Organism, Alien Interface Infantry, Temporal Guard | Queued outside the current scope | Keep vanilla sprite/map-icon presentation until a separately approved 3D package is produced and wired. |
 
 ## Portraits and character assets
 

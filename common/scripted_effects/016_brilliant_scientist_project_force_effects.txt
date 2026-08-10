@@ -133,7 +133,14 @@ brilliant_scientist_apply_biological_force_history = {
 			set_technology = { anthrax_bomb_delivery_systems = 1 popup = no }
 		}
 		if = {
-			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_plague } }
+			limit = {
+				KRG_warren_kruger = {
+					OR = {
+						has_character_flag = brilliant_scientist_personal_biological_agent_plague
+						has_character_flag = brilliant_scientist_personal_biological_agent_black_plague
+					}
+				}
+			}
 			set_technology = { plague_bomb_delivery_systems = 1 popup = no }
 		}
 		if = {
@@ -158,7 +165,14 @@ brilliant_scientist_apply_biological_force_history = {
 			add_ideas = brilliant_scientist_biological_delivery_anthrax
 		}
 		if = {
-			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_biological_agent_plague } }
+			limit = {
+				KRG_warren_kruger = {
+					OR = {
+						has_character_flag = brilliant_scientist_personal_biological_agent_plague
+						has_character_flag = brilliant_scientist_personal_biological_agent_black_plague
+					}
+				}
+			}
 			add_ideas = brilliant_scientist_biological_delivery_plague
 		}
 		if = {
@@ -191,12 +205,12 @@ brilliant_scientist_define_project_force_templates = {
 		division_template = {
 			name = "Quantum Transit Raiders"
 			regiments = {
-				kruger_portal_raider = { x = 0 y = 0 }
-				kruger_portal_raider = { x = 0 y = 1 }
-				kruger_portal_raider = { x = 1 y = 0 }
-				kruger_portal_raider = { x = 1 y = 1 }
-				kruger_portal_raider = { x = 2 y = 0 }
-				kruger_portal_raider = { x = 2 y = 1 }
+				portal_raider = { x = 0 y = 0 }
+				portal_raider = { x = 0 y = 1 }
+				portal_raider = { x = 1 y = 0 }
+				portal_raider = { x = 1 y = 1 }
+				portal_raider = { x = 2 y = 0 }
+				portal_raider = { x = 2 y = 1 }
 			}
 		}
 	}
@@ -211,14 +225,16 @@ brilliant_scientist_define_project_force_templates = {
 		division_template = {
 			name = "Replicated Guard Cadre"
 			regiments = {
-				kruger_clone_infantry = { x = 0 y = 0 }
-				kruger_clone_infantry = { x = 0 y = 1 }
-				kruger_clone_infantry = { x = 1 y = 0 }
-				kruger_clone_infantry = { x = 1 y = 1 }
-				kruger_clone_infantry = { x = 2 y = 0 }
-				kruger_clone_infantry = { x = 2 y = 1 }
-				kruger_clone_infantry = { x = 3 y = 0 }
-				kruger_clone_infantry = { x = 3 y = 1 }
+				clone_infantry = { x = 0 y = 0 }
+				clone_infantry = { x = 0 y = 1 }
+				clone_infantry = { x = 0 y = 2 }
+				clone_infantry = { x = 0 y = 3 }
+				clone_infantry = { x = 0 y = 4 }
+				clone_infantry = { x = 1 y = 0 }
+				clone_infantry = { x = 1 y = 1 }
+				clone_infantry = { x = 1 y = 2 }
+				clone_infantry = { x = 1 y = 3 }
+				clone_infantry = { x = 1 y = 4 }
 			}
 		}
 	}
@@ -490,11 +506,11 @@ brilliant_scientist_rebuild_project_force_runtime_package = {
 	}
 	if = {
 		limit = { brilliant_scientist_has_cloning_force_history_prototype = yes }
-		set_technology = { brilliant_scientist_clone_formations_tech = 1 popup = no }
+		clone_select_kruger_refinement = yes
 		set_country_flag = brilliant_scientist_project_force_cloning_active
 		if = {
 			limit = { brilliant_scientist_has_cloning_force_history_weaponization = yes }
-			set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 1 popup = no }
+			clone_select_kruger_weaponization = yes
 			set_country_flag = brilliant_scientist_project_force_cloning_weaponized
 			set_country_flag = brilliant_scientist_cloning_military_package_ready
 		}

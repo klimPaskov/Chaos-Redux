@@ -1,5 +1,7 @@
 # Event 016 to Event 019 Generic Unit-Family Provider Handoff
 
+> **Superseded provider-inventory notice (2026-08-09):** This handoff records the earlier seven-row `504-510` bridge. Provider 522 and the expanded Event 19 owner-adapter census were added later, so the callback and count statements below remain historical evidence only. Use `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, `016_core_runtime_handoff_map.md`, and `.tmp/event19_docs_curator_current.md` for the current source map.
+
 ## Outcome
 
 Event 016 now exposes seven generic Event 019 provider families after the history-derived runtime package is rebuilt.

@@ -1,5 +1,7 @@
 # Event 016 native CBRN callback boundary re-audit
 
+> Scope correction, 2026-08-09: this audit remains valid for the optional KRG biological stockpile and delivery ledger, but its callback absence does not block native Event 016 biological or Portal Facility Raids. Native raids remain engine-owned for preparation, reservation, cancellation, expiry, outcome, and history; no parallel ledger is authorized. See `docs/plans/016_brilliant_scientist_plans/016_portal_plague_documentation_reconciliation_2026-08-09.md`.
+
 ## Finding
 
 The current HOI4 raid API still exposes only outcome-time scripted hooks. Native `essential_equipment` is collected when a raid is created, while strategic and battlefield biological raids invoke their existing resolvers from `success_levels.*.actor_effects`. The available RAID_INSTANCE documentation exposes actor, victim, target, and outcome context, but no stable raid identity, pre-reservation callback, cancellation callback, expiry callback, or native `on_raid_*` on-action.

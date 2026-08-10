@@ -1,5 +1,7 @@
 # Event 016 non-model content closure handoff
 
+> **Superseded provider-inventory notice (2026-08-09):** This handoff predates Event 016 provider 522 and the expanded Event 19 owner-adapter census. Its seven-provider validation step is historical evidence only; use `016_core_runtime_handoff_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider facts and open lifecycle or MCP limits.
+
 Date: 2026-08-03
 
 ## Recommendation
