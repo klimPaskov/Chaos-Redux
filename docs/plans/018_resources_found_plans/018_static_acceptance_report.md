@@ -4,6 +4,10 @@ Date: 2026-08-09
 Validation mode: current static implementation evidence, deterministic arithmetic, asset inspection, HOI4 MCP event/focus/GUI/probability evidence, and the previously supplied initialization log
 Runtime boundary: the user explicitly waived launching Hearts of Iron IV. No live gameplay, combat, animation-playback, or audio-playback session was run; supported-resolution GUI layout was inspected through the offline HOI4 MCP renderer.
 
+## Current formal disposition
+
+The scenarios in this report remain positive definition-based implementation evidence, but this report does not grant unconditional completion. The 2026-08-10 final current-source audit found no confirmed source-local gameplay defect and retained the implemented scenario results below. Formal completion is nevertheless open because mandatory probability evidence remains incomplete at several MCP adapter boundaries and the cave-monster package lacks a fresh independently reviewable 3D/action visual proof. The exact current disposition is recorded in `subagent_handoffs/event018_final_completion_current_2026-08-10.md`.
+
 ## Evidence contract
 
 - **Definition pass** means the final script has a complete, reachable path and its deterministic state transitions or arithmetic satisfy the scenario.
@@ -163,7 +167,7 @@ All cave battalions require zero manpower and declare no equipment need. Their l
 | --- | --- |
 | PG-01 equipmentless broods | Complete by unit/template/spawn/capacity definition audit. Live combat and reinforcement observation was waived. |
 | PG-02 capacity and denial | Complete by the boundary table, one-shot denial trace, activation/grace/spawn lifecycle trace, and ledger-preservation audit. |
-| PG-03 combat and route AI | Complete by cumulative route audit, unit-stat balance table, reachable observation events, target consumption, origin/anchor requests, and ordinary anti-armor strategies. Live battle observation was waived. |
+| PG-03 combat and route AI | Definition-based implementation pass by cumulative route audit, unit-stat balance table, reachable observation events, target consumption, origin/anchor requests, and ordinary anti-armor strategies. Mandatory campaign probability evidence remains incomplete at the documented adapter boundary. Live battle observation was waived. |
 | PG-04 baseline/evolutions/closure | Complete by package arithmetic, safety comparison, global evolution-row guards, transfer traces, and exact six-ledger inverse. |
 | PG-05 terminal and aftermath | Complete by exact truth-table gates, one-shot terminal/defeat/reconstruction flags, valid foothold selection, and bounded cleanup. |
 | PG-06 UI/assets/text | Complete by current static and MCP evidence. The selected-field package supplies the full durable record, five real-frame animation families at 10/10/12/12/12 frames, five required static fallbacks, Suspended, and a live history-only Closed consumer. All 67 focus icons, 36 unique idea/state icons, 39 action-family plus 5 category icons, 5 category pictures, and 15 achievement triplets are registered and inspected. The final localisation audit proves the four Event Details controls remain usable while unrevealed title/body/summary content and the Stage IV portrait stay chronology-masked. The selected-field MCP pass covered active, history, empty, full, minimum, maximum, long-text, hover, selected, disabled, and warning probes at 1280 by 720, 1366 by 768, 1920 by 1080, and 2560 by 1440 without an Event 018-local layout or interaction diagnostic. Live playback and unlock observation was waived. |
@@ -172,11 +176,12 @@ All cave battalions require zero manpower and declare no equipment need. Their l
 
 The inspected file is `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/logs/error.log`. It is a 68-line, `no_game_date` initialization log last written at 2026-07-11 16:58:09. It contains no Event 018, DHO, Resource Field, or Event 018 audio diagnostic. Event 018 audio IDs 54 through 56 have complete named registrations and files. Some Event 018 files in the final worktree postdate the log, so this is supporting negative loader evidence only. The log's workshop-descriptor and anonymous shared-sound lines do not name or resolve to an Event 018 surface and are not used as Event 018 acceptance evidence.
 
-## Fresh closure audits
+## Historical closure audits and current supersession
 
 - `final_event_completion_reaudit_handoff.md` returned PASS after comparing the full package to the latest gameplay, AI, achievement, focus, decision, terminal, asset, text, and documentation surfaces.
 - `ui_localisation_reaudit_handoff.md` returned PASS after the missing research-bonus label, player-facing process language, and deterministic status-box wrapping were repaired and re-read. The final three status lines are 111, 69, and 111 pixels at their widest in vanilla `hoi_16mbs`, within the 158-pixel box.
 - `asset_audio_reaudit_handoff.md` returned PASS after the consolidated super-event registration row was corrected to `interface/chaosx_super_events.gfx` and the current manifest hash was verified against the live definitions.
+- `event018_final_completion_current_2026-08-10.md` supersedes those narrower PASS records for the aggregate completion claim. It retains their positive source findings but withholds formal closure for the probability and fresh 3D/action visual evidence gates.
 
 ## Explicitly skipped live validation
 
@@ -194,4 +199,4 @@ These are skipped task-specific validations, not claimed engine results. Final a
 
 ## Simplifications, fallbacks, omissions, and blockers
 
-No gameplay simplification or fallback is accepted in this report. The static UI textures are deliberate accessibility fallbacks paired with real multi-frame source animation, not substitutes for missing animation. The selected-field MCP layout gate is closed, and the current 67-focus tree has clean Event 018-local inspect, render, and raster evidence. Final current-source custom focus, weighted-AI, decision, country, localisation, event-completion, and improvement-loop closure evidence remains required before this report can declare that no acceptance checkpoint is open.
+No gameplay simplification or fallback is accepted in this report. The static UI textures are deliberate accessibility fallbacks paired with real multi-frame source animation, not substitutes for missing animation. The selected-field MCP layout gate is closed, and the current 67-focus tree has clean Event 018-local inspect, render, and raster evidence. The current focus, decision, country, localisation, event-completion, catalog, and improvement-loop reviews are complete. Formal acceptance remains open only at the documented probability-adapter and fresh cave-monster 3D/action visual-evidence boundaries; the temporary Event 018 evidence workspace must therefore remain until genuine closure.

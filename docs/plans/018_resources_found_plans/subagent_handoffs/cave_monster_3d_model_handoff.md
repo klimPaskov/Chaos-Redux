@@ -1,8 +1,10 @@
 # Event 018 cave monster 3D model handoff
 
-Status: `needs_user_review`. A bounded model package was produced with source evidence, PDX textures, a custom creature rig, grounded idle/move/attack/death exports, previews, reports, checksums, io_pdx_mesh actual-byte reimports, four licensed audio originals and mechanically converted runtime WAVs. The parent has copied and hash-verified the selected model/actions, wired the shared entity and animation asset, registered sound hooks, and installed five bespoke counter families. Remaining review is limited to the subtle idle/move read and live consumer validation.
+Status: `needs_user_review`. A bounded model package was produced with source evidence, PDX textures, a custom creature rig, grounded idle/move/attack/death exports, previews, reports, checksums, io_pdx_mesh actual-byte reimports, four licensed audio originals and mechanically converted runtime WAVs. The parent has copied and hash-verified the selected model/actions, wired the shared entity and animation asset, registered sound hooks, and installed five bespoke counter families. A 2026-08-10 reconstruction freshly reimported the installed runtime bytes and closed the counter static review, but fresh 3D/action previews remain blocked by the locked adapter's working-object contract and live consumer validation remains user-owned.
 
 ## Provider and dependency lineage
+
+The values in this section are the original production-run lineage. Current 2026-08-10 lock verification is recorded separately below and supersedes these versions only for the reconstruction pass.
 
 - Reference: `docs/assets/018_resources_found/models_3d/cave_monster/refs/original/meshy_input.png`, SHA-256 `F04C5C4B934959D436A1888A3AB0F520D054ECE9CBE56A58D95C5CD22967A361`.
 - Official Meshy MCP: `@meshy-ai/meshy-mcp-server` 0.4.0, git head `d8c77d1cb897e345eb41d38b510b8391b1664346`, wrapper `.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd`.
@@ -31,7 +33,7 @@ Protected source is `blender/source/resources_found_cave_monster_provider_source
 ## Geometry, material, rig, action, and export results
 
 - The provider source was protected; the working duplicate was reduced from 745,600 to 30,000 triangles and has 14,998 vertices, one UV map, zero boundary edges, zero non-manifold edges, and zero degenerate faces.
-- The selected vanilla references are `western_european_infantry.mesh` and `infantry_rifle_entity`. Measured source height is 7.3518247977, entity scale is 0.8 exactly once, effective runtime height is 5.8814598382, forward is `-Y`, and up is `+Z`.
+- The selected vanilla references are `western_european_infantry.mesh` and `infantry_rifle_entity`. The pre-export Blender working-geometry height is `7.3518247977`, giving a pre-export calibrated effective height of `5.8814598382` at entity scale `0.8` exactly once. The independently parsed exported-runtime AABB height is `7.3563573360`, giving a byte-level runtime effective vertical extent of `5.8850858688`. These are two named measurement conventions, not interchangeable values; the exported-runtime AABB is `0.0045325383` source units, or `0.0036260306` effective units, taller. Forward is `-Y`, and up is `+Z`.
 - The one coherent armored quadruped retains head, four limbs, carapace, and tail. Seven textured views were rendered. The underside view was occluded by the adapter ground plane. The adapter does not expose wireframe or untextured preview modes.
 - Provider PBR sources were packed to the verified PDX channels. The mesh text references only the three stable selected DDS names. Auto-generated `texture_0.dds`-family staging maps are rejected and must not be copied.
 - The custom nonhumanoid armature has 17 bones. All 14,998 working vertices have a normalized weight and no deforming vertex is unweighted.
@@ -42,25 +44,34 @@ Protected source is `blender/source/resources_found_cave_monster_provider_source
 
 ## Sourced audio
 
-Research pages, direct URLs, creators, and licenses are recorded under `evidence/audio/source_urls.md`.
+The durable reconstruction records source pages, direct URLs, creators, licences, and refresh status in `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/evidence/audio/source_provenance.md`.
 
 - Idle candidate: `evidence/audio/original/idle_alligator_bellow.ogg`, U.S. Fish and Wildlife Service public domain, SHA-256 `72A5612E99B6A941D751EFBCCF1E44F816C06C7884E3108C5298A2BA84B25169`.
 - Move candidate: `evidence/audio/original/move_walking_on_gravel.ogg`, CC0 1.0, SHA-256 `14990DE1FD15418B55A2C939B0A99348446E613C1C4A5A307E49A87D228DE5EF`.
 - Attack candidate: `evidence/audio/original/attack_lion_roar.ogg`, public-domain dedication, SHA-256 `AB237D0F960E83412251D0C11F69959F3C2E8D3B14595F7181C3056F7FA18BF7`.
 - Death candidate: `evidence/audio/original/death_gravel_rocks.ogg`, public-domain dedication, SHA-256 `BC254F5C70EE0252FDC79278F83E5428B6953807CFC21805052E6A617F2BB330`.
-- No audio was synthesized, recorded, generated, or unlicensed. Wikimedia initially returned HTTP 429, then the recorded direct upload URLs succeeded with an explicit user agent. The parent mechanically converted all four immutable originals to mono 44.1 kHz PCM WAV runtime candidates, trimmed four movement contacts plus bounded attack/death derivatives, recorded their hashes and durations, and wired timed entity hooks. The exact roles, synchronization points, source URLs, and transformations are in `evidence/audio/sound_design_handoff.md`.
+- No audio was synthesized, recorded, generated, or unlicensed. All four originals were freshly downloaded on 2026-08-10 and match their production SHA-256 values. `event018_cave_audio_recipe_reconstruction_2026-08-10.md` records the normalized FFmpeg commands, exact source intervals, fades, mono 44.1 kHz signed 16-bit PCM conversion, and unity-gain/no-normalization result. Fresh reconstruction matches six of seven runtime cues byte-for-byte. Move foot 02 differs only in the final 16-bit sample, fresh `-3` versus runtime `-2`, after 12,347 identical samples; this is a one-LSB endpoint quantization variance, not a source, interval, gain, channel-mix, or waveform mismatch. The checked-in runtime byte remains authoritative, and no source/hash/interval/fade/gain/normalization or normalized-command gap remains.
 
 ## Bespoke counters
 
 Exact installed-vanilla inspection is recorded in `evidence/counter/counter_artist_handoff.md`. The five consumers are `cave_monster_brood`, `cave_stone_phalanx_brood`, `cave_burrow_war_brood`, `cave_scree_tide_brood`, and `cave_anchor_guard_brood`.
 
-The inspected references are `interface/subuniticons.gfx` lines 36 and 189, `unit_mountain_icon.dds` at 152 by 42 with two 76 by 42 frames, and `onmap_unit_mountain_icon.dds` at 60 by 12 with two 30 by 12 frames. The matching skill-local land counter contact sheets were inspected. Large olive-green samples include RGB 73/106/73, 62/89/62, 85/116/85, and 112/138/112. Ten original strips were produced, round-tripped, copied into the two runtime counter folders, and registered with the five subunit tokens. The parent owns the final consumer review.
+The inspected references are `interface/subuniticons.gfx` lines 36 and 189, `unit_mountain_icon.dds` at 152 by 42 with two 76 by 42 frames, and `onmap_unit_mountain_icon.dds` at 60 by 12 with two 30 by 12 frames. The matching skill-local land counter contact sheets were inspected. Large olive-green samples include RGB 73/106/73, 62/89/62, 85/116/85, and 112/138/112. Ten original strips were produced, round-tripped, copied into the two runtime counter folders, and registered with the five subunit tokens. The 2026-08-10 mechanical audit confirmed two nonidentical frames, transparent bounds, ten unique large frame-0 hashes, ten unique on-map frame-0 hashes, olive frame 0 and grayscale disabled frame 1 for every large strip, and correct grayscale on-map treatment. Parent visual review passed bounds, alpha, large-strip differentiation, disabled-state readability, and the necessarily tiny but distinct on-map silhouettes.
+
+## 2026-08-10 static evidence reconstruction
+
+- Current dependency locks passed: dependencies SHA-256 `D764E440754241E58A066A7BE8F95F97B7D682B3568AC9FF46D49A33C092EF16`, Meshy schema `DBB9CAD7FB12AFE81ECA05A2F381EF4251C035F4D22BF17856A2F6D41F16A62D`, and adapter config `225D5BE4E7517B2C340EDF2D0F7AD522A7940664B09A7A193F68C5941D45748B`.
+- The locked `cave_monster` job root was reconstructed from byte-for-byte runtime copies only. Adapter health request `aa730ec9cb124eb3822985175cf2a274` passed with Blender 5.1.2, adapter 1.2.2, and checksum-locked io_pdx_mesh 0.91.0.
+- Fresh reimport request `69348683ca2b4b2481bca993744b230c` found the 17-bone rig, 30,000 triangles, no degenerate faces, no negative-scale objects, and position-welded closure with zero loose or non-manifold edges. Idle, move, attack, and death requests `33593b2079d04bc59e71a0aafd8a2c7a`, `06768af1400341608dc1ccc3b44ec5e2`, `26750574db2648e7b8f6d64b2460e9f5`, and `bf087c00dd584a0580fac55b7f24e091` all reimported the action and sampled ground contact between approximately `0.0000092` and `0.0000145` source units.
+- Fresh preview request `b95a1f1196e84d0db1f0a1cc5087674b` failed with `Preview rendering found no working mesh objects.` The live schema exposes no official restore, import-existing, promote, select, or mark-working operation. Reimport proofs intentionally lack the `chaosx_working` tag required by `inspect_scene` rendering; changing the locked adapter or manually tagging proof objects was outside this non-mutating tranche. Therefore no fresh silhouette, clipping/shear, restrained idle/move, attack/death readability, or textured-view conclusion is claimed.
+- Runtime WAV static analysis confirms seven mono 44.1 kHz 16-bit PCM files with zero clipped samples. The strongest measured peaks are `-7.78 dBFS` for attack and `-2.06 dBFS` for death; idle is `24.240 s` at `-30.38 dBFS` RMS. Four movement contacts are `0.274671-0.280000 s`; foot 01 is about 15 dB RMS quieter than foot 02, which remains an auditory review item rather than a declared defect.
+- Evidence and the complete limitation ledger are in `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/` and `event018_cave_monster_evidence_reconstruction_2026-08-10.md`.
 
 ## Parent-owned remaining work
 
-1. Review the restrained idle/move motion; attack and revised death grounding are corrected and proven.
-2. Review the four mechanically converted licensed WAVs; sound definitions and entity hooks are already wired.
-3. Review the ten bespoke DDS strips and their five registered subunit tokens.
-4. Perform live in-game validation of the copied model, actions, sound hooks, and counters; source-to-runtime hashes and static bindings already match.
+1. Review the restrained idle/move motion and attack/death readability from a working checkpoint or live consumer; fresh runtime-byte previews could not be rendered through the locked adapter.
+2. Audibly review the seven mechanically converted licensed WAVs, especially movement-contact balance and idle overlap; sound definitions and entity hooks are already wired.
+3. Perform live in-game validation of the copied model, actions, sound hooks, and counters; source-to-runtime hashes and static bindings already match. Static counter review is complete and passed.
+4. Preserve `docs/plans/018_resources_found_plans/subagent_handoffs/event018_cave_audio_recipe_reconstruction_2026-08-10.md` as the durable normalized-command and six-exact-plus-one-LSB reproduction record.
 
 The worker boundary remained source-only: it did not edit gameplay, event, focus, decision, country, history, AI, localisation, GUI, GFX, entity, `.asset`, sound definition, on_action, spreadsheet, or runtime files. The parent applied the runtime model, animation, sound, counter, entity aliases, and subunit wiring described above. No fallback or scope reduction was silently accepted.

@@ -4,6 +4,10 @@ Date: 2026-07-12
 Mode: documentation-only reconciliation  
 Gameplay, localisation, assets, workbook, and Git commit: unchanged by this curation pass
 
+## Parent supersession, 2026-08-10
+
+This handoff is preserved as a historical documentation-reconciliation checkpoint. Its statement that no surface remained unresolved is superseded by `subagent_handoffs/event018_final_completion_current_2026-08-10.md`. The 363 checked requirements remain valid as an implemented static inventory, but formal completion is open because mandatory probability evidence is incomplete at several MCP adapter boundaries and the cave-monster package lacks fresh independently reviewable 3D/action visual proof. The temporary Event 018 evidence workspace is retained until those gates genuinely close.
+
 ## Result
 
 The Event 018 documentation set is reconciled to the implemented and audited state. Accepted implementation changes are represented in the source specification package, the improvement loop is closed, the acceptance proof boundary is explicit, asset and audio wiring are documented as complete, and stale planning-stage claims have a current disposition without deleting their historical evidence.

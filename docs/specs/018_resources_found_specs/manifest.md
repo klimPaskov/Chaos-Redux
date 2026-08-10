@@ -5,8 +5,8 @@ Generated on 2026-08-10.
 ## Package totals
 
 - Files listed: 26
-- Total bytes excluding this manifest: 417505
-- Total words excluding this manifest: 61737
+- Total bytes excluding this manifest: 419341
+- Total words excluding this manifest: 61961
 - Goal prompt length: 3,991 characters
 - Required package folders present: specs, prompts, matrices, research, focus_graphs
 
@@ -20,16 +20,16 @@ Generated on 2026-08-10.
 - No semicolon character appears in the package.
 - The source corpus read log records every supplied Markdown, TOML, and CSV source.
 - The planning-stage improvement review preserves its original executor limitation as history, and its current note points to the completed independent closure handoff.
-- The acceptance matrix records all 363 accepted requirements under the documented static proof boundary and the three fresh closure audits record PASS.
+- The acceptance matrix records all 363 accepted implementation requirements under the documented static proof boundary. The current final audit withholds formal completion at the mandatory probability and fresh cave-monster 3D/action visual evidence gates.
 - The package reflects the direct user requirement that Event 018 is an Economy (pos), cluster 7, member at Medium severity.
 
 ## File inventory
 
 | Path | Bytes | Words | SHA-256 |
 | --- | ---: | ---: | --- |
-| `README.md` | 6255 | 715 | `357f772a6bc03ae115a494f6ac11b6a83c5b64a3492139f1f3f782109c53145e` |
+| `README.md` | 6620 | 763 | `d4daa0722ab2139738567d00bb0425d686902f43c90852eaca2e5f5fab6d0361` |
 | `focus_graphs/cave_host_focus_architecture.md` | 17004 | 2163 | `17464e6e13ba2b127b858be3cd79882399491cdb2e485336caaceb135fd7809d` |
-| `matrices/acceptance_criteria.md` | 23882 | 3672 | `d3aede9b206281767d96e17b56208d848e2de24e22e77bc0f789cca19647d3fa` |
+| `matrices/acceptance_criteria.md` | 25353 | 3848 | `0208ef5bb9abc9ef354efea84233b6c9a516257edb77ad1a4ed73fdf52973b24` |
 | `matrices/ai_strategy_matrix.md` | 14501 | 2317 | `b2b7826bf963b32f85397da0fbfff6d9b1a8ef698e0b2c8fab45159ffbdff7ff` |
 | `matrices/country_package_matrix.md` | 12441 | 2068 | `c9b4b3dd02a8778c8435f0854e2c15e8c1585b8e90fc072ea98826ef00858d45` |
 | `matrices/decision_mission_matrix.md` | 21703 | 3877 | `c1ffdb9e2ff773576c432e108b60178c3f501b3b99d82e0c969696cbcbf2cfa8` |

@@ -120,7 +120,7 @@ Every achievement has three separate 64 by 64 runtime files under `gfx/achieveme
 - `<achievement_id>_grey.dds` for incomplete eligibility;
 - `<achievement_id>_not_eligible.dds` for unavailable status.
 
-The icon set is registered in `interface/chaosx_achievements.gfx`. Source prompts, type-specific masters, processed PNGs, overlays, contact sheets, dimensions, and final paths are recorded in `docs/assets/018_resources_found/manifest.md` and its GFX handoff.
+The icon set is registered in `interface/chaosx_achievements.gfx`. Source prompts, type-specific masters, processed PNGs, overlays, contact sheets, dimensions, and final paths were produced in the deleted temporary evidence workspace; their durable source-to-runtime conclusions are recorded in `docs/events/018_resources_found/assets.md`, `docs/plans/018_resources_found_plans/subagent_handoffs/achievement_icon_handoff.md`, and `docs/plans/018_resources_found_plans/subagent_handoffs/asset_audio_reaudit_handoff.md`.
 
 ## Implementation surfaces
 
@@ -129,7 +129,11 @@ The icon set is registered in `interface/chaosx_achievements.gfx`. Source prompt
 - evidence writes: `common/scripted_effects/018_resources_found_achievement_effects.txt` and the field, decision, event, cave, focus, and on-action call sites;
 - names, descriptions, and requirement tooltips: `localisation/english/chaosx_achievements_l_english.yml`;
 - sprite registration: `interface/chaosx_achievements.gfx`;
-- icon package: `gfx/achievements/` and `docs/assets/018_resources_found/`.
+- icon package: `gfx/achievements/`, with the durable inventory in `docs/events/018_resources_found/assets.md`.
+
+## Temporary-workspace disposition
+
+The event-scoped `docs/assets/018_resources_found/` workspace is temporary evidence rather than a runtime dependency. A bounded cave-monster reconstruction tranche is retained there while final Event 018 evidence gates remain open; the whole event-scoped workspace must be deleted only after genuine goal closure.
 
 ## Future extension rules
 

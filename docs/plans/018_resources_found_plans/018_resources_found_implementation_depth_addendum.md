@@ -8,7 +8,7 @@ Event 018 already has the intended playable spine: a persistent exact resource l
 
 Completion is nevertheless blocked by several concrete implementation defects and proof gaps. These items deepen or finish mechanics already required by the accepted specification; they do not change the event premise.
 
-This addendum is the active improvement-loop handoff. It must be implemented, promoted into the source specification where it changes a tuning or gating rule, explicitly queued with a reason, or explicitly rejected before another Event 018 improvement-loop pass is requested.
+This addendum is a planning-era improvement-loop handoff. It is no longer an active queue; the closure disposition below is authoritative. The implementation findings and requirement language later in this file remain historical traceability and must not be used to recreate deleted temporary evidence workspaces or reopen closed items.
 
 ## Closure disposition (2026-07-12)
 
@@ -26,6 +26,10 @@ This addendum is no longer an active implementation queue. A closure-only verifi
 | RF-018-08 | Implemented and source-spec aligned | Event 18 and cluster 7 workbook rows match final player-facing localisation and are marked `Implemented`. Part 1 and the acceptance matrix already define the identity, cluster, severity, and workbook-alignment contract. |
 
 No item was rejected, deferred, or replaced by a fallback. No new depth addendum is required.
+
+## Post-completion documentation disposition
+
+The event-scoped `docs/assets/018_resources_found/` workspace is temporary production and review evidence, never a runtime dependency. Its bounded cave-monster reconstruction tranche remains present while final Event 018 evidence gates are open. Durable runtime inventory, provenance conclusions, rights records, and review outcomes are maintained in `docs/events/018_resources_found/assets.md`, `docs/super_events/018_resources_found/`, `docs/systems/resources_found_cave_monster_model.md`, and the named Event 018 plan handoffs. Delete the temporary workspace only after genuine goal closure.
 
 ## Reference basis
 
@@ -47,7 +51,7 @@ This audit used the complete Event 018 specification package and prior research/
 | Defeat and reconstruction | Functional blocker | A 75% origin-continent milestone is enough to mark “global history”; Event .99 then fires immediately for every human and can fire again after the reconstruction project. This does not meet the global/costly/eligible-survivor gate. |
 | Achievements | Logic present; art gate open | Fifteen tracked achievements and disqualifiers exist. “Thirty From Below” depends on the opening-strength calibration. Achievement icon triplets and registration belong to the active icon tranche. |
 | Event/news/super-event raster and audio | Strong | Report/news/super-event images, DHO portraits and flags, an eight-frame Vhorruk source animation, and audio/display slots 54–56 and 82–84 are wired. |
-| Focus, decision, idea, achievement, and scripted-GUI art | Active completion tranche | `chaosx_icon_artist` has completed 65/65 bespoke focus source masters. A transient full-volume error interrupted DDS export; processing is being rerun with reduced concurrency. The remaining owned package is 20 live idea icons, 39 decision/category icons, five category pictures, 45 achievement-state DDS files, thirteen GUI textures, and the exhaustive manifest/GFX handoff. Re-audit the final delivery rather than duplicating it. |
+| Focus, decision, idea, achievement, and scripted-GUI art | Historical active-tranche snapshot; superseded by the closure table | The snapshot records the pre-closure icon tranche and its transient export interruption. RF-018-07 later closed the package with the current 67 focus sprites, 36 unique idea/state sprites, 39 decision-family sprites plus category art, 15 achievement triplets, and five real-frame GUI animation families. |
 | Localisation | Events/focuses strong; decision copy in repair | Event and focus writing is bespoke. The rendered decision layer contained generated boilerplate and incorrect targets/cost claims. `chaosx_event_chain_worker` is rewriting 118 rendered items family by family; nine permanently hidden evolution clocks intentionally need no localisation. |
 | Logs, docs, and catalog | Two blockers | Evolution milestones append once per field rather than once per global tier. The event catalog workbook still describes Event 018 as a minor “100 production” event to be reworked and does not register cluster 7 membership. |
 
@@ -197,7 +201,7 @@ Rewrite all 118 rendered decision/mission names, descriptions, and tooltips fami
 - all fifteen achievement normal/grey/not-eligible triplets and root achievement GFX registration;
 - the thirteen scripted-GUI textures/frame sheets/static fallbacks referenced by `interface/018_resources_found.gfx`;
 - any Event 018-specific `.gfx` registration required by stable code identifiers;
-- `docs/assets/018_resources_found/manifest.md` and `docs/assets/018_resources_found/gfx_handoff.md`, with source/provenance notes and contact sheets/previews where required.
+- `docs/events/018_resources_found/assets.md` and the permanent specialist handoffs under `docs/plans/018_resources_found_plans/subagent_handoffs/`, with source/provenance conclusions and review evidence promoted from the deleted temporary workspace.
 
 Animated pieces must use real separately generated/sourced/provided frames. Do not approve a transform-only animation made by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still. Keep a static fallback in the same visual family. The main agent must review the delivered manifest and perform final GFX/gameplay wiring.
 
