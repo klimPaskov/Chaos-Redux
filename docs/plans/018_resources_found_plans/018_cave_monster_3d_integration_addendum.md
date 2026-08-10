@@ -2,7 +2,7 @@
 
 ## Disposition
 
-Status: `implemented_pending_live_review`.
+Status: `complete` for static integration under the user's explicit no-HOI4-testing override.
 
 The former production workspace was removed after its durable facts were promoted. During the active Event 018 goal, the exact locked adapter root was temporarily reconstructed from installed runtime-byte copies for non-mutating reimport proof, and a separate `cave_monster_static_closure` root retains the static evidence. Neither is a runtime dependency.
 
@@ -10,9 +10,9 @@ Broad Event 018 expansion remains closed.
 
 The earlier RF-018-01 through RF-018-08 addendum is fully resolved, and this review does not reopen any of those mechanics or propose another route, country, doctrine, focus family, unit family, model variant, or visual layer.
 
-The two bounded integration items are implemented. Five lightweight sprite-to-entity aliases now resolve all brood tokens to the canonical model, and movement, attack, and death audio use mechanically trimmed derivatives with timed entity hooks. Fresh 3D/action perceptual review, auditory review, and user-owned live consumer validation remain.
+The two bounded integration items are implemented. Five lightweight sprite-to-entity aliases resolve all brood tokens to the canonical model, and movement, attack, and death audio use mechanically trimmed derivatives with timed entity hooks. Fresh actual-byte model/action perceptual review and parent counter review pass. Auditory playback and live consumer behavior remain unperformed caveats, and no in-game claim is made.
 
-The parent should implement or explicitly reject the two bounded integration items below, refresh the affected crosswalk rows, obtain the user-owned live-consumer evidence, and then close this tranche without another broad improvement-loop pass.
+The static tranche is closed without another broad improvement-loop pass. The live-consumer scenarios below remain documented only as optional user-owned checks because the user explicitly waived HOI4 testing.
 
 ## Evidence baseline
 
@@ -24,7 +24,7 @@ The current runtime package has seven mono 44.1 kHz 16-bit PCM WAVs: idle at 24.
 
 Scale evidence uses two named conventions. The pre-export Blender working height is `7.3518247977`, or `5.8814598382` after entity scale `0.8`; the parsed exported-runtime AABB is `7.3563573360`, or `5.8850858688` after scale. The disclosed difference is `0.0045325383` source units or `0.0036260306` effective units.
 
-The 2026-08-10 runtime-byte reimport passed for the mesh and all four actions, with sampled action contacts approximately `0.0000092` to `0.0000145` source units above ground. Fresh preview rendering is not claimed because reimport proofs are not tagged as working objects and the locked schema exposes no non-mutating promotion operation.
+The 2026-08-10 runtime-byte reimport passed for the mesh and all four actions. Fresh mesh, attack, death, and five-frame idle/move previews were rendered from temporary byte-identical copies of the runtime files. Idle request `c3231525b22440b6bb02d50b6324dc28` and move request `b6d51f89323a4d359187fc2e8354caee` keep sampled contact between approximately `-0.00000020` and `+0.00001316` source units. Quarter-phase decoded pixel hashes differ while midpoint and end pixels return exactly to the neutral pose, closing the earlier false-static interpretation. The combined contact sheet SHA-256 is `FC5D8A8AB3CCA0BE8143B7767DC55EE710E60CC7D4691C825958C8C5E03258AB`.
 
 The model registration defines `resources_found_cave_monster_mesh`, the four animation types, and one entity named `resources_found_cave_monster_entity`.
 
@@ -98,7 +98,7 @@ The coherent shared creature model with five role-specific counters is the corre
 
 Historical or regional research does not add useful value here because the issue is an engine consumer contract, not an unsourced cultural or historical design claim.
 
-RF-018-3D-01 and RF-018-3D-02 are implemented. Static counter review passed on 2026-08-10 for both frames, alpha bounds, vanilla-green and disabled-state treatment, and family differentiation. Remaining work is fresh 3D/action perceptual review through a supported working-scene route, auditory review, user-owned live consumer review, and parent final review.
+RF-018-3D-01 and RF-018-3D-02 are implemented. Static counter review passed on 2026-08-10 for both frames, alpha bounds, vanilla-green and disabled-state treatment, and family differentiation. Fresh actual-byte model/action perceptual review also passed. Auditory playback and user-owned live consumer review were not performed; the user's explicit no-HOI4-testing override permits static closure without converting either omission into in-game evidence.
 
 Additional models, route-specific skins, particles, new combat states, extra creature families, or more cave-unit types would add maintenance cost without closing either identified defect and should not be added in this pass.
 
@@ -122,10 +122,10 @@ The installed-package limitation specified for this planner remains recorded: no
 
 ## Promotion and parent handoff
 
-This file remains under `docs/plans/018_resources_found_plans/` as the bounded implementation record while live review is pending.
+This file remains under `docs/plans/018_resources_found_plans/` as the bounded static integration record.
 
 It should not be promoted into the source specification because it does not change the accepted Event 018 design.
 
-After live review, durable consumer, synchronization, hash, provenance, and validation facts belong in `docs/systems/resources_found_cave_monster_model.md`, `docs/events/018_resources_found/assets.md`, this addendum, and `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The deleted temporary workspace and its model manifest, crosswalk, runtime handoff, and audio evidence files are historical production records, not current runtime dependencies.
+Durable consumer, synchronization, hash, provenance, and validation facts belong in `docs/systems/resources_found_cave_monster_model.md`, `docs/events/018_resources_found/assets.md`, this addendum, and `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The temporary reconstructed evidence roots remain non-runtime dependencies and must be retained until the parent closes the overall Event 018 goal.
 
-The parent should issue a narrow 3D-tranche closure note after the live review rather than running another broad Event 018 improvement pass.
+The narrow 3D-tranche closure note is `docs/plans/018_resources_found_plans/subagent_handoffs/event018_cave_monster_visual_closure_2026-08-10.md`. No additional broad Event 018 improvement pass is justified by this tranche.
