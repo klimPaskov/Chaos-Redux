@@ -4,14 +4,15 @@ This checklist defines completion. A checked item must be supported by implement
 
 ## Evidence mode and proof boundary
 
-Checkbox state is reconciled against the current implementation on 2026-07-12.
+Checkbox state is reconciled against the current implementation through 2026-08-10.
 
 - `[x]` means the accepted requirement is supported by current deterministic script definitions, exact fixtures, focused static audits, registered runtime assets, documentation, or workbook evidence.
 - The user explicitly waived launching Hearts of Iron IV for this pass. Checked engine-facing scenarios therefore record accepted definition-based and static evidence. They do not claim observed live gameplay, combat, GUI scale, music playback, or campaign AI behavior.
-- All 363 accepted requirements are closed. The fresh event-completion, selected-field UI and localisation, and asset and audio audits returned PASS after their recorded repairs.
+- All 363 accepted implementation requirements are mapped and supported under the stated static proof boundary. This checked implementation inventory is not an unconditional completion verdict.
+- Formal completion remains open under the repository's no-unresolved-surface rule. The current final audit found no source-local gameplay defect, but mandatory probability evidence is incomplete at several MCP adapter boundaries and the cave-monster package still lacks a fresh independently reviewable 3D/action visual proof.
 - Optional ideas rejected by the improvement-loop review are outside the accepted Event 018 design and are not completion blockers.
 
-Primary evidence is indexed in [the static acceptance report](../../../plans/018_resources_found_plans/018_static_acceptance_report.md), [the implementation-depth disposition](../../../plans/018_resources_found_plans/018_resources_found_implementation_depth_addendum.md), [the improvement-loop closure handoff](../../../plans/018_resources_found_plans/improvement_loop_closure_handoff.md), and the focused auditor and production handoffs under `docs/plans/018_resources_found_plans/subagent_handoffs/`.
+Primary evidence is indexed in [the static acceptance report](../../../plans/018_resources_found_plans/018_static_acceptance_report.md), [the implementation-depth disposition](../../../plans/018_resources_found_plans/018_resources_found_implementation_depth_addendum.md), [the improvement-loop closure handoff](../../../plans/018_resources_found_plans/improvement_loop_closure_handoff.md), and the focused auditor and production handoffs under `docs/plans/018_resources_found_plans/subagent_handoffs/`. The current formal disposition is recorded in `event018_final_completion_current_2026-08-10.md`, with exact open evidence boundaries in `event018_probability_bounded_closure_2026-08-10.md` and `event018_cave_monster_evidence_reconstruction_2026-08-10.md`.
 
 ## Source design and classification
 
@@ -19,6 +20,7 @@ Primary evidence is indexed in [the static acceptance report](../../../plans/018
 - [x] Canonical entry uses the `chaosx.nr18.1` root.
 - [x] Event remains Minor Repeatable.
 - [x] Event is assigned to Economy (pos), cluster 7.
+- [x] Cluster member severity is Medium.
 - [x] Event is enabled by default only after the rework is implementation-ready.
 - [x] Baseline works when all four evolutions are disabled.
 - [x] Baseline lifecycle stages are not logged as evolutions.
@@ -445,3 +447,10 @@ The scenarios below are checked on the deterministic and static evidence recorde
 - [x] Regional defeat cleanup scenario recorded.
 - [x] Global defeat aftermath gating scenario recorded.
 - [x] No simplification, fallback, missing AI, missing asset, or missing text remains undisclosed.
+
+## Formal completion evidence gates
+
+The checked requirements above record implemented or explicitly dispositioned design surfaces. Formal goal closure is withheld until both current evidence gates below are resolved or the user explicitly changes the acceptance contract:
+
+- Mandatory HOI4 MCP probability evidence must cover the remaining event-wide option normalization, typed campaign predicates, direct-random selectors, scripted MTTH variables, mission applicability, and fixed AI-strategy factors without unresolved adapter gaps.
+- The installed cave-monster mesh and four actions need fresh independently reviewable visual proof through an approved non-mutating route. Static byte reimport, counter review, audio provenance, and audio reconstruction are already positive but do not substitute for that visual review.

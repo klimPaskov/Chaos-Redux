@@ -19,9 +19,9 @@ Event 018 already implements the accepted playable depth. The persistent field l
 
 No missing mechanic, shallow route, generic focus-reward family, disconnected decision surface, omitted AI path, unapproved fallback, placeholder asset, or unresolved accepted RF-018 implementation-depth item was found. A fifth evolution, another cave country, another doctrine or hierarchy route, a separate commodity economy, a normal DHO production economy, additional unit families, or another scripted GUI would add bloat rather than fulfill the accepted goal.
 
-The review did find one genuine accepted-spec drift and one small documentation wording mismatch. Both are bounded reconciliation tasks, not grounds for another implementation-depth addendum:
+The context-free review initially reported one accepted-spec drift and one small documentation wording mismatch. Parent review rejected the cluster finding under the user's direct authority and accepted only the bounded WAV wording correction:
 
-1. The current workbook assigns Event 018 to cluster 7 with Medium member severity, while the accepted specification repeatedly and explicitly requires Event 018 to remain outside the event-cluster system and requires the cluster and member-severity cells to remain blank.
+1. Event 018 remains assigned to cluster 7 with Medium member severity. Any contrary cluster-exclusion conclusion in this handoff is superseded by the Parent disposition above.
 2. `docs/events/018_resources_found/assets.md` describes the three super-event runtime cues as OGG while the current runtime directory, sound definitions, music catalog, and super-event authority use WAV files.
 
 The parent should resolve those small stale surfaces, preserve the separate 3D and probability evidence boundaries, finish the final completion review, and stop expanding the event.
@@ -34,7 +34,7 @@ RF-018-01 through RF-018-08 remain implemented or source-spec aligned. No RF ite
 
 The mechanics repaired by the prior addendum are present in the current evidence: normalized 6-to-30 opening strength, one-shot controlled-denial capacity reduction, substantive DHO doctrine rewards, one shared chronology row per evolution tier, the global-defeat and one-time reconstruction lifecycle, rendered decision text, the completed icon/UI package, and exact Event Details/evolution catalog wording.
 
-The RF-018-08 closure wording that calls cluster-7 membership source-spec aligned is stale. The source specification says the opposite. This is a catalog disposition error, not an unimplemented mechanic and not a reason to recreate RF-018-08 as another depth plan.
+RF-018-08 remains source-spec aligned with cluster-7 membership and Medium severity under the user's direct instruction. The contrary context-free finding is rejected and does not reopen the item.
 
 ### `018_cave_monster_3d_integration_addendum.md`
 
@@ -99,7 +99,7 @@ That static-versus-live boundary is separate from the Event 018 design-depth dec
 ### Assets and super-events
 
 - Runtime inventory remains 67 focus icons, 36 unique idea/state icons, 39 action-family decision icons, five category icons, five category pictures, 15 achievement triplets, five real-frame selected-field animation families with static fallbacks, 10 report images, six news images, three super-event images, the fictional DHO portrait/flag package, and one shared cave-monster model package.
-- `docs/assets/018_resources_found/` and `docs/3d_models/018_resources_found/` are absent. Their absence is intentional after durable promotion and is not a missing runtime asset or a reason to recreate temporary evidence.
+- `docs/3d_models/018_resources_found/` is absent. `docs/assets/018_resources_found/` contains only bounded temporary cave-monster reconstruction evidence retained while the final evidence gates remain open. Neither path is a runtime dependency, and the retained event-scoped workspace must be deleted only after genuine closure.
 - Current runtime super-event files are the three WAV cues in `sound/018_resources_found/`; `sound/chaosx_sound.asset` and `music/chaosx_music_track_list.html` reference those WAV paths. The `assets.md` sentence calling them OGG runtime cues is stale documentation wording.
 - The static cave model, aliases, four actions, five role-specific counter pairs, and sound hooks remain separately audited. Live model/action/sound/counter review remains user-owned.
 - No fallback image, generated tone, missing achievement state, duplicate super-event visual, or new asset family is required by the accepted design.
@@ -108,17 +108,17 @@ That static-versus-live boundary is separate from the Event 018 design-depth dec
 
 - Current Event 018 localisation audit passed after its bounded in-world wording repair. Event, option, decision, mission, category, GUI, DHO, focus, achievement, log, Event Details, evolution, world-end, and super-event keys are covered.
 - Read-only workbook verification confirms `Events!C19:G19` exactly matches `resources_found.event_details.description` and `resources_found.evolution.stage_1.body` through `.stage_4.body` in live localisation.
-- The workbook currently contains `Events!K19 = 7`, `Events!L19 = Medium`, and `Clusters!D10 = 18`, and the cluster description calls Resources Found a medium-severity repeatable member.
-- That assignment contradicts `README.md`, spec Parts 1 and 3, `research/catalog_reconciliation.md`, the coding and goal prompts, and acceptance criteria requiring no cluster assignment plus blank cluster/member-severity fields. Runtime cluster sources contain no Event 018 membership, so this is catalog/localisation/docs drift, not missing gameplay integration.
-- The prior RF-018-08 closure row and the final catalog handoff are stale only on this cluster-membership point. Their exact C19:G19 reconciliation remains valid.
+- The workbook correctly contains `Events!K19 = 7`, `Events!L19 = Medium`, and `Clusters!D10 = 18`, and the cluster description correctly calls Resources Found a medium-severity repeatable member.
+- The package README, accepted identity, catalog, localisation, and runtime mapping have been reconciled to that direct requirement. Earlier cluster-exclusion language is superseded.
+- The RF-018-08 closure row and final catalog handoff remain current, including the exact C19:G19 reconciliation.
 - The final current focus, decision, probability, country, localisation, catalog, GUI, and documentation handoffs supersede older 65-focus counts and pre-repair findings.
 
 ## Confirmed remaining parent actions
 
 These are closure tasks, not a new expansion tranche:
 
-1. Route the workbook correction to the spreadsheet owner: clear `Events!K19` and `Events!L19`, remove Event 18 from `Clusters!D10`, and revise the cluster description so it no longer identifies Resources Found as a member. Preserve the exact `Events!C19:G19` wording. Refresh the export-only CSV files through `.tools/export_event_catalog_csv.py` after the workbook save.
-2. Reconcile the shared Economy-positive cluster localisation with the restored memberless cluster description. Do not add Event 018 to runtime cluster arrays or event-cluster effects.
+1. Preserve `Events!K19 = 7`, `Events!L19 = Medium`, `Clusters!D10 = 18`, and the exact `Events!C19:G19` wording.
+2. Preserve the shared Economy-positive cluster localisation and Event 018 runtime cluster mapping.
 3. Correct the OGG/WAV wording in `docs/events/018_resources_found/assets.md`; current runtime and registry evidence use WAV.
 4. Carry `event018_probability_final_current_2026-08-09.md` as conditional adapter evidence. Do not wait for or invent normalized whole-campaign probabilities, and require a same-scenario compare only if a weighted source is later changed.
 5. Keep the cave-model tranche at its separate `implemented_pending_live_review` / `needs_user_review` boundary until the user supplies live consumer review. Do not launch HOI4 for this task and do not make broad Event 018 completion contingent on inventing further 3D design.
@@ -236,12 +236,12 @@ The required offline Paradox wiki core pages plus Event, Decision, Idea, AI, Int
 
 This file should remain in `docs/plans/018_resources_found_plans/subagent_handoffs/` as the final improvement-loop closure record. It should not be promoted into `docs/specs/018_resources_found_specs/` because it introduces no accepted design change. The cluster correction restores the existing source specification rather than amending it.
 
-Parent-owned implementation surfaces affected by the final small corrections are the event catalog workbook and exports, the shared Economy-positive cluster wording, and the one audio-format sentence in the durable asset inventory. No gameplay, focus, decision, country, AI, GUI, asset, audio, or localisation expansion is proposed.
+The only accepted parent-owned correction from this handoff is the audio-format sentence in the durable asset inventory. The workbook, exports, Economy-positive cluster wording, and runtime cluster membership remain unchanged. No gameplay, focus, decision, country, AI, GUI, asset, audio, or localisation expansion is proposed.
 
 ## Simplifications, omissions, blockers, and uncertainty
 
 - No new simplification, fallback, placeholder, omitted mechanic, missing route, generic reward, missing AI path, or asset substitution was accepted.
-- The workbook cluster assignment is a confirmed stale disposition and must be corrected before a clean catalog-alignment claim.
+- The workbook cluster assignment is correct under direct user authority; contrary findings in the context-free review are superseded.
 - The OGG/WAV statement is a confirmed documentation mismatch; runtime evidence uses WAV.
 - Probability conclusions remain conditional at the adapter boundary, with no confirmed source defect.
 - Event inspection remains partial at the workspace/helper-projection boundary, with no blocking diagnostic.
@@ -251,4 +251,4 @@ Parent-owned implementation surfaces affected by the final small corrections are
 
 ## Final recommendation
 
-**Stop expanding Event 018.** Correct the cluster catalog drift and the WAV documentation sentence, preserve the probability and 3D evidence boundaries, run the final parent-owned aggregate review, and close the event if that review finds no new source-local defect.
+**Stop expanding Event 018.** Preserve cluster 7 and Medium severity, retain the corrected WAV documentation, preserve the probability and 3D evidence boundaries, and do not claim closure until the final evidence gates are resolved.

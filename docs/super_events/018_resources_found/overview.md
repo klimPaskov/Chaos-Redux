@@ -2,13 +2,16 @@
 
 ## Authority and disposition
 
-This is the reconciled implementation authority for the three Event 018 super-events. It combines the final text and quotation research, original Event 018 visual package, audio selection and licensing research, stable runtime identifiers, trigger ownership, and rejected-candidate disposition. The detailed evidence remains in:
+This is the reconciled implementation authority for the three Event 018 super-events. It combines the final text and quotation research, original Event 018 visual package, audio selection and licensing research, stable runtime identifiers, trigger ownership, and rejected-candidate disposition. The durable evidence remains in:
 
 - `docs/super_events/018_resources_found/text_research.md`
 - `docs/super_events/018_resources_found/audio_research.md`
-- `docs/assets/018_resources_found/generated_event_art_manifest.md`
-- `docs/assets/018_resources_found/audio_manifest.md`
-- `docs/assets/018_resources_found/source/audio/license_evidence/README.md`
+- `docs/events/018_resources_found/assets.md`
+- `docs/plans/018_resources_found_plans/subagent_handoffs/generated_event_art_handoff.md`
+- `docs/plans/018_resources_found_plans/subagent_handoffs/super_event_audio_researcher_handoff.md`
+- `docs/plans/018_resources_found_plans/subagent_handoffs/asset_audio_reaudit_handoff.md`
+
+Source downloads, rendered masters, and frozen licence snapshots were held in the deleted event-scoped evidence workspace during production; the permanent records above retain the source identity, rights conclusions, checksums, runtime mappings, and rejection decisions.
 
 The source and rights pages were last checked on 12 July 2026. All titles, descriptions, and buttons are original Chaos Redux writing. Only the quotation lines and their attributions are sourced. The Oth-Kesh Host, Vhorruk, its symbols, and all three super-event images are original fictional and visual identities created for Event 018.
 
@@ -43,8 +46,8 @@ The text introduces an organized nonhuman polity, the literal cave-monster leade
 
 ### Original image
 
-- Generated source: `docs/assets/018_resources_found/source_png/super_events/super_event_018_cave_emergence_source.png`
-- Processed master: `docs/assets/018_resources_found/processed_png/super_events/super_event_018_cave_emergence.png`
+- Historical source path (deleted temporary evidence, not retained): `docs/assets/018_resources_found/source_png/super_events/super_event_018_cave_emergence_source.png`
+- Historical processed-master path (deleted temporary evidence, not retained): `docs/assets/018_resources_found/processed_png/super_events/super_event_018_cave_emergence.png`
 - Runtime DDS: `gfx/super_events/018_resources_found/super_event_018_cave_emergence.dds`
 - Registered sprite: `GFX_super_event_018_cave_emergence`
 
@@ -55,7 +58,7 @@ The image is a dedicated Oth-Kesh emergence composition and is not reused by eit
 - **Work:** Modest Mussorgsky, *Pictures at an Exhibition*, IV. *Bydło*.
 - **Performer:** Skidmore College Orchestra. The performer identity is corroborated by an audio-identity comparison between the VRTS-confirmed Musopen copy and the named Skidmore copy.
 - **Source and rights:** [Wikimedia Commons Musopen/VRTS copy](https://commons.wikimedia.org/wiki/File:Modest_Mussorgsky_-_pictures_at_an_exhibition_-_iv._bydlo_-_sempre_moderato%2C_pesante.ogg). The page records a worldwide public-domain release and an unconditional grant where waiver is unavailable, confirmed through Wikimedia VRTS ticket `2008012110017088`.
-- **Preserved master:** `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg`, SHA-256 `87da8f6bc6a03900ce0eac2879e7b027de707d1173c1cadc82db1caa081a88d4`.
+- **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg`, SHA-256 `87da8f6bc6a03900ce0eac2879e7b027de707d1173c1cadc82db1caa081a88d4`.
 - **Edit:** retained `00:24.000–02:18.750`, quarter-sine fades, fixed `-2.6 dB` gain, `0.250 s` zero tail, 44.1 kHz stereo delivery.
 - **Runtime WAV:** `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `88d3b749fd51bcc106daf352ae9791c51d3452e7bce9a01ebf8971dad57385c0`.
 - **WAV file:** `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `daf27599720d281eaa96fe828dc38337553026054b634a57d652a41236050575`.
@@ -82,8 +85,8 @@ The copy records three visible facts: the first continent has become a connected
 
 ### Original image
 
-- Generated source: `docs/assets/018_resources_found/source_png/super_events/super_event_018_world_end_source.png`
-- Processed master: `docs/assets/018_resources_found/processed_png/super_events/super_event_018_world_end.png`
+- Historical source path (deleted temporary evidence, not retained): `docs/assets/018_resources_found/source_png/super_events/super_event_018_world_end_source.png`
+- Historical processed-master path (deleted temporary evidence, not retained): `docs/assets/018_resources_found/processed_png/super_events/super_event_018_world_end.png`
 - Runtime DDS: `gfx/super_events/018_resources_found/super_event_018_world_end.dds`
 - Registered sprite: `GFX_super_event_018_world_end`
 
@@ -94,7 +97,7 @@ The image depicts cross-continent rupture and is distinct from the country-emerg
 - **Work:** Johannes Brahms, Symphony No. 1 in C minor, Op. 68, I. *Un poco sostenuto — Allegro*.
 - **Performer identity:** Czech National Symphony Orchestra in embedded metadata; published by the source as Musopen Symphony Orchestra.
 - **Source and rights:** [Wikimedia Commons file page](https://commons.wikimedia.org/wiki/File:Brahms,_Symphony_No._1_in_C_Minor,_Op._68_-_I._Un_poco_sostenuto_-_Allegro.ogg); [CC0 1.0 Universal deed](https://creativecommons.org/publicdomain/zero/1.0/). The file-specific licence is CC0 1.0, which supplies worldwide copying, adaptation, distribution, and performance rights to the extent permitted by law.
-- **Preserved master:** `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg`, SHA-256 `f86f1df2f97b79c9bc92dac63b0da1bf868675005af4fe9c05ab886291af9b95`; its SHA-1 matches the Commons structured checksum.
+- **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg`, SHA-256 `f86f1df2f97b79c9bc92dac63b0da1bf868675005af4fe9c05ab886291af9b95`; its SHA-1 matches the Commons structured checksum.
 - **Edit:** retained `08:40.000–10:29.750`, quarter-sine fades, original dynamics, `0.250 s` zero tail, 44.1 kHz stereo delivery.
 - **Runtime WAV:** `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `b6888c95658dafbf40dd822550d05c505e9a653ce4daa01191e00a6500c28215`.
 - **WAV file:** `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `f0ee745abfbe432cd26b37ad14fb800ab4bcbf77e442eb11d06f8f8f991e1266`.
@@ -123,8 +126,8 @@ The text preserves casualties, material reconstruction, retained anti-cave pract
 
 ### Original image
 
-- Generated source: `docs/assets/018_resources_found/source_png/super_events/super_event_018_global_defeat_source.png`
-- Processed master: `docs/assets/018_resources_found/processed_png/super_events/super_event_018_global_defeat.png`
+- Historical source path (deleted temporary evidence, not retained): `docs/assets/018_resources_found/source_png/super_events/super_event_018_global_defeat_source.png`
+- Historical processed-master path (deleted temporary evidence, not retained): `docs/assets/018_resources_found/processed_png/super_events/super_event_018_global_defeat.png`
 - Runtime DDS: `gfx/super_events/018_resources_found/super_event_018_global_defeat.dds`
 - Registered sprite: `GFX_super_event_018_global_defeat`
 
@@ -135,7 +138,7 @@ The image is a dedicated multinational reconstruction scene and is not used by t
 - **Work:** Frédéric Chopin, Prelude in E minor (Largo), Op. 28 No. 4.
 - **Performer:** Ivan Ilić, piano; Paris, October 2005.
 - **Source and rights:** [Wikimedia Commons file page](https://commons.wikimedia.org/wiki/File:Ivan_Ili%C4%87-Chopin_Prelude_Opus_28_n.4.ogg); [Creative Commons Attribution 3.0 Unported](https://creativecommons.org/licenses/by/3.0/).
-- **Preserved master:** `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg`, SHA-256 `c64c302948b73e251478b4e4a9e44d0e92ceec2e34f95e02d6c1130420dcd7cf`.
+- **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg`, SHA-256 `c64c302948b73e251478b4e4a9e44d0e92ceec2e34f95e02d6c1130420dcd7cf`.
 - **Edit:** retained `00:00.450–01:49.200`, quarter-sine fades, fixed `+6.5 dB` gain, `0.250 s` zero tail, 44.1 kHz stereo delivery.
 - **Runtime WAV:** `sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `b1131b009a715c20598bf720d485c05038d583accbc1e46744dbc182d1f7631e`.
 - **WAV file:** `sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9`.

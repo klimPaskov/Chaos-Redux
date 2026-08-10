@@ -5,6 +5,10 @@ Mode: read-only repository/precedent mapping
 Implementation status: not started; the current two-event prototype must be replaced  
 Source of truth: `docs/specs/018_resources_found_specs/`
 
+## Superseded map notice
+
+This is a 2026-07-11 planning snapshot, not a current implementation queue. The implemented and audited state is recorded in `docs/events/018_resources_found/`, `docs/super_events/018_resources_found/`, `docs/achievements/018_resources_found/`, `docs/systems/resources_found_cave_monster_model.md`, `018_static_acceptance_report.md`, and the current Event 018 handoffs. The event-scoped `docs/assets/018_resources_found/` folder is temporary evidence rather than a runtime dependency. A bounded cave-monster reconstruction tranche is retained there while final evidence gates remain open; historical tranche instructions must not recreate deleted production material, and the retained workspace must be removed only after genuine goal closure.
+
 ## 1. Purpose and constraints
 
 This map identifies the exact repository surfaces, stable identifiers, collision-free reservations, reusable Chaos Redux patterns, vanilla precedents, ownership boundaries, and implementation order needed to implement Event 018 in full.
@@ -113,8 +117,8 @@ Create Event 018 logic in event-owned files so shared edits remain small and rev
 ### Documentation and assets
 
 - `docs/events/018_resources_found/overview.md`;
-- `docs/assets/018_resources_found/manifest.md` plus source, processed, contact-sheet, preview, animation, and handoff folders required by the asset skill;
-- `docs/assets/018_resources_found/gfx_handoff.md`;
+- `docs/events/018_resources_found/assets.md` as the durable runtime inventory after temporary-workspace cleanup;
+- permanent specialist evidence in `docs/plans/018_resources_found_plans/subagent_handoffs/`;
 - Event 018 super-event text/audio research files under `docs/super_events/`;
 - Event 18 detail, evolution, and cluster fields in `docs/spreadsheets/chaos_redux_events_catalog.xlsx` after implementation facts and final localisation exist.
 
@@ -423,9 +427,9 @@ Implement all 15 concepts in the prompt, in this order, using stable `018_resour
 
 Wire one section in `common/achievements/chaos_redux_achievements.txt`, sprite aliases in `interface/chaosx_achievements.gfx`, localisation in `chaosx_achievements_l_english.yml`, and three 64×64 DDS files per achievement in root `gfx/achievements/` (45 files total). Preserve current dirty achievement edits. Follow `docs/systems/custom_achievements.md`.
 
-### Asset inventory
+### Asset inventory (historical planning baseline)
 
-No `docs/assets/018_resources_found/` package exists. The Event 018 asset prompt requires at least:
+At the time of this map, no Event 018 asset package existed. The Event 018 asset prompt required at least:
 
 - 10 report images (210×176);
 - 6 news images (397×153);

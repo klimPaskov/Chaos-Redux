@@ -4,11 +4,13 @@
 
 Status: `implemented_pending_live_review`.
 
+The former production workspace was removed after its durable facts were promoted. During the active Event 018 goal, the exact locked adapter root was temporarily reconstructed from installed runtime-byte copies for non-mutating reimport proof, and a separate `cave_monster_static_closure` root retains the static evidence. Neither is a runtime dependency.
+
 Broad Event 018 expansion remains closed.
 
 The earlier RF-018-01 through RF-018-08 addendum is fully resolved, and this review does not reopen any of those mechanics or propose another route, country, doctrine, focus family, unit family, model variant, or visual layer.
 
-The two bounded integration items are implemented. Five lightweight sprite-to-entity aliases now resolve all brood tokens to the canonical model, and movement, attack, and death audio use mechanically trimmed derivatives with timed entity hooks. Only user-owned live consumer validation remains.
+The two bounded integration items are implemented. Five lightweight sprite-to-entity aliases now resolve all brood tokens to the canonical model, and movement, attack, and death audio use mechanically trimmed derivatives with timed entity hooks. Fresh 3D/action perceptual review, auditory review, and user-owned live consumer validation remain.
 
 The parent should implement or explicitly reject the two bounded integration items below, refresh the affected crosswalk rows, obtain the user-owned live-consumer evidence, and then close this tranche without another broad improvement-loop pass.
 
@@ -18,7 +20,11 @@ The selected mesh, idle, move, attack, revised death, diffuse, normal, and specu
 
 All five large counter DDS files and all five on-map counter DDS files also match their selected evidence copies byte-for-byte.
 
-The four runtime WAV hashes match `evidence/audio/sound_design_handoff.md`, and their measured durations are 24.240 seconds for idle, 6.384 seconds for move, 9.020 seconds for attack, and 6.000 seconds for death.
+The current runtime package has seven mono 44.1 kHz 16-bit PCM WAVs: idle at 24.240 seconds, four movement contacts at 0.274671 to 0.280000 seconds, attack at 0.841723 seconds, and death at 1.500000 seconds. Static analysis found zero clipped samples. The former 6.384-second move, 9.020-second attack, and 6.000-second death values describe superseded pre-trim candidates.
+
+Scale evidence uses two named conventions. The pre-export Blender working height is `7.3518247977`, or `5.8814598382` after entity scale `0.8`; the parsed exported-runtime AABB is `7.3563573360`, or `5.8850858688` after scale. The disclosed difference is `0.0045325383` source units or `0.0036260306` effective units.
+
+The 2026-08-10 runtime-byte reimport passed for the mesh and all four actions, with sampled action contacts approximately `0.0000092` to `0.0000145` source units above ground. Fresh preview rendering is not claimed because reimport proofs are not tagged as working objects and the locked schema exposes no non-mutating promotion operation.
 
 The model registration defines `resources_found_cave_monster_mesh`, the four animation types, and one entity named `resources_found_cave_monster_entity`.
 
@@ -64,7 +70,7 @@ The audio provenance, runtime hashes, derivative durations, and synchronization 
 
 `gfx/entities/018_resources_found_cave_monster.asset` currently attaches one untimed sound event at state entry for move, attack, defend, support attack, and death.
 
-The action lengths are approximately 1.000 second for move, 1.333 seconds for attack, and 1.500 seconds for death at 24 FPS, while the installed clips are 6.384, 9.020, and 6.000 seconds respectively.
+The action lengths are approximately 1.000 second for move, 1.333 seconds for attack, and 1.500 seconds for death at 24 FPS. Installed cues are four 0.274671-to-0.280000-second movement contacts, a 0.841723-second attack cue, and a 1.500000-second death cue.
 
 The preferred outcome is implemented for movement, attack, and death. Idle remains the explicitly accepted state-entry ambience described below.
 
@@ -92,7 +98,7 @@ The coherent shared creature model with five role-specific counters is the corre
 
 Historical or regional research does not add useful value here because the issue is an engine consumer contract, not an unsourced cultural or historical design claim.
 
-RF-018-3D-01 and RF-018-3D-02 are implemented. The only remaining tasks are the user-owned live consumer review, documentation reconciliation, a focused asset/runtime re-audit, and parent final review.
+RF-018-3D-01 and RF-018-3D-02 are implemented. Static counter review passed on 2026-08-10 for both frames, alpha bounds, vanilla-green and disabled-state treatment, and family differentiation. Remaining work is fresh 3D/action perceptual review through a supported working-scene route, auditory review, user-owned live consumer review, and parent final review.
 
 Additional models, route-specific skins, particles, new combat states, extra creature families, or more cave-unit types would add maintenance cost without closing either identified defect and should not be added in this pass.
 
@@ -120,6 +126,6 @@ This file remains under `docs/plans/018_resources_found_plans/` as the bounded i
 
 It should not be promoted into the source specification because it does not change the accepted Event 018 design.
 
-After implementation and live review, durable consumer, synchronization, hash, provenance, and validation facts should be reconciled into `docs/assets/018_resources_found/models_3d/cave_monster/manifest.md`, `runtime/crosswalk.md`, `runtime/handoff.md`, `evidence/audio/sound_design_handoff.md`, and the current model handoff.
+After live review, durable consumer, synchronization, hash, provenance, and validation facts belong in `docs/systems/resources_found_cave_monster_model.md`, `docs/events/018_resources_found/assets.md`, this addendum, and `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The deleted temporary workspace and its model manifest, crosswalk, runtime handoff, and audio evidence files are historical production records, not current runtime dependencies.
 
 The parent should issue a narrow 3D-tranche closure note after the live review rather than running another broad Event 018 improvement pass.

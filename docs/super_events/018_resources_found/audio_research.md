@@ -8,7 +8,7 @@ This package supplies three unique, real musical recordings for the accepted Eve
 - visible slot `83`, audio ID `55`: `THE DEEP WAR CROSSES THE SEAS`
 - visible slot `84`, audio ID `56`: conditional global or near-global defeat, `THE LAST DEPTH IS SEALED`
 
-The source and rights pages were rechecked on 2026-07-12. Composition rights and recording rights were evaluated separately. Exact source downloads and frozen licence evidence are preserved under `docs/assets/018_resources_found/source/audio/`. Final WAV files are unique 60-to-120-second, 44.1 kHz stereo Vorbis cues with matching 44.1 kHz stereo signed 16-bit PCM WAV files.
+The source and rights pages were rechecked on 2026-07-12. Composition rights and recording rights were evaluated separately. Exact source downloads and frozen licence evidence were held under the temporary `docs/assets/018_resources_found/source/audio/` production tranche and were deleted after their durable facts were promoted. A separate bounded cave-monster reconstruction tranche currently keeps the event-scoped temporary workspace present while final evidence gates remain open. This file retains the super-event source identities, rights conclusions, hashes, and conversion facts. Final runtime cues are unique 60-to-120-second, 44.1 kHz stereo signed 16-bit PCM WAV files.
 
 The duration repair did not change visible slots, audio IDs, helper IDs, sound wrappers, base sound IDs, or runtime filenames. ID `55` was replaced at its stable paths because the former United States Air Force recording had only a U.S.-federal public-domain basis. Its replacement recording is CC0 1.0 and supplies worldwide redistribution and adaptation rights.
 
@@ -42,7 +42,7 @@ Each programme interval is followed by a `0.250 s` zeroed tail included in the f
 - **Performer-identification copy:** [Wikimedia Commons, Skidmore College Orchestra/FMA copy](https://commons.wikimedia.org/wiki/File:Skidmore_College_Orchestra_-_07_-_IV_Bydlo_Sempre_moderato_pesante.ogg)
 - **Public Domain Mark:** <https://creativecommons.org/publicdomain/mark/1.0/>
 - **Musopen VRTS permission record:** Wikimedia VRTS ticket `2008012110017088`, linked on the selected source page
-- **Preserved source:** `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg`
+- **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg`
 - **Original technical profile:** Vorbis, 48,000 Hz, stereo, `139.008000 s`, `2,771,284` bytes
 - **Source SHA-256:** `87da8f6bc6a03900ce0eac2879e7b027de707d1173c1cadc82db1caa081a88d4`
 
@@ -89,7 +89,7 @@ The earlier 34-second cadence was too short for the source brief. The final 115-
 - **Direct original file:** <https://upload.wikimedia.org/wikipedia/commons/a/a7/Brahms%2C_Symphony_No._1_in_C_Minor%2C_Op._68_-_I._Un_poco_sostenuto_-_Allegro.ogg>
 - **CC0 deed:** <https://creativecommons.org/publicdomain/zero/1.0/>
 - **CC0 legal code:** <https://creativecommons.org/publicdomain/zero/1.0/legalcode>
-- **Preserved source:** `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg`
+- **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg`
 - **Original technical profile:** Vorbis, 48,000 Hz, stereo, `909.216000 s`, `20,432,979` bytes
 - **Source SHA-1:** `6ad72b00ca5032cbe5aa06aea80c70c82533bb90`, matching the Commons structured checksum
 - **Source SHA-256:** `f86f1df2f97b79c9bc92dac63b0da1bf868675005af4fe9c05ab886291af9b95`
@@ -123,7 +123,7 @@ The retained passage begins with a quieter repeated figure, grows in weight and 
 
 ### Superseded Debussy candidate
 
-The former ID `55` candidate was Claude Debussy's *La mer*, III. `Dialogue du vent et de la mer`, arranged by Lawrence Odom and performed by the United States Air Force Band. Its official U.S.-federal public-domain basis was well documented but did not provide the clean worldwide grant required for a distributable mod. The source remains preserved at `docs/assets/018_resources_found/source/audio/debussy_la_mer_iii_usaf_original.mp3` for audit history, but no final file, localisation string, catalogue row, or runtime definition identifies or uses it.
+The former ID `55` candidate was Claude Debussy's *La mer*, III. `Dialogue du vent et de la mer`, arranged by Lawrence Odom and performed by the United States Air Force Band. Its official U.S.-federal public-domain basis was well documented but did not provide the clean worldwide grant required for a distributable mod. Its historical source path was `docs/assets/018_resources_found/source/audio/debussy_la_mer_iii_usaf_original.mp3` in the deleted temporary workspace; no final file, localisation string, catalogue row, or runtime definition identifies or uses it.
 
 ## 3. Audio ID 56 - THE LAST DEPTH IS SEALED
 
@@ -136,7 +136,7 @@ The former ID `55` candidate was Claude Debussy's *La mer*, III. `Dialogue du ve
 - **Canonical source and rights page:** [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ivan_Ili%C4%87-Chopin_Prelude_Opus_28_n.4.ogg)
 - **Original upstream note:** initially uploaded by Ivan Ilić to his IMSLP user page
 - **Recording licence:** [Creative Commons Attribution 3.0 Unported](https://creativecommons.org/licenses/by/3.0/)
-- **Preserved source:** `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg`
+- **Historical source path (deleted temporary evidence, not retained):** `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg`
 - **Original technical profile:** Vorbis, 44,100 Hz, stereo, `109.814422 s`, `1,371,608` bytes
 - **Source SHA-256:** `c64c302948b73e251478b4e4a9e44d0e92ceec2e34f95e02d6c1130420dcd7cf`
 
@@ -182,14 +182,14 @@ All final files decode successfully, report two channels at exactly 44,100 Hz, a
 
 The intentionally lower integrated level on ID `56` preserves the piano's complete rise, rests, and decay while keeping the true peak below `-2 dBTP`; forcing it to `-18 LUFS` would require compression or limiting. No such dynamic flattening was introduced.
 
-### Preserved-source hashes
+### Historical source checksums
 
-| Source path | Bytes | SHA-1 | SHA-256 | Disposition |
+| Historical source path (deleted temporary evidence) | Bytes | SHA-1 | SHA-256 | Disposition |
 | --- | ---: | --- | --- | --- |
-| `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg` | `2,771,284` | `d445e58a5e251e6e5b53550875967cda770b3bcd` | `87da8f6bc6a03900ce0eac2879e7b027de707d1173c1cadc82db1caa081a88d4` | Active ID `54` master |
-| `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg` | `20,432,979` | `6ad72b00ca5032cbe5aa06aea80c70c82533bb90` | `f86f1df2f97b79c9bc92dac63b0da1bf868675005af4fe9c05ab886291af9b95` | Active ID `55` master |
-| `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg` | `1,371,608` | `c4ae6453ba25612c130e6d332bb210bec1aafb6c` | `c64c302948b73e251478b4e4a9e44d0e92ceec2e34f95e02d6c1130420dcd7cf` | Active ID `56` master |
-| `docs/assets/018_resources_found/source/audio/debussy_la_mer_iii_usaf_original.mp3` | `20,145,174` | `f9a3972c623beae59a6aab9bf0a8430adcacdb5f` | `65c3e891cde5a486742681bb5490309393cc33546d5b129878fa7a50a2fa139b` | Superseded ID `55` research source; not wired |
+| `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg` | `2,771,284` | `d445e58a5e251e6e5b53550875967cda770b3bcd` | `87da8f6bc6a03900ce0eac2879e7b027de707d1173c1cadc82db1caa081a88d4` | Active ID `54` source identity; final runtime cue is permanent |
+| `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg` | `20,432,979` | `6ad72b00ca5032cbe5aa06aea80c70c82533bb90` | `f86f1df2f97b79c9bc92dac63b0da1bf868675005af4fe9c05ab886291af9b95` | Active ID `55` source identity; final runtime cue is permanent |
+| `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg` | `1,371,608` | `c4ae6453ba25612c130e6d332bb210bec1aafb6c` | `c64c302948b73e251478b4e4a9e44d0e92ceec2e34f95e02d6c1130420dcd7cf` | Active ID `56` source identity; final runtime cue is permanent |
+| `docs/assets/018_resources_found/source/audio/debussy_la_mer_iii_usaf_original.mp3` | `20,145,174` | `f9a3972c623beae59a6aab9bf0a8430adcacdb5f` | `65c3e891cde5a486742681bb5490309393cc33546d5b129878fa7a50a2fa139b` | Superseded ID `55` historical source identity; not wired |
 
 ### Decoded-audio uniqueness hashes
 
@@ -205,11 +205,9 @@ The three file hashes and decoded PCM hashes are mutually unique. Repository tit
 
 ## Licence-evidence archive
 
-Frozen source-page, deed, and legal-code snapshots, with their own SHA-256 values, are indexed in:
+Frozen source-page, deed, and legal-code snapshots were indexed under `docs/assets/018_resources_found/source/audio/license_evidence/README.md` in the deleted temporary workspace.
 
-`docs/assets/018_resources_found/source/audio/license_evidence/README.md`
-
-This archive contains the VRTS-confirmed ID `54` rights page and performer page, the ID `55` Commons file page plus CC0 deed and legal code, and the ID `56` Commons file page plus CC BY 3.0 deed and legal code.
+The durable rights record is this document, which retains the source URLs, licence terms, attribution requirements, checksum identities, and conversion facts for every active cue.
 
 ## Candidate disposition and uniqueness decisions
 

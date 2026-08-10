@@ -190,7 +190,7 @@ Icons and UI:
 - selected-field static and animated assets: `gfx/interface/018_resources_found/` and `gfx/interface/animated/018_resources_found/`;
 - 15 achievement complete, grey, and not-eligible triplets: `gfx/achievements/`.
 
-The permanent runtime inventory, dimensions, animation frame counts, fallbacks, provenance conclusions, sprite identifiers, licences, and specialist evidence links are recorded in `docs/events/018_resources_found/assets.md`. The event-scoped `docs/assets/018_resources_found/` workspace was temporary and is intentionally absent after its durable facts were promoted.
+The permanent runtime inventory, dimensions, animation frame counts, fallbacks, provenance conclusions, sprite identifiers, licences, and specialist evidence links are recorded in `docs/events/018_resources_found/assets.md`. The event-scoped `docs/assets/018_resources_found/` workspace is temporary evidence, not a runtime dependency. Its bounded cave-monster reconstruction tranche remains available while final evidence gates are open and must be deleted only after genuine Event 018 closure.
 
 The exact-estimate refresh controls reuse `GFX_decision_generic_research`. The internal clock category and its nine non-rendered missions require no category art, mission icons, or localisation.
 
