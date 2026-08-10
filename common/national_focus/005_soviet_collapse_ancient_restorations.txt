@@ -28,7 +28,7 @@ focus_tree = {
 
 	focus = {
 		id = INX_restore_itil_council
-		icon = GFX_focus_soviet_collapse_ancient_emergency_council
+		icon = GFX_focus_INX_restore_itil_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 0
@@ -41,7 +41,7 @@ focus_tree = {
 
 	focus = {
 		id = INX_toll_law_debate
-		icon = GFX_focus_soviet_collapse_ancient_legitimacy_debate
+		icon = GFX_focus_INX_toll_law_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 1
@@ -55,7 +55,7 @@ focus_tree = {
 
 	focus = {
 		id = INX_ferry_house_registers
-		icon = GFX_focus_soviet_collapse_ancient_inx_itil_toll_houses
+		icon = GFX_focus_INX_ferry_house_registers
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 2
 		y = 2
@@ -69,7 +69,7 @@ focus_tree = {
 
 	focus = {
 		id = INX_caspian_road_markets
-		icon = GFX_focus_soviet_collapse_ancient_market_roads
+		icon = GFX_focus_INX_caspian_road_markets
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 0
 		y = 3
@@ -82,8 +82,36 @@ focus_tree = {
 	}
 
 	focus = {
+		id = INX_caspian_merchant_court
+		icon = GFX_focus_INX_caspian_merchant_court
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 0
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = INX_caspian_road_markets }
+		completion_reward = {
+			set_country_flag = INX_caspian_merchant_court
+			set_country_flag = inx_merchant_toll_court_active
+			add_to_variable = { inx_toll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			random_owned_controlled_state = {
+				limit = { is_core_of = INX }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = rail_way level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = INX_caspian_merchant_court_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 1.5 has_stability < 0.5 }
+		}
+	}
+
+	focus = {
 		id = INX_customs_workshop_compact
-		icon = GFX_focus_soviet_collapse_ancient_workshop_compact
+		icon = GFX_focus_INX_customs_workshop_compact
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 4
 		y = 3
@@ -97,7 +125,7 @@ focus_tree = {
 
 	focus = {
 		id = INX_volga_toll_guard
-		icon = GFX_focus_soviet_collapse_ancient_inx_volga_toll_guard
+		icon = GFX_focus_INX_volga_toll_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 2
@@ -114,7 +142,7 @@ focus_tree = {
 
 	focus = {
 		id = INX_guard_the_crossings
-		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
+		icon = GFX_focus_INX_guard_the_crossings
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 		x = 6
 		y = 3
@@ -128,7 +156,7 @@ focus_tree = {
 
 	focus = {
 		id = INX_caspian_patrol_letters
-		icon = GFX_focus_soviet_collapse_ancient_inx_caspian_steppe_letters
+		icon = GFX_focus_INX_caspian_patrol_letters
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
 		x = 8
 		y = 3
@@ -159,14 +187,44 @@ focus_tree = {
 	}
 
 	focus = {
+		id = INX_caspian_ferry_guard_charter
+		icon = GFX_focus_INX_caspian_ferry_guard_charter
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = INX_guard_the_crossings }
+		prerequisite = { focus = INX_caspian_patrol_letters }
+		completion_reward = {
+			set_country_flag = INX_caspian_ferry_guard_charter
+			set_country_flag = inx_ferry_guard_route_active
+			add_to_variable = { inx_toll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			random_owned_controlled_state = {
+				limit = { is_core_of = INX }
+				construct_building_in_random_province = { bunker = 1 }
+			}
+			custom_effect_tooltip = INX_caspian_ferry_guard_charter_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 1.5 has_war_support > 0.5 }
+		}
+	}
+
+	focus = {
 		id = INX_league_transit_bargain
-		icon = GFX_focus_soviet_collapse_ancient_league_bargain
+		icon = GFX_focus_INX_league_transit_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 2
+		x = 6
 		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = INX_caspian_road_markets }
-		prerequisite = { focus = INX_caspian_patrol_letters }
+		prerequisite = { focus = INX_caspian_merchant_court }
+		prerequisite = { focus = INX_caspian_ferry_guard_charter }
 		completion_reward = {
 			soviet_collapse_apply_inx_focus_league_transit_bargain = yes
 		}
@@ -174,15 +232,44 @@ focus_tree = {
 	}
 
 	focus = {
-		id = INX_old_border_files
-		icon = GFX_focus_soviet_collapse_ancient_old_border_files
-		search_filters = { FOCUS_FILTER_ANNEXATION }
+		id = INX_toll_transit_charter
+		icon = GFX_focus_INX_toll_transit_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 6
 		y = 5
-		cost = @soviet_collapse_focus_medium
+		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = INX_league_transit_bargain }
 		prerequisite = { focus = INX_customs_workshop_compact }
-		prerequisite = { focus = INX_guard_the_crossings }
+		completion_reward = {
+			set_country_flag = INX_toll_transit_charter
+			set_country_flag = inx_toll_transit_charter_active
+			add_to_variable = { inx_toll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			unlock_decision_tooltip = soviet_collapse_argue_khazar_toll_claim
+			random_owned_controlled_state = {
+				limit = { is_core_of = INX }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = rail_way level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = INX_toll_transit_charter_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.75 has_war = no }
+			modifier = { factor = 1.5 has_country_flag = inx_merchant_toll_court_active }
+		}
+	}
+
+	focus = {
+		id = INX_old_border_files
+		icon = GFX_focus_INX_old_border_files
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 6
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = INX_toll_transit_charter }
 		completion_reward = {
 			custom_effect_tooltip = INX_old_border_files_tt
 			hidden_effect = {
@@ -211,10 +298,10 @@ focus_tree = {
 
 	focus = {
 		id = INX_symbolic_crossing_state
-		icon = GFX_focus_soviet_collapse_ancient_symbolic_state
+		icon = GFX_focus_INX_symbolic_crossing_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = INX_old_border_files }
 		mutually_exclusive = { focus = INX_expansionist_steppe_levy }
@@ -238,10 +325,10 @@ focus_tree = {
 
 	focus = {
 		id = INX_expansionist_steppe_levy
-		icon = GFX_focus_soviet_collapse_ancient_inx_steppe_levy
+		icon = GFX_focus_INX_expansionist_steppe_levy
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = INX_old_border_files }
 		mutually_exclusive = { focus = INX_symbolic_crossing_state }
@@ -286,10 +373,10 @@ focus_tree = {
 
 	focus = {
 		id = INX_khazar_charter
-		icon = GFX_focus_soviet_collapse_ancient_inx_khazar_charter
+		icon = GFX_focus_INX_khazar_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
 		x = 7
-		y = 7
+		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = INX_symbolic_crossing_state focus = INX_expansionist_steppe_levy }
 		completion_reward = {
@@ -299,6 +386,7 @@ focus_tree = {
 				set_country_flag = inx_toll_transit_law_codified
 				unlock_decision_tooltip = soviet_collapse_commission_old_banner
 				unlock_decision_tooltip = soviet_collapse_argue_khazar_toll_claim
+				unlock_decision_tooltip = soviet_collapse_write_restored_charter
 				add_to_variable = { inx_toll_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
 				add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
@@ -322,13 +410,18 @@ focus_tree = {
 
 	focus = {
 		id = INX_restoration_survives_modern_war
-		icon = GFX_focus_soviet_collapse_ancient_restoration_survives
+		icon = GFX_focus_INX_restoration_survives_modern_war
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
 		x = 6
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = INX_khazar_charter }
-		available = { has_country_flag = INX_symbolic_crossing_state }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = INX_restoration_survives_modern_war_ready_tt
+				has_country_flag = INX_symbolic_crossing_state
+			}
+		}
 		completion_reward = {
 			custom_effect_tooltip = INX_restoration_survives_modern_war_tt
 			hidden_effect = {
@@ -356,13 +449,20 @@ focus_tree = {
 
 	focus = {
 		id = INX_returned_names_endgame
-		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
+		icon = GFX_focus_INX_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
 		x = 10
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = INX_khazar_charter }
-		available = { has_country_flag = INX_expansionist_steppe_levy }
+		prerequisite = { focus = INX_expansionist_steppe_levy }
+		mutually_exclusive = { focus = INX_bounded_crossing_horizon }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = INX_returned_names_endgame_ready_tt
+				has_country_flag = INX_expansionist_steppe_levy
+			}
+		}
 			completion_reward = {
 				set_country_flag = INX_returned_names_endgame
 				set_country_flag = INX_returned_names_toll_route
@@ -380,17 +480,51 @@ focus_tree = {
 	}
 
 	focus = {
+		id = INX_bounded_crossing_horizon
+		icon = GFX_focus_INX_bounded_crossing_horizon
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = INX_restoration_survives_modern_war }
+		mutually_exclusive = { focus = INX_returned_names_endgame }
+		completion_reward = {
+			set_country_flag = INX_bounded_crossing_horizon
+			set_country_flag = inx_symbolic_transit_endgame
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { inx_toll_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			unlock_decision_tooltip = soviet_collapse_write_restored_charter
+			random_owned_controlled_state = {
+				limit = { is_core_of = INX }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = rail_way level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = INX_bounded_crossing_horizon_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 1.5 has_stability > 0.5 }
+		}
+	}
+
+	focus = {
 		id = INX_road_beyond_the_caspian
-		icon = GFX_focus_soviet_collapse_ancient_inx_road_beyond_caspian
+		icon = GFX_focus_INX_road_beyond_the_caspian
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
-		y = 9
+		y = 10
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = INX_returned_names_endgame }
 		available = {
-			OR = {
-				has_global_flag = { flag = chaos_tier value = 4 }
-				has_global_flag = { flag = chaos_tier value = 5 }
+			custom_trigger_tooltip = {
+				tooltip = INX_road_beyond_the_caspian_ready_tt
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
 			}
 		}
 			completion_reward = {
@@ -438,7 +572,7 @@ focus_tree = {
 
 	focus = {
 		id = SOG_city_register_council
-		icon = GFX_focus_soviet_collapse_ancient_sog_city_register_council
+		icon = GFX_focus_SOG_city_register_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 0
@@ -451,7 +585,7 @@ focus_tree = {
 
 	focus = {
 		id = SOG_city_law_debate
-		icon = GFX_focus_soviet_collapse_ancient_sog_city_law_debate
+		icon = GFX_focus_SOG_city_law_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 1
@@ -465,7 +599,7 @@ focus_tree = {
 
 	focus = {
 		id = SOG_samarkand_bukhara_registers
-		icon = GFX_focus_soviet_collapse_ancient_sog_samarkand_bukhara_registers
+		icon = GFX_focus_SOG_samarkand_bukhara_registers
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 2
 		y = 2
@@ -479,7 +613,7 @@ focus_tree = {
 
 	focus = {
 		id = SOG_oasis_merchant_roads
-		icon = GFX_focus_soviet_collapse_ancient_sog_oasis_merchant_roads
+		icon = GFX_focus_SOG_oasis_merchant_roads
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 0
 		y = 3
@@ -492,8 +626,37 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SOG_caravan_merchant_charter
+		icon = GFX_focus_SOG_caravan_merchant_charter
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 0
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SOG_oasis_merchant_roads }
+		completion_reward = {
+			set_country_flag = SOG_caravan_merchant_charter
+			set_country_flag = sog_merchant_charter_active
+			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				limit = { is_core_of = SOG }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = SOG_caravan_merchant_charter_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 1.5 has_stability < 0.5 }
+		}
+	}
+
+	focus = {
 		id = SOG_bazaar_workshop_compact
-		icon = GFX_focus_soviet_collapse_ancient_workshop_compact
+		icon = GFX_focus_SOG_bazaar_workshop_compact
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 4
 		y = 3
@@ -507,7 +670,7 @@ focus_tree = {
 
 	focus = {
 		id = SOG_market_guard
-		icon = GFX_focus_soviet_collapse_ancient_heritage_guard
+		icon = GFX_focus_SOG_market_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 2
@@ -524,7 +687,7 @@ focus_tree = {
 
 	focus = {
 		id = SOG_scholar_envoy_rooms
-		icon = GFX_focus_soviet_collapse_ancient_sog_scholar_envoy_rooms
+		icon = GFX_focus_SOG_scholar_envoy_rooms
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
 		x = 8
 		y = 3
@@ -555,7 +718,7 @@ focus_tree = {
 
 	focus = {
 		id = SOG_oasis_checkpoint_guard
-		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
+		icon = GFX_focus_SOG_oasis_checkpoint_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 		x = 12
 		y = 3
@@ -568,8 +731,38 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SOG_caravan_guard_commission
+		icon = GFX_focus_SOG_caravan_guard_commission
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SOG_oasis_checkpoint_guard }
+		prerequisite = { focus = SOG_scholar_envoy_rooms }
+		completion_reward = {
+			set_country_flag = SOG_caravan_guard_commission
+			set_country_flag = sog_caravan_guard_route_active
+			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			random_owned_controlled_state = {
+				limit = { is_core_of = SOG }
+				construct_building_in_random_province = { bunker = 1 }
+			}
+			custom_effect_tooltip = SOG_caravan_guard_commission_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 1.5 has_war_support > 0.5 }
+		}
+	}
+
+	focus = {
 		id = SOG_league_city_bargain
-		icon = GFX_focus_soviet_collapse_ancient_league_bargain
+		icon = GFX_focus_SOG_league_city_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 4
@@ -583,15 +776,44 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SOG_old_city_border_files
-		icon = GFX_focus_soviet_collapse_ancient_old_border_files
-		search_filters = { FOCUS_FILTER_ANNEXATION }
+		id = SOG_merchant_transit_charter
+		icon = GFX_focus_SOG_merchant_transit_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 6
 		y = 5
-		cost = @soviet_collapse_focus_medium
+		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = SOG_league_city_bargain }
 		prerequisite = { focus = SOG_bazaar_workshop_compact }
-		prerequisite = { focus = SOG_oasis_checkpoint_guard }
+		completion_reward = {
+			set_country_flag = SOG_merchant_transit_charter
+			set_country_flag = sog_merchant_transit_charter_active
+			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			unlock_decision_tooltip = soviet_collapse_argue_sogdian_city_claim
+			random_owned_controlled_state = {
+				limit = { is_core_of = SOG }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = rail_way level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = SOG_merchant_transit_charter_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.75 has_war = no }
+			modifier = { factor = 1.5 has_country_flag = sog_merchant_charter_active }
+		}
+	}
+
+	focus = {
+		id = SOG_old_city_border_files
+		icon = GFX_focus_SOG_old_city_border_files
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 6
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SOG_merchant_transit_charter }
 		completion_reward = {
 			custom_effect_tooltip = SOG_old_city_border_files_tt
 			hidden_effect = {
@@ -620,10 +842,10 @@ focus_tree = {
 
 	focus = {
 		id = SOG_symbolic_city_league
-		icon = GFX_focus_soviet_collapse_ancient_symbolic_state
+		icon = GFX_focus_SOG_symbolic_city_league
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = SOG_old_city_border_files }
 		mutually_exclusive = { focus = SOG_expansionist_merchant_claims }
@@ -646,10 +868,10 @@ focus_tree = {
 
 	focus = {
 		id = SOG_expansionist_merchant_claims
-		icon = GFX_focus_soviet_collapse_ancient_sog_merchant_claims
+		icon = GFX_focus_SOG_expansionist_merchant_claims
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = SOG_old_city_border_files }
 		mutually_exclusive = { focus = SOG_symbolic_city_league }
@@ -694,10 +916,10 @@ focus_tree = {
 
 	focus = {
 		id = SOG_sogdian_city_charter
-		icon = GFX_focus_soviet_collapse_ancient_sog_sogdian_charter
+		icon = GFX_focus_SOG_sogdian_city_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
 		x = 7
-		y = 7
+		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_symbolic_city_league focus = SOG_expansionist_merchant_claims }
 		completion_reward = {
@@ -707,6 +929,7 @@ focus_tree = {
 				set_country_flag = sog_merchant_city_court_codified
 				unlock_decision_tooltip = soviet_collapse_commission_old_banner
 				unlock_decision_tooltip = soviet_collapse_argue_sogdian_city_claim
+				unlock_decision_tooltip = soviet_collapse_write_restored_charter
 				add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
 				add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
@@ -726,13 +949,18 @@ focus_tree = {
 
 	focus = {
 		id = SOG_restoration_survives_modern_war
-		icon = GFX_focus_soviet_collapse_ancient_restoration_survives
+		icon = GFX_focus_SOG_restoration_survives_modern_war
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
 		x = 6
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_sogdian_city_charter }
-		available = { has_country_flag = SOG_symbolic_city_league }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = SOG_restoration_survives_modern_war_ready_tt
+				has_country_flag = SOG_symbolic_city_league
+			}
+		}
 		completion_reward = {
 			custom_effect_tooltip = SOG_restoration_survives_modern_war_tt
 			hidden_effect = {
@@ -760,13 +988,20 @@ focus_tree = {
 
 	focus = {
 		id = SOG_returned_names_endgame
-		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
+		icon = GFX_focus_SOG_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
 		x = 10
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_sogdian_city_charter }
-		available = { has_country_flag = SOG_expansionist_merchant_claims }
+		prerequisite = { focus = SOG_expansionist_merchant_claims }
+		mutually_exclusive = { focus = SOG_bounded_city_horizon }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = SOG_returned_names_endgame_ready_tt
+				has_country_flag = SOG_expansionist_merchant_claims
+			}
+		}
 			completion_reward = {
 				set_country_flag = SOG_returned_names_endgame
 				set_country_flag = SOG_returned_names_city_route
@@ -784,17 +1019,51 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SOG_bounded_city_horizon
+		icon = GFX_focus_SOG_bounded_city_horizon
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SOG_restoration_survives_modern_war }
+		mutually_exclusive = { focus = SOG_returned_names_endgame }
+		completion_reward = {
+			set_country_flag = SOG_bounded_city_horizon
+			set_country_flag = sog_symbolic_city_endgame
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			unlock_decision_tooltip = soviet_collapse_write_restored_charter
+			random_owned_controlled_state = {
+				limit = { is_core_of = SOG }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = SOG_bounded_city_horizon_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 1.5 has_stability > 0.5 }
+		}
+	}
+
+	focus = {
 		id = SOG_cities_beyond_the_desert
-		icon = GFX_focus_soviet_collapse_ancient_sog_cities_beyond_desert
+		icon = GFX_focus_SOG_cities_beyond_the_desert
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
-		y = 9
+		y = 10
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = SOG_returned_names_endgame }
 		available = {
-			OR = {
-				has_global_flag = { flag = chaos_tier value = 4 }
-				has_global_flag = { flag = chaos_tier value = 5 }
+			custom_trigger_tooltip = {
+				tooltip = SOG_cities_beyond_the_desert_ready_tt
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
 			}
 		}
 			completion_reward = {
@@ -842,7 +1111,7 @@ focus_tree = {
 
 	focus = {
 		id = ANX_oasis_authority_council
-		icon = GFX_focus_soviet_collapse_ancient_anx_oasis_authority_council
+		icon = GFX_focus_ANX_oasis_authority_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 0
@@ -855,7 +1124,7 @@ focus_tree = {
 
 	focus = {
 		id = ANX_water_law_debate
-		icon = GFX_focus_soviet_collapse_ancient_anx_water_law_debate
+		icon = GFX_focus_ANX_water_law_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 1
@@ -869,7 +1138,7 @@ focus_tree = {
 
 	focus = {
 		id = ANX_khiva_urgench_water_boards
-		icon = GFX_focus_soviet_collapse_ancient_anx_khiva_urgench_water_boards
+		icon = GFX_focus_ANX_khiva_urgench_water_boards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 2
 		y = 2
@@ -883,7 +1152,7 @@ focus_tree = {
 
 	focus = {
 		id = ANX_caravan_well_compact
-		icon = GFX_focus_soviet_collapse_ancient_anx_caravan_well_compact
+		icon = GFX_focus_ANX_caravan_well_compact
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 0
 		y = 3
@@ -896,8 +1165,36 @@ focus_tree = {
 	}
 
 	focus = {
+		id = ANX_caravan_water_ledger
+		icon = GFX_focus_ANX_caravan_water_ledger
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 0
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ANX_caravan_well_compact }
+		completion_reward = {
+			set_country_flag = ANX_caravan_water_ledger
+			set_country_flag = anx_caravan_water_route_active
+			add_to_variable = { anx_water_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			random_owned_controlled_state = {
+				limit = { is_core_of = ANX }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				construct_building_in_random_province = { supply_node = 1 }
+			}
+			custom_effect_tooltip = ANX_caravan_water_ledger_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 1.5 has_stability < 0.5 }
+		}
+	}
+
+	focus = {
 		id = ANX_oasis_workshop_compact
-		icon = GFX_focus_soviet_collapse_ancient_workshop_compact
+		icon = GFX_focus_ANX_oasis_workshop_compact
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 4
 		y = 3
@@ -911,7 +1208,7 @@ focus_tree = {
 
 	focus = {
 		id = ANX_oasis_canal_guards
-		icon = GFX_focus_soviet_collapse_ancient_anx_oasis_canal_guards
+		icon = GFX_focus_ANX_oasis_canal_guards
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 2
@@ -928,7 +1225,7 @@ focus_tree = {
 
 	focus = {
 		id = ANX_guard_the_pumps
-		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
+		icon = GFX_focus_ANX_guard_the_pumps
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 		x = 8
 		y = 3
@@ -942,7 +1239,7 @@ focus_tree = {
 
 	focus = {
 		id = ANX_canal_recognition_letters
-		icon = GFX_focus_soviet_collapse_ancient_neighbor_letters
+		icon = GFX_focus_ANX_canal_recognition_letters
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 12
 		y = 3
@@ -967,8 +1264,39 @@ focus_tree = {
 	}
 
 	focus = {
+		id = ANX_canal_sapper_commission
+		icon = GFX_focus_ANX_canal_sapper_commission
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ANX_guard_the_pumps }
+		prerequisite = { focus = ANX_canal_recognition_letters }
+		completion_reward = {
+			set_country_flag = ANX_canal_sapper_commission
+			set_country_flag = anx_canal_sapper_route_active
+			add_to_variable = { anx_water_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			random_owned_controlled_state = {
+				limit = { is_core_of = ANX }
+				construct_building_in_random_province = { bunker = 1 }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = ANX_canal_sapper_commission_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 1.5 has_war_support > 0.5 }
+		}
+	}
+
+	focus = {
 		id = ANX_league_irrigation_bargain
-		icon = GFX_focus_soviet_collapse_ancient_league_bargain
+		icon = GFX_focus_ANX_league_irrigation_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 4
@@ -982,15 +1310,44 @@ focus_tree = {
 	}
 
 	focus = {
-		id = ANX_old_oasis_border_files
-		icon = GFX_focus_soviet_collapse_ancient_old_border_files
-		search_filters = { FOCUS_FILTER_ANNEXATION }
+		id = ANX_water_transit_charter
+		icon = GFX_focus_ANX_water_transit_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 6
 		y = 5
-		cost = @soviet_collapse_focus_medium
+		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ANX_league_irrigation_bargain }
 		prerequisite = { focus = ANX_oasis_workshop_compact }
-		prerequisite = { focus = ANX_guard_the_pumps }
+		completion_reward = {
+			set_country_flag = ANX_water_transit_charter
+			set_country_flag = anx_water_transit_charter_active
+			add_to_variable = { anx_water_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			unlock_decision_tooltip = soviet_collapse_argue_khwarazmian_oasis_claim
+			random_owned_controlled_state = {
+				limit = { is_core_of = ANX }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = rail_way level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = ANX_water_transit_charter_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.75 has_war = no }
+			modifier = { factor = 1.5 has_country_flag = anx_caravan_water_route_active }
+		}
+	}
+
+	focus = {
+		id = ANX_old_oasis_border_files
+		icon = GFX_focus_ANX_old_oasis_border_files
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 6
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ANX_water_transit_charter }
 		completion_reward = {
 			custom_effect_tooltip = ANX_old_oasis_border_files_tt
 			hidden_effect = {
@@ -1019,10 +1376,10 @@ focus_tree = {
 
 	focus = {
 		id = ANX_symbolic_oasis_authority
-		icon = GFX_focus_soviet_collapse_ancient_symbolic_state
+		icon = GFX_focus_ANX_symbolic_oasis_authority
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ANX_old_oasis_border_files }
 		mutually_exclusive = { focus = ANX_expansionist_water_claims }
@@ -1044,10 +1401,10 @@ focus_tree = {
 
 	focus = {
 		id = ANX_expansionist_water_claims
-		icon = GFX_focus_soviet_collapse_ancient_anx_water_claims
+		icon = GFX_focus_ANX_expansionist_water_claims
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ANX_old_oasis_border_files }
 		mutually_exclusive = { focus = ANX_symbolic_oasis_authority }
@@ -1092,10 +1449,10 @@ focus_tree = {
 
 	focus = {
 		id = ANX_khwarazmian_water_charter
-		icon = GFX_focus_soviet_collapse_ancient_anx_water_charter
+		icon = GFX_focus_ANX_khwarazmian_water_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
 		x = 7
-		y = 7
+		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ANX_symbolic_oasis_authority focus = ANX_expansionist_water_claims }
 		completion_reward = {
@@ -1105,6 +1462,7 @@ focus_tree = {
 				set_country_flag = anx_irrigation_rights_codified
 				unlock_decision_tooltip = soviet_collapse_commission_old_banner
 				unlock_decision_tooltip = soviet_collapse_argue_khwarazmian_oasis_claim
+				unlock_decision_tooltip = soviet_collapse_write_restored_charter
 				add_to_variable = { anx_water_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
 				add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
@@ -1133,13 +1491,18 @@ focus_tree = {
 
 	focus = {
 		id = ANX_restoration_survives_modern_war
-		icon = GFX_focus_soviet_collapse_ancient_restoration_survives
+		icon = GFX_focus_ANX_restoration_survives_modern_war
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
 		x = 6
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ANX_khwarazmian_water_charter }
-		available = { has_country_flag = ANX_symbolic_oasis_authority }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = ANX_restoration_survives_modern_war_ready_tt
+				has_country_flag = ANX_symbolic_oasis_authority
+			}
+		}
 		completion_reward = {
 			custom_effect_tooltip = ANX_restoration_survives_modern_war_tt
 			hidden_effect = {
@@ -1168,13 +1531,20 @@ focus_tree = {
 
 	focus = {
 		id = ANX_returned_names_endgame
-		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
+		icon = GFX_focus_ANX_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
 		x = 10
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ANX_khwarazmian_water_charter }
-		available = { has_country_flag = ANX_expansionist_water_claims }
+		prerequisite = { focus = ANX_expansionist_water_claims }
+		mutually_exclusive = { focus = ANX_bounded_oasis_horizon }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = ANX_returned_names_endgame_ready_tt
+				has_country_flag = ANX_expansionist_water_claims
+			}
+		}
 			completion_reward = {
 				set_country_flag = ANX_returned_names_endgame
 				set_country_flag = ANX_returned_names_oasis_route
@@ -1192,17 +1562,51 @@ focus_tree = {
 	}
 
 	focus = {
+		id = ANX_bounded_oasis_horizon
+		icon = GFX_focus_ANX_bounded_oasis_horizon
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ANX_restoration_survives_modern_war }
+		mutually_exclusive = { focus = ANX_returned_names_endgame }
+		completion_reward = {
+			set_country_flag = ANX_bounded_oasis_horizon
+			set_country_flag = anx_symbolic_water_endgame
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { anx_water_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			unlock_decision_tooltip = soviet_collapse_write_restored_charter
+			random_owned_controlled_state = {
+				limit = { is_core_of = ANX }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				construct_building_in_random_province = { supply_node = 1 }
+			}
+			custom_effect_tooltip = ANX_bounded_oasis_horizon_tt
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 1.5 has_stability > 0.5 }
+		}
+	}
+
+	focus = {
 		id = ANX_delta_without_a_center
-		icon = GFX_focus_soviet_collapse_ancient_anx_delta_without_center
+		icon = GFX_focus_ANX_delta_without_a_center
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
-		y = 9
+		y = 10
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ANX_returned_names_endgame }
 		available = {
-			OR = {
-				has_global_flag = { flag = chaos_tier value = 4 }
-				has_global_flag = { flag = chaos_tier value = 5 }
+			custom_trigger_tooltip = {
+				tooltip = ANX_delta_without_a_center_ready_tt
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
 			}
 		}
 			completion_reward = {
@@ -1250,7 +1654,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_pass_council
-		icon = GFX_focus_soviet_collapse_ancient_abx_pass_council
+		icon = GFX_focus_ABX_pass_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 0
@@ -1263,7 +1667,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_pass_law_debate
-		icon = GFX_focus_soviet_collapse_ancient_abx_pass_law_debate
+		icon = GFX_focus_ABX_pass_law_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 1
@@ -1277,7 +1681,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_alan_pass_courts
-		icon = GFX_focus_soviet_collapse_ancient_abx_alan_pass_courts
+		icon = GFX_focus_ABX_alan_pass_courts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 2
@@ -1291,7 +1695,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_darial_road_offices
-		icon = GFX_focus_soviet_collapse_ancient_market_roads
+		icon = GFX_focus_ABX_darial_road_offices
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		x = 0
 		y = 3
@@ -1305,7 +1709,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_mountain_workshop_compact
-		icon = GFX_focus_soviet_collapse_ancient_workshop_compact
+		icon = GFX_focus_ABX_mountain_workshop_compact
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 4
 		y = 3
@@ -1319,7 +1723,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_darial_guard_posts
-		icon = GFX_focus_soviet_collapse_ancient_abx_darial_guard_posts
+		icon = GFX_focus_ABX_darial_guard_posts
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 2
@@ -1336,7 +1740,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_guard_the_pass_line
-		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
+		icon = GFX_focus_ABX_guard_the_pass_line
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 		x = 8
 		y = 3
@@ -1350,7 +1754,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_mountain_envoy_guarantees
-		icon = GFX_focus_soviet_collapse_ancient_abx_mountain_envoy_guarantees
+		icon = GFX_focus_ABX_mountain_envoy_guarantees
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 12
 		y = 3
@@ -1376,7 +1780,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_league_pass_bargain
-		icon = GFX_focus_soviet_collapse_ancient_league_bargain
+		icon = GFX_focus_ABX_league_pass_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 4
@@ -1391,7 +1795,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_old_pass_border_files
-		icon = GFX_focus_soviet_collapse_ancient_old_border_files
+		icon = GFX_focus_ABX_old_pass_border_files
 		search_filters = { FOCUS_FILTER_ANNEXATION }
 		x = 6
 		y = 5
@@ -1428,7 +1832,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_symbolic_pass_principality
-		icon = GFX_focus_soviet_collapse_ancient_symbolic_state
+		icon = GFX_focus_ABX_symbolic_pass_principality
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 6
@@ -1453,7 +1857,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_expansionist_mountain_claims
-		icon = GFX_focus_soviet_collapse_ancient_abx_mountain_claims
+		icon = GFX_focus_ABX_expansionist_mountain_claims
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
 		y = 6
@@ -1503,7 +1907,7 @@ focus_tree = {
 
 	focus = {
 		id = ABX_alan_pass_charter
-		icon = GFX_focus_soviet_collapse_ancient_abx_pass_charter
+		icon = GFX_focus_ABX_alan_pass_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
 		x = 7
 		y = 7
@@ -1516,6 +1920,7 @@ focus_tree = {
 				set_country_flag = abx_pass_court_authority_codified
 				unlock_decision_tooltip = soviet_collapse_commission_old_banner
 				unlock_decision_tooltip = soviet_collapse_argue_alan_pass_claim
+				unlock_decision_tooltip = soviet_collapse_write_restored_charter
 				add_to_variable = { abx_pass_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
 				add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
@@ -1534,13 +1939,18 @@ focus_tree = {
 
 	focus = {
 		id = ABX_restoration_survives_modern_war
-		icon = GFX_focus_soviet_collapse_ancient_restoration_survives
+		icon = GFX_focus_ABX_restoration_survives_modern_war
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ABX_alan_pass_charter }
-		available = { has_country_flag = ABX_symbolic_pass_principality }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = ABX_restoration_survives_modern_war_ready_tt
+				has_country_flag = ABX_symbolic_pass_principality
+			}
+		}
 		completion_reward = {
 			custom_effect_tooltip = ABX_restoration_survives_modern_war_tt
 			hidden_effect = {
@@ -1570,13 +1980,18 @@ focus_tree = {
 
 	focus = {
 		id = ABX_returned_names_endgame
-		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
+		icon = GFX_focus_ABX_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
 		x = 10
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ABX_alan_pass_charter }
-		available = { has_country_flag = ABX_expansionist_mountain_claims }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = ABX_returned_names_endgame_ready_tt
+				has_country_flag = ABX_expansionist_mountain_claims
+			}
+		}
 			completion_reward = {
 				set_country_flag = ABX_returned_names_endgame
 				set_country_flag = ABX_returned_names_pass_route
@@ -1596,16 +2011,19 @@ focus_tree = {
 
 	focus = {
 		id = ABX_every_pass_a_border
-		icon = GFX_focus_soviet_collapse_ancient_abx_every_pass_border
+		icon = GFX_focus_ABX_every_pass_a_border
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
 		x = 10
 		y = 9
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ABX_returned_names_endgame }
 		available = {
-			OR = {
-				has_global_flag = { flag = chaos_tier value = 4 }
-				has_global_flag = { flag = chaos_tier value = 5 }
+			custom_trigger_tooltip = {
+				tooltip = ABX_every_pass_a_border_ready_tt
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
 			}
 		}
 			completion_reward = {

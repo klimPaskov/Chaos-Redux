@@ -2,9 +2,9 @@
 
 Date: 2026-07-11
 
-Status: Command and Corridors tranche implemented and audited on 2026-07-11. The later tranches and the separate May 29 focus backlog remain queued; this is not an Event 005 completion claim.
+Status: Command and Corridors, Patron Rivalry, Successor Relations, Reconsolidation and Aftermath, and the UWR/KMB follow-up packages are implemented and reconciled through 2026-08-09. The 43-tree and 1,760-focus package has zero semantic shallow-leaf risks, final assets are installed, workbook/CSV parity is complete, and every supported probability surface has complete scenario inputs with zero unresolved items.
 
-Disposition: the 2026-05-29 focus redesign remains partially implemented and explicitly queued. This addendum does not duplicate that backlog. Its first tranche is the implemented shared crisis loop; Patron Rivalry, Successor Relations, Reconsolidation and Aftermath, and full UWR/KMB completion remain separate accepted-design work.
+Disposition: the 2026-05-29 focus redesign and its former heuristic risk counts remain historical evidence, while the current 43-tree package and semantic reward audit are resolved. This addendum does not duplicate that backlog. Its first tranche is the implemented shared crisis loop, Patron Rivalry events `chaosx.nr5.50` through `chaosx.nr5.70` are implemented, Successor Relations is implemented through three faction packages and charter events `chaosx.nr5.33`, `chaosx.nr5.34`, and `chaosx.nr5.37`, Reconsolidation and Aftermath events `chaosx.nr5.96` and `chaosx.nr5.97` are implemented, and the UWR/KMB package and final-asset work are implemented.
 
 ## Verdict
 
@@ -21,20 +21,19 @@ Foreign Appetite, League Cohesion, and Old Movement pressure remain secondary fo
 
 ## Source Reconciliation
 
-The canonical June 5 ledger is stale.
+The canonical June 5 ledger is historical and must not be used as the current implementation ledger.
 
-- Current Event 005 focus files contain 43 trees and 1,728 focuses.
-- The promoted ledger records 41 trees and 1,698 focuses.
-- The difference is the later UWR and KMB packages, which have supplemental specs but are not reconciled into the source map.
-- UWR has a compact seven-focus package and no dedicated decision category or bespoke AI surface.
-- KMB has a compact nine-focus package with decisions, coal-golem units, resource treaties, and concessions, but no bespoke route AI.
-- The existing audit still records 1,127 helper-only or nearly helper-only focus rewards and 520 pathline heuristic risks. Those findings remain the separate focus backlog.
+- Current Event 005 focus files contain 43 trees and 1,760 focuses: 515 republic focuses, 1,035 custom-splinter focuses, 134 factory-successor focuses, and 76 ancient-restoration focuses.
+- The historical promoted ledger recorded 41 trees and 1,698 focuses.
+- The 41-tree and 1,698-focus figures are superseded by the current source count and the later UWR/KMB and focus-depth handoffs.
+- UWR and KMB now have their implemented specialist packages, dedicated decisions, route-aware AI, and final focus, decision, idea, and UWR flag assets.
+- The historical 1,127 helper-only or nearly helper-only reward count and 520 pathline heuristic count are superseded. Recursive review of all 1,760 completion rewards reports zero semantic shallow-leaf risks.
 - `docs/events/005_soviet_collapse/overview.md` says selected patron desks normalize dynamic targets and check both target and `FROM`.
 - Before this reconciliation, `source_of_truth_map.md` still listed Tajikistan-style empty panels as unresolved. It now records the required verification instead of assuming a missing implementation.
 - The live scripts contain selected-target variables, flags, event-target activation, array normalization, and checks in both scope directions. This is a verification contradiction, not evidence that another targeting system is needed.
-- Reconquest resolution currently clears the crisis and resets its component values. It does not turn the manner of victory into a political settlement or lasting aftermath.
+- Reconquest resolution clears the crisis and resets its component values, while events `chaosx.nr5.96` and `chaosx.nr5.97` turn the manner of victory into a political settlement and lasting aftermath.
 
-The source map and documentation ledger now distinguish the implemented Command and Corridors tranche from the still-queued focus, successor, aftermath, presentation, and country-package work.
+The source map and documentation ledger distinguish the implemented Event005 systems, including Successor Relations, and route the completed probability evidence to the 2026-08-09 probability handoff.
 
 ## Tranche One: Command And Corridors
 
@@ -101,13 +100,13 @@ The proof must show decision activation, visibility, availability, completion sc
 
 ## Focus And Country Integration
 
-Tranche one adds hooks, not focuses.
+This section records the historical tranche-one boundary; the later UWR/KMB follow-up package added the implemented specialist focus surfaces documented in the 2026-08-09 handoffs.
 
 - Existing focus rewards that promise command, corridors, settlements, or regional authority should feed the shared operational helpers.
 - Helper-only rewards should be converted only when they sit directly on the tranche's route and can expose a visible mission, target, state project, or crisis-value consequence.
-- UWR should receive crisis-facing AI and contamination aftermath hooks before receiving more focus nodes.
-- KMB should receive route AI and its existing treaties and concessions should affect Depot Vulnerability, sponsor pressure, or corridor control before receiving more focus nodes.
-- The May 29 custom-splinter, ancient-restoration, OGB, layout, and broad reward backlog remains queued separately.
+- At tranche-one scope, UWR was to receive crisis-facing AI and contamination aftermath hooks before receiving more focus nodes; the later UWR package is implemented.
+- At tranche-one scope, KMB was to receive route AI and make its existing treaties and concessions affect Depot Vulnerability, sponsor pressure, or corridor control before receiving more focus nodes; the later KMB package is implemented.
+- The May 29 custom-splinter, ancient-restoration, OGB, layout, and broad reward wording is historical planning evidence. The current semantic reward audit resolves its shallow-leaf risk, while any authored-layout work remains a separate parent decision.
 
 ## AI Behavior
 
@@ -123,7 +122,7 @@ Tranche one adds hooks, not focuses.
 
 The implemented tranche preserves all 118 mission identifiers and classifies them exactly once as 37 Chain of Command, 21 Corridors and Depots, and 60 Republic Settlement missions. It reuses the existing active-objective cap, monthly refill cap, refill event, progressive release system, and selected-target categories. All 21 corridor missions are bound to a live qualifying state and cancel into refill without success or failure when that state becomes invalid. The opening posture is applied before the first objective fill.
 
-Release causes are recorded before release setup and affect the released country's package, Moscow's next family, sponsor interest, neighboring breakaways, and AI without forcing a release. The five selected-target scope families use one shared lifecycle, retain cooldowns while hidden, and convert to bounded wartime actions after Union Unmade. UWR contamination and KMB treaty/concession hooks feed the shared crisis values; both countries receive route-aware AI without adding focus nodes.
+Release causes are recorded before release setup and affect the released country's package, Moscow's next family, sponsor interest, neighboring breakaways, and AI without forcing a release. The five selected-target scope families use one shared lifecycle, retain cooldowns while hidden, and convert to bounded wartime actions after Union Unmade. UWR contamination and KMB treaty/concession hooks feed the shared crisis values, and both countries receive route-aware AI; later UWR/KMB follow-up work also adds their implemented focus surfaces.
 
 Implementation and audit records:
 
@@ -134,16 +133,16 @@ Implementation and audit records:
 - `subagent_handoffs/2026_07_11_soviet_command_corridors_completion_audit.md`
 - `subagent_handoffs/2026_07_11_soviet_localisation_audit.md`
 
-The Event 005 spreadsheet row and event-detail/evolution bodies are unchanged because this tranche does not alter the event premise or evolution catalog. Their pre-existing parity backlog remains queued. No new visual identifier is introduced; the tranche reuses registered decision icons.
+The Event 005 workbook row, event-detail text, evolution-detail text, and generated CSV exports are in exact wording parity according to the 2026-08-09 spreadsheet handoff. The final focus, decision, idea, and UWR flag assets are covered by the 2026-08-09 asset handoffs. The probability completion handoff records complete decision, mission, event-option, random-list, and focus candidate pools with zero unresolved inputs.
 
 ## Later Tranches
 
-These require separate acceptance after tranche one works:
+The following disposition supersedes the original queued wording:
 
-1. **Patron Rivalry** uses existing influence and patronage values to create competing offers, dependency resistance, and sponsor conflict around one selected republic.
-2. **Successor Relations** adds bounded corridor agreements, border arbitration, League obligations, and visible disputes using existing regional and target helpers.
-3. **Reconsolidation And Aftermath** snapshots the surviving crisis values before cleanup and produces distinct Soviet settlements or successor outcomes. Reconquest must stop erasing the manner of victory before those outcomes are evaluated.
-4. **UWR And KMB Completion** adds UWR field-release and facility decisions, contamination integration for conquerors, KMB treaty competition, conquered-basin policy, route AI, and final asset work through the proper asset workflow.
+1. **Patron Rivalry** is implemented by events `chaosx.nr5.50` through `chaosx.nr5.70`; no further Event 005 implementation is required for this chain.
+2. **Successor Relations** is implemented through the Black International, Free Soviet Congress, and Iron Production Bloc founding decisions, common faction lifecycle, route-sensitive AI, and charter events `chaosx.nr5.33`, `chaosx.nr5.34`, and `chaosx.nr5.37`.
+3. **Reconsolidation And Aftermath** is implemented by events `chaosx.nr5.96` and `chaosx.nr5.97`; no further Event 005 implementation is required for this chain.
+4. **UWR And KMB Completion** is implemented, including package decisions, route AI, conquered-basin outcomes, contamination and aftermath handling, final icons, and the final UWR flag family.
 
 These labels are design directions, not final player-facing localisation.
 
@@ -172,7 +171,7 @@ These labels are design directions, not final player-facing localisation.
 - Mission success, compromise, and failure alter connected values and the next refill in distinguishable ways.
 - A release records a meaningful cause and that cause changes its setup or the next crisis response without bypassing release gates.
 - Selected Moscow and foreign desks work for a base republic, Tajikistan, a dynamic non-base republic, a high-chaos successor, and a post-Union-Unmade target.
-- UWR and KMB participate in the shared crisis and AI layers without adding focus nodes.
+- UWR and KMB participate in the shared crisis and AI layers, with their later implemented specialist focus packages and final assets.
 - Reconquest behavior remains unchanged in tranche one except for any non-destructive data capture explicitly needed by a later aftermath plan.
 - Terminal, maximum-chaos, and standalone scenario release paths retain their documented exhaustive behavior.
 
@@ -189,4 +188,4 @@ These labels are design directions, not final player-facing localisation.
 - asset work before gameplay identifiers and accepted scope are stable
 - a world-scanning recurring on-action
 
-No fallback design or simplification was used for the implemented tranche. Event 005 remains incomplete until its queued focus backlog, later shared-mechanic tranches, presentation alignment, country-package completion, assets, and final full-event audits are resolved.
+No fallback design or simplification was used for the implemented tranches. Historical handoffs with older focus, asset, map, parity, and partial-probability dispositions remain preserved as evidence and are routed through the current source map rather than treated as active blockers. The compact MCP focus-layout rewrite remains the terminal source mutation.

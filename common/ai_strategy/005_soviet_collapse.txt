@@ -56,6 +56,12 @@
 @SOV_COLLAPSE_AI_KMB_CONCESSION_CONCENTRATION = 25
 @SOV_COLLAPSE_AI_KMB_COAL_GOLEM_FACTORY_EARLY = 1
 @SOV_COLLAPSE_AI_KMB_COAL_GOLEM_FACTORY_LATE = 2
+@SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_RESTRAINT = 80
+@SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_SUPPLY = 35
+@SOV_COLLAPSE_AI_ANCIENT_RESTORATION_ARMY = 95
+@SOV_COLLAPSE_AI_ANCIENT_RESTORATION_SUPPLY = 45
+@SOV_COLLAPSE_AI_ANCIENT_EXPANSION_ARMY = 120
+@SOV_COLLAPSE_AI_ANCIENT_EXPANSION_CONCENTRATION = 25
 
 soviet_collapse_soviet_crisis_containment = {
 	allowed = { original_tag = SOV }
@@ -952,6 +958,177 @@ soviet_collapse_kmb_concession_posture = {
 	ai_strategy = {
 		type = force_concentration_factor
 		value = @SOV_COLLAPSE_AI_KMB_CONCESSION_CONCENTRATION
+	}
+}
+
+soviet_collapse_inx_symbolic_transit_posture = {
+	allowed = { original_tag = INX }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		has_country_flag = INX_symbolic_crossing_state
+		NOT = { has_country_flag = INX_expansionist_steppe_levy }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_SUPPLY
+	}
+}
+
+soviet_collapse_inx_steppe_restoration_posture = {
+	allowed = { original_tag = INX }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		OR = {
+			has_country_flag = INX_expansionist_steppe_levy
+			has_country_flag = INX_road_beyond_the_caspian
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_ANCIENT_EXPANSION_ARMY
+	}
+	ai_strategy = {
+		type = force_concentration_factor
+		value = @SOV_COLLAPSE_AI_ANCIENT_EXPANSION_CONCENTRATION
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_ANCIENT_RESTORATION_SUPPLY
+	}
+}
+
+soviet_collapse_sog_city_register_posture = {
+	allowed = { original_tag = SOG }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		has_country_flag = SOG_symbolic_city_league
+		NOT = { has_country_flag = SOG_expansionist_merchant_claims }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_SUPPLY
+	}
+}
+
+soviet_collapse_sog_merchant_restoration_posture = {
+	allowed = { original_tag = SOG }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		OR = {
+			has_country_flag = SOG_expansionist_merchant_claims
+			has_country_flag = SOG_cities_beyond_the_desert
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_ANCIENT_EXPANSION_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_ANCIENT_RESTORATION_SUPPLY
+	}
+}
+
+soviet_collapse_anx_water_charter_posture = {
+	allowed = { original_tag = ANX }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		has_country_flag = ANX_delta_without_a_center
+		NOT = { has_country_flag = ANX_expansionist_water_claims }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_SUPPLY
+	}
+}
+
+soviet_collapse_anx_water_expansion_posture = {
+	allowed = { original_tag = ANX }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		OR = {
+			has_country_flag = ANX_expansionist_water_claims
+			has_country_flag = ANX_delta_without_a_center
+		}
+		OR = {
+			has_country_flag = ANX_expansionist_water_claims
+			has_country_flag = ANX_khwarazmian_water_charter
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_ANCIENT_RESTORATION_ARMY
+	}
+	ai_strategy = {
+		type = force_concentration_factor
+		value = @SOV_COLLAPSE_AI_ANCIENT_EXPANSION_CONCENTRATION
+	}
+}
+
+soviet_collapse_abx_pass_council_posture = {
+	allowed = { original_tag = ABX }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		has_country_flag = ABX_symbolic_pass_principality
+		NOT = { has_country_flag = ABX_expansionist_mountain_claims }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @SOV_COLLAPSE_AI_ANCIENT_SYMBOLIC_SUPPLY
+	}
+}
+
+soviet_collapse_abx_mountain_restoration_posture = {
+	allowed = { original_tag = ABX }
+	enable = {
+		has_country_flag = soviet_collapse_ancient_restoration_successor
+		OR = {
+			has_country_flag = ABX_expansionist_mountain_claims
+			has_country_flag = ABX_every_pass_a_border
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_ANCIENT_EXPANSION_ARMY
+	}
+	ai_strategy = {
+		type = force_concentration_factor
+		value = @SOV_COLLAPSE_AI_ANCIENT_EXPANSION_CONCENTRATION
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_ANCIENT_RESTORATION_SUPPLY
 	}
 }
 
