@@ -1714,7 +1714,13 @@ def camera_point_at(camera: bpy.types.Object, target: Vector) -> None:
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
 
 
-def render_previews(job: Path, runtime_stem: str, view_names: List[str] | None = None) -> List[str]:
+def render_previews(
+    job: Path,
+    runtime_stem: str,
+    view_names: List[str] | None = None,
+    *,
+    working_only: bool = True,
+) -> List[str]:
     scene = bpy.context.scene
     scene.render.engine = "BLENDER_EEVEE"
     scene.render.resolution_x = 512
@@ -1724,9 +1730,10 @@ def render_previews(job: Path, runtime_stem: str, view_names: List[str] | None =
     scene.render.film_transparent = False
     scene.world.color = (0.015, 0.02, 0.03)
 
-    meshes = mesh_objects()
+    meshes = mesh_objects(working_only=working_only)
     if not meshes:
-        raise RuntimeError("Preview rendering found no working mesh objects.")
+        object_class = "working" if working_only else "imported runtime-proof"
+        raise RuntimeError(f"Preview rendering found no {object_class} mesh objects.")
     minimum, maximum = world_bounds(meshes)
     center = (minimum + maximum) * 0.5
     dimensions = maximum - minimum
@@ -3841,14 +3848,32 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     )
     if anim is not None:
         pdx["import_animfile"](str(anim), frame_start=1)
+    proof_name = safe_name(
+        payload.get("proof_name")
+        or f"{mesh.stem}_{Path(payload['anim_rel']).stem if payload.get('anim_rel') else 'mesh'}"
+    )
     animation_bounds = []
+    preview_paths = []
     if anim is not None:
         actions = [action for action in bpy.data.actions if action.frame_range[1] >= action.frame_range[0]]
         if actions:
             action = max(actions, key=lambda candidate: candidate.frame_range[1] - candidate.frame_range[0])
+            rigs = armatures(working_only=False)
+            if len(rigs) == 1:
+                rigs[0].animation_data_create()
+                rigs[0].animation_data.action = action
             first = int(math.floor(float(action.frame_range[0])))
             last = int(math.ceil(float(action.frame_range[1])))
-            sample_frames = sorted({first, int(round((first + last) / 2.0)), last})
+            span = last - first
+            sample_frames = sorted(
+                {
+                    first,
+                    int(round(first + span * 0.25)),
+                    int(round(first + span * 0.5)),
+                    int(round(first + span * 0.75)),
+                    last,
+                }
+            )
             for frame in sample_frames:
                 bpy.context.scene.frame_set(frame)
                 bpy.context.view_layer.update()
@@ -3862,12 +3887,24 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
                         "dimensions": list(maximum - minimum),
                     }
                 )
+                preview_paths.extend(
+                    render_previews(
+                        job,
+                        f"reimport_{proof_name}_frame_{frame:03d}",
+                        ["front", "left", "three_quarter"],
+                        working_only=False,
+                    )
+                )
             bpy.context.scene.frame_set(first)
             bpy.context.view_layer.update()
-    proof_name = safe_name(
-        payload.get("proof_name")
-        or f"{mesh.stem}_{Path(payload['anim_rel']).stem if payload.get('anim_rel') else 'mesh'}"
-    )
+    else:
+        preview_paths.extend(
+            render_previews(
+                job,
+                f"reimport_{proof_name}",
+                working_only=False,
+            )
+        )
     proof = job / "blender" / "checkpoints" / f"reimport_{proof_name}.blend"
     save_blend(proof)
     report = {
@@ -3891,6 +3928,7 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         ],
         "geometry": geometry_metrics(working_only=False, position_weld_distance=1e-6),
         "animation_bounds": animation_bounds,
+        "previews": sorted(set(preview_paths)),
         "armatures": [
             {"name": obj.name, "bones": len(obj.data.bones)}
             for obj in bpy.context.scene.objects
