@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_SOVIET_COLLAPSE_KMB_AI_SUPERIORITY_RATIO = 1.25
 # ============================================================================
 # CHAOS REDUX - EVENT 005 SOVIET COLLAPSE TRIGGERS
 # ============================================================================
@@ -4326,6 +4329,18 @@ is_soviet_collapse_regional_mandate_missing_member_target_for_from = {
 			has_country_flag = soviet_collapse_central_asian_league_founder
 			FROM = { is_soviet_collapse_central_asia_league_region_tag = yes }
 		}
+		AND = {
+			has_country_flag = soviet_collapse_black_international_founder
+			FROM = { is_soviet_collapse_black_international_ready_country = yes }
+		}
+		AND = {
+			has_country_flag = soviet_collapse_free_soviet_congress_founder
+			FROM = { is_soviet_collapse_free_soviet_congress_ready_country = yes }
+		}
+		AND = {
+			has_country_flag = soviet_collapse_iron_production_bloc_founder
+			FROM = { is_soviet_collapse_iron_production_bloc_ready_country = yes }
+		}
 	}
 }
 
@@ -4431,6 +4446,113 @@ is_soviet_collapse_regional_faction_candidate = {
 	NOT = { is_in_faction = yes }
 	NOT = { has_country_flag = soviet_collapse_regional_faction }
 	NOT = { has_country_flag = soviet_collapse_regional_faction_recently_left }
+}
+
+is_soviet_collapse_black_international_identity = {
+	OR = {
+		tag = FTH
+		tag = BBH
+		has_country_flag = soviet_collapse_black_banner_successor
+		has_country_flag = soviet_collapse_black_banner_endgame
+		has_country_flag = soviet_collapse_black_banner_host
+		has_country_flag = soviet_collapse_ukraine_route_black_banner
+	}
+}
+
+is_soviet_collapse_free_soviet_congress_identity = {
+	NOT = { is_soviet_collapse_black_international_identity = yes }
+	OR = {
+		tag = AOX
+		has_government = communism
+		has_country_flag = soviet_collapse_naval_council_state
+		has_country_flag = soviet_collapse_port_council_endgame
+		has_country_flag = soviet_collapse_socialist_focus_route_payload_granted
+		has_country_flag = soviet_collapse_socialist_focus_second_milestone
+		has_country_flag = soviet_collapse_socialist_focus_third_milestone
+		has_country_flag = soviet_collapse_moldova_route_council_active
+		has_country_flag = soviet_collapse_caucasus_route_council_active
+		has_country_flag = soviet_collapse_belarus_route_congress_active
+		has_country_flag = soviet_collapse_kazakhstan_congress_route_debate_active
+	}
+}
+
+is_soviet_collapse_iron_production_bloc_identity = {
+	OR = {
+		tag = CFR
+		tag = MFR
+		tag = UWD
+		tag = PRA
+		tag = KMB
+		tag = UWR
+		has_country_flag = soviet_collapse_factory_successor
+		has_country_flag = soviet_collapse_ural_workers_successor
+		has_country_flag = soviet_collapse_ural_workers_endgame
+		has_country_flag = soviet_collapse_pale_railway_successor
+		has_country_flag = soviet_collapse_pale_railway_endgame
+		has_country_flag = soviet_collapse_kuznetsk_mining_successor
+		has_country_flag = soviet_collapse_unconventional_warfare_successor
+		has_country_flag = soviet_collapse_depot_focus_third_milestone
+	}
+}
+
+is_soviet_collapse_black_international_ready_country = {
+	exists = yes
+	is_soviet_collapse_black_international_identity = yes
+	OR = {
+		has_country_flag = soviet_collapse_breakaway
+		has_country_flag = soviet_collapse_event_created_republic
+		has_country_flag = soviet_collapse_high_chaos_successor
+	}
+}
+
+is_soviet_collapse_free_soviet_congress_ready_country = {
+	exists = yes
+	is_soviet_collapse_free_soviet_congress_identity = yes
+	OR = {
+		has_country_flag = soviet_collapse_breakaway
+		has_country_flag = soviet_collapse_event_created_republic
+		has_country_flag = soviet_collapse_high_chaos_successor
+	}
+}
+
+is_soviet_collapse_iron_production_bloc_ready_country = {
+	exists = yes
+	is_soviet_collapse_iron_production_bloc_identity = yes
+	OR = {
+		has_country_flag = soviet_collapse_breakaway
+		has_country_flag = soviet_collapse_event_created_republic
+		has_country_flag = soviet_collapse_high_chaos_successor
+	}
+}
+
+is_soviet_collapse_black_international_leader = {
+	exists = yes
+	is_faction_leader = yes
+	has_country_flag = soviet_collapse_black_international_founder
+}
+
+is_soviet_collapse_free_soviet_congress_leader = {
+	exists = yes
+	is_faction_leader = yes
+	has_country_flag = soviet_collapse_free_soviet_congress_founder
+}
+
+is_soviet_collapse_iron_production_bloc_leader = {
+	exists = yes
+	is_faction_leader = yes
+	has_country_flag = soviet_collapse_iron_production_bloc_founder
+}
+
+has_soviet_collapse_existing_black_international_leader = {
+	any_country = { is_soviet_collapse_black_international_leader = yes }
+}
+
+has_soviet_collapse_existing_free_soviet_congress_leader = {
+	any_country = { is_soviet_collapse_free_soviet_congress_leader = yes }
+}
+
+has_soviet_collapse_existing_iron_production_bloc_leader = {
+	any_country = { is_soviet_collapse_iron_production_bloc_leader = yes }
 }
 
 has_soviet_collapse_baltic_league_member_ready = {
@@ -4657,6 +4779,30 @@ can_found_soviet_collapse_central_asian_league = {
 	has_soviet_collapse_central_asian_league_quorum = yes
 }
 
+can_found_soviet_collapse_black_international = {
+	is_soviet_collapse_regional_faction_candidate = yes
+	is_soviet_collapse_regional_league_foundation_pressure_ready = yes
+	is_soviet_collapse_black_international_identity = yes
+	NOT = { has_soviet_collapse_existing_black_international_leader = yes }
+	NOT = { has_global_flag = soviet_collapse_black_international_announced }
+}
+
+can_found_soviet_collapse_free_soviet_congress = {
+	is_soviet_collapse_regional_faction_candidate = yes
+	is_soviet_collapse_regional_league_foundation_pressure_ready = yes
+	is_soviet_collapse_free_soviet_congress_identity = yes
+	NOT = { has_soviet_collapse_existing_free_soviet_congress_leader = yes }
+	NOT = { has_global_flag = soviet_collapse_free_soviet_congress_announced }
+}
+
+can_found_soviet_collapse_iron_production_bloc = {
+	is_soviet_collapse_regional_faction_candidate = yes
+	is_soviet_collapse_regional_league_foundation_pressure_ready = yes
+	is_soviet_collapse_iron_production_bloc_identity = yes
+	NOT = { has_soviet_collapse_existing_iron_production_bloc_leader = yes }
+	NOT = { has_global_flag = soviet_collapse_iron_production_bloc_announced }
+}
+
 is_soviet_collapse_regional_league_foundation_pressure_ready = {
 	OR = {
 		is_soviet_collapse_league_pressure_ready = yes
@@ -4743,6 +4889,9 @@ is_soviet_collapse_regional_faction_member = {
 		has_country_flag = soviet_collapse_baltic_league_member
 		has_country_flag = soviet_collapse_caucasus_league_member
 		has_country_flag = soviet_collapse_central_asian_league_member
+		has_country_flag = soviet_collapse_black_international_member
+		has_country_flag = soviet_collapse_free_soviet_congress_member
+		has_country_flag = soviet_collapse_iron_production_bloc_member
 	}
 }
 
@@ -8579,8 +8728,11 @@ can_pay_mfr_convert_depots_to_arms_lines_cost = {
 is_soviet_collapse_kmb_valid_concession_target_from_root = {
 	exists = yes
 	NOT = { tag = ROOT }
+	NOT = { is_subject = yes }
+	NOT = { has_capitulated = yes }
 	NOT = { is_in_faction_with = ROOT }
 	NOT = { has_war_with = ROOT }
+	NOT = { ROOT = { has_wargoal_against = PREV } }
 	ROOT = { can_declare_war_on = PREV }
 }
 
@@ -8589,7 +8741,7 @@ is_soviet_collapse_kmb_superior_concession_target_from_root = {
 	ROOT = {
 		strength_ratio = {
 			tag = PREV
-			ratio > constant:soviet_collapse_kmb_ai.superiority_ratio
+			ratio > @CR_SC_SOVIET_COLLAPSE_KMB_AI_SUPERIORITY_RATIO
 		}
 	}
 }
@@ -8603,6 +8755,122 @@ has_soviet_collapse_kmb_valid_concession_target = {
 has_soviet_collapse_kmb_superior_concession_target = {
 	any_neighbor_country = {
 		is_soviet_collapse_kmb_superior_concession_target_from_root = yes
+	}
+}
+
+has_soviet_collapse_kmb_conquered_basin = {
+	570 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	571 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	572 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	578 = { is_owned_by = ROOT is_controlled_by = ROOT }
+}
+
+has_soviet_collapse_kmb_resource_expansion_capacity = {
+	OR = {
+		NOT = { has_variable = soviet_collapse_kmb_resource_expansion_stage }
+		check_variable = {
+			var = soviet_collapse_kmb_resource_expansion_stage
+			value = constant:soviet_collapse_kmb_balance.resource_expansion_stage_cap
+			compare = less_than
+		}
+	}
+}
+
+has_soviet_collapse_kmb_export_partner = {
+	any_other_country = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { is_subject = yes }
+		NOT = { has_war_with = ROOT }
+		NOT = { has_market_access_with = ROOT }
+	}
+}
+
+can_pay_soviet_collapse_kmb_open_export_auction_cost = {
+	has_equipment = { convoy_1 > constant:soviet_collapse_kmb_balance.export_auction_convoys_gate }
+}
+
+can_pay_soviet_collapse_kmb_resource_treaty_cost = {
+	has_equipment = { convoy_1 > constant:soviet_collapse_kmb_balance.resource_treaty_convoys_gate }
+}
+
+can_pay_soviet_collapse_kmb_force_mining_concession_cost = {
+	command_power > constant:soviet_collapse_kmb_balance.force_mining_concession_command_power
+}
+
+can_pay_soviet_collapse_kmb_industrial_tender_cost = {
+	has_equipment = { convoy_1 > constant:soviet_collapse_kmb_balance.industrial_tender_convoys_gate }
+}
+
+can_choose_soviet_collapse_kmb_conquered_basin_policy = {
+	has_soviet_collapse_kmb_conquered_basin = yes
+	NOT = { has_country_flag = kmb_conquered_basin_policy_chosen }
+}
+
+has_soviet_collapse_uwr_blacksite_expansion_capacity = {
+	any_owned_controlled_state = {
+		NOT = { biowarfare_facility > 0 }
+		NOT = { cw_facility > 0 }
+	}
+}
+
+has_soviet_collapse_uwr_experiment_camp_capacity = {
+	any_owned_controlled_state = {
+		NOT = { concentration_camp > 0 }
+		NOT = { extermination_camp > 0 }
+	}
+}
+
+can_pay_soviet_collapse_uwr_blacksite_overclock_cost = {
+	command_power > constant:soviet_collapse_uwr_balance.blacksite_overclock_command_power
+}
+
+can_pay_soviet_collapse_uwr_experiment_camp_cost = {
+	command_power > constant:soviet_collapse_uwr_balance.camp_registry_expansion_command_power
+}
+
+can_pay_soviet_collapse_uwr_field_release_raid_cost = {
+	has_army_experience > constant:soviet_collapse_uwr_balance.field_release_raid_army_xp
+	command_power > constant:soviet_collapse_uwr_balance.field_release_raid_command_power
+	has_manpower > constant:soviet_collapse_uwr_balance.field_release_raid_manpower_gate
+	has_equipment = { infantry_equipment_1 > constant:soviet_collapse_uwr_balance.field_release_raid_infantry_equipment_gate }
+	has_equipment = { support_equipment_1 > constant:soviet_collapse_uwr_balance.field_release_raid_support_equipment_gate }
+	has_equipment = { artillery_equipment_1 > constant:soviet_collapse_uwr_balance.field_release_raid_artillery_equipment_gate }
+}
+
+can_pay_soviet_collapse_uwr_prisoner_intake_cost = {
+	command_power > constant:soviet_collapse_uwr_balance.prisoner_intake_command_power
+	has_manpower > constant:soviet_collapse_uwr_balance.prisoner_intake_manpower_gate
+	has_equipment = { infantry_equipment_1 > constant:soviet_collapse_uwr_balance.prisoner_intake_infantry_equipment_gate }
+	has_equipment = { support_equipment_1 > constant:soviet_collapse_uwr_balance.prisoner_intake_support_equipment_gate }
+}
+
+is_soviet_collapse_uwr_prisoner_intake_state = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	has_state_flag = camp_rework_experiment_site
+	NOT = { has_state_flag = soviet_collapse_uwr_prisoner_intake_completed }
+}
+
+is_soviet_collapse_uwr_aftermath_target_state = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	ROOT = { NOT = { tag = UWR } }
+	OR = {
+		has_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
+		has_state_flag = soviet_collapse_uwr_contamination_aftermath
+	}
+}
+
+has_soviet_collapse_uwr_aftermath_site = {
+	NOT = { tag = UWR }
+	any_owned_state = {
+		is_controlled_by = ROOT
+		OR = {
+			has_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
+			has_state_flag = soviet_collapse_uwr_contamination_aftermath
+		}
 	}
 }
 
@@ -8858,12 +9126,12 @@ can_pay_soviet_collapse_chain_of_command_compromise_cost = {
 can_pay_soviet_collapse_corridors_and_depots_compromise_cost = {
 	has_active_soviet_collapse_corridors_and_depots_objective = yes
 	has_soviet_collapse_selected_corridor_state = yes
-	political_power > constant:soviet_collapse_operational_priority.corridor_compromise_political_power_gate
+	check_variable = { var = political_power value = constant:soviet_collapse_operational_priority.corridor_compromise_political_power_gate compare = greater_than }
 }
 
 can_pay_soviet_collapse_republic_settlement_compromise_cost = {
 	has_active_soviet_collapse_republic_settlement_objective = yes
-	political_power > constant:soviet_collapse_operational_priority.settlement_compromise_political_power_gate
+	check_variable = { var = political_power value = constant:soviet_collapse_operational_priority.settlement_compromise_political_power_gate compare = greater_than }
 }
 
 has_soviet_collapse_uwr_contamination_aftermath = {

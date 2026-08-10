@@ -11,8 +11,9 @@ The Board treats coal, metals, oil-shale work, rail dispatches, and concession l
 1. High-chaos release logic checks `can_soviet_collapse_spawn_kmb`.
 2. State 569 transfers to `KMB`, receives a core, and loads `KMB_soviet_collapse_focus_tree`.
 3. `soviet_collapse_setup_kmb_successor` applies the `kmb_subsoil_quota_state` idea, basin-scale resource expansion, manpower, equipment, assault columns, coal-golem columns, and the high-chaos evolution log.
-4. The focus tree unlocks decisions for progressive subsoil expansion, coal-for-machine exchange, export auctions, resource treaties, oil-for-truck barter, and forced mining concessions.
-5. Forced concessions use neighboring war-plan logic, while trade decisions improve resources, industry, fuel, trucks, coal-golem equipment, liaison reach, market access, resource-rights deals, and foreign-supply planning.
+4. The sixteen-focus tree unlocks decisions for progressive subsoil expansion, coal-for-machine exchange, export auctions, resource treaties, oil-for-truck barter, targeted forced mining concessions, foreign industrial tenders, and conquered-basin policy.
+5. Forced concessions target an explicitly selected eligible neighboring country, while trade decisions improve resources, industry, fuel, trucks, coal-golem equipment, liaison reach, market access, resource-rights deals, and foreign-supply planning.
+6. Conquest of states 570, 571, 572, and 578 opens a mutually exclusive policy choice between direct board rule, a Khakass concession authority, and a resource corridor.
 
 ## Resource And Unit Identity
 
@@ -59,7 +60,7 @@ Coal golems are slow infantry-format battalions with tank-like armor, piercing, 
 
 ## Assets
 
-The current idea icon reuses `gfx/interface/ideas/005_soviet_collapse/005_uwd_custom_splinter_idea.dds` through `GFX_idea_kmb_subsoil_quota_state`.
+The KMB identity idea uses the dedicated `gfx/interface/ideas/005_soviet_collapse/005_kmb_subsoil_quota_state.dds` texture through `GFX_idea_kmb_subsoil_quota_state`.
 
 The KMB leader portrait is a generated miner portrait:
 
@@ -78,18 +79,19 @@ Coal-golem assets:
 - large counter: `gfx/interface/counters/divisions_large/unit_coal_golem_icon.dds`
 - small counter: `gfx/interface/counters/divisions_small/onmap_unit_coal_golem_icon.dds`
 
-Future art pass:
+Dedicated KMB focus, decision, and identity-idea icons are installed with source PNGs, processed previews, DDS files, contact sheets, hashes, and an exact wiring manifest under `docs/assets/005_soviet_collapse/`.
 
-- optional dedicated KMB idea, focus, and decision icon set.
+## Completed Follow-Up Package (2026-08-09)
 
-## Future Depth
-
-- Add targeted concession decisions against specific neighboring resource states once a safe dynamic target UI is available.
-- Add treaty chains where foreign industrial powers compete for Kuznetsk output.
-- Add late-game integration choices for conquered basins: direct board rule, concession puppet, or resource corridor.
+- `kmb_force_mining_concession` is a country-targeted decision. Every decision instance names and scopes its eligible neighboring target instead of selecting a random neighbor at completion.
+- `kmb_accept_machine_tool_bid` and `kmb_accept_armaments_bid` form a mutually exclusive foreign tender competition for Kuznetsk output.
+- `kmb_integrate_conquered_basin` applies direct board rule and cores the conquered basin.
+- `kmb_establish_concession_authority` releases a KHA concession puppet across the conquered basin while preserving KMB control of state 569 and giving KMB resource rights.
+- `kmb_establish_resource_corridor` develops and claims the basin as an armed extraction corridor without direct integration.
+- All decision costs, resource steps, factory grants, equipment grants, crisis pressure, and policy flags use centralized Event 005 constants and helpers.
 
 ## Implemented shared-crisis and AI hooks (2026-07-11)
 
 The six Mining Board decision costs are centralized. A signed resource treaty raises KMB depot control while increasing Moscow's Depot Vulnerability and Foreign Appetite and prioritizing Corridors and Depots. A successful forced concession raises Moscow's Depot Vulnerability, Republic Confidence, and Foreign Appetite and prioritizes both corridor and settlement work. These hooks use the existing decisions and add no focus node or release timer.
 
-KMB AI now protects state 569, allocates infantry and train production, reserves one coal-golem factory after Guard the Pitheads and two after Raise Furnace Columns, avoids opportunistic wars while isolated on the treaty route, and enters concession posture only when a valid neighboring target exists and KMB exceeds the shared 1.25 strength ratio. The decision and strategy use the same reusable target triggers. Conquered-basin policy, treaty competition, and final route assets remain in the later KMB completion tranche.
+KMB AI now protects state 569, allocates infantry and train production, reserves one coal-golem factory after Guard the Pitheads and two after Raise Furnace Columns, avoids opportunistic wars while isolated on the treaty route, and enters concession posture only when a valid neighboring target exists and KMB exceeds the shared 1.25 strength ratio. The targeted concession decision and strategy use the same reusable target triggers. Its direct-rule, concession-authority, and resource-corridor policy weights respond to war, stability, and faction context, while tender weights distinguish peacetime industrial investment from wartime armaments demand.

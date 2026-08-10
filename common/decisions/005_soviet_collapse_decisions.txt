@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_SOVIET_COLLAPSE_OPERATIONAL_PRIORITY_CORRIDOR_COMPROMISE_POLITICAL_POWER_COST = 35
+@CR_SC_SOVIET_COLLAPSE_OPERATIONAL_PRIORITY_SETTLEMENT_COMPROMISE_POLITICAL_POWER_COST = 50
 # ============================================================================
 # CHAOS REDUX - EVENT 005 SOVIET COLLAPSE DECISIONS
 # ============================================================================
@@ -32,6 +36,8 @@
 @soviet_collapse_foreign_commitment_days_remove = 120
 @soviet_collapse_foreign_commitment_consumer_goods = 0.10
 @soviet_collapse_factory_ancient_days_reenable = 42
+@soviet_collapse_kmb_concession_days_reenable = 120
+@soviet_collapse_uwr_field_release_days_reenable = 180
 @soviet_collapse_emergency_mobilization_days_reenable = 63
 @soviet_collapse_ai_low = 1
 @soviet_collapse_ai_medium = 2
@@ -261,7 +267,7 @@ soviet_collapse_soviet_category = {
 
 	soviet_collapse_accept_emergency_corridor_board = {
 		icon = GFX_decision_soviet_collapse_rail_goal
-		ai_hint_pp_cost = constant:soviet_collapse_operational_priority.corridor_compromise_political_power_cost
+		ai_hint_pp_cost = @CR_SC_SOVIET_COLLAPSE_OPERATIONAL_PRIORITY_CORRIDOR_COMPROMISE_POLITICAL_POWER_COST
 		visible = {
 			tag = SOV
 			is_soviet_collapse_active = yes
@@ -306,7 +312,7 @@ soviet_collapse_soviet_category = {
 
 	soviet_collapse_offer_interim_republic_statute = {
 		icon = GFX_decision_soviet_collapse_cleanup_goal
-		ai_hint_pp_cost = constant:soviet_collapse_operational_priority.settlement_compromise_political_power_cost
+		ai_hint_pp_cost = @CR_SC_SOVIET_COLLAPSE_OPERATIONAL_PRIORITY_SETTLEMENT_COMPROMISE_POLITICAL_POWER_COST
 		visible = {
 			tag = SOV
 			is_soviet_collapse_active = yes
@@ -342,7 +348,7 @@ soviet_collapse_soviet_category = {
 				factor = @soviet_collapse_ai_pressure_multiplier
 				check_variable = {
 					var = soviet_collapse_republic_confidence
-					value = constant:soviet_collapse_soviet_objective.contested_republic_confidence_cap
+					value = constant:soviet_collapse_threat_guard.contested_republic_confidence_cap
 					compare = greater_than
 				}
 			}
@@ -458,7 +464,7 @@ soviet_collapse_soviet_category = {
 		}
 		fire_only_once = yes
 		complete_effect = {
-			soviet_collapse_mark_union_crisis_resolved_by_reconquest = yes
+			soviet_collapse_begin_reconsolidation_settlement = yes
 			custom_effect_tooltip = soviet_collapse_declare_union_territory_recovered_tt
 		}
 		ai_will_do = {
@@ -7606,6 +7612,105 @@ soviet_collapse_regional_faction_category = {
 		}
 	}
 
+	soviet_collapse_found_black_international = {
+		icon = GFX_decision_soviet_collapse_black_international
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			can_found_soviet_collapse_black_international = yes
+		}
+		custom_cost_trigger = {
+			set_temp_variable = {
+				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+			}
+			set_temp_variable = {
+				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+			}
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		}
+		custom_cost_text = soviet_collapse_regional_faction_found_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_found_black_international = yes
+			custom_effect_tooltip = soviet_collapse_found_black_international_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_country_flag = soviet_collapse_black_banner_endgame
+			}
+		}
+	}
+
+	soviet_collapse_found_free_soviet_congress = {
+		icon = GFX_decision_soviet_collapse_free_soviet_congress
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			can_found_soviet_collapse_free_soviet_congress = yes
+		}
+		custom_cost_trigger = {
+			set_temp_variable = {
+				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+			}
+			set_temp_variable = {
+				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+			}
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		}
+		custom_cost_text = soviet_collapse_regional_faction_found_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_found_free_soviet_congress = yes
+			custom_effect_tooltip = soviet_collapse_found_free_soviet_congress_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_country_flag = soviet_collapse_socialist_focus_third_milestone
+			}
+		}
+	}
+
+	soviet_collapse_found_iron_production_bloc = {
+		icon = GFX_decision_soviet_collapse_iron_production_bloc
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			can_found_soviet_collapse_iron_production_bloc = yes
+		}
+		custom_cost_trigger = {
+			set_temp_variable = {
+				soviet_collapse_regional_faction_found_pp_cost_display = constant:soviet_collapse_regional_faction.found_political_power
+			}
+			set_temp_variable = {
+				soviet_collapse_regional_faction_found_cp_cost_display = constant:soviet_collapse_regional_faction.found_command_power
+			}
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		}
+		custom_cost_text = soviet_collapse_regional_faction_found_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_found_iron_production_bloc = yes
+			custom_effect_tooltip = soviet_collapse_found_iron_production_bloc_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_country_flag = soviet_collapse_depot_focus_third_milestone
+			}
+		}
+	}
+
 	soviet_collapse_invite_regional_partners = {
 		icon = GFX_decision_soviet_collapse_regional_invite
 		available = {
@@ -8046,10 +8151,12 @@ soviet_collapse_regional_faction_category = {
 		icon = GFX_decision_soviet_collapse_regional_withdraw
 		available = {
 			hidden_trigger = { is_soviet_collapse_regional_faction_member = yes }
+			NOT = { is_faction_leader = yes }
 		}
 		visible = {
 			is_soviet_collapse_active = yes
 			is_soviet_collapse_regional_faction_member = yes
+			NOT = { is_faction_leader = yes }
 		}
 		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
 		complete_effect = {
@@ -8960,6 +9067,49 @@ soviet_collapse_returned_names = {
 					}
 				}
 			}
+		}
+	}
+
+	soviet_collapse_write_restored_charter = {
+		icon = GFX_decision_soviet_collapse_foreign_recognition
+		available = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			has_country_flag = soviet_collapse_ancient_restoration_successor
+			has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			OR = {
+				has_country_flag = INX_khazar_charter
+				has_country_flag = SOG_sogdian_city_charter
+				has_country_flag = ANX_khwarazmian_water_charter
+				has_country_flag = ABX_alan_pass_charter
+			}
+			NOT = { has_country_flag = soviet_collapse_restored_charter_sealed }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			set_country_flag = soviet_collapse_restored_charter_sealed
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_to_variable = {
+				soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain
+			}
+			custom_effect_tooltip = soviet_collapse_write_restored_charter_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war = yes }
 		}
 	}
 
@@ -13304,10 +13454,17 @@ soviet_collapse_northern_lights_commune = {
 
 soviet_collapse_kuznetsk_mining_board = {
 	kmb_deepen_subsoil_extraction = {
-		icon = GFX_decision_generic_industry
+		icon = GFX_decision_005_kmb_deepen_subsoil_extraction
 		cost = constant:soviet_collapse_kmb_balance.deepen_subsoil_extraction_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_resource_expansion_capacity_tt
+				hidden_trigger = { has_soviet_collapse_kmb_resource_expansion_capacity = yes }
+			}
+		}
 		visible = {
 			tag = KMB
+			NOT = { has_capitulated = yes }
 			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = kmb_focus_open_the_subsoil_ledger
 		}
@@ -13329,10 +13486,17 @@ soviet_collapse_kuznetsk_mining_board = {
 	}
 
 	kmb_sell_coal_for_machines = {
-		icon = GFX_decision_generic_industry
+		icon = GFX_decision_005_kmb_sell_coal_for_machines
 		cost = constant:soviet_collapse_kmb_balance.sell_coal_for_machines_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_resource_expansion_capacity_tt
+				hidden_trigger = { has_soviet_collapse_kmb_resource_expansion_capacity = yes }
+			}
+		}
 		visible = {
 			tag = KMB
+			NOT = { has_capitulated = yes }
 			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = kmb_focus_coal_for_every_front
 		}
@@ -13354,15 +13518,31 @@ soviet_collapse_kuznetsk_mining_board = {
 	}
 
 	kmb_open_export_auction = {
-		icon = GFX_decision_generic_trade
+		icon = GFX_decision_005_kmb_open_export_auction
 		cost = constant:soviet_collapse_kmb_balance.open_export_auction_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_export_partner_requirement_tt
+				hidden_trigger = { has_soviet_collapse_kmb_export_partner = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = kmb_open_export_auction_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_kmb_open_export_auction_cost = yes }
+			}
+		}
 		visible = {
 			tag = KMB
+			NOT = { has_capitulated = yes }
 			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = kmb_focus_export_treaty_board
 		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_kmb_open_export_auction_cost = yes }
+		}
+		custom_cost_text = kmb_open_export_auction_cost_text
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
+			hidden_effect = { soviet_collapse_pay_kmb_export_auction_cost = yes }
 			random_country = {
 				limit = {
 					exists = yes
@@ -13370,6 +13550,7 @@ soviet_collapse_kuznetsk_mining_board = {
 						is_subject = yes
 						tag = root
 						has_war_with = root
+						has_market_access_with = root
 					}
 				}
 				add_opinion_modifier = { target = root modifier = soviet_collapse_kmb_resource_treaty }
@@ -13407,15 +13588,31 @@ soviet_collapse_kuznetsk_mining_board = {
 	}
 
 	kmb_sign_resource_treaty = {
-		icon = GFX_decision_generic_industry
+		icon = GFX_decision_005_kmb_sign_resource_treaty
 		cost = constant:soviet_collapse_kmb_balance.sign_resource_treaty_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_export_partner_requirement_tt
+				hidden_trigger = { has_soviet_collapse_kmb_export_partner = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = kmb_sign_resource_treaty_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_kmb_resource_treaty_cost = yes }
+			}
+		}
 		visible = {
 			tag = KMB
+			NOT = { has_capitulated = yes }
 			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = kmb_focus_export_treaty_board
 		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_kmb_resource_treaty_cost = yes }
+		}
+		custom_cost_text = kmb_sign_resource_treaty_cost_text
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
+			hidden_effect = { soviet_collapse_pay_kmb_resource_treaty_cost = yes }
 			random_country = {
 				limit = {
 					exists = yes
@@ -13423,6 +13620,7 @@ soviet_collapse_kuznetsk_mining_board = {
 						is_subject = yes
 						tag = root
 						has_war_with = root
+						has_market_access_with = root
 					}
 				}
 				add_opinion_modifier = { target = root modifier = soviet_collapse_kmb_resource_treaty }
@@ -13448,14 +13646,15 @@ soviet_collapse_kuznetsk_mining_board = {
 	}
 
 	kmb_trade_oil_for_trucks = {
-		icon = GFX_decision_generic_industry
+		icon = GFX_decision_005_kmb_trade_oil_for_trucks
 		cost = constant:soviet_collapse_kmb_balance.trade_oil_for_trucks_cost
 		visible = {
 			tag = KMB
+			NOT = { has_capitulated = yes }
 			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = kmb_focus_oil_shale_emergency
 		}
-		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		fire_only_once = yes
 		complete_effect = {
 			soviet_collapse_kmb_add_oil_and_synthetic_surge = yes
 			add_fuel = constant:soviet_collapse_republic_focus.pacific_observer_fuel_gain
@@ -13476,20 +13675,31 @@ soviet_collapse_kuznetsk_mining_board = {
 	}
 
 	kmb_force_mining_concession = {
-		icon = GFX_decision_generic_prepare_civil_war
+		icon = GFX_decision_005_kmb_force_mining_concession
 		cost = constant:soviet_collapse_kmb_balance.force_mining_concession_cost
+		target_trigger = {
+			FROM = { is_soviet_collapse_kmb_superior_concession_target_from_root = yes }
+		}
 		available = {
-			hidden_trigger = { has_soviet_collapse_kmb_superior_concession_target = yes }
+			custom_trigger_tooltip = {
+				tooltip = kmb_force_mining_concession_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_kmb_force_mining_concession_cost = yes }
+			}
 		}
 		visible = {
 			tag = KMB
+			NOT = { has_capitulated = yes }
 			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = kmb_focus_concession_treaties
 		}
-		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_kmb_force_mining_concession_cost = yes }
+		}
+		custom_cost_text = kmb_force_mining_concession_cost_text
+		days_re_enable = @soviet_collapse_kmb_concession_days_reenable
 		complete_effect = {
-			random_neighbor_country = {
-				limit = { is_soviet_collapse_kmb_superior_concession_target_from_root = yes }
+			hidden_effect = { soviet_collapse_pay_kmb_force_mining_concession_cost = yes }
+			FROM = {
 				add_opinion_modifier = {
 					target = root
 					modifier = soviet_collapse_kmb_forced_concession
@@ -13513,7 +13723,11 @@ soviet_collapse_kuznetsk_mining_board = {
 					soviet_collapse_apply_kmb_concession_crisis_hook = yes
 				}
 			}
-			soviet_collapse_apply_custom_splinter_expansion_claims = yes
+			if = {
+				limit = { NOT = { has_country_flag = kmb_decision_concession_claims_applied } }
+				soviet_collapse_apply_custom_splinter_expansion_claims = yes
+				set_country_flag = kmb_decision_concession_claims_applied
+			}
 			soviet_collapse_kmb_add_metal_quota_surge = yes
 			custom_effect_tooltip = kmb_force_mining_concession_tt
 		}
@@ -13521,7 +13735,7 @@ soviet_collapse_kuznetsk_mining_board = {
 			base = 0
 			modifier = {
 				add = @soviet_collapse_ai_high
-				has_soviet_collapse_kmb_superior_concession_target = yes
+				FROM = { is_soviet_collapse_kmb_superior_concession_target_from_root = yes }
 			}
 			modifier = {
 				factor = @soviet_collapse_ai_urgent_multiplier
@@ -13537,6 +13751,417 @@ soviet_collapse_kuznetsk_mining_board = {
 					}
 				}
 			}
+		}
+	}
+
+	kmb_integrate_conquered_basin = {
+		icon = GFX_decision_005_kmb_integrate_conquered_basin
+		cost = constant:soviet_collapse_kmb_balance.conquered_basin_integration_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_conquered_basin_requirement_tt
+				hidden_trigger = { has_soviet_collapse_kmb_conquered_basin = yes }
+			}
+		}
+		visible = {
+			tag = KMB
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = kmb_focus_concession_treaties
+			NOT = { has_country_flag = kmb_conquered_basin_policy_chosen }
+		}
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_kmb_integrate_conquered_basin = yes
+			custom_effect_tooltip = kmb_integrate_conquered_basin_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war = yes }
+		}
+	}
+
+	kmb_establish_concession_authority = {
+		icon = GFX_decision_005_kmb_establish_concession_authority
+		cost = constant:soviet_collapse_kmb_balance.conquered_basin_concession_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_conquered_basin_requirement_tt
+				hidden_trigger = { can_choose_soviet_collapse_kmb_conquered_basin_policy = yes }
+			}
+			KHA = { exists = no }
+		}
+		visible = {
+			tag = KMB
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = kmb_focus_concession_treaties
+			NOT = { has_country_flag = kmb_conquered_basin_policy_chosen }
+			KHA = { exists = no }
+		}
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_kmb_establish_concession_authority = yes
+			custom_effect_tooltip = kmb_establish_concession_authority_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_war = no }
+			modifier = { factor = @soviet_collapse_ai_calm_multiplier has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	kmb_establish_resource_corridor = {
+		icon = GFX_decision_005_kmb_establish_resource_corridor
+		cost = constant:soviet_collapse_kmb_balance.conquered_basin_corridor_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_conquered_basin_requirement_tt
+				hidden_trigger = { can_choose_soviet_collapse_kmb_conquered_basin_policy = yes }
+			}
+		}
+		visible = {
+			tag = KMB
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = kmb_focus_concession_treaties
+			NOT = { has_country_flag = kmb_conquered_basin_policy_chosen }
+		}
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_kmb_establish_resource_corridor = yes
+			custom_effect_tooltip = kmb_establish_resource_corridor_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_war = yes }
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier is_in_faction = yes }
+		}
+	}
+
+	kmb_accept_machine_tool_bid = {
+		icon = GFX_decision_005_kmb_accept_machine_tool_bid
+		cost = constant:soviet_collapse_kmb_balance.industrial_tender_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_export_partner_requirement_tt
+				hidden_trigger = { has_soviet_collapse_kmb_export_partner = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = kmb_industrial_tender_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_kmb_industrial_tender_cost = yes }
+			}
+		}
+		visible = {
+			tag = KMB
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = kmb_focus_treaty_corridor_guards
+			NOT = { has_country_flag = kmb_foreign_tender_resolved }
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_soviet_collapse_kmb_industrial_tender_cost = yes } }
+		custom_cost_text = kmb_industrial_tender_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			hidden_effect = { soviet_collapse_pay_kmb_industrial_tender_cost = yes }
+			random_country = {
+				limit = {
+					exists = yes
+					NOR = { is_subject = yes tag = root has_war_with = root has_market_access_with = root }
+				}
+				add_opinion_modifier = { target = root modifier = soviet_collapse_kmb_resource_treaty }
+				root = {
+					add_opinion_modifier = { target = prev modifier = soviet_collapse_kmb_resource_treaty }
+					give_market_access = prev
+					give_resource_rights = { receiver = prev state = 569 }
+				}
+			}
+			add_offsite_building = { type = industrial_complex level = constant:soviet_collapse_kmb_balance.industrial_tender_civilian_factories }
+			add_political_power = constant:soviet_collapse_kmb_balance.industrial_tender_political_power
+			add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_republic_focus.medium_league_gain }
+			set_country_flag = kmb_foreign_tender_resolved
+			set_country_flag = kmb_machine_tool_bid_accepted
+			soviet_collapse_apply_kmb_treaty_corridor_crisis_hook = yes
+			custom_effect_tooltip = kmb_accept_machine_tool_bid_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_war = no }
+		}
+	}
+
+	kmb_accept_armaments_bid = {
+		icon = GFX_decision_005_kmb_accept_armaments_bid
+		cost = constant:soviet_collapse_kmb_balance.industrial_tender_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = kmb_export_partner_requirement_tt
+				hidden_trigger = { has_soviet_collapse_kmb_export_partner = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = kmb_industrial_tender_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_kmb_industrial_tender_cost = yes }
+			}
+		}
+		visible = {
+			tag = KMB
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = kmb_focus_treaty_corridor_guards
+			NOT = { has_country_flag = kmb_foreign_tender_resolved }
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_soviet_collapse_kmb_industrial_tender_cost = yes } }
+		custom_cost_text = kmb_industrial_tender_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			hidden_effect = { soviet_collapse_pay_kmb_industrial_tender_cost = yes }
+			random_country = {
+				limit = {
+					exists = yes
+					NOR = { is_subject = yes tag = root has_war_with = root has_market_access_with = root }
+				}
+				add_opinion_modifier = { target = root modifier = soviet_collapse_kmb_resource_treaty }
+				root = {
+					add_opinion_modifier = { target = prev modifier = soviet_collapse_kmb_resource_treaty }
+					give_market_access = prev
+					give_resource_rights = { receiver = prev state = 569 }
+				}
+			}
+			add_offsite_building = { type = arms_factory level = constant:soviet_collapse_kmb_balance.industrial_tender_military_factories }
+			add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_kmb_balance.industrial_tender_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_kmb_balance.industrial_tender_support_equipment }
+			add_army_experience = constant:soviet_collapse_kmb_balance.industrial_tender_army_experience
+			set_country_flag = kmb_foreign_tender_resolved
+			set_country_flag = kmb_armaments_bid_accepted
+			soviet_collapse_apply_kmb_treaty_corridor_crisis_hook = yes
+			custom_effect_tooltip = kmb_accept_armaments_bid_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war = yes }
+		}
+	}
+}
+
+soviet_collapse_uwr_blacksite_category = {
+	uwr_overclock_blacksite_network = {
+		icon = GFX_decision_005_uwr_overclock_blacksite_network
+		cost = constant:soviet_collapse_uwr_balance.blacksite_overclock_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = uwr_blacksite_facility_capacity_tt
+				hidden_trigger = { has_soviet_collapse_uwr_blacksite_expansion_capacity = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = uwr_overclock_blacksite_network_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_uwr_blacksite_overclock_cost = yes }
+			}
+		}
+		visible = {
+			tag = UWR
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = uwr_focus_tver_pathogen_directorate
+			NOT = { has_country_flag = uwr_decision_blacksite_overclocked }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_uwr_blacksite_overclock_cost = yes }
+		}
+		custom_cost_text = uwr_overclock_blacksite_network_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			hidden_effect = { soviet_collapse_pay_uwr_blacksite_overclock_cost = yes }
+			soviet_collapse_uwr_overclock_blacksite_network = yes
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:soviet_collapse_uwr_balance.breakthrough_gain
+			}
+			add_breakthrough_progress = {
+				specialization = specialization_cw
+				value = constant:soviet_collapse_uwr_balance.breakthrough_gain
+			}
+			add_to_variable = {
+				soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain
+			}
+			set_country_flag = uwr_decision_blacksite_overclocked
+			custom_effect_tooltip = uwr_overclock_blacksite_network_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war = yes }
+		}
+	}
+
+	uwr_expand_experiment_camp_registry = {
+		icon = GFX_decision_005_uwr_expand_experiment_camp_registry
+		cost = constant:soviet_collapse_uwr_balance.camp_registry_expansion_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = uwr_experiment_camp_capacity_tt
+				hidden_trigger = { has_soviet_collapse_uwr_experiment_camp_capacity = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = uwr_expand_experiment_camp_registry_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_uwr_experiment_camp_cost = yes }
+			}
+		}
+		visible = {
+			tag = UWR
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = uwr_focus_experiment_camp_registry
+			NOT = { has_country_flag = uwr_decision_camp_registry_expanded }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_uwr_experiment_camp_cost = yes }
+		}
+		custom_cost_text = uwr_expand_experiment_camp_registry_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			hidden_effect = { soviet_collapse_pay_uwr_experiment_camp_cost = yes }
+			soviet_collapse_uwr_build_experiment_camp = yes
+			soviet_collapse_uwr_stockpile_absurd_payloads = yes
+			add_manpower = constant:soviet_collapse_uwr_balance.starting_manpower
+			set_country_flag = uwr_decision_camp_registry_expanded
+			custom_effect_tooltip = uwr_expand_experiment_camp_registry_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war = yes }
+		}
+	}
+
+	uwr_authorize_field_release_raids = {
+		icon = GFX_decision_005_uwr_authorize_field_release_raids
+		cost = constant:soviet_collapse_uwr_balance.field_release_raid_cost
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = uwr_authorize_field_release_raids_cost_text_tooltip
+				hidden_trigger = { can_pay_soviet_collapse_uwr_field_release_raid_cost = yes }
+			}
+		}
+		visible = {
+			tag = UWR
+			NOT = { has_capitulated = yes }
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = uwr_focus_field_release_doctrine
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_uwr_field_release_raid_cost = yes }
+		}
+		custom_cost_text = uwr_authorize_field_release_raids_cost_text
+		days_re_enable = @soviet_collapse_uwr_field_release_days_reenable
+		complete_effect = {
+			hidden_effect = { soviet_collapse_pay_uwr_field_release_raid_cost = yes }
+			soviet_collapse_uwr_stockpile_absurd_payloads = yes
+			soviet_collapse_spawn_custom_splinter_assault_columns = yes
+			if = {
+				limit = { NOT = { has_country_flag = uwr_decision_field_release_claims_applied } }
+				soviet_collapse_apply_custom_splinter_expansion_claims = yes
+				set_country_flag = uwr_decision_field_release_claims_applied
+			}
+			soviet_collapse_apply_high_chaos_neighbor_expansion_plan = yes
+			add_war_support = constant:soviet_collapse_uwr_balance.field_release_raid_war_support
+			custom_effect_tooltip = uwr_authorize_field_release_raids_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war = yes }
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	uwr_intake_prisoner_transports = {
+		icon = GFX_decision_005_uwr_intake_prisoner_transports
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:soviet_collapse_uwr_balance.prisoner_intake_cost
+		target_root_trigger = {
+			tag = UWR
+			NOT = { has_capitulated = yes }
+			has_country_flag = uwr_focus_registry_of_containment
+			can_pay_soviet_collapse_uwr_prisoner_intake_cost = yes
+		}
+		target_trigger = { FROM = { is_soviet_collapse_uwr_prisoner_intake_state = yes } }
+		visible = { FROM = { is_soviet_collapse_uwr_prisoner_intake_state = yes } }
+		available = { can_pay_soviet_collapse_uwr_prisoner_intake_cost = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_uwr_prisoner_intake_cost = yes }
+		custom_cost_text = uwr_prisoner_intake_cost_text
+		complete_effect = {
+			custom_effect_tooltip = uwr_intake_prisoner_transports_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = soviet_collapse_uwr_prisoner_intake_state }
+				soviet_collapse_pay_uwr_prisoner_intake_cost = yes
+				soviet_collapse_complete_uwr_prisoner_intake = yes
+			}
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war = yes }
+		}
+	}
+
+	uwr_dismantle_captured_blacksite = {
+		icon = GFX_decision_005_uwr_dismantle_captured_blacksite
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:soviet_collapse_uwr_aftermath.dismantlement_cost
+		target_root_trigger = { has_soviet_collapse_uwr_aftermath_site = yes }
+		target_trigger = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		visible = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		complete_effect = {
+			custom_effect_tooltip = uwr_dismantle_captured_blacksite_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = soviet_collapse_uwr_aftermath_state }
+				soviet_collapse_dismantle_uwr_aftermath_site = yes
+			}
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+		}
+	}
+
+	uwr_secure_captured_blacksite = {
+		icon = GFX_decision_005_uwr_secure_captured_blacksite
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:soviet_collapse_uwr_aftermath.containment_cost
+		target_root_trigger = { has_soviet_collapse_uwr_aftermath_site = yes }
+		target_trigger = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		visible = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		complete_effect = {
+			custom_effect_tooltip = uwr_secure_captured_blacksite_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = soviet_collapse_uwr_aftermath_state }
+				soviet_collapse_secure_uwr_aftermath_site = yes
+			}
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_war = yes }
+		}
+	}
+
+	uwr_exploit_captured_blacksite = {
+		icon = GFX_decision_005_uwr_exploit_captured_blacksite
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:soviet_collapse_uwr_aftermath.exploitation_cost
+		target_root_trigger = { has_soviet_collapse_uwr_aftermath_site = yes }
+		target_trigger = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		visible = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		complete_effect = {
+			custom_effect_tooltip = uwr_exploit_captured_blacksite_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = soviet_collapse_uwr_aftermath_state }
+				soviet_collapse_exploit_uwr_aftermath_site = yes
+			}
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_global_flag = { flag = chaos_tier value = 5 } }
+			modifier = { factor = @soviet_collapse_ai_calm_multiplier FROM = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
 		}
 	}
 }

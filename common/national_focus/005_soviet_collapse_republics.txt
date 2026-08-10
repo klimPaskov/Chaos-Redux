@@ -20,7 +20,13 @@ focus_tree = {
 		modifier = {
 			add = 20
 			tag = UKR
-			has_country_flag = soviet_collapse_event_created_republic
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
+			}
 		}
 	}
 
@@ -49,7 +55,7 @@ focus_tree = {
 	# role: trunk | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_emergency_rada
-		icon = GFX_ukr_soviet_collapse_survival
+		icon = GFX_focus_ukr_soviet_collapse_emergency_rada
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 0
@@ -66,7 +72,7 @@ focus_tree = {
 	# role: side | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_guard_the_telegraph_house
-		icon = GFX_focus_soviet_collapse_guard_the_radio_stations
+		icon = GFX_focus_ukr_soviet_collapse_guard_the_telegraph_house
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 1
@@ -93,7 +99,7 @@ focus_tree = {
 	# role: side | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_seal_the_grain_ledgers
-		icon = GFX_ukr_soviet_collapse_seal_the_grain_ledgers
+		icon = GFX_focus_ukr_soviet_collapse_seal_the_grain_ledgers
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 10
 		y = 1
@@ -119,7 +125,7 @@ focus_tree = {
 	# role: side | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_count_the_depot_keys
-		icon = GFX_focus_soviet_collapse_audit_local_depots
+		icon = GFX_focus_ukr_soviet_collapse_count_the_depot_keys
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 		x = 17
 		y = 1
@@ -142,7 +148,7 @@ focus_tree = {
 	# role: convergence | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_first_republican_line
-		icon = GFX_ukr_soviet_collapse_first_republican_line
+		icon = GFX_focus_ukr_soviet_collapse_first_republican_line
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 17
 		y = 2
@@ -165,7 +171,7 @@ focus_tree = {
 	# role: fork | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_question_of_statehood
-		icon = GFX_ukr_soviet_collapse_identity
+		icon = GFX_focus_ukr_soviet_collapse_question_of_statehood
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 3
@@ -183,7 +189,7 @@ focus_tree = {
 	# role: crisis | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_war_without_a_declaration
-		icon = GFX_ukr_soviet_collapse_armed_forces
+		icon = GFX_focus_ukr_soviet_collapse_war_without_a_declaration
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 19
 		y = 4
@@ -211,7 +217,7 @@ focus_tree = {
 	# role: fork | filter: emergency
 	focus = {
 		id = ukr_soviet_collapse_moscows_officers_in_our_barracks
-			icon = GFX_focus_soviet_collapse_republican_general_staff
+			icon = GFX_focus_ukr_soviet_collapse_moscows_officers_in_our_barracks
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 			x = 19
 			y = 2
@@ -221,6 +227,13 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_officer_question_open
 			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.military_focus_gain }
+			if = {
+				limit = { SOV = { exists = yes } }
+				add_decryption = { target = SOV amount = constant:soviet_collapse_republic_focus.ukr_officer_vetting_decryption_gain }
+			}
+			custom_effect_tooltip = ukr_soviet_collapse_moscows_officers_in_our_barracks_tt
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -230,7 +243,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_open_the_liaison_offices
-		icon = GFX_ukr_soviet_collapse_foreign
+		icon = GFX_focus_ukr_soviet_collapse_open_the_liaison_offices
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 28
 		y = 6
@@ -253,7 +266,7 @@ focus_tree = {
 	# role: route_lock | filter: political
 	focus = {
 		id = ukr_soviet_collapse_socialist_republic_without_moscow
-		icon = GFX_ukr_soviet_collapse_socialist
+		icon = GFX_focus_ukr_soviet_collapse_socialist_republic_without_moscow
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 5
@@ -284,7 +297,7 @@ focus_tree = {
 	# role: route_lock | filter: political
 	focus = {
 		id = ukr_soviet_collapse_black_banner_compact
-		icon = GFX_ukr_soviet_collapse_black_banner
+		icon = GFX_focus_ukr_soviet_collapse_black_banner_compact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 19
 		y = 5
@@ -319,7 +332,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_elections_under_shellfire
-		icon = GFX_ukr_soviet_collapse_democratic
+		icon = GFX_focus_ukr_soviet_collapse_elections_under_shellfire
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 5
@@ -345,7 +358,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_peasant_socialist_congress
-		icon = GFX_ukr_soviet_collapse_peasant_socialist_congress
+		icon = GFX_focus_ukr_soviet_collapse_peasant_socialist_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 19
 		y = 7
@@ -363,7 +376,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_workers_congress_in_kharkiv
-		icon = GFX_ukr_soviet_collapse_workers_congress_in_kharkiv
+		icon = GFX_focus_ukr_soviet_collapse_workers_congress_in_kharkiv
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
 		y = 8
@@ -384,7 +397,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_village_soviets_without_requisition
-		icon = GFX_ukr_soviet_collapse_village_soviets_without_requisition
+		icon = GFX_focus_ukr_soviet_collapse_village_soviets_without_requisition
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 9
@@ -407,7 +420,7 @@ focus_tree = {
 	# role: route_lock | filter: political
 	focus = {
 		id = ukr_soviet_collapse_purge_moscow_loyalists
-		icon = GFX_ukr_soviet_collapse_purge_moscow_loyalists
+		icon = GFX_focus_ukr_soviet_collapse_purge_moscow_loyalists
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 11
@@ -435,7 +448,7 @@ focus_tree = {
 	# role: route_lock | filter: political
 	focus = {
 		id = ukr_soviet_collapse_re_register_the_party
-		icon = GFX_ukr_soviet_collapse_re_register_the_party
+		icon = GFX_focus_ukr_soviet_collapse_re_register_the_party
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 11
@@ -468,7 +481,7 @@ focus_tree = {
 	# role: league | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_left_league_delegation
-		icon = GFX_ukr_soviet_collapse_left_league_delegation
+		icon = GFX_focus_ukr_soviet_collapse_left_league_delegation
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
 		y = 10
@@ -493,7 +506,7 @@ focus_tree = {
 	# role: fork | filter: political
 	focus = {
 		id = ukr_soviet_collapse_the_ukrainian_commune_debate
-		icon = GFX_ukr_soviet_collapse_the_ukrainian_commune_debate
+		icon = GFX_focus_ukr_soviet_collapse_the_ukrainian_commune_debate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
 		y = 13
@@ -543,7 +556,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_officers_above_parties
-		icon = GFX_ukr_soviet_collapse_directory
+		icon = GFX_focus_ukr_soviet_collapse_officers_above_parties
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 22
 		y = 5
@@ -571,7 +584,7 @@ focus_tree = {
 	# role: intelligence | filter: military
 	focus = {
 		id = ukr_soviet_collapse_officer_patronage_lists
-		icon = GFX_ukr_soviet_collapse_officer_patronage_lists
+		icon = GFX_focus_ukr_soviet_collapse_officer_patronage_lists
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 24
 		y = 6
@@ -598,7 +611,7 @@ focus_tree = {
 	# role: side | filter: military
 	focus = {
 		id = ukr_soviet_collapse_general_staff_war_college
-		icon = GFX_ukr_soviet_collapse_general_staff_war_college
+		icon = GFX_focus_ukr_soviet_collapse_general_staff_war_college
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 27
 		y = 9
@@ -621,7 +634,7 @@ focus_tree = {
 	# role: fork | filter: military
 	focus = {
 		id = ukr_soviet_collapse_the_commander_or_the_cabinet
-		icon = GFX_ukr_soviet_collapse_the_commander_or_the_cabinet
+		icon = GFX_focus_ukr_soviet_collapse_the_commander_or_the_cabinet
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 22
 		y = 6
@@ -647,7 +660,7 @@ focus_tree = {
 	# role: route_lock | filter: military
 	focus = {
 		id = ukr_soviet_collapse_army_supremacy
-		icon = GFX_ukr_soviet_collapse_army_supremacy
+		icon = GFX_focus_ukr_soviet_collapse_army_supremacy
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 21
 		y = 8
@@ -672,7 +685,7 @@ focus_tree = {
 	# role: route_lock | filter: military
 	focus = {
 		id = ukr_soviet_collapse_mixed_emergency_cabinet
-		icon = GFX_ukr_soviet_collapse_mixed_emergency_cabinet
+		icon = GFX_focus_ukr_soviet_collapse_mixed_emergency_cabinet
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 24
 		y = 8
@@ -699,7 +712,7 @@ focus_tree = {
 	# role: finisher | filter: military
 	focus = {
 		id = ukr_soviet_collapse_the_directory_state
-		icon = GFX_ukr_soviet_collapse_the_directory_state
+		icon = GFX_focus_ukr_soviet_collapse_the_directory_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 27
 		y = 11
@@ -739,7 +752,7 @@ focus_tree = {
 	# role: diplomacy | filter: political
 	focus = {
 		id = ukr_soviet_collapse_foreign_courts_notice_kyiv
-		icon = GFX_ukr_soviet_collapse_foreign_courts_notice_kyiv
+		icon = GFX_focus_ukr_soviet_collapse_foreign_courts_notice_kyiv
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 23
 		y = 4
@@ -771,7 +784,7 @@ focus_tree = {
 	# role: hidden | filter: political
 	focus = {
 		id = ukr_soviet_collapse_free_soil_compromise
-		icon = GFX_ukr_soviet_collapse_free_soil_compromise
+		icon = GFX_focus_ukr_soviet_collapse_free_soil_compromise
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 6
@@ -823,7 +836,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_coalition_of_three_ministries
-		icon = GFX_ukr_soviet_collapse_democratic
+		icon = GFX_focus_ukr_soviet_collapse_coalition_of_three_ministries
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 14
 		y = 7
@@ -844,7 +857,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_rural_deputy_bloc
-		icon = GFX_ukr_soviet_collapse_rural_deputy_bloc
+		icon = GFX_focus_ukr_soviet_collapse_rural_deputy_bloc
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 14
 		y = 9
@@ -876,7 +889,7 @@ focus_tree = {
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_minority_autonomy_statutes
-		icon = GFX_ukr_soviet_collapse_minority_autonomy_statutes
+		icon = GFX_focus_ukr_soviet_collapse_minority_autonomy_statutes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 10
@@ -905,7 +918,7 @@ focus_tree = {
 	# role: fork | filter: political
 	focus = {
 		id = ukr_soviet_collapse_provincial_governors_or_elected_radas
-		icon = GFX_ukr_soviet_collapse_provincial_governors_or_elected_radas
+		icon = GFX_focus_ukr_soviet_collapse_provincial_governors_or_elected_radas
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 12
@@ -932,7 +945,7 @@ focus_tree = {
 	# role: route_lock | filter: political
 	focus = {
 		id = ukr_soviet_collapse_appointed_governors
-		icon = GFX_ukr_soviet_collapse_appointed_governors
+		icon = GFX_focus_ukr_soviet_collapse_appointed_governors
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 14
@@ -953,7 +966,7 @@ focus_tree = {
 	# role: finisher | filter: political
 	focus = {
 		id = ukr_soviet_collapse_republic_of_laws
-		icon = GFX_ukr_soviet_collapse_democratic
+		icon = GFX_focus_ukr_soviet_collapse_republic_of_laws
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 6
@@ -980,7 +993,7 @@ focus_tree = {
 	# role: crosslink | filter: political
 	focus = {
 		id = ukr_soviet_collapse_civilian_command_over_the_army
-		icon = GFX_ukr_soviet_collapse_democratic
+		icon = GFX_focus_ukr_soviet_collapse_civilian_command_over_the_army
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 12
 		y = 8
@@ -1016,7 +1029,7 @@ focus_tree = {
 	# role: side | filter: military
 	focus = {
 		id = ukr_soviet_collapse_black_sea_defense_staff
-		icon = GFX_ukr_soviet_collapse_expansion
+		icon = GFX_focus_ukr_soviet_collapse_black_sea_defense_staff
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_NAVY_XP }
 		x = 25
 		y = 3
@@ -1045,7 +1058,7 @@ focus_tree = {
 	# role: side | filter: military
 	focus = {
 		id = ukr_soviet_collapse_depot_motor_columns
-		icon = GFX_ukr_soviet_collapse_depot_motor_columns
+		icon = GFX_focus_ukr_soviet_collapse_depot_motor_columns
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 21
 		y = 3
@@ -1063,7 +1076,7 @@ focus_tree = {
 	# role: crosslink | filter: military
 	focus = {
 		id = ukr_soviet_collapse_league_training_cadres
-		icon = GFX_ukr_soviet_collapse_league_training_cadres
+		icon = GFX_focus_ukr_soviet_collapse_league_training_cadres
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 10
@@ -1086,7 +1099,7 @@ focus_tree = {
 	# role: crosslink | filter: military
 	focus = {
 		id = ukr_soviet_collapse_foreign_advisers_in_plain_coats
-		icon = GFX_ukr_soviet_collapse_foreign_advisers_in_plain_coats
+		icon = GFX_focus_ukr_soviet_collapse_foreign_advisers_in_plain_coats
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 37
 		y = 7
@@ -1112,7 +1125,7 @@ focus_tree = {
 	# role: crosslink | filter: military
 	focus = {
 		id = ukr_soviet_collapse_arsenal_cities
-		icon = GFX_ukr_soviet_collapse_industry
+		icon = GFX_focus_ukr_soviet_collapse_arsenal_cities
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 26
 		y = 6
@@ -1137,7 +1150,7 @@ focus_tree = {
 	# role: convergence | filter: military
 	focus = {
 		id = ukr_soviet_collapse_army_of_the_republic
-		icon = GFX_ukr_soviet_collapse_army_of_the_republic
+		icon = GFX_focus_ukr_soviet_collapse_army_of_the_republic
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 26
 		y = 7
@@ -1157,7 +1170,7 @@ focus_tree = {
 	# role: side | filter: military
 	focus = {
 		id = ukr_soviet_collapse_republican_deep_battle
-		icon = GFX_ukr_soviet_collapse_republican_deep_battle
+		icon = GFX_focus_ukr_soviet_collapse_republican_deep_battle
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 26
 		y = 8
@@ -1189,7 +1202,7 @@ focus_tree = {
 	# role: side | filter: industry
 	focus = {
 		id = ukr_soviet_collapse_village_granary_guards
-		icon = GFX_ukr_soviet_collapse_village_granary_guards
+		icon = GFX_focus_ukr_soviet_collapse_village_granary_guards
 		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
 		x = 11
 		y = 3
@@ -1209,7 +1222,7 @@ focus_tree = {
 	# role: side | filter: industry
 	focus = {
 		id = ukr_soviet_collapse_dnieper_workshops
-		icon = GFX_ukr_soviet_collapse_industry
+		icon = GFX_focus_ukr_soviet_collapse_dnieper_workshops
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 9
 		y = 3
@@ -1233,7 +1246,7 @@ focus_tree = {
 	# role: side | filter: industry
 	focus = {
 		id = ukr_soviet_collapse_black_sea_port_ledgers
-		icon = GFX_ukr_soviet_collapse_black_sea_port_ledgers
+		icon = GFX_focus_ukr_soviet_collapse_black_sea_port_ledgers
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
 		x = 31
 		y = 5
@@ -1268,7 +1281,7 @@ focus_tree = {
 	# role: crosslink | filter: industry
 	focus = {
 		id = ukr_soviet_collapse_grain_loan
-		icon = GFX_ukr_soviet_collapse_grain_loan
+		icon = GFX_focus_ukr_soviet_collapse_grain_loan
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 7
 		y = 7
@@ -1302,7 +1315,7 @@ focus_tree = {
 	# role: side | filter: industry
 	focus = {
 		id = ukr_soviet_collapse_factories_under_local_guard
-		icon = GFX_ukr_soviet_collapse_factories_under_local_guard
+		icon = GFX_focus_ukr_soviet_collapse_factories_under_local_guard
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
 		x = 6
 		y = 5
@@ -1327,7 +1340,7 @@ focus_tree = {
 	# role: route_lock | filter: industry
 	focus = {
 		id = ukr_soviet_collapse_arms_before_exports
-		icon = GFX_ukr_soviet_collapse_industry
+		icon = GFX_focus_ukr_soviet_collapse_arms_before_exports
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 8
 		y = 5
@@ -1349,7 +1362,7 @@ focus_tree = {
 	# role: crosslink | filter: industry
 	focus = {
 		id = ukr_soviet_collapse_arsenal_of_the_league
-		icon = GFX_ukr_soviet_collapse_arsenal_of_the_league
+		icon = GFX_focus_ukr_soviet_collapse_arsenal_of_the_league
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 4
 		y = 10
@@ -1381,7 +1394,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 		focus = {
 				id = ukr_soviet_collapse_german_liaison_question
-				icon = GFX_ukr_soviet_collapse_german_liaison_question
+				icon = GFX_focus_ukr_soviet_collapse_german_liaison_question
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 				x = 30
 				y = 6
@@ -1411,7 +1424,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 		focus = {
 				id = ukr_soviet_collapse_british_caution
-				icon = GFX_ukr_soviet_collapse_british_caution
+				icon = GFX_focus_ukr_soviet_collapse_british_caution
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 				x = 27
 			y = 5
@@ -1431,7 +1444,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_romanian_port_route
-		icon = GFX_ukr_soviet_collapse_romanian_port_route
+		icon = GFX_focus_ukr_soviet_collapse_romanian_port_route
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
 		x = 29
 		y = 7
@@ -1452,7 +1465,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_prepare_league_liaison_rooms
-		icon = GFX_ukr_soviet_collapse_league
+		icon = GFX_focus_ukr_soviet_collapse_prepare_league_liaison_rooms
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 7
@@ -1478,7 +1491,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 		focus = {
 			id = ukr_soviet_collapse_advisers_without_flags
-			icon = GFX_ukr_soviet_collapse_advisers_without_flags
+			icon = GFX_focus_ukr_soviet_collapse_advisers_without_flags
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 				x = 29
 			y = 8
@@ -1499,7 +1512,7 @@ focus_tree = {
 	# role: crosslink | filter: diplomacy
 		focus = {
 			id = ukr_soviet_collapse_equipment_corridor_authority
-			icon = GFX_ukr_soviet_collapse_equipment_corridor_authority
+			icon = GFX_focus_ukr_soviet_collapse_equipment_corridor_authority
 			search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 			x = 33
 			y = 12
@@ -1531,7 +1544,7 @@ focus_tree = {
 	# role: convergence | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_league_founding_charter
-		icon = GFX_ukr_soviet_collapse_league_founding_charter
+		icon = GFX_focus_ukr_soviet_collapse_league_founding_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 11
@@ -1571,7 +1584,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_league_of_equals
-		icon = GFX_ukr_soviet_collapse_league_of_equals
+		icon = GFX_focus_ukr_soviet_collapse_league_of_equals
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 13
@@ -1607,7 +1620,7 @@ focus_tree = {
 	# role: side | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_kyiv_leads_the_front
-		icon = GFX_ukr_soviet_collapse_kyiv_leads_the_front
+		icon = GFX_focus_ukr_soviet_collapse_kyiv_leads_the_front
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP FOCUS_FILTER_ANNEXATION }
 		x = 4
 		y = 13
@@ -1653,7 +1666,7 @@ focus_tree = {
 	# role: expansion_side | filter: expansion
 		focus = {
 			id = ukr_soviet_collapse_romanian_grain_and_river_bargain
-			icon = GFX_ukr_soviet_collapse_romanian_grain_and_river_bargain
+			icon = GFX_focus_ukr_soviet_collapse_romanian_grain_and_river_bargain
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 34
 			y = 9
@@ -1675,7 +1688,7 @@ focus_tree = {
 	# role: expansion_side | filter: expansion
 	focus = {
 			id = ukr_soviet_collapse_anatolian_grain_mission
-			icon = GFX_ukr_soviet_collapse_anatolian_grain_mission
+			icon = GFX_focus_ukr_soviet_collapse_anatolian_grain_mission
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 29
 			y = 9
@@ -1703,7 +1716,7 @@ focus_tree = {
 	# role: expansion_side | filter: expansion
 	focus = {
 		id = ukr_soviet_collapse_carpathian_security_belt
-		icon = GFX_ukr_soviet_collapse_carpathian_security_belt
+		icon = GFX_focus_ukr_soviet_collapse_carpathian_security_belt
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 31
 		y = 11
@@ -1726,7 +1739,7 @@ focus_tree = {
 	# role: expansion_fork | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_protectorate_debate
-		icon = GFX_ukr_soviet_collapse_protectorate_debate
+		icon = GFX_focus_ukr_soviet_collapse_protectorate_debate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 36
 		y = 9
@@ -1753,7 +1766,7 @@ focus_tree = {
 	# role: expansion_route | filter: expansion
 	focus = {
 		id = ukr_soviet_collapse_direct_national_claims
-		icon = GFX_ukr_soviet_collapse_direct_national_claims
+		icon = GFX_focus_ukr_soviet_collapse_direct_national_claims
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP FOCUS_FILTER_ANNEXATION }
 		x = 28
 		y = 12
@@ -1783,7 +1796,7 @@ focus_tree = {
 	# role: expansion_route | filter: expansion
 	focus = {
 		id = ukr_soviet_collapse_black_sea_hegemony
-		icon = GFX_ukr_soviet_collapse_black_sea_hegemony
+		icon = GFX_focus_ukr_soviet_collapse_black_sea_hegemony
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 27
 		y = 13
@@ -1809,7 +1822,7 @@ focus_tree = {
 	# role: expansion_route | filter: expansion
 	focus = {
 		id = ukr_soviet_collapse_breadbasket_empire
-		icon = GFX_ukr_soviet_collapse_breadbasket_empire
+		icon = GFX_focus_ukr_soviet_collapse_breadbasket_empire
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 31
 		y = 13
@@ -1837,7 +1850,7 @@ focus_tree = {
 	# role: expansion_route | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_border_states_accept_kyiv
-		icon = GFX_ukr_soviet_collapse_border_states_accept_kyiv
+		icon = GFX_focus_ukr_soviet_collapse_border_states_accept_kyiv
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 14
@@ -1866,7 +1879,7 @@ focus_tree = {
 	# role: expansion_route | filter: diplomacy
 	focus = {
 		id = ukr_soviet_collapse_external_border_arbitration
-		icon = GFX_ukr_soviet_collapse_border_states_accept_kyiv
+		icon = GFX_focus_ukr_soviet_collapse_external_border_arbitration
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 16
@@ -1894,7 +1907,7 @@ focus_tree = {
 	# role: expansion_route | filter: expansion
 	focus = {
 		id = ukr_soviet_collapse_league_security_zone_mandates
-		icon = GFX_ukr_soviet_collapse_black_sea_hegemony
+		icon = GFX_focus_ukr_soviet_collapse_league_security_zone_mandates
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 7
 		y = 18
@@ -1924,7 +1937,7 @@ focus_tree = {
 	# role: expansion_capstone | filter: expansion
 	focus = {
 		id = ukr_soviet_collapse_great_steppe_and_sea_plan
-		icon = GFX_ukr_soviet_collapse_great_steppe_and_sea_plan
+		icon = GFX_focus_ukr_soviet_collapse_great_steppe_and_sea_plan
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 27
 		y = 15
@@ -1974,7 +1987,7 @@ focus_tree = {
 	# role: units | filter: foreign_aid
 	focus = {
 		id = ukr_soviet_collapse_ports_need_soldiers
-		icon = GFX_ukr_soviet_collapse_ports_need_soldiers
+		icon = GFX_focus_ukr_soviet_collapse_ports_need_soldiers
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
 		x = 32
 		y = 10
@@ -2006,7 +2019,7 @@ focus_tree = {
 	# role: expansion | filter: foreign_aid
 	focus = {
 		id = ukr_soviet_collapse_the_western_question_cannot_wait
-		icon = GFX_ukr_soviet_collapse_the_western_question_cannot_wait
+		icon = GFX_focus_ukr_soviet_collapse_the_western_question_cannot_wait
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 29
 		y = 14
@@ -2036,7 +2049,7 @@ focus_tree = {
 	# role: high_chaos | filter: foreign_aid
 		focus = {
 			id = ukr_soviet_collapse_the_bread_line_becomes_a_border
-			icon = GFX_ukr_soviet_collapse_the_bread_line_becomes_a_border
+			icon = GFX_focus_ukr_soviet_collapse_the_bread_line_becomes_a_border
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 			x = 35
 			y = 16
@@ -2066,7 +2079,7 @@ focus_tree = {
 	# role: late_game | filter: foreign_aid
 		focus = {
 			id = ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map
-			icon = GFX_ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map
+			icon = GFX_focus_ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 			x = 25
 			y = 16
@@ -2089,7 +2102,7 @@ focus_tree = {
 	# role: hidden | filter: high_chaos
 			focus = {
 				id = ukr_soviet_collapse_bread_state_whispers
-				icon = GFX_ukr_soviet_collapse_bread_state_whispers
+				icon = GFX_focus_ukr_soviet_collapse_bread_state_whispers
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 				x = 31
 				y = 15
@@ -2123,7 +2136,7 @@ focus_tree = {
 	# role: evolution | filter: high_chaos
 			focus = {
 				id = ukr_soviet_collapse_black_soil_oath
-				icon = GFX_ukr_soviet_collapse_black_soil_oath
+				icon = GFX_focus_ukr_soviet_collapse_black_soil_oath
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 				x = 31
 				y = 16
@@ -2151,7 +2164,7 @@ focus_tree = {
 	# role: high_chaos | filter: high_chaos
 		focus = {
 			id = ukr_soviet_collapse_dead_fields_living_columns
-			icon = GFX_ukr_soviet_collapse_dead_fields_living_columns
+			icon = GFX_focus_ukr_soviet_collapse_dead_fields_living_columns
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 			x = 29
 			y = 16
@@ -2179,7 +2192,7 @@ focus_tree = {
 	# role: high_chaos | filter: high_chaos
 	focus = {
 		id = ukr_soviet_collapse_grain_census_of_everyone
-		icon = GFX_ukr_soviet_collapse_grain_census_of_everyone
+		icon = GFX_focus_ukr_soviet_collapse_grain_census_of_everyone
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 32
 		y = 18
@@ -2200,7 +2213,7 @@ focus_tree = {
 	# role: high_chaos | filter: high_chaos
 	focus = {
 		id = ukr_soviet_collapse_no_one_leaves_the_bread_line
-		icon = GFX_ukr_soviet_collapse_no_one_leaves_the_bread_line
+		icon = GFX_focus_ukr_soviet_collapse_no_one_leaves_the_bread_line
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 31
 		y = 19
@@ -2221,7 +2234,7 @@ focus_tree = {
 	# role: late_game | filter: high_chaos
 	focus = {
 		id = ukr_soviet_collapse_last_harvest_plan
-		icon = GFX_ukr_soviet_collapse_last_harvest_plan
+		icon = GFX_focus_ukr_soviet_collapse_last_harvest_plan
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 31
 		y = 20
@@ -2241,7 +2254,7 @@ focus_tree = {
 	# role: evolution | filter: high_chaos
 		focus = {
 			id = ukr_soviet_collapse_black_banner_takes_the_villages
-			icon = GFX_ukr_soviet_collapse_black_banner_takes_the_villages
+			icon = GFX_focus_ukr_soviet_collapse_black_banner_takes_the_villages
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 30
 			y = 18
@@ -2271,7 +2284,7 @@ focus_tree = {
 	# role: finisher | filter: high_chaos
 			focus = {
 				id = ukr_soviet_collapse_the_double_republic
-				icon = GFX_ukr_soviet_collapse_the_double_republic
+				icon = GFX_focus_ukr_soviet_collapse_the_double_republic
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 				x = 35
 				y = 19
@@ -2295,7 +2308,7 @@ focus_tree = {
 	# role: crisis | filter: high_chaos
 			focus = {
 				id = ukr_soviet_collapse_the_commune_war
-				icon = GFX_ukr_soviet_collapse_the_commune_war
+				icon = GFX_focus_ukr_soviet_collapse_the_commune_war
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 				x = 27
 				y = 19
@@ -2318,7 +2331,7 @@ focus_tree = {
 	# role: late_game | filter: high_chaos
 		focus = {
 			id = ukr_soviet_collapse_when_the_fields_refuse_the_state
-			icon = GFX_ukr_soviet_collapse_when_the_fields_refuse_the_state
+			icon = GFX_focus_ukr_soviet_collapse_when_the_fields_refuse_the_state
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 34
 			y = 18
@@ -2343,7 +2356,13 @@ focus_tree = {
 		factor = 0
 		modifier = {
 			add = 10
-			has_country_flag = soviet_collapse_event_created_republic
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
+			}
 		}
 	}
 
@@ -2531,7 +2550,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_socialist_sovereignty_committee
-		icon = GFX_focus_soviet_collapse_commit_to_socialist_sovereignty
+		icon = GFX_focus_soviet_collapse_socialist_sovereignty_committee
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 11		y = 2
 			cost = @soviet_collapse_focus_medium
@@ -2559,7 +2578,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_military_defense_council
-		icon = GFX_focus_soviet_collapse_republican_general_staff
+		icon = GFX_focus_soviet_collapse_military_defense_council
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 			x = 2		y = 2
 			cost = @soviet_collapse_focus_medium
@@ -2595,7 +2614,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_foreign_liaison_government
-		icon = GFX_focus_soviet_collapse_request_external_missions
+		icon = GFX_focus_soviet_collapse_foreign_liaison_government
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 6		y = 4
 			cost = @soviet_collapse_focus_medium
@@ -2693,7 +2712,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_foreign_cadre_school
-		icon = GFX_focus_soviet_collapse_open_volunteer_channels
+		icon = GFX_focus_soviet_collapse_foreign_cadre_school
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 7		y = 5
 		cost = @soviet_collapse_focus_medium
@@ -2711,7 +2730,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_league_reserve_table
-		icon = GFX_focus_soviet_collapse_common_front_timetables
+		icon = GFX_focus_soviet_collapse_league_reserve_table
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 6		y = 8
 		cost = @soviet_collapse_focus_long
@@ -2745,7 +2764,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_the_first_line_holds
-		icon = GFX_focus_soviet_collapse_survive_the_first_orders
+		icon = GFX_focus_soviet_collapse_the_first_line_holds
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 17		y = 2
 		cost = @soviet_collapse_focus_long
@@ -2760,7 +2779,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_stabilize_food_and_currency
-		icon = GFX_focus_soviet_collapse_secure_ministry_ledgers
+		icon = GFX_focus_soviet_collapse_stabilize_food_and_currency
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 8		y = 7
 		cost = @soviet_collapse_focus_medium
@@ -2780,7 +2799,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_prepare_league_liaisons
-		icon = GFX_focus_soviet_collapse_convene_league_liaisons
+		icon = GFX_focus_soviet_collapse_prepare_league_liaisons
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 11		y = 4
 		cost = @soviet_collapse_focus_medium
@@ -2799,7 +2818,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_neutrality_under_pressure
-		icon = GFX_focus_soviet_collapse_guard_the_radio_stations
+		icon = GFX_focus_soviet_collapse_neutrality_under_pressure
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8		y = 8
 		cost = @soviet_collapse_focus_medium
@@ -2818,7 +2837,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_old_underground_branch
-		icon = GFX_focus_soviet_collapse_huliaipole_black_flag
+		icon = GFX_focus_soviet_collapse_old_underground_branch
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 14		y = 4
 		cost = @soviet_collapse_focus_long
@@ -3048,7 +3067,7 @@ focus_tree = {
 
 	focus = {
 		id = soviet_collapse_high_chaos_local_strongman
-		icon = GFX_focus_soviet_collapse_no_masters_in_kyiv_or_moscow
+		icon = GFX_focus_soviet_collapse_high_chaos_local_strongman
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 17		y = 6
 		cost = @soviet_collapse_focus_long
@@ -3155,7 +3174,13 @@ focus_tree = {
 		factor = 0
 		modifier = {
 			add = 10
-			has_country_flag = soviet_collapse_event_created_republic
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
+			}
 			is_soviet_collapse_internal_republic_focus_tree_tag = yes
 			NOT = { is_soviet_collapse_caucasus_focus_tree_tag = yes }
 			NOT = { is_soviet_collapse_central_asia_focus_tree_tag = yes }
@@ -3201,7 +3226,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_secure_autonomous_capital
-		icon = GFX_focus_soviet_collapse_guard_the_radio_stations
+		icon = GFX_focus_internal_soviet_collapse_secure_autonomous_capital
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 1
@@ -3217,7 +3242,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_map_union_property
-		icon = GFX_focus_soviet_collapse_secure_ministry_ledgers
+		icon = GFX_focus_internal_soviet_collapse_map_union_property
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 16
 		y = 1
@@ -3249,7 +3274,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_write_the_autonomy_statute
-		icon = GFX_focus_soviet_collapse_claim_republican_legality
+		icon = GFX_focus_internal_soviet_collapse_write_the_autonomy_statute
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 2
@@ -3268,7 +3293,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_legal_autonomy_congress
-		icon = GFX_focus_soviet_collapse_commit_to_socialist_sovereignty
+		icon = GFX_focus_internal_soviet_collapse_legal_autonomy_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 4
@@ -3292,7 +3317,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_security_council
-		icon = GFX_focus_soviet_collapse_republican_general_staff
+		icon = GFX_focus_internal_soviet_collapse_security_council
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER FOCUS_FILTER_ANNEXATION }
 		x = 20
 		y = 4
@@ -3338,7 +3363,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_forest_republic_committees
-		icon = GFX_focus_soviet_collapse_belarusian_forest_corridors
+		icon = GFX_focus_internal_soviet_collapse_forest_republic_committees
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 1
 		y = 4
@@ -3415,7 +3440,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_forest_border_guard_posts
-		icon = GFX_focus_soviet_collapse_belarusian_forest_corridors
+		icon = GFX_focus_internal_soviet_collapse_forest_border_guard_posts
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 0
 		y = 6
@@ -3448,7 +3473,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_yamalian_gas_field_councils
-		icon = GFX_focus_internal_soviet_collapse_yakut_arctic_resource_compacts
+		icon = GFX_focus_internal_soviet_collapse_yamalian_gas_field_councils
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 4
 		y = 6
@@ -3475,7 +3500,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_taymyr_nickel_guard
-		icon = GFX_focus_internal_soviet_collapse_yakut_lena_resource_board
+		icon = GFX_focus_internal_soviet_collapse_taymyr_nickel_guard
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 6
 		y = 6
@@ -3500,7 +3525,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_nenets_tundra_route_committees
-		icon = GFX_focus_internal_soviet_collapse_border_and_rail_liaisons
+		icon = GFX_focus_internal_soviet_collapse_nenets_tundra_route_committees
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 4
 		y = 7
@@ -3526,7 +3551,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_arctic_resource_compact
-		icon = GFX_focus_internal_soviet_collapse_yakut_arctic_resource_compacts
+		icon = GFX_focus_internal_soviet_collapse_arctic_resource_compact
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 5
 		y = 8
@@ -3602,7 +3627,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_syktyvkar_emergency_council
-		icon = GFX_focus_soviet_collapse_republican_council_files
+		icon = GFX_focus_internal_soviet_collapse_syktyvkar_emergency_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 7
 		y = 8
@@ -3677,7 +3702,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_exile_camp_reckoning
-		icon = GFX_focus_soviet_collapse_no_masters_in_kyiv_or_moscow
+		icon = GFX_focus_internal_soviet_collapse_exile_camp_reckoning
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 3
 		y = 9
@@ -3762,7 +3787,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_ural_cavalry_roads
-		icon = GFX_focus_soviet_collapse_steppe_supply_congress
+		icon = GFX_focus_internal_soviet_collapse_ural_cavalry_roads
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 9
 		y = 5
@@ -3836,7 +3861,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_idel_ural_congress
-		icon = GFX_focus_soviet_collapse_supreme_soviet_minutes
+		icon = GFX_focus_internal_soviet_collapse_idel_ural_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 7
@@ -3857,7 +3882,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_bashkir_cavalry_oath
-		icon = GFX_focus_soviet_collapse_steppe_supply_congress
+		icon = GFX_focus_internal_soviet_collapse_bashkir_cavalry_oath
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 7
@@ -3880,7 +3905,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_ufa_emergency_authority
-		icon = GFX_focus_soviet_collapse_emergency_constitution_claim
+		icon = GFX_focus_internal_soviet_collapse_ufa_emergency_authority
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 11
 		y = 8
@@ -3980,7 +4005,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_black_sea_peninsula_guard
-		icon = GFX_focus_soviet_collapse_black_sea_dniester_line
+		icon = GFX_focus_internal_soviet_collapse_black_sea_peninsula_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 18
 		y = 4
@@ -4004,7 +4029,7 @@ focus_tree = {
 
 		focus = {
 			id = internal_soviet_collapse_crimean_tatar_councils
-			icon = GFX_focus_soviet_collapse_speaker_recognition_desk
+			icon = GFX_focus_internal_soviet_collapse_crimean_tatar_councils
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 20
 			y = 5
@@ -4060,7 +4085,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_black_sea_minorities_statute
-		icon = GFX_focus_soviet_collapse_regional_mandate_rolls
+		icon = GFX_focus_internal_soviet_collapse_black_sea_minorities_statute
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 7
@@ -4079,7 +4104,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_ukraine_settlement_commission
-		icon = GFX_focus_soviet_collapse_legality_broadcasts
+		icon = GFX_focus_internal_soviet_collapse_ukraine_settlement_commission
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_ANNEXATION }
 		x = 17
 		y = 8
@@ -4208,7 +4233,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_taiga_steppe_self_rule
-		icon = GFX_focus_soviet_collapse_steppe_supply_congress
+		icon = GFX_focus_internal_soviet_collapse_taiga_steppe_self_rule
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 5
@@ -4535,7 +4560,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_tuvan_steppe_guard
-		icon = GFX_focus_soviet_collapse_steppe_supply_congress
+		icon = GFX_focus_internal_soviet_collapse_tuvan_steppe_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 29
 		y = 8
@@ -4609,7 +4634,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_minor_volga_autonomy_roundtable
-		icon = GFX_focus_internal_soviet_collapse_volga_oil_and_workshops
+		icon = GFX_focus_internal_soviet_collapse_minor_volga_autonomy_roundtable
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 6
@@ -4644,7 +4669,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_minor_volga_workshop_guards
-		icon = GFX_focus_internal_soviet_collapse_volga_oil_and_workshops
+		icon = GFX_focus_internal_soviet_collapse_minor_volga_workshop_guards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 13
 		y = 8
@@ -4673,7 +4698,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_don_kuban_host_congress
-		icon = GFX_focus_soviet_collapse_steppe_supply_congress
+		icon = GFX_focus_internal_soviet_collapse_don_kuban_host_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 14
 		y = 5
@@ -4705,7 +4730,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_pontic_frontier_roads
-		icon = GFX_focus_internal_soviet_collapse_black_sea_customs_office
+		icon = GFX_focus_internal_soviet_collapse_pontic_frontier_roads
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 14
 		y = 7
@@ -4731,7 +4756,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_caucasus_mountain_charters
-		icon = GFX_focus_soviet_collapse_caucasus_pass_guards
+		icon = GFX_focus_internal_soviet_collapse_caucasus_mountain_charters
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 23
 		y = 6
@@ -4762,7 +4787,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_caucasus_pass_and_coast_guard
-		icon = GFX_focus_soviet_collapse_caucasus_pass_guards
+		icon = GFX_focus_internal_soviet_collapse_caucasus_pass_and_coast_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 25
 		y = 8
@@ -4794,7 +4819,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_inner_asian_oasis_border_congress
-		icon = GFX_focus_internal_soviet_collapse_tuvan_steppe_compact
+		icon = GFX_focus_internal_soviet_collapse_inner_asian_oasis_border_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 30
 		y = 5
@@ -4830,7 +4855,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_oasis_route_guards
-		icon = GFX_focus_soviet_collapse_steppe_supply_congress
+		icon = GFX_focus_internal_soviet_collapse_oasis_route_guards
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 30
 		y = 7
@@ -4859,7 +4884,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_chukotka_vladivostok_pacific_watch
-		icon = GFX_focus_internal_soviet_collapse_far_eastern_port_authority
+		icon = GFX_focus_internal_soviet_collapse_chukotka_vladivostok_pacific_watch
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 32
 		y = 8
@@ -4890,7 +4915,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_bering_amur_supply_posts
-		icon = GFX_focus_internal_soviet_collapse_far_eastern_rail_contracts
+		icon = GFX_focus_internal_soviet_collapse_bering_amur_supply_posts
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 32
 		y = 10
@@ -4948,7 +4973,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_old_names_under_guard
-		icon = GFX_focus_soviet_collapse_no_masters_in_kyiv_or_moscow
+		icon = GFX_focus_internal_soviet_collapse_old_names_under_guard
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 7
@@ -5071,7 +5096,7 @@ focus_tree = {
 
 	focus = {
 		id = internal_soviet_collapse_no_return_to_oblast_rule
-		icon = GFX_focus_soviet_collapse_no_masters_in_kyiv_or_moscow
+		icon = GFX_focus_internal_soviet_collapse_no_return_to_oblast_rule
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 11
@@ -5098,7 +5123,13 @@ focus_tree = {
 		factor = 0
 		modifier = {
 			add = 20
-			has_country_flag = soviet_collapse_event_created_republic
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
+			}
 			OR = {
 				tag = LIT
 				tag = LAT
@@ -5129,7 +5160,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_restore_the_state_seal
-		icon = GFX_baltic_soviet_collapse_restore_legal_continuity
+		icon = GFX_focus_baltic_soviet_collapse_restore_the_state_seal
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 0
@@ -5144,7 +5175,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_call_the_prewar_deputies
-		icon = GFX_baltic_soviet_collapse_call_the_prewar_deputies
+		icon = GFX_focus_baltic_soviet_collapse_call_the_prewar_deputies
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 3
 		y = 1
@@ -5164,7 +5195,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_guard_the_archives
-		icon = GFX_baltic_soviet_collapse_guard_the_archives
+		icon = GFX_focus_baltic_soviet_collapse_guard_the_archives
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 2
@@ -5183,7 +5214,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_emergency_border_guard
-		icon = GFX_baltic_soviet_collapse_home_guard_staff
+		icon = GFX_focus_baltic_soviet_collapse_emergency_border_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 6
 		y = 1
@@ -5200,7 +5231,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_radio_appeals_to_the_north
-		icon = GFX_baltic_soviet_collapse_wire_rooms
+		icon = GFX_focus_baltic_soviet_collapse_radio_appeals_to_the_north
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 3
@@ -5217,7 +5248,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_the_legal_state_or_the_front_state
-		icon = GFX_baltic_soviet_collapse_sovereign_baltic_front
+		icon = GFX_focus_baltic_soviet_collapse_the_legal_state_or_the_front_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 2
@@ -5226,13 +5257,17 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = soviet_collapse_baltic_state_question_open
 			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
+			custom_effect_tooltip = baltic_soviet_collapse_the_legal_state_or_the_front_state_tt
 		}
 		ai_will_do = { base = 10 }
 	}
 
 	focus = {
 		id = baltic_soviet_collapse_legal_continuity_government
-		icon = GFX_baltic_soviet_collapse_legal_continuity_government
+		icon = GFX_focus_baltic_soviet_collapse_legal_continuity_government
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 3
@@ -5264,7 +5299,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_military_border_government
-		icon = GFX_baltic_soviet_collapse_military_border_government
+		icon = GFX_focus_baltic_soviet_collapse_military_border_government
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 28
 		y = 3
@@ -5296,7 +5331,7 @@ focus_tree = {
 
 	focus = {
 			id = baltic_soviet_collapse_baltic_league_first
-			icon = GFX_baltic_soviet_collapse_restoration_pact
+			icon = GFX_focus_baltic_soviet_collapse_baltic_league_first
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 20
 			y = 4
@@ -5324,7 +5359,7 @@ focus_tree = {
 
 	focus = {
 			id = baltic_soviet_collapse_foreign_protection_council
-			icon = GFX_baltic_soviet_collapse_observer_missions
+			icon = GFX_focus_baltic_soviet_collapse_foreign_protection_council
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 24
 			y = 4
@@ -5352,7 +5387,7 @@ focus_tree = {
 
 		focus = {
 			id = baltic_soviet_collapse_scandinavian_listening_mission
-			icon = GFX_baltic_soviet_collapse_scandinavian_listening_mission
+			icon = GFX_focus_baltic_soviet_collapse_scandinavian_listening_mission
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 23
 			y = 5
@@ -5370,7 +5405,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_british_naval_observers
-		icon = GFX_baltic_soviet_collapse_british_naval_observers
+		icon = GFX_focus_baltic_soviet_collapse_british_naval_observers
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 5
@@ -5386,7 +5421,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_sponsor_fleet_rights
-		icon = GFX_baltic_soviet_collapse_sponsor_fleet_rights
+		icon = GFX_focus_baltic_soviet_collapse_sponsor_fleet_rights
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 26
 		y = 6
@@ -5408,7 +5443,7 @@ focus_tree = {
 
 		focus = {
 			id = baltic_soviet_collapse_german_border_pressure
-			icon = GFX_baltic_soviet_collapse_german_border_pressure
+			icon = GFX_focus_baltic_soviet_collapse_german_border_pressure
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 			x = 25
 			y = 5
@@ -5424,7 +5459,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_a_port_without_a_master
-		icon = GFX_baltic_soviet_collapse_port_customs
+		icon = GFX_focus_baltic_soviet_collapse_a_port_without_a_master
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 11
 		y = 5
@@ -5444,7 +5479,7 @@ focus_tree = {
 
 		focus = {
 			id = baltic_soviet_collapse_baltic_recognition_dossier
-			icon = GFX_baltic_soviet_collapse_baltic_recognition_dossier
+			icon = GFX_focus_baltic_soviet_collapse_baltic_recognition_dossier
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 23
 			y = 6
@@ -5466,7 +5501,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_the_legal_front_abroad
-		icon = GFX_baltic_soviet_collapse_the_legal_front_abroad
+		icon = GFX_focus_baltic_soviet_collapse_the_legal_front_abroad
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 4
@@ -5489,7 +5524,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_the_second_restoration
-		icon = GFX_baltic_soviet_collapse_the_second_restoration
+		icon = GFX_focus_baltic_soviet_collapse_the_second_restoration
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 5
@@ -5505,7 +5540,7 @@ focus_tree = {
 
 		focus = {
 			id = baltic_soviet_collapse_baltic_defense_compact
-			icon = GFX_baltic_soviet_collapse_restoration_pact
+			icon = GFX_focus_baltic_soviet_collapse_baltic_defense_compact
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 			x = 17
 			y = 6
@@ -5527,7 +5562,7 @@ focus_tree = {
 
 		focus = {
 			id = baltic_soviet_collapse_pan_baltic_war_room
-			icon = GFX_baltic_soviet_collapse_pan_baltic_war_room
+			icon = GFX_focus_baltic_soviet_collapse_pan_baltic_war_room
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 			x = 19
 			y = 7
@@ -5549,7 +5584,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_baltic_shield_doctrine
-		icon = GFX_baltic_soviet_collapse_baltic_shield_doctrine
+		icon = GFX_focus_baltic_soviet_collapse_baltic_shield_doctrine
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 13
 		y = 8
@@ -5572,7 +5607,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_ports_before_patronage
-		icon = GFX_baltic_soviet_collapse_ports_before_patronage
+		icon = GFX_focus_baltic_soviet_collapse_ports_before_patronage
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 12
 		y = 2
@@ -5593,7 +5628,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_the_baltic_customs_desk
-		icon = GFX_baltic_soviet_collapse_the_baltic_customs_desk
+		icon = GFX_focus_baltic_soviet_collapse_the_baltic_customs_desk
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 3
@@ -5613,7 +5648,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_volunteer_rifle_societies
-		icon = GFX_baltic_soviet_collapse_volunteer_rifle_societies
+		icon = GFX_focus_baltic_soviet_collapse_volunteer_rifle_societies
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 2
 		y = 2
@@ -5631,7 +5666,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_coastal_defense_batteries
-		icon = GFX_baltic_soviet_collapse_coastal_defense_batteries
+		icon = GFX_focus_baltic_soviet_collapse_coastal_defense_batteries
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 2
@@ -5654,7 +5689,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_forest_and_marsh_lines
-		icon = GFX_baltic_soviet_collapse_forest_belts
+		icon = GFX_focus_baltic_soviet_collapse_forest_and_marsh_lines
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 6
 		y = 2
@@ -5674,7 +5709,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_rail_to_the_ports
-		icon = GFX_baltic_soviet_collapse_rail_to_the_ports
+		icon = GFX_focus_baltic_soviet_collapse_rail_to_the_ports
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 9
 		y = 1
@@ -5690,7 +5725,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_the_port_economy
-		icon = GFX_baltic_soviet_collapse_the_port_economy
+		icon = GFX_focus_baltic_soviet_collapse_the_port_economy
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 14
 		y = 2
@@ -5707,7 +5742,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_no_retreat_from_the_capital
-		icon = GFX_baltic_soviet_collapse_no_retreat_from_the_capital
+		icon = GFX_focus_baltic_soviet_collapse_no_retreat_from_the_capital
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 3
@@ -5732,7 +5767,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_a_baltic_army_not_three_militias
-		icon = GFX_baltic_soviet_collapse_a_baltic_army_not_three_militias
+		icon = GFX_focus_baltic_soviet_collapse_a_baltic_army_not_three_militias
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 15
 		y = 4
@@ -5753,7 +5788,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_the_border_front_at_home
-		icon = GFX_baltic_soviet_collapse_the_border_front_at_home
+		icon = GFX_focus_baltic_soviet_collapse_the_border_front_at_home
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 30
 		y = 4
@@ -5773,7 +5808,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_the_baltic_question_resolved
-		icon = GFX_baltic_soviet_collapse_the_baltic_question_resolved
+		icon = GFX_focus_baltic_soviet_collapse_the_baltic_question_resolved
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 23
 		y = 9
@@ -5807,7 +5842,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_university_volunteer_lists
-		icon = GFX_baltic_soviet_collapse_university_volunteer_lists
+		icon = GFX_focus_baltic_soviet_collapse_university_volunteer_lists
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 2
@@ -5830,7 +5865,7 @@ focus_tree = {
 
 		focus = {
 			id = baltic_soviet_collapse_tallinn_riga_vilnius_rotation
-			icon = GFX_baltic_soviet_collapse_restoration_pact
+			icon = GFX_focus_baltic_soviet_collapse_tallinn_riga_vilnius_rotation
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 20
 			y = 8
@@ -5846,7 +5881,7 @@ focus_tree = {
 
 		focus = {
 				id = baltic_soviet_collapse_foreign_advisers_under_baltic_law
-				icon = GFX_baltic_soviet_collapse_foreign_advisers_under_baltic_law
+				icon = GFX_focus_baltic_soviet_collapse_foreign_advisers_under_baltic_law
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 				x = 28
 				y = 7
@@ -5868,7 +5903,7 @@ focus_tree = {
 
 		focus = {
 			id = baltic_soviet_collapse_singing_barricades_early
-			icon = GFX_baltic_soviet_collapse_wire_rooms
+			icon = GFX_focus_baltic_soviet_collapse_singing_barricades_early
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 18
 			y = 5
@@ -5894,7 +5929,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_tallinn_harbor_customs
-		icon = GFX_baltic_soviet_collapse_tallinn_harbor_customs
+		icon = GFX_focus_baltic_soviet_collapse_tallinn_harbor_customs
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 6
 		y = 7
@@ -5919,7 +5954,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_estonian_forest_coast_guard
-		icon = GFX_baltic_soviet_collapse_forest_belts
+		icon = GFX_focus_baltic_soviet_collapse_estonian_forest_coast_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 4
 		y = 8
@@ -5948,7 +5983,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_riga_corridor_switchyards
-		icon = GFX_baltic_soviet_collapse_wire_rooms
+		icon = GFX_focus_baltic_soviet_collapse_riga_corridor_switchyards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 8
 		y = 7
@@ -5975,7 +6010,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_latvian_port_guard_boards
-		icon = GFX_baltic_soviet_collapse_latvian_port_guard_boards
+		icon = GFX_focus_baltic_soviet_collapse_latvian_port_guard_boards
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 8
 		y = 8
@@ -6002,7 +6037,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_vilnius_border_statutes
-		icon = GFX_baltic_soviet_collapse_vilnius_border_statutes
+		icon = GFX_focus_baltic_soviet_collapse_vilnius_border_statutes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 11
 		y = 7
@@ -6027,7 +6062,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_lithuanian_interior_line
-		icon = GFX_baltic_soviet_collapse_lithuanian_interior_line
+		icon = GFX_focus_baltic_soviet_collapse_lithuanian_interior_line
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 11
 		y = 8
@@ -6062,7 +6097,10 @@ focus_tree = {
 		modifier = {
 			OR = {
 				has_country_flag = soviet_collapse_event_created_republic
-				has_country_flag = soviet_collapse_breakaway
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
 			}
 			is_soviet_collapse_caucasus_focus_tree_tag = yes
 			add = 30
@@ -6091,7 +6129,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_convene_mountain_and_city_councils
-		icon = GFX_caucasus_soviet_collapse_mountain_councils
+		icon = GFX_focus_caucasus_soviet_collapse_convene_mountain_and_city_councils
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 0
@@ -6105,7 +6143,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_hold_the_passes
-		icon = GFX_caucasus_soviet_collapse_pass_guards
+		icon = GFX_focus_caucasus_soviet_collapse_hold_the_passes
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 0
 		y = 1
@@ -6121,7 +6159,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_protect_the_oil_and_ports
-		icon = GFX_caucasus_soviet_collapse_oil_route_offices
+		icon = GFX_focus_caucasus_soviet_collapse_protect_the_oil_and_ports
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 2
 		y = 1
@@ -6137,7 +6175,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_the_border_faiths_and_nations
-		icon = GFX_caucasus_soviet_collapse_border_faiths_nations
+		icon = GFX_focus_caucasus_soviet_collapse_the_border_faiths_and_nations
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 1
@@ -6156,7 +6194,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_caucasus_route_fork
-		icon = GFX_caucasus_soviet_collapse_route_fork
+		icon = GFX_focus_caucasus_soviet_collapse_caucasus_route_fork
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 2
@@ -6178,7 +6216,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_oil_emergency_directorate
-		icon = GFX_caucasus_soviet_collapse_oil_emergency_directorate
+		icon = GFX_focus_caucasus_soviet_collapse_oil_emergency_directorate
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 8
 		y = 2
@@ -6208,7 +6246,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_mountain_federal_compact
-		icon = GFX_caucasus_soviet_collapse_mountain_federal_compact
+		icon = GFX_focus_caucasus_soviet_collapse_mountain_federal_compact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 3
@@ -6226,7 +6264,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_national_restoration_councils
-		icon = GFX_caucasus_soviet_collapse_national_restoration_councils
+		icon = GFX_focus_caucasus_soviet_collapse_national_restoration_councils
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 3
@@ -6246,7 +6284,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_black_sea_or_caspian_routes
-		icon = GFX_caucasus_soviet_collapse_black_sea_or_caspian_routes
+		icon = GFX_focus_caucasus_soviet_collapse_black_sea_or_caspian_routes
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 3
@@ -6263,7 +6301,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_tbilisi_black_sea_authority
-		icon = GFX_caucasus_soviet_collapse_tbilisi_black_sea_authority
+		icon = GFX_focus_caucasus_soviet_collapse_tbilisi_black_sea_authority
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 8
 		y = 4
@@ -6289,7 +6327,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_black_sea_observer_desks
-		icon = GFX_caucasus_soviet_collapse_black_sea_observer_desks
+		icon = GFX_focus_caucasus_soviet_collapse_black_sea_observer_desks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 0
 		y = 5
@@ -6317,7 +6355,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_foreign_border_guarantees
-		icon = GFX_caucasus_soviet_collapse_foreign_missions
+		icon = GFX_focus_caucasus_soviet_collapse_foreign_border_guarantees
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 4
@@ -6336,7 +6374,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_sponsor_consulates
-		icon = GFX_caucasus_soviet_collapse_sponsor_consulates
+		icon = GFX_focus_caucasus_soviet_collapse_sponsor_consulates
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 5
@@ -6356,7 +6394,7 @@ focus_tree = {
 
 		focus = {
 			id = caucasus_soviet_collapse_council_of_passes
-		icon = GFX_caucasus_soviet_collapse_council_of_passes
+		icon = GFX_focus_caucasus_soviet_collapse_council_of_passes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 			x = 12
 			y = 4
@@ -6377,7 +6415,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_capital_claims_the_valleys
-		icon = GFX_caucasus_soviet_collapse_capital_claims_the_valleys
+		icon = GFX_focus_caucasus_soviet_collapse_capital_claims_the_valleys
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 4
@@ -6403,7 +6441,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_pipeline_guard_corps
-		icon = GFX_caucasus_soviet_collapse_pipeline_guard_corps
+		icon = GFX_focus_caucasus_soviet_collapse_pipeline_guard_corps
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 12
 		y = 3
@@ -6419,7 +6457,7 @@ focus_tree = {
 
 		focus = {
 			id = caucasus_soviet_collapse_oilfield_security_compacts
-		icon = GFX_caucasus_soviet_collapse_oilfield_security_compacts
+		icon = GFX_focus_caucasus_soviet_collapse_oilfield_security_compacts
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 			x = 14
 			y = 4
@@ -6447,7 +6485,7 @@ focus_tree = {
 
 		focus = {
 			id = caucasus_soviet_collapse_baku_oilfield_guard
-		icon = GFX_caucasus_soviet_collapse_baku_oilfield_guard
+		icon = GFX_focus_caucasus_soviet_collapse_baku_oilfield_guard
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 			x = 24
 			y = 4
@@ -6480,7 +6518,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_caspian_oil_diplomacy
-		icon = GFX_caucasus_soviet_collapse_caspian_oil_diplomacy
+		icon = GFX_focus_caucasus_soviet_collapse_caspian_oil_diplomacy
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 21
 		y = 6
@@ -6512,7 +6550,7 @@ focus_tree = {
 
 		focus = {
 			id = caucasus_soviet_collapse_caucasus_defense_compact
-		icon = GFX_caucasus_soviet_collapse_defense_compact
+		icon = GFX_focus_caucasus_soviet_collapse_caucasus_defense_compact
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 			x = 14
 			y = 5
@@ -6543,7 +6581,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_mountain_artillery_schools
-		icon = GFX_caucasus_soviet_collapse_mountain_brigades
+		icon = GFX_focus_caucasus_soviet_collapse_mountain_artillery_schools
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 0
 		y = 2
@@ -6563,7 +6601,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_yerevan_relief_networks
-		icon = GFX_caucasus_soviet_collapse_yerevan_relief_networks
+		icon = GFX_focus_caucasus_soviet_collapse_yerevan_relief_networks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 4
@@ -6587,7 +6625,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_ararat_border_fortresses
-		icon = GFX_caucasus_soviet_collapse_ararat_border_fortresses
+		icon = GFX_focus_caucasus_soviet_collapse_ararat_border_fortresses
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 6
@@ -6614,7 +6652,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_the_border_war_cabinet
-		icon = GFX_caucasus_soviet_collapse_mountain_brigades
+		icon = GFX_focus_caucasus_soviet_collapse_the_border_war_cabinet
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 0
 		y = 4
@@ -6636,7 +6674,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_oil_for_recognition
-		icon = GFX_caucasus_soviet_collapse_oil_for_recognition
+		icon = GFX_focus_caucasus_soviet_collapse_oil_for_recognition
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 19
 		y = 6
@@ -6654,7 +6692,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_ancient_thrones_in_the_mountains
-		icon = GFX_caucasus_soviet_collapse_ancient_thrones_mountains
+		icon = GFX_focus_caucasus_soviet_collapse_ancient_thrones_in_the_mountains
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 3
@@ -6677,7 +6715,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_ancient_caucasus_crowns
-		icon = GFX_caucasus_soviet_collapse_ancient_caucasus_crowns
+		icon = GFX_focus_caucasus_soviet_collapse_ancient_caucasus_crowns
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 4
@@ -6705,7 +6743,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_the_caucasus_stands
-		icon = GFX_caucasus_soviet_collapse_caucasus_stands
+		icon = GFX_focus_caucasus_soviet_collapse_the_caucasus_stands
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 7
@@ -6725,7 +6763,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_no_one_owns_the_passes_alone
-		icon = GFX_caucasus_soviet_collapse_no_one_owns_the_passes_alone
+		icon = GFX_focus_caucasus_soviet_collapse_no_one_owns_the_passes_alone
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 6
@@ -6742,7 +6780,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_the_passes_vote
-		icon = GFX_caucasus_soviet_collapse_the_passes_vote
+		icon = GFX_focus_caucasus_soviet_collapse_the_passes_vote
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 7
@@ -6759,7 +6797,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_tbilisi_baku_yerevan_talks
-		icon = GFX_caucasus_soviet_collapse_defense_compact
+		icon = GFX_focus_caucasus_soviet_collapse_tbilisi_baku_yerevan_talks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 14
 		y = 7
@@ -6776,7 +6814,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_civilian_oversight_of_oil
-		icon = GFX_caucasus_soviet_collapse_civilian_oil_oversight
+		icon = GFX_focus_caucasus_soviet_collapse_civilian_oversight_of_oil
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 23
 		y = 3
@@ -6800,7 +6838,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_oil_state_command
-		icon = GFX_caucasus_soviet_collapse_oil_state_command
+		icon = GFX_focus_caucasus_soviet_collapse_oil_state_command
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 26
 		y = 4
@@ -6828,7 +6866,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_mountain_autonomy_statutes
-		icon = GFX_caucasus_soviet_collapse_mountain_autonomy_statutes
+		icon = GFX_focus_caucasus_soviet_collapse_mountain_autonomy_statutes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 3
@@ -6851,7 +6889,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_border_treaty_with_turkey
-		icon = GFX_caucasus_soviet_collapse_border_treaty_with_turkey
+		icon = GFX_focus_caucasus_soviet_collapse_border_treaty_with_turkey
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 7
@@ -6869,7 +6907,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_iranian_corridor_talks
-		icon = GFX_caucasus_soviet_collapse_iranian_corridor_talks
+		icon = GFX_focus_caucasus_soviet_collapse_iranian_corridor_talks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 6
@@ -6885,7 +6923,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_caspian_watch
-		icon = GFX_caucasus_soviet_collapse_caspian_watch
+		icon = GFX_focus_caucasus_soviet_collapse_caspian_watch
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 2
 		y = 2
@@ -6903,7 +6941,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_the_compact_holds_the_ridge
-		icon = GFX_caucasus_soviet_collapse_defense_compact
+		icon = GFX_focus_caucasus_soviet_collapse_the_compact_holds_the_ridge
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 12
 		y = 8
@@ -6928,7 +6966,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_the_oil_cannot_be_the_government
-		icon = GFX_caucasus_soviet_collapse_oil_not_government
+		icon = GFX_focus_caucasus_soviet_collapse_the_oil_cannot_be_the_government
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 			x = 22
 			y = 7
@@ -6952,7 +6990,7 @@ focus_tree = {
 
 	focus = {
 		id = caucasus_soviet_collapse_oil_without_masters
-		icon = GFX_caucasus_soviet_collapse_oil_without_masters
+		icon = GFX_focus_caucasus_soviet_collapse_oil_without_masters
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 22
 		y = 4
@@ -6982,7 +7020,10 @@ focus_tree = {
 		modifier = {
 			OR = {
 				has_country_flag = soviet_collapse_event_created_republic
-				has_country_flag = soviet_collapse_breakaway
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
 			}
 			is_soviet_collapse_central_asia_focus_tree_tag = yes
 			add = 30
@@ -7011,7 +7052,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_southern_emergency_majlis
-		icon = GFX_central_asia_soviet_collapse_supply_congress
+		icon = GFX_focus_central_asia_soviet_collapse_southern_emergency_majlis
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 0
@@ -7025,7 +7066,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_guard_the_oasis_and_passes
-		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		icon = GFX_focus_central_asia_soviet_collapse_guard_the_oasis_and_passes
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 0
 		y = 1
@@ -7041,7 +7082,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_irrigation_and_bread_councils
-		icon = GFX_central_asia_soviet_collapse_rail_and_irrigation_boards
+		icon = GFX_focus_central_asia_soviet_collapse_irrigation_and_bread_councils
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 1
@@ -7061,7 +7102,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_the_border_caravans
-		icon = GFX_central_asia_soviet_collapse_caravan_border_offices
+		icon = GFX_focus_central_asia_soviet_collapse_the_border_caravans
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
 		y = 1
@@ -7077,7 +7118,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_southern_route_fork
-		icon = GFX_central_asia_soviet_collapse_inland_republics_compact
+		icon = GFX_focus_central_asia_soviet_collapse_southern_route_fork
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 2
@@ -7099,7 +7140,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_local_republic_council
-		icon = GFX_central_asia_soviet_collapse_local_republic_council
+		icon = GFX_focus_central_asia_soviet_collapse_local_republic_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 7
 		y = 3
@@ -7130,7 +7171,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_majlis_elections
-		icon = GFX_central_asia_soviet_collapse_majlis_elections
+		icon = GFX_focus_central_asia_soviet_collapse_majlis_elections
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 1
 		y = 4
@@ -7150,7 +7191,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_samarkand_letters
-		icon = GFX_central_asia_soviet_collapse_samarkand_letters
+		icon = GFX_focus_central_asia_soviet_collapse_samarkand_letters
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 1
 		y = 5
@@ -7170,7 +7211,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_no_more_distant_capitals
-		icon = GFX_central_asia_soviet_collapse_no_more_distant_capitals
+		icon = GFX_focus_central_asia_soviet_collapse_no_more_distant_capitals
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = -2
 		y = 6
@@ -7186,7 +7227,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_tashkent_emergency_ministries
-		icon = GFX_central_asia_soviet_collapse_tashkent_emergency_ministries
+		icon = GFX_focus_central_asia_soviet_collapse_tashkent_emergency_ministries
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 4
 		y = 5
@@ -7210,7 +7251,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_samarkand_bukhara_legitimacy
-		icon = GFX_central_asia_soviet_collapse_samarkand_bukhara_legitimacy
+		icon = GFX_focus_central_asia_soviet_collapse_samarkand_bukhara_legitimacy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 1
 		y = 6
@@ -7236,7 +7277,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_cotton_rail_republic
-		icon = GFX_central_asia_soviet_collapse_rail_and_irrigation_boards
+		icon = GFX_focus_central_asia_soviet_collapse_cotton_rail_republic
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 3
 		y = 7
@@ -7266,7 +7307,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_turkestan_city_congress
-		icon = GFX_central_asia_soviet_collapse_steppe_federation
+		icon = GFX_focus_central_asia_soviet_collapse_turkestan_city_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 2
 		y = 8
@@ -7295,7 +7336,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_military_border_authority
-		icon = GFX_central_asia_soviet_collapse_military_border_authority
+		icon = GFX_focus_central_asia_soviet_collapse_military_border_authority
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 15
 		y = 3
@@ -7325,7 +7366,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_border_commanders
-		icon = GFX_central_asia_soviet_collapse_border_commanders
+		icon = GFX_focus_central_asia_soviet_collapse_border_commanders
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 9
 		y = 4
@@ -7342,7 +7383,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_southern_pass_reserve
-		icon = GFX_central_asia_soviet_collapse_southern_pass_reserve
+		icon = GFX_focus_central_asia_soviet_collapse_southern_pass_reserve
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 9
 		y = 5
@@ -7368,7 +7409,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_desert_scout_columns
-		icon = GFX_central_asia_soviet_collapse_desert_scout_columns
+		icon = GFX_focus_central_asia_soviet_collapse_desert_scout_columns
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 6
@@ -7396,7 +7437,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_dushanbe_mountain_sovereignty
-		icon = GFX_central_asia_soviet_collapse_dushanbe_mountain_sovereignty
+		icon = GFX_focus_central_asia_soviet_collapse_dushanbe_mountain_sovereignty
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 11
 		y = 6
@@ -7424,7 +7465,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_pamir_pass_fortresses
-		icon = GFX_central_asia_soviet_collapse_pamir_pass_fortresses
+		icon = GFX_focus_central_asia_soviet_collapse_pamir_pass_fortresses
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 4
 		y = 8
@@ -7450,7 +7491,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_bishkek_pass_council
-		icon = GFX_central_asia_soviet_collapse_bishkek_pass_council
+		icon = GFX_focus_central_asia_soviet_collapse_bishkek_pass_council
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 8
@@ -7477,7 +7518,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_tian_shan_horse_routes
-		icon = GFX_central_asia_soviet_collapse_tian_shan_horse_routes
+		icon = GFX_focus_central_asia_soviet_collapse_tian_shan_horse_routes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 7
 		y = 9
@@ -7501,7 +7542,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_foreign_border_patronage
-		icon = GFX_central_asia_soviet_collapse_foreign_balance_desks
+		icon = GFX_focus_central_asia_soviet_collapse_foreign_border_patronage
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 19
 		y = 4
@@ -7533,7 +7574,7 @@ focus_tree = {
 
 		focus = {
 			id = central_asia_soviet_collapse_turkestan_federation_road
-			icon = GFX_central_asia_soviet_collapse_steppe_federation
+			icon = GFX_focus_central_asia_soviet_collapse_turkestan_federation_road
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 11
 			y = 4
@@ -7562,7 +7603,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_federation_delegates
-		icon = GFX_central_asia_soviet_collapse_steppe_federation
+		icon = GFX_focus_central_asia_soviet_collapse_federation_delegates
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 5
@@ -7585,7 +7626,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_southern_republics_coordinate
-		icon = GFX_central_asia_soviet_collapse_southern_republics_coordinate
+		icon = GFX_focus_central_asia_soviet_collapse_southern_republics_coordinate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 6
@@ -7604,7 +7645,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_basmachi_roads_reopen
-		icon = GFX_central_asia_soviet_collapse_basmachi_roads_reopen
+		icon = GFX_focus_central_asia_soviet_collapse_basmachi_roads_reopen
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 9
 		y = 2
@@ -7628,7 +7669,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_negotiate_with_the_mountain_bands
-		icon = GFX_central_asia_soviet_collapse_negotiate_with_the_mountain_bands
+		icon = GFX_focus_central_asia_soviet_collapse_negotiate_with_the_mountain_bands
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 5
 		y = 4
@@ -7656,7 +7697,7 @@ focus_tree = {
 
 		focus = {
 			id = central_asia_soviet_collapse_clear_the_mountain_bands
-			icon = GFX_central_asia_soviet_collapse_clear_the_mountain_bands
+			icon = GFX_focus_central_asia_soviet_collapse_clear_the_mountain_bands
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 			x = 6
 			y = 5
@@ -7688,7 +7729,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_the_oasis_arsenal
-		icon = GFX_central_asia_soviet_collapse_rail_and_irrigation_boards
+		icon = GFX_focus_central_asia_soviet_collapse_the_oasis_arsenal
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 3
 		y = 2
@@ -7710,7 +7751,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_the_cotton_question
-		icon = GFX_central_asia_soviet_collapse_rail_and_irrigation_boards
+		icon = GFX_focus_central_asia_soviet_collapse_the_cotton_question
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 3
 		y = 4
@@ -7740,7 +7781,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_the_southern_shield
-		icon = GFX_central_asia_soviet_collapse_the_southern_shield
+		icon = GFX_focus_central_asia_soviet_collapse_the_southern_shield
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 15
 		y = 9
@@ -7769,7 +7810,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_federation_or_neighbor_pact
-		icon = GFX_central_asia_soviet_collapse_federation_or_neighbor_pact
+		icon = GFX_focus_central_asia_soviet_collapse_federation_or_neighbor_pact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 10
@@ -7786,7 +7827,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_loose_southern_pact
-		icon = GFX_central_asia_soviet_collapse_loose_southern_pact
+		icon = GFX_focus_central_asia_soviet_collapse_loose_southern_pact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 11
@@ -7804,7 +7845,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_federation_state
-		icon = GFX_central_asia_soviet_collapse_steppe_federation
+		icon = GFX_focus_central_asia_soviet_collapse_federation_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
 		y = 11
@@ -7827,7 +7868,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_the_south_survives_together
-		icon = GFX_central_asia_soviet_collapse_the_south_survives_together
+		icon = GFX_focus_central_asia_soviet_collapse_the_south_survives_together
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 13
@@ -7850,7 +7891,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_the_oasis_guard
-		icon = GFX_central_asia_soviet_collapse_the_oasis_guard
+		icon = GFX_focus_central_asia_soviet_collapse_the_oasis_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 6
 		y = 2
@@ -7878,7 +7919,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_the_basmachi_amnesty_ledger
-		icon = GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls
+		icon = GFX_focus_central_asia_soviet_collapse_the_basmachi_amnesty_ledger
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 6
@@ -7897,7 +7938,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_khwarazm_and_older_names
-		icon = GFX_central_asia_soviet_collapse_khwarazm_and_older_names
+		icon = GFX_focus_central_asia_soviet_collapse_khwarazm_and_older_names
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
 		y = 7
@@ -7926,7 +7967,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_khwarazm_restoration_debate
-		icon = GFX_central_asia_soviet_collapse_khwarazm_restoration_debate
+		icon = GFX_focus_central_asia_soviet_collapse_khwarazm_restoration_debate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_ANNEXATION }
 		x = 10
 		y = 8
@@ -7976,7 +8017,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_foreign_border_schools
-		icon = GFX_central_asia_soviet_collapse_foreign_border_schools
+		icon = GFX_focus_central_asia_soviet_collapse_foreign_border_schools
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 6
@@ -7998,7 +8039,7 @@ focus_tree = {
 
 	focus = {
 		id = central_asia_soviet_collapse_ashgabat_desert_authority
-		icon = GFX_central_asia_soviet_collapse_ashgabat_desert_authority
+		icon = GFX_focus_central_asia_soviet_collapse_ashgabat_desert_authority
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 24
 		y = 6
@@ -8022,7 +8063,7 @@ focus_tree = {
 
 		focus = {
 			id = central_asia_soviet_collapse_caspian_route_bargain
-			icon = GFX_central_asia_soviet_collapse_caspian_route_bargain
+			icon = GFX_focus_central_asia_soviet_collapse_caspian_route_bargain
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 22
 			y = 7
@@ -8047,7 +8088,7 @@ focus_tree = {
 
 	focus = {
 			id = central_asia_soviet_collapse_desert_republic_settlement
-			icon = GFX_central_asia_soviet_collapse_desert_republic_settlement
+			icon = GFX_focus_central_asia_soviet_collapse_desert_republic_settlement
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 			x = 22
 			y = 8
@@ -8074,7 +8115,7 @@ focus_tree = {
 
 	focus = {
 			id = central_asia_soviet_collapse_desert_route_to_foreign_aid
-			icon = GFX_central_asia_soviet_collapse_desert_route_to_foreign_aid
+			icon = GFX_focus_central_asia_soviet_collapse_desert_route_to_foreign_aid
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 20
 			y = 7
@@ -8093,7 +8134,7 @@ focus_tree = {
 
 	focus = {
 			id = central_asia_soviet_collapse_liaison_missions_in_the_bazaar
-			icon = GFX_central_asia_soviet_collapse_liaison_missions_in_the_bazaar
+			icon = GFX_focus_central_asia_soviet_collapse_liaison_missions_in_the_bazaar
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 18
 			y = 7
@@ -8116,7 +8157,13 @@ focus_tree = {
 		modifier = {
 			add = 20
 			tag = MOL
-			has_country_flag = soviet_collapse_event_created_republic
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
+			}
 		}
 	}
 
@@ -8142,7 +8189,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_chisinau_emergency_council
-		icon = GFX_moldova_soviet_collapse_chisinau_ledgers
+		icon = GFX_focus_moldova_soviet_collapse_chisinau_emergency_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 7
 		y = 0
@@ -8157,7 +8204,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_guard_the_dniester_crossings
-		icon = GFX_moldova_soviet_collapse_dniester_line
+		icon = GFX_focus_moldova_soviet_collapse_guard_the_dniester_crossings
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 2
 		y = 1
@@ -8174,7 +8221,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_bessarabian_legal_files
-		icon = GFX_moldova_soviet_collapse_bessarabian_legal_files
+		icon = GFX_focus_moldova_soviet_collapse_bessarabian_legal_files
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 1
@@ -8191,7 +8238,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_the_romanian_question
-		icon = GFX_moldova_soviet_collapse_romanian_window
+		icon = GFX_focus_moldova_soviet_collapse_the_romanian_question
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 1
@@ -8210,7 +8257,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_moldova_route_fork
-		icon = GFX_moldova_soviet_collapse_bridge_state
+		icon = GFX_focus_moldova_soviet_collapse_moldova_route_fork
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 2
@@ -8233,7 +8280,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_romanian_alignment_office
-		icon = GFX_moldova_soviet_collapse_romanian_alignment_office
+		icon = GFX_focus_moldova_soviet_collapse_romanian_alignment_office
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 19
 		y = 2
@@ -8254,7 +8301,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_independent_republic_council
-		icon = GFX_moldova_soviet_collapse_independent_republic_council
+		icon = GFX_focus_moldova_soviet_collapse_independent_republic_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
 		y = 4
@@ -8280,7 +8327,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_dniester_defense_directorate
-		icon = GFX_moldova_soviet_collapse_dniester_defense_directorate
+		icon = GFX_focus_moldova_soviet_collapse_dniester_defense_directorate
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 15
 		y = 3
@@ -8310,7 +8357,7 @@ focus_tree = {
 
 		focus = {
 			id = moldova_soviet_collapse_ukrainian_border_compact
-			icon = GFX_moldova_soviet_collapse_ukrainian_corridor
+			icon = GFX_focus_moldova_soviet_collapse_ukrainian_border_compact
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 12
 			y = 3
@@ -8333,7 +8380,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_river_guard_brigades
-		icon = GFX_moldova_soviet_collapse_depot_battalions
+		icon = GFX_focus_moldova_soviet_collapse_river_guard_brigades
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 14
 		y = 5
@@ -8366,7 +8413,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_bessarabian_negotiations
-		icon = GFX_moldova_soviet_collapse_bessarabian_negotiations
+		icon = GFX_focus_moldova_soviet_collapse_bessarabian_negotiations
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 19
 		y = 3
@@ -8382,7 +8429,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_romanian_aid_without_annexation
-		icon = GFX_moldova_soviet_collapse_romanian_aid_without_annexation
+		icon = GFX_focus_moldova_soviet_collapse_romanian_aid_without_annexation
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 19
 		y = 4
@@ -8417,7 +8464,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_union_with_romania_question
-		icon = GFX_moldova_soviet_collapse_union_with_romania_question
+		icon = GFX_focus_moldova_soviet_collapse_union_with_romania_question
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 5
@@ -8436,7 +8483,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_grain_and_river_trade
-		icon = GFX_moldova_soviet_collapse_river_customs
+		icon = GFX_focus_moldova_soviet_collapse_grain_and_river_trade
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 15
 		y = 4
@@ -8452,7 +8499,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_ukrainian_grain_road
-		icon = GFX_moldova_soviet_collapse_ukrainian_corridor
+		icon = GFX_focus_moldova_soviet_collapse_ukrainian_grain_road
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 16
 		y = 5
@@ -8474,7 +8521,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_dniester_bridge_sappers
-		icon = GFX_moldova_soviet_collapse_dniester_bridge_sappers
+		icon = GFX_focus_moldova_soviet_collapse_dniester_bridge_sappers
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 9
 		y = 5
@@ -8493,7 +8540,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_alliance_not_union
-		icon = GFX_moldova_soviet_collapse_eastern_buffer_compact
+		icon = GFX_focus_moldova_soviet_collapse_alliance_not_union
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 19
 			y = 7
@@ -8524,7 +8571,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_conditional_union
-		icon = GFX_moldova_soviet_collapse_conditional_union
+		icon = GFX_focus_moldova_soviet_collapse_conditional_union
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 23
 			y = 7
@@ -8554,7 +8601,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_reject_the_union_question
-		icon = GFX_moldova_soviet_collapse_reject_the_union_question
+		icon = GFX_focus_moldova_soviet_collapse_reject_the_union_question
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 16
 			y = 7
@@ -8586,7 +8633,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_dniester_military_bureau
-		icon = GFX_moldova_soviet_collapse_dniester_military_bureau
+		icon = GFX_focus_moldova_soviet_collapse_dniester_military_bureau
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 6
@@ -8603,7 +8650,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_ministry_seals
-		icon = GFX_moldova_soviet_collapse_ministry_seals
+		icon = GFX_focus_moldova_soviet_collapse_ministry_seals
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 7
 		y = 1
@@ -8620,7 +8667,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_raion_food_boards
-		icon = GFX_moldova_soviet_collapse_raion_food_boards
+		icon = GFX_focus_moldova_soviet_collapse_raion_food_boards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 7
 		y = 2
@@ -8639,7 +8686,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_vineyard_and_cannery_committees
-		icon = GFX_moldova_soviet_collapse_vineyard_and_cannery_committees
+		icon = GFX_focus_moldova_soviet_collapse_vineyard_and_cannery_committees
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 2
@@ -8659,7 +8706,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_chisinau_radio_watch
-		icon = GFX_moldova_soviet_collapse_chisinau_radio_watch
+		icon = GFX_focus_moldova_soviet_collapse_chisinau_radio_watch
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
 		y = 3
@@ -8680,7 +8727,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_constitutional_sfat
-		icon = GFX_moldova_soviet_collapse_constitutional_sfat
+		icon = GFX_focus_moldova_soviet_collapse_constitutional_sfat
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 5
@@ -8697,7 +8744,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_district_prefect_rolls
-		icon = GFX_moldova_soviet_collapse_district_prefect_rolls
+		icon = GFX_focus_moldova_soviet_collapse_district_prefect_rolls
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 6
@@ -8715,7 +8762,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_neutral_bridge_statute
-		icon = GFX_moldova_soviet_collapse_neutral_bridge_statute
+		icon = GFX_focus_moldova_soviet_collapse_neutral_bridge_statute
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 5
 		y = 6
@@ -8739,7 +8786,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_republic_without_a_patron
-		icon = GFX_moldova_soviet_collapse_republic_without_a_patron
+		icon = GFX_focus_moldova_soviet_collapse_republic_without_a_patron
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 3
 		y = 7
@@ -8762,7 +8809,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_odessa_contact_posts
-		icon = GFX_moldova_soviet_collapse_ukrainian_corridor
+		icon = GFX_focus_moldova_soviet_collapse_odessa_contact_posts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 6
@@ -8785,7 +8832,7 @@ focus_tree = {
 
 		focus = {
 			id = moldova_soviet_collapse_southern_rail_timetables
-			icon = GFX_moldova_soviet_collapse_ukrainian_corridor
+			icon = GFX_focus_moldova_soviet_collapse_southern_rail_timetables
 			search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 			x = 18
 			y = 8
@@ -8806,7 +8853,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_border_customs_shares
-		icon = GFX_moldova_soviet_collapse_border_customs_shares
+		icon = GFX_focus_moldova_soviet_collapse_border_customs_shares
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 12
 		y = 10
@@ -8830,7 +8877,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_eastern_buffer_missions
-		icon = GFX_moldova_soviet_collapse_eastern_buffer_compact
+		icon = GFX_focus_moldova_soviet_collapse_eastern_buffer_missions
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 16
 		y = 11
@@ -8852,7 +8899,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_prut_relief_depots
-		icon = GFX_moldova_soviet_collapse_prut_relief_depots
+		icon = GFX_focus_moldova_soviet_collapse_prut_relief_depots
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 18
 		y = 5
@@ -8881,7 +8928,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_bucharest_observer_mission
-		icon = GFX_moldova_soviet_collapse_bucharest_observer_mission
+		icon = GFX_focus_moldova_soviet_collapse_bucharest_observer_mission
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 26
 		y = 6
@@ -8904,7 +8951,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_western_training_mission
-		icon = GFX_moldova_soviet_collapse_western_training_mission
+		icon = GFX_focus_moldova_soviet_collapse_western_training_mission
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 22
 		y = 9
@@ -8937,7 +8984,7 @@ focus_tree = {
 
 		focus = {
 			id = moldova_soviet_collapse_vote_on_the_prut_statute
-			icon = GFX_moldova_soviet_collapse_vote_on_the_prut_statute
+			icon = GFX_focus_moldova_soviet_collapse_vote_on_the_prut_statute
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 25
 			y = 9
@@ -8967,7 +9014,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_bendery_bridge_works
-		icon = GFX_moldova_soviet_collapse_bendery_bridge_works
+		icon = GFX_focus_moldova_soviet_collapse_bendery_bridge_works
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 11
 		y = 6
@@ -8987,7 +9034,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_tiraspol_depot_belt
-		icon = GFX_moldova_soviet_collapse_tiraspol_depot_belt
+		icon = GFX_focus_moldova_soviet_collapse_tiraspol_depot_belt
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 14
 		y = 7
@@ -9011,7 +9058,7 @@ focus_tree = {
 
 		focus = {
 			id = moldova_soviet_collapse_anti_air_over_the_crossings
-			icon = GFX_moldova_soviet_collapse_anti_air_over_the_crossings
+			icon = GFX_focus_moldova_soviet_collapse_anti_air_over_the_crossings
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 8
 		y = 8
@@ -9034,7 +9081,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_river_command_reserve
-		icon = GFX_moldova_soviet_collapse_river_command_reserve
+		icon = GFX_focus_moldova_soviet_collapse_river_command_reserve
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 9
@@ -9064,7 +9111,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_neutrality_between_three_roads
-		icon = GFX_moldova_soviet_collapse_neutrality_between_three_roads
+		icon = GFX_focus_moldova_soviet_collapse_neutrality_between_three_roads
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 24
 		y = 4
@@ -9084,7 +9131,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_league_observer_table
-		icon = GFX_moldova_soviet_collapse_eastern_buffer_compact
+		icon = GFX_focus_moldova_soviet_collapse_league_observer_table
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 24
 		y = 5
@@ -9104,7 +9151,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_black_soil_recovery_boards
-		icon = GFX_moldova_soviet_collapse_black_soil_recovery_boards
+		icon = GFX_focus_moldova_soviet_collapse_black_soil_recovery_boards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 6
@@ -9131,7 +9178,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_smugglers_and_border_committees
-		icon = GFX_moldova_soviet_collapse_smugglers_and_border_committees
+		icon = GFX_focus_moldova_soviet_collapse_smugglers_and_border_committees
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 22
 		y = 6
@@ -9157,7 +9204,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_republic_of_crossings
-		icon = GFX_moldova_soviet_collapse_republic_of_crossings
+		icon = GFX_focus_moldova_soviet_collapse_republic_of_crossings
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 12
 		y = 12
@@ -9190,7 +9237,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_the_river_state
-		icon = GFX_moldova_soviet_collapse_the_river_state
+		icon = GFX_focus_moldova_soviet_collapse_the_river_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 18
 		y = 14
@@ -9219,7 +9266,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_the_small_republic_survives
-		icon = GFX_moldova_soviet_collapse_the_small_republic_survives
+		icon = GFX_focus_moldova_soviet_collapse_the_small_republic_survives
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 2
@@ -9235,7 +9282,7 @@ focus_tree = {
 
 	focus = {
 		id = moldova_soviet_collapse_a_small_state_between_larger_maps
-		icon = GFX_moldova_soviet_collapse_a_small_state_between_larger_maps
+		icon = GFX_focus_moldova_soviet_collapse_a_small_state_between_larger_maps
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 3
@@ -9258,7 +9305,13 @@ focus_tree = {
 		modifier = {
 			add = 20
 			tag = BLR
-			has_country_flag = soviet_collapse_event_created_republic
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
+			}
 		}
 	}
 
@@ -9286,7 +9339,7 @@ focus_tree = {
 	# political, diplomacy, and high-chaos lanes kept apart.
 	focus = {
 		id = blr_soviet_collapse_minsk_emergency_office
-		icon = GFX_blr_soviet_collapse_civic
+		icon = GFX_focus_blr_soviet_collapse_minsk_emergency_office
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 0
@@ -9301,7 +9354,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_the_rail_map_on_the_wall
-		icon = GFX_blr_soviet_collapse_rail
+		icon = GFX_focus_blr_soviet_collapse_the_rail_map_on_the_wall
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 0
 		y = 1
@@ -9317,7 +9370,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_forest_committees_report_in
-		icon = GFX_blr_soviet_collapse_forest
+		icon = GFX_focus_blr_soviet_collapse_forest_committees_report_in
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
 		y = 1
@@ -9335,7 +9388,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_first_corridor_guard
-		icon = GFX_blr_soviet_collapse_corridor
+		icon = GFX_focus_blr_soviet_collapse_first_corridor_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 6
 		y = 1
@@ -9354,7 +9407,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_which_road_is_belarus
-		icon = GFX_blr_soviet_collapse_which_road_is_belarus
+		icon = GFX_focus_blr_soviet_collapse_which_road_is_belarus
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 5
 		y = 3
@@ -9392,7 +9445,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_evacuation_choice
-		icon = GFX_blr_soviet_collapse_evacuation_choice
+		icon = GFX_focus_blr_soviet_collapse_evacuation_choice
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 7
 		y = 2
@@ -9418,7 +9471,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_state_between_armies
-		icon = GFX_blr_soviet_collapse_state_between_armies
+		icon = GFX_focus_blr_soviet_collapse_state_between_armies
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 5
 		y = 7
@@ -9434,7 +9487,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_national_council_of_minsk
-		icon = GFX_blr_soviet_collapse_national_council_minsk
+		icon = GFX_focus_blr_soviet_collapse_national_council_of_minsk
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 5
@@ -9460,7 +9513,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_socialist_autonomy_without_moscow
-		icon = GFX_blr_soviet_collapse_socialist
+		icon = GFX_focus_blr_soviet_collapse_socialist_autonomy_without_moscow
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 5
@@ -9485,7 +9538,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_military_transit_directorate
-		icon = GFX_blr_soviet_collapse_military_transit_directorate
+		icon = GFX_focus_blr_soviet_collapse_military_transit_directorate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 6
 		y = 5
@@ -9514,7 +9567,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_foreign_corridor_administration
-		icon = GFX_blr_soviet_collapse_foreign_transit
+		icon = GFX_focus_blr_soviet_collapse_foreign_corridor_administration
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 5
@@ -9546,7 +9599,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_council_bargains_with_forests
-		icon = GFX_blr_soviet_collapse_council_bargains_forests
+		icon = GFX_focus_blr_soviet_collapse_council_bargains_with_forests
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 6
@@ -9572,7 +9625,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_red_without_the_center
-		icon = GFX_blr_soviet_collapse_socialist
+		icon = GFX_focus_blr_soviet_collapse_red_without_the_center
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 3
 		y = 7
@@ -9596,7 +9649,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_orders_printed_like_timetables
-		icon = GFX_blr_soviet_collapse_orders_printed_timetables
+		icon = GFX_focus_blr_soviet_collapse_orders_printed_like_timetables
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 7
 		y = 7
@@ -9623,7 +9676,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_liaison_hotels
-			icon = GFX_blr_soviet_collapse_liaison_hotels
+			icon = GFX_focus_blr_soviet_collapse_liaison_hotels
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 9
 			y = 7
@@ -9644,7 +9697,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_belarusian_question_answered
-		icon = GFX_blr_soviet_collapse_belarusian_question_answered
+		icon = GFX_focus_blr_soviet_collapse_belarusian_question_answered
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 9
@@ -9661,7 +9714,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_nationalize_the_rail_schedules
-		icon = GFX_blr_soviet_collapse_nationalize_the_rail_schedules
+		icon = GFX_focus_blr_soviet_collapse_nationalize_the_rail_schedules
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = -1
 		y = 2
@@ -9681,7 +9734,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_seal_the_minsk_junction
-		icon = GFX_blr_soviet_collapse_seal_the_minsk_junction
+		icon = GFX_focus_blr_soviet_collapse_seal_the_minsk_junction
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = -1
 		y = 4
@@ -9713,7 +9766,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_western_corridor_switchmen
-		icon = GFX_blr_soviet_collapse_western_corridor_switchmen
+		icon = GFX_focus_blr_soviet_collapse_western_corridor_switchmen
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 1
 		y = 2
@@ -9729,7 +9782,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_eastern_line_watch
-		icon = GFX_blr_soviet_collapse_counterintel
+		icon = GFX_focus_blr_soviet_collapse_eastern_line_watch
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 3
 		y = 2
@@ -9749,7 +9802,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_depot_cars_without_labels
-		icon = GFX_blr_soviet_collapse_counterintel
+		icon = GFX_focus_blr_soviet_collapse_depot_cars_without_labels
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 0
 		y = 3
@@ -9770,7 +9823,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_timetable_state
-			icon = GFX_blr_soviet_collapse_timetable_state
+			icon = GFX_focus_blr_soviet_collapse_timetable_state
 			search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 			x = 0
 			y = 5
@@ -9793,7 +9846,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_league_supply_timetables
-			icon = GFX_blr_soviet_collapse_league_supply_timetables
+			icon = GFX_focus_blr_soviet_collapse_league_supply_timetables
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 1
 			y = 9
@@ -9818,7 +9871,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_foreign_aid_through_brest
-			icon = GFX_blr_soviet_collapse_foreign_aid_through_brest
+			icon = GFX_focus_blr_soviet_collapse_foreign_aid_through_brest
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 1
 			y = 4
@@ -9841,7 +9894,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_railway_guard_regiments
-			icon = GFX_blr_soviet_collapse_railway_guard_regiments
+			icon = GFX_focus_blr_soviet_collapse_railway_guard_regiments
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
 			x = -7
 			y = 5
@@ -9867,7 +9920,7 @@ focus_tree = {
 
 			focus = {
 				id = blr_soviet_collapse_railway_neutrality
-				icon = GFX_blr_soviet_collapse_railway_neutrality
+				icon = GFX_focus_blr_soviet_collapse_railway_neutrality
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 				x = 0
 				y = 8
@@ -9887,7 +9940,7 @@ focus_tree = {
 
 			focus = {
 				id = blr_soviet_collapse_rail_war_state
-				icon = GFX_blr_soviet_collapse_rail_war_state
+				icon = GFX_focus_blr_soviet_collapse_rail_war_state
 				search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 				x = -12
 				y = 8
@@ -9913,7 +9966,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_last_train_east
-			icon = GFX_blr_soviet_collapse_last_train_east
+			icon = GFX_focus_blr_soviet_collapse_last_train_east
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 8
 			y = 4
@@ -9934,7 +9987,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_forest_defense_staff
-			icon = GFX_blr_soviet_collapse_forest_defense_staff
+			icon = GFX_focus_blr_soviet_collapse_forest_defense_staff
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 			x = 10
 			y = 2
@@ -9959,7 +10012,7 @@ focus_tree = {
 
 			focus = {
 				id = blr_soviet_collapse_guide_companies
-				icon = GFX_blr_soviet_collapse_guide_companies
+				icon = GFX_focus_blr_soviet_collapse_guide_companies
 				search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 				x = 11
 				y = 4
@@ -9979,7 +10032,7 @@ focus_tree = {
 
 			focus = {
 				id = blr_soviet_collapse_village_warning_bells
-				icon = GFX_blr_soviet_collapse_village_warning_bells
+				icon = GFX_focus_blr_soviet_collapse_village_warning_bells
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 				x = 13
 				y = 4
@@ -10000,7 +10053,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_swamp_roads_closed
-			icon = GFX_blr_soviet_collapse_swamp_roads_closed
+			icon = GFX_focus_blr_soviet_collapse_swamp_roads_closed
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 			x = 12
 			y = 6
@@ -10021,7 +10074,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_partisans_or_army
-			icon = GFX_blr_soviet_collapse_partisans_or_army
+			icon = GFX_focus_blr_soviet_collapse_partisans_or_army
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
 			x = 11
 			y = 8
@@ -10066,7 +10119,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_decentralized_detachments
-		icon = GFX_blr_soviet_collapse_decentralized_detachments
+		icon = GFX_focus_blr_soviet_collapse_decentralized_detachments
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 12
 		y = 10
@@ -10090,7 +10143,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_regular_forest_brigades
-		icon = GFX_blr_soviet_collapse_regular_forest_brigades
+		icon = GFX_focus_blr_soviet_collapse_regular_forest_brigades
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 10
 		y = 10
@@ -10110,7 +10163,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_the_forest_general_staff
-		icon = GFX_blr_soviet_collapse_the_forest_general_staff
+		icon = GFX_focus_blr_soviet_collapse_the_forest_general_staff
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
 		x = 10
 		y = 13
@@ -10133,7 +10186,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_minsk_does_not_own_every_tree
-		icon = GFX_blr_soviet_collapse_minsk_does_not_own_every_tree
+		icon = GFX_focus_blr_soviet_collapse_minsk_does_not_own_every_tree
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 12
@@ -10153,7 +10206,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_a_forest_that_can_govern
-		icon = GFX_blr_soviet_collapse_forest_can_govern
+		icon = GFX_focus_blr_soviet_collapse_a_forest_that_can_govern
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
 		y = 14
@@ -10174,7 +10227,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_the_green_border
-		icon = GFX_blr_soviet_collapse_the_green_border
+		icon = GFX_focus_blr_soviet_collapse_the_green_border
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 11
@@ -10194,7 +10247,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_quiet_recognition_letters
-		icon = GFX_blr_soviet_collapse_quiet_recognition_letters
+		icon = GFX_focus_blr_soviet_collapse_quiet_recognition_letters
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 9
@@ -10216,7 +10269,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_prepare_league_freight_tables
-			icon = GFX_blr_soviet_collapse_league_freight_tables
+			icon = GFX_focus_blr_soviet_collapse_prepare_league_freight_tables
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 			x = 2
 			y = 11
@@ -10249,7 +10302,7 @@ focus_tree = {
 
 			focus = {
 				id = blr_soviet_collapse_join_the_league_when_war_comes
-				icon = GFX_blr_soviet_collapse_join_league_when_war_comes
+				icon = GFX_focus_blr_soviet_collapse_join_the_league_when_war_comes
 				search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 				x = 6
 				y = 10
@@ -10295,7 +10348,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_minsk_supplies_the_front
-			icon = GFX_blr_soviet_collapse_minsk_supplies_front
+			icon = GFX_focus_blr_soviet_collapse_minsk_supplies_the_front
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 			x = 6
 			y = 12
@@ -10326,7 +10379,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_the_corridor_everyone_wants
-		icon = GFX_blr_soviet_collapse_the_corridor_everyone_wants
+		icon = GFX_focus_blr_soviet_collapse_the_corridor_everyone_wants
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = -2
 		y = 1
@@ -10347,7 +10400,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_the_forest_state_rumor
-		icon = GFX_blr_soviet_collapse_the_forest_state_rumor
+		icon = GFX_focus_blr_soviet_collapse_the_forest_state_rumor
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 12
 			y = 14
@@ -10377,7 +10430,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_every_track_through_minsk
-		icon = GFX_blr_soviet_collapse_every_track_through_minsk
+		icon = GFX_focus_blr_soviet_collapse_every_track_through_minsk
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = -3
 		y = 7
@@ -10398,7 +10451,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_minsk_central_dispatch
-		icon = GFX_blr_soviet_collapse_minsk_central_dispatch
+		icon = GFX_focus_blr_soviet_collapse_minsk_central_dispatch
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = -1
 		y = 7
@@ -10418,7 +10471,7 @@ focus_tree = {
 
 		focus = {
 			id = blr_soviet_collapse_armored_train_workshops
-			icon = GFX_blr_soviet_collapse_armored_train_workshops
+			icon = GFX_focus_blr_soviet_collapse_armored_train_workshops
 			search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 				x = -1
 				y = 10
@@ -10445,7 +10498,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_brest_is_not_a_gift
-		icon = GFX_blr_soviet_collapse_brest_is_not_a_gift
+		icon = GFX_focus_blr_soviet_collapse_brest_is_not_a_gift
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = -1
 		y = 6
@@ -10471,7 +10524,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_forest_ammunition_hides
-		icon = GFX_blr_soviet_collapse_forest_ammunition_hides
+		icon = GFX_focus_blr_soviet_collapse_forest_ammunition_hides
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 11
 		y = 12
@@ -10495,7 +10548,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_the_green_rail_pact
-		icon = GFX_blr_soviet_collapse_the_green_rail_pact
+		icon = GFX_focus_blr_soviet_collapse_the_green_rail_pact
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 		x = 4
 		y = 11
@@ -10516,7 +10569,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_baltic_wire_rooms
-		icon = GFX_blr_soviet_collapse_baltic_wire_rooms
+		icon = GFX_focus_blr_soviet_collapse_baltic_wire_rooms
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
 		y = 12
@@ -10542,7 +10595,7 @@ focus_tree = {
 
 	focus = {
 		id = blr_soviet_collapse_the_league_depot_at_minsk
-		icon = GFX_blr_soviet_collapse_league_depot_minsk
+		icon = GFX_focus_blr_soviet_collapse_the_league_depot_at_minsk
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 7
 		y = 13
@@ -10578,7 +10631,13 @@ focus_tree = {
 		modifier = {
 			add = 20
 			tag = KAZ
-			has_country_flag = soviet_collapse_event_created_republic
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				AND = {
+					has_country_flag = soviet_collapse_breakaway
+					has_country_flag = soviet_collapse_active_origin
+				}
+			}
 		}
 	}
 
@@ -10606,7 +10665,7 @@ focus_tree = {
 	# district, resource, Alash, socialist, directorate, and federation lanes kept apart.
 	focus = {
 		id = kaz_soviet_collapse_alma_ata_emergency_congress
-		icon = GFX_kaz_soviet_collapse_federation
+		icon = GFX_focus_kaz_soviet_collapse_alma_ata_emergency_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 0
@@ -10621,7 +10680,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_southern_wires_are_cut
-		icon = GFX_kaz_soviet_collapse_southern_wires_cut
+		icon = GFX_focus_kaz_soviet_collapse_the_southern_wires_are_cut
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 1
@@ -10640,7 +10699,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_steppe_district_inventories
-		icon = GFX_kaz_soviet_collapse_military
+		icon = GFX_focus_kaz_soviet_collapse_steppe_district_inventories
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 13
 		y = 1
@@ -10656,7 +10715,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_guard_the_resource_towns
-		icon = GFX_kaz_soviet_collapse_resources
+		icon = GFX_focus_kaz_soviet_collapse_guard_the_resource_towns
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 20
 		y = 1
@@ -10676,7 +10735,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_congress_chooses_a_past
-		icon = GFX_kaz_soviet_collapse_alash
+		icon = GFX_focus_kaz_soviet_collapse_the_congress_chooses_a_past
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 26
 		y = 2
@@ -10717,7 +10776,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_south_asks_for_guarantees
-		icon = GFX_kaz_soviet_collapse_foreign
+		icon = GFX_focus_kaz_soviet_collapse_the_south_asks_for_guarantees
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 2
@@ -10743,7 +10802,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_a_state_across_distances
-		icon = GFX_kaz_soviet_collapse_settlement
+		icon = GFX_focus_kaz_soviet_collapse_a_state_across_distances
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 26
 		y = 3
@@ -10759,7 +10818,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_alash_memory_restored
-		icon = GFX_kaz_soviet_collapse_alash_memory_restored
+		icon = GFX_focus_kaz_soviet_collapse_alash_memory_restored
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 28
 		y = 3
@@ -10778,7 +10837,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_socialist_steppe_republic
-		icon = GFX_kaz_soviet_collapse_steppe_socialist
+		icon = GFX_focus_kaz_soviet_collapse_socialist_steppe_republic
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 32
 		y = 3
@@ -10797,7 +10856,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_resource_defense_directorate
-		icon = GFX_kaz_soviet_collapse_resource_defense_directorate
+		icon = GFX_focus_kaz_soviet_collapse_resource_defense_directorate
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 23
 		y = 2
@@ -10818,7 +10877,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_alash_courts
-		icon = GFX_kaz_soviet_collapse_the_alash_courts
+		icon = GFX_focus_kaz_soviet_collapse_the_alash_courts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 26
 		y = 4
@@ -10848,7 +10907,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_aul_councils_and_red_teachers
-		icon = GFX_kaz_soviet_collapse_aul_councils_and_red_teachers
+		icon = GFX_focus_kaz_soviet_collapse_aul_councils_and_red_teachers
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 34
 		y = 4
@@ -10882,7 +10941,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_oasis_and_steppe_congress
-		icon = GFX_kaz_soviet_collapse_oasis_steppe_congress
+		icon = GFX_focus_kaz_soviet_collapse_oasis_and_steppe_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 3
@@ -10899,7 +10958,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_karaganda_emergency_board
-		icon = GFX_kaz_soviet_collapse_karaganda_emergency_board
+		icon = GFX_focus_kaz_soviet_collapse_karaganda_emergency_board
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 2
@@ -10916,7 +10975,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_oil_field_protection_orders
-			icon = GFX_kaz_soviet_collapse_oil_field_protection_orders
+			icon = GFX_focus_kaz_soviet_collapse_oil_field_protection_orders
 			search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
 			x = 18
 			y = 3
@@ -10938,7 +10997,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_rail_to_the_mines
-		icon = GFX_kaz_soviet_collapse_rail_to_the_mines
+		icon = GFX_focus_kaz_soviet_collapse_rail_to_the_mines
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 24
 		y = 3
@@ -10961,7 +11020,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_resource_concessions_debate
-		icon = GFX_kaz_soviet_collapse_resource_concessions_debate
+		icon = GFX_focus_kaz_soviet_collapse_resource_concessions_debate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 4
@@ -10987,7 +11046,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_domestic_resource_state
-		icon = GFX_kaz_soviet_collapse_domestic_resource_state
+		icon = GFX_focus_kaz_soviet_collapse_domestic_resource_state
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 5
@@ -11010,7 +11069,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_league_resource_pool
-			icon = GFX_kaz_soviet_collapse_league_resource_pool
+			icon = GFX_focus_kaz_soviet_collapse_league_resource_pool
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 20
 			y = 6
@@ -11034,7 +11093,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_foreign_technical_missions
-		icon = GFX_kaz_soviet_collapse_foreign_technical_missions
+		icon = GFX_focus_kaz_soviet_collapse_foreign_technical_missions
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 6
@@ -11060,7 +11119,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_the_steppe_arsenal
-		icon = GFX_kaz_soviet_collapse_steppe_arsenal
+		icon = GFX_focus_kaz_soviet_collapse_the_steppe_arsenal
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 24
 			y = 6
@@ -11096,7 +11155,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_mobile_steppe_staff
-		icon = GFX_kaz_soviet_collapse_mobile_steppe_staff
+		icon = GFX_focus_kaz_soviet_collapse_mobile_steppe_staff
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 13
 		y = 2
@@ -11117,7 +11176,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_aul_horse_registers
-		icon = GFX_kaz_soviet_collapse_aul_horse_registers
+		icon = GFX_focus_kaz_soviet_collapse_aul_horse_registers
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 14
 		y = 3
@@ -11139,7 +11198,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_officers_of_the_steppe_district
-		icon = GFX_kaz_soviet_collapse_officers_steppe_district
+		icon = GFX_focus_kaz_soviet_collapse_officers_of_the_steppe_district
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 3
@@ -11156,7 +11215,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_wide_defense_doctrine
-		icon = GFX_kaz_soviet_collapse_wide_defense_doctrine
+		icon = GFX_focus_kaz_soviet_collapse_the_wide_defense_doctrine
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 2
@@ -11172,7 +11231,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_border_is_a_road
-		icon = GFX_kaz_soviet_collapse_border_is_a_road
+		icon = GFX_focus_kaz_soviet_collapse_the_border_is_a_road
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 3
@@ -11191,7 +11250,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_league_cavalry_school
-		icon = GFX_kaz_soviet_collapse_league_cavalry_school
+		icon = GFX_focus_kaz_soviet_collapse_league_cavalry_school
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 14
 		y = 4
@@ -11221,7 +11280,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_army_that_crosses_distance
-		icon = GFX_kaz_soviet_collapse_army_crosses_distance
+		icon = GFX_focus_kaz_soviet_collapse_the_army_that_crosses_distance
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 2
 		y = 3
@@ -11244,7 +11303,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_turkmen_rail_and_desert_talks
-		icon = GFX_kaz_soviet_collapse_turkmen_rail_desert_talks
+		icon = GFX_focus_kaz_soviet_collapse_turkmen_rail_and_desert_talks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 12
 		y = 3
@@ -11273,7 +11332,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_steppe_federation_charter
-			icon = GFX_kaz_soviet_collapse_steppe_federation_charter
+			icon = GFX_focus_kaz_soviet_collapse_steppe_federation_charter
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 6
 			y = 5
@@ -11327,7 +11386,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_lone_steppe_state
-			icon = GFX_kaz_soviet_collapse_lone_steppe_state
+			icon = GFX_focus_kaz_soviet_collapse_lone_steppe_state
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 32
 			y = 4
@@ -11355,7 +11414,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_british_and_american_engineers
-		icon = GFX_kaz_soviet_collapse_british_and_american_engineers
+		icon = GFX_focus_kaz_soviet_collapse_british_and_american_engineers
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 16
 		y = 9
@@ -11379,7 +11438,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_no_concession_without_a_republic
-			icon = GFX_kaz_soviet_collapse_no_concession_without_a_republic
+			icon = GFX_focus_kaz_soviet_collapse_no_concession_without_a_republic
 			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 			x = 20
 			y = 5
@@ -11402,7 +11461,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_southern_shield
-		icon = GFX_kaz_soviet_collapse_southern_shield
+		icon = GFX_focus_kaz_soviet_collapse_the_southern_shield
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP FOCUS_FILTER_ANNEXATION }
 		x = 4
 		y = 4
@@ -11418,7 +11477,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_steppe_remembers_old_states
-		icon = GFX_kaz_soviet_collapse_myth
+		icon = GFX_focus_kaz_soviet_collapse_the_steppe_remembers_old_states
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 34
 		y = 3
@@ -11444,7 +11503,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_basmachi_roads_reopen
-		icon = GFX_kaz_soviet_collapse_basmachi_roads_reopen
+		icon = GFX_focus_kaz_soviet_collapse_basmachi_roads_reopen
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 38
 		y = 4
@@ -11466,7 +11525,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_crush_the_road_militias
-		icon = GFX_kaz_soviet_collapse_crush_road_militias
+		icon = GFX_focus_kaz_soviet_collapse_crush_the_road_militias
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 38
 		y = 5
@@ -11488,7 +11547,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_last_caravan_tax
-		icon = GFX_kaz_soviet_collapse_the_last_caravan_tax
+		icon = GFX_focus_kaz_soviet_collapse_the_last_caravan_tax
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
 		y = 5
@@ -11504,7 +11563,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_a_state_under_open_sky
-		icon = GFX_kaz_soviet_collapse_a_state_under_open_sky
+		icon = GFX_focus_kaz_soviet_collapse_a_state_under_open_sky
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 1
@@ -11520,7 +11579,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_southern_republics_do_not_kneel
-		icon = GFX_kaz_soviet_collapse_southern_republics_do_not_kneel
+		icon = GFX_focus_kaz_soviet_collapse_the_southern_republics_do_not_kneel
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 4
 		y = 5
@@ -11549,7 +11608,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_written_alash_program
-		icon = GFX_kaz_soviet_collapse_the_written_alash_program
+		icon = GFX_focus_kaz_soviet_collapse_the_written_alash_program
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 30
 		y = 5
@@ -11567,7 +11626,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_teachers_of_the_new_steppe
-		icon = GFX_kaz_soviet_collapse_teachers_of_the_new_steppe
+		icon = GFX_focus_kaz_soviet_collapse_teachers_of_the_new_steppe
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 32
 		y = 5
@@ -11588,7 +11647,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_southern_deputies_demand_seats
-		icon = GFX_kaz_soviet_collapse_southern_deputies_seats
+		icon = GFX_focus_kaz_soviet_collapse_southern_deputies_demand_seats
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 3
@@ -11609,7 +11668,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_resource_towns_demand_seats
-		icon = GFX_kaz_soviet_collapse_the_resource_towns_demand_seats
+		icon = GFX_focus_kaz_soviet_collapse_the_resource_towns_demand_seats
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 28
 		y = 4
@@ -11641,7 +11700,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_no_steppe_without_the_south
-		icon = GFX_kaz_soviet_collapse_no_steppe_without_south
+		icon = GFX_focus_kaz_soviet_collapse_no_steppe_without_the_south
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 4
@@ -11663,7 +11722,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_border_cavalry_schools
-		icon = GFX_kaz_soviet_collapse_border_cavalry_schools
+		icon = GFX_focus_kaz_soviet_collapse_border_cavalry_schools
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 12
 			y = 4
@@ -11687,7 +11746,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_steppe_cannot_be_encircled
-		icon = GFX_kaz_soviet_collapse_steppe_cannot_be_encircled
+		icon = GFX_focus_kaz_soviet_collapse_the_steppe_cannot_be_encircled
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 3
@@ -11705,7 +11764,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_foreign_trucks_local_drivers
-		icon = GFX_kaz_soviet_collapse_foreign_trucks_local_drivers
+		icon = GFX_focus_kaz_soviet_collapse_foreign_trucks_local_drivers
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 16
 		y = 7
@@ -11727,7 +11786,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_a_thousand_kilometers_of_defense
-		icon = GFX_kaz_soviet_collapse_thousand_kilometers_defense
+		icon = GFX_focus_kaz_soviet_collapse_a_thousand_kilometers_of_defense
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 2
 		y = 4
@@ -11744,7 +11803,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_uzbek_industrial_bargain
-		icon = GFX_kaz_soviet_collapse_uzbek_industrial_bargain
+		icon = GFX_focus_kaz_soviet_collapse_uzbek_industrial_bargain
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 20
 		y = 3
@@ -11766,7 +11825,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_tajik_mountain_guarantees
-		icon = GFX_kaz_soviet_collapse_tajik_mountain_guarantees
+		icon = GFX_focus_kaz_soviet_collapse_tajik_mountain_guarantees
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 4
@@ -11783,7 +11842,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_kyrgyz_border_cavalry
-		icon = GFX_kaz_soviet_collapse_kyrgyz_border_cavalry
+		icon = GFX_focus_kaz_soviet_collapse_kyrgyz_border_cavalry
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 15
 			y = 5
@@ -11805,7 +11864,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_steppe_arbitration_court
-		icon = GFX_kaz_soviet_collapse_steppe_arbitration_court
+		icon = GFX_focus_kaz_soviet_collapse_the_steppe_arbitration_court
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 7
@@ -11821,7 +11880,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_basmachi_autonomy_offer
-		icon = GFX_kaz_soviet_collapse_basmachi_autonomy_offer
+		icon = GFX_focus_kaz_soviet_collapse_basmachi_autonomy_offer
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 40
 		y = 5
@@ -11837,7 +11896,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_steppe_keeps_many_memories
-		icon = GFX_kaz_soviet_collapse_the_steppe_keeps_many_memories
+		icon = GFX_focus_kaz_soviet_collapse_the_steppe_keeps_many_memories
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 31
 		y = 8
@@ -11866,7 +11925,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_southern_republics_write_together
-		icon = GFX_kaz_soviet_collapse_southern_republics_write_together
+		icon = GFX_focus_kaz_soviet_collapse_the_southern_republics_write_together
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 9
@@ -11889,7 +11948,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_restore_alash_names
-		icon = GFX_kaz_soviet_collapse_restore_alash_names
+		icon = GFX_focus_kaz_soviet_collapse_restore_alash_names
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 30
 		y = 4
@@ -11914,7 +11973,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_semey_legal_circle
-		icon = GFX_kaz_soviet_collapse_semey_legal_circle
+		icon = GFX_focus_kaz_soviet_collapse_semey_legal_circle
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 28
 		y = 5
@@ -11930,7 +11989,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_local_notable_compacts
-		icon = GFX_kaz_soviet_collapse_local_notable_compacts
+		icon = GFX_focus_kaz_soviet_collapse_local_notable_compacts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 27
 		y = 6
@@ -11945,7 +12004,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_steppe_land_statutes
-		icon = GFX_kaz_soviet_collapse_steppe_land_statutes
+		icon = GFX_focus_kaz_soviet_collapse_steppe_land_statutes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 29
 		y = 6
@@ -11961,7 +12020,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_constitutional_kurultai
-		icon = GFX_kaz_soviet_collapse_constitutional_kurultai
+		icon = GFX_focus_kaz_soviet_collapse_constitutional_kurultai
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 28
 		y = 7
@@ -11981,7 +12040,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_soviets_of_the_steppe
-		icon = GFX_kaz_soviet_collapse_soviets_of_the_steppe
+		icon = GFX_focus_kaz_soviet_collapse_soviets_of_the_steppe
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 36
 		y = 4
@@ -12000,7 +12059,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_mining_workers_councils
-		icon = GFX_kaz_soviet_collapse_mining_workers_councils
+		icon = GFX_focus_kaz_soviet_collapse_mining_workers_councils
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 34
 		y = 5
@@ -12024,7 +12083,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_collective_farm_bargains
-		icon = GFX_kaz_soviet_collapse_collective_farm_bargains
+		icon = GFX_focus_kaz_soviet_collapse_collective_farm_bargains
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 36
 		y = 5
@@ -12040,7 +12099,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_red_nomad_committees
-		icon = GFX_kaz_soviet_collapse_red_nomad_committees
+		icon = GFX_focus_kaz_soviet_collapse_red_nomad_committees
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		x = 35
 		y = 6
@@ -12058,7 +12117,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_planned_economy_without_center
-		icon = GFX_kaz_soviet_collapse_planned_economy_without_center
+		icon = GFX_focus_kaz_soviet_collapse_planned_economy_without_center
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 33
 		y = 6
@@ -12081,7 +12140,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_sovereign_steppe_socialism
-		icon = GFX_kaz_soviet_collapse_sovereign_steppe_socialism
+		icon = GFX_focus_kaz_soviet_collapse_sovereign_steppe_socialism
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 34
 		y = 7
@@ -12098,7 +12157,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_karaganda_coal_accounting
-		icon = GFX_kaz_soviet_collapse_karaganda_coal_accounting
+		icon = GFX_focus_kaz_soviet_collapse_karaganda_coal_accounting
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 6
@@ -12120,7 +12179,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_emergency_oil_boards
-		icon = GFX_kaz_soviet_collapse_emergency_oil_boards
+		icon = GFX_focus_kaz_soviet_collapse_emergency_oil_boards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 7
@@ -12145,7 +12204,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_copper_and_chrome_ledgers
-		icon = GFX_kaz_soviet_collapse_copper_and_chrome_ledgers
+		icon = GFX_focus_kaz_soviet_collapse_copper_and_chrome_ledgers
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 25
 		y = 7
@@ -12167,7 +12226,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_guard_the_mine_heads
-		icon = GFX_kaz_soviet_collapse_guard_the_mine_heads
+		icon = GFX_focus_kaz_soviet_collapse_guard_the_mine_heads
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
 		x = 24
 		y = 8
@@ -12189,7 +12248,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_industrial_settlement_compacts
-			icon = GFX_kaz_soviet_collapse_industrial_settlement_compacts
+			icon = GFX_focus_kaz_soviet_collapse_industrial_settlement_compacts
 			search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 			x = 21
 			y = 9
@@ -12226,7 +12285,7 @@ focus_tree = {
 
 	focus = {
 			id = kaz_soviet_collapse_resource_sovereignty
-			icon = GFX_kaz_soviet_collapse_resource_sovereignty
+			icon = GFX_focus_kaz_soviet_collapse_resource_sovereignty
 			search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 			x = 20
 			y = 10
@@ -12250,7 +12309,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_mobile_district_commands
-		icon = GFX_kaz_soviet_collapse_mobile_district_commands
+		icon = GFX_focus_kaz_soviet_collapse_mobile_district_commands
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 4
@@ -12267,7 +12326,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_horse_and_truck_columns
-		icon = GFX_kaz_soviet_collapse_horse_truck_columns
+		icon = GFX_focus_kaz_soviet_collapse_horse_and_truck_columns
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 11
 			y = 5
@@ -12286,7 +12345,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_rail_guard_brigades
-		icon = GFX_kaz_soviet_collapse_rail_guard_brigades
+		icon = GFX_focus_kaz_soviet_collapse_rail_guard_brigades
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
 			x = 25
 			y = 5
@@ -12311,7 +12370,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_caspian_security_detachments
-		icon = GFX_kaz_soviet_collapse_caspian_security_detachments
+		icon = GFX_focus_kaz_soviet_collapse_caspian_security_detachments
 		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
 		x = 16
 		y = 8
@@ -12334,7 +12393,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_airstrips_on_the_steppe
-		icon = GFX_kaz_soviet_collapse_airstrips_on_steppe
+		icon = GFX_focus_kaz_soviet_collapse_airstrips_on_the_steppe
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
 		x = 3
 		y = 6
@@ -12353,7 +12412,7 @@ focus_tree = {
 
 		focus = {
 			id = kaz_soviet_collapse_army_of_the_open_horizon
-			icon = GFX_kaz_soviet_collapse_army_open_horizon
+			icon = GFX_focus_kaz_soviet_collapse_army_of_the_open_horizon
 			search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AIR_XP FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
 			x = 2
 			y = 7
@@ -12384,7 +12443,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_call_the_steppe_congress
-		icon = GFX_kaz_soviet_collapse_call_steppe_congress
+		icon = GFX_focus_kaz_soviet_collapse_call_the_steppe_congress
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 5
 		y = 6
@@ -12405,7 +12464,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_uzbek_supply_delegates
-		icon = GFX_kaz_soviet_collapse_uzbek_supply_delegates
+		icon = GFX_focus_kaz_soviet_collapse_uzbek_supply_delegates
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 4
 		y = 7
@@ -12420,7 +12479,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_kyrgyz_mountain_liaisons
-		icon = GFX_kaz_soviet_collapse_kyrgyz_mountain_liaisons
+		icon = GFX_focus_kaz_soviet_collapse_kyrgyz_mountain_liaisons
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 6
 		y = 7
@@ -12435,7 +12494,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_tajik_pass_agreements
-		icon = GFX_kaz_soviet_collapse_tajik_pass_agreements
+		icon = GFX_focus_kaz_soviet_collapse_tajik_pass_agreements
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 8
 		y = 7
@@ -12451,7 +12510,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_common_steppe_passports
-		icon = GFX_kaz_soviet_collapse_common_steppe_passports
+		icon = GFX_focus_kaz_soviet_collapse_common_steppe_passports
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 8
@@ -12470,7 +12529,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_steppe_defense_council
-		icon = GFX_kaz_soviet_collapse_steppe_defense_council
+		icon = GFX_focus_kaz_soviet_collapse_steppe_defense_council
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 9
@@ -12493,7 +12552,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_open_eastern_liaison_yurts
-		icon = GFX_kaz_soviet_collapse_open_eastern_liaison_yurts
+		icon = GFX_focus_kaz_soviet_collapse_open_eastern_liaison_yurts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 7
@@ -12512,7 +12571,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_turkish_language_channels
-		icon = GFX_kaz_soviet_collapse_turkish_language_channels
+		icon = GFX_focus_kaz_soviet_collapse_turkish_language_channels
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 8
@@ -12527,7 +12586,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_iranian_caspian_notes
-		icon = GFX_kaz_soviet_collapse_iranian_caspian_notes
+		icon = GFX_focus_kaz_soviet_collapse_iranian_caspian_notes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
 		x = 18
 		y = 8
@@ -12545,7 +12604,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_japanese_far_east_approaches
-		icon = GFX_kaz_soviet_collapse_japanese_far_east_approaches
+		icon = GFX_focus_kaz_soviet_collapse_japanese_far_east_approaches
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 8
@@ -12561,7 +12620,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_british_mining_observers
-		icon = GFX_kaz_soviet_collapse_british_mining_observers
+		icon = GFX_focus_kaz_soviet_collapse_british_mining_observers
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 16
 		y = 10
@@ -12579,7 +12638,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_multi_vector_recognition
-		icon = GFX_kaz_soviet_collapse_multi_vector_recognition
+		icon = GFX_focus_kaz_soviet_collapse_multi_vector_recognition
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
 		y = 9
@@ -12599,7 +12658,7 @@ focus_tree = {
 
 	focus = {
 		id = kaz_soviet_collapse_the_steppe_outlives_the_union
-		icon = GFX_kaz_soviet_collapse_the_steppe_outlives_the_union
+		icon = GFX_focus_kaz_soviet_collapse_the_steppe_outlives_the_union
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 12

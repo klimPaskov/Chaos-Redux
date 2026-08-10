@@ -2,6 +2,8 @@
 
 This is the compact entry point for the Soviet Collapse implementation state. It summarizes the current accepted direction and points back to the source map for evidence. Older audits, package notes, asset sidecars, and subagent handoffs remain historical evidence unless `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` marks a specific finding as superseded.
 
+Current reconciliation: the active package contains 43 focus trees and 1,760 focuses, the semantic shallow-leaf risk is zero, UWR and KMB packages and their final assets are implemented, workbook and CSV parity is complete, Event 005 map positions are clean within the states it consumes, Patron Rivalry plus Reconsolidation and Aftermath are implemented, and every supported weighted surface has complete probability inputs with zero unresolved items. The compact MCP focus-layout rewrite is deliberately reserved as the final source mutation after this documentation snapshot.
+
 ## Current Gameplay Surface
 
 Event 005 is a major Soviet crisis started through `chaosx.nr5.1` and visible event `chaosx.nr5.2`. The implementation spans:
@@ -30,6 +32,7 @@ The main active systems are:
 - breakaway emergency decisions
 - foreign patron decisions and dependency pressure
 - local league and Free Republics' League logic
+- three Successor Relations alignments: the Black International, Free Soviet Congress, and Iron Production Bloc
 - Union Unmade terminal collapse
 - triggerable scenario launch: the Scenarios window can force standalone Soviet Collapse starts without inheriting unrelated live-crisis settings, release ordinary republics or ordinary plus high-chaos splinters by type, form local factions, start the anti-Soviet wars, and grant extra opening forces scaled by intensity, controlled states, civilian factories, and military factories; large and industrial republics receive stronger opening armies through state and factory multipliers; a neutral country that launches the scenario remains outside immediate external-corridor wars, while Moscow and republic launchers still follow the normal collapse actor logic
 - reconquest resolution: Moscow marks the crisis resolved after regaining control of every state held when the crisis began, which clears the crisis/terminal flags, removes active Soviet missions, hides breakaway and foreign intervention boards, and resets the crisis meters
@@ -42,7 +45,7 @@ The repression network and Union Crisis share one bounded bridge. Soviet gulag a
 
 The Soviet camp package lives in `common/decisions/camp_repression_major_country_decisions.txt`, `common/scripted_effects/camp_repression_major_country_effects.txt`, `common/ideas/camp_repression_major_country_ideas.txt`, `common/dynamic_modifiers/camp_repression_major_country_dynamic_modifiers.txt`, and `events/soviet_gulag.txt`. It projects vanilla paranoia only while the paranoia system is active, uses the shared active-site registry and Deaths pipeline, and processes recurring harm through the registered-country monthly pulse rather than a second Soviet loop. Famine warning, critical famine, administrative breakdown, relief, retreat records, reform, and dismantlement are bounded threshold or decision outcomes. Splinter experiment sites created by Soviet Collapse register the same responsible-country and evidence fields as ordinary sites, while their population loss remains owned by the affected state through the Deaths adapter.
 
-This overview is not a completion report. The bounded Command and Corridors tranche is implemented and audited, but Event 005 remains in urgent playability cleanup. The separate May 29 focus-depth backlog, broader successor relations, patron rivalry, reconsolidation aftermath, full UWR/KMB completion, presentation parity, assets, and final full-event completion audits remain open.
+The bounded Command and Corridors tranche, Patron Rivalry events `chaosx.nr5.50` through `chaosx.nr5.70`, Reconsolidation and Aftermath events `chaosx.nr5.96` and `chaosx.nr5.97`, the UWR and KMB package surfaces, final Event 005 assets, workbook/CSV parity, and probability completion are implemented. The current source map and probability handoff retain the exact MCP evidence.
 
 The crisis board keeps all 118 numbered Soviet missions and its existing active and monthly refill caps. Each mission belongs to exactly one operational family: 37 Chain of Command, 21 Corridors and Depots, and 60 Republic Settlement. At refill, Moscow measures Authority and Obedience shortfalls, Republic Confidence and Depot Vulnerability excesses, and the influence of Foreign Appetite, League Cohesion, and Old Movement pressure. It attempts at most one live mission from each family in priority order, then fills remaining places through the original complete mission list. The opening posture shifts the safe bands before the first post-option fill, so the first board reflects the player's declared response. This is one mission board and one release scheduler, not a parallel objective system.
 
@@ -60,7 +63,7 @@ Reconquest is part of the threat model. When Moscow annexes a breakaway republic
 
 Breakaway setup grants starting forces dynamically. The release package scales field formations, manpower, infantry equipment, support equipment, and artillery from controlled states, civilian factories, and military factories before applying chaos, war-pressure, depot, foreign-access, and terminal-collapse bonuses. Stronger republics therefore start with substantially larger armies without relying only on a short fixed major-tag list, and their spawned field formations use stronger templates as their territorial or industrial base grows. The initial-force marker is based on actual fielded divisions, and the setup path retries a minimum package for any breakaway with usable owned or controlled territory that still has no units after the dynamic package runs. Union Unmade finalization also retries the same actual-division check for every breakaway and guarantees that any newly released republic with a usable owned or controlled state fields at least one unit. The triggerable Union Unmade scenario uses the same strength model with higher intensity caps, so high-intensity starts can give Ukraine, Belarus, Kazakhstan, large Siberian republics, and industrial successors far larger opening forces than small isolated tags. Large republics and industrial successors receive especially large field-formation bursts at high intensity, while small northern or regional tags still get enough guards to survive the first month.
 
-Existing-country focus-tree eligibility must stay conservative. Event-created ordinary republic trees are intended for countries marked with `soviet_collapse_event_created_republic`; existing countries with meaningful trees should receive crisis integration, decisions, ideas, or additive hooks rather than a blind runtime focus-tree replacement. Current script evidence shows Event005 focus-tree country blocks and loader paths checking `soviet_collapse_event_created_republic`, but this still needs validation during urgent playability work.
+Existing-country focus-tree eligibility stays conservative. Event-created ordinary republic trees are limited to countries marked with `soviet_collapse_event_created_republic`; all nine generic runtime loader calls and matching regional tree selectors enforce that exact gate, so existing countries with meaningful trees retain them and receive crisis integration through the existing non-replacement surfaces.
 
 Regional focus-tree and league classifiers must stay geographic. The Central Asian focus tree and Central Asian League cover Kazakhstan, the southern Central Asian republics, and Central Asian successor/restoration packages. Northern internal republics above Kazakhstan, including Altai and Ostyak-Vogulia, stay on internal-republic logic and must not count as Central Asian League members. Caucasus League formation is single-leader: once a Caucasus league leader or announcement exists, later Caucasus calls join that league or refresh invitations instead of creating another Caucasus faction. Union Unmade runs a terminal Central Asian League reconciliation pass after releases and league formation, so newly released eligible Central Asian republics join the existing Central Asian faction instead of remaining outside it.
 
@@ -101,7 +104,7 @@ Event 005 registers two event-log evolution families:
 - Republic Secession Progression, type `constant:soviet_collapse_event_log.secession_evolution_type`: records five public stages: First Durable Secession, Regional Cascade, Union Unmade, Maximum Rupture at Totalen Chaos, and World Collapse Rupture at World Collapse.
 - High-Chaos Successor Mutation, type `constant:soviet_collapse_high_chaos_event_log.evolution_type`: records the first qualifying non-republic successor authority for its chaos tier. Branch IDs choose the actor-specific title and body, while the player-facing stage display comes from the logged tier: Stage 4 at Totalen Chaos and Stage 5 at World Collapse. Later high-chaos reports stay out of the evolution log.
 
-The event-details preview list for event ID `5` is registered in `events_log_rebuild_open_event_details_view`. Player-facing evolution body text must match the Event 005 row in `docs/spreadsheets/chaos_redux_events_catalog.xlsx` exactly after implementation facts are finalized. The current documentation should not be treated as proof that event-detail and spreadsheet wording are already aligned.
+The event-details preview list for event ID `5` is registered in `events_log_rebuild_open_event_details_view`. The 2026-08-09 spreadsheet parity handoff confirms exact wording parity between the workbook row, event-detail text, evolution-detail text, and regenerated CSV exports.
 
 Soviet Collapse evolution detail popups use the portrait-style details layout for both registered evolution families. Their portrait slot returns `GFX_soviet_collapse_evolution_portraits_animated`, a 66-frame loop assembled from the existing `gfx/leaders/005_soviet_collapse/*_leader.dds` portrait set. The static fallback is `GFX_soviet_collapse_evolution_portraits`, and both sprite aliases are registered in `interface/005_soviet_collapse_custom_icons.gfx`. The animation package, contact sheet, preview GIF, source-frame PNGs, processed-frame PNGs, and handoff notes live under `docs/assets/005_soviet_collapse/`.
 
@@ -117,18 +120,17 @@ The surviving historical surfaces are:
 - `docs/assets/005_soviet_collapse/`
 - `docs/assets/005_soviet_collapse_generated_handoff/`
 
-There is no separate canonical Event 005 super-event research document. Super-event status must be taken from the current source map, the live presentation records, and the surviving provenance ledgers.
+Verified Event 005 super-event quote wording, editions, translations, attribution, source URLs, confidence, and rights notes are recorded in `docs/super_events/005_soviet_collapse/text_research.md`. Runtime presentation status remains governed by the current source map and live presentation records.
 
 Generated/source/final binary assets and text prompt files remain in place. Do not delete useful historical notes during urgent cleanup; mark findings as accepted, queued, superseded, or contradicted in the source map instead.
 
 ## Current Priority
 
-Implementation should continue in this order:
+Completion evidence is preserved in this order:
 
-1. Preserve the implemented Command and Corridors loop, release-cause inheritance, selected-target lifecycle, and UWR/KMB shared hooks while addressing later work.
+1. Preserve the implemented Command and Corridors loop, release-cause inheritance, selected-target lifecycle, Patron Rivalry, Reconsolidation and Aftermath, UWR/KMB packages, Successor Relations, and final asset wiring.
 2. Keep release pacing gradual: calm worlds release the base Soviet republics, pressure and chaos unlock wider pools, and only terminal or maximum-intensity rupture paths run exhaustive passes.
-3. Continue the separate focus-quality backlog: political, industry, expansion, layout, mutex, helper-generic reward, and regional-payoff cleanup across the 43-tree package.
-4. Design Patron Rivalry, Successor Relations, Reconsolidation and Aftermath, and full UWR/KMB completion as separately accepted tranches.
-5. Preserve event-created focus-tree eligibility for runtime tree loads and validate that already-existing republic tags are not overwritten unless the event created them.
-6. Reconcile event-detail, evolution-detail, and spreadsheet wording only when those player-facing fields actually change; the Command and Corridors tranche does not change the event premise or evolution catalog.
-7. Leave flags and other final assets to their explicit completion scope. The Command and Corridors tranche reuses registered decision and mission icons and adds no sprite identifier.
+3. Treat the former 520 pathline heuristic and 1,127 shallow-reward count as historical audit evidence. The current focus package has 1,760 material reward checks and zero semantic shallow-leaf risks.
+4. Keep the completed workbook, generated CSV exports, Event 005 map consumers, final icons, and UWR flag family aligned with their current handoffs. Do not reopen those surfaces as unfinished implementation.
+5. Preserve the exact event-created gate around all generic runtime focus-tree loads so already-existing republic tags are not overwritten.
+6. Run the compact `hoi4.focus_rewrite` batch across all 43 trees as the final source mutation, then retain read-only post-rewrite inspection, rendering, probability, and semantic-hash evidence.
