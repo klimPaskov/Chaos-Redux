@@ -367,7 +367,7 @@ brilliant_scientist_apply_project_stage_output = {
 			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
 			set_country_flag = brilliant_scientist_cloning_weaponization_completed
 			add_dynamic_modifier = { modifier = brilliant_scientist_cloning_weaponization }
-			set_technology = { brilliant_scientist_clone_formations_tech = 1 popup = yes }
+			clone_select_kruger_refinement = yes
 			set_country_flag = brilliant_scientist_cloning_military_package_ready
 		}
 	}
@@ -1088,6 +1088,7 @@ brilliant_scientist_capture_biological_agent_history = {
 	if = { limit = { is_special_project_completed = sp:tularemia_bomb } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_tularemia } }
 	if = { limit = { is_special_project_completed = sp:smallpox_bomb } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_smallpox } }
 	if = { limit = { is_special_project_completed = sp:weaponize_the_zombies } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_weaponized_zombies } }
+	if = { limit = { is_special_project_completed = sp:black_plague_weaponization_program } KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_agent_black_plague } }
 }
 
 # COUNTRY scope. Reused native projects keep their clocks and outputs. This
@@ -1133,13 +1134,19 @@ brilliant_scientist_sync_native_project_prototypes = {
 
 # COUNTRY scope. Exact family input, used by project completion outputs.
 brilliant_scientist_record_new_project_prototype = {
-	brilliant_scientist_load_project_index = yes
 	if = {
-		limit = {
-			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+		limit = { is_mengele_clone_directorate_country = yes }
+		brilliant_scientist_record_mengele_project_prototype = yes
+	}
+	else = {
+		brilliant_scientist_load_project_index = yes
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory }
+				check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			}
+			brilliant_scientist_complete_native_prototype_stage = yes
 		}
-		brilliant_scientist_complete_native_prototype_stage = yes
 	}
 }
 

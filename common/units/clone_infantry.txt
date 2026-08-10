@@ -1,0 +1,104 @@
+# ============================================================================
+# CHAOS REDUX - SHARED CLONE INFANTRY
+# ============================================================================
+# Neutral reusable clone battalion. Provider-specific technologies may refine
+# it, but the unit id, equipment contract, model token, and counter identity
+# remain shared across events.
+# ============================================================================
+
+@CLONE_INFANTRY_PRIORITY = 610
+@CLONE_INFANTRY_AI_PRIORITY = 215
+@CLONE_INFANTRY_COMBAT_WIDTH = 2
+@CLONE_INFANTRY_STRENGTH = 20
+@CLONE_INFANTRY_ORGANISATION = 70
+@CLONE_INFANTRY_MORALE = 0.30
+@CLONE_INFANTRY_MANPOWER = 1000
+@CLONE_INFANTRY_TRAINING_DAYS = 90
+@CLONE_INFANTRY_SUPPRESSION = 1.20
+@CLONE_INFANTRY_WEIGHT = 0.50
+@CLONE_INFANTRY_SUPPLY = 0.06
+@CLONE_INFANTRY_RIFLES = 90
+@CLONE_INFANTRY_COHORTS = 1
+@ARYAN_CLONE_INFANTRY_PRIORITY = 611
+@ARYAN_CLONE_INFANTRY_AI_PRIORITY = 230
+
+sub_units = {
+	clone_infantry = {
+		abbreviation = "CLN"
+		sprite = clone_infantry
+		map_icon_category = infantry
+		priority = @CLONE_INFANTRY_PRIORITY
+		ai_priority = @CLONE_INFANTRY_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_infantry_and_bicycle
+		}
+
+		combat_width = @CLONE_INFANTRY_COMBAT_WIDTH
+		max_strength = @CLONE_INFANTRY_STRENGTH
+		max_organisation = @CLONE_INFANTRY_ORGANISATION
+		default_morale = @CLONE_INFANTRY_MORALE
+		manpower = @CLONE_INFANTRY_MANPOWER
+		training_time = @CLONE_INFANTRY_TRAINING_DAYS
+		suppression = @CLONE_INFANTRY_SUPPRESSION
+		weight = @CLONE_INFANTRY_WEIGHT
+		supply_consumption = @CLONE_INFANTRY_SUPPLY
+
+		essential = {
+			infantry_equipment
+			clone_equipment
+		}
+		need = {
+			infantry_equipment = @CLONE_INFANTRY_RIFLES
+			clone_equipment = @CLONE_INFANTRY_COHORTS
+		}
+	}
+
+	# Mengele's explicitly selected Aryan formation. It deliberately uses its
+	# own sprite token so the map model always resolves to installed German
+	# infantry art without changing the shared clone battalion consumer.
+	aryan_clone_infantry = {
+		abbreviation = "ACL"
+		sprite = aryan_clone_infantry
+		map_icon_category = infantry
+		priority = @ARYAN_CLONE_INFANTRY_PRIORITY
+		ai_priority = @ARYAN_CLONE_INFANTRY_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_infantry_and_bicycle
+		}
+
+		combat_width = @CLONE_INFANTRY_COMBAT_WIDTH
+		max_strength = @CLONE_INFANTRY_STRENGTH
+		max_organisation = @CLONE_INFANTRY_ORGANISATION
+		default_morale = @CLONE_INFANTRY_MORALE
+		manpower = @CLONE_INFANTRY_MANPOWER
+		training_time = @CLONE_INFANTRY_TRAINING_DAYS
+		suppression = @CLONE_INFANTRY_SUPPRESSION
+		weight = @CLONE_INFANTRY_WEIGHT
+		supply_consumption = @CLONE_INFANTRY_SUPPLY
+
+		essential = {
+			infantry_equipment
+			clone_equipment
+		}
+		need = {
+			infantry_equipment = @CLONE_INFANTRY_RIFLES
+			clone_equipment = @CLONE_INFANTRY_COHORTS
+		}
+	}
+}

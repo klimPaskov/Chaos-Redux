@@ -1,5 +1,7 @@
 # Event 016 Portal Raid beachhead and factory extraction handoff
 
+> Historical contract superseded by the 2026-08-09 documentation reconciliation: the native Portal Facility Raid is the current architecture and uses seven-day preparation, ten Command Power, sixty Teleportation Equipment, hostile-province seizure, fully supplied unit spawn, and eligible building transfer. The separate KRG biological stockpile and delivery ledger remains queued behind the optional native CBRN callback; no parallel ledger is authorized. Portal Raider counters are complete and wired, while the runtime model/entity, actions, and sounds remain rejected and unwired pending user-approved paid recovery. See `docs/events/016_brilliant_scientist/systems/portal_raider_api.md` and `docs/plans/016_brilliant_scientist_plans/016_portal_plague_documentation_reconciliation_2026-08-09.md`.
+
 Date: 2026-08-03
 
 ## Scope

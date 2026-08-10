@@ -1,5 +1,7 @@
 # Event 016 documentation reconciliation handoff
 
+> **Superseded provider-inventory notice (2026-08-09):** The statements below that Event 019 contains only providers `501-503` and lacks Event 016 adapters are obsolete after the `504-510` bridge and provider 522 expansion. Retain this handoff as historical reconciliation evidence only; use `016_core_runtime_handoff_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current continuation.
+
 Date: 2026-07-29
 
 > Superseded continuation note (2026-08-01): this handoff predates commits `01b1a2f3d` and `4b59b0adf`. Its core-runtime map remains useful, but current documentation status and the two report-presentation continuations are recorded in `016_core_runtime_handoff_map.md` and `016_documentation_curator_continuation_2026-08-01.md`.
@@ -41,7 +43,7 @@ No other file was changed by this documentation pass.
 - The old source map and resume packet now identify their 2026-07-14 placeholder and asset counters as historical instead of silently competing with current handoff evidence.
 - The map explicitly distinguishes package production or bounded implementation from parent-owned runtime wiring, audits, and default enablement.
 - The map records that Event 019 currently has only provider IDs 501, 502, and 503 and that Event016 clone, robot, paleo, xeno, and exotic-interface adapters are not implemented.
-- The map excludes the complete anomaly recon trooper and anomaly signal beacon pilot packages from Event016 model acceptance.
+- The map excludes the complete anomaly signal beacon pilot package from Event016 model acceptance.
 - The map records the exact seven Event016 route-specific sub-unit consumers as the actual 3D backlog.
 
 ## Contradictions still open

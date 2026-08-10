@@ -2,7 +2,7 @@
 
 Date: 2026-07-14
 
-> Current-runtime pointer (2026-08-01): this packet is retained as the 2026-07-14 planning resume snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` before continuing implementation because the opening, shared architecture, bounded gameplay tranches, host-archetype dossier presentation, KRG foundation presentation, and multiple asset packages have advanced since this packet was written. Event 016 is default-enabled at the core-runtime milestone but is not content-complete. Every unqualified implementation, default-state, and next-action statement below is historical snapshot wording.
+> Current-runtime pointer (2026-08-09): this packet is retained as the 2026-07-14 planning resume snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` before continuing implementation because the opening, shared architecture, bounded gameplay tranches, host-archetype dossier presentation, KRG foundation presentation, native raid architecture, and multiple asset packages have advanced since this packet was written. Event 016 is default-enabled at the core-runtime milestone but is not content-complete. Native Event 016 raids are not blocked by the missing CBRN callback; only the optional KRG biological stockpile and delivery ledger remains queued. The clone infantry model/entity package is installed and reusable, Portal Raider counters are complete and wired, and the Portal Raider runtime model/entity remains rejected and unwired pending user-approved paid recovery. Every unqualified implementation, default-state, and next-action statement below is historical snapshot wording.
 
 ## Historical resume state, 2026-07-14
 

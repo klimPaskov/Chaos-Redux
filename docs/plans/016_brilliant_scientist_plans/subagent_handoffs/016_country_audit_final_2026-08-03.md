@@ -1,5 +1,7 @@
 # Event 016 KRG country-package audit handoff
 
+> **Superseded provider-inventory notice (2026-08-09):** This audit predates strict provider 522 and the expanded 18-ID Event 19 census. Its `504-510` bridge and open-isolation statements remain historical evidence only; use `016_core_runtime_handoff_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider facts and validation limits.
+
 Date: 2026-08-03  
 Scope: read-only audit of the fixed `KRG` package and its Event 019 provider surface.  
 Result: the static package is broad and internally connected, but transfer/formation, live playability, Event 019 isolation/cleanup, biological stockpile delivery, and portrait-pipeline acceptance remain open. No gameplay file was changed.
@@ -80,7 +82,7 @@ The KRG idea surface is wired to 34 Event 016 DDS icons and includes the current
 
 - Dormant KRG begins with an empty OOB and zero research slots by design. Formation initialisation (`common/scripted_effects/016_brilliant_scientist_country_effects.txt:660-679`) restores configured research slots, political power, limited former-host conventional technology, starting ideas, the conventional guard package, carried project history, and the KRG focus tree.
 - `brilliant_scientist_apply_conventional_guard_package` (`common/scripted_effects/016_brilliant_scientist_country_effects.txt:417-583`) builds a six-infantry Laboratory Guard template and derives guarded divisions, manpower, infantry/support/motorised equipment, fuel, experience, and equipment/manpower factors from route and host history. Takeover deliberately receives no free conventional grant.
-- Seven project sub-units are defined in `common/units/016_brilliant_scientist_project_forces.txt`: `kruger_portal_raider`, `kruger_clone_infantry`, `kruger_robot_frame`, `kruger_paleogenetic_beast`, `kruger_xenobiological_assault`, `kruger_exotic_guard`, and `kruger_temporal_guard`. Project equipment and the two project technology files define matching equipment/technology IDs; project technologies are history/focus unlocked (`allow = { always = no }`) rather than generic researchables.
+- Six route-specific project sub-units are defined in `common/units/016_brilliant_scientist_project_forces.txt`; cloning uses the shared `clone_infantry` and `clone_equipment` API. Project technologies are history/focus unlocked (`allow = { always = no }`) rather than generic researchables.
 - Production and supply are intentionally constrained by the starting ideas and route decisions. Static source wiring is present; affordability, stockpile quantities, template materialisation, fuel/supply survival, and route-specific balance need live or scripted scenario evidence.
 
 ## AI and playability

@@ -1,5 +1,7 @@
 # Event 016 Event 019 provider-isolation audit - 2026-08-03
 
+> **Superseded provider-inventory notice (2026-08-09):** This static audit covers seven historical provider rows and 77 callback definitions. Provider 522 and the expanded 18-ID Event 19 census were added later, so the counts and coverage table below are archival evidence rather than the current inventory. Use `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, `016_core_runtime_handoff_map.md`, and `.tmp/event19_docs_curator_current.md` for current facts and unresolved MCP or lifecycle evidence.
+
 ## Status
 
 The static provider-isolation audit is complete for the Event 016 integration surface. This tranche is documentation-only: no gameplay files, assets, localisation, models, or Event 019 core files were changed. The audit does not replace live Anomalous Rising, management, defeat, or final-cleanup acceptance.
@@ -15,7 +17,7 @@ The shared contract is documented in `docs/events/019_infantry_spawn/systems/tri
 
 | Provider | Family | Gate | Event 016 source |
 | --- | --- | --- | --- |
-| 504 | clone | `brilliant_scientist_project_force_cloning_active` | `kruger_clone_infantry` |
+| 504 | clone | `brilliant_scientist_project_force_cloning_active` | `clone_infantry` |
 | 505 | robot | `brilliant_scientist_project_force_robotics_active` | `kruger_robot_frame` |
 | 506 | paleogenetic | `brilliant_scientist_project_force_paleogenetics_active` | `kruger_paleogenetic_beast` |
 | 507 | xenobiological | `brilliant_scientist_project_force_xenobiological_synthesis_active` | `kruger_xenobiological_assault` |

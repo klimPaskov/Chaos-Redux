@@ -36,7 +36,11 @@ chaosx_grant_custom_operational_technology_core = {
 	}
 	if = {
 		limit = { check_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.clone } }
-		if = { limit = { NOT = { has_tech = brilliant_scientist_clone_formations_tech } } set_technology = { brilliant_scientist_clone_formations_tech = 1 popup = no } }
+		if = {
+			limit = { is_mengele_clone_directorate_country = yes }
+			clone_select_mengele_refinement = yes
+		}
+		else = { clone_select_kruger_refinement = yes }
 		set_country_flag = chaosx_custom_technology_clone_operational
 		set_country_flag = chaosx_custom_technology_clone_formations_granted
 		set_temp_variable = { chaosx_custom_technology_grant_applied = 1 }
@@ -112,7 +116,11 @@ chaosx_grant_custom_technology_upgrade = {
 		limit = { check_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.clone_weaponization } }
 		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.clone }
 		chaosx_grant_custom_operational_technology_core = yes
-		if = { limit = { NOT = { has_tech = brilliant_scientist_clone_formations_weaponization_tech } } set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 1 popup = no } }
+		if = {
+			limit = { is_mengele_clone_directorate_country = yes }
+			clone_select_mengele_refinement = yes
+		}
+		else = { clone_select_kruger_weaponization = yes }
 		set_country_flag = chaosx_custom_technology_clone_formations_weaponization_granted
 		set_temp_variable = { chaosx_custom_technology_upgrade_applied = 1 }
 	}
@@ -275,7 +283,14 @@ chaosx_reapply_custom_technology_grants = {
 	if = { limit = { has_country_flag = chaosx_custom_technology_temporal_guard_granted } set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.temporal } chaosx_grant_custom_operational_technology_core = yes }
 
 	if = { limit = { has_country_flag = chaosx_custom_technology_portal_warfare_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_portal_warfare_weaponization_tech } } set_technology = { brilliant_scientist_portal_warfare_weaponization_tech = 1 popup = no } } }
-	if = { limit = { has_country_flag = chaosx_custom_technology_clone_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_clone_formations_weaponization_tech } } set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 1 popup = no } } }
+	if = {
+		limit = { has_country_flag = chaosx_custom_technology_clone_formations_weaponization_granted }
+		if = {
+			limit = { is_mengele_clone_directorate_country = yes }
+			clone_select_mengele_refinement = yes
+		}
+		else = { clone_select_kruger_weaponization = yes }
+	}
 	if = { limit = { has_country_flag = chaosx_custom_technology_robot_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_robot_formations_weaponization_tech } } set_technology = { brilliant_scientist_robot_formations_weaponization_tech = 1 popup = no } } }
 	if = { limit = { has_country_flag = chaosx_custom_technology_paleogenetic_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_paleogenetic_formations_weaponization_tech } } set_technology = { brilliant_scientist_paleogenetic_formations_weaponization_tech = 1 popup = no } } }
 	if = { limit = { has_country_flag = chaosx_custom_technology_xenobiological_formations_weaponization_granted } if = { limit = { NOT = { has_tech = brilliant_scientist_xenobiological_formations_weaponization_tech } } set_technology = { brilliant_scientist_xenobiological_formations_weaponization_tech = 1 popup = no } } }

@@ -6,12 +6,16 @@
 # Native raid reservation, cancellation, expiry, outcome selection, equipment
 # collection, and raid history remain owned by the HOI4 raid engine. These
 # effects resolve the Event 016 consequences after the native outcome has been
-# selected: the breach can seize one province, create a Portal Raider cadre,
-# and extract factories to the raider country as off-map industry.
+# selected: the breach seizes one province, reconstructs the raid's assigned
+# Portal Raider formation there, and transfers exact factories or strategic
+# facilities. The raid outcome destroys the original formation before this
+# fixed-template reconstruction, so successful repeatable raids cannot duplicate
+# units, manpower, or their carried equipment.
 # ============================================================================
 
 @CR_SC_PORTAL_RAID_LIGHT_DAMAGE = 1
 @CR_SC_PORTAL_RAID_HEAVY_DAMAGE = 2
+@CR_SC_PORTAL_RAID_TRANSFER_LEVEL = 1
 
 # COUNTRY scope. Called once by each native portal-raid outcome.
 brilliant_scientist_record_portal_raid_attempt = {
@@ -41,7 +45,9 @@ brilliant_scientist_record_portal_raid_critical_success = {
 # STATE scope. The successful portal operation is a real one-province landing,
 # not a damage-only report. The actor becomes controller of the selected
 # province while the target country retains the surrounding state, and the
-# existing locked Quantum Transit Raiders template supplies the spawned cadre.
+# existing locked Quantum Transit Raiders template supplies the reconstructed
+# formation. The raid requires all six Portal Raider battalions from that locked
+# template and destroys the assigned formation in its division outcome block.
 # This leaves a persistent state flag for later spread, containment, and
 # aftermath systems without adding a whole-world polling on_action.
 brilliant_scientist_portal_raid_establish_beachhead = {
@@ -52,58 +58,206 @@ brilliant_scientist_portal_raid_establish_beachhead = {
 		}
 		set_state_flag = brilliant_scientist_portal_beachhead_active
 		set_state_flag = brilliant_scientist_portal_raid_breach_recorded
+		set_temp_variable = { brilliant_scientist_portal_spawn_province = var:ROOT.target_province }
 		var:ROOT.actor_country = {
-			set_province_controller = var:ROOT.target_province
 			set_country_flag = brilliant_scientist_portal_beachhead_established_ever
 			add_to_variable = { brilliant_scientist_portal_beachheads = constant:brilliant_scientist_value.one }
-		}
-		var:ROOT.target_province = {
-			create_unit = {
-				division = "name = \"Portal Breach Cadre\" division_template = \"Quantum Transit Raiders\" start_experience_factor = 0.50 start_equipment_factor = 0.40 start_manpower_factor = 0.75"
-				owner = var:ROOT.actor_country
-				allow_spawning_on_enemy_provs = yes
-				count = 1
+			meta_effect = {
+				text = {
+					set_province_controller = [PORTAL_PROVINCE]
+					create_unit = {
+						division = "name = \"Portal Breach Cadre\" division_template = \"Quantum Transit Raiders\" start_experience_factor = 0.50 start_equipment_factor = 1.00 start_manpower_factor = 1.00"
+						owner = THIS
+						prioritize_location = [PORTAL_PROVINCE]
+						allow_spawning_on_enemy_provs = yes
+						count = 1
+					}
+				}
+				PORTAL_PROVINCE = "[?brilliant_scientist_portal_spawn_province|.0]"
 			}
 		}
 	}
 }
 
-# STATE scope. Extracts exactly one factory level from the selected target and
-# returns it to the raiding country as an off-map factory. Off-map industry is
-# intentional here: the factory is portable loot and cannot fail because the
-# raider has no free construction slot at the moment of the raid. The priority
-# keeps the outcome legible and lets a critical success call this effect twice.
-brilliant_scientist_portal_raid_steal_factory = {
+# COUNTRY scope. Shared persistent receipt for one exact transferred building.
+brilliant_scientist_record_portal_installation_extraction = {
+	set_country_flag = brilliant_scientist_portal_installation_extraction_ever
+	add_to_variable = { brilliant_scientist_portal_installations_stolen = constant:brilliant_scientist_value.one }
+}
+
+# STATE scope. Facility-target wrapper. Provincial facilities may be considered
+# because the native building target supplies their exact target province.
+brilliant_scientist_portal_raid_extract_installation = {
+	set_temp_variable = { brilliant_scientist_portal_raid_allow_facility_transfer = constant:brilliant_scientist_value.one }
+	brilliant_scientist_portal_raid_extract_installation_internal = yes
+}
+
+# STATE scope. State-target wrapper. Provincial facilities are excluded because
+# a state target does not identify their exact province; factories, reactors,
+# and rocket sites remain eligible.
+brilliant_scientist_portal_raid_extract_state_installation = {
+	set_temp_variable = { brilliant_scientist_portal_raid_allow_facility_transfer = constant:brilliant_scientist_value.zero }
+	brilliant_scientist_portal_raid_extract_installation_internal = yes
+}
+
+# STATE scope. Transfers one exact installation per call. Eligible facilities
+# are rebuilt instantly in one valid owned state; factories are moved into
+# off-map industry so a full destination state cannot erase the reward. The
+# target is removed only when an eligible destination exists.
+brilliant_scientist_portal_raid_extract_installation_internal = {
 	if = {
 		limit = { var:ROOT.actor_country = { exists = yes } }
 		if = {
+			limit = {
+				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
+				nuclear_facility > 0
+				var:ROOT.target_province = { nuclear_facility > 0 }
+				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+			remove_building = { type = nuclear_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }
+			set_state_flag = brilliant_scientist_portal_facility_extracted
+			var:ROOT.actor_country = {
+				random_owned_controlled_state = {
+					limit = { land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 }
+					construct_building_in_random_province = { nuclear_facility = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
+				}
+				set_country_flag = brilliant_scientist_portal_facility_extraction_ever
+				brilliant_scientist_record_portal_installation_extraction = yes
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
+				land_facility > 0
+				var:ROOT.target_province = { land_facility > 0 }
+				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+			remove_building = { type = land_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }
+			set_state_flag = brilliant_scientist_portal_facility_extracted
+			var:ROOT.actor_country = {
+				random_owned_controlled_state = {
+					limit = { land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 }
+					construct_building_in_random_province = { land_facility = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
+				}
+				set_country_flag = brilliant_scientist_portal_facility_extraction_ever
+				brilliant_scientist_record_portal_installation_extraction = yes
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
+				air_facility > 0
+				var:ROOT.target_province = { air_facility > 0 }
+				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+			remove_building = { type = air_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }
+			set_state_flag = brilliant_scientist_portal_facility_extracted
+			var:ROOT.actor_country = {
+				random_owned_controlled_state = {
+					limit = { land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 }
+					construct_building_in_random_province = { air_facility = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
+				}
+				set_country_flag = brilliant_scientist_portal_facility_extraction_ever
+				brilliant_scientist_record_portal_installation_extraction = yes
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
+				naval_facility > 0
+				var:ROOT.target_province = { naval_facility > 0 }
+				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country is_coastal = yes land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
+			}
+			remove_building = { type = naval_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }
+			set_state_flag = brilliant_scientist_portal_facility_extracted
+			var:ROOT.actor_country = {
+				random_owned_controlled_state = {
+					limit = { is_coastal = yes land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 }
+					construct_building_in_random_province = { naval_facility = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
+				}
+				set_country_flag = brilliant_scientist_portal_facility_extraction_ever
+				brilliant_scientist_record_portal_installation_extraction = yes
+			}
+		}
+		else_if = {
+			limit = {
+				commercial_nuclear_reactor > 0
+				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country free_building_slots = { building = commercial_nuclear_reactor size > 0 } } }
+			}
+			remove_building = { type = commercial_nuclear_reactor level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
+			set_state_flag = brilliant_scientist_portal_facility_extracted
+			var:ROOT.actor_country = {
+				random_owned_controlled_state = {
+					limit = { free_building_slots = { building = commercial_nuclear_reactor size > 0 } }
+					add_building_construction = { type = commercial_nuclear_reactor level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL instant_build = yes }
+				}
+				set_country_flag = brilliant_scientist_portal_facility_extraction_ever
+				brilliant_scientist_record_portal_installation_extraction = yes
+			}
+		}
+		else_if = {
+			limit = {
+				nuclear_reactor > 0
+				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country free_building_slots = { building = nuclear_reactor size > 0 } } }
+			}
+			remove_building = { type = nuclear_reactor level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
+			set_state_flag = brilliant_scientist_portal_facility_extracted
+			var:ROOT.actor_country = {
+				random_owned_controlled_state = {
+					limit = { free_building_slots = { building = nuclear_reactor size > 0 } }
+					add_building_construction = { type = nuclear_reactor level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL instant_build = yes }
+				}
+				set_country_flag = brilliant_scientist_portal_facility_extraction_ever
+				brilliant_scientist_record_portal_installation_extraction = yes
+			}
+		}
+		else_if = {
+			limit = {
+				rocket_site > 0
+				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country free_building_slots = { building = rocket_site size > 0 } } }
+			}
+			remove_building = { type = rocket_site level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
+			set_state_flag = brilliant_scientist_portal_facility_extracted
+			var:ROOT.actor_country = {
+				random_owned_controlled_state = {
+					limit = { free_building_slots = { building = rocket_site size > 0 } }
+					add_building_construction = { type = rocket_site level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL instant_build = yes }
+				}
+				set_country_flag = brilliant_scientist_portal_facility_extraction_ever
+				brilliant_scientist_record_portal_installation_extraction = yes
+			}
+		}
+		else_if = {
 			limit = { arms_factory > 0 }
-			remove_building = { type = arms_factory level = 1 }
+			remove_building = { type = arms_factory level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
 			set_state_flag = brilliant_scientist_portal_factory_extracted
 			var:ROOT.actor_country = {
-				add_offsite_building = { type = arms_factory level = 1 }
+				add_offsite_building = { type = arms_factory level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
 				set_country_flag = brilliant_scientist_portal_factory_extraction_ever
 				add_to_variable = { brilliant_scientist_portal_factories_stolen = constant:brilliant_scientist_value.one }
+				brilliant_scientist_record_portal_installation_extraction = yes
 			}
 		}
 		else_if = {
 			limit = { industrial_complex > 0 }
-			remove_building = { type = industrial_complex level = 1 }
+			remove_building = { type = industrial_complex level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
 			set_state_flag = brilliant_scientist_portal_factory_extracted
 			var:ROOT.actor_country = {
-				add_offsite_building = { type = industrial_complex level = 1 }
+				add_offsite_building = { type = industrial_complex level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
 				set_country_flag = brilliant_scientist_portal_factory_extraction_ever
 				add_to_variable = { brilliant_scientist_portal_factories_stolen = constant:brilliant_scientist_value.one }
+				brilliant_scientist_record_portal_installation_extraction = yes
 			}
 		}
 		else_if = {
 			limit = { dockyard > 0 }
-			remove_building = { type = dockyard level = 1 }
+			remove_building = { type = dockyard level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
 			set_state_flag = brilliant_scientist_portal_factory_extracted
 			var:ROOT.actor_country = {
-				add_offsite_building = { type = dockyard level = 1 }
+				add_offsite_building = { type = dockyard level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL }
 				set_country_flag = brilliant_scientist_portal_factory_extraction_ever
 				add_to_variable = { brilliant_scientist_portal_factories_stolen = constant:brilliant_scientist_value.one }
+				brilliant_scientist_record_portal_installation_extraction = yes
 			}
 		}
 	}

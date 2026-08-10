@@ -6,7 +6,7 @@ The Chaos unit family registry is the opt-in contract used by Event 19 and futur
 
 Each family owns one registration entry and one startup registration call. Event 19 reads the aligned `global.chaos_unit_family_*` rows and dispatches through the stored provider ID. Adding a future family therefore does not require adding it to an Event 19 family list.
 
-Event 19 keeps its consolidated ordinary table and the initial zombie, ghost, and golem provider integrations in the single `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt` file. Registry tuning lives in the existing Event 19 constants, registry triggers live in the existing Event 19 trigger file, and startup registration calls live in the relevant existing parent on-action files. A future family defines its one complete registration effect and Event 19 callbacks in that family's existing integration surface, then calls the registration once from its existing parent startup path. It does not edit the Event 19 registry file, add a family-specific Event 19 registry file, add a second Event 19 registry file, or add an Event 19 family-list row.
+Event 19 keeps its consolidated ordinary table and the three baseline zombie, ghost, and golem bindings in the single `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt` file. The remaining installed Chaos families use owner-side adapters in their existing event or doctrine files. Registry tuning lives in the existing Event 19 constants, registry triggers live in the existing Event 19 trigger file, and startup registration calls live in the relevant existing parent on-action files. A future family defines its one complete registration effect and Event 19 callbacks in that family's existing integration surface, then calls the registration once from its existing parent startup path. It does not edit the Event 19 registry file, add a family-specific Event 19 registry file, add a second Event 19 registry file, or add an Event 19 family-list row.
 
 The shared registry never infers eligibility from a unit token and never substitutes a different family. A missing provider, duplicate family ID with conflicting ownership, unsupported contract version, or misaligned table sets `chaos_unit_family_registry_invariant_failure` and prevents the affected Event 19 operation.
 
@@ -29,7 +29,22 @@ country pulse clears a stale Board-open flag after passive closeout. Historical
 whole-event asset, country, focus, scenario, catalog, and audit evidence remains
 valid for those broader surfaces; this increment's focused handoff is the
 current completion authority for registry selection and ordinary-category
-lifecycle.
+lifecycle. The later static provider-coverage reconciliation (2026-08-09) is
+the current authority for the provider inventory and owner contracts described
+below; it does not convert partial MCP inspection or unresolved weighted-pool
+analysis into live lifecycle proof.
+
+The current source census contains 18 provider IDs (`501-514`, `518`, `520-522`).
+Each provider has 12 definitions in the owner surface: one idempotent registration
+effect plus eleven Event 19 callbacks for eligibility, template construction,
+spawn, sustainment, management evaluation, payment, refund, management-cost
+display, derivative setup, public addition removal, and derivative cleanup.
+Provider 513's static package evidence includes all eight combat/support unit
+definitions, eight meshes/entities, packaged DDS maps, and 49 sound files. Its
+owner manifest `common/scripted_effects/012_africa_strange_force_manifest_effects.txt`
+sets `africa_strange_formation_package_ready` after the per-unit manifest flags;
+the manifest file is untracked and its startup call is an uncommitted modification, so parent integration and
+runtime acceptance remain open even though the static package is present.
 
 ### Event 016 generic provider bridge
 
@@ -37,19 +52,37 @@ Event 016 registers the following generic Event 019 families from its idempotent
 
 | Family | Family/provider ID | Event 016 implementation consumer | Provider-owned material profile |
 | --- | ---: | --- | --- |
-| Clone Infantry | 504 | `kruger_clone_infantry`, `infantry_equipment` | Standard infantry equipment plus exact manpower and training/sustainment costs. |
+| Clone Infantry | 504 | `clone_infantry`, `clone_equipment`, `infantry_equipment` | Shared clone cohorts, rifles, and exact manpower and training or sustainment costs. |
 | Autonomous Robot | 505 | `kruger_robot_frame`, `kruger_robot_equipment_1` | Robot equipment, manpower, political power, and command power callbacks. |
 | Paleogenetic Creature | 506 | `kruger_paleogenetic_beast`, `kruger_paleogenetic_equipment_1` | Paleogenetic equipment, manpower, political power, and command power callbacks. |
 | Xenobiological Organism | 507 | `kruger_xenobiological_assault`, `kruger_xenobiological_equipment_1` | Xenobiological equipment, manpower, political power, and command power callbacks. |
 | Alien Interface Infantry | 508 | `kruger_exotic_guard`, `kruger_exotic_arms_equipment_1` | Alien-arms equipment, manpower, political power, and command power callbacks. |
-| Portal Raider | 509 | `kruger_portal_raider`, `kruger_portal_equipment_1` | Portal equipment, manpower, political power, and command power callbacks. |
+| Portal Raider | 509 | `portal_raider`, `teleportation_equipment_1` | Generic teleportation equipment, infantry equipment, manpower, political power, and command power callbacks. |
 | Temporal Guard | 510 | `kruger_temporal_guard`, `kruger_temporal_equipment_1` | Temporal equipment, manpower, political power, and command power callbacks. |
+| Aryan Clone Infantry | 522 | `aryan_clone_infantry`, `clone_equipment` | Germany/Mengele-owned refinement only; requires `germany_mengele_is_germany_scope = yes`, `germany_mengele_program_active = yes`, `germany_mengele_cloning_project_completed`, `germany_master_race_claim_established`, and `mengele_aryan_clone_refinement_tech`. It is never a neutral clone alias. |
 
-These seven rows use neutral visual profile 999 and remain unavailable until their corresponding Event 016 history-derived runtime flag is active, so Event 016 native force materialisation remains unchanged and no provider row becomes a synonym for the Event 016 parent identity.
+These eight rows use neutral visual profile 999 and remain unavailable until their corresponding Event 016 history-derived runtime flag or the strict Mengele refinement gate is active, so Event 016 native force materialisation remains unchanged and no provider row becomes a synonym for the Event 016 parent identity.
 
-The provider callbacks record only manpower in the shared Event 019 obligation ledger; project equipment is deliberately reconciled and paid by the provider callbacks so the shared equipment-profile enum is not broadened for Event 016-only equipment lines.
+The provider callbacks record exact manpower, generic infantry/support equipment, and the stable custom profiles 142-148 in the shared Event 019 obligation ledger. The unit-file need contract is therefore reconciled and paid without a generic proxy or a second Event 019 registry file.
 
 Generic derivatives use the common Event 019 country shell plus a provider-owned hidden family idea, neutral host commander, route variable, release report, and removable package marker, and cleanup verifies the stored family/provider pair and requested lifecycle phase before proving teardown.
+
+### Owner-side installed family adapters
+
+The following provider rows cover the installed custom combat families beyond the three baseline bindings. Each row is registered from its existing owner package and is dispatched through the same generic callback contract. The exact unit and support boundary is maintained in `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`.
+
+| Family/provider | Owner surface | Event 19 consumers | Availability |
+| ---: | --- | --- | --- |
+| 511 | Zombie Outbreak owner adapter | All eleven mutated, demonic, wendigo, and armoured zombie variants | Spawn-only. Base `zombies` remains the only trainable zombie body. |
+| 512 | Africa Order owner adapter | `chaosx_elephant` | Spawn-only. Africa equipment remains provider-owned. |
+| 513 | Africa strange-forces owner adapter | `gorilla_heavy_infantry`, `stone_cohorts`, `riverborn`, `forest_giants`, `plague_carriers`, with `pan_sappers`, `oracle_recon`, and `disaster_wardens` support rows | Spawn-only and package-gated. |
+| 514 | Death owner adapter | `death_hollow_ghost_host`, `death_last_shore_ghost_host` | Spawn-only. `death_weak_ghost_host` remains baseline provider 502. |
+| 518 | Resources Found owner adapter | All five cave brood combat bodies | Spawn-only. Zero-manpower and zero-equipment bodies remain cave-owned. |
+| 520 | Black Plague owner adapter | Five rat combat bodies with `rat_tunnelers` support | Spawn-only. Rat sustainment remains parent-owned. |
+| 521 | CBRN doctrine owner surface | `chaos_battalion` | Spawn-only. Chemical support, payload, mask, decontamination, instrument, and truck reserves remain CBRN-owned. |
+| 522 | Event 016 Mengele owner adapter | `aryan_clone_infantry` | Trainable and spawnable only for the gated German Mengele program; exact clone and rifle needs use the shared Event 19 multi-resource profiles. |
+
+The CBRN headquarters, chemical support, chemical tank, and Livens support definitions are accounted for as parent-owned support consumers rather than standalone lots because they have no combat regiment. Event 19 requires a combat component before it can create a division, so it records provider 521's `chaos_battalion` without fabricating a support-only division or substituting ordinary infantry equipment. Provider 521's standing contract covers manpower, infantry, support, gas masks, decontamination, CBRN instruments, and motorized equipment; `chemical_agent_payload` remains operation-level and is not standing unit debt. The management-cost display callback selects a presentation profile during the Muster Board cache rebuild and never debits resources; profile `99` is reserved for ledger-backed zero-debit owner adapters whose tooltip must state that obligations are tracked by the Event 19 manifest. `aryan_clone_infantry` remains excluded from provider 504; provider 522 is the separate, strict owner adapter for the actual Mengele refinement.
 
 ## Registration fields
 
@@ -63,6 +96,12 @@ Every row records:
 
 The shared registry contains only the generic contract and aligned runtime rows. The initial Event 19-specific tuning, triggers, and static-token adapters follow the single-file ownership rule above; later providers remain externally owned and join through the generic provider-ID dispatch contract.
 
+### Exact multi-resource obligations
+
+The owner callbacks for providers 504-513, 521, and 522 use the temporary provider manifest in `common/scripted_effects/019_infantry_spawn_ledger_effects.txt`. Profiles 130-148 are declared in the existing Event 19 constants and are mapped through exact affordability, settlement, standardization-loss, salvage, snapshot, and rollback paths. A manifest row records its stable profile, per-battalion need, component count, and manpower/equipment scale kind; the commit helper applies the current lot start factor and appends a normal obligation row. The manifest is cleared before and after each provider callback.
+
+Provider 512 records 1,600 manpower and 180 elephant equipment. Provider 513 records all five combat and three support components, totaling 6,320 manpower and 1,400 bespoke equipment. Providers 504-510 and 522 record their unit-file infantry/support needs plus profiles 142-148 for clone and Kruger equipment. Providers 504 and 522 use ten combat battalions with 1,000 manpower, 90 `infantry_equipment`, and 1 `clone_equipment` per battalion, or 10,000 manpower, 900 infantry equipment, and 10 clone equipment before start-factor scaling; their sustainment contract is 1,000 manpower, 180 infantry equipment, and 2 clone equipment. Provider 521 records 1,050 manpower, infantry 170, support 70, gas masks 100, decontamination 60, CBRN instruments 15, and motorized 30; its operation-level chemical payload remains outside standing unit debt. No generic infantry row or unsupported profile is substituted for a real need.
+
 The eligibility callback returns two separate receipts. `chaos_unit_family_candidate_eligible` exposes a row to direct, first-reception, scenario, natural-release, and derivative consumers, while `chaos_unit_family_candidate_native` admits that row to the weighted automatic-generation family draw. A family-only row may therefore participate in automatic generation only for a provider-defined native host, while an ordinary-mix or both row can opt into the same draw for its own eligible countries.
 
 ## Provider contract
@@ -75,10 +114,13 @@ An Event 19-capable provider implements:
 - `chaos_unit_family_provider_N_event19_evaluate_management`;
 - `chaos_unit_family_provider_N_event19_pay_management_action`;
 - `chaos_unit_family_provider_N_event19_refund_management_action`;
+- `chaos_unit_family_provider_N_event19_get_management_cost_display`;
 - `chaos_unit_family_provider_N_event19_reconcile_sustainment`;
 - `chaos_unit_family_provider_N_event19_setup_derivative`;
 - `chaos_unit_family_provider_N_event19_remove_public_additions`;
 - `chaos_unit_family_provider_N_event19_cleanup_derivative`.
+
+Including registration, these eleven callback names form 12 provider surfaces per ID. Registration is counted separately because it is called from the owner startup path before Event 19 dispatch, while the eleven callback names above are the runtime dispatch contract. `event19_get_management_cost_display` writes `infantry_spawn_family_provider_display_cost_profile` into the shared Muster Board cache; it is presentation-only and must not be treated as a second family list or payment path.
 
 Static-token operations are selected with `meta_effect` using the recorded provider ID. Registration is idempotent only when every field in the existing row matches the offered entry; any conflicting provider, source event, availability mode, lot policy, profile, weight, or contract version marks the registry invariant failed. Startup initialization therefore cannot duplicate or silently redefine a row. A future family contributes one aligned runtime registration row and its provider contract from its own existing integration surface; Event 19 needs no hardcoded family enumeration, localisation map, picture map, list edit, or registry-file edit.
 
@@ -104,7 +146,7 @@ The natural-release transaction freezes the exact family or linked claimant-loya
 
 ## Event 19 isolation
 
-The initial providers expose only base `zombies`, `death_weak_ghost_host`, and `coal_golem`. Base zombies may be trainable. Ghosts and golems are spawn-only. Provider code may reuse the unit token but must not call the parent event's country setup, evolution, super-event, or world-end helpers.
+The three baseline bindings expose `zombies`, `death_weak_ghost_host`, and `coal_golem`. The owner-side rows above add every installed combat-capable Chaos family without expanding the dedicated Event 19 registry file. Base zombies may be trainable. Every ghost, golem, mutated zombie, elephant, Africa strange-force, cave, rat, and CBRN row is spawn-only. Provider code may reuse the unit token but must not call the parent event's country setup, evolution, super-event, or world-end helpers.
 
 Derivative identity uses dynamic-country creation or the proved same-tag takeover path. The registry contract has no fixed-tag fallback.
 

@@ -3,7 +3,7 @@
 # ============================================================================
 # Event 016 owns project history, native templates, equipment unlocks, and
 # native force materialisation. This file is the external provider surface for
-# Event 019: it registers seven generic family identities (504-510) only after
+# Event 019: it registers eight generic family identities (504-510 and 522) only after
 # the Event 016 runtime package is current, then supplies template, spawn,
 # management, sustainment, and isolated-derivative callbacks.
 #
@@ -77,6 +77,19 @@ brilliant_scientist_register_event19_project_force_providers = {
 			}
 		}
 		chaos_unit_family_provider_510_register = yes
+	}
+	# Provider 522 is deliberately narrower than the neutral clone provider:
+	# only the living German Mengele program with the completed cloning project,
+	# public master-race claim, and explicit Aryan refinement may expose it.
+	if = {
+		limit = {
+			germany_mengele_is_germany_scope = yes
+			germany_mengele_program_active = yes
+			has_country_flag = germany_mengele_cloning_project_completed
+			has_country_flag = germany_master_race_claim_established
+			has_tech = mengele_aryan_clone_refinement_tech
+		}
+		chaos_unit_family_provider_522_register = yes
 	}
 }
 
@@ -206,12 +219,31 @@ chaos_unit_family_provider_510_register = {
 	chaos_unit_family_register_current_provider = yes
 }
 
+chaos_unit_family_provider_522_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event16_aryan_clone_infantry.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event16_aryan_clone_infantry.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event16_aryan_clone_infantry.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.trainable_and_spawnable }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event16_aryan_clone_infantry.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event16_aryan_clone_infantry.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event16_aryan_clone_infantry.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event16_aryan_clone_infantry.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event16_aryan_clone_infantry.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event16_aryan_clone_infantry.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event16_aryan_clone_infantry.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
 # Inputs: infantry_spawn_current_template_uid and a provider kind. The
 # template names are generic Event 019 identities; kruger_* tokens are only
 # the already-defined Event 016 unit consumers.
 brilliant_scientist_event19_build_project_force_template = {
 	if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.clone compare = equals } }
+		clone_grant_infantry_access = yes
 		meta_effect = {
 			text = {
 				division_template = {
@@ -220,16 +252,50 @@ brilliant_scientist_event19_build_project_force_template = {
 					force_allow_recruiting = no
 					priority = 0
 					regiments = {
-						kruger_clone_infantry = { x = 0 y = 0 }
-						kruger_clone_infantry = { x = 0 y = 1 }
-						kruger_clone_infantry = { x = 0 y = 2 }
-						kruger_clone_infantry = { x = 0 y = 3 }
+						clone_infantry = { x = 0 y = 0 }
+						clone_infantry = { x = 0 y = 1 }
+						clone_infantry = { x = 0 y = 2 }
+						clone_infantry = { x = 0 y = 3 }
+						clone_infantry = { x = 0 y = 4 }
+						clone_infantry = { x = 1 y = 0 }
+						clone_infantry = { x = 1 y = 1 }
+						clone_infantry = { x = 1 y = 2 }
+						clone_infantry = { x = 1 y = 3 }
+						clone_infantry = { x = 1 y = 4 }
 					}
 				}
 			}
 			TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
 		}
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_clone_infantry.template_battalions }
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals } }
+		clone_grant_infantry_access = yes
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "Aryan Clone Formation [TEMPLATE_UID]"
+					is_locked = yes
+					force_allow_recruiting = no
+					priority = 0
+					regiments = {
+						aryan_clone_infantry = { x = 0 y = 0 }
+						aryan_clone_infantry = { x = 0 y = 1 }
+						aryan_clone_infantry = { x = 0 y = 2 }
+						aryan_clone_infantry = { x = 0 y = 3 }
+						aryan_clone_infantry = { x = 0 y = 4 }
+						aryan_clone_infantry = { x = 1 y = 0 }
+						aryan_clone_infantry = { x = 1 y = 1 }
+						aryan_clone_infantry = { x = 1 y = 2 }
+						aryan_clone_infantry = { x = 1 y = 3 }
+						aryan_clone_infantry = { x = 1 y = 4 }
+					}
+				}
+			}
+			TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+		}
+		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_aryan_clone_infantry.template_battalions }
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.robot compare = equals } }
@@ -322,10 +388,10 @@ brilliant_scientist_event19_build_project_force_template = {
 					force_allow_recruiting = no
 					priority = 0
 					regiments = {
-						kruger_portal_raider = { x = 0 y = 0 }
-						kruger_portal_raider = { x = 0 y = 1 }
-						kruger_portal_raider = { x = 1 y = 0 }
-						kruger_portal_raider = { x = 1 y = 1 }
+						portal_raider = { x = 0 y = 0 }
+						portal_raider = { x = 0 y = 1 }
+						portal_raider = { x = 1 y = 0 }
+						portal_raider = { x = 1 y = 1 }
 					}
 				}
 			}
@@ -354,12 +420,17 @@ brilliant_scientist_event19_build_project_force_template = {
 		}
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_temporal_guard.template_battalions }
 	}
+	else = {
+		set_temp_variable = { infantry_spawn_provider_component_count = 0 }
+		infantry_spawn_mark_ledger_invariant_failure = yes
+	}
 	set_temp_variable = { infantry_spawn_provider_component_profile = infantry_spawn_current_family_id }
 	infantry_spawn_append_provider_combat_column_manifest = yes
 }
 
-# Event 019's ledger needs the manpower row, but the seven project equipment
-# lines stay provider-owned and are never forced into the shared profile enum.
+# Event 019's ledger receives every standing need in the provider template.
+# Project custom equipment uses the stable profile identities 142-148; ordinary
+# infantry and support rows use the shared profiles.
 brilliant_scientist_event19_record_project_force_manpower_obligation = {
 	set_temp_variable = { infantry_spawn_current_obligation_debt_value_override = 0 }
 	set_temp_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_equipment_family.manpower }
@@ -374,41 +445,146 @@ brilliant_scientist_event19_record_project_force_manpower_obligation = {
 
 # Shared callback bodies.
 brilliant_scientist_event19_reconcile_project_force_sustainment = {
+	infantry_spawn_clear_provider_obligation_manifest = yes
 	if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.clone compare = equals } }
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_clone_infantry.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event16_clone_infantry.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_clone_infantry.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_clone_infantry.infantry_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.clone_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_clone_infantry.clone_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals } }
+		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_aryan_clone_infantry.template_battalions }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_aryan_clone_infantry.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_aryan_clone_infantry.infantry_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.clone_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_aryan_clone_infantry.clone_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.robot compare = equals } }
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_autonomous_robot.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event16_autonomous_robot.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_autonomous_robot.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_robot_equipment_1 }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_autonomous_robot.kruger_robot_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_autonomous_robot.support_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.paleogenetic compare = equals } }
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_paleogenetic_creature.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event16_paleogenetic_creature.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_paleogenetic_creature.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_paleogenetic_equipment_1 }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_paleogenetic_creature.kruger_paleogenetic_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_paleogenetic_creature.support_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.xenobiological compare = equals } }
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_xenobiological_organism.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event16_xenobiological_organism.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_xenobiological_organism.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_xenobiological_equipment_1 }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_xenobiological_organism.kruger_xenobiological_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_xenobiological_organism.support_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals } }
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_alien_interface_infantry.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_exotic_arms_equipment_1 }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.kruger_exotic_arms_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.infantry_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.support_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.portal compare = equals } }
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_portal_raider.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event16_portal_raider.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_portal_raider.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.teleportation_equipment_1 }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_portal_raider.teleportation_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_portal_raider.infantry_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.temporal compare = equals } }
+		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_temporal_guard.template_battalions }
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_temporal_guard.manpower_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_temporal_equipment_1 }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_temporal_guard.kruger_temporal_equipment_per_battalion }
+		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_temporal_guard.infantry_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
+		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
+		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_temporal_guard.support_equipment_per_battalion }
+		infantry_spawn_queue_provider_obligation = yes
 	}
 	else = {
-		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_temporal_guard.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event16_temporal_guard.manpower_per_battalion }
+		infantry_spawn_mark_ledger_invariant_failure = yes
 	}
-	brilliant_scientist_event19_record_project_force_manpower_obligation = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
 }
 
 # Eligibility, template, spawn, and sustainment callbacks. Event 019 dispatches
@@ -419,6 +595,14 @@ brilliant_scientist_event19_evaluate_project_force_eligibility = {
 	if = {
 		limit = {
 			OR = {
+				AND = {
+					check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals }
+					germany_mengele_is_germany_scope = yes
+					germany_mengele_program_active = yes
+					has_country_flag = germany_mengele_cloning_project_completed
+					has_country_flag = germany_master_race_claim_established
+					has_tech = mengele_aryan_clone_refinement_tech
+				}
 				AND = {
 					check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.clone compare = equals }
 					brilliant_scientist_event19_clone_provider_unlocked = yes
@@ -489,6 +673,11 @@ chaos_unit_family_provider_510_event19_evaluate_eligibility = {
 	brilliant_scientist_event19_evaluate_project_force_eligibility = yes
 }
 
+chaos_unit_family_provider_522_event19_evaluate_eligibility = {
+	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.aryan }
+	brilliant_scientist_event19_evaluate_project_force_eligibility = yes
+}
+
 chaos_unit_family_provider_504_event19_build_template = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.clone }
 	brilliant_scientist_event19_build_project_force_template = yes
@@ -524,6 +713,11 @@ chaos_unit_family_provider_510_event19_build_template = {
 	brilliant_scientist_event19_build_project_force_template = yes
 }
 
+chaos_unit_family_provider_522_event19_build_template = {
+	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.aryan }
+	brilliant_scientist_event19_build_project_force_template = yes
+}
+
 chaos_unit_family_provider_504_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_505_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_506_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
@@ -531,6 +725,7 @@ chaos_unit_family_provider_507_event19_spawn_unit = { infantry_spawn_spawn_curre
 chaos_unit_family_provider_508_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_509_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_510_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
+chaos_unit_family_provider_522_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 
 chaos_unit_family_provider_504_event19_reconcile_sustainment = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.clone }
@@ -567,6 +762,11 @@ chaos_unit_family_provider_510_event19_reconcile_sustainment = {
 	brilliant_scientist_event19_reconcile_project_force_sustainment = yes
 }
 
+chaos_unit_family_provider_522_event19_reconcile_sustainment = {
+	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.aryan }
+	brilliant_scientist_event19_reconcile_project_force_sustainment = yes
+}
+
 brilliant_scientist_event19_evaluate_project_force_management = {
 	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
 	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
@@ -580,7 +780,26 @@ brilliant_scientist_event19_evaluate_project_force_management = {
 			infantry_spawn_country_has_eligible_state = yes
 			check_variable = { var = army_experience value = constant:chaos_unit_family_event16_clone_infantry.training_army_experience_cost compare = greater_than_or_equals }
 			check_variable = { var = num_equipment@infantry_equipment value = constant:chaos_unit_family_event16_clone_infantry.training_infantry_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@clone_equipment value = constant:chaos_unit_family_event16_clone_infantry.training_clone_equipment_cost compare = greater_than_or_equals }
 			check_variable = { var = manpower value = constant:chaos_unit_family_event16_clone_infantry.training_manpower_cost compare = greater_than_or_equals }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_train = 1 }
+		set_temp_variable = { infantry_spawn_family_provider_uses_training = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals }
+			germany_mengele_is_germany_scope = yes
+			germany_mengele_program_active = yes
+			has_country_flag = germany_mengele_cloning_project_completed
+			has_country_flag = germany_master_race_claim_established
+			has_tech = mengele_aryan_clone_refinement_tech
+			NOT = { is_in_array = { array = infantry_spawn_trainable_family_ids value = constant:chaos_unit_family_event16_aryan_clone_infantry.family_id } }
+			infantry_spawn_country_has_eligible_state = yes
+			check_variable = { var = army_experience value = constant:chaos_unit_family_event16_aryan_clone_infantry.training_army_experience_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@infantry_equipment value = constant:chaos_unit_family_event16_aryan_clone_infantry.training_infantry_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@clone_equipment value = constant:chaos_unit_family_event16_aryan_clone_infantry.training_clone_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = manpower value = constant:chaos_unit_family_event16_aryan_clone_infantry.training_manpower_cost compare = greater_than_or_equals }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_train = 1 }
 		set_temp_variable = { infantry_spawn_family_provider_uses_training = 1 }
@@ -639,7 +858,7 @@ brilliant_scientist_event19_evaluate_project_force_management = {
 			brilliant_scientist_event19_portal_provider_unlocked = yes
 			NOT = { has_political_power < constant:chaos_unit_family_event16_portal_raider.training_political_power_cost }
 			NOT = { command_power < constant:chaos_unit_family_event16_portal_raider.training_command_power_cost }
-			check_variable = { var = num_equipment@kruger_portal_equipment_1 value = constant:chaos_unit_family_event16_portal_raider.training_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@teleportation_equipment_1 value = constant:chaos_unit_family_event16_portal_raider.training_equipment_cost compare = greater_than_or_equals }
 			check_variable = { var = manpower value = constant:chaos_unit_family_event16_portal_raider.training_manpower_cost compare = greater_than_or_equals }
 			infantry_spawn_country_has_eligible_state = yes
 		}
@@ -664,7 +883,23 @@ brilliant_scientist_event19_evaluate_project_force_management = {
 			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.clone compare = equals }
 			brilliant_scientist_event19_clone_provider_unlocked = yes
 			check_variable = { var = num_equipment@infantry_equipment value = constant:chaos_unit_family_event16_clone_infantry.sustainment_infantry_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@clone_equipment value = constant:chaos_unit_family_event16_clone_infantry.sustainment_clone_equipment_cost compare = greater_than_or_equals }
 			check_variable = { var = manpower value = constant:chaos_unit_family_event16_clone_infantry.sustainment_manpower_cost compare = greater_than_or_equals }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals }
+			germany_mengele_is_germany_scope = yes
+			germany_mengele_program_active = yes
+			has_country_flag = germany_mengele_cloning_project_completed
+			has_country_flag = germany_master_race_claim_established
+			has_tech = mengele_aryan_clone_refinement_tech
+			check_variable = { var = num_equipment@infantry_equipment value = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_infantry_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@clone_equipment value = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_clone_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = manpower value = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_manpower_cost compare = greater_than_or_equals }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
 	}
@@ -718,7 +953,7 @@ brilliant_scientist_event19_evaluate_project_force_management = {
 			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.portal compare = equals }
 			brilliant_scientist_event19_portal_provider_unlocked = yes
 			NOT = { has_political_power < constant:chaos_unit_family_event16_portal_raider.sustainment_political_power_cost }
-			check_variable = { var = num_equipment@kruger_portal_equipment_1 value = constant:chaos_unit_family_event16_portal_raider.sustainment_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@teleportation_equipment_1 value = constant:chaos_unit_family_event16_portal_raider.sustainment_equipment_cost compare = greater_than_or_equals }
 			check_variable = { var = manpower value = constant:chaos_unit_family_event16_portal_raider.sustainment_manpower_cost compare = greater_than_or_equals }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
@@ -734,6 +969,31 @@ brilliant_scientist_event19_evaluate_project_force_management = {
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
 	}
+}
+
+chaos_unit_family_provider_504_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.clone_infantry }
+}
+chaos_unit_family_provider_505_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.autonomous_robot }
+}
+chaos_unit_family_provider_506_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.paleogenetic_creature }
+}
+chaos_unit_family_provider_507_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.xenobiological_organism }
+}
+chaos_unit_family_provider_508_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.alien_interface }
+}
+chaos_unit_family_provider_509_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.portal_raider }
+}
+chaos_unit_family_provider_510_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.temporal_guard }
+}
+chaos_unit_family_provider_522_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.aryan_clone_infantry }
 }
 
 chaos_unit_family_provider_504_event19_evaluate_management = {
@@ -764,6 +1024,10 @@ chaos_unit_family_provider_510_event19_evaluate_management = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.temporal }
 	brilliant_scientist_event19_evaluate_project_force_management = yes
 }
+chaos_unit_family_provider_522_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.aryan }
+	brilliant_scientist_event19_evaluate_project_force_management = yes
+}
 
 brilliant_scientist_event19_pay_project_force_management = {
 	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
@@ -783,7 +1047,50 @@ brilliant_scientist_event19_pay_project_force_management = {
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_clone_infantry.training_infantry_equipment_cost }
 		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_clone_infantry.training_clone_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
+		clone_refresh_reserve_manpower = yes
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_clone_infantry.training_manpower_cost }
+		add_manpower = infantry_spawn_family_provider_negative_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_clone_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
+		clone_refresh_reserve_manpower = yes
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_manpower_cost }
+		add_manpower = infantry_spawn_family_provider_negative_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals }
+			check_variable = { infantry_spawn_family_provider_can_train > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_aryan_clone_infantry.training_army_experience_cost }
+		army_experience = infantry_spawn_family_provider_negative_cost
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_aryan_clone_infantry.training_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_aryan_clone_infantry.training_clone_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
+		clone_refresh_reserve_manpower = yes
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_aryan_clone_infantry.training_manpower_cost }
 		add_manpower = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
 	}
@@ -881,7 +1188,7 @@ brilliant_scientist_event19_pay_project_force_management = {
 		add_command_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_portal_raider.training_equipment_cost }
-		add_equipment_to_stockpile = { type = kruger_portal_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
+		add_equipment_to_stockpile = { type = teleportation_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_portal_raider.training_manpower_cost }
 		add_manpower = infantry_spawn_family_provider_negative_cost
@@ -917,6 +1224,10 @@ brilliant_scientist_event19_pay_project_force_management = {
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_clone_infantry.sustainment_infantry_equipment_cost }
 		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_clone_infantry.sustainment_clone_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
+		clone_refresh_reserve_manpower = yes
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_clone_infantry.sustainment_manpower_cost }
 		add_manpower = infantry_spawn_family_provider_negative_cost
@@ -1001,7 +1312,7 @@ brilliant_scientist_event19_pay_project_force_management = {
 		add_political_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_portal_raider.sustainment_equipment_cost }
-		add_equipment_to_stockpile = { type = kruger_portal_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
+		add_equipment_to_stockpile = { type = teleportation_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
 		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_portal_raider.sustainment_manpower_cost }
 		add_manpower = infantry_spawn_family_provider_negative_cost
@@ -1035,7 +1346,22 @@ brilliant_scientist_event19_refund_project_force_management = {
 		}
 		army_experience = constant:chaos_unit_family_event16_clone_infantry.training_army_experience_cost
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:chaos_unit_family_event16_clone_infantry.training_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = constant:chaos_unit_family_event16_clone_infantry.training_clone_equipment_cost }
+		clone_refresh_reserve_manpower = yes
 		add_manpower = constant:chaos_unit_family_event16_clone_infantry.training_manpower_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals }
+		}
+		army_experience = constant:chaos_unit_family_event16_aryan_clone_infantry.training_army_experience_cost
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:chaos_unit_family_event16_aryan_clone_infantry.training_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = constant:chaos_unit_family_event16_aryan_clone_infantry.training_clone_equipment_cost }
+		clone_refresh_reserve_manpower = yes
+		add_manpower = constant:chaos_unit_family_event16_aryan_clone_infantry.training_manpower_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 	if = {
@@ -1094,7 +1420,7 @@ brilliant_scientist_event19_refund_project_force_management = {
 		}
 		add_political_power = constant:chaos_unit_family_event16_portal_raider.training_political_power_cost
 		add_command_power = constant:chaos_unit_family_event16_portal_raider.training_command_power_cost
-		add_equipment_to_stockpile = { type = kruger_portal_equipment_1 amount = constant:chaos_unit_family_event16_portal_raider.training_equipment_cost }
+		add_equipment_to_stockpile = { type = teleportation_equipment_1 amount = constant:chaos_unit_family_event16_portal_raider.training_equipment_cost }
 		add_manpower = constant:chaos_unit_family_event16_portal_raider.training_manpower_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
@@ -1118,7 +1444,21 @@ brilliant_scientist_event19_refund_project_force_management = {
 			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.clone compare = equals }
 		}
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:chaos_unit_family_event16_clone_infantry.sustainment_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = constant:chaos_unit_family_event16_clone_infantry.sustainment_clone_equipment_cost }
+		clone_refresh_reserve_manpower = yes
 		add_manpower = constant:chaos_unit_family_event16_clone_infantry.sustainment_manpower_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.aryan compare = equals }
+		}
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_clone_equipment_cost }
+		clone_refresh_reserve_manpower = yes
+		add_manpower = constant:chaos_unit_family_event16_aryan_clone_infantry.sustainment_manpower_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 	if = {
@@ -1172,7 +1512,7 @@ brilliant_scientist_event19_refund_project_force_management = {
 			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.portal compare = equals }
 		}
 		add_political_power = constant:chaos_unit_family_event16_portal_raider.sustainment_political_power_cost
-		add_equipment_to_stockpile = { type = kruger_portal_equipment_1 amount = constant:chaos_unit_family_event16_portal_raider.sustainment_equipment_cost }
+		add_equipment_to_stockpile = { type = teleportation_equipment_1 amount = constant:chaos_unit_family_event16_portal_raider.sustainment_equipment_cost }
 		add_manpower = constant:chaos_unit_family_event16_portal_raider.sustainment_manpower_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
@@ -1217,6 +1557,10 @@ chaos_unit_family_provider_510_event19_pay_management_action = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.temporal }
 	brilliant_scientist_event19_pay_project_force_management = yes
 }
+chaos_unit_family_provider_522_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.aryan }
+	brilliant_scientist_event19_pay_project_force_management = yes
+}
 
 chaos_unit_family_provider_504_event19_refund_management_action = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.clone }
@@ -1244,6 +1588,10 @@ chaos_unit_family_provider_509_event19_refund_management_action = {
 }
 chaos_unit_family_provider_510_event19_refund_management_action = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.temporal }
+	brilliant_scientist_event19_refund_project_force_management = yes
+}
+chaos_unit_family_provider_522_event19_refund_management_action = {
+	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.aryan }
 	brilliant_scientist_event19_refund_project_force_management = yes
 }
 
@@ -1274,6 +1622,10 @@ brilliant_scientist_event19_install_project_force_public_package = {
 	if = {
 		limit = { check_variable = { var = infantry_spawn_derivative_family_id value = constant:chaos_unit_family_event16_clone_infantry.family_id compare = equals } }
 		add_ideas = brilliant_scientist_event19_clone_host
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_family_id value = constant:chaos_unit_family_event16_aryan_clone_infantry.family_id compare = equals } }
+		add_ideas = brilliant_scientist_event19_aryan_clone_host
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_derivative_family_id value = constant:chaos_unit_family_event16_autonomous_robot.family_id compare = equals } }
@@ -1312,6 +1664,10 @@ brilliant_scientist_event19_setup_project_force_derivative = {
 				AND = {
 					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_clone_infantry.family_id }
 					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_clone_infantry.provider_id }
+				}
+				AND = {
+					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_aryan_clone_infantry.family_id }
+					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_aryan_clone_infantry.provider_id }
 				}
 				AND = {
 					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_autonomous_robot.family_id }
@@ -1395,6 +1751,7 @@ brilliant_scientist_event19_remove_project_force_public_additions = {
 		clr_country_flag = infantry_spawn_derivative_provider_leadership_installed
 	}
 	remove_ideas = brilliant_scientist_event19_clone_host
+	remove_ideas = brilliant_scientist_event19_aryan_clone_host
 	remove_ideas = brilliant_scientist_event19_robot_host
 	remove_ideas = brilliant_scientist_event19_paleogenetic_host
 	remove_ideas = brilliant_scientist_event19_xenobiological_host
@@ -1419,6 +1776,10 @@ brilliant_scientist_event19_cleanup_project_force_derivative = {
 				AND = {
 					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_clone_infantry.family_id }
 					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_clone_infantry.provider_id }
+				}
+				AND = {
+					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_aryan_clone_infantry.family_id }
+					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_aryan_clone_infantry.provider_id }
 				}
 				AND = {
 					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_autonomous_robot.family_id }
@@ -1474,6 +1835,7 @@ chaos_unit_family_provider_507_event19_setup_derivative = { brilliant_scientist_
 chaos_unit_family_provider_508_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
 chaos_unit_family_provider_509_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
 chaos_unit_family_provider_510_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
+chaos_unit_family_provider_522_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
 
 chaos_unit_family_provider_504_event19_remove_public_additions = { brilliant_scientist_event19_remove_project_force_public_additions = yes }
 chaos_unit_family_provider_505_event19_remove_public_additions = { brilliant_scientist_event19_remove_project_force_public_additions = yes }
@@ -1482,6 +1844,7 @@ chaos_unit_family_provider_507_event19_remove_public_additions = { brilliant_sci
 chaos_unit_family_provider_508_event19_remove_public_additions = { brilliant_scientist_event19_remove_project_force_public_additions = yes }
 chaos_unit_family_provider_509_event19_remove_public_additions = { brilliant_scientist_event19_remove_project_force_public_additions = yes }
 chaos_unit_family_provider_510_event19_remove_public_additions = { brilliant_scientist_event19_remove_project_force_public_additions = yes }
+chaos_unit_family_provider_522_event19_remove_public_additions = { brilliant_scientist_event19_remove_project_force_public_additions = yes }
 
 chaos_unit_family_provider_504_event19_cleanup_derivative = {
 	if = { limit = { check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_clone_infantry.provider_id } } brilliant_scientist_event19_cleanup_project_force_derivative = yes }
@@ -1503,4 +1866,7 @@ chaos_unit_family_provider_509_event19_cleanup_derivative = {
 }
 chaos_unit_family_provider_510_event19_cleanup_derivative = {
 	if = { limit = { check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_temporal_guard.provider_id } } brilliant_scientist_event19_cleanup_project_force_derivative = yes }
+}
+chaos_unit_family_provider_522_event19_cleanup_derivative = {
+	if = { limit = { check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_aryan_clone_infantry.provider_id } } brilliant_scientist_event19_cleanup_project_force_derivative = yes }
 }

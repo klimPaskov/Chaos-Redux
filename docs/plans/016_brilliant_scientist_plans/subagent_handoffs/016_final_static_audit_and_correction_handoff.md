@@ -1,5 +1,7 @@
 # Event 016 final static audit and correction handoff
 
+> **Superseded provider-inventory notice (2026-08-09):** The provider-coverage statements in this historical correction handoff predate portal, temporal, and Aryan clone provider expansion. Use `016_core_runtime_handoff_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for the current provider inventory and validation boundary.
+
 Date: 2026-07-29
 
 ## Scope

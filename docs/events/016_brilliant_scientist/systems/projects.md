@@ -124,6 +124,9 @@ The exact biological-agent character flags are:
 - `brilliant_scientist_personal_biological_agent_tularemia`
 - `brilliant_scientist_personal_biological_agent_smallpox`
 - `brilliant_scientist_personal_biological_agent_weaponized_zombies`
+- `brilliant_scientist_personal_biological_agent_black_plague`
+
+Black Plague remains a distinct disease and special-project history from ordinary plague. A Kruger Directorate that has completed Biological Weapons Theory may expose `black_plague_weaponization_program` without waiting for Event 020 or acquiring an Event 020 sample. The project still uses the native Event 020 Black Plague phase, accident, condemnation, payload, and delivery runtime. Its completed payload shares the existing `plague_bomb_delivery_systems` equipment route, while the character flag above preserves its distinct provenance through transfer or Kruger State formation. Mengele can expose the same project through the reusable Directorate special-project registry, and the project is included in the CBRN random/project registries rather than a parallel disease ledger. Every future Chaos Redux special project must be reviewed for inclusion in the reusable CBRN random and project registries before it is accepted as a new consumer.
 
 ## Costs and duration
 

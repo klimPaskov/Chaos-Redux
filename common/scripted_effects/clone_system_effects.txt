@@ -1,0 +1,141 @@
+# ============================================================================
+# CHAOS REDUX - SHARED CLONE INFANTRY API
+# ============================================================================
+# Country-scope helpers grant provider-neutral access, select a provider
+# refinement, create the editable 20-width baseline template, and refresh the
+# stockpile-derived manpower modifier. Physical equipment remains the sole
+# reserve-manpower source of truth.
+# ============================================================================
+
+# COUNTRY scope. Creates the shared editable ten-battalion template once.
+clone_ensure_infantry_template = {
+	if = {
+		limit = { NOT = { has_template = "Clone Infantry Division" } }
+		division_template = {
+			name = "Clone Infantry Division"
+			regiments = {
+				clone_infantry = { x = 0 y = 0 }
+				clone_infantry = { x = 0 y = 1 }
+				clone_infantry = { x = 0 y = 2 }
+				clone_infantry = { x = 0 y = 3 }
+				clone_infantry = { x = 0 y = 4 }
+				clone_infantry = { x = 1 y = 0 }
+				clone_infantry = { x = 1 y = 1 }
+				clone_infantry = { x = 1 y = 2 }
+				clone_infantry = { x = 1 y = 3 }
+				clone_infantry = { x = 1 y = 4 }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Creates the distinct 20-width Aryan clone template once.
+# Its battalion keeps the shared clone-equipment economy while resolving to
+# the dedicated normal-German infantry entity family.
+clone_ensure_aryan_infantry_template = {
+	if = {
+		limit = { NOT = { has_template = "Aryan Clone Division" } }
+		division_template = {
+			name = "Aryan Clone Division"
+			regiments = {
+				aryan_clone_infantry = { x = 0 y = 0 }
+				aryan_clone_infantry = { x = 0 y = 1 }
+				aryan_clone_infantry = { x = 0 y = 2 }
+				aryan_clone_infantry = { x = 0 y = 3 }
+				aryan_clone_infantry = { x = 0 y = 4 }
+				aryan_clone_infantry = { x = 1 y = 0 }
+				aryan_clone_infantry = { x = 1 y = 1 }
+				aryan_clone_infantry = { x = 1 y = 2 }
+				aryan_clone_infantry = { x = 1 y = 3 }
+				aryan_clone_infantry = { x = 1 y = 4 }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Grants only provider-neutral manufacture, recruitment, and
+# template access. It does not select a provider refinement.
+clone_grant_infantry_access = {
+	if = {
+		limit = { NOT = { has_tech = clone_infantry_access_tech } }
+		set_technology = { clone_infantry_access_tech = 1 popup = no }
+	}
+	clone_ensure_infantry_template = yes
+}
+
+# COUNTRY scope. Selects Event 016's refinement family and excludes Mengele's
+# separate Aryan refinement unless a later event explicitly defines a hybrid.
+clone_select_kruger_refinement = {
+	clone_grant_infantry_access = yes
+	if = {
+		limit = { has_tech = mengele_clone_refinement_tech }
+		set_technology = { mengele_clone_refinement_tech = 0 popup = no }
+	}
+	if = {
+		limit = { has_tech = mengele_aryan_clone_refinement_tech }
+		set_technology = { mengele_aryan_clone_refinement_tech = 0 popup = no }
+	}
+	if = {
+		limit = { NOT = { has_tech = brilliant_scientist_clone_formations_tech } }
+		set_technology = { brilliant_scientist_clone_formations_tech = 1 popup = no }
+	}
+}
+
+# COUNTRY scope. Adds Event 016's stronger weaponization refinement.
+clone_select_kruger_weaponization = {
+	clone_select_kruger_refinement = yes
+	if = {
+		limit = { NOT = { has_tech = brilliant_scientist_clone_formations_weaponization_tech } }
+		set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 1 popup = no }
+	}
+}
+
+# COUNTRY scope. Selects Mengele's refinement and excludes the Event 016
+# refinements unless a later event explicitly defines a hybrid.
+clone_select_mengele_refinement = {
+	clone_grant_infantry_access = yes
+	if = {
+		limit = { has_tech = brilliant_scientist_clone_formations_weaponization_tech }
+		set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 0 popup = no }
+	}
+	if = {
+		limit = { has_tech = brilliant_scientist_clone_formations_tech }
+		set_technology = { brilliant_scientist_clone_formations_tech = 0 popup = no }
+	}
+	if = {
+		limit = { NOT = { has_tech = mengele_clone_refinement_tech } }
+		set_technology = { mengele_clone_refinement_tech = 1 popup = no }
+	}
+}
+
+# COUNTRY scope. Adds the explicitly Aryan battalion and its German-model
+# template without replacing ordinary Mengele clone formations.
+clone_select_mengele_aryan_refinement = {
+	clone_select_mengele_refinement = yes
+	if = {
+		limit = { NOT = { has_tech = mengele_aryan_clone_refinement_tech } }
+		set_technology = { mengele_aryan_clone_refinement_tech = 1 popup = no }
+	}
+	clone_ensure_aryan_infantry_template = yes
+}
+
+# COUNTRY scope. Recomputes reserve manpower from physical stockpile only.
+clone_refresh_reserve_manpower = {
+	set_variable = { clone_equipment_stockpile = num_equipment@clone_equipment }
+	round_variable = clone_equipment_stockpile
+	set_variable = { clone_reserve_weekly_manpower = clone_equipment_stockpile }
+	multiply_variable = { clone_reserve_weekly_manpower = constant:clone_system.weekly_manpower_per_equipment }
+	round_variable = clone_reserve_weekly_manpower
+	if = {
+		limit = { check_variable = { clone_equipment_stockpile > 0 } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = clone_reserve_manpower } }
+			add_dynamic_modifier = { modifier = clone_reserve_manpower }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else_if = {
+		limit = { has_dynamic_modifier = clone_reserve_manpower }
+		remove_dynamic_modifier = { modifier = clone_reserve_manpower }
+	}
+}

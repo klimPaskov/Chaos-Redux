@@ -221,7 +221,7 @@ Values are Theory / Prototype / Deployment / Weaponization days. Prototype is no
 
 - **Reuse prerequisites only:** computation, advanced materials, electronics calibration, and high-energy stages. No live Teleportation Experiment event or reusable teleportation project identifier was found; do not claim an event link until one exists.
 - **New project:** <code>sp_brilliant_scientist_quantum_transit</code>; <code>specialization_nuclear</code>, <code>nuclear_facility</code>; breakthrough 3; very-long/insane; steel 6, tungsten 8, chromium 6, rubber 4.
-- **New operational outputs:** technology <code>brilliant_scientist_portal_warfare_tech</code>; unit <code>kruger_portal_raider</code>; archetype/type <code>kruger_portal_equipment</code>/<code>kruger_portal_equipment_1</code>.
+- **Operational outputs:** technology <code>brilliant_scientist_portal_warfare_tech</code>; generic unit <code>portal_raider</code>; archetype/type <code>teleportation_equipment</code>/<code>teleportation_equipment_1</code>.
 - **Stages:** Theory requires Computation, Materials, and High Energy at Deployment; Prototype transfers bounded inert matter; Deployment unlocks linked terminals and the operational outputs; Weaponization unlocks capped portal raids and strategic delivery.
 - **Accident/countermeasure:** object loss → chamber breach → uncontrolled portal/distant intrusion. Counter with terminal security, power denial, dual control, and electronics-based portal detection.
 - **KRG inheritance:** portal force cap uses <code>constant:brilliant_scientist_force.portal_cap</code> = 4 and requires terminals, equipment, supply, and stage; no free teleport spawn.
@@ -233,7 +233,7 @@ Values are Theory / Prototype / Deployment / Weaponization days. Prototype is no
 
 - **Structural precedent only:** <code>sp_mengele_cloning</code> demonstrates a medium, biowarfare-specialized cloning project, but it is Germany/Mengele-specific. Event 016 must not reuse that project’s availability, flags, outputs, or identifier.
 - **New project:** <code>sp_brilliant_scientist_cloning</code>; <code>specialization_biowarfare</code>, <code>biowarfare_facility</code>; breakthrough 2; medium/medium; steel 5, chromium 3, rubber 4.
-- **New operational outputs:** <code>brilliant_scientist_clone_formations_tech</code>, unit <code>kruger_clone_infantry</code>. Clone formations reuse ordinary infantry/support/motorized equipment; do not create clone equipment solely to satisfy a naming pattern.
+- **Operational outputs:** <code>brilliant_scientist_clone_formations_tech</code>, shared unit <code>clone_infantry</code>, and transferable <code>clone_equipment</code>. Clone formations also consume ordinary infantry equipment.
 - **Stages:** Theory requires Biomedical; Prototype yields a viable body; Deployment unlocks cadres/replacement systems and growth sites; Weaponization unlocks capped clone armies and Kruger-continuity choices.
 - **Synergies:** Biomedical, Paleogenetics, Xenobiological Synthesis, and Temporal.
 - **Accident/countermeasure:** nonviable body → growth contamination → identity/escape crisis. Counter with growth-site control, identity records, and amnesty/splinter routes.
@@ -367,8 +367,8 @@ The exact Event 016 request-source mapping is parent-owned because the current F
 
 | Family | Technology | Unit | Equipment archetype/type |
 | --- | --- | --- | --- |
-| Teleportation | <code>brilliant_scientist_portal_warfare_tech</code> | <code>kruger_portal_raider</code> | <code>kruger_portal_equipment</code>/<code>kruger_portal_equipment_1</code> |
-| Cloning | <code>brilliant_scientist_clone_formations_tech</code> | <code>kruger_clone_infantry</code> | Reuse ordinary infantry/support/motorized equipment |
+| Teleportation | <code>brilliant_scientist_portal_warfare_tech</code> | <code>portal_raider</code> | <code>teleportation_equipment</code>/<code>teleportation_equipment_1</code> |
+| Cloning | <code>brilliant_scientist_clone_formations_tech</code> | <code>clone_infantry</code> | Shared <code>clone_equipment</code> plus ordinary infantry equipment |
 | Robotics | <code>brilliant_scientist_robot_formations_tech</code> | <code>kruger_robot_frame</code> | <code>kruger_robot_equipment</code>/<code>kruger_robot_equipment_1</code> |
 | Paleogenetics | <code>brilliant_scientist_paleogenetic_formations_tech</code> | <code>kruger_paleogenetic_beast</code> | <code>kruger_paleogenetic_equipment</code>/<code>kruger_paleogenetic_equipment_1</code> |
 | Xenobiological synthesis | <code>brilliant_scientist_xenobiological_formations_tech</code> | <code>kruger_xenobiological_assault</code> | <code>kruger_xenobiological_equipment</code>/<code>kruger_xenobiological_equipment_1</code> |

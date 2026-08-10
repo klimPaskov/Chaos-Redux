@@ -595,6 +595,36 @@ infantry_spawn_calculate_current_obligation_outstanding_debt_value = {
 		}
 		set_temp_variable = { infantry_spawn_current_obligation_debt_value = constant:infantry_spawn_accounting.equipment_debt_per_battalion }
 	}
+	# Event 19 custom-unit profiles are all material equipment obligations. The
+	# Africa support profiles remain equipment debt rows because their support
+	# role does not make them generic support_equipment. Event 016 clone and
+	# Kruger profiles are likewise exact equipment debt rows.
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.chaosx_elephant_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_gorilla_heavy_infantry_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_pan_sappers_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_stone_cohorts_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_riverborn_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_forest_giants_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_oracle_recon_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_disaster_wardens_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_plague_carriers_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.gas_mask_equipment }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.decontamination_equipment }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.cbrn_instrument_equipment }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.clone_equipment }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_robot_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_paleogenetic_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_xenobiological_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_exotic_arms_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.teleportation_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_temporal_equipment_1 }
+			}
+		}
+		set_temp_variable = { infantry_spawn_current_obligation_debt_value = constant:infantry_spawn_accounting.equipment_debt_per_battalion }
+	}
 	else = { infantry_spawn_mark_ledger_invariant_failure = yes }
 	if = {
 		limit = {
@@ -723,25 +753,122 @@ infantry_spawn_append_current_obligation_row = {
 	}
 }
 
-infantry_spawn_record_provider_unit_obligations = {
-	set_temp_variable = { infantry_spawn_current_obligation_debt_value_override = 0 }
-	set_temp_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_equipment_family.manpower }
-	set_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_provider_component_count }
-	multiply_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_provider_manpower_per_battalion }
-	multiply_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_current_start_manpower }
-	set_temp_variable = { infantry_spawn_current_obligation_paid = 0 }
-	set_temp_variable = { infantry_spawn_current_obligation_outstanding = infantry_spawn_current_obligation_issued }
-	set_temp_variable = { infantry_spawn_current_obligation_status = constant:infantry_spawn_obligation_state.outstanding }
-	infantry_spawn_append_current_obligation_row = yes
+# Provider callbacks build a temporary, aligned obligation manifest before
+# publishing persistent rows. The manifest is callback-local state and must be
+# cleared before and after every provider reconciliation.
+infantry_spawn_clear_provider_obligation_manifest = {
+	clear_temp_array = infantry_spawn_provider_manifest_profile_entries
+	clear_temp_array = infantry_spawn_provider_manifest_per_battalion_entries
+	clear_temp_array = infantry_spawn_provider_manifest_component_count_entries
+	clear_temp_array = infantry_spawn_provider_manifest_scale_kind_entries
+	set_temp_variable = { infantry_spawn_provider_manifest_invalid = 0 }
+}
 
-	set_temp_variable = { infantry_spawn_current_obligation_resource_profile = infantry_spawn_provider_resource_profile }
-	set_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_provider_component_count }
-	multiply_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_provider_resource_per_battalion }
-	multiply_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_current_start_equipment }
-	set_temp_variable = { infantry_spawn_current_obligation_paid = 0 }
-	set_temp_variable = { infantry_spawn_current_obligation_outstanding = infantry_spawn_current_obligation_issued }
-	set_temp_variable = { infantry_spawn_current_obligation_status = constant:infantry_spawn_obligation_state.outstanding }
-	infantry_spawn_append_current_obligation_row = yes
+# Inputs: infantry_spawn_provider_manifest_profile,
+# infantry_spawn_provider_manifest_per_battalion,
+# infantry_spawn_provider_manifest_component_count, and
+# infantry_spawn_provider_manifest_scale_kind. The row is omitted only when
+# its computed component_count * per_battalion amount is zero. A negative or
+# unknown scale is rejected so no malformed row can reach the persistent
+# ledger.
+infantry_spawn_queue_provider_obligation = {
+	set_temp_variable = { infantry_spawn_provider_manifest_queued_amount = infantry_spawn_provider_manifest_component_count }
+	multiply_temp_variable = { infantry_spawn_provider_manifest_queued_amount = infantry_spawn_provider_manifest_per_battalion }
+	if = {
+		limit = { check_variable = { infantry_spawn_provider_manifest_queued_amount > 0 } }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+					check_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+				}
+			}
+			add_to_temp_array = { array = infantry_spawn_provider_manifest_profile_entries value = infantry_spawn_provider_manifest_profile }
+			add_to_temp_array = { array = infantry_spawn_provider_manifest_per_battalion_entries value = infantry_spawn_provider_manifest_per_battalion }
+			add_to_temp_array = { array = infantry_spawn_provider_manifest_component_count_entries value = infantry_spawn_provider_manifest_component_count }
+			add_to_temp_array = { array = infantry_spawn_provider_manifest_scale_kind_entries value = infantry_spawn_provider_manifest_scale_kind }
+		}
+		else = { set_temp_variable = { infantry_spawn_provider_manifest_invalid = 1 } }
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_provider_manifest_queued_amount < 0 } }
+		set_temp_variable = { infantry_spawn_provider_manifest_invalid = 1 }
+	}
+}
+
+# Commits every queued manifest row as one exact obligation. The provider's
+# current start factors are applied only here, so all resources use the same
+# scaling semantics as ordinary unit needs.
+infantry_spawn_record_provider_obligation_manifest = {
+	if = {
+		limit = { check_variable = { infantry_spawn_provider_manifest_invalid > 0 } }
+		infantry_spawn_mark_ledger_invariant_failure = yes
+	}
+	# Keep the manifest's committed shape and accounting totals available to the
+	# owning Event 19 transaction after the callback clears its working arrays.
+	# Rows with a zero scaled amount are intentionally omitted, so this count is
+	# the exact number of persistent rows the manifest can publish.
+	set_temp_variable = { infantry_spawn_provider_manifest_committed_row_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_provider_manifest_committed_manpower = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_provider_manifest_committed_equipment_debt = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_provider_manifest_commit_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = infantry_spawn_provider_manifest_commit_index
+				value = infantry_spawn_provider_manifest_profile_entries^num
+				compare = less_than
+			}
+		}
+		set_temp_variable = { infantry_spawn_current_obligation_debt_value_override = 0 }
+		set_temp_variable = { infantry_spawn_current_obligation_resource_profile = infantry_spawn_provider_manifest_profile_entries^infantry_spawn_provider_manifest_commit_index }
+		set_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_provider_manifest_component_count_entries^infantry_spawn_provider_manifest_commit_index }
+		multiply_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_provider_manifest_per_battalion_entries^infantry_spawn_provider_manifest_commit_index }
+		if = {
+			limit = { check_variable = { infantry_spawn_provider_manifest_scale_kind_entries^infantry_spawn_provider_manifest_commit_index = constant:infantry_spawn_provider_manifest_scale_kind.manpower } }
+			multiply_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_current_start_manpower }
+		}
+		else_if = {
+			limit = { check_variable = { infantry_spawn_provider_manifest_scale_kind_entries^infantry_spawn_provider_manifest_commit_index = constant:infantry_spawn_provider_manifest_scale_kind.equipment } }
+			multiply_temp_variable = { infantry_spawn_current_obligation_issued = infantry_spawn_current_start_equipment }
+		}
+		else = { infantry_spawn_mark_ledger_invariant_failure = yes }
+		set_temp_variable = { infantry_spawn_current_obligation_paid = 0 }
+		set_temp_variable = { infantry_spawn_current_obligation_outstanding = infantry_spawn_current_obligation_issued }
+		set_temp_variable = { infantry_spawn_current_obligation_status = constant:infantry_spawn_obligation_state.outstanding }
+		if = {
+			limit = { check_variable = { infantry_spawn_current_obligation_issued > 0 } }
+			infantry_spawn_append_current_obligation_row = yes
+			if = {
+				limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+				add_to_temp_variable = { infantry_spawn_provider_manifest_committed_row_count = constant:infantry_spawn_muster_gui_value.one }
+				if = {
+					limit = { check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_equipment_family.manpower } }
+					add_to_temp_variable = { infantry_spawn_provider_manifest_committed_manpower = infantry_spawn_current_obligation_outstanding }
+				}
+				else = { add_to_temp_variable = { infantry_spawn_provider_manifest_committed_equipment_debt = infantry_spawn_current_obligation_debt_value } }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_provider_manifest_commit_index = 1 }
+	}
+}
+
+# Compatibility wrapper for the original one-manpower/one-equipment callback
+# contract. Existing providers retain their behavior while multi-resource
+# providers can queue any number of exact rows through the manifest helpers.
+infantry_spawn_record_provider_unit_obligations = {
+	infantry_spawn_clear_provider_obligation_manifest = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = infantry_spawn_provider_manpower_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = infantry_spawn_provider_resource_profile }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = infantry_spawn_provider_resource_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -752,7 +879,7 @@ infantry_spawn_record_provider_unit_obligations = {
 # terminal lot across multiple country pulses, snapshots every table that can
 # affect that proof, then removes all aligned rows by descending index in one
 # capped commit. Old generation summaries use the same protocol and the newest
-# twelve summaries are always retained for the Muster Board history view.
+# twelve summaries are always retained for the Formation Ledger history cache.
 
 infantry_spawn_compaction_clear_lot_candidate = {
 	clear_array = infantry_spawn_compaction_candidate_unit_row_indexes

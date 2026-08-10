@@ -2,7 +2,7 @@
 
 ## Binding reconciliation
 
-Paleogenetics and xenobiological synthesis are separate at every stage and may converge only through Synthesis. Temporal mechanics use synchronization capacity, temporal debt, bounded targets, use records, anchors, ledgers, authentication, stabilization, and persistent scars. Origin evidence may lock one campaign conclusion or remain unresolved. Strategic Singularity is a terminal commitment distinct from Laboratory World.
+Paleogenetics and xenobiological synthesis are separate at every stage and may converge only through Synthesis. Temporal mechanics use synchronization capacity, temporal debt, bounded targets, use records, anchors, ledgers, authentication, stabilization, and persistent scars. Origin evidence may lock one campaign conclusion or remain unresolved. Strategic Singularity is a terminal commitment distinct from Laboratory World. The native raid framework is the Event 016 architecture for biological and Portal Warfare raids; the missing native CBRN callback blocks only the optional KRG biological stockpile and delivery ledger, not those native raids, and no parallel ledger is authorized. Black Plague remains the native Event 020 project and is available to Kruger through Biological Weapons Theory and to Mengele through the reusable special-project registry, with inclusion in the CBRN random/project registries. Every future Chaos Redux special project must be reviewed for inclusion in those reusable registries before acceptance.
 
 ## Stage matrix
 
