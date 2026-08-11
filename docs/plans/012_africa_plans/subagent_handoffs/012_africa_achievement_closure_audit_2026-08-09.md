@@ -1,5 +1,7 @@
 # Event 012 Africa achievement closure audit
 
+> Superseded pre-closure notice, 2026-08-10: the all-44-blocked verdict below describes the pre-patch snapshot. Current rows must be reconciled against the 2026-08-10 owner handoffs, source invariants, and acceptance-ledger dispositions; user-owned live validation is not a reason to retain source-complete rows as blocked.
+
 Date: 2026-08-09.
 
 ## Verdict before closure patches

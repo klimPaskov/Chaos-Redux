@@ -2,6 +2,8 @@
 
 Date: 2026-08-06.
 
+> Historical baseline notice, 2026-08-10: this elephant-era cleanup snapshot is superseded for current status. The current matrix is `84 installed_runtime`, `28 installed_dormant`, `10 deferred_runtime_gated`, `117 deferred_controlled_pool`, with zero model-required and zero unique-package-required rows; current achievement owner operations and W4/W5 evidence are recorded by the final reconciliation handoff.
+
 ## Scope and disposition
 
 This pass reconciles the Event 012 release overview, elephant model and runtime handoffs, visual matrix notes, acceptance-ledger evidence, achievement handoffs, dated completion audits, and the catalog workbook note after the shared armoured elephant tranche.

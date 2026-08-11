@@ -2,6 +2,12 @@
 
 This matrix summarises the first 16 fully playable restored and regional member packages from spec part 9.
 
+## Current reconciliation boundary (2026-08-11)
+
+All 16 priority packages are accepted as implemented conditional packages on existing carriers, and their 16 matching polity-catalog rows are accepted as implemented in the current ledger. DYX/Luba, DZX/Lunda, and EMX/Kilwa remain intentionally dormant when their accepted readiness gates are closed. Historical source-cropped male portraits remain accepted placeholders and are non-blocking for this source/package disposition.
+
+The remaining 199 polity-catalog candidates stay queued for controlled-pool treatment and are not implied to be fully playable packages.
+
 ## Selection principle
 
 The first tranche is intentionally selective. It covers different political forms, regions, economic problems, territorial overlap types, and League relationships. It does not imply that the other polity-catalog entries are unimportant. Those entries remain available for compact release, autonomy, cultural recognition, later promotion, or regional congress outcomes.

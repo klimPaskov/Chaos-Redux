@@ -50,7 +50,7 @@ Once the gate passes, the existing Event 012 initializer remains the sole conten
 
 The three tags are registered in `common/country_tags/006_independence_wave_countries.txt` as IW-124 Basotho (HZX), IW-125 Eswatini (EUX), and IW-116 Zanzibar (ELX). Their definitions and histories intentionally omit runtime state setup. The installed Event 006 scenario initializer places all three in blocked package arrays. The admission helper accepts the active Event 006 receipt (`independence_wave_active_origin` plus `liberation_origin = independence_wave`), an explicit scenario release receipt (`independence_wave_scenario_origin`), or the persistent ended-origin marker (`independence_wave_origin_ended`) left by Event 006 cleanup.
 
-The current Event 006 package-binding ledger remains unchanged: HZX and EUX are `disabled_no_unique_current_state`; ELX is `scenario_only_unbound`. Existing Event 006 and Event 012 handoffs explicitly prohibit a generic South Africa, Natal, Tanganyika, Mauritius, Comoro, or other substitute state. The new trigger therefore waits for a future approved runtime to materialise the exact shell rather than inventing map ownership.
+The current Event 006 package-binding ledger still records HZX and EUX as `disabled_no_unique_current_state` and ELX as `scenario_only_unbound` for ordinary map-start materialisation, but those inventory labels are an intentional Event 006-origin prerequisite rather than an Event 012 host implementation blocker. Existing Event 006 and Event 012 handoffs explicitly prohibit a generic South Africa, Natal, Tanganyika, Mauritius, Comoro, or other substitute state. The guarded Event 012 branch therefore admits only an approved active, scenario, or ended origin receipt with the exact shell and an owned/controlled African core capital.
 
 ## Event 012 host-selection and content evidence
 
@@ -89,7 +89,7 @@ The installed package exposes no Technology Tree Viewer. Technology evidence was
 
 ## Remaining risks and blockers
 
-- HZX, EUX, and ELX remain dormant on the installed map until an approved Event 006 or later scenario runtime supplies a real country with an African owned-and-controlled core capital and a valid Event 006/scenario origin receipt. This is intentional fail-closed behavior, not a fallback.
+- HZX, EUX, and ELX are intentional conditional Event 006-origin carriers. Their source-implemented Event 012 host branches remain dormant on an ordinary map start until an approved Event 006 or later scenario runtime supplies the exact shell, origin receipt, and owned/controlled African core capital; this designed prerequisite is not a missing implementation or fallback.
 - The pre-existing Event 012 focus renderer reports 14 blocking layout diagnostics; this patch does not alter the continental tree.
 - The map renderer reports unrelated workspace-wide building/port locator diagnostics; no state or map source changed here.
 - Final live campaign, save/reload, and runtime event acceptance remain parent-owned.

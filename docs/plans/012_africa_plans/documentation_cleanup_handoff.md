@@ -2,6 +2,8 @@
 
 Date: 2026-08-01.
 
+> Historical baseline notice, 2026-08-10: this cleanup handoff is retained for provenance only. Its 2026-08-01 and 2026-08-06 counts, no-model wording, all-blocked achievement language, and pre-W5 status are superseded by `docs/events/012_africa/overview.md`, the current 239-row matrix, the reconciled acceptance ledger, and the final documentation handoff.
+
 ## Superseding implementation note (2026-08-03)
 
 This dated reconciliation predates the direct-tag/source-locked portrait tranche, six external package identity assets, and seven named W5 source receipts. Its historical counts and Event 006 receipt wording are retained only as provenance; the active source-of-truth map is now `docs/events/012_africa/overview.md`, `docs/events/012_africa/world_order.md`, the current acceptance ledger, and the current W5/portrait handoffs.

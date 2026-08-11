@@ -4,6 +4,8 @@ Date: 2026-08-01
 
 Status: **Incomplete. No hard static load blocker was found, but accepted gameplay, presentation, and acceptance work remains open.**
 
+> Historical audit notice, 2026-08-10: this report predates W5 certification, the 9-model/18-animation package reconciliation, semantic achievement owner tranches, and the current 239-row dispositions. Retain its findings as dated evidence only; the final overview, current ledger, and final documentation handoff supersede its completion table and blocker counts.
+
 ## Superseding implementation note (2026-08-06)
 
 This read-only audit predates the parent-wired shared armoured elephant package. Matrix rows 203–204 are now `installed_runtime` through one `chaosx_elephant` unit/entity body with host and Action 102 consumers, reducing the remaining `deferred_model_required` rows from 16 to 14. Achievement 36 is runtime-evidence-gated rather than model-gated; its achievement owners and live movement, supply, destruction, and war-purpose witnesses remain open. The dated audit findings below remain historical evidence and do not claim current gameplay completion.

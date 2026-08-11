@@ -797,6 +797,16 @@ The host can accept a peaceful exit. Doing so costs Reach but can preserve Autho
 
 The League can dissolve if the host is defeated, membership falls below a minimum, Authority collapses, and no successor exists. Dissolution creates an aftermath rather than deleting all relationships instantly.
 
+## Charter presentation and action-family contract (normative, 2026-08-11)
+
+The recurring Charter interface uses one shared action kernel for quote, payment, target validation, outcome dispatch, AI selection, generation, cooldown, and cleanup. The current action census contains 102 concepts: 96 ordinary source implementations and six deliberately runtime-gated concepts, actions 71–76, whose fictional-disease or strange-formation readiness contracts remain fail-closed.
+
+The recurring Charter GUI owns the normal recurring action families. Six late or episodic families are permanently list-only in decisions and must not acquire duplicate Charter buttons: Scramble response actions 77–84, World order actions 85–92, constitutional route crises 93–99, post-unification governance action 100, host opening action 101, and regional congress/restorations action 102.
+
+The list-only contract is a presentation boundary, not a second mechanic. List decisions and the recurring Charter GUI must preserve the same quote, target, validation, cost, outcome, AI, generation, cooldown, and cleanup semantics where they share an action concept. The player-facing surface must expose an action only when its phase and gates permit it, with no duplicate store, fallback button, or alternate payment lane.
+
+Actions 71–76 remain intentional controlled runtime gates and are not omissions from the action registry, selector, or disposition matrix. Any future presentation change must preserve the six-family list-only contract and the shared action kernel rather than creating a parallel late-action GUI.
+
 ## Completion conditions for this part
 
 The Charter system is incomplete unless:

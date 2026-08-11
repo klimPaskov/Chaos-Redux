@@ -8,6 +8,10 @@ The catalog is intentionally broader than the expected implementation. It gives 
 
 The catalog should not be implemented as 215 equal countries.
 
+## Current reconciliation boundary (2026-08-11)
+
+The current acceptance ledger records 16 matching priority candidates as implemented conditional packages with no new country-tag or cosmetic-tag fallback. The other 199 candidates remain queued for controlled-pool treatment, where a candidate may be activated through a documented congress, autonomy, restoration, or other accepted route without implying a permanent full-country package.
+
 ## Package tiers
 
 ### Tier A

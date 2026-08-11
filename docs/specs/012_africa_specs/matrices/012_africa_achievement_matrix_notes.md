@@ -4,6 +4,16 @@
 
 `012_africa_achievement_matrix.csv` defines 44 difficult achievement concepts across protection, League government, constitutional routes, restoration settlements, diaspora return, development, warfare, high-chaos systems, and world order.
 
+## Current reconciliation boundary (2026-08-11)
+
+The matrix remains the acceptance criterion for all 44 rows, and the current source supplies authored positive operations, exact disqualifier writers, lifecycle resets, and structural invariants for every row. The acceptance ledger records all 44 achievement rows as `implemented`; this disposition is source-complete and does not claim a live campaign result.
+
+Structural invariants are the current-state checks that the engine can observe directly, such as current-generation membership, live relationship and region registries, settled receipts, controlled states, route constitution, host identity, and exact package readiness. They replace unsupported technical proxy flags only when the source handoff explicitly records the invariant and its cleanup path.
+
+Rows 10, 16, 29, 30, and 40 retain their exact current owner semantics in the final reconciliation handoff: regional congress completion and represented live roster, settled Scramble core plus foreign-cession disqualifier, per-region rail/river/road/port receipts, active Event018 field/deposit plus local-processing receipts and concession clock, and symmetric Stoneborn/human current-generation member war. These are source contracts, not unresolved gameplay gaps.
+
+The retired fake Event012 `SCN-011` scenario reservation is not an achievement route and must not re-enter matrix acceptance claims. MCP exact/partial and user-owned playback evidence remains separately documented.
+
 Keys and title directions are working material. Final titles and descriptions belong to implementation localisation. The matrix gives exact campaign-state requirements, disqualifiers, visibility, difficulty, tracking needs, icon direction, and the reason each achievement deserves to exist.
 
 ## Coverage

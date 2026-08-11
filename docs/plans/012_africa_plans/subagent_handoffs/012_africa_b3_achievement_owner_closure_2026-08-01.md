@@ -1,5 +1,7 @@
 # Event 012 achievement owner closure: B3 tranche (2026-08-01)
 
+> Superseded tranche notice, 2026-08-10: B3 owner evidence remains useful, but its remaining-gap language predates the current rows 1-17, 19-34, high-chaos, elephant, and W4 source patches. Use the current achievement matrix notes, acceptance ledger, and final documentation handoff for row dispositions.
+
 ## Scope and result
 
 This tranche implements only exact transition owners that are already exposed by the Event 012 action, diaspora, and priority-member systems.

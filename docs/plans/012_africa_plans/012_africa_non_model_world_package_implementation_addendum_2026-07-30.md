@@ -2,6 +2,8 @@
 
 Date: 2026-07-30
 
+> Final disposition, 2026-08-10: this accepted non-model world-package addendum is folded into the current W0-W5 source, six external package documents, W5 certification handoff, and four-role presentation records. Its historical queued/model/unique-package counts are superseded by the current 9-model and zero unique-package-blocker matrix. Retain this file as provenance; no additional world-package design is open here beyond the parent-owned semantic follow-ups named in the final documentation handoff.
+
 ## Superseding implementation note (2026-08-03)
 
 The current W5 source tranche is no longer uncalled: seven named package-surface receipts, a separate review writer, and the atomic readiness setter are wired from `africa_initialize_scramble_and_world_packages`. The six external package identity assets, focus roots, leader descriptions, and The World emblem are installed but remain political/dormant gates. This dated addendum remains the W0-W4 design record; current status belongs to `docs/events/012_africa/world_order.md` and the W5 handoff.

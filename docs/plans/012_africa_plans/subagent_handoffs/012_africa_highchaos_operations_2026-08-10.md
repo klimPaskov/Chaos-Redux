@@ -1,0 +1,58 @@
+# Event 012 high-chaos actor operations handoff — 2026-08-10
+
+## Scope and ownership
+
+This handoff covers the promoted Tier A decision, trigger, effect, constant, localisation, documentation, and probability evidence for the four exact high-chaos actor operations requested for achievement rows 18, 37, 40, and the Row 35 positive victory receipt. The parent-authorized final follow-up adds one narrow Event 012 `on_war_relation_added` callsite and its pairwise helper so ordinary or reverse-initiated Stoneborn/human-member wars cannot bypass Row 40. No country tag, state, focus, model, workbook, or broad action-matrix file was changed. No commit or staging was performed.
+
+The operations are additive and mutually exclusive by actor package and one-use flags. Every targeted operation requires a current-generation cooperative human member with settled representation and explicit integration consent. Nonhuman targets, stale generations, hostile targets, and targets under the 90-day lock are rejected before cost or effects are applied.
+
+## Exact operations
+
+| Decision ID | Actor scope | Exact owner | Engine-visible outcome |
+| --- | --- | --- | --- |
+| `africa_promoted_tiera_nonhuman_rampage` | Pan, Gorilla Kingdom, Living Rivers, or Ancient Hosts | Full outcome sets `africa_achievement_nonhuman_rampage`; partial and failure remain operation-local | Full or partial authored member disruption with separate stability, war-support, and confidence bands; failure leaves the target unharmed |
+| `africa_promoted_tiera_forest_actor_rampage` | The Green | Accepted Event 013 call sets `africa_achievement_forest_actor_rampage` | Calls the public natural-disaster contract against the selected member; Event 013 remains the owner of delayed civilian impact and `africa_achievement_disaster_weaponised_against_civilians` |
+| `africa_promoted_tiera_stoneborn_rights_violation` | Stoneborn | Full or partial result sets `africa_achievement_stoneborn_rights_violation` and calls the existing rights-violation owner | Full clears representation and consent and applies resistance pressure; partial withdraws representation with the smaller disruption band; failure leaves the target unharmed |
+| `africa_promoted_tiera_stoneborn_human_member_war` | Stoneborn | Confirmed engine declaration sets `africa_achievement_stoneborn_human_member_war` | Declares `annex_everything` war on the selected human member and stores only the Row 40 target receipt |
+| `africa_promoted_tiera_host_great_power_war` | Current Event 012 host | Confirmed host declaration snapshots a major enemy and opens the separate Row 35 lifecycle | Declares `annex_everything` war against a major nonhuman-excluded enemy; later capitulation and full host control are required |
+
+The four actor operations charge political power through the decision `cost` and command power through custom-cost triggers. The distinct host war has its own political-power, command-power, 365-day re-enable, one-use, and target-lock contract. Mature mechanic/host stages use the corresponding surcharge. The actor operations have a shared 180-day country cooldown and 90-day target lock. Full and partial outcomes use centralized operation weights and impact constants; failure never writes an achievement DQ.
+
+The Forest operation supplies Event 013's public contract fields: `hostile_actor` caller, Event 012 caller ID, selected-country target, regional severity, single sequence, meaningful news/report, normal aftermath, family chain, history logging, and caller cost/cooldown/target-legitimacy proof values. It writes the Forest rampage DQ only when `natural_disaster_call_result` is accepted. Event 013 owns the later civilian-death witness.
+
+## Row 35 positive closure
+
+`africa_promoted_tiera_stoneborn_human_member_war` remains a Row 40 negative only and writes no Row 35 receipt. The distinct `africa_promoted_tiera_host_great_power_war` saves `africa_promoted_tiera_great_power_war_target` and sets `africa_promoted_tiera_host_great_power_war_pending` only after the current host's `has_war_with = FROM` confirms the declaration. At that receipt the target is marked `africa_promoted_tiera_great_power_war_target_was_major` only when the engine reports `is_major = yes`, preserving the enemy's major-status snapshot. `africa_promoted_tiera_record_nonhuman_great_power_war_victory` is a player/AI-usable receipt decision, not a declaration proxy. Its availability requires the current Event 012 host to be major, the pending host lifecycle, the major-target snapshot flag, four recorded global nonhuman formation families, `global.africa_achievement_nonhuman_rights_actors^num` at least `constant:africa_achievement_count.nonhuman_rights_actors`, the preserved-rights threshold flag, no rights-violation or extermination DQ, a capitulated target, and every target core controlled by the host. The helper calls the authoritative `africa_achievement_record_milestone` with `africa_achievement_milestone.nonhuman_great_power_war_won`, then clears the pending host flag, target snapshot, and global target.
+
+## Generic Row 40 war callback
+
+The bespoke Stoneborn decision remains the immediate declaration writer, but `common/on_actions/012_africa_world_order_on_actions.txt` now invokes `africa_promoted_tiera_record_stoneborn_human_member_war_relation` for every `on_war_relation_added` callback. Its pair trigger checks ROOT-as-attacker/FROM-as-defender and the reverse orientation, requires the current Event 012 host and host-generation ledger, identifies a registered active Stoneborn package, and identifies the other participant through the cooperative current-generation member state, settled representation, and integration-consent flags. It intentionally omits the pre-war `NOT has_war_with` and target-lock checks because the declaration callback itself is the war witness. `is_actual_nonhuman_country` and `is_special_chaos_country` are explicit negative gates on the member side, so Stoneborn/nonhuman wars cannot satisfy Row 40. The helper routes the sticky DQ through `event_target:africa_host`, writes one host witness flag, and is idempotent when the bespoke writer already set the global receipt. This covers ordinary and scripted diplomacy in addition to either-side declaration.
+
+## Disease and out-of-scope semantic gaps
+
+The accepted Event 012 deliberate ordinary-pathogen seed is owned by the parent native disease adapter and was not duplicated here. No operation in this scope proves `africa_achievement_irreversible_disease_outcome` or `africa_achievement_terminal_disease_outcome`; both remain zero-writer structural invariants because no exact native lifecycle owner was found. `defy_the_drought` remains a hostile Event 013 call only; it no longer writes Row 31/37 survival or containment credit. Event 013's successful reconstruction and famine-prevention callbacks are the sole owners of those positive ledgers. The achievement triggers no longer carry dead negative checks for the two disease flags, `africa_achievement_human_caricature_used`, or `africa_achievement_elephant_used_against_unthreatened_african`; their approved family, protected-target, and native-adapter contracts make those paths structurally unavailable, and no proxy writer was added.
+
+## Files changed
+
+- `common/script_constants/012_africa_promoted_tiera_constants.txt` - operation cost, cooldown, impact, outcome-weight, and AI tuning constants, including `great_power_war` and `great_power_victory`.
+- `common/scripted_triggers/012_africa_promoted_tiera_triggers.txt` - target consent/generation gates, operation availability/pay triggers, host-war lifecycle gates, guarded Row 35 victory-receipt trigger, and bidirectional Row 40 war-participant classification.
+- `common/decisions/012_africa_promoted_tiera_decisions.txt` - four targeted actor decisions, the distinct host great-power war, and `africa_promoted_tiera_record_nonhuman_great_power_war_victory`.
+- `common/scripted_effects/012_africa_promoted_tiera_effects.txt` - four authored operation effects, the Event 013 callsite, host-war lifecycle, dynamic costs, cooldown/target-lock helpers, guarded Row 35 milestone callsite, and the idempotent generic Stoneborn/human-member war owner.
+- `common/on_actions/012_africa_world_order_on_actions.txt` - one parent-authorized Event 012 `on_war_relation_added` helper call; existing bounded callbacks remain otherwise untouched by this tranche.
+- `common/scripted_triggers/012_africa_achievement_triggers.txt` - removed four zero-writer negative checks after the approved contracts were confirmed structurally impossible.
+- `common/scripted_triggers/012_africa_elephant_operation_triggers.txt` - removed the matching zero-writer elephant negative gate; the protected defensive-war target contract remains authoritative.
+- `localisation/english/012_africa_promoted_tiera_l_english.yml` - names, descriptions, tooltips, costs, and the host-war/Row 35 receipt text; file remains UTF-8 with BOM.
+- `docs/012_africa_promoted_tiera.md` - operation table, Event 013 contract, disease boundary, Row 35 receipt, and validation note.
+- `docs/plans/012_africa_plans/subagent_handoffs/012_africa_highchaos_operations_2026-08-10.md` - this handoff.
+
+## Validation and MCP evidence
+
+Touched script files have balanced braces and no unsupported comparison operators in the new surface. A repository-wide search confirms the four removed zero-writer flags no longer appear in gameplay scripts. The localisation key audit found no duplicate keys and all new decision keys. No in-game test was run because live testing belongs to the user.
+
+The read-only Event MCP route returned a partial vanilla-game inventory and did not index `events/012_africa_promoted_tiera_events.txt`; artifact `event-scan-53a767c5012b.json` in workspace `mod_chaos_redux_ea3b2d67c2c0` is the exact blocker evidence. The probability MCP route indexed `mod:common/decisions/012_africa_promoted_tiera_decisions.txt`; baseline artifact `probability-inspect-e54f872a5e1a.json` is retained. The earlier companion run saw all four actor decision IDs in inspect artifact `probability-inspect-9572f1cb13d9.json` (source hash `9572f1cb13d982030ce3db1322f3b93a1b4b2bbc4bee254aaf4ed72308e47ba6`), evaluate artifact `probability-4a0e217d74a1a72bdff5f49f`, and sweep artifact `probability-6fd04794a38250b539a5a9e7` (source hash `a5f550b427bb5758373083416c406b6a0ca9646ba6bdad5eabdf9e27f3d03a48`); these used source hashes before the distinct host-war and rights-array tightening, so they are not final certification. The main `chaosx_ai_probability_auditor` run must append a fresh same-scenario inspect/evaluate/sweep/compare set and report native target/check-variable unresolved diagnostics before parent completion claims; if no final route is exposed, that exact blocker remains open.
+
+The required vanilla documentation directory `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation` is absent in this environment. Required offline Paradox wiki pages were read, and repository/vanilla precedents were used for targeted decisions, event targets, `declare_war_on`, and `any_core_state` ownership checks.
+
+## Remaining risks
+
+The victory receipt is intentionally gated on the capitulation/occupation state still exposing the saved target and all cores after a peace result. Parent-owned live testing should verify the timing window and whether the target remains a valid event target during the peace conference. The probability adapter reports partial analysis when native `check_variable` and target gates cannot be evaluated; that limitation must remain explicit in the final report.

@@ -10,7 +10,7 @@ Read all nine spec parts, every matrix and note, every diagram, all three resear
 
 Event ID 12 remains a severe Fire-Once event in the Formables cluster. Select a valid country whose capital is in Africa. Give it a country-aware host overlay, direct public identity, a large non-linear continental focus tree, Charter League system, protection and intervention tools, regional congresses, staged integration, restored polities, resource and corridor development, diaspora return, military growth, rival blocs, RSA civil-war handling, post-unification Scramble crisis, optional high-chaos content, other continent unifiers, and the rare terminal The World route.
 
-The current release-candidate already has nine 3D packages, 18 full frame-animation packages, six promoted Tier A visual and runtime packages on existing carriers, 16 priority-member packages, 16 historical male sourced placeholder portraits, six fictional male portraits, three no-person evolution images, four super-event roles, all 102 actions, RSA Allied civil-war handling, W5 certification, and world-order packages installed. Final achievement, AI, localisation, live-consumer, and event-completion audits remain open.
+The current release-candidate already has nine installed model packages including the shared armoured elephant, 18 full frame-animation packages, six promoted Tier A visual and runtime packages on existing carriers, 16 priority-member packages, 16 historical male source-locked portrait placeholders, six fictional male portraits, three no-person evolution images, four super-event roles, all 102 actions with 96 implemented and six explicitly runtime-gated families, RSA Allied civil-war handling, W4/W5 source certification, the Charter GUI, and world-order packages installed. Remaining work is limited to real source or engine gates recorded in the current ledger, such as AI probability evidence, six gated action families, final localisation/event completion review, and the parent-owned semantic follow-ups. The three niche hosts are source-implemented conditional Event 006-origin carriers, and the source-cropped historical portrait placeholders are accepted deliverables whose transparent status is not an Event 012 blocker; user-owned live validation is not a reason to retain a source-complete row as partially available.
 
 Do not begin with instant conquest or instant continent-wide cores. African states retain agency. They can accept protection, negotiate clauses, refuse integration, leave, form rival blocs, or fight.
 
@@ -45,8 +45,8 @@ Other candidates remain compact countries, autonomous regions, cultural bodies, 
 - dynamic starting forces and reinforcement paths for fighting countries
 - flag, leader, portrait, party, advisor, unit, AI, and localisation coverage
 - 44 achievements
-- 239 release-ledger rows, with required model, animation, portrait, and presentation packages installed and controlled-pool rows explicitly disposed
-- four super-event roles with dedicated quote, remark, image, audio, source, slot, and wiring records installed, with final playback and localisation review open
+- 239 release-ledger rows with `84 installed_runtime`, `28 installed_dormant`, `10 deferred_runtime_gated`, and `117 deferred_controlled_pool` asset dispositions; model-required, unique-package-required, and pending-runtime-blocker counts are all zero
+- four super-event roles with dedicated quote, remark, image, audio, source, slot, and wiring records installed; any remaining playback or localisation review is a source/consumer audit boundary, not missing media
 - catalog, event doc, music doc, manifests, and spreadsheet alignment
 
 ## Evolution interpretation

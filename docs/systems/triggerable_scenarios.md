@@ -42,7 +42,6 @@ Type controls cycle scenario-specific type variables:
 - Death: Instant Outbreak only.
 - Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
 - Every Banner Rises: Sovereign Scatter, Common Congress, Wars of Separation, three bounded Universal Belligerence rules, Patron Worlds, or Great Partition.
-- Africa Is One placeholder: fixed Reserved display with neutral placeholder launch event.
 - Coalition Unmasked: Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, or Random Coalition.
 - The Hunger Lines: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, or Convergence.
 - The Unbidden Muster: The Barracks Overflow, The Arsenal Draw, The Generals' Muster, or The Impossible Host.
@@ -104,10 +103,6 @@ Every Banner Rises launches Event 006 through the shared frozen Liberation trans
 Low, Medium, High, and Maximum select anchor, compact, extended, and extended territory packages while scaling forces, stocks, institutions, ambitions, and route access. Great Partition advances territory by one additional tier before reservation, capped at the accepted non-overlapping extension. Six numeric type families back eight player-facing modes because Universal Belligerence exposes three independently selectable rules. The 32-cell runtime acceptance matrix covers each mode at all four intensities. The result event reports releases, hosts, wars, league membership, territory, forces, and transaction proof. Its decision ledger exposes every blocked package and exact rejection reason.
 
 The implementation contract, files, assets, and test matrix are documented in `docs/events/006_independence_wave/systems/triggerable_scenario.md`.
-
-### SCN-011: Africa Is One
-
-Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
 
 ### SCN-012: Black Plague Unbound
 
