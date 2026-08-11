@@ -4,6 +4,10 @@
 
 `012_africa_decision_mission_matrix.csv` converts the Charter League, integration, diaspora, economy, rival-bloc, high-chaos, Scramble, and world-order designs into 102 implementation-ready action concepts.
 
+## Current reconciliation boundary (2026-08-10)
+
+All 102 action IDs now use the shared parameterised quote, payment, outcome, AI, and cleanup contract. The current ledger records 96 implemented action rows and six explicit runtime-gated rows (71-76); the six late or episodic families remain intentionally list-only and are not duplicated in the Charter GUI. A source-complete action is not downgraded because the user owns live validation, while a real readiness gate remains explicit in its row disposition.
+
 The matrix is planning material. Keys are stable working identifiers, not final player-facing localisation. Exact costs, durations, targets, state groups, and AI weights remain tuning work, but every row already defines the action owner, target, purpose, dynamic cost basis, duration band, success, partial success, failure, value changes, AI logic, and cleanup.
 
 ## Family coverage

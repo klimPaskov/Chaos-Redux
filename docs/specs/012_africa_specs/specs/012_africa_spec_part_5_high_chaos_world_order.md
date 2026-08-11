@@ -738,6 +738,18 @@ Names remain short and geographic. Three or more continent unions can use a larg
 
 ## The World is One path
 
+## W0-W5 package receipts and terminal separation (normative, 2026-08-11)
+
+World-order readiness is certified through six ordered work packages. W0 establishes the shared readiness lane and source contract. W1 certifies the constituent protocol. W2 certifies the six external continent packages. W3 certifies sponsorship modes and their obligations. W4 certifies union, war, succession, and breakup routes. W5 performs the all-six atomic certification after the preceding receipts are frozen.
+
+W5 freezes the six-slot roster, checks the six explicit continent mappings, verifies seven candidate-owned runtime receipts for every package, and records a separate review-writer receipt. Its atomic setter writes `africa_world_package_implementation_ready` only when all six package reviews pass; otherwise it writes no global readiness flag and leaves the package lane closed.
+
+W5 readiness is separate from package installation, action 85 availability, territory or tag identity transfer, terminal world identity, and super-event emission. The political package may be installed and reviewed while the terminal result remains unavailable. Conversely, no terminal result may infer package readiness from installed assets, a model manifest, or a partial roster.
+
+The terminal presentation package has an independent readiness flag, `africa_the_world_super_event_package_ready`, set only by its title, button, quote, image, audio, localisation, and consumer receipts. Asset presence or W5 completion never sets this flag, and the flag never certifies political package readiness.
+
+Terminal political resolution and super-event emission are separate effects with separate owners and cleanup. The terminal result must not emit the presentation twice, and the super-event consumer must not write territory, identity, succession, or world-end state. No role may be duplicated through a fallback branch.
+
 The World path is a terminal, rare, campaign-ending system.
 
 ### Required conditions

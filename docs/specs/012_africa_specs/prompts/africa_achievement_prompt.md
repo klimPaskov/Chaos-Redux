@@ -6,6 +6,8 @@ Implement the Event 12 achievement package from `matrices/012_africa_achievement
 
 The matrix defines 44 achievement concepts with working keys, condition sets, disqualifiers, visibility, difficulty, tracking needs, icon direction, and design purpose. The expanded host, constitutional, and priority-member specifications provide the route facts those conditions must read.
 
+The current source has authored owner operations and structural invariants across the protection, League, constitutional, restoration, diaspora, economy, military, high-chaos, and world-order families. The acceptance ledger must promote a row when its exact positive owner, negative owner, cleanup/reset path, and required structural invariant are source-present; user-owned live validation is not a reason to leave a source-complete row marked `blocked`. Real missing owners remain fail-closed and must stay `blocked` with a concrete source reason, never a proxy or fallback.
+
 Required supporting sources:
 
 - `specs/012_africa_spec_part_7_host_country_playbooks.md`

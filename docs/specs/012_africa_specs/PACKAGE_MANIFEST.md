@@ -1,5 +1,9 @@
 # Event 12 Africa expanded package manifest
 
+> Manifest provenance notice, 2026-08-10: this manifest is the frozen 2026-07-10 specification-package inventory and its byte counts and hashes are not the current runtime ledger. Use `docs/events/012_africa/overview.md`, the authoritative asset matrix, and `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` for reconciled implementation status. The manifest remains a design-package integrity record and has not been silently regenerated during this documentation-only pass.
+
+> Current reconciliation pointer, 2026-08-11: the source-completion certification records 44/44 achievements, 64/64 AI profiles, 102/102 actions with six deliberate runtime gates, 16 implemented conditional priority packages, 16 matching implemented polity rows, 199 queued controlled-pool candidates, and 239 visual dispositions. See `docs/plans/012_africa_plans/subagent_handoffs/012_africa_final_current_source_certification_2026-08-11.md` and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_final_documentation_reconcile_2026-08-11.md` for current evidence boundaries.
+
 ## Package identity
 
 - Event ID: `12`

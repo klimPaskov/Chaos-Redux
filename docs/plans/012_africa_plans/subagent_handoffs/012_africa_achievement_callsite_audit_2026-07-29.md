@@ -1,5 +1,7 @@
 # Event 012 Africa achievement callsite completion audit
 
+> Historical audit notice, 2026-08-10: this read-only callsite snapshot predates the current owner operations, W4 repairs, Nile/Gold operations, elephant operations, and high-chaos operations. Its queued and model-gated statuses are retained as provenance only; the final reconciliation handoff is the current disposition authority.
+
 ## Audit scope and conclusion
 
 This is a read-only completion audit of all 44 accepted Event 012 achievements after `99f405fe4`, using current `HEAD` `3d57a19792cd` on 2026-07-29.

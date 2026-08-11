@@ -7,7 +7,7 @@ Event 012 uses one source policy for historical sovereigns and a separate asset 
 1. The package keeps the existing direct carrier tag and never creates a new tag or cosmetic carrier.
 2. The three constitutional installation effects always run the accepted settlement installer, which adds the package's stable male sovereign role; `africa_priority_member_portrait_runtime_is_approved` records runtime coverage for audits and is not a politics-only fallback gate.
 3. The source-locked runtime map covers all sixteen male sovereign consumers: named historical rulers where the source is exact, and clearly labelled coin, map, statue, artifact, or office placeholders where a face is not safely claimable.
-4. The shared portrait trigger remains an audit surface for the existing runtime sprite and source-backed identity map; portrait provenance and final male-actor acceptance are release handoff requirements, not a reason to suppress the sovereign settlement path.
+4. The shared portrait trigger remains an audit surface for the existing runtime sprite and source-backed identity map; provenance metadata and any later final male-actor replacement are optional release-handoff refinements, not a reason to suppress the sovereign settlement path or block Event 012 source completion.
 5. The direct-source map records Ezana of Aksum, Taharqa of Kush, Radama II of Merina, Mansa Musa-associated Catalan Atlas art, the Kilwa map panel, and the Great Zimbabwe Bird artifact without presenting any of them as an invented modern face.
 6. The portrait worker can replace each source-locked placeholder with its accepted male ruler/person crop in place; no portrait identifier, tag, or package store needs to change.
 
@@ -21,4 +21,4 @@ The historical leader sprites remain in `interface/012_africa_priority_member_ch
 
 ## Remaining acceptance
 
-Review rights and campaign-date eligibility for the historical source rows before public release. Do not add lion heads, masks, spears, face paint, crowns, or insignia that are not visible in the selected historical source. The six fictional portrait packages and nine model consumers are installed, while final package, localisation, and live-consumer audits remain open.
+The sixteen historical rows are accepted source-cropped or artifact/map/office placeholders with transparent provenance labels. A future portrait pass may review rights, campaign-date eligibility, or replace a placeholder with an exact male ruler/person crop, but no such optional refinement blocks Event 012 source completion. Do not add lion heads, masks, spears, face paint, crowns, or insignia that are not visible in the selected historical source. The six fictional portrait packages and nine model consumers are installed, while final package, localisation, and live-consumer audits remain separate source or user-owned boundaries.

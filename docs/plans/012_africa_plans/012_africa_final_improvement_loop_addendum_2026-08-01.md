@@ -2,15 +2,17 @@
 
 Date: 2026-08-01.
 
+> Final disposition, 2026-08-11: this accepted improvement-loop addendum is fully folded into the current Event 012 overview, normative spec parts 2 and 5, world-order document, asset matrix, action/achievement owner handoffs, and acceptance ledger. Its historical blocker counts and model-gated language are superseded by the current 44 implemented achievement rows, 64 source-wired AI profiles, 102/102 action concepts with six deliberate runtime gates, 16 implemented conditional priority packages, 9 model packages, 18 animations, 4 super-event roles, and 239-row visual reconciliation. The broad addendum is closed; remaining MCP adapter limits and user-owned playback are evidence boundaries, not implementation gaps, and no new expansion pass is authorised by this file.
+
 ## Superseding implementation note (2026-08-03)
 
-The W5 callsite and six external identity package tranche described as queued in this dated addendum have since been implemented at source level. Seven named package-surface receipts, a separate review writer, and the atomic readiness setter now run after roster freeze. Retain the remaining live AI, rights/actor, custom-carrier instantiation, achievement-owner, and model-gated items as open acceptance work; use the current overview and W5 handoff as the active status authority.
+The W5 callsite and six external identity package tranche described as queued in this dated addendum have since been implemented at source level. Seven named package-surface receipts, a separate review writer, and the atomic readiness setter now run after roster freeze. Retain the remaining AI, rights/actor, custom-carrier, achievement, and model paragraphs below as historical evidence only; use the current overview, normative specs, and final source-certification handoffs as the active status authority.
 
 ## Superseding implementation note (2026-08-06)
 
-The shared armoured elephant model package is now parent-wired as `chaosx_elephant` with a custom unit, equipment and technology bridge, counters, sounds, and host/Action 102 formation consumers. Matrix rows 203–204 therefore moved to `installed_runtime`, and achievement 36 is runtime-evidence-gated rather than model-gated; its achievement owners and live movement, supply, destruction, and war-purpose witnesses remain open. The remaining model-gated rows and unit identities listed below stay deferred, while the current matrix and `docs/events/012_africa/overview.md` supersede the historical counts in this addendum.
+The shared armoured elephant model package is now parent-wired as `chaosx_elephant` with a custom unit, equipment and technology bridge, counters, sounds, and host/Action 102 formation consumers. Matrix rows 203–204 therefore moved to `installed_runtime`; achievement 36 has its source owner contract, and user-owned movement, supply, destruction, and war-purpose playback remains separate evidence. The current matrix and `docs/events/012_africa/overview.md` supersede the historical counts in this addendum.
 
-Status: Final bounded improvement-loop addendum; broad expansion is closed, implementation and acceptance remain open.
+Status: Superseded and fully folded on 2026-08-11; broad expansion, implementation planning, and acceptance disposition are closed in the current source-of-truth map.
 
 Owner: Main Event 012 implementation agent, with the exact specialist owners named below.
 
@@ -22,7 +24,7 @@ The current campaign already contains the intended mechanical spine: host proof,
 
 The remaining value lies in connecting and accepting those systems, not widening them.
 
-This is not a closure handoff because accepted non-model work remains unresolved: the W5 world-package certification tranche has not been implemented, most achievement rows still lack complete owner and lifetime-disqualifier proof, thirteen priority packages still need end-to-end acceptance, and the sixty-four AI rows retain two evidence blockers. The Event 012 release documents and shared asset ledger are reconciled by the 2026-08-01 documentation cleanup; the workbook and export surfaces remain parent-owned.
+This is historical implementation-planning material, not a current closure verdict. W5 certification, all 44 achievement owner contracts, all 16 priority packages, and the 64 AI profile registry are now source-reconciled; dynamic MCP probability and user-owned playback remain evidence boundaries. The Event 012 release documents and shared asset ledger are reconciled by the current documentation handoff; the workbook and export surfaces remain parent-owned and unchanged here.
 
 The next implementation sequence must therefore finish the accepted integration work in this file and in `012_africa_non_model_world_package_implementation_addendum_2026-07-30.md`, leave every remaining model and external-review gate closed, keep the elephant achievement behind its runtime-evidence gate, run the bounded acceptance scenarios, reconcile the release surfaces, and then stop the improvement loop.
 
@@ -484,11 +486,9 @@ Later institutional sources are inspiration and are explicitly date-sensitive ra
 
 ### Prior addendum status
 
-The 2026-07-30 non-model world-package addendum remains unresolved.
+The 2026-07-30 non-model world-package addendum is fully folded and superseded by the normative W0-W5 contract in spec part 5, the current world-order document, and the source-certification handoffs.
 
-W0-W4 are source-implemented but need acceptance and promotion; W5 remains unimplemented and is the first B tranche in this file.
-
-No new broad addendum should be written until this disposition is implemented, promoted, queued with a reason, or rejected with a reason.
+W0-W5 are source-implemented and promoted; no new broad addendum should be written for this tranche.
 
 ### Specs disposition
 

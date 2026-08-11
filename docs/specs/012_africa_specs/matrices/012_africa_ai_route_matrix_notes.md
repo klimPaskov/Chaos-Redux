@@ -4,6 +4,12 @@
 
 `012_africa_ai_route_matrix.csv` defines 64 AI profiles for regional hosts, individual full host dossiers, constitutional routes, member relationship states, outside powers, high-chaos actors, and continent-scale movements.
 
+## Current reconciliation boundary (2026-08-11)
+
+All 64 profile predicates, loaders, registry calls, policy vectors, and 102-action dispatch paths are source-present, and the acceptance ledger records all 64 AI profiles as `implemented`. The probability surface still requires the named MCP scenario audit because the strategy-plan adapter does not expose a usable final surface; this is an evidence limitation, not permission to replace the bespoke profiles with flat weights or to call the registry complete at campaign-balance level.
+
+Exact local pools remain distinct from bounded dynamic profile, action, decision, focus, strategy, and world-order evaluations. No profile omission or normalized current probability claim is inferred from an incomplete MCP manifest.
+
 The matrix prevents one generic AI weight table from controlling a system whose actors have different goals. It gives each profile route preferences, avoidance logic, focus priorities, decision behaviour, diplomacy, military use, mechanic-value policy, rare-content policy, invalid-route blockers, and cleanup.
 
 ## Profile groups
