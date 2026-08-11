@@ -9,13 +9,11 @@ For leader/commander style review, inspect the canonical role-specific reference
 Advisor dossier cards use the separate canonical references under
 `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
-There is no bundled full-size portrait processor. After the immutable crop, create
-the deterministic `156x210` country-leader, commander, operative, or named-officeholder
-candidate with a reproducible task-specific/manual image workflow. Inspect the
-canonical role family (`leaders/`, `commanders/`, or `operatives/`). Retain the processed source or
-ImageGen result, candidate PNG, exact dimensions, crop metadata, hashes, role-specific
-comparison sheet, and independent likeness/style/provenance review. Do not hand off
-a raw, filtered, or merely resized photograph as runtime art.
+The portrait source tool owns deterministic source-placeholder preparation. It
+does not approve identity, rights, role fit, likeness, or runtime wiring. Inspect
+the canonical role family (`leaders/`, `commanders/`, or `operatives/`), retain
+the source/crop/processed evidence, and obtain independent identity, framing,
+and provenance review before DDS or runtime promotion.
 
 Use the canonical role-specific references as style-family controls only. An
 independent auditor must compare the archival master, explicit archival crop, raw
@@ -23,9 +21,29 @@ ImageGen result, processed candidate, and role-specific references separately.
 
 ## `extract_portrait_source_crop.py`
 
-This is the only accepted immutable crop stage for a real-person archival photograph. It decodes the photographic master and crops it with Pillow, preserves the decoded source mode in a lossless PNG, reopens that PNG, and proves exact decoded-pixel equality against the same master rectangle in RGBA form before committing the PNG and JSON evidence together. It never resizes, enhances, recolours, retouches, or replaces an existing artifact without `--force`. Illustrations and generated reconstructions cannot be used as real-person identity masters.
+This is the only accepted immutable crop/package stage for a grounded real-person archival photograph. Automatic mode uses the bundled official OpenCV Zoo YuNet model (`tools/models/face_detection_yunet_2026may.onnx`) to detect exactly one face, computes a portrait-aspect head-and-shoulders crop, preserves the unchanged source bytes, proves exact decoded-pixel equality with Pillow, writes a deterministic RGB `156x210` PNG, and commits JSON evidence plus a co-located provenance `.txt` contract. Zero or multiple faces, missing OpenCV `FaceDetectorYN`, missing model, unsafe crop geometry, or any write collision fails closed; provide `--model` or use manual `--crop` recovery. The detector is a framing aid, never identity approval. Illustrations and generated reconstructions cannot be used as real-person identity masters.
 
-Run it before ImageGen with the measured boundary in decoded master pixels:
+The vendored model is from the MIT-licensed OpenCV Zoo `face_detection_yunet` directory. Source: `https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet`. File SHA-256: `ebafce4e3c118d6554634be5c27ab333b4c047a9a8c3faf1d7cf93101c22f0f0` (229738 bytes); the upstream license is retained at `tools/models/LICENSE`. Keep this model with the skill; do not replace it with an unverified detector.
+
+Automatic mode is the default when `--crop` is omitted. Run it from the mod root with the output crop path inside the durable event package (for example `docs/assets/portraits/<event_id>_<event_slug>/<subject>/`):
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py `
+	<archival_master.jpg> <subject_source_crop.png>
+```
+
+For `<runtime_basename>_source_crop.png`, the command writes
+`<runtime_basename>_source_crop.json`, `<runtime_basename>.txt`,
+`<runtime_basename>_156x210.png`, and an unchanged
+`<runtime_basename>_original.<source_suffix>`
+in the same folder. Pass `--processed`, `--source-copy`, or `--provenance` only
+when explicit co-located filenames are needed. The `.txt` file is a contract:
+complete subject/source/attribution/license and independent-review fields before
+claiming a grounded portrait is admissible. `source_placeholder` remains valid
+when that mode is explicitly selected; `styled_final` and `replacement_pending`
+are separate, user-requested provider branches. The agent never operates RunPod.
+
+For a known boundary or a detector miss, retain the exact manual recovery path:
 
 ```powershell
 python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py `
@@ -34,7 +52,18 @@ python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_
 	--metadata <archival_crop.json>
 ```
 
-Keep the PNG and JSON together. The JSON records the Pillow/tool versions and hash, master/output hashes and dimensions, decode modes, crop rectangle, equality hashes/result, and a normalized command. `ffmpeg` or ImageMagick crops are not immutable source crops unless an independent check proves exact equality of their decoded output pixels against the same decoded master rectangle and retains equivalent evidence; when that proof is unavailable, reject the crop and return to this utility.
+Manual `--crop` uses the same complete package transaction and naming defaults;
+the JSON labels `mode: manual_crop_override` and does not claim a face box or
+YuNet detection. The older `crop_source()` Python API remains available for
+callers that intentionally need only the two historical crop/evidence files.
+
+Keep the unchanged original, lossless crop, JSON evidence, resized PNG, and
+provenance `.txt` together under `docs/assets/portraits/<event_id>_<event_slug>/`
+(a subject subfolder is allowed). The JSON records tool/model versions and
+hashes, source/crop/processed dimensions, face box, crop rectangle, equality
+result, and normalized command. `ffmpeg` or ImageMagick crops are not immutable
+source evidence unless an independent check proves exact decoded-pixel equality
+against the same decoded master rectangle and retains equivalent evidence.
 
 ## `convert_to_dds.py`
 

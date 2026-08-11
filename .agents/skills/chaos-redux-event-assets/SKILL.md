@@ -146,28 +146,21 @@ An absent event-scoped `docs/assets/` folder is expected after a fully complete 
 
 ### Durable portrait source archive
 
-`chaosx_portrait_creator` creates the durable source package for every sourced portrait and archives the attributed source without changing the runtime identity. Select the grounded portrait mode explicitly in the brief or manifest: `source_placeholder` preserves the unchanged source, exact head-and-shoulders crop, deterministic `156x210` fit, and DDS wiring, and is complete for a source-placeholder requirement without waiting for a repaint. A provider-backed `styled_final` is a separate optional branch that starts only after the user explicitly requests a styled final; the user runs the locked provider workflow and supplies the result, while the portrait worker validates and installs it at the same runtime path. Never replace the archived source or silently change the runtime identity.
+`chaosx_portrait_creator` owns one durable source package for every grounded portrait and archives it without changing runtime identity. Select the mode in the brief or manifest: `source_placeholder` keeps the unchanged source/crop, deterministic `156x210` PNG, DDS, and wiring; `styled_final` is an optional provider branch that starts only after the user explicitly requests it and supplies the result. Never silently repaint, replace, or overwrite provenance.
 
-Create one durable source package for each sourced or grounded portrait. Build its basename from dynamic project keys:
-
-```text
-<runtime_portrait_basename> = portrait_<tag>_<character_key>
-```
-
-Use the resolved basename consistently across the runtime texture and durable source pair:
+Store each package together under `docs/assets/portraits/<event_id>_<event_slug>/` (a subject subfolder is allowed), using the exact runtime basename:
 
 ```text
+<subject>/
+  <runtime_portrait_basename>_original.<original_suffix> # untouched original bytes
+  <runtime_portrait_basename>_source_crop.png         # lossless crop, before resize/DDS
+  <runtime_portrait_basename>_source_crop.json         # exact crop/equality evidence
+  <runtime_portrait_basename>_156x210.png              # deterministic processed candidate
+  <runtime_portrait_basename>.txt                     # co-located provenance contract
 <runtime_portrait_path>/<runtime_portrait_basename>.dds
-docs/assets/portraits/<event_id>_<event_slug>/<runtime_portrait_basename>.png
 ```
 
-Resolve `<tag>` and `<character_key>` from the implementation. Use the runtime texture basename, preserve its exact spelling and case, and keep the runtime DDS and archived source aligned.
-
-Save the highest-resolution original portrait source that anchors the subject in its original source format under `docs/assets/portraits/<event_id>_<event_slug>/`, before the final crop, `156x210` resize, and DDS conversion. When a processor requires PNG, also retain a lossless PNG copy with the same stable basename and record the relationship, the archive copy never replaces the real-person provenance or identity-audit requirements. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder.
-
-An event may contain any number of portrait source packages in the same durable event folder. Never overwrite one subject with another. Record every package, runtime DDS basename/path, provenance, and replacement state. `chaosx_portrait_creator` generates non-sourced fictional or impossible portraits with native ImageGen.
-
-The durable archive is not runtime storage. No `.gfx`, character, GUI, event, focus, idea, or decision reference may point into `docs/assets/portraits/`. Do not delete this archive when removing `docs/assets/<event_id>_<event_slug>/`, remove or replace a source package only when the user explicitly requests it.
+The original source, lossless crop, processed PNG, JSON, and `.txt` contract are mandatory and must never be split across folders. The contract records subject, source URL/attribution/license, hashes, crop coordinates, mode/state, reviewer/date, and separate identity/framing/provenance verdicts. Preserve original-format bytes and a lossless PNG copy when needed. The archive is evidence only: no `.gfx`, character, GUI, event, focus, idea, or decision may reference `docs/assets/portraits/`, and cleanup of temporary event workspaces must not delete it.
 
 ## 3. Asset source rules
 
@@ -244,67 +237,20 @@ Record the image source, source link, author or archive if available, license or
 
 ### Portrait source-mode gate
 
-Classify a country-leader, commander, named officeholder, or institutional-leader portrait before routing it:
-
-- **Grounded identity**: any country or polity that existed, partly existed, claims continuity from a real institution or community, or remains otherwise plausibly historical, including real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical country, polity, or community. Use `chaosx_portrait_creator` and attributed source material: sourced real people for leaders, commanders, and named officeholders, or authentic archival institutional material for a governing body or symbolic institution. Match the time, place, role, and accepted demographic constraints. Never generate an invented officeholder, fictional face, or invented grounded institution, even when the route is absurd, alternate-history, or high-chaos. If no defensible source and usable image exists, mark the portrait/package `blocked` and do not substitute a generated portrait.
-- **Fictional high-chaos identity**: a truly fictional country or an impossible/supernatural entity. A generated one-person leader is allowed only in this class, and only when the package itself is high-chaos. Reject an ordinary, conventionally dressed, or interchangeable generated officeholder. Make the leader visually memorable with extraordinary invented ceremonial dress, regalia, body adornment, ritual objects, altered uniforms, or another internally coherent motif belonging to the fictional polity's invented culture. The strangeness must come from that designed setting, not borrowed sacred objects or exaggerated traits of a real people. Avoid modern props, generic faces, meme aesthetics, gore, mockery, stereotypes, and caricatures of real cultures.
-
-Record the classification, source mode, identity evidence, and any blocked decision in the manifest and handoff. Missing, ambiguous, or contradictory classification is a fail-closed source-mode error, stop and report it instead of choosing a convenient fallback.
+Classify every country-leader, commander, operative, named officeholder, or institutional portrait before routing. A grounded identity (`grounded_source_only`) is any real, partly real, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical polity/community/institution; it requires `chaosx_portrait_creator` and attributed real-person or authentic institutional source material. If no defensible source exists, mark `blocked` and never invent a grounded face. A generated one-person portrait is allowed only for a truly fictional high-chaos country or impossible/supernatural entity, and must have an extraordinary internally coherent invented motif rather than a generic face, modern prop, meme, gore, mockery, stereotype, or caricature. Record classification, source mode, evidence, and blocked decisions; missing or contradictory classification fails closed.
 
 ### Portrait subject ownership gate
 
-Before sourcing or wiring any real-person leader, commander, operative, or named officeholder token, search both installed vanilla and the current project for exact and variant identity forms (including transliterations, titles, and name-order variants).
-Check character definitions, country histories and recruitment, portrait files, `.gfx`/interface consumers, leader/commander/operative/officeholder consumers, and relevant localisation (normally `common/characters/`, `history/countries/`, `gfx/leaders/`, `interface/`, and `localisation/`).
-A person already defined, recruited, or meaningfully portrait-owned by a live character roster may not be cloned into another country.
-
-Reuse is allowed only through an explicit guarded existing-character transfer or availability contract that removes or invalidates origin ownership before target ownership and prevents simultaneous ownership.
-Without that contract, fail closed and block the portrait/token.
-Literal ship names, production-line names, streets, equipment, or incidental prose are not character ownership unless an actual character, portrait, leader, commander, operative, or officeholder consumer resolves to the person.
-Record search terms, roots/files and ids checked, matches or no-match evidence, disposition, and any transfer guard in the manifest and handoff.
-Run it in addition to the unchanged grounded-source-only (`grounded_source_only`) versus `fictional_high_chaos` source-mode gate, it never authorizes a generated grounded person.
+Before sourcing or wiring a real-person token, search installed vanilla and the project for exact/variant names, transliterations, titles, and name order across `common/characters/`, `history/countries/`, `gfx/leaders/`, `interface/`, and `localisation/`. A person already defined, recruited, or portrait-owned by a live roster cannot be cloned. Reuse requires an explicit guarded transfer that invalidates origin ownership before target ownership and prevents simultaneous ownership; otherwise fail closed. Incidental prose, ship names, streets, and equipment are not ownership. Record search terms, roots/ids, matches or no-match evidence, disposition, and any transfer guard in the manifest/handoff; this gate never authorizes a generated grounded person.
 
 ### Real-person portraits
 
-Do not generate, reconstruct, or substitute the identity of a real person. This applies to country leaders, commanders, operatives, and named officeholders. The identity master must be an unchanged attributed archival photograph of the real subject, for a male subject, it must be an unchanged attributed archival male photograph. An illustration, statue, reenactor, actor, text description, or generated reconstruction cannot serve as the identity master.
-
-Use the mandatory source-preservation sequence for every real-person portrait before production: unchanged attributed archival photograph (archival male photograph for male subjects) -> explicit head-and-shoulders crop -> durable source package -> independent identity, framing, and provenance audit. Add a provider prompt/package only for the optional explicitly requested `styled_final` branch. Section 21 owns production and review.
-
-Make the explicit head-and-shoulders crop before resizing with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py`, passing required decoded-master `left top right bottom` coordinates and retaining its lossless PNG plus JSON evidence. The utility uses Pillow as the single decode/crop backend, reopens the PNG, and fails closed unless its decoded pixels exactly equal the same decoded master rectangle, it never resizes, enhances, recolours, retouches, or overwrites without `--force`. An `ffmpeg` or ImageMagick crop that cannot retain an equivalent exact decoded-pixel equality proof is not an accepted immutable source crop.
-
-Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed photographs. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official photographic portraits, military archive photographs, or passport or identity photographs. Archival illustrations may inform period context but never identity or likeness. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
-
-Preserve the unchanged master and exact crop as evidence, role-specific references may document the expected period and role but may not supply, replace, or invent the person's face. Keep the source PNG in `docs/assets/portraits/<event_id>_<event_slug>/`, record the state, and let `chaosx_portrait_creator` handle the section 21 handoff and review.
-
-Identity preservation is a separate non-compensable pass/fail gate: style quality can never excuse identity drift. Preserve exact facial geometry, asymmetry, age, expression, hair and facial hair, pose, and source-visible clothing, and do not add hidden detail or unsupported clothing or insignia.
-
-Compare the unchanged master, explicit crop, processed 156x210 candidate, DDS output, and role-specific references at native size and an enlarged inspection scale of at least 4x nearest-neighbour.
-
-Reject genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, and weak likeness. Keep `source_placeholder` when the accepted mode is source-only; do not infer `replacement_pending` unless a provider-backed styled final was explicitly requested and remains outstanding. Section 21 defines the optional `styled_final` branch.
-
-Keep the source, crop, processed candidate, audit sheet, and final DDS in distinct paths, never overwrite the source master or silently replace provenance.
-
-Record the source link, attribution, archive, license or public-domain status when available, immutable source hash, crop coordinates, role/reference family, candidate hash, audit reviewer and date, placeholder status, final DDS path, and sprite name in the manifest and handoff. If any source, identity, provenance, crop, or audit evidence is missing or fails, mark the portrait blocked and do not substitute a generated or generic person.
-
-For generated or sourced one-person portraits, the asset handoff must identify the subject's role and gender presentation plus any matching name-pool or character-metadata requirement. Female-presenting portraits must not be paired with male names and should require `female = yes` where a country leader is created directly. Male-presenting portraits must not be paired with female names or `female = yes`. Council, board, office, crowd, and symbolic-institution portraits should keep institutional leader names instead of personal random-name pools.
+Never generate, reconstruct, or substitute a real person's identity. Use an unchanged attributed archival photograph (male subject: archival male photograph), then `extract_portrait_source_crop.py` automatic or explicit crop, durable co-located package, and independent identity/framing/provenance review before DDS. Prefer public-domain/clearly licensed period sources; reject illustrations, statues, reenactors, actors, text descriptions, modern or era-incompatible images, and any unverified crop. The tool preserves source bytes, proves decoded RGBA equality, and writes a lossless crop before deterministic `156x210` resize; `ffmpeg`/ImageMagick output without equivalent equality evidence is invalid. Preserve exact facial geometry, asymmetry, age, expression, hair, pose, and source-visible clothing; reject genericization, beautification, symmetrization, face substitution, invented detail, unsupported insignia, filtered photos, or weak likeness. Compare master, crop, candidate, DDS, and role references at native and ≥4x nearest-neighbour. Record source/attribution/license, hashes, crop coordinates, role references, reviewer/date, separate verdicts, state, runtime path, sprite, and gender/name-pool metadata; female-presenting portraits require matching female metadata/name pools and male-presenting portraits require matching male metadata/name pools, while councils/boards use institutional names. Missing evidence blocks the portrait. `source_placeholder` is complete when selected; set `replacement_pending` only after an explicit outstanding `styled_final` request.
 
 
 ### Fictional portraits
 
-Non-sourced fictional or impossible character portraits are generated with native ImageGen by `chaosx_portrait_creator`; they do not use the grounded-source replacement branch.
-A generated one-person country leader is permitted only for a truly fictional high-chaos country or an impossible/supernatural entity, a grounded polity always remains on the sourced-real-person path.
-
-Generated country-leader and commander portraits should follow the full `156x210` HOI4 portrait convention. Generated operatives must follow the matching cataloged operative portrait and owning sprite. Use head-and-shoulders or restrained bust framing, a strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, a HOI4-compatible background, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
-
-For generated one-person portraits, record the subject role, apparent gender presentation, `fictional_high_chaos` classification, and the extraordinary invented regalia or cultural motif in the manifest and handoff.
-Where name pools or gender metadata apply, they must match the portrait.
-Never hand off a portrait in a way that lets implementation randomly assign names from the opposite gender pool.
-Do not use generic faces, modern props, meme aesthetics, gore, mockery, stereotypes, or caricatures of real cultures as visual shorthand.
-
-For a fictional council, committee, junta, board, office, crowd, or symbolic-body leader, follow the accepted content brief and use an institutional name rather than a random personal name pool.
-A people-free institutional composition may use one readable symbol, empty chamber, desk, machinery, seal, document arrangement, or other institution-specific subject.
-A staged governing group is allowed only when the brief requires it and every visible subject satisfies the accepted demographic and period constraints.
-For a grounded institution, use defensible sourced archival material for the real institution or source a real officeholder, do not generate an invented body or officeholder.
-If the design calls for a specific person, route it through the one-person portrait rules instead of treating that person as an institution.
+Fictional or impossible portraits use native ImageGen through `chaosx_portrait_creator`, never the grounded replacement branch. One-person leaders require `fictional_high_chaos`, full `156x210` HOI4 framing, a memorable invented motif, matching role/gender/name metadata, and no text, watermark, modern UI, meme, gore, stereotype, or caricature. Institutional briefs use an institutional name and may be people-free; a staged group requires explicit authorization and matching constraints. Grounded institutions still require authentic sourced material, and a named person uses one-person rules.
 
 ### User-provided assets
 
@@ -1109,26 +1055,20 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 
 ## 21. Country-leader, commander, operative, and named-officeholder portraits
 
-For real country-leader, commander, operative, and named-officeholder portraits, `chaosx_portrait_creator` finds an attributed archival source, creates the explicit head-and-shoulders crop, archives it under `docs/assets/portraits/`, and follows the mode named in the brief. In `source_placeholder` mode, the unchanged crop is fit deterministically to `156x210`, converted to DDS, and wired while preserving identity; no HOI4 repaint is required. A provider-backed `styled_final` is optional and begins only after the user explicitly asks for it; the user runs the locked provider workflow and supplies the output, then the portrait worker independently validates and installs it at the same runtime path.
+`chaosx_portrait_creator` owns every portrait from source/brief through runtime handoff. Grounded portraits use an attributed unchanged source and the selected `source_placeholder` or explicitly requested `styled_final` mode; fictional/impossible portraits use native ImageGen. Automated checks never replace independent visual review.
 
-For a fictional high-chaos or impossible subject, `chaosx_portrait_creator` uses native ImageGen and completes the processed PNG, DDS, portrait wiring, manifest, and handoff. Keep that candidate and review evidence separate from grounded source archives.
-
-Keep the source, crop, any supplied provider final, hashes, and independent likeness/framing/provenance review with the portrait package. Automated checks do not replace visual review.
-
-Create the immutable source crop with the exact decoded-master boundary and retain the utility's JSON equality evidence:
+Run the automatic source package tool from the mod root (or pass `--crop` for measured recovery):
 
 ```powershell
 python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py `
-	<archival_master.jpg> <archival_crop.png> `
-	--crop <left> <top> <right> <bottom> `
-	--metadata <archival_crop.json>
+	<archival_master.jpg> <subject_source_crop.png>
 ```
 
-The metadata must record the Pillow/tool version and hash, master/output hashes and dimensions, decode modes, crop rectangle, equality result and hashes, and normalized command. Do not accept an `ffmpeg` or ImageMagick crop as immutable source evidence when it cannot prove exact decoded-pixel equality against the same master rectangle.
+Automatic mode uses bundled YuNet to require exactly one face, computes a portrait-aspect head-and-shoulders crop, saves the untouched original, exact lossless crop, `156x210` RGB PNG, JSON equality/model/hash evidence, and a co-located provenance `.txt` contract under `docs/assets/portraits/<event_id>_<event_slug>/` (subject subfolders are allowed). Missing model/OpenCV support, zero/multiple faces, unsafe geometry, or write collisions fail closed; use `--model` or an explicit `--crop` recovery. Both routes write the complete package; manual JSON is labelled `manual_crop_override` and reports no face box or YuNet detection. The JSON must retain source/crop/processed dimensions, hashes, exact crop coordinates, equality result, and normalized command (plus detector evidence only for automatic mode). Never accept an alternate crop without equivalent decoded-pixel equality evidence.
 
-Convert and wire the source crop as `source_placeholder` when that mode is selected. Do not mark `replacement_pending` unless a provider-backed styled final was explicitly requested and is still outstanding. When the user supplies the requested styled output, hand it to `chaosx_portrait_creator` for independent validation, DDS conversion, and replacement at the same runtime path.
+Convert and wire the processed PNG as `source_placeholder` when selected. `replacement_pending` is allowed only after an explicit styled-final request remains outstanding; when supplied, the user-provided output goes to `chaosx_portrait_creator` for independent validation, DDS conversion, and replacement at the same runtime path. Never operate RunPod.
 
-Before DDS conversion, save the durable source under the exact runtime portrait basename. The archive does not replace the source master, audit evidence, processed candidate, or runtime asset.
+Before DDS conversion, keep the untouched original, lossless crop, processed PNG, JSON, and provenance contract together under the exact runtime basename. The archive never replaces source evidence and never becomes a runtime reference.
 
 Choose the canonical reference family by role before starting:
 
@@ -1137,28 +1077,17 @@ Choose the canonical reference family by role before starting:
 - operative: `portraits/operatives/`
 - named officeholder: the canonical family owned by its consuming leader, commander, operative, advisor, or high-command surface
 
-Use role-specific references as style controls only and never as a source for the person's face. Compare the unchanged master, explicit crop, deterministic source-placeholder candidate, any supplied provider-backed final, runtime candidate, and references at native size and an enlarged inspection scale.
+Use role-specific references as style controls only, never as a face source. Compare unchanged master, exact crop, deterministic candidate, any supplied provider output, runtime candidate, and references at native size and ≥4x nearest-neighbour.
 
-Preserve exact facial geometry, asymmetry, age, expression, hair and facial hair, pose, and source-visible clothing. Reject genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, or a filtered photograph. Use the unchanged master and exact crop as evidence, consult the gate above for placeholder status.
-
-Record:
-
-- source link if internet-sourced
-- author or archive if available
-- license or public domain status if available
-- original image path
-- immutable source hash, explicit crop coordinates, deterministic 156x210 candidate hash, matching reference folder and hashes, comparison-sheet path, independent reviewer identity and date, and separate likeness/framing/provenance verdicts
-- selected portrait mode/state, source-placeholder path and hash, any supplied provider master/game output paths and hashes, and `replacement_pending` evidence only when the styled-final request is outstanding
-- processed PNG path
-- final DDS path
+Preserve facial geometry, asymmetry, age, expression, hair, pose, and source-visible clothing; reject genericization, beautification, symmetrization, face substitution, invented detail, unsupported insignia, weak likeness, or filtered photos. Record source URL/attribution/license, original and crop hashes/coordinates, processed/provider/runtime hashes, role references, comparison sheet, reviewer/date, separate likeness/framing/provenance verdicts, mode/state, DDS path, sprite, and gender/name-pool metadata. Missing evidence blocks the portrait.
 
 For fictional or impossible characters classified as `fictional_high_chaos`, `chaosx_portrait_creator` uses native ImageGen and completes the portrait package. Grounded identities use the sourced gate above; if no defensible source exists, mark the portrait `blocked`.
 
-Country-leader, commander, operative, and named-officeholder identity candidates are deterministic `156x210` portraits. Advisor and high-command cards use section 21.1's separate native `65x67` manual workflow after the shared identity gate. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size, never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline, follow their cataloged owning sprite.
+Country-leader, commander, operative, and named-officeholder candidates are deterministic `156x210` portraits; commander references remain full `156x210` even when displayed smaller. Advisor/high-command cards use section 21.1's separate native `65x67` workflow after the shared identity gate. Operatives use the full pipeline and cataloged owning sprite.
 
 ## Chaos Redux portrait production gate
 
-Every portrait follows `.agents/skills/chaos-redux-comfyui/SKILL.md`. Grounded portraits choose the archived-source `source_placeholder` branch or the optional provider-backed `styled_final` branch; fictional or impossible portraits use the portrait worker's native ImageGen branch. The no-advisor-icons authorization boundary in section 21.1 remains separate and unchanged.
+Every portrait follows `.agents/skills/chaos-redux-comfyui/SKILL.md`: grounded source-placeholder or explicitly requested provider-backed styled-final branch, fictional/impossible native ImageGen branch, and the separate no-advisor-icons authorization boundary in section 21.1.
 
 ## 21.1 Advisor and high-command portrait icons
 
@@ -1509,7 +1438,7 @@ Before finishing, confirm:
 21. Every icon family in section 5.2 was treated as its own asset type, and no UI surface was satisfied by resizing, cropping, recoloring, padding, relabeling, or lightly editing an icon made for another surface.
 22. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, has no transform-only final motion, and proves its animation family's purpose and direction or state semantics rather than only its frame count.
 23. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
-24. Every grounded character portrait passes section 21 with source/crop evidence, a deterministic `156x210` candidate, independent identity/framing/provenance review, and correct DDS/runtime evidence. `source_placeholder` is valid when that mode is explicitly selected; `replacement_pending` is honest only after a provider-backed styled final was explicitly requested but not supplied, while `styled_final` requires validated provider output and independent review. Commander textures are full `156x210` portraits, never fabricated `50x67` sources. An illustration cannot serve as the identity master, and a crop without exact decoded-pixel equality evidence fails this checklist.
+24. Every grounded character portrait passes section 21 with an unchanged original, co-located lossless pre-resize crop, JSON equality/model evidence, `156x210` candidate, provenance `.txt` contract, independent identity/framing/provenance review, and correct DDS/runtime evidence. `source_placeholder` is valid when explicitly selected; `replacement_pending` is honest only after an explicit styled-final request remains outstanding, while `styled_final` requires validated provider output and independent review. Commander textures are full `156x210`, never fabricated `50x67` sources. An illustration cannot serve as the identity master, and a crop without exact decoded-pixel equality evidence fails this checklist.
 25. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 26. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package, one pipeline was not resized or relabeled to substitute for another. A 3D package also proves the one-image Meshy input rule, provider lineage, vanilla scale calibration, PDX material mapping, topology repair, required skeletal actions, `.mesh`/`.anim` reimport, hash-aware runtime synchronization, parent-owned wiring, and a live consumer.
 27. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
