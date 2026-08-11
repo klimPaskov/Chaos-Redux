@@ -47,6 +47,13 @@ africa_promoted_tiera_accept_league = {
 	set_country_flag = africa_promoted_tiera_league_settled
 	set_country_flag = africa_promoted_tiera_league_accepted
 	set_country_flag = africa_member_allied_settlement_accepted
+	if = {
+		limit = {
+			has_global_flag = africa_achievement_normal_launch
+			has_country_flag = africa_registered_high_chaos_actor
+		}
+		africa_achievement_record_nonhuman_constitutional_member = yes
+	}
 	if = { limit = { has_event_target = africa_host } event_target:africa_host = { add_to_variable = { africa_charter_authority = constant:africa_value.one africa_consent_commitment = constant:africa_value.one } } }
 }
 
@@ -163,6 +170,10 @@ africa_promoted_tiera_post_settlement = {
 	if = {
 		limit = { africa_promoted_tiera_package_is_the_green = yes }
 		set_country_flag = africa_promoted_green_biome_restoration
+		if = {
+			limit = { has_global_flag = africa_achievement_normal_launch }
+			set_global_flag = africa_achievement_ecological_covenant_owner_ready
+		}
 		add_stability = 0.10
 		add_war_support = 0.03
 	}
@@ -175,6 +186,11 @@ africa_promoted_tiera_post_settlement = {
 	if = {
 		limit = { africa_promoted_tiera_package_is_stoneborn = yes }
 		set_country_flag = africa_promoted_stoneborn_monument_restoration
+		if = {
+			limit = { has_global_flag = africa_achievement_normal_launch }
+			set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.stoneborn_constitutional_status }
+			africa_achievement_record_milestone = yes
+		}
 		add_army_experience = 10
 		add_stability = 0.05
 	}
@@ -190,6 +206,13 @@ africa_promoted_tiera_post_settlement = {
 africa_promoted_tiera_cleanup_on_defeat = {
 	if = {
 		limit = { africa_promoted_tiera_is_active = yes }
+		if = {
+			limit = {
+				has_global_flag = africa_achievement_normal_launch
+				africa_promoted_tiera_carrier_is_stoneborn = yes
+			}
+			set_global_flag = africa_achievement_stoneborn_erased
+		}
 		drop_cosmetic_tag = yes
 		africa_promoted_tiera_clear_lifecycle_ideas = yes
 		clr_country_flag = africa_promoted_tiera_active

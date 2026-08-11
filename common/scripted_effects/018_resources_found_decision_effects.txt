@@ -1142,6 +1142,46 @@ resources_found_complete_selected_field_project = {
 				set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority }
 				set_state_flag = resources_found_field_nationalized
 				set_state_flag = resources_found_compensation_claim_unresolved
+				# Event 012 row 30 disqualifier owner: only a real Event 018
+				# nationalisation on an African field held by the current host or a
+				# current-generation member reaches the host achievement ledger.
+				if = {
+					limit = {
+						is_on_continent = africa
+						owner = {
+							OR = {
+								africa_is_current_host = yes
+								AND = {
+									africa_member_host_generation_is_current = yes
+									has_event_target = africa_host
+								}
+							}
+						}
+					}
+					if = {
+						limit = { NOT = { has_state_flag = africa_achievement_forced_resource_pending } }
+						set_state_flag = africa_achievement_forced_resource_pending
+						add_to_array = {
+							array = global.africa_achievement_pending_forced_resource_fields
+							value = THIS
+						}
+					}
+					owner = {
+						if = {
+							limit = { africa_is_current_host = yes }
+							africa_achievement_record_forced_resource_seizure = yes
+						}
+						else_if = {
+							limit = {
+								africa_member_host_generation_is_current = yes
+								has_event_target = africa_host
+							}
+							event_target:africa_host = {
+								africa_achievement_record_forced_resource_seizure = yes
+							}
+						}
+					}
+				}
 				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.major }
 			}
 			country_event = { id = chaosx.nr18.8 }
@@ -1150,6 +1190,21 @@ resources_found_complete_selected_field_project = {
 			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.settle_compensation } }
 			var:resources_found_active_project_field = {
 				resources_found_refresh_dispute_achievement_evidence = yes
+				# Only the exact nationalised field can cure its pending Event 012
+				# seizure witness. Unrelated compensation or arbitration settlements
+				# leave the pending field entry and DQ intact.
+				if = {
+					limit = {
+						has_state_flag = africa_achievement_forced_resource_pending
+						has_state_flag = resources_found_field_nationalized
+						has_state_flag = resources_found_compensation_claim_unresolved
+					}
+					clr_state_flag = africa_achievement_forced_resource_pending
+					remove_from_array = {
+						array = global.africa_achievement_pending_forced_resource_fields
+						value = THIS
+					}
+				}
 				clr_state_flag = resources_found_compensation_claim_unresolved
 				set_state_flag = resources_found_compensation_settled
 				set_state_flag = resources_found_contracts_settled_for_closure
@@ -1162,6 +1217,14 @@ resources_found_complete_selected_field_project = {
 			}
 			set_temp_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.compensation }
 			resources_found_begin_dispute_settlement_qualification = yes
+			if = {
+				limit = { has_event_target = africa_host }
+				event_target:africa_host = { africa_achievement_refresh_forced_resource_seizure_ledger = yes }
+			}
+			else_if = {
+				limit = { africa_is_current_host = yes }
+				africa_achievement_refresh_forced_resource_seizure_ledger = yes
+			}
 			country_event = { id = chaosx.nr18.9 }
 		}
 		else_if = {
@@ -1579,6 +1642,41 @@ resources_found_reactivate_selected_field_contract = {
 			var:resources_found_contract_partner = { save_event_target_as = resources_found_contract_partner_target }
 		}
 		resources_found_grant_selected_field_resource_rights = yes
+		# Event 12 achievement owner: a restored private concession in an African
+		# field is recorded only at the real Event 18 rights-grant source.  This
+		# deliberately does not infer a concession from an Event 12 action proxy.
+		var:resources_found_selected_field = {
+			if = {
+				limit = {
+					is_on_continent = africa
+					has_state_flag = resources_found_foreign_concession_granted
+					owner = {
+						OR = {
+							africa_is_current_host = yes
+							AND = {
+								africa_member_host_generation_is_current = yes
+								has_event_target = africa_host
+							}
+						}
+					}
+				}
+				owner = {
+					if = {
+						limit = { africa_is_current_host = yes }
+						africa_achievement_record_private_resource_concession = yes
+					}
+					else_if = {
+						limit = {
+							africa_member_host_generation_is_current = yes
+							has_event_target = africa_host
+						}
+						event_target:africa_host = {
+							africa_achievement_record_private_resource_concession = yes
+						}
+					}
+				}
+			}
+		}
 		var:resources_found_selected_field = {
 			if = {
 				limit = { has_state_flag = resources_found_long_term_export_contract }

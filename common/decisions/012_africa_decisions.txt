@@ -490,7 +490,7 @@ africa_charter_council_category = {
 		target_array = africa_active_action_short_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_short } }
-		days_mission_timeout = FROM.africa_active_action_duration_days
+		days_mission_timeout = var:africa_active_action_duration_days
 		is_good = yes
 		available = { FROM = { africa_action_objective_is_complete = yes } }
 		complete_effect = { FROM = { africa_resolve_action = yes } }
@@ -510,7 +510,7 @@ africa_charter_council_category = {
 		target_array = africa_active_action_medium_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_medium } }
-		days_mission_timeout = FROM.africa_active_action_duration_days
+		days_mission_timeout = var:africa_active_action_duration_days
 		is_good = yes
 		available = { FROM = { africa_action_objective_is_complete = yes } }
 		complete_effect = { FROM = { africa_resolve_action = yes } }
@@ -530,7 +530,7 @@ africa_charter_council_category = {
 		target_array = africa_active_action_long_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_long } }
-		days_mission_timeout = FROM.africa_active_action_duration_days
+		days_mission_timeout = var:africa_active_action_duration_days
 		is_good = yes
 		available = { FROM = { africa_action_objective_is_complete = yes } }
 		complete_effect = { FROM = { africa_resolve_action = yes } }
@@ -550,7 +550,7 @@ africa_charter_council_category = {
 		target_array = africa_active_action_epic_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_epic } }
-		days_mission_timeout = FROM.africa_active_action_duration_days
+		days_mission_timeout = var:africa_active_action_duration_days
 		is_good = yes
 		available = { FROM = { africa_action_objective_is_complete = yes } }
 		complete_effect = { FROM = { africa_resolve_action = yes } }
@@ -2227,9 +2227,9 @@ africa_world_order_actions_category = {
 		visible = { africa_world_sponsorship_host_can_offer = yes }
 		available = {
 			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-			check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.diplomatic_offer_pp compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.diplomatic_offer_pp compare = greater_than_or_equals }
 		}
-		custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.diplomatic_offer_pp compare = greater_than } }
+			custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.diplomatic_offer_pp compare = greater_than_or_equals } }
 		custom_cost_text = africa_world_sponsorship_diplomatic_offer_cost
 		complete_effect = {
 			FROM = {
@@ -2251,9 +2251,9 @@ africa_world_order_actions_category = {
 		visible = { africa_world_sponsorship_host_can_offer = yes }
 		available = {
 			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-			check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.material_offer_pp compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.material_offer_pp compare = greater_than_or_equals }
 		}
-		custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.material_offer_pp compare = greater_than } }
+			custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.material_offer_pp compare = greater_than_or_equals } }
 		custom_cost_text = africa_world_sponsorship_material_offer_cost
 		complete_effect = {
 			FROM = {
@@ -2275,12 +2275,12 @@ africa_world_order_actions_category = {
 		visible = { africa_world_sponsorship_host_can_offer = yes }
 		available = {
 			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-			check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.military_offer_pp compare = greater_than }
-			command_power > constant:africa_world_sponsorship_mode.military_offer_command_power
+				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.military_offer_pp compare = greater_than_or_equals }
+				NOT = { command_power < constant:africa_world_sponsorship_mode.military_offer_command_power }
 		}
 		custom_cost_trigger = {
-			check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.military_offer_pp compare = greater_than }
-			command_power > constant:africa_world_sponsorship_mode.military_offer_command_power
+				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.military_offer_pp compare = greater_than_or_equals }
+				NOT = { command_power < constant:africa_world_sponsorship_mode.military_offer_command_power }
 		}
 		custom_cost_text = africa_world_sponsorship_military_offer_cost
 		complete_effect = {
@@ -2303,9 +2303,9 @@ africa_world_order_actions_category = {
 		visible = { africa_world_sponsorship_host_can_offer = yes }
 		available = {
 			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
-			check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.ideological_offer_pp compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.ideological_offer_pp compare = greater_than_or_equals }
 		}
-		custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.ideological_offer_pp compare = greater_than } }
+			custom_cost_trigger = { check_variable = { var = political_power value = constant:africa_world_sponsorship_mode.ideological_offer_pp compare = greater_than_or_equals } }
 		custom_cost_text = africa_world_sponsorship_ideological_offer_cost
 		complete_effect = {
 			FROM = {
@@ -2349,9 +2349,9 @@ africa_world_order_actions_category = {
 		visible = { africa_is_current_host = yes }
 		available = {
 			FROM = { africa_world_sponsorship_material_obligation_is_due = yes }
-			has_equipment = { infantry_equipment > constant:africa_world_order.sponsorship_equipment }
-			has_equipment = { support_equipment > constant:africa_world_order.sponsorship_support_equipment }
-			has_equipment = { convoy > constant:africa_world_order.sponsorship_convoys }
+				NOT = { has_equipment = { infantry_equipment < constant:africa_world_order.sponsorship_equipment } }
+				NOT = { has_equipment = { support_equipment < constant:africa_world_order.sponsorship_support_equipment } }
+				NOT = { has_equipment = { convoy < constant:africa_world_order.sponsorship_convoys } }
 		}
 		cost = 0
 		complete_effect = {
@@ -2522,9 +2522,9 @@ africa_world_order_actions_category = {
 			}
 		}
 		available = {
-			has_equipment = { infantry_equipment > constant:africa_world_order.sponsorship_equipment }
-			has_equipment = { support_equipment > constant:africa_world_order.sponsorship_support_equipment }
-			has_equipment = { convoy > constant:africa_world_order.sponsorship_convoys }
+			NOT = { has_equipment = { infantry_equipment < constant:africa_world_order.sponsorship_equipment } }
+			NOT = { has_equipment = { support_equipment < constant:africa_world_order.sponsorship_support_equipment } }
+			NOT = { has_equipment = { convoy < constant:africa_world_order.sponsorship_convoys } }
 		}
 		cost = constant:africa_world_order.sponsorship_pp_cost
 		complete_effect = {
@@ -2655,7 +2655,7 @@ africa_world_polity_actions_category = {
 			NOT = { has_country_flag = africa_crossroads_lifecycle_crisis_pending }
 			NOT = { has_country_flag = africa_crossroads_shared_lane_event_open }
 			NOT = { has_country_flag = africa_world_package_sovereign_complete }
-			check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than_or_equals }
 		}
 		cost = constant:africa_world_package_protocol.counterterm_pp_cost
 		complete_effect = {
@@ -2674,7 +2674,7 @@ africa_world_polity_actions_category = {
 			NOT = { has_country_flag = africa_crossroads_lifecycle_crisis_pending }
 			NOT = { has_country_flag = africa_crossroads_shared_lane_event_open }
 			NOT = { has_country_flag = africa_world_package_sovereign_complete }
-			check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than_or_equals }
 		}
 		cost = constant:africa_world_package_protocol.counterterm_pp_cost
 		complete_effect = {
@@ -2693,7 +2693,7 @@ africa_world_polity_actions_category = {
 			NOT = { has_country_flag = africa_crossroads_lifecycle_crisis_pending }
 			NOT = { has_country_flag = africa_crossroads_shared_lane_event_open }
 			NOT = { has_country_flag = africa_world_package_sovereign_complete }
-			check_variable = { var = political_power value = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost compare = greater_than_or_equals }
 		}
 		cost = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost
 		complete_effect = {
@@ -2712,7 +2712,7 @@ africa_world_polity_actions_category = {
 			NOT = { has_country_flag = africa_europe_lifecycle_crisis_pending }
 			NOT = { has_country_flag = africa_europe_shared_lane_event_open }
 			NOT = { has_country_flag = africa_world_package_sovereign_complete }
-			check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than_or_equals }
 		}
 		cost = constant:africa_world_package_protocol.counterterm_pp_cost
 		complete_effect = {
@@ -2731,7 +2731,7 @@ africa_world_polity_actions_category = {
 			NOT = { has_country_flag = africa_europe_lifecycle_crisis_pending }
 			NOT = { has_country_flag = africa_europe_shared_lane_event_open }
 			NOT = { has_country_flag = africa_world_package_sovereign_complete }
-			check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_package_protocol.counterterm_pp_cost compare = greater_than_or_equals }
 		}
 		cost = constant:africa_world_package_protocol.counterterm_pp_cost
 		complete_effect = {
@@ -2750,7 +2750,7 @@ africa_world_polity_actions_category = {
 			NOT = { has_country_flag = africa_europe_lifecycle_crisis_pending }
 			NOT = { has_country_flag = africa_europe_shared_lane_event_open }
 			NOT = { has_country_flag = africa_world_package_sovereign_complete }
-			check_variable = { var = political_power value = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost compare = greater_than }
+				check_variable = { var = political_power value = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost compare = greater_than_or_equals }
 		}
 		cost = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost
 		complete_effect = {
@@ -3374,4 +3374,119 @@ africa_regional_restorations_actions_category = {
 		ai_will_do = { base = 0 }
 	}
 
+}
+
+# Archive Disposition is deliberately a bounded target operation. The target
+# array is the maintained relationship roster and each target can receive one
+# mutually exclusive custody/sale/suppression receipt before Africa is One.
+africa_archive_disposition_category = {
+	africa_archive_publish_custodial_register = {
+		name = africa_archive_publish_custodial_register
+		desc = africa_archive_publish_custodial_register_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_relationship_countries
+		activation = { africa_achievement_archive_disposition_window_is_open = yes }
+		target_root_trigger = { africa_achievement_archive_disposition_window_is_open = yes }
+		target_trigger = { FROM = { africa_achievement_archive_disposition_target_is_valid = yes } }
+		visible = { africa_achievement_archive_disposition_window_is_open = yes }
+		available = {
+			africa_achievement_can_pay_archive_safe_disposition = yes
+			FROM = { africa_achievement_archive_disposition_target_is_valid = yes }
+		}
+		custom_cost_trigger = { africa_achievement_can_pay_archive_safe_disposition = yes }
+		custom_cost_text = africa_archive_publish_custodial_register_cost
+		cost = 0
+		days_re_enable = var:africa_achievement_archive_safe_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_archive_publish_custodial_register_effect_tt
+			FROM = {
+				save_global_event_target_as = africa_achievement_archive_disposition_target
+				set_variable = { global.africa_achievement_archive_last_disposition_target_id = THIS.id }
+			}
+			africa_achievement_pay_archive_safe_disposition = yes
+			FROM = { africa_achievement_record_archive_disposition_safe = yes }
+			africa_achievement_clear_archive_disposition_target = yes
+		}
+		ai_will_do = { base = constant:africa_achievement_archive_disposition_ai.safe_base }
+	}
+
+	africa_archive_sell_external_archive = {
+		name = africa_archive_sell_external_archive
+		desc = africa_archive_sell_external_archive_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_relationship_countries
+		activation = { africa_achievement_archive_disposition_window_is_open = yes }
+		target_root_trigger = { africa_achievement_archive_disposition_window_is_open = yes }
+		target_trigger = { FROM = { africa_achievement_archive_disposition_target_is_valid = yes } }
+		visible = { africa_achievement_archive_disposition_window_is_open = yes }
+		available = {
+			africa_achievement_can_pay_archive_destructive_disposition = yes
+			FROM = { africa_achievement_archive_disposition_target_is_valid = yes }
+		}
+		custom_cost_trigger = { africa_achievement_can_pay_archive_destructive_disposition = yes }
+		custom_cost_text = africa_archive_sell_external_archive_cost
+		cost = 0
+		days_re_enable = var:africa_achievement_archive_destructive_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_archive_sell_external_archive_effect_tt
+			FROM = {
+				save_global_event_target_as = africa_achievement_archive_disposition_target
+				set_variable = { global.africa_achievement_archive_last_disposition_target_id = THIS.id }
+			}
+			africa_achievement_pay_archive_destructive_disposition = yes
+			FROM = { africa_achievement_record_archive_disposition_sold = yes }
+			africa_achievement_clear_archive_disposition_target = yes
+		}
+		ai_will_do = {
+			base = constant:africa_achievement_archive_disposition_ai.destructive_base
+			modifier = {
+				factor = 0
+				NOT = { africa_achievement_archive_destructive_ai_profile = yes }
+			}
+			modifier = {
+				factor = constant:africa_achievement_archive_disposition_ai.destructive_profile_factor
+				africa_achievement_archive_destructive_ai_profile = yes
+			}
+		}
+	}
+
+	africa_archive_suppress_archive_register = {
+		name = africa_archive_suppress_archive_register
+		desc = africa_archive_suppress_archive_register_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_relationship_countries
+		activation = { africa_achievement_archive_disposition_window_is_open = yes }
+		target_root_trigger = { africa_achievement_archive_disposition_window_is_open = yes }
+		target_trigger = { FROM = { africa_achievement_archive_disposition_target_is_valid = yes } }
+		visible = { africa_achievement_archive_disposition_window_is_open = yes }
+		available = {
+			africa_achievement_can_pay_archive_destructive_disposition = yes
+			FROM = { africa_achievement_archive_disposition_target_is_valid = yes }
+		}
+		custom_cost_trigger = { africa_achievement_can_pay_archive_destructive_disposition = yes }
+		custom_cost_text = africa_archive_suppress_archive_register_cost
+		cost = 0
+		days_re_enable = var:africa_achievement_archive_destructive_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_archive_suppress_archive_register_effect_tt
+			FROM = {
+				save_global_event_target_as = africa_achievement_archive_disposition_target
+				set_variable = { global.africa_achievement_archive_last_disposition_target_id = THIS.id }
+			}
+			africa_achievement_pay_archive_destructive_disposition = yes
+			FROM = { africa_achievement_record_archive_disposition_suppressed = yes }
+			africa_achievement_clear_archive_disposition_target = yes
+		}
+		ai_will_do = {
+			base = constant:africa_achievement_archive_disposition_ai.destructive_base
+			modifier = {
+				factor = 0
+				NOT = { africa_achievement_archive_destructive_ai_profile = yes }
+			}
+			modifier = {
+				factor = constant:africa_achievement_archive_disposition_ai.destructive_profile_factor
+				africa_achievement_archive_destructive_ai_profile = yes
+			}
+		}
+	}
 }

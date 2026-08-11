@@ -16,6 +16,7 @@ africa_disease_authorize_review = {
 		limit = { africa_disease_review_authorization_is_available = yes }
 		set_country_flag = africa_fictional_pathogen_review_authorized
 		set_country_flag = africa_disease_research_site
+		set_global_flag = africa_achievement_disease_route_created
 		set_variable = { africa_disease_payload_available = constant:africa_disease.payload_capacity }
 		set_variable = { africa_disease_research_progress = constant:africa_value.zero }
 		set_variable = { africa_disease_weapon_release_count = constant:africa_value.zero }
@@ -70,6 +71,7 @@ africa_disease_launch_seed = {
 			limit = { check_variable = { var = africa_disease_dispatch_accepted value = constant:africa_value.one compare = equals } }
 			set_country_flag = africa_disease_crisis_active
 			set_country_flag = africa_disease_weapon_release_recorded
+			africa_achievement_record_disease_outbreak = yes
 			if = {
 				limit = { NOT = { has_variable = africa_disease_target_release_count } }
 				set_variable = { africa_disease_target_release_count = constant:africa_value.zero }
@@ -80,6 +82,11 @@ africa_disease_launch_seed = {
 				subtract_from_variable = { africa_disease_payload_available = constant:africa_disease.payload_unit }
 				add_to_variable = { africa_disease_weapon_release_count = constant:africa_value.one }
 				set_country_flag = africa_fictional_pathogen_release_recorded
+				set_global_flag = africa_achievement_disease_route_created
+				# An accepted deliberate ordinary-pathogen seed affects a civilian
+				# state lifecycle and may spread beyond the selected formation. This
+				# is the exact uncontrolled-release disqualifier for Row 39.
+				set_global_flag = africa_achievement_deliberate_uncontrolled_civilian_release
 				set_country_flag = { flag = africa_disease_weapon_cooldown days = @AFRICA_DISEASE_WEAPON_COOLDOWN_DAYS }
 			}
 		}
@@ -118,6 +125,7 @@ africa_disease_dispatch_laboratory_accident = {
 		if = {
 			limit = { check_variable = { var = africa_disease_accident_dispatch_accepted value = constant:africa_value.one compare = equals } }
 			set_country_flag = africa_disease_crisis_active
+			africa_achievement_record_disease_outbreak = yes
 		}
 	}
 	clear_variable = africa_disease_accident_dispatch_accepted
@@ -144,6 +152,7 @@ africa_disease_apply_containment_full = {
 		}
 		clr_country_flag = africa_disease_crisis_active
 		set_country_flag = africa_disease_containment_complete
+		africa_achievement_record_disease_outbreak_contained = yes
 	}
 	else = {
 		set_country_flag = africa_disease_containment_failed
@@ -191,6 +200,7 @@ africa_disease_apply_research_full = {
 			}
 			set_country_flag = africa_disease_countermeasure_researched
 			set_country_flag = africa_disease_research_complete
+			set_global_flag = africa_achievement_disease_countermeasure_completed
 		}
 	}
 }

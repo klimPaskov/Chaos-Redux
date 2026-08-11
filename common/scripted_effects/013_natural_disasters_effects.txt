@@ -5357,9 +5357,19 @@ natural_disaster_record_event012_civilian_weaponisation = {
 			}
 			has_variable = natural_disaster_last_deaths
 			check_variable = { natural_disaster_last_deaths > 0 }
-			NOT = { has_global_flag = africa_achievement_disaster_weaponised_against_civilians }
 		}
 		var:natural_disaster_caller_country = {
+			if = {
+				limit = {
+					has_variable = africa_ecological_wrath
+					check_variable = {
+						var = africa_ecological_wrath
+						value = constant:africa_measure.maximum
+						compare = greater_than_or_equals
+					}
+				}
+				set_global_flag = africa_achievement_maximum_ecological_wrath_against_civilians
+			}
 			africa_achievement_record_disaster_weaponised_against_civilians = yes
 		}
 		clr_state_flag = natural_disaster_event012_weaponisation_pending
@@ -8537,6 +8547,10 @@ natural_disaster_execute_chain_followup = {
 				check_variable = { natural_disaster_chain_risk > constant:natural_disaster_chain.none }
 			}
 			set_state_flag = natural_disaster_chain_prevented
+			if = {
+				limit = { check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.famine } }
+				controller = { africa_achievement_record_natural_disaster_famine_prevention = yes }
+			}
 			set_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.none }
 		}
 		if = {
@@ -8832,6 +8846,32 @@ natural_disaster_apply_terminal_failure_consequence = {
 		}
 		natural_disaster_apply_state_disruption = yes
 		natural_disaster_schedule_family_report = yes
+		# A failed Event 013 famine-prevention mission on the current Event 012
+		# host is the exact preventable-famine owner. Drought selection, famine
+		# risk, or civilian deaths alone are not enough to write the flag.
+		if = {
+			limit = {
+				has_state_flag = natural_disaster_chain_mission_failed
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.famine }
+			}
+			controller = {
+				if = {
+					limit = {
+						africa_is_current_host = yes
+						has_global_flag = africa_event_active
+					}
+					set_global_flag = africa_achievement_preventable_famine
+				}
+				else_if = {
+					limit = {
+						has_global_flag = africa_event_active
+						africa_member_host_generation_is_current = yes
+						has_event_target = africa_host
+					}
+					set_global_flag = africa_achievement_preventable_famine
+				}
+			}
+		}
 	}
 }
 
@@ -10110,6 +10150,11 @@ natural_disaster_achievement_track_card_close = {
 	if = {
 		limit = { has_state_flag = natural_disaster_reconstruction_success }
 		natural_disaster_achievement_record_catalogue_group = yes
+		# Event 012 owns the cross-event containment ledger. The callback is
+		# country-scoped through the live state controller and receives PREV as
+		# this exact reconstructed state, so only a current host/current-generation
+		# member and one unique Event 013 sequence can increment the ledger.
+		controller = { africa_achievement_record_natural_disaster_reconstruction_success = yes }
 		if = {
 			limit = {
 				check_variable = { natural_disaster_sequence_id = nd_achievement_severe_sequence }

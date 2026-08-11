@@ -8,8 +8,21 @@
 # ============================================================================
 
 on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				africa_register_strange_force_asset_manifests = yes
+			}
+		}
+	}
+
 	on_join_faction = {
 		effect = {
+			if = {
+				limit = { has_country_flag = africa_achievement_peaceful_exit_started }
+				africa_achievement_record_peaceful_reassociation = yes
+			}
 			# ROOT is the joining member. The helper resolves the current faction
 			# leader and records only an external patron; internal League factions
 			# remain outside the patronage state.
@@ -31,6 +44,7 @@ on_actions = {
 				limit = { has_event_target = africa_host }
 				event_target:africa_host = { africa_common_reserve_clear_expired_posture = yes }
 			}
+			africa_promoted_tiera_record_stoneborn_human_member_war_relation = yes
 			if = {
 				limit = {
 					ROOT = { africa_is_current_host = yes }
@@ -74,6 +88,7 @@ on_actions = {
 					FROM = {
 						africa_relationship_is_protected = yes
 						has_country_flag = africa_achievement_counted_protected_partner
+						africa_member_host_generation_is_current = yes
 					}
 				}
 				FROM = { africa_achievement_record_protection_war_started = yes }
@@ -84,6 +99,56 @@ on_actions = {
 			if = {
 				limit = { FROM = { africa_common_reserve_can_cover_defensive_war = yes } }
 				FROM = { africa_common_reserve_deploy_on_defensive_war = yes }
+			}
+			# A negotiated departure fails the no-war achievement at the exact
+			# declaration callback, regardless of which side opened hostilities.
+			if = {
+				limit = {
+					OR = {
+						AND = {
+							ROOT = { africa_is_current_host = yes }
+							FROM = { has_country_flag = africa_achievement_peaceful_exit_started }
+						}
+						AND = {
+							FROM = { africa_is_current_host = yes }
+							ROOT = { has_country_flag = africa_achievement_peaceful_exit_started }
+						}
+					}
+				}
+				set_global_flag = africa_achievement_exit_war_or_coup
+			}
+			# The Horn settlement requires the separately recognised Aksum and
+			# Harar packages to remain at peace with one another.
+			if = {
+				limit = {
+					OR = {
+						AND = {
+							ROOT = {
+								africa_member_host_generation_is_current = yes
+								has_country_flag = africa_achievement_restoration_identity_aksum_recorded
+							}
+							FROM = {
+								africa_member_host_generation_is_current = yes
+								has_country_flag = africa_achievement_restoration_identity_harar_recorded
+							}
+						}
+						AND = {
+							ROOT = {
+								africa_member_host_generation_is_current = yes
+								has_country_flag = africa_achievement_restoration_identity_harar_recorded
+							}
+							FROM = {
+								africa_member_host_generation_is_current = yes
+								has_country_flag = africa_achievement_restoration_identity_aksum_recorded
+							}
+						}
+					}
+				}
+				set_global_flag = africa_achievement_horn_package_war
+				if = {
+					limit = { has_event_target = africa_host }
+					event_target:africa_host = { africa_achievement_record_horn_corridor_loss = yes }
+				}
 			}
 			# A protected partner that starts an offensive war while the reserve
 			# posture is open never receives reserve material, but the attempted
@@ -160,6 +225,16 @@ on_actions = {
 		effect = {
 			if = {
 				limit = {
+					africa_priority_member_has_package = yes
+					africa_member_host_generation_is_current = yes
+					is_subject = yes
+					FROM = { capital_scope = { NOT = { is_on_continent = africa } } }
+				}
+				set_global_flag = africa_achievement_priority_member_colonial_puppet
+			}
+			africa_world_record_sponsored_puppet_status = yes
+			if = {
+				limit = {
 					any_core_state = { is_on_continent = africa }
 					OR = {
 						africa_is_current_host = yes
@@ -194,6 +269,16 @@ on_actions = {
 		effect = {
 			if = {
 				limit = {
+					africa_priority_member_has_package = yes
+					africa_member_host_generation_is_current = yes
+					is_subject = yes
+					FROM = { capital_scope = { NOT = { is_on_continent = africa } } }
+				}
+				set_global_flag = africa_achievement_priority_member_colonial_puppet
+			}
+			africa_world_record_sponsored_puppet_status = yes
+			if = {
+				limit = {
 					any_core_state = { is_on_continent = africa }
 					africa_is_current_host = yes
 					FROM = {
@@ -222,6 +307,16 @@ on_actions = {
 		effect = {
 			if = {
 				limit = {
+					africa_priority_member_has_package = yes
+					africa_member_host_generation_is_current = yes
+					is_subject = yes
+					FROM = { capital_scope = { NOT = { is_on_continent = africa } } }
+				}
+				set_global_flag = africa_achievement_priority_member_colonial_puppet
+			}
+			africa_world_record_sponsored_puppet_status = yes
+			if = {
+				limit = {
 					any_core_state = { is_on_continent = africa }
 					africa_is_current_host = yes
 					is_subject = yes
@@ -248,6 +343,10 @@ on_actions = {
 	# identify the exact member/partner transaction before the country is removed.
 	on_annex = {
 		effect = {
+			# Preserve the direct claimant until the victim-owned achievement
+			# callback has classified the annexation. The regular target clears with
+			# this effect chain and cannot leak into a later transaction.
+			ROOT = { save_event_target_as = africa_achievement_annexer }
 			# The host must stage its ledger before the annexed country scope is
 			# removed. A recorded constitutional designation can complete the
 			# transfer in this callback; otherwise the annexer receives the explicit
@@ -317,11 +416,68 @@ on_actions = {
 				limit = { FROM = { has_country_flag = africa_priority_member_package_active } }
 				FROM = { africa_priority_member_cleanup_runtime = yes }
 			}
+			# The victim still exists during this callback. Only a country that
+			# actually supplied one of the live regional witnesses must be
+			# excluded and cause the bounded current-host ledgers to rebuild.
+			if = {
+				limit = {
+					FROM = {
+						OR = {
+							AND = {
+								africa_member_host_generation_is_current = yes
+								has_variable = africa_regional_overlay
+							}
+							has_country_flag = africa_achievement_live_overlap_settlement_proof
+							has_country_flag = africa_achievement_live_continental_connection_proof
+							has_country_flag = africa_achievement_live_worker_peasant_proof
+							has_country_flag = africa_achievement_live_food_security_proof
+						}
+					}
+				}
+				FROM = { set_country_flag = africa_achievement_exclude_from_live_region_proof }
+				for_each_scope_loop = {
+					array = global.africa_achievement_current_hosts
+					if = {
+						limit = { exists = yes }
+						africa_achievement_refresh_survival_windows = yes
+					}
+				}
+			}
 		}
 	}
 
 	on_state_control_changed = {
 		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						has_state_flag = africa_achievement_port_project_counted
+						NOT = { has_state_flag = africa_achievement_port_loss_counted }
+					}
+					FROM = {
+						OR = {
+							africa_is_current_host = yes
+							africa_member_host_generation_is_current = yes
+						}
+					}
+					ROOT = {
+						NOT = {
+							OR = {
+								africa_is_current_host = yes
+								africa_member_host_generation_is_current = yes
+							}
+						}
+					}
+				}
+				FROM.FROM = { set_state_flag = africa_achievement_port_loss_counted }
+				add_to_variable = { global.africa_achievement_maritime_ports_lost = constant:africa_value.one }
+				if = {
+					limit = {
+						check_variable = { var = global.africa_achievement_maritime_ports_lost value = constant:africa_value.two compare = greater_than_or_equals }
+					}
+					set_global_flag = africa_achievement_two_ports_lost
+				}
+			}
 			ROOT = {
 				if = {
 					limit = { africa_world_package_is_installed = yes }
@@ -334,6 +490,13 @@ on_actions = {
 					africa_world_refresh_package_polity_proof = yes
 				}
 			}
+			for_each_scope_loop = {
+				array = global.africa_achievement_current_hosts
+				if = {
+					limit = { exists = yes }
+					africa_achievement_refresh_survival_windows = yes
+				}
+			}
 		}
 	}
 
@@ -343,26 +506,9 @@ on_actions = {
 				limit = { ROOT = { has_country_flag = africa_common_reserve_deployment_active } }
 				ROOT = { africa_common_reserve_resolve_deployment = yes }
 			}
-			# ROOT is the capitulated country and FROM is the winner. A rival
-			# priority member earns its victory receipt only when it defeats the
-			# current host after choosing the explicit rival-bloc departure route.
-			# This is a bounded capitulation owner; ordinary peace does not infer
-			# victory from a relationship or an opinion value.
-			if = {
-				limit = {
-					ROOT = {
-						africa_is_current_host = yes
-						has_country_flag = africa_host_commit_completed
-					}
-					FROM = {
-						africa_priority_member_has_package = yes
-						africa_relationship_is_rival_bloc = yes
-						has_country_flag = africa_priority_member_rival_departure_chosen
-						NOT = { has_capitulated = yes }
-					}
-				}
-				FROM = { africa_priority_member_record_rival_bloc_victory = yes }
-			}
+			# A capitulation never credits the row-24 rival-bloc victory. That owner
+			# is deliberately restricted to on_peaceconference_ended, where ROOT is
+			# the non-capitulation peace winner and FROM is the committed host.
 			# A weather-marked hostile country is an army proof only when it
 			# capitulates directly to the current Event 012 host. The target flag
 			# is written by the accepted Event 013 selected-country call; ordinary
@@ -408,7 +554,7 @@ on_actions = {
 						NOT = { has_country_flag = africa_world_union_war_defeated_review_open }
 					}
 				}
-				ROOT = { africa_world_union_war_open_defeated_review = yes }
+				ROOT = { africa_world_union_war_open_defender_settlement = yes }
 			}
 			if = {
 				limit = {
@@ -473,6 +619,10 @@ on_actions = {
 				}
 				ROOT = { africa_achievement_record_member_capitulation = yes }
 			}
+			for_each_scope_loop = {
+				array = global.africa_achievement_current_hosts
+				if = { limit = { exists = yes } africa_achievement_refresh_live_regional_proofs = yes }
+			}
 		}
 	}
 
@@ -485,6 +635,32 @@ on_actions = {
 			if = {
 				limit = { FROM = { has_country_flag = africa_common_reserve_deployment_active } }
 				FROM = { africa_common_reserve_resolve_deployment = yes }
+			}
+			# A peace callback is authoritative for negotiated independence or a
+			# settled protection war even when no peace conference follows. These
+			# target-owned writers are idempotent and retain the exact generation,
+			# no-war, independence, and 180-day survival guards.
+			if = {
+				limit = { ROOT = { has_country_flag = africa_achievement_protection_war_unresolved } }
+				ROOT = {
+					africa_achievement_record_protection_war_settled = yes
+					africa_achievement_record_last_convoy_war_settlement = yes
+				}
+			}
+			if = {
+				limit = { FROM = { has_country_flag = africa_achievement_protection_war_unresolved } }
+				FROM = {
+					africa_achievement_record_protection_war_settled = yes
+					africa_achievement_record_last_convoy_war_settlement = yes
+				}
+			}
+			if = {
+				limit = { ROOT = { has_country_flag = africa_achievement_last_convoy_war_required } }
+				ROOT = { africa_achievement_record_last_convoy_war_settlement = yes }
+			}
+			if = {
+				limit = { FROM = { has_country_flag = africa_achievement_last_convoy_war_required } }
+				FROM = { africa_achievement_record_last_convoy_war_settlement = yes }
 			}
 			# A negotiated end to an expedition war clears only the settling
 			# actor. The host remains in the intervention phase until every
@@ -545,6 +721,25 @@ on_actions = {
 
 	on_peaceconference_ended = {
 		effect = {
+			# ROOT is the peace-conference winner and FROM the defeated party. A
+			# rival priority member earns Row 24 only from this explicit winner
+			# relationship after a non-capitulation peace; the separate
+			# on_capitulation hook remains responsible for the host-lost branch.
+			if = {
+				limit = {
+					ROOT = {
+						africa_priority_member_has_package = yes
+						africa_relationship_is_rival_bloc = yes
+						has_country_flag = africa_priority_member_rival_departure_chosen
+						NOT = { has_capitulated = yes }
+					}
+					FROM = {
+						africa_is_current_host = yes
+						has_country_flag = africa_host_commit_completed
+					}
+				}
+				ROOT = { africa_priority_member_record_rival_bloc_victory = yes }
+			}
 			if = {
 				limit = { ROOT = { africa_world_package_is_installed = yes has_capitulated = yes } }
 				ROOT = { africa_world_handle_package_actor_loss = yes }
@@ -657,6 +852,17 @@ on_actions = {
 					africa_achievement_record_protection_war_settled = yes
 					africa_achievement_record_last_convoy_war_settlement = yes
 				}
+			}
+			# Last Convoy is target-owned and may be an associate/chartered partner
+			# rather than a protected-war participant. Its settlement writer runs on
+			# the exact candidate after every colonial war has actually ended.
+			if = {
+				limit = { ROOT = { has_country_flag = africa_achievement_last_convoy_war_required } }
+				ROOT = { africa_achievement_record_last_convoy_war_settlement = yes }
+			}
+			if = {
+				limit = { FROM = { has_country_flag = africa_achievement_last_convoy_war_required } }
+				FROM = { africa_achievement_record_last_convoy_war_settlement = yes }
 			}
 		}
 	}

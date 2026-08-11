@@ -1,0 +1,425 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AUTHORED ELEPHANT OPERATION TRIGGERS
+# ============================================================================
+# State terrain is not exposed as a vanilla state-scope trigger. The registry
+# below is therefore an explicit state-id classification derived from the
+# installed vanilla map/definition.csv terrain column and the Event 012
+# homeland registry. Plains-dominant African states are the authored savanna
+# band; forest/jungle, hills/mountain, and desert retain their exact bands.
+# No country-level terrain proxy is used.
+# ============================================================================
+
+# STATE scope. Dominant vanilla desert terrain in the Event 012 African state
+# registry. The state id is the engine witness; no owner or country inference
+# is substituted.
+africa_elephant_state_is_desert = {
+	OR = {
+		state = 268
+		state = 269
+		state = 273
+		state = 446
+		state = 449
+		state = 514
+		state = 515
+		state = 547
+		state = 551
+		state = 557
+		state = 559
+		state = 661
+		state = 662
+		state = 663
+		state = 665
+		state = 767
+		state = 775
+		state = 782
+		state = 786
+		state = 835
+		state = 893
+		state = 903
+		state = 907
+		state = 908
+	}
+}
+
+# STATE scope. Plains-dominant states are the authored African savanna band.
+africa_elephant_state_is_savanna = {
+	OR = {
+		state = 272
+		state = 275
+		state = 447
+		state = 461
+		state = 541
+		state = 542
+		state = 544
+		state = 549
+		state = 702
+		state = 705
+		state = 708
+		state = 774
+		state = 778
+		state = 781
+		state = 844
+		state = 884
+		state = 886
+		state = 887
+		state = 892
+		state = 895
+		state = 898
+		state = 899
+		state = 901
+		state = 902
+		state = 905
+	}
+}
+
+# STATE scope. Forest and jungle are one achievement forest band. Both are
+# retained in the registry because vanilla exposes them as separate terrain
+# types while the Event 012 achievement uses a six-band African taxonomy.
+africa_elephant_state_is_forest = {
+	OR = {
+		state = 274
+		state = 295
+		state = 296
+		state = 297
+		state = 298
+		state = 538
+		state = 539
+		state = 540
+		state = 545
+		state = 546
+		state = 548
+		state = 556
+		state = 558
+		state = 700
+		state = 701
+		state = 706
+		state = 707
+		state = 709
+		state = 718
+		state = 768
+		state = 769
+		state = 771
+		state = 772
+		state = 773
+		state = 776
+		state = 777
+		state = 779
+		state = 796
+		state = 885
+		state = 888
+		state = 889
+		state = 890
+		state = 891
+		state = 896
+		state = 897
+		state = 900
+	}
+}
+
+# STATE scope. Hills- and mountain-dominant states are the authored highland
+# band; the map registry keeps those two vanilla terrain types together.
+africa_elephant_state_is_highland = {
+	OR = {
+		state = 271
+		state = 290
+		state = 448
+		state = 450
+		state = 451
+		state = 458
+		state = 459
+		state = 460
+		state = 462
+		state = 513
+		state = 550
+		state = 543
+		state = 681
+		state = 719
+		state = 770
+		state = 783
+		state = 836
+		state = 837
+		state = 838
+		state = 839
+		state = 840
+		state = 841
+		state = 842
+		state = 843
+		state = 883
+		state = 894
+		state = 904
+	}
+}
+
+# STATE scope. The only marsh-bearing Event 012 registry entry is Barotseland;
+# it remains an explicit marsh-band option even though its surrounding map
+# pixels are otherwise forest-dominant.
+africa_elephant_state_is_marsh = {
+	state = 981
+}
+
+# STATE scope. Coast is the final fallback band for an African state whose
+# dominant land terrain is not in the explicit registry above.
+africa_elephant_state_is_coast = {
+	is_coastal = yes
+}
+
+# STATE scope. Only African states may be selected by these operations.
+africa_elephant_state_has_terrain_band = {
+	is_on_continent = africa
+	OR = {
+		africa_elephant_state_is_desert = yes
+		africa_elephant_state_is_savanna = yes
+		africa_elephant_state_is_forest = yes
+		africa_elephant_state_is_highland = yes
+		africa_elephant_state_is_marsh = yes
+		africa_elephant_state_is_coast = yes
+	}
+}
+
+# STATE scope. Duplicate state clicks are visible but unavailable once the
+# selected band has already been recorded in the shared achievement array.
+africa_elephant_state_terrain_band_is_unrecorded = {
+	OR = {
+		AND = {
+			africa_elephant_state_is_desert = yes
+			NOT = { is_in_array = { array = global.africa_achievement_elephant_terrain_regions value = constant:africa_achievement_terrain_region.desert } }
+		}
+		AND = {
+			africa_elephant_state_is_savanna = yes
+			NOT = { is_in_array = { array = global.africa_achievement_elephant_terrain_regions value = constant:africa_achievement_terrain_region.savanna } }
+		}
+		AND = {
+			africa_elephant_state_is_forest = yes
+			NOT = { is_in_array = { array = global.africa_achievement_elephant_terrain_regions value = constant:africa_achievement_terrain_region.forest } }
+		}
+		AND = {
+			africa_elephant_state_is_highland = yes
+			NOT = { is_in_array = { array = global.africa_achievement_elephant_terrain_regions value = constant:africa_achievement_terrain_region.highland } }
+		}
+		AND = {
+			africa_elephant_state_is_marsh = yes
+			NOT = { is_in_array = { array = global.africa_achievement_elephant_terrain_regions value = constant:africa_achievement_terrain_region.marsh } }
+		}
+		AND = {
+			africa_elephant_state_is_coast = yes
+			NOT = { is_in_array = { array = global.africa_achievement_elephant_terrain_regions value = constant:africa_achievement_terrain_region.coast } }
+		}
+	}
+}
+
+# COUNTRY scope. This is the single menu gate for all three authored
+# operations. Evolution, model, host, normal-launch, and event-active facts
+# are all explicit, and every achievement DQ blocks a new attempt.
+africa_elephant_operation_gate = {
+	africa_is_current_host = yes
+	africa_achievement_normal_host_is_eligible = yes
+	OR = {
+		africa_achievement_uses_high_chaos = yes
+		has_global_flag = africa_evolution_ii_logged
+	}
+	has_country_flag = africa_elephant_warfare_unlocked
+	has_country_flag = africa_elephant_model_runtime_consumer
+	has_country_flag = africa_elephant_host_guard_spawned
+	has_global_flag = africa_event_active
+	NOT = { has_global_flag = africa_achievement_elephant_formation_destroyed }
+	NOT = { has_global_flag = africa_achievement_elephant_supply_failed }
+}
+
+# STATE scope. The first registration binds one existing elephant division to
+# the operation's locked, one-division roster. Later state checks require that
+# exact division-scoped roster marker and owner; another surviving elephant
+# cannot substitute for the authored roster after binding.
+africa_elephant_state_contains_operation_roster = {
+	ROOT = {
+		has_country_flag = africa_elephant_operation_roster_active
+		has_event_target = africa_elephant_operation_roster
+		has_variable = africa_elephant_operation_roster_generation
+		check_variable = { var = africa_elephant_operation_roster_generation value = africa_host_generation compare = equals }
+	}
+	any_state_division = {
+		owner = { tag = ROOT }
+		has_variable = africa_elephant_operation_roster_marker
+		check_variable = { var = africa_elephant_operation_roster_marker value = ROOT.africa_host_generation compare = equals }
+		division_has_battalion_in_template = chaosx_elephant
+	}
+}
+
+# COUNTRY scope. The global division target is the operation's identity
+# witness. A moving division still exists and retains its marker; a destroyed
+# division is the only formation-DQ witness authored by these operations.
+africa_elephant_operation_roster_is_destroyed = {
+	OR = {
+		NOT = { has_event_target = africa_elephant_operation_roster }
+		AND = {
+			has_event_target = africa_elephant_operation_roster
+			event_target:africa_elephant_operation_roster = {
+				NOT = { exists = yes }
+			}
+		}
+	}
+}
+
+africa_elephant_operation_roster_contract_is_intact = {
+	has_event_target = africa_elephant_operation_roster
+	event_target:africa_elephant_operation_roster = {
+		exists = yes
+		has_variable = africa_elephant_operation_roster_marker
+		check_variable = { var = africa_elephant_operation_roster_marker value = ROOT.africa_host_generation compare = equals }
+		division_has_battalion_in_template = chaosx_elephant
+	}
+}
+
+africa_elephant_state_formation_contract_is_valid = {
+	is_owned_and_controlled_by = ROOT
+	africa_elephant_state_has_terrain_band = yes
+	OR = {
+		AND = {
+			ROOT = { NOT = { has_country_flag = africa_elephant_operation_roster_active } }
+			any_state_division = {
+				owner = { tag = ROOT }
+				division_has_battalion_in_template = chaosx_elephant
+			}
+		}
+		AND = {
+			africa_elephant_state_contains_operation_roster = yes
+		}
+	}
+}
+
+# COUNTRY scope. The state selected for the timed logistics contract remains a
+# live global target so mission checks can validate control and formation each
+# day without a world scan.
+africa_elephant_logistics_formation_contract_is_intact = {
+	has_event_target = africa_elephant_logistics_state
+	africa_elephant_operation_roster_contract_is_intact = yes
+	event_target:africa_elephant_logistics_state = {
+		is_owned_and_controlled_by = ROOT
+		supply_node > constant:africa_value.zero
+		africa_elephant_state_contains_operation_roster = yes
+	}
+}
+
+africa_elephant_logistics_material_contract_is_intact = {
+	# The reserve was debited at operation start. These operation-owned
+	# commitment variables are the sealed contract, not a national stockpile
+	# or fuel proxy for a division's live supply state.
+	has_variable = africa_elephant_logistics_equipment_commitment
+	check_variable = { var = africa_elephant_logistics_equipment_commitment value = constant:africa_elephant_operation.logistics_elephant_equipment_commitment compare = equals }
+	has_variable = africa_elephant_logistics_truck_commitment
+	check_variable = { var = africa_elephant_logistics_truck_commitment value = constant:africa_elephant_operation.logistics_truck_commitment compare = equals }
+	has_variable = africa_elephant_logistics_train_commitment
+	check_variable = { var = africa_elephant_logistics_train_commitment value = constant:africa_elephant_operation.logistics_train_commitment compare = equals }
+	has_variable = africa_elephant_logistics_fuel_commitment
+	check_variable = { var = africa_elephant_logistics_fuel_commitment value = constant:africa_elephant_operation.logistics_fuel_commitment compare = equals }
+}
+
+africa_elephant_logistics_contract_is_intact = {
+	africa_is_current_host = yes
+	has_country_flag = africa_elephant_logistics_active
+	check_variable = { var = africa_elephant_logistics_generation value = africa_host_generation compare = equals }
+	africa_elephant_logistics_formation_contract_is_intact = yes
+	africa_elephant_logistics_material_contract_is_intact = yes
+}
+
+# COUNTRY scope. The start decision checks the paid resource commitment before
+# it debits stockpiles. The target state adds the formation contract separately.
+africa_elephant_logistics_start_cost_is_paid = {
+	check_variable = { var = num_equipment@chaosx_elephant_equipment_1 value = constant:africa_elephant_operation.logistics_elephant_equipment_commitment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = constant:africa_elephant_operation.logistics_truck_commitment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = constant:africa_elephant_operation.logistics_train_commitment compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:africa_elephant_operation.logistics_fuel_commitment compare = greater_than_or_equals }
+}
+
+africa_elephant_logistics_start_is_valid = {
+	africa_elephant_operation_gate = yes
+	NOT = { has_country_flag = africa_elephant_logistics_active }
+	NOT = { has_global_flag = africa_achievement_elephant_supply_maintained }
+	check_variable = { var = global.africa_achievement_elephant_terrain_regions^num value = constant:africa_value.one compare = greater_than_or_equals }
+	africa_elephant_operation_roster_contract_is_intact = yes
+	africa_elephant_logistics_start_cost_is_paid = yes
+}
+
+# COUNTRY scope on the protection target. Defensive war is the structural
+# under-attack witness; an unthreatened African target cannot satisfy it.
+africa_elephant_protection_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	africa_relationship_is_protected = yes
+	africa_member_host_generation_is_current = yes
+	has_country_flag = africa_achievement_counted_protected_partner
+	NOT = { has_country_flag = africa_achievement_protection_war_counted }
+	NOT = { has_country_flag = africa_achievement_protection_war_unresolved }
+	has_war = yes
+	has_defensive_war = yes
+	NOT = { has_capitulated = yes }
+	capital_scope = {
+		is_on_continent = africa
+		is_controlled_by = PREV
+		africa_elephant_state_contains_operation_roster = yes
+	}
+}
+
+africa_elephant_protection_formation_contract_is_intact = {
+	africa_elephant_operation_roster_contract_is_intact = yes
+	has_variable = africa_elephant_protection_participation_witness
+	has_event_target = africa_elephant_protection_partner
+	has_event_target = africa_elephant_protection_state
+	event_target:africa_elephant_protection_state = {
+		is_owned_and_controlled_by = event_target:africa_elephant_protection_partner
+		africa_elephant_state_contains_operation_roster = yes
+	}
+}
+
+africa_elephant_protection_start_is_valid = {
+	africa_elephant_operation_gate = yes
+	has_global_flag = africa_achievement_elephant_supply_maintained
+	NOT = { has_global_flag = africa_achievement_elephant_protection_war_won }
+	NOT = { has_country_flag = africa_elephant_protection_expedition_active }
+	africa_elephant_operation_roster_contract_is_intact = yes
+}
+
+africa_elephant_protection_contract_is_intact = {
+	africa_is_current_host = yes
+	has_country_flag = africa_elephant_protection_expedition_active
+	africa_elephant_protection_formation_contract_is_intact = yes
+	has_event_target = africa_elephant_protection_partner
+	event_target:africa_elephant_protection_partner = {
+		africa_relationship_is_protected = yes
+		africa_member_host_generation_is_current = yes
+		has_country_flag = africa_achievement_protection_war_counted
+		NOT = { has_capitulated = yes }
+	}
+	OR = {
+		event_target:africa_elephant_protection_partner = {
+			has_country_flag = africa_achievement_protection_war_unresolved
+			has_war = yes
+			has_defensive_war = yes
+		}
+		event_target:africa_elephant_protection_partner = {
+			has_country_flag = africa_achievement_protection_war_settled
+			NOT = { has_war = yes }
+		}
+	}
+}
+
+africa_elephant_protection_settlement_witness_is_ready = {
+	africa_is_current_host = yes
+	africa_elephant_protection_formation_contract_is_intact = yes
+	has_event_target = africa_elephant_protection_partner
+	event_target:africa_elephant_protection_partner = {
+		africa_relationship_is_protected = yes
+		africa_member_host_generation_is_current = yes
+		has_country_flag = africa_achievement_protection_war_counted
+		has_country_flag = africa_achievement_protection_war_settled
+		NOT = { has_capitulated = yes }
+		NOT = { has_war = yes }
+	}
+}
+
+africa_elephant_operation_menu_visible = {
+	OR = {
+		africa_elephant_operation_gate = yes
+		has_country_flag = africa_elephant_logistics_active
+		has_country_flag = africa_elephant_protection_expedition_active
+	}
+}

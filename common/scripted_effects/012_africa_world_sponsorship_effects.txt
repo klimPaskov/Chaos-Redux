@@ -346,6 +346,10 @@ africa_world_sponsorship_fulfil_current_mode = {
 africa_world_sponsorship_default_current_mode = {
 	if = {
 		limit = { africa_world_sponsorship_any_obligation_is_due = yes }
+		# A missed obligation is a broken sponsorship clause only after the
+		# Africa-is-one world-order route is active. Refusals before installation
+		# never enter this helper and therefore do not invalidate the achievement.
+		africa_world_record_sponsorship_betrayal = yes
 		if = {
 			limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material } }
 				africa_world_default_current_sponsorship_obligation = yes
@@ -442,6 +446,7 @@ africa_world_sponsorship_open_ideological_congress = {
 africa_world_sponsorship_record_ideological_capture = {
 	if = {
 		limit = { africa_world_sponsorship_ideological_obligation_is_due = yes }
+		africa_world_record_sponsorship_betrayal = yes
 		set_country_flag = africa_world_sponsorship_ideological_capture
 		set_country_flag = africa_world_sponsorship_sovereignty_grievance
 		set_temp_variable = { africa_world_sponsorship_capture_loss = constant:africa_world_sponsorship_mode.capture_legitimacy_loss }

@@ -810,6 +810,7 @@ africa_initialize_scramble_and_world_packages = {
 		set_variable = { africa_world_packages_settled_count = constant:africa_value.zero }
 		set_variable = { africa_world_packages_sovereign_complete_count = constant:africa_value.zero }
 		set_variable = { africa_world_terminal_resolved_count = constant:africa_value.zero }
+		set_variable = { africa_world_global_revolt_pressure = constant:africa_value.zero }
 		set_variable = { africa_world_package_roster_disposition_count = constant:africa_value.zero }
 		set_variable = { africa_world_package_pending_count = constant:africa_value.zero }
 		set_variable = { africa_world_package_absent_count = constant:africa_value.zero }
@@ -1311,6 +1312,12 @@ africa_scramble_launch_expedition_if_unresolved = {
 				set_country_flag = africa_scramble_intervention_war_actor
 				set_temp_variable = { africa_scramble_expedition_launched = constant:africa_value.one }
 				set_global_flag = africa_scramble_intervention_war_active
+				event_target:africa_host = {
+					if = {
+						limit = { NOT = { has_country_flag = africa_achievement_scramble_core_snapshot_ready } }
+						africa_achievement_capture_scramble_core_snapshot = yes
+					}
+				}
 				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_scramble_response.expedition_infantry_equipment }
 				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_scramble_response.expedition_support_equipment }
 				add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_scramble_response.expedition_convoys }
@@ -1408,6 +1415,7 @@ africa_scramble_ratify_aftermath = {
 		africa_clear_action_quote = yes
 		africa_ai_refresh_host_policy_snapshot = yes
 		country_event = { id = africa_world_order.7 }
+		africa_achievement_record_scramble_settlement = yes
 		africa_achievement_capture_scramble_settlement_snapshot = yes
 		africa_scramble_apply_aftermath_materials = yes
 		africa_scramble_cleanup_response_roster = yes
@@ -1442,6 +1450,7 @@ africa_scramble_close_continental_docket = {
 			africa_achievement_record_unresolved_continent_identity = yes
 			country_event = { id = africa_world_order.110 }
 		}
+		africa_achievement_record_scramble_settlement = yes
 		africa_achievement_capture_scramble_settlement_snapshot = yes
 		africa_scramble_apply_aftermath_materials = yes
 		africa_scramble_cleanup_response_roster = yes
@@ -2120,6 +2129,42 @@ africa_world_cleanup_package_constituent_protocol = {
 	clr_country_flag = africa_world_package_constituent_protocol_open
 }
 
+# COUNTRY scope on an installed package actor. These achievement witnesses
+# intentionally read only the actor's persistent sponsorship flag and the
+# world-order gate; callers own the loss, exile, breakup, and subject events.
+africa_world_record_sponsored_movement_collapse = {
+	if = {
+		limit = {
+			has_global_flag = africa_is_one
+			has_country_flag = africa_world_package_sponsored
+		}
+		set_global_flag = africa_achievement_sponsored_movement_collapsed
+	}
+}
+
+# COUNTRY scope on a subject callback ROOT. The subject callback proves the
+# direct puppet state; no foreign-control or current-capital proxy is used.
+africa_world_record_sponsored_puppet_status = {
+	if = {
+		limit = {
+			has_global_flag = africa_is_one
+			has_country_flag = africa_world_package_sponsored
+			is_subject = yes
+		}
+		set_global_flag = africa_achievement_sponsored_continent_puppeted
+	}
+}
+
+# COUNTRY scope on the installed sponsorship candidate. Defaults and explicit
+# ideological capture both call this helper after the obligation gate proves a
+# real sponsorship clause was active.
+africa_world_record_sponsorship_betrayal = {
+	if = {
+		limit = { has_global_flag = africa_is_one }
+		set_global_flag = africa_achievement_sponsorship_betrayal
+	}
+}
+
 # COUNTRY scope on a package actor after capitulation or annexation. A single
 # successor candidate is nominated if one exists; otherwise the ledger opens a
 # visible exile or breakup certification path.
@@ -2131,6 +2176,10 @@ africa_world_handle_package_actor_loss = {
 			NOT = { has_country_flag = africa_world_package_exile_path_resolved }
 			NOT = { has_country_flag = africa_world_package_breakup_recorded }
 		}
+		# A sponsored package actor has lost the sponsored movement at the
+		# exact capitulation/annexation witness. Successor review may preserve
+		# a continent slot, but it cannot restore the original sponsorship proof.
+		africa_world_record_sponsored_movement_collapse = yes
 		if = {
 			limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }
 			africa_world_sponsorship_cleanup_active_state = yes
@@ -2386,6 +2435,7 @@ africa_world_commit_package_successor = {
 africa_world_record_exile_resolution = {
 	if = {
 		limit = { africa_world_package_exile_resolution_is_possible = yes }
+		africa_world_record_sponsored_movement_collapse = yes
 		set_country_flag = africa_world_package_exile_path_resolved
 		clr_country_flag = africa_world_package_exile_path_open
 		clr_country_flag = africa_world_package_successor_review_open
@@ -2402,6 +2452,7 @@ africa_world_record_exile_resolution = {
 africa_world_record_package_breakup = {
 	if = {
 		limit = { africa_world_package_breakup_resolution_is_possible = yes }
+		africa_world_record_sponsored_movement_collapse = yes
 		set_country_flag = africa_world_package_breakup_recorded
 		set_country_flag = africa_world_package_terminally_resolved
 		clr_country_flag = africa_world_package_breakup_review_open
@@ -3627,6 +3678,7 @@ africa_world_order_apply_full_result = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.administer_world_regions } }
+		africa_world_resolve_region_revolt = yes
 		set_country_flag = africa_world_region_administration_complete
 		set_country_flag = africa_world_order_resolved_under_africa
 		event_target:africa_host = { add_to_variable = { africa_world_regions_administered = constant:africa_value.one } }
@@ -3715,6 +3767,7 @@ africa_world_order_apply_partial_result = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.administer_world_regions } }
+		africa_world_resolve_region_revolt = yes
 		set_country_flag = africa_world_region_autonomy_preserved
 		set_country_flag = africa_world_order_resolved_under_africa
 	}
@@ -3815,8 +3868,7 @@ africa_world_order_apply_failure_result = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.administer_world_regions } }
-		set_country_flag = africa_world_region_revolt
-		event_target:africa_host = { add_to_variable = { africa_integration_burden = constant:africa_world_order.world_region_revolt_pressure } }
+		africa_world_record_region_revolt = yes
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.contain_terminal_high_chaos } }
@@ -3828,6 +3880,64 @@ africa_world_order_apply_failure_result = {
 # ---------------------------------------------------------------------------
 # Union, continental-war, terminal, and cleanup helpers
 # ---------------------------------------------------------------------------
+
+# COUNTRY scope on a failed postwar region actor. Each unresolved actor enters
+# the pressure ledger once; four simultaneous failures reach the public global
+# revolt threshold and the registered actors themselves open the wars.
+africa_world_record_region_revolt = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = africa_world_region_revolt }
+			has_event_target = africa_host
+		}
+		set_country_flag = africa_world_region_revolt
+		event_target:africa_host = {
+			add_to_variable = { africa_integration_burden = constant:africa_world_order.world_region_revolt_pressure }
+			add_to_variable = { africa_world_global_revolt_pressure = constant:africa_world_order.world_region_revolt_pressure }
+			if = {
+				limit = {
+					check_variable = {
+						var = africa_world_global_revolt_pressure
+						value = constant:africa_world_order.world_region_revolt_threshold
+						compare = greater_than_or_equals
+					}
+					NOT = { has_global_flag = africa_world_global_revolt_active }
+				}
+				set_global_flag = africa_world_global_revolt_active
+				set_global_flag = africa_achievement_global_revolt_threshold_reached
+				for_each_scope_loop = {
+					array = africa_world_package_actors
+					if = {
+						limit = {
+							exists = yes
+							has_country_flag = africa_world_region_revolt
+							NOT = { has_war_with = event_target:africa_host }
+							can_declare_war_on = event_target:africa_host
+						}
+						declare_war_on = { target = event_target:africa_host type = topple_government }
+					}
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a region actor whose full or partial administration result
+# has ended a previously counted revolt before the global threshold was met.
+africa_world_resolve_region_revolt = {
+	if = {
+		limit = {
+			has_country_flag = africa_world_region_revolt
+			NOT = { has_global_flag = africa_world_global_revolt_active }
+			has_event_target = africa_host
+		}
+		clr_country_flag = africa_world_region_revolt
+		event_target:africa_host = {
+			subtract_from_variable = { africa_world_global_revolt_pressure = constant:africa_world_order.world_region_revolt_pressure }
+			clamp_variable = { var = africa_world_global_revolt_pressure min = constant:africa_value.zero max = constant:africa_world_order.world_region_revolt_threshold }
+		}
+	}
+}
 
 # COUNTRY scope on a package actor. Idempotently records one resolved
 # continent identity in the host's terminal ledger.
@@ -3846,24 +3956,16 @@ africa_world_record_terminal_resolution = {
 	}
 }
 
-# COUNTRY scope on a consenting package actor.
+# COUNTRY scope on a consenting package actor. Full action resolution opens
+# the W4 convention; ballots and ratified clauses, not the action result alone,
+# own the eventual union identity and achievement proof.
 africa_world_form_union_with_current_target = {
 	if = {
 		limit = { africa_world_union_target_is_compatible = yes }
-		set_country_flag = africa_world_union_partner
-		set_country_flag = africa_world_order_resolved_under_africa
-		set_variable = { africa_world_package_status = constant:africa_world_package_status.union_partner }
+		clear_global_event_target = africa_world_union_protocol_candidate
+		save_global_event_target_as = africa_world_union_protocol_candidate
 		event_target:africa_host = {
-			set_country_flag = africa_dynamic_union_commit_ready
-			set_country_flag = africa_dynamic_two_continent_union_active
-			if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } } } set_cosmetic_tag = AFRICA_MIDDLE_EASTERN_UNION }
-			else_if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } } } set_cosmetic_tag = AFRO_EUROPEAN_UNION }
-			else_if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } } } set_cosmetic_tag = AFRO_ASIAN_UNION }
-			else_if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } } } set_cosmetic_tag = AFRO_NORTH_AMERICAN_UNION }
-			else_if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } } } set_cosmetic_tag = AFRO_SOUTH_AMERICAN_UNION }
-			else_if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } } } set_cosmetic_tag = AFRO_OCEANIAN_UNION }
-			PREV = { africa_world_record_terminal_resolution = yes }
-			africa_achievement_record_two_continent_integration = yes
+			africa_world_union_protocol_open_registered_target = yes
 		}
 	}
 }

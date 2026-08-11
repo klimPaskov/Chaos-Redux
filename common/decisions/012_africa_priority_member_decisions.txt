@@ -812,7 +812,8 @@ africa_priority_member_category = {
 	# nubia continuing settlement
 	africa_priority_nubia_post_settlement_action = {
 		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
-		visible = { africa_priority_member_package_is_nubia = yes has_country_flag = africa_priority_member_post_settlement_open }
+		# Replaced by the six explicit Nile operation decisions below.
+		visible = { always = no }
 		available = {
 			africa_priority_member_can_run_post_settlement_action = yes
 		}
@@ -860,7 +861,8 @@ africa_priority_member_category = {
 	# great zimbabwe continuing settlement
 	africa_priority_great_zimbabwe_post_settlement_action = {
 		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
-		visible = { africa_priority_member_package_is_great_zimbabwe = yes has_country_flag = africa_priority_member_post_settlement_open }
+		# Replaced by the seven explicit Gold Roads operation decisions below.
+		visible = { always = no }
 		available = {
 			africa_priority_member_can_run_post_settlement_action = yes
 		}
@@ -871,6 +873,274 @@ africa_priority_member_category = {
 			hidden_effect = { africa_priority_member_run_post_settlement_action = yes }
 		}
 		ai_will_do = { base = constant:africa_priority_member_ai.post_settlement }
+	}
+
+	# -----------------------------------------------------------------------
+	# Explicit Nile restoration operations. The old generic Nubia action is
+	# intentionally hidden above; each receipt below is a real authored stage.
+	# -----------------------------------------------------------------------
+	africa_priority_nubia_nile_survey = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_survey_nile_operation = yes }
+		available = { africa_priority_member_can_survey_nile_operation = yes }
+		cost = constant:africa_priority_member_operation.nile_survey_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_survey_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_nile_survey_tt
+			hidden_effect = { africa_priority_nubia_execute_nile_survey = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.nile_survey
+			modifier = { factor = 0 NOT = { africa_priority_member_nile_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_nubia_nile_kush_recognition = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_recognise_nile_kush = yes }
+		available = { africa_priority_member_can_recognise_nile_kush = yes }
+		cost = constant:africa_priority_member_operation.nile_identity_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_identity_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_nile_kush_recognition_tt
+			hidden_effect = { africa_priority_nubia_execute_nile_kush = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.nile_identity
+			modifier = { factor = 0 NOT = { africa_priority_member_nile_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_nubia_nile_makuria_recognition = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_recognise_nile_makuria = yes }
+		available = { africa_priority_member_can_recognise_nile_makuria = yes }
+		cost = constant:africa_priority_member_operation.nile_identity_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_identity_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_nile_makuria_recognition_tt
+			hidden_effect = { africa_priority_nubia_execute_nile_makuria = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.nile_identity
+			modifier = { factor = 0 NOT = { africa_priority_member_nile_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_nubia_nile_alodia_recognition = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_recognise_nile_alodia = yes }
+		available = { africa_priority_member_can_recognise_nile_alodia = yes }
+		cost = constant:africa_priority_member_operation.nile_identity_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_identity_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_nile_alodia_recognition_tt
+			hidden_effect = { africa_priority_nubia_execute_nile_alodia = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.nile_identity
+			modifier = { factor = 0 NOT = { africa_priority_member_nile_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_nubia_nile_capital_consent = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_settle_nile_capital = yes }
+		available = { africa_priority_member_can_settle_nile_capital = yes }
+		cost = constant:africa_priority_member_operation.nile_capital_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_capital_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_nile_capital_consent_tt
+			hidden_effect = { africa_priority_nubia_execute_nile_capital_consent = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.nile_capital
+			modifier = { factor = 0 NOT = { africa_priority_member_nile_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_nubia_record_capital_dispute = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_record_nile_capital_dispute = yes }
+		available = { africa_priority_member_can_record_nile_capital_dispute = yes }
+		cost = constant:africa_priority_member_operation.operation_failure_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_capital_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_record_capital_dispute_tt
+			hidden_effect = { africa_priority_nubia_record_nile_capital_dispute = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_operation_ai.failure }
+	}
+
+	africa_priority_nubia_shared_nile_corridor = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_open_nile_corridor = yes }
+		available = { africa_priority_member_can_open_nile_corridor = yes }
+		cost = constant:africa_priority_member_operation.nile_corridor_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_corridor_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_shared_nile_corridor_tt
+			hidden_effect = { africa_priority_nubia_execute_shared_nile_corridor = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.nile_corridor
+			modifier = { factor = 0 NOT = { africa_priority_member_nile_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_nubia_record_corridor_failure = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_nubia
+		visible = { africa_priority_member_can_record_nile_corridor_failure = yes }
+		available = { africa_priority_member_can_record_nile_corridor_failure = yes }
+		cost = constant:africa_priority_member_operation.operation_failure_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.nile_corridor_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_nubia_record_corridor_failure_tt
+			hidden_effect = { africa_priority_nubia_record_nile_corridor_failure = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_operation_ai.failure }
+	}
+
+	# -----------------------------------------------------------------------
+	# Explicit Gold Roads operations. Great Zimbabwe, Mutapa, and Rozwi are
+	# separate identity dockets before processing, corridor, and ledger proof.
+	# -----------------------------------------------------------------------
+	africa_priority_great_zimbabwe_plateau_survey = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_survey_gold_plateau = yes }
+		available = { africa_priority_member_can_survey_gold_plateau = yes }
+		cost = constant:africa_priority_member_operation.gold_survey_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_survey_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_plateau_survey_tt
+			hidden_effect = { africa_priority_great_zimbabwe_execute_plateau_survey = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.gold_survey
+			modifier = { factor = 0 NOT = { africa_priority_member_gold_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_great_zimbabwe_identity_recognition = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_recognise_gold_great_zimbabwe = yes }
+		available = { africa_priority_member_can_recognise_gold_great_zimbabwe = yes }
+		cost = constant:africa_priority_member_operation.gold_identity_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_identity_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_identity_recognition_tt
+			hidden_effect = { africa_priority_great_zimbabwe_execute_identity = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.gold_identity
+			modifier = { factor = 0 NOT = { africa_priority_member_gold_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_great_zimbabwe_mutapa_recognition = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_recognise_gold_mutapa = yes }
+		available = { africa_priority_member_can_recognise_gold_mutapa = yes }
+		cost = constant:africa_priority_member_operation.gold_identity_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_identity_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_mutapa_recognition_tt
+			hidden_effect = { africa_priority_great_zimbabwe_execute_mutapa = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.gold_identity
+			modifier = { factor = 0 NOT = { africa_priority_member_gold_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_great_zimbabwe_rozwi_recognition = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_recognise_gold_rozwi = yes }
+		available = { africa_priority_member_can_recognise_gold_rozwi = yes }
+		cost = constant:africa_priority_member_operation.gold_identity_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_identity_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_rozwi_recognition_tt
+			hidden_effect = { africa_priority_great_zimbabwe_execute_rozwi = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.gold_identity
+			modifier = { factor = 0 NOT = { africa_priority_member_gold_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_great_zimbabwe_processing_survey = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_survey_gold_processing = yes }
+		available = { africa_priority_member_can_survey_gold_processing = yes }
+		cost = constant:africa_priority_member_operation.gold_processing_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_processing_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_processing_survey_tt
+			hidden_effect = { africa_priority_great_zimbabwe_execute_processing_survey = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.gold_processing
+			modifier = { factor = 0 NOT = { africa_priority_member_gold_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_great_zimbabwe_plateau_corridor = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_open_gold_corridor = yes }
+		available = { africa_priority_member_can_open_gold_corridor = yes }
+		cost = constant:africa_priority_member_operation.gold_corridor_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_corridor_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_plateau_corridor_tt
+			hidden_effect = { africa_priority_great_zimbabwe_execute_plateau_corridor = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.gold_corridor
+			modifier = { factor = 0 NOT = { africa_priority_member_gold_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_great_zimbabwe_record_corridor_failure = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_record_gold_corridor_failure = yes }
+		available = { africa_priority_member_can_record_gold_corridor_failure = yes }
+		cost = constant:africa_priority_member_operation.operation_failure_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_corridor_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_record_corridor_failure_tt
+			hidden_effect = { africa_priority_great_zimbabwe_record_plateau_corridor_failure = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_operation_ai.failure }
+	}
+
+	africa_priority_great_zimbabwe_local_ownership_ledger = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_ratify_gold_local_ledger = yes }
+		available = { africa_priority_member_can_ratify_gold_local_ledger = yes }
+		cost = constant:africa_priority_member_operation.gold_ledger_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_ledger_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_local_ownership_ledger_tt
+			hidden_effect = { africa_priority_great_zimbabwe_execute_local_ledger = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_priority_member_operation_ai.gold_ledger
+			modifier = { factor = 0 NOT = { africa_priority_member_gold_operation_is_viable = yes } }
+		}
+	}
+
+	africa_priority_great_zimbabwe_foreign_concession_choice = {
+		icon = GFX_decision_012_africa_priority_member_post_settlement_great_zimbabwe
+		visible = { africa_priority_member_can_record_gold_foreign_majority = yes }
+		available = { africa_priority_member_can_record_gold_foreign_majority = yes }
+		cost = constant:africa_priority_member_operation.operation_failure_pp
+		days_re_enable = constant:africa_priority_member_operation_duration.gold_ledger_days
+		complete_effect = {
+			custom_effect_tooltip = africa_priority_great_zimbabwe_foreign_concession_choice_tt
+			hidden_effect = { africa_priority_great_zimbabwe_record_foreign_majority = yes }
+		}
+		ai_will_do = { base = constant:africa_priority_member_operation_ai.failure }
 	}
 
 	# merina continuing settlement

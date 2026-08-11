@@ -1,0 +1,195 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AUTHORED ELEPHANT OPERATIONS
+# ============================================================================
+# Three player-visible operations own the row-36 evidence chain:
+# 1) register a formation in a selected African terrain band;
+# 2) debit and hold a real equipment/fuel reserve through a timed mission;
+# 3) open a protection expedition only against a protected African partner in
+#    defensive war and settle it when the partner's war is actually over.
+# ============================================================================
+
+africa_elephant_operations_category = {
+	africa_elephant_register_terrain_band = {
+		name = africa_elephant_register_terrain_band
+		desc = africa_elephant_register_terrain_band_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		activation = { africa_elephant_operation_gate = yes }
+		target_root_trigger = { africa_elephant_operation_gate = yes }
+		target_trigger = {
+			FROM = {
+				africa_elephant_state_formation_contract_is_valid = yes
+				africa_elephant_state_terrain_band_is_unrecorded = yes
+			}
+		}
+		visible = { africa_elephant_operation_menu_visible = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_elephant_register_terrain_band_requirements_tt
+				hidden_trigger = {
+					FROM = {
+						africa_elephant_state_formation_contract_is_valid = yes
+						africa_elephant_state_terrain_band_is_unrecorded = yes
+					}
+				}
+			}
+		}
+		cost = constant:africa_elephant_operation.terrain_band_command_power_cost
+		days_re_enable = constant:africa_elephant_operation.terrain_band_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_elephant_register_terrain_band_effect_tt
+			FROM = { save_global_event_target_as = africa_elephant_band_state }
+			africa_elephant_record_selected_terrain_band = yes
+		}
+		ai_will_do = {
+			base = constant:africa_elephant_operation.ai_terrain_band_base
+			modifier = { factor = 0 FROM = { NOT = { africa_elephant_state_formation_contract_is_valid = yes } } }
+		}
+	}
+
+	africa_elephant_open_logistics_contract = {
+		name = africa_elephant_open_logistics_contract
+		desc = africa_elephant_open_logistics_contract_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		activation = { africa_elephant_logistics_start_is_valid = yes }
+		target_root_trigger = { africa_elephant_logistics_start_is_valid = yes }
+		target_trigger = {
+			FROM = {
+				africa_elephant_state_formation_contract_is_valid = yes
+				supply_node > constant:africa_value.zero
+			}
+		}
+		visible = { africa_elephant_operation_menu_visible = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_elephant_open_logistics_contract_requirements_tt
+				hidden_trigger = {
+					africa_elephant_logistics_start_is_valid = yes
+					FROM = {
+						africa_elephant_state_formation_contract_is_valid = yes
+						supply_node > constant:africa_value.zero
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { africa_elephant_logistics_start_cost_is_paid = yes }
+		custom_cost_text = africa_elephant_open_logistics_contract_cost
+		cost = constant:africa_elephant_operation.logistics_command_power_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_elephant_open_logistics_contract_effect_tt
+			africa_elephant_begin_logistics_contract = yes
+		}
+		ai_will_do = {
+			base = constant:africa_elephant_operation.ai_logistics_base
+			modifier = { factor = 0 has_global_flag = africa_achievement_elephant_supply_maintained }
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	africa_elephant_open_protection_expedition = {
+		name = africa_elephant_open_protection_expedition
+		desc = africa_elephant_open_protection_expedition_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_relationship_countries
+		activation = { africa_elephant_protection_start_is_valid = yes }
+		target_root_trigger = { africa_elephant_protection_start_is_valid = yes }
+		target_trigger = {
+			FROM = { africa_elephant_protection_target_is_valid = yes }
+		}
+		visible = { africa_elephant_operation_menu_visible = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_elephant_open_protection_expedition_requirements_tt
+				hidden_trigger = {
+					africa_elephant_protection_start_is_valid = yes
+					FROM = { africa_elephant_protection_target_is_valid = yes }
+				}
+			}
+		}
+		cost = constant:africa_elephant_operation.protection_command_power_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_elephant_open_protection_expedition_effect_tt
+			africa_elephant_begin_protection_expedition = yes
+		}
+		ai_will_do = {
+			base = constant:africa_elephant_operation.ai_protection_base
+			modifier = { factor = 0 FROM = { NOT = { africa_elephant_protection_target_is_valid = yes } } }
+		}
+	}
+
+	# Mission scope is the current host. Its target state and partner are
+	# persisted event targets, so no global on_action loop is required.
+	africa_elephant_logistics_mission = {
+		name = africa_elephant_logistics_mission
+		desc = africa_elephant_logistics_mission_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		days_mission_timeout = var:africa_elephant_logistics_timeout_days
+		is_good = yes
+		activation = {
+			africa_is_current_host = yes
+			has_country_flag = africa_elephant_logistics_active
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_elephant_logistics_mission_requirements_tt
+				hidden_trigger = {
+					africa_elephant_logistics_contract_is_intact = yes
+					check_variable = { var = global.num_days value = africa_elephant_logistics_completion_day compare = greater_than_or_equals }
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { africa_is_current_host = yes }
+				NOT = { africa_elephant_logistics_contract_is_intact = yes }
+			}
+		}
+		cancel_effect = { africa_elephant_fail_logistics_contract = yes }
+		complete_effect = { africa_elephant_complete_logistics_contract = yes }
+		timeout_effect = { africa_elephant_fail_logistics_contract = yes }
+		ai_will_do = {
+			base = constant:africa_elephant_operation.ai_logistics_base
+			modifier = {
+				factor = 0
+				NOT = { africa_elephant_logistics_contract_is_intact = yes }
+			}
+		}
+	}
+
+	africa_elephant_protection_mission = {
+		name = africa_elephant_protection_mission
+		desc = africa_elephant_protection_mission_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		days_mission_timeout = var:africa_elephant_protection_timeout_days
+		is_good = yes
+		activation = {
+			africa_is_current_host = yes
+			has_country_flag = africa_elephant_protection_expedition_active
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_elephant_protection_mission_requirements_tt
+				hidden_trigger = { africa_elephant_protection_settlement_witness_is_ready = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { africa_is_current_host = yes }
+				NOT = { africa_elephant_protection_contract_is_intact = yes }
+			}
+		}
+		cancel_effect = { africa_elephant_fail_protection_expedition = yes }
+		complete_effect = { africa_elephant_complete_protection_expedition = yes }
+		timeout_effect = { africa_elephant_fail_protection_expedition = yes }
+		ai_will_do = {
+			base = constant:africa_elephant_operation.ai_protection_base
+			modifier = {
+				factor = 0
+				NOT = { africa_elephant_protection_contract_is_intact = yes }
+			}
+		}
+	}
+}
