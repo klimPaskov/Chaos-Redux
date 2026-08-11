@@ -996,6 +996,7 @@ africa_host_transfer_record_terminal_loss = {
 		clr_global_flag = africa_event_active
 		set_global_flag = africa_event_resolved
 		set_global_flag = africa_host_transfer_terminal_after_successor_loss
+		set_global_flag = africa_achievement_league_destroyed
 		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.host_succession_terminal }
 		set_temp_variable = { africa_event_log_actor = THIS.id }
 		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
@@ -1070,6 +1071,7 @@ africa_host_transfer_complete_successor = {
 		clr_country_flag = africa_host_transfer_resolver
 		clr_country_flag = africa_host_transfer_congress_open
 		set_country_flag = africa_host_successor_received_mandate
+		africa_achievement_register_valid_host_successor = yes
 		set_variable = { africa_origin_host_id = global.africa_host_transfer_origin_host_id }
 		set_variable = { africa_host_generation = global.africa_host_transfer_old_generation }
 		add_to_variable = { africa_host_generation = constant:africa_host_lifecycle.initial_generation }
@@ -1261,6 +1263,7 @@ africa_host_transfer_complete_successor = {
 			if = { limit = { exists = yes } set_variable = { africa_member_host_generation = event_target:africa_host.africa_host_generation } }
 		}
 		africa_reconcile_relationship_counts_and_caps = yes
+		africa_achievement_refresh_live_regional_proofs = yes
 
 		if = {
 			limit = {

@@ -1302,7 +1302,18 @@ africa_priority_member_apply_focus_step = {
 		set_country_flag = africa_priority_focus_post_settlement_programme_written
 		set_country_flag = africa_priority_member_post_settlement_open
 		africa_priority_member_apply_mature_compact_idea = yes
-		if = { limit = { africa_priority_member_can_run_post_settlement_action = yes } africa_priority_member_run_post_settlement_action = yes }
+		if = {
+			limit = {
+				africa_priority_member_can_run_post_settlement_action = yes
+				NOT = {
+					OR = {
+						africa_priority_member_package_is_nubia = yes
+						africa_priority_member_package_is_great_zimbabwe = yes
+					}
+				}
+			}
+			africa_priority_member_run_post_settlement_action = yes
+		}
 		set_country_flag = africa_priority_member_focus_overlay_completed
 	}
 	clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
@@ -1850,7 +1861,15 @@ africa_priority_member_apply_post_settlement_payload = {
 
 africa_priority_member_run_post_settlement_action = {
 	if = {
-		limit = { africa_priority_member_can_run_post_settlement_action = yes }
+		limit = {
+			africa_priority_member_can_run_post_settlement_action = yes
+			NOT = {
+				OR = {
+					africa_priority_member_package_is_nubia = yes
+					africa_priority_member_package_is_great_zimbabwe = yes
+				}
+			}
+		}
 		if = { limit = { NOT = { has_variable = africa_priority_member_post_settlement_progress } } set_variable = { africa_priority_member_post_settlement_progress = constant:africa_priority_member_progress.minimum } }
 		add_to_variable = { africa_priority_member_post_settlement_progress = constant:africa_priority_member_progress.step }
 		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
@@ -1859,6 +1878,449 @@ africa_priority_member_run_post_settlement_action = {
 		clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
 		if = { limit = { check_variable = { var = africa_priority_member_post_settlement_progress value = constant:africa_priority_member_progress.maximum compare = greater_than_or_equals } } set_country_flag = africa_priority_member_post_settlement_mature }
 		if = { limit = { has_event_target = africa_host } event_target:africa_host = { africa_clamp_host_values = yes } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Authored Nile restoration and Gold Roads operations
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Survey the live capital state before any controlled-pool
+# identity is recognised. The state flag is a receipt on an existing state;
+# this operation never creates a tag, state, core, or transfer.
+africa_priority_nubia_execute_nile_survey = {
+	if = {
+		limit = {
+			africa_priority_member_can_survey_nile_operation = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_nubia_nile_survey_completed
+		set_country_flag = africa_priority_nubia_nile_survey_receipt
+		set_variable = { africa_priority_nubia_nile_stage = constant:africa_priority_member_operation_stage.nile_survey }
+		capital_scope = { set_state_flag = africa_priority_nubia_nile_surveyed }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+		if = {
+			limit = { has_event_target = africa_host }
+			event_target:africa_host = { add_to_variable = { africa_regional_equality = constant:africa_priority_member_progress.host_minor_gain } }
+		}
+	}
+	else_if = {
+		limit = { africa_priority_member_can_survey_nile_operation = yes }
+		set_country_flag = africa_priority_nubia_nile_operation_partial_receipt
+	}
+}
+
+# COUNTRY scope. Each named Nile identity is a separate consent docket. The
+# achievement helper owns the global identity array and count; these package
+# flags are the local evidence that the Nubia operation actually completed.
+africa_priority_nubia_execute_nile_kush = {
+	if = {
+		limit = {
+			africa_priority_member_can_recognise_nile_kush = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_nubia_kush_recognised
+		set_country_flag = africa_priority_nubia_kush_recognition_receipt
+		set_variable = { africa_priority_nubia_nile_stage = constant:africa_priority_member_operation_stage.nile_kush }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.kush }
+		africa_achievement_record_restoration_identity = yes
+		clear_variable = africa_achievement_restoration_identity_id
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+	}
+	else_if = {
+		limit = { africa_priority_member_can_recognise_nile_kush = yes }
+		set_country_flag = africa_priority_nubia_nile_operation_partial_receipt
+	}
+}
+
+africa_priority_nubia_execute_nile_makuria = {
+	if = {
+		limit = {
+			africa_priority_member_can_recognise_nile_makuria = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_nubia_makuria_recognised
+		set_country_flag = africa_priority_nubia_makuria_recognition_receipt
+		set_variable = { africa_priority_nubia_nile_stage = constant:africa_priority_member_operation_stage.nile_makuria }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.makuria }
+		africa_achievement_record_restoration_identity = yes
+		clear_variable = africa_achievement_restoration_identity_id
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+	}
+	else_if = {
+		limit = { africa_priority_member_can_recognise_nile_makuria = yes }
+		set_country_flag = africa_priority_nubia_nile_operation_partial_receipt
+	}
+}
+
+africa_priority_nubia_execute_nile_alodia = {
+	if = {
+		limit = {
+			africa_priority_member_can_recognise_nile_alodia = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_nubia_alodia_recognised
+		set_country_flag = africa_priority_nubia_alodia_recognition_receipt
+		set_variable = { africa_priority_nubia_nile_stage = constant:africa_priority_member_operation_stage.nile_alodia }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.alodia }
+		africa_achievement_record_restoration_identity = yes
+		clear_variable = africa_achievement_restoration_identity_id
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+	}
+	else_if = {
+		limit = { africa_priority_member_can_recognise_nile_alodia = yes }
+		set_country_flag = africa_priority_nubia_nile_operation_partial_receipt
+	}
+}
+
+# COUNTRY scope. A capital can only be settled after all three named dockets
+# exist and the overlap disposition is recorded. Loss of the live compact,
+# host generation, or peace is an exact capital-dispute receipt; a missing
+# overlap docket remains a visible partial result and does not fabricate a
+# settlement.
+africa_priority_nubia_execute_nile_capital_consent = {
+	if = {
+		limit = {
+			africa_priority_member_can_settle_nile_capital = yes
+			africa_priority_member_has_viable_compact_base = yes
+			africa_member_host_generation_is_current = yes
+			has_war = no
+			has_country_flag = africa_priority_member_overlap_disposition_recorded
+		}
+		set_country_flag = africa_priority_nubia_nile_capital_consent_recorded
+		set_country_flag = africa_priority_nubia_nile_capital_settlement_receipt
+		set_variable = { africa_priority_nubia_nile_stage = constant:africa_priority_member_operation_stage.nile_capital }
+		capital_scope = { set_state_flag = africa_priority_nubia_nile_capital_consent_recorded }
+		add_stability = constant:africa_priority_member_reward.stability_standard
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+	}
+	else_if = {
+		limit = {
+			africa_priority_member_can_settle_nile_capital = yes
+			OR = {
+				NOT = { africa_priority_member_has_viable_compact_base = yes }
+				has_war = yes
+				NOT = { africa_member_host_generation_is_current = yes }
+			}
+		}
+		set_country_flag = africa_priority_nubia_nile_capital_dispute_receipt
+		custom_effect_tooltip = africa_priority_nubia_nile_capital_dispute_receipt
+		set_global_flag = africa_achievement_nile_capital_dispute
+	}
+	else_if = {
+		limit = { africa_priority_member_can_settle_nile_capital = yes }
+		set_country_flag = africa_priority_nubia_nile_operation_partial_receipt
+	}
+}
+
+# COUNTRY scope. Explicit negative operation for a capital that cannot be
+# settled safely. This remains player-visible for receipt testing and is
+# permanently AI-disabled; it is not a generic progress substitute.
+africa_priority_nubia_record_nile_capital_dispute = {
+	if = {
+		limit = { africa_priority_member_can_record_nile_capital_dispute = yes }
+		set_country_flag = africa_priority_nubia_nile_capital_dispute_receipt
+		custom_effect_tooltip = africa_priority_nubia_nile_capital_dispute_receipt
+		set_global_flag = africa_achievement_nile_capital_dispute
+	}
+}
+
+# COUNTRY scope. The shared Nile corridor is only operational after all three
+# identities and the consent-based capital are live. A hard access break writes
+# the achievement-owned failure flag; an unresolved overlap is a partial
+# operation and remains repairable through the existing overlap settlement.
+africa_priority_nubia_execute_shared_nile_corridor = {
+	if = {
+		limit = {
+			africa_priority_member_can_open_nile_corridor = yes
+			africa_priority_member_has_viable_compact_base = yes
+			africa_member_host_generation_is_current = yes
+			has_war = no
+			has_country_flag = africa_priority_member_overlap_disposition_recorded
+		}
+		set_country_flag = africa_priority_nubia_shared_nile_corridor_active
+		set_country_flag = africa_priority_nubia_nile_corridor_receipt
+		set_variable = { africa_priority_nubia_nile_stage = constant:africa_priority_member_operation_stage.nile_corridor }
+		capital_scope = { set_state_flag = africa_priority_nubia_shared_nile_corridor_operational }
+		set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.nile_overlaps_settled }
+		africa_achievement_record_milestone = yes
+		clear_variable = africa_achievement_milestone_id
+		set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.nile_corridor_operational }
+		africa_achievement_record_milestone = yes
+		clear_variable = africa_achievement_milestone_id
+		if = {
+			limit = {
+				check_variable = { var = global.africa_achievement_nile_identity_count value = constant:africa_achievement_count.nile_identities compare = greater_than_or_equals }
+			}
+			set_global_flag = africa_achievement_nile_owner_ready
+		}
+	}
+	else_if = {
+		limit = {
+			africa_priority_member_can_open_nile_corridor = yes
+			OR = {
+				NOT = { africa_priority_member_has_viable_compact_base = yes }
+				has_war = yes
+				NOT = { africa_member_host_generation_is_current = yes }
+			}
+		}
+		set_country_flag = africa_priority_nubia_nile_corridor_failure_receipt
+		custom_effect_tooltip = africa_priority_nubia_nile_corridor_failure_receipt
+		set_global_flag = africa_achievement_nile_corridor_failed
+	}
+	else_if = {
+		limit = { africa_priority_member_can_open_nile_corridor = yes }
+		set_country_flag = africa_priority_nubia_nile_corridor_partial_receipt
+		set_country_flag = africa_priority_nubia_nile_operation_partial_receipt
+	}
+}
+
+africa_priority_nubia_record_nile_corridor_failure = {
+	if = {
+		limit = { africa_priority_member_can_record_nile_corridor_failure = yes }
+		set_country_flag = africa_priority_nubia_nile_corridor_failure_receipt
+		custom_effect_tooltip = africa_priority_nubia_nile_corridor_failure_receipt
+		set_global_flag = africa_achievement_nile_corridor_failed
+	}
+}
+
+# COUNTRY scope. Survey the plateau processing chain before any concession is
+# entered. Processing is counted once as a local zone and remains tied to the
+# same existing capital state.
+africa_priority_great_zimbabwe_execute_plateau_survey = {
+	if = {
+		limit = {
+			africa_priority_member_can_survey_gold_plateau = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_great_zimbabwe_plateau_survey_completed
+		set_country_flag = africa_priority_great_zimbabwe_plateau_survey_receipt
+		set_variable = { africa_priority_great_zimbabwe_gold_stage = constant:africa_priority_member_operation_stage.gold_survey }
+		capital_scope = { set_state_flag = africa_priority_great_zimbabwe_plateau_surveyed }
+		add_stability = constant:africa_priority_member_reward.stability_small
+		add_to_variable = { africa_member_confidence = constant:africa_priority_member_progress.confidence_gain }
+	}
+	else_if = {
+		limit = { africa_priority_member_can_survey_gold_plateau = yes }
+		set_country_flag = africa_priority_great_zimbabwe_gold_operation_partial_receipt
+	}
+}
+
+africa_priority_great_zimbabwe_execute_identity = {
+	if = {
+		limit = {
+			africa_priority_member_can_recognise_gold_great_zimbabwe = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_great_zimbabwe_restoration_identity_recognised
+		set_country_flag = africa_priority_great_zimbabwe_identity_receipt
+		set_variable = { africa_priority_great_zimbabwe_gold_stage = constant:africa_priority_member_operation_stage.gold_great_zimbabwe }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.great_zimbabwe }
+		africa_achievement_record_restoration_identity = yes
+		clear_variable = africa_achievement_restoration_identity_id
+		add_stability = constant:africa_priority_member_reward.stability_small
+	}
+	else_if = {
+		limit = { africa_priority_member_can_recognise_gold_great_zimbabwe = yes }
+		set_country_flag = africa_priority_great_zimbabwe_gold_operation_partial_receipt
+	}
+}
+
+africa_priority_great_zimbabwe_execute_mutapa = {
+	if = {
+		limit = {
+			africa_priority_member_can_recognise_gold_mutapa = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_great_zimbabwe_mutapa_recognised
+		set_country_flag = africa_priority_great_zimbabwe_mutapa_recognition_receipt
+		set_variable = { africa_priority_great_zimbabwe_gold_stage = constant:africa_priority_member_operation_stage.gold_mutapa }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.mutapa }
+		africa_achievement_record_restoration_identity = yes
+		clear_variable = africa_achievement_restoration_identity_id
+		add_stability = constant:africa_priority_member_reward.stability_small
+	}
+	else_if = {
+		limit = { africa_priority_member_can_recognise_gold_mutapa = yes }
+		set_country_flag = africa_priority_great_zimbabwe_gold_operation_partial_receipt
+	}
+}
+
+africa_priority_great_zimbabwe_execute_rozwi = {
+	if = {
+		limit = {
+			africa_priority_member_can_recognise_gold_rozwi = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_great_zimbabwe_rozwi_recognised
+		set_country_flag = africa_priority_great_zimbabwe_rozwi_recognition_receipt
+		set_variable = { africa_priority_great_zimbabwe_gold_stage = constant:africa_priority_member_operation_stage.gold_rozwi }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.rozwi }
+		africa_achievement_record_restoration_identity = yes
+		clear_variable = africa_achievement_restoration_identity_id
+		add_stability = constant:africa_priority_member_reward.stability_small
+	}
+	else_if = {
+		limit = { africa_priority_member_can_recognise_gold_rozwi = yes }
+		set_country_flag = africa_priority_great_zimbabwe_gold_operation_partial_receipt
+	}
+}
+
+africa_priority_great_zimbabwe_execute_processing_survey = {
+	if = {
+		limit = {
+			africa_priority_member_can_survey_gold_processing = yes
+			africa_priority_member_has_viable_compact_base = yes
+		}
+		set_country_flag = africa_priority_great_zimbabwe_processing_surveyed
+		set_country_flag = africa_priority_great_zimbabwe_processing_survey_receipt
+		set_country_flag = africa_priority_great_zimbabwe_public_processing_programme_active
+		set_variable = { africa_priority_great_zimbabwe_gold_stage = constant:africa_priority_member_operation_stage.gold_processing }
+		capital_scope = {
+			set_state_flag = africa_priority_great_zimbabwe_processing_surveyed
+			set_state_flag = africa_priority_great_zimbabwe_plateau_mine_source_surveyed
+			add_building_construction = { type = industrial_complex level = constant:africa_priority_member_reward.building_level instant_build = yes }
+		}
+		random_owned_controlled_state = {
+			limit = {
+				is_on_continent = africa
+				NOT = { has_state_flag = africa_priority_great_zimbabwe_processing_surveyed }
+				NOT = { has_state_flag = africa_priority_great_zimbabwe_plateau_mine_source_surveyed }
+			}
+			set_state_flag = africa_priority_great_zimbabwe_processing_surveyed
+		}
+		random_owned_controlled_state = {
+			limit = {
+				is_on_continent = africa
+				NOT = { has_state_flag = africa_priority_great_zimbabwe_processing_surveyed }
+				NOT = { has_state_flag = africa_priority_great_zimbabwe_plateau_mine_source_surveyed }
+			}
+			set_state_flag = africa_priority_great_zimbabwe_processing_surveyed
+		}
+		if = {
+			limit = { NOT = { has_country_flag = africa_achievement_great_zimbabwe_processing_counted } }
+			set_country_flag = africa_achievement_great_zimbabwe_processing_counted
+			set_variable = { africa_priority_great_zimbabwe_processing_zone_count = constant:africa_value.three }
+			add_to_variable = { global.africa_achievement_processing_zone_count = constant:africa_value.three }
+		}
+		add_stability = constant:africa_priority_member_reward.stability_standard
+	}
+	else_if = {
+		limit = { africa_priority_member_can_survey_gold_processing = yes }
+		set_country_flag = africa_priority_great_zimbabwe_gold_operation_partial_receipt
+	}
+}
+
+# COUNTRY scope. Plateau corridor access is separate from processing survey
+# and local ownership. Overlap uncertainty is a repairable partial result;
+# occupation, war, or a lost host generation writes the exact achievement
+# corridor-failure receipt.
+africa_priority_great_zimbabwe_execute_plateau_corridor = {
+	if = {
+		limit = {
+			africa_priority_member_can_open_gold_corridor = yes
+			africa_priority_member_has_viable_compact_base = yes
+			africa_member_host_generation_is_current = yes
+			has_war = no
+			has_country_flag = africa_priority_member_overlap_disposition_recorded
+		}
+		set_country_flag = africa_priority_great_zimbabwe_plateau_corridor_operational
+		set_country_flag = africa_priority_great_zimbabwe_plateau_corridor_receipt
+		set_country_flag = africa_priority_great_zimbabwe_mine_processing_connection_receipt
+		set_variable = { africa_priority_great_zimbabwe_gold_stage = constant:africa_priority_member_operation_stage.gold_corridor }
+		capital_scope = { set_state_flag = africa_priority_great_zimbabwe_plateau_corridor_operational set_state_flag = africa_priority_great_zimbabwe_mine_processing_connected }
+		every_owned_state = {
+			limit = {
+				is_on_continent = africa
+				is_controlled_by = ROOT
+				has_state_flag = africa_priority_great_zimbabwe_processing_surveyed
+			}
+			set_state_flag = africa_priority_great_zimbabwe_plateau_corridor_connected
+		}
+	}
+	else_if = {
+		limit = {
+			africa_priority_member_can_open_gold_corridor = yes
+			OR = {
+				NOT = { africa_priority_member_has_viable_compact_base = yes }
+				has_war = yes
+				NOT = { africa_member_host_generation_is_current = yes }
+			}
+		}
+		set_country_flag = africa_priority_great_zimbabwe_plateau_corridor_failure_receipt
+		custom_effect_tooltip = africa_priority_great_zimbabwe_plateau_corridor_failure_receipt
+		set_global_flag = africa_achievement_plateau_corridor_failed
+	}
+	else_if = {
+		limit = { africa_priority_member_can_open_gold_corridor = yes }
+		set_country_flag = africa_priority_great_zimbabwe_plateau_corridor_partial_receipt
+		set_country_flag = africa_priority_great_zimbabwe_gold_operation_partial_receipt
+	}
+}
+
+africa_priority_great_zimbabwe_record_plateau_corridor_failure = {
+	if = {
+		limit = { africa_priority_member_can_record_gold_corridor_failure = yes }
+		set_country_flag = africa_priority_great_zimbabwe_plateau_corridor_failure_receipt
+		custom_effect_tooltip = africa_priority_great_zimbabwe_plateau_corridor_failure_receipt
+		set_global_flag = africa_achievement_plateau_corridor_failed
+	}
+}
+
+# COUNTRY scope. The ledger records protected local ownership and the measured
+# foreign concession share, then opens the achievement's five-year survival
+# window through the existing host refresh helper.
+africa_priority_great_zimbabwe_execute_local_ledger = {
+	if = {
+		limit = {
+			africa_priority_member_can_ratify_gold_local_ledger = yes
+			africa_priority_member_has_viable_compact_base = yes
+			africa_member_host_generation_is_current = yes
+			has_war = no
+		}
+		set_country_flag = africa_priority_great_zimbabwe_local_ownership_ledger_recorded
+		set_country_flag = africa_priority_great_zimbabwe_local_ownership_receipt
+		set_variable = { africa_priority_great_zimbabwe_gold_stage = constant:africa_priority_member_operation_stage.gold_ledger }
+		set_variable = { global.africa_achievement_local_ownership_share = constant:africa_achievement_ratio.protected_local_ownership }
+		set_variable = { global.africa_achievement_foreign_concession_share = constant:africa_achievement_ratio.resource_review_settlement_foreign_concession_share }
+		capital_scope = { set_state_flag = africa_priority_great_zimbabwe_local_ownership_ledger_recorded }
+		if = {
+			limit = {
+				check_variable = { var = africa_priority_great_zimbabwe_processing_zone_count value = constant:africa_value.three compare = greater_than_or_equals }
+				check_variable = { var = global.africa_achievement_plateau_polity_count value = constant:africa_achievement_count.plateau_polities compare = greater_than_or_equals }
+				check_variable = { var = global.africa_achievement_processing_zone_count value = constant:africa_achievement_count.plateau_polities compare = greater_than_or_equals }
+			}
+			set_global_flag = africa_achievement_gold_roads_owner_ready
+			set_global_flag = africa_achievement_local_ownership_owner_ready
+		}
+		if = {
+			limit = { has_event_target = africa_host }
+			event_target:africa_host = { africa_achievement_refresh_survival_windows = yes }
+		}
+	}
+	else_if = {
+		limit = { africa_priority_member_can_ratify_gold_local_ledger = yes }
+		set_country_flag = africa_priority_great_zimbabwe_local_ownership_partial_receipt
+	}
+}
+
+# COUNTRY scope. This is the explicit negative ledger choice. It is player
+# visible but AI-disabled, and it leaves the exact foreign-majority receipt
+# used by the achievement trigger rather than silently converting the route to
+# a generic progress point.
+africa_priority_great_zimbabwe_record_foreign_majority = {
+	if = {
+		limit = { africa_priority_member_can_record_gold_foreign_majority = yes }
+		set_country_flag = africa_priority_great_zimbabwe_foreign_resource_majority_receipt
+		custom_effect_tooltip = africa_priority_great_zimbabwe_foreign_resource_majority_receipt
+		set_global_flag = africa_achievement_foreign_resource_majority
+		set_variable = { global.africa_achievement_foreign_concession_share = constant:africa_priority_member_operation.foreign_majority_share }
+		clr_global_flag = africa_achievement_gold_roads_owner_ready
+		clr_global_flag = africa_achievement_local_ownership_owner_ready
 	}
 }
 
@@ -1875,6 +2337,11 @@ africa_priority_member_cleanup_runtime = {
 	clear_variable = africa_priority_member_mechanic_progress
 	clear_variable = africa_priority_member_security_readiness
 	clear_variable = africa_priority_member_post_settlement_progress
+	clear_variable = africa_priority_nubia_nile_stage
+	clear_variable = africa_priority_great_zimbabwe_gold_stage
+	clear_variable = africa_priority_great_zimbabwe_processing_zone_count
+	clr_country_flag = africa_priority_nubia_nile_operation_partial_receipt
+	clr_country_flag = africa_priority_great_zimbabwe_gold_operation_partial_receipt
 	clear_variable = africa_priority_member_nature_power
 	clr_country_flag = africa_natural_disaster_weapon_reserved
 	clr_country_flag = africa_natural_disaster_member_nature_action_active

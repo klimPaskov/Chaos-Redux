@@ -41,10 +41,12 @@ africa_achievement_count = {
 	diaspora_projects = 12
 	diaspora_owned_projects = 10
 	corridor_systems = 4
+	corridor_required_region_modes = 18
 	resource_zones = 12
 	development_projects = 30
 	reserve_wars = 6
 	nonhuman_unit_families = 4
+	nonhuman_rights_actors = 4
 	elephant_terrain_regions = 3
 	ecological_bargains = 5
 	disasters_contained = 3
@@ -150,6 +152,10 @@ africa_achievement_corridor_system = {
 	river = 2
 	road = 3
 	port = 4
+	# Composite region+mode keys use region * stride + mode. The stride is
+	# larger than the four corridor modes and is shared by the live topology
+	# rebuild and its trigger, so no region/mode pair can alias another pair.
+	region_key_stride = 10
 }
 
 africa_achievement_nonhuman_family = {
@@ -217,6 +223,52 @@ africa_achievement_host_profile = {
 	socialist_or_communist = 3
 	military_or_authoritarian = 4
 	coastal = 5
+}
+
+africa_achievement_archive_disposition = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	public_custodial = 1
+	sold = 2
+	suppressed = 3
+}
+
+# Dynamic Archive Disposition costs and cooldowns. The host starts at the base
+# values and each current-generation evacuation adds one per-archive increment;
+# no option can silently use a static cost after the ledger has grown.
+africa_achievement_archive_disposition_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	safe_base_pp = 20
+	safe_base_cp = 5
+	safe_per_archive_pp = 5
+	safe_per_archive_cp = 1
+	safe_base_cooldown_days = 45
+	safe_per_archive_cooldown_days = 5
+	destructive_base_pp = 10
+	destructive_base_cp = 3
+	destructive_per_archive_pp = 3
+	destructive_per_archive_cp = 1
+	destructive_base_cooldown_days = 90
+	destructive_per_archive_cooldown_days = 10
+}
+
+africa_achievement_archive_disposition_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	safe_base = 100
+	destructive_base = 5
+	destructive_profile_factor = 30
 }
 
 africa_achievement_milestone = {

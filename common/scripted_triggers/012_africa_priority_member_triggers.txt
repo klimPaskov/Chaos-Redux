@@ -646,6 +646,204 @@ africa_priority_member_can_run_post_settlement_action = {
 	}
 }
 
+# COUNTRY scope. The Nubia and Great Zimbabwe packages leave the generic
+# progress ladder behind and expose authored operation stages instead. These
+# gates only open during the recorded settlement window; each operation's
+# effect revalidates the live capital, host generation, war, and overlap state
+# so a failed attempt can leave an exact receipt rather than a false success.
+africa_priority_member_can_run_nile_operation = {
+	africa_priority_member_settlement_is_recorded = yes
+	africa_priority_member_package_is_nubia = yes
+	has_event_target = africa_host
+	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
+	has_country_flag = africa_priority_member_post_settlement_open
+	africa_member_host_generation_is_current = yes
+	NOT = { africa_relationship_is_leaving = yes }
+	NOT = { africa_relationship_is_occupied_settlement = yes }
+	NOT = { has_global_flag = africa_achievement_nile_corridor_failed }
+	NOT = { has_global_flag = africa_achievement_nile_capital_dispute }
+}
+
+africa_priority_member_nile_operation_is_viable = {
+	africa_priority_member_can_run_nile_operation = yes
+	africa_priority_member_has_viable_compact_base = yes
+	has_war = no
+}
+
+africa_priority_member_can_survey_nile_operation = {
+	africa_priority_member_can_run_nile_operation = yes
+	NOT = { has_country_flag = africa_priority_nubia_nile_survey_completed }
+}
+
+africa_priority_member_can_recognise_nile_kush = {
+	africa_priority_member_can_run_nile_operation = yes
+	has_country_flag = africa_priority_nubia_nile_survey_completed
+	NOT = { has_country_flag = africa_priority_nubia_kush_recognised }
+}
+
+africa_priority_member_can_recognise_nile_makuria = {
+	africa_priority_member_can_run_nile_operation = yes
+	has_country_flag = africa_priority_nubia_kush_recognised
+	NOT = { has_country_flag = africa_priority_nubia_makuria_recognised }
+}
+
+africa_priority_member_can_recognise_nile_alodia = {
+	africa_priority_member_can_run_nile_operation = yes
+	has_country_flag = africa_priority_nubia_makuria_recognised
+	NOT = { has_country_flag = africa_priority_nubia_alodia_recognised }
+}
+
+africa_priority_member_can_settle_nile_capital = {
+	africa_priority_member_can_run_nile_operation = yes
+	has_country_flag = africa_priority_nubia_kush_recognised
+	has_country_flag = africa_priority_nubia_makuria_recognised
+	has_country_flag = africa_priority_nubia_alodia_recognised
+	NOT = { has_country_flag = africa_priority_nubia_nile_capital_consent_recorded }
+}
+
+africa_priority_member_can_record_nile_capital_dispute = {
+	africa_priority_member_settlement_is_recorded = yes
+	africa_priority_member_package_is_nubia = yes
+	has_event_target = africa_host
+	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
+	has_country_flag = africa_priority_member_post_settlement_open
+	has_country_flag = africa_priority_nubia_kush_recognised
+	has_country_flag = africa_priority_nubia_makuria_recognised
+	has_country_flag = africa_priority_nubia_alodia_recognised
+	NOT = { has_country_flag = africa_priority_nubia_nile_capital_consent_recorded }
+	NOT = { has_global_flag = africa_achievement_nile_capital_dispute }
+	OR = {
+		NOT = { africa_priority_member_has_viable_compact_base = yes }
+		has_war = yes
+		NOT = { africa_member_host_generation_is_current = yes }
+		africa_relationship_is_leaving = yes
+		africa_relationship_is_occupied_settlement = yes
+	}
+}
+
+africa_priority_member_can_open_nile_corridor = {
+	africa_priority_member_can_run_nile_operation = yes
+	has_country_flag = africa_priority_nubia_kush_recognised
+	has_country_flag = africa_priority_nubia_makuria_recognised
+	has_country_flag = africa_priority_nubia_alodia_recognised
+	has_country_flag = africa_priority_nubia_nile_capital_consent_recorded
+	NOT = { has_country_flag = africa_priority_nubia_shared_nile_corridor_active }
+}
+
+africa_priority_member_can_record_nile_corridor_failure = {
+	africa_priority_member_settlement_is_recorded = yes
+	africa_priority_member_package_is_nubia = yes
+	has_event_target = africa_host
+	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
+	has_country_flag = africa_priority_member_post_settlement_open
+	has_country_flag = africa_priority_nubia_kush_recognised
+	has_country_flag = africa_priority_nubia_makuria_recognised
+	has_country_flag = africa_priority_nubia_alodia_recognised
+	has_country_flag = africa_priority_nubia_nile_capital_consent_recorded
+	NOT = { has_country_flag = africa_priority_nubia_shared_nile_corridor_active }
+	NOT = { has_global_flag = africa_achievement_nile_corridor_failed }
+	OR = {
+		NOT = { africa_priority_member_has_viable_compact_base = yes }
+		has_war = yes
+		NOT = { africa_member_host_generation_is_current = yes }
+		africa_relationship_is_leaving = yes
+		africa_relationship_is_occupied_settlement = yes
+	}
+}
+
+africa_priority_member_can_run_gold_operation = {
+	africa_priority_member_settlement_is_recorded = yes
+	africa_priority_member_package_is_great_zimbabwe = yes
+	has_event_target = africa_host
+	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
+	has_country_flag = africa_priority_member_post_settlement_open
+	africa_member_host_generation_is_current = yes
+	NOT = { africa_relationship_is_leaving = yes }
+	NOT = { africa_relationship_is_occupied_settlement = yes }
+	NOT = { has_global_flag = africa_achievement_foreign_resource_majority }
+	NOT = { has_global_flag = africa_achievement_plateau_corridor_failed }
+}
+
+africa_priority_member_gold_operation_is_viable = {
+	africa_priority_member_can_run_gold_operation = yes
+	africa_priority_member_has_viable_compact_base = yes
+	has_war = no
+}
+
+africa_priority_member_can_survey_gold_plateau = {
+	africa_priority_member_can_run_gold_operation = yes
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_plateau_survey_completed }
+}
+
+africa_priority_member_can_recognise_gold_great_zimbabwe = {
+	africa_priority_member_can_run_gold_operation = yes
+	has_country_flag = africa_priority_great_zimbabwe_plateau_survey_completed
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_restoration_identity_recognised }
+}
+
+africa_priority_member_can_recognise_gold_mutapa = {
+	africa_priority_member_can_run_gold_operation = yes
+	has_country_flag = africa_priority_great_zimbabwe_restoration_identity_recognised
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_mutapa_recognised }
+}
+
+africa_priority_member_can_recognise_gold_rozwi = {
+	africa_priority_member_can_run_gold_operation = yes
+	has_country_flag = africa_priority_great_zimbabwe_mutapa_recognised
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_rozwi_recognised }
+}
+
+africa_priority_member_can_survey_gold_processing = {
+	africa_priority_member_can_run_gold_operation = yes
+	has_country_flag = africa_priority_great_zimbabwe_restoration_identity_recognised
+	has_country_flag = africa_priority_great_zimbabwe_mutapa_recognised
+	has_country_flag = africa_priority_great_zimbabwe_rozwi_recognised
+	num_of_controlled_states > constant:africa_priority_member_operation.processing_state_floor
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_processing_surveyed }
+}
+
+africa_priority_member_can_open_gold_corridor = {
+	africa_priority_member_can_run_gold_operation = yes
+	has_country_flag = africa_priority_great_zimbabwe_restoration_identity_recognised
+	has_country_flag = africa_priority_great_zimbabwe_mutapa_recognised
+	has_country_flag = africa_priority_great_zimbabwe_rozwi_recognised
+	has_country_flag = africa_priority_great_zimbabwe_processing_surveyed
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_plateau_corridor_operational }
+}
+
+africa_priority_member_can_record_gold_corridor_failure = {
+	africa_priority_member_settlement_is_recorded = yes
+	africa_priority_member_package_is_great_zimbabwe = yes
+	has_event_target = africa_host
+	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
+	has_country_flag = africa_priority_member_post_settlement_open
+	has_country_flag = africa_priority_great_zimbabwe_restoration_identity_recognised
+	has_country_flag = africa_priority_great_zimbabwe_mutapa_recognised
+	has_country_flag = africa_priority_great_zimbabwe_rozwi_recognised
+	has_country_flag = africa_priority_great_zimbabwe_processing_surveyed
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_plateau_corridor_operational }
+	NOT = { has_global_flag = africa_achievement_plateau_corridor_failed }
+	OR = {
+		NOT = { africa_priority_member_has_viable_compact_base = yes }
+		has_war = yes
+		NOT = { africa_member_host_generation_is_current = yes }
+		africa_relationship_is_leaving = yes
+		africa_relationship_is_occupied_settlement = yes
+	}
+}
+
+africa_priority_member_can_ratify_gold_local_ledger = {
+	africa_priority_member_can_run_gold_operation = yes
+	has_country_flag = africa_priority_great_zimbabwe_plateau_corridor_operational
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_local_ownership_ledger_recorded }
+}
+
+africa_priority_member_can_record_gold_foreign_majority = {
+	africa_priority_member_can_run_gold_operation = yes
+	has_country_flag = africa_priority_great_zimbabwe_processing_surveyed
+	NOT = { has_country_flag = africa_priority_great_zimbabwe_local_ownership_ledger_recorded }
+}
+
 africa_priority_member_has_coastal_project_site = {
 	any_owned_state = {
 		is_controlled_by = ROOT

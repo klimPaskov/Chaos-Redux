@@ -302,6 +302,7 @@ africa_promoted_tiera_reveal_package = {
 		limit = { has_variable = africa_promoted_tiera_package_id }
 		set_country_flag = africa_promoted_tiera_active
 		set_country_flag = africa_promoted_tiera_revealed
+		set_country_flag = africa_registered_high_chaos_actor
 		set_variable = { africa_promoted_tiera_mechanic_progress = constant:africa_promoted_tiera_progress.minimum }
 		set_variable = { africa_promoted_tiera_politics_choice = 0 }
 		africa_promoted_tiera_assign_character = yes
@@ -356,5 +357,326 @@ africa_promoted_tiera_advance_mechanic = {
 		set_variable = { africa_promoted_tiera_mechanic_progress = constant:africa_promoted_tiera_progress.maximum }
 		set_country_flag = africa_promoted_tiera_mechanic_complete
 		africa_promoted_tiera_apply_mature_idea = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Exact high-chaos actor operations
+# ---------------------------------------------------------------------------
+
+# Shared lifecycle helpers. The operation cap is one exact escalation per
+# carrier; the timed cooldown and target lock close stale decision surfaces
+# without creating a world iteration or a persistent target array.
+africa_promoted_tiera_highchaos_operation_set_cooldown = {
+	set_temp_variable = { africa_promoted_tiera_operation_cooldown_days = constant:africa_promoted_tiera_cost.operation_cooldown_days }
+	set_country_flag = { flag = africa_promoted_tiera_highchaos_operation_cooldown days = var:africa_promoted_tiera_operation_cooldown_days }
+}
+
+africa_promoted_tiera_highchaos_operation_lock_target = {
+	set_temp_variable = { africa_promoted_tiera_operation_target_lock_days = constant:africa_promoted_tiera_cost.operation_target_lock_days }
+	set_country_flag = { flag = africa_promoted_tiera_highchaos_operation_target_lock days = var:africa_promoted_tiera_operation_target_lock_days }
+}
+
+africa_promoted_tiera_apply_member_disruption_full = {
+	set_country_flag = africa_promoted_tiera_highchaos_operation_target_affected
+	set_temp_variable = { africa_promoted_tiera_member_stability_loss = constant:africa_promoted_tiera_operation_impact.full_stability_loss }
+	multiply_temp_variable = { africa_promoted_tiera_member_stability_loss = -1 }
+	add_stability = africa_promoted_tiera_member_stability_loss
+	set_temp_variable = { africa_promoted_tiera_member_war_support_loss = constant:africa_promoted_tiera_operation_impact.full_war_support_loss }
+	multiply_temp_variable = { africa_promoted_tiera_member_war_support_loss = -1 }
+	add_war_support = africa_promoted_tiera_member_war_support_loss
+	set_temp_variable = { africa_promoted_tiera_member_confidence_loss = constant:africa_promoted_tiera_operation_impact.full_confidence_loss }
+	multiply_temp_variable = { africa_promoted_tiera_member_confidence_loss = -1 }
+	add_to_variable = { africa_member_confidence = africa_promoted_tiera_member_confidence_loss }
+	set_variable = { africa_relationship_state = constant:africa_relationship.resistant }
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = { africa_achievement_reset_live_member_loss_clocks = yes }
+	}
+}
+
+africa_promoted_tiera_apply_member_disruption_partial = {
+	set_country_flag = africa_promoted_tiera_highchaos_operation_target_partially_affected
+	set_temp_variable = { africa_promoted_tiera_member_stability_loss = constant:africa_promoted_tiera_operation_impact.partial_stability_loss }
+	multiply_temp_variable = { africa_promoted_tiera_member_stability_loss = -1 }
+	add_stability = africa_promoted_tiera_member_stability_loss
+	set_temp_variable = { africa_promoted_tiera_member_war_support_loss = constant:africa_promoted_tiera_operation_impact.partial_war_support_loss }
+	multiply_temp_variable = { africa_promoted_tiera_member_war_support_loss = -1 }
+	add_war_support = africa_promoted_tiera_member_war_support_loss
+	set_temp_variable = { africa_promoted_tiera_member_confidence_loss = constant:africa_promoted_tiera_operation_impact.partial_confidence_loss }
+	multiply_temp_variable = { africa_promoted_tiera_member_confidence_loss = -1 }
+	add_to_variable = { africa_member_confidence = africa_promoted_tiera_member_confidence_loss }
+}
+
+africa_promoted_tiera_deduct_nonhuman_rampage_command_power = {
+	set_temp_variable = { africa_promoted_tiera_nonhuman_rampage_command_power_cost = constant:africa_promoted_tiera_cost.nonhuman_rampage_cp }
+	if = {
+		limit = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+		set_temp_variable = { africa_promoted_tiera_nonhuman_rampage_command_power_cost = constant:africa_promoted_tiera_cost.nonhuman_rampage_mature_cp }
+	}
+	multiply_temp_variable = { africa_promoted_tiera_nonhuman_rampage_command_power_cost = -1 }
+	add_command_power = africa_promoted_tiera_nonhuman_rampage_command_power_cost
+}
+
+africa_promoted_tiera_deduct_forest_rampage_command_power = {
+	set_temp_variable = { africa_promoted_tiera_forest_rampage_command_power_cost = constant:africa_promoted_tiera_cost.forest_rampage_cp }
+	if = {
+		limit = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+		set_temp_variable = { africa_promoted_tiera_forest_rampage_command_power_cost = constant:africa_promoted_tiera_cost.forest_rampage_mature_cp }
+	}
+	multiply_temp_variable = { africa_promoted_tiera_forest_rampage_command_power_cost = -1 }
+	add_command_power = africa_promoted_tiera_forest_rampage_command_power_cost
+}
+
+africa_promoted_tiera_deduct_stoneborn_rights_command_power = {
+	set_temp_variable = { africa_promoted_tiera_stoneborn_rights_command_power_cost = constant:africa_promoted_tiera_cost.stoneborn_rights_cp }
+	if = {
+		limit = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+		set_temp_variable = { africa_promoted_tiera_stoneborn_rights_command_power_cost = constant:africa_promoted_tiera_cost.stoneborn_rights_mature_cp }
+	}
+	multiply_temp_variable = { africa_promoted_tiera_stoneborn_rights_command_power_cost = -1 }
+	add_command_power = africa_promoted_tiera_stoneborn_rights_command_power_cost
+}
+
+africa_promoted_tiera_deduct_stoneborn_war_command_power = {
+	set_temp_variable = { africa_promoted_tiera_stoneborn_war_command_power_cost = constant:africa_promoted_tiera_cost.stoneborn_war_cp }
+	if = {
+		limit = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+		set_temp_variable = { africa_promoted_tiera_stoneborn_war_command_power_cost = constant:africa_promoted_tiera_cost.stoneborn_war_mature_cp }
+	}
+	multiply_temp_variable = { africa_promoted_tiera_stoneborn_war_command_power_cost = -1 }
+	add_command_power = africa_promoted_tiera_stoneborn_war_command_power_cost
+}
+
+africa_promoted_tiera_deduct_host_great_power_war_command_power = {
+	set_temp_variable = { africa_promoted_tiera_host_great_power_war_command_power_cost = constant:africa_promoted_tiera_cost.great_power_war_cp }
+	if = {
+		limit = { check_variable = { var = africa_host_depth value = constant:africa_host_depth.promoted compare = greater_than_or_equals } }
+		set_temp_variable = { africa_promoted_tiera_host_great_power_war_command_power_cost = constant:africa_promoted_tiera_cost.great_power_war_mature_cp }
+	}
+	multiply_temp_variable = { africa_promoted_tiera_host_great_power_war_command_power_cost = -1 }
+	add_command_power = africa_promoted_tiera_host_great_power_war_command_power_cost
+}
+
+# Any of Pan, Gorilla Kingdom, Living Rivers, or Ancient Hosts can choose one
+# direct rampage against a consenting human member. The outcome roll is the
+# operation's own ledger: full and partial outcomes are both authored damage,
+# while failure records only the failed attempt and never opens a DQ flag.
+africa_promoted_tiera_nonhuman_rampage = {
+	if = {
+		limit = {
+			africa_promoted_tiera_nonhuman_rampage_is_available = yes
+			FROM = { africa_promoted_tiera_human_member_target_is_valid = yes }
+		}
+		africa_promoted_tiera_deduct_nonhuman_rampage_command_power = yes
+		set_country_flag = africa_promoted_tiera_nonhuman_rampage_used
+		africa_promoted_tiera_highchaos_operation_set_cooldown = yes
+		FROM = { africa_promoted_tiera_highchaos_operation_lock_target = yes }
+		random_list = {
+			constant:africa_promoted_tiera_operation.full = {
+				set_global_flag = africa_achievement_nonhuman_rampage
+				set_country_flag = africa_promoted_tiera_nonhuman_rampage_full
+				FROM = { africa_promoted_tiera_apply_member_disruption_full = yes }
+			}
+			constant:africa_promoted_tiera_operation.partial = {
+				set_country_flag = africa_promoted_tiera_nonhuman_rampage_partial
+				FROM = { africa_promoted_tiera_apply_member_disruption_partial = yes }
+			}
+			constant:africa_promoted_tiera_operation.failure = {
+				set_country_flag = africa_promoted_tiera_nonhuman_rampage_failed
+				FROM = { set_country_flag = africa_promoted_tiera_nonhuman_rampage_target_unharmed }
+			}
+		}
+	}
+}
+
+# The Green's rampage uses Event 013's public hostile_actor contract. The DQ
+# is written only after Event 013 accepts this exact selected-country call;
+# civilian deaths later open Event 013's separate disaster-weaponisation owner.
+africa_promoted_tiera_forest_actor_rampage = {
+	if = {
+		limit = {
+			africa_promoted_tiera_forest_actor_rampage_is_available = yes
+			FROM = { africa_promoted_tiera_human_member_target_is_valid = yes }
+		}
+		africa_promoted_tiera_deduct_forest_rampage_command_power = yes
+		set_country_flag = africa_promoted_tiera_forest_actor_rampage_used
+		africa_promoted_tiera_highchaos_operation_set_cooldown = yes
+		FROM = {
+			save_event_target_as = natural_disaster_call_target_country
+			africa_promoted_tiera_highchaos_operation_lock_target = yes
+		}
+		set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.hostile_actor }
+		set_temp_variable = { natural_disaster_call_caller_event_id = constant:africa_natural_disaster.caller_event_id }
+		set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
+		set_temp_variable = { natural_disaster_call_family_group = constant:natural_disaster_family_group.random }
+		set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
+		set_temp_variable = { natural_disaster_call_target_country_supplied = constant:africa_value.one }
+		set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.regional }
+		set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
+		set_temp_variable = { natural_disaster_call_sequence_count = constant:africa_value.one }
+		set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
+		set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.affected_country }
+		set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
+		set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.family }
+		set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_013_history }
+		set_temp_variable = { natural_disaster_call_caller_cost_checked = constant:africa_value.one }
+		set_temp_variable = { natural_disaster_call_caller_cooldown_checked = constant:africa_value.one }
+		set_temp_variable = { natural_disaster_call_target_legitimacy_checked = constant:africa_value.one }
+		call_natural_disaster = yes
+		set_variable = { africa_promoted_tiera_forest_call_result = natural_disaster_call_result }
+		set_variable = { africa_promoted_tiera_forest_call_reject_reason = natural_disaster_call_reject_reason }
+		set_variable = { africa_promoted_tiera_forest_call_sequence_id = natural_disaster_call_sequence_id }
+		if = {
+			limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.accepted } }
+			set_global_flag = africa_achievement_forest_actor_rampage
+			set_country_flag = africa_promoted_tiera_forest_actor_rampage_accepted
+			FROM = { set_country_flag = africa_promoted_tiera_forest_rampage_call_accepted }
+		}
+		else = {
+			set_country_flag = africa_promoted_tiera_forest_actor_rampage_failed
+			FROM = { set_country_flag = africa_promoted_tiera_forest_rampage_call_rejected }
+		}
+	}
+}
+
+# Stoneborn can deliberately withdraw rights from a member whose
+# representation and consent were already recorded. Both full and partial
+# results are real violations and therefore set the exact Stoneborn DQ; only a
+# failed adjudication leaves the positive settlement ledger eligible.
+africa_promoted_tiera_stoneborn_rights_violation = {
+	if = {
+		limit = {
+			africa_promoted_tiera_stoneborn_rights_violation_is_available = yes
+			FROM = { africa_promoted_tiera_human_member_target_is_valid = yes }
+		}
+		africa_promoted_tiera_deduct_stoneborn_rights_command_power = yes
+		set_country_flag = africa_promoted_tiera_stoneborn_rights_violation_used
+		africa_promoted_tiera_highchaos_operation_set_cooldown = yes
+		FROM = { africa_promoted_tiera_highchaos_operation_lock_target = yes }
+		random_list = {
+			constant:africa_promoted_tiera_operation.full = {
+				set_global_flag = africa_achievement_stoneborn_rights_violation
+				africa_achievement_record_nonhuman_rights_violation = yes
+				set_country_flag = africa_promoted_tiera_stoneborn_rights_violation_full
+				FROM = {
+					clr_country_flag = africa_member_representation_settled
+					clr_country_flag = africa_member_integration_consent
+					africa_promoted_tiera_apply_member_disruption_full = yes
+				}
+			}
+			constant:africa_promoted_tiera_operation.partial = {
+				set_global_flag = africa_achievement_stoneborn_rights_violation
+				africa_achievement_record_nonhuman_rights_violation = yes
+				set_country_flag = africa_promoted_tiera_stoneborn_rights_violation_partial
+				FROM = {
+					clr_country_flag = africa_member_representation_settled
+					africa_promoted_tiera_apply_member_disruption_partial = yes
+				}
+			}
+			constant:africa_promoted_tiera_operation.failure = {
+				set_country_flag = africa_promoted_tiera_stoneborn_rights_violation_failed
+				FROM = { set_country_flag = africa_promoted_tiera_stoneborn_rights_target_unharmed }
+			}
+		}
+	}
+}
+
+# The Stoneborn war operation is a direct declaration against the selected
+# human member. The exact DQ is written only if the engine confirms the new
+# war; a rejected declaration is a visible failed operation, not a proxy flag.
+africa_promoted_tiera_stoneborn_human_member_war = {
+	if = {
+		limit = {
+			africa_promoted_tiera_stoneborn_human_member_war_is_available = yes
+			FROM = {
+				africa_promoted_tiera_human_member_target_is_valid = yes
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		africa_promoted_tiera_deduct_stoneborn_war_command_power = yes
+		set_country_flag = africa_promoted_tiera_stoneborn_human_member_war_used
+		africa_promoted_tiera_highchaos_operation_set_cooldown = yes
+		FROM = { africa_promoted_tiera_highchaos_operation_lock_target = yes }
+		declare_war_on = { target = FROM type = annex_everything }
+		if = {
+			limit = { has_war_with = FROM }
+			set_global_flag = africa_achievement_stoneborn_human_member_war
+			set_country_flag = africa_promoted_tiera_stoneborn_human_member_war_accepted
+			FROM = { set_country_flag = africa_promoted_tiera_stoneborn_human_member_war_target }
+		}
+		else = {
+			set_country_flag = africa_promoted_tiera_stoneborn_human_member_war_failed
+			FROM = { set_country_flag = africa_promoted_tiera_stoneborn_human_member_war_target_unharmed }
+		}
+	}
+}
+
+# Generic Event 012 pairwise war owner for Row 40. The bespoke Stoneborn
+# decision above remains the immediate declaration witness; this callback
+# covers wars opened by either side and ordinary or scripted diplomacy. The
+# pair predicate classifies both participants against the current host and
+# rejects nonhuman actors, while the global receipt and host witness are
+# written once so repeated callback delivery is harmless.
+africa_promoted_tiera_record_stoneborn_human_member_war_relation = {
+	if = {
+		limit = { africa_promoted_tiera_stoneborn_human_member_war_pair_is_current = yes }
+		event_target:africa_host = {
+			if = {
+				limit = { NOT = { has_global_flag = africa_achievement_stoneborn_human_member_war } }
+				set_global_flag = africa_achievement_stoneborn_human_member_war
+				set_country_flag = africa_promoted_tiera_stoneborn_human_member_war_relation_recorded
+			}
+		}
+	}
+}
+
+# The current Event 012 host owns a separate great-power war lifecycle. Its
+# target-major snapshot is captured only after the engine confirms the war;
+# Stoneborn's human-member war never writes this pending receipt.
+africa_promoted_tiera_host_great_power_war = {
+	if = {
+		limit = {
+			africa_promoted_tiera_host_great_power_war_is_available = yes
+			FROM = { africa_promoted_tiera_host_great_power_war_enemy_target_is_valid = yes }
+		}
+		africa_promoted_tiera_deduct_host_great_power_war_command_power = yes
+		set_country_flag = africa_promoted_tiera_host_great_power_war_used
+		africa_promoted_tiera_highchaos_operation_set_cooldown = yes
+		FROM = { africa_promoted_tiera_highchaos_operation_lock_target = yes }
+		declare_war_on = { target = FROM type = annex_everything }
+		if = {
+			limit = { has_war_with = FROM }
+			set_country_flag = africa_promoted_tiera_host_great_power_war_pending
+			FROM = {
+				if = {
+					limit = { is_major = yes }
+					set_country_flag = africa_promoted_tiera_great_power_war_target_was_major
+				}
+				save_global_event_target_as = africa_promoted_tiera_great_power_war_target
+			}
+		}
+		else = {
+			set_country_flag = africa_promoted_tiera_host_great_power_war_failed
+			FROM = { set_country_flag = africa_promoted_tiera_host_great_power_war_target_unharmed }
+		}
+	}
+}
+
+# COUNTRY scope on the current Event 012 host after its distinct great-power
+# war has actually ended in host control. The shared achievement milestone
+# owner remains authoritative; this helper only supplies a guarded Event 012
+# callsite and cleans its persistent target receipt.
+africa_promoted_tiera_record_nonhuman_great_power_war_victory = {
+	if = {
+		limit = { africa_promoted_tiera_nonhuman_great_power_war_victory_is_available = yes }
+		set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.nonhuman_great_power_war_won }
+		africa_achievement_record_milestone = yes
+		set_country_flag = africa_promoted_tiera_nonhuman_great_power_war_recorded
+		event_target:africa_promoted_tiera_great_power_war_target = {
+			clr_country_flag = africa_promoted_tiera_great_power_war_target_was_major
+		}
+		clr_country_flag = africa_promoted_tiera_host_great_power_war_pending
+		clear_global_event_target = africa_promoted_tiera_great_power_war_target
 	}
 }

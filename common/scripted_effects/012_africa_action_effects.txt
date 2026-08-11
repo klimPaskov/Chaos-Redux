@@ -6881,6 +6881,37 @@ africa_strange_force_spawn_guard = {
 	africa_strange_force_finalize_result = yes
 }
 
+# COUNTRY scope after a real strange-force create_unit receipt. Only the
+# families represented by the achievement enum are recorded; riverborn,
+# oracle recon, and plague carriers intentionally have no family mapping.
+africa_achievement_record_strange_force_formation = {
+	if = {
+		limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.stone_cohorts } }
+		set_temp_variable = { africa_achievement_nonhuman_family_id = constant:africa_achievement_nonhuman_family.stone }
+		africa_achievement_record_nonhuman_unit_family = yes
+	}
+	else_if = {
+		limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.gorilla_heavy_infantry } }
+		set_temp_variable = { africa_achievement_nonhuman_family_id = constant:africa_achievement_nonhuman_family.gorilla }
+		africa_achievement_record_nonhuman_unit_family = yes
+	}
+	else_if = {
+		limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.pan_sappers } }
+		set_temp_variable = { africa_achievement_nonhuman_family_id = constant:africa_achievement_nonhuman_family.pan_sapper }
+		africa_achievement_record_nonhuman_unit_family = yes
+	}
+	else_if = {
+		limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.forest_giants } }
+		set_temp_variable = { africa_achievement_nonhuman_family_id = constant:africa_achievement_nonhuman_family.forest }
+		africa_achievement_record_nonhuman_unit_family = yes
+	}
+	else_if = {
+		limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.disaster_wardens } }
+		set_temp_variable = { africa_achievement_nonhuman_family_id = constant:africa_achievement_nonhuman_family.weather }
+		africa_achievement_record_nonhuman_unit_family = yes
+	}
+}
+
 # COUNTRY scope. Finalises one guarded formation attempt. The permanent
 # receipt prevents duplicate templates for the same family; the short timed
 # receipt also protects repeated action/focus callbacks during the same chain.
@@ -6888,6 +6919,10 @@ africa_strange_force_finalize_result = {
 	if = {
 		limit = { check_variable = { africa_strange_force_spawn_result > constant:africa_value.zero } }
 		add_to_variable = { global.africa_strange_force_formation_count = constant:africa_value.one }
+		if = {
+			limit = { has_global_flag = africa_achievement_normal_launch }
+			africa_achievement_record_strange_force_formation = yes
+		}
 		set_temp_variable = { africa_strange_force_cooldown_days = constant:africa_action_threshold.cooldown_days }
 		if = {
 			limit = { check_variable = { africa_strange_force_requested_kind = constant:africa_strange_force_kind.stone_cohorts } }
@@ -7231,9 +7266,9 @@ africa_apply_action_full_semantics = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.connect_member_capitals } }
-		set_country_flag = africa_member_transport_connection_complete
 		capital_scope = { save_event_target_as = africa_member_capital_state }
 		event_target:africa_host = {
+			capital_scope = { save_event_target_as = africa_host_capital_state }
 			capital_scope = {
 				build_railway = {
 					start_state = THIS
@@ -7241,6 +7276,21 @@ africa_apply_action_full_semantics = {
 					level = constant:africa_action_building.rail_level
 				}
 			}
+		}
+		# The country receipt is written only after the engine reports a real
+		# capital-to-capital route. The capital state marker lets the achievement
+		# refresh prove that topology still exists after later ownership changes.
+		if = {
+			limit = {
+				event_target:africa_host = {
+					has_railway_connection = {
+						start_state = event_target:africa_host_capital_state
+						target_state = event_target:africa_member_capital_state
+					}
+				}
+			}
+			set_country_flag = africa_member_transport_connection_complete
+			capital_scope = { set_state_flag = africa_member_capital_transport_connection_operational }
 		}
 	}
 	else_if = {
@@ -8142,6 +8192,7 @@ africa_call_hostile_natural_disaster_from_action = {
 			}
 			africa_prepare_hostile_natural_disaster_strength = yes
 			set_variable = { africa_last_natural_disaster_call_strength = africa_natural_disaster_weapon_strength }
+			set_variable = { africa_last_natural_disaster_call_severity = natural_disaster_call_severity }
 			set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
 			set_temp_variable = { natural_disaster_call_sequence_count = constant:africa_value.one }
 			set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
@@ -8196,6 +8247,11 @@ africa_call_hostile_natural_disaster_from_action = {
 						}
 					if = {
 						limit = {
+							check_variable = {
+								var = natural_disaster_call_severity
+								value = constant:natural_disaster_severity.catastrophic
+								compare = greater_than_or_equals
+							}
 							event_target:natural_disaster_call_resolved_primary_country = {
 								OR = {
 									africa_member_host_generation_is_current = yes
@@ -8325,7 +8381,6 @@ africa_apply_current_action_outcome = {
 		}
 		africa_call_hostile_natural_disaster_from_action = yes
 		africa_strange_force_spawn_disaster_wardens_after_natural_disaster = yes
-		africa_achievement_record_full_action = yes
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.partial } }
@@ -8364,6 +8419,14 @@ africa_apply_current_action_outcome = {
 		}
 	}
 	africa_diaspora_apply_current_outcome = yes
+	# Achievement recording follows the diaspora owner ledger. Passage,
+	# skills, housing, bonds, and citizenship therefore consume the exact
+	# target flags written by the full-outcome dispatcher rather than a bare
+	# action-id receipt.
+	if = {
+		limit = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full } }
+		africa_achievement_record_full_action = yes
+	}
 	africa_achievement_record_action_outcome = yes
 }
 
@@ -8558,7 +8621,11 @@ africa_cleanup_annexed_action_target = {
 			africa_diaspora_cleanup_action_state = yes
 			africa_disease_cleanup_target_receipts = yes
 			if = {
-				limit = { has_event_target = africa_host }
+				limit = {
+					has_event_target = africa_host
+					africa_member_host_generation_is_current = yes
+				}
+				event_target:africa_host = { africa_achievement_reset_live_member_loss_clocks = yes }
 				africa_unregister_current_relationship_state = yes
 				event_target:africa_host = { africa_reconcile_relationship_counts_and_caps = yes }
 			}

@@ -9,7 +9,50 @@
 africa_achievement_normal_host_is_eligible = {
 	has_country_flag = africa_achievement_host_actor_eligible
 	has_global_flag = africa_achievement_normal_launch
-	NOT = { has_global_flag = africa_achievement_forced_scenario_used }
+}
+# Event 012 has no registered triggerable-scenario route. Forced-scenario
+# exclusions therefore remain documentary invariants rather than live checks.
+
+# HOST scope for the bounded Archive Disposition decision category. The source
+# roster is the maintained relationship array; this never opens a world scan.
+africa_achievement_archive_disposition_window_is_open = {
+	africa_is_current_host = yes
+	NOT = { has_global_flag = africa_is_one }
+	any_of_scopes = {
+		array = africa_relationship_countries
+		africa_achievement_archive_disposition_target_is_valid = yes
+	}
+}
+
+# COUNTRY scope on a selected evacuation target. A target may be disposed only
+# once, while it remains in the current host generation and has not capitulated.
+africa_achievement_archive_disposition_target_is_valid = {
+	exists = yes
+	africa_is_valid_relationship_target = yes
+	africa_member_host_generation_is_current = yes
+	has_country_flag = africa_achievement_archive_evacuated
+	NOT = { has_country_flag = africa_achievement_archive_disposition_recorded }
+}
+
+africa_achievement_can_pay_archive_safe_disposition = {
+	NOT = { has_political_power < africa_achievement_archive_safe_cost_pp }
+	NOT = { command_power < africa_achievement_archive_safe_cost_cp }
+}
+
+africa_achievement_can_pay_archive_destructive_disposition = {
+	NOT = { has_political_power < africa_achievement_archive_destructive_cost_pp }
+	NOT = { command_power < africa_achievement_archive_destructive_cost_cp }
+}
+
+# HOST scope for AI only. Destructive disposition is an exception for an
+# explicitly recorded high-chaos, military/authoritarian, or coercive profile;
+# the safe public/custodial operation remains the default preference.
+africa_achievement_archive_destructive_ai_profile = {
+	OR = {
+		has_global_flag = africa_achievement_high_chaos_host
+		has_global_flag = africa_achievement_origin_military_or_authoritarian
+		has_global_flag = africa_achievement_coercive_integration_used
+	}
 }
 
 africa_achievement_event12_actor_is_eligible = {
@@ -19,7 +62,6 @@ africa_achievement_event12_actor_is_eligible = {
 		has_country_flag = africa_priority_member_player_origin_validated
 	}
 	has_global_flag = africa_achievement_normal_launch
-	NOT = { has_global_flag = africa_achievement_forced_scenario_used }
 }
 
 africa_achievement_uses_grounded_constitution = {
@@ -34,6 +76,35 @@ africa_achievement_uses_high_chaos = {
 		check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
 		has_global_flag = africa_evolution_iii_logged
 		has_global_flag = africa_achievement_high_chaos_host
+	}
+}
+
+# COUNTRY scope on a current-generation court. The crown charter, succession
+# settlement, and current monarchical/recognised-court identity are all
+# required; a historical court flag by itself is not live evidence.
+africa_country_counts_as_current_court = {
+	africa_member_host_generation_is_current = yes
+	has_country_flag = africa_achievement_recognised_court_member
+	has_country_flag = africa_clause_preserved_crown
+	has_country_flag = africa_member_continental_constitution_accepted
+	has_country_flag = africa_member_succession_rules_settled
+	NOT = { has_capitulated = yes }
+	NOT = { has_civil_war = yes }
+	NOT = { has_war_with = event_target:africa_host }
+	OR = {
+		africa_relationship_is_protected = yes
+		africa_relationship_is_associate = yes
+		africa_relationship_is_chartered = yes
+		africa_relationship_is_autonomous_federal = yes
+		africa_relationship_is_integrated_region = yes
+	}
+	OR = {
+		has_government = neutrality
+		has_country_flag = africa_restored_polity_member
+		has_country_flag = africa_priority_kongo_court_civic_congress_government
+		has_country_flag = africa_priority_harar_municipal_court_compact
+		has_country_flag = africa_priority_merina_crown_assembly_government
+		has_country_flag = africa_priority_zulu_crown_assembly_government
 	}
 }
 
@@ -52,6 +123,7 @@ africa_guardians_without_borders_is_complete = {
 
 africa_last_convoy_home_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_last_convoy_war_settled
 	has_global_flag = africa_achievement_last_convoy_completed
 	NOT = { has_global_flag = africa_achievement_last_convoy_partner_capitulated }
 	NOT = { has_global_flag = africa_achievement_last_convoy_corridor_abandoned }
@@ -75,6 +147,9 @@ africa_no_empty_promises_is_complete = {
 africa_the_interveners_left_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	has_global_flag = africa_achievement_scramble_coalition_defeated
+	has_country_flag = africa_scramble_defensive_war_won
+	has_global_flag = africa_scramble_response_settled
+	has_global_flag = africa_achievement_no_hostile_foreign_control
 	check_variable = { var = global.africa_achievement_foreign_expeditions_defeated value = constant:africa_value.one compare = greater_than_or_equals }
 	NOT = { has_global_flag = africa_achievement_league_member_capitulated }
 	NOT = { has_global_flag = africa_achievement_partition_accepted }
@@ -82,8 +157,26 @@ africa_the_interveners_left_is_complete = {
 
 africa_archive_of_the_living_state_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_is_one
+	has_global_flag = africa_achievement_africa_is_one_snapshot_captured
+	has_global_flag = africa_achievement_archive_roster_live_at_africa_is_one
 	check_variable = { var = global.africa_achievement_archive_evacuation_count value = constant:africa_achievement_count.archives_restored compare = greater_than_or_equals }
-	check_variable = { var = global.africa_achievement_archive_restoration_count value = constant:africa_achievement_count.archives_restored compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_archive_restoration_count value = constant:africa_achievement_count.archives_restored compare = equals }
+	check_variable = { var = global.africa_achievement_snapshot_archives_restored value = constant:africa_achievement_count.archives_restored compare = equals }
+	check_variable = { var = global.africa_achievement_archive_restored_roster^num value = constant:africa_achievement_count.archives_restored compare = equals }
+	# The Africa-is-One snapshot is a checkpoint, not a permanent relationship
+	# proxy. Recheck every exact restored-government pointer at achievement time
+	# so a later subject conversion or capitulation cannot leave Row 5 live.
+	all_of_scopes = {
+		array = global.africa_achievement_archive_restored_roster
+		exists = yes
+		africa_member_host_generation_is_current = yes
+		NOT = { has_capitulated = yes }
+		OR = {
+			AND = { is_subject = no exists = yes }
+			africa_relationship_is_autonomous_federal = yes
+		}
+	}
 	NOT = { has_global_flag = africa_achievement_archive_permanently_destroyed }
 	NOT = { has_global_flag = africa_achievement_archive_sold_or_suppressed }
 	NOT = { has_global_flag = africa_achievement_archive_partner_annexed }
@@ -91,19 +184,22 @@ africa_archive_of_the_living_state_is_complete = {
 
 africa_twelve_empty_chairs_filled_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
-	check_variable = { var = global.africa_achievement_snapshot_full_members value = constant:africa_achievement_count.congress_full_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_congress_attendance_count value = constant:africa_achievement_count.congress_full_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_congress_full_member_roster^num value = constant:africa_achievement_count.congress_full_members compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_congress_all_agenda_completed
+	has_global_flag = africa_achievement_congress_roster_live
+	has_global_flag = africa_achievement_congress_retention_completed
 	check_variable = { var = global.num_days value = global.africa_achievement_congress_retention_deadline_day compare = greater_than_or_equals }
-	NOT = { has_global_flag = africa_achievement_member_expelled_during_congress_window }
 	NOT = { has_global_flag = africa_achievement_coerced_accession_during_congress_window }
+	NOT = { has_global_flag = africa_achievement_congress_member_lost }
 }
 
 africa_the_clause_is_the_country_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	has_global_flag = africa_is_one
-	check_variable = { var = global.africa_achievement_snapshot_clause_members value = constant:africa_achievement_count.clause_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_clause_members value = constant:africa_achievement_count.clause_members compare = greater_than_or_equals }
 	NOT = { check_variable = { africa_constitution = constant:africa_constitution.military_continentalism } }
-	NOT = { has_global_flag = africa_achievement_protected_clause_cancelled }
+	NOT = { has_global_flag = africa_achievement_clause_member_loss }
 	NOT = { has_global_flag = africa_achievement_untracked_member_annexed }
 }
 
@@ -121,13 +217,17 @@ africa_exit_without_war_is_complete = {
 africa_no_second_capital_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	check_variable = { var = global.africa_achievement_rival_crises_resolved value = constant:africa_achievement_count.rival_crises_resolved compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_rival_terminal_result
+	check_variable = { var = africa_rival_bloc_countries^num value = constant:africa_value.zero compare = equals }
 	NOT = { has_global_flag = africa_achievement_rival_crisis_overran_limit }
 	NOT = { has_global_flag = africa_achievement_rival_leader_annexed }
-	NOT = { has_global_flag = africa_achievement_terminal_rival_coercion }
 }
 
 africa_every_region_speaks_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_congress_all_agenda_completed
+	has_global_flag = africa_achievement_congress_roster_live
+	check_variable = { var = global.africa_achievement_congress_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
 	has_global_flag = africa_is_one
 	check_variable = { var = global.africa_achievement_represented_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_overlap_settled_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
@@ -138,6 +238,7 @@ africa_every_region_speaks_is_complete = {
 africa_confidence_is_contagious_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	check_variable = { var = global.africa_achievement_snapshot_high_confidence value = constant:africa_achievement_count.high_confidence_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_high_confidence_members value = constant:africa_achievement_count.high_confidence_members compare = greater_than_or_equals }
 	check_variable = { var = africa_integration_burden value = constant:africa_measure.high compare = less_than }
 	check_variable = { var = global.num_days value = global.africa_achievement_confidence_deadline_day compare = greater_than_or_equals }
 	NOT = { has_global_flag = africa_achievement_coercive_integration_used }
@@ -151,8 +252,9 @@ africa_federation_by_consent_is_complete = {
 	has_global_flag = africa_is_one
 	check_variable = { var = global.africa_achievement_snapshot_autonomous_federal value = constant:africa_achievement_count.federal_members compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_snapshot_federal_settled value = constant:africa_achievement_count.federal_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_federal_members value = constant:africa_achievement_count.federal_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_federal_settled value = constant:africa_achievement_count.federal_members compare = greater_than_or_equals }
 	NOT = { has_global_flag = africa_achievement_coercive_integration_used }
-	NOT = { has_global_flag = africa_achievement_military_takeover }
 	NOT = { has_global_flag = africa_achievement_covenant_route_used }
 }
 
@@ -160,11 +262,10 @@ africa_republic_of_many_capitals_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	check_variable = { africa_constitution = constant:africa_constitution.continental_republic }
 	check_variable = { var = global.africa_achievement_republic_institution_regions^num value = constant:africa_achievement_count.republic_institution_regions compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_republic_institution_owner_ready
 	has_global_flag = africa_achievement_republic_succession_active
 	check_variable = { var = global.num_days value = global.africa_achievement_republic_deadline_day compare = greater_than_or_equals }
-	NOT = { has_global_flag = africa_achievement_republic_suspended }
-	NOT = { has_global_flag = africa_achievement_republic_one_region_centralisation }
-	NOT = { has_global_flag = africa_achievement_military_transition }
+	NOT = { has_civil_war = yes }
 }
 
 africa_crowns_at_one_table_is_complete = {
@@ -173,9 +274,8 @@ africa_crowns_at_one_table_is_complete = {
 	check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns }
 	has_global_flag = africa_is_one
 	check_variable = { var = global.africa_achievement_snapshot_court_members value = constant:africa_achievement_count.crown_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_court_members value = constant:africa_achievement_count.crown_members compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_crown_succession_settled
-	NOT = { has_global_flag = africa_achievement_counted_court_deposed }
-	NOT = { has_global_flag = africa_achievement_counted_monarchy_abolished }
 	NOT = { has_global_flag = africa_achievement_coercive_integration_used }
 }
 
@@ -184,9 +284,10 @@ africa_union_of_work_and_land_is_complete = {
 	has_global_flag = africa_achievement_origin_socialist_or_communist
 	check_variable = { africa_constitution = constant:africa_constitution.peoples_union }
 	check_variable = { var = global.africa_achievement_worker_represented_regions^num value = constant:africa_achievement_count.union_represented_regions compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_food_secure_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_union_socialised_projects value = constant:africa_achievement_count.union_socialised_projects compare = greater_than_or_equals }
 	check_variable = { var = global.num_days value = global.africa_achievement_union_food_deadline_day compare = greater_than_or_equals }
-	NOT = { has_global_flag = africa_achievement_military_takeover }
+	NOT = { has_civil_war = yes }
 	NOT = { has_global_flag = africa_achievement_private_resource_concession }
 	NOT = { has_global_flag = africa_achievement_preventable_famine }
 }
@@ -199,15 +300,23 @@ africa_order_without_partition_is_complete = {
 	check_variable = { var = global.africa_achievement_major_interventions_defeated value = constant:africa_achievement_count.major_interventions_defeated compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_emergency_rule_reduced
 	has_global_flag = africa_achievement_representation_restored
-	NOT = { has_global_flag = africa_achievement_permanent_maximum_emergency_rule }
+	check_variable = { var = global.africa_achievement_represented_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_overlap_settled_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
+	africa_all_african_states_are_settled = yes
+	NOT = { check_variable = { var = africa_emergency_rule_debt value = constant:africa_measure.maximum compare = greater_than_or_equals } }
+	NOT = { has_civil_war = yes }
 	NOT = { has_global_flag = africa_achievement_member_genocide }
-	NOT = { has_global_flag = africa_achievement_region_partitioned }
+	# The Scramble settlement snapshot is the authoritative foreign-cession
+	# witness. A marked African core ceded to a foreign-capital owner/controller
+	# is an actual partition and disqualifies this route; temporary control loss
+	# alone is not used as a proxy.
+	NOT = { has_global_flag = africa_achievement_african_core_ceded }
 }
 
 africa_confederation_that_endured_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
-	check_variable = { var = global.africa_achievement_snapshot_sovereign_members value = constant:africa_achievement_count.confederal_sovereign_members compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_confederal_members value = constant:africa_achievement_count.confederal_sovereign_members compare = greater_than_or_equals }
 	NOT = { check_variable = { var = africa_integration_burden value = constant:africa_achievement_ratio.confederal_integration_ceiling compare = greater_than } }
 	check_variable = { var = global.num_days value = global.africa_achievement_confederation_deadline_day compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_scramble_settled_or_won
@@ -224,7 +333,6 @@ africa_covenant_with_the_impossible_is_complete = {
 	check_variable = { var = global.num_days value = global.africa_achievement_covenant_peace_deadline_day compare = greater_than_or_equals }
 	NOT = { has_global_flag = africa_achievement_nonhuman_rights_violation }
 	NOT = { has_global_flag = africa_achievement_nonhuman_rampage }
-	NOT = { has_global_flag = africa_achievement_terminal_disease_outcome }
 }
 
 africa_kings_of_the_savanna_is_complete = {
@@ -243,7 +351,8 @@ africa_kings_of_the_savanna_is_complete = {
 
 africa_nile_has_many_memories_is_complete = {
 	africa_achievement_event12_actor_is_eligible = yes
-	# Reviewed owner gate: Kush, Makuria, Alodia, and the shared Nile settlement owner are not yet runtime-backed.
+	# Owner gate: all four live Nile claimant identities and their shared
+	# settlement owner are recorded by the regional package/effects ledger.
 	has_global_flag = africa_achievement_nile_owner_ready
 	OR = {
 		check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn }
@@ -261,23 +370,25 @@ africa_nile_has_many_memories_is_complete = {
 
 africa_ports_of_the_monsoon_is_complete = {
 	africa_achievement_event12_actor_is_eligible = yes
-	# Reviewed owner gate: two-port loss and inland-shortcut disqualifier owners are not yet runtime-backed.
+	# Owner gate: live coastal naval-base states and convoy access are rebuilt at
+	# each host refresh; port loss is latched by state-control ownership change.
 	has_global_flag = africa_achievement_monsoon_owner_ready
 	OR = {
 		check_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean }
 		check_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands }
 		has_global_flag = africa_achievement_origin_coastal_host
 	}
-	check_variable = { var = global.africa_achievement_maritime_polity_count value = constant:africa_achievement_count.maritime_polities compare = greater_than_or_equals }
-	check_variable = { var = global.africa_achievement_maritime_port_count value = constant:africa_achievement_count.maritime_ports compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_maritime_polities value = constant:africa_achievement_count.maritime_polities compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_live_maritime_ports value = constant:africa_achievement_count.maritime_ports compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_maritime_access_completed
 	check_variable = { var = global.num_days value = global.africa_achievement_maritime_access_deadline_day compare = greater_than_or_equals }
 	NOT = { has_global_flag = africa_achievement_two_ports_lost }
-	NOT = { has_global_flag = africa_achievement_inland_military_shortcut }
 }
 
 africa_walls_courts_and_caravans_is_complete = {
 	africa_achievement_event12_actor_is_eligible = yes
-	# Reviewed owner gate: horn package war, abolition, and corridor-loss owners are not yet runtime-backed.
+	# Owner gate: bilateral Aksum/Harar war, forced administration, and sustained
+	# live-corridor loss each have distinct runtime writers.
 	has_global_flag = africa_achievement_horn_owner_ready
 	OR = {
 		check_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn }
@@ -286,15 +397,24 @@ africa_walls_courts_and_caravans_is_complete = {
 	}
 	any_country = {
 		africa_priority_member_package_is_aksum = yes
+		africa_member_host_generation_is_current = yes
+		NOT = { has_capitulated = yes }
+		NOT = { has_war_with = event_target:africa_host }
+		OR = { africa_relationship_is_protected = yes africa_relationship_is_associate = yes africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes africa_relationship_is_integrated_region = yes }
 		has_country_flag = africa_priority_member_politics_settled
 		has_country_flag = africa_priority_aksum_heritage_consent_separated
 	}
 	any_country = {
 		africa_priority_member_package_is_harar = yes
+		africa_member_host_generation_is_current = yes
+		NOT = { has_capitulated = yes }
+		NOT = { has_war_with = event_target:africa_host }
+		OR = { africa_relationship_is_protected = yes africa_relationship_is_associate = yes africa_relationship_is_chartered = yes africa_relationship_is_autonomous_federal = yes africa_relationship_is_integrated_region = yes }
 		has_country_flag = africa_priority_member_politics_settled
 		has_country_flag = africa_priority_harar_corridor_guarantees_diversified
 	}
 	check_variable = { var = global.num_days value = global.africa_achievement_horn_corridor_deadline_day compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_horn_corridor_peace_completed
 	NOT = { has_global_flag = africa_achievement_horn_package_war }
 	NOT = { has_global_flag = africa_achievement_horn_package_abolished }
 	NOT = { has_global_flag = africa_achievement_horn_corridor_lost }
@@ -302,7 +422,8 @@ africa_walls_courts_and_caravans_is_complete = {
 
 africa_the_old_gold_roads_is_complete = {
 	africa_achievement_event12_actor_is_eligible = yes
-	# Reviewed owner gate: Mutapa, Rozwi, local-ownership, and plateau failure owners are not yet runtime-backed.
+	# Owner gate: live plateau identities, processing receipts, and local-control
+	# clocks are sourced from the package and action ledgers.
 	has_global_flag = africa_achievement_gold_roads_owner_ready
 	OR = {
 		check_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa }
@@ -323,8 +444,8 @@ africa_the_old_gold_roads_is_complete = {
 
 africa_member_who_said_no_is_complete = {
 	africa_achievement_event12_actor_is_eligible = yes
-	# Reviewed owner gate: the refusal alternative is transaction-backed; League
-	# destruction, puppet, and terminal-chaos disqualifier owners remain audited.
+	# Owner gate: refusal, rival-bloc victory in a non-capitulation peace, and
+	# recognised confederation are transaction-backed; terminal DQs remain sticky.
 	has_global_flag = africa_achievement_member_refusal_owner_ready
 	has_country_flag = africa_priority_member_player_origin_validated
 	has_country_flag = africa_priority_member_league_offer_refused
@@ -343,7 +464,6 @@ africa_return_without_compulsion_is_complete = {
 	check_variable = { var = global.africa_achievement_diaspora_origin_groups^num value = constant:africa_achievement_count.diaspora_origin_groups compare = greater_than_or_equals }
 	check_variable = { var = africa_diaspora_trust value = constant:africa_measure.high compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_returnee_citizenship_protected
-	NOT = { has_global_flag = africa_achievement_forced_relocation }
 	NOT = { has_global_flag = africa_achievement_diaspora_disaster_negligence }
 	NOT = { has_global_flag = africa_achievement_returnee_discrimination }
 }
@@ -353,16 +473,17 @@ africa_tools_books_and_ballots_is_complete = {
 	check_variable = { var = global.africa_achievement_diaspora_skill_programmes^num value = constant:africa_achievement_count.diaspora_skill_programmes compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_diaspora_project_count value = constant:africa_achievement_count.diaspora_projects compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_returnee_representation_protected
-	NOT = { has_global_flag = africa_achievement_military_labor_only_programme }
 	NOT = { has_global_flag = africa_achievement_returnee_representation_denied }
 	NOT = { has_global_flag = africa_achievement_diaspora_trust_collapse }
 }
 
 africa_four_oceans_homeward_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
-	check_variable = { var = global.africa_achievement_diaspora_origin_groups^num value = constant:africa_achievement_count.diaspora_origin_groups compare = greater_than_or_equals }
+	is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.north_america }
+	is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.south_america_caribbean }
+	is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.europe }
+	is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.indian_ocean }
 	NOT = { has_global_flag = africa_achievement_catastrophic_return_loss }
-	NOT = { has_global_flag = africa_achievement_forced_relocation }
 }
 
 africa_capital_without_capture_is_complete = {
@@ -380,7 +501,14 @@ africa_rails_rivers_roads_and_ports_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	check_variable = { var = global.africa_achievement_corridor_systems^num value = constant:africa_achievement_count.corridor_systems compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_connected_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
+	# The live topology ledger is keyed by region and physical mode. Every
+	# applicable overlay pair must still be present; a four-enum receipt or a
+	# generic region count cannot satisfy this graph contract.
+	check_variable = { var = global.africa_achievement_corridor_required_region_modes^num value = constant:africa_achievement_count.corridor_required_region_modes compare = greater_than_or_equals }
+	check_variable = { var = global.africa_achievement_corridor_live_region_modes^num value = global.africa_achievement_corridor_required_region_modes^num compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_corridor_required_pairs_live
 	check_variable = { var = global.num_days value = global.africa_achievement_corridor_access_deadline_day compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_corridor_access_completed
 	NOT = { has_global_flag = africa_achievement_network_split }
 	NOT = { has_global_flag = africa_achievement_connected_region_lost }
 }
@@ -393,7 +521,13 @@ africa_ore_leaves_as_machines_is_complete = {
 	has_global_flag = africa_achievement_ore_leaves_as_machines_owner_ready
 	check_variable = { var = global.africa_achievement_resource_zone_count value = constant:africa_achievement_count.resource_zones compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_processing_zone_count value = constant:africa_achievement_count.resource_zones compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_resource_settlement_operation
+	OR = {
+		NOT = { has_global_flag = africa_achievement_event18_resource_surface_present }
+		has_global_flag = africa_achievement_event18_resource_settlement_integrated
+	}
 	check_variable = { var = global.num_days value = global.africa_achievement_resource_concession_deadline_day compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_resource_concession_completed
 	NOT = { has_global_flag = africa_achievement_raw_export_dependency_crisis }
 	NOT = { has_global_flag = africa_achievement_foreign_concession_cap_breached }
 	NOT = { has_global_flag = africa_achievement_forced_resource_seizure }
@@ -412,11 +546,13 @@ africa_bread_before_banners_is_complete = {
 
 africa_development_without_overstretch_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
-	# Reviewed owner gate: the project-exploitation scandal owner is not yet runtime-backed.
+	# Owner gate: development projects and all-region confidence are live; the
+	# exploitation-scandal flag remains a fail-closed disqualifier.
 	has_global_flag = africa_achievement_development_owner_ready
 	check_variable = { var = global.africa_achievement_development_project_count value = constant:africa_achievement_count.development_projects compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_developed_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
 	check_variable = { var = global.num_days value = global.africa_achievement_development_stability_deadline_day compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_development_stability_completed
 	NOT = { has_global_flag = africa_achievement_integration_burden_breached }
 	NOT = { has_global_flag = africa_achievement_region_confidence_collapsed }
 	NOT = { has_global_flag = africa_achievement_project_exploitation_scandal }
@@ -424,7 +560,8 @@ africa_development_without_overstretch_is_complete = {
 
 africa_common_reserve_answers_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
-	# Reviewed owner gate: deployment, deadline, capital-loss, and offensive-abuse writers are runtime-backed; six-war acceptance remains the live gate.
+	# Owner gate: deployment, deadline, capital-loss, offensive-abuse, and six-war
+	# sequence writers are runtime-backed.
 	has_global_flag = africa_achievement_common_reserve_owner_ready
 	check_variable = { var = global.africa_achievement_reserve_wars_answered value = constant:africa_achievement_count.reserve_wars compare = greater_than_or_equals }
 	NOT = { has_global_flag = africa_achievement_reserve_deadline_missed }
@@ -435,6 +572,7 @@ africa_common_reserve_answers_is_complete = {
 africa_no_foreign_boot_remains_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
 	has_global_flag = africa_achievement_scramble_coalition_defeated
+	has_global_flag = africa_achievement_scramble_settlement_owner_ready
 	has_global_flag = africa_achievement_no_hostile_foreign_control
 	check_variable = { global.africa_achievement_hostile_african_state_count = constant:africa_value.zero }
 	NOT = { has_global_flag = africa_achievement_african_core_ceded }
@@ -448,7 +586,6 @@ africa_beasts_but_not_caricatures_is_complete = {
 	check_variable = { var = global.africa_achievement_nonhuman_unit_families^num value = constant:africa_achievement_count.nonhuman_unit_families compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_nonhuman_great_power_war_won
 	has_global_flag = africa_achievement_nonhuman_actor_rights_preserved
-	NOT = { has_global_flag = africa_achievement_human_caricature_used }
 	NOT = { has_global_flag = africa_achievement_nonhuman_extermination }
 	NOT = { has_global_flag = africa_achievement_nonhuman_rights_violation }
 }
@@ -466,14 +603,13 @@ africa_elephants_crossed_the_desert_is_complete = {
 	has_global_flag = africa_achievement_elephant_protection_war_won
 	NOT = { has_global_flag = africa_achievement_elephant_formation_destroyed }
 	NOT = { has_global_flag = africa_achievement_elephant_supply_failed }
-	NOT = { has_global_flag = africa_achievement_elephant_used_against_unthreatened_african }
 }
 
 africa_the_forest_kept_its_word_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
-	# Reviewed owner gate: the accepted hostile selected-country call is not
-	# civilian-casualty proof, and no exact civilian-damage owner is exposed yet.
-	# Keep Row 37 fail-closed until that owner is wired.
+	# Event 013 owns the exact accepted-call and positive civilian-impact
+	# receipts; this predicate consumes the authored ecological ledger without
+	# inferring harm from a generic hostile call.
 	has_global_flag = africa_achievement_ecological_covenant_owner_ready
 	africa_achievement_uses_high_chaos = yes
 	check_variable = { var = global.africa_achievement_ecological_bargains_honoured value = constant:africa_achievement_count.ecological_bargains compare = greater_than_or_equals }
@@ -509,8 +645,6 @@ africa_disease_made_and_unmade_is_complete = {
 	check_variable = { var = global.africa_achievement_disease_outbreaks_contained value = constant:africa_value.one compare = greater_than_or_equals }
 	has_global_flag = africa_achievement_disease_countermeasure_completed
 	NOT = { has_global_flag = africa_achievement_deliberate_uncontrolled_civilian_release }
-	NOT = { has_global_flag = africa_achievement_irreversible_disease_outcome }
-	NOT = { has_global_flag = africa_achievement_terminal_disease_outcome }
 }
 
 africa_stone_walks_into_parliament_is_complete = {
@@ -542,7 +676,7 @@ africa_two_continents_one_name_is_complete = {
 	has_global_flag = africa_achievement_two_continent_negotiated
 	has_global_flag = africa_achievement_two_continent_constitutional_integration
 	has_global_flag = africa_achievement_two_continent_military_integration
-	check_variable = { var = global.num_days value = global.africa_achievement_two_continent_stability_deadline_day compare = greater_than_or_equals }
+	has_global_flag = africa_achievement_two_continent_stability_completed
 	NOT = { has_global_flag = africa_achievement_two_continent_conquest_only }
 	NOT = { has_global_flag = africa_achievement_two_continent_confidence_collapse }
 	NOT = { has_global_flag = africa_achievement_two_continent_union_civil_war }
@@ -557,7 +691,6 @@ africa_war_between_worlds_is_complete = {
 	has_global_flag = africa_achievement_continental_war_victory
 	has_global_flag = africa_achievement_continental_settlement_complete
 	check_variable = { var = global.num_days value = global.africa_achievement_continental_settlement_deadline_day compare = greater_than_or_equals }
-	NOT = { has_global_flag = africa_achievement_debug_surrender_used }
 	NOT = { has_global_flag = africa_achievement_global_revolt_threshold_reached }
 }
 
@@ -575,4 +708,42 @@ africa_the_world_is_one_is_complete = {
 	has_global_flag = world_end
 	NOT = { has_global_flag = africa_achievement_other_world_end_used }
 	NOT = { has_global_flag = africa_achievement_unresolved_continent_identity }
+}
+# STATE scope. A processing pair is counted only on a state that has a live
+# Event 018 field or a real vanilla resource deposit. A project receipt in an
+# empty state is not a resource zone.
+africa_achievement_resource_processing_state_is_valid = {
+	OR = {
+		resources_found_is_active_field = yes
+		natural_disaster_state_has_resource_proxy = yes
+	}
+}
+
+# COUNTRY scope. A connected-region receipt remains live only while the
+# authored host-to-capital railway edge remains live. This is deliberately
+# separate from local rail/river/port endpoint validation below: a local
+# project cannot substitute for the star edge to the Event 012 host.
+africa_achievement_live_corridor_road_edge_is_valid = {
+	has_country_flag = africa_achievement_live_continental_connection_proof
+	has_country_flag = africa_member_transport_connection_complete
+	capital_scope = { has_state_flag = africa_member_capital_transport_connection_operational }
+	has_railway_connection = {
+		start_state = ROOT.capital
+		target_state = THIS.capital
+	}
+}
+
+# COUNTRY scope. A local corridor mode is live only when the exact host edge
+# above remains present and at least one owned rail/river/port endpoint still
+# carries its project marker and live evidence. The generic connection receipt
+# alone is intentionally insufficient.
+africa_achievement_live_network_actor_is_valid = {
+	africa_achievement_live_corridor_road_edge_is_valid = yes
+	any_owned_state = {
+		OR = {
+			AND = { has_state_flag = africa_rail_spine_connection_operational africa_first_proof_state_project_evidence_is_live = yes }
+			AND = { has_state_flag = africa_river_or_lake_transport_operational africa_first_proof_state_project_evidence_is_live = yes }
+			AND = { has_state_flag = africa_port_modernisation_operational africa_first_proof_state_project_evidence_is_live = yes }
+		}
+	}
 }

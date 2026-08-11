@@ -153,6 +153,32 @@ genocide_credit_state_deaths_to_responsible = {
 			}
 			set_temp_variable = { genocide_condemnation_civilian_deaths = PREV.genocide_last_state_deaths }
 			genocide_register_hidden_condemnation_source = yes
+			# Event 012 Military Continentalism may use the shared camp system, but
+			# positive deaths in a living current-generation League member are an
+			# exact lifetime disqualifier for Order Without Partition.
+			if = {
+				limit = {
+					has_global_flag = africa_event_active
+					africa_is_current_host = yes
+					PREV = {
+						owner = {
+							exists = yes
+							africa_member_host_generation_is_current = yes
+						}
+					}
+				}
+				set_global_flag = africa_achievement_member_genocide
+				if = {
+					limit = {
+						PREV = {
+							owner = { has_country_flag = africa_registered_high_chaos_actor }
+						}
+					}
+					PREV = {
+						owner = { set_country_flag = africa_achievement_nonhuman_genocide_targeted }
+					}
+				}
+			}
 		}
 	}
 }

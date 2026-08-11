@@ -139,4 +139,140 @@ africa_promoted_tiera_category = {
 		complete_effect = { custom_effect_tooltip = africa_promoted_tiera_call_plague_carriers_tt hidden_effect = { africa_promoted_tiera_call_plague_carriers = yes } }
 		ai_will_do = { base = constant:africa_promoted_tiera_ai.force }
 	}
+
+	# These four targeted decisions are deliberately separate operations. The
+	# target trigger only exposes a current, consenting human member; no generic
+	# hostile, breach, or failed-action flag can substitute for the exact owner.
+	africa_promoted_tiera_nonhuman_rampage = {
+		name = africa_promoted_tiera_nonhuman_rampage
+		desc = africa_promoted_tiera_nonhuman_rampage_desc
+		icon = GFX_decision_012_africa_forest_giants
+		target_root_trigger = { africa_promoted_tiera_nonhuman_rampage_is_available = yes }
+		target_trigger = { FROM = { africa_promoted_tiera_human_member_target_is_valid = yes } }
+		visible = { africa_promoted_tiera_nonhuman_rampage_is_available = yes }
+		available = { africa_promoted_tiera_can_pay_nonhuman_rampage = yes }
+		cost = constant:africa_promoted_tiera_cost.nonhuman_rampage_pp
+		custom_cost_trigger = { africa_promoted_tiera_can_pay_nonhuman_rampage = yes }
+		custom_cost_text = africa_promoted_tiera_nonhuman_rampage_cost
+		days_re_enable = constant:africa_promoted_tiera_cost.operation_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_promoted_tiera_nonhuman_rampage_tt
+			hidden_effect = { africa_promoted_tiera_nonhuman_rampage = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_promoted_tiera_ai.rampage
+			modifier = { factor = 0.50 has_war = no }
+		}
+	}
+
+	africa_promoted_tiera_forest_actor_rampage = {
+		name = africa_promoted_tiera_forest_actor_rampage
+		desc = africa_promoted_tiera_forest_actor_rampage_desc
+		icon = GFX_decision_012_africa_disaster_wardens
+		target_root_trigger = { africa_promoted_tiera_forest_actor_rampage_is_available = yes }
+		target_trigger = { FROM = { africa_promoted_tiera_human_member_target_is_valid = yes } }
+		visible = { africa_promoted_tiera_forest_actor_rampage_is_available = yes }
+		available = { africa_promoted_tiera_can_pay_forest_rampage = yes }
+		cost = constant:africa_promoted_tiera_cost.forest_rampage_pp
+		custom_cost_trigger = { africa_promoted_tiera_can_pay_forest_rampage = yes }
+		custom_cost_text = africa_promoted_tiera_forest_actor_rampage_cost
+		days_re_enable = constant:africa_promoted_tiera_cost.operation_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_promoted_tiera_forest_actor_rampage_tt
+			hidden_effect = { africa_promoted_tiera_forest_actor_rampage = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_promoted_tiera_ai.forest_rampage
+			modifier = { factor = 0.25 has_war = no }
+		}
+	}
+
+	africa_promoted_tiera_stoneborn_rights_violation = {
+		name = africa_promoted_tiera_stoneborn_rights_violation
+		desc = africa_promoted_tiera_stoneborn_rights_violation_desc
+		icon = GFX_decision_012_africa_priority_member_political_settlement
+		target_root_trigger = { africa_promoted_tiera_stoneborn_rights_violation_is_available = yes }
+		target_trigger = { FROM = { africa_promoted_tiera_human_member_target_is_valid = yes } }
+		visible = { africa_promoted_tiera_stoneborn_rights_violation_is_available = yes }
+		available = { africa_promoted_tiera_can_pay_stoneborn_rights = yes }
+		cost = constant:africa_promoted_tiera_cost.stoneborn_rights_pp
+		custom_cost_trigger = { africa_promoted_tiera_can_pay_stoneborn_rights = yes }
+		custom_cost_text = africa_promoted_tiera_stoneborn_rights_violation_cost
+		days_re_enable = constant:africa_promoted_tiera_cost.operation_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_promoted_tiera_stoneborn_rights_violation_tt
+			hidden_effect = { africa_promoted_tiera_stoneborn_rights_violation = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_promoted_tiera_ai.stoneborn_rights
+			modifier = { factor = 2.00 has_country_flag = africa_promoted_stoneborn_silent_conquest }
+		}
+	}
+
+	africa_promoted_tiera_stoneborn_human_member_war = {
+		name = africa_promoted_tiera_stoneborn_human_member_war
+		desc = africa_promoted_tiera_stoneborn_human_member_war_desc
+		icon = GFX_decision_012_africa_stone_cohorts
+		target_root_trigger = { africa_promoted_tiera_stoneborn_human_member_war_is_available = yes }
+		target_trigger = {
+			FROM = {
+				africa_promoted_tiera_human_member_target_is_valid = yes
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		visible = { africa_promoted_tiera_stoneborn_human_member_war_is_available = yes }
+		available = { africa_promoted_tiera_can_pay_stoneborn_war = yes }
+		cost = constant:africa_promoted_tiera_cost.stoneborn_war_pp
+		custom_cost_trigger = { africa_promoted_tiera_can_pay_stoneborn_war = yes }
+		custom_cost_text = africa_promoted_tiera_stoneborn_human_member_war_cost
+		days_re_enable = constant:africa_promoted_tiera_cost.operation_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_promoted_tiera_stoneborn_human_member_war_tt
+			hidden_effect = { africa_promoted_tiera_stoneborn_human_member_war = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_promoted_tiera_ai.stoneborn_war
+			modifier = { factor = 0.25 has_war = yes }
+		}
+	}
+
+	# The host's distinct great-power war is the only lifecycle that can open
+	# the Row 35 victory receipt. Stoneborn's member war remains Row 40 only.
+	africa_promoted_tiera_host_great_power_war = {
+		name = africa_promoted_tiera_host_great_power_war
+		desc = africa_promoted_tiera_host_great_power_war_desc
+		icon = GFX_decision_012_africa_stone_cohorts
+		target_root_trigger = { africa_promoted_tiera_host_great_power_war_is_available = yes }
+		target_trigger = { FROM = { africa_promoted_tiera_host_great_power_war_enemy_target_is_valid = yes } }
+		visible = { africa_promoted_tiera_host_great_power_war_is_available = yes }
+		available = { africa_promoted_tiera_can_pay_host_great_power_war = yes }
+		cost = constant:africa_promoted_tiera_cost.great_power_war_pp
+		custom_cost_trigger = { africa_promoted_tiera_can_pay_host_great_power_war = yes }
+		custom_cost_text = africa_promoted_tiera_host_great_power_war_cost
+		days_re_enable = constant:africa_promoted_tiera_cost.great_power_war_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = africa_promoted_tiera_host_great_power_war_tt
+			hidden_effect = { africa_promoted_tiera_host_great_power_war = yes }
+		}
+		ai_will_do = {
+			base = constant:africa_promoted_tiera_ai.great_power_war
+			modifier = { factor = 0.25 has_war = yes }
+		}
+	}
+
+	# A player or AI may record the great-power victory only after the real war
+	# result is observable. The complete effect rechecks every proof and clears
+	# the global target, so this receipt cannot be asserted at declaration time.
+	africa_promoted_tiera_record_nonhuman_great_power_war_victory = {
+		name = africa_promoted_tiera_record_nonhuman_great_power_war_victory
+		desc = africa_promoted_tiera_record_nonhuman_great_power_war_victory_desc
+		icon = GFX_decision_012_africa_stone_cohorts
+		visible = { africa_promoted_tiera_activation_is_open = yes }
+		available = { africa_promoted_tiera_nonhuman_great_power_war_victory_is_available = yes }
+		complete_effect = {
+			custom_effect_tooltip = africa_promoted_tiera_record_nonhuman_great_power_war_victory_tt
+			hidden_effect = { africa_promoted_tiera_record_nonhuman_great_power_war_victory = yes }
+		}
+		ai_will_do = { base = constant:africa_promoted_tiera_ai.great_power_victory }
+	}
 }

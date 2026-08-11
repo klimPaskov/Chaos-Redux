@@ -1,0 +1,283 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AUTHORED ELEPHANT OPERATION EFFECTS
+# ============================================================================
+# These are the only Event 012 elephant achievement writers. The first terrain
+# operation binds one existing elephant division to a locked, one-division
+# operation roster and stamps that division with a generation-scoped marker.
+# Later state and mission contracts refer to that marked roster, not to an
+# arbitrary surviving elephant or a country-level proxy. Logistics and
+# protection evidence is written only when their authored missions settle. No
+# on_action scan is involved.
+# ============================================================================
+
+# COUNTRY scope. Create the one-division roster once. The template is locked
+# and capped so a later elephant cannot substitute for the authored detachment.
+africa_elephant_ensure_operation_roster = {
+	if = {
+		limit = { NOT = { has_template = "Africa Elephant Operations Roster" } }
+		division_template = {
+			name = "Africa Elephant Operations Roster"
+			is_locked = yes
+			force_allow_recruiting = no
+			division_cap = 1
+			priority = 2
+			override_model = chaosx_elephant_shared_base_entity
+			regiments = {
+				chaosx_elephant = { x = 0 y = 0 }
+				chaosx_elephant = { x = 0 y = 1 }
+			}
+			support = {
+				recon = { x = 0 y = 0 }
+				engineer = { x = 0 y = 1 }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. On the first terrain registration, convert one actual
+# elephant division in the selected state to the unique operation roster and
+# save that exact division scope. The state trigger has already proved owner,
+# control, terrain, and an elephant battalion before this effect runs.
+africa_elephant_bind_operation_roster = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_elephant_operation_roster_active } }
+		africa_elephant_ensure_operation_roster = yes
+		event_target:africa_elephant_band_state = {
+			random_state_division = {
+				limit = {
+					owner = { tag = ROOT }
+					division_has_battalion_in_template = chaosx_elephant
+				}
+				change_division_template = { division_template = "Africa Elephant Operations Roster" }
+				set_variable = { africa_elephant_operation_roster_marker = ROOT.africa_host_generation }
+				save_global_event_target_as = africa_elephant_operation_roster
+			}
+		}
+		if = {
+			limit = { has_event_target = africa_elephant_operation_roster }
+			set_country_flag = africa_elephant_operation_roster_active
+			set_variable = { africa_elephant_operation_roster_generation = africa_host_generation }
+		}
+	}
+}
+
+# COUNTRY scope. FROM is persisted as the selected state by the decision.
+africa_elephant_record_selected_terrain_band = {
+	if = {
+		limit = {
+			has_event_target = africa_elephant_band_state
+			event_target:africa_elephant_band_state = {
+				africa_elephant_state_formation_contract_is_valid = yes
+				africa_elephant_state_terrain_band_is_unrecorded = yes
+			}
+		}
+		africa_elephant_bind_operation_roster = yes
+		event_target:africa_elephant_band_state = {
+			if = {
+				limit = { africa_elephant_state_is_marsh = yes }
+				ROOT = { set_temp_variable = { africa_achievement_terrain_region_id = constant:africa_achievement_terrain_region.marsh } }
+			}
+			else_if = {
+				limit = { africa_elephant_state_is_desert = yes }
+				ROOT = { set_temp_variable = { africa_achievement_terrain_region_id = constant:africa_achievement_terrain_region.desert } }
+			}
+			else_if = {
+				limit = { africa_elephant_state_is_savanna = yes }
+				ROOT = { set_temp_variable = { africa_achievement_terrain_region_id = constant:africa_achievement_terrain_region.savanna } }
+			}
+			else_if = {
+				limit = { africa_elephant_state_is_forest = yes }
+				ROOT = { set_temp_variable = { africa_achievement_terrain_region_id = constant:africa_achievement_terrain_region.forest } }
+			}
+			else_if = {
+				limit = { africa_elephant_state_is_highland = yes }
+				ROOT = { set_temp_variable = { africa_achievement_terrain_region_id = constant:africa_achievement_terrain_region.highland } }
+			}
+			else_if = {
+				limit = { africa_elephant_state_is_coast = yes }
+				ROOT = { set_temp_variable = { africa_achievement_terrain_region_id = constant:africa_achievement_terrain_region.coast } }
+			}
+		}
+		africa_achievement_record_elephant_formation = yes
+		africa_achievement_record_elephant_terrain_region = yes
+	}
+	clear_global_event_target = africa_elephant_band_state
+}
+
+# COUNTRY scope. FROM is the controlled state whose named operation roster is
+# bound to the 180-day logistics contract. The selected state is retained only
+# for this contract; the roster target itself is retained for the protection
+# expedition.
+africa_elephant_begin_logistics_contract = {
+	FROM = {
+		save_global_event_target_as = africa_elephant_logistics_state
+	}
+	set_variable = { africa_elephant_logistics_generation = africa_host_generation }
+	set_variable = { africa_elephant_logistics_completion_day = global.num_days }
+	add_to_variable = { africa_elephant_logistics_completion_day = constant:africa_elephant_operation.logistics_duration_days }
+	# These values are the sealed, operation-owned reserve ledger. They are
+	# checked as contract variables, not against a national stockpile/fuel
+	# snapshot that could not prove a division's live supply state.
+	set_variable = { africa_elephant_logistics_equipment_commitment = constant:africa_elephant_operation.logistics_elephant_equipment_commitment }
+	set_variable = { africa_elephant_logistics_truck_commitment = constant:africa_elephant_operation.logistics_truck_commitment }
+	set_variable = { africa_elephant_logistics_train_commitment = constant:africa_elephant_operation.logistics_train_commitment }
+	set_variable = { africa_elephant_logistics_fuel_commitment = constant:africa_elephant_operation.logistics_fuel_commitment }
+	set_variable = { africa_elephant_logistics_timeout_days = constant:africa_elephant_operation.logistics_timeout_days }
+	set_temp_variable = { africa_elephant_operation_equipment_payment = constant:africa_elephant_operation.logistics_elephant_equipment_commitment }
+	multiply_temp_variable = { africa_elephant_operation_equipment_payment = -1 }
+	set_temp_variable = { africa_elephant_operation_truck_payment = constant:africa_elephant_operation.logistics_truck_commitment }
+	multiply_temp_variable = { africa_elephant_operation_truck_payment = -1 }
+	set_temp_variable = { africa_elephant_operation_train_payment = constant:africa_elephant_operation.logistics_train_commitment }
+	multiply_temp_variable = { africa_elephant_operation_train_payment = -1 }
+	set_temp_variable = { africa_elephant_operation_fuel_payment = constant:africa_elephant_operation.logistics_fuel_commitment }
+	multiply_temp_variable = { africa_elephant_operation_fuel_payment = -1 }
+	add_equipment_to_stockpile = {
+		type = chaosx_elephant_equipment_1
+		amount = var:africa_elephant_operation_equipment_payment
+	}
+	add_equipment_to_stockpile = {
+		type = motorized_equipment
+		amount = var:africa_elephant_operation_truck_payment
+	}
+	add_equipment_to_stockpile = {
+		type = train_equipment
+		amount = var:africa_elephant_operation_train_payment
+	}
+	add_fuel = var:africa_elephant_operation_fuel_payment
+	set_country_flag = africa_elephant_logistics_active
+	activate_mission = africa_elephant_logistics_mission
+}
+
+africa_elephant_clear_logistics_contract = {
+	clr_country_flag = africa_elephant_logistics_active
+	clear_variable = africa_elephant_logistics_generation
+	clear_variable = africa_elephant_logistics_completion_day
+	clear_variable = africa_elephant_logistics_equipment_commitment
+	clear_variable = africa_elephant_logistics_truck_commitment
+	clear_variable = africa_elephant_logistics_train_commitment
+	clear_variable = africa_elephant_logistics_fuel_commitment
+	clear_variable = africa_elephant_logistics_timeout_days
+	clear_global_event_target = africa_elephant_logistics_state
+}
+
+# The mission engine calls this only after the duration, selected-state, named
+# roster, and sealed reserve contracts pass. The achievement helper itself is
+# deliberately narrow; this caller owns the complete logistics witness.
+africa_elephant_complete_logistics_contract = {
+	if = {
+		limit = {
+			africa_elephant_logistics_contract_is_intact = yes
+			check_variable = { var = global.num_days value = africa_elephant_logistics_completion_day compare = greater_than_or_equals }
+		}
+		africa_achievement_record_elephant_supply_proof = yes
+		set_country_flag = africa_elephant_logistics_completed
+		africa_elephant_clear_logistics_contract = yes
+	}
+}
+
+# A broken named roster/state resolves this authored operation. A missing
+# saved division scope is the exact formation-destruction witness; movement
+# leaves the saved division scope alive and therefore cannot write that DQ.
+# Loss of the selected controlled depot, departure of the marked roster from
+# its bound state, or mutation of the sealed material ledger writes the
+# existing supply DQ. No country stockpile/fuel snapshot is interpreted as
+# live unit supply.
+africa_elephant_fail_logistics_contract = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_achievement_elephant_supply_failed } }
+		if = {
+			limit = { africa_elephant_operation_roster_is_destroyed = yes }
+			set_global_flag = africa_achievement_elephant_formation_destroyed
+		}
+		else_if = {
+			limit = {
+				OR = {
+					NOT = { africa_elephant_logistics_material_contract_is_intact = yes }
+					NOT = { has_event_target = africa_elephant_logistics_state }
+					AND = {
+						has_event_target = africa_elephant_logistics_state
+						event_target:africa_elephant_logistics_state = {
+							OR = {
+								NOT = { is_owned_and_controlled_by = ROOT }
+								NOT = { supply_node > constant:africa_value.zero }
+							}
+						}
+					}
+				}
+			}
+			set_global_flag = africa_achievement_elephant_supply_failed
+		}
+		else_if = {
+			limit = { NOT = { africa_elephant_logistics_formation_contract_is_intact = yes } }
+			set_global_flag = africa_achievement_elephant_supply_failed
+		}
+		else_if = {
+			limit = { africa_elephant_logistics_contract_is_intact = yes }
+			set_global_flag = africa_achievement_elephant_supply_failed
+		}
+	}
+	africa_elephant_clear_logistics_contract = yes
+}
+
+# COUNTRY scope; the targeted decision has already validated FROM as a
+# protected, genuinely defensive-war African partner.
+africa_elephant_begin_protection_expedition = {
+	FROM = {
+		save_global_event_target_as = africa_elephant_protection_partner
+		capital_scope = { save_global_event_target_as = africa_elephant_protection_state }
+	}
+	if = {
+		limit = {
+			FROM = { africa_elephant_protection_target_is_valid = yes }
+			has_event_target = africa_elephant_protection_state
+			event_target:africa_elephant_protection_state = {
+				is_owned_and_controlled_by = event_target:africa_elephant_protection_partner
+				africa_elephant_state_contains_operation_roster = yes
+			}
+		}
+		event_target:africa_elephant_protection_partner = {
+			africa_achievement_record_protection_war_started = yes
+		}
+		set_variable = { africa_elephant_protection_participation_witness = constant:africa_value.one }
+		set_variable = { africa_elephant_protection_timeout_days = constant:africa_elephant_operation.protection_timeout_days }
+		set_country_flag = africa_elephant_protection_expedition_active
+		activate_mission = africa_elephant_protection_mission
+	}
+	else = {
+		clear_global_event_target = africa_elephant_protection_partner
+		clear_global_event_target = africa_elephant_protection_state
+	}
+}
+
+africa_elephant_clear_protection_expedition = {
+	clr_country_flag = africa_elephant_protection_expedition_active
+	clear_variable = africa_elephant_protection_timeout_days
+	clear_variable = africa_elephant_protection_participation_witness
+	clear_global_event_target = africa_elephant_protection_partner
+	clear_global_event_target = africa_elephant_protection_state
+}
+
+africa_elephant_complete_protection_expedition = {
+	if = {
+		limit = { africa_elephant_protection_settlement_witness_is_ready = yes }
+		event_target:africa_elephant_protection_partner = {
+			africa_achievement_record_protection_war_settled = yes
+		}
+		africa_achievement_record_elephant_protection_victory = yes
+		africa_elephant_clear_protection_expedition = yes
+	}
+}
+
+africa_elephant_fail_protection_expedition = {
+	# A missing saved division scope is the exact formation-destruction witness.
+	# Partner capitulation, peace, or relationship loss ends the expedition with
+	# no invented protection-failed flag; the achievement matrix has no such DQ.
+	if = {
+		limit = {
+			NOT = { has_global_flag = africa_achievement_elephant_formation_destroyed }
+			africa_elephant_operation_roster_is_destroyed = yes
+		}
+		set_global_flag = africa_achievement_elephant_formation_destroyed
+	}
+	africa_elephant_clear_protection_expedition = yes
+}

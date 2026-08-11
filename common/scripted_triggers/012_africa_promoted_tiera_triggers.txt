@@ -284,3 +284,272 @@ africa_promoted_tiera_force_plague_carriers_is_available = {
 		NOT = { has_country_flag = africa_promoted_tiera_force_plague_carriers_called }
 	}
 }
+
+# ---------------------------------------------------------------------------
+# High-chaos actor operations
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on a promoted carrier. The normal host must still be in
+# Evolution III high chaos; otherwise the carrier cannot escalate a settled
+# member relationship through this additive surface.
+africa_promoted_tiera_highchaos_operation_window_is_open = {
+	AND = {
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_activation_is_open = yes
+		NOT = { has_country_flag = africa_promoted_tiera_contained }
+		NOT = { has_country_flag = africa_promoted_tiera_highchaos_operation_cooldown }
+	}
+}
+
+# COUNTRY scope on a human polity that has actually entered the current host's
+# cooperative member ledger. Consent and representation are required before an
+# actor can violate them; opinion, vanilla alliance, and mere geography are
+# never treated as membership proof.
+africa_promoted_tiera_human_member_target_is_valid = {
+	AND = {
+		africa_is_valid_relationship_target = yes
+		NOT = { is_actual_nonhuman_country = yes }
+		africa_member_host_generation_is_current = yes
+		africa_relationship_is_cooperative = yes
+		has_country_flag = africa_member_representation_settled
+		has_country_flag = africa_member_integration_consent
+		NOT = { has_war_with = event_target:africa_host }
+		NOT = { has_country_flag = africa_promoted_tiera_highchaos_operation_target_lock }
+	}
+}
+
+# COUNTRY scope on a participant observed by Event 012's pairwise war
+# callback. Unlike the pre-war decision target gate this predicate does not
+# require `NOT = { has_war_with = event_target:africa_host }` or a target lock;
+# the relation is still cooperative in the declaration callback, while the
+# current-generation member ledger, settled representation, and explicit
+# consent remain authoritative. Nonhuman and special chaos countries are
+# rejected explicitly so a Stoneborn war with another actor cannot satisfy Row
+# 40.
+africa_promoted_tiera_human_member_war_participant_is_current = {
+	AND = {
+		exists = yes
+		africa_is_valid_relationship_target = yes
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = { is_special_chaos_country = yes }
+		africa_member_host_generation_is_current = yes
+		africa_relationship_is_cooperative = yes
+		has_country_flag = africa_member_representation_settled
+		has_country_flag = africa_member_integration_consent
+	}
+}
+
+# COUNTRY scope on a promoted Stoneborn actor seen by the pairwise callback.
+# Activation-open ties the actor to the committed current Event 012 host and
+# host generation; no tag, opinion, or generic hostile-country proxy is used.
+africa_promoted_tiera_stoneborn_actor_is_current = {
+	AND = {
+		exists = yes
+		has_country_flag = africa_registered_high_chaos_actor
+		africa_promoted_tiera_is_active = yes
+		africa_promoted_tiera_package_is_stoneborn = yes
+		africa_promoted_tiera_activation_is_open = yes
+		NOT = { has_country_flag = africa_promoted_tiera_contained }
+	}
+}
+
+# Event 012's on_war_relation_added callback keeps ROOT as attacker and FROM
+# as defender, then checks both orientations. The global DQ is idempotent and
+# the host scope is required so an unrelated Stoneborn/foreign war cannot
+# write the Row 40 receipt outside the current Event 012 generation.
+africa_promoted_tiera_stoneborn_human_member_war_pair_is_current = {
+	AND = {
+		has_event_target = africa_host
+		event_target:africa_host = {
+			exists = yes
+			africa_is_current_host = yes
+		}
+		NOT = { has_global_flag = africa_achievement_stoneborn_human_member_war }
+		OR = {
+			AND = {
+				ROOT = { africa_promoted_tiera_stoneborn_actor_is_current = yes }
+				FROM = { africa_promoted_tiera_human_member_war_participant_is_current = yes }
+			}
+			AND = {
+				FROM = { africa_promoted_tiera_stoneborn_actor_is_current = yes }
+				ROOT = { africa_promoted_tiera_human_member_war_participant_is_current = yes }
+			}
+		}
+	}
+}
+
+africa_promoted_tiera_nonhuman_rampage_is_available = {
+	AND = {
+		africa_promoted_tiera_highchaos_operation_window_is_open = yes
+		OR = {
+			africa_promoted_tiera_package_is_pan = yes
+			africa_promoted_tiera_package_is_gorilla_kingdom = yes
+			africa_promoted_tiera_package_is_living_rivers = yes
+			africa_promoted_tiera_package_is_ancient_hosts = yes
+		}
+		NOT = { has_country_flag = africa_promoted_tiera_nonhuman_rampage_used }
+	}
+}
+
+africa_promoted_tiera_forest_actor_rampage_is_available = {
+	AND = {
+		africa_promoted_tiera_highchaos_operation_window_is_open = yes
+		africa_promoted_tiera_package_is_the_green = yes
+		NOT = { has_country_flag = africa_promoted_tiera_forest_actor_rampage_used }
+	}
+}
+
+africa_promoted_tiera_stoneborn_rights_violation_is_available = {
+	AND = {
+		africa_promoted_tiera_highchaos_operation_window_is_open = yes
+		africa_promoted_tiera_package_is_stoneborn = yes
+		NOT = { has_country_flag = africa_promoted_tiera_stoneborn_rights_violation_used }
+	}
+}
+
+africa_promoted_tiera_stoneborn_human_member_war_is_available = {
+	AND = {
+		africa_promoted_tiera_highchaos_operation_window_is_open = yes
+		africa_promoted_tiera_package_is_stoneborn = yes
+		NOT = { has_country_flag = africa_promoted_tiera_stoneborn_human_member_war_used }
+	}
+}
+
+# COUNTRY scope on the current Event 012 host. This is a distinct great-power
+# war lifecycle and never reuses the Stoneborn human-member-war receipt.
+africa_promoted_tiera_host_great_power_war_is_available = {
+	AND = {
+		africa_promoted_tiera_activation_is_open = yes
+		africa_is_current_host = yes
+		is_major = yes
+		NOT = { has_country_flag = africa_promoted_tiera_host_great_power_war_used }
+		NOT = { has_country_flag = africa_promoted_tiera_host_great_power_war_pending }
+		NOT = { has_country_flag = africa_promoted_tiera_highchaos_operation_cooldown }
+	}
+}
+
+# TARGET scope on an enemy chosen for the host's distinct great-power war.
+# Major status is checked again at declaration and snapshotted only after the
+# engine confirms the new war. Existing members and nonhuman actors are not
+# silently converted into a great-power enemy for this receipt.
+africa_promoted_tiera_host_great_power_war_enemy_target_is_valid = {
+	AND = {
+		exists = yes
+		is_major = yes
+		NOT = { has_capitulated = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = { has_war_with = ROOT }
+		NOT = { africa_member_host_generation_is_current = yes }
+		ROOT = { can_declare_war_on = FROM }
+	}
+}
+
+africa_promoted_tiera_can_pay_host_great_power_war = {
+	OR = {
+		AND = {
+			check_variable = { var = africa_host_depth value = constant:africa_host_depth.promoted compare = greater_than_or_equals }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.great_power_war_mature_cp }
+		}
+		AND = {
+			NOT = { check_variable = { var = africa_host_depth value = constant:africa_host_depth.promoted compare = greater_than_or_equals } }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.great_power_war_cp }
+		}
+	}
+}
+
+# COUNTRY scope on the current Event 012 host after its distinct great-power
+# war has produced an engine-verifiable victory against an enemy that was
+# major at the declaration snapshot. This is deliberately a receipt gate, not
+# a reveal, Stoneborn member-war, or generic occupation proxy: the host must
+# control every core of the capitulated target, while real nonhuman formations
+# and preserved actor rights remain supporting witnesses.
+africa_promoted_tiera_nonhuman_great_power_war_victory_is_available = {
+	AND = {
+		africa_promoted_tiera_activation_is_open = yes
+		africa_is_current_host = yes
+		is_major = yes
+		has_country_flag = africa_promoted_tiera_host_great_power_war_pending
+		NOT = { has_global_flag = africa_achievement_nonhuman_great_power_war_won }
+		has_event_target = africa_promoted_tiera_great_power_war_target
+		# The achievement ledger fills this array only from distinct current-
+		# generation actors whose rights and obligations were both ratified.
+		has_global_flag = africa_achievement_nonhuman_actor_rights_preserved
+		NOT = { has_global_flag = africa_achievement_nonhuman_rights_violation }
+		NOT = { has_global_flag = africa_achievement_nonhuman_extermination }
+		check_variable = {
+			var = global.africa_achievement_nonhuman_rights_actors^num
+			value = constant:africa_achievement_count.nonhuman_rights_actors
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = global.africa_achievement_nonhuman_unit_families^num
+			value = constant:africa_achievement_count.nonhuman_unit_families
+			compare = greater_than_or_equals
+		}
+		event_target:africa_promoted_tiera_great_power_war_target = {
+			exists = yes
+			has_country_flag = africa_promoted_tiera_great_power_war_target_was_major
+			has_capitulated = yes
+			NOT = {
+				any_core_state = {
+					NOT = { is_controlled_by = ROOT }
+				}
+			}
+		}
+	}
+}
+
+# The mature surcharge is a real package-state input. Each trigger keeps the
+# decision disabled until the actor can pay the exact command-power band that
+# its current mechanic stage will deduct.
+africa_promoted_tiera_can_pay_nonhuman_rampage = {
+	OR = {
+		AND = {
+			check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.nonhuman_rampage_mature_cp }
+		}
+		AND = {
+			NOT = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.nonhuman_rampage_cp }
+		}
+	}
+}
+
+africa_promoted_tiera_can_pay_forest_rampage = {
+	OR = {
+		AND = {
+			check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.forest_rampage_mature_cp }
+		}
+		AND = {
+			NOT = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.forest_rampage_cp }
+		}
+	}
+}
+
+africa_promoted_tiera_can_pay_stoneborn_rights = {
+	OR = {
+		AND = {
+			check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.stoneborn_rights_mature_cp }
+		}
+		AND = {
+			NOT = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.stoneborn_rights_cp }
+		}
+	}
+}
+
+africa_promoted_tiera_can_pay_stoneborn_war = {
+	OR = {
+		AND = {
+			check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.stoneborn_war_mature_cp }
+		}
+		AND = {
+			NOT = { check_variable = { var = africa_promoted_tiera_mechanic_progress value = constant:africa_promoted_tiera_progress.maximum compare = greater_than_or_equals } }
+			NOT = { command_power < constant:africa_promoted_tiera_cost.stoneborn_war_cp }
+		}
+	}
+}

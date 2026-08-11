@@ -21,14 +21,30 @@ africa_world_union_protocol_open = {
 			africa_world_union_protocol_is_openable = yes
 			FROM = { africa_world_union_protocol_target_is_eligible = yes }
 		}
+		clear_global_event_target = africa_world_union_protocol_candidate
+		FROM = { save_global_event_target_as = africa_world_union_protocol_candidate }
+		africa_world_union_protocol_open_registered_target = yes
+	}
+}
+
+# COUNTRY scope on the unified African host. The selected external package is
+# retained only for this bounded opener and is cleared before the effect ends.
+africa_world_union_protocol_open_registered_target = {
+	if = {
+		limit = {
+			africa_world_union_protocol_is_openable = yes
+			has_event_target = africa_world_union_protocol_candidate
+			event_target:africa_world_union_protocol_candidate = { africa_world_union_protocol_target_is_eligible = yes }
+		}
 		clear_global_event_target = africa_world_union_protocol_host
 		clear_global_event_target = africa_world_union_protocol_partner
 		save_global_event_target_as = africa_world_union_protocol_host
-		FROM = { save_global_event_target_as = africa_world_union_protocol_partner }
+		event_target:africa_world_union_protocol_candidate = { save_global_event_target_as = africa_world_union_protocol_partner }
 		set_global_flag = africa_world_union_protocol_open
 		set_country_flag = africa_world_union_protocol_host
-		FROM = {
+		event_target:africa_world_union_protocol_partner = {
 			set_country_flag = africa_world_union_protocol_partner
+			set_country_flag = africa_world_union_protocol_proposal_open
 			set_variable = { africa_world_union_status = constant:africa_world_union_protocol.status.proposed }
 			set_variable = { africa_world_package_phase = constant:africa_world_package_phase.union_convention }
 			set_variable = { africa_world_union_partner_approval = constant:africa_world_union_protocol.approval.pending }
@@ -43,9 +59,9 @@ africa_world_union_protocol_open = {
 		set_variable = { africa_world_union_host_ballot_total = constant:africa_value.zero }
 		set_variable = { africa_world_union_partner_ballot_total = constant:africa_value.zero }
 		set_variable = { africa_world_union_strain = constant:africa_value.zero }
-		set_country_flag = africa_world_union_protocol_proposal_open
-		FROM = { country_event = { id = africa_world_package.700 } }
+		event_target:africa_world_union_protocol_partner = { country_event = { id = africa_world_package.700 } }
 	}
+	clear_global_event_target = africa_world_union_protocol_candidate
 }
 
 africa_world_union_protocol_record_partner_acceptance = {
@@ -97,7 +113,19 @@ africa_world_union_protocol_record_host_acceptance = {
 		limit = {
 			has_global_flag = africa_world_union_protocol_open
 			has_country_flag = africa_world_union_protocol_host
-			has_country_flag = africa_world_union_protocol_partner_accepted
+			OR = {
+				has_country_flag = africa_world_union_protocol_partner_accepted
+				event_target:africa_world_union_protocol_partner = { has_country_flag = africa_world_union_protocol_partner_counterterms }
+			}
+		}
+		if = {
+			limit = { event_target:africa_world_union_protocol_partner = { has_country_flag = africa_world_union_protocol_partner_counterterms } }
+			set_country_flag = africa_world_union_protocol_partner_accepted
+			event_target:africa_world_union_protocol_partner = {
+				clr_country_flag = africa_world_union_protocol_partner_counterterms
+				set_country_flag = africa_world_union_protocol_partner_approved
+				set_variable = { africa_world_union_partner_approval = constant:africa_world_union_protocol.approval.accepted }
+			}
 		}
 		set_country_flag = africa_world_union_protocol_host_approved
 		set_variable = { africa_world_union_host_approval = constant:africa_world_union_protocol.approval.accepted }
@@ -138,19 +166,41 @@ africa_world_union_protocol_dispatch_constituent_ballots = {
 		set_variable = { africa_world_union_partner_no_count = constant:africa_value.zero }
 		set_variable = { africa_world_union_host_ballot_total = constant:africa_value.zero }
 		set_variable = { africa_world_union_partner_ballot_total = constant:africa_value.zero }
-		for_each_scope_loop = {
-			array = africa_world_constituent_countries
-			if = {
-				limit = {
-					has_country_flag = africa_world_constituent_consented
-					NOT = { has_country_flag = africa_world_constituent_coerced }
-					NOT = { has_country_flag = africa_world_constituent_withdrawn }
-					NOT = { is_subject = yes }
+		if = {
+			limit = { africa_is_current_host = yes }
+			for_each_scope_loop = {
+				array = africa_relationship_countries
+				if = {
+					limit = {
+						exists = yes
+						NOT = { has_capitulated = yes }
+						africa_member_host_generation_is_current = yes
+						africa_relationship_is_cooperative = yes
+						has_country_flag = africa_member_continental_constitution_accepted
+						NOT = { has_war_with = event_target:africa_world_union_protocol_host }
+					}
+					set_country_flag = africa_world_union_ballot_pending_host
+					set_country_flag = africa_world_union_ballot_host_side
+					event_target:africa_world_union_protocol_host = { add_to_variable = { africa_world_union_host_ballot_total = constant:africa_value.one } }
+					country_event = { id = africa_world_package.702 }
 				}
-				set_country_flag = africa_world_union_ballot_pending_host
-				set_country_flag = africa_world_union_ballot_host_side
-				event_target:africa_world_union_protocol_host = { add_to_variable = { africa_world_union_host_ballot_total = constant:africa_value.one } }
-				country_event = { id = africa_world_package.702 }
+			}
+		}
+		else = {
+			for_each_scope_loop = {
+				array = africa_world_constituent_countries
+				if = {
+					limit = {
+						has_country_flag = africa_world_constituent_consented
+						NOT = { has_country_flag = africa_world_constituent_coerced }
+						NOT = { has_country_flag = africa_world_constituent_withdrawn }
+						NOT = { is_subject = yes }
+					}
+					set_country_flag = africa_world_union_ballot_pending_host
+					set_country_flag = africa_world_union_ballot_host_side
+					event_target:africa_world_union_protocol_host = { add_to_variable = { africa_world_union_host_ballot_total = constant:africa_value.one } }
+					country_event = { id = africa_world_package.702 }
+				}
 			}
 		}
 		event_target:africa_world_union_protocol_partner = {
@@ -367,9 +417,12 @@ africa_world_union_protocol_activate = {
 		event_target:africa_world_union_protocol_partner = {
 			set_country_flag = africa_world_union_protocol_active
 			set_country_flag = africa_world_union_partner
+			set_country_flag = africa_world_order_resolved_under_africa
 			set_country_flag = africa_world_union_protocol_autonomous_partner_preserved
 			set_variable = { africa_world_union_status = constant:africa_world_union_protocol.status.active }
 			set_variable = { africa_world_package_phase = constant:africa_world_package_phase.union_active }
+			set_variable = { africa_world_package_status = constant:africa_world_package_status.union_partner }
+			africa_world_record_terminal_resolution = yes
 		}
 		if = {
 			limit = { event_target:africa_world_union_protocol_partner = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } } }
@@ -402,10 +455,66 @@ africa_world_union_protocol_activate = {
 		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_world_union_protocol_partner.id }
 		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
 		africa_record_event_log_world_order_entry = yes
+		africa_achievement_record_two_continent_integration = yes
+		africa_world_union_protocol_refresh_confidence_proof = yes
+		set_temp_variable = { africa_world_union_confidence_pulse_days = constant:africa_world_union_protocol.tuning.confidence_pulse_days }
+		country_event = {
+			id = africa_world_package.760
+			days = africa_world_union_confidence_pulse_days
+		}
+	}
+}
+
+# COUNTRY scope on the unified African host. Africa's side is proven from the
+# live nine-region member-confidence ledger; the second continent uses its
+# package legitimacy. A collapse is recorded only after both sides have first
+# reached medium confidence, so a weak opening delays rather than falsifies the
+# five-year clock.
+africa_world_union_protocol_refresh_confidence_proof = {
+	if = {
+		limit = {
+			has_global_flag = africa_world_union_protocol_open
+			has_country_flag = africa_world_union_protocol_active
+			has_event_target = africa_world_union_protocol_partner
+			event_target:africa_world_union_protocol_partner = {
+				exists = yes
+				has_country_flag = africa_world_union_protocol_active
+				has_variable = africa_world_package_legitimacy
+			}
+		}
+		africa_achievement_refresh_medium_confidence_regions = yes
+		if = {
+			limit = {
+				has_global_flag = africa_achievement_all_regions_medium_confidence
+				event_target:africa_world_union_protocol_partner = {
+					check_variable = {
+						var = africa_world_package_legitimacy
+						value = constant:africa_measure.medium
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			set_global_flag = africa_achievement_two_continent_both_medium_confidence
+		}
+		else_if = {
+			limit = { has_global_flag = africa_achievement_two_continent_both_medium_confidence }
+			clr_global_flag = africa_achievement_two_continent_both_medium_confidence
+			set_global_flag = africa_achievement_two_continent_confidence_collapse
+			africa_world_union_protocol_apply_strain = yes
+		}
+		africa_achievement_refresh_host_duration_windows = yes
 	}
 }
 
 africa_world_union_protocol_apply_strain = {
+	if = {
+		limit = { africa_world_union_protocol_is_active = yes }
+		africa_world_union_protocol_record_strain = yes
+		country_event = { id = africa_world_package.709 }
+	}
+}
+
+africa_world_union_protocol_record_strain = {
 	if = {
 		limit = { africa_world_union_protocol_is_active = yes }
 		add_to_variable = { africa_world_union_strain = constant:africa_world_union_protocol.tuning.strain_event_gain }
@@ -418,7 +527,23 @@ africa_world_union_protocol_apply_strain = {
 			set_country_flag = africa_world_union_strain_review_due
 			set_variable = { africa_world_union_status = constant:africa_world_union_protocol.status.strained }
 		}
-		country_event = { id = africa_world_package.709 }
+	}
+}
+
+africa_world_union_protocol_defer_strain_review = {
+	if = {
+		limit = {
+			africa_world_union_protocol_can_review_strain = yes
+			NOT = { has_country_flag = africa_world_union_strain_deferral_used }
+		}
+		africa_world_union_protocol_record_strain = yes
+		set_country_flag = africa_world_union_strain_deferral_used
+		event_target:africa_world_union_protocol_partner = { set_country_flag = africa_world_union_strain_deferral_used }
+		set_temp_variable = { africa_world_union_strain_followup_days = constant:africa_world_union_protocol.tuning.strain_followup_days }
+		country_event = {
+			id = africa_world_package.718
+			days = africa_world_union_strain_followup_days
+		}
 	}
 }
 
@@ -426,11 +551,13 @@ africa_world_union_protocol_renegotiate = {
 	if = {
 		limit = { africa_world_union_protocol_can_review_strain = yes }
 		clr_country_flag = africa_world_union_strain_review_due
+		clr_country_flag = africa_world_union_strain_deferral_used
 		subtract_from_variable = { africa_world_union_strain = constant:africa_world_union_protocol.tuning.strain_repair }
 		clamp_variable = { var = africa_world_union_strain min = constant:africa_world_union_protocol.tuning.strain_min max = constant:africa_world_union_protocol.tuning.strain_max }
 		set_variable = { africa_world_union_status = constant:africa_world_union_protocol.status.active }
 		event_target:africa_world_union_protocol_partner = {
 			clr_country_flag = africa_world_union_strain_review_due
+			clr_country_flag = africa_world_union_strain_deferral_used
 			subtract_from_variable = { africa_world_union_strain = constant:africa_world_union_protocol.tuning.strain_repair }
 			clamp_variable = { var = africa_world_union_strain min = constant:africa_world_union_protocol.tuning.strain_min max = constant:africa_world_union_protocol.tuning.strain_max }
 			set_variable = { africa_world_union_status = constant:africa_world_union_protocol.status.active }
@@ -461,6 +588,11 @@ africa_world_union_protocol_dissolve_by_treaty = {
 		}
 		set_country_flag = africa_world_union_protocol_dissolved
 		set_country_flag = africa_world_union_dissolution_recorded
+		if = {
+			limit = { has_global_flag = africa_achievement_two_continent_both_medium_confidence }
+			set_global_flag = africa_achievement_two_continent_confidence_collapse
+			clr_global_flag = africa_achievement_two_continent_both_medium_confidence
+		}
 		set_variable = { africa_world_union_status = constant:africa_world_union_protocol.status.dissolved }
 		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.sovereign }
 		set_country_flag = africa_world_union_protocol_historic
@@ -482,11 +614,14 @@ africa_world_union_protocol_dissolve_by_treaty = {
 		clr_country_flag = africa_world_union_protocol_active
 		clr_country_flag = africa_world_union_protocol_dissolving
 		clr_country_flag = africa_world_union_partner
+		clr_country_flag = africa_dynamic_two_continent_union_active
 		event_target:africa_world_union_protocol_partner = {
 			clr_country_flag = africa_world_union_protocol_active
 			clr_country_flag = africa_world_union_protocol_dissolving
 			clr_country_flag = africa_world_union_partner
+			clr_country_flag = africa_dynamic_two_continent_union_active
 		}
+		clr_global_flag = africa_dynamic_two_continent_union_active
 		set_global_flag = africa_world_union_protocol_closed
 		africa_world_union_protocol_clear_pair = yes
 	}
@@ -497,25 +632,57 @@ africa_world_union_protocol_dissolve_by_treaty = {
 # then reuses the common war opener and partner-call ledger.
 africa_world_union_protocol_open_contested_dissolution_war = {
 	if = {
-		limit = { has_global_flag = africa_world_union_protocol_open }
+		limit = {
+			has_global_flag = africa_world_union_protocol_open
+			has_country_flag = africa_world_union_protocol_dissolving
+			has_event_target = africa_world_union_protocol_host
+			has_event_target = africa_world_union_protocol_partner
+			event_target:africa_world_union_protocol_host = {
+				exists = yes
+				has_country_flag = africa_world_union_protocol_host
+			}
+			event_target:africa_world_union_protocol_partner = {
+				exists = yes
+				has_country_flag = africa_world_union_protocol_partner
+				has_country_flag = africa_world_union_protocol_dissolving
+			}
+		}
+		set_global_flag = africa_achievement_two_continent_union_civil_war
+		clr_global_flag = africa_achievement_two_continent_both_medium_confidence
 		event_target:africa_world_union_protocol_host = {
 			clear_global_event_target = africa_world_continental_war_protocol_attacker
 			save_global_event_target_as = africa_world_continental_war_protocol_attacker
 			set_country_flag = africa_world_continental_war_protocol_attacker
 			set_variable = { africa_world_continental_war_goal = constant:africa_world_war_protocol.goal.break_rival_compact }
 		}
-		event_target:africa_world_union_protocol_partner = {
+			event_target:africa_world_union_protocol_partner = {
 			save_global_event_target_as = africa_world_continental_war_protocol_defender
 			set_country_flag = africa_world_continental_war_protocol_defender
 		}
 		set_global_flag = africa_world_continental_war_protocol_open
-		event_target:africa_world_union_protocol_host = { africa_world_union_protocol_clear_pair = yes }
+		event_target:africa_world_union_protocol_host = {
+			africa_world_union_protocol_restore_host_identity = yes
+			clr_country_flag = africa_dynamic_two_continent_union_active
+			africa_world_union_protocol_clear_pair = yes
+		}
+		event_target:africa_world_continental_war_protocol_defender = { clr_country_flag = africa_dynamic_two_continent_union_active }
+		clr_global_flag = africa_dynamic_two_continent_union_active
 		event_target:africa_world_continental_war_protocol_attacker = { africa_world_continental_war_protocol_start_war = yes }
 	}
 }
 
 africa_world_union_protocol_restore_host_identity = {
 	if = {
+		limit = { africa_is_current_host = yes }
+		if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.federal_union } } set_cosmetic_tag = AFRICA_CHARTER_FEDERATION }
+		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.continental_republic } } set_cosmetic_tag = AFRICA_CONTINENTAL_REPUBLIC }
+		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns } } set_cosmetic_tag = AFRICA_UNITED_KINGDOMS }
+		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.peoples_union } } set_cosmetic_tag = AFRICA_PEOPLES_UNION }
+		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.military_continentalism } } set_cosmetic_tag = AFRICA_CONTINENTAL_COMMAND }
+		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.continental_confederation } } set_cosmetic_tag = AFRICA_CONFEDERATION }
+		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant } } set_cosmetic_tag = AFRICA_COVENANT_UNION }
+	}
+	else_if = {
 		limit = { has_country_flag = africa_world_middle_east_package }
 		if = { limit = { has_country_flag = africa_middle_east_arab_federal_route } set_cosmetic_tag = MIDDLE_EASTERN_FEDERATION }
 		else_if = { limit = { has_country_flag = africa_middle_east_plural_crossroads_route } set_cosmetic_tag = CROSSROADS_FEDERATION }
@@ -569,23 +736,43 @@ africa_world_union_protocol_restore_host_identity = {
 
 africa_world_union_protocol_clear_pair = {
 	if = {
+		limit = { africa_is_current_host = yes }
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			clr_country_flag = africa_world_union_ballot_pending_host
+			clr_country_flag = africa_world_union_ballot_host_side
+		}
+	}
+	if = {
 		limit = { has_event_target = africa_world_union_protocol_partner }
 		event_target:africa_world_union_protocol_partner = {
+			for_each_scope_loop = {
+				array = africa_world_constituent_countries
+				clr_country_flag = africa_world_union_ballot_pending_partner
+				clr_country_flag = africa_world_union_ballot_partner_side
+			}
 			clr_country_flag = africa_world_union_protocol_partner
 			clr_country_flag = africa_world_union_protocol_active
 			clr_country_flag = africa_world_union_protocol_dissolving
 			clr_country_flag = africa_world_union_ballot_pending_host
 			clr_country_flag = africa_world_union_ballot_pending_partner
 			clr_country_flag = africa_world_union_protocol_dissolution_partner_approved
+			clr_country_flag = africa_world_union_protocol_proposal_open
+			clr_country_flag = africa_world_union_protocol_partner_counterterms
+			clr_country_flag = africa_world_union_strain_deferral_used
 		}
 	}
 	clr_country_flag = africa_world_union_protocol_host
+	clr_country_flag = africa_world_union_protocol_proposal_open
 	clr_country_flag = africa_world_union_protocol_active
 	clr_country_flag = africa_world_union_protocol_dissolving
 	clr_country_flag = africa_world_union_ballot_pending_host
 	clr_country_flag = africa_world_union_ballot_pending_partner
 	clr_country_flag = africa_world_protocol_union_clause_pending
 	clr_global_flag = africa_world_union_protocol_open
+	set_temp_variable = { africa_world_union_protocol_reopen_lock_days = constant:africa_world_union_protocol.tuning.reopen_lock_days }
+	set_global_flag = { flag = africa_world_union_protocol_reopen_locked days = africa_world_union_protocol_reopen_lock_days }
+	clr_country_flag = africa_world_union_strain_deferral_used
 	clear_global_event_target = africa_world_union_protocol_host
 	clear_global_event_target = africa_world_union_protocol_partner
 }
@@ -622,7 +809,7 @@ africa_world_continental_war_protocol_prepare = {
 			set_variable = { africa_world_continental_war_goal = constant:africa_world_war_protocol.goal.restore_constituent_sovereignty }
 		}
 		set_country_flag = africa_world_continental_war_protocol_prepared
-		FROM = { country_event = { id = africa_world_package.720 } }
+		FROM = { country_event = { id = africa_world_package.732 } }
 	}
 }
 
@@ -744,6 +931,7 @@ africa_world_continental_war_protocol_record_partner_join = {
 		}
 		clr_country_flag = africa_world_war_call_for_attacker
 		clr_country_flag = africa_world_war_call_for_defender
+		country_event = { id = africa_world_package.722 }
 	}
 }
 
@@ -770,6 +958,7 @@ africa_world_continental_war_protocol_record_partner_support = {
 		}
 		clr_country_flag = africa_world_war_call_for_attacker
 		clr_country_flag = africa_world_war_call_for_defender
+		country_event = { id = africa_world_package.722 }
 	}
 }
 
@@ -782,6 +971,7 @@ africa_world_continental_war_protocol_record_partner_neutral = {
 		else_if = { limit = { has_country_flag = africa_world_war_call_for_defender } event_target:africa_world_continental_war_protocol_defender = { add_to_variable = { africa_world_war_neutral_responses = constant:africa_value.one } } }
 		clr_country_flag = africa_world_war_call_for_attacker
 		clr_country_flag = africa_world_war_call_for_defender
+		country_event = { id = africa_world_package.722 }
 	}
 }
 
@@ -803,12 +993,14 @@ africa_world_continental_war_protocol_resolve_armistice = {
 		set_country_flag = africa_world_continental_war_protocol_settled
 		set_country_flag = africa_world_war_settlement_sovereign_armistice
 		set_country_flag = africa_world_war_rivalry_memory
+		set_country_flag = africa_world_union_war_terminal_disposition_recorded
 		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.sovereign }
 		event_target:africa_world_continental_war_protocol_defender = {
 			set_variable = { africa_world_continental_war_status = constant:africa_world_war_protocol.status.settled }
 			set_country_flag = africa_world_continental_war_protocol_settled
 			set_country_flag = africa_world_war_settlement_sovereign_armistice
 			set_country_flag = africa_world_war_rivalry_memory
+			set_country_flag = africa_world_union_war_terminal_disposition_recorded
 			set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.sovereign }
 			set_variable = { africa_world_package_phase = constant:africa_world_package_phase.sovereign }
 		}
@@ -819,6 +1011,16 @@ africa_world_continental_war_protocol_resolve_armistice = {
 		set_temp_variable = { africa_event_log_secondary_actor = THIS.id }
 		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
 		africa_record_event_log_world_order_entry = yes
+		africa_achievement_record_continental_settlement = yes
+		country_event = { id = africa_world_package.728 }
+		country_event = { id = africa_world_package.736 }
+		event_target:africa_world_continental_war_protocol_attacker = {
+			set_country_flag = africa_world_war_settlement_sovereign_armistice
+			set_country_flag = africa_world_war_rivalry_memory
+			set_country_flag = africa_world_union_war_terminal_disposition_recorded
+			country_event = { id = africa_world_package.728 }
+			country_event = { id = africa_world_package.736 }
+		}
 		africa_world_continental_war_protocol_cleanup = yes
 	}
 }
@@ -836,6 +1038,7 @@ africa_world_continental_war_protocol_accept_constitutional_settlement = {
 		africa_world_record_terminal_resolution = yes
 		event_target:africa_world_continental_war_protocol_attacker = {
 			set_country_flag = africa_world_war_settlement_sovereign_armistice
+			set_country_flag = africa_world_union_war_terminal_disposition_recorded
 			set_variable = { africa_world_continental_war_status = constant:africa_world_war_protocol.status.settled }
 		}
 		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.continental_war_prewar_settlement }
@@ -860,13 +1063,19 @@ africa_world_continental_war_protocol_resolve_submission = {
 		set_variable = { africa_world_continental_war_status = constant:africa_world_war_protocol.status.settled }
 		set_country_flag = africa_world_continental_war_protocol_settled
 		africa_world_record_terminal_resolution = yes
-		event_target:africa_world_continental_war_protocol_attacker = { set_country_flag = africa_world_war_settlement_confederal_submission }
+		event_target:africa_world_continental_war_protocol_attacker = {
+			set_country_flag = africa_world_war_settlement_confederal_submission
+			set_country_flag = africa_world_union_war_terminal_disposition_recorded
+		}
 		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.continental_war_submission }
 		set_temp_variable = { africa_event_log_actor = THIS.id }
 		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
 		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_world_continental_war_protocol_defender.id }
 		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
 		africa_record_event_log_world_order_entry = yes
+		africa_achievement_record_continental_settlement = yes
+		country_event = { id = africa_world_package.729 }
+		event_target:africa_world_continental_war_protocol_attacker = { country_event = { id = africa_world_package.729 } }
 		africa_world_continental_war_protocol_cleanup = yes
 	}
 }
@@ -880,6 +1089,7 @@ africa_world_continental_war_protocol_release_constituents = {
 				limit = { has_country_flag = africa_world_constituent_member }
 				africa_world_record_constituent_withdrawal = yes
 				set_country_flag = africa_world_world_war_constituent_released
+				country_event = { id = africa_world_package.737 }
 			}
 		}
 		set_country_flag = africa_world_war_settlement_constituent_release
@@ -887,6 +1097,10 @@ africa_world_continental_war_protocol_release_constituents = {
 		set_variable = { africa_world_continental_war_status = constant:africa_world_war_protocol.status.settled }
 		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.sovereign }
 		set_country_flag = africa_world_continental_war_protocol_settled
+		event_target:africa_world_continental_war_protocol_attacker = {
+			set_country_flag = africa_world_war_settlement_constituent_release
+			set_country_flag = africa_world_union_war_terminal_disposition_recorded
+		}
 		africa_world_record_terminal_resolution = yes
 		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.continental_war_constituent_release }
 		set_temp_variable = { africa_event_log_actor = THIS.id }
@@ -894,6 +1108,9 @@ africa_world_continental_war_protocol_release_constituents = {
 		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_world_continental_war_protocol_attacker.id }
 		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
 		africa_record_event_log_world_order_entry = yes
+		africa_achievement_record_continental_settlement = yes
+		country_event = { id = africa_world_package.730 }
+		event_target:africa_world_continental_war_protocol_attacker = { country_event = { id = africa_world_package.730 } }
 		africa_world_continental_war_protocol_cleanup = yes
 	}
 }
@@ -915,6 +1132,8 @@ africa_world_continental_war_protocol_cleanup = {
 			clr_country_flag = africa_world_continental_war_protocol_active
 			clr_country_flag = africa_world_continental_war_protocol_prepared
 			clr_country_flag = africa_world_continental_war_protocol_news_sent
+			clr_country_flag = africa_world_war_counterterms_pending
+			clr_country_flag = africa_world_war_second_armistice_offered
 			clear_array = africa_world_war_registered_partners
 			clear_array = africa_world_war_joined_partners
 		}
@@ -923,11 +1142,33 @@ africa_world_continental_war_protocol_cleanup = {
 			clr_country_flag = africa_world_continental_war_protocol_active
 			clr_country_flag = africa_world_continental_war_protocol_review_pending
 			clr_country_flag = africa_world_war_armistice_offer_pending
+			clr_country_flag = africa_world_war_counterterms_pending
+			clr_country_flag = africa_world_war_second_armistice_offered
 			clear_array = africa_world_war_registered_partners
 			clear_array = africa_world_war_joined_partners
 		}
 	}
 	clr_global_flag = africa_world_continental_war_protocol_open
+	if = {
+		limit = { has_event_target = africa_world_continental_war_protocol_attacker }
+		event_target:africa_world_continental_war_protocol_attacker = {
+			if = {
+				limit = { has_country_flag = africa_world_union_war_terminal_disposition_recorded }
+				country_event = { id = africa_world_package.735 }
+				country_event = { id = africa_world_package.739 }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = africa_world_continental_war_protocol_defender }
+		event_target:africa_world_continental_war_protocol_defender = {
+			if = {
+				limit = { has_country_flag = africa_world_union_war_terminal_disposition_recorded }
+				country_event = { id = africa_world_package.735 }
+				country_event = { id = africa_world_package.739 }
+			}
+		}
+	}
 	clear_global_event_target = africa_world_continental_war_protocol_attacker
 	clear_global_event_target = africa_world_continental_war_protocol_defender
 }
@@ -942,10 +1183,24 @@ africa_world_continental_war_protocol_cleanup = {
 africa_world_union_war_open_defeated_review = {
 	if = {
 		limit = { africa_world_continental_war_protocol_can_open_defeated_review = yes }
+		event_target:africa_world_continental_war_protocol_attacker = { africa_achievement_record_continental_war_victory = yes }
 		africa_world_handle_package_actor_loss = yes
 		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.successor_review }
 		set_country_flag = africa_world_union_war_defeated_review_open
 		country_event = { id = africa_world_package.740 }
+	}
+}
+
+# COUNTRY scope on the defeated W4 package actor. This exact capitulation
+# witness records the victor before opening the attacker's settlement choice.
+africa_world_union_war_open_defender_settlement = {
+	if = {
+		limit = { africa_world_continental_war_protocol_can_open_defeated_review = yes }
+		event_target:africa_world_continental_war_protocol_attacker = {
+			africa_achievement_record_continental_war_victory = yes
+			country_event = { id = africa_world_package.726 }
+		}
+		set_country_flag = africa_world_union_war_defeated_review_open
 	}
 }
 
@@ -976,6 +1231,7 @@ africa_world_union_war_commit_successor = {
 		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
 		africa_record_event_log_world_order_entry = yes
 		set_country_flag = africa_world_union_war_successor_committed
+		africa_achievement_record_continental_settlement = yes
 		country_event = { id = africa_world_package.746 }
 		country_event = { id = africa_world_package.747 }
 		africa_world_union_war_cleanup_package = yes
@@ -1018,6 +1274,7 @@ africa_world_union_war_record_exile = {
 		set_temp_variable = { africa_event_log_secondary_actor = constant:africa_value.zero }
 		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.zero }
 		africa_record_event_log_world_order_entry = yes
+		africa_achievement_record_continental_settlement = yes
 		africa_world_cleanup_package_constituent_protocol = yes
 		africa_world_union_war_cleanup_package = yes
 	}
@@ -1060,6 +1317,7 @@ africa_world_union_war_record_breakup = {
 			set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.zero }
 		}
 		africa_record_event_log_world_order_entry = yes
+		africa_achievement_record_continental_settlement = yes
 		africa_world_cleanup_package_constituent_protocol = yes
 		africa_world_union_war_cleanup_package = yes
 	}
@@ -1116,6 +1374,7 @@ africa_world_terminal_protocol_begin_unanimous_union = {
 				country_event = { id = africa_world_package.750 }
 			}
 		}
+		country_event = { id = africa_world_package.751 }
 	}
 }
 
@@ -1199,6 +1458,7 @@ africa_world_terminal_protocol_record_actor_terminal_rejection = {
 		clr_country_flag = africa_world_terminal_actor_proof_pending
 		set_country_flag = africa_world_terminal_actor_proof_rejected
 		set_global_flag = africa_world_terminal_protocol_blocked
+		country_event = { id = africa_world_package.754 }
 		event_target:africa_world_terminal_protocol_host = { country_event = { id = africa_world_package.757 } }
 	}
 }
@@ -1231,6 +1491,8 @@ africa_world_terminal_protocol_finalize = {
 				clr_country_flag = africa_world_continental_war_protocol_active
 				clr_country_flag = africa_world_continental_war_protocol_review_pending
 				clr_country_flag = africa_world_war_armistice_offer_pending
+				clr_country_flag = africa_world_war_counterterms_pending
+				clr_country_flag = africa_world_war_second_armistice_offered
 				set_variable = { africa_world_package_phase = constant:africa_world_package_phase.terminally_resolved }
 			}
 		}
@@ -1245,6 +1507,7 @@ africa_world_terminal_protocol_set_handoff_ready = {
 		limit = { has_global_flag = africa_world_terminal_political_proof_complete }
 		set_global_flag = africa_world_terminal_protocol_handoff_ready
 		set_country_flag = africa_world_terminal_protocol_handoff_ready
+		country_event = { id = africa_world_package.759 }
 	}
 }
 
