@@ -24,7 +24,15 @@ The entity keeps the existing custom actions and adds one-shot sound events to t
 | `attack`, `defend`, and `support_attack` | `chaosx_zombie_attack` | State entry, with randomized creature attack vocalizations |
 | `death` | `chaosx_zombie_death` | State entry, with randomized death vocalizations |
 
-The package does not add a separate selection or order-acknowledgement voice because the verified land-unit entity path exposes animation-state events, while the vanilla selection and order sounds are global army UI effects rather than per-subunit entity consumers.
+## Selection-audio consumer
+
+Zombie-specific selection playback is not currently bound.
+
+The installed game exposes the infantry selection event only through the hardcoded class-global `select_army` soundeffect and provides no per-subunit selection field or unit-entity `selected` state.
+
+Replacing `select_army` would change selection audio for every infantry army, not only divisions whose dominant subunit resolves `sprite = zombies`, so that shared override requires explicit approval and a collateral-consumer audit.
+
+Idle, movement, attack, and death entity events remain independent of this selection limitation and must not be treated as selection evidence.
 
 ## Vanilla precedents
 
@@ -57,6 +65,8 @@ The source role map and derived SHA-256 values are recorded in `docs/assets/002_
 ## Validation boundary
 
 Source files, derived WAV format, runtime file references, soundeffect identifiers, entity event identifiers, and all twelve sprite consumers were checked locally.
+
+Zombie-specific selection remains blocked on the absence of a per-unit engine consumer; no global `select_army` override was made.
 
 Live playback in Hearts of Iron IV remains user-owned because the agent does not launch the game.
 
