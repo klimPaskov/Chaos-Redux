@@ -78,7 +78,7 @@ Validate the job before any paid work. The parent must provide:
 - named vanilla reference paths and the expected scale relationship
 - for buildings, the measured runtime footprint budget and whether the consumer is a dedicated provincial map building or a state-level gameplay building with a provincial visual anchor
 - required action roles, runtime consumer, baseline planned paid operations, extra-recovery credit limit, and extra paid-attempt limit
-- for every custom unit, a sound-design brief covering applicable voice, selection, movement, idle or engine loop, attack, impact, special-action, and death or destruction roles, plus the selected vanilla precedent and animation synchronization points
+- for every custom unit, a sound-design brief with a mandatory selection role plus applicable acknowledgement, movement, idle or engine loop, attack, impact, special-action, and death or destruction roles, the selected vanilla precedents, the exact selection consumer, and animation synchronization points
 - for every custom unit, a counter brief naming each exact runtime counter consumer, token, required state and size, final sprite and DDS path, inspected installed-vanilla definition and texture paths, matching skill-local counter reference family, and `chaosx_icon_artist` handoff path
 - the locked provider, Blender, adapter, and `io_pdx_mesh` dependencies
 - the deterministic job root and exact handoff path
@@ -219,15 +219,21 @@ Every requested action must have a semantic role, final name, source route, FPS,
 
 Every new custom unit package must define a coherent custom sound identity. Do not leave a distinctive unit silent or attach an unrelated default sound family. A vanilla sound family may be reused only when the accepted design says it genuinely matches the unit.
 
-Inspect the exact vanilla consumer before planning the package because land units, creatures, vehicles, aircraft, and ships do not necessarily expose the same sound roles. Include the applicable roles:
+Selection audio is mandatory for every custom unit package. Provide at least one sourced selection one-shot, a stable runtime identifier, and an exact consumer/binding plan; do not treat idle entry, entity creation, or another animation-state event as unit selection.
 
-- selection and order acknowledgements or unit voice
+Inspect the exact vanilla consumer before planning the package because land units, creatures, vehicles, aircraft, and ships do not necessarily expose the same sound roles. Include these roles:
+
+- selection, plus order acknowledgements or unit voice when the consumer exposes them
 - idle, ambient, engine, rotor, mechanical, or creature loops
 - movement
 - weapon discharge and attack
 - impact, hit, or contact
 - special actions
 - death, destruction, shutdown, or disappearance
+
+The installed HOI4 land-unit selection path exposes hardcoded class-global soundeffects such as `select_army`, `select_vehicle`, `select_tank`, `select_fleet`, `select_railway_gun`, and `select_aircraft`; it does not expose a `common/units` selection field or a unit-entity `selected` state. Recheck the installed version for every job instead of assuming this remains unchanged. A new soundeffect name is not a binding by itself.
+
+When the installed consumer remains class-global, never override it as if it were unique to one subunit or sprite. Enumerate every collateral consumer, obtain explicit user approval before changing the shared family, and otherwise mark the per-unit selection binding `blocked`. The sourced selection candidate and handoff are still required, but the package cannot be marked complete until a verified consumer plays it on actual unit selection.
 
 Use the repository web-search workflow to locate candidate files on the Internet, inspect the source page and direct download terms, and save only approved candidates under the deterministic job evidence root. Prefer public-domain, Creative Commons, official archive, institutional, user-authorized, or otherwise clearly licensed sources. Reject unclear provenance, unclear recording rights, unclear modification rights, vague royalty-free claims, and sources that do not permit the intended mod use.
 
@@ -239,6 +245,7 @@ The sound handoff must define:
 
 - the unit or subunit id and runtime consumer
 - the chosen vanilla sound and voice precedents
+- the mandatory selection source, soundeffect identifier, exact engine consumer, binding scope, and every collateral consumer of a shared class-global hook
 - proposed sound, soundeffect, wrapper, and file identifiers
 - one-shot or loop behavior
 - the animation action and exact frame or phase that each sound should follow
@@ -250,7 +257,7 @@ The sound handoff must define:
 
 Custom vocal units should have voice direction that matches their culture, language, body, and role. Nonhuman or impossible units should use purpose-built, sourced vocalizations or mechanical sounds instead of ordinary soldier acknowledgements. Do not manufacture final audio from test tones, primitive oscillators, placeholder beeps, or unrelated stock effects.
 
-The model worker does not claim the sound package complete merely because synchronization points and identifiers are documented. It must provide sourced audio candidates and licensing evidence or mark the role blocked. Sound definitions, entity or unit wiring, and in-game playback validation remain parent-owned unless the task explicitly grants that production scope.
+The model worker does not claim the sound package complete merely because synchronization points and identifiers are documented. It must provide sourced audio candidates and licensing evidence or mark the role blocked. Selection acceptance requires evidence from the actual selection consumer and cannot be inferred from idle or another entity state. Sound definitions, entity or unit wiring, and in-game playback validation remain parent-owned unless the task explicitly grants that production scope.
 
 ## PDX export and reimport evidence
 

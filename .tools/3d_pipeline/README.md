@@ -137,15 +137,17 @@ Export `.mesh` and `.anim` only with the locked `io_pdx_mesh` setup, then reimpo
 
 ## Custom-unit sound-design handoff
 
-Every custom unit job must include a source-only sound package with applicable voice, idle or creature loop, movement, attack, impact, special-action, and death roles.
+Every custom unit job must include a source-only sound package with a mandatory selection one-shot plus applicable acknowledgement or voice, idle or creature loop, movement, attack, impact, special-action, and death roles.
 
 Use the exact installed vanilla land-unit consumer as the wiring precedent, including `sound/*.asset` source declarations, `soundeffect` wrappers, and entity `state` events in `gfx/entities/*.asset`.
+
+Audit selection separately from entity-state audio. The installed game currently exposes class-global `select_army`, `select_vehicle`, `select_tank`, `select_fleet`, `select_railway_gun`, and `select_aircraft` soundeffects, with no per-subunit selection field or unit-entity `selected` state. A custom selection soundeffect without a verified consumer is unwired, and overriding a shared class family requires an explicit collateral-consumer list and user approval.
 
 Research and preserve legally usable source audio under the deterministic job root, record the source page, direct download, creator, license, original checksum, derived checksum, and permitted mechanical conversion, and never synthesize a test tone or placeholder effect.
 
 The parent must enumerate every `common/units` sub-unit that resolves the custom `sprite` token before claiming family-wide audio coverage. A sound event attached to one entity reaches only the unit consumers that resolve that entity, so deliberate exclusions must be documented and every intended family member must share the sprite binding.
 
-The parent owns final `sound/*.asset` definitions, runtime WAV copies, entity-state wiring, and live playback validation. The worker handoff must leave exact sound and soundeffect identifiers, state synchronization points, source evidence, and remaining parent checks.
+The parent owns final `sound/*.asset` definitions, runtime WAV copies, entity-state wiring, selection-consumer wiring, and live playback validation. The worker handoff must leave exact sound and soundeffect identifiers, selection binding scope, state synchronization points, source evidence, and remaining parent checks.
 
 ## Runtime handoff and ownership
 
