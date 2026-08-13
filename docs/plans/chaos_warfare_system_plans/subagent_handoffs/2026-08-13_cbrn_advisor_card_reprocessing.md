@@ -2,9 +2,9 @@
 
 ## Outcome
 
-The twelve existing CBRN historical advisor and theorist cards were regenerated from their existing approved `156x210` scientist DDS sources with the latest `create_advisor_icon.py` cover-fit behavior. The complete source canvas is uniformly scaled with an aspect-preserved result until it covers the measured rotated opening, centered at the opening center, and clipped only by the unchanged dossier frame.
+The twelve existing CBRN historical advisor and theorist cards were regenerated from their existing approved `156x210` scientist DDS sources with the corrected `create_advisor_icon.py` cover-fit behavior. The complete source canvas is uniformly scaled with an aspect-preserved result until it covers the measured rotated opening plus a safe under-frame bleed, centered at the opening center, and masked so it cannot reach the transparent card exterior.
 
-The new cards passed independent native, `4x`, alignment, vanilla-scale, no-gap, no-stretch, and composition review for all twelve IDs. The producer did not self-approve.
+The new cards passed independent native, `4x`, alignment, checker-background, vanilla-scale, no-gap, no-inner-edge-seam, no-exterior-spill, no-stretch, DDS-equality, and composition review for all twelve IDs. The producer did not self-approve.
 
 ## Scope and ownership boundary
 
@@ -26,22 +26,20 @@ The twelve grounded historical sources are the existing approved local files `gf
 - Measured opening fill plane: `30.477406015014285 x 45.09450833210553`.
 - Measured and selected rotation: `-4.76` degrees.
 - Selected offset: `0,0`.
-- Complete-source covering content: `33.498777618135534 x 45.09450833210553`.
-- Frame clip: horizontal `1.5106858015606246` pixels on each side, with no vertical clip.
-- Metadata flags for every card: `source_pre_crop=false`, `frame_clip=true`, `frame_clip_pixels=[1.5106858015606246,0.0,1.5106858015606246,0.0]`, `stretch=false`, `matte=false`, and `anisotropic_scale=false`.
+- Under-frame fill plane: `36.47740601501428 x 51.09450833210553`, adding the centralized `2` px bleed and `1` px resampling guard around the visible opening.
+- Complete-source covering content: `37.95592047527839 x 51.09450833210553`.
+- Symmetric aspect-ratio excess: horizontal `0.7392572301320541` pixels on each side, with no vertical excess.
+- The safe bleed mask contains `1457` pixels and every bleed-ring pixel lies beneath nontransparent frame artwork; the processor fails closed if the bleed reaches a fully transparent exterior pixel.
+- Metadata flags for every card: `source_pre_crop=false`, `frame_clip=true`, `frame_clip_pixels=[0.7392572301320541,0.0,0.7392572301320541,0.0]`, `under_frame_bleed_pixels=2`, `resampling_edge_guard_pixels=1`, `stretch=false`, `matte=false`, and `anisotropic_scale=false`.
 - The latest processor mechanically rejects anisotropic rendering, so stretching is rejected before output.
-- The focused processor suite contains 15 tests; the parent reran all 15 successfully against the final processor state.
+- The focused processor suite contains 17 tests; the complete event-asset tool suite contains 25 tests. Both passed against the final processor state.
 - The template remains the final composited layer and was not reconstructed or modified.
 
 ## Generated files and runtime wiring
 
-Every card directory contains a `65x67` native PNG, `260x268` nearest-neighbour `4x` review PNG, `284x314` placement study, `520x536` `8x` red/green/yellow alignment overlay, and metadata JSON. The package also contains regenerated native, `4x`, and alignment contact sheets plus a `validation_report.json` with per-card dimensions, hashes, opening coverage, DDS-header, pixel-equality, and stable-GFX-path evidence.
+Every card directory contains a `65x67` native PNG, `260x268` nearest-neighbour `4x` review PNG, `284x314` placement study, `520x536` `8x` red/green/yellow alignment overlay, and metadata JSON. The package also contains regenerated native, `4x`, alignment, and high-contrast alpha-edge contact sheets plus a `validation_report.json` with per-card dimensions, hashes, visible-opening coverage, translucent-edge coverage, exterior-spill count, DDS-header, pixel-equality, and stable-GFX-path evidence.
 
-The twelve staged DDS files were emitted by `create_advisor_icon.py`. The twelve stable runtime DDS files were generated from the native PNGs with:
-
-```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <native.png> --output <runtime.dds> --width 65 --height 67
-```
+The twelve stable runtime DDS files were emitted by `create_advisor_icon.py`; the staged DDS files are byte-identical evidence copies. The processor's DDS round-trip gate confirms exact pixel equality with the native PNG before metadata is written.
 
 The stable GFX sprite names and runtime texture paths remain:
 
@@ -65,14 +63,15 @@ The stable GFX sprite names and runtime texture paths remain:
 - All twelve source DDS files decoded as `156x210` with alpha range `255..255`.
 - All twelve native candidates are `65x67`; all `4x` reviews are `260x268`; all placement studies are `284x314`; all alignment overlays are `520x536`.
 - Every opening-mask pixel has portrait coverage, with `1121` covered pixels and `0` gap pixels per card.
-- Every metadata record reports cover mode, `source_pre_crop=false`, `frame_clip=true`, recorded `frame_clip_pixels`, `stretch=false`, `matte=false`, and `anisotropic_scale=false`.
+- Every card reports `opening_alpha_gap_pixels=0`, `inner_edge_alpha_gap_pixels=0`, and `exterior_alpha_leak_pixels=0`.
+- Every metadata record reports under-frame bleed cover mode, `source_pre_crop=false`, `frame_clip=true`, recorded `frame_clip_pixels`, `under_frame_bleed_pixels=2`, `resampling_edge_guard_pixels=1`, `stretch=false`, `matte=false`, and `anisotropic_scale=false`.
 - Every staged and runtime DDS is `65x67`, one-level uncompressed BGRA, exact length `17548` bytes, and pixel-identical to its native PNG.
 - Every stable `GFX_idea_<ID>` sprite and `gfx/interface/advisors/cbrn/<ID>.dds` texture path remains present.
-- The latest focused processor test suite was not changed; its direct `pytest` invocation remains environment-blocked because the available `pytest` interpreter lacks Pillow while the processor Python lacks pytest.
+- All 17 focused advisor tests and all 25 event-asset tool tests pass with the available processor Python.
 
 ## Review state, replacement state, and remaining work
 
-Independent read-only reviewer `019ffa95-8460-7861-9d23-ad097dca1883` approved all twelve cards across vanilla-comparable scale, opening-edge coverage, absence of stretch, face/headwear/shoulder composition, paper overlap, and red/green/yellow overlay geometry. No card required another change.
+Independent read-only reviewer `chaosx_independent_cbrn_dossier_reviewer_2026-08-13` approved all twelve cards across vanilla-comparable scale, visible-opening and translucent-edge coverage, exterior-corner containment, absence of stretch, face/headwear/shoulder composition, paper overlap, checker-background evidence, DDS equality, and red/green/yellow overlay geometry. No card required another change.
 
 The cards are independently approved sourced placeholders based on the existing approved portraits. No styled-final replacement was requested or supplied, so `replacement_pending` is not asserted and no replacement state remains unresolved.
 

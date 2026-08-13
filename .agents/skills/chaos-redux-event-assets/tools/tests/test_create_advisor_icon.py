@@ -76,7 +76,7 @@ class AdvisorIconTests(unittest.TestCase):
 			if pixel[3] == 255:
 				self.assertEqual(card_pixels[index], pixel)
 
-	def test_portrait_is_clipped_to_the_enclosed_template_opening(self) -> None:
+	def test_portrait_is_clipped_to_the_safe_under_frame_region(self) -> None:
 		template = self.make_template()
 		card = ADVISOR.compose(
 			self.source,
@@ -89,6 +89,23 @@ class AdvisorIconTests(unittest.TestCase):
 		)
 		self.assertEqual(card.getpixel((0, 0))[3], 0)
 		self.assertGreater(card.getpixel((20, 20))[3], 0)
+
+	def test_canonical_bleed_mask_stays_beneath_nontransparent_frame_pixels(self) -> None:
+		template = ADVISOR.load_template(ADVISOR.DEFAULT_TEMPLATE)
+		opening_mask = ADVISOR.create_opening_mask(template)
+		bleed_mask = ADVISOR.create_portrait_bleed_mask(template)
+		template_alpha = template.getchannel("A")
+		self.assertGreater(
+			sum(1 for value in bleed_mask.getdata() if value),
+			sum(1 for value in opening_mask.getdata() if value),
+		)
+		for opening, bleed, alpha in zip(
+			opening_mask.getdata(),
+			bleed_mask.getdata(),
+			template_alpha.getdata(),
+		):
+			if bleed and not opening:
+				self.assertGreater(alpha, 0)
 
 	def test_canonical_template_opening_mask_is_enclosed(self) -> None:
 		template = ADVISOR.load_template(ADVISOR.DEFAULT_TEMPLATE)
@@ -118,6 +135,27 @@ class AdvisorIconTests(unittest.TestCase):
 			for x in range(mask.width):
 				if mask.getpixel((x, y)):
 					self.assertGreater(card.getpixel((x, y))[3], 0)
+
+	def test_canonical_composite_has_no_opening_seam_or_exterior_spill(self) -> None:
+		template = ADVISOR.load_template(ADVISOR.DEFAULT_TEMPLATE)
+		geometry = ADVISOR.measure_opening_geometry(template)
+		card = ADVISOR.compose(
+			self.source,
+			template,
+			geometry["center"],
+			geometry["size"],
+			(0.0, 0.0),
+			geometry["rotation"],
+			0.0,
+		)
+		self.assertEqual(
+			ADVISOR.audit_portrait_alpha_coverage(card, template),
+			{
+				"opening_alpha_gap_pixels": 0,
+				"inner_edge_alpha_gap_pixels": 0,
+				"exterior_alpha_leak_pixels": 0,
+			},
+		)
 
 	def test_canonical_opening_geometry_is_measured_from_the_frame(self) -> None:
 		template = ADVISOR.load_template(ADVISOR.DEFAULT_TEMPLATE)
@@ -291,7 +329,19 @@ class AdvisorIconTests(unittest.TestCase):
 			self.assertIn("fit_to_opening", payload["selected_transform"])
 			self.assertEqual(
 				payload["selected_transform"]["complete_image_resize"]["mode"],
-				"aspect_preserving_cover_with_frame_clip",
+				"aspect_preserving_cover_with_under_frame_bleed",
+			)
+			self.assertEqual(
+				payload["selected_transform"]["fit_to_opening"]["under_frame_bleed_pixels"],
+				ADVISOR.UNDER_FRAME_BLEED_PIXELS,
+			)
+			self.assertEqual(
+				payload["selected_transform"]["fit_to_opening"]["alpha_coverage"],
+				{
+					"opening_alpha_gap_pixels": 0,
+					"inner_edge_alpha_gap_pixels": 0,
+					"exterior_alpha_leak_pixels": 0,
+				},
 			)
 			self.assertFalse(payload["selected_transform"]["complete_image_resize"]["source_pre_crop"])
 			self.assertTrue(payload["selected_transform"]["complete_image_resize"]["frame_clip"])

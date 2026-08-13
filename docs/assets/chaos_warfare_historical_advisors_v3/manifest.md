@@ -29,15 +29,17 @@ The compositor uses `.agents/skills/chaos-redux-event-assets/tools/create_adviso
 
 The measured opening center is `24.76151027919129, 30.645146882359736`, the measured opening fill plane is `30.477406015014285 x 45.09450833210553`, and the measured rotation is `-4.76` degrees. Every card uses offset `0,0`, selected rotation `-4.76`, and zero measured angular error.
 
-The complete `156x210` source canvas is loaded without pre-cropping or pre-warping and uniformly scaled with one aspect-preserving factor until it covers the measured opening. The covering content is `33.498777618135534 x 45.09450833210553`; the opening clips only the horizontal excess of `1.5106858015606246` pixels on each side. The portrait is centered under the unchanged frame, with no matte, no padding, no transparent gap, no black gap, and no stretch.
+The complete `156x210` source canvas is loaded without pre-cropping or pre-warping and uniformly scaled with one aspect-preserving factor until it covers a `36.47740601501428 x 51.09450833210553` under-frame fill plane. This plane adds the centralized `2` px safe bleed and `1` px resampling guard around the visible opening. The resulting covering content is `37.95592047527839 x 51.09450833210553`, with only `0.7392572301320541` pixels of symmetric horizontal aspect-ratio excess. The portrait is centered under the unchanged frame, with no matte, padding, transparent opening gap, black gap, or stretch.
 
-Every metadata record reports `source_pre_crop=false`, `frame_clip=true`, `frame_clip_pixels=[1.5106858015606246,0.0,1.5106858015606246,0.0]`, `stretch=false`, `matte=false`, and `anisotropic_scale=false`. The latest processor mechanically rejects anisotropic rendering, so the no-stretch condition is enforceable rather than visual-only. All 15 focused processor tests pass against the final state.
+The portrait is never clipped to the exact visible opening. Its mask extends two pixels beneath the canonical frame so the frame's translucent antialiased inner edge always has opaque portrait coverage, while the processor fails closed if that bleed would reach a fully transparent exterior template pixel. Every metadata record reports `opening_alpha_gap_pixels=0`, `inner_edge_alpha_gap_pixels=0`, `exterior_alpha_leak_pixels=0`, `source_pre_crop=false`, `frame_clip=true`, `frame_clip_pixels=[0.7392572301320541,0.0,0.7392572301320541,0.0]`, `stretch=false`, `matte=false`, and `anisotropic_scale=false`. The processor mechanically rejects anisotropic rendering. All 17 focused advisor tests and all 25 event-asset tool tests pass against this state.
 
 ## Generated evidence and runtime outputs
 
 Each `cards/<ID>/` directory contains the fresh native `65x67` PNG, nearest-neighbour `4x` `260x268` review PNG, `284x314` placement study, `520x536` `8x` alignment overlay, and metadata JSON. The overlay uses red for the measured opening, green for the opening fill plane, and yellow for the complete uniformly fitted portrait bounds.
 
-Each staged DDS under `staged_dds/` is a `65x67` one-level uncompressed 32-bit BGRA output from `create_advisor_icon.py`. Each runtime DDS under `gfx/interface/advisors/cbrn/` was then created from its native PNG with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --width 65 --height 67`. The staged and runtime DDS pixels are identical to their native PNG, and the header, dimensions, exact length, BGRA masks, and texture caps are recorded in `validation_report.json`.
+The dedicated alpha-edge contact sheet composites every native card over a high-contrast magenta/green checker background. It exposes any inner-frame transparency seam or exterior spill that would be difficult to see against the usual dark UI background.
+
+Each runtime DDS under `gfx/interface/advisors/cbrn/` is a `65x67` one-level uncompressed 32-bit BGRA output from `create_advisor_icon.py`; each staged DDS under `staged_dds/` is its byte-identical evidence copy. Runtime and staged DDS pixels are identical to their native PNG, and the header, dimensions, exact length, BGRA masks, and texture caps are recorded in `validation_report.json`.
 
 ## Runtime mapping and wiring
 
@@ -60,7 +62,7 @@ Existing `interface/cbrn_historical_advisors.gfx`, `interface/_scientists_portra
 
 ## Review and replacement state
 
-All twelve outputs passed independent native, `4x`, alignment, vanilla-scale, no-gap, no-stretch, and composition review. `independent_visual_review.md` records the per-card approval and `validation_report.json` records the automated evidence.
+All twelve outputs passed automated native, `4x`, alignment, no-gap, no-stretch, DDS-equality, and exterior-spill checks. Independent reviewer `chaosx_independent_cbrn_dossier_reviewer_2026-08-13` approved every regenerated card after native, nearest-neighbour `4x`, alignment-overlay, high-contrast checker, vanilla-scale, and composition review. The producer did not self-approve.
 
 The runtime state is an independently approved sourced placeholder derived from the existing approved historical source portraits. No user-supplied HOI4-style styled final was requested or supplied, so there is no replacement to install and no `replacement_pending` claim. The user remains the only RunPod operator for any future styled-final branch.
 
@@ -69,5 +71,6 @@ The runtime state is an independently approved sourced placeholder derived from 
 - `contact_sheets/cbrn_selected_cards_native_contact_sheet.png`
 - `contact_sheets/cbrn_selected_cards_4x_contact_sheet.png`
 - `contact_sheets/cbrn_alignment_overlays_contact_sheet.png`
+- `contact_sheets/cbrn_alpha_edge_review_contact_sheet.png`
 - `validation_report.json`
 - `independent_visual_review.md`

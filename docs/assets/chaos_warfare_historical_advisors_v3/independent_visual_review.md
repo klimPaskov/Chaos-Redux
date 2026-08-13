@@ -2,27 +2,27 @@
 
 Date: 2026-08-13
 
-Reviewer: independent read-only reviewer `019ffa95-8460-7861-9d23-ad097dca1883`; the portrait producer did not self-approve.
+Reviewer: `chaosx_independent_cbrn_dossier_reviewer_2026-08-13`; the portrait producer did not self-approve.
 
 ## Status
 
 Overall verdict: `APPROVED`.
 
-| ID | Vanilla-comparable scale | No opening gaps | No stretch | Coherent composition | Correct overlay |
-|---|---|---|---|---|---|
-| `AST_howard_florey` | PASS | PASS | PASS | PASS | PASS |
-| `ENG_alexander_fleming` | PASS | PASS | PASS | PASS | PASS |
-| `ENG_paul_fildes` | PASS | PASS | PASS | PASS | PASS |
-| `GER_gerhard_schrader` | PASS | PASS | PASS | PASS | PASS |
-| `GER_kurt_blome` | PASS | PASS | PASS | PASS | PASS |
-| `JAP_masaji_kitano` | PASS | PASS | PASS | PASS | PASS |
-| `JAP_shiro_ishii` | PASS | PASS | PASS | PASS | PASS |
-| `POL_franciszek_witaszek` | PASS | PASS | PASS | PASS | PASS |
-| `SOV_grigory_mairanovsky` | PASS | PASS | PASS | PASS | PASS |
-| `SOV_ivan_mikhailovich_velikanov` | PASS | PASS | PASS | PASS | PASS |
-| `USA_frank_olson` | PASS | PASS | PASS | PASS | PASS |
-| `USA_ira_baldwin` | PASS | PASS | PASS | PASS | PASS |
+| ID | Visual review | Alpha evidence | DDS equality | Verdict |
+|---|---|---|---|---|
+| `AST_howard_florey` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `ENG_alexander_fleming` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `ENG_paul_fildes` | Clean seams and corners; headwear and face remain readable | `0 / 0 / 0` | PASS | PASS |
+| `GER_gerhard_schrader` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `GER_kurt_blome` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `JAP_masaji_kitano` | Clean seams and corners; headwear and shoulders remain readable | `0 / 0 / 0` | PASS | PASS |
+| `JAP_shiro_ishii` | Clean seams and corners; headwear and face remain readable | `0 / 0 / 0` | PASS | PASS |
+| `POL_franciszek_witaszek` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `SOV_grigory_mairanovsky` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `SOV_ivan_mikhailovich_velikanov` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `USA_frank_olson` | Clean seams and corners; readable scale and composition | `0 / 0 / 0` | PASS | PASS |
+| `USA_ira_baldwin` | Clean seams and corners; profile remains readable behind the paper | `0 / 0 / 0` | PASS | PASS |
 
-The reviewer compared the native and nearest-neighbour `4x` contact sheets, individual cards where needed, the combined `8x` alignment overlays, the canonical vanilla advisor reference sheet, and the recorded cover geometry. All twelve subjects read at a scale comparable to the vanilla dossier family. No empty, transparent, black, matte, or padded opening-edge gap remains, no anisotropic distortion is visible, and the paper overlap preserves coherent face, headwear, and shoulder framing.
+The alpha evidence columns report `opening_alpha_gap_pixels / inner_edge_alpha_gap_pixels / exterior_alpha_leak_pixels`. The reviewer compared native, nearest-neighbour `4x`, alignment-overlay, and high-contrast checker contact sheets against the canonical vanilla advisor references and template.
 
-Every card covers all `1121` opening-mask pixels with `0` gaps. The uniformly scaled portrait extends approximately `1.510685802` pixels beyond each horizontal opening edge and `0` pixels vertically, matching the intended symmetric frame clip without stretching.
+The checker evidence exposes no inner-frame alpha seam or exterior portrait spill. All cards use aspect-preserving scaling without visible distortion, match the canonical dossier geometry, retain the unchanged canonical template hash, and preserve readable face, headwear, and shoulder composition. Runtime and staged DDS pixels match the native PNGs for all twelve cards. No defects, exceptions, or failed cards were found.
