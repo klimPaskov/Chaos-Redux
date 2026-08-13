@@ -69,8 +69,8 @@ Kazakhstan needs a manual branch re-layout rather than accepting the generated c
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
 - `chaos-redux-subagents`
 - `chaos-redux-improvement-loop`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`

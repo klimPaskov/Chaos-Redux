@@ -18,8 +18,8 @@ The planning run fully processed the following supplied files.
 - `chaos-redux-super-events.md`
 - `chaos-redux-improvement-loop.md`
 - `chaos-redux-subagents.md`
-- `hoi4-focus-trees.md`
-- `hoi4-decisions-missions.md`
+- `chaos-redux-focus-trees.md`
+- `chaos-redux-decisions-missions.md`
 
 ### Catalogs
 

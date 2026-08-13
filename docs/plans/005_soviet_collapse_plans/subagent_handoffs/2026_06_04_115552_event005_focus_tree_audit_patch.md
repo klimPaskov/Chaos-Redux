@@ -9,7 +9,7 @@ Required references consulted before editing:
 - Offline Paradox wiki: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla documentation: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `loc_formatter_documentation.md`.
 - Vanilla precedent: `common/national_focus/generic.txt` and `common/national_focus/soviet.txt` focus syntax/layout patterns.
-- Repo skill: `hoi4-focus-trees`.
+- Repo skill: `chaos-redux-focus-trees`.
 
 No `gfx/flags` or `interface/flags` files were read or edited.
 

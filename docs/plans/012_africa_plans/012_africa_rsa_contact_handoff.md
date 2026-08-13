@@ -134,7 +134,7 @@ No DDS, sprite definition, asset manifest, or new `.gfx` file is needed.
 
 Implementation was checked against the mandatory offline wiki pages for data structures/event targets, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, AI modding, factions, and country creation. Vanilla documentation consulted includes script concepts/script constants, effects, triggers, and the script-constant schema. Structural precedents include AST civil-war settlement and union-control lifecycle code, TAOG war-relation on actions, WTT Germany, La Résistance Spain, Indian faction inheritance, and Afghanistan revolter targeting.
 
-Repository skills used for this package were `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-event-assets`. The asset workflow confirmed that the accepted design needs no new visual production and changed the category treatment to a category-sized vanilla crisis sprite.
+Repository skills used for this package were `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets`. The asset workflow confirmed that the accepted design needs no new visual production and changed the category treatment to a category-sized vanilla crisis sprite.
 
 Focused checks confirmed:
 

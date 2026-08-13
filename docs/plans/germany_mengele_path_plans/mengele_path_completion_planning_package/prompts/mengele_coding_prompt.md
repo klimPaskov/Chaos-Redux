@@ -9,8 +9,8 @@ Start by reading:
 - `.agents/skills/chaos-redux-super-events/SKILL.md`.
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`.
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`.
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`.
-- `.agents/skills/hoi4-focus-trees/SKILL.md` if `mengele_clone_army_focus_tree` is touched.
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`.
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md` if `mengele_clone_army_focus_tree` is touched.
 - Offline Paradox wiki and vanilla documentation required by `AGENTS.md` for events, decisions, ideas, localisation, on actions, scopes, effects, triggers, focus trees, scripted localisation, GUI, and audio surfaces you touch.
 
 Then read this package:

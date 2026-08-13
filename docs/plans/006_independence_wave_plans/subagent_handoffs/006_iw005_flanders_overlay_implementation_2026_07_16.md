@@ -216,8 +216,8 @@ No design simplification or fallback was used.
 ## Skills used
 
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
-- `hoi4-focus-trees`
+- `chaos-redux-decisions-missions`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`
 
 No skill was created or updated. `chaos-redux-event-assets` was not used because no new or modified asset was needed.

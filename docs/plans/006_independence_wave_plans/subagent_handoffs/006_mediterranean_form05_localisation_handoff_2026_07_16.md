@@ -89,7 +89,7 @@ No unresolved external or vanilla localisation reference remains in scope.
 
 ## Sources and implementation guidance used
 
-- Repo skills: `chaos-redux-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-subagents`.
+- Repo skills: `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.
 - Offline wiki core pages required by `AGENTS.md`, plus National Focus Modding and Country Creation.
 - Vanilla script-concept and localisation formatter and object documentation, with vanilla country, character, idea, decision, focus, and event localisation examples.
 - Current Event 006 Mediterranean and FORM-05 gameplay, history, interface, and documentation files.

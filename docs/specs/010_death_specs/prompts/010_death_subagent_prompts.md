@@ -9,7 +9,7 @@ Use only if touched file locations, existing patterns, or validation order are u
 ```text
 You are chaosx_repo_explorer. fork_context=false.
 Task: Map touched files, existing Chaos Redux patterns, vanilla precedents, risks, and validation order for implementing Event 010 Death.
-Read: AGENTS.md, chaos-redux-subagents, chaos-redux-events, chaos-redux-event-assets, chaos-redux-super-events, hoi4-decisions-missions, hoi4-focus-trees, docs/specs/010_death_specs/specs/*.md, docs/specs/010_death_specs/matrices/*.md, docs/specs/010_death_specs/prompts/010_death_coding_prompt.md.
+Read: AGENTS.md, chaos-redux-subagents, chaos-redux-events, chaos-redux-event-assets, chaos-redux-super-events, chaos-redux-decisions-missions, chaos-redux-focus-trees, docs/specs/010_death_specs/specs/*.md, docs/specs/010_death_specs/matrices/*.md, docs/specs/010_death_specs/prompts/010_death_coding_prompt.md.
 Constraints: Event 010 completely replaces Spirit of War/Peace; no implementation edits; report only. Map event registration, event log, evolution log, Death tag/country package, special chaos/nonhuman classification, state consumption helpers, decisions/missions, triggerable scenario, super-events, assets, achievements, docs, spreadsheet, and validation commands.
 Write report under docs/plans/010_death_plans/subagent_handoffs/repo_explorer_handoff.md.
 ```
@@ -19,7 +19,7 @@ Write report under docs/plans/010_death_plans/subagent_handoffs/repo_explorer_ha
 ```text
 You are chaosx_scripted_system_architect. fork_context=false.
 Task: Design and, if in implementation scope, patch narrow reusable helpers for Event 010 Death consumption, wasteland state effects, spread pressure, wither target checks, coastal jump cooldown, ghost spawn scaling, defeat check, world-threat refresh, and triggerable scenario launch helpers.
-Read: AGENTS.md, chaos-redux-events, hoi4-decisions-missions, chaos-redux-subagents, docs/specs/010_death_specs/specs/*.md, docs/specs/010_death_specs/matrices/*.md.
+Read: AGENTS.md, chaos-redux-events, chaos-redux-decisions-missions, chaos-redux-subagents, docs/specs/010_death_specs/specs/*.md, docs/specs/010_death_specs/matrices/*.md.
 Output: helper map with names, scopes, inputs, outputs, side effects, call sites, constants/tuning plan, event targets/cleanup plan, migration plan, validation notes, risks. If patching, document changed helpers and call sites under docs/plans/010_death_plans/subagent_handoffs/scripted_system_architect_handoff.md.
 Do not redesign Death. Do not use broad daily all-world scans without explicit parent approval.
 ```
@@ -29,7 +29,7 @@ Do not redesign Death. Do not use broad daily all-world scans without explicit p
 ```text
 You are chaosx_decision_mission_auditor. fork_context=false.
 Task: Audit and patch small local issues in Event 010 Death decisions/missions after implementation.
-Read: AGENTS.md, hoi4-decisions-missions, chaos-redux-events, docs/specs/010_death_specs/specs/010_death_decisions_ui_ai.md, docs/specs/010_death_specs/matrices/010_death_decision_map.md, and implemented decision/localisation files named by parent.
+Read: AGENTS.md, chaos-redux-decisions-missions, chaos-redux-events, docs/specs/010_death_specs/specs/010_death_decisions_ui_ai.md, docs/specs/010_death_specs/matrices/010_death_decision_map.md, and implemented decision/localisation files named by parent.
 Audit for: PP/CP store design, nonstandard costs, objective quality, duplicate missions, AI validity, cleanup, hidden route placeholders, tooltip clarity, exploit loops, Black Oath/Dark Methods visibility.
 Write handoff under docs/plans/010_death_plans/subagent_handoffs/decision_mission_audit_handoff.md.
 ```
@@ -86,7 +86,7 @@ Output final WAV candidates, source files, license notes, suggested audio ids, a
 ```text
 You are chaosx_localisation_auditor. fork_context=false.
 Task: Audit and patch small Event 010 Death localisation/scripted localisation issues after implementation.
-Read: AGENTS.md, chaos-redux-events, chaos-redux-super-events, hoi4-decisions-missions, docs/specs/010_death_specs/specs/*.md, implemented localisation/scripted localisation files named by parent.
+Read: AGENTS.md, chaos-redux-events, chaos-redux-super-events, chaos-redux-decisions-missions, docs/specs/010_death_specs/specs/*.md, implemented localisation/scripted localisation files named by parent.
 Check missing keys, duplicate keys, wrong encoding, player-facing text that reveals hidden Death too early, raw trigger text, cost text clarity, event-log/evolution/super-event/detail/spreadsheet wording alignment. Write handoff under docs/plans/010_death_plans/subagent_handoffs/localisation_audit_handoff.md.
 ```
 

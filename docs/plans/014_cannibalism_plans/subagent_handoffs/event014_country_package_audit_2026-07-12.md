@@ -24,7 +24,7 @@ The blocking defects are the unification slot-release path, duplicated starting 
 
 ## Required references consulted
 
-The repository `AGENTS.md` and the `chaos-redux-events`, `chaos-redux-subagents`, and `hoi4-focus-trees` skills were read before the audit.
+The repository `AGENTS.md` and the `chaos-redux-events`, `chaos-redux-subagents`, and `chaos-redux-focus-trees` skills were read before the audit.
 
 The offline wiki snapshot was used rather than the online Paradox wiki. The required core pages were consulted: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding. Country creation, Portrait modding, Division modding, Technology modding, National focus modding, Equipment modding, and Cosmetic tag pages were also consulted for the package surfaces.
 
@@ -240,6 +240,6 @@ Add a hard host-capital logistics/coherence contract with a player-safe exceptio
 
 - Used: `chaos-redux-events`
 - Used: `chaos-redux-subagents`
-- Used: `hoi4-focus-trees`
+- Used: `chaos-redux-focus-trees`
 - Created or updated: none
 

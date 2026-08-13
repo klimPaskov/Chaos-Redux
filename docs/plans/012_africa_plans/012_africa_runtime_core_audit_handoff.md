@@ -8,7 +8,7 @@ Audit date: 2026-07-29.
 
 This audit covered Event 12 scripted effects, scripted triggers, decisions, on-actions, events, scripted localisation, high-chaos action constants, priority-member force consumers, and related localisation/GFX references.
 
-Required repository guidance was read from `AGENTS.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`.
+Required repository guidance was read from `AGENTS.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`.
 
 The offline Paradox wiki core pages for data structures, triggers, effects, modifiers, localisation, scopes, on-actions, event modding, decision modding, idea modding, and AI modding were consulted.
 

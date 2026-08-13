@@ -25,7 +25,7 @@ The audit used the required repository guidance and both mandated reference sets
 - vanilla documentation for script concepts and script constants, effects, triggers, and modifiers;
 - vanilla focus precedents from the China Warlord and Austria trees;
 - the Event 014 specifications and the previous Event 014 focus audit;
-- the `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-events` repository skills.
+- the `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-events` repository skills.
 
 The audited live focus source is:
 

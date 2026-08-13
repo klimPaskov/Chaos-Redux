@@ -1,6 +1,6 @@
 # Decision and Mission Prompt: Holy Realm Buddhahood
 
-Use `hoi4-decisions-missions` with the Holy Realm specs.
+Use `chaos-redux-decisions-missions` with the Holy Realm specs.
 
 Implement the decision and mission systems from:
 

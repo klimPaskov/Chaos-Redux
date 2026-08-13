@@ -245,8 +245,8 @@ The independent BRI audit is recorded in `006_bri_country_package_audit_2026_07_
 Repo skills used:
 
 - `chaos-redux-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 - `chaos-redux-subagents`
 - `chaos-redux-improvement-loop`

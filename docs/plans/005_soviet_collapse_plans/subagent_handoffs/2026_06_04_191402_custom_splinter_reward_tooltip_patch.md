@@ -62,6 +62,6 @@ After:
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
 - `chaos-redux-subagents`

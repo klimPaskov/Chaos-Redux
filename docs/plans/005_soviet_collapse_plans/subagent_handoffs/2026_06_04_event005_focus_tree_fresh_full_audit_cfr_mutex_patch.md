@@ -10,7 +10,7 @@ Scope:
   - `common/national_focus/005_soviet_collapse_custom_splinters.txt`
   - `common/national_focus/005_soviet_collapse_factory_successors.txt`
   - `common/national_focus/005_soviet_collapse_ancient_restorations.txt`
-- Used repo skills: `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`.
+- Used repo skills: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`.
 - Consulted required offline Paradox wiki pages plus vanilla HOI4 documentation and vanilla focus examples before opening/editing Chaos Redux files.
 - Parent constraint honored: no flag files, flag assets, `.dds`, `.tga`, sprite files, or flag-related paths were edited.
 - No commit made.

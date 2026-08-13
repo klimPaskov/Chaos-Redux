@@ -18,7 +18,7 @@ No current MCP evidence proves dominance, starvation, rank reversal, repetition,
 
 ## Required references
 
-The audit read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-mtth/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-event-planning/SKILL.md`, and the relevant Event 006 specifications and prior handoffs.
+The audit read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-mtth/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-event-planning/SKILL.md`, and the relevant Event 006 specifications and prior handoffs.
 
 The offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding were consulted alongside the relevant vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`.
 

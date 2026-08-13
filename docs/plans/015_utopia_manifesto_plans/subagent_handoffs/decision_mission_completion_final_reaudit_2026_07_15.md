@@ -88,6 +88,6 @@ The event bridge semantics match the offline wiki and vanilla references. `parad
 
 ## Skills used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-subagents`

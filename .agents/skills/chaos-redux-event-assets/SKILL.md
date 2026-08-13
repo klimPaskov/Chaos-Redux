@@ -1167,7 +1167,7 @@ The implementation must still follow HOI4 UI rules and existing repo patterns.
 
 ## Decision category and scripted GUI visual packs
 
-Do not build a full scripted GUI visual pack for every important category. First follow the presentation hierarchy in `hoi4-decisions-missions`. A simple category may need only its small icon and one static or animated category picture.
+Do not build a full scripted GUI visual pack for every important category. First follow the presentation hierarchy in `chaos-redux-decisions-missions`. A simple category may need only its small icon and one static or animated category picture.
 
 When a full scripted GUI or mechanic window is justified, the asset handoff should cover the interface state set that the actual mechanic uses. Do not create unused tabs, button states, meters, frames, or decorative controls only to fill the background.
 
@@ -1214,7 +1214,7 @@ Progression-state variants should use the same target size as the base asset.
 
 ## Formable state-puzzle visual assets
 
-When a formable uses the reusable state-puzzle presentation from `hoi4-decisions-missions`, the asset package must preserve exact state geometry and one shared geographic projection.
+When a formable uses the reusable state-puzzle presentation from `chaos-redux-decisions-missions`, the asset package must preserve exact state geometry and one shared geographic projection.
 
 Each puzzle package should include:
 
@@ -1242,7 +1242,7 @@ Do not choose a structure only because it is easier to export. The GUI and dynam
 
 The reusable implementation templates belong under:
 
-`.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/`
+`.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`
 
 The asset handoff must match the template manifest and naming rules. Skill-local template assets are reference scaffolding and must never be runtime consumers.
 

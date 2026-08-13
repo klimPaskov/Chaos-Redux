@@ -276,7 +276,7 @@ Eight targeted decisions consume those route-aware MTTH values:
 Repository guidance:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Event 014 specifications and matrices under `docs/specs/014_cannibalism_specs/`
 - the prior Event 014 decision/mission audit, remediation handoff, anti-spoiler audit, package validation, and runtime-consolidation handoff

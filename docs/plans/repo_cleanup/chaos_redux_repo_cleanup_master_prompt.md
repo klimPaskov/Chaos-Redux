@@ -64,8 +64,8 @@ Read and follow:
 
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md` when cleanup reveals shallow or disconnected design
 - `.agents/skills/chaos-redux-event-assets/SKILL.md` only when asset references or `.gfx` wiring need cleanup

@@ -147,8 +147,8 @@ Every project source supplied with the task was read in full before this package
 | `chaos-redux-improvement-loop(3).md` | Anti-bloat rule, closure conditions, playable depth, visual state design, and the need to connect assets to real mechanics |
 | `chaos-redux-subagents(3).md` | `fork_context=false`, narrow role ownership, required handoffs, asset routing, patch boundaries, and parent responsibility |
 | `chaos-redux-super-events(3).md` | Complete-package thinking, source verification, unique runtime assets, and no placeholder completion |
-| `hoi4-decisions-missions(3).md` | Clear visible costs and requirements, state-driven UI, no passive reward-store design, and task-specific validation principles |
-| `hoi4-focus-trees(10).md` | Route identity, visual coverage, asset variety, playable payoff, and local vanilla-precedent requirements |
+| `chaos-redux-decisions-missions(3).md` | Clear visible costs and requirements, state-driven UI, no passive reward-store design, and task-specific validation principles |
+| `chaos-redux-focus-trees(10).md` | Route identity, visual coverage, asset variety, playable payoff, and local vanilla-precedent requirements |
 | `chaos_redux_clusters_catalog(1).csv` | Existing event-cluster scope and the need for reusable asset routing across linked events |
 | `chaos_redux_events_catalog(1).csv` | Full event catalog review. It demonstrates demand for humanoids, nonhuman hosts, creatures, machines, vehicles, structures, aircraft, naval assets, transformations, and route-specific identities |
 | `chaos_redux_scenarios_catalog(1).csv` | Manual scenario breadth and the need for reproducible asset variants and scenario-safe runtime wiring |

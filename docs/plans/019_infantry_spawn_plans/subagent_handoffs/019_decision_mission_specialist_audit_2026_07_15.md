@@ -22,7 +22,7 @@ The required references were consulted before the live Event 019 source:
 - Offline Paradox wiki: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Interface modding, Scripted GUI modding, Achievement modding, Division modding, Equipment modding, and Unit modding.
 - Installed vanilla documentation: `common/decisions/_documentation.md`, `common/scripted_guis/_documentation.md`, `common/on_actions/_documentation.md`, `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `common/script_constants/documentation.md`, and the relevant units/equipment documentation.
 - Vanilla precedents included `common/decisions/AST.txt` and `common/decisions/categories/AST_decision_categories.txt`. Vanilla confirms that effect-activated missions may use `allowed = { always = no }` and `activation = { always = no }` and still be started by `activate_mission`.
-- Repo guidance used in full: `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
+- Repo guidance used in full: `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
 
 No web copy of the Paradox wiki was used.
 

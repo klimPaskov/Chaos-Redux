@@ -233,7 +233,7 @@ The dynamic-duration and natural-disaster-strength gaps remain unimplemented by 
 
 ## Guidance used
 
-Applied `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
+Applied `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
 
 ## 2026-07-30 profile-driven duration implementation blocked
 

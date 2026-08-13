@@ -169,6 +169,6 @@ Meaningful validation not run:
 
 ## Skills used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-subagents`

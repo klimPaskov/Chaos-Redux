@@ -205,7 +205,7 @@ The `create_dynamic_country` call in `019_infantry_spawn_scenario_effects.txt` b
 
 - `chaos-redux-subagents` for ownership boundaries, audit reporting, and handoff placement.
 - `chaos-redux-events` for Event 19 integration and completion standards.
-- `hoi4-focus-trees` and `hoi4-decisions-missions` during the full country-package pass for reachability and decision-lifecycle review.
+- `chaos-redux-focus-trees` and `chaos-redux-decisions-missions` during the full country-package pass for reachability and decision-lifecycle review.
 - Required offline Paradox wiki core pages plus Country creation, Cosmetic tag, National focus, Division, Equipment, and Technology references.
 - Vanilla HOI4 effects/triggers/script-constant documentation and matching vanilla implementations.
 

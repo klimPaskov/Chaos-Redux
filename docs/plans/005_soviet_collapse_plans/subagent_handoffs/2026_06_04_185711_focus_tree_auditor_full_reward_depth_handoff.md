@@ -10,7 +10,7 @@ Audited all files matching `common/national_focus/005_soviet_collapse_*.txt`.
 
 Required guidance consulted:
 
-- Skills: `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`
+- Skills: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`
 - Vanilla precedents: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`, vanilla decisions under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions`
@@ -175,4 +175,4 @@ Limitations:
 - Branch family classification is keyword/mechanic heuristic; it identifies review targets, not final design truth.
 - No files were patched beyond this handoff report.
 
-Skills used: `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`.
+Skills used: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`.

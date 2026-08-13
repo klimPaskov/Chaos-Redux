@@ -254,7 +254,7 @@ No accepted plan was silently promoted to whole-event completion. The Bosnia foc
 
 ## Meaningful validation performed
 
-- Read and applied `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `xlsx`.
+- Read and applied `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `xlsx`.
 - Consulted the mandatory offline wiki pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, AI modding, interface/scripted GUI modding, national focuses, country creation, and achievements.
 - Consulted relevant installed vanilla documentation and the installed BOS focus-tree precedent.
 - Compared specification parts 1 through 7, quality/acceptance files, candidate/formable/AI/achievement/asset matrices, the current source-of-truth map, resume packet, current package and UI handoffs, source files, assets/audio manifests, and the catalog workbook.

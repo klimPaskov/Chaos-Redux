@@ -10,8 +10,8 @@ Boundary: no flag files or flag folders were opened, edited, or targeted. `gfx/f
 
 ## References Used
 
-- Skill: `hoi4-focus-trees`
-- Skill: `hoi4-decisions-missions` for focus-to-decision linkage checks
+- Skill: `chaos-redux-focus-trees`
+- Skill: `chaos-redux-decisions-missions` for focus-to-decision linkage checks
 - Skill: `chaos-redux-events` for Event005 handoff alignment
 - Offline wiki snapshot: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla documentation: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `modifiers_documentation.md`

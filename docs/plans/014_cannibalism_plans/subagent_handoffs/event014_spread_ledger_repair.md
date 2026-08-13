@@ -125,4 +125,4 @@ No localisation file was edited under this task's ownership boundary. The two au
 
 No fallback, placeholder, route omission, hardcoded variable-duration token, or gameplay simplification was used. The only cross-owner integration action is replacing the raw unification spread loop with the migration helper above. The two P3 localisation rewrites remain intentionally assigned to the localisation owner.
 
-Skills used: `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-subagents`.
+Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`.

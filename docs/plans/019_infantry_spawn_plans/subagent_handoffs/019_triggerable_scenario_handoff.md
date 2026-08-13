@@ -157,7 +157,7 @@ No new visual asset or `.gfx` registration is required. The two generated leader
 
 ## Skills and references
 
-The implementation used `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-subagents`, plus the required offline wiki, official vanilla documentation, vanilla dynamic-country precedents, and current Chaos Redux Event 019/provider patterns. No skill file required an update because this tranche introduced no reusable workflow absent from the existing skills.
+The implementation used `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`, plus the required offline wiki, official vanilla documentation, vanilla dynamic-country precedents, and current Chaos Redux Event 019/provider patterns. No skill file required an update because this tranche introduced no reusable workflow absent from the existing skills.
 
 ## Git handoff
 

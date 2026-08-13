@@ -20,8 +20,8 @@ No Hearts of Iron IV process was launched. No map mutation was attempted.
 - `.agents/skills/chaos-redux-subagents/SKILL.md`.
 - `.agents/skills/chaos-redux-events/SKILL.md`.
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`.
-- `.agents/skills/hoi4-focus-trees/SKILL.md`.
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`.
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`.
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`.
 - Offline wiki pages in `paradox_wiki/` for data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, AI modding, country creation, national focuses, state, character, portrait, graphical assets, technology, division, and unit syntax.
 - Vanilla documentation in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, including effects, triggers, script concepts, modifiers, dynamic variables, decisions, focuses, characters, and AI references.
 

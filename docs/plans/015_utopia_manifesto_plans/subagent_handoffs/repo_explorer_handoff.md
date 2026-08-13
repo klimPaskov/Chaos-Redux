@@ -270,7 +270,7 @@ No current Event 15 focus-icon folder, super-event image folder, league-emblem p
 | Event classification | Parent: retain ID 15 once in `chaosx_logic_effects.txt` fire-once registry; no cluster/repeatable entry. |
 | Target selection | Parent/architect: Event 15 triggers/effects/constants plus HEAD active-pool and dispatcher hooks; safe predicate, score, pool order, manual reason. |
 | Player choice | Parent: `chaosx.nr15.1`, AI fixed accept, human accept/reject, replacement warning, rejection cleanup. |
-| Focus replacement | Parent with `hoi4-focus-trees`: complete tree, safe loader, route audit. |
+| Focus replacement | Parent with `chaos-redux-focus-trees`: complete tree, safe loader, route audit. |
 | Ledger | Parent: four-value kernel, scripted GUI, breakdown localisation, AI-readable helpers. |
 | Callings | Parent: focus/decision/effect/idea/AI families; real training/support/time costs. |
 | Common stores | Parent: reserve bands, projects, emergency release, rotation, long mission, aid and failure states. |

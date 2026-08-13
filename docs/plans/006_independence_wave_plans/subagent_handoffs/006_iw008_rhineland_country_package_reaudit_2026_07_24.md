@@ -19,7 +19,7 @@ No live HOI4 save, SCN-008 runtime, or MCP renderer was available for this stati
 ## Audit sources and evidence reviewed
 
 - Repository instructions: `AGENTS.md`.
-- Skills: `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, `.agents/skills/hoi4-focus-trees/SKILL.md`, and `.agents/skills/hoi4-decisions-missions/SKILL.md`.
+- Skills: `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, `.agents/skills/chaos-redux-focus-trees/SKILL.md`, and `.agents/skills/chaos-redux-decisions-missions/SKILL.md`.
 - Required offline wiki pages under `paradox_wiki/`: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Country creation, National focus modding, Character modding, Portrait modding, Graphical asset modding, State modding, Map modding, Division modding, Equipment modding, and Technology modding.
 - Vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and the applicable country, character, focus, decision, state, and technology references.
 - Integrated package audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_rhi_bay_postportrait_admission_audit_2026_07_22.md`.

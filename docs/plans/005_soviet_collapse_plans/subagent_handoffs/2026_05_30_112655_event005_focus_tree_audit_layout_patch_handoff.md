@@ -14,7 +14,7 @@ Scope audited:
 References read:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki core pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding

@@ -18,7 +18,7 @@ Constraints honored:
 - Worktree was already dirty with parent changes before this audit, so no commit was made.
 
 Skills and references used:
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`
 - Offline wiki pages consulted before auditing the focus files: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla documentation consulted from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`: effects, triggers, modifiers, script concepts, localisation objects, localisation formatters.

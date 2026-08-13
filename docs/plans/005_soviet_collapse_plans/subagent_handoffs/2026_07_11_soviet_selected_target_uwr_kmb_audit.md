@@ -48,7 +48,7 @@ Project guidance consulted:
 
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - The accepted July 11 improvement-loop addendum
 - The Event 005 source-of-truth map and documentation-state map
 - The Event 005 event overview and all nine source specifications

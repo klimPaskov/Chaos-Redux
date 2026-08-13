@@ -2,7 +2,7 @@
 
 ## Task
 
-Implement the decision, mission, and optional scripted-GUI layer for the accepted CBRN rework. Read `hoi4-decisions-missions`, the full spec pack, current chemical and biological decisions, current scripted GUI patterns, and verified vanilla 1.19 examples. Use dynamic costs, named targets, AI behavior, cleanup, and custom tooltips. Do not create a political-power store.
+Implement the decision, mission, and optional scripted-GUI layer for the accepted CBRN rework. Read `chaos-redux-decisions-missions`, the full spec pack, current chemical and biological decisions, current scripted GUI patterns, and verified vanilla 1.19 examples. Use dynamic costs, named targets, AI behavior, cleanup, and custom tooltips. Do not create a political-power store.
 
 ## Categories
 

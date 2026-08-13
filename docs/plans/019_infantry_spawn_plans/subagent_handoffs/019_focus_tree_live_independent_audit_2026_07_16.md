@@ -71,4 +71,4 @@ The required HOI4 MCP focus inspect and render calls were attempted against the 
 
 The audit found no simplification, omitted route, missing linked surface, or unresolved blocker. The controlled one-formation combat trials and exact recorded-formation recreate/prove/delete method remain the approved substitutes; this audit did not broaden either mechanism.
 
-Skills used: `hoi4-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`. No skill was created or changed.
+Skills used: `chaos-redux-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`. No skill was created or changed.

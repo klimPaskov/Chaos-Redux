@@ -17,9 +17,9 @@ No flag assets, flag sprites, `gfx/flags`, `.tga`, `.dds`, or flag-related inter
 ## Required References Consulted
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - Offline wiki pages: National focus, Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, Decision modding, Event modding, Idea modding, AI modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `modifiers_documentation.md`
 - Vanilla focus examples for focus reward, filter, layout, and AI syntax
@@ -121,6 +121,6 @@ Validation run after handoff creation:
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`

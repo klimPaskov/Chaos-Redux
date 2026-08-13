@@ -136,7 +136,7 @@ No requested English source surface was omitted, no fallback or placeholder was 
 ## Skills and references used
 
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 - Repository `AGENTS.md`
 - Required offline Paradox wiki core pages, plus Interface Modding, Scripted GUI Modding, National Focus, Country Creation, Achievement Modding, and Division Modding

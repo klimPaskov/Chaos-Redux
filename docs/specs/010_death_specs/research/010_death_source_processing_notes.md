@@ -32,8 +32,8 @@ This is a planning/source note, not a gameplay spec.
 - `chaos-redux-event-assets.md`
 - `chaos-redux-frame-animation.md`
 - `chaos-redux-super-events.md`
-- `hoi4-focus-trees.md`
-- `hoi4-decisions-missions.md`
+- `chaos-redux-focus-trees.md`
+- `chaos-redux-decisions-missions.md`
 - Subagent TOML files for repo exploration, scripted-system architecture, decisions/missions, country package, localisation, completion audit, spreadsheet worker, generated art, icon art, super-event text, super-event audio, sourced assets, focus audit, documentation curation, and improvement-loop planning.
 - `chaos_redux_events_catalog.xlsx`, sheet `Main Sheet`, row ID 10. The row currently lists `Spirit of War/Peace`, details `Random country gets options to either be a symbol of war or a symbol of peace.`, type `Minor Fire-Once`, status `To Be Reworked`, and no cluster fields.
 

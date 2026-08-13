@@ -14,7 +14,7 @@ The audit used `common/decisions/006_independence_wave*.txt`, all matching Event
 
 The design authority is `docs/specs/006_independence_wave_specs/matrices/006_decision_mission_map.csv` (80 rows) together with `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_3_mechanics_and_decisions.md`. The current implementation status remains HOLD/PARTIAL in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`.
 
-I read `AGENTS.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`. I also consulted the required offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding, plus the installed vanilla documentation for effects, triggers, modifiers, script concepts, and script math.
+I read `AGENTS.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`. I also consulted the required offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding, plus the installed vanilla documentation for effects, triggers, modifiers, script concepts, and script math.
 
 ## Severity-ranked findings
 

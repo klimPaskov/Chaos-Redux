@@ -7,7 +7,7 @@ Audited only the requested Event005 focus, effect, decision, and localisation fi
 Required local references consulted before patching:
 
 - `AGENTS.md`
-- `hoi4-focus-trees` skill
+- `chaos-redux-focus-trees` skill
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`
 - Vanilla focus precedent: `common/national_focus/generic.txt`
@@ -133,6 +133,6 @@ I patched two obvious filter mismatches. Additional high-confidence candidates:
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 
 No skills were created or updated.

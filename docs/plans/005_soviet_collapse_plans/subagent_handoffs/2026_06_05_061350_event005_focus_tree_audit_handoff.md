@@ -7,7 +7,7 @@ Patch status: no gameplay patch made. The working tree was already dirty across 
 
 ## References Consulted
 
-- Repo skill: `hoi4-focus-trees`
+- Repo skill: `chaos-redux-focus-trees`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `common/script_constants/documentation.md`
 - Vanilla precedent: `common/national_focus/generic.txt` for prerequisite OR/AND patterns, `relative_position_id`, mutual exclusions, `ai_will_do`, focus reward ideas, and branch spacing

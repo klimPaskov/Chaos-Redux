@@ -25,7 +25,7 @@ The current post-promotion static attestation set is 21 selectable packages acro
 
 ## Required references consulted
 
-Before source review I read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-mtth/SKILL.md`, and `.agents/skills/chaos-redux-event-planning/SKILL.md`. I also consulted the offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding, plus the applicable vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, including `script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`, and AI/decision/event references.
+Before source review I read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-mtth/SKILL.md`, and `.agents/skills/chaos-redux-event-planning/SKILL.md`. I also consulted the offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding, plus the applicable vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, including `script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`, and AI/decision/event references.
 
 ## MCP inspection evidence
 

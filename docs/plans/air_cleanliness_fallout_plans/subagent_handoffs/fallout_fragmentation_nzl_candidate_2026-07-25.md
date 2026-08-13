@@ -4,7 +4,7 @@
 - Parent task: identify one existing possible-country candidate for the next Fallout fragmentation materialization tranche after the committed B7 USA continuity pilot.
 - Explicit constraints: read-only gameplay inspection; no Hearts of Iron IV launch; inspect one existing tag, its history/focus/package, and Fallout materialization precedents; state whether a safe candidate is proven or blocked.
 - Candidate inspected: `NZL` (New Zealand Lifeboat State).
-- Skills/docs read: `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`; required offline Paradox wiki pages; vanilla collections/effects documentation and relevant vanilla files.
+- Skills/docs read: `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`; required offline Paradox wiki pages; vanilla collections/effects documentation and relevant vanilla files.
 
 ## Primary findings
 - `NZL` is the only existing Fallout successor package found with a dedicated package loader, focus tree, decisions, characters, AI plans, ideas, constants, cosmetics, on-actions, localisation, and asset surfaces.

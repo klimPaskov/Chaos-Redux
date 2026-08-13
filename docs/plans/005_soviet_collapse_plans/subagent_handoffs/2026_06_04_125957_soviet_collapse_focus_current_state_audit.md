@@ -12,7 +12,7 @@ No `gfx/flags`, `interface/flags`, flag sprite, or flag asset files were touched
 ## References Consulted
 
 - Repo instructions: `AGENTS.md`
-- Skill: `.agents/skills/hoi4-focus-trees/SKILL.md`
+- Skill: `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - Offline wiki pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `modifiers_documentation.md`, `common/decisions/_documentation.md`, `common/ai_strategy/_documentation.md`
 - Vanilla focus precedent: `common/national_focus/generic.txt`, `common/national_focus/soviet.txt`
@@ -159,6 +159,6 @@ Follow-up validation still needed after any future focus edit:
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 
 No skills were created or updated.

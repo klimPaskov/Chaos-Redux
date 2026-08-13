@@ -231,4 +231,4 @@ Skipped meaningful validation:
 
 Simplifications, omissions, and blockers: no gameplay fallback or simplification was introduced. The audit is complete as a current static row-level decision and mission audit, while the SCN-008 and host-crisis execution evidence listed above remains open.
 
-Skills used: `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
+Skills used: `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.

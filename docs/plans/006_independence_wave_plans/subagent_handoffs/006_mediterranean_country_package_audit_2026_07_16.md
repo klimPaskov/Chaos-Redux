@@ -205,7 +205,7 @@ outside this verdict.
 ## References and skills used
 
 The audit applied `chaos-redux-events`, `chaos-redux-subagents`,
-`hoi4-focus-trees`, and `hoi4-decisions-missions`. It also consulted the required
+`chaos-redux-focus-trees`, and `chaos-redux-decisions-missions`. It also consulted the required
 offline wiki pages, official vanilla documentation, vanilla COR/history/focus/
 character/AI precedents, and all accepted Event 006 specification parts. No web
 Paradox wiki was used. No skill was created or updated.

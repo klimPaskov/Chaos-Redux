@@ -6,8 +6,8 @@ Scope: read-only audit of the four requested Event 005 focus files. No gameplay 
 
 ## References Consulted
 
-- Repo skill: `hoi4-focus-trees`
-- Related skill read for decision integration checks: `hoi4-decisions-missions`
+- Repo skill: `chaos-redux-focus-trees`
+- Related skill read for decision integration checks: `chaos-redux-decisions-missions`
 - Offline wiki snapshot: National focus modding, Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding
 - Vanilla docs/files: `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `common/focus_inlay_windows/documentation.md`, and focus precedents from `soviet.txt`, `baltic_shared.txt`, `china_warlord.txt`
 
@@ -243,5 +243,5 @@ Risks:
 
 ## Skills Used
 
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions` for verifying focus-decision integration expectations
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions` for verifying focus-decision integration expectations

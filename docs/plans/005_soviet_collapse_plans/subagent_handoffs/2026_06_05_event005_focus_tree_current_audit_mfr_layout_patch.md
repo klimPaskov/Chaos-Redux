@@ -9,7 +9,7 @@ Audited:
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt`
 
-References read before inspection: `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, the offline Paradox wiki core pages plus National focus modding, and vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`.
+References read before inspection: `AGENTS.md`, `chaos-redux-focus-trees`, `chaos-redux-events`, the offline Paradox wiki core pages plus National focus modding, and vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`.
 
 ## Changed Files
 

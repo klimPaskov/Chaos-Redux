@@ -1,6 +1,6 @@
 # Prompt for chaosx_repo_explorer
 
-Use `fork_context=false`. Explore Event 17 `Random faction` using the source spec at `docs/specs/017_random_faction_specs/`. Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-decisions-missions`, and relevant offline wiki and vanilla references.
+Use `fork_context=false`. Explore Event 17 `Random faction` using the source spec at `docs/specs/017_random_faction_specs/`. Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, and relevant offline wiki and vanilla references.
 
 Map exact files and existing patterns for:
 

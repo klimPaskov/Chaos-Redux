@@ -10,7 +10,7 @@ The Event 15 helper kernel is implemented in the following parent-owned, uncommi
 
 No gameplay file outside those three files was edited by the scripted-system subagent. The parent agent owns final integration, review, and commit.
 
-The implementation used the `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `hoi4-mtth` skills. The required offline wiki core pages and the relevant vanilla documentation for effects, triggers, script constants, event targets, events, decisions, focuses, AI, scopes, localisation, and on actions were consulted before implementation.
+The implementation used the `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-mtth` skills. The required offline wiki core pages and the relevant vanilla documentation for effects, triggers, script constants, event targets, events, decisions, focuses, AI, scopes, localisation, and on actions were consulted before implementation.
 
 ## Implemented kernel
 

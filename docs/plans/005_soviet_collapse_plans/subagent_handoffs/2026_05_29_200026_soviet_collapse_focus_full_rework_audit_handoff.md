@@ -7,7 +7,7 @@ Mode: Audit only. No gameplay patch was made.
 ## Required references used
 
 - Repo instructions: `AGENTS.md`
-- Skills: `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`
+- Skills: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`
 - Offline wiki pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`
 - Vanilla precedents inspected: `common/national_focus/generic.txt`, `common/national_focus/soviet.txt`

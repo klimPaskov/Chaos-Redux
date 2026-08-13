@@ -149,4 +149,4 @@ The two low-severity design follow-ups above remain intentionally unpatched beca
 
 ## Skills used
 
-`hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents` guided the audit, lifecycle checks, current-state evidence, and handoff format.
+`chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents` guided the audit, lifecycle checks, current-state evidence, and handoff format.

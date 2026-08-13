@@ -1,6 +1,6 @@
 # Decision and Mission Implementation Prompt for Event 018 Resources Found
 
-Implement the complete Event 018 decision and mission systems from the source specs and `matrices/decision_mission_matrix.md`. Follow `AGENTS.md`, `chaos-redux-events`, and `hoi4-decisions-missions`. Use the scripted-system architect for repeated field, target, capacity, cost, and cleanup logic. Run the decision and mission auditor before completion.
+Implement the complete Event 018 decision and mission systems from the source specs and `matrices/decision_mission_matrix.md`. Follow `AGENTS.md`, `chaos-redux-events`, and `chaos-redux-decisions-missions`. Use the scripted-system architect for repeated field, target, capacity, cost, and cleanup logic. Run the decision and mission auditor before completion.
 
 All working labels are design handles, not final localisation. Write final player-facing text during implementation.
 

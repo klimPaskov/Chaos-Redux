@@ -11,8 +11,8 @@
 - [x] `chaos-redux-improvement-loop.md`
 - [x] `chaos-redux-subagents.md`
 - [x] `chaos-redux-super-events.md`
-- [x] `hoi4-decisions-missions.md`
-- [x] `hoi4-focus-trees.md`
+- [x] `chaos-redux-decisions-missions.md`
+- [x] `chaos-redux-focus-trees.md`
 - [x] `chaos_redux_clusters_catalog.csv`
 - [x] `chaos_redux_events_catalog.csv`
 - [x] `chaos_redux_scenarios_catalog.csv`

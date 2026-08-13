@@ -1,6 +1,6 @@
 # Prompt for chaosx_localisation_auditor
 
-Use `fork_context=false`. Audit Event 17 `Random faction` after implementation. Read `AGENTS.md`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-subagents`, and the Event 17 spec package.
+Use `fork_context=false`. Audit Event 17 `Random faction` after implementation. Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, and the Event 17 spec package.
 
 Check:
 

@@ -12,10 +12,10 @@ The primary tree under review was `common/national_focus/019_infantry_spawn_deri
 
 Required project guidance used:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 
 The required offline Paradox wiki pages were consulted, including National focus modding, Decision modding, Idea modding, AI modding, Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, and Event modding. Vanilla official effect, trigger, script-concept, AI strategy, and decision documentation was consulted. Vanilla focus layout, explicit `load_focus_tree`, and AI strategy precedents were also inspected.
@@ -190,6 +190,6 @@ No gameplay, localisation, sprite, or asset file was edited by this specialist.
 
 ## Skill maintenance
 
-Skills used: `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-decisions-missions`, and `chaos-redux-event-assets`.
+Skills used: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets`.
 
 No reusable workflow gap requiring a skill creation or skill update was identified in this bounded audit.

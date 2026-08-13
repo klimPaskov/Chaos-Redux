@@ -44,7 +44,7 @@ Context note: the worktree and the scoped focus file already had broad uncommitt
 
 | Check | Result |
 | --- | --- |
-| Required wiki/docs/reference pass | Read `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, offline core wiki pages, offline National Focus wiki page, vanilla script concept/effects/triggers docs, and vanilla focus examples before editing. |
+| Required wiki/docs/reference pass | Read `AGENTS.md`, `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, offline core wiki pages, offline National Focus wiki page, vanilla script concept/effects/triggers docs, and vanilla focus examples before editing. |
 | Direct focus idea ops scan | `rg -n "add_ideas|remove_ideas|swap_ideas|modify_ideas" common/national_focus/005_soviet_collapse_republics.txt` returned no matches. |
 | Unsupported comparison operator scan | The less-than-or-equal / greater-than-or-equal token scan returned no matches in the focus file. |
 | Brace-depth check | `common/national_focus/005_soviet_collapse_republics.txt: brace_depth=0 min_depth=0 bad=[]`. |

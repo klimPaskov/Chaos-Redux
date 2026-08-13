@@ -11,7 +11,7 @@ No `gfx/flags`, `.tga`, flag sprite, or flag `.gfx` files were touched.
 ## Required References Used
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - Core offline wiki pages listed in `AGENTS.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`

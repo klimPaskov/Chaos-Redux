@@ -7,8 +7,8 @@ Scope: Event005 Soviet Collapse focus trees only.
 ## References consulted
 
 - Repo instructions: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/AGENTS.md`
-- Repo skill: `hoi4-focus-trees`
-- Related repo skill opened for focus-decision connections: `hoi4-decisions-missions`
+- Repo skill: `chaos-redux-focus-trees`
+- Related repo skill opened for focus-decision connections: `chaos-redux-decisions-missions`
 - Offline Paradox wiki snapshot pages:
   - `Data structures - Hearts of Iron 4 Wiki.md`
   - `Triggers - Hearts of Iron 4 Wiki.md`
@@ -392,7 +392,7 @@ No flags were touched. This subagent did not edit `gfx/flags`, flag sprites, fla
 
 ## Skills used, created, or updated
 
-- Used: `hoi4-focus-trees`
-- Used for decision-link audit context: `hoi4-decisions-missions`
+- Used: `chaos-redux-focus-trees`
+- Used for decision-link audit context: `chaos-redux-decisions-missions`
 - Created: none
 - Updated: none

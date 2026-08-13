@@ -95,7 +95,7 @@ The final PNG was reviewed directly at normal review scale after the last coordi
 
 ## References and skills used
 
-- Skills: `hoi4-focus-trees`, `chaos-redux-subagents`.
+- Skills: `chaos-redux-focus-trees`, `chaos-redux-subagents`.
 - Offline wiki core pages required by `AGENTS.md`, plus `National focus modding - Hearts of Iron 4 Wiki.md`.
 - Vanilla documentation under `Hearts of Iron IV/documentation`, including script concepts and focus-tree load/trigger references.
 - Vanilla generic and Spain focus-tree coordinate/prerequisite precedents.

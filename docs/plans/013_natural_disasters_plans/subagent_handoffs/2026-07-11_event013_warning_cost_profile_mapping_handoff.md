@@ -30,7 +30,7 @@ The current implementation uses only three flat warning packages, `field_teams`,
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 
 ### Offline Paradox wiki snapshot
 

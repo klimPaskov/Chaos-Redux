@@ -287,9 +287,9 @@ There are four immutable trial types, one for each approved combat-achievement s
 - AGENTS.md
 - .agents/skills/chaos-redux-events/SKILL.md
 - .agents/skills/chaos-redux-subagents/SKILL.md
-- .agents/skills/hoi4-decisions-missions/SKILL.md
-- .agents/skills/hoi4-focus-trees/SKILL.md
-- .agents/skills/hoi4-mtth/SKILL.md
+- .agents/skills/chaos-redux-decisions-missions/SKILL.md
+- .agents/skills/chaos-redux-focus-trees/SKILL.md
+- .agents/skills/chaos-redux-mtth/SKILL.md
 
 ### Offline wiki and vanilla documentation
 

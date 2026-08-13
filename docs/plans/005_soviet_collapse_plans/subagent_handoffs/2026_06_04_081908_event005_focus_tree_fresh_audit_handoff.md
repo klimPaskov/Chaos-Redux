@@ -25,7 +25,7 @@ No gfx, flag, `.tga`, or flag sprite files were inspected or touched.
 ## Required References Consulted
 
 - Repo guidance: `AGENTS.md`
-- Skills: `.agents/skills/hoi4-focus-trees/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- Skills: `.agents/skills/chaos-redux-focus-trees/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - Offline Paradox wiki snapshot: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla documentation: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, `dynamic_variables_documentation.md`, `loc_objects_documentation.md`, `loc_formatter_documentation.md`
 - Vanilla focus precedents sampled: `generic.txt`, `soviet.txt`, `finland.txt`

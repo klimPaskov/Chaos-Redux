@@ -75,5 +75,5 @@ Further broad rework is still needed. This handoff is a bounded safe tranche, no
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`

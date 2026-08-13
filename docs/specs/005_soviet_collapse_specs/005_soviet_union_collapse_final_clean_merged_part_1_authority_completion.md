@@ -135,8 +135,8 @@ Before editing, the agent must read:
 - `chaos-redux-events`
 - `chaos-redux-event-assets`
 - `chaos-redux-super-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - the relevant offline Paradox wiki pages
 - vanilla examples for focus trees, decisions, events, flags, subjects, and release logic
 - existing Chaos Redux event, evolution, event log, decision, focus, and asset patterns

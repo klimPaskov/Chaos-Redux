@@ -2,7 +2,7 @@
 
 Date: 2026-06-05
 
-Subagent role: `chaosx_focus_tree_auditor` style audit using `hoi4-focus-trees` and `hoi4-decisions-missions` guidance.
+Subagent role: `chaosx_focus_tree_auditor` style audit using `chaos-redux-focus-trees` and `chaos-redux-decisions-missions` guidance.
 
 Scope: read-only audit of Event005 Soviet Collapse focus trees in:
 
@@ -314,8 +314,8 @@ Priority:
 Reference/documentation checks:
 
 ```bash
-sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md
-sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-decisions-missions/SKILL.md
+sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md
+sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-decisions-missions/SKILL.md
 rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus|Focus'
 rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation' | rg -i 'focus|trigger|effect|localisation|modifier|ai|script|decision|event|idea'
 rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus' | head -40
@@ -377,6 +377,6 @@ rg -n "x = .*y =|relative_position_id|prerequisite|available = \\{|has_completed
 
 ## Skills Used
 
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 

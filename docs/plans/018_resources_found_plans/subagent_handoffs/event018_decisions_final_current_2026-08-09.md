@@ -8,7 +8,7 @@ Date: 2026-08-09. Scope: current Event 018 decision categories, decisions, missi
 
 ## Required references and evidence boundary
 
-- Read and applied `AGENTS.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`.
+- Read and applied `AGENTS.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, and `.agents/skills/chaos-redux-subagents/SKILL.md`.
 - Consulted the Event 018 source specification package under `docs/specs/018_resources_found_specs/`, including all eight sequential parts, `matrices/decision_mission_matrix.md`, `matrices/ai_strategy_matrix.md`, `matrices/tuning_and_balance_framework.md`, `matrices/acceptance_criteria.md`, and the cave focus architecture.
 - Consulted the required offline Paradox wiki decision, trigger, effect, modifier, localisation, scope, on-action, event, idea, AI, interface, and scripted-GUI pages. Vanilla decision and mission precedent and the installed documentation were used through the earlier final decision handoff, including `documentation/decisions/_documentation.md`, `script_concept_documentation.md`, `triggers_documentation.md`, and `effects_documentation.md`.
 - Reused the completed probability handoff at `docs/plans/018_resources_found_plans/subagent_handoffs/event018_probability_final_current_2026-08-09.md` as required. No second probability auditor was spawned and no weighted source was changed here.

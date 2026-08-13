@@ -7,7 +7,7 @@ Scope: read-only audit of Soviet Collapse focus trees and related decision/scrip
 ## References Checked
 
 - Repo guidance: `AGENTS.md`
-- Skills used: `hoi4-focus-trees`, `chaos-redux-subagents`
+- Skills used: `chaos-redux-focus-trees`, `chaos-redux-subagents`
 - Offline wiki snapshot: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Country creation, National focus modding
 - Vanilla docs/precepts: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, `dynamic_variables_documentation.md`, `common/decisions/_documentation.md`, `common/ai_strategy/_documentation.md`, `common/on_actions/_documentation.md`, `common/script_constants/documentation.md`
 - Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`

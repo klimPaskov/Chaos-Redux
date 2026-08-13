@@ -177,7 +177,7 @@ No design simplification, fallback mechanic, omitted choice, missing localisatio
 
 - `chaos-redux-events`
 - `chaos-redux-improvement-loop`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 
 No skill was created or updated.

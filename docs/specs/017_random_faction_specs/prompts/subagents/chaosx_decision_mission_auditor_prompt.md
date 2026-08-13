@@ -1,6 +1,6 @@
 # Prompt for chaosx_decision_mission_auditor
 
-Use `fork_context=false`. Audit and patch the Event 17 Bloc Pressure decision category after implementation. Read `AGENTS.md`, `hoi4-decisions-missions`, `chaos-redux-events`, and the Event 17 spec package.
+Use `fork_context=false`. Audit and patch the Event 17 Bloc Pressure decision category after implementation. Read `AGENTS.md`, `chaos-redux-decisions-missions`, `chaos-redux-events`, and the Event 17 spec package.
 
 Check:
 

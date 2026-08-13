@@ -10,7 +10,7 @@ The strongest current conclusion is therefore: **no confirmed weighted-logic def
 
 ## Evidence boundary and required references
 
-I read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-focus-trees/SKILL.md`, and `.agents/skills/hoi4-decisions-missions/SKILL.md` before source review. I read the complete `docs/specs/018_resources_found_specs/` package, the prior dated probability/focus/decision handoffs, the current workboard changes, the offline Paradox wiki core pages, and the required vanilla documentation.
+I read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-focus-trees/SKILL.md`, and `.agents/skills/chaos-redux-decisions-missions/SKILL.md` before source review. I read the complete `docs/specs/018_resources_found_specs/` package, the prior dated probability/focus/decision handoffs, the current workboard changes, the offline Paradox wiki core pages, and the required vanilla documentation.
 
 Current weighted source files are `common/national_focus/018_resources_found_cave_focus_tree.txt`, `events/018_random_resource.txt`, `common/decisions/018_resources_found_decisions.txt`, `common/scripted_effects/018_resources_found_prefire_effects.txt`, `common/scripted_effects/018_resources_found_cave_effects.txt`, `common/scripted_effects/018_resources_found_effects.txt`, `common/scripted_effects/018_resources_found_decision_effects.txt`, `common/ai_strategy/018_resources_found_ai_strategy.txt`, and the Event 018 scripted-trigger/effect files consumed by those sources.
 

@@ -43,7 +43,7 @@ No implementation, asset, localisation, spreadsheet, specification, or pre-exist
 
 ## Skills
 
-Used: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `hoi4-focus-trees`, and `hoi4-decisions-missions`.
+Used: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-focus-trees`, and `chaos-redux-decisions-missions`.
 
 Created or updated: none.
 

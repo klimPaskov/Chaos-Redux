@@ -245,10 +245,10 @@ These are closure-evidence facts, not a finding that an accepted focus route, fo
 
 Skills:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 
 Offline wiki snapshot pages:
 

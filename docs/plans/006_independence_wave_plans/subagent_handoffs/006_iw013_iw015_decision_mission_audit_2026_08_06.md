@@ -164,4 +164,4 @@ Do not use this audit to admit NAV or GLC, change their portrait or flag status,
 
 ## Skills used
 
-`hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents` guided the audit, lifecycle review, and handoff boundary.
+`chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents` guided the audit, lifecycle review, and handoff boundary.

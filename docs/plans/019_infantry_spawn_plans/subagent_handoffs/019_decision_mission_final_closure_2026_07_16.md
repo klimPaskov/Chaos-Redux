@@ -12,7 +12,7 @@ AI expectations cross-checked against
 decision/UI/AI contract in
 `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_7_decisions_ui_ai_balance.md`.
 
-The audit used the `chaos-redux-subagents` and `hoi4-decisions-missions`
+The audit used the `chaos-redux-subagents` and `chaos-redux-decisions-missions`
 workflows. The required offline wiki pages and the vanilla decision, scripted
 GUI, trigger, effect, variable, and script-constant documentation were reviewed
 before source inspection. No gameplay, localisation, asset, GUI, category,

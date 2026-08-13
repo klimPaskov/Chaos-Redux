@@ -76,8 +76,8 @@ Parent-agent patch tranche for Soviet Collapse release pacing and focus-tree cle
 
 ## Skills Used
 
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`

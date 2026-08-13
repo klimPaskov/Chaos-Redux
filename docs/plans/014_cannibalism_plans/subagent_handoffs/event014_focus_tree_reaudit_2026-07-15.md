@@ -186,4 +186,4 @@ No commit was created.
 
 ## Authorities and skills used
 
-The audit followed the offline Paradox wiki snapshot, vanilla HOI4 documentation and focus/AI precedents, the accepted Event 014 specifications and addenda, and the repository skills `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-decisions-missions`, and `chaos-redux-event-assets`.
+The audit followed the offline Paradox wiki snapshot, vanilla HOI4 documentation and focus/AI precedents, the accepted Event 014 specifications and addenda, and the repository skills `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets`.

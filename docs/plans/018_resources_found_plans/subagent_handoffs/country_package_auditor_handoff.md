@@ -7,7 +7,7 @@ Status: **static country-package acceptance repaired and passed; engine-executio
 
 ## References followed
 
-This pass used `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, and `chaos-redux-event-assets`. It read the complete Event 018 spec package, especially the country-package, brood-warfare, AI, tuning, and acceptance matrices; the implementation-depth addendum; the current cave-country documentation; and the completed focus-tree auditor handoff.
+This pass used `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-event-assets`. It read the complete Event 018 spec package, especially the country-package, brood-warfare, AI, tuning, and acceptance matrices; the implementation-depth addendum; the current cave-country documentation; and the completed focus-tree auditor handoff.
 
 The audit also consulted the required offline wiki pages, including Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Country creation, National focus, Unit modding, and Division modding. Official vanilla documentation and vanilla country, OOB, locked-template, AI-strategy, character, and portrait precedents were checked in parallel. No online Paradox wiki page was used.
 

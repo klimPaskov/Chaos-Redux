@@ -139,7 +139,7 @@ The paid proclamation decision at `common/decisions/015_utopia_manifesto_decisio
 
 ## References consulted
 
-Skills used: `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, and `hoi4-decisions-missions`.
+Skills used: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, and `chaos-redux-decisions-missions`.
 
 Offline wiki snapshot pages consulted: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and National focus modding.
 

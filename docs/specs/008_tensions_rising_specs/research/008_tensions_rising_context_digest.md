@@ -24,8 +24,8 @@ This package was built from the user-provided Event 008 rework brief and the upl
 - `chaos-redux-improvement-loop.md`
 - `chaos-redux-subagents.md`
 - `chaos-redux-event-assets.md`
-- `hoi4-decisions-missions.md`
-- `hoi4-focus-trees.md`
+- `chaos-redux-decisions-missions.md`
+- `chaos-redux-focus-trees.md`
 - subagent TOML files for scripted systems, assets, localisation, completion audit, spreadsheet worker, planner, and related roles
 - `chaos_redux_events_catalog.xlsx` for the current row snapshot
 

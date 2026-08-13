@@ -8,7 +8,7 @@ This was a read-only audit of gameplay state. I did not patch focus files, helpe
 
 ## Skills and references used
 
-- Repo skills: `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`.
+- Repo skills: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`.
 - Offline wiki pages consulted: `National focus modding`, `Data structures`, `Triggers`, `Effect`, `Modifiers`, `Localisation`, `Scopes`, `On actions`, `Event modding`, `Decision modding`, `Idea modding`, `AI modding`.
 - Vanilla documentation consulted: `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `common/ai_strategy/_documentation.md`, `common/decisions/_documentation.md`, `common/on_actions/_documentation.md`.
 - Vanilla precedent inspected: `common/national_focus/generic.txt`, `common/national_focus/switzerland.txt`.

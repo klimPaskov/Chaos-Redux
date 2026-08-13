@@ -19,7 +19,7 @@ No gameplay files were edited. This is an audit-only handoff.
 ## Required References Consulted
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
@@ -219,7 +219,7 @@ No gameplay, localisation, GUI, or asset files were edited.
 
 ## Skills Used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`

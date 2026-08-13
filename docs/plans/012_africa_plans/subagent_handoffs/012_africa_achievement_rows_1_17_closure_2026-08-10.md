@@ -10,7 +10,7 @@ The handoff records source evidence and the remaining owner gaps so the parent c
 
 ## Required source review
 
-Read before audit: `AGENTS.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, the offline Paradox wiki core pages (data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, AI modding), and the vanilla documentation pages `script_concept_documentation.md`, `effects_documentation.md`, and `triggers_documentation.md`.
+Read before audit: `AGENTS.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, the offline Paradox wiki core pages (data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, AI modding), and the vanilla documentation pages `script_concept_documentation.md`, `effects_documentation.md`, and `triggers_documentation.md`.
 
 Primary source surfaces inspected:
 

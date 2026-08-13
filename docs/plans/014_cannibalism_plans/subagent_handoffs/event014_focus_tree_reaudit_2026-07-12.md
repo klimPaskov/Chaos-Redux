@@ -24,9 +24,9 @@ This was a read-only gameplay, localisation, and asset audit. No gameplay, local
 
 The audit used the following repository skills as required guidance:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 - `chaos-redux-subagents`
 
@@ -91,7 +91,7 @@ Required resolution: implement a paid, target-aware terminal-hunt decision famil
 
 ### H-03 — High: warlord and Wendigo focus reward tuning still violates the required round-value standard
 
-The required focus skill says authored gameplay tuning should use round multiples of five and specifically rejects unexplained values such as 2, 3, 7, 12, and 18. See `.agents/skills/hoi4-focus-trees/SKILL.md:511` and its completion checks at `:858-859` and `:882-883`.
+The required focus skill says authored gameplay tuning should use round multiples of five and specifically rejects unexplained values such as 2, 3, 7, 12, and 18. See `.agents/skills/chaos-redux-focus-trees/SKILL.md:511` and its completion checks at `:858-859` and `:882-883`.
 
 The live warlord focus constants still contain extensive unexplained authored percentages and values outside that standard, including:
 
@@ -322,9 +322,9 @@ This audit did not mutate or commit the shared dirty worktree. It added only thi
 
 ## Skills used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 - `chaos-redux-subagents`
 

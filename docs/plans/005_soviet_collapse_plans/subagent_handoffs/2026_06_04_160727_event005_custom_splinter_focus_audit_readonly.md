@@ -17,7 +17,7 @@ Secondary files sampled for comparison and remaining blockers:
 
 Reference material opened before audit:
 
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla documentation: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`
 - Vanilla focus precedents sampled from `generic.txt`, `finland.txt`, `france.txt`, and `germany.txt`

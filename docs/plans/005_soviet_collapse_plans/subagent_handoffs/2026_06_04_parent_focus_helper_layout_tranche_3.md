@@ -79,4 +79,4 @@ This is not a full focus-tree completion claim. Remaining broad work includes:
 - further chaos-country per-tag expansion and decision integration
 - final focus audit after a larger rewrite tranche
 
-Skills used: `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`.
+Skills used: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`.

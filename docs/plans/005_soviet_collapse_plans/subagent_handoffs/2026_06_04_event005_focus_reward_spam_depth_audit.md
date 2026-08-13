@@ -16,7 +16,7 @@ Related helper files inspected:
 - `common/script_constants/005_soviet_collapse_constants.txt`
 - `common/decisions/005_soviet_collapse_decisions.txt`
 
-Used the `hoi4-focus-trees` and `chaos-redux-events` skills. Consulted the required offline Paradox wiki pages and vanilla documentation before editing.
+Used the `chaos-redux-focus-trees` and `chaos-redux-events` skills. Consulted the required offline Paradox wiki pages and vanilla documentation before editing.
 
 ## Findings
 

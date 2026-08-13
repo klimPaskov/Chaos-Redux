@@ -7,7 +7,7 @@ Status: **audit complete; no source patch authored by this subagent**
 
 ## References and validation surface
 
-This pass followed `AGENTS.md`, `.agents\skills\hoi4-focus-trees\SKILL.md`, `.agents\skills\chaos-redux-events\SKILL.md`, `.agents\skills\hoi4-decisions-missions\SKILL.md`, `.agents\skills\chaos-redux-event-assets\SKILL.md`, `.agents\skills\chaos-redux-improvement-loop\SKILL.md`, and `.agents\skills\chaos-redux-subagents\SKILL.md`.
+This pass followed `AGENTS.md`, `.agents\skills\chaos-redux-focus-trees\SKILL.md`, `.agents\skills\chaos-redux-events\SKILL.md`, `.agents\skills\chaos-redux-decisions-missions\SKILL.md`, `.agents\skills\chaos-redux-event-assets\SKILL.md`, `.agents\skills\chaos-redux-improvement-loop\SKILL.md`, and `.agents\skills\chaos-redux-subagents\SKILL.md`.
 
 The required offline Paradox wiki national-focus, trigger, effect, localisation, scope, modifier, AI, graphical-asset, and character references were consulted alongside the vanilla `triggers_documentation.md`, `effects_documentation.md`, and `script_concept_documentation.md` files.
 

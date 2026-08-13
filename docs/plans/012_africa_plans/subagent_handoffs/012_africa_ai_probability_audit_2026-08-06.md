@@ -8,7 +8,7 @@ The audit covers event option `ai_chance`, MTTH-backed profile/evolution values,
 
 ## Required references read
 
-I read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-mtth/SKILL.md`, `.agents/skills/hoi4-focus-trees/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-event-planning/SKILL.md`, and `.agents/skills/chaos-redux-improvement-loop/SKILL.md` before the audit. I consulted the required offline Paradox wiki pages under `paradox_wiki/` and the relevant vanilla documentation under `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\`, including effects, triggers, modifiers, script concepts, and AI documentation.
+I read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-mtth/SKILL.md`, `.agents/skills/chaos-redux-focus-trees/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, `.agents/skills/chaos-redux-event-planning/SKILL.md`, and `.agents/skills/chaos-redux-improvement-loop/SKILL.md` before the audit. I consulted the required offline Paradox wiki pages under `paradox_wiki/` and the relevant vanilla documentation under `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\`, including effects, triggers, modifiers, script concepts, and AI documentation.
 
 ## MCP structural evidence
 

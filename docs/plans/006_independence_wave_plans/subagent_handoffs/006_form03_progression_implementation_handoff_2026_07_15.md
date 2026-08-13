@@ -112,7 +112,7 @@ this is the selected design, not a fallback. No commit was created.
 ## Skills used
 
 - `chaos-redux-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`

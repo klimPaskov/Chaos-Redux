@@ -224,6 +224,6 @@ These are meaningful scenario checks for the next country/decision audit. They a
 
 - `chaos-redux-subagents` for audit ownership, evidence boundaries, and handoff structure;
 - `chaos-redux-events` for Event 016 integration and completion expectations;
-- `hoi4-focus-trees` for the 100-focus structural, localisation, AI, reachability, and asset audit.
+- `chaos-redux-focus-trees` for the 100-focus structural, localisation, AI, reachability, and asset audit.
 
 No skill was created or modified by this audit.

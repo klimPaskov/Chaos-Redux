@@ -153,7 +153,7 @@ The package validation record is deliberately definition-level, filesystem-level
 - `chaos-redux-subagents`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-event-assets`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 
 No skill was created or updated.

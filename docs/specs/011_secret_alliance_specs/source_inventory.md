@@ -36,8 +36,8 @@ Every file listed below was read in full before the final package was assembled.
 | `chaosx_spreadsheet_doc_worker.toml` | 3943 | 54 | `107d79714af672f951c140b64baeaf40bfabb0ff5b9d3c007be1bb81ed1403cf` | Fully read |
 | `chaosx_super_event_audio_researcher.toml` | 3248 | 64 | `ccabb1c32d425c3bbfdc528894b28e62698d16324810001db01f332732247d6f` | Fully read |
 | `chaosx_super_event_text_researcher.toml` | 3839 | 61 | `e434e849ac72ce188e8638541682a4862385c3e4fbbbd170b2655fac5d1125ba` | Fully read |
-| `hoi4-decisions-missions.md` | 43564 | 890 | `04e8fa35106f0557b5e1e313036662747eb180b090a533d59af8830ead801ffa` | Fully read |
-| `hoi4-focus-trees.md` | 45298 | 898 | `bebb8e91fbc5f3c013f99a3237458b50ba9278de44f659337100976372f1d824` | Fully read |
+| `chaos-redux-decisions-missions.md` | 43564 | 890 | `04e8fa35106f0557b5e1e313036662747eb180b090a533d59af8830ead801ffa` | Fully read |
+| `chaos-redux-focus-trees.md` | 45298 | 898 | `bebb8e91fbc5f3c013f99a3237458b50ba9278de44f659337100976372f1d824` | Fully read |
 | `/home/oai/skills/spreadsheets/SKILL.md` | 7406 | 167 | `d84b9da14ac7ae39abb0f7013d6ce891abb276ca2d85db433d787ba5f8919763` | Fully read |
 | `/home/oai/skills/spreadsheets/API_QUICK_START.md` | 12828 | 272 | `c35df5e7223cb49645c4c73cbf0e4566787838bdbd03c7c83f378c6848c6e1c6` | Fully read |
 

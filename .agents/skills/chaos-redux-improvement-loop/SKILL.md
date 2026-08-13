@@ -77,8 +77,8 @@ Use the system skill that owns the surface being improved.
 
 - `chaos-redux-event-planning` is the standard for expansion spec quality. The addendum should be idea-first, detailed, and implementation-ready, but not forced into a rigid template.
 - `chaos-redux-events` owns event chains, event details, evolutions, event logs, docs, and catalog alignment.
-- `hoi4-focus-trees` owns route depth, branch interaction, focus rewards, route AI, focus icons, and focus documentation.
-- `hoi4-decisions-missions` owns decisions, missions, costs, objectives, scripted GUI decision surfaces, hidden decision visibility, tooltips, AI actions, and cleanup.
+- `chaos-redux-focus-trees` owns route depth, branch interaction, focus rewards, route AI, focus icons, and focus documentation.
+- `chaos-redux-decisions-missions` owns decisions, missions, costs, objectives, scripted GUI decision surfaces, hidden decision visibility, tooltips, AI actions, and cleanup.
 - `chaos-redux-event-assets` owns visual assets, animated sprites, animated portraits, source rules, DDS outputs, manifests, contact sheets, and sprite handoffs.
 - `chaos-redux-super-events` owns super-event role, title, description, quote, audio, image, trigger, localisation, docs, and spreadsheet alignment.
 - `chaos-redux-subagents` explains when to use a planner subagent, a patch-capable system subagent, an asset worker, a read-only auditor, or other subagents.

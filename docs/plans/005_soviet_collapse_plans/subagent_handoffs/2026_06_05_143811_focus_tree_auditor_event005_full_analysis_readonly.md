@@ -482,7 +482,7 @@ Risk:
 Commands and checks run:
 
 - `rg --files paradox_wiki -g '*National focus*' -g '*Data structures*' -g '*Triggers*' -g '*Effects*' -g '*Modifiers*' -g '*Localisation*' -g '*Scopes*' -g '*Decision modding*' -g '*Idea modding*' -g '*AI modding*'`
-- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-subagents/SKILL.md`
 - `sed -n` reads of all required offline wiki pages listed above.
 - `rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation' -g '*focus*' -g '*effects*' -g '*triggers*' -g '*script*'`

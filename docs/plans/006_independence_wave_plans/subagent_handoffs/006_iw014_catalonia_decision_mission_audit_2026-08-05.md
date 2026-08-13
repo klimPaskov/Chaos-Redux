@@ -158,4 +158,4 @@ The two non-blocking follow-ups are limited to CAT ledger visibility and defensi
 
 ## Skills used
 
-`hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents` guided the CAT audit, Event 006 integration checks, and this handoff.
+`chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents` guided the CAT audit, Event 006 integration checks, and this handoff.

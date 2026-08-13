@@ -13,7 +13,7 @@ There is no world-end branch, manual scenario, or event cluster requirement in t
 ## References Consulted
 
 - Repository instructions: `AGENTS.md`.
-- Skills: `chaos-redux-event-planning`, `chaos-redux-events`, `hoi4-decisions-missions`, `hoi4-mtth`, `chaos-redux-subagents`.
+- Skills: `chaos-redux-event-planning`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-mtth`, `chaos-redux-subagents`.
 - Offline Paradox wiki pages: Data structures, Triggers, Effects, Scopes, Decision modding, Event modding, Modifiers, Localisation, On actions, Idea modding, AI modding.
 - Vanilla documentation: script concepts, script constants, effects, triggers.
 - Vanilla precedents:
@@ -172,7 +172,7 @@ If reveal is caused by exposure rather than an existing war, the final design mu
 
 ## Decision Category And Target Selectors
 
-Evolution II should unlock player counter-decisions. Use the selected-target pattern from `hoi4-decisions-missions`:
+Evolution II should unlock player counter-decisions. Use the selected-target pattern from `chaos-redux-decisions-missions`:
 
 - One player selector decision chooses a suspected country from `global.secret_alliance_counter_targets`.
 - Selection marks a single country with `secret_alliance_selected_counter_target` or stores a regular event target inside the activation chain.
@@ -227,7 +227,7 @@ Before reveal, overt AI strategies should be modest. Do not make all members ope
 
 ## MTTH Plan
 
-Use the `hoi4-mtth` pattern for central pacing and AI weights. Add a future file such as:
+Use the `chaos-redux-mtth` pattern for central pacing and AI weights. Add a future file such as:
 
 - `common/mtth/011_secret_alliance_mtth.txt`
 

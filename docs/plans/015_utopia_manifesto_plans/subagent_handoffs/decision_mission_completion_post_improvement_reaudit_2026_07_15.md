@@ -180,7 +180,7 @@ These limitations did not produce a source-level blocker.
 
 - chaos-redux-subagents
 - chaos-redux-events
-- hoi4-decisions-missions
+- chaos-redux-decisions-missions
 - chaos-redux-improvement-loop
 
 No skill was created or updated by this read-only audit.

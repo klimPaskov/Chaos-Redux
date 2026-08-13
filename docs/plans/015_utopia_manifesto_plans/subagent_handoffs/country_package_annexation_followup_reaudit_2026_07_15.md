@@ -150,7 +150,7 @@ Skills used:
 
 - `chaos-redux-events` for event-root, hidden-event, integration, and terminal
   lifecycle expectations;
-- `hoi4-decisions-missions` for Necessary Ground mission/case cleanup and
+- `chaos-redux-decisions-missions` for Necessary Ground mission/case cleanup and
   target-disappearance invariants;
 - `chaos-redux-subagents` for bounded ownership, concurrent-change review, and
   this handoff.

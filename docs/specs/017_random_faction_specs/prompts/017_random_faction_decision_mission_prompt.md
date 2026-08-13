@@ -1,6 +1,6 @@
 # Decision and mission prompt for Event 17: Random faction
 
-Use `hoi4-decisions-missions`, `chaos-redux-events`, and the Event 17 spec files. Implement the Bloc Pressure decision category and mission families from `matrices/017_random_faction_decision_map.md`.
+Use `chaos-redux-decisions-missions`, `chaos-redux-events`, and the Event 17 spec files. Implement the Bloc Pressure decision category and mission families from `matrices/017_random_faction_decision_map.md`.
 
 Core requirements:
 

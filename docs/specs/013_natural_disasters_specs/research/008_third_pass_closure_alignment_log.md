@@ -28,8 +28,8 @@ The pass also processed the uploaded source materials present in `/mnt/data`, in
 - `chaos-redux-super-events.md`
 - `chaos-redux-subagents.md`
 - `chaos-redux-improvement-loop.md`
-- `hoi4-focus-trees.md`
-- `hoi4-decisions-missions.md`
+- `chaos-redux-focus-trees.md`
+- `chaos-redux-decisions-missions.md`
 - all uploaded `chaosx_*.toml` subagent files
 - uploaded event, cluster, and scenario CSV catalog files
 - the original Natural Disasters brief in `Pasted text.txt`

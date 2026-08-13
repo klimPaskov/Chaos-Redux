@@ -9,7 +9,7 @@ This pass covers the 43 national focus trees loaded from the Soviet-collapse foc
 - `005_soviet_collapse_republics.txt`: Ukraine, Breakaway, Internal Republic, Baltic, Caucasus, Central Asia, Moldova, Belarus, Kazakhstan (9 trees).
 - `005_soviet_collapse_custom_splinters.txt`: 27 custom splinter trees.
 
-The request was handled with `hoi4-focus-trees`, the offline HOI4 references, and the HOI4 MCP workspace `mod_chaos_redux_ea3b2d67c2c0`.
+The request was handled with `chaos-redux-focus-trees`, the offline HOI4 references, and the HOI4 MCP workspace `mod_chaos_redux_ea3b2d67c2c0`.
 
 ## Implementation
 

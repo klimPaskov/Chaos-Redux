@@ -97,7 +97,7 @@ The district-aftermath availability check was reviewed during this work. It now 
 ## Skills and references used
 
 - `chaos-redux-events` for Event 015 localisation voice, event-chain alignment, and completion handoff requirements.
-- `hoi4-decisions-missions` for targeted decision, mission, dynamic cost, cancellation, and timeout localisation alignment.
+- `chaos-redux-decisions-missions` for targeted decision, mission, dynamic cost, cancellation, and timeout localisation alignment.
 - `chaos-redux-subagents` for bounded ownership and evidence-rich parent handoff.
 
 The required offline Paradox wiki core pages and the relevant vanilla localisation, trigger, effect, scope, event, decision, idea, AI, and script-concept documentation were consulted. Vanilla scripted-localisation precedents were inspected. No skill was created or updated because the existing skills already covered this reusable workflow.

@@ -447,7 +447,7 @@ Skills used:
 
 - chaos-redux-subagents for the bounded audit and handoff contract;
 - chaos-redux-events for Event 19 integration, writing, and completion rules;
-- hoi4-decisions-missions for decision, mission, cost, AI, and scripted-GUI
+- chaos-redux-decisions-missions for decision, mission, cost, AI, and scripted-GUI
   review.
 
 No skill was created or updated.

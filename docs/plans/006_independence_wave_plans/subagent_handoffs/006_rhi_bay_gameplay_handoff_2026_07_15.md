@@ -383,8 +383,8 @@ Within the bounded package files, no route, government, visible value, mission, 
 ## Skills and references used
 
 - `chaos-redux-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - required offline Paradox wiki pages, including national focuses, country creation, divisions, portraits, events, decisions, ideas, AI, scopes, triggers, effects, modifiers, localisation, and on-actions
 - official vanilla documentation for script concepts, script constants, effects, triggers, and generated characters
 - vanilla RHI/BAY histories and characters, Germany's Rupprecht transfer, and the vanilla German reunification decision

@@ -323,8 +323,8 @@ The former negative `brilliant_scientist_focus_extreme_submission_lock` check wa
 
 ## Skills used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 - `chaos-redux-event-assets`

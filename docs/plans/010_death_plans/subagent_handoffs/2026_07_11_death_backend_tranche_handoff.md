@@ -13,7 +13,7 @@ Required project guidance was read before inspecting or patching the backend:
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `docs/plans/010_death_plans/2026_07_11_death_improvement_loop_addendum.md`
 - the current Event 010 specs, matrices, README, and `docs/events/010_death/overview.md`
 

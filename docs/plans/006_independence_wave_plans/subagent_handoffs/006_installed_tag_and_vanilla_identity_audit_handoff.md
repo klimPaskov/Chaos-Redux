@@ -177,4 +177,4 @@ No gameplay, specification, tag-registry, localisation, asset, skill, or spreads
 
 - chaos-redux-subagents for bounded ownership, evidence, and handoff rules;
 - chaos-redux-events for Event 006 integration context;
-- hoi4-focus-trees in the vanilla tree-safety subaudit.
+- chaos-redux-focus-trees in the vanilla tree-safety subaudit.

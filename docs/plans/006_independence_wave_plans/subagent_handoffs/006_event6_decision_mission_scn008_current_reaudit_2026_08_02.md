@@ -104,6 +104,6 @@ No simplification or fallback was introduced.
 
 ## Skills and references used
 
-Applied `hoi4-decisions-missions`, `chaos-redux-events`, `hoi4-focus-trees`, and `chaos-redux-subagents`.
+Applied `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-subagents`.
 
 Consulted the required offline Paradox wiki decision, trigger, effect, scope, localisation, AI, interface, and scripted-GUI references, plus the relevant vanilla decision, scripted-GUI, script-concept, script-constant, effect, and trigger documentation and the vanilla border-conflict decision precedent.

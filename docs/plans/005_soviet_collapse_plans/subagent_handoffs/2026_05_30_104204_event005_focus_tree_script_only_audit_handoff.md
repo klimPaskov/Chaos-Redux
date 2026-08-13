@@ -204,9 +204,9 @@ Additional Python parser audits were run for focus counts, duplicate focus ids, 
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets` for asset-boundary rules only; no assets were inspected or modified.
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`

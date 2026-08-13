@@ -239,6 +239,6 @@ The achievement event call sites listed above are cross-owner integration depend
 ## Skills and references used
 
 - `chaos-redux-subagents` for ownership boundaries and handoff obligations.
-- `hoi4-decisions-missions` for targeted-decision, mission-lifecycle, dynamic-duration, AI, and cleanup rules.
+- `chaos-redux-decisions-missions` for targeted-decision, mission-lifecycle, dynamic-duration, AI, and cleanup rules.
 - Required offline Paradox wiki core pages, relevant vanilla documentation, and vanilla decision/mission precedents were consulted before editing. No online Paradox wiki was used.
 

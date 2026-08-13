@@ -240,4 +240,4 @@ These skipped checks are recorded because they would add runtime confidence; the
 
 ## Skills used
 
-This audit applied `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `xlsx` for their respective event, plan-disposition, asset/provenance, animation, super-event, focus, decision/mission, and workbook requirements.
+This audit applied `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `xlsx` for their respective event, plan-disposition, asset/provenance, animation, super-event, focus, decision/mission, and workbook requirements.

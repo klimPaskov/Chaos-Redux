@@ -232,8 +232,8 @@ Event 006 work in this dirty workspace; no unrelated change was reverted.
 
 ## Guidance used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`
 - `chaos-redux-improvement-loop` (depth review only; no expansion was needed)

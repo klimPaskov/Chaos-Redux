@@ -13,7 +13,7 @@ The requested `common/national_focus/005_soviet_collapse_ukraine.txt` and `commo
 ## Required References Used
 
 - Read `AGENTS.md`.
-- Used the `hoi4-focus-trees` skill before inspecting focus files.
+- Used the `chaos-redux-focus-trees` skill before inspecting focus files.
 - Consulted the required offline wiki pages in `paradox_wiki/`, including Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and National focus modding.
 - Consulted vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, especially effects/triggers docs and focus inlay documentation.
 - Consulted vanilla focus precedents in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt` and `baltic_shared.txt`.

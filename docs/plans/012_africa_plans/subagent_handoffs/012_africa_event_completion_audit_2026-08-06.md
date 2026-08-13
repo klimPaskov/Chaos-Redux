@@ -12,7 +12,7 @@ This was a read-only gameplay audit. No gameplay, localisation, workbook, asset,
 
 The audit reviewed `AGENTS.md`, all nine Event 012 specifications, the matrices and diagrams under `docs\specs\012_africa_specs`, the current research and prompt material, `docs\events\012_africa`, the dated plans and handoffs under `docs\plans\012_africa_plans`, and the current gameplay, localisation, GFX, model, sound, and spreadsheet consumers.
 
-The required project skills applied were `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-3d-model-pipeline`, `chaos-redux-frame-animation`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-super-events`, and the read-only portion of `xlsx` for catalog inspection.
+The required project skills applied were `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-3d-model-pipeline`, `chaos-redux-frame-animation`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, and the read-only portion of `xlsx` for catalog inspection.
 
 The required offline Paradox wiki pages and installed vanilla documentation were consulted. The audit used read-only HOI4 MCP event, focus, and GUI routes. Every weighted surface was routed separately to `chaosx_ai_probability_auditor`; its final status is recorded below.
 

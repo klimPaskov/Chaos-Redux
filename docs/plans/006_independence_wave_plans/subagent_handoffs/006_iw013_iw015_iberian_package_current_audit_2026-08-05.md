@@ -170,4 +170,4 @@ No obsolete pasted logs or historical runtime dumps are used as evidence.
 
 ## Skills used
 
-`chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, and `chaos-redux-comfyui` guided the audit and handoff boundary.
+`chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, and `chaos-redux-comfyui` guided the audit and handoff boundary.

@@ -9,7 +9,7 @@ Scope audited:
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt`
 
-References used: `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, offline Paradox wiki core pages plus `National focus modding`, and vanilla focus/docs references.
+References used: `AGENTS.md`, `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, offline Paradox wiki core pages plus `National focus modding`, and vanilla focus/docs references.
 
 ## Changed Files
 

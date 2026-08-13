@@ -12,7 +12,7 @@ Required project instructions and skills were read:
 - `AGENTS.md`
 - `CHAOS_REDUX_MECHANICS.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `docs/specs/010_death_specs/specs/*.md`
 - `docs/specs/010_death_specs/matrices/*.md`

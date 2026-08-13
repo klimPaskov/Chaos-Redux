@@ -22,9 +22,9 @@ The following were read before this architecture was written.
 
 - `AGENTS.md`.
 - `.agents/skills/chaos-redux-events/SKILL.md`.
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`.
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`.
 - `.agents/skills/chaos-redux-subagents/SKILL.md`.
-- `.agents/skills/hoi4-mtth/SKILL.md`.
+- `.agents/skills/chaos-redux-mtth/SKILL.md`.
 - The complete 33-file Event 011 package under `docs/specs/011_secret_alliance_specs/`.
 
 ### Offline wiki snapshot

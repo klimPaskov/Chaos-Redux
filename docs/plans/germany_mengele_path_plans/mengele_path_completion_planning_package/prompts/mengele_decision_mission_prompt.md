@@ -2,7 +2,7 @@
 
 Use this after the main coding pass touches Germany Mengele decisions or missions.
 
-Read `hoi4-decisions-missions`, `chaos-redux-events`, and the relevant repository files.
+Read `chaos-redux-decisions-missions`, `chaos-redux-events`, and the relevant repository files.
 
 Audit and patch small local issues in:
 

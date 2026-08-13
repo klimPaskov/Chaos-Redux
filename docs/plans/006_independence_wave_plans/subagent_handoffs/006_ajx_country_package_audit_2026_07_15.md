@@ -43,8 +43,8 @@ Skills used:
 
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 
 No skill was created or updated.

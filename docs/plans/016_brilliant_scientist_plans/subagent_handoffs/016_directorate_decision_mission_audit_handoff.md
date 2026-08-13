@@ -6,7 +6,7 @@
 - Mode: patch-capable decision and mission audit
 - Scope: Event 016 host Directorate institutions, facilities, foreign liaison, category, modifiers, constants, localisation, and system documentation
 - Explicit exclusions: the project-board decision file, opening and Kruger identity, shared Event 016 gameplay files, focus trees, specs, and all other Event 016 surfaces
-- Skills used: `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`
+- Skills used: `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`
 
 The owned slice is structurally sound after the local corrections recorded below. Two outcome consumers and one UI status remain parent-owned integration work; those gaps prevent this handoff from claiming the complete Host Management acceptance section.
 

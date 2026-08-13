@@ -4,7 +4,7 @@ Subagent role: `chaosx_focus_tree_auditor`
 
 Skills used:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
 
 References consulted before reading or patching Chaos Redux files:

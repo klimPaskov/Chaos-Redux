@@ -108,7 +108,7 @@ No icon ids were changed.
 
 ## Validation Run
 
-- Read required repo instructions and skills: `AGENTS.md`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`.
+- Read required repo instructions and skills: `AGENTS.md`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`.
 - Consulted offline wiki pages required by AGENTS, including Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and National focus modding.
 - Consulted vanilla documentation: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`.
 - Inspected vanilla precedent for focus/decision reward syntax including `unlock_decision_tooltip`, `add_building_construction`, `add_equipment_to_stockpile`, `add_manpower`, and unit creation patterns.

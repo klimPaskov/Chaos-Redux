@@ -23,7 +23,7 @@ The audit re-read:
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_country_package_postclosure_remediation_2026-07-12.md`;
 - the final Event 014 country, unification, Wendigo, focus-closure, decision, scorer, on-action, AI, unit-history, focus, event, localisation, interface, and lifecycle files relevant to the findings and acceptance gates.
 
-Required repository guidance was read first: `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, and `hoi4-decisions-missions`.
+Required repository guidance was read first: `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-decisions-missions`.
 
 The offline `paradox_wiki/` snapshot was used instead of the online Paradox wiki. The required core pages were consulted together with the country, division, unit, national-focus, technology, and equipment pages. Vanilla script-constant, effects, triggers, and script-concept documentation was consulted. Vanilla scorer definitions, `change_tag_from`, template-support, and on-action implementations were used as precedents.
 
@@ -144,7 +144,7 @@ There are no remaining country-package blockers. This report is a definition-lev
 
 - `chaos-redux-subagents`
 - `chaos-redux-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 
 No skill was created or updated.

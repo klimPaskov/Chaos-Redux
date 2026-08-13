@@ -231,7 +231,7 @@ Gaps:
 
 Commands/criteria run:
 - Read `AGENTS.md`.
-- Read `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents` skills.
+- Read `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents` skills.
 - Consulted offline Paradox wiki snapshots: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Consulted vanilla HOI4 documentation: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`; checked vanilla `common/national_focus/generic.txt` prerequisite/mutual-exclusion examples.
 - Brace balance on all four audited focus files: final depth 0, no negative lines.

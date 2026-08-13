@@ -1,6 +1,6 @@
 # Decision and Mission Prompt - Event 010 Death
 
-Implement the Event 010 Death decision and mission systems from `010_death_decisions_ui_ai.md`. Follow `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
+Implement the Event 010 Death decision and mission systems from `010_death_decisions_ui_ai.md`. Follow `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
 
 Non-negotiables:
 

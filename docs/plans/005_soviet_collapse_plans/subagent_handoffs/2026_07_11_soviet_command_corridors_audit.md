@@ -12,7 +12,7 @@ This audit did not edit gameplay files and did not create a commit.
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - the required offline wiki pages for data structures, triggers, effects, modifiers, localisation, scopes, on-actions, events, decisions, ideas, and AI
 - vanilla `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, script-constant documentation, AI-strategy documentation, and vanilla mission/decision precedents
 - `2026_07_11_soviet_collapse_improvement_loop_addendum.md`

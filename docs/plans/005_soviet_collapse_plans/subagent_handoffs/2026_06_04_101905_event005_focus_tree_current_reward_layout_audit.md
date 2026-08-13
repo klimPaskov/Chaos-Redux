@@ -10,7 +10,7 @@ Audited the current worktree after the parent removed the generic high-chaos esc
 
 ## Required references used
 
-- Repo skill: `hoi4-focus-trees`.
+- Repo skill: `chaos-redux-focus-trees`.
 - Offline wiki pages opened: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla docs consulted: `effects_documentation.md` for `load_focus_tree` / `mark_focus_tree_layout_dirty`, `triggers_documentation.md` for `has_focus_tree`.
 - Vanilla focus precedents skimmed: `common/national_focus/soviet.txt`, `generic.txt`, `poland.txt`.

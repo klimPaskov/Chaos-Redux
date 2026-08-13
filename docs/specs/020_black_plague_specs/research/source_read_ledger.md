@@ -44,9 +44,9 @@ This ledger records every project source file supplied for the Event 20 planning
 | `chaos-redux-events.md` | 52,452 | 692 | `3a16c0fa87a0a9cfe3a48c9d59ce0df746411d91710cd017b2fec47db6703db3` | Read in full |
 | `CHAOS_REDUX_MECHANICS.md` | 44,359 | 973 | `fb4ed4ab5894c5c93c319c4a144f2f6f95c7593f22286de449681e94675d4715` | Read in full |
 | `AGENTS.md` | 31,714 | 372 | `3a1d0e3ec31907507ef403f80245186613c739108fe638f57376430f46556886` | Read in full |
-| `hoi4-decisions-missions.md` | 43,564 | 890 | `04e8fa35106f0557b5e1e313036662747eb180b090a533d59af8830ead801ffa` | Read in full |
+| `chaos-redux-decisions-missions.md` | 43,564 | 890 | `04e8fa35106f0557b5e1e313036662747eb180b090a533d59af8830ead801ffa` | Read in full |
 | `chaos-redux-event-planning.md` | 136,300 | 1,799 | `8b9091691a0fec22ce912a4fda1634d58918b5bd8ad0dcf3393d52a8f212238a` | Read in full |
-| `hoi4-focus-trees(3).md` | 49,654 | 923 | `489c0638bef4852b5a2f6fe326ceb17de6690a9ce719afb174b661e431e60bc8` | Read in full |
+| `chaos-redux-focus-trees(3).md` | 49,654 | 923 | `489c0638bef4852b5a2f6fe326ceb17de6690a9ce719afb174b661e431e60bc8` | Read in full |
 
 ## Catalog findings that changed the design
 

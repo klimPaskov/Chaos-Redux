@@ -23,8 +23,8 @@ work remains fail-closed and is listed explicitly below.
 ## Required references consulted
 
 - Repository `AGENTS.md`.
-- Repo skills: `chaos-redux-events`, `hoi4-focus-trees`,
-  `hoi4-decisions-missions`, and `chaos-redux-subagents`.
+- Repo skills: `chaos-redux-events`, `chaos-redux-focus-trees`,
+  `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.
 - Offline wiki: Data structures, Triggers, Effects, Modifiers, Localisation,
   Scopes, On actions, Event modding, Decision modding, Idea modding, AI
   modding, Country creation, Character modding, and National focus modding.
@@ -222,6 +222,6 @@ adviser icons.
 No fallback or simplification was introduced by this audit. The work is a
 sound package-foundation repair, not a completion claim. No commit was made.
 
-Skills used: `chaos-redux-events`, `hoi4-focus-trees`,
-`hoi4-decisions-missions`, and `chaos-redux-subagents`. No skill was created or
+Skills used: `chaos-redux-events`, `chaos-redux-focus-trees`,
+`chaos-redux-decisions-missions`, and `chaos-redux-subagents`. No skill was created or
 updated.

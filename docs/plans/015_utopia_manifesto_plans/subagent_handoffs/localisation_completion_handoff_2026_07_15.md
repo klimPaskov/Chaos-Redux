@@ -127,6 +127,6 @@ None. Every key referenced by the current scoped gameplay surface is localised, 
 ## Skills and references used
 
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - Required offline Paradox wiki pages, including Localisation, Decision Modding, Event Modding, Triggers, Effects, Scopes, and Data Structures
 - Vanilla localisation formatting, scripted object, script concept, and custom tooltip documentation and precedents

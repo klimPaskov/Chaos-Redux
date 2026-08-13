@@ -23,7 +23,7 @@ No `gfx/flags` or flag sprite files were touched or inspected.
 
 ## References Used
 
-- Repo skills: `hoi4-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`.
+- Repo skills: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`.
 - Repo instructions: `AGENTS.md`.
 - Offline wiki: National focus modding, Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `common/decisions/_documentation.md`, `common/ai_strategy/_documentation.md`.

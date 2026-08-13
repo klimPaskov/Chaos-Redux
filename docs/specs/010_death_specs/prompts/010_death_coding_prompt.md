@@ -11,8 +11,8 @@ Implement Event ID 10 as `Death`, fully replacing the obsolete `Spirit of War/Pe
 - `chaos-redux-event-assets`
 - `chaos-redux-frame-animation`
 - `chaos-redux-super-events`
-- `hoi4-decisions-missions`
-- `hoi4-focus-trees` if implementing the Death focus/progression tree
+- `chaos-redux-decisions-missions`
+- `chaos-redux-focus-trees` if implementing the Death focus/progression tree
 - all spec files under `docs/specs/010_death_specs/specs/`
 - all matrices and prompt handoffs under `docs/specs/010_death_specs/`
 

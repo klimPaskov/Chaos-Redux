@@ -165,4 +165,4 @@ Event 006 remains incomplete at the parent level because the runtime lifecycle m
 
 No fallback or simplification was introduced by this audit.
 
-Skills used: `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
+Skills used: `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.

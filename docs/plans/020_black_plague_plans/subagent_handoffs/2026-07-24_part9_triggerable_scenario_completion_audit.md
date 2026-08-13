@@ -303,7 +303,7 @@ The audit applied:
 - `chaos-redux-subagents`
 - `chaos-redux-event-planning`
 - `chaos-redux-event-assets`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `xlsx`
 
 The audit also consulted the required offline Paradox wiki pages, official vanilla script documentation, the live generic scenario framework, the implemented SCN-013 integration handoff, the complete Event 20 planning inventory, all Part 9 and dependency-specific sections, and the current Event 20 source providers.

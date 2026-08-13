@@ -27,7 +27,7 @@ The inspected scripted GUI uses `context_type = decision_category`, `window_name
 
 ## References inspected
 
-I read the repository `AGENTS.md`, the required `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-event-assets`, and `chaos-redux-frame-animation` skills, the offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Interface modding, and Scripted GUI modding, and the installed vanilla documentation set.
+I read the repository `AGENTS.md`, the required `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-event-assets`, and `chaos-redux-frame-animation` skills, the offline Paradox wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Interface modding, and Scripted GUI modding, and the installed vanilla documentation set.
 
 Vanilla precedents inspected were `interface/countrydecisionview.gui` for the decision-category ledger layout and `interface/usa_congress_scripted_gui.gui` plus `common/scripted_guis/USA_congress_scripted_gui.txt` for a bounded scripted decision-category window with explicit controls and values.
 

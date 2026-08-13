@@ -1,13 +1,13 @@
 ---
-name: hoi4-decisions-missions
+name: chaos-redux-decisions-missions
 description: Use when designing, implementing, auditing, or fixing Hearts of Iron IV decisions, missions, timed objectives, decision categories, and mission localisation.
 ---
 
-# HOI4 Decisions and Missions
+# Chaos Redux Decisions and Missions
 
 Use this skill when a task touches decisions, missions, timed objectives, decision categories, mission UI, costs, trigger tooltips, scripted localisation, AI decision behavior, or balance around decision-driven systems.
 
-This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `hoi4-focus-trees`. For visual assets, use `chaos-redux-event-assets`.
+This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`.
 
 For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. It may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 

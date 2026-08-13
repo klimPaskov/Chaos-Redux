@@ -42,7 +42,7 @@ No runtime session was part of this read/audit-and-patch handoff. No remaining s
 
 ## Skills used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 
 No skill was created or changed.

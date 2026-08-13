@@ -157,10 +157,10 @@ All other requested surfaces audited here are implemented and have no open P0, P
 - `chaos-redux-subagents` for ownership boundaries, specialist evidence, supersession, and completion-audit reporting;
 - `chaos-redux-events` for event integration, log/detail, evolution, documentation, and workbook alignment;
 - `chaos-redux-event-assets` and `chaos-redux-frame-animation` for final asset, sprite, animation, fallback, manifest, and provenance checks;
-- `hoi4-focus-trees` for the derivative focus-tree completion standard;
-- `hoi4-decisions-missions` for decision/mission surfaces and AI review;
+- `chaos-redux-focus-trees` for the derivative focus-tree completion standard;
+- `chaos-redux-decisions-missions` for decision/mission surfaces and AI review;
 - `chaos-redux-improvement-loop` for accepted improvement-plan disposition;
-- `hoi4-mtth` for the active-country timing review;
+- `chaos-redux-mtth` for the active-country timing review;
 - `xlsx` for direct workbook inspection.
 
 ## Auditor changes

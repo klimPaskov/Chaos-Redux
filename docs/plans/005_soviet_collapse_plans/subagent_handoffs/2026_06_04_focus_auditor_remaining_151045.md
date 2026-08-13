@@ -2,7 +2,7 @@
 
 Scope: current worktree audit of Event005 Soviet Collapse focus trees, excluding all CFR focus work plus `PRA_count_the_locomotives`, `PRA_repair_the_branch_lines`, `DSC_field_hospital_memorials`, and `DSC_register_field_hospital_columns` / `dsc_register_field_hospital_columns`. No gameplay files were edited.
 
-References consulted before gameplay inspection: `AGENTS.md`, `.agents/skills/hoi4-focus-trees/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, offline Paradox wiki pages for Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and National focus modding, plus vanilla `effects_documentation.md` focus effects.
+References consulted before gameplay inspection: `AGENTS.md`, `.agents/skills/chaos-redux-focus-trees/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, offline Paradox wiki pages for Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and National focus modding, plus vanilla `effects_documentation.md` focus effects.
 
 Flags were not touched. `gfx/flags` and `interface/flags` were not opened or edited.
 

@@ -11,7 +11,7 @@ No flag files, visual flag assets, `.tga` files, flag `.gfx` files, or flag spri
 ## Required References Used
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
 - Core offline wiki pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding

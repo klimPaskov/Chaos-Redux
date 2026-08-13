@@ -13,7 +13,7 @@ Scope:
 	- `common/national_focus/005_soviet_collapse_factory_successors.txt`
 	- `common/national_focus/005_soviet_collapse_ancient_restorations.txt`
 - No localisation, scripted effects, scripted triggers, decisions, binary flags, scenario effects, or release systems were edited.
-- Skills used: `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`.
+- Skills used: `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`.
 - Required references read before edits: offline Paradox wiki Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding; vanilla documentation for triggers, effects, modifiers, localisation formatter, script concepts; vanilla focus precedent from `generic.txt`/`soviet.txt`.
 
 ## High-Priority Fixes First

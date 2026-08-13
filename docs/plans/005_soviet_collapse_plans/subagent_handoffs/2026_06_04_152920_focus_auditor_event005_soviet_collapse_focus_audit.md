@@ -14,7 +14,7 @@ Audited these focus files:
 Reference files opened before auditing:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
 - Vanilla focus precedents sampled from `common/national_focus/finland.txt`, `france.txt`, `spain.txt`
@@ -111,7 +111,7 @@ Reference files opened before auditing:
 ## Commands Run
 
 - `rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus'`
-- `sed -n` reads for `AGENTS.md`, `hoi4-focus-trees/SKILL.md`, offline wiki pages, vanilla docs, and sampled focus blocks.
+- `sed -n` reads for `AGENTS.md`, `chaos-redux-focus-trees/SKILL.md`, offline wiki pages, vanilla docs, and sampled focus blocks.
 - `find 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus' -maxdepth 1 -type f | head -20`
 - `rg -n "search_filters|mutually_exclusive|ai_will_do|custom_effect_tooltip|unlock_decision_tooltip|unlock_decision_category_tooltip"` on vanilla focus examples.
 - `wc -l` on the four Event005 focus files.

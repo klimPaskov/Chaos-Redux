@@ -1,9 +1,9 @@
 ---
-name: hoi4-mtth
+name: chaos-redux-mtth
 description: Define and use HOI4 MTTH variables safely (base/modifiers, file-scoped constants, and mtth:entry usage in set_variable/set_temp_variable) with guidance for minimizing ai_will_do clutter.
 ---
 
-# HOI4 MTTH Variables
+# Chaos Redux MTTH Variables
 
 ## Scope and References
 

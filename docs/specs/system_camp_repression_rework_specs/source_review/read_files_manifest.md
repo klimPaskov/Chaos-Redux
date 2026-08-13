@@ -38,8 +38,8 @@ I read every uploaded project source file visible in `/mnt/data` for this conver
 | `genocide_crisis_system.md` | `.md` | 16194 | `c7da1fa5ce02e8edfa0ba75669a5fdfd96ed6295` | 193 | 16001 |
 | `genocide_mechanics_spec.md` | `.md` | 40800 | `a2dc609dea3a7f82faa2dcf68aa648a9800fb1d6` | 1159 | 39640 |
 | `germany_mengele.md` | `.md` | 21045 | `4ef1846defd0547aba3563786e37e119e62de42b` | 292 | 21045 |
-| `hoi4-decisions-missions.md` | `.md` | 43564 | `fd15f2473a472fe6aa7a24077d544e54ea28d24c` | 890 | 43542 |
-| `hoi4-focus-trees.md` | `.md` | 45298 | `37506d5b939554fac057aa7077213e7fee5375d5` | 898 | 45298 |
+| `chaos-redux-decisions-missions.md` | `.md` | 43564 | `fd15f2473a472fe6aa7a24077d544e54ea28d24c` | 890 | 43542 |
+| `chaos-redux-focus-trees.md` | `.md` | 45298 | `37506d5b939554fac057aa7077213e7fee5375d5` | 898 | 45298 |
 
 ## Planning package readback after continuation
 

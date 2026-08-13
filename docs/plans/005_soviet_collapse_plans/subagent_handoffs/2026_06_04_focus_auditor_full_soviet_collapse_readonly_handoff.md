@@ -13,7 +13,7 @@ No files under `gfx/flags/` or `interface/flags/` were opened or edited. Flags w
 ## Required References Consulted
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki: `National focus modding`, `Data structures`, `Triggers`, `Effect`, `Localisation`, `Modifiers`, `Scopes`, `On actions`, `Event modding`, `Decision modding`, `Idea modding`, `AI modding`

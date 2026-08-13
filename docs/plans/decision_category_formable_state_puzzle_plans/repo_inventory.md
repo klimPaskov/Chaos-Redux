@@ -6,7 +6,7 @@
 - Constraints: read-only exploration; this report is the only file written; no gameplay, localisation, GUI, GFX, asset, spreadsheet, or implementation edits; no commit.
 - Expected baseline/source-of-truth set: 240 metadata blocks under common/decisions/categories/*.txt, 287 unique top-level category containers under common/decisions/*.txt, and a 296-id union.
 - Current shared-worktree caveat: the expected baseline is 240 metadata ids and 287 containers (296 union). The 21 puzzle overrides project to 261 metadata ids; including the separately owned UWR metadata admission makes 262; the untracked FORM-09 pair makes observed working-tree counts 263 metadata, 288 containers, and 297 union ids. The extra id is recorded separately below.
-- Required references read: AGENTS.md, .agents/skills/hoi4-decisions-missions/SKILL.md, .agents/skills/chaos-redux-subagents/SKILL.md, the offline Decision modding, Scripted GUI modding, Map modding, Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, and AI modding wiki snapshots, plus the installed vanilla formable category file and relevant documentation.
+- Required references read: AGENTS.md, .agents/skills/chaos-redux-decisions-missions/SKILL.md, .agents/skills/chaos-redux-subagents/SKILL.md, the offline Decision modding, Scripted GUI modding, Map modding, Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, and AI modding wiki snapshots, plus the installed vanilla formable category file and relevant documentation.
 
 ## Primary findings
 

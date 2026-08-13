@@ -2,7 +2,7 @@
 
 Implement `holy_realm_buddhahood` from the spec package under `docs/specs/003_holy_realm_buddhahood_specs/`.
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-super-events`, `hoi4-decisions-missions`, `hoi4-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, and related Chaos Redux skills.
+Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-super-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, and related Chaos Redux skills.
 
 Implement all mapped surfaces:
 

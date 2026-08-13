@@ -169,6 +169,6 @@ No static gameplay/reference blocker remains in the audited core-runtime scope.
 
 ## Skills and references used
 
-This audit applied `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-super-events`, and `xlsx`.
+This audit applied `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, and `xlsx`.
 
 Required offline Paradox wiki pages and relevant vanilla documentation were consulted. Read-only HOI4 event/focus/GUI inspection was used where it returned bounded evidence. No web Paradox wiki access and no gameplay edit were performed.

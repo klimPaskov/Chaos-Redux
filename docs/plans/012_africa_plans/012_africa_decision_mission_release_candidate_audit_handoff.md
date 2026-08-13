@@ -136,7 +136,7 @@ The active Event 12 decision and mission release-candidate surface is otherwise 
 
 ## Guidance used
 
-Applied `hoi4-decisions-missions`, `chaos-redux-events`, `hoi4-focus-trees` for decision-focus integration, and `chaos-redux-subagents` handoff requirements.
+Applied `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-focus-trees` for decision-focus integration, and `chaos-redux-subagents` handoff requirements.
 
 ## Release-candidate correction (2026-07-29)
 

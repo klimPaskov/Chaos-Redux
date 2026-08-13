@@ -120,4 +120,4 @@ No fallback or simplification was introduced by this audit.
 
 The whole Event 006 completion claim remains blocked by the scenario-matrix and package-admission evidence described above. This audit is complete only as a bounded decision and mission source audit.
 
-Skills used: `hoi4-decisions-missions`, `chaos-redux-events`, `hoi4-focus-trees`, and `chaos-redux-subagents`.
+Skills used: `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-subagents`.

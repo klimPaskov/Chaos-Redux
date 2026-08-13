@@ -12,7 +12,7 @@ This is not an Event005 completion claim.
 - Core offline wiki pages required by `AGENTS.md`: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding
 - Vanilla focus precedent under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`, especially China focus mutual-exclusion, path, AI, and war-goal structures
 - Vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, especially effects, triggers, modifiers, and script concept documentation
-- `hoi4-focus-trees` skill guidance
+- `chaos-redux-focus-trees` skill guidance
 - Current Event005 source docs: `docs/events/005_soviet_collapse/overview.md`, `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md`, and spec parts 5 and 6
 
 ## Files Audited

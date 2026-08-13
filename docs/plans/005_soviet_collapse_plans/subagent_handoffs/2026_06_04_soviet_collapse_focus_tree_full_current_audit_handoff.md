@@ -47,10 +47,10 @@ Vanilla documentation and precedents consulted:
 
 Repo skills used:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 
 ## Current Tree Inventory
 
@@ -214,7 +214,7 @@ Evidence:
 
 Impact: `ai_will_do` can select focuses, but it does not make countries aggressive, defensive, pro-faction, anti-SOV, or expansionist after focus completion. Chaos countries especially need persistent AI strategies.
 
-Recommended patch owner: Parent focus implementation agent; consider `hoi4-mtth` only if focus AI becomes cluttered.
+Recommended patch owner: Parent focus implementation agent; consider `chaos-redux-mtth` only if focus AI becomes cluttered.
 
 ### 13. Focus filters often do not match visible rewards
 

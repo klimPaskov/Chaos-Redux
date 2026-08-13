@@ -17,7 +17,7 @@ All five P1 and three P2 findings from `event014_country_package_audit_2026-07-1
 
 The re-audit covered all eight reusable warlord slots, their origin territory and incarnation lifecycle, CBL creation and inheritance, the in-place original-ZZZ transformation, player-control safety, population and Larder accounting, technology continuity, units and recruitment, AI, characters, localisation, flags, and pre-reveal secrecy.
 
-Required repository guidance was read first: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, and `hoi4-focus-trees`.
+Required repository guidance was read first: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, and `chaos-redux-focus-trees`.
 
 The offline `paradox_wiki/` snapshot was used rather than the online Paradox wiki. The core Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding pages were consulted together with the country, technology, division, portrait, equipment, and national-focus pages. Vanilla documentation under the installed HOI4 `documentation/` directory was also consulted, including effects, triggers, modifiers, dynamic variables, script concepts, script constants, AI strategy, and special-project documentation. Vanilla country-release, inheritance, character-role, dynamic-country, and AI-profile implementations were used as precedents.
 
@@ -106,4 +106,4 @@ This verdict is limited to the Event 014 country-package surface described above
 
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`

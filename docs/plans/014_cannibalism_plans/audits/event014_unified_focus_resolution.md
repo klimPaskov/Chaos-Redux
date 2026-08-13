@@ -170,6 +170,6 @@ The whole Event 014 audit is not yet complete because the five dedicated categor
 
 ## Skills used
 
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`

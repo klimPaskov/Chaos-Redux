@@ -228,7 +228,7 @@ Do not reuse this FAIL as a completion claim after only one repair. The next foc
 
 ## References and skills used
 
-- Repo skills: `hoi4-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`.
+- Repo skills: `chaos-redux-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`.
 - Offline wiki: Data Structures, Triggers, Effects, Modifiers, Localisation, Scopes, On Actions, Event Modding, Decision Modding, Idea Modding, AI Modding, and National Focus Modding.
 - Official vanilla documentation: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, localisation formatter documentation, and `common/script_constants/documentation.md`.
 - Vanilla precedents: generic industrial/naval focus branches, Australian state-aware railway focuses, and German mutual-exclusion/relative-layout patterns; vanilla runtime `load_focus_tree` precedents were also checked.

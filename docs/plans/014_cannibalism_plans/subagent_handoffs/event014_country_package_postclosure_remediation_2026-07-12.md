@@ -153,4 +153,4 @@ The documented effects database provides `add_ai_strategy` but no corresponding 
 
 The engine has no `on_war_relation_removed` hook in the current official on-action documentation. Inactive epochs are cleared by the next bounded Event 014 pulse. A relation-added hook force-resets the epoch before any re-war sampling, including the edge case where peace and re-war occur between pulses.
 
-No skill was created or updated. Skills used were `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-subagents`.
+No skill was created or updated. Skills used were `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.

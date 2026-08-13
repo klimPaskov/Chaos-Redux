@@ -1,6 +1,6 @@
 # Event005 Soviet Collapse Focus-Tree Auditor Handoff
 
-Role: `chaosx_focus_tree_auditor` style bounded audit, using `hoi4-focus-trees`.
+Role: `chaosx_focus_tree_auditor` style bounded audit, using `chaos-redux-focus-trees`.
 
 Scope audited:
 
@@ -19,7 +19,7 @@ Required local references consulted before focus-file edits:
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
 - Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`.
 - Repo rules: `AGENTS.md`.
-- Skill: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`.
+- Skill: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md`.
 
 Key engine points used: prerequisite blocks are OR inside one block and AND across blocks; focus pathlines are safest when prerequisites are above children; `ai_will_do` uses MTTH-style scoring; search filters are per-focus UI filter tags.
 

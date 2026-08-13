@@ -84,7 +84,7 @@ The revised text describes four native raids, the exact selected state and adjac
 - The concurrent `cbrn_hq_l_english.yml` edit was intentionally left untouched and should remain under its owning worker's review.
 - Raid gameplay scripts were not changed in this localisation-only pass. Any later mechanic change requires a fresh wording audit.
 
-Skills applied: `hoi4-decisions-missions` and `chaos-redux-subagents`.
+Skills applied: `chaos-redux-decisions-missions` and `chaos-redux-subagents`.
 
 ## Parent disposition
 

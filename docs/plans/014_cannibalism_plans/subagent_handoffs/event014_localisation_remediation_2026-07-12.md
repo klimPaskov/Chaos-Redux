@@ -174,6 +174,6 @@ Per parent direction, this pass did not edit `common/achievements/chaos_redux_ac
 ## Skills used
 
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
-- `hoi4-focus-trees`
+- `chaos-redux-decisions-missions`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`

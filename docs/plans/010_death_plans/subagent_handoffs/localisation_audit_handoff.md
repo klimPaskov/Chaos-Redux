@@ -27,8 +27,8 @@ Repo instructions and skills used:
 
 - `AGENTS.md`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
-- `hoi4-focus-trees`
+- `chaos-redux-decisions-missions`
+- `chaos-redux-focus-trees`
 - `chaos-redux-super-events`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`

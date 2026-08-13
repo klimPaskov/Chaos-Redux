@@ -2,7 +2,7 @@
 
 ## Scope
 
-The reusable package under `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/` is now populated as documentation scaffolding only.
+The reusable package under `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/` is now populated as documentation scaffolding only.
 
 ## Files added
 

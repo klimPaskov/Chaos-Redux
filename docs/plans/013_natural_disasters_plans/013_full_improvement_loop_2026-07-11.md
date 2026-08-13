@@ -170,7 +170,7 @@ Do not reroll an existing route. Do not replay the original impact. Do not add a
 
 ### Evolution logging decision
 
-The source spec permits an unfired Event 013 to open at the current higher evolution. Document this as the Event 013 pre-fire pacing exception. A normal active progression records each newly reached stage once. If runtime evidence shows repeated same-stage logging, repair the flag transition. Do not add MTTH pacing unless the source spec is amended and the `hoi4-mtth` skill is used.
+The source spec permits an unfired Event 013 to open at the current higher evolution. Document this as the Event 013 pre-fire pacing exception. A normal active progression records each newly reached stage once. If runtime evidence shows repeated same-stage logging, repair the flag transition. Do not add MTTH pacing unless the source spec is amended and the `chaos-redux-mtth` skill is used.
 
 ### Files
 
@@ -467,5 +467,5 @@ No simplification or fallback is authorized by this plan. The four implementatio
 - `chaos-redux-improvement-loop`
 - `chaos-redux-event-planning`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-super-events`
