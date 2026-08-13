@@ -23,8 +23,8 @@ The user constraint to not touch flags was respected. No files under `gfx/flags`
 
 Repo skill used:
 
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`, because several focus rewards unlock or depend on decisions/missions
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`, because several focus rewards unlock or depend on decisions/missions
 
 Offline Paradox wiki pages consulted before Event005 inspection:
 

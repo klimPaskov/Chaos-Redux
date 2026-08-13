@@ -27,7 +27,7 @@ I did not patch gameplay because the Event005 surface is heavily dirty and the r
 
 ## References Consulted
 
-- Repo skill: `.agents/skills/hoi4-focus-trees/SKILL.md`
+- Repo skill: `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/modifiers_documentation.md`, `common/ai_strategy/_documentation.md`, `common/focus_inlay_windows/documentation.md`, `common/script_constants/documentation.md`
 - Vanilla precedent: `common/national_focus/generic.txt`, `china_nationalist.txt`, and broader vanilla focus search for prerequisites, `relative_position_id`, `ai_will_do`, focus reward idea use, and branch spacing
@@ -168,4 +168,4 @@ No flags or flag assets were touched.
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`

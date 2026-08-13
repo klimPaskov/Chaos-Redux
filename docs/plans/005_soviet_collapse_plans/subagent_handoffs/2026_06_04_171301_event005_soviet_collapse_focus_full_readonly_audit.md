@@ -18,7 +18,7 @@ Edit mode: read-only for gameplay/script/localisation. This report is the only f
 
 Required project guidance:
 
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 
 Required offline wiki pages:
@@ -213,7 +213,7 @@ These are patch recommendations, not applied here.
 Read-only inspection:
 
 ```bash
-sed -n '1,520p' .agents/skills/hoi4-focus-trees/SKILL.md
+sed -n '1,520p' .agents/skills/chaos-redux-focus-trees/SKILL.md
 sed -n '1,260p' .agents/skills/chaos-redux-subagents/SKILL.md
 sed -n '1,160p' "paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md"
 sed -n '1,120p' "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md"

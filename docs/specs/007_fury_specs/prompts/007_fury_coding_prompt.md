@@ -18,7 +18,7 @@ Primary files:
 - `matrices/007_fury_ai_balance_matrix.md`
 - `acceptance/007_fury_acceptance_criteria.md`
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-improvement-loop`.
+Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-improvement-loop`.
 
 ## Core implementation requirements
 

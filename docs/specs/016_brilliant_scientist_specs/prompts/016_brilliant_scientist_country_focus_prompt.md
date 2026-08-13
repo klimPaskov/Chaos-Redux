@@ -10,8 +10,8 @@ Read:
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_focus_tree_architecture.md`
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_ai_behavior_matrix.md`
 - `docs/specs/016_brilliant_scientist_specs/acceptance/016_acceptance_criteria.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - `AGENTS.md`

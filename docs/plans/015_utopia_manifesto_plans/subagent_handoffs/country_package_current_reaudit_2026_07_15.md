@@ -10,7 +10,7 @@ No country-package blocker remains in the inspected snapshot. No fallback or sim
 
 ## Audit authorities and scope
 
-The audit used the repository rules plus the `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-subagents`, `hoi4-focus-trees`, and `hoi4-decisions-missions` skills. Before source review or editing, it consulted the required offline wiki pages, including data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, decisions, ideas, AI, country creation, portraits, cosmetic tags, and national focuses. It also consulted the corresponding vanilla documentation and vanilla precedents for characters/advisors, cosmetic identities, idea replacement, focus invalidation, annexation, state-control callbacks, and character promotion.
+The audit used the repository rules plus the `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-subagents`, `chaos-redux-focus-trees`, and `chaos-redux-decisions-missions` skills. Before source review or editing, it consulted the required offline wiki pages, including data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, decisions, ideas, AI, country creation, portraits, cosmetic tags, and national focuses. It also consulted the corresponding vanilla documentation and vanilla precedents for characters/advisors, cosmetic identities, idea replacement, focus invalidation, annexation, state-control callbacks, and character promotion.
 
 The inspected package surface was:
 

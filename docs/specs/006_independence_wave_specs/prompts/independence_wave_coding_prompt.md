@@ -21,8 +21,8 @@ Read and follow:
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - `.agents/skills/chaos-redux-frame-animation/SKILL.md`
 - `.agents/skills/chaos-redux-super-events/SKILL.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - all Event 6 spec parts, matrices, diagrams, research notes, and prompt files

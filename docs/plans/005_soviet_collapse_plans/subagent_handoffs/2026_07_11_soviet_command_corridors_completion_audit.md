@@ -12,7 +12,7 @@ This audit did not edit gameplay files and did not create a commit. It created o
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - Offline wiki pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding
 - Vanilla `common/decisions/_documentation.md`
 - Vanilla `documentation/effects_documentation.md`

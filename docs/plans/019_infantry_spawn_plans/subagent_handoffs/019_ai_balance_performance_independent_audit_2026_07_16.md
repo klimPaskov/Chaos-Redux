@@ -346,9 +346,9 @@ Skills used:
 - `chaos-redux-events`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
-- `hoi4-focus-trees`
-- `hoi4-mtth`
+- `chaos-redux-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-mtth`
 
 The read-only HOI4 focus inspector was attempted against the Event 019 focus
 file but returned `ARTIFACT_STORAGE_LIMIT`. Focus cardinality, branch gating,

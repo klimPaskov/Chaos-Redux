@@ -16,7 +16,7 @@ Hard asset constraint followed: no flag assets, `.tga` files, `gfx/flags`, or fl
 ## Required Reading Completed
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - Offline wiki:
   - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
@@ -356,7 +356,7 @@ Ancient restorations:
 
 ```bash
 sed -n '1,260p' AGENTS.md
-sed -n '1,260p' .agents/skills/hoi4-focus-trees/SKILL.md
+sed -n '1,260p' .agents/skills/chaos-redux-focus-trees/SKILL.md
 sed -n '1,260p' .agents/skills/chaos-redux-events/SKILL.md
 sed -n '1,220p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'
 sed -n '1,220p' 'paradox_wiki/Effect - Hearts of Iron 4 Wiki.md'
@@ -401,7 +401,7 @@ No HOI4 runtime launch, screenshot validation, or in-game focus-tree validation 
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
 
 No skills were created or updated.

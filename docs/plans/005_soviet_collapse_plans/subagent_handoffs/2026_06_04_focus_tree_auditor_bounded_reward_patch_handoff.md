@@ -14,7 +14,7 @@ No flag file contents were inspected or edited. The only flag-related operation 
 ## References Used
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - Offline wiki snapshot pages for national focus modding, data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, and AI modding.
 - Vanilla documentation:

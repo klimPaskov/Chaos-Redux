@@ -212,7 +212,7 @@ The shared Event 15 effects and documentation files also contain association and
 ## Skills and references used
 
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 - required offline Paradox wiki core pages, including data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, and AI modding
 - offline `Faction modding` wiki snapshot and vanilla `common/factions/_documentation.md`

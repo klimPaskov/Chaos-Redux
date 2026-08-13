@@ -177,8 +177,8 @@ The exact-transfer owner separately changed the live commit-readiness guard desc
 
 - `chaos-redux-subagents` for independent ownership, coordination, severity reporting, and handoff placement.
 - `chaos-redux-events` for Event 19 integration, identity, logs, evolution, documentation, and completion standards.
-- `hoi4-focus-trees` for focus route, reachability, AI, reward, and lifecycle review.
-- `hoi4-decisions-missions` for decision/mission visibility, target, cancellation, cost, AI, and cleanup review.
+- `chaos-redux-focus-trees` for focus route, reachability, AI, reward, and lifecycle review.
+- `chaos-redux-decisions-missions` for decision/mission visibility, target, cancellation, cost, AI, and cleanup review.
 - Required offline Paradox wiki pages, including the core scripting pages plus country creation, national focus, and division references.
 - Current vanilla HOI4 effects, triggers, script concepts, script constants, dynamic variables, and AI documentation, plus dynamic-country/unit-transfer/civil-war precedents.
 

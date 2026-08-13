@@ -213,5 +213,5 @@ completion or readiness claim.
 
 No commit was created.
 
-Skills used: `chaos-redux-events`, `hoi4-decisions-missions`,
+Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`,
 `chaos-redux-subagents`, and `chaos-redux-improvement-loop`.

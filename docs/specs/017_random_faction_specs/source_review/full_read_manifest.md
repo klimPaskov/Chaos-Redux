@@ -32,8 +32,8 @@ This manifest records the project files available in `/mnt/data` that were read 
 | `chaosx_spreadsheet_doc_worker.toml` | text | 3947 | 55 | 541 | `712d05bf76de9b49` |
 | `chaosx_super_event_audio_researcher.toml` | text | 3314 | 65 | 500 | `ea374f776aabaa3e` |
 | `chaosx_super_event_text_researcher.toml` | text | 3902 | 62 | 569 | `5d466a4d0e7a217c` |
-| `hoi4-decisions-missions.md` | text | 40087 | 864 | 5903 | `369db0c2785ec2f0` |
-| `hoi4-focus-trees.md` | text | 38682 | 837 | 5688 | `6b8dfb504b3eec14` |
+| `chaos-redux-decisions-missions.md` | text | 40087 | 864 | 5903 | `369db0c2785ec2f0` |
+| `chaos-redux-focus-trees.md` | text | 38682 | 837 | 5688 | `6b8dfb504b3eec14` |
 
 ## Direct catalog baseline used
 

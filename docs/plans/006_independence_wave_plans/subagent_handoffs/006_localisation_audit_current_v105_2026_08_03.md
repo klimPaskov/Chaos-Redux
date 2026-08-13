@@ -4,7 +4,7 @@ Date: 2026-08-03.
 
 Scope: read-only audit of the current Event 006 localisation, scripted localisation, event log, decision and mission text, focus and idea text, Statehood Ledger GUI, scenario surfaces, and catalog-facing wording.
 
-I read `AGENTS.md`, the required `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-subagents` skills, the required offline Paradox wiki pages, and the relevant installed vanilla documentation before inspecting the source.
+I read `AGENTS.md`, the required `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents` skills, the required offline Paradox wiki pages, and the relevant installed vanilla documentation before inspecting the source.
 
 No gameplay, localisation, asset, workbook, or interface source file was changed by this audit.
 

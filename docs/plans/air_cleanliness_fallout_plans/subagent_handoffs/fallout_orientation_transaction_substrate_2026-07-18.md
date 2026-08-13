@@ -146,7 +146,7 @@ No fallback or weaker substitute was used for any blocked surface. No files outs
 ## Skills and references used
 
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 - Required offline Paradox wiki core pages, including event targets and event modding
 - Vanilla effects and triggers documentation, script constants documentation, and state-scope `add_manpower`

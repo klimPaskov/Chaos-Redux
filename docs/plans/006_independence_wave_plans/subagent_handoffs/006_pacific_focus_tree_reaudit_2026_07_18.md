@@ -18,7 +18,7 @@ postformation audits. This tranche did not change either gate.
 
 - repository `AGENTS.md`;
 - repo skills `chaos-redux-subagents`, `chaos-redux-events`,
-  `hoi4-focus-trees`, `hoi4-decisions-missions`, and
+  `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and
   `chaos-redux-event-assets`;
 - offline wiki snapshot pages for Data structures, Triggers, Effects,
   Modifiers, Localisation, Scopes, On actions, Event modding, Decision

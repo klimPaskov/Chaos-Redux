@@ -19,7 +19,7 @@ References consulted before focus edits:
 - Offline Paradox wiki National focus modding page.
 - Vanilla documentation: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`.
 - Vanilla focus precedent: `baltic_shared.txt`, `poland.txt`, `soviet.txt`.
-- Repo skills: `hoi4-focus-trees`, `chaos-redux-events`.
+- Repo skills: `chaos-redux-focus-trees`, `chaos-redux-events`.
 
 No flag, sprite, image, or asset files were touched.
 

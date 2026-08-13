@@ -71,4 +71,4 @@ Catalog export shape is now normalized by `.tools/export_event_catalog_csv.py`; 
 - The fresh direct Event 013 GUI MCP review completed, but its offline renderer applies each control's scale to its source offset and therefore reports four false card-3/milestone intersections; the raw source-coordinate parser and vanilla scale precedent both show zero engine-relevant overlap. Live engine interaction remains queued, and no gameplay fallback was introduced.
 - No other gameplay fallback, generic disaster popup, duplicate disaster controller, unresearched super-event, placeholder audio, or transform-only final animation remains.
 
-Skills used during the implementation and completion passes: `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, and `xlsx`.
+Skills used during the implementation and completion passes: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, and `xlsx`.

@@ -15,8 +15,8 @@ Read in full:
 - `chaos-redux-super-events`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
-- `hoi4-focus-trees`
+- `chaos-redux-decisions-missions`
+- `chaos-redux-focus-trees`
 - every Event 20 spec, matrix, prompt, research note, focus graph, and review file
 - the current Event 20 catalog row
 - the live biological warfare, disease, Deaths, Chaos Meter, air cleanliness, condemnation, world-threat, event log, mapmode, and special-project files

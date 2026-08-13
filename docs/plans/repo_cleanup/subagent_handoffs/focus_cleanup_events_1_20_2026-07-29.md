@@ -10,7 +10,7 @@ The bounded surface was the Event 1-20 national-focus inventory under common/nat
 
 Standalone Event 21+ trees, report/news/super-event assets, scripted GUI event-target usage, and broad shared-helper rewrites were out of scope.
 
-Required repository guidance was read before inspection: AGENTS.md, the offline Paradox wiki pages named by the repository, the vanilla focus documentation and focus precedents, .agents/skills/hoi4-focus-trees/SKILL.md, .agents/skills/chaos-redux-events/SKILL.md, .agents/skills/hoi4-decisions-missions/SKILL.md, .agents/skills/chaos-redux-event-assets/SKILL.md, and .agents/skills/chaos-redux-subagents/SKILL.md.
+Required repository guidance was read before inspection: AGENTS.md, the offline Paradox wiki pages named by the repository, the vanilla focus documentation and focus precedents, .agents/skills/chaos-redux-focus-trees/SKILL.md, .agents/skills/chaos-redux-events/SKILL.md, .agents/skills/chaos-redux-decisions-missions/SKILL.md, .agents/skills/chaos-redux-event-assets/SKILL.md, and .agents/skills/chaos-redux-subagents/SKILL.md.
 
 The static pass parsed 3,105 ordinary focus = {} nodes and 111 shared_focus = {} definitions, with zero duplicate focus IDs and no unresolved prerequisite, mutually_exclusive, or has_completed_focus references in the scoped sources.
 

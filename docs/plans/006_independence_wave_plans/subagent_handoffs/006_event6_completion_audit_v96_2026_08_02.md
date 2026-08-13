@@ -312,4 +312,4 @@ This audit did not edit gameplay, localisation, GFX definitions, assets, audio, 
 
 The only file created by this task is this handoff.
 
-Skills applied: `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-super-events`, and `xlsx`.
+Skills applied: `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, and `xlsx`.

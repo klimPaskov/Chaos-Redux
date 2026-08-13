@@ -91,4 +91,4 @@ No other gameplay route, focus, decision, mission, lifecycle value, force row, A
 
 ## References and skills used
 
-Read directly and applied: `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-event-assets`. The mandatory offline wiki pages, official vanilla documentation, vanilla BRI files, vanilla commander portrait precedents, accepted IW-004 specs/matrices/research, package documentation, implementation handoff, asset manifest, and GFX handoff were all consulted. No web Paradox wiki was used.
+Read directly and applied: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets`. The mandatory offline wiki pages, official vanilla documentation, vanilla BRI files, vanilla commander portrait precedents, accepted IW-004 specs/matrices/research, package documentation, implementation handoff, asset manifest, and GFX handoff were all consulted. No web Paradox wiki was used.

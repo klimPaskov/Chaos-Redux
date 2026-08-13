@@ -13,8 +13,8 @@ This note records the project sources processed while preparing the planning pac
 - `chaos-redux-event-assets.md`
 - `chaos-redux-frame-animation.md`
 - `chaos-redux-super-events.md`
-- `hoi4-decisions-missions.md`
-- `hoi4-focus-trees.md`
+- `chaos-redux-decisions-missions.md`
+- `chaos-redux-focus-trees.md`
 - relevant `chaosx_*.toml` subagent descriptions, especially scripted-system, localisation, asset, spreadsheet, and completion-audit agents.
 
 The provided catalog entry in the user prompt was treated as the authoritative Event 009 row for this planning pass.

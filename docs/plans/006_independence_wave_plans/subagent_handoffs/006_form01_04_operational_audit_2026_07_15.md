@@ -24,7 +24,7 @@ No fallback identity, fallback member, fallback state, readiness attestation, or
 
 - Accepted identity and membership source: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_form01_04_identity_research_2026_07_15.md`
 - Accepted FORM-03 progression source: `docs/plans/006_independence_wave_plans/006_form03_language_industry_progression_addendum_2026_07_15.md`
-- Repository skills: `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-decisions-missions`, `hoi4-focus-trees`, and `chaos-redux-event-assets`
+- Repository skills: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, and `chaos-redux-event-assets`
 - Offline wiki core pages required by `AGENTS.md`, plus `Country creation` and `Cosmetic tag modding`
 - Vanilla documentation for effects, triggers, script concepts/constants, decisions, events, focuses, ideas, modifiers, scopes, and localisation
 - Vanilla decision, mission, focus, cosmetic-tag, and country-flag precedents

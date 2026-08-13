@@ -115,8 +115,8 @@ No live game launch was performed, in accordance with repository policy. No prob
 - `.tools/generate_formable_state_puzzle_runtime.mjs`
 - `docs/formables/state_registry/consumer_spec.schema.json`
 - `docs/formables/state_registry/README.md`
-- `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/README.md`
-- `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/universal_state_registry_workflow.md`
-- `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/validation_checklist.md`
+- `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/README.md`
+- `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/universal_state_registry_workflow.md`
+- `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/validation_checklist.md`
 
 No simplification was made to the universal trigger families, current manifests, wrap math, or ITA/HUN preservation. The only remaining blockers are the unrelated MCP global diagnostics and parent-owned live-game/DDS acceptance beyond this source audit.

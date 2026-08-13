@@ -32,7 +32,7 @@ This was a read-only audit. No gameplay, localisation, gfx, flag, or sprite file
 
 ## Validation
 
-- Read required repo skills: `chaos-redux-subagents`, `hoi4-focus-trees`, and `hoi4-decisions-missions`.
+- Read required repo skills: `chaos-redux-subagents`, `chaos-redux-focus-trees`, and `chaos-redux-decisions-missions`.
 - Consulted offline wiki pages: data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, AI modding, and national focus modding.
 - Consulted vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation` and inspected vanilla focus/decision precedents.
 - Ran read-only searches/parsing for focus counts, direct `add_ideas`, direct stockpile rewards, helper call sites, and route/layout anomalies.
@@ -40,5 +40,5 @@ This was a read-only audit. No gameplay, localisation, gfx, flag, or sprite file
 ## Skills Used
 
 - `chaos-redux-subagents`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`

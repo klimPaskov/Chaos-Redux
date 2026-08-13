@@ -7,7 +7,7 @@ Status: **visual layout is clean and all 65 focus icons now have matching shine 
 
 ## References followed
 
-This pass used `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, and `chaos-redux-subagents`. It read `AGENTS.md`, the required offline Paradox wiki pages, the vanilla script and localisation documentation, vanilla `interface/goals.gfx` and `interface/goals_shine.gfx`, and the established Chaos Redux one-line shine registrations in Events 006 and 007. `chaos-redux-improvement-loop` was not used because the tree is not shallow and this pass did not redesign a route family.
+This pass used `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, and `chaos-redux-subagents`. It read `AGENTS.md`, the required offline Paradox wiki pages, the vanilla script and localisation documentation, vanilla `interface/goals.gfx` and `interface/goals_shine.gfx`, and the established Chaos Redux one-line shine registrations in Events 006 and 007. `chaos-redux-improvement-loop` was not used because the tree is not shallow and this pass did not redesign a route family.
 
 ## Changed files
 

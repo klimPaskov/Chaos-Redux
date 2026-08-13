@@ -19,7 +19,7 @@ The P1 recovery-state consumption defect found by the decision/mission specialis
 
 ## Authority and method
 
-The audit followed `AGENTS.md` and used these repository skills: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `hoi4-focus-trees`, and `hoi4-decisions-missions`. No skill was created or updated.
+The audit followed `AGENTS.md` and used these repository skills: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-focus-trees`, and `chaos-redux-decisions-missions`. No skill was created or updated.
 
 The required offline Paradox wiki pages and relevant vanilla documentation were consulted before source review. The current specialist authorities were then reconciled:
 

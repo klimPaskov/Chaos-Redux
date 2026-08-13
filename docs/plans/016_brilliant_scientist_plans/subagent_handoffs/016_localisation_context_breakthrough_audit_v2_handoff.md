@@ -4,7 +4,7 @@ Date: 2026-08-01
 
 Scope: Event 016 English localisation and scripted localisation after the `.4`, `.5`, and `.6` context and first-prototype report tranche.
 
-The audit followed `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-decisions-missions`, `hoi4-focus-trees`, `chaos-redux-super-events`, and the Event 016 localisation auditor prompt. The required offline Paradox wiki localisation, data structure, trigger, effect, modifier, scope, on-action, event, decision, idea, and AI pages were consulted together with the relevant vanilla localisation and script documentation.
+The audit followed `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-super-events`, and the Event 016 localisation auditor prompt. The required offline Paradox wiki localisation, data structure, trigger, effect, modifier, scope, on-action, event, decision, idea, and AI pages were consulted together with the relevant vanilla localisation and script documentation.
 
 ## Audit result
 

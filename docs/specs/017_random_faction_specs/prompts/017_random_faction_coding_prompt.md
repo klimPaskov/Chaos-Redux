@@ -9,7 +9,7 @@ Read and follow:
 - `chaos-redux-event-planning`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 - `chaos-redux-frame-animation` for animated assets
 - relevant offline Paradox wiki pages and vanilla HOI4 documentation before editing game files

@@ -252,4 +252,4 @@ No live-game result is claimed. This report answers only whether the current fil
 
 The audit introduced no gameplay simplification, fallback, placeholder, or omitted package surface. It did not edit gameplay. The blockers are C-01, C-02, and M-01 above. Overall Event 006 completion is not claimed.
 
-Skills used: `chaos-redux-events`, `chaos-redux-event-assets`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-subagents`.
+Skills used: `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.

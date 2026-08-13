@@ -37,8 +37,8 @@ All uploaded Markdown files, TOML subagent files, CSV catalog files, and the Nat
 | `chaosx_spreadsheet_doc_worker.toml` | 3943 | 55 | `107d79714af672f9` |
 | `chaosx_super_event_audio_researcher.toml` | 3248 | 65 | `ccabb1c32d425c3b` |
 | `chaosx_super_event_text_researcher.toml` | 3839 | 62 | `e434e849ac72ce18` |
-| `hoi4-decisions-missions.md` | 43564 | 891 | `04e8fa35106f0557` |
-| `hoi4-focus-trees.md` | 45298 | 899 | `bebb8e91fbc5f3c0` |
+| `chaos-redux-decisions-missions.md` | 43564 | 891 | `04e8fa35106f0557` |
+| `chaos-redux-focus-trees.md` | 45298 | 899 | `bebb8e91fbc5f3c0` |
 
 ## Important availability limits
 

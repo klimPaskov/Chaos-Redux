@@ -9,7 +9,7 @@ Status: implementation repair complete; readiness remains deliberately closed pe
 ## Workflow references used
 
 - Repository guidance: `AGENTS.md`.
-- Repo skills: `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-decisions-missions`, and `hoi4-focus-trees`.
+- Repo skills: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, and `chaos-redux-focus-trees`.
 - Offline wiki: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding, Cosmetic tag modding, and Country creation.
 - Vanilla documentation: script concepts and constants, script-constant schema, dynamic variables, effects, triggers, decisions, events, focuses, ideas, modifiers, scopes, and localisation; vanilla state, adjacency, diplomatic-relation removal, naval-base, and `strength_ratio` precedents were checked directly.
 

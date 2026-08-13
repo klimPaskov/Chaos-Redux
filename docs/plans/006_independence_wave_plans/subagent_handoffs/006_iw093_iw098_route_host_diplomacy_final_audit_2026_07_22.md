@@ -143,7 +143,7 @@ or route locking.
 
 ## References consulted
 
-- Repository `AGENTS.md`; `chaos-redux-events`, `hoi4-decisions-missions`, and
+- Repository `AGENTS.md`; `chaos-redux-events`, `chaos-redux-decisions-missions`, and
   `chaos-redux-subagents` skills.
 - Required offline Paradox wiki pages and the relevant vanilla documentation
   (`script_concept_documentation.md`, `triggers_documentation.md`, and

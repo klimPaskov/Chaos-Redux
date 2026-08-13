@@ -215,8 +215,8 @@ These changes do not grant package attestation. A fresh independent exact-packag
 ## Skills and references used
 
 - `chaos-redux-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 - `chaos-redux-improvement-loop`
 - required offline Paradox wiki core pages and National Focus Modding

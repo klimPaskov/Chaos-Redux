@@ -33,7 +33,7 @@ No fallback, generic substitute, admission bypass, weakened source gate, or comp
 - `docs/assets/006_independence_wave/manifest.md` and current Event 006 asset handoffs/manifests
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` as the catalog source of truth, compared read-only with all three exported CSVs
 
-The repository guidance, required offline Paradox wiki pages, vanilla documentation inventory, and the `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `xlsx` skills were consulted for the audited surfaces.
+The repository guidance, required offline Paradox wiki pages, vanilla documentation inventory, and the `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `xlsx` skills were consulted for the audited surfaces.
 
 ## Post-commit delta re-audit
 

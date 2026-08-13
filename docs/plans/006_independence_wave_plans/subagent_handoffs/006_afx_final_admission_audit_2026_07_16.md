@@ -252,8 +252,8 @@ SCN-008 coverage, and Event 006 completion remain outside this authorization.
 
 - `chaos-redux-subagents`
 - `chaos-redux-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 
 No skill was created or updated during this audit.

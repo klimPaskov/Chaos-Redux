@@ -9,7 +9,7 @@ Scope: Event005 Soviet Collapse focus trees, with priority on pathline/prerequis
 ## References Consulted
 
 - Repo rules: `AGENTS.md`
-- Skills: `hoi4-focus-trees`, `chaos-redux-subagents`
+- Skills: `chaos-redux-focus-trees`, `chaos-redux-subagents`
 - Offline wiki snapshot: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`
 - Vanilla focus precedent scan: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`

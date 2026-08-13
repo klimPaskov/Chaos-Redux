@@ -31,7 +31,7 @@ The remainder of this document is retained as the accepted implementation-order 
 Use this order so the rework remains integrated with the existing `genocide_crisis`, Deaths, Condemnation, and country-specific systems.
 
 1. Promote or copy the accepted planning package into `docs/specs/system_camp_repression_rework_specs/`.
-2. Read the required repo guidance before editing: `AGENTS.md`, `chaos-redux-events`, `hoi4-decisions-missions`, `hoi4-focus-trees` for focus hooks, `chaos-redux-event-assets` for any new assets, and `chaos-redux-super-events` for any super-event implementation.
+2. Read the required repo guidance before editing: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees` for focus hooks, `chaos-redux-event-assets` for any new assets, and `chaos-redux-super-events` for any super-event implementation.
 3. Inspect existing `genocide_crisis` files and confirm current helper names before adding new helper families.
 4. Add or update script constants for shared values, country caps, mission durations, display bands, AI weights, and state-pool scoring.
 5. Add scripted triggers for shared and country-specific state pools.

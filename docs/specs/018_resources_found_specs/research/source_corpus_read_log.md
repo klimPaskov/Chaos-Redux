@@ -13,8 +13,8 @@ The planning pass read the complete supplied project corpus before drafting the 
 - `chaos-redux-super-events.md`
 - `chaos-redux-improvement-loop.md`
 - `chaos-redux-subagents.md`
-- `hoi4-focus-trees.md`
-- `hoi4-decisions-missions.md`
+- `chaos-redux-focus-trees.md`
+- `chaos-redux-decisions-missions.md`
 - `/home/oai/skills/spreadsheets/SKILL.md`
 - `/home/oai/skills/spreadsheets/API_QUICK_START.md`
 

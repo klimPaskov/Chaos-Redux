@@ -5,7 +5,7 @@
 - Date: 2026-08-01
 - Mode: patch-capable decision and mission audit
 - Scope: Event 016 host-context events `.4/.5`, Directorate project incidents, Directorate foreign liaison, foreign operations, containment, and directly related lifecycle helpers
-- Skills used: `hoi4-decisions-missions`, `chaos-redux-events`, `hoi4-focus-trees`, and `chaos-redux-subagents`
+- Skills used: `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-subagents`
 - Reference basis: required offline Paradox wiki decision, event, trigger, effect, scope, localisation, AI, modifier, on-action, idea, and data-structure pages, plus vanilla decision/effect/trigger documentation and targeted vanilla mission/foreign-decision precedents
 - Safe boundary: this handoff patches only the two Event 016 Directorate decision files named below and does not redesign transfer, containment, foreign frameworks, event content, or focus routes
 

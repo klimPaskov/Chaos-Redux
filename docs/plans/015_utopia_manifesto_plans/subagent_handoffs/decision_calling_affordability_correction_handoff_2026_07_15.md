@@ -118,7 +118,7 @@ The strict `>` comparisons still present in the main decision file are intention
 ## References consulted
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - offline wiki snapshots for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and Equipment
 - vanilla `common/decisions/_documentation.md`

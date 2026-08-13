@@ -434,7 +434,7 @@ The cleanup helper removes a military guarantee only when `africa_world_sponsors
 
 ## Validation and evidence
 
-Read the repository instructions, `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-subagents` skills before editing.
+Read the repository instructions, `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents` skills before editing.
 
 Read the required offline Paradox wiki pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, and AI modding.
 

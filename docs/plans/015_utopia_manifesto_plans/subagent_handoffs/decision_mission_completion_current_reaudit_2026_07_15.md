@@ -45,7 +45,7 @@ Rebaseline verdict: **PASS**. The post-audit patch introduces no decision or mis
 
 Repository guidance used:
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `AGENTS.md`
 
@@ -290,7 +290,7 @@ This is a source-level completion audit. It proves the current definitions, disp
 
 ## Skills used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 
 No skill was created or updated during this audit.

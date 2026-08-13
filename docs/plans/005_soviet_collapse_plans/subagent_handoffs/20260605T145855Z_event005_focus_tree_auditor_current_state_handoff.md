@@ -17,7 +17,7 @@ Explicitly did not touch `gfx/flags` or flag sprite files.
 Required references read before opening/editing focus files:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`

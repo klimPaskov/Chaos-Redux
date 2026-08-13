@@ -10,7 +10,7 @@ No gameplay, localisation, asset, or flag sprite files were edited. This report 
 
 Project guidance:
 
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 
@@ -323,7 +323,7 @@ Currently, several focuses use large hidden bundles of flags, claims, variables,
 Commands run:
 
 ```bash
-sed -n '1,220p' .agents/skills/hoi4-focus-trees/SKILL.md
+sed -n '1,220p' .agents/skills/chaos-redux-focus-trees/SKILL.md
 sed -n '1,220p' .agents/skills/chaos-redux-events/SKILL.md
 sed -n '1,260p' .agents/skills/chaos-redux-subagents/SKILL.md
 rg --files paradox_wiki | rg '((National focus|Focus|Effects|Triggers|Localisation|Scopes|AI modding|Modifiers|Decision modding|Data structures|Event modding|On actions|Idea modding).*Hearts of Iron 4 Wiki\\.md$)'

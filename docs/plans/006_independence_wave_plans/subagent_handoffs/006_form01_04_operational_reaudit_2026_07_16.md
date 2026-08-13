@@ -32,7 +32,7 @@ This re-audit inspected the current repository state after the shared transactio
 
 Required references consulted before the source audit:
 
-- repository skills: `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-decisions-missions`, `hoi4-focus-trees`, and `chaos-redux-event-assets`;
+- repository skills: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, and `chaos-redux-event-assets`;
 - accepted Event 006 specifications, candidate matrices, progression addendum, identity research, implementation handoffs, and the preceding operational audit;
 - offline wiki core pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, decisions, ideas, and AI;
 - offline wiki pages for country creation, cosmetic tags, focus trees, factions, autonomy, states, and map adjacency;

@@ -39,10 +39,10 @@ This is an implementation handoff. It is not a focus-tree source file and does n
 Read completely before authoring:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-event-planning/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 
 The additional decision/event skills were necessary because most focus payoffs are decision, mission, event, and project-board unlocks rather than direct modifier grants.
@@ -219,10 +219,10 @@ No focus render or source lint can be meaningful until the tree is implemented. 
 
 Used:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-event-planning`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 
 No skill was created or modified. No gameplay implementation or fallback was produced.

@@ -2,7 +2,7 @@
 
 ## Scope
 
-This audit applies `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-events` to the Event 012 external focus packages and the Charter League scripted GUI.
+This audit applies `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-events` to the Event 012 external focus packages and the Charter League scripted GUI.
 
 It uses the HOI4 MCP focus and GUI inspection/render routes and does not launch Hearts of Iron IV.
 

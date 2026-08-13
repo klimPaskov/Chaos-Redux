@@ -28,7 +28,7 @@ and script-constant documentation. Vanilla `WTT_border_conflicts.txt` supplied
 the concrete controlled-border-war and timed-mission precedent. No online
 Paradox wiki page was used.
 
-The repository skills used were `hoi4-decisions-missions`,
+The repository skills used were `chaos-redux-decisions-missions`,
 `chaos-redux-events`, and `chaos-redux-subagents`. No skill was created or
 modified because the reviewed cost-localisation, mission-lifecycle, GUI, and
 handoff rules are already covered by those workflows.

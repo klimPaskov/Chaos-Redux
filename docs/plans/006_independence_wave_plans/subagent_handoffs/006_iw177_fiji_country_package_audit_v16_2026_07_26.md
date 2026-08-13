@@ -2,7 +2,7 @@
 
 ## Scope and status
 
-This is a read-only country-package audit for the accepted distinct-group alternative `IW-177` (Fiji, `FIJ`). No gameplay, localisation, GFX, map, or vanilla files were changed. The audit used `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-event-assets`, the required offline Paradox wiki pages, and the relevant installed vanilla country/state/history and documentation files.
+This is a read-only country-package audit for the accepted distinct-group alternative `IW-177` (Fiji, `FIJ`). No gameplay, localisation, GFX, map, or vanilla files were changed. The audit used `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets`, the required offline Paradox wiki pages, and the relevant installed vanilla country/state/history and documentation files.
 
 **Result: FIJ is structurally valid in registry and map terms, but it is not a runnable or attested Event 006 country package.** The accepted identity remains a founding congress that negotiates representation, veto, autonomy, revenue, and defense clauses before any wider island federation. The package must distinguish chiefly and communal authority, colonial administration, labor, shipping, and defense interests. No generic or invented leader, portrait, flag route, or shallow copied package should be admitted.
 

@@ -39,8 +39,8 @@ I also read `/home/oai/skills/spreadsheets/SKILL.md` because the project source 
 | `genocide_crisis_system.md` | 16194 | 16001 | 194 | `3d4d06bcb82e01d501b74647b5923a5ce6d55d0bbdc8b42261fff68fde7aabfd` |
 | `genocide_mechanics_spec.md` | 40800 | 39640 | 1160 | `8a6b10494a3f8aaad906d7316d692caf54e015c8e37f92dbc2fa8101f6e4b1e9` |
 | `germany_mengele.md` | 21045 | 21045 | 293 | `9e6ca3e568433abc61f2ec252f942d6ee84550d991d95d25c82b3f4c3f2df67d` |
-| `hoi4-decisions-missions.md` | 43564 | 43542 | 891 | `04e8fa35106f0557b5e1e313036662747eb180b090a533d59af8830ead801ffa` |
-| `hoi4-focus-trees.md` | 45298 | 45298 | 899 | `bebb8e91fbc5f3c013f99a3237458b50ba9278de44f659337100976372f1d824` |
+| `chaos-redux-decisions-missions.md` | 43564 | 43542 | 891 | `04e8fa35106f0557b5e1e313036662747eb180b090a533d59af8830ead801ffa` |
+| `chaos-redux-focus-trees.md` | 45298 | 45298 | 899 | `bebb8e91fbc5f3c013f99a3237458b50ba9278de44f659337100976372f1d824` |
 | `/home/oai/skills/spreadsheets/SKILL.md` | 7406 | 7406 | 168 | `d84b9da14ac7ae39abb0f7013d6ce891abb276ca2d85db433d787ba5f8919763` |
 
 ## Source conclusions

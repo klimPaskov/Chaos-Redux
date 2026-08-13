@@ -23,7 +23,7 @@ Repository guidance used:
 - `chaos-redux-events`
 - `chaos-redux-event-planning`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 - `chaos-redux-frame-animation`
 - `xlsx`

@@ -351,4 +351,4 @@ No current post-v82 focus artifact, 32-cell scenario execution matrix, complete 
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
 - `docs/specs/006_independence_wave_specs/quality/simplifications_omissions_and_blockers.md`
 
-Skills applied: `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-super-events`, and `xlsx`.
+Skills applied: `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, and `xlsx`.

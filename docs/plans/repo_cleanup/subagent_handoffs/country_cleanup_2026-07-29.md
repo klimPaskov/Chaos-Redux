@@ -6,7 +6,7 @@ Status: bounded audit complete with three local cleanup patches. No commit was c
 
 This handoff covers country-package surfaces for Events 1-20 and shared country/AI references in `common/country_tags/`, `common/countries/`, `history/countries/`, `common/ai_strategy/`, `common/ai_templates/`, and country-package localisation/docs. `common/national_focus/` and `common/decisions/` were not changed.
 
-I followed `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-focus-trees/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, and `.agents/skills/chaos-redux-improvement-loop/SKILL.md`.
+I followed `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-focus-trees/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, and `.agents/skills/chaos-redux-improvement-loop/SKILL.md`.
 
 I consulted the required offline Paradox wiki pages in `paradox_wiki/`, including Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Country creation, and National focus modding, plus the relevant vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/` and vanilla country/history precedents.
 

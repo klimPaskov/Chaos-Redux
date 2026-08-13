@@ -2,7 +2,7 @@
 
 Canonical status: accepted baseline prompt, subject to the corrected ownership and living-world source specs in this package.
 
-Use `hoi4-decisions-missions` before implementation. This prompt covers state-targeted air cleanup and post-Fallout survival decisions.
+Use `chaos-redux-decisions-missions` before implementation. This prompt covers state-targeted air cleanup and post-Fallout survival decisions.
 
 Decision systems to implement from the spec:
 

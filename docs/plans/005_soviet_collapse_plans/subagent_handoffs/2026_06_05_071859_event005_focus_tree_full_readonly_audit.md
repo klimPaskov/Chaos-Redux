@@ -14,7 +14,7 @@ Mode: read-only audit. No focus files, gfx, flags, localisation, or gameplay fil
 
 Repo guidance and skill:
 - `AGENTS.md`
-- `hoi4-focus-trees` skill: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `chaos-redux-focus-trees` skill: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md`
 
 Offline Paradox wiki snapshot:
 - `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
@@ -281,7 +281,7 @@ Patch recommendation:
 
 Reference and discovery commands:
 ```bash
-sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md
+sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md
 sed -n '1,220p' AGENTS.md
 sed -n '1,180p' "paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md"
 sed -n '1,120p' "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md"

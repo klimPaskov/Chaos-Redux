@@ -1,6 +1,6 @@
 # Black Plague Achievement Implementation Prompt
 
-Implement the Event 20 achievement set from `matrices/achievement_matrix.md`. Read the accepted Event 20 specs, `AGENTS.md`, `chaos-redux-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-event-assets` before editing.
+Implement the Event 20 achievement set from `matrices/achievement_matrix.md`. Read the accepted Event 20 specs, `AGENTS.md`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets` before editing.
 
 ## Achievement set
 

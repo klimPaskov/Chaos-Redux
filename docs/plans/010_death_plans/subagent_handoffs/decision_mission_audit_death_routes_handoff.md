@@ -199,7 +199,7 @@ No commit was created. The worktree already contains substantial parent/user Eve
 
 ## Skills Used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`

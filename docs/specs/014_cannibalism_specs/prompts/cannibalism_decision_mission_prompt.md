@@ -3,7 +3,7 @@
 Read:
 
 - `AGENTS.md`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - Event 14 Parts 1, 2, 3, 6, 7, 8, and 9
 - `matrices/decision_mission_matrix.md`

@@ -230,5 +230,5 @@ blocked. Final release/readiness promotion remains incomplete by design until
 the parent reconciles the independent audits. The HOI4 MCP storage/budget
 limits are validation-tool blockers only and do not justify a readiness claim.
 
-Skills used: `chaos-redux-events`, `hoi4-decisions-missions`, and
+Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, and
 `chaos-redux-subagents`.

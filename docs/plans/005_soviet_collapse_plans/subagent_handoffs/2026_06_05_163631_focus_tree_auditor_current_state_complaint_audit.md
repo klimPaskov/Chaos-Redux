@@ -32,7 +32,7 @@ Task: current-state audit of Event005 Soviet Collapse focus trees after the late
   - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
   - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
 - Repo skills:
-  - `hoi4-focus-trees`
+  - `chaos-redux-focus-trees`
   - `chaos-redux-subagents`
 
 ## Files Inspected

@@ -14,7 +14,7 @@ The other 27 formable categories retain static presentation for explicit applica
 
 ## Skills and routed ownership
 
-- `hoi4-decisions-missions` governed category, formable, helper, tooltip, and scripted-GUI implementation.
+- `chaos-redux-decisions-missions` governed category, formable, helper, tooltip, and scripted-GUI implementation.
 - `chaos-redux-event-assets` governed the reference family, archival/generated art, DDS processing, manifests, and GFX handoffs.
 - `chaos-redux-event-planning` governed consumer selection, layout ownership, and implementation handoff structure.
 - `chaos-redux-subagents` governed context-free routing and parent review.
@@ -32,7 +32,7 @@ The canonical review-only reference family is `.agents/skills/chaos-redux-event-
 It contains the 13 user-provided 114x101 PNGs and a labeled `contact_sheet.png`.
 The family is documented in the reference `README.md` and `CATALOG.md` and is not referenced by runtime GFX.
 
-The reusable template is `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/`.
+The reusable template is `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`.
 It contains the required README, schema, filled manifest, GUI, GFX, scripted-GUI, scripted-trigger, scripted-effect, scripted-localisation, localisation, static-picture alternative, and validation checklist.
 The skill-local files are scaffolding only and are not runtime consumers.
 

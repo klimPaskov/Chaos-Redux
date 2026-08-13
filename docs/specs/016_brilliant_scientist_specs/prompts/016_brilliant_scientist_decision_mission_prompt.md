@@ -10,7 +10,7 @@ Read:
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_7_world_reactions_and_ai.md`
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_decision_mission_map.md`
 - `docs/specs/016_brilliant_scientist_specs/acceptance/016_balance_and_exploit_review.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `AGENTS.md`
 

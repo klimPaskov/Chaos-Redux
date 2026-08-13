@@ -24,7 +24,7 @@ The current completion evidence records the frozen allocator, synchronized trans
 
 The current completion evidence also records fourteen attested non-overlay packages, thirteen compatible reservation groups, and no admitted fourteen- or twenty-package witness.
 
-The audit applied the hoi4-decisions-missions, chaos-redux-events, hoi4-focus-trees, and chaos-redux-subagents skills.
+The audit applied the chaos-redux-decisions-missions, chaos-redux-events, chaos-redux-focus-trees, and chaos-redux-subagents skills.
 
 The required offline Paradox wiki pages and the additional National focus and scripted-GUI references were consulted together with the vanilla SOV decision, paranoia GUI, and focus precedents and relevant vanilla documentation.
 

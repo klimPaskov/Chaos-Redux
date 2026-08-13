@@ -150,7 +150,7 @@ Closure condition: replace the strict custom-cost checks with equality-safe trig
 ### Required repository guidance and skills
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 
@@ -203,4 +203,4 @@ Closure condition: replace the strict custom-cost checks with equality-safe trig
 - No gameplay patch was made because the delegated task was audit-only.
 - The five findings above are unresolved live-source omissions/defects, not optional polish.
 - The accepted completion claim remains blocked until the P0 and P1 findings are closed and the P2 affordability mismatch is corrected or explicitly rejected through a source-of-truth spec change.
-- No skill was created or updated. Skills used: `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
+- No skill was created or updated. Skills used: `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.

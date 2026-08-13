@@ -139,8 +139,8 @@ The Event 006 allocator is therefore still intentionally closed for these packag
 ## References and skills used
 
 - `chaos-redux-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-subagents`
 - Required offline Paradox wiki core pages, including national focus modding
 - Vanilla decision, on-action, script-concept, trigger, effect, and AI-strategy documentation

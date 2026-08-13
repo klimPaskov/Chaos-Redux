@@ -8,7 +8,7 @@ Verdict: **PASS for the country-owned static package; no confirmed narrow source
 
 ## References and audit method
 
-I read `AGENTS.md`, the complete Event 018 specification package under `docs/specs/018_resources_found_specs/`, the current cave-country documentation, and the existing Event 018 country, focus, asset, probability, and completion handoffs. The required repository skills were read: `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-comfyui`, and `chaos-redux-improvement-loop`.
+I read `AGENTS.md`, the complete Event 018 specification package under `docs/specs/018_resources_found_specs/`, the current cave-country documentation, and the existing Event 018 country, focus, asset, probability, and completion handoffs. The required repository skills were read: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-comfyui`, and `chaos-redux-improvement-loop`.
 
 I consulted the required offline wiki pages in `paradox_wiki/`: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Country creation, National focus modding, Unit modding, Division modding, and Technology modding. I also read the relevant vanilla documentation in `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\`, including effects, triggers, script concepts, and script constants, and checked vanilla country, character, locked-template, OOB, unit, AI-strategy, and portrait precedents. No online Paradox wiki page was used.
 

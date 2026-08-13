@@ -32,7 +32,7 @@ The re-audit covered:
 - route-break and terminal-lock cleanup;
 - target scorers, targeted-decision wrappers, MTTH wrappers, and pulse cadence.
 
-Required repository guidance was read first: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, and `hoi4-focus-trees`.
+Required repository guidance was read first: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, and `chaos-redux-focus-trees`.
 
 The offline `paradox_wiki/` snapshot was used rather than the online Paradox wiki. The core Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding pages were consulted together with Country creation, Division modding, Unit modding, National focus, Technology, and Equipment. Vanilla `effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md` were consulted. Vanilla scorer, `change_tag_from`, and `add_units_to_division_template` implementations were used as precedents.
 
@@ -166,6 +166,6 @@ Country-package completion should be reconsidered only after all of the followin
 
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 
 No skill was created or updated.

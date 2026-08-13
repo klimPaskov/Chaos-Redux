@@ -129,5 +129,5 @@ I did not patch those because they are multi-prerequisite or late-branch connect
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`

@@ -7,7 +7,7 @@ Status: **gameplay/static focus audit repaired and all 65 focus sprites verified
 
 ## References followed
 
-This pass used `hoi4-focus-trees` and read the complete Event 018 spec package, focus architecture, active implementation-depth addendum, acceptance/AI/tuning matrices, and cave-country documentation. It also consulted the required offline wiki pages, including National Focus, Idea, and AI modding, the official vanilla script/effect/trigger/AI documentation, and vanilla staged-idea precedents using `swap_ideas`.
+This pass used `chaos-redux-focus-trees` and read the complete Event 018 spec package, focus architecture, active implementation-depth addendum, acceptance/AI/tuning matrices, and cave-country documentation. It also consulted the required offline wiki pages, including National Focus, Idea, and AI modding, the official vanilla script/effect/trigger/AI documentation, and vanilla staged-idea precedents using `swap_ideas`.
 
 ## Files changed
 

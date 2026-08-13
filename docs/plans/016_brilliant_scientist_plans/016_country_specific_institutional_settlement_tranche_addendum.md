@@ -149,7 +149,7 @@ Existing high Exposure, high Grievance, high Dependence, war, and accident-press
 Country identity must never force an AI outcome.
 
 No MTTH or scheduling value changes.
-The existing `.5`, `.7`, and `.8` delivery paths are sufficient, so the `hoi4-mtth` workflow is not needed for this tranche.
+The existing `.5`, `.7`, and `.8` delivery paths are sufficient, so the `chaos-redux-mtth` workflow is not needed for this tranche.
 
 ## Historical and regional basis
 

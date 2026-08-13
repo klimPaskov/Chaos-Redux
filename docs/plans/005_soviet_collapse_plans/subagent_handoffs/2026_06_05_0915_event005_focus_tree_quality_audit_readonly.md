@@ -30,7 +30,7 @@ Required references consulted before opening target files:
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`
 - Vanilla focus precedents: `common/national_focus/estonia.txt`, `common/national_focus/germany.txt`
 
-Skill used: `hoi4-focus-trees`.
+Skill used: `chaos-redux-focus-trees`.
 
 ## Validation Method
 

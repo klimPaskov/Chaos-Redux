@@ -2,17 +2,17 @@
 
 ## Scope
 
-This maintenance pass updates only the reusable formable state-puzzle template guidance and this requested handoff. No gameplay files, registry JSON, generated assets, runtime tools, or `.agents/skills/hoi4-decisions-missions/SKILL.md` were edited.
+This maintenance pass updates only the reusable formable state-puzzle template guidance and this requested handoff. No gameplay files, registry JSON, generated assets, runtime tools, or `.agents/skills/chaos-redux-decisions-missions/SKILL.md` were edited.
 
 ## Changed files
 
-- `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/universal_state_registry_workflow.md` is a new focused workflow covering the canonical geometry registry, ordered-root provenance, builder and consumer commands, consumer schema/template, candidate supersets, optional live visibility helpers, live qualification/control, runtime manifest discovery, no-cache/no-world-scan rules, finite runtime limits, map-changing mod regeneration, mandatory MCP map/GUI evidence, and DDS decode round-trip evidence.
-- `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/README.md` now links the focused workflow, identifies `state_manifest.*` as compatibility scaffolding rather than a second geometry source, points setup step 2 at the registry-backed consumer flow, and calls out the MCP/DDS evidence gates.
-- `.agents/skills/hoi4-decisions-missions/templates/formable_state_puzzle/validation_checklist.md` now includes registry/consumer provenance, complete-manifest discovery, candidate-superset, live-helper, regeneration, MCP map/GUI, and DDS round-trip checks.
+- `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/universal_state_registry_workflow.md` is a new focused workflow covering the canonical geometry registry, ordered-root provenance, builder and consumer commands, consumer schema/template, candidate supersets, optional live visibility helpers, live qualification/control, runtime manifest discovery, no-cache/no-world-scan rules, finite runtime limits, map-changing mod regeneration, mandatory MCP map/GUI evidence, and DDS decode round-trip evidence.
+- `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/README.md` now links the focused workflow, identifies `state_manifest.*` as compatibility scaffolding rather than a second geometry source, points setup step 2 at the registry-backed consumer flow, and calls out the MCP/DDS evidence gates.
+- `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/validation_checklist.md` now includes registry/consumer provenance, complete-manifest discovery, candidate-superset, live-helper, regeneration, MCP map/GUI, and DDS round-trip checks.
 
 ## Verified source and route details
 
-- Read `AGENTS.md`, the complete `chaos-redux-subagents` skill, and the complete `hoi4-decisions-missions` skill before editing.
+- Read `AGENTS.md`, the complete `chaos-redux-subagents` skill, and the complete `chaos-redux-decisions-missions` skill before editing.
 - Read the required offline Paradox wiki pages and applicable vanilla documentation, including decision, interface, scripted-GUI, trigger, effect, localisation, scope, and dynamic-variable references.
 - Inspected `.tools/build_formable_state_registry.py`, `.tools/build_formable_state_puzzle_consumer.py`, `docs/formables/state_registry/consumer_spec.schema.json`, `docs/formables/state_registry/consumer_spec.template.json`, `docs/formables/state_registry/README.md`, and `.tools/generate_formable_state_puzzle_runtime.mjs` to ground the guidance in current contracts.
 - Verified the installed HOI4 MCP route names `mcp__hoi4_agent_tools__hoi4_map_inspect`, `mcp__hoi4_agent_tools__hoi4_map_render`, `mcp__hoi4_agent_tools__hoi4_gui_inspect`, and `mcp__hoi4_agent_tools__hoi4_gui_render` from the active tool surface.

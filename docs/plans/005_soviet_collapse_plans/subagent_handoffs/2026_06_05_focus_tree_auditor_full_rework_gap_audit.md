@@ -6,7 +6,7 @@ Scope: audit only, no gameplay patch
 
 ## References Consulted
 
-- Repo skill: `hoi4-focus-trees`
+- Repo skill: `chaos-redux-focus-trees`
 - Offline wiki snapshot: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla documentation: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `loc_objects_documentation.md`
 - Current Event005 focus files and helpers under `common/national_focus/`, `common/scripted_effects/`, `common/scripted_triggers/`, `common/ideas/`, and Event005 decisions
@@ -311,6 +311,6 @@ Content patches that should wait for parent design:
 
 ## Skills Used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 
 No skills were created or updated.

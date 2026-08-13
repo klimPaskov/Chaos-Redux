@@ -6,8 +6,8 @@ Read:
 
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`
 - `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`

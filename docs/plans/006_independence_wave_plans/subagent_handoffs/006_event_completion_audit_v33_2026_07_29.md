@@ -329,6 +329,6 @@ No gameplay file, asset, localisation file, workbook, exported CSV, existing spe
 - `chaos-redux-event-planning`
 - `chaos-redux-event-assets`
 - `chaos-redux-super-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `xlsx`

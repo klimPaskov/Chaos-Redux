@@ -93,7 +93,7 @@ No decision, mission, category, scripted GUI, localisation, effect, trigger, or 
 
 ## Skills used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-mtth`
+- `chaos-redux-mtth`

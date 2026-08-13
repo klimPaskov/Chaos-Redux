@@ -27,7 +27,7 @@ The Wendigo route is the strongest of the three mechanically: its decision gates
 Required repository guidance:
 
 - AGENTS.md
-- .agents/skills/hoi4-focus-trees/SKILL.md
+- .agents/skills/chaos-redux-focus-trees/SKILL.md
 - .agents/skills/chaos-redux-subagents/SKILL.md
 
 Offline wiki pages consulted:

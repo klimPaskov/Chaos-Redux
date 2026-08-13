@@ -229,8 +229,8 @@ Skills used:
 - `chaos-redux-subagents`
 - `chaos-redux-events`
 - `chaos-redux-event-assets`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-super-events`
 

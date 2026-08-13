@@ -250,7 +250,7 @@ No DDS was generated, reused, or substituted during this audit.
 
 ## Skills used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-event-assets`
 

@@ -7,7 +7,7 @@ Scope: bounded audit/patch for `common/national_focus/005_soviet_collapse_custom
 ## Required references consulted
 
 - Repo instructions: `AGENTS.md`
-- Skills: `hoi4-focus-trees`, `chaos-redux-subagents`
+- Skills: `chaos-redux-focus-trees`, `chaos-redux-subagents`
 - Offline wiki core pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding
 - Focus-specific wiki page: National focus modding
 - Vanilla docs: `documentation/script_concept_documentation.md`, `documentation/triggers_documentation.md`, `documentation/effects_documentation.md`

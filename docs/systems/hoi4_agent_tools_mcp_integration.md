@@ -31,7 +31,7 @@ Large JSON, SVG, PNG, HTML, diagnostics, plans, and diffs are linked through `ho
 
 ## Existing workflow ownership
 
-Use the skill that owns the current work. `hoi4-focus-trees` owns focus inspection and layout evidence; `chaos-redux-events` owns event-chain inspection; `hoi4-decisions-missions` and event-owned GUI work may use Scripted GUI Studio; map-touching workflows may use Agent Nudger. Technology, doctrine, country, event, and focus work should use a Technology Tree Viewer only after a server version actually exposes one. There is no central MCP skill or router.
+Use the skill that owns the current work. `chaos-redux-focus-trees` owns focus inspection and layout evidence; `chaos-redux-events` owns event-chain inspection; `chaos-redux-decisions-missions` and event-owned GUI work may use Scripted GUI Studio; map-touching workflows may use Agent Nudger. Technology, doctrine, country, event, and focus work should use a Technology Tree Viewer only after a server version actually exposes one. There is no central MCP skill or router.
 
 ## Writes and recovery
 

@@ -16,7 +16,7 @@ This PASS is limited to decision and mission mechanics plus the script-to-GUI st
 ## Required references used
 
 - `AGENTS.md`.
-- Repo skills, read in full: `chaos-redux-subagents`, `hoi4-decisions-missions`, and `chaos-redux-events`.
+- Repo skills, read in full: `chaos-redux-subagents`, `chaos-redux-decisions-missions`, and `chaos-redux-events`.
 - All eight Event 015 specification parts, all Event 015 matrices, the accepted improvement addendum, the source-of-truth map, and the current resume record.
 - Prior decision reports: `decision_mission_completion_current_reaudit_2026_07_15.md` and `decision_mission_post_balance_reaudit_2026_07_16.md`.
 - Late Ledger report: `ledger_state_architecture_reaudit_2026_07_16.md`.

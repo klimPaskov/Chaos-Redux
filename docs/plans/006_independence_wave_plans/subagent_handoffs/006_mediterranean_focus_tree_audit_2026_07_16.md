@@ -28,7 +28,7 @@ were not opened or changed.
 ## Required references consulted
 
 - Repository `AGENTS.md`.
-- Repo skills: `hoi4-focus-trees`, `chaos-redux-events`, and
+- Repo skills: `chaos-redux-focus-trees`, `chaos-redux-events`, and
   `chaos-redux-subagents`.
 - Required offline wiki pages: Data structures, Triggers, Effects, Modifiers,
   Localisation, Scopes, On actions, Event modding, Decision modding, Idea
@@ -303,7 +303,7 @@ missing focus reward, missing focus AI weight, missing focus localisation, or
 missing focus icon remains inside the authorized focus scope. No broader
 package or Event 6 completion is claimed. No commit was made.
 
-Skills used: `hoi4-focus-trees`, `chaos-redux-events`, and
+Skills used: `chaos-redux-focus-trees`, `chaos-redux-events`, and
 `chaos-redux-subagents`.
 
 No skill was created or updated; all findings and changes are Event 006-specific.

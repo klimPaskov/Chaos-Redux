@@ -37,8 +37,8 @@ All supplied project source files listed below were read in full before this pac
 | `chaosx_spreadsheet_doc_worker.toml` | 59 | 4,548 | `ed95090b42d301a65bff6e23b6f0a0d7ce0c28265939be12eb07c89a706307b1` |
 | `chaosx_super_event_audio_researcher.toml` | 65 | 3,330 | `9cf82a5472cb4a6feca7243e1db242ac6bd76f3dcec054cf58aed9e2a40bf5a1` |
 | `chaosx_super_event_text_researcher.toml` | 62 | 3,859 | `3cadc8f524b8141942b44aff462349d0c224dfd59578ef05f628b31aa043c6b3` |
-| `hoi4-decisions-missions(3).md` | 892 | 44,103 | `e8a1ed3fcee0ca3e4483e9a5398a4f21c5550619cd48fa1ea61fad4c4703ed09` |
-| `hoi4-focus-trees(10).md` | 1,293 | 72,660 | `47b01e707b029ace09e8442951323cda616c19882b1013bddc5d2cd9c1136e20` |
+| `chaos-redux-decisions-missions(3).md` | 892 | 44,103 | `e8a1ed3fcee0ca3e4483e9a5398a4f21c5550619cd48fa1ea61fad4c4703ed09` |
+| `chaos-redux-focus-trees(10).md` | 1,293 | 72,660 | `47b01e707b029ace09e8442951323cda616c19882b1013bddc5d2cd9c1136e20` |
 
 ## Catalog processing notes
 

@@ -717,4 +717,4 @@ This handoff does not implement gameplay, assets, localisation, or readiness fla
 
 The implementation path is complete enough to begin bounded coding for `SCO`, `WLS`, `BRI`, `AFX`, `AGX`, `RHI`, `BAY`, `AJX`, and the preserved-tree `ICE` adapter. `ACX` and `AEX` remain intentionally blocked for the reasons above.
 
-Skills used for this exploration: `chaos-redux-subagents`, `chaos-redux-events`, and `hoi4-focus-trees`. No skill was created or modified.
+Skills used for this exploration: `chaos-redux-subagents`, `chaos-redux-events`, and `chaos-redux-focus-trees`. No skill was created or modified.

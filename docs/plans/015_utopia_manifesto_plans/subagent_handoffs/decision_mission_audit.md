@@ -155,5 +155,5 @@ No gameplay, localisation, asset, interface, or spreadsheet file was edited.
 
 ## Skills
 
-- Used: `hoi4-decisions-missions`, `chaos-redux-subagents`.
+- Used: `chaos-redux-decisions-missions`, `chaos-redux-subagents`.
 - Created or updated: none.

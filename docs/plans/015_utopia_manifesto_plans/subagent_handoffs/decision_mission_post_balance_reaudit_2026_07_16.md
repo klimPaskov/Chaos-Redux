@@ -14,7 +14,7 @@ This is a decision/mission mechanics verdict, not a substitute for the separate 
 ## References used
 
 - Repository instructions: `AGENTS.md`.
-- Repo skills, read in full: `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
+- Repo skills, read in full: `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
 - All files under `docs/specs/015_utopia_manifesto_specs/`, including the balance-Ledger, decision/mission, evolution, Necessary Ground, route, and asset requirements.
 - Previous current decision report: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/decision_mission_completion_current_reaudit_2026_07_15.md`.
 - Required offline wiki pages: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Interface Modding, and Scripted GUI Modding.

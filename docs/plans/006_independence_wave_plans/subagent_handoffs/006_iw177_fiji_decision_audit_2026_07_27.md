@@ -16,7 +16,7 @@ The decision-specific engine behaviour was checked against `C:/Program Files (x8
 
 Vanilla decision precedents reviewed were `common/decisions/AST.txt` for mission structure and `common/decisions/WTT_border_conflicts.txt` for timeout and cancellation handling.
 
-The `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-subagents`, and `hoi4-focus-trees` skills were applied.
+The `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-subagents`, and `chaos-redux-focus-trees` skills were applied.
 
 ## Issue list, ordered by severity
 

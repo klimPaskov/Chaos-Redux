@@ -13,7 +13,7 @@ The audit initially found four gameplay/localisation contract gaps: Four Doors a
 ## Required sources reviewed
 
 - Repository `AGENTS.md` in full.
-- Repo skills in full: `chaos-redux-events`, `chaos-redux-subagents`, and `hoi4-decisions-missions`.
+- Repo skills in full: `chaos-redux-events`, `chaos-redux-subagents`, and `chaos-redux-decisions-missions`.
 - Offline wiki pages: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and Achievement modding.
 - Relevant vanilla documentation and precedents, including localisation formatting, localisation objects, script concepts, scripted localisation, decisions, events, and on-action state-control behavior.
 - Every file under `docs/specs/017_random_faction_specs/`, including all four specifications, matrices, research, source-review material, prompts, and subagent prompts.
@@ -97,5 +97,5 @@ The technical labels for hidden resolver/check events (`chaosx.nr17.20` and `.81
 
 ## Skills
 
-Used: `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-decisions-missions`.
+Used: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`.
 Created or updated: none.

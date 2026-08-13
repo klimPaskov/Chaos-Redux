@@ -48,7 +48,7 @@ The addendum defines an implementation-ready **Charter of Languages and Works** 
 
 ## Evidence and constraints
 
-The work used the required `chaos-redux-event-planning`, `chaos-redux-improvement-loop`, `chaos-redux-events`, `hoi4-decisions-missions`, `hoi4-focus-trees`, and `chaos-redux-subagents` skills. The `xlsx` skill was used read-only to verify that `docs/spreadsheets/chaos_redux_events_catalog.xlsx` has only broad Event 6 row fields and no FORM-03-specific field.
+The work used the required `chaos-redux-event-planning`, `chaos-redux-improvement-loop`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, and `chaos-redux-subagents` skills. The `xlsx` skill was used read-only to verify that `docs/spreadsheets/chaos_redux_events_catalog.xlsx` has only broad Event 6 row fields and no FORM-03-specific field.
 
 Required offline wiki pages, official vanilla documentation, vanilla Belgium, Netherlands, and Bulgaria precedents, all relevant Event 6 specifications and matrices, the current FORM-03 transaction, AFX and AGX package files, formable registry, league values, five-value system, focus tree, idea lifecycle, audits, identity research, and official Belgian, Benelux, Walloon, Dutch, and Frisian sources were reviewed.
 

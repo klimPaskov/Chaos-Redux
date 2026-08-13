@@ -54,7 +54,7 @@ Run after the common framework, each regional overlay tranche, and the signature
 
 ### Prompt
 
-Read `AGENTS.md`, `hoi4-focus-trees`, all Event 6 focus and country specs, regional overlay matrix, idea lifecycle matrix, formable registry, decision map, parent-provided focus file paths, and relevant implementation handoffs. Compare the required survival, government, economy, military, diplomacy, former-host, expansion, league, formable, and high-chaos lanes against implementation. Verify branch depth, interaction, route locks, prerequisites, failure states, AI, decision hooks, idea lifecycles, formable links, icons, localisation, and existing-tree overlay safety. Patch only small local issues. Write a route coverage table and handoff to `docs/plans/006_independence_wave_plans/subagent_handoffs/focus_tree_audit_<scope>.md`.
+Read `AGENTS.md`, `chaos-redux-focus-trees`, all Event 6 focus and country specs, regional overlay matrix, idea lifecycle matrix, formable registry, decision map, parent-provided focus file paths, and relevant implementation handoffs. Compare the required survival, government, economy, military, diplomacy, former-host, expansion, league, formable, and high-chaos lanes against implementation. Verify branch depth, interaction, route locks, prerequisites, failure states, AI, decision hooks, idea lifecycles, formable links, icons, localisation, and existing-tree overlay safety. Patch only small local issues. Write a route coverage table and handoff to `docs/plans/006_independence_wave_plans/subagent_handoffs/focus_tree_audit_<scope>.md`.
 
 ## 6. Decision and mission auditor
 
@@ -62,7 +62,7 @@ Run after the value system and each major decision family are implemented.
 
 ### Prompt
 
-Read `AGENTS.md`, `hoi4-decisions-missions`, Event 6 spec Part 3, `matrices/006_decision_mission_map.csv`, wave tuning, AI matrix, idea lifecycles, and the implementation files named by the parent. Audit every accepted row for owner, phase, target, visible requirement, cost, duration, success, failure, partial result, AI, cooldown, cleanup, route validity, and exploit risk. Flag political-power stores, passive checklists, reward dust, free-unit loops, stale targets, invalid hosts, dead patrons, and formable core spam. Patch only small local cost, tooltip, AI, visibility, cooldown, or cleanup defects. Write the handoff to `docs/plans/006_independence_wave_plans/subagent_handoffs/decision_mission_audit_<scope>.md`.
+Read `AGENTS.md`, `chaos-redux-decisions-missions`, Event 6 spec Part 3, `matrices/006_decision_mission_map.csv`, wave tuning, AI matrix, idea lifecycles, and the implementation files named by the parent. Audit every accepted row for owner, phase, target, visible requirement, cost, duration, success, failure, partial result, AI, cooldown, cleanup, route validity, and exploit risk. Flag political-power stores, passive checklists, reward dust, free-unit loops, stale targets, invalid hosts, dead patrons, and formable core spam. Patch only small local cost, tooltip, AI, visibility, cooldown, or cleanup defects. Write the handoff to `docs/plans/006_independence_wave_plans/subagent_handoffs/decision_mission_audit_<scope>.md`.
 
 ## 7. Localisation auditor
 

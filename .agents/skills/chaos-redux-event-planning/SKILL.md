@@ -18,8 +18,8 @@ Before writing the event specification, use the following as the design baseline
 - `chaos-redux-event-assets` when the event needs visual assets
 - `chaos-redux-frame-animation` when the event has animated sprites, animated UI, animated route emblems, animated portraits, warning pulses, hover loops, glow loops, float loops, particle loops, or frame-by-frame presentation needs
 - `chaos-redux-super-events` when the event needs a super-event
-- `hoi4-focus-trees` or the current focus-tree skill when the event needs focus trees
-- `hoi4-decisions-missions` when the event needs decisions, missions, timed objectives, influence actions, or decision-driven mechanics
+- `chaos-redux-focus-trees` or the current focus-tree skill when the event needs focus trees
+- `chaos-redux-decisions-missions` when the event needs decisions, missions, timed objectives, influence actions, or decision-driven mechanics
 - the authoritative event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and its export-only CSV snapshots
 - use CSV snapshots only for read-only inspection, never as an editable source; if a workbook update makes them stale, refresh them with `python .tools/export_event_catalog_csv.py`
 - provided existing event docs

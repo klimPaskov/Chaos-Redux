@@ -140,7 +140,7 @@ Live AI focus selection, decision ordering, front behavior, diplomatic timing, f
 
 ## Validation performed
 
-- Read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/hoi4-focus-trees/SKILL.md`, `.agents/skills/hoi4-decisions-missions/SKILL.md`, the required offline Paradox wiki pages, and the relevant installed vanilla documentation and carrier files.
+- Read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-focus-trees/SKILL.md`, `.agents/skills/chaos-redux-decisions-missions/SKILL.md`, the required offline Paradox wiki pages, and the relevant installed vanilla documentation and carrier files.
 - Ran `python .tools/audit_event6_allocator.py`. It passed with 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008-ranked packages, 13 attested packages, 12 compatible reservation groups, `RG-RHINE-SAAR` pair capacity 2, the 6/8/10/14/20 automatic ladder, and Event 005-first joint reservation order.
 - Ran `python .tools/audit_chaosx_country_tags.py --surface-scan`. It reported 136 protected Event 006/Soviet tags, zero external country-definition collisions, zero external identity-surface collisions, and one intentionally skipped Random Events root.
 - Re-extracted the current adapter and attestation OR blocks. The adapter block contains 22 IDs and the content-attestation block contains exactly the expected 13 IDs.
@@ -164,4 +164,4 @@ Changed tags, state IDs, leaders, parties, focus IDs, localisation keys, formabl
 
 No broad redesign or plan handoff was written because no patchable local country-package gap was found. The parent should retain the current `HOLD / PARTIAL` whole-event disposition and reconcile the stale HAW and historical admission documents during documentation curation.
 
-Skills used: `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, and `hoi4-decisions-missions`.
+Skills used: `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-decisions-missions`.

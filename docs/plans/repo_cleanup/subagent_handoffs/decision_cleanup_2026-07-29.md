@@ -118,4 +118,4 @@ The cost scan did not treat Event 021 or higher as standalone cleanup targets.
 
 ## Skills used
 
-Used `hoi4-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
+Used `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.

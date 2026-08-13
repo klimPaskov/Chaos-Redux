@@ -26,8 +26,8 @@ were edited by this audit. No fallback or substitute package was introduced.
 ## Source and precedent basis
 
 The audit followed `AGENTS.md` and the repository skills
-`chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`,
-`hoi4-decisions-missions`, `chaos-redux-event-assets`, and
+`chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`,
+`chaos-redux-decisions-missions`, `chaos-redux-event-assets`, and
 `chaos-redux-improvement-loop`. The required offline Paradox wiki pages were
 consulted (data structures, triggers, effects, modifiers, localisation,
 scopes, on actions, event, decision, idea, AI, country, focus, state, and

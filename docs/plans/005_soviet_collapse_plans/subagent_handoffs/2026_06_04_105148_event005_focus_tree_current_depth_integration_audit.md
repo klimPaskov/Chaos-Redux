@@ -20,7 +20,7 @@ No gameplay patches were made. The issues found are mostly structural and would 
 
 Repo skills:
 
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`

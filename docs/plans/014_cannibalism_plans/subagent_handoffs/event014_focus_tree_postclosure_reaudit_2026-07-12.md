@@ -123,10 +123,10 @@ This audit wrote only this handoff. It did not edit gameplay, localisation, asse
 
 ## Skills used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
-- `hoi4-mtth`
+- `chaos-redux-decisions-missions`
+- `chaos-redux-mtth`
 - `chaos-redux-event-assets`
 - `chaos-redux-subagents`
 

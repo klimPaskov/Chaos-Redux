@@ -4,7 +4,7 @@
 
 Implement Event 013 Natural Disasters from scratch using the spec package in `docs/specs/013_natural_disasters_specs/`. Do not reuse deleted Event 013 logic. Do not reuse old Earth Earthquake logic. Event 046 must remain an inactive unknown placeholder. Event 099 Sandstorm must not keep separate sandstorm logic and should either remain a placeholder or bridge narrowly into Event 013 dust and sandstorm calls.
 
-Read AGENTS.md, chaos-redux-events, hoi4-decisions-missions, chaos-redux-event-assets, chaos-redux-frame-animation, chaos-redux-super-events, chaos-redux-subagents, chaos-redux-improvement-loop, and any touched-system skill before editing. Inspect the live repo, offline Paradox wiki pages, vanilla docs, and existing Chaos Redux patterns before implementation.
+Read AGENTS.md, chaos-redux-events, chaos-redux-decisions-missions, chaos-redux-event-assets, chaos-redux-frame-animation, chaos-redux-super-events, chaos-redux-subagents, chaos-redux-improvement-loop, and any touched-system skill before editing. Inspect the live repo, offline Paradox wiki pages, vanilla docs, and existing Chaos Redux patterns before implementation.
 
 Core requirements:
 

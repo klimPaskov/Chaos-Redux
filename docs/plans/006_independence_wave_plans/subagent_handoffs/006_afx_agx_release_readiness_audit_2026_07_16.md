@@ -129,8 +129,8 @@ workflow authority:
 
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 
 The required offline wiki references were consulted before source inspection:

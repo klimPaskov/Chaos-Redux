@@ -41,9 +41,9 @@ Required references opened before editing:
 
 Skills used:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`

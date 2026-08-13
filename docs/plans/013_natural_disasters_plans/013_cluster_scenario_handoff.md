@@ -91,6 +91,6 @@ Event 099 remains a harmless placeholder and is not part of this cluster. Its th
 - `chaos-redux-events`
 - `chaos-redux-subagents`
 - `chaos-redux-improvement-loop`
-- `hoi4-mtth` for timing guidance review. No MTTH entry was needed because this tranche uses existing cluster cooldown and scenario intensity controls.
+- `chaos-redux-mtth` for timing guidance review. No MTTH entry was needed because this tranche uses existing cluster cooldown and scenario intensity controls.
 
 No commit was created.

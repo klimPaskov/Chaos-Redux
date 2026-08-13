@@ -175,7 +175,7 @@ An additional read-only `chaosx_decision_mission_auditor` launch was attempted, 
 
 ## Skills used
 
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-event-assets`
 - `chaos-redux-subagents`

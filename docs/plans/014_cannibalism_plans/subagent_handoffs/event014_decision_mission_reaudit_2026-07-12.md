@@ -360,8 +360,8 @@ No commit was created, as required.
 
 ## Skills used
 
-- hoi4-decisions-missions
+- chaos-redux-decisions-missions
 - chaos-redux-events
-- hoi4-focus-trees
+- chaos-redux-focus-trees
 - chaos-redux-event-assets
 - chaos-redux-subagents

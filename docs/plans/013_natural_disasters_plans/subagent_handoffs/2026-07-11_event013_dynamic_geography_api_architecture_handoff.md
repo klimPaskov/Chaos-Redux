@@ -45,7 +45,7 @@ The current decision-category implementation uses the correct vanilla triggered-
 - AGENTS.md
 - .agents/skills/chaos-redux-subagents/SKILL.md
 - .agents/skills/chaos-redux-events/SKILL.md
-- .agents/skills/hoi4-decisions-missions/SKILL.md
+- .agents/skills/chaos-redux-decisions-missions/SKILL.md
 - every file under docs/specs/013_natural_disasters_specs/
 - the live Event 013 constants, triggers, effects, decisions, category definitions, scripted localisation, localisation, GFX, on-actions, GUI, dynamic API, and system documentation
 

@@ -286,7 +286,7 @@ Skills used:
 - `chaos-redux-events` for Event 015 integration/lifecycle expectations;
 - `chaos-redux-event-assets` for source provenance, visual review, manifests,
   and runtime-format evidence;
-- `hoi4-focus-trees` for package loading, route, AI, and post-formation review;
+- `chaos-redux-focus-trees` for package loading, route, AI, and post-formation review;
 - `chaos-redux-subagents` for the bounded auditor handoff contract.
 
 Required offline wiki pages consulted:

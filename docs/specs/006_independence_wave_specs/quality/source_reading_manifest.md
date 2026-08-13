@@ -15,8 +15,8 @@ The files were read from their complete local copies under `/mnt/data`.
 | `chaos-redux-improvement-loop.md` | 275 | Depth pass, anti-bloat rules, closure conditions, and design-gap review |
 | `chaos-redux-subagents.md` | 288 | Custom subagent ownership, fork-context rules, handoffs, audits, and routing |
 | `chaos-redux-super-events.md` | 791 | Super-event role, quote research, cultural remark research, image and audio requirements, and implementation gates |
-| `hoi4-decisions-missions.md` | 890 | Active decision design, missions, costs, AI, cleanup, formables, GUI, clutter control, and balance |
-| `hoi4-focus-trees.md` | 898 | Branch depth, route interaction, AI, rewards, formable links, shared-tree adaptation, and country identity |
+| `chaos-redux-decisions-missions.md` | 890 | Active decision design, missions, costs, AI, cleanup, formables, GUI, clutter control, and balance |
+| `chaos-redux-focus-trees.md` | 898 | Branch depth, route interaction, AI, rewards, formable links, shared-tree adaptation, and country identity |
 | `chaos_redux_clusters_catalog.csv` | 15 | Liberations cluster definition and Event 5 and Event 6 membership |
 | `chaos_redux_events_catalog.csv` | 1035 | Current catalog entries and the existing Event 6 draft. Rows 204 through 1035 were verified as blank CSV tail rows |
 | `chaos_redux_scenarios_catalog.csv` | 20 | Existing scenario IDs, type patterns, intensity behavior, and next available scenario slot |

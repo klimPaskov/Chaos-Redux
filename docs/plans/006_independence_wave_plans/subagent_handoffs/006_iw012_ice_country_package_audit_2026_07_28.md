@@ -77,7 +77,7 @@ No gameplay file was patched by this audit. The adapter is statically admitted; 
 
 ## Validation performed
 
-- Read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, and `.agents/skills/hoi4-focus-trees/SKILL.md` before auditing.
+- Read `AGENTS.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, and `.agents/skills/chaos-redux-focus-trees/SKILL.md` before auditing.
 - Read the required offline Paradox wiki pages and relevant installed vanilla documentation for data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, decisions, ideas, AI, country/state history, national focuses, divisions, and technology.
 - Inspected vanilla ICE country, history, state 100, OOB, focus tree, characters, AI, flag/cosmetic definitions, and Nordic/formable references.
 - Ran the targeted tag audit with workshop/local-mod roots redirected to nonexistent paths to keep the check read-only and bounded; it completed with zero tag or cosmetic collisions.

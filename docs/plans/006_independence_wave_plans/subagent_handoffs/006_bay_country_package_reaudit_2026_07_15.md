@@ -229,5 +229,5 @@ not claimed; this certification is strictly the `IW-009` package admission
 boundary described above.
 
 Skills used: `chaos-redux-events`, `chaos-redux-event-assets`,
-`hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-subagents`.
+`chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.
 No skill was created or updated.

@@ -12,7 +12,7 @@ Scope:
 Mode: read-only audit. No gameplay, localisation, gfx, flag, or docs files were edited except this handoff. No commit was made.
 
 Required references consulted before inspection:
-- Repo skill: `hoi4-focus-trees`
+- Repo skill: `chaos-redux-focus-trees`
 - Offline wiki snapshot: National focus modding, Data structures, Trigger, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
 - Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`.
 - Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`.
@@ -157,7 +157,7 @@ Priority conversion targets:
 
 ## Validation and audit commands used
 
-- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus'`
 - `sed -n '1,220p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'`
 - `sed -n '1,180p' 'paradox_wiki/Effect - Hearts of Iron 4 Wiki.md'`

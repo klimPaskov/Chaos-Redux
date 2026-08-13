@@ -1,6 +1,6 @@
 Finish the Germany Mengele path to full Chaos Redux standards. Use the extracted package at `docs/plans/germany_mengele_path_plans/mengele_path_completion_planning_package/` or the verified repo-specific plan folder.
 
-Read first: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-super-events`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `hoi4-decisions-missions`, and `hoi4-focus-trees` if the clone army tree is touched. Read the required offline Paradox wiki pages and vanilla documentation before editing.
+Read first: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-super-events`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, and `chaos-redux-focus-trees` if the clone army tree is touched. Read the required offline Paradox wiki pages and vanilla documentation before editing.
 
 Then read these package files: `specs/current_implementation_map.md`, `specs/mengele_path_completion_spec.md`, `specs/mengele_super_event_acceptance_criteria.md`, `specs/mengele_improvement_loop_addendum.md`, `matrices/mengele_event_inventory_matrix.md`, and `matrices/mengele_test_matrix.md`.
 

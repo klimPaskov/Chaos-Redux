@@ -1,9 +1,9 @@
 ---
-name: hoi4-focus-trees
+name: chaos-redux-focus-trees
 description: Use when designing, implementing, auditing, or fixing Hearts of Iron IV national focus trees.
 ---
 
-# HOI4 Focus Trees
+# Chaos Redux Focus Trees
 
 Use this skill when a task touches national focus trees, focus-tree loading, focus effects, focus layout, focus localisation, focus icons, focus AI, focus-tree documentation, or event-created country trees.
 
@@ -11,7 +11,7 @@ Use this skill together with:
 
 - `AGENTS.md` for repository-wide rules
 - `chaos-redux-events` when the tree belongs to an event
-- `hoi4-decisions-missions` when focuses unlock, modify, or depend on decisions and missions
+- `chaos-redux-decisions-missions` when focuses unlock, modify, or depend on decisions and missions
 - `chaos-redux-event-assets` when focus icons, leader portraits, flags, or idea icons are required
 - `chaos-redux-improvement-loop` when a tree needs broader route depth or a near-completion anti-bloat pass
 - `chaos-redux-subagents` before routing focus audits, improvement plans, or active small patches
@@ -57,7 +57,7 @@ Before editing focus files:
 - Inspect vanilla focus files for syntax and layout precedent.
 - Inspect existing Chaos Redux focus trees and event-created focus-tree loading patterns.
 - Read `AGENTS.md`.
-- Read `hoi4-decisions-missions` when focuses unlock decisions, timed objectives, missions, or dynamic mechanics.
+- Read `chaos-redux-decisions-missions` when focuses unlock decisions, timed objectives, missions, or dynamic mechanics.
 
 Do not rely on memory for prerequisite behavior, layout behavior, AI syntax, or search filters.
 

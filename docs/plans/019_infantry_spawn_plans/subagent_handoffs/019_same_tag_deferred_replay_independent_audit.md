@@ -26,7 +26,7 @@ Repository guidance and skills:
 
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `019_same_tag_deferred_replay_handoff.md`
 - `019_performance_isolation_ai_audit_handoff.md`
@@ -415,4 +415,4 @@ The final direct source pass also confirmed that the claimant upper-bound check 
 
 ### Completion status
 
-No gameplay file was edited by this auditor. This report is the only auditor-owned change. No simplification, fallback, omission, or blocker remains within the requested audit scope. Skills used for the audit were `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-subagents`.
+No gameplay file was edited by this auditor. This report is the only auditor-owned change. No simplification, fallback, omission, or blocker remains within the requested audit scope. Skills used for the audit were `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.

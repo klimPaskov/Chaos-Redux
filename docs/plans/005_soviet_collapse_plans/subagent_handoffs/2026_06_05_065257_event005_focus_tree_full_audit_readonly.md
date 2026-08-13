@@ -15,7 +15,7 @@ Patched: no. This is a read-only audit handoff. The parent is continuing impleme
 
 ## References Consulted
 
-- Skill: `hoi4-focus-trees`
+- Skill: `chaos-redux-focus-trees`
 - Repo rules: `AGENTS.md`
 - Offline wiki snapshot: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla documentation: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`

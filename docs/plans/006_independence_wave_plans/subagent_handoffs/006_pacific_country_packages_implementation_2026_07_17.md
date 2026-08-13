@@ -241,8 +241,8 @@ cross-system audits pass together.
 
 ## Skills and references used
 
-Skills used: `chaos-redux-events`, `hoi4-focus-trees`,
-`hoi4-decisions-missions`, `chaos-redux-subagents`, and
+Skills used: `chaos-redux-events`, `chaos-redux-focus-trees`,
+`chaos-redux-decisions-missions`, `chaos-redux-subagents`, and
 `chaos-redux-improvement-loop`.
 
 Required offline Paradox wiki pages, the relevant Character Modding, Country

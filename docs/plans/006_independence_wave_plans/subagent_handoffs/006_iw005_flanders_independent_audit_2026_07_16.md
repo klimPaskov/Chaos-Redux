@@ -161,7 +161,7 @@ These amounts are staged behind separate actions rather than demanded simultaneo
 - Vanilla precedents: `on_daily_SWE`/`on_daily_GER`; `CHI_holding_state_mission`; `add_days_mission_timeout` uses in AST/CHI; 500-equipment threshold in `common/decisions/AUS.txt:1643`; Belgium's `BEL_flanders` cosmetic route and focus tree.
 - Event 6 sources: IW-005 research and force-mapping rows, the FORM03 addendum, the implementation handoff, and the Flanders overlay system document.
 
-Skills used: `chaos-redux-subagents`, `hoi4-decisions-missions`, and `chaos-redux-events`.
+Skills used: `chaos-redux-subagents`, `chaos-redux-decisions-missions`, and `chaos-redux-events`.
 
 ## Simplifications, omissions, and blockers
 

@@ -5,9 +5,9 @@ Implement the complete decision, mission, and mechanic action layer for Chaos Re
 Read:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-decisions-missions/SKILL.md`
+- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
 - `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - Event 6 spec parts 1 through 7
 - `matrices/006_decision_mission_map.csv`
 - `matrices/006_wave_tuning_model.csv`

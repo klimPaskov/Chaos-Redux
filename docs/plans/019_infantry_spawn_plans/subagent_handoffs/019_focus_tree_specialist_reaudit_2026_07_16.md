@@ -158,4 +158,4 @@ This specialist created only this handoff:
 
 No files were staged or committed.
 
-Skills used: `chaos-redux-subagents`, `hoi4-focus-trees`, and `chaos-redux-events`. No skill was created or updated.
+Skills used: `chaos-redux-subagents`, `chaos-redux-focus-trees`, and `chaos-redux-events`. No skill was created or updated.

@@ -6,7 +6,7 @@ This is the read-only gameplay re-audit of the ordinary paid-request and
 ordinary-country selected-family paid-request transactions after remediation of
 the earlier refund, allocator, obligation, and training-authorization findings.
 The gameplay audit used the `chaos-redux-events`, `chaos-redux-subagents`, and
-`hoi4-decisions-missions` workflows. No gameplay or registry file was edited by
+`chaos-redux-decisions-missions` workflows. No gameplay or registry file was edited by
 this audit.
 
 ### Severity verdict

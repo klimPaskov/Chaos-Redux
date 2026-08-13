@@ -21,7 +21,7 @@ The parent should patch the lifecycle kernel before adding more presentation or 
 
 ## Sources consulted
 
-The review followed `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-subagents`.
+The review followed `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.
 
 The required offline wiki pages were consulted, including Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding.
 
@@ -474,4 +474,4 @@ These are architecture scenarios, not generic syntax checks.
 - Changed file: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/scripted_system_architect_case_review.md`
 - Gameplay edits: none
 - Simplifications: none in the audit. Unverified engine behavior is identified as a blocker rather than replaced with a fallback.
-- Skills used: `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-subagents`
+- Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`

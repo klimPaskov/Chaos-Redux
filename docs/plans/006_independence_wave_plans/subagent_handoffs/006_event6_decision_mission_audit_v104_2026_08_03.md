@@ -16,7 +16,7 @@ The decision and mission slice is conditionally source-closed except for the min
 
 - Read the Event 006 v104 completion evidence and current decision/mission audit handoffs, including the current cost-gate and allocator repairs.
 - Read the required offline Paradox wiki Decision modding, National focus modding, triggers, effects, scopes, localisation, and on-actions pages, plus the required vanilla documentation and vanilla decision/focus precedents.
-- Applied `hoi4-decisions-missions`, `chaos-redux-events`, `hoi4-focus-trees`, and `chaos-redux-subagents` guidance.
+- Applied `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-focus-trees`, and `chaos-redux-subagents` guidance.
 - Inspected 31 Event 006 decision files, 31 category files, four Event 006 focus files, the Event 006 crisis and decision effects, related scripted triggers, on-action recovery, constants, English localisation, and the Statehood Ledger sources.
 
 ## Issues, sorted by severity

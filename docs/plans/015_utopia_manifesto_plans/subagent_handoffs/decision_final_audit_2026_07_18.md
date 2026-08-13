@@ -234,8 +234,8 @@ storage is available, a narrow read-only rerun of `.213` / `.214` and
 `utopia_manifesto_ledger_container` is the only outstanding confidence step;
 it should be recorded against this handoff rather than changing the design.
 
-Skills applied: `hoi4-decisions-missions`, `chaos-redux-events`,
-`hoi4-focus-trees`, and `chaos-redux-subagents`. Required offline Paradox wiki
+Skills applied: `chaos-redux-decisions-missions`, `chaos-redux-events`,
+`chaos-redux-focus-trees`, and `chaos-redux-subagents`. Required offline Paradox wiki
 pages and vanilla decision/on-action/script-constant documentation were
 consulted; vanilla `common/decisions/SIA.txt` was used as the targeted-decision
 precedent.

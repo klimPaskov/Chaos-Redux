@@ -122,8 +122,8 @@ All exact-name occurrences in Event 014 localisation resolve through one of thos
 ## Skills used
 
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
-- `hoi4-focus-trees`
+- `chaos-redux-decisions-missions`
+- `chaos-redux-focus-trees`
 - `chaos-redux-super-events`
 - `chaos-redux-subagents`
 - `xlsx` for the read-only Event Catalog cell comparison

@@ -17,8 +17,8 @@ Before editing, read:
 - `chaos-redux-event-assets`
 - `chaos-redux-frame-animation`
 - `chaos-redux-super-events`
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-improvement-loop`
 - `chaos-redux-subagents`
 - required offline Paradox wiki pages

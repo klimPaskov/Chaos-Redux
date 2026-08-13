@@ -19,7 +19,7 @@ The Event completion-auditor checkbox in `docs/specs/018_resources_found_specs/m
 
 ## Required references consulted
 
-The main audit read the complete instructions for `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, and the relevant event-planning guidance before adjudicating their surfaces.
+The main audit read the complete instructions for `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, and the relevant event-planning guidance before adjudicating their surfaces.
 
 The required offline wiki snapshot was consulted, including:
 

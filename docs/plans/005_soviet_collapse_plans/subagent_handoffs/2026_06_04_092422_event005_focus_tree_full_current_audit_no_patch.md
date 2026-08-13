@@ -18,7 +18,7 @@ Parent constraints honored:
 
 Skills and references used:
 - Read `AGENTS.md`.
-- Used `hoi4-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`.
+- Used `chaos-redux-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`.
 - Consulted the offline Paradox wiki snapshot for national focus, decision, localisation, data structures, triggers, modifiers, scopes, on actions, event modding, idea modding, and AI modding. The offline snapshot does not contain a standalone `Effects - Hearts of Iron 4 Wiki.md` file, so vanilla `effects_documentation.md` was used for effect syntax.
 - Consulted vanilla docs in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/` and inspected vanilla `common/national_focus/soviet.txt` for focus structure precedent.
 
@@ -200,7 +200,7 @@ Most repeated decision tooltips:
 ## Validation Run
 
 Commands run:
-- `sed -n` on `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`.
+- `sed -n` on `AGENTS.md`, `chaos-redux-focus-trees`, `chaos-redux-events`, and `chaos-redux-subagents`.
 - `sed -n` on offline wiki pages for national focus, decision, localisation, data structures, triggers, modifiers, scopes, on actions, event modding, idea modding, and AI modding.
 - `sed -n` on vanilla `effects_documentation.md`, `triggers_documentation.md`, and `common/national_focus/soviet.txt`.
 - Parsed the four scoped focus files for tree/focus counts, ids, coordinates, icons, rewards, AI blocks, search filters, prerequisites, mutual exclusions, helper calls, direct idea operations, duplicate coordinates, OR prerequisites, and approximate pathline intersections.

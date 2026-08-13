@@ -7,7 +7,7 @@ Implement the phased Event 19 decision, mission, and scripted GUI system from th
 Read:
 
 - `AGENTS.md`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-events`
 - `chaos-redux-frame-animation` for the three animated UI packages
 - all Event 19 specification parts

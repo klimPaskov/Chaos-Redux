@@ -37,7 +37,7 @@ Affected focus ids checked:
 
 Repo guidance:
 
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 
 Required offline wiki snapshot pages:
@@ -72,7 +72,7 @@ Relevant reference conclusions:
 
 ## Commands And Checks Run
 
-- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-subagents/SKILL.md`
 - `rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus'`
 - `rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation' | rg -i 'focus|national|trigger|effect|localisation|ai|script'`

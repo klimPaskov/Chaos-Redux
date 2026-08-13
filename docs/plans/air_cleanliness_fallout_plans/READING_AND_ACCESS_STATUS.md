@@ -14,8 +14,8 @@ The following project sources available in `/mnt/data` were fully read and proce
 - `chaos-redux-improvement-loop.md`
 - `chaos-redux-subagents.md`
 - `chaos-redux-super-events.md`
-- `hoi4-decisions-missions.md`
-- `hoi4-focus-trees.md`
+- `chaos-redux-decisions-missions.md`
+- `chaos-redux-focus-trees.md`
 - all uploaded custom subagent TOML files
 - `chaos_redux_clusters_catalog.csv`
 - `chaos_redux_scenarios_catalog.csv`

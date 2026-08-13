@@ -400,7 +400,7 @@ asset file was changed.
 - `chaos-redux-subagents`
 - `chaos-redux-event-planning`
 - `chaos-redux-event-assets`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `xlsx` (read-only workbook verification)
 
 No skill was created or updated.

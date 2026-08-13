@@ -1,6 +1,6 @@
 # Decision and Mission Implementation Prompt: Event 15 Utopia Manifesto
 
-Implement the decision, mission, and scripted GUI systems mapped in the Event 15 source specs. Read `AGENTS.md`, `chaos-redux-events`, `hoi4-decisions-missions`, `hoi4-focus-trees`, `chaos-redux-frame-animation`, and the relevant offline wiki and vanilla documentation before editing.
+Implement the decision, mission, and scripted GUI systems mapped in the Event 15 source specs. Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-frame-animation`, and the relevant offline wiki and vanilla documentation before editing.
 
 ## Required systems
 

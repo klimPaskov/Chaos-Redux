@@ -54,7 +54,7 @@ Use this skill with `chaos-redux-event-assets`.
 
 Use `$imagegen` for generated frame art. If `$imagegen` is unavailable, stop and report the blocker. Do not invent another image generation route.
 
-Use `chaos-redux-super-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, or `chaos-redux-events` for the gameplay surface that uses the animation.
+Use `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, or `chaos-redux-events` for the gameplay surface that uses the animation.
 
 3D skeletal `.anim` actions are not frame-sheet assets. Route model rigs, retargeting, baked actions, root-motion policy, `.anim` export, reimport proof, and unit or entity runtime binding to `chaos-redux-3d-model-pipeline`; do not manufacture a skeletal action by moving or filtering one still image, and do not replace a requested action with a 2D frame sheet.
 

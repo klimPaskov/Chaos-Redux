@@ -65,8 +65,8 @@ Repository skills:
 - chaos-redux-events
 - chaos-redux-subagents
 - chaos-redux-improvement-loop
-- hoi4-decisions-missions
-- hoi4-focus-trees
+- chaos-redux-decisions-missions
+- chaos-redux-focus-trees
 
 Required offline wiki pages:
 

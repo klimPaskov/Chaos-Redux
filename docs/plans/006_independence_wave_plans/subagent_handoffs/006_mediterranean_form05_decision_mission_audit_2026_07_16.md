@@ -68,7 +68,7 @@ Both now use `is_good = no`. They therefore remain active after manual activatio
 - Vanilla `common/decisions/_documentation.md` and official effects/triggers documentation.
 - Vanilla Philippine intervention mission as the manual-activation/fail-closed mission precedent.
 - Vanilla Nordic League formable decision as the independent-member/formable structural precedent.
-- Repository skills `hoi4-decisions-missions` and `chaos-redux-subagents`.
+- Repository skills `chaos-redux-decisions-missions` and `chaos-redux-subagents`.
 
 ## Remaining risks and scope boundaries
 

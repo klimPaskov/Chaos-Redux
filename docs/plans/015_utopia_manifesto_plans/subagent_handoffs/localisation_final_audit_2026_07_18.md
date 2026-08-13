@@ -254,4 +254,4 @@ Plan handoff path: this file. No separate missing-mechanic plan was required.
 
 Simplifications, omissions, and blockers: no localisation fallback or gameplay simplification was used. The two validation limitations above are explicit; neither concealed a known defect.
 
-Skills applied: `chaos-redux-events`, `hoi4-decisions-missions`, `hoi4-focus-trees`, `chaos-redux-super-events`, and `chaos-redux-subagents`, with the required offline Paradox wiki and vanilla documentation references.
+Skills applied: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-super-events`, and `chaos-redux-subagents`, with the required offline Paradox wiki and vanilla documentation references.

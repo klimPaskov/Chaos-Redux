@@ -161,7 +161,7 @@ was used.
 No commit was created.
 
 Skills used: `chaos-redux-events`, `chaos-redux-subagents`, and
-`hoi4-decisions-missions`.
+`chaos-redux-decisions-missions`.
 
 ## Follow-up reconciliation — 2026-07-18
 

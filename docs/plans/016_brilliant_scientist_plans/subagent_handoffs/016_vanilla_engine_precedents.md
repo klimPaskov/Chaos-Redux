@@ -61,7 +61,7 @@ Official documentation consulted included:
 - `$HOI4/common/ai_templates/_documentation.md`
 - `$HOI4/common/scripted_guis/_documentation.md`
 
-The `hoi4-mtth` skill governed the MTTH conclusions. The `chaos-redux-super-events` skill governed the super-event/audio recommendation.
+The `chaos-redux-mtth` skill governed the MTTH conclusions. The `chaos-redux-super-events` skill governed the super-event/audio recommendation.
 
 ## 1. One character as scientist, advisor, and leader
 

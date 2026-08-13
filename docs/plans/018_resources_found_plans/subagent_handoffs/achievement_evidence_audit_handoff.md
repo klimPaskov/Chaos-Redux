@@ -4,7 +4,7 @@
 
 This is a read-only completion audit of the Event 018 evidence contracts for six achievements. No gameplay, localisation, registry, asset, or spreadsheet file was edited by this audit.
 
-The audit used the complete `chaos-redux-events`, `chaos-redux-subagents`, and `hoi4-decisions-missions` skills. It checked the Event 018 achievement prompt and related specs against the live implementation, the required offline wiki pages, the official vanilla trigger/effect/script-constant documentation, and vanilla precedents for explicitly activated missions and state-control evidence.
+The audit used the complete `chaos-redux-events`, `chaos-redux-subagents`, and `chaos-redux-decisions-missions` skills. It checked the Event 018 achievement prompt and related specs against the live implementation, the required offline wiki pages, the official vanilla trigger/effect/script-constant documentation, and vanilla precedents for explicitly activated missions and state-control evidence.
 
 The live tree already contains partial repairs added during this audit. The verdicts below describe that live state, not the older implementation that preceded those repairs.
 

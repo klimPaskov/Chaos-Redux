@@ -75,7 +75,7 @@ User direction is required only if an implementation attempt would need a fallba
 - `chaos-redux-improvement-loop`
 - `chaos-redux-event-planning`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-super-events`
 
 ## Validation of this documentation handoff

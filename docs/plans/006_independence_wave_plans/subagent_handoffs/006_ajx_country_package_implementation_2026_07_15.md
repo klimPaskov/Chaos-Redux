@@ -221,7 +221,7 @@ force proof, localisation surface, or cleanup item inside the accepted bounded
 AJX package was simplified. Overall Event 006 completion and IW-010 readiness
 are not claimed.
 
-Skills used: `chaos-redux-events`, `hoi4-focus-trees`,
-`hoi4-decisions-missions`, `chaos-redux-event-assets`,
+Skills used: `chaos-redux-events`, `chaos-redux-focus-trees`,
+`chaos-redux-decisions-missions`, `chaos-redux-event-assets`,
 `chaos-redux-subagents`, and `chaos-redux-improvement-loop`. No skill was
 created or updated.

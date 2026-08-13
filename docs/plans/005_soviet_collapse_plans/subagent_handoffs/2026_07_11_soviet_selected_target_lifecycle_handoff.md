@@ -150,6 +150,6 @@ These gameplay files contained concurrent Command and Corridors work. Edits were
 
 - `chaos-redux-events`
 - `chaos-redux-subagents`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 
 No skill was created or updated.

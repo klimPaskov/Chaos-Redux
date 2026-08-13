@@ -21,7 +21,7 @@ This handoff uses three evidence labels:
 - **STATIC** means the result follows deterministically from the current script text and constants, without claiming that the engine executed it.
 - **NOT PROVEN** means the result depends on engine behavior or a scenario that was not recorded in the supplied log. Absence of an error is not treated as gameplay proof.
 
-The audit followed `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-decisions-missions`, and `hoi4-focus-trees`. It also consulted the required offline wiki pages, the official vanilla documentation, and vanilla unit/focus precedents. No web Paradox wiki material was used.
+The audit followed `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-focus-trees`. It also consulted the required offline wiki pages, the official vanilla documentation, and vanilla unit/focus precedents. No web Paradox wiki material was used.
 
 ## Snapshot and load-evidence boundary
 

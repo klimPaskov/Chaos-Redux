@@ -72,7 +72,7 @@ After:
 Read required references before editing:
 
 - `AGENTS.md`
-- `.agents/skills/hoi4-focus-trees/SKILL.md`
+- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
 - Required core wiki pages from `paradox_wiki/`

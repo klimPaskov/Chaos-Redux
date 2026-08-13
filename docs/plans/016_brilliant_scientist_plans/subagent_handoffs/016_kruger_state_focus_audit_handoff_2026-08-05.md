@@ -16,7 +16,7 @@ The portal recruitment consumer patch is accepted. Live route sequencing, hidden
 
 ## Required references and evidence
 
-The audit used `AGENTS.md`, the complete `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents` skills, the required offline Paradox wiki pages, the relevant vanilla documentation files, the Event 016 focus specification, the focus architecture matrix, the AI behavior matrix, and the Event 016 acceptance reviews.
+The audit used `AGENTS.md`, the complete `chaos-redux-focus-trees`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents` skills, the required offline Paradox wiki pages, the relevant vanilla documentation files, the Event 016 focus specification, the focus architecture matrix, the AI behavior matrix, and the Event 016 acceptance reviews.
 
 The parent `hoi4.focus_inspect` and `hoi4.focus_render` run recorded 100 focuses, 108 connectors, zero connector crossings, zero node intersections, zero long connectors, and zero too-close same-row pairs. The 14 blocking diagnostics reported by that run are unrelated vanilla continuous-focus icon references rather than KRG focus errors.
 

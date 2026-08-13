@@ -15,7 +15,7 @@ Audited the current Event005 Soviet Collapse focus trees in:
 
 Used repo skills:
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`
 
 Required references consulted before inspecting the Chaos Redux focus files:

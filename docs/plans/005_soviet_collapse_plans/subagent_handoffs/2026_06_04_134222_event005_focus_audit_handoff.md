@@ -7,7 +7,7 @@ Scope:
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
 
 Constraints followed:
-- Used `hoi4-focus-trees`.
+- Used `chaos-redux-focus-trees`.
 - Consulted the offline Paradox wiki core pages plus National focus modding, and vanilla documentation/examples before auditing focus files.
 - Did not inspect or edit flag sprites or flag asset directories.
 - Kept patches to narrow focus search-filter fixes only.

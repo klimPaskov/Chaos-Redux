@@ -27,7 +27,7 @@ Do not set `independence_wave_form48_readiness_attested`.
 ## Required references and workflow
 
 The audit used `chaos-redux-subagents`, `chaos-redux-events`,
-`hoi4-focus-trees`, `hoi4-decisions-missions`, and
+`chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and
 `chaos-redux-event-assets`. The required offline wiki pages were consulted,
 including the core scripting pages and the national-focus, country-creation,
 division/unit, and portrait pages. Official vanilla effects, triggers, script

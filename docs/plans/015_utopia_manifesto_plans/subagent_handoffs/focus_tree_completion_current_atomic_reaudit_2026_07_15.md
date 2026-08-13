@@ -46,10 +46,10 @@ Corroborating current audit records:
 Repository guidance and skills:
 
 - `AGENTS.md`
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 - `docs/specs/015_utopia_manifesto_specs/prompts/subagents/03_focus_tree_auditor_prompt.md`
 - all eight Event 015 specification parts and the current completion, country-package, decision/mission, and focus-route matrices
@@ -319,10 +319,10 @@ The installed HOI4 domain MCP tools were not exposed in this agent's tool invent
 
 ## Skills used
 
-- `hoi4-focus-trees`
+- `chaos-redux-focus-trees`
 - `chaos-redux-subagents`
 - `chaos-redux-events`
-- `hoi4-decisions-missions`
+- `chaos-redux-decisions-missions`
 - `chaos-redux-event-assets`
 
 No skill was created or updated during this audit.

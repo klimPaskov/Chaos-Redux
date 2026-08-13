@@ -231,8 +231,8 @@ The artifact expanded the wider mod and returned unrelated blocking diagnostics,
 - `chaos-redux-subagents`
 - `chaos-redux-event-planning`
 - `chaos-redux-event-assets`, including its tools/assets/vanilla-reference READMEs
-- `hoi4-focus-trees`
-- `hoi4-decisions-missions`
+- `chaos-redux-focus-trees`
+- `chaos-redux-decisions-missions`
 - Required offline wiki pages for data structures, triggers, effects, modifiers, localisation, scopes, on-actions, events, decisions, ideas, AI, focuses, and country creation
 - Relevant installed vanilla documentation and CHU/ASY/formable precedents
 

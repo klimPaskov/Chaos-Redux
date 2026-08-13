@@ -6,7 +6,7 @@ Date: 2026-08-03
 
 This audit compares the current KRG package and finite host-settlement layer with `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_5_kruger_state_country_package.md`, `docs/specs/016_brilliant_scientist_specs/matrices/016_country_package_matrix.md`, the Event 016 source-of-truth map, and the accepted settlement handoffs.
 
-Required repository guidance was read before inspection: `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-event-assets`, together with the required offline Paradox wiki pages and relevant vanilla documentation.
+Required repository guidance was read before inspection: `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets`, together with the required offline Paradox wiki pages and relevant vanilla documentation.
 
 No gameplay, asset, localisation, map, or technology source was changed by this audit; the only output is this handoff.
 

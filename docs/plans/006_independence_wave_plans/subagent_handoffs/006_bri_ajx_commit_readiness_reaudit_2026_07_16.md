@@ -366,4 +366,4 @@ This closes findings B1-B4 for bounded package commit safety. Both packages have
 
 ## Sources and skill record
 
-This re-audit used the repository's `chaos-redux-events`, `chaos-redux-subagents`, `hoi4-focus-trees`, `hoi4-decisions-missions`, and `chaos-redux-event-assets` guidance. It consulted the required offline Paradox wiki core pages plus focus, country, character, and AI references; the corresponding official vanilla documentation; vanilla files; the post-98ec formable audits; and the package/asset evidence listed above. No fallback, gameplay simplification, asset substitution, staging action, or commit was performed.
+This re-audit used the repository's `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, and `chaos-redux-event-assets` guidance. It consulted the required offline Paradox wiki core pages plus focus, country, character, and AI references; the corresponding official vanilla documentation; vanilla files; the post-98ec formable audits; and the package/asset evidence listed above. No fallback, gameplay simplification, asset substitution, staging action, or commit was performed.

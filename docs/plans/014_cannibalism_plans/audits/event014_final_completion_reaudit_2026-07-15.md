@@ -23,7 +23,7 @@ Completion-ready: YES.
 
 ## Required authority and references
 
-The audit followed `AGENTS.md` and the repository skills `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, and `xlsx`.
+The audit followed `AGENTS.md` and the repository skills `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, and `xlsx`.
 
 The required offline Paradox wiki pages were consulted for data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, decisions, ideas, AI, national focuses, interfaces, scripted GUI, graphical assets, countries, achievements, divisions, and units. Relevant vanilla documentation was checked for effects, triggers, script concepts, dynamic variables, modifiers, localisation objects and formatters, script constants, decisions, AI strategy, AI templates, on actions, characters, scripted GUI, and factions. Vanilla precedents were checked for triggered events, timed missions, mutual exclusions, focus-tree loading, unit creation, animated sprites, and achievements.
 

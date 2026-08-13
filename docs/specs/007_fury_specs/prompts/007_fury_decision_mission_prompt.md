@@ -1,6 +1,6 @@
 # Decision and mission implementation prompt for Event 007 Fury
 
-Use `hoi4-decisions-missions`, `chaos-redux-events`, and the Fury decision spec.
+Use `chaos-redux-decisions-missions`, `chaos-redux-events`, and the Fury decision spec.
 
 Source spec:
 
