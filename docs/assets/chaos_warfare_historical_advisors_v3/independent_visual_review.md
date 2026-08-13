@@ -2,25 +2,27 @@
 
 Date: 2026-08-13
 
-Reviewer: independent read-only Codex reviewer, separate from final deterministic compositor execution
+Reviewer: independent read-only reviewer `019ffa95-8460-7861-9d23-ad097dca1883`; the portrait producer did not self-approve.
 
-## Verdict
+## Status
 
-All twelve cards passed at native `65x67`, nearest-neighbour `4x`, and on the combined alignment overlay:
+Overall verdict: `APPROVED`.
 
-- `AST_howard_florey`: PASS
-- `ENG_alexander_fleming`: PASS
-- `ENG_paul_fildes`: PASS
-- `GER_gerhard_schrader`: PASS
-- `GER_kurt_blome`: PASS
-- `JAP_masaji_kitano`: PASS
-- `JAP_shiro_ishii`: PASS
-- `POL_franciszek_witaszek`: PASS
-- `SOV_grigory_mairanovsky`: PASS
-- `SOV_ivan_mikhailovich_velikanov`: PASS
-- `USA_frank_olson`: PASS
-- `USA_ira_baldwin`: PASS
+| ID | Vanilla-comparable scale | No opening gaps | No stretch | Coherent composition | Correct overlay |
+|---|---|---|---|---|---|
+| `AST_howard_florey` | PASS | PASS | PASS | PASS | PASS |
+| `ENG_alexander_fleming` | PASS | PASS | PASS | PASS | PASS |
+| `ENG_paul_fildes` | PASS | PASS | PASS | PASS | PASS |
+| `GER_gerhard_schrader` | PASS | PASS | PASS | PASS | PASS |
+| `GER_kurt_blome` | PASS | PASS | PASS | PASS | PASS |
+| `JAP_masaji_kitano` | PASS | PASS | PASS | PASS | PASS |
+| `JAP_shiro_ishii` | PASS | PASS | PASS | PASS | PASS |
+| `POL_franciszek_witaszek` | PASS | PASS | PASS | PASS | PASS |
+| `SOV_grigory_mairanovsky` | PASS | PASS | PASS | PASS | PASS |
+| `SOV_ivan_mikhailovich_velikanov` | PASS | PASS | PASS | PASS | PASS |
+| `USA_frank_olson` | PASS | PASS | PASS | PASS | PASS |
+| `USA_ira_baldwin` | PASS | PASS | PASS | PASS | PASS |
 
-Overall verdict: APPROVED.
+The reviewer compared the native and nearest-neighbour `4x` contact sheets, individual cards where needed, the combined `8x` alignment overlays, the canonical vanilla advisor reference sheet, and the recorded cover geometry. All twelve subjects read at a scale comparable to the vanilla dossier family. No empty, transparent, black, matte, or padded opening-edge gap remains, no anisotropic distortion is visible, and the paper overlap preserves coherent face, headwear, and shoulder framing.
 
-The reviewer found no unintended black gaps, source spill, crooked frame placement, or abnormal paper overlap. Faces, headwear, and shoulder context remain readable and coherent with the canonical vanilla family. Red opening and green fill-plane geometry show no visible divergence; yellow contained-portrait bounds remain inside the frame. Minor source softness on Kitano and Olson is inherited from the approved full portraits and remains acceptable at native size.
+Every card covers all `1121` opening-mask pixels with `0` gaps. The uniformly scaled portrait extends approximately `1.510685802` pixels beyond each horizontal opening edge and `0` pixels vertically, matching the intended symmetric frame clip without stretching.

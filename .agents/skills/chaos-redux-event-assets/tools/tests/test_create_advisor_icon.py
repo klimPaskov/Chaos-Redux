@@ -39,19 +39,24 @@ class AdvisorIconTests(unittest.TestCase):
 		self.assertEqual(prepared.size, self.source.size)
 		self.assertEqual(prepared.tobytes(), self.source.tobytes())
 
-	def test_contained_resize_preserves_aspect_without_crop_or_stretch(self) -> None:
-		geometry = ADVISOR.calculate_contained_portrait_geometry(
+	def test_cover_resize_preserves_aspect_without_stretch_or_padding(self) -> None:
+		opening_size = (30.477406, 45.094508)
+		geometry = ADVISOR.calculate_covering_portrait_geometry(
 			self.source.size,
-			(30.477406, 45.094508),
+			opening_size,
 		)
 		self.assertAlmostEqual(
 			geometry["content_size"][0] / geometry["content_size"][1],
 			self.source.width / self.source.height,
 			places=6,
 		)
-		self.assertAlmostEqual(geometry["content_size"][0], 30.477406, places=6)
-		self.assertGreater(geometry["padding"][1], 0.0)
-		self.assertEqual(geometry["padding"][3], 0.0)
+		self.assertAlmostEqual(geometry["content_size"][1], opening_size[1], places=6)
+		self.assertGreater(geometry["content_size"][0], opening_size[0])
+		self.assertGreater(geometry["frame_clip"][0], 0.0)
+		self.assertGreater(geometry["frame_clip"][2], 0.0)
+		self.assertEqual(geometry["frame_clip"][1], 0.0)
+		self.assertEqual(geometry["frame_clip"][3], 0.0)
+		self.assertNotIn("padding", geometry)
 
 	def test_template_is_the_final_top_layer(self) -> None:
 		template = self.make_template()
@@ -96,6 +101,24 @@ class AdvisorIconTests(unittest.TestCase):
 			self.assertEqual(mask.getpixel((0, y)), 0)
 			self.assertEqual(mask.getpixel((mask.width - 1, y)), 0)
 
+	def test_cover_fills_every_canonical_opening_pixel(self) -> None:
+		template = ADVISOR.load_template(ADVISOR.DEFAULT_TEMPLATE)
+		geometry = ADVISOR.measure_opening_geometry(template)
+		card = ADVISOR.compose(
+			self.source,
+			template,
+			geometry["center"],
+			geometry["size"],
+			(0.0, 0.0),
+			geometry["rotation"],
+			0.0,
+		)
+		mask = ADVISOR.create_opening_mask(template)
+		for y in range(mask.height):
+			for x in range(mask.width):
+				if mask.getpixel((x, y)):
+					self.assertGreater(card.getpixel((x, y))[3], 0)
+
 	def test_canonical_opening_geometry_is_measured_from_the_frame(self) -> None:
 		template = ADVISOR.load_template(ADVISOR.DEFAULT_TEMPLATE)
 		geometry = ADVISOR.measure_opening_geometry(template)
@@ -105,12 +128,12 @@ class AdvisorIconTests(unittest.TestCase):
 		self.assertAlmostEqual(geometry["size"][1], 45.0945, places=2)
 		self.assertAlmostEqual(geometry["rotation"], -4.76, places=2)
 
-	def test_fit_gate_rejects_crop_based_oversizing(self) -> None:
+	def test_opening_fill_plane_gate_rejects_oversizing(self) -> None:
 		template = ADVISOR.load_template(ADVISOR.DEFAULT_TEMPLATE)
 		geometry = ADVISOR.measure_opening_geometry(template)
 		center = geometry["center"]
 		rotation = geometry["rotation"]
-		with self.assertRaisesRegex(ValueError, "must be resized and positioned"):
+		with self.assertRaisesRegex(ValueError, "opening-fill plane must remain inside"):
 			ADVISOR.validate_fit_to_opening(
 				(43.0, 56.0),
 				center,
@@ -166,17 +189,27 @@ class AdvisorIconTests(unittest.TestCase):
 		portrait = ADVISOR.prepare_portrait(self.source, 0.0)
 		first = ADVISOR.render_portrait_layer(
 			portrait,
-			(42.0, 55.0),
+			(42.0, 42.0 * 210.0 / 156.0),
 			(23.0, 34.5),
 			-7.0,
 		)
 		second = ADVISOR.render_portrait_layer(
 			portrait,
-			(48.0, 60.0),
+			(48.0, 48.0 * 210.0 / 156.0),
 			(27.0, 31.0),
 			5.0,
 		)
 		self.assertNotEqual(first.tobytes(), second.tobytes())
+
+	def test_portrait_renderer_rejects_anisotropic_stretch(self) -> None:
+		portrait = ADVISOR.prepare_portrait(self.source, 0.0)
+		with self.assertRaisesRegex(ValueError, "one uniform scale factor"):
+			ADVISOR.render_portrait_layer(
+				portrait,
+				(42.0, 55.0),
+				(23.0, 34.5),
+				-7.0,
+			)
 
 	def test_selected_transform_must_appear_in_placement_study(self) -> None:
 		self.assertTrue(
@@ -258,10 +291,15 @@ class AdvisorIconTests(unittest.TestCase):
 			self.assertIn("fit_to_opening", payload["selected_transform"])
 			self.assertEqual(
 				payload["selected_transform"]["complete_image_resize"]["mode"],
-				"aspect_preserving_contain_with_source_matte",
+				"aspect_preserving_cover_with_frame_clip",
 			)
-			self.assertFalse(payload["selected_transform"]["complete_image_resize"]["crop"])
+			self.assertFalse(payload["selected_transform"]["complete_image_resize"]["source_pre_crop"])
+			self.assertTrue(payload["selected_transform"]["complete_image_resize"]["frame_clip"])
 			self.assertFalse(payload["selected_transform"]["complete_image_resize"]["stretch"])
+			self.assertNotIn(
+				"source_derived_padding",
+				payload["selected_transform"]["complete_image_resize"],
+			)
 			self.assertEqual(len(payload["placement_candidates"]), 1)
 			self.assertTrue(study_path.exists())
 			self.assertTrue(alignment_path.exists())

@@ -1,11 +1,12 @@
-"""Place a complete portrait beneath the canonical HOI4 advisor template.
+"""Place a uniformly scaled portrait beneath the canonical HOI4 advisor template.
 
-The complete source portrait is resized uniformly without cropping or
-stretching, aligned to geometry measured from the template opening, and placed
-over a source-derived matte that fills only the residual opening space. The
-supplied template is composited unchanged after an edge-only safety clip. The
-script writes the required native and 4x review PNGs, placement study, 8x
-alignment overlay, transform metadata, and a one-level 32-bit BGRA DDS.
+The complete source canvas is loaded without a pre-crop or warp, resized with
+one shared scale factor until it covers the measured opening, and centered
+behind the frame. Only source pixels outside the opening are clipped by the
+unchanged dossier template. This removes padded edge strips without stretching
+the portrait. The script writes the required native and 4x review PNGs,
+placement study, 8x alignment overlay, transform metadata, and a one-level
+32-bit BGRA DDS.
 """
 
 from __future__ import annotations
@@ -14,7 +15,6 @@ import argparse
 import hashlib
 import json
 import math
-import statistics
 import struct
 from pathlib import Path
 
@@ -61,7 +61,7 @@ def parse_args() -> argparse.Namespace:
 		"--alignment-preview",
 		type=Path,
 		required=True,
-		help="Required 8x overlay: opening red, fill plane green, contained portrait yellow.",
+		help="Required 8x overlay: opening red, fill plane green, covering portrait yellow.",
 	)
 	parser.add_argument(
 		"--study-candidate",
@@ -158,7 +158,7 @@ def prepare_portrait(
 	return portrait
 
 
-def calculate_contained_portrait_geometry(
+def calculate_covering_portrait_geometry(
 	source_size: tuple[int, int],
 	opening_size: tuple[float, float],
 ) -> dict[str, object]:
@@ -167,18 +167,17 @@ def calculate_contained_portrait_geometry(
 	source_aspect = source_size[0] / source_size[1]
 	opening_aspect = opening_size[0] / opening_size[1]
 	if source_aspect >= opening_aspect:
-		content_size = (opening_size[0], opening_size[0] / source_aspect)
-		padding = (0.0, opening_size[1] - content_size[1], 0.0, 0.0)
-		local_center_offset = (0.0, padding[1] / 2.0)
-	else:
 		content_size = (opening_size[1] * source_aspect, opening_size[1])
-		horizontal_padding = opening_size[0] - content_size[0]
-		padding = (horizontal_padding / 2.0, 0.0, horizontal_padding / 2.0, 0.0)
-		local_center_offset = (0.0, 0.0)
+		horizontal_clip = content_size[0] - opening_size[0]
+		frame_clip = (horizontal_clip / 2.0, 0.0, horizontal_clip / 2.0, 0.0)
+	else:
+		content_size = (opening_size[0], opening_size[0] / source_aspect)
+		vertical_clip = content_size[1] - opening_size[1]
+		frame_clip = (0.0, vertical_clip / 2.0, 0.0, vertical_clip / 2.0)
 	return {
 		"content_size": content_size,
-		"padding": padding,
-		"local_center_offset": local_center_offset,
+		"frame_clip": frame_clip,
+		"local_center_offset": (0.0, 0.0),
 		"source_aspect": source_aspect,
 		"content_aspect": content_size[0] / content_size[1],
 	}
@@ -198,19 +197,6 @@ def rotate_local_offset(
 	)
 
 
-def derive_background_matte(portrait: Image.Image) -> tuple[int, int, int, int]:
-	portrait = portrait.convert("RGBA")
-	patch_width = max(1, portrait.width // 8)
-	patch_height = max(1, portrait.height // 8)
-	left = portrait.crop((0, 0, patch_width, patch_height))
-	right = portrait.crop((portrait.width - patch_width, 0, portrait.width, patch_height))
-	pixels = list(left.getdata()) + list(right.getdata())
-	visible = [pixel for pixel in pixels if pixel[3] > 0]
-	if not visible:
-		return (0, 0, 0, 255)
-	return tuple(int(statistics.median(pixel[channel] for pixel in visible)) for channel in range(4))
-
-
 def render_portrait_layer(
 	portrait: Image.Image,
 	target_size: tuple[float, float],
@@ -219,6 +205,11 @@ def render_portrait_layer(
 ) -> Image.Image:
 	scale_x = target_size[0] / portrait.width
 	scale_y = target_size[1] / portrait.height
+	if not math.isclose(scale_x, scale_y, rel_tol=1e-9, abs_tol=1e-12):
+		raise ValueError(
+			"Advisor portraits must use one uniform scale factor; anisotropic resizing "
+			"would stretch the source portrait."
+		)
 	angle = math.radians(rotation)
 	cosine = math.cos(angle)
 	sine = math.sin(angle)
@@ -415,8 +406,8 @@ def validate_fit_to_opening(
 		or local_bounds[3] > limit_y
 	):
 		raise ValueError(
-			"The complete advisor portrait must be resized and positioned to fit inside "
-			"the measured rotated dossier opening before masking; selected local bounds "
+			"The advisor opening-fill plane must remain inside the measured rotated "
+			"dossier opening before masking; selected local bounds "
 			f"are {tuple(round(value, 3) for value in local_bounds)}, opening half-size "
 			f"limits are ({limit_x:.3f}, {limit_y:.3f})."
 		)
@@ -471,26 +462,18 @@ def compose(
 		template_center[0] + portrait_offset[0],
 		template_center[1] + portrait_offset[1],
 	)
-	contained = calculate_contained_portrait_geometry(portrait.size, portrait_size)
+	covering = calculate_covering_portrait_geometry(portrait.size, portrait_size)
 	portrait_center = rotate_local_offset(
 		opening_center,
-		contained["local_center_offset"],
+		covering["local_center_offset"],
 		rotation,
 	)
-	matte = Image.new("RGBA", (1, 1), derive_background_matte(portrait))
 	card = render_portrait_layer(
-		matte,
-		portrait_size,
-		opening_center,
-		rotation,
-	)
-	portrait_layer = render_portrait_layer(
 		portrait,
-		contained["content_size"],
+		covering["content_size"],
 		portrait_center,
 		rotation,
 	)
-	card.alpha_composite(portrait_layer)
 	opening_mask = create_opening_mask(template)
 	card.putalpha(ImageChops.multiply(card.getchannel("A"), opening_mask))
 	card.alpha_composite(template)
@@ -641,10 +624,10 @@ def write_metadata(
 		template_center[0] + portrait_offset[0],
 		template_center[1] + portrait_offset[1],
 	)
-	contained = calculate_contained_portrait_geometry(source_size, portrait_size)
+	covering = calculate_covering_portrait_geometry(source_size, portrait_size)
 	content_center = rotate_local_offset(
 		portrait_center,
-		contained["local_center_offset"],
+		covering["local_center_offset"],
 		rotation,
 	)
 	rotation_delta = validate_opening_alignment(
@@ -690,14 +673,15 @@ def write_metadata(
 				"required_inset_pixels": 0.0,
 			},
 			"complete_image_resize": {
-				"mode": "aspect_preserving_contain_with_source_matte",
+				"mode": "aspect_preserving_cover_with_frame_clip",
 				"source_aspect": round(source_aspect, 6),
-				"content_aspect": round(contained["content_aspect"], 6),
+				"content_aspect": round(covering["content_aspect"], 6),
 				"opening_fill_size": list(portrait_size),
-				"contained_content_size": list(contained["content_size"]),
-				"contained_content_center": list(content_center),
-				"source_derived_padding": list(contained["padding"]),
-				"crop": False,
+				"covering_content_size": list(covering["content_size"]),
+				"covering_content_center": list(content_center),
+				"source_pre_crop": False,
+				"frame_clip_pixels": list(covering["frame_clip"]),
+				"frame_clip": True,
 				"stretch": False,
 			},
 		},
@@ -825,10 +809,10 @@ def main() -> None:
 	review_preview.parent.mkdir(parents=True, exist_ok=True)
 	card.resize((CARD_SIZE[0] * 4, CARD_SIZE[1] * 4), Image.Resampling.NEAREST).save(review_preview)
 	write_bgra_dds(card, output)
-	contained = calculate_contained_portrait_geometry(source_size, portrait_size)
+	covering = calculate_covering_portrait_geometry(source_size, portrait_size)
 	content_center = rotate_local_offset(
 		portrait_center,
-		contained["local_center_offset"],
+		covering["local_center_offset"],
 		args.rotation,
 	)
 	alignment_path = args.alignment_preview.resolve()
@@ -839,7 +823,7 @@ def main() -> None:
 		portrait_center,
 		args.rotation,
 		alignment_path,
-		contained["content_size"],
+		covering["content_size"],
 		content_center,
 	)
 	study_path = args.placement_study.resolve()
