@@ -88,7 +88,7 @@ Inspect the canonical native `65x67` references under `.agents/skills/chaos-redu
 
 Use `create_advisor_icon.py` when the accepted design calls for the shared `advisor_template.png` dossier surface.
 
-The tool loads the complete source portrait without cropping, resizes the complete source to a `65x67` intermediate, applies the requested transformed size, rotation, and opening-center offset, and composites the untouched template once as the top layer.
+The tool loads the complete source portrait without cropping or pre-warping it. It derives the canonical opening's center, rotated width and height, and exact angle directly from the template on every run. Canonical cards use that exact measured opening-fill plane, match the angle within `0.05` degrees, and use a `0 0` center offset. The complete portrait is resized uniformly to contain within that plane while preserving its source aspect ratio. Any residual strip is filled with a matte sampled from the source's upper corners, not with stretched or cropped portrait pixels; the contained portrait is bottom-aligned so shoulders remain at the frame base. The fitted composition is safety-clipped to the irregular opening edge and the untouched template is composited once as the top layer. Misaligned fill planes and any workflow that crops or stretches the portrait are rejected.
 
 Run it from the mod root:
 
@@ -98,16 +98,24 @@ python -B .agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py `
 	--portrait-size <width> <height> `
 	--rotation <degrees> `
 	--portrait-offset <right> <down> `
+	--study-candidate <width> <height> <right> <down> <rotation> `
+	--placement-study <placement_study.png> `
+	--alignment-preview <alignment_8x.png> `
 	--preview <review.png> `
 	--review-preview <review_4x.png> `
+	--metadata <placement_metadata.json> `
 	--output <runtime.dds>
 ```
 
-`--review-preview` is optional and writes the required nearest-neighbour `4x` inspection copy without changing runtime pixels.
+The native preview, nearest-neighbour `4x` review preview, per-person placement study, `8x` alignment overlay, transform metadata, and staged DDS are all required outputs. In the overlay, red is the measured opening, green is the source-derived fill plane, and yellow is the uniformly contained full portrait. The compositor will not run when any review artifact is omitted.
 
 Negative `--portrait-offset` values move left or up.
 
-Use a coarse placement grid followed by a fine grid against the actual template opening when the first supplied transform does not fit.
+Use `--study-candidate` to retain the exact template-derived placement as a per-person visual study. The selected transform must appear in the supplied study, so the runtime card cannot silently diverge from the reviewed placement.
+
+The compositor rejects rotations between `-0.25` and `0.25` degrees by default because a neutral transform recreates the frame-only failure mode. `--allow-zero-rotation` exists only for a documented, independently reviewed alternative template whose measured opening is actually unrotated; it cannot bypass canonical-template alignment.
+
+Use a separate placement study for every person. The measured fill-plane size, center, and rotation belong to the shared frame and must match across canonical cards, while the source-specific visual review confirms that the yellow full-portrait bounds remain readable and preserve the source aspect ratio. `--metadata` records the measured opening geometry, source and template hashes, contained content size, source-derived padding, crop/stretch booleans, selected placement and alignment error, study candidate, and output hashes.
 
 Keep the complete head and shoulders readable, prevent portrait pixels from appearing outside the frame, keep the face clear of the paper, and retain the exact template as the final top layer.
 
