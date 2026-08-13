@@ -88,7 +88,7 @@ Inspect the canonical native `65x67` references under `.agents/skills/chaos-redu
 
 Use `create_advisor_icon.py` when the accepted design calls for the shared `advisor_template.png` dossier surface.
 
-The tool loads the complete source portrait without cropping or pre-warping it. It derives the canonical opening's center, rotated width and height, and exact angle directly from the template on every run. Canonical cards use that exact measured opening-fill plane, match the angle within `0.05` degrees, and use a `0 0` center offset. The complete portrait is resized uniformly to contain within that plane while preserving its source aspect ratio. Any residual strip is filled with a matte sampled from the source's upper corners, not with stretched or cropped portrait pixels; the contained portrait is bottom-aligned so shoulders remain at the frame base. The fitted composition is safety-clipped to the irregular opening edge and the untouched template is composited once as the top layer. Misaligned fill planes and any workflow that crops or stretches the portrait are rejected.
+The tool loads the complete approved source canvas without pre-cropping or pre-warping it. It measures the canonical opening center, rotated width and height, and angle directly from the template on every run. Use one shared uniform scale factor, `max(opening_width / source_width, opening_height / source_height)`, to cover the measured opening-fill plane while preserving the source aspect ratio exactly, then center the scaled portrait behind the opening. Do not anisotropically resize, add a matte or padded strip, or crop before scaling. Only the narrow symmetric excess caused by the mismatched aspect ratio may be clipped after scaling by the unchanged irregular opening safety mask, and the untouched template remains the final top layer. `source_pre_crop=false` means no pre-scale source crop; it does not mean that post-scale frame clipping is absent. Misaligned fill planes, gaps, matte pixels, and stretched portraits are rejected.
 
 Run it from the mod root:
 
@@ -107,7 +107,7 @@ python -B .agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py `
 	--output <runtime.dds>
 ```
 
-The native preview, nearest-neighbour `4x` review preview, per-person placement study, `8x` alignment overlay, transform metadata, and staged DDS are all required outputs. In the overlay, red is the measured opening, green is the source-derived fill plane, and yellow is the uniformly contained full portrait. The compositor will not run when any review artifact is omitted.
+The native preview, nearest-neighbour `4x` review preview, per-person placement study, `8x` alignment overlay, transform metadata, and staged DDS are all required outputs. In the overlay, red is the measured opening, green is the opening-fill plane, and yellow is the uniformly scaled covering portrait; yellow may extend beyond green only by the recorded symmetric frame clip. The compositor will not run when any review artifact is omitted.
 
 Negative `--portrait-offset` values move left or up.
 
@@ -115,7 +115,7 @@ Use `--study-candidate` to retain the exact template-derived placement as a per-
 
 The compositor rejects rotations between `-0.25` and `0.25` degrees by default because a neutral transform recreates the frame-only failure mode. `--allow-zero-rotation` exists only for a documented, independently reviewed alternative template whose measured opening is actually unrotated; it cannot bypass canonical-template alignment.
 
-Use a separate placement study for every person. The measured fill-plane size, center, and rotation belong to the shared frame and must match across canonical cards, while the source-specific visual review confirms that the yellow full-portrait bounds remain readable and preserve the source aspect ratio. `--metadata` records the measured opening geometry, source and template hashes, contained content size, source-derived padding, crop/stretch booleans, selected placement and alignment error, study candidate, and output hashes.
+Use a separate placement study for every person. The measured opening-fill size, center, and rotation belong to the shared frame and must match across canonical cards, while the source-specific visual review confirms that the yellow covering-portrait bounds remain readable and preserve the source aspect ratio. `--metadata` records the measured opening geometry, source and template hashes, `opening_fill_size`, `covering_content_size`, `covering_content_center`, `frame_clip_pixels`, and the explicit fit flags `source_pre_crop=false`, `frame_clip=true`, and `stretch=false`, plus selected placement and alignment error, study candidate, and output hashes. QA must prove that every opening-mask pixel has source coverage, that no transparent, black, matte, or padded gap remains, and that the subject scale matches the vanilla advisor/high-command references at native and `4x` review size.
 
 Keep the complete head and shoulders readable, prevent portrait pixels from appearing outside the frame, keep the face clear of the paper, and retain the exact template as the final top layer.
 
