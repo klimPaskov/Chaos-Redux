@@ -231,11 +231,9 @@ Inspect the exact vanilla consumer before planning the package because land unit
 - special actions
 - death, destruction, shutdown, or disappearance
 
-The installed HOI4 land-unit selection path has two distinct layers. Generic class-wide soundeffects include `select_army`, `select_vehicle`, `select_tank`, `select_fleet`, `select_railway_gun`, and `select_aircraft`. Infantry country voices use the hardcoded templates `TAG_infantry_idle`, `TAG_infantry_move_out`, `TAG_infantry_neutral_combat`, `TAG_infantry_positive_combat`, and `TAG_infantry_retreat`; installed `vo.asset` files realize them as entries such as `GER_infantry_idle` and `SOV_infantry_idle`. Recheck both layers in the installed version for every job instead of assuming either one is the only consumer.
+The installed HOI4 infantry voice path uses the hardcoded templates `TAG_infantry_idle`, `TAG_infantry_move_out`, `TAG_infantry_neutral_combat`, `TAG_infantry_positive_combat`, and `TAG_infantry_retreat`; installed `vo.asset` files realize them as entries such as `GER_infantry_idle` and `SOV_infantry_idle`. Recheck these templates and their installed vanilla definitions for every job.
 
-For a custom infantry family owned by a dedicated country or original tag, prefer the tag voice consumer and define the exact `<TAG>_infantry_idle` selection soundeffect in the vanilla `Voices` category. Verify the actual tag or `original_tag` used by every intended country, including dynamic countries and cosmetic-tag transitions. This is country/original-tag routing, not subunit or sprite routing: enumerate every infantry division under that tag as a collateral consumer. If custom and ordinary infantry can coexist under the same tag, obtain explicit user approval before replacing the tag voice or mark per-subunit selection blocked.
-
-Only consider a generic class-wide override when no verified tag voice applies. Never override a shared class family as if it were unique to one subunit or sprite; enumerate every collateral consumer and obtain explicit user approval. A new soundeffect name without the exact engine-consumed identifier is not a binding by itself.
+For a custom infantry family owned by a dedicated country or original tag, define the exact `<TAG>_infantry_idle` selection soundeffect in the vanilla `Voices` category. Verify the actual tag or `original_tag` used by every intended country, including dynamic countries and cosmetic-tag transitions. This is country/original-tag routing, not subunit or sprite routing: enumerate every infantry division under that tag as a consumer. If custom and ordinary infantry coexist under the same tag and require distinct selection voices, mark per-subunit selection `blocked`; do not replace another unit family's voice. A new soundeffect name without the exact engine-consumed identifier is not a binding by itself.
 
 Use the repository web-search workflow to locate candidate files on the Internet, inspect the source page and direct download terms, and save only approved candidates under the deterministic job evidence root. Prefer public-domain, Creative Commons, official archive, institutional, user-authorized, or otherwise clearly licensed sources. Reject unclear provenance, unclear recording rights, unclear modification rights, vague royalty-free claims, and sources that do not permit the intended mod use.
 
@@ -247,7 +245,7 @@ The sound handoff must define:
 
 - the unit or subunit id and runtime consumer
 - the chosen vanilla sound and voice precedents
-- the mandatory selection source, soundeffect identifier, exact engine consumer, binding scope, and every collateral consumer of a shared class-global hook
+- the mandatory selection source, soundeffect identifier, exact engine consumer, binding scope, resolved country or original tag, and every infantry consumer under that identity
 - proposed sound, soundeffect, wrapper, and file identifiers
 - one-shot or loop behavior
 - the animation action and exact frame or phase that each sound should follow

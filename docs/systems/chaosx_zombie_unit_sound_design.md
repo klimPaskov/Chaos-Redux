@@ -27,12 +27,10 @@ The entity keeps the existing custom actions and adds one-shot sound events to t
 
 ## Selection-audio consumer
 
-The installed game has two separate infantry selection-audio layers.
-
-`select_army` is the generic class-wide UI effect, while the national soldier-voice consumer constructs `TAG_infantry_idle` for selection and the related `TAG_infantry_move_out`, `TAG_infantry_neutral_combat`, `TAG_infantry_positive_combat`, and `TAG_infantry_retreat` identifiers for other army voice situations.
+The national soldier-voice consumer constructs `TAG_infantry_idle` for selection and the related `TAG_infantry_move_out`, `TAG_infantry_neutral_combat`, `TAG_infantry_positive_combat`, and `TAG_infantry_retreat` identifiers for other army voice situations.
 
 The zombie package defines `ZZZ_infantry_idle` in the vanilla `Voices` category and maps it to the three sourced zombie idle moans.
-The direct `ZZZ` outbreak and the dynamically created outbreak countries use `original_tag = ZZZ`, so this is the intended country-voice selection family for zombie armies without replacing the global `select_army` effect.
+The direct `ZZZ` outbreak and the dynamically created outbreak countries use `original_tag = ZZZ`, so this is the intended country-voice selection family for zombie armies.
 
 This hook is country/original-tag based, not sprite or sub-unit based.
 If another country fields zombie battalions while retaining a different original tag, its infantry selection voice remains that country's voice family because HOI4 exposes no per-subunit selection key.
@@ -80,7 +78,6 @@ The durable selection source-to-runtime mapping and checksums are recorded above
 Source files, derived WAV format, runtime file references, soundeffect identifiers, entity event identifiers, and all twelve sprite consumers were checked locally.
 
 The `ZZZ_infantry_idle` identifier, `Voices` category membership, three selection candidates, and `ZZZ` original-tag consumer were checked against the installed vanilla voice package.
-No global `select_army` override was made.
 
 Live playback in Hearts of Iron IV remains user-owned because the agent does not launch the game.
 
