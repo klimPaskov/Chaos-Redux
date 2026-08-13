@@ -1,5 +1,7 @@
 # Event 012 priority-member historical portrait runtime map
 
+> ComfyUI input shelf (2026-08-13): use only the seventeen pre-resize PNGs in `comfyui_source_inputs/`. That folder contains one clearly named grounded source per target and no `156x210` derivatives. Files elsewhere in this archive are provenance, processing, fictional, evolution, or runtime evidence and are not user-run ComfyUI inputs.
+
 > Current acceptance supersession (2026-08-09): `docs/assets/012_africa/portrait_acceptance_2026-08-09/manifest.md` and its `contact_sheets/` are the authoritative source/crop/DDS evidence for the retained runtime package. They replace the earlier artifact/map placeholders for Aksum, Kilwa, Nubia, and Great Zimbabwe with individually sourced adult-male archival images (including King Lobengula for Great Zimbabwe). The legacy table below is retained as provenance history and must not be used to reintroduce a stale runtime asset.
 
 This file is the source-of-truth map for the sixteen male-only priority-member portrait consumers. Every runtime DDS is a 156x210 direct source crop or resize and is deliberately not repainted into a different historical likeness. The original source masters are retained in this directory with the `source_master_` prefix, and the crop/evidence workspaces remain under `docs/assets/012_africa_world_order/`.
