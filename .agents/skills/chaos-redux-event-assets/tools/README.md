@@ -88,7 +88,11 @@ Inspect the canonical native `65x67` references under `.agents/skills/chaos-redu
 
 Use `create_advisor_icon.py` when the accepted design calls for the shared `advisor_template.png` dossier surface.
 
-The tool loads the complete approved source canvas without pre-cropping or pre-warping it. It measures the canonical opening center, rotated width and height, and angle directly from the template on every run. Use one shared uniform scale factor, `max(opening_width / source_width, opening_height / source_height)`, to cover the measured opening-fill plane while preserving the source aspect ratio exactly, then center the scaled portrait behind the opening. Do not anisotropically resize, add a matte or padded strip, or crop before scaling. Only the narrow symmetric excess caused by the mismatched aspect ratio may be clipped after scaling by the unchanged irregular opening safety mask, and the untouched template remains the final top layer. `source_pre_crop=false` means no pre-scale source crop; it does not mean that post-scale frame clipping is absent. Misaligned fill planes, gaps, matte pixels, and stretched portraits are rejected.
+The tool loads the complete approved source canvas without pre-cropping or pre-warping it. It measures the canonical opening center, rotated width and height, and angle directly from the template on every run. Never clip the portrait to the exact visible opening: the canonical frame has translucent antialiased inner-edge pixels, and exact-opening clipping exposes alpha seams when those pixels lack underlying portrait coverage. This supersedes the older exact-opening clipping language because the visible opening is the audit region, while the portrait must extend beneath the antialiased edge inside a verified mask.
+
+Use one uniform aspect-preserving cover scale with no anisotropic resize or stretching. The tool expands the measured opening-fill plane by `2 * (UNDER_FRAME_BLEED_PIXELS + PORTRAIT_EDGE_GUARD_PIXELS)` before cover fitting; the centralized constants are currently `UNDER_FRAME_BLEED_PIXELS = 2` px and `PORTRAIT_EDGE_GUARD_PIXELS = 1` px. The safe bleed mask expands the opening beneath the frame and rejects any expanded pixel that reaches a fully transparent exterior template pixel. Do not copy these constants into per-person or event-specific commands. Mask the covering portrait with this verified bleed mask and keep the canonical template untouched as the final top layer.
+
+The covering scale is `max(under_frame_fill_width / source_width, under_frame_fill_height / source_height)`, so the source aspect ratio remains unchanged. The aspect-ratio excess is recorded in `frame_clip_pixels`; it is not permission to clip the portrait to the exact visible opening. `source_pre_crop=false` means no pre-scale source crop, not that the portrait may stop at the visible opening. Misaligned fill planes, gaps, matte pixels, padded strips, and stretched portraits are rejected.
 
 Run it from the mod root:
 
@@ -107,7 +111,7 @@ python -B .agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py `
 	--output <runtime.dds>
 ```
 
-The native preview, nearest-neighbour `4x` review preview, per-person placement study, `8x` alignment overlay, transform metadata, and staged DDS are all required outputs. In the overlay, red is the measured opening, green is the opening-fill plane, and yellow is the uniformly scaled covering portrait; yellow may extend beyond green only by the recorded symmetric frame clip. The compositor will not run when any review artifact is omitted.
+The native preview, nearest-neighbour `4x` review preview, per-person placement study, `8x` alignment overlay, transform metadata, and staged DDS are all required outputs. In the overlay, red is the measured opening, green is the opening-fill plane, and yellow is the uniformly scaled covering portrait; yellow may extend beyond green by the centralized bleed/guard allowance and recorded symmetric cover excess, but the runtime portrait must remain inside the verified safe bleed mask. The compositor will not run when any review artifact is omitted.
 
 Negative `--portrait-offset` values move left or up.
 
@@ -115,15 +119,17 @@ Use `--study-candidate` to retain the exact template-derived placement as a per-
 
 The compositor rejects rotations between `-0.25` and `0.25` degrees by default because a neutral transform recreates the frame-only failure mode. `--allow-zero-rotation` exists only for a documented, independently reviewed alternative template whose measured opening is actually unrotated; it cannot bypass canonical-template alignment.
 
-Use a separate placement study for every person. The measured opening-fill size, center, and rotation belong to the shared frame and must match across canonical cards, while the source-specific visual review confirms that the yellow covering-portrait bounds remain readable and preserve the source aspect ratio. `--metadata` records the measured opening geometry, source and template hashes, `opening_fill_size`, `covering_content_size`, `covering_content_center`, `frame_clip_pixels`, and the explicit fit flags `source_pre_crop=false`, `frame_clip=true`, and `stretch=false`, plus selected placement and alignment error, study candidate, and output hashes. QA must prove that every opening-mask pixel has source coverage, that no transparent, black, matte, or padded gap remains, and that the subject scale matches the vanilla advisor/high-command references at native and `4x` review size.
+Use a separate placement study for every person. The measured opening-fill size, center, and rotation belong to the shared frame and must match across canonical cards, while the source-specific visual review confirms that the yellow covering-portrait bounds remain readable and preserve the source aspect ratio. `--metadata` records the measured opening geometry, source and template hashes, `opening_fill_size`, `under_frame_fill_size`, `covering_content_size`, `covering_content_center`, `frame_clip_pixels`, `under_frame_bleed_pixels`, `resampling_edge_guard_pixels`, and the explicit fit flags `source_pre_crop=false`, `frame_clip=true`, and `stretch=false`, plus selected placement and alignment error, study candidate, and output hashes. The alpha-coverage record must report `opening_alpha_gap_pixels=0`, `inner_edge_alpha_gap_pixels=0`, and `exterior_alpha_leak_pixels=0`. Review the native card and nearest-neighbour `4x` enlargement against contrasting solid backgrounds and checker backgrounds, and compare subject scale and frame integrity with the vanilla advisor/high-command references.
 
-Keep the complete head and shoulders readable, prevent portrait pixels from appearing outside the frame, keep the face clear of the paper, and retain the exact template as the final top layer.
+Keep the complete head and shoulders readable, keep the face clear of the paper, prevent portrait pixels from appearing outside the verified bleed mask, and retain the exact template as the final top layer.
 
 Record the source hash, template hash, complete-source resize, selected dimensions, center, offset, rotation, sepia strength, candidate grids, independent review, processed PNG hash, and runtime DDS hash.
 
 For grounded real people, complete the shared sourced identity gate through an independently approved `156x210` candidate first; fictional high-chaos or impossible or supernatural subjects may use an approved generated master.
 
-Review the candidate at native size and at `4x` nearest-neighbour size against the canonical advisor and high-command family.
+Review the candidate at native size and at `4x` nearest-neighbour size against contrasting solid backgrounds, checker backgrounds, and the canonical advisor and high-command family.
+
+Keep this workflow generic. Do not hard-code event-specific advisor names into the reusable skill; record those names in the event manifest or handoff instead.
 
 The producer may not approve the candidate.
 

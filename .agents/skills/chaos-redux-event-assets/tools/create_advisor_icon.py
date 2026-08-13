@@ -1,10 +1,11 @@
 """Place a uniformly scaled portrait beneath the canonical HOI4 advisor template.
 
 The complete source canvas is loaded without a pre-crop or warp, resized with
-one shared scale factor until it covers the measured opening, and centered
-behind the frame. Only source pixels outside the opening are clipped by the
-unchanged dossier template. This removes padded edge strips without stretching
-the portrait. The script writes the required native and 4x review PNGs,
+one shared scale factor until it covers the measured opening plus a controlled
+under-frame bleed, and centered behind the frame. The bleed remains wholly
+beneath nontransparent frame pixels, preventing translucent inner-edge pixels
+from revealing an alpha seam without stretching the portrait. The script writes
+the required native and 4x review PNGs,
 placement study, 8x alignment overlay, transform metadata, and a one-level
 32-bit BGRA DDS.
 """
@@ -18,7 +19,7 @@ import math
 import struct
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 
 
 CARD_SIZE = (65, 67)
@@ -29,6 +30,8 @@ OPENING_GEOMETRY_ALPHA_THRESHOLD = 128
 MAX_ALIGNMENT_ERROR = 0.05
 MAX_OPENING_CENTER_OFFSET = 0.001
 MAX_OPENING_SIZE_ERROR = 0.01
+UNDER_FRAME_BLEED_PIXELS = 2
+PORTRAIT_EDGE_GUARD_PIXELS = 1
 SKILL_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_TEMPLATE = (
 	SKILL_ROOT
@@ -253,6 +256,81 @@ def create_opening_mask(
 	return mask
 
 
+def create_portrait_bleed_mask(
+	template: Image.Image,
+	bleed_pixels: int = UNDER_FRAME_BLEED_PIXELS,
+) -> Image.Image:
+	"""Expand the opening beneath the frame without entering transparent exterior pixels."""
+	if bleed_pixels < 0:
+		raise ValueError("Advisor portrait bleed must not be negative")
+	opening_mask = create_opening_mask(template)
+	if bleed_pixels == 0:
+		return opening_mask
+	bleed_mask = opening_mask.filter(ImageFilter.MaxFilter(bleed_pixels * 2 + 1))
+	opening_pixels = opening_mask.load()
+	bleed_pixels_data = bleed_mask.load()
+	template_alpha = template.getchannel("A").load()
+	unsafe_pixels = [
+		(x, y)
+		for y in range(template.height)
+		for x in range(template.width)
+		if bleed_pixels_data[x, y]
+		and not opening_pixels[x, y]
+		and template_alpha[x, y] == 0
+	]
+	if unsafe_pixels:
+		raise ValueError(
+			"Advisor under-frame bleed reaches transparent exterior pixels; "
+			"reduce UNDER_FRAME_BLEED_PIXELS or use a compatible canonical template."
+		)
+	return bleed_mask
+
+
+def calculate_under_frame_fill_size(
+	opening_size: tuple[float, float],
+	bleed_pixels: int = UNDER_FRAME_BLEED_PIXELS,
+	edge_guard_pixels: int = PORTRAIT_EDGE_GUARD_PIXELS,
+) -> tuple[float, float]:
+	"""Return the local fill plane needed to cover the bleed mask after resampling."""
+	if bleed_pixels < 0 or edge_guard_pixels < 0:
+		raise ValueError("Advisor portrait bleed and edge guard must not be negative")
+	extension = 2.0 * (bleed_pixels + edge_guard_pixels)
+	return (opening_size[0] + extension, opening_size[1] + extension)
+
+
+def audit_portrait_alpha_coverage(
+	card: Image.Image,
+	template: Image.Image,
+) -> dict[str, int]:
+	"""Count visible opening gaps, translucent inner-edge gaps, and exterior spills."""
+	opening_mask = create_opening_mask(template)
+	bleed_mask = create_portrait_bleed_mask(template)
+	opening_pixels = opening_mask.load()
+	bleed_pixels = bleed_mask.load()
+	template_alpha = template.getchannel("A").load()
+	card_alpha = card.getchannel("A").load()
+	opening_alpha_gap_pixels = 0
+	inner_edge_alpha_gap_pixels = 0
+	exterior_alpha_leak_pixels = 0
+	for y in range(template.height):
+		for x in range(template.width):
+			if opening_pixels[x, y] and card_alpha[x, y] < 255:
+				opening_alpha_gap_pixels += 1
+			elif (
+				bleed_pixels[x, y]
+				and 0 < template_alpha[x, y] < 255
+				and card_alpha[x, y] < 255
+			):
+				inner_edge_alpha_gap_pixels += 1
+			if not bleed_pixels[x, y] and template_alpha[x, y] == 0 and card_alpha[x, y] > 0:
+				exterior_alpha_leak_pixels += 1
+	return {
+		"opening_alpha_gap_pixels": opening_alpha_gap_pixels,
+		"inner_edge_alpha_gap_pixels": inner_edge_alpha_gap_pixels,
+		"exterior_alpha_leak_pixels": exterior_alpha_leak_pixels,
+	}
+
+
 def find_enclosed_opening(
 	template: Image.Image,
 	alpha_threshold: int,
@@ -462,7 +540,8 @@ def compose(
 		template_center[0] + portrait_offset[0],
 		template_center[1] + portrait_offset[1],
 	)
-	covering = calculate_covering_portrait_geometry(portrait.size, portrait_size)
+	under_frame_fill_size = calculate_under_frame_fill_size(portrait_size)
+	covering = calculate_covering_portrait_geometry(portrait.size, under_frame_fill_size)
 	portrait_center = rotate_local_offset(
 		opening_center,
 		covering["local_center_offset"],
@@ -474,8 +553,8 @@ def compose(
 		portrait_center,
 		rotation,
 	)
-	opening_mask = create_opening_mask(template)
-	card.putalpha(ImageChops.multiply(card.getchannel("A"), opening_mask))
+	bleed_mask = create_portrait_bleed_mask(template)
+	card.putalpha(ImageChops.multiply(card.getchannel("A"), bleed_mask))
 	card.alpha_composite(template)
 	return card
 
@@ -618,13 +697,15 @@ def write_metadata(
 ) -> None:
 	template = load_template(template_path)
 	opening_mask = create_opening_mask(template)
+	bleed_mask = create_portrait_bleed_mask(template)
 	opening_geometry = measure_opening_geometry(template)
 	template_center = opening_geometry["center"]
 	portrait_center = (
 		template_center[0] + portrait_offset[0],
 		template_center[1] + portrait_offset[1],
 	)
-	covering = calculate_covering_portrait_geometry(source_size, portrait_size)
+	under_frame_fill_size = calculate_under_frame_fill_size(portrait_size)
+	covering = calculate_covering_portrait_geometry(source_size, under_frame_fill_size)
 	content_center = rotate_local_offset(
 		portrait_center,
 		covering["local_center_offset"],
@@ -643,8 +724,10 @@ def write_metadata(
 		opening_geometry,
 	)
 	source_aspect = source_size[0] / source_size[1]
+	card = Image.open(preview_path).convert("RGBA")
+	alpha_coverage = audit_portrait_alpha_coverage(card, template)
 	payload = {
-		"workflow": "chaos-redux-advisor-dossier-v3",
+		"workflow": "chaos-redux-advisor-dossier-v4",
 		"source": {
 			"path": str(source_path),
 			"sha256": sha256(source_path),
@@ -669,14 +752,19 @@ def write_metadata(
 			"zero_rotation_exception": allow_zero_rotation,
 			"fit_to_opening": {
 				"safety_mask_bbox": list(opening_mask.getbbox()),
+				"under_frame_bleed_mask_bbox": list(bleed_mask.getbbox()),
 				"opening_local_bounds": [round(value, 6) for value in portrait_bounds],
 				"required_inset_pixels": 0.0,
+				"under_frame_bleed_pixels": UNDER_FRAME_BLEED_PIXELS,
+				"resampling_edge_guard_pixels": PORTRAIT_EDGE_GUARD_PIXELS,
+				"alpha_coverage": alpha_coverage,
 			},
 			"complete_image_resize": {
-				"mode": "aspect_preserving_cover_with_frame_clip",
+				"mode": "aspect_preserving_cover_with_under_frame_bleed",
 				"source_aspect": round(source_aspect, 6),
 				"content_aspect": round(covering["content_aspect"], 6),
 				"opening_fill_size": list(portrait_size),
+				"under_frame_fill_size": list(under_frame_fill_size),
 				"covering_content_size": list(covering["content_size"]),
 				"covering_content_center": list(content_center),
 				"source_pre_crop": False,
@@ -801,6 +889,12 @@ def main() -> None:
 		args.rotation,
 		args.sepia_strength,
 	)
+	alpha_coverage = audit_portrait_alpha_coverage(card, template)
+	if any(alpha_coverage.values()):
+		raise ValueError(
+			"Advisor portrait alpha coverage failed: "
+			+ ", ".join(f"{key}={value}" for key, value in alpha_coverage.items())
+		)
 	preview = args.preview.resolve()
 	output = args.output.resolve()
 	preview.parent.mkdir(parents=True, exist_ok=True)
@@ -809,7 +903,8 @@ def main() -> None:
 	review_preview.parent.mkdir(parents=True, exist_ok=True)
 	card.resize((CARD_SIZE[0] * 4, CARD_SIZE[1] * 4), Image.Resampling.NEAREST).save(review_preview)
 	write_bgra_dds(card, output)
-	covering = calculate_covering_portrait_geometry(source_size, portrait_size)
+	under_frame_fill_size = calculate_under_frame_fill_size(portrait_size)
+	covering = calculate_covering_portrait_geometry(source_size, under_frame_fill_size)
 	content_center = rotate_local_offset(
 		portrait_center,
 		covering["local_center_offset"],
