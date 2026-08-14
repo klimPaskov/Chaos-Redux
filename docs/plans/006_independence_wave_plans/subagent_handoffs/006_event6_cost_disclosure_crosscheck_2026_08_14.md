@@ -143,3 +143,9 @@ The two remaining admitted IW-184/HBX light-factory disclosure mismatches were r
 The existing factory-aware localisation triplets already match the one-factory modifier on each decision. The adjacent coastal-supply-bureaus project retains the generic administration-standard selector because it reserves the standard, not light, factory tier.
 
 No payment helper, requirement, AI score, duration, route gate, project lifecycle, admission, Join, asset, or cleanup behavior changed. This is a selector-only disclosure repair; the existing structural probability receipts remain sufficient and no quantitative balance claim is made.
+
+## Follow-up implementation addendum — FIJ and AFX disclosures (2026-08-14)
+
+The exhaustive current-source scan found two additional selector/tier mismatches. `independence_wave_fij_convene_constituent_congress` now selects `independence_wave_cost_administration_standard_factory` for its existing light-factory reservation. IW-177/FIJ remains adapter-only and fail-closed; this source correction does not alter its portrait, flag, FORM-39, or central-admission gates.
+
+The admitted AFX `independence_wave_afx_convene_meuse_industrial_conference` now selects `independence_wave_cost_strategic_major` for its existing major-factory reservation. The same source pass also preserves the owner’s file-scoped `@` mirrors for factory fields that reject shared constant tokens. No route, payment, AI, timing, lifecycle, admission, Join, asset, or cleanup behavior changed.
