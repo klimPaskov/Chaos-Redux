@@ -89,6 +89,8 @@ The initial physical archive check for this reconciliation reported exactly one 
 
 Post-reconciliation IW-051 source research added two original YAK source images directly in the parent and their processed provenance/crop evidence under `processed/`. The current physical archive check therefore reports exactly one child directory, `processed`, with 48 files directly in the parent and 137 files in `processed`; the parent and processed filename and image-dimension scans still return no `156x210` files.
 
+Post-reconciliation BWX evidence added one original Mordovian ASSR emblem directly in the parent and two processed evidence files under `processed/`, so the latest physical audit reports 49 parent originals and 139 processed/evidence files. This does not change the flat layout, the no-`156x210` rule, or ComfyUI source selection: only direct parent source files are inputs, while processed evidence stays in `processed/`.
+
 A focused search across the direct Event 006 markdown scope, the resume packet, and the simplifications/blockers spec found no remaining `portraits_generated_png` reference.
 
 The same search found only the historical count/path records listed above, each explicitly labeled historical or traceability-only.
