@@ -1,0 +1,60 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-096 BIA COMPATIBILITY TRIGGERS
+# ============================================================================
+# Dormant, package-local preservation predicates for the registered BIA
+# carrier. IW-096 remains fail-closed because the installed map has no unique
+# Benin City state: research/public anchor 558 is the broad Nigeria state and
+# is not a BIA core in vanilla. These predicates therefore describe the
+# exact future release surface without admitting the package or changing the
+# current map.
+#
+# BIA is intentionally shared by IW-096 Edo Kingdom of Benin and IW-107
+# Biafra. The exact package id and future Benin selector are mandatory; tag
+# membership alone must never choose either identity. No selector is set in
+# this file.
+# ============================================================================
+
+# COUNTRY scope. The complete Event 006 origin and living-tag gate remains
+# explicit even though is_independence_wave_active_country already includes
+# the live origin flag, liberation_origin value, and un-ended-origin check.
+is_independence_wave_iw_096_bia_compatibility_context = {
+	exists = yes
+	original_tag = BIA
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_active_origin
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_096 }
+	has_country_flag = independence_wave_iw_096_benin_identity_selected
+}
+
+# COUNTRY scope. IW-096's research/public anchor is state 558. This is a
+# post-release ownership/control/capital witness only; the installed vanilla
+# state is still ENG-owned and has NGA's core, so no current candidate is
+# inferred from the number alone.
+has_independence_wave_iw_096_bia_release_anchor_surface = {
+	is_independence_wave_iw_096_bia_compatibility_context = yes
+	check_variable = { independence_wave_anchor_state = 558 }
+	owns_state = 558
+	controls_state = 558
+	capital_scope = { state = 558 }
+}
+
+# COUNTRY scope. These are the registered vanilla BIA witnesses that must
+# survive an Event 006 release. Vanilla BIA keeps core 900 (Benue), recruits
+# Akenzua II, and uses the generic focus tree; this adapter never reloads or
+# replaces any of those surfaces.
+has_independence_wave_iw_096_bia_vanilla_surface = {
+	is_independence_wave_iw_096_bia_compatibility_context = yes
+	900 = { is_core_of = BIA }
+	has_character = BIA_akenzua_ii
+	has_focus_tree = generic_focus
+}
+
+# COUNTRY scope. Strict preservation contract for a future source-backed Edo
+# route. It is intentionally not a generic BIA trigger and cannot match the
+# IW-107 Biafran package because the package id is exact.
+has_independence_wave_iw_096_bia_compatibility_contract = {
+	is_independence_wave_iw_096_bia_compatibility_context = yes
+	has_independence_wave_iw_096_bia_release_anchor_surface = yes
+	has_independence_wave_iw_096_bia_vanilla_surface = yes
+}
