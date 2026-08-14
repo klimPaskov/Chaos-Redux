@@ -13,6 +13,8 @@ IW-050 is package-local and remains fail-closed for central admission. The sourc
 
 The package uses the installed KOM/state-397 identity, Northern Council and taiga/rail ledgers, four route government installers, generation-safe project failure, the vanilla `KOM_pavel_murashev` roster checkpoint, and five guarded shared-focus helper contracts. Route-specific cosmetic tags are intentionally not assigned because the neutral and route-flag audit remains fail-closed.
 
+The roster checkpoint implementation is the parent-applied bounded repair in commit `109e6e734`. It adds one idempotent package-local writer after the existing `.350` call and leaves the central event, adapter, attestation, preflight, and Join surfaces unchanged.
+
 The prepared setup trigger now matches `independence_wave_force_package_military_tradition.p50` and no longer requires and forbids the same terrain reinforcement flag. A duplicate active-country array check was removed. The force profile remains `mountain_frontier` and the package remains tied to the region-05 IW-050 loader/reservation contract.
 
 ## Validation

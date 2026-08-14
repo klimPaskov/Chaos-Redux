@@ -6,6 +6,8 @@ IW-050 uses the registered `KOM` carrier and the installed compact anchor at sta
 
 The package gate is `is_independence_wave_komi_package`. Setup initializes `independence_wave_komi_congress_cohesion` and `independence_wave_komi_taiga_readiness`, clamps both ledgers to 0–100, and exposes `independence_wave_komi_northern_compact_category` only after the package setup proof and current force generation are present.
 
+Package-local setup now includes the idempotent `KOM_pavel_murashev` vanilla-roster checkpoint from commit `109e6e734`. It writes the local roster receipt and shared command-roster readiness only when the exact KOM carrier is present; generation cleanup clears both flags. This does not add a branch to `chaosx.nr6.350` or widen central admission.
+
 The founding Northern Council mission lasts 420 days. Success requires a route government, both ledgers at 60 or higher, and continued ownership and control of state 397. Ten paid projects serialize through `has_independence_wave_komi_active_package_project`; project cancellation is fail-closed on package loss, force-generation rollover, founding failure, or capital loss.
 
 The canonical projects secure taiga depots, integrate rail guards, register Komi communities, settle former-host ledgers, install one of four route governments, codify durable sovereignty, and open the Northern Ural corridor. Shared focus helpers cover the Northern Congress, railhead communities, forest guards, former-host settlement, and the Pechora corridor.
