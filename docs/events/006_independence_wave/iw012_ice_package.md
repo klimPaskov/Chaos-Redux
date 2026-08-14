@@ -48,7 +48,7 @@ The route weights are centralized in `independence_wave_focus_ai`. Constitutiona
 
 ## Assets
 
-No new IW-012 portrait, flag, or advisor icon is required. The registered vanilla ICE flag and portraits are the approved historical identity sources. Grounded historical portraits use the unchanged attributed source, an explicit head-and-shoulders crop, deterministic `156x210` source-placeholder processing, independent identity/framing/provenance review, and DDS conversion only when the package is otherwise authorized; no HOI4 repaint or stylistic filter is required. Because ICE already supplies the approved vanilla assets, no duplicate portrait master is placed in `docs/assets/006_independence_wave/portraits_generated_png`. The flat portrait shelf remains reserved for original-size Event 006 masters only, with no nested folders and no normalized `156x210` PNGs.
+No new IW-012 portrait, flag, or advisor icon is required. The registered vanilla ICE flag and portraits are the approved historical identity sources. Grounded historical portraits use the unchanged attributed source, an explicit head-and-shoulders crop, deterministic `156x210` source-placeholder processing, independent identity/framing/provenance review, and DDS conversion only when the package is otherwise authorized; no HOI4 repaint or stylistic filter is required. Because ICE already supplies the approved vanilla assets, no duplicate portrait master is placed in the consolidated archive `docs/assets/portraits/006_independence_wave/`; original source files are kept directly in that parent, exactly one child folder `processed/` contains processed assets and metadata, and no `156x210` image files are retained in either archive location.
 
 ## Validation and remaining admission evidence
 
