@@ -10,7 +10,27 @@ Package-local setup now includes the idempotent `KOM_pavel_murashev` vanilla-ros
 
 The founding Northern Council mission lasts 420 days. Success requires a route government, both ledgers at 60 or higher, and continued ownership and control of state 397. Ten paid projects serialize through `has_independence_wave_komi_active_package_project`; project cancellation is fail-closed on package loss, force-generation rollover, founding failure, or capital loss.
 
-The canonical projects secure taiga depots, integrate rail guards, register Komi communities, settle former-host ledgers, install one of four route governments, codify durable sovereignty, and open the Northern Ural corridor. Shared focus helpers cover the Northern Congress, railhead communities, forest guards, former-host settlement, and the Pechora corridor.
+The canonical projects secure taiga depots, integrate rail guards, register Komi communities, settle former-host ledgers, install one of four route governments, and separately codify durable sovereignty or open the Northern Ural corridor. Shared focus helpers cover the Northern Congress, railhead communities, forest guards, former-host settlement, and the Pechora corridor.
+
+## Codify and corridor authority (2026-08-14)
+
+The package-local codify/corridor repair handoff `subagent_handoffs/006_iw050_komi_codify_corridor_repair_2026_08_14.md` supersedes the earlier alias wording.
+
+Codify now sets durable sovereignty and applies the major-settlement effect under an idempotent Komi package guard; it does not open the Pechora corridor.
+
+The separate Northern Ural corridor project is lifecycle-gated on the resolved and stable compact, network membership, the League route, capital control, the Komi strategic cost, and generation-safe project readiness, with mirrored cancellation prerequisites.
+
+This repair remains package-local and does not widen the central adapter, content attestation, preflight, or deterministic Join surfaces.
+
+## Origin and strategic-cost hardening (2026-08-14)
+
+Komi project readiness and every project cancellation path now fail closed when `independence_wave_origin_ended` is set, preventing projects from surviving the end of the originating crisis or a force-generation rollover.
+
+The former-host ledger project also cancels when the tracked former host becomes unsettled, so its diplomatic settlement cannot complete after the host relationship has entered a war or loss state.
+
+The former-host ledger and Northern Ural corridor projects use the package-specific strategic cost label and reserve one Komi civilian factory through their decision modifier; the visible tooltip now shows the same stability, war-support, command-power, and factory burden.
+
+This hardening remains package-local. It does not add Komi to central attestation, normal or scenario preflight, deterministic Join, or the Event 006 workbook.
 
 ## Routes and identity boundary
 

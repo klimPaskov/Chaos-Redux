@@ -29,6 +29,7 @@ independence_wave_komi_northern_compact_category = {
 			OR = {
 				NOT = { is_independence_wave_komi_package = yes }
 				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+				has_country_flag = independence_wave_origin_ended
 				AND = {
 					has_stable_independence_wave_komi_compact = yes
 					has_independence_wave_komi_route_government = yes
@@ -76,7 +77,7 @@ independence_wave_komi_northern_compact_category = {
 		days_remove = constant:independence_wave_komi_duration.project_short
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_administration_light = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_depots_effect_tt independence_wave_komi_focus_secure_taiga_depots = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
@@ -93,7 +94,7 @@ independence_wave_komi_northern_compact_category = {
 		days_remove = constant:independence_wave_komi_duration.project_standard
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_guards_effect_tt independence_wave_komi_focus_integrate_rail_guards = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes } }
 	}
@@ -110,7 +111,7 @@ independence_wave_komi_northern_compact_category = {
 		days_remove = constant:independence_wave_komi_duration.project_standard
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_communities_effect_tt independence_wave_komi_focus_register_komi_communities = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
@@ -122,11 +123,12 @@ independence_wave_komi_northern_compact_category = {
 		visible = { is_independence_wave_komi_project_ready = yes NOT = { has_country_flag = independence_wave_komi_host_ledgers_settled } has_independence_wave_living_former_host = yes }
 		available = { is_independence_wave_komi_project_ready = yes can_pay_independence_wave_komi_strategic_cost = yes capital_scope = { is_controlled_by = ROOT } NOT = { has_independence_wave_komi_active_package_project = yes } var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
 		custom_cost_trigger = { can_pay_independence_wave_komi_strategic_cost = yes }
-		custom_cost_text = independence_wave_cost_diplomatic_standard
+		custom_cost_text = independence_wave_komi_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_KOM_CIVILIAN_FACTORY_USE }
 		days_remove = constant:independence_wave_komi_duration.project_standard
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_diplomatic_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_host_ledgers_effect_tt independence_wave_komi_focus_settle_former_host_ledgers = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed has_independence_wave_komi_unsettled_host = yes capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
@@ -143,7 +145,7 @@ independence_wave_komi_northern_compact_category = {
 		days_remove = constant:independence_wave_komi_duration.project_long
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_constitutional_effect_tt independence_wave_komi_focus_ratify_constitutional_autonomy = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
@@ -160,7 +162,7 @@ independence_wave_komi_northern_compact_category = {
 		days_remove = constant:independence_wave_komi_duration.project_long
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_taiga_effect_tt independence_wave_komi_focus_adopt_taiga_land_compact = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
@@ -177,7 +179,7 @@ independence_wave_komi_northern_compact_category = {
 		days_remove = constant:independence_wave_komi_duration.project_long
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_rail_councils_effect_tt independence_wave_komi_focus_convene_rail_councils = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
@@ -193,7 +195,7 @@ independence_wave_komi_northern_compact_category = {
 		days_remove = constant:independence_wave_komi_duration.project_long
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_security_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_emergency_effect_tt independence_wave_komi_focus_establish_taiga_emergency_command = yes }
-		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = { OR = { NOT = { is_independence_wave_komi_package = yes } NOT = { has_independence_wave_force_package_for_current_generation = yes } has_country_flag = independence_wave_origin_ended has_country_flag = independence_wave_komi_compact_crisis_failed capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_komi_package = yes } independence_wave_komi_apply_project_failure = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes } }
 	}
@@ -226,6 +228,7 @@ independence_wave_komi_northern_compact_category = {
 			OR = {
 				NOT = { is_independence_wave_komi_package = yes }
 				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+				has_country_flag = independence_wave_origin_ended
 				has_country_flag = independence_wave_komi_compact_crisis_failed
 				NOT = { has_country_flag = independence_wave_komi_compact_crisis_resolved }
 				NOT = { has_independence_wave_komi_route_government = yes }
@@ -260,7 +263,8 @@ independence_wave_komi_northern_compact_category = {
 			NOT = { has_independence_wave_komi_active_package_project = yes }
 		}
 		custom_cost_trigger = { can_pay_independence_wave_komi_strategic_cost = yes }
-		custom_cost_text = independence_wave_cost_diplomatic_standard
+		custom_cost_text = independence_wave_komi_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_KOM_CIVILIAN_FACTORY_USE }
 		days_remove = constant:independence_wave_komi_duration.project_long
 		complete_effect = { independence_wave_komi_begin_project = yes independence_wave_decision_pay_diplomatic_standard = yes }
 		remove_effect = { custom_effect_tooltip = independence_wave_komi_corridor_effect_tt independence_wave_komi_focus_open_northern_ural_corridor = yes }
@@ -268,6 +272,7 @@ independence_wave_komi_northern_compact_category = {
 			OR = {
 				NOT = { is_independence_wave_komi_package = yes }
 				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+				has_country_flag = independence_wave_origin_ended
 				has_country_flag = independence_wave_komi_compact_crisis_failed
 				NOT = { has_country_flag = independence_wave_komi_compact_crisis_resolved }
 				NOT = { has_country_flag = independence_wave_network_member }
