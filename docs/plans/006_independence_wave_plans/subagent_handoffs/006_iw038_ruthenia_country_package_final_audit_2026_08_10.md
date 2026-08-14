@@ -1,0 +1,40 @@
+# IW-038 Ruthenia country-package final audit
+
+Audit date: 2026-08-10. Scope is the registered vanilla `RUT` carrier, fixed state-73 Carpathian Ruthenia anchor, Event 006 runtime adapter, and its country-owned consumers. This audit made no gameplay edits, staging, or commit.
+
+## Disposition
+
+The IW-038 country package is source-complete and admitted. No intrinsic country-package promotion blocker was found.
+
+## Coverage checklist
+
+- Vanilla preservation: no Chaos Redux override was added for vanilla `RUT` registration, `RUT - Ruthenia` history, or state 73. The package reuses `RUT`, preserves the vanilla capital binding to state 73, and only activates after the exact dormant candidate and release transaction succeed.
+- Exact dormant candidate: `is_independence_wave_exact_package_iw_038_tag_available` in `common/scripted_triggers/006_independence_wave_package_triggers.txt` requires the dormant `RUT` identity, capital state 73, and a distinct living state-73 host. `common/scripted_effects/006_independence_wave_packages_region_04_effects.txt` loads `RUT` and state 73 and saves the actual state owner as the primary host; no hardcoded CZE path is used.
+- Setup/final/cleanup: `common/scripted_effects/006_independence_wave_package_dispatch_effects.txt:37,66,109` dispatch Ruthenia setup, final validation, and cleanup. `can_initialize_independence_wave_iw_038_package` requires the frozen package tuple, anchor/former-host event targets, protected-state ownership, and capital state 73.
+- Former host: runtime triggers and settlement effects use `independence_wave_former_host` and `independence_wave_setup_former_host`; living-host bilateral settlement is guarded by host existence and war state, while the depot-gated local fallback does not substitute a country.
+- Force contract: `common/scripted_triggers/006_independence_wave_ruthenia_package_triggers.txt:167-185` proves package `iw_038`, `mountain_frontier`, military tradition `p38`, the expected pathway count, exactly `integrate_militias`, `regional_guards`, `secure_depots`, `terrain_units`, and `professional_officers`, and explicitly rejects defector/volunteer/league/factory-rail/foreign-arms/capital-border, navy, and air inheritance flags.
+- Roster and portraits: `events/006_independence_wave.txt:275-317` synchronously recruits `RUT_independence_wave_andriy_brodiy`, `RUT_independence_wave_ivan_mondok`, and `RUT_independence_wave_dmytro_klympush`, applies the Event 006-scoped Augustin civilian portrait, and publishes `independence_wave_rut_roster_checkpoint` only after the four-character roster trigger passes. Cleanup retires only the three additive characters and restores vanilla Augustin civilian large/small portraits (`common/scripted_effects/006_independence_wave_ruthenia_package_effects.txt:440-455`). Authorized sourced-original placeholders have explicit caveat manifests; no candidate is marked FAIL.
+- Route cosmetics and flags: the four route installers select `RUT_INDEPENDENCE_WAVE_CIVICX`, `RUT_INDEPENDENCE_WAVE_AGRARIANX`, `RUT_INDEPENDENCE_WAVE_SOCIALISTX`, or `RUT_INDEPENDENCE_WAVE_EMERGENCYX`; normal, medium, and small flag assets exist under `gfx/flags/`, and cleanup drops only these four package tags.
+- Ledgers and ideas: `independence_wave_rut_civic_concord` and `independence_wave_rut_mountain_security` are clamped to the shared 0-100 range and drive the fragmented/compact lifecycle plus four route ideas in `common/ideas/006_independence_wave_ruthenia_ideas.txt`.
+- AI: `common/ai_strategy/006_independence_wave_ruthenia.txt` contains guarded mountain-survival, host-restraint, settled-compact, and emergency-guard layers. The current probability audit reports a complete mission pool (`poolComplete=true`), bounded evaluation, and current/current compare; the strategy-factor adapter remains an explicit MCP limitation, not a source blocker.
+- Focus hooks: all five shared hooks are present and guarded by `original_tag = RUT` plus the IW-038 package predicate in `common/national_focus/006_independence_wave_focus.txt` (assembly, mountain communities, border guards, former-host ledgers, and Carpathian corridor).
+- Decisions/missions: one passive founding mission plus ten serialized paid projects are present in `common/decisions/006_independence_wave_ruthenia_decisions.txt`; the active-project trigger and cleanup enumerate all ten paid IDs. Route, host-loss fallback, crisis, capital, resource, settlement, and one-shot completion gates remain fail-closed. The durable-sovereignty visible block includes the founding-settlement gate.
+- Localisation/docs/assets: `localisation/english/006_independence_wave_ruthenia_l_english.yml` is present with the reported 126 BOM-encoded keys, and `docs/events/006_independence_wave/ruthenia_package.md` is present. Four portrait DDS consumers, four route flag ladders, ideas, and decision/focus icon consumers are wired.
+- Formables and central gates: no Ruthenia formable suite or bypass exists; prepared setup rejects a formable family. Central attestation/preflight is covered by the current parent promotion override below.
+
+## MCP evidence
+
+- Map: fresh read-only `hoi4.map_inspect` for state 73 returned `MAP_INSPECTED`, revision `842f5df2b7099d29e9239bbdf6943c8d1a1d4eb4273aa9adf1ab2ad9e077949c`, artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bed0837be2705b0cce3177122db23df95b8666933a3c0c279f7ba1a0ea1d3b02/d6504b6eaaf3269fe3c534f64a1a5efc28624f46f9c03030e33d9febf91e0938/map-inspect.842f5df2b7099d29.json`. State/region membership, networks, adjacencies, supply, and railways passed; unrelated workspace-wide building/port locator diagnostics were reported, and no map rewrite was made.
+- Focus: fresh `hoi4.focus_inspect` on `independence_wave_focus_tree` returned 184 focuses and 193 connectors with zero crossings or node intersections. The adapter reported workspace-wide missing continuous-focus icons and layout diagnostics; none names the five RUT hooks. The package uses no RUT-owned focus tree.
+- Event: fresh `hoi4.event_inspect` trace and `hoi4.event_render` overview for `chaosx.nr6.350` are current revision `3691f675a525` and returned `EVENT_INSPECTED_PARTIAL`/`EVENT_RENDERED_PARTIAL` with no package-specific blocker. Trace artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/396880cdde6c5ef128ad17eb0eeeab663d0a71011ac8ea683ea28202f1e897cd/e55982afa48835d289f2bb6444c24e3f70339d1de1311011ff903d8cd9d1bd76/event-trace-3691f675a525.json`. Overview manifest: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1c173d6877a3ecb12fd48ca542a14ec85164e00a24febcc25cef535a1dc8db61/d305d5f3ec06cf37a9fe14a17b4d9183c7b155c318282bfbb7acdf174639b4cd/event-overview-3691f675a525-manifest.json`.
+- Technology Tree Viewer: the installed package exposes no Technology Tree Viewer. No Ruthenia technology tree was changed; inherited technology remains in the shared force contract and this tool limitation is recorded rather than substituted with source-only engine evidence.
+
+## Remaining parent gates and non-blocking uncertainty
+
+The authorized sourced-original portrait placeholders retain explicit `PASS`/`PASS_WITH_CAVEAT` provenance and are not a package-source blocker. The probability handoff records typed-fixture limitations and an unavailable strategy-factor adapter; it does not invalidate the source gates or create a Ruthenia promotion blocker. The `corridor_priority` constant is currently unused by the strategy file and should remain a documented tuning note unless the parent elects an AI change.
+
+## Current promotion override
+
+Parent confirmation on 2026-08-10 records that central runtime adapter, content attestation, normal preflight, scenario preflight, and Join probe have landed atomically. The allocator now reports 29 attested packages across 26 reservation groups. This supersedes the earlier “parent integration gate” wording above; IW-038 remains admitted source-complete.
+
+No broad identity redesign, vanilla history overwrite, generic portrait fallback, formable bypass, free-resource loop, navy/air inheritance, or unrelated country patch was introduced.
