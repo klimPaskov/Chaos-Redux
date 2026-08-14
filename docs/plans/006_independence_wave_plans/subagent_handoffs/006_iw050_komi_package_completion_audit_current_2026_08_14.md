@@ -46,6 +46,8 @@ Typed mission fixtures are not available through the current probability adapter
 
 No central dispatch, attestation, preflight, Join, formable, portrait, flag, or event-root changes were made. IW-050 is therefore incomplete for central admission even though its package-local gameplay and localisation surfaces are present.
 
+A parent source-hygiene pass normalized two stray spaces in the active-project `has_decision` OR block of `common/scripted_triggers/006_independence_wave_komi_package_triggers.txt`; the current Event 006 MCP scan still returns `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics and the same deferred workspace-wide helper/lifecycle boundary.
+
 ## Required next gate
 
 Before promotion, resolve the portrait and flag evidence, stabilize the installed KOM ladder provenance, preserve the Event 005 Soviet-origin boundary, add central adapter and attestation wiring only after parent review, and rerun typed mission and AI probability scenarios with a same-scenario comparison.
