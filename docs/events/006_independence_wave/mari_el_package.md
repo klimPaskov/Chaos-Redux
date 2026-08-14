@@ -8,6 +8,8 @@ The exact gate is `is_independence_wave_mari_package`, with `is_independence_wav
 
 The founding mission lasts 420 days. Success requires a route government, both compact values at 60 or higher, and continued ownership and control of Yoshkar-Ola. Ten paid projects serialize through the active-project trigger. Project cancellation remains fail-closed on package loss, generation rollover, founding failure, or capital loss.
 
+The vanilla `MEL_zinovy_zhadinov` roster consumer also requires the parent-owned `independence_wave_iw_047_identity_rights_cleared` flag. The flag has no local setter because the exact 1936 identity and portrait rights remain unresolved.
+
 The canonical projects secure forest depots, integrate woodland guards, register Mari communities, settle former-host claims, install one of four route governments, codify durable sovereignty, and open the Volga-Finnic corridor. Shared focus helpers cover the Forest Congress, Mari communities, woodland guards, former-host settlement, and the network corridor.
 
 ## Routes and visible identity
