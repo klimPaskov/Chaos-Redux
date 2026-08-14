@@ -30,15 +30,17 @@ The decision file has balanced blocks, no unsupported comparison operators, and 
 
 The decision-category renderer is not available in the installed MCP, so UI overflow remains a source-only limitation. The package remains outside central dispatcher, attestation, scenario preflight, and Join until the portrait, flag, and runtime admission gates are separately accepted.
 
-## Durable read-only re-audit after codify/corridor repair (2026-08-14)
+## Historical read-only re-audit after codify/corridor repair (2026-08-14)
 
 ### Disposition
 
-The codify/corridor split is now structurally correct: `independence_wave_komi_focus_codify_durable_sovereignty` sets its named sovereignty flag and applies the major settlement, while `independence_wave_komi_focus_open_northern_ural_corridor` remains a separate network and League-route project. The current package is not fully sound, however, because the re-audit found two concrete cost/lifecycle defects and several requirement or tooltip mismatches. This re-audit was read-only and changed no gameplay source.
+This dated pre-`b8aa313a8` re-audit recorded the structurally correct codify/corridor split, two concrete cost/lifecycle defects, and several requirement or tooltip mismatches. The lifecycle, cost, and tooltip handoff supersedes its durable-flag, emergency-cost, and codify-wording findings, while the remaining design questions stay deferred as documented above. This re-audit was read-only and changed no gameplay source.
 
 The package-local fail-closed boundary is preserved. No central dispatcher, content attestation, scenario preflight, deterministic Join, portrait, flag, or unrelated file was edited.
 
-### Severity-ordered findings
+### Historical severity-ordered findings (pre-b8aa313a8)
+
+The findings below are retained as dated evidence and are not current source authority; the superseding lifecycle, cost, and tooltip handoff above governs repaired behavior.
 
 1. **High — durable sovereignty is not cleared by package setup or cleanup.** `common/scripted_effects/006_independence_wave_komi_package_effects.txt:306-314` sets `independence_wave_komi_durable_sovereignty`, while setup at `:329-348` and cleanup at `:411-453` clear the other Komi lifecycle flags but never clear this one. A reused or reinitialized IW-050 generation can therefore inherit the flag and permanently suppress codify visibility at `common/decisions/006_independence_wave_komi_decisions.txt:205-210`. Narrow correction: add `clr_country_flag = independence_wave_komi_durable_sovereignty` to both package-local setup and cleanup.
 
@@ -109,3 +111,29 @@ The decision/effect/category/triggers/localisation source review found no missin
 3. Reconcile the codify tooltip and description with the deliberately separate corridor outcome.
 
 4. Reconcile Komi factory reservation and strategic gates with their cost localisations, then decide whether the origin-ended guard and former-host partial outcome require narrow lifecycle/tooltip updates.
+
+## Current narrow patch-pass re-audit (2026-08-14; HEAD 3ad93a39d)
+
+### Disposition
+
+The current HEAD already contains the three bounded source repairs requested for this pass, so no additional gameplay patch was applied. The owner-applied changes are source-backed and remain limited to the Komi package surface; this pass did not touch the central dispatcher, attestation, Join, portraits, flags, or workbook.
+
+### Current source proof
+
+1. `independence_wave_komi_durable_sovereignty` has exactly one package-local writer in `common/scripted_effects/006_independence_wave_komi_package_effects.txt:306-314` and symmetric clears in setup at `:329-349` and cleanup at `:412-455`. The setup/cleanup pattern now prevents a reused generation from inheriting or retaining the terminal sovereignty flag.
+
+2. Codify and corridor wording now matches their separate effects. `independence_wave_komi_sovereignty_effect_tt` at `localisation/english/006_independence_wave_komi_l_english.yml:69` describes the legitimacy, recognition, capacity, and durable-settlement result supplied by `independence_wave_komi_apply_major_settlement` at `common/scripted_effects/006_independence_wave_komi_package_effects.txt:90-97,306-314`, while `independence_wave_komi_corridor_effect_tt` at `:70` retains the ledger, network, and League gains supplied by the corridor alias at `:286-296`. The codify description at `:50` no longer claims to secure the separate corridor.
+
+3. Emergency command now uses `can_pay_independence_wave_security_standard_cost` in both `available` and `custom_cost_trigger` at `common/decisions/006_independence_wave_komi_decisions.txt:187-200`, matching `independence_wave_decision_pay_security_standard`. The shared security trigger at `common/scripted_triggers/006_independence_wave_decision_triggers.txt:263-268` checks the same manpower, Army Experience, infantry-equipment, and support-equipment families that the payment effect spends at `common/scripted_effects/006_independence_wave_decision_effects.txt:209-220`; the current constants preserve the established strict-greater-than gate and matching spend magnitudes.
+
+### Scoped validation
+
+The static current-source check found one durable-sovereignty writer, two symmetric clears, two emergency security-gate references, zero emergency strategic-gate references, no stale corridor/network phrase in the codify tooltip, the origin-ended readiness guard, eleven origin-ended cancellation guards, six Komi administration-standard cost-key references, and two Komi strategic cost-key references.
+
+The current decision probability receipt remains the post-repair `mission_ai_will_do` inspection recorded in `006_iw050_komi_admin_standard_cost_localisation_reaudit_2026_08_14.md`, with eleven candidates, fifteen required inputs, zero inspect-unresolved items, and an incomplete pool. The cost and lifecycle repairs changed no AI score, so no new normalized probability or balance claim is made.
+
+No decision-owned scripted GUI exists for the ordinary Komi category, so GUI inspect/render/rewrite evidence remains not applicable. Live HOI4 execution and materialized non-empty probability scenarios remain outside the available evidence boundary.
+
+### Remaining issues
+
+The former-host partial-success wording and central package admission/Join boundary remain deferred design or authority issues. The current three requested source defects are resolved; no further narrow source correction is justified by this pass.
