@@ -201,3 +201,13 @@ The parent repeated `hoi4.gui_inspect` for `chaosx_independence_wave_formable_st
 The parent repeated `hoi4.gui_render` for the same scenario at 1920x1080 and 1366x768 across the requested generic states and received the same `GUI_RENDERED` full-window SVG; the renderer still did not expose family-isolated crop, hierarchy, click-region, resolution, state-gallery, or comparison artifacts.
 
 No source or layout change was made after this recheck, and no `hoi4.gui_rewrite` is justified without a concrete family-isolated authored defect.
+
+## Parent family-isolated recheck — 2026-08-14
+
+The parent also inspected FORM-12 and FORM-13 separately with scenarios `E6_FORM12_STATE833_FAMILY_2026_08_14` and `E6_FORM13_STATE833_FAMILY_2026_08_14`. Both returned `GUI_INSPECTED` at shared revision `57e77f6caf31f9ae8dfa206fb9f6e5beedb84936ba0a958f9b34d77a3da3b018`, with 93 inspected elements each. FORM-12 evidence is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e4292f90e6635d77d6208a41e1877dd627e5e87b433f6df939539d07c99e6bb0/4de9f48424682a815ef41c51535e130c5852edc41c3c544ac869585ec7135f40/gui-inspect.57e77f6caf31f9ae.json`; FORM-13 evidence is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/eb5f2369ef6a389402402b9232511cb3e3c441c1ecf2337b675ff91cd90bc0da/021de40a626764a30c7899864a3968dd859e191ce0bad33d1ea4cc43579d12f1/gui-inspect.57e77f6caf31f9ae.json`.
+
+Both family inspections retain the same workspace-wide graph truncation, 2,000 blocking diagnostics, and 521 visible-overlap diagnostics; the result does not isolate a FORM-12 or FORM-13 authored defect. No source or layout change is justified.
+
+Separate renders were also completed at 1920x1080 and 1366x768 over normal, hover, long-text, and missing-localisation states. FORM-12 evidence is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9654598f01c40a19da62a51464f8e7698112a52589404fd484b76aaf61e8203f/ca2b3b66277aed800a36f78dec287bd7fee3567608f20b038b98af11c83b9291/chaosx_independence_wave_formable_state_puzzle_w-full.svg`; FORM-13 evidence is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9654598f01c40a19da62a51464f8e7698112a52589404fd484b76aaf61e8203f/4a1bc813b22cac165a07f1f3b5933cf20c994718470f894400bf7171bbda3c6e/chaosx_independence_wave_formable_state_puzzle_w-full.svg`.
+
+The renders returned one aggregate full-window SVG each, with validation not passed and no family-isolated crop, hierarchy, click-region, state-gallery, resolution-gallery, or comparison artifacts. FORM-12/13 GUI acceptance therefore remains unresolved, while the state-833 source/localisation/asset contract remains unchanged and no rewrite was applied.
