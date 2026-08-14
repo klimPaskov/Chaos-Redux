@@ -22,6 +22,14 @@ The separate Northern Ural corridor project is lifecycle-gated on the resolved a
 
 This repair remains package-local and does not widen the central adapter, content attestation, preflight, or deterministic Join surfaces.
 
+## Lifecycle, cost, and tooltip authority (2026-08-14)
+
+The lifecycle, cost, and tooltip repair handoff `subagent_handoffs/006_iw050_komi_lifecycle_cost_tooltip_repair_2026_08_14.md` records the owner-applied source repair committed as `b8aa313a8`.
+
+The repair clears durable sovereignty during package setup and cleanup, aligns emergency affordability with its security payment, and reconciles the codify description and effect tooltip with the separate corridor outcome.
+
+KOM remains package-local and fail-closed; the repair does not change the current 40/32/29/161 authority or central adapter, attestation, preflight, or deterministic Join surfaces.
+
 ## Origin and strategic-cost hardening (2026-08-14)
 
 Komi project readiness and every project cancellation path now fail closed when `independence_wave_origin_ended` is set, preventing projects from surviving the end of the originating crisis or a force-generation rollover.
@@ -48,7 +56,7 @@ KOM remains package-local and unadmitted. This package documentation does not ad
 
 The installed map crosswalk binds state 397 to Syktyvkar and preserves optional extension states 262 and 581 as claims or later negotiation territory. Event 005 Soviet Collapse retains its own KOM release, origin, focus, and committee-character surfaces; the Event 006 package gate excludes those Soviet-origin flags and variables.
 
-The package-local completion authority is `subagent_handoffs/006_iw050_komi_package_completion_audit_current_2026_08_14.md`, with country-core, decisions, focus-hooks, localisation, portrait-source, symbol, probability, and source-crosswalk evidence in the sibling IW-050 handoffs dated 2026-08-14.
+The package-local completion authority is `subagent_handoffs/006_iw050_komi_package_completion_audit_current_2026_08_14.md`, with country-core, decisions, codify/corridor, lifecycle/cost/tooltip, focus-hooks, localisation, portrait-source, symbol, probability, and source-crosswalk evidence in the sibling IW-050 handoffs dated 2026-08-14.
 
 IW-050 is absent from the central adapter, content-attestation, normal and SCN-008 preflight, and deterministic Join surfaces; the region-05 loader and reservation rows remain candidate evidence only.
 
