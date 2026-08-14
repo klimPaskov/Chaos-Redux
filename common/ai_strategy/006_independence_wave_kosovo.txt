@@ -1,0 +1,63 @@
+# Some fields in this file reject script-constant tokens.
+@CR_SC_IW_KOS_ARMY = 80
+@CR_SC_IW_KOS_PRODUCTION = 38
+@CR_SC_IW_KOS_SUPPORT = 48
+@CR_SC_IW_KOS_ARTILLERY = 20
+@CR_SC_IW_KOS_INFRASTRUCTURE = 72
+@CR_SC_IW_KOS_DEFENSE = 68
+@CR_SC_IW_KOS_EMERGENCY = 112
+@CR_SC_IW_KOS_FOUNDING_RESTRAINT = -240
+@CR_SC_IW_KOS_SETTLED_RESTRAINT = -400
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-031 KOSOVO AI
+# ============================================================================
+
+independence_wave_kos_municipal_survival = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_iw_031_setup_complete
+		has_country_flag = independence_wave_kos_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOS_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_KOS_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_KOS_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_KOS_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KOS_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KOS_DEFENSE }
+}
+
+independence_wave_kos_host_restraint = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_iw_031_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kos_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KOS_FOUNDING_RESTRAINT }
+}
+
+independence_wave_kos_settled_compact = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_kos_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOS_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KOS_SETTLED_RESTRAINT }
+}
+
+independence_wave_kos_emergency_guard = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_kos_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOS_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KOS_DEFENSE }
+}
