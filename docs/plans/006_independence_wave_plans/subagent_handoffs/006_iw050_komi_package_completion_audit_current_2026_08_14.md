@@ -20,7 +20,7 @@ The package-local source set is:
 - `localisation/english/006_independence_wave_komi_l_english.yml`
 - `common/national_focus/006_independence_wave_focus.txt` with five guarded KOM helper calls
 
-The package uses the installed `KOM` carrier and state 397, the p55 force contract, Northern Council and taiga/rail ledgers, four package-local government routes, generation-safe project cancellation, the vanilla `KOM_pavel_murashev` roster checkpoint, and ten canonical projects.
+The package uses the installed `KOM` carrier and state 397, the p50 force contract, Northern Council and taiga/rail ledgers, four package-local government routes, generation-safe project cancellation, the vanilla `KOM_pavel_murashev` roster checkpoint, and ten canonical projects.
 
 The package-local localisation file contains 59 owned keys with UTF-8 BOM and covers the category, founding mission, ten projects, seven idea pairs, party strings, ledger labels, effect tooltips, and route prose.
 
