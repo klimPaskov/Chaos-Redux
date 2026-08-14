@@ -58,6 +58,26 @@ The nearest visual historical lead, [Край, область, республи�
 
 No “provisional institution” was silently invented from these records. A future acceptable institutional source would need an explicitly named 1936 body, archive or collection attribution, date or period basis, an image that actually depicts that body, and a rights/reproduction basis.
 
+## Additional deeper archive sweep — 2026-08-14
+
+The archival-context compendium [«Памятуя лишь о благе и пользе России..»: представители Коми края в российском парламенте](https://djvu.online/file/6sazOWWFKyP2I), published by the State Council of the Republic of Komi in 2014, states that its materials were compiled from the National Archive of the Republic of Komi, National Museum, National Library, GARF, and other collections.
+
+On printed page 42, the entry is explicitly **МУРАШЕВ Павел Иванович**, born in 1890 in Mednoe, and identifies him as first secretary of the Komi regional VKP(b) committee from November 1937 through June 1938, with arrest on 21 June 1938.
+
+The reviewed scan page is [024.webp](https://djvu.online/jpg2/6/s/a/6sazOWWFKyP2I/024.webp), which covers printed pages 42–43; its temporary evidence copy was `2276x1500`, `423298` bytes, SHA-256 `0A899265C2AFF15ECC9B84183AFCB22327DC0554133DE5BDDE1409D286AD2287`.
+
+The Murashev entry on that page is text-only, while the adjacent Potapov entry has an attributed portrait and the page includes a separate group photograph; therefore this archive-backed compendium is exact-name/date corroboration and direct negative evidence against an exposed Murashev portrait, not an acceptable portrait source.
+
+The scan is a third-party mirror of a 2014 copyrighted book, marked `© Государственный Совет Республики Коми, 2014` and `© авторы`, and exposes no image-specific public-domain, Creative Commons, or reproduction permission; the temporary page was not added to the repository archive.
+
+The 2020 CC BY article [Социальный портрет руководителей партийно-государственных органов Коми автономной области — Коми АССР в 1920–1930-е годы](https://cyberleninka.ru/article/n/sotsialnyy-portret-rukovoditeley-partiyno-gosudarstvennyh-organov-komi-avtonomnoy-oblasti-komi-assr-v-1920-1930-e-gody) independently lists `П. И. Мурашев (ноябрь 1937 г. — июнь 1938 г.)` among the first secretaries and identifies National Archive of Komi fonds P-1 and R-3 as source material, but contains no attributable portrait or image-rights record.
+
+The Perm State Archive of Contemporary History catalogue [Д.3296 Мурашев Павел Иванович](https://www.permgaspi.ru/db/unit/746538) exposes a five-sheet case in Fund 620, inventory 37 vol. 2, case 3296, dated 23 February–25 May 1954; it provides no scan or portrait and explicitly states that use of materials without archive approval is prohibited.
+
+Exact-name image and catalogue variants checked in the deeper pass included `Мурашев Павел Иванович 1890 фото`, `Мурашев Павел Иванович Коми обком фотография`, `Мурашев Коми обком портрет`, `Павел Иванович Мурашев 1937 фото`, and `Мурашев П.И. Коми фото`; returned hits were the text-only records above, unrelated Murashev/Murashov individuals, later military/prosecutorial subjects, or uncited images without rights evidence.
+
+This deeper sweep therefore strengthens, rather than changes, the blocking verdict: the exact person is documented in the Komi regional office only from November 1937, the 1936 institutional publication remains a restricted catalogue lead without an exposed image, and no exact portrait or authentic 1936 institutional image with usable rights was found.
+
 ## Rejected image and runtime candidates
 
 The image-search result at [epp.genproc.gov.ru](https://epp.genproc.gov.ru/ru/proc_10/activity/veterans-rights/sovet/veterans/e5518389/) is **Pavel Romanovich Murashev**, born 1914 in Karelia, a World War II veteran and prosecutor; it is not Pavel Ivanovich Murashev of the Komi regional committee. The reviewed file URL was `https://epp.genproc.gov.ru/upload/iblock/f9f/szy1x5g18vylbwohok3rwqn4wb6ka2dc.jpg`, dimensions `142x199`, bytes `6363`, SHA-256 `EA7DC1875B31CBBE9B464E5A710A4659069E75A568D9FC4985F0619EDAD341C3`. It was not archived or cropped because identity, 1936 relevance, and reproduction rights all fail.
