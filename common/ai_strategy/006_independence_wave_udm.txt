@@ -1,0 +1,76 @@
+# Some AI fields reject script-constant tokens. These file-scoped values keep
+# the UDM strategy parser-safe while matching the IW-048 industrial-security
+# force contract and the workshop/forest-rail ledger tradeoff.
+@CR_SC_IW_UDM_ARMY = 84
+@CR_SC_IW_UDM_PRODUCTION = 60
+@CR_SC_IW_UDM_SUPPORT = 55
+@CR_SC_IW_UDM_ARTILLERY = 30
+@CR_SC_IW_UDM_INFRASTRUCTURE = 78
+@CR_SC_IW_UDM_WORKSHOPS = 72
+@CR_SC_IW_UDM_DEFENSE = 82
+@CR_SC_IW_UDM_EMERGENCY = 116
+@CR_SC_IW_UDM_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_UDM_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-048 UDMURTIA AI
+# ============================================================================
+# UDM protects Izhevsk and its forest rail/depot belt, keeps workshop output
+# available for industrial guards, and avoids a former-host escalation until
+# the visible ledgers and compact are settled. Route selection stays with the
+# shared focus framework and the package-local decision workers.
+# ============================================================================
+
+independence_wave_udm_industrial_survival = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_iw_048_setup_complete
+		has_country_flag = independence_wave_udm_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_UDM_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_UDM_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_UDM_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_UDM_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_UDM_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_IW_UDM_WORKSHOPS }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_UDM_DEFENSE }
+}
+
+independence_wave_udm_host_restraint = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_iw_048_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_udm_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_UDM_FOUNDING_RESTRAINT }
+}
+
+independence_wave_udm_settled_compact = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_udm_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_UDM_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_UDM_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_UDM_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_IW_UDM_WORKSHOPS }
+}
+
+independence_wave_udm_emergency_guard = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_udm_industrial_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_UDM_EMERGENCY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_UDM_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_UDM_DEFENSE }
+}
