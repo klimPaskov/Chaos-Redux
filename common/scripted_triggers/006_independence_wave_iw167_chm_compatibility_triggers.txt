@@ -1,0 +1,44 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-167 CHM COMPATIBILITY TRIGGERS
+# ============================================================================
+# Dormant preservation predicates for the registered Champa carrier. IW-167
+# remains high-chaos-only and fail-closed. The installed map binds its compact
+# runtime anchor to state 286; the public research row's 671 extension remains
+# a documented future substate requirement and is not silently substituted.
+# ============================================================================
+
+# COUNTRY scope. A future named Champa institution must opt in explicitly.
+is_independence_wave_iw_167_chm_compatibility_context = {
+	exists = yes
+	original_tag = CHM
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_active_origin
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_167 }
+	has_country_flag = independence_wave_iw_167_named_institution_selected
+}
+
+# COUNTRY scope. Current installed binding is state 286/South Annam. This
+# witness never transfers ownership or adds/removes a Champa core.
+has_independence_wave_iw_167_chm_anchor_surface = {
+	is_independence_wave_iw_167_chm_compatibility_context = yes
+	check_variable = { independence_wave_anchor_state = 286 }
+	owns_state = 286
+	controls_state = 286
+	capital_scope = { state = 286 }
+	286 = { is_core_of = CHM }
+}
+
+# COUNTRY scope. Vanilla CHM has no dedicated character file; the generic tree
+# is the only safe registered surface to witness until an institution is sourced.
+has_independence_wave_iw_167_chm_vanilla_surface = {
+	is_independence_wave_iw_167_chm_compatibility_context = yes
+	has_focus_tree = generic_focus
+}
+
+# COUNTRY scope. Strict future named-institution preservation contract.
+has_independence_wave_iw_167_chm_compatibility_contract = {
+	is_independence_wave_iw_167_chm_compatibility_context = yes
+	has_independence_wave_iw_167_chm_anchor_surface = yes
+	has_independence_wave_iw_167_chm_vanilla_surface = yes
+}
