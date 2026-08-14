@@ -6,6 +6,8 @@ IW-048 is a package-local Event 006 implementation for vanilla UDM at Izhevsk, s
 
 The carrier remains the vanilla `UDM` tag, vanilla history, vanilla capital 399, vanilla Boris Berman character `UDM_boris`, vanilla leader portrait token, and vanilla normal, medium, and small ideology flag ladder. No portrait, flag, country-history, character, or `.gfx` asset was created or replaced by this tranche.
 
+The `UDM_boris` roster consumer requires the parent-owned `independence_wave_iw_048_identity_rights_cleared` flag. The flag has no local setter because the exact identity and 1936 Udmurt office remain unresolved.
+
 The package uses the registry's `industrial_security` force profile and the existing shared `industrial_breakaway` package-archetype constant because the shared archetype table has no separate `industrial_security` archetype token. This mapping is documented for later admission review and does not alter the central registry.
 
 ## Package mechanics
