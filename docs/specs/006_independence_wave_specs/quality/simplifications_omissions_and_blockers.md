@@ -12,7 +12,9 @@ The current IW-045 Event 006 boundary is 32 content-attested selectable packages
 
 The 2026-08-12 shared-focus repair added twenty-five visible prerequisite edges to the existing tree source: fourteen generic route/trunk edges plus eleven package and AJX edges. The parent-applied cleanup removed ten redundant visible edges while preserving their `available` gates. The final-source focus evidence reports 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors, with authored detour warnings and unrelated vanilla icon diagnostics remaining, so the focus surface remains HOLD. The current receipt is `../../plans/006_independence_wave_plans/subagent_handoffs/006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md`. Earlier 184-node/193-connector and 184-node/206-connector receipts are historical traceability only.
 
-IW-050 Komi remains package-local and fail-closed after the lifecycle, cost, and tooltip repair committed as `b8aa313a8`; it remains absent from central adapter, attestation, normal or SCN-008 preflight, and deterministic Join surfaces.
+IW-050 Komi remains package-local and fail-closed after the lifecycle, cost, and tooltip repair committed as `b8aa313a8` and the administration-standard cost/localisation repair committed as `8b1aaeaae`; the read-only re-audit disposition is recorded by `d84816ecc` and clarified by `3ad93a39d`, and Komi remains absent from central adapter, attestation, normal or SCN-008 preflight, and deterministic Join surfaces.
+
+IW-047 Mari El remains package-local and fail-closed under the current state-833 FORM-12/13 rebind, with no central attestation or deterministic Join entry; state 256 is historical package-binding traceability only.
 
 The committed IW-013/IW-015 founding serialization and project-readiness repair in `fe7fd3925` adds active-founding-mission guards to NAV and GLC founding activation and routes their paid projects through package-readiness helpers; it preserves their adapter-only fail-closed status and does not change counts or central admission.
 
