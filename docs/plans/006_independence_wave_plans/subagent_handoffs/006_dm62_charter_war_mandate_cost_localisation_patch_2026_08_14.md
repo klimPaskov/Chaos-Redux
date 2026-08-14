@@ -120,6 +120,8 @@ The offline Paradox wiki core pages and the vanilla decision/localisation docume
 
 The prior mandatory shared decision and mission probability inspections remain the applicable weighted-logic evidence: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/48e6446425d09136b75cd3aa37bed85cd8d35b1ce4f193c35391f304be801390/09c8965cfac37c4308892cd7a94fc25cb5a8ef8b98ff29729049e6087c14fc04/probability-inspect-efc4d478e6f2.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5d2db102151e09ad515e867e2bfbb2df70069816741b21a6e23fd49281f30f88/bcd11c2ba12b48df9e9ad1b960b336a1467605d8900fe4a162d2d2317dd2d19c/probability-inspect-efc4d478e6f2.json`.
 
+The current post-repair decision-source inspection returned `PROBABILITY_SOURCE_INSPECTED` at source revision `61bf9c2ae0bcf524aa70c2509acd4592e378f670446c7a7e89d5a02ec28fd805`, source hash `149dca17038809614d306860cce698e3eeb19598d005422ca3f034156dd02b97`, with 10 candidates, 0 available candidates under the empty fixture, 79 required inputs, and 0 inspect-unresolved rows. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6bf673ad940656c45a727b2983ea1f64a003289728dc79e1d67a8ba3c2f586e1/402439c88470d479b6c15e30bde831d8c38081e41126d799f65f4d25ad77ad08/probability-inspect-149dca170388.json`.
+
 Those inspections reported incomplete candidate pools and therefore do not support quantitative balance claims; this cost-text-only patch does not alter those surfaces.
 
 DM-62 uses the ordinary decision framework rather than a named event-owned scripted GUI, so no GUI rewrite was attempted.
