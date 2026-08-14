@@ -39,9 +39,29 @@ Every formable family records:
 
 The initial registry is in `matrices/006_formable_family_registry.csv`.
 
+## Grouped state-puzzle consumer contract (accepted current addition, 2026-08-09)
+
+The current Event 006 state-puzzle surface is a grouped consumer workflow for fourteen runtime-authored families: FORM-01, FORM-02, FORM-03, FORM-04, FORM-05, FORM-07, FORM-08, FORM-09, FORM-12, FORM-13, FORM-16, FORM-18, FORM-39, and FORM-48.
+
+This is a current implementation subset of the 48-row registry, not a declaration that every registry row is operational.
+
+Each of the fourteen consumer specs declares `group_id = independence_wave_formables`, `group_scripted_gui_id = independence_wave_formable_state_puzzle_scripted_gui`, `group_window_id = chaosx_independence_wave_formable_state_puzzle_window`, one family activation helper, a finite `summary_required_count`, and the family territory helper used by the owning formation path.
+
+The grouped scripted GUI is presentation-only for human players and leaves the normal decision, mission, and AI paths as gameplay owners.
+
+State qualification, summary and hover status, player availability, and AI commit availability use the same family territory contract, with pending founding invitations taking precedence so mutually exclusive family overlays do not present simultaneously.
+
+The current generated evidence covers fourteen manifests, 50 candidate-state rows, and 100 unresolved/qualifying DDS pieces, while seventeen Event 006 formable decision categories attach the same grouped scripted GUI through `context_type = decision_category`.
+
+FORM-07 and FORM-48 remain readiness-controlled and fail closed under their identity, package, member, and integration contracts; their visible consumer surfaces do not make the families available for formation.
+
+FORM-08 intentionally displays the researched states 84 and 82 with a required summary count of three while its territory helper remains false; no third state is invented until a researched Danubian member and anchor are approved.
+
+The category attachment crosswalk and current MCP GUI evidence are retained in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_formable_state_puzzle_category_attachment_audit_2026_08_09.md` and the settled filesystem audit; aggregate offline GUI diagnostics do not constitute family-isolated visual acceptance.
+
 ## Event 006 compatibility and signature contract for IW-043 and IW-058
 
-The source-implemented CHU/ASY package tranche is not part of the current post-TRA fifteen-package runtime attestation set. IW-043 on vanilla carrier `CHU` and IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced identity, rights, package, and runtime gates are independently accepted. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by the dated reconciliation handoff, but FORM-08 remains a separate fail-closed Vojvodina/Slavonia member, consent, and anchor gate. Their signature formable surfaces remain separate gates:
+The source-implemented CHU/ASY package tranche remains a separate fail-closed design surface rather than part of the current 32-package runtime attestation set across 29 compatible reservation groups. IW-043 on vanilla carrier `CHU` and IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced identity, rights, package, and runtime gates are independently accepted. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by the dated reconciliation handoff, but FORM-08 remains a separate fail-closed Vojvodina/Slavonia member, consent, and anchor gate. Their signature formable surfaces remain separate gates:
 
 - FORM-12 and FORM-13 must use the IW-043 member, anchor, rights, consent,
   integration, and cleanup contract.
@@ -618,7 +638,7 @@ This is not final localisation.
 One of the following must occur:
 
 - a radical league adopts an offensive charter and has enough members and military strength
-- a high-chaos 20-country wave begins with several armed or radical governments and immediate coordinated claims
+- a high-chaos 10-country wave begins with several armed or radical governments and immediate coordinated claims
 - several Event 6 countries launch synchronized wars against former hosts
 - a hidden high-chaos formable becomes the center of an aggressive bloc
 - the league sponsors enough new breakaways to create a visible cascade
