@@ -137,3 +137,9 @@ No decision-owned scripted GUI exists for the ordinary Komi category, so GUI ins
 ### Remaining issues
 
 The former-host partial-success wording and central package admission/Join boundary remain deferred design or authority issues. The current three requested source defects are resolved; no further narrow source correction is justified by this pass.
+
+## Former-host partial-success localisation clarification (2026-08-14)
+
+The package-local former-host project can still complete its Komi ledger advancement when the former host becomes unavailable or returns to war during the timer, while `independence_wave_komi_apply_former_host_settlement` is correctly skipped because the bilateral target is no longer valid. The player-facing text now states this partial outcome explicitly in `localisation/english/006_independence_wave_komi_l_english.yml:40,64`: the bilateral settlement is recorded only when the former host remains available and at peace, otherwise the Komi ledgers advance but the external claims remain unresolved.
+
+This is a localisation-only clarification of existing effect behavior. No decision availability, timer, cost, AI score, central dispatcher, attestation, portrait, flag, or Join surface changed. The file retains its UTF-8 BOM; no new probability or GUI claim is made because the gameplay source and weighted surfaces were unchanged.
