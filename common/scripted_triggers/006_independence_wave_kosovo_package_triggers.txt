@@ -1,0 +1,191 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 KOSOVO PACKAGE TRIGGERS
+# ============================================================================
+# Exact IW-031 identity, state-802, roster, route, force, and completion proofs.
+# ============================================================================
+
+is_independence_wave_kos_package = {
+	original_tag = KOS
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_031 }
+}
+
+is_independence_wave_kos_project_ready = {
+	is_independence_wave_kos_package = yes
+	has_country_flag = independence_wave_iw_031_setup_complete
+	NOT = { has_country_flag = independence_wave_kos_compact_crisis_failed }
+}
+
+has_independence_wave_kos_unsettled_host = {
+	OR = {
+		NOT = { has_independence_wave_living_former_host = yes }
+		AND = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { has_war_with = ROOT }
+		}
+	}
+}
+
+can_pay_independence_wave_kos_administration_light_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_kosovo_cost.civilian_factory_floor
+	command_power > constant:independence_wave_decision_cost.command_power_light
+	has_manpower > constant:independence_wave_decision_cost.manpower_light
+}
+
+can_pay_independence_wave_kos_administration_standard_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_kosovo_cost.civilian_factory_floor
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+}
+
+can_pay_independence_wave_kos_strategic_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_kosovo_cost.civilian_factory_floor
+	has_stability > constant:independence_wave_decision_cost.stability_standard
+	has_war_support > constant:independence_wave_decision_cost.war_support_minor
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
+is_independence_wave_exact_package_iw_031_runtime_ready = {
+	is_independence_wave_kos_package = yes
+	has_complete_independence_wave_iw_031_package_setup = yes
+	has_independence_wave_force_package_for_current_generation = yes
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	802 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 802 }
+	has_variable = independence_wave_former_host
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+}
+
+can_initialize_independence_wave_iw_031_package = {
+	is_independence_wave_kos_package = yes
+	check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_031 }
+	check_variable = { independence_wave_region = constant:independence_wave_region.balkans_danube }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.standard }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.mountain_or_frontier }
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_anchor_state = { state = 802 is_owned_and_controlled_by = ROOT }
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	capital_scope = { state = 802 }
+}
+
+has_independence_wave_kos_command_roster = {
+	has_character = KOS_independence_wave_ferhat_draga
+	has_character = KOS_independence_wave_miladin_popovic
+	has_character = KOS_independence_wave_shaban_polluzha
+	KOS_independence_wave_shaban_polluzha = { is_corps_commander = yes }
+}
+
+has_stable_independence_wave_kos_compact = {
+	is_independence_wave_kos_package = yes
+	check_variable = { var = independence_wave_kos_civic_concord value = constant:independence_wave_kosovo_pressure.stable compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_kos_municipal_reach value = constant:independence_wave_kosovo_pressure.stable compare = greater_than_or_equals }
+}
+
+has_independence_wave_kos_active_package_project = {
+	OR = {
+		has_decision = independence_wave_kos_secure_mitrovica_depots
+		has_decision = independence_wave_kos_integrate_territorial_guards
+		has_decision = independence_wave_kos_register_municipal_compacts
+		has_decision = independence_wave_kos_settle_former_host_ledgers
+		has_decision = independence_wave_kos_ratify_agrarian_civic_charter
+		has_decision = independence_wave_kos_convene_workers_council
+		has_decision = independence_wave_kos_adopt_federal_cantonal_charter
+		has_decision = independence_wave_kos_establish_territorial_command
+		has_decision = independence_wave_kos_codify_durable_sovereignty
+		has_decision = independence_wave_kos_open_balkan_network_corridor
+	}
+}
+
+has_independence_wave_kos_route_government = {
+	OR = {
+		AND = { has_independence_wave_constitutional_route = yes has_country_flag = independence_wave_kos_civic_government }
+		AND = { has_independence_wave_popular_council_route = yes has_country_flag = independence_wave_kos_socialist_government }
+		AND = { has_independence_wave_traditional_route = yes has_country_flag = independence_wave_kos_federal_government }
+		AND = { has_independence_wave_emergency_military_route = yes has_country_flag = independence_wave_kos_emergency_government }
+	}
+}
+
+has_prepared_independence_wave_iw_031_package_setup = {
+	is_independence_wave_kos_package = yes
+	has_country_flag = independence_wave_origin_prepared
+	check_variable = { independence_wave_region = constant:independence_wave_region.balkans_danube }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.standard }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.mountain_or_frontier }
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = { state = 802 is_owned_and_controlled_by = ROOT }
+	has_variable = independence_wave_former_host
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	has_independence_wave_kos_command_roster = yes
+	has_country_flag = independence_wave_command_roster_ready
+	has_idea = civilian_economy
+	has_idea = export_focus
+	has_idea = volunteer_only
+	has_country_flag = independence_wave_full_focus_framework
+	check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+	has_country_flag = independence_wave_route_constitutional_available
+	has_country_flag = independence_wave_route_popular_council_available
+	has_country_flag = independence_wave_route_traditional_available
+	has_country_flag = independence_wave_route_emergency_military_available
+	NOT = { has_country_flag = independence_wave_route_patron_client_available }
+	has_country_flag = independence_wave_radical_sovereignty_route_excluded
+	has_country_flag = independence_wave_host_negotiation_route_available
+	has_country_flag = independence_wave_host_guarded_frontier_route_available
+	has_country_flag = independence_wave_host_association_route_available
+	has_country_flag = independence_wave_host_reclamation_route_available
+	has_country_flag = independence_wave_internal_power_struggle_registered
+	has_country_flag = independence_wave_ambition_family_registered
+	has_country_flag = independence_wave_league_route_available
+	NOT = { has_country_flag = independence_wave_formable_family_registered }
+	has_country_flag = independence_wave_force_mapping_loaded
+	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_031 }
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mountain_frontier }
+	check_variable = { independence_wave_military_tradition = constant:independence_wave_force_package_military_tradition.p31 }
+	has_independence_wave_force_package_for_current_generation = yes
+	has_country_flag = independence_wave_force_package_applied
+	check_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.expected_reinforcement_pathway_count }
+	has_country_flag = independence_wave_reinforce_integrate_militias
+	has_country_flag = independence_wave_reinforce_regional_guards
+	has_country_flag = independence_wave_reinforce_secure_depots
+	has_country_flag = independence_wave_reinforce_volunteer_corridors
+	has_country_flag = independence_wave_reinforce_capital_border_defense
+	NOT = { has_country_flag = independence_wave_reinforce_convert_defectors }
+	NOT = { has_country_flag = independence_wave_reinforce_terrain_units }
+	NOT = { has_country_flag = independence_wave_reinforce_league_cadres }
+	NOT = { has_country_flag = independence_wave_reinforce_factory_rail_guards }
+	NOT = { has_country_flag = independence_wave_reinforce_foreign_arms }
+	NOT = { has_country_flag = independence_wave_reinforce_professional_officers }
+	NOT = { has_country_flag = independence_wave_force_navy_inheritance_enabled }
+	NOT = { has_country_flag = independence_wave_force_air_inheritance_enabled }
+	has_country_flag = independence_wave_kos_ai_profile
+	has_country_flag = independence_wave_iw_031_lifecycle_initialized
+	OR = { has_idea = kos_fractured_municipal_mandate has_idea = kos_cantonal_state_compact }
+	capital_scope = { state = 802 }
+}
+
+has_complete_independence_wave_iw_031_package_setup = {
+	has_prepared_independence_wave_iw_031_package_setup = yes
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_iw_031_setup_complete
+	has_country_flag = independence_wave_origin_activation_ready
+	independence_wave_active_country_arrays_are_aligned = yes
+	independence_wave_network_member_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
+	has_country_flag = independence_wave_network_member
+}

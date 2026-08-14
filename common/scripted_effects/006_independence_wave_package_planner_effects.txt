@@ -273,7 +273,10 @@ independence_wave_measure_candidate_host_loss_capacity = {
 		limit = { has_event_target = liberation_candidate_state_host }
 		event_target:liberation_candidate_state_host = {
 			set_temp_variable = { independence_wave_host_loss_ceiling = num_owned_states }
-			subtract_from_temp_variable = { independence_wave_host_loss_ceiling = constant:liberation_release_limit.one }
+			if = {
+				limit = { NOT = { is_independence_wave_join_plan_context_active = yes } }
+				subtract_from_temp_variable = { independence_wave_host_loss_ceiling = constant:liberation_release_limit.one }
+			}
 			if = {
 				limit = {
 					check_variable = {
