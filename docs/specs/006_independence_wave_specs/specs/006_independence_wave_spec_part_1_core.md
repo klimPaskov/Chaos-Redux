@@ -28,14 +28,14 @@ The baseline number of countries released by an automatic wave is fixed by the c
 
 | Chaos band | Countries in the wave | Candidate character | Opening character |
 | --- | ---: | --- | --- |
-| Calm World | 6 | Established releasables and countries already represented by registered content | Small territorial package, limited forces, strong diplomatic vulnerability |
-| Gathering Storm | 8 | Established releasables plus a limited set of clear historical restorations | Wider host disruption, better local organization, first rare overlays |
-| Rising Chaos | 10 | Registered tags, historical states, regional identities, and researched local polities | Stronger militias, more contested borders, active patron competition |
-| Chaos Tier | 14 | Broad regional pool with stranger governments and ambitious historical claims | Armed releases, radical routes, league politics, frequent host retaliation |
-| Totalen Chaos | 20 | Full eligible pool, including niche historical and local polities | Maximum variety, stronger forces, severe instability, aggressive ambitions, hidden formables |
-| World Collapse | 20 | Full eligible pool, including rare and niche historical and local polities | Maximum variety, stronger forces, severe instability, aggressive ambitions, hidden formables, and danger-milestone pressure |
+| Calm World | 3 | Established releasables and countries already represented by registered content | Small territorial package, limited forces, strong diplomatic vulnerability |
+| Gathering Storm | 4 | Established releasables plus a limited set of clear historical restorations | Wider host disruption, better local organization, first rare overlays |
+| Rising Chaos | 5 | Registered tags, historical states, regional identities, and researched local polities | Stronger militias, more contested borders, active patron competition |
+| Chaos Tier | 7 | Broad regional pool with stranger governments and ambitious historical claims | Armed releases, radical routes, league politics, frequent host retaliation |
+| Totalen Chaos | 10 | Full eligible pool, including niche historical and local polities | Maximum variety, stronger forces, severe instability, aggressive ambitions, hidden formables |
+| World Collapse | 10 | Full eligible pool, including rare and niche historical and local polities | Maximum variety, stronger forces, severe instability, aggressive ambitions, hidden formables, and danger-milestone pressure |
 
-World Collapse retains the 20-country count of Totalen Chaos while also changing package quality, route access, force strength, border ambition, instability, and the chance of a dangerous coordinated bloc.
+World Collapse retains the 10-country count of Totalen Chaos while also changing package quality, route access, force strength, border ambition, instability, and the chance of a dangerous coordinated bloc.
 
 The fixed counts are design anchors. A wave may release fewer countries only when the map cannot produce the required number without violating host survival, duplicating a state, selecting an already living tag, or creating an invalid country. Such a shortfall is a blocked wave slot, not permission to annex a host or create overlapping ownership.
 
@@ -251,7 +251,7 @@ The 14 collision rows contain 12 same-group overlaps already governed by maximum
 
 The preceding sentence is a dated design snapshot from before the current collision-gate repair. The live region-06 and region-12 planner contracts now apply explicit state-level mutexes for state 354 and state 441, so these two findings are implemented source gates rather than unresolved gameplay omissions. The reservation groups remain distinct, and no package admission or map grant is implied by the mutexes.
 
-The current registry scan confirms that all 91 reuse rows resolve to registered tags and all 102 custom Event 6 `X` tags remain collision-free in the installed and mod registries. The scan locks identifiers and representations. It does not implement the thirteen compatibility adapters or thirteen additive overlay hooks. That result must be repeated if the relevant registries change.
+The current registry scan confirms that all 91 reuse rows resolve to registered tags and all 102 custom Event 6 `X` tags remain collision-free in the installed and mod registries. The scan locks identifiers and representations. The thirteen additive overlay hooks are source-validated and the thirteen registered-tag compatibility boundaries have current package-local source surfaces or retained adapters with route-preservation handoffs, but the scan and those dormant boundaries do not clear the separate package identity, asset, host/collision, and admission gates. That result must be repeated if the relevant registries change.
 
 ## Repeatable memory
 
