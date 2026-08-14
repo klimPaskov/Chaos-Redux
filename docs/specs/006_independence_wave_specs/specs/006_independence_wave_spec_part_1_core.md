@@ -249,6 +249,8 @@ The dated implementation layer in `../../../plans/006_independence_wave_plans/pa
 
 The 14 collision rows contain 12 same-group overlaps already governed by maximum-one and trimming rules. Two cross-group findings remain unresolved implementation gates. Lazistan and Pontus both claim state 354 Trabzon while retaining distinct accepted reservation groups. Their automatic selection needs an explicit state-level mutual exclusion. The route-only Himalayan confederation overlaps the automatic Kashmir package on state 441, so that route must consume or exclude the active Kashmir reservation. Neither finding authorizes a silent group merge or a broader map grant.
 
+The preceding sentence is a dated design snapshot from before the current collision-gate repair. The live region-06 and region-12 planner contracts now apply explicit state-level mutexes for state 354 and state 441, so these two findings are implemented source gates rather than unresolved gameplay omissions. The reservation groups remain distinct, and no package admission or map grant is implied by the mutexes.
+
 The current registry scan confirms that all 91 reuse rows resolve to registered tags and all 102 custom Event 6 `X` tags remain collision-free in the installed and mod registries. The scan locks identifiers and representations. It does not implement the thirteen compatibility adapters or thirteen additive overlay hooks. That result must be repeated if the relevant registries change.
 
 ## Repeatable memory
