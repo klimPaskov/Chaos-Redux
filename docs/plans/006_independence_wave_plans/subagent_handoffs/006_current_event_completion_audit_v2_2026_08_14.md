@@ -182,7 +182,7 @@ PNG artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/631b
 ## Asset and documentation gaps
 
 - Every unresolved grounded character carrier still requires its own `chaosx_portrait_creator` handoff with durable attributed source and rights evidence, an explicit placeholder/final state, runtime wiring evidence where authorized, and replacement evidence if a final is pending.
-- IW-050 has a portrait research worker active during this audit; no result from that concurrent work is promoted here.
+- IW-050 portrait research is now closed fail-closed in `006_iw050_komi_portrait_identity_research_2026_08_14.md`: no attributable period source, identity match, or rights basis was found, and no portrait asset or runtime wiring was promoted.
 - IW-050 still lacks accepted neutral and route-symbol provenance. No placeholder or later institutional flag should be treated as approval.
 - Super-event 23 audio remains a hard external-rights blocker, not optional polish.
 - The Komi core and completion handoffs, Komi package documentation, and any current source-of-truth text depending on their roster-checkpoint claim must record `109e6e734` and the bounded post-fix MCP evidence.
