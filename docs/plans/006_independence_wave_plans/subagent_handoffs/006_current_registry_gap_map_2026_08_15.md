@@ -19,6 +19,8 @@ IW-049 BWX is the most concrete source-local lead because a country shell, histo
 
 IW-051 YAK is the cleanest current-map anchor among the requested candidates at state 574. The package-local decisions, ideas, AI, lifecycle, force setup, localisation, and five shared focus callbacks now exist in `006_iw051_sakha_package_core_2026_08_15.md`, but identity/rights clearance, flag/origin acceptance, map-collision resolution, typed probability evidence, and central admission remain open.
 
+IW-052 BYA now has dedicated fail-closed identity, symbol, and package audits in `006_independence_wave_iw052_bya_portrait_research_handoff.md`, `006_iw052_bya_symbol_research_2026_08_15.md`, and `006_iw052_buryatia_package_core_2026_08_15.md`. The exact 1936 democratic opening consumer remains unresolved: Mikhei Erbanov is only a conditional period-fit institutional candidate pending parent identity assignment and crop review, while vanilla BYA generic portraits and the Event 005 Baikal Relay Council portrait are rejected. No neutral 1936 flag provenance or package-local mechanics/AI/focus/decision source is admitted, and BYA remains outside central adapter, attestation, preflight, scenario, and Join surfaces.
+
 The later IW-070 ARM, IW-071 GEO, and IW-072 AZR tranche is the useful complete reference: exact installed anchors 230/231/229, reused vanilla identity/portraits/flags, full package mechanics, central adapter/attestation, and current package audits are all documented. It is a precedent, not an unadmitted next candidate.
 
 ## Relevant files
