@@ -12,7 +12,9 @@ A later accepted-matrix cost-disclosure pass found three existing decisions whos
 
 Those owner-applied repairs are documented in `006_hbx_federal_asset_ledger_cost_localisation_alignment_2026_08_14.md`, `006_dm16_recognition_campaign_cost_localisation_alignment_2026_08_14.md`, `006_dm42_collective_recognition_cost_localisation_patch_2026_08_14.md`, and `006_post_dm62_recognition_cost_disclosure_gap_audit_2026_08_14.md`. They supersede the narrower timing of the original post-Join source-gap conclusion without widening its central-admission disposition.
 
-After HBX, DM-16, and DM-42, the current audit proves no further bounded source patch under the accepted authority. Current authority remains 40 runtime adapters, 32 attestations, 29 compatible reservation groups, and 161 unattested selectable rows; IW-047 MEL and IW-050 KOM remain fail-closed. Event 006 remains HOLD/PARTIAL, and this handoff makes no additional source or whole-event completion claim.
+The later exhaustive cost-disclosure scan also corrected `independence_wave_fij_convene_constituent_congress` to the existing administration-standard factory triplet and the admitted AFX `independence_wave_afx_convene_meuse_industrial_conference` to the existing strategic-major triplet. The FIJ repair is documented in the current addendum of `006_event6_cost_disclosure_crosscheck_2026_08_14.md`; the AFX repair is in the same addendum and preserves its existing file-scoped factory mirrors. These are selector-only repairs: FIJ remains adapter-only/fail-closed, while AFX remains admitted, and neither change widens central admission or Join.
+
+After HBX, DM-16, DM-42, FIJ, and AFX, the current audit proves no further bounded source patch under the accepted authority. Current authority remains 40 runtime adapters, 32 attestations, 29 compatible reservation groups, and 161 unattested selectable rows; IW-047 MEL and IW-050 KOM remain fail-closed. Event 006 remains HOLD/PARTIAL, and this handoff makes no additional source or whole-event completion claim.
 
 ## Disposition
 
@@ -40,6 +42,7 @@ This is not a mechanical OR-list defect. Adding any unattested ID to `has_indepe
 - KOM roster checkpoint, project lifecycle, strategic costs, and cost localisation are already repaired by the current committed tranche.
 - The Iberian founding missions are already serialized by `fe7fd3925`.
 - Evolution incident disable cleanup and package cost-localisation triplets are already repaired.
+- HBX, DM-16, DM-42, FIJ, and AFX factory-cost selectors now match their existing factory reservations; remaining custom/formable disclosure rows are design-dependent and are not silently normalized here.
 - Focus-layout warnings, rights and provenance gates, dedicated GUI evidence limits, and probability-adapter limitations were excluded from candidate selection for this pass.
 
 ## Current event MCP evidence
