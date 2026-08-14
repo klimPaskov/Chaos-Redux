@@ -97,6 +97,8 @@ The current `iceland_tree` focus inspection returned `FOCUS_INSPECTED` for the p
 
 The current focused Event 006 state-flow inspection for `chaosx.nr6.1` returned `EVENT_INSPECTED_PARTIAL` with zero selected blocking diagnostics at revision `741883f50501db1f866db675ee6ad6cb4009a90ad539eb84b08ce5e82602f65b`. Helper/lifecycle projection remains deferred in the large workspace, so this is structural evidence only. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a9a1cb21e545f652c0834806605d617135593fa24be7d2e30881be34a0b3cd74/83201ffd5066e07d8aea6834e7fe87e6bffd1255602c7e369824791e4cc7fa3e/event-state_flow-741883f50501.json`.
 
+The paired current renders completed as `MAP_RENDERED`, `FOCUS_RENDERED`, and `EVENT_RENDERED_PARTIAL`. The map state render passed its offline artifact checks (`map-state.png` SHA `0550658fb9a890f6226150e4b0ff98fd5cfcbdbe6a75da2372173d4cf4d8dacc`). The Iceland focus render retained layout hash `519ea6ed46008ccdaca74b3938aa42abcd45a1b88feb080bf224a21ed17b3e8c` but inherited the missing vanilla-icon diagnostics. The Event state render remains structural-only for the same deferred workspace projection; its revision-matched SVG is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6467bda29743f52ac99d589a1b4082ad57cebe08c46426b35ba735beae82f741/ea38c9286e0143ebb2ba898b4b2e0254ef12b31fb68387ee825e86213cada8fe/event-state-741883f50501.svg`.
+
 ## Final disposition
 
 The bounded owner corrections are complete: two parser-compatible factory modifiers and the one-line Shipping Registers tooltip disclosure. No gameplay effect, trigger, AI, central adapter, attestation, or Join behavior changed.
