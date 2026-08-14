@@ -4,11 +4,23 @@ Date: 2026-08-14
 
 Scope: read-only cross-decision scan of current Event 006 `custom_cost_text` selectors paired with `modifier = { civilian_factory_use = ... }`. The scan excludes Join/admission changes, portraits, flags, workbook data, and gameplay patching. The already repaired DM-16, DM-42, HBX federal asset ledger, and DM-62 selectors were checked as resolved and are not counted as live findings.
 
-## Disposition
+## Historical baseline disposition (superseded below)
 
-No gameplay source was edited by this audit. The source baseline was HEAD `7bb935ee5`; the shared decision and localisation files also contained the owner-applied DM-10/DM-36 repair in the working tree while this audit ran. The owner repair changes DM-10 `independence_wave_establish_treasury_and_currency` to `independence_wave_cost_administration_major` and DM-36 `independence_wave_buy_out_concession` to `independence_wave_cost_strategic_major`, with complete base, tooltip, and blocked keys. Those two findings are therefore recorded as resolved in the current owner worktree, pending the owner's normal commit/receipt.
+No gameplay source was edited by this audit. The source baseline was HEAD `7bb935ee5`; the shared decision and localisation files also contained the owner-applied DM-10/DM-36 repair in the working tree while this audit ran. The owner repair changes DM-10 `independence_wave_establish_treasury_and_currency` to `independence_wave_cost_administration_major` and DM-36 `independence_wave_buy_out_concession` to `independence_wave_cost_strategic_major`, with complete base, tooltip, and blocked keys. Those two findings were recorded as resolved in the then-current owner worktree and are superseded by the later committed source receipts referenced below.
 
-The remaining scan finds accepted-matrix cost disclosures that disagree with the active factory reservation, plus package/formable callers that need dedicated factory-aware text. The strongest safe selector-only recommendation is DM-49: the owner-added `independence_wave_cost_strategic_major` triplet exactly matches its existing major reservation and the accepted matrix's three-factory burden. No selector or localisation patch was applied here because the parent explicitly requested a read-only crosscheck.
+At that historical baseline, the remaining scan found accepted-matrix cost disclosures that disagreed with the active factory reservation, plus package/formable callers that needed dedicated factory-aware text. The strongest safe selector-only recommendation was DM-49: the owner-added `independence_wave_cost_strategic_major` triplet exactly matched its existing major reservation and the accepted matrix's three-factory burden. No selector or localisation patch was applied here because the parent explicitly requested a read-only crosscheck.
+
+## Superseding current-source disposition (2026-08-14)
+
+Owner source repairs after the `7bb935ee5` audit baseline supersede the historical selector findings for DM-49/DM-50 through `e1af5c85b`, DM-51/DM-52/DM-56/DM-57 through `3f8c18e49`, ARX through `47c60e51a`, and DM-16/DM-42 plus the HBX federal-asset-ledger selector through `21d769e4f`.
+
+Current source pairs DM-49/DM-50 with `independence_wave_cost_strategic_major` and a major factory modifier, DM-51 with `independence_wave_cost_border_ultimatum_major` and a major modifier, DM-52/DM-56 with `independence_wave_cost_integration_major` and a major modifier, DM-57 with `independence_wave_cost_breakaway_sponsorship_standard_factory` and a standard modifier, and ARX/DM-16/DM-42 with `independence_wave_cost_diplomatic_standard_factory` and a light modifier.
+
+The HBX federal-asset-ledger selector uses `independence_wave_cost_diplomatic_standard_factory` with its light factory modifier. Before the owner implementation addendum below, the federal-arsenal and Sacramento convention selectors were the remaining light-factory disclosures without factory-aware text.
+
+The factory-aware security-standard and administration-standard triplets exist, so the two selectors were aligned by the owner without changing payment or lifecycle code. No blanket HBX admission change is implied by this disclosure repair.
+
+The historical findings below remain preserved as dated evidence, with only the repaired selector rows superseded by the current-source disposition above.
 
 ## Severity-sorted findings
 
@@ -57,6 +69,8 @@ The ARX selector is a particularly clean one-line candidate: `independence_wave_
 HBX `independence_wave_hbx_screen_federal_arsenals` at `common/decisions/006_independence_wave_pacific_decisions.txt:37-51` has the same security-standard/light-factory omission, but IW-184/HBX remains held at the canonical content-attestation gate. It is context-limited rather than an admitted-surface patch candidate. The IW-043/IW-058 security-standard callers have the analogous omission and remain behind their package-admission boundary; they are not safe to widen or normalize in this tranche.
 
 ## Safe selector-only recommendations versus design-dependent work
+
+The recommendations below are historical baseline proposals; DM-49/DM-50, ARX, DM-16, DM-42, and the HBX federal-asset-ledger entry are superseded by the current-source disposition above, while the remaining formable and design-dependent entries retain their dated status.
 
 Safe and mechanically complete selector replacements, not applied in this read-only task:
 
@@ -121,3 +135,11 @@ The MCP pools are incomplete and no probability compare/evaluate pass was needed
 Validation consisted of the source/localisation crosswalk, accepted-matrix lookup, exact selector inspection for DM-10/DM-36 and the remaining candidates, and a complete custom-cost key/triplet scan. Live HOI4 execution, save/load, and runtime decision-card observation were not run; they remain parent/user validation surfaces.
 
 No files were changed by this audit. Parent-owned concurrent changes, including the DM-10/DM-36 selector/triplet repair and unrelated working-tree edits, were preserved. No admission, Join, assets, portraits, flags, workbook, AI, payment effect, or cleanup edits were made.
+
+## Owner implementation addendum — HBX factory disclosures (2026-08-14)
+
+The two remaining admitted IW-184/HBX light-factory disclosure mismatches were repaired in `common/decisions/006_independence_wave_pacific_decisions.txt`: `independence_wave_hbx_screen_federal_arsenals` now selects `independence_wave_cost_security_standard_factory`, and `independence_wave_hbx_seat_sacramento_civic_convention` now selects `independence_wave_cost_administration_standard_factory`.
+
+The existing factory-aware localisation triplets already match the one-factory modifier on each decision. The adjacent coastal-supply-bureaus project retains the generic administration-standard selector because it reserves the standard, not light, factory tier.
+
+No payment helper, requirement, AI score, duration, route gate, project lifecycle, admission, Join, asset, or cleanup behavior changed. This is a selector-only disclosure repair; the existing structural probability receipts remain sufficient and no quantitative balance claim is made.
