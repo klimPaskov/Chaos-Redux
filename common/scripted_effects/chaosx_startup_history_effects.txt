@@ -2,7 +2,7 @@
 # CHAOS REDUX - STARTUP HISTORY COMPATIBILITY EFFECTS
 # ============================================================================
 # Additive startup grants that replace copied vanilla history overrides.
-# Existing-country technologies, stockpiles, generated scientists, commander traits,
+# Existing-country technologies, stockpiles, static scientists, commander traits,
 # breakthrough progress, special projects, delayed events, and starting facility
 # placement belong here unless they define a new Chaos Redux country package.
 # ============================================================================
@@ -94,19 +94,6 @@ chaosx_startup_sync_chemical_technology_unlocks = {
 	}
 }
 
-chaosx_startup_mark_existing_scientists = {
-	every_scientist = {
-		set_character_flag = chaosx_startup_scientist_preexisting
-	}
-}
-
-chaosx_startup_clear_generated_scientist_helper_flags = {
-	every_scientist = {
-		clr_character_flag = chaosx_startup_scientist_preexisting
-		clr_character_flag = chaosx_startup_scientist_named
-	}
-}
-
 chaosx_startup_grant_ast = {
 	AST = {
 		if = {
@@ -117,13 +104,12 @@ chaosx_startup_grant_ast = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			chaosx_startup_mark_existing_scientists = yes
 			recruit_character = AST_howard_florey
 			AST_howard_florey = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_ast_howard_florey
 			}
-			chaosx_startup_clear_generated_scientist_helper_flags = yes
+			recruit_character = AST_charles_kellaway
+			recruit_character = AST_frank_macfarlane_burnet
 			add_breakthrough_progress = {
 				specialization = specialization_biowarfare
 				value = constant:startup_history_breakthrough.australia_biowarfare
@@ -173,6 +159,9 @@ chaosx_startup_grant_can = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			recruit_character = CAN_otto_maass
+			recruit_character = CAN_frederick_banting
+			recruit_character = CAN_claude_e_dolman
 		}
 	}
 }
@@ -209,40 +198,29 @@ chaosx_startup_grant_eng = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			chaosx_startup_mark_existing_scientists = yes
 			recruit_character = ENG_paul_fildes
 			ENG_paul_fildes = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_eng_paul_fildes
 			}
 			recruit_character = ENG_alexander_fleming
 			ENG_alexander_fleming = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_eng_alexander_fleming
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_ENG_ernst_chain
-				gender = male
-				traits = { scientist_trait_brilliant_theorist }
-				skills = {
-					specialization_biowarfare = 3
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = ENG_ernst_chain
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_ENG_ernst_chain"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = ENG_ernst_chain
+			ENG_ernst_chain = {
 				set_character_flag = chaosx_scientist_eng_ernst_chain
 			}
-			chaosx_startup_clear_generated_scientist_helper_flags = yes
+			recruit_character = ENG_charles_lovatt_evans
+			recruit_character = ENG_harold_hartley
+			recruit_character = ENG_john_scott_haldane
+			recruit_character = ENG_joseph_barcroft
+			recruit_character = ENG_rudolph_peters
+			recruit_character = ENG_edward_abraham
+			recruit_character = ENG_norman_heatley
+			recruit_character = ENG_patrick_laidlaw
+			recruit_character = ENG_b_c_j_g_knight
+			recruit_character = ENG_david_w_w_henderson
+			recruit_character = ENG_donald_d_woods
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.eng_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.eng_phosgene_agent_lots }
@@ -285,6 +263,8 @@ chaosx_startup_grant_fra = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
+			recruit_character = FRA_charles_dufraisse
+			recruit_character = FRA_paul_lebeau
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.fra_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.fra_phosgene_agent_lots }
@@ -320,128 +300,42 @@ chaosx_startup_grant_ger = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			chaosx_startup_mark_existing_scientists = yes
 			recruit_character = GER_gerhard_schrader
 			GER_gerhard_schrader = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_ger_gerhard_schrader
 			}
 			recruit_character = GER_kurt_blome
 			GER_kurt_blome = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_ger_kurt_blome
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_GER_walter_schreiber
-				gender = male
-				traits = { scientist_trait_resourceful }
-				skills = {
-					specialization_biowarfare = 2
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = GER_walter_schreiber
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_GER_walter_schreiber"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = GER_walter_schreiber
+			GER_walter_schreiber = {
 				set_character_flag = chaosx_scientist_ger_walter_schreiber
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_GER_erich_traub
-				gender = male
-				traits = { scientist_trait_gifted_engineer }
-				skills = {
-					specialization_biowarfare = 1
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = GER_erich_traub
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_GER_erich_traub"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = GER_erich_traub
+			GER_erich_traub = {
 				set_character_flag = chaosx_scientist_ger_erich_traub
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_GER_kurt_gutzeit
-				gender = male
-				traits = { scientist_trait_bright scientist_trait_inhumane }
-				skills = {
-					specialization_biowarfare = 2
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = GER_kurt_gutzeit
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_GER_kurt_gutzeit"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = GER_kurt_gutzeit
+			GER_kurt_gutzeit = {
 				set_character_flag = chaosx_scientist_ger_kurt_gutzeit
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_GER_sigmund_rascher
-				gender = male
-				traits = { scientist_trait_inhumane }
-				skills = {
-					specialization_biowarfare = 1
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = GER_sigmund_rascher
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_GER_sigmund_rascher"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = GER_sigmund_rascher
+			GER_sigmund_rascher = {
 				set_character_flag = chaosx_scientist_ger_sigmund_rascher
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_GER_josef_mengele
-				gender = male
-				traits = { scientist_trait_inhumane }
-				skills = {
-					specialization_biowarfare = 1
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = GER_josef_mengele
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_GER_josef_mengele"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = GER_josef_mengele
+			GER_josef_mengele = {
 				set_character_flag = chaosx_scientist_ger_josef_mengele
 			}
-			chaosx_startup_clear_generated_scientist_helper_flags = yes
+			recruit_character = GER_august_hirt
+			recruit_character = GER_ferdinand_flury
+			recruit_character = GER_otto_ambros
+			recruit_character = GER_otto_bickenbach
+			recruit_character = GER_richard_kuhn
+			recruit_character = GER_gerhard_rose
+			recruit_character = GER_joachim_mrugowsky
+			recruit_character = GER_erwin_ding_schuler
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.ger_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.ger_phosgene_agent_lots }
@@ -563,40 +457,19 @@ chaosx_startup_grant_jap = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			chaosx_startup_mark_existing_scientists = yes
 			recruit_character = JAP_shiro_ishii
 			JAP_shiro_ishii = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_jap_shiro_ishii
 			}
 			recruit_character = JAP_masaji_kitano
 			JAP_masaji_kitano = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_jap_masaji_kitano
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_JAP_chikahiko_koizumi
-				gender = male
-				traits = { scientist_trait_fast_learner scientist_trait_inhumane }
-				skills = {
-					specialization_biowarfare = 2
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = JAP_chikahiko_koizumi
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_JAP_chikahiko_koizumi"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = JAP_chikahiko_koizumi
+			JAP_chikahiko_koizumi = {
 				set_character_flag = chaosx_scientist_jap_chikahiko_koizumi
 			}
-			chaosx_startup_clear_generated_scientist_helper_flags = yes
+			recruit_character = JAP_ryoichi_naito
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.jap_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.jap_mustard_agent_lots }
@@ -680,13 +553,12 @@ chaosx_startup_grant_pol = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			chaosx_startup_mark_existing_scientists = yes
 			recruit_character = POL_franciszek_witaszek
 			POL_franciszek_witaszek = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_pol_franciszek_witaszek
 			}
-			chaosx_startup_clear_generated_scientist_helper_flags = yes
+			recruit_character = POL_rudolf_weigl
+			recruit_character = POL_ludwik_fleck
 			set_temp_variable = { var = startup_history_event_days value = constant:startup_history_event_delay.poland_biowarfare_days }
 			set_temp_variable = { var = startup_history_event_random_days value = constant:startup_history_event_delay.poland_biowarfare_random_days }
 			country_event = { id = biowarfare.3 days = startup_history_event_days random_days = startup_history_event_random_days }
@@ -761,40 +633,24 @@ chaosx_startup_grant_sov = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			chaosx_startup_mark_existing_scientists = yes
-			generate_scientist_character = {
-				portrait = GFX_portrait_SOV_lavrentiy_pavlovich_beria
-				gender = male
-				traits = { scientist_trait_resourceful }
-				skills = {
-					specialization_biowarfare = 1
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = SOV_lavrentiy_pavlovich_beria
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_SOV_lavrentiy_pavlovich_beria"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = SOV_lavrentiy_pavlovich_beria
+			SOV_lavrentiy_pavlovich_beria = {
 				set_character_flag = chaosx_scientist_sov_lavrentiy_pavlovich_beria
 			}
 			recruit_character = SOV_grigory_mairanovsky
 			SOV_grigory_mairanovsky = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_sov_grigory_mairanovsky
 			}
 			recruit_character = SOV_ivan_mikhailovich_velikanov
 			SOV_ivan_mikhailovich_velikanov = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_sov_ivan_mikhailovich_velikanov
 			}
-			chaosx_startup_clear_generated_scientist_helper_flags = yes
+			recruit_character = SOV_georgy_gause
+			recruit_character = SOV_nikolai_ginsburg
+			recruit_character = SOV_sergei_muromtsev
+			recruit_character = SOV_zinaida_yermolyeva
+			recruit_character = SOV_nikolay_zelinsky
+			recruit_character = SOV_yakov_fishman
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.sov_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.sov_phosgene_agent_lots }
@@ -872,39 +728,29 @@ chaosx_startup_grant_usa = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			chaosx_startup_mark_existing_scientists = yes
 			recruit_character = USA_frank_olson
 			USA_frank_olson = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_usa_frank_olson
 			}
 			recruit_character = USA_ira_baldwin
 			USA_ira_baldwin = {
-				set_character_flag = chaosx_startup_scientist_named
 				set_character_flag = chaosx_scientist_usa_ira_baldwin
 			}
-			generate_scientist_character = {
-				portrait = GFX_portrait_USA_murray_sanders
-				gender = male
-				skills = {
-					specialization_biowarfare = 2
-				}
-			}
-			random_scientist = {
-				limit = {
-					NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
-					NOT = { has_character_flag = chaosx_startup_scientist_named }
-				}
-				set_character_name = USA_murray_sanders
-				set_portraits = {
-					army = {
-						large = "GFX_portrait_USA_murray_sanders"
-					}
-				}
-				set_character_flag = chaosx_startup_scientist_named
+			recruit_character = USA_murray_sanders
+			USA_murray_sanders = {
 				set_character_flag = chaosx_scientist_usa_murray_sanders
 			}
-			chaosx_startup_clear_generated_scientist_helper_flags = yes
+			recruit_character = USA_stanhope_bayne_jones
+			recruit_character = USA_william_a_hagan
+			recruit_character = USA_karl_friedrich_meyer
+			recruit_character = USA_theodor_rosebury
+			recruit_character = USA_edwin_broun_fred
+			recruit_character = USA_george_w_merck
+			recruit_character = USA_james_stevens_simmons
+			recruit_character = USA_cornelius_p_rhoads
+			recruit_character = USA_dean_s_tarbell
+			recruit_character = USA_james_b_conant
+			recruit_character = USA_winford_lee_lewis
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_mustard_agent_lots }
