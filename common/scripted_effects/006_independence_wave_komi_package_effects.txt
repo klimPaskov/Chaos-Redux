@@ -306,6 +306,17 @@ independence_wave_komi_focus_establish_taiga_emergency_command = { independence_
 independence_wave_komi_focus_codify_durable_sovereignty = { independence_wave_komi_focus_open_pechora_corridor = yes }
 independence_wave_komi_focus_open_northern_ural_corridor = { independence_wave_komi_focus_open_pechora_corridor = yes }
 
+# The vanilla KOM character is the only accepted roster checkpoint. Keep the
+# installed portrait and character ownership intact; this flag only proves that
+# the package-local setup has a usable vanilla command roster.
+independence_wave_komi_checkpoint_vanilla_roster = {
+	if = {
+		limit = { is_independence_wave_komi_package = yes has_character = KOM_pavel_murashev }
+		set_country_flag = independence_wave_komi_roster_checkpoint
+		set_country_flag = independence_wave_command_roster_ready
+	}
+}
+
 independence_wave_setup_iw_050_komi = {
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_050_setup_complete
@@ -332,6 +343,7 @@ independence_wave_setup_iw_050_komi = {
 	if = {
 		limit = { can_initialize_independence_wave_iw_050_package = yes }
 		country_event = { id = chaosx.nr6.350 }
+		independence_wave_komi_checkpoint_vanilla_roster = yes
 		independence_wave_ensure_komi_baseline_laws = yes
 		independence_wave_initialize_komi_politics = yes
 		set_variable = { independence_wave_komi_congress_cohesion = constant:independence_wave_komi_pressure.council_cohesion_start }
