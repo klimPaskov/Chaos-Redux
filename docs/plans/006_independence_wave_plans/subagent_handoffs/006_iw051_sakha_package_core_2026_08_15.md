@@ -6,7 +6,7 @@ The package-local IW-051 core is implemented for the registered `YAK` carrier wi
 
 The tranche is intentionally fail-closed: central adapter, attestation, preflight, scenario, deterministic Join, Event 006 admission, Event 005 origins, state history, vanilla YAK files, flags, portraits, and other assets were not changed.
 
-Setup and roster use the source-backed vanilla characters `YAK_pavel_pevznyak` and `YAK_anatoly_pepelyayev`, but require the parent-owned `independence_wave_iw_051_identity_rights_cleared` country flag before any setup or roster checkpoint can proceed.
+Setup and roster use the source-backed vanilla character `YAK_pavel_pevznyak` and require the parent-owned `independence_wave_iw_051_identity_rights_cleared` country flag before any setup or roster checkpoint can proceed. The vanilla `YAK_anatoly_pepelyayev` character remains available to the carrier but is excluded from the Event 006 opening because the portrait audit found no valid 1936 Sakha role/date basis.
 
 ## Changed files
 
@@ -36,7 +36,7 @@ Setup and roster use the source-backed vanilla characters `YAK_pavel_pevznyak` a
 - Tag and package registration: local predicate complete; central admission registration intentionally not added.
 - State/map: state-574 anchor and capital checks complete; optional `644|876|877` are not written locally.
 - Politics/parties: local starting and route politics plus YAK party/cosmetic localisation complete.
-- Leaders/roster: vanilla character IDs are source-backed and exact; clearance gate remains unset by default.
+- Leaders/roster: the Event 006 roster is narrowed to the source-backed `YAK_pavel_pevznyak` consumer; the clearance gate remains unset by default and `YAK_anatoly_pepelyayev` is explicitly excluded from the opening.
 - Portraits/flags/assets: no new or overridden asset; generic vanilla YAK portrait provenance and rights remain unresolved.
 - Focus tree: five shared callbacks wired after helper definitions; no new tree or icon was created.
 - Decisions/missions: founding mission and ten project decisions are package-local and generation-guarded.
