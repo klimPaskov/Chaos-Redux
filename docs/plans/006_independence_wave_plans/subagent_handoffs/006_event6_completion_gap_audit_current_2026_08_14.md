@@ -107,12 +107,12 @@ Fresh source audits used:
 
 ### Stale or contradicted documentation
 
-1. `docs/plans/006_independence_wave_plans/subagent_handoffs/006_current_whole_event_completion_audit_post_iw045_mel_2026_08_14.md:173-175,208-216` still says the state-833 rebind and route flags are unimplemented and recommends that tranche next. Those findings are superseded by current source and asset evidence.
+1. `docs/plans/006_independence_wave_plans/subagent_handoffs/006_current_whole_event_completion_audit_post_iw045_mel_2026_08_14.md:173-175,208-216` previously described the state-833 rebind and route flags as unimplemented. The current handoff now records both as complete; only neutral-flag provenance remains open.
 2. `docs/events/006_independence_wave/mari_el_package.md:47` still says “Reconcile the anchor record,” although lines 27-29 correctly state that the state-833 anchor and FORM-12/13 consumers are reconciled. The future-work sentence should retain only the remaining portrait, neutral-symbol, probability, and admission gates.
 3. `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md:64` describes a current 31-package/28-group attestation set. Current authority is 32 packages/29 groups.
 4. `docs/plans/006_independence_wave_plans/006_admitted_package_ai_evidence_tranche_addendum_2026_08_13.md:15,192` preserves 31/28/162/39 and calls for a 31-row admitted parity matrix. The accepted tranche remains valid, but current execution must use 32/29/161/40 and a 32-row parity matrix.
 5. `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw047_mel_package_admission_audit_current_2026_08_14.md:76` and the AI addendum at line 271 say the installed MCP has no Technology Tree Viewer. Current callable tools include `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare`. No MEL technology feature was added, so this is a stale capability statement rather than a missing technology audit.
-6. The top overrides in `006_source_of_truth_map.md` and `006_independence_wave_resume_packet.md` have the correct 32/29/161/40 authority, but they do not yet summarize the completed IW-047 state-833 rebind and route-flag disposition. Historical sections are explicitly superseded, so this is a curator gap rather than an authority ambiguity.
+6. The top overrides in `006_source_of_truth_map.md` and `006_independence_wave_resume_packet.md` have the correct 32/29/161/40 authority and current IW-047 state-833/route-flag disposition. Historical sections retain dated traceability only.
 7. Eight unreferenced legacy FORM-12/13 state-256 asset files remain in the source/processed/final asset trees. No runtime or manifest consumer points to them. They are optional cleanup, not a current gameplay blocker.
 
 ## Accepted-plan disposition
