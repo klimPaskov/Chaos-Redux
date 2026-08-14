@@ -62,6 +62,21 @@ The existing DDS is `156x210`, 32-bit uncompressed BGRA with a valid legacy head
 
 The Fiji Times/Fiji Museum library image has no capture date or reusable license. The iTaukei Affairs ceremony image has no capture date or reuse permission; its modern EXIF save date is not a capture date. Ministry/USP commemorative graphics are modern composites, and the Find a Grave image depicts a monument rather than the person. None clears the grounded source gate.
 
+## Follow-up source search (2026-08-14)
+
+The bounded follow-up searched Wikimedia Commons API image/file metadata for `Ratu Sir Lala Sukuna`, `Lala Sukuna`, `Josefa Sukuna`, `Sukuna Fiji`, and `Fiji Legislative Council 1936`, then checked the returned archive references against the strict 1936 date and rights gates. Internet Archive advanced searches for Sukuna, Fiji Legislative Council, and Vishnu Deo were also checked for an attributable period portrait. No new pre-1936 Sukuna portrait or exact 1936 Fiji Legislative Council/Native Affairs officeholder portrait with a complete identity, role, date, source, and reusable-rights chain was found.
+
+The only additional attributable Sukuna image that passed an initial identity/source check was [CO 1069-652-37 (8187622443).jpg](https://commons.wikimedia.org/wiki/File:CO_1069-652-37_(8187622443).jpg), the [direct Commons image](https://upload.wikimedia.org/wikipedia/commons/3/38/CO_1069-652-37_%288187622443%29.jpg) credited to [The National Archives UK Flickr collection](https://www.flickr.com/photos/nationalarchives/8187622443/). Commons metadata identifies Ratu Sir Lala Sukuna at the 80th anniversary of the Deed of Cession in Suva, dated **1954**, at `734x572` pixels, with the National Archives UK copyright page stating “No known copyright restrictions.” The same Commons metadata marks the file `Copyrighted=True`, so this is a bounded no-known-restrictions/Flickr-Commons basis rather than an unambiguous public-domain grant. It fails the strict 1936 date gate and was not downloaded into the durable archive, processed, or considered for runtime use.
+
+The Commons search results otherwise returned the retained National Archives of Fiji portrait (`circa 1940s`), a statue, the 1954 Colonial Office image, and modern or non-portrait material. The contextual Legislative Council references confirm the period's Fijian representation structure and Sukuna's political activity, but do not provide a named 1936 officeholder portrait with source/date/rights evidence. No alternate exact officeholder was admitted by inference.
+
+| Candidate | Identity/source | Date gate | Rights gate | Disposition |
+| --- | --- | --- | --- | --- |
+| National Archives of Fiji Sukuna portrait | Strong identity and archive attribution | **FAIL:** circa 1940s | `PD-Fiji` Commons claim, bounded | Retained evidence only; not a 1936 source |
+| National Archives UK `CO 1069-652-37` Sukuna image | Strong identity and archive attribution | **FAIL:** 1954 | “No known copyright restrictions,” but Commons metadata also says `Copyrighted=True` | Not archived or admitted |
+| 1929 *Modern Review* Vishnu Deo scan | Attributed period publication and named subject | Passes 1936-era date | `PD-India` Commons claim, anonymous halftone | **FAIL:** not the exact Sukuna consumer's 1936 role |
+| Other exact 1936 Fiji officeholder | No complete attributable package found | Unverified | Unverified | Fail closed; no substitution |
+
 ## Ownership and reference checks
 
 The exact and variant terms `Sukuna`, `Lala Sukuna`, `Josefa Lalabalavu`, `Vanayaliyali Sukuna`, `Vishnu Deo`, and `Vishnu_Deo` were checked across project and targeted installed-vanilla `common/characters`, `history/countries`, `gfx/leaders`, `interface`, and `localisation` roots. No pre-existing vanilla or Chaos Redux character/portrait owner was found. The only project localisation match is the existing FIJ consumer itself. No transfer or clone is authorized.
@@ -72,9 +87,9 @@ The offline Paradox portrait and graphical-asset pages confirm the full `156x210
 
 ## Archive and output state
 
-The durable portrait parent remains flat at `docs/assets/portraits/006_independence_wave/`: FIJ Sukuna and Vishnu originals are at the parent root, and the `processed/` directory contains no FIJ processed outputs. No `156x210` archive file was created. Existing event-scoped review evidence remains under `docs/assets/006_independence_wave/`; it is not copied into the durable flat archive by this fail-closed audit.
+The durable portrait parent remains flat at `docs/assets/portraits/006_independence_wave/`: FIJ Sukuna and Vishnu originals are at the parent root, and the `processed/` directory contains no FIJ processed outputs. No `156x210` archive file was created. Existing event-scoped review evidence remains under `docs/assets/006_independence_wave/`; it is not copied into the durable flat archive by this fail-closed audit. The 1954 National Archives UK candidate was not archived because it fails the date gate and does not carry a clean public-domain status.
 
-No files other than this handoff were changed by this audit. No new source download, crop, PNG, DDS, `.gfx` entry, character reference, manifest, attestation, Join branch, or central authority edit was made.
+No files other than this handoff were changed by this follow-up. No new source download, crop, PNG, DDS, `.gfx` entry, character reference, manifest, attestation, Join branch, or central authority edit was made.
 
 ## Skipped checks and exact blockers
 
