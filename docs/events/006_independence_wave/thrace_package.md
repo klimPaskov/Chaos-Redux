@@ -16,7 +16,7 @@ Lifecycle ideas distinguish divided authority from the stable Thrace Compact. Fi
 
 ## Identity assets
 
-The leader consumer is the sourced male Hristo Silyanov, a Bulgarian revolutionary, historian, and memoirist associated with the Internal Macedonian-Adrianople Revolutionary Organization and the 1903 Preobrazhenie uprising. The current policy accepts the original archival identity as a source placeholder. The explicit crop, original source, provenance, processed PNGs, and runtime DDS are archived under `docs/assets/portraits/006_independence_wave/iw027_thrace_hristo_silyanov_source_placeholder_2026_08_06/`. Runtime wiring is in `interface/006_independence_wave_iw027_thrace_portraits.gfx`.
+The leader consumer is the sourced male Hristo Silyanov, a Bulgarian revolutionary, historian, and memoirist associated with the Internal Macedonian-Adrianople Revolutionary Organization and the 1903 Preobrazhenie uprising. The current policy accepts the original archival identity as a source placeholder. Its original source is flat in `docs/assets/portraits/006_independence_wave/iw027_thrace_hristo_silyanov_source_placeholder_2026_08_06__portrait_BAX_independence_wave_hristo_silyanov_original.jpg`; the crop, provenance, and review evidence are in the single `processed/` subfolder. Runtime wiring is in `interface/006_independence_wave_iw027_thrace_portraits.gfx`.
 
 The BAX flag is a flat ImageGen alternate-history civic synthesis based on researched Thrace regional motifs. It is not presented as a claimed historical national flag. The source prompt, raw ImageGen master, processed ladder, final TGAs, and manifest remain in `docs/assets/006_independence_wave/event006_missing_flags_2026_08_02/`, with the runtime family in `gfx/flags/`.
 
