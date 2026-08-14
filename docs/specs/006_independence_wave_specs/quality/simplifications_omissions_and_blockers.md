@@ -2,29 +2,45 @@
 
 ## Planning scope
 
-This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `24` source has a produced game-ready derivative and runtime package. Direct comparison of the editable catalog workbook with the current Event Details, evolution, Liberations-cluster, and SCN-008 localisation found exact agreement, so the bounded catalog-alignment task is closed without a workbook rewrite.
+This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `24` source has a produced game-ready derivative and runtime package. The latest catalog authority is `subagent_handoffs/006_catalog_wave_ladder_update_2026_08_11.md`, which records the approved Event 006 `Events!C7` wording update and regenerated CSV mirrors; this documentation patch does not edit the workbook or exports.
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
-## Current authority continuation (2026-08-06 Banat admission)
+## Current authority override (2026-08-14 IW-045 admission)
 
-The current Event 006 boundary is 24 content-attested selectable packages across 22 compatible reservation groups, with 169 unattested selectable rows out of 193 non-overlay rows and a 20-package static standalone witness that excludes only the self-hosting ICE anchor. IW-024 Banat (`AXX`) is admitted on exact state 82 with a protected ROM remnant, a sourced Otto Roth source-placeholder roster, the p24 mountain-frontier force mapping, the full generic framework, paid route/host/league projects, AI layers, cleanup, and a flat ImageGen alternate-history civic flag synthesis whose lack of attested historical geometry is explicitly documented. The central dispatcher exposes 32 adapters, with nine adapter-only rows still fail-closed. Ordinary super-events use runtime slots and audio/history IDs `23` and `24`; four-digit labels in dated research remain traceability only. The workbook/catalog status is `Partially Available` for Event 006 and the Liberations cluster, while SCN-008 remains `Unavailable`; the whole event remains **HOLD / PARTIAL**.
+The current IW-045 Event 006 boundary is 32 content-attested selectable packages across 29 compatible reservation groups, with 161 unattested selectable rows out of 193 non-overlay rows and 40 runtime adapters. Eight adapter-only rows remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. The deterministic Join order places IW-040 after IW-038, IW-044 after IW-040, and IW-045 after IW-044, with all three before IW-033. The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10. IW-038 Ruthenia, IW-040 Kuban, IW-044 Tatarstan, and IW-045 Bashkiria are admitted under their exact vanilla-carrier and actual-former-host contracts; the whole event remains **HOLD / PARTIAL**.
+
+The 2026-08-12 shared-focus repair added twenty-five visible prerequisite edges to the existing tree source: fourteen generic route/trunk edges plus eleven package and AJX edges. The parent-applied cleanup removed ten redundant visible edges while preserving their `available` gates. The final-source focus evidence reports 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors, with authored detour warnings and unrelated vanilla icon diagnostics remaining, so the focus surface remains HOLD. The current receipt is `../../plans/006_independence_wave_plans/subagent_handoffs/006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md`. Earlier 184-node/193-connector and 184-node/206-connector receipts are historical traceability only.
+
+IW-050 Komi remains package-local and fail-closed after the lifecycle, cost, and tooltip repair committed as `b8aa313a8`; it remains absent from central adapter, attestation, normal or SCN-008 preflight, and deterministic Join surfaces.
+
+The committed IW-013/IW-015 founding serialization and project-readiness repair in `fe7fd3925` adds active-founding-mission guards to NAV and GLC founding activation and routes their paid projects through package-readiness helpers; it preserves their adapter-only fail-closed status and does not change counts or central admission.
+
+The committed evolution removal-tail repair in `7a4e0d7a9` clears each matching pending flag when its incident is inactive or disabled while enabled branches continue to fire the existing events; focused Event MCP inspect/render remains partial with zero selected blocking diagnostics, and counts, admission, and deterministic Join are unchanged.
+
+Komi codify/corridor lifecycle repair `65da64229`, strategic/lifecycle hardening `85f5c9778`, and lifecycle/cost/tooltip repair `b8aa313a8` remain package-local corrections and do not widen the current 40/32/29/161 boundary or central admission surfaces.
+
+The current catalog status remains `Partially Available` for Event 006, `Unavailable` for SCN-008, and `Partially Available` for the mixed Liberations cluster. The 2026-08-11 catalog handoff records the updated player-facing ladder wording and successful export refresh; earlier no-delta catalog comparisons are historical traceability only.
+
+## Historical authority continuation (2026-08-06 Banat admission; superseded by the IW-038 promotion)
+
+The then-current Event 006 boundary was 24 content-attested selectable packages across 22 compatible reservation groups, with 169 unattested selectable rows out of 193 non-overlay rows and a 20-package static standalone witness that excludes only the self-hosting ICE anchor. IW-024 Banat (`AXX`) was admitted on exact state 82 with a protected ROM remnant, a sourced Otto Roth source-placeholder roster, the p24 mountain-frontier force mapping, the full generic framework, paid route/host/league projects, AI layers, cleanup, and a flat ImageGen alternate-history civic flag synthesis whose lack of attested historical geometry is explicitly documented. The central dispatcher exposed 32 adapters, with nine adapter-only rows still fail-closed. Ordinary super-events used runtime slots and audio/history IDs `23` and `24`; four-digit labels in dated research remain traceability only. The then-current workbook/catalog status was `Partially Available` for Event 006 and the Liberations cluster, while SCN-008 remained `Unavailable`; the whole event remained **HOLD / PARTIAL**.
 
 ## Historical authority snapshot (2026-08-06; superseded by the continuation above)
 
-The historical sections below retain their dated package arithmetic and are not current routing authority. The current Event 006 boundary is 23 content-attested selectable packages across 22 compatible reservation groups, with 170 unattested selectable rows out of 193 non-overlay rows and a 20-package static standalone witness that excludes only the self-hosting ICE anchor. The central dispatcher exposes 32 adapters, with nine adapter-only rows still fail-closed. Ordinary super-events use runtime slots and audio/history IDs `23` and `24`; four-digit labels in dated research remain traceability only. The workbook/catalog status is `Partially Available` for Event 006 and the Liberations cluster, while SCN-008 remains `Unavailable`; the whole event remains **HOLD / PARTIAL**. The exact audio-23 recording is still blocked, and the v116 *Toujours en Tête* source is research-only pending selection, ShareAlike integration review, and human audition. No Event 006 advisor icons are authorized or present.
+The historical sections below retain their dated package arithmetic and are not current routing authority. The then-current Event 006 boundary was 23 content-attested selectable packages across 22 compatible reservation groups, with 170 unattested selectable rows out of 193 non-overlay rows and a 20-package static standalone witness that excludes only the self-hosting ICE anchor. The central dispatcher exposed 32 adapters, with nine adapter-only rows still fail-closed. Ordinary super-events used runtime slots and audio/history IDs `23` and `24`; four-digit labels in dated research remain traceability only. The workbook/catalog status was `Partially Available` for Event 006 and the Liberations cluster, while SCN-008 remained `Unavailable`; the whole event remained **HOLD / PARTIAL**. The exact audio-23 recording is still blocked, and the v116 *Toujours en Tête* source is research-only pending selection, ShareAlike integration review, and human audition. No Event 006 advisor icons are authorized or present.
 
 ## Historical post-TRA implementation reconciliation (2026-08-03; superseded for package counts by the 2026-08-05 Transcaucasus amendment)
 
 The current whole-event status is **HOLD / PARTIAL**. The exact compile-time content-attestation set is fifteen packages (`IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-018`, `IW-019`, `IW-023`, `IW-173`, and `IW-184`) across fourteen compatible reservation groups and fifteen distinct anchors. The registry contains 193 selectable non-overlay rows, leaving 178 unattested. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by `006_iw023_tra_runtime_scenario_admission_reconciliation_2026_08_03.md` and gameplay commit `712c7c868`.
 
-The source-backed standalone fourteen-package witness is now recorded in `subagent_handoffs/006_event6_14_package_static_witness_2026_08_03.md` and enforced by `.tools/audit_event6_allocator.py`; it covers unique anchors/tags, the RG-RHINE-SAAR two-slot exception, compact host-owned footprints, and capital-preferred surviving remnants. This is not a live transaction or save/load receipt. The 20-country band remains structurally impossible with fifteen attestations. FORM-08 remains separately fail-closed for its accepted Vojvodina/Slavonia member, consent, and anchor proof. `23`, additional formables, package-specific AI/balance acceptance, and the remaining 178 country packages remain blockers. The obsolete pasted flag-log is excluded from current evidence; current collision evidence comes only from the scoped registered-tag source and strict static audit.
+The source-backed standalone fourteen-package witness is now recorded in `subagent_handoffs/006_event6_14_package_static_witness_2026_08_03.md` and enforced by `.tools/audit_event6_allocator.py`; it covers unique anchors/tags, the RG-RHINE-SAAR two-slot exception, compact host-owned footprints, and capital-preferred surviving remnants. This is not a live transaction or save/load receipt. That dated witness predates the active 3/4/5/7/10 ladder and does not define current wave cardinality. FORM-08 remains separately fail-closed for its accepted Vojvodina/Slavonia member, consent, and anchor proof. `23`, additional formables, package-specific AI/balance acceptance, and the remaining 178 country packages remain blockers in that dated snapshot. The obsolete pasted flag-log is excluded from current evidence; current collision evidence comes only from the scoped registered-tag source and strict static audit.
 
 The current grounded portrait policy is unchanged-source placeholder processing: retain the attributed source, take the exact head-and-shoulders crop, perform deterministic `156x210` processing, independently audit identity/framing/provenance, and convert to DDS only when a runtime consumer is otherwise authorized. No Event 006 advisor icons are created or required.
 
 ## 2026-07-29 shared core and registry API milestone (historical baseline)
 
-The core implementation milestone is closed under source and static evidence. The closure covers the automatic and World Collapse loop, the Event 005 and Event 006 reservation and transaction boundary, the shared country-value and host, patron, Network, League, and rival-bloc systems, and the reusable Event 006 country-registration and collection API. The approved automatic ladder remains 6/8/10/14/20, with the 14- and 20-country targets fail-closed below admitted package and reservation capacity.
+The core implementation milestone is closed under source and static evidence. The closure covers the automatic and World Collapse loop, the Event 005 and Event 006 reservation and transaction boundary, the shared country-value and host, patron, Network, League, and rival-bloc systems, and the reusable Event 006 country-registration and collection API. The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10. Any shortfall remains fail-closed below admitted package and reservation capacity.
 
 This closure is not a country-package completion claim. The current fourteen-package static attestation set spans thirteen compatible reservation groups and fourteen distinct anchors, while 179 non-overlay rows remain unattested, alongside 55 unbound rows, 17 inert reservations, 13 route-only overlays, missing or withdrawn package identities and assets, focus diagnostics, package-specific AI and balance evidence, unresolved formable and route contracts, and the `23` rights blocker. IW-018 ARX is admitted by the post-wire audit; the three v35 closure handoffs are the bounded implementation evidence, while package-specific handoffs remain the authority for their own content.
 
@@ -46,8 +62,8 @@ The current scoped tag audit covers the 102 Event 006 reservation tags plus the
 reports zero external collisions for the scoped surface, and leaves the unrelated
 `REV`, `ZIN`, and `ZZZ` carriers untouched. Earlier broad installed scans remain
 dated evidence only. The allocator still records 149 publishers, 126
-automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, the doubled
-6/8/10/14/20 ladder, and Event 005-first joint reservation ordering. Those
+automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, the active
+3/4/5/7/10 ladder, and Event 005-first joint reservation ordering. Those
 structural counts do not override the compile-time visual-readiness gate. Pacific
 assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and
 the audited flat ImageGen PFX flag. Exactly zero custom Event 006 advisor
@@ -173,8 +189,8 @@ reviewed. The two signature achievements remain hidden by their intended
 player-facing visibility rules, while their exact proof writers and formable
 adapter attestations are operational for the matching CHU and ASY package
 generations. The vanilla CHU/ASY shortcut guards have independently passed.
-The full achievement audit and static proof/source matrix remain required before
-whole-event completion. Live validation is optional future QA.
+The current static achievement audit and proof/source matrix are recorded in
+`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_achievement_static_audit_current_2026_08_14.md` and verify all sixteen definitions, 48 localisation keys, 48 icon variants, and proof-writer references. Whole-event completion still requires campaign reachability evidence across the remaining package, formable, League, super-event, and MCP lifecycle gaps. Live validation is optional future QA.
 
 ### Super-event production
 
@@ -191,12 +207,7 @@ The package defines source mode, motifs, sizes, animated states, static fallback
 
 ### Catalog workbook
 
-The editable source workbook was compared directly with the stable in-game
-localisation. `Events!C7`, `Events!D7:H7`, `Clusters!B3:C3`, and
-`Scenarios!B9:E9` match the current Event Details, all five evolution title/body
-pairs, Liberations cluster wording, and SCN-008 name, premise, type labels, and
-intensity descriptions exactly. No workbook write or CSV export was needed
-because there was no content delta. Whole-event status remains **In progress / Needs Testing** for implementation and static-source reasons, not catalog drift. Live rendering and runtime QA are optional future follow-up.
+The latest catalog handoff records an approved `Events!C7` wording update for the current 3/4/5/7/10 ladder with World Collapse at 10 and a successful refresh of all three export-only CSV mirrors. Event 006 remains `Partially Available`, the mixed Liberations cluster remains `Partially Available`, and SCN-008 remains `Unavailable`; the earlier no-delta comparison is historical traceability only. Whole-event status remains **HOLD / PARTIAL** for implementation and static-source reasons, not catalog drift. Live rendering and runtime QA are optional future follow-up.
 
 ### Repository and game validation
 
