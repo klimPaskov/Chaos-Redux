@@ -24,7 +24,7 @@ IW-050 Komi is package-local and remains absent from central content attestation
 
 The current IW-050 package-local evidence is `subagent_handoffs/006_iw050_komi_package_completion_audit_current_2026_08_14.md`, supported by the country-core, decisions, focus-hooks, localisation, portrait-source, symbol, probability, and source-crosswalk handoffs dated 2026-08-14.
 
-The package uses registered `KOM`, state 397, the p55 force contract, its package-local ledger, route, project, focus-helper, AI, localisation, and cleanup surfaces, but portrait identity/rights, flag provenance, typed mission fixtures, and central admission remain blocked.
+The package uses registered `KOM`, state 397, the p50 force contract, its package-local ledger, route, project, focus-helper, AI, localisation, and cleanup surfaces, but portrait identity/rights, flag provenance, typed mission fixtures, and central admission remain blocked.
 
 IW-047 Mari El remains package-local and unadmitted, while its installed runtime and FORM-12/13 consumer contract is state 833.
 
