@@ -8,6 +8,10 @@ Audit mode: read-only current-source admission audit. No gameplay, central regis
 
 IW-048 UDM remains fail-closed and is not admitted. The package has local constants, scripted triggers/effects, ideas, decisions, localisation, AI strategy, and guarded calls into the shared focus tree, but the current source has three package-local correctness blockers and is intentionally absent from central admission surfaces.
 
+### Superseding source update
+
+The three source blockers listed below were repaired after this read-only snapshot. The current repair receipt is `006_iw048_udm_package_local_repairs_2026_08_14.md`; the package remains fail-closed because central admission, portrait identity, flag provenance, and usable probability evidence are still unresolved.
+
 No new country tag, country definition, country history, character, portrait, flag, map state, formable, technology, GUI, central adapter, attestation, preflight, deterministic Join, or asset was added by this audit.
 
 ## Identity and vanilla reuse
@@ -74,9 +78,9 @@ No numeric AI ranking, timing, dominance, or balance claim is made because the m
 
 ## Concrete package-local blockers
 
-1. The accepted IW-048 force row in `docs/plans/006_independence_wave_plans/006_force_package_mapping.csv` requires `industrial_security`, military tradition `54`, and the reinforcement path `mobilize factory or railway guards`. Current setup in `common/scripted_effects/006_independence_wave_udm_package_effects.txt` adds `independence_wave_add_reinforce_terrain_units`, while `common/scripted_triggers/006_independence_wave_udm_package_triggers.txt` requires `independence_wave_reinforce_terrain_units` and explicitly rejects `independence_wave_reinforce_factory_rail_guards`. This is a source-of-truth mismatch and blocks package acceptance until the owner reconciles the pathway.
-2. The package has a shared `has_independence_wave_force_package_for_current_generation` check, but no UDM generation snapshot/equality helper or generation guard appears in the UDM trigger/effect source. `independence_wave_cleanup_iw_048_udm` is limited to `original_tag = UDM` and package id `iw_048`, so a stale cleanup call is not generation-safe. The ten decision cancellation paths and project failure effect likewise have no UDM generation snapshot gate.
-3. Cleanup restores `democratic = 60`, `communism = 20`, `neutrality = 10`, and `fascism = 10`. Vanilla `history/countries/UDM - Udmurtia.txt` uses democratic `60`, fascism `20`, communism `10`, and neutrality `10`; the cleanup swaps the fascist and communist shares and therefore does not restore vanilla identity exactly.
+1. **Resolved by the superseding source update.** The accepted IW-048 force row requires `industrial_security`, military tradition `54`, and `mobilize factory or railway guards`; setup and the prepared trigger now use that exact factory/rail pathway and reject the terrain-unit substitute.
+2. **Resolved by the superseding source update.** UDM setup snapshots `independence_wave_generation_id` into `independence_wave_udm_package_generation_id`, and cleanup requires that snapshot to equal the live generation plus `has_independence_wave_force_package_for_current_generation = yes`; the shared reset order performs package cleanup before clearing current-generation and force-mapping variables.
+3. **Resolved by the superseding source update.** Cleanup now restores vanilla UDM popularities as democratic `60`, communism `10`, neutrality `10`, and fascism `20`.
 4. Setup uses `set_politics = { ruling_party = democratic elections_allowed = yes }` in `independence_wave_initialize_udm_politics`. This differs from the provisional setup used by the accepted KUB/TAT pattern and should be explicitly accepted or changed by the package owner; it is an admission review item in addition to the three blockers above.
 
 ## MCP evidence and limitations
@@ -94,7 +98,7 @@ No numeric AI ranking, timing, dominance, or balance claim is made because the m
 
 The following surfaces are intentionally absent and must be supplied by the parent admission owner if IW-048 is later promoted: package-dispatch calls in `common/scripted_effects/006_independence_wave_package_dispatch_effects.txt` and `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`, content attestation, normal/scenario preflight, scenario registration, and deterministic Join references in `common/scripted_effects/006_independence_wave_join_effects.txt`, `common/scripted_triggers/006_independence_wave_join_triggers.txt`, `common/on_actions/006_independence_wave_join_on_actions.txt`, and `events/006_independence_wave_join.txt`.
 
-No central source was edited or admitted during this audit. The package must remain fail-closed until the three package-local blockers, the identity/map/asset acceptance packet, central adapter/attestation/preflight/Join review, and usable probability scenarios are resolved by the owning agent.
+No central source was edited or admitted during this audit. The package must remain fail-closed until the remaining politics design review, identity/map/asset acceptance packet, central adapter/attestation/preflight/Join review, and usable probability scenarios are resolved by the owning agent.
 
 ## Files reviewed
 
