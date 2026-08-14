@@ -2,13 +2,13 @@
 
 Date: 2026-08-14
 
-Status: **QUEUED FOR PARENT IMPLEMENTATION; PLAN ONLY**
+Status: **IMPLEMENTED AND MCP-VALIDATED**
 
 ## Decision
 
 The smallest next high-impact Event 006 tranche is a bounded shared-focus connector cleanup, not another country package, probability-tuning pass, formable, or super-event wiring pass.
 
-The implementation owner should remove the ten redundant visible prerequisites that connect `independence_wave_prepare_capital_administration` to ten distant, already-wired package roots. Every affected root already repeats the parent-completion requirement and its exact package identity in `available`, and every root remains hidden behind its package-specific `allow_branch`. The edit therefore removes only ten misleading long connectors. It does not change focus availability, package identity, rewards, AI, coordinates, route locks, admission, dispatch, attestation, preflight, or Join.
+The implementation owner removed the ten redundant visible prerequisites that connected `independence_wave_prepare_capital_administration` to ten distant, already-wired package roots. Every affected root retains the parent-completion requirement and its exact package identity in `available`, and every root remains hidden behind its package-specific `allow_branch`. The edit removed only ten misleading long connectors. It did not change focus availability, package identity, rewards, AI, coordinates, route locks, admission, dispatch, attestation, preflight, or Join.
 
 This addendum does not authorize a broad tree reflow. It does not authorize removal of any other prerequisite.
 
@@ -16,12 +16,12 @@ This addendum does not authorize a broad tree reflow. It does not authorize remo
 
 The current accepted Event 006 authority remains:
 
-- 31 content-attested packages.
-- 28 compatible reservation groups.
-- 162 unattested selectable rows.
-- 39 runtime adapters.
+- 32 content-attested packages.
+- 29 compatible reservation groups.
+- 161 unattested selectable rows.
+- 40 runtime adapters.
 
-IW-045 Bashkiria does not change those figures. Its package-local country, decision, focus-hook, localisation, and AI-strategy sources have landed, but central adapter, content attestation, normal/scenario preflight, deterministic Join, and full quantitative AI evidence remain deliberately absent. This focus cleanup must not add IW-045 to any central list or turn its inert package-local content into an admission claim.
+IW-045 Bashkiria establishes the current 32/29/161/40 boundary. Its package-local country, decision, focus-hook, localisation, and AI-strategy sources are present, but central adapter, content attestation, normal/scenario preflight, deterministic Join, and full quantitative AI evidence remain deliberately bounded by the current authority. This focus cleanup did not add any package to a central list or turn package-local content into an admission claim.
 
 The automatic release ladder remains `3/4/5/7/10`, including World Collapse at `10`. No allocator, dispatcher, attestation, reservation, Join, event, on-action, or package registry source is in scope.
 
@@ -39,10 +39,10 @@ Fresh read-only `hoi4.focus_inspect` completed for `common/national_focus/006_in
 
 - Revision: `4d270a35c303796596f39254ec287c181683e508ac50e141415888f39cc39c4b`.
 - Focuses: 184.
-- Connectors: 206.
+- Connectors: 196.
 - Connector crossings: 0.
 - Focus-node intersections: 0.
-- Long connectors: 12.
+- Long connectors: 2.
 - Layout hash: `014c594a446087d67b6623767e34af4b83a026e7446235e5a3bd3cbc4eceef2a`.
 - Validation aggregate: 14 blocking focus diagnostics.
 - Inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2789a26798d07b748c1a70eddf26854a87a6bcb1877010f30bdcdf4096f1d017/6b0fee03d1b7f3a9c48a326c73173258d8a68398ff6502230327ef829a071e72/focus-inspect.4d270a35c3037965.json`.
@@ -66,13 +66,13 @@ Fresh read-only `hoi4.event_inspect` state-flow analysis for `chaosx.nr6.1` retu
 
 This partial result supports only the boundary that no event-chain edit is warranted by this focus-layout tranche. It is not full lifecycle evidence.
 
-## Exact implementation tranche
+## Exact implementation tranche (completed)
 
 Owner file:
 
 - `common/national_focus/006_independence_wave_focus.txt`.
 
-For each child below, remove only the line `prerequisite = { focus = independence_wave_prepare_capital_administration }`.
+For each child below, the line `prerequisite = { focus = independence_wave_prepare_capital_administration }` was removed.
 
 | Package root | Current horizontal span | Required gates that remain in source |
 | --- | ---: | --- |
@@ -116,7 +116,7 @@ No probability comparison is required because no `ai_will_do`, strategy factor, 
 
 | Candidate next surface | Disposition | Reason |
 | --- | --- | --- |
-| Ten remote package-root connectors | **SELECTED / QUEUED** | One source file and ten redundant lines remove ten of twelve current long connectors without changing mechanics or authority |
+| Ten remote package-root connectors | **IMPLEMENTED / ACCEPTED** | One source file and ten redundant lines removed ten of twelve long connectors without changing mechanics or authority; post-change inspect/render receipts are recorded in the handoff |
 | Remaining transport and treasury detours | **QUEUED, NOT IN THIS TRANCHE** | A previous economy-lane coordinate trial introduced a crossing and was reverted; these need a separately rendered local layout design |
 | Military-archetype and independent-command geometry | **QUEUED, NOT IN THIS TRANCHE** | The independent-command visible edge was previously restored after removal isolated the choice; no repeat trial is authorized here |
 | Former-host successor-ledger connector | **QUEUED, NOT IN THIS TRANCHE** | It is a real visible route split and needs a separate branch-anchor review, not mechanical prerequisite deletion |
@@ -154,7 +154,7 @@ The installed probability adapters still do not provide a resolved typed KUB/TAT
 
 ## Promotion recommendation
 
-Keep this addendum in `docs/plans/006_independence_wave_plans/` until the exact ten-line source patch and its post-change focus inspect/render receipt are accepted or rejected.
+Keep this addendum as the dated implementation record. The exact ten-line source patch and its post-change focus inspect/render receipt are recorded in the companion handoff; the remaining focus diagnostics are outside this tranche.
 
 If accepted, promote only the general rule into `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_4_focus_tree_architecture.md`: a distant gated package module may use its exact completed-focus condition in `available` without a redundant visible connector when that connector crosses unrelated branch space. Record dated IDs, artifact URIs, and diagnostic counts in a handoff, not permanent design prose.
 
