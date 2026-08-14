@@ -37,7 +37,7 @@ The pre-fix documentation overstated this surface.
 
 `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw050_komi_country_core_2026_08_14.md:14` and `006_iw050_komi_package_completion_audit_current_2026_08_14.md:23` claim a vanilla `KOM_pavel_murashev` roster checkpoint, while `docs/events/006_independence_wave/komi_package.md:41` calls the package-local effects source-wired.
 
-The writer now exists, but the documents still need a durable `109e6e734` implementation receipt and the post-fix MCP limitations below.
+The writer now exists, and the related Komi handoffs were reconciled to `109e6e734` in `92bedf21a`; the post-fix MCP limitations are recorded below.
 
 ### Owner patch disposition
 
