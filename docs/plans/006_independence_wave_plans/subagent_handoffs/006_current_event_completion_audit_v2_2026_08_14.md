@@ -4,6 +4,8 @@
 
 Event 006 remains **HOLD / PARTIAL**.
 
+Superseding narrow patch: commit `b66899d16` adds stage-specific disable and cancellation guards to the five paid evolution incident decisions and their five resolution events. The patch closes the queued-incident-after-disable edge case without changing package authority, Join, central admission, or the event count ladder. Detailed evidence is recorded in `006_evolution_incident_disable_guard_patch_2026_08_14.md`.
+
 This audit does not make a whole-event completion claim and does not change the current authority boundary of **40 runtime adapters / 32 content attestations / 29 compatible reservation groups / 161 unattested selectable rows**.
 
 IW-047 MEL and IW-050 KOM remain package-local and absent from central adapter, content-attestation, preflight, dispatcher, and Join admission surfaces.
