@@ -16,7 +16,7 @@ The IW-045 Bashkiria promotion receipt is `subagent_handoffs/006_iw045_bashkiria
 
 Current super-event identifier override (2026-08-05): Event 006 uses ordinary project-wide identifiers `23` for the League of New States and `24` for Every Border a Casus Belli across display slots, audio, and Event Log history payloads. The danger package is source-wired; the league image/text dispatch is registered but its rights-cleared audio, wrappers, and firing remain blocked. Four-digit identifiers in dated entries below are traceability only.
 
-Current portrait archive layout (2026-08-14): the single archive is `docs/assets/portraits/006_independence_wave/`. Original source files are flat in the parent, all processed evidence is in its one `processed/` subfolder, and no `156x210` files are retained in the archive. Runtime DDS/GFX files remain in engine-facing folders; this archive is evidence/ComfyUI input only.
+Current portrait archive layout (2026-08-14): the single archive is `docs/assets/portraits/006_independence_wave/`. Original source files are kept directly in the parent, exactly one child folder `processed/` contains processed assets and metadata, and no `156x210` image files are retained in either archive location. Runtime DDS/GFX files remain in engine-facing folders; this archive is evidence/ComfyUI input only.
 
 ## Current IW-050 and IW-047 continuation authority (2026-08-14)
 

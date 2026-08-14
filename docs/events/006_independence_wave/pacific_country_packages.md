@@ -2,7 +2,7 @@
 
 ## Scope
 
-The current whole-event authority is 24 content-attested packages across 22 compatible reservation groups with 169 selectable rows still unattested. The older 23/22/170 arithmetic in this Pacific reference is dated traceability only; IW-024 Banat is the latest package promotion outside this region.
+The current whole-event authority is 32 content-attested packages across 29 compatible reservation groups with 161 selectable rows still unattested, served by 40 central/runtime adapters. Eight adapter-only rows remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM; the older arithmetic in this Pacific reference is dated traceability only. IW-045 Bashkiria is now admitted outside this regional reference.
 
 Current visual status (2026-08-01): IW-173 HAW has passed the independent v46
 portrait audit and is wired as an additive runtime package. Samuel Wilder King
@@ -51,7 +51,7 @@ after the coordinated PASS audits, sets all six shared adapter readiness flags,
 `independence_wave_form48_readiness_attested`. No annexation or integration
 fallback is used. FORM-06 through FORM-47 remain fail-closed, including
 FORM-42. The current whole-event evidence authority is the source map and resume packet under
-`../../plans/006_independence_wave_plans/`; the owner-promoted MAC/BOS tranche is the current package-count delta: 23 content-attested packages across 22 compatible reservation groups, with 170 selectable rows still unattested. The central dispatcher exposes 32 package adapters, while nine adapter-only rows remain fail-closed.
+`../../plans/006_independence_wave_plans/`; the current package-count authority is 32 content-attested packages across 29 compatible reservation groups, with 161 selectable rows still unattested. The central dispatcher exposes 40 package adapters, while eight adapter-only rows remain fail-closed.
 The narrowed v98 handoff remains generic-focus evidence only. The whole event stays
 **HOLD / PARTIAL** while FSM admission, live allocation, scenario, AI, and
 synchronized transaction evidence remain open. The v105 normal-spacing receipt
@@ -63,28 +63,16 @@ dedicated Iceland package reference rather than duplicated in this Pacific
 package document.
 
 The current allocator audit passes 149 publishers, 126 automatic/high-chaos
-selectable packages, 138 SCN-008 ranked packages, twenty-three exact attestations
-across twenty-two compatible reservation groups, the doubled 6/8/10/14/20 ladder, and
-Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
+selectable packages, 138 SCN-008 ranked packages, thirty exact attestations
+across twenty-seven compatible reservation groups, the active 3/4/5/7/10 ladder with
+World Collapse also targeting 10, and Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
 covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
 local mods, archives, and reports zero collisions; it remains historical scan
-evidence rather than current environment proof. The durable Event 006 portrait
-shelf now contains 63 original-size masters with no normalized or advisor
-derivatives.
+evidence rather than current environment proof. The durable Event 006 portrait archive uses the consolidated layout stated below; its contents are source evidence only and do not grant runtime, package, or attestation promotion.
 
-That sentence is a dated historical snapshot. The current portrait-shelf authority
-is 83 original-size PNG masters in the flat shelf recorded by the current source map, with all 83 indexed or
-explicitly recorded in the two flat-shelf manifests; no normalized 156x210 shelf
-files, advisor portraits, dossier derivatives, or small consumers are authorized.
-CHU Karim Tinchurin v3, the other CHU evidence rows, the two MNT masters, and ASY
-Haydo remain `needs_user_review` rights/date or provenance evidence. ASY Barsoum v93
-passes its independent audit and v94 promotes only the existing concordat-council
-DDS consumer; the wider IW-058 package remains outside attestation.
+The current portrait archive authority is `docs/assets/portraits/006_independence_wave/`: original source files are kept directly in the parent, exactly one child folder `processed/` contains processed assets and metadata, and no `156x210` image files are retained in either archive location. CHU Karim Tinchurin v3, the other CHU evidence rows, the two MNT masters, and ASY Haydo remain `needs_user_review` for rights/date or provenance evidence. ASY Barsoum v93 passes its independent audit and v94 promotes only the existing concordat-council DDS consumer; the wider IW-058 package remains outside attestation.
 
-Current shelf-index override (2026-08-03): all 83 physical masters are now indexed
-or explicitly recorded in the two flat-shelf manifests. The indexed rows are
-traceability-only and do not change any rights, provenance, role, or runtime
-admission gates.
+Historical shelf-index record (2026-08-03; traceability only): all 83 physical masters were indexed or explicitly recorded in the two flat-shelf manifests. The indexed rows are traceability-only and do not change any rights, provenance, role, or runtime admission gates.
 
 That package now has the v93 independent audit recorded: identity/likeness,
 HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with
