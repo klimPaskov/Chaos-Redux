@@ -4,6 +4,20 @@
 
 IW-050 is source-wired at package scope but remains fail-closed and unadmitted. The package does not change the current Event 006 authority boundary of 40 runtime adapters, 32 content attestations, 29 compatible reservation groups, and 161 unattested selectable rows.
 
+## Superseding codify/corridor repair note (2026-08-14)
+
+The package-local codify/corridor repair handoff `006_iw050_komi_codify_corridor_repair_2026_08_14.md` supersedes the earlier package-local alias wording.
+
+`independence_wave_komi_focus_codify_durable_sovereignty` now uses an idempotent Komi package guard, sets `independence_wave_komi_durable_sovereignty`, and applies `independence_wave_komi_apply_major_settlement`; it no longer opens the Pechora corridor.
+
+The separate `open_northern_ural_corridor` project is lifecycle-gated on a resolved and stable compact, network membership, the League route, capital control, the Komi strategic cost, and generation-safe project readiness, with mirrored cancellation prerequisites.
+
+This repair changes package-local codify and corridor behavior only; IW-050 remains outside the 40/32/29/161 authority, central adapter and attestation surfaces, normal or SCN-008 preflight, and deterministic Join, and remains fail-closed for central admission.
+
+The repair receipt supersedes the earlier 119-unresolved-input empty-state summary: the current six-scenario mission analysis has 66 rows, 131 unresolved inputs, and 11 never-eligible diagnostics, so it remains adapter-capability evidence only and supplies no normalized probability, timing, dominance, starvation, or balance claim.
+
+The later lifecycle, cost, and tooltip repair is recorded in `006_iw050_komi_lifecycle_cost_tooltip_repair_2026_08_14.md` and committed as `b8aa313a8`. It clears the durable sovereignty flag in setup and cleanup, aligns the emergency affordability gate with its security payment, and removes the codify/corridor tooltip mismatch. IW-050 remains package-local and fail-closed.
+
 The central adapter dispatcher, content-attestation OR list, normal and SCN-008 preflights, deterministic Join sequence, and central event wiring intentionally do not include IW-050. Region-05 loader and reservation rows are not runtime admission proof.
 
 ## Package-local implementation
@@ -32,7 +46,7 @@ Map inspection selected state 397 and its province geometry successfully, with a
 
 The current focus inspection completed with 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors. The five Komi helper references resolved, the layout hash was unchanged, and the remaining 14 diagnostics are existing workspace diagnostics outside this package. The focus receipt is recorded in `006_iw050_komi_focus_hooks_2026_08_14.md`.
 
-The mission probability inspect found 11 candidates, zero currently available candidates, an incomplete pool, 14 required inputs, and zero unresolved source items. Six empty-state scenarios produced a partial analysis with 66 rows, 119 unresolved state inputs, and 11 never-eligible diagnostics, so no ranking, timing, normalized probability, dominance, starvation, or balance claim is valid. The exact analysis and artifact URIs are recorded in `006_iw050_komi_decisions_2026_08_14.md`.
+The mission probability inspect found 11 candidates, zero currently available candidates, an incomplete pool, 15 required inputs, and zero unresolved source items. The current six empty-state scenarios produced a partial analysis with 66 rows, 131 unresolved state inputs, and 11 never-eligible diagnostics, so no ranking, timing, normalized probability, dominance, starvation, or balance claim is valid. The exact analysis and artifact URIs are recorded in `006_iw050_komi_decisions_2026_08_14.md` and `006_iw050_komi_lifecycle_cost_tooltip_repair_2026_08_14.md`.
 
 The AI strategy probability inspect returned `PROBABILITY_SOURCE_DISCOVERED` with `discoveryReason=no_weighted_surfaces` and zero candidates. The named empty strategy evaluation returned `PROBABILITY_SURFACE_EMPTY`, so no quantitative AI claim is valid. The exact source revision, hash, and artifact URI are recorded in `006_iw050_komi_probability_audit_2026_08_14.md`.
 

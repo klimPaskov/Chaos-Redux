@@ -14,6 +14,16 @@ Removal-tail inspect artifacts: `.360` `hoi4-agent://workspace/mod_chaos_redux_e
 
 Post-patch baseline: gameplay commit `b66899d16` (`Fix disabled evolution incident lifecycle`) plus documentation commit `fc8d2c45d` (`Clarify evolution incident source mirrors`).
 
+## Superseding removal-tail source-status note (2026-08-14)
+
+The five paid evolution incident `remove_effect` branches now clear their matching pending flags when the country is inactive or the corresponding evolution is disabled, while enabled branches continue to fire `chaosx.nr6.360` through `.364` without changing paid costs, timers, options, ledgers, or generation cleanup.
+
+Focused Event MCP inspect/render remains `EVENT_INSPECTED_PARTIAL` and `EVENT_RENDERED_PARTIAL` with zero selected blocking diagnostics at revision `741883f50501db1f866db675ee6ad6cb4009a90ad539eb84b08ce5e82602f65b`, and the large-workspace helper/lifecycle projection remains deferred.
+
+This removal-tail source change is committed in `7a4e0d7a9` (`Fix disabled evolution incident removal cleanup`); the earlier `b66899d16` guard baseline remains historical evidence for the visibility, cancellation, and event-entry checks.
+
+No Event 006 counts, package attestation, central adapter, preflight, deterministic Join, or admission status changed.
+
 ## Disposition
 
 **The identified lifecycle defect is repaired; the audited evolution/League surface remains source-present but MCP-partial.**
@@ -60,7 +70,7 @@ The direct flag checks are preferable here to reconstructing `is_current_evoluti
 | Canonical evolution activation and pacing | PASS at source; MCP partial | `common/scripted_effects/006_independence_wave_evolution_effects.txt:552-685` owns the five transitions, pre-fire eligibility, and one-stage active progression; lines 689-738 own MTTH scheduling and due checks. No safe gap found here. |
 | Pre-fire evolved openings | PASS at source | `common/scripted_effects/006_independence_wave_evolution_effects.txt:757-779` freezes the five active stages and applies each pending opening to the released country. |
 | Evolution Event Log rows | PASS at source; MCP helper projection deferred | `common/scripted_effects/006_independence_wave_evolution_effects.txt:159-290` sets event/type/stage/tier/date/actor context and defers pre-fire rows until an actor exists. |
-| Five paid evolution incident families | PARTIAL | Events `chaosx.nr6.360` through `.364`, their two options each, costs, timers, AI factors, and resolution helpers are source-present. `b66899d16` fixed visibility, cancellation, and event-entry guards. EVOL-006-DISABLE-REMOVE-TAIL remains. |
+| Five paid evolution incident families | PARTIAL, source-repaired; MCP partial | Events `chaosx.nr6.360` through `.364`, their two options each, costs, timers, AI factors, resolution helpers, and the five removal-tail cleanup branches are source-present. `b66899d16` fixed visibility, cancellation, and event-entry guards, while `7a4e0d7a9` clears matching pending flags for inactive or disabled removals. The Event MCP receipts remain partial with zero selected blocking diagnostics. |
 | Armed Birth paid frontier-reserve follow-through | PASS at source | Current authority explicitly states the five incident families and their paid frontier-reserve follow-through are no longer an implementation blocker at `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md:131`. No repeat implementation is authorized. |
 | League shared state machine | PASS at source within this scope | `common/scripted_effects/006_independence_wave_effects.txt:2543-2598` covers regional conference, congress preparation/failure/reopen, and charter-vote progression. The first successful proclamation emits `chaosx.nr6.35` once at lines 2601-2609. No locally provable League source omission was found. |
 | League first-congress news | PASS at source; MCP partial | `events/006_independence_wave.txt:71-82` defines `chaosx.nr6.35` with accepted ASSET-004. Fresh inspect/render selected zero blocking diagnostics. |
@@ -105,7 +115,7 @@ The sweep attempt returned exact blocker `PROBABILITY_SWEEP_RANGE_REQUIRED` beca
 
 - Preserve the five accepted evolution identities and stage order in `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_2_event_flow_and_evolutions.md:381-576`.
 - Preserve the source-wired active/pre-fire/logging implementation. Do not repeat the incident-family or Armed Birth follow-through tranche.
-- Treat `docs/plans/006_independence_wave_plans/subagent_handoffs/006_evolution_incident_disable_guard_patch_2026_08_14.md` as a correct partial repair whose completion claim needs the removal-tail follow-up above.
+- Treat `docs/plans/006_independence_wave_plans/subagent_handoffs/006_evolution_incident_disable_guard_patch_2026_08_14.md` as the source receipt for the five removal-tail cleanup branches, with Event MCP evidence still partial and source commit `7a4e0d7a9` as the implementation receipt.
 - Preserve League and ordinary super-event `24` source wiring.
 - Keep ordinary super-event `23` blocked. Do not select audio, create wrappers, or add a firing transaction from this audit.
 - Keep the whole event at HOLD / PARTIAL and do not change central admission, package attestations, asset rights, workbook rows, or unrelated shared UI.
