@@ -836,6 +836,103 @@ independence_wave_execute_reclamation_front = {
 	}
 }
 
+# DM-01 material commitment. The force-level equipment tier follows the
+# garrison tier, while an isolated capital consumes one train or one truck
+# reserve. The cost is sunk when the mission opens and is never refunded by a
+# cancellation caused by capital loss or a broken garrison.
+independence_wave_decision_pay_provisional_capital = {
+	if = {
+		limit = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals } }
+		add_equipment_to_stockpile = {
+			type = infantry_equipment
+			amount = constant:independence_wave_decision_cost.infantry_light_spend
+		}
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = constant:independence_wave_decision_cost.support_light_spend
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals } }
+		add_equipment_to_stockpile = {
+			type = infantry_equipment
+			amount = constant:independence_wave_decision_cost.infantry_standard_spend
+		}
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = constant:independence_wave_decision_cost.support_standard_spend
+		}
+	}
+	else_if = {
+		# Legacy or incomplete package setup has no published force level. The
+		# matching trigger fallback is the standard material tier, so it must
+		# consume the same standard commitment rather than the major tier.
+		limit = { NOT = { has_variable = independence_wave_force_level } }
+		add_equipment_to_stockpile = {
+			type = infantry_equipment
+			amount = constant:independence_wave_decision_cost.infantry_standard_spend
+		}
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = constant:independence_wave_decision_cost.support_standard_spend
+		}
+	}
+	else = {
+		add_equipment_to_stockpile = {
+			type = infantry_equipment
+			amount = constant:independence_wave_decision_cost.infantry_major_spend
+		}
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = constant:independence_wave_decision_cost.support_major_spend
+		}
+	}
+	if = {
+		limit = { NOT = { capital_scope = { supply_node > 0 } } }
+		if = {
+			limit = { has_equipment = { train_equipment > constant:independence_wave_decision_cost.provisional_capital_train_gate } }
+			add_equipment_to_stockpile = {
+				type = train_equipment
+				amount = constant:independence_wave_decision_cost.provisional_capital_train_spend
+			}
+		}
+		else = {
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:independence_wave_decision_cost.provisional_capital_motorized_spend
+			}
+		}
+	}
+}
+
+# Country scope. The caller has already proven the complete DM-01 material
+# gate. The 75-day mission is shortened to 30 or 45 days for the two lighter
+# force tiers, giving the accepted 30-to-75-day dynamic window.
+independence_wave_start_provisional_capital_mission = {
+	if = {
+		limit = { can_pay_independence_wave_provisional_capital_cost = yes }
+		set_country_flag = independence_wave_dm01_costs_reserved
+		independence_wave_decision_pay_provisional_capital = yes
+		activate_mission = independence_wave_secure_provisional_capital
+		if = {
+			limit = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals } }
+			set_temp_variable = { independence_wave_dm01_duration_adjustment = constant:independence_wave_decision_duration.provisional_capital_fragile_adjustment }
+			add_days_mission_timeout = {
+				mission = independence_wave_secure_provisional_capital
+				days = independence_wave_dm01_duration_adjustment
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals } }
+			set_temp_variable = { independence_wave_dm01_duration_adjustment = constant:independence_wave_decision_duration.provisional_capital_viable_adjustment }
+			add_days_mission_timeout = {
+				mission = independence_wave_secure_provisional_capital
+				days = independence_wave_dm01_duration_adjustment
+			}
+		}
+	}
+}
+
 # Validates the exact aligned witness without changing claims, wargoals, state
 # flags, or costs. The caller pays only after this pass sets the effect-chain
 # validation marker, then applies the same frozen rows in a separate effect.
@@ -1018,6 +1115,10 @@ independence_wave_cleanup_decision_layer = {
 
 	clr_country_flag = independence_wave_dm01_capital_secured
 	clr_country_flag = independence_wave_dm01_capital_failed
+	clr_country_flag = independence_wave_dm01_capital_administration_ready
+	clr_country_flag = independence_wave_dm01_costs_reserved
+	clr_country_flag = independence_wave_dm01_relocation_required
+	clr_country_flag = independence_wave_dm01_relocation_complete
 	clr_country_flag = independence_wave_dm02_revenue_service_established
 	clr_country_flag = independence_wave_dm02_salary_crisis
 	clr_country_flag = independence_wave_dm03_population_registered

@@ -46,6 +46,8 @@ has_independence_wave_active_founding_mission = {
 		has_active_mission = independence_wave_register_population
 		has_active_mission = independence_wave_hold_first_assembly
 		has_active_mission = independence_wave_confirm_traditional_authority
+		has_active_mission = independence_wave_nav_hold_fueros_together
+		has_active_mission = independence_wave_glc_hold_council_together
 	}
 }
 
@@ -270,6 +272,70 @@ can_pay_independence_wave_security_major_cost = {
 	has_army_experience > constant:independence_wave_decision_cost.army_experience_major
 	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major }
 	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_major }
+}
+
+# DM-01 reserves the infantry and support equipment at mission start. The
+# force-level branches mirror the capital garrison tiers without charging
+# manpower or army experience, which remain available for the later founding
+# actions.
+independence_wave_secure_provisional_capital_equipment_cost_satisfied = {
+	OR = {
+		AND = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_light_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_light_gate }
+		}
+		AND = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals }
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_standard_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_standard_gate }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = equals }
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.high_chaos compare = equals }
+			}
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_major_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_major_gate }
+		}
+		AND = {
+			NOT = { has_variable = independence_wave_force_level }
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_standard_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_standard_gate }
+		}
+	}
+}
+
+# A capital with a supply node does not need a transport burden. Otherwise the
+# country must reserve either trains or trucks for the isolated administration.
+independence_wave_secure_provisional_capital_transport_cost_satisfied = {
+	OR = {
+		capital_scope = { supply_node > 0 }
+		AND = {
+			NOT = { capital_scope = { supply_node > 0 } }
+			OR = {
+				has_equipment = { train_equipment > constant:independence_wave_decision_cost.provisional_capital_train_gate }
+				has_equipment = { motorized_equipment > constant:independence_wave_decision_cost.provisional_capital_motorized_gate }
+			}
+		}
+	}
+}
+
+# DM-01's automatic mission is started only after its tied garrison and
+# material commitments can be paid. `independence_wave_refresh_country_state`
+# retries this country-scoped gate when a later state change supplies the
+# missing equipment; no world scan is introduced.
+can_pay_independence_wave_provisional_capital_cost = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_package_setup_complete
+	NOT = { has_country_flag = independence_wave_dm01_capital_secured }
+	NOT = { has_country_flag = independence_wave_dm01_capital_failed }
+	NOT = { has_country_flag = independence_wave_dm01_costs_reserved }
+	NOT = { has_active_mission = independence_wave_secure_provisional_capital }
+	capital_scope = { is_controlled_by = ROOT }
+	independence_wave_secure_provisional_capital_garrison_satisfied = yes
+	independence_wave_secure_provisional_capital_equipment_cost_satisfied = yes
+	independence_wave_secure_provisional_capital_transport_cost_satisfied = yes
 }
 
 can_pay_independence_wave_strategic_cost = {
