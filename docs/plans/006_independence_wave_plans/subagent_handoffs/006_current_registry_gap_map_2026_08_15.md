@@ -120,3 +120,6 @@ The admitted IW-070–IW-072 handoff is the best approved in-repo precedent for 
 
 Do not implement or admit IW-046, IW-049, IW-051, IW-052, or IW-057 in the current tranche. If the parent needs one bounded source-backed follow-up, select IW-049 for map/identity/flag-source research only, with IW-051 as the next map-clean fallback after its identity and package-local mechanics are researched; preserve the 40-adapter, 32-attested, 29-group, 161-unattested boundary until a complete packet and the mandatory MCP/probability/audit evidence exist.
 
+## Current static recheck — 2026-08-15
+
+The post-reconciliation static recheck still reports 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, 40 runtime adapters, 32 attestations, 29 compatible groups, and 161 unattested rows. The allocator audit, SCN-008 scenario matrix, 102-family flag audit, and protected-country-tag audit all pass without changing the central boundary. No candidate admission, Join entry, or asset fallback was added by this recheck.
