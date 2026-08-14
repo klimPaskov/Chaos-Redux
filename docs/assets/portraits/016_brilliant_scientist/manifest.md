@@ -4,15 +4,15 @@ This is the durable manifest for the 2026-08-14 user-supplied scientist portrait
 
 ## Coverage and disposition
 
-The request specified 70 `.dds` inputs. The supplied directory contained 71 `.dds` files and no other input files; all 71 were audited. Exactly 65 unique identities were installed, 4 duplicate candidates were retained but not installed, and 2 ambiguous candidates were blocked.
+The request specified 70 `.dds` inputs. The supplied directory contained 71 `.dds` files and no other input files; all 71 were audited. Exactly 66 unique identities were installed, 4 duplicate candidates were retained but not installed, and one anonymous input was retained as explicit `not_needed` evidence after the user correction. No input remains an unresolved blocker.
 
 | Disposition | Count | Runtime action |
 | --- | ---: | --- |
-| Installed unique scientist portraits | 65 | One stable `156x210` runtime DDS and one `GFX_portrait_*` sprite per identity |
-| Replaced existing runtime portraits | 19 | Existing ID and sprite name preserved; supplied DDS promoted byte-for-byte |
+| Installed unique scientist portraits | 66 | One stable `156x210` runtime DDS and one `GFX_portrait_*` sprite per identity |
+| Replaced existing runtime portraits | 20 | Existing ID and sprite name preserved; supplied DDS promoted byte-for-byte |
 | New runtime portrait/sprite assets | 46 | Stable sprite/texture created; gameplay owner handoff required for character assignment |
 | Duplicate alternates | 4 | Archived under `alternates/`; no duplicate scientist identity |
-| Blocked ambiguous files | 2 | Archived under `blocked/`; no sprite or texture installed |
+| Not-needed ignored input | 1 | Archived under `not_needed/`; no identity, sprite, or runtime path assigned |
 
 Runtime scientist role is the vanilla full portrait canvas `156x210` under `gfx/leaders/scientists/`. Existing IDs use the established `portrait_<TAG>_<name>.dds` basename and `GFX_portrait_<TAG>_<name>` sprite convention.
 
@@ -33,6 +33,7 @@ Runtime scientist role is the vanilla full portrait canvas `156x210` under `gfx/
 | `BIO__ENG__patrick_laidlaw__source_01_00001.dds` | `ENG_patrick_laidlaw` | `gfx/leaders/scientists/portrait_ENG_patrick_laidlaw.dds` | `GFX_portrait_ENG_patrick_laidlaw` | new sprite/texture; handoff | none; gameplay owner handoff | none | `58f1067b3537cba1bb7c45fbd3fd7c26333455173ea143fa28ba91a8cdf4a702` |
 | `BIO__ENG__paul_fildes__source_01_00001.dds` | `ENG_paul_fildes` | `gfx/leaders/scientists/portrait_ENG_paul_fildes.dds` | `GFX_portrait_ENG_paul_fildes` | replaced existing | common/characters/cbrn_historical_specialists.txt; common/scripted_effects/chaosx_startup_history_effects.txt | regenerated 65x67 | `bd9d1fac4207b66f8d97cae7c3a801806e954a4270034544fe1b37f4ba35de40` |
 | `BIO__GER__erwin_ding_schuler__source_01_00001.dds` | `GER_erwin_ding_schuler` | `gfx/leaders/scientists/portrait_GER_erwin_ding_schuler.dds` | `GFX_portrait_GER_erwin_ding_schuler` | new sprite/texture; handoff | none; gameplay owner handoff | none | `069b9fd9e7f298c7a371efcf7b2795cc9e0e0027b5ecfb62a7bf46068395fde6` |
+| `6925d2612b927.image_00001.dds` | `GER_erich_traub` | `gfx/leaders/scientists/portrait_GER_erich_traub.dds` | `GFX_portrait_GER_erich_traub` | replaced existing byte-for-byte after explicit user correction | common/characters/cbrn_historical_scientists.txt; common/scripted_effects/chaosx_startup_history_effects.txt | none; scientist-only consumer | `71d437dfe1466c0a86ef33800363aeec9963bcfae042aab09792ae0a9bf8ab59` |
 | `BIO__GER__gerhard_rose__source_01_00001.dds` | `GER_gerhard_rose` | `gfx/leaders/scientists/portrait_GER_gerhard_rose.dds` | `GFX_portrait_GER_gerhard_rose` | new sprite/texture; handoff | none; gameplay owner handoff | none | `d1b116e35623138f35fea1f65f8c41bd5680c7648dcf79454b54125fb15d24dc` |
 | `BIO__GER__joachim_mrugowsky__source_01_00001.dds` | `GER_joachim_mrugowsky` | `gfx/leaders/scientists/portrait_GER_joachim_mrugowsky.dds` | `GFX_portrait_GER_joachim_mrugowsky` | new sprite/texture; handoff | none; gameplay owner handoff | none | `df0773be31be33f96a5cd69c8493edfd1b8262d1aa0614059da0ca1b3e29f3e9` |
 | `BIO__GER__kurt_blome__source_01_00001.dds` | `GER_kurt_blome` | `gfx/leaders/scientists/portrait_GER_kurt_blome.dds` | `GFX_portrait_GER_kurt_blome` | replaced existing | common/characters/cbrn_historical_specialists.txt; common/scripted_effects/chaosx_startup_history_effects.txt | regenerated 65x67 | `05bf1e6754d618dc4684be4bfdcde8e990c9f136989ea2c1a00304cc95d503f6` |
@@ -99,18 +100,17 @@ The full per-input record, source URL, rights status, dimensions, alpha range, r
 
 Only the selected candidate for each identity owns the runtime sprite. Karl Friedrich Meyer’s two files are byte-identical; the other alternates were rejected on comparative framing/source evidence.
 
-## Blocked inputs
+## Not-needed ignored input
 
-| Input | Proposed fill checked | Blocker | Archived path | SHA-256 |
+| Input | Proposed fill checked | Disposition | Archived path | SHA-256 |
 | --- | --- | --- | --- | --- |
-| `6925d2612b927.image_00001.dds` | `POL_franciszek_witaszek` | Blocked after direct comparison with public and existing Witaszek references; generic filename and visible facial mismatch make the proposed POL_franciszek_witaszek fill indefensible. | `blocked/6925d2612b927.image_00001/6925d2612b927.image_00001.dds` | `71d437dfe1466c0a86ef33800363aeec9963bcfae042aab09792ae0a9bf8ab59` |
-| `s-l1200_00001.dds` | `GER_erich_traub` | Blocked after direct comparison with public and existing Traub references; generic filename and visible facial mismatch make the proposed GER_erich_traub fill indefensible. | `blocked/s-l1200_00001/s-l1200_00001.dds` | `883c44e7cda35c759c823a868596437b7153b89bd07493b7c489551b662134bf` |
+| `s-l1200_00001.dds` | none | `not_needed`: explicit user-directed ignore after 6925d2612b927.image_00001.dds was identified as Erich Traub; no identity, sprite, or runtime path | `not_needed/s-l1200_00001/s-l1200_00001.dds` | `883c44e7cda35c759c823a868596437b7153b89bd07493b7c489551b662134bf` |
 
-The direct comparison sheet is `contact_sheets/ambiguous_vs_existing_native.png` and `contact_sheets/ambiguous_vs_existing_4x.png`. Neither blocked file has a runtime basename, sprite, character reference, or gameplay assignment.
+The earlier comparison sheets, `contact_sheets/ambiguous_vs_existing_native.png` and `contact_sheets/ambiguous_vs_existing_4x.png`, remain preserved as historical review evidence. The corrected installed-runtime contact sheets include `GER_erich_traub`, while `s-l1200_00001.dds` is recorded as ignored in the manifest and machine-readable mapping. The 6925d2612b927.image_00001.dds source is installed for the locked Traub runtime consumer.
 
 ## Existing advisor-card consumers
 
-The 11 supplied replacements that already had static 65x67 advisor-card consumers were regenerated from their accepted processed 156x210 PNGs using `create_advisor_icon.py` and the canonical `advisor_template.png`. Witaszek’s card remains unchanged because its only corresponding generic input was blocked. No small card was created for any new scientist-only identity.
+The 11 supplied replacements that already had static 65x67 advisor-card consumers were regenerated from their accepted processed 156x210 PNGs using `create_advisor_icon.py` and the canonical `advisor_template.png`. Witaszek’s card remains unchanged because no accepted input targets it. Erich Traub is scientist-only and has no advisor-card requirement; no card was created or altered for him or any new scientist-only identity.
 
 | Identity | Sprite | Runtime card | State | Evidence package |
 | --- | --- | --- | --- | --- |
@@ -125,15 +125,15 @@ The 11 supplied replacements that already had static 65x67 advisor-card consumer
 | `SOV_ivan_mikhailovich_velikanov` | `GFX_idea_SOV_ivan_mikhailovich_velikanov` | `gfx/interface/advisors/cbrn/SOV_ivan_mikhailovich_velikanov.dds` | replaced; output SHA `8c845375ad34e78b45f98ff7df9d85c609a1162e31050f450e993db4a0bf9fc6` | `advisor_cards/SOV_ivan_mikhailovich_velikanov/` |
 | `USA_frank_olson` | `GFX_idea_USA_frank_olson` | `gfx/interface/advisors/cbrn/USA_frank_olson.dds` | replaced; output SHA `c019f3af1bac34b14e40b730159b25a68ec81f8099a73e7053e5d1fe0ca5e9b7` | `advisor_cards/USA_frank_olson/` |
 | `USA_ira_baldwin` | `GFX_idea_USA_ira_baldwin` | `gfx/interface/advisors/cbrn/USA_ira_baldwin.dds` | replaced; output SHA `3de6eb4afd1e584b32773487173b8b05b0d2def2d448212500783ba02bce5265` | `advisor_cards/USA_ira_baldwin/` |
-| `POL_franciszek_witaszek` | `GFX_idea_POL_franciszek_witaszek` | `gfx/interface/advisors/cbrn/POL_franciszek_witaszek.dds` | unchanged; blocked source | existing runtime/card retained |
+| `POL_franciszek_witaszek` | `GFX_idea_POL_franciszek_witaszek` | `gfx/interface/advisors/cbrn/POL_franciszek_witaszek.dds` | unchanged; no accepted input targets Witaszek | existing runtime/card retained |
 
 The card manifest records prior/new hashes, template, transform, native/4x previews, placement study, alignment preview, and metadata for each regenerated card.
 
 ## Validation and review evidence
 
 - All 71 supplied DDS files decoded as `156x210`, exact length `131168` bytes, one-level uncompressed BGRA (`dwFlags=0x100F`, pixel flags `0x41`, mip count `0`, caps `0x1000`), with opaque alpha (`255:255`).
-- All 65 installed runtime DDS files are byte-identical to their selected supplied input and have SHA-256 values recorded in `checksums.sha256`.
-- `convert_to_dds.py` was run on all 65 processed PNGs. Strict BGRA/header pass: 65; decoded-pixel match: 65; converter-output byte match to supplied DDS: 65. Converter outputs are retained in `conversion_qa/`; runtime preserves the supplied finals.
+- All 66 installed runtime DDS files are byte-identical to their selected supplied input and have SHA-256 values recorded in `checksums.sha256`.
+- `convert_to_dds.py` was run on all 66 processed PNGs. Strict BGRA/header pass: 66; decoded-pixel match: 66; converter-output byte match to supplied DDS: 66. Converter outputs are retained in `conversion_qa/`; runtime preserves the supplied finals.
 - Every selected source package contains the untouched original DDS copy, exact full-canvas crop PNG/JSON, processed `156x210` PNG, and completed provenance contract.
 - Native/4x full input review: `contact_sheets/scientists_native_contact_sheet.png`, `contact_sheets/scientists_4x_contact_sheet.png`.
 - Native/4x installed-runtime review: `contact_sheets/installed_scientists_native_contact_sheet.png`, `contact_sheets/installed_scientists_4x_contact_sheet.png`.
@@ -143,10 +143,10 @@ The card manifest records prior/new hashes, template, transform, native/4x previ
 
 ## Files changed/owned
 
-- `gfx/leaders/scientists/portrait_*.dds`: 65 selected user-supplied runtime finals, including 19 replacements and 46 new stable texture paths.
+- `gfx/leaders/scientists/portrait_*.dds`: 66 selected user-supplied runtime finals, including 20 replacements and 46 new stable texture paths.
 - `interface/_scientists_portraits_additions.gfx`: 46 new portrait-only sprite definitions. Existing `interface/_scientists_portraits.gfx` was preserved because it already carried unrelated/shared worktree changes.
 - `gfx/interface/advisors/cbrn/*.dds`: 11 regenerated existing advisor-card textures; Witaszek unchanged.
-- `docs/assets/portraits/016_brilliant_scientist/`: durable source packages, alternates, blocked inputs, contact/review sheets, hashes, manifests, and converter QA.
+- `docs/assets/portraits/016_brilliant_scientist/`: durable source packages, alternates, the explicit not-needed input archive, contact/review sheets, hashes, manifests, and converter QA.
 - `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_scientist_portrait_install_2026-08-14.md`: parent handoff.
 
 No traits, skills, history recruitment, decisions, events, AI, or localisation files were edited. New identities have no character definitions or gameplay/localisation changes; their stable sprites/textures are handed to gameplay owners for any future character assignment.

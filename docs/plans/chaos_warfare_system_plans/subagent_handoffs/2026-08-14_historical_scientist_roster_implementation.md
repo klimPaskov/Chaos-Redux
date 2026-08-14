@@ -31,13 +31,13 @@ The implementation rebalances several conspicuous existing profiles: Shiro Ishii
 
 The user supplied 71 DDS files representing 70 unique images.
 
-Sixty-five unique identities were installed: 19 existing runtime portraits were replaced and 46 new portrait sprites and textures were added.
+Sixty-six unique identities were installed: 20 existing runtime portraits were replaced and 46 new portrait sprites and textures were added.
 
 Eleven established 65x67 advisor cards were regenerated from the accepted replacement portraits.
 
 Four duplicate or alternate candidates were archived without creating duplicate identities.
 
-Two anonymous files remain blocked and unassigned: `6925d2612b927.image_00001.dds` does not match Franciszek Witaszek, and `s-l1200_00001.dds` does not match Erich Traub.
+The user identified `6925d2612b927.image_00001.dds` as Erich Traub, and it now replaces the existing Traub runtime DDS under the stable character and sprite contract. `s-l1200_00001.dds` is explicitly ignored and retained as `not_needed` evidence without an identity or runtime assignment.
 
 The durable asset evidence is under `docs/assets/portraits/016_brilliant_scientist/`, with the full manifest at `docs/assets/portraits/016_brilliant_scientist/manifest.md` and the portrait-worker handoff at `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_scientist_portrait_install_2026-08-14.md`.
 
@@ -49,14 +49,12 @@ The audit caught Canadian recruits in the wrong country grant during review; the
 
 The localisation audit confirmed all 134 roster keys exactly once and corrected 17 factual or clarity defects, including professions and wartime roles for Harold Hartley, Murray Sanders, Sergei Muromtsev, Karl Friedrich Meyer, Edwin Broun Fred, William Hagan, and several perpetrator descriptions.
 
-The portrait parent review passed all 65 installed large portraits and 11 regenerated advisor cards at native and enlarged review scales.
+The portrait parent review passed all 66 installed large portraits and 11 regenerated advisor cards at native and enlarged review scales.
 
 No character/scientist renderer is exposed by the installed HOI4 MCP server.
 
 The probability inspector found no supported weighted surface in the unchanged advisor `ai_will_do` blocks, and no probability-bearing gameplay value was changed.
 
-## Remaining blocker
+## Portrait disposition
 
-The two anonymous DDS files cannot be wired without identities from the user.
-
-They are preserved in the asset package with side-by-side rejection evidence and do not have runtime sprites, character IDs, or recruitment calls.
+No portrait input remains blocked. The user-corrected Traub input is wired to the existing consumer, and the second anonymous file remains intentionally unwired under the explicit `not_needed` disposition.

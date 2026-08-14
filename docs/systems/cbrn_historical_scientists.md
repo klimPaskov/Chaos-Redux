@@ -122,7 +122,7 @@ Eleven pre-existing 65x67 advisor cards were regenerated from the accepted portr
 
 No new scientist-trait icons, specialization icons, or advisor sprites are required.
 
-The complete input mapping, hashes, selected alternates, blocked anonymous files, and visual-review evidence are recorded in `docs/assets/portraits/016_brilliant_scientist/manifest.md`.
+The complete input mapping, hashes, selected alternates, user-corrected anonymous-file dispositions, and visual-review evidence are recorded in `docs/assets/portraits/016_brilliant_scientist/manifest.md`.
 
 ## Historical research basis
 
@@ -134,8 +134,8 @@ Where a person's historical role was administrative rather than scientific, the 
 
 ## Future plans
 
-Two supplied files, `6925d2612b927.image_00001.dds` and `s-l1200_00001.dds`, remain unassigned because their filenames and faces do not support a defensible identity match.
+The user identified `6925d2612b927.image_00001.dds` as Erich Traub, so it replaces the established Traub runtime portrait without changing his character, sprite, skill, trait, localisation, or startup recruitment.
 
-If the user supplies identities for those files, they can be evaluated against the same historical scale and either replace an existing portrait or receive new static character, sprite, localisation, and startup wiring.
+The second anonymous file, `s-l1200_00001.dds`, is intentionally ignored and retained only as `not_needed` archive evidence.
 
 Dates of availability could later be modeled for scientists who died during the scenario period, but the current startup roster intentionally exposes the requested identities from scenario start.

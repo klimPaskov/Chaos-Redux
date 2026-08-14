@@ -4,7 +4,7 @@ This package installs the user-supplied HOI4-style finals from `C:\Users\klimp\D
 
 ## Required-input inventory
 
-The request specified 70 DDS files; the directory contained 71 DDS files and no other input file type. All 71 were audited. The selected/alternate/blocked disposition is recorded in `input_mapping.json` and `manifest.md`.
+The request specified 70 DDS files; the directory contained 71 DDS files and no other input file type. All 71 were audited. The selected, alternate, and explicit not-needed dispositions are recorded in `input_mapping.json` and `manifest.md`.
 
 ## Duplicate identity decisions
 
@@ -15,11 +15,11 @@ The request specified 70 DDS files; the directory contained 71 DDS files and no 
 
 Exactly one runtime portrait and one stable sprite were created per identity; no duplicate scientist identity was added.
 
-## Ambiguous filename decisions
+## Corrected anonymous-input decisions
 
-- `6925d2612b927.image_00001.dds`: blocked. The candidate was compared directly with the public [Franciszek Witaszek reference portrait](https://www.csw2020.com.pl/wp-content/uploads/2015/04/Franciszek-Witaszek.jpg) and the existing `POL_franciszek_witaszek` runtime portrait; its clean-shaven, dark-haired face does not match the reference's mustache, hairline, and facial structure. The filename is generic, so the proposed Witaszek fill was rejected rather than guessed.
+- `6925d2612b927.image_00001.dds`: the user authoritatively identified this supplied styled final as Erich Traub. It is installed byte-for-byte for the existing `GER_erich_traub` runtime consumer and retains the established `GFX_portrait_GER_erich_traub` sprite.
 - `Sigmund_Rascher_child_00001.dds`: resolved to `GER_sigmund_rascher`; the source-caption evidence describes Sigmund Rascher posing with a child kidnapped by his wife, and the repository already has the stable runtime ID/sprite.
-- `s-l1200_00001.dds`: blocked. The candidate was compared directly with the public [Erich Traub reference photograph](https://historyuk.s3.eu-west-2.amazonaws.com/s3fs-public/2022-09/Erich%20Traub.jpg) and the existing `GER_erich_traub` runtime portrait; the candidate's glasses, hairline, and facial structure do not match Traub's documented balding, clean-shaven profile. The filename is generic, so the proposed Traub fill was rejected rather than guessed.
+- `s-l1200_00001.dds`: explicitly ignored by the user after the Traub correction. It remains in the durable archive as `not_needed` evidence and receives no identity, sprite, runtime texture, or gameplay assignment.
 - `Gutzeit-15_00001.dds`: resolved to `GER_kurt_gutzeit`; the repository already has the stable runtime ID/sprite, and Federal Archive/Commons Kurt Gutzeit imagery provides the defensible broad facial/framing comparison.
 
 ## Identity references
@@ -38,4 +38,4 @@ The per-input identity-reference URL, source mode, rights status, hash, QA, runt
 
 ## Review standard
 
-The source crop is the full supplied 156x210 canvas `[0, 0, 156, 210]`; the exact crop PNG is decoded-pixel-equal to the supplied DDS. Native and 4x contact sheets in `contact_sheets/` provide human framing review. `ambiguous_vs_existing_native.png` and `ambiguous_vs_existing_4x.png` preserve the direct comparison against the two proposed existing-ID fills. Every selected candidate received identity, framing, provenance, and strict DDS format checks; blocked candidates were never wired.
+The source crop is the full supplied 156x210 canvas `[0, 0, 156, 210]`; the exact crop PNG is decoded-pixel-equal to the supplied DDS. Native and 4x installed-runtime contact sheets in `contact_sheets/` provide human framing review for all 66 installed portraits. The older `ambiguous_vs_existing` sheets remain historical review evidence and are superseded for these two anonymous inputs by the user's Traub identification and explicit ignore instruction. Every selected candidate received identity, framing, provenance, and strict DDS format checks; the not-needed input is not wired.
