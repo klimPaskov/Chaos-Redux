@@ -6,6 +6,14 @@ Audit base: `6fc828454b813c0cfe6660a255991b431bf39867` (`Implement scoped Event 
 
 Mode: read-only completion audit. No gameplay, localisation, asset, workbook, or runtime file was changed.
 
+## Post-DM-62 reconciliation
+
+A later accepted-matrix cost-disclosure pass found three existing decisions whose light civilian-factory commitments selected the generic diplomatic cost text. The parent has applied the bounded selector repair to IW-184/HBX `independence_wave_hbx_settle_federal_asset_ledger`, DM-16 `independence_wave_coordinate_recognition_campaign`, and DM-42 `independence_wave_request_collective_recognition` in the current owner worktree. All three now reuse `independence_wave_cost_diplomatic_standard_factory`; their costs, triggers, effects, timing, cleanup, AI, package admission, and assets remain unchanged.
+
+Those owner-applied repairs are documented in `006_hbx_federal_asset_ledger_cost_localisation_alignment_2026_08_14.md`, `006_dm16_recognition_campaign_cost_localisation_alignment_2026_08_14.md`, `006_dm42_collective_recognition_cost_localisation_patch_2026_08_14.md`, and `006_post_dm62_recognition_cost_disclosure_gap_audit_2026_08_14.md`. They supersede the narrower timing of the original post-Join source-gap conclusion without widening its central-admission disposition.
+
+After HBX, DM-16, and DM-42, the current audit proves no further bounded source patch under the accepted authority. Current authority remains 40 runtime adapters, 32 attestations, 29 compatible reservation groups, and 161 unattested selectable rows; IW-047 MEL and IW-050 KOM remain fail-closed. Event 006 remains HOLD/PARTIAL, and this handoff makes no additional source or whole-event completion claim.
+
 ## Disposition
 
 No additional narrow source patch is justified after the Join conversion commit.
