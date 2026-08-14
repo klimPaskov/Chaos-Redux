@@ -89,6 +89,14 @@ Static checks covered the seven ICE decision/mission IDs, cost/effect selector p
 
 No live game, save/load, allocator, or runtime activation-order validation was run.
 
+## Current MCP refresh
+
+The current read-only map inspection for state `100` returned `MAP_INSPECTED` with state membership, geometry, and network checks passing. The aggregate locator check remains false because the workspace contains unrelated building/port-position diagnostics; this is not an ICE-state failure. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7164e6928fcc259dc675de2607ec5604fb42ce3d8ef47b937e3ffc6649e11a91/e07a0ab2e2f07b551e70418bb3e430ed46e183134c8cf9704bc43113f0934a75/map-inspect.2bbb0ec306dc6906.json`.
+
+The current `iceland_tree` focus inspection returned `FOCUS_INSPECTED` for the preserved vanilla carrier, with 89 focuses and 104 connectors. The result is not a focus PASS because the viewer reports missing vanilla icon references and 193 aggregate diagnostics; those are broader carrier/workspace issues, not new ICE overlay nodes. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f2682740392515224f41380c7f851fdf4aacc609b0f4a3a7bf990355f44c4866/458ac01963430ce2b5a9136c029a630be9e5f5bc5faaf0454700d42d3b86cf3b/focus-inspect.464595bb80570dc8.json`.
+
+The current focused Event 006 state-flow inspection for `chaosx.nr6.1` returned `EVENT_INSPECTED_PARTIAL` with zero selected blocking diagnostics at revision `741883f50501db1f866db675ee6ad6cb4009a90ad539eb84b08ce5e82602f65b`. Helper/lifecycle projection remains deferred in the large workspace, so this is structural evidence only. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a9a1cb21e545f652c0834806605d617135593fa24be7d2e30881be34a0b3cd74/83201ffd5066e07d8aea6834e7fe87e6bffd1255602c7e369824791e4cc7fa3e/event-state_flow-741883f50501.json`.
+
 ## Final disposition
 
 The bounded owner corrections are complete: two parser-compatible factory modifiers and the one-line Shipping Registers tooltip disclosure. No gameplay effect, trigger, AI, central adapter, attestation, or Join behavior changed.
