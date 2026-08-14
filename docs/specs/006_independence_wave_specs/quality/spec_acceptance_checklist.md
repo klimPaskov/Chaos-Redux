@@ -4,6 +4,8 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 
 The controlling 2026-07-29 acceptance decision makes source and static evidence the completion authority. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static package capacity, incomplete package or formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain in force.
 
+Current implementation authority after the IW-045 admission is 32 content-attested selectable packages across 29 compatible reservation groups, 161 unattested selectable rows out of 193 non-overlay rows, and 40 runtime adapters. Eight adapter-only rows remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. IW-040, IW-044, and IW-045 are inserted after IW-038 and before IW-033 in deterministic Join order; IW-045 passes the central content-attestation and normal/scenario preflight gates under its exact dormant BSK/state-651 contract. The parent-applied focus cleanup removed ten redundant visible edges while preserving all corresponding `available` gates; the current MCP receipt is 184 focuses, 196 connectors, zero crossings, zero node intersections, two long connectors, and 14 blocking diagnostics. This remains a current HOLD surface, not a completion receipt. Current IW-040, IW-044, and IW-045 mission probability evidence is partial with incomplete typed candidate pools and no quantitative balance claim. The whole Event 006 disposition remains HOLD / PARTIAL.
+
 Current collision-gate continuation (2026-08-06): the cross-group Trabzon conflict is guarded by `is_independence_wave_region_06_state_354_mutex_open` and both IW-067/IW-068 planners. The Kashmir/Himalayan conflict is guarded by `is_independence_wave_region_12_state_441_mutex_open` and both IW-139/IW-149 planners. These source gates preserve the separate reservation groups and reject a state-441 reservation already held by the other package; they do not promote either package or formable.
 
 ## 2026-07-29 shared core and registry API milestone
@@ -12,7 +14,7 @@ The following bounded implementation milestone is closed under source and static
 
 | Milestone surface | Status | Boundary that remains open |
 | --- | --- | --- |
-| Automatic loop, World Collapse allocation, and Event 005/Event 006 transaction boundary | Source-closed | The approved ladder remains 6/8/10/14/20. The 14- and 20-country targets stay fail-closed below admitted package and reservation capacity. |
+| Automatic loop, World Collapse allocation, and Event 005/Event 006 transaction boundary | Source-closed | The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10. Scenario and static capacity counts remain separate evidence surfaces. |
 | Shared dynamic systems | Source-closed | Package-specific route writers, package AI and balance, and package admission still require their own audits. |
 | Country registration and reusable `chaosx_country_*` API | Source-closed | Registration does not promote country definitions, leaders, portraits, flags, focuses, decisions, forces, AI, formables, or assets. |
 
@@ -29,7 +31,7 @@ transactions, is maintained in
 | Event identity is Event 6, Independence Wave, Minor Repeatable | `README.md`, Part 1 | Complete in source design | Register and validate in the event system |
 | Event belongs to the Liberations cluster with Event 5 | Part 1, catalog handoff | Complete in source design | Keep cluster ID 2 and Low participation behavior |
 | Countries release instantly in a synchronized wave | Part 1 synchronized planner, release planner diagram | Complete in source design | Implement atomic planning and execution helpers |
-| Automatic wave sizes are exactly 6, 8, 10, 14, and 20 | Part 1 exact wave ladder, `006_wave_tuning_model.csv` | Complete in source design | Tune only the supporting package strength, not these counts; the doubled ladder supersedes the earlier 3/4/5/7/10 decision |
+| Automatic wave sizes are exactly 3, 4, 5, 7, and 10 | Part 1 exact wave ladder, `006_wave_tuning_model.csv` | Complete in source design | Tune supporting package strength and World Collapse intensity without changing these counts; World Collapse also targets 10 |
 | Host-facing Independence Wave crisis opens under severe occupation or low stability | Part 2 crisis surface, Part 3 crisis mission | Complete in source design | Expose the scoped costed mission, queue the ordinary synchronized planner on success, wait through the bounded retry window when the coordinator is busy, and fail closed without direct ownership changes when the plan remains invalid |
 | Early waves favor existing and normal releasables | Part 1 candidate layers A and B | Complete in source design | Verify registered tags and release effects |
 | Later waves add researched historical and local polities | Part 1 layers C and D, candidate registry, research rules | Complete in source design | Package-level historical research and asset review |
@@ -95,6 +97,8 @@ transactions, is maintained in
 - [x] The current selectable country pool contains 138 bound and 55 unbound packages after all 13 overlay rows are excluded.
 - [x] All 14 collision rows were independently recomputed.
 - [ ] All thirteen registered-tag compatibility adapters are implemented and route-preservation audited, including the `IW-153 POK` preservation obligations.
+
+Current source evidence for the thirteen package-local boundaries is consolidated in `../../../plans/006_independence_wave_plans/subagent_handoffs/006_registered_tag_compatibility_adapters_audit_2026_08_14.md`. The checkbox remains open because the adapter receipts are dormant and fail-closed until each package's identity, asset, host/collision, and complete admission evidence is independently accepted.
 - [x] All thirteen additive vanilla route-overlay hooks are implemented and kept out of the release selector; the final IW-156/IW-196/IW-197/IW-204 adapters are source-validated but not package-admitted.
 
 IW-022 has a bounded CRO-origin `dalmatia` source adapter, IW-025 has a bounded HUN-origin `vojvodina` source adapter, IW-035 has a bounded living-LIT `LIVONIA` adapter, IW-059 has a bounded formed `neo_mesopotamia` adapter, IW-085 has a bounded Italian-autonomy `LBA` adapter, IW-101/IW-102/IW-105 have bounded mutually exclusive COG cosmetic adapters, and IW-156/IW-196/IW-197/IW-204 have bounded TNE, Antilles, and Chilean vanilla overlays. Their meaningful-tree, network, league, formable, symbol, save/load, and live-runtime evidence are intentionally not counted toward either unchecked acceptance gate; no exact route-overlay hook remains absent.
