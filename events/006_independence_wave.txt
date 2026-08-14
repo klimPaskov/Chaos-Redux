@@ -246,6 +246,116 @@ country_event = {
 			set_country_flag = independence_wave_mnt_roster_checkpoint
 		}
 		if = {
+			# KOS has no vanilla character roster. Attach its three separately
+			# sourced male identities only after IW-031 is selected.
+			limit = {
+				is_independence_wave_kos_package = yes
+				NOT = { has_character = KOS_independence_wave_ferhat_draga }
+			}
+			recruit_character = KOS_independence_wave_ferhat_draga
+		}
+		if = {
+			limit = {
+				is_independence_wave_kos_package = yes
+				NOT = { has_character = KOS_independence_wave_miladin_popovic }
+			}
+			recruit_character = KOS_independence_wave_miladin_popovic
+		}
+		if = {
+			limit = {
+				is_independence_wave_kos_package = yes
+				NOT = { has_character = KOS_independence_wave_shaban_polluzha }
+			}
+			recruit_character = KOS_independence_wave_shaban_polluzha
+		}
+		if = {
+			limit = {
+				is_independence_wave_kos_package = yes
+				has_independence_wave_kos_command_roster = yes
+			}
+			set_country_flag = independence_wave_kos_roster_checkpoint
+		}
+		if = {
+			# KUB retains its vanilla Ivanis command roster. The checkpoint is
+			# explicit so a setup retry cannot treat the vanilla-only package as
+			# an unverified empty roster.
+			limit = {
+				is_independence_wave_kub_package = yes
+				has_independence_wave_kub_command_roster = yes
+			}
+			set_country_flag = independence_wave_kub_roster_checkpoint
+		}
+		if = {
+			# TAT retains its vanilla Aleksandr Alemasov command roster. The
+			# checkpoint keeps the vanilla-only package idempotent across retries.
+			limit = {
+				is_independence_wave_tat_package = yes
+				has_independence_wave_tat_command_roster = yes
+			}
+			set_country_flag = independence_wave_tat_roster_checkpoint
+		}
+		if = {
+			# RUT preserves the vanilla Augustin Voloshyn character and attaches
+			# three separately sourced Event 006 route identities idempotently.
+			limit = {
+				is_independence_wave_rut_package = yes
+				NOT = { has_character = RUT_independence_wave_andriy_brodiy }
+			}
+			recruit_character = RUT_independence_wave_andriy_brodiy
+		}
+		if = {
+			# BSK retains the vanilla Yakov Bykin roster. The checkpoint is
+			# explicit so a package retry cannot treat a vanilla-only roster as
+			# an unverified empty setup.
+			limit = {
+				is_independence_wave_bashkiria_package = yes
+				has_independence_wave_bsk_command_roster = yes
+			}
+			set_country_flag = independence_wave_bsk_roster_checkpoint
+			if = {
+				limit = { NOT = { has_country_flag = independence_wave_bsk_portrait_override } }
+				set_portraits = {
+					character = BSK_yakov_bykin
+					civilian = {
+						large = GFX_portrait_BSK_independence_wave_yakov_bykin
+					}
+				}
+				set_country_flag = independence_wave_bsk_portrait_override
+			}
+		}
+		if = {
+			limit = {
+				is_independence_wave_rut_package = yes
+				NOT = { has_character = RUT_independence_wave_ivan_mondok }
+			}
+			recruit_character = RUT_independence_wave_ivan_mondok
+		}
+		if = {
+			limit = {
+				is_independence_wave_rut_package = yes
+				NOT = { has_character = RUT_independence_wave_dmytro_klympush }
+			}
+			recruit_character = RUT_independence_wave_dmytro_klympush
+		}
+		if = {
+			# The Event 006 portrait remains character-scoped so ordinary vanilla
+			# RUT keeps its installed portrait outside the Independence Wave.
+			limit = { is_independence_wave_rut_package = yes }
+			set_portraits = {
+				character = RUT_augustin_voloshyn
+				civilian = {
+					large = GFX_portrait_RUT_independence_wave_augustin_voloshyn
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_independence_wave_rut_package = yes
+				has_independence_wave_rut_command_roster = yes
+			}
+			set_country_flag = independence_wave_rut_roster_checkpoint
+		}
+		if = {
 			# MAC uses the sourced Metodija Andonov-Cento identity as its
 			# provisional leader and corps commander. Attach the additive
 			# character here because the vanilla carrier history must remain
@@ -394,6 +504,48 @@ country_event = {
 	}
 	immediate = {
 		independence_wave_cleanup_reclamation_front_operation = yes
+	}
+}
+
+# DM-01 failure hands the provisional government to an explicit emergency
+# relocation choice. The event is country-scoped and only moves the capital to
+# a state that is already owned and controlled by the released country.
+country_event = {
+	id = chaosx.nr6.311
+	title = chaosx.nr6.311.t
+	desc = chaosx.nr6.311.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_active_country = yes
+		has_country_flag = independence_wave_dm01_relocation_required
+	}
+
+	option = {
+		name = chaosx.nr6.311.a
+		random_owned_controlled_state = {
+			limit = {
+				is_controlled_by = ROOT
+				NOT = { is_capital = yes }
+			}
+			ROOT = {
+				set_capital = { state = PREV remember_old_capital = no }
+				set_country_flag = independence_wave_dm01_relocation_complete
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = independence_wave_dm01_relocation_complete } }
+			set_country_flag = independence_wave_dm01_relocation_complete
+		}
+		clr_country_flag = independence_wave_dm01_relocation_required
+		independence_wave_refresh_country_state = yes
+	}
+
+	option = {
+		name = chaosx.nr6.311.b
+		set_country_flag = independence_wave_dm01_relocation_complete
+		clr_country_flag = independence_wave_dm01_relocation_required
+		independence_wave_refresh_country_state = yes
 	}
 }
 
