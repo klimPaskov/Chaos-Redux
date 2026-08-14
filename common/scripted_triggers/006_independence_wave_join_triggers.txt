@@ -1,0 +1,124 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 JOIN-WAVE TRIGGERS
+# ============================================================================
+# These predicates are intentionally country-scoped.  The join offer is
+# dispatched only by narrow state/peace/capitulation/release callbacks; no
+# periodic world scan is required.
+# ============================================================================
+
+is_independence_wave_join_source_identity_eligible = {
+	exists = yes
+	is_subject = no
+	has_war = no
+	NOT = { is_independence_wave_active_origin_country = yes }
+	NOT = { is_independence_wave_registry_event6_owned_tag = yes }
+	NOT = { is_soviet_collapse_active_origin_country = yes }
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	check_variable = {
+		var = num_owned_states
+		value = constant:liberation_release_limit.minimum
+		compare = greater_than
+	}
+}
+
+is_independence_wave_join_source_eligible = {
+	is_independence_wave_join_source_identity_eligible = yes
+	NOT = { has_country_flag = independence_wave_join_offer_pending }
+	NOT = { has_country_flag = independence_wave_join_cooldown }
+	NOT = { has_country_flag = independence_wave_join_operation_active }
+}
+
+is_independence_wave_join_coordinator_busy = {
+	OR = {
+		has_global_flag = liberation_release_plan_valid
+		is_liberation_release_plan_active = yes
+	}
+}
+
+is_independence_wave_join_reduction_threshold_met = {
+	has_variable = independence_wave_join_peak_owned_state_count
+	check_variable = {
+		var = independence_wave_join_owned_state_count
+		value = constant:liberation_release_limit.minimum
+		compare = greater_than
+	}
+	check_variable = {
+		var = independence_wave_join_state_loss_count
+		value = constant:independence_wave_join.minimum_states_lost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_join_owned_state_count_scaled
+		value = independence_wave_join_peak_owned_state_count_scaled
+		compare = less_than_or_equals
+	}
+}
+
+is_independence_wave_join_plan_ledger_owned = {
+	has_variable = independence_wave_join_plan_id
+	has_variable = global.liberation_plan_id
+	check_variable = {
+		var = global.liberation_plan_id
+		value = independence_wave_join_plan_id
+		compare = equals
+	}
+	check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+	var:global.liberation_plan_source_country = { tag = ROOT }
+}
+
+is_independence_wave_join_plan_global_cleanup_owned = {
+	is_independence_wave_join_plan_ledger_owned = yes
+	OR = {
+		NOT = { has_variable = global.independence_wave_join_active_plan_id }
+		check_variable = {
+			var = global.independence_wave_join_active_plan_id
+			value = independence_wave_join_plan_id
+			compare = equals
+		}
+	}
+}
+
+is_independence_wave_join_plan_identity_owned = {
+	is_independence_wave_join_plan_ledger_owned = yes
+	has_variable = global.independence_wave_join_active_plan_id
+	has_global_flag = independence_wave_join_conversion_active
+	has_global_flag = liberation_release_plan_includes_event6
+	check_variable = {
+		var = global.independence_wave_join_active_plan_id
+		value = independence_wave_join_plan_id
+		compare = equals
+	}
+}
+
+is_independence_wave_join_current_plan = {
+	is_independence_wave_join_plan_identity_owned = yes
+	has_variable = independence_wave_join_package_id
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+	check_variable = { global.independence_wave_plan_selected_count = constant:liberation_release_limit.one }
+	has_variable = global.independence_wave_join_offer_source
+	check_variable = { var = global.independence_wave_join_offer_source value = ROOT.id compare = equals }
+	check_variable = {
+		var = global.independence_wave_plan_selected_package_ids^0
+		value = independence_wave_join_package_id
+		compare = equals
+	}
+}
+
+is_independence_wave_join_plan_context_active = {
+	has_global_flag = independence_wave_join_conversion_active
+	has_variable = global.independence_wave_join_active_plan_id
+	check_variable = {
+		var = global.liberation_plan_id
+		value = global.independence_wave_join_active_plan_id
+		compare = equals
+	}
+	check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+}
+
+# Shared release validators call this only while the explicit join flag is
+# active.  It is deliberately narrow: a zero-state host is legal only for the
+# single Event 006 join plan that proved an exact all-owned-state footprint.
+is_independence_wave_join_zero_host_conversion = {
+	has_global_flag = independence_wave_join_conversion_active
+	has_country_flag = independence_wave_join_zero_host_allowed
+}

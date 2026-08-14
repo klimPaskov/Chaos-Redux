@@ -1,0 +1,490 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 JOIN-THE-INDEPENDENCE-WAVE EFFECTS
+# ============================================================================
+# A country-scoped conversion offer raised after a significant territorial
+# reduction.  The callback captures a peak owned-state baseline, opens one
+# ordinary Event 006 release plan, and probes only compile-time-attested
+# package adapters.  The accepted package is locked and executed by the
+# existing frozen-plan executor; this file does not copy diplomacy, factions,
+# or wars through unsupported broad effects.
+# ============================================================================
+
+# COUNTRY scope. Clear all join-local state while leaving durable failure and
+# success receipts available to the Event Log/history surface.
+independence_wave_join_clear_runtime = {
+	# Only the source that still owns the matching plan may clear global join
+	# markers.  A delayed hidden report must not clear a later plan's context.
+	if = {
+		limit = { is_independence_wave_join_plan_global_cleanup_owned = yes }
+		clr_global_flag = independence_wave_join_conversion_active
+		clear_variable = global.independence_wave_join_offer_source
+		clear_variable = global.independence_wave_join_active_plan_id
+	}
+	clr_country_flag = independence_wave_join_offer_pending
+	clr_country_flag = independence_wave_join_retry_pending
+	clr_country_flag = independence_wave_join_operation_active
+	clr_country_flag = independence_wave_join_zero_host_allowed
+	clear_variable = independence_wave_join_offer_date
+	clear_variable = independence_wave_join_package_id
+	clear_variable = independence_wave_join_owned_state_count
+	clear_variable = independence_wave_join_state_loss_count
+	clear_variable = independence_wave_join_owned_state_count_scaled
+	clear_variable = independence_wave_join_peak_owned_state_count_scaled
+	clear_variable = independence_wave_join_probe_state_row_start
+	clear_variable = independence_wave_join_probe_country_row_start
+	clear_variable = independence_wave_join_plan_id
+	clear_variable = independence_wave_join_history_payload
+}
+
+# COUNTRY scope. Schedule one scoped retry while the shared release
+# coordinator is busy. The country flag is the single-flight queue key; no
+# periodic or world-wide scan is introduced.
+independence_wave_join_schedule_retry = {
+	if = {
+		limit = { NOT = { has_country_flag = independence_wave_join_retry_pending } }
+		set_country_flag = independence_wave_join_retry_pending
+		country_event = {
+			id = chaosx.nr6.40
+			days = constant:independence_wave_join.retry_days
+		}
+	}
+}
+
+independence_wave_join_clear_retry_state = {
+	clr_country_flag = independence_wave_join_retry_pending
+}
+
+# COUNTRY scope. Keep the largest observed owned-state count. If no prior
+# observation exists, reconstruct the pre-loss footprint from the larger of
+# current territory and the country's core-state count as a last-resort
+# fallback. War-entry callbacks establish the exact pre-loss observation;
+# state-control callbacks only re-evaluate affected countries because a
+# controller change does not prove that ownership changed.
+independence_wave_join_update_peak_baseline = {
+	set_temp_variable = { independence_wave_join_current_owned_states = num_owned_states }
+	if = {
+		limit = { NOT = { has_variable = independence_wave_join_peak_owned_state_count } }
+		set_variable = { independence_wave_join_peak_owned_state_count = independence_wave_join_current_owned_states }
+		set_temp_variable = { independence_wave_join_core_state_count = constant:liberation_release_limit.minimum }
+		every_core_state = {
+			add_to_temp_variable = { independence_wave_join_core_state_count = constant:liberation_release_limit.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_join_core_state_count
+					value = independence_wave_join_peak_owned_state_count
+					compare = greater_than
+				}
+			}
+			set_variable = { independence_wave_join_peak_owned_state_count = independence_wave_join_core_state_count }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_join_current_owned_states
+				value = independence_wave_join_peak_owned_state_count
+				compare = greater_than
+			}
+		}
+		set_variable = { independence_wave_join_peak_owned_state_count = independence_wave_join_current_owned_states }
+	}
+	set_variable = { independence_wave_join_owned_state_count = independence_wave_join_current_owned_states }
+	set_variable = { independence_wave_join_state_loss_count = independence_wave_join_peak_owned_state_count }
+	subtract_from_variable = { independence_wave_join_state_loss_count = independence_wave_join_current_owned_states }
+	set_variable = { independence_wave_join_owned_state_count_scaled = independence_wave_join_current_owned_states }
+	multiply_variable = { independence_wave_join_owned_state_count_scaled = constant:independence_wave_join.percentage_basis }
+	set_variable = { independence_wave_join_peak_owned_state_count_scaled = independence_wave_join_peak_owned_state_count }
+	multiply_variable = { independence_wave_join_peak_owned_state_count_scaled = constant:independence_wave_join.reduction_percent }
+}
+
+# COUNTRY scope. War entry provides a pre-loss observation for both belligerents
+# without iterating the world. It never opens an offer while the war is active.
+independence_wave_join_observe_war_entry = {
+	set_temp_variable = { independence_wave_join_current_owned_states = num_owned_states }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = independence_wave_join_peak_owned_state_count }
+				check_variable = {
+					var = independence_wave_join_current_owned_states
+					value = independence_wave_join_peak_owned_state_count
+					compare = greater_than
+				}
+			}
+		}
+		set_variable = { independence_wave_join_peak_owned_state_count = independence_wave_join_current_owned_states }
+	}
+	set_country_flag = independence_wave_join_baseline_observed_at_war_entry
+}
+
+# COUNTRY scope. Use the existing package loader/reservation wrappers as the
+# content authority.  Each wrapper publishes a fixed anchor and all optional
+# package states; an exact state-row count comparison then rejects any source
+# that owns an extra or missing state.  Numeric meta-effect dispatch keeps this
+# list aligned with the attested runtime package IDs without copying package
+# setup logic here.
+independence_wave_join_try_package = {
+	set_temp_variable = { independence_wave_join_probe_country_row_start = global.liberation_plan_countries^num }
+	set_temp_variable = { independence_wave_join_probe_state_row_start = global.liberation_plan_states^num }
+	set_temp_variable = { independence_wave_candidate_requested_territory = constant:liberation_territory_level.extended }
+	set_temp_variable = { independence_wave_candidate_force_level = constant:liberation_force_level.viable }
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_join_candidate_id
+				value = constant:independence_wave_planner.two_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_effect = {
+			text = { independence_wave_reserve_package_iw_00[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_join_candidate_id|.0]"
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_join_candidate_id
+				value = constant:independence_wave_planner.three_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_effect = {
+			text = { independence_wave_reserve_package_iw_0[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_join_candidate_id|.0]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = { independence_wave_reserve_package_iw_[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_join_candidate_id|.0]"
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.independence_wave_plan_selected_count
+				value = independence_wave_join_probe_country_row_start
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { independence_wave_join_probe_state_count = global.liberation_plan_states^num }
+		subtract_from_temp_variable = { independence_wave_join_probe_state_count = independence_wave_join_probe_state_row_start }
+		set_temp_variable = { independence_wave_join_unreserved_owned_state_found = constant:independence_wave_planner.no_candidates }
+		every_owned_state = {
+			limit = { NOT = { is_liberation_release_current_reserved_state = yes } }
+			set_temp_variable = { independence_wave_join_unreserved_owned_state_found = constant:independence_wave_planner.selected }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_join_probe_state_count
+					value = independence_wave_join_owned_state_count
+					compare = equals
+				}
+				check_variable = {
+					var = independence_wave_join_unreserved_owned_state_found
+					value = constant:independence_wave_planner.no_candidates
+					compare = equals
+				}
+			}
+			set_temp_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.selected }
+		}
+		else = {
+			liberation_release_rollback_candidate_reservation = yes
+			# Package finishers publish selected-package metadata before the exact
+			# footprint proof runs. Reset that metadata and reopen the same
+			# allocating contribution so a later attested package is a clean,
+			# single-flight trial rather than inheriting a stale selected-count row.
+			independence_wave_clear_plan_contribution = yes
+			independence_wave_begin_plan_contribution = yes
+			set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+			set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.viable }
+			set_variable = { global.independence_wave_plan_target_count = constant:liberation_release_limit.one }
+			set_variable = { global.independence_wave_plan_chaos_band = constant:independence_wave_chaos_band.gathering_storm }
+		}
+	}
+}
+
+# COUNTRY scope. Calls exactly one candidate wrapper in fixed attestation order
+# and leaves the shared plan in `allocating` while the report event is open.
+independence_wave_join_probe_attested_package = {
+	set_temp_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_001 }
+	independence_wave_join_try_package = yes
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_002 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_004 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_006 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_007 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_008 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_009 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_010 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_012 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_014 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_017 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_018 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_019 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_023 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_024 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_026 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_027 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_028 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_029 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_030 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_031 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_038 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_040 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_044 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_045 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_033 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_041 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_070 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_071 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_072 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_173 } independence_wave_join_try_package = yes }
+	if = { limit = { check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.no_candidates } } set_temp_variable = { independence_wave_join_candidate_id = constant:independence_wave_package_id.iw_184 } independence_wave_join_try_package = yes }
+}
+
+independence_wave_join_record_history = {
+	set_temp_variable = { events_log_system_event_id = constant:independence_wave_event.id }
+	set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.repeatable }
+	set_temp_variable = { events_log_system_payload = independence_wave_join_history_payload }
+	set_temp_variable = { events_log_system_actor = THIS.id }
+	set_temp_variable = { events_log_system_has_actor = constant:independence_wave_plan.loop_increment }
+	set_temp_variable = { events_log_system_secondary_actor = constant:independence_wave_value.minimum }
+	set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_value.minimum }
+	if = {
+		limit = { has_event_target = independence_wave_join_target }
+		event_target:independence_wave_join_target = {
+			set_temp_variable = { events_log_system_secondary_actor = THIS.id }
+		}
+		set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_plan.loop_increment }
+	}
+	record_events_log_system_history_entry = yes
+	refresh_events_log_system_history_views = yes
+	set_temp_variable = { events_log_system_event_id = 0 }
+	set_temp_variable = { events_log_system_event_type = 0 }
+	set_temp_variable = { events_log_system_payload = 0 }
+	set_temp_variable = { events_log_system_actor = 0 }
+	set_temp_variable = { events_log_system_has_actor = 0 }
+	set_temp_variable = { events_log_system_secondary_actor = 0 }
+	set_temp_variable = { events_log_system_has_secondary_actor = 0 }
+}
+
+# COUNTRY scope. Called only by a scoped callback. The coordinator remains in
+# allocation while the normal report event asks the owner for consent.
+independence_wave_join_offer_if_eligible = {
+	independence_wave_join_update_peak_baseline = yes
+	if = {
+		limit = {
+			is_independence_wave_join_source_eligible = yes
+			is_independence_wave_join_reduction_threshold_met = yes
+		}
+		# A source can qualify while another Event 005/006 transaction owns the
+		# shared coordinator. Queue one country-scoped retry and leave all plan
+		# arrays untouched until that retry finds the coordinator free.
+		if = {
+			limit = { is_independence_wave_join_coordinator_busy = yes }
+			independence_wave_join_schedule_retry = yes
+		}
+		else = {
+		independence_wave_join_clear_retry_state = yes
+		set_country_flag = independence_wave_join_operation_active
+		# The explicit conversion flag is raised before reservation probing so
+		# the shared host-capacity helper can admit a zero-state host candidate.
+		# Every failed probe clears the plan and this flag before returning; the
+		# flag is therefore never a general Event 006 release bypass.
+		set_global_flag = independence_wave_join_conversion_active
+		set_temp_variable = { liberation_call_mode = constant:liberation_plan_mode.triggerable_scenario }
+		set_temp_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.independence_wave }
+		set_temp_variable = { liberation_call_expected_country_count = constant:liberation_release_limit.one }
+		liberation_release_begin_plan = yes
+		liberation_release_enter_allocation_phase = yes
+		if = {
+			limit = { check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating } }
+			set_variable = { global.independence_wave_join_active_plan_id = global.liberation_plan_id }
+			# Capture the plan identity before probing so no-package cleanup can
+			# prove ownership of the global markers as well.
+			set_variable = { independence_wave_join_plan_id = global.liberation_plan_id }
+			independence_wave_begin_plan_contribution = yes
+			# Join conversion must reserve the complete attested package footprint. The
+			# ordinary wave tuner may select a compact band, so force the broadest
+			# territory/force levels for this single-country transaction after it
+			# initializes the shared contribution row.
+			set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+			set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.viable }
+		}
+		set_variable = { global.independence_wave_plan_target_count = constant:liberation_release_limit.one }
+		set_variable = { global.independence_wave_plan_chaos_band = constant:independence_wave_chaos_band.gathering_storm }
+		independence_wave_join_probe_attested_package = yes
+		if = {
+			limit = {
+				check_variable = { independence_wave_join_probe_success = constant:independence_wave_planner.selected }
+				check_variable = { global.independence_wave_plan_selected_count = constant:liberation_release_limit.one }
+			}
+			set_global_flag = independence_wave_plan_contribution_ready
+			set_country_flag = independence_wave_join_offer_pending
+			set_variable = { independence_wave_join_offer_date = global.date }
+			set_variable = { independence_wave_join_plan_id = global.liberation_plan_id }
+			set_variable = { independence_wave_join_package_id = global.independence_wave_plan_selected_package_ids^0 }
+			set_variable = { global.independence_wave_join_offer_source = THIS.id }
+			var:global.liberation_plan_countries^0 = { save_event_target_as = independence_wave_join_target }
+			set_temp_variable = { independence_wave_join_history_payload = constant:independence_wave_join.history_offer }
+			independence_wave_join_record_history = yes
+			country_event = { id = chaosx.nr6.36 }
+		}
+		else = {
+			independence_wave_join_clear_runtime = yes
+			independence_wave_clear_plan_contribution = yes
+			liberation_release_abort_plan = yes
+			liberation_release_reset_plan = yes
+		}
+		}
+	}
+	else = {
+		# Eligibility or the exact reduction threshold may disappear before a
+		# queued retry fires; cancel that country-local retry immediately.
+		independence_wave_join_clear_retry_state = yes
+	}
+}
+
+# COUNTRY scope. Acceptance revalidates the owner and frozen exact footprint,
+# enables the explicit zero-host validator branch, then enters the ordinary
+# Event 006 lock/execute/final-validation pipeline.
+independence_wave_join_accept_and_execute = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_join_offer_pending
+			is_independence_wave_join_current_plan = yes
+			is_independence_wave_join_source_identity_eligible = yes
+			has_country_flag = independence_wave_join_operation_active
+		}
+		# Rebuild the short-lived target from the locked plan row when the player
+		# answers the report. This avoids relying on event-target persistence across
+		# the visible option and its hidden execution event.
+		var:global.liberation_plan_countries^0 = { save_event_target_as = independence_wave_join_target }
+		set_country_flag = independence_wave_join_zero_host_allowed
+		liberation_release_lock_plan = yes
+		if = {
+			limit = { is_liberation_release_plan_locked = yes }
+			independence_wave_execute_standalone_frozen_plan = yes
+		}
+		if = {
+			limit = { check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed } }
+			set_global_flag = independence_wave_join_success_receipt
+			set_variable = { global.independence_wave_join_last_resolution = constant:independence_wave_join.history_accepted }
+			set_temp_variable = { independence_wave_join_history_payload = constant:independence_wave_join.history_accepted }
+			independence_wave_join_record_history = yes
+			set_temp_variable = { independence_wave_join_switch_human = constant:independence_wave_planner.no_candidates }
+			if = {
+				limit = { is_human = yes }
+				set_temp_variable = { independence_wave_join_switch_human = constant:independence_wave_planner.selected }
+			}
+			# The human-player switch is deliberately last: target setup, generic
+			# focus assignment, package validation, and the commit barrier have all
+			# succeeded before `change_tag_from` can run. Cleanup runs while the
+			# source scope still exists; the switch is the final effect in this
+			# branch so a deleted source cannot receive follow-up writes.
+			independence_wave_join_clear_runtime = yes
+			independence_wave_clear_plan_contribution = yes
+			liberation_release_reset_plan = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = independence_wave_join_switch_human
+						value = constant:independence_wave_planner.selected
+						compare = equals
+					}
+					has_event_target = independence_wave_join_target
+				}
+				event_target:independence_wave_join_target = { change_tag_from = ROOT }
+			}
+		}
+		else = {
+			set_global_flag = independence_wave_join_failure_receipt
+			set_variable = { global.independence_wave_join_last_resolution = constant:independence_wave_join.history_failed }
+			set_temp_variable = { independence_wave_join_history_payload = constant:independence_wave_join.history_failed }
+			independence_wave_join_record_history = yes
+			if = { limit = { has_global_flag = liberation_release_execution_started } liberation_release_execute_compensating_rollback = yes }
+			independence_wave_join_clear_runtime = yes
+			country_event = { id = chaosx.nr6.39 }
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				is_independence_wave_join_plan_identity_owned = yes
+				is_liberation_release_plan_open = yes
+			}
+			set_global_flag = independence_wave_join_failure_receipt
+			set_variable = { global.independence_wave_join_last_resolution = constant:independence_wave_join.history_failed }
+			set_temp_variable = { independence_wave_join_history_payload = constant:independence_wave_join.history_failed }
+			independence_wave_join_record_history = yes
+			independence_wave_clear_plan_contribution = yes
+			liberation_release_abort_plan = yes
+			independence_wave_join_clear_runtime = yes
+			liberation_release_reset_plan = yes
+			country_event = { id = chaosx.nr6.39 }
+		}
+		else_if = {
+			limit = {
+				has_country_flag = independence_wave_join_offer_pending
+				NOT = { is_liberation_release_plan_active = yes }
+				OR = {
+					is_independence_wave_join_plan_global_cleanup_owned = yes
+					NOT = { has_variable = global.liberation_plan_id }
+				}
+			}
+			# A report that outlived its coordinator plan may clean its local
+			# receipt, but must not touch a newer plan's global context.
+			set_global_flag = independence_wave_join_failure_receipt
+			set_variable = { global.independence_wave_join_last_resolution = constant:independence_wave_join.history_failed }
+			set_temp_variable = { independence_wave_join_history_payload = constant:independence_wave_join.history_failed }
+			independence_wave_join_record_history = yes
+			independence_wave_join_clear_runtime = yes
+			liberation_release_reset_plan = yes
+			country_event = { id = chaosx.nr6.39 }
+		}
+	}
+}
+
+independence_wave_join_decline_and_cooldown = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_join_offer_pending
+			is_independence_wave_join_plan_identity_owned = yes
+			is_liberation_release_plan_open = yes
+		}
+		var:global.liberation_plan_countries^0 = { save_event_target_as = independence_wave_join_target }
+		independence_wave_clear_plan_contribution = yes
+		liberation_release_abort_plan = yes
+		independence_wave_join_clear_runtime = yes
+		liberation_release_reset_plan = yes
+		set_temp_variable = { independence_wave_join_cooldown_days = constant:independence_wave_join.cooldown_days }
+		set_country_flag = { flag = independence_wave_join_cooldown days = independence_wave_join_cooldown_days }
+		set_variable = { global.independence_wave_join_last_resolution = constant:independence_wave_join.history_declined }
+		set_temp_variable = { independence_wave_join_history_payload = constant:independence_wave_join.history_declined }
+		independence_wave_join_record_history = yes
+	}
+	else_if = {
+		limit = {
+			has_country_flag = independence_wave_join_offer_pending
+			NOT = { is_liberation_release_plan_active = yes }
+			OR = {
+				is_independence_wave_join_plan_global_cleanup_owned = yes
+				NOT = { has_variable = global.liberation_plan_id }
+			}
+		}
+		# A stale timeout/decline may close only its local report after the
+		# coordinator has already been reset; it cannot clear a newer plan.
+		set_temp_variable = { independence_wave_join_cooldown_days = constant:independence_wave_join.cooldown_days }
+		set_country_flag = { flag = independence_wave_join_cooldown days = independence_wave_join_cooldown_days }
+		set_variable = { global.independence_wave_join_last_resolution = constant:independence_wave_join.history_declined }
+		set_temp_variable = { independence_wave_join_history_payload = constant:independence_wave_join.history_declined }
+		independence_wave_join_record_history = yes
+		independence_wave_join_clear_runtime = yes
+		liberation_release_reset_plan = yes
+	}
+}
