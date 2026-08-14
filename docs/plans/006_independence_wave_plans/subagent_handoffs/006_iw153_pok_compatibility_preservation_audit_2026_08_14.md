@@ -1,5 +1,7 @@
 # IW-153 POK compatibility preservation audit — 2026-08-14
 
+> **Superseded source note (2026-08-14):** The follow-up handoff `006_iw153_pok_anchor_hardening_2026_08_14.md` records a narrow parent-applied contract repair. The current contract additionally witnesses ownership and control of state 334; all dormant and admission boundaries below remain unchanged.
+
 ## Disposition
 
 The committed IW-153 adapter is bounded, source-backed, and correctly dormant.
@@ -68,7 +70,7 @@ The newly committed IW-155 BLI adapter is noted only as a parallel package-local
 ## Validation and blockers
 
 - Static source checks re-confirmed balanced braces, tab-indented script blocks, no unsupported `<=` or `>=`, no unary variable negation, and no prohibited POK mutations such as `add_core_of`, `remove_core_of`, `recruit_character`, `set_nationality`, `add_to_array`, `remove_from_array`, tag changes, OOB loads, or route effects in the adapter files.
-- The current POK trigger/effect files and committed adapter handoff were not modified by this audit, and no central list or Join source was changed.
+- The current POK trigger/effect files were later narrowed by the parent to add `owns_state = 334` and `controls_state = 334` to the contract. No central list or Join source was changed.
 - No live HOI4 run, save/load, or runtime asset validation is claimed.
 - Remaining blockers are the named Dayak polity or precise regional institution, exact territory/host contract, sourced period-fit leader or institutional identity, portrait provenance, and attested symbol/flag source; the broad Dayak label and state 334 alone remain insufficient.
 
