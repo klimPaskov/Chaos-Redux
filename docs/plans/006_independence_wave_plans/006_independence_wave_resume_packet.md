@@ -30,6 +30,20 @@ The exact state-833 rebind covers the FORM-12/13 consumer specs, qualification h
 
 The current MEL documentation and admission authorities are `subagent_handoffs/006_iw047_mari_el_package_documentation_handoff_2026_08_14.md` and `subagent_handoffs/006_iw047_mel_package_admission_audit_current_2026_08_14.md`; MEL remains outside central attestation and deterministic Join despite its completed package-local rebind and route-flag evidence.
 
+## Current IW-048 UDM continuation authority (2026-08-14)
+
+IW-048 UDM is package-local and unadmitted, with no central adapter, content-attestation entry, normal or SCN-008 preflight branch, scenario entry, or deterministic Join entry.
+
+UDM reuses vanilla `UDM`, vanilla capital/state 399 Izhevsk, vanilla history and politics baseline, vanilla `UDM_boris` / Boris Berman and its existing portrait token, and the installed vanilla normal, medium, and small ideology flag ladders; no new portrait or flag asset is admitted by this tranche.
+
+The package-local force profile is p48 `industrial_security`, while the initialization gate uses the existing `industrial_breakaway` archetype token because no separate shared `industrial_security` archetype constant exists; admission review must resolve that source mapping without widening the central registry.
+
+The local mission, ten timed projects, lifecycle cleanup, AI strategy, localisation, and five guarded shared-focus helper calls are not central admission evidence, and the current authority remains 40 runtime adapters, 32 content attestations, 29 compatible groups, and 161 unattested rows with the active 3/4/5/7/10 ladder.
+
+Admission remains blocked on vanilla identity/asset acceptance, state-399 host/anchor proof, the force/archetype mapping, typed probability fixtures with a same-scenario comparison, whole-event MCP evidence, and central wiring review; the current mission pool is incomplete and no quantitative AI claim is supported.
+
+Use `subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md` and `subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md` for the bounded UDM receipts, including partial Event MCP and aggregate focus diagnostics.
+
 The 2026-08-13 pre-IW-045 boundary of 39 runtime adapters, 31 content attestations, 28 compatible reservation groups, and 162 unattested selectable rows is historical traceability only and must not drive current routing.
 
 The temporary FORM-12/13 state-256 hardening and all pre-rebind wording are superseded by the state-833 rebind and must not trigger duplicate work.
