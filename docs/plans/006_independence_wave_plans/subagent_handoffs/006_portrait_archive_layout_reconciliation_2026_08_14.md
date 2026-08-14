@@ -18,4 +18,4 @@ These edits do not change portrait identity, source rights, runtime DDS/GFX, cha
 
 ## Validation
 
-The current archive contains 46 original source images directly at the root and one `processed` directory containing 240 derived/evidence/provenance files. The 46 root sources have unique SHA-256 hashes; ComfyUI should use only image files directly in the parent and should not scan `processed/`. A current filesystem audit confirms no `156x210` filenames or 156x210 image dimensions in either archive location. No runtime path points into `docs/assets/portraits/006_independence_wave/`.
+The current archive contains 46 original source images directly at the root and one `processed` directory containing 122 derived/evidence/provenance files. The 46 root sources have unique SHA-256 hashes; ComfyUI should use only image files directly in the parent and should not scan `processed/`. A current filesystem audit confirms no `156x210` filenames or 156x210 image dimensions in either archive location. No runtime path points into `docs/assets/portraits/006_independence_wave/`.
