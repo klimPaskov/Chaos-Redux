@@ -140,8 +140,16 @@ is_liberation_release_current_protected_state = {
 
 is_liberation_release_state_available_for_reservation = {
 	owner = { exists = yes }
-	NOT = { is_liberation_release_current_reserved_state = yes }
-	NOT = { is_liberation_release_current_protected_state = yes }
+	OR = {
+		AND = {
+			NOT = { is_liberation_release_current_reserved_state = yes }
+			NOT = { is_liberation_release_current_protected_state = yes }
+		}
+		AND = {
+			is_independence_wave_join_plan_context_active = yes
+			is_liberation_release_current_protected_state = yes
+		}
+	}
 }
 
 # STATE scope. A protected remnant must never be the mandatory anchor currently
@@ -259,7 +267,14 @@ liberation_release_execution_matches_frozen_ownership = {
 		array = global.liberation_plan_hosts
 		exists = yes
 		has_variable = liberation_release_protected_state
-		var:liberation_release_protected_state = { is_owned_by = PREV }
+		OR = {
+			var:liberation_release_protected_state = { is_owned_by = PREV }
+			AND = {
+				is_independence_wave_join_plan_context_active = yes
+				event_target:independence_wave_join_target = { exists = yes }
+				var:liberation_release_protected_state = { is_owned_by = event_target:independence_wave_join_target }
+			}
+		}
 	}
 }
 

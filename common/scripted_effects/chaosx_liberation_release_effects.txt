@@ -249,6 +249,19 @@ liberation_release_select_and_reserve_host_state = {
 	set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.none }
 	if = {
 		limit = {
+			is_independence_wave_join_plan_context_active = yes
+			has_event_target = liberation_candidate_anchor
+			event_target:liberation_candidate_anchor = {
+				is_owned_by = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+		}
+		event_target:liberation_candidate_anchor = { save_event_target_as = liberation_candidate_protected_state }
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
+	}
+	else_if = {
+		limit = {
 			is_in_array = { array = global.liberation_plan_hosts value = THIS }
 			has_variable = liberation_release_protected_state
 			check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
@@ -375,6 +388,7 @@ liberation_release_reserve_host_state = {
 				OR = {
 					NOT = { has_event_target = liberation_candidate_anchor }
 					NOT = { state = event_target:liberation_candidate_anchor }
+					is_independence_wave_join_plan_context_active = yes
 				}
 			}
 		}
@@ -458,7 +472,10 @@ liberation_release_add_country_reservation = {
 			event_target:liberation_candidate_anchor = {
 				is_owned_by = event_target:liberation_candidate_primary_host
 				NOT = { is_liberation_release_current_reserved_state = yes }
-				NOT = { is_liberation_release_current_protected_state = yes }
+				OR = {
+					NOT = { is_liberation_release_current_protected_state = yes }
+					is_independence_wave_join_plan_context_active = yes
+				}
 			}
 			event_target:liberation_candidate_primary_host = {
 				has_country_flag = liberation_release_plan_host
@@ -1083,13 +1100,16 @@ liberation_release_validate_country_rows = {
 			limit = {
 				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
 				NOT = {
-						event_target:liberation_validation_anchor = {
-							is_liberation_release_current_reserved_state = yes
+					event_target:liberation_validation_anchor = {
+						is_liberation_release_current_reserved_state = yes
+						OR = {
 							NOT = { is_liberation_release_current_protected_state = yes }
-							check_variable = { liberation_release_state_role = constant:liberation_plan_state_role.anchor }
-							check_variable = { var = liberation_release_package_id value = liberation_validation_row_package compare = equals }
-							check_variable = { var = liberation_release_plan_owner value = liberation_validation_row_owner compare = equals }
-							check_variable = { var = liberation_release_target_country value = event_target:liberation_validation_country compare = equals }
+							is_independence_wave_join_plan_context_active = yes
+						}
+						check_variable = { liberation_release_state_role = constant:liberation_plan_state_role.anchor }
+						check_variable = { var = liberation_release_package_id value = liberation_validation_row_package compare = equals }
+						check_variable = { var = liberation_release_plan_owner value = liberation_validation_row_owner compare = equals }
+						check_variable = { var = liberation_release_target_country value = event_target:liberation_validation_country compare = equals }
 						is_owned_by = event_target:liberation_validation_primary_host
 					}
 				}
@@ -1173,7 +1193,10 @@ liberation_release_validate_state_rows = {
 				NOT = {
 					event_target:liberation_validation_state = {
 						is_liberation_release_current_reserved_state = yes
-						NOT = { is_liberation_release_current_protected_state = yes }
+						OR = {
+							NOT = { is_liberation_release_current_protected_state = yes }
+							is_independence_wave_join_plan_context_active = yes
+						}
 						is_owned_by = event_target:liberation_validation_state_host
 						check_variable = { var = liberation_release_package_id value = liberation_validation_state_package compare = equals }
 						check_variable = { var = liberation_release_plan_owner value = liberation_validation_state_owner compare = equals }
@@ -1234,8 +1257,17 @@ liberation_release_validate_host_rows = {
 			if = {
 				limit = {
 					OR = {
-						NOT = { check_variable = { var = liberation_validation_host_owned_states value = liberation_validation_host_planned_losses compare = greater_than } }
-						NOT = { check_variable = { var = liberation_validation_host_snapshot value = liberation_validation_host_planned_losses compare = greater_than } }
+						AND = {
+							NOT = { is_independence_wave_join_plan_context_active = yes }
+							OR = {
+								NOT = { check_variable = { var = liberation_validation_host_owned_states value = liberation_validation_host_planned_losses compare = greater_than } }
+								NOT = { check_variable = { var = liberation_validation_host_snapshot value = liberation_validation_host_planned_losses compare = greater_than } }
+							}
+						}
+						AND = {
+							is_independence_wave_join_plan_context_active = yes
+							NOT = { check_variable = { var = liberation_validation_host_owned_states value = liberation_validation_host_planned_losses compare = equals } }
+						}
 						NOT = { check_variable = { var = liberation_validation_computed_losses value = liberation_validation_host_planned_losses compare = equals } }
 					}
 				}
@@ -1258,9 +1290,18 @@ liberation_release_validate_host_rows = {
 				limit = {
 					check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
 					NOT = {
-						event_target:liberation_validation_protected_state = {
-							is_liberation_release_current_protected_state = yes
-							is_owned_by = event_target:liberation_validation_host
+						OR = {
+							event_target:liberation_validation_protected_state = {
+								is_liberation_release_current_protected_state = yes
+								is_owned_by = event_target:liberation_validation_host
+							}
+							AND = {
+								is_independence_wave_join_plan_context_active = yes
+								event_target:liberation_validation_protected_state = {
+									is_liberation_release_current_protected_state = yes
+									is_owned_by = event_target:liberation_validation_host
+								}
+							}
 						}
 					}
 				}
@@ -1430,6 +1471,17 @@ liberation_release_restore_host_capitals_before_execution = {
 liberation_release_prepare_host_capitals_for_execution = {
 	set_temp_variable = { liberation_host_capital_relocation_failure = constant:liberation_plan_reject_reason.none }
 	if = {
+		limit = {
+			is_independence_wave_join_plan_context_active = yes
+			is_independence_wave_join_zero_host_conversion = yes
+		}
+		# A join conversion has already proved that every owned state belongs to
+		# the locked package. Relocating a capital to a state that is about to be
+		# transferred would create a false survival requirement, so the ordinary
+		# host-capital move is intentionally skipped for this explicit path.
+		set_temp_variable = { liberation_host_capital_relocation_failure = constant:liberation_plan_reject_reason.none }
+	}
+	else_if = {
 		limit = {
 			is_liberation_release_plan_locked = yes
 			liberation_release_host_arrays_are_aligned = yes

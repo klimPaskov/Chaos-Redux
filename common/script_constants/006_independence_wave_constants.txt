@@ -3,8 +3,10 @@
 # ============================================================================
 # Central tuning for wave size, package readiness, territory and force levels,
 # allocation scoring, scenario setup, provenance, and visible country values.
-# Automatic wave counts are doubled across every firing band by the current
-# Event 006 design decision; scenario-bound package counts remain matrix-owned.
+# Automatic wave counts follow the active Event 006 ladder of 3/4/5/7/10.
+# World Collapse retains the ten-country ceiling while increasing force,
+# instability, rarity, and ambition; scenario-bound package counts remain
+# matrix-owned.
 # ============================================================================
 
 independence_wave_event = {
@@ -16,6 +18,31 @@ independence_wave_event = {
 	id = 6
 	package_count = 206
 	reservation_group_count = 111
+}
+
+# Join-the-wave conversion is a scoped, player-facing Event 006 offer.  The
+# percentage is compared as `owned * 100 <= peak * reduction_percent`; keeping
+# the values here makes the callback thresholds tuneable without duplicating
+# magic numbers across on_actions, events, and the planner.
+independence_wave_join = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	reduction_percent = 50
+	percentage_basis = 100
+	minimum_states_lost = 2
+	cooldown_days = 90
+	offer_event_id = 36
+	accept_event_id = 37
+	decline_event_id = 38
+	receipt_event_id = 39
+	retry_days = 7
+	history_offer = 1
+	history_accepted = 2
+	history_declined = 3
+	history_failed = 4
 }
 
 independence_wave_chaos_band = {
@@ -38,12 +65,12 @@ independence_wave_count = {
 		data = int
 	}
 
-	calm_world = 6
-	gathering_storm = 8
-	rising_chaos = 10
-	chaos_tier = 14
-	totalen_chaos = 20
-	world_collapse = 20
+	calm_world = 3
+	gathering_storm = 4
+	rising_chaos = 5
+	chaos_tier = 7
+	totalen_chaos = 10
+	world_collapse = 10
 }
 
 independence_wave_pool_layer = {
