@@ -16,6 +16,18 @@ IW-050 Komi remains package-local and fail-closed after the lifecycle, cost, and
 
 IW-047 Mari El remains package-local and fail-closed under the current state-833 FORM-12/13 rebind, with no central attestation or deterministic Join entry; state 256 is historical package-binding traceability only.
 
+IW-048 UDM remains package-local and fail-closed, with no central adapter, content-attestation entry, normal or SCN-008 preflight branch, scenario entry, or deterministic Join entry.
+
+UDM reuses vanilla `UDM`, vanilla history and politics baseline, vanilla capital/state 399 Izhevsk, vanilla `UDM_boris` / Boris Berman and its existing portrait token, and the installed vanilla normal, medium, and small ideology flag ladders; no new portrait or flag asset is admitted by this tranche.
+
+The package-local source maps force profile p48 `industrial_security` through the existing shared `industrial_breakaway` archetype token because no separate shared `industrial_security` archetype constant exists; this mapping remains an explicit admission-review blocker and does not change central registry authority.
+
+The local mission, ten timed projects, decisions, ideas, AI strategy, lifecycle cleanup, localisation, and five guarded shared-focus helper calls remain package-local and preserve the 40-adapter, 32-attestation, 29-group, 161-unattested boundary.
+
+UDM admission remains blocked on vanilla identity/asset acceptance, state-399 host/anchor proof, force/archetype mapping review, typed probability fixtures and same-scenario comparison, whole-event MCP evidence, and central wiring review; the mission pool is incomplete and no quantitative balance claim is made.
+
+The current UDM implementation and audit authorities are `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md` and `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md`.
+
 The committed IW-013/IW-015 founding serialization and project-readiness repair in `fe7fd3925` adds active-founding-mission guards to NAV and GLC founding activation and routes their paid projects through package-readiness helpers; it preserves their adapter-only fail-closed status and does not change counts or central admission.
 
 The committed evolution removal-tail repair in `7a4e0d7a9` clears each matching pending flag when its incident is inactive or disabled while enabled branches continue to fire the existing events; focused Event MCP inspect/render remains partial with zero selected blocking diagnostics, and counts, admission, and deterministic Join are unchanged.

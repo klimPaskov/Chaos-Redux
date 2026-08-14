@@ -16,6 +16,18 @@ IW-050 Komi remains package-local and fail-closed after the lifecycle, cost, and
 
 IW-047 Mari El remains package-local and fail-closed under the current state-833 FORM-12/13 rebind, with no central attestation or deterministic Join entry; state 256 is historical package-binding traceability only.
 
+IW-048 UDM remains package-local and fail-closed, with no central adapter, content-attestation entry, normal or SCN-008 preflight branch, scenario entry, or deterministic Join entry.
+
+UDM reuses vanilla `UDM`, vanilla history and politics baseline, vanilla capital/state 399 Izhevsk, vanilla `UDM_boris` / Boris Berman and its existing portrait token, and the installed vanilla normal, medium, and small ideology flag ladders; no new portrait or flag asset is admitted by this tranche.
+
+The package-local source maps force profile p48 `industrial_security` through the existing shared `industrial_breakaway` archetype token because no separate shared `industrial_security` archetype constant exists; this is an explicit admission-review blocker and does not alter the central registry.
+
+The local mission, ten timed projects, decisions, ideas, AI strategy, lifecycle cleanup, localisation, and five guarded shared-focus helper calls do not change the current 40-adapter, 32-attestation, 29-group, 161-unattested boundary.
+
+The UDM admission packet remains blocked on vanilla identity/asset acceptance, state-399 host/anchor binding, force/archetype mapping review, typed probability fixtures and same-scenario comparison, whole-event MCP evidence, and central wiring review; the mission pool is incomplete and no quantitative balance claim is supported.
+
+The current UDM implementation and audit authorities are `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md` and `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md`.
+
 The accepted IW-033/IW-041, IW-026 Macedonia, IW-029 Bosnia, IW-024 Banat, IW-027 Thrace, IW-028 Epirus, IW-030 Montenegro, IW-031 Kosovo, and IW-038 Ruthenia package promotions established the dated 2026-08-10 boundary below. That paragraph is historical traceability; the current package and super-event boundary is the post-IW-045 override immediately above it.
 
 - Candidate packages: **206**
