@@ -1,0 +1,35 @@
+# Event 006 registered-tag compatibility adapter audit
+
+## Disposition
+
+All thirteen registered-tag compatibility boundaries named by the accepted Event 006 research ledger now have source-backed preservation surfaces or a retained existing package adapter and a dated route-preservation handoff. These boundaries remain additive and fail-closed. No new country is admitted, no release selector is widened, and no central adapter, content-attestation, scenario-preflight, or Join list is changed by this audit.
+
+The acceptance checklist remains unchecked because a compatibility boundary is not the same as package admission. Portrait identity and rights, neutral or route-specific flag provenance, map and host collision, meaningful-tree, formable, typed probability, and complete package lifecycle gates remain open for the relevant rows.
+
+## Coverage
+
+| Event package | Carrier | Source boundary | Route-preservation evidence | Current disposition |
+| --- | --- | --- | --- | --- |
+| IW-038 | `RUT` | `common/scripted_triggers/006_independence_wave_ruthenia_package_triggers.txt` and `common/scripted_effects/006_independence_wave_ruthenia_package_effects.txt` | `006_iw038_rut_compatibility_audit_2026_08_14.md` | Existing package adapter; central admission and package-specific evidence remain authoritative |
+| IW-042 | `GAL` | `common/scripted_triggers/006_independence_wave_iw042_gal_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw042_gal_compatibility_effects.txt` | `006_iw042_gal_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; current map and identity discrepancies remain documented |
+| IW-043 | `CHU` | `common/scripted_triggers/006_independence_wave_iw043_iw058_package_triggers.txt` and `common/scripted_effects/006_independence_wave_iw043_iw058_package_effects.txt` | Existing IW-043/IW-058 signature-package audits | Existing package adapter; portrait, rights, and content-attestation gates remain open |
+| IW-096 | `BIA` | `common/scripted_triggers/006_independence_wave_iw096_bia_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw096_bia_compatibility_effects.txt` | `006_iw096_bia_compatibility_adapter_handoff_2026_08_14.md` | Dormant and fail-closed; state-558 versus vanilla BIA state-900 identity remains unresolved |
+| IW-133 | `BAN` | `common/scripted_triggers/006_independence_wave_iw133_ban_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw133_ban_compatibility_effects.txt` | `006_iw133_ban_compatibility_adapter_handoff_2026_08_14.md` | Dormant and fail-closed; Event 005 GOE/RAJ/UK route collisions remain protected |
+| IW-150 | `ATJ` | `common/scripted_triggers/006_independence_wave_iw150_atj_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw150_atj_compatibility_effects.txt` | `006_iw150_atj_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; identity, portrait, symbol, and package admission gates remain open |
+| IW-153 | `POK` | `common/scripted_triggers/006_independence_wave_iw153_pok_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw153_pok_compatibility_effects.txt` | `006_iw153_pok_compatibility_preservation_audit_2026_08_14.md` | Preservation-audited and unbound; no central admission or Join widening |
+| IW-155 | `BLI` | `common/scripted_triggers/006_independence_wave_iw155_bli_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw155_bli_compatibility_effects.txt` | `006_iw155_bali_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; identity, symbol, portrait, and package surfaces remain open |
+| IW-157 | `WPG` | `common/scripted_triggers/006_independence_wave_iw157_wpg_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw157_wpg_compatibility_effects.txt` | `006_iw157_wpg_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; named-community and asset gates remain open |
+| IW-167 | `CHM` | `common/scripted_triggers/006_independence_wave_iw167_chm_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw167_chm_compatibility_effects.txt` | `006_iw167_chm_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; installed state 286 versus research extension 671 remains explicit |
+| IW-171 | `OKN` | `common/scripted_triggers/006_independence_wave_iw171_okn_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw171_okn_compatibility_effects.txt` | `006_iw171_okn_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; named institutional and asset gates remain open |
+| IW-172 | `ANU` | `common/scripted_triggers/006_independence_wave_iw172_anu_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw172_anu_compatibility_effects.txt` | `006_iw172_anu_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; named-community identity and symbol gates remain open |
+| IW-178 | `PNG` | `common/scripted_triggers/006_independence_wave_iw178_png_compatibility_triggers.txt` and `common/scripted_effects/006_independence_wave_iw178_png_compatibility_effects.txt` | `006_iw178_png_compatibility_adapter_2026_08_14.md` | Dormant and fail-closed; state 523 remains a future named-community witness |
+
+## Shared validation
+
+The scoped wrapper files have balanced Clausewitz blocks, tab indentation, no unsupported comparison operators, no unary variable negation, and marker-only cleanup effects. The Event 006 allocator audit still passes at 149 publishers, 40 runtime adapters, 32 attestations, 29 compatible groups, and 161 unattested selectable rows. The SCN-008 scenario matrix still passes all 32 cells and eight edge cases with the 3/4/5/7/10 ladder and World Collapse 10.
+
+A fresh `hoi4.map_inspect` for states 286, 536, and 523 returned `MAP_INSPECTED` at revision `24bebf72ae84437ce5b2b218ed3a261c9d80fcd19d5afca093fa02030d89021a`. The selected state/core/network checks are available in `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/47369f48aef01cdebeb7ea9c5ab0cd12b190344a7e185902ecb138388fc32607/d18b0d427fb183eabcf49e6d9fe42dbe5baf7047a3f63f29fe4a5c7f8b527a4a/map-inspect.24bebf72ae84437c.json`; aggregate map validation remains false only because unrelated workspace building-position and floating-harbor diagnostics exceed the result ceiling. Event and focus evidence remains the parent-owned current Event 006 record because these wrappers add no event dispatch or focus nodes. No weighted surface was introduced, so no probability claim applies.
+
+## Remaining work
+
+The thirteen wrappers do not authorize a central list edit. Each package still requires its own complete source, host and collision audit, identity and rights packet, flag or symbol decision, portrait consumer review, AI and typed probability evidence, formable and GUI evidence where applicable, and final content attestation before promotion. The next safe action is package-specific evidence closure, not generic admission or a release-selector bypass.
