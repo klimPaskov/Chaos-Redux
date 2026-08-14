@@ -9,13 +9,15 @@
 
 ## Primary findings
 
+> Superseded for IW-051 package-local source coverage on 2026-08-15: the read-only snapshot below predates the package-local Sakha/YAK core tranche recorded in `006_iw051_sakha_package_core_2026_08_15.md`. The central adapter, attestation, scenario preflight, and deterministic Join boundary remains unchanged and fail-closed.
+
 The current source-of-truth boundary is 40 runtime adapters, 32 content-attested selectable packages, 29 compatible reservation groups, and 161 unattested selectable rows out of 193 non-overlay rows, with Event 006 still HOLD/PARTIAL.
 
 No requested candidate currently has a complete identity, rights, map, package-mechanics, portrait/flag, weighted-evidence, and central-admission packet, so there is no safe gameplay or admission tranche to promote now.
 
 IW-049 BWX is the most concrete source-local lead because a country shell, history shell, country-tag registration, and documented flat flag ladder exist, but its current map binding is explicitly unbound and its sourced leader/portrait and complete package surfaces are absent.
 
-IW-051 YAK is the cleanest current-map anchor among the requested candidates at state 574, but the current handoff confirms that it has no package-local decisions, ideas, AI, production/supply setup, or Event 006 focus hook, and its leader/asset evidence is not an admission packet.
+IW-051 YAK is the cleanest current-map anchor among the requested candidates at state 574. The package-local decisions, ideas, AI, lifecycle, force setup, localisation, and five shared focus callbacks now exist in `006_iw051_sakha_package_core_2026_08_15.md`, but identity/rights clearance, flag/origin acceptance, map-collision resolution, typed probability evidence, and central admission remain open.
 
 The later IW-070 ARM, IW-071 GEO, and IW-072 AZR tranche is the useful complete reference: exact installed anchors 230/231/229, reused vanilla identity/portraits/flags, full package mechanics, central adapter/attestation, and current package audits are all documented. It is a precedent, not an unadmitted next candidate.
 
