@@ -12,6 +12,8 @@ Changed `common/decisions/006_independence_wave_evolution_incident_decisions.txt
 
 Changed `events/006_independence_wave_evolution_incidents.txt` so each resolution event rejects a stale pending flag when its exact Event Log evolution row is disabled.
 
+The same source pass mirrors the ten incident AI factors and the three civilian-factory-use fields through file-scoped `@` constants because those fields reject the shared `constant:` token form.
+
 The stage-specific disable flags are `events_log_disabled_evolution_6_21_1` through `events_log_disabled_evolution_6_21_5`.
 
 This preserves the existing paid costs, timers, AI willingness values, incident options, ledgers, and generation cleanup. It only prevents a disabled evolution from resolving a queued incident after the player turns that evolution off.
