@@ -4,6 +4,16 @@
 
 IW-050 is package-local and remains fail-closed for central admission. The source tranche adds the country-local lifecycle, ledger, route, focus-helper, decision-alias, setup, validation, and cleanup surfaces without widening the central dispatcher, content-attestation OR list, scenario preflight, or deterministic Join sequence.
 
+## Superseding codify/corridor repair note (2026-08-14)
+
+The package-local codify/corridor repair handoff `006_iw050_komi_codify_corridor_repair_2026_08_14.md` supersedes the earlier package-local alias wording.
+
+Codification now sets `independence_wave_komi_durable_sovereignty` and applies `independence_wave_komi_apply_major_settlement` under an idempotent Komi package guard, while the separate Northern Ural corridor project remains lifecycle-gated and no longer opens as a codification alias.
+
+The repair leaves IW-050 package-local and fail-closed, with the current 40 runtime adapter, 32 content-attestation, 29 compatible-group, and 161 unattested-row boundary unchanged and central adapter, attestation, preflight, and deterministic Join surfaces untouched.
+
+The follow-up lifecycle, cost, and tooltip repair is recorded in `006_iw050_komi_lifecycle_cost_tooltip_repair_2026_08_14.md` and is committed as `b8aa313a8`. It clears durable sovereignty during setup and cleanup, aligns emergency affordability with its security payment, and reconciles the codify localisation with the separate corridor outcome.
+
 ## Changed source
 
 - `common/scripted_effects/006_independence_wave_komi_package_effects.txt`

@@ -14,6 +14,20 @@ IW-047 Mari El is materially implemented at the package-local level but is not c
 
 IW-050 Komi is materially implemented at the package-local level but is absent from central attestation and deterministic Join and must remain fail-closed.
 
+The 2026-08-14 IW-050 codify/corridor repair supersedes the earlier package-local alias wording: codification now sets `independence_wave_komi_durable_sovereignty` and applies `independence_wave_komi_apply_major_settlement`, while the separate Northern Ural corridor project is lifecycle-gated on its compact, network, League-route, capital-control, strategic-cost, and generation-safe readiness prerequisites with mirrored cancellation.
+
+This is a package-local behavior correction only; it does not change the current 40 runtime adapter, 32 content-attestation, 29 compatible-group, and 161 unattested-row authority, and IW-050 remains absent from central adapter, attestation, preflight, and deterministic Join surfaces.
+
+## Superseding evolution incident removal-tail note (2026-08-14)
+
+The five paid evolution incident `remove_effect` branches now clear their matching pending flags when the country is inactive or the corresponding evolution is disabled, while enabled branches continue to fire `chaosx.nr6.360` through `.364` without changing paid costs, timers, options, ledgers, or generation cleanup.
+
+Focused Event MCP inspect/render remains `EVENT_INSPECTED_PARTIAL` and `EVENT_RENDERED_PARTIAL` with zero selected blocking diagnostics at revision `741883f50501db1f866db675ee6ad6cb4009a90ad539eb84b08ce5e82602f65b`, and the large-workspace helper/lifecycle projection remains deferred.
+
+The removal-tail source change is committed in `7a4e0d7a9` (`Fix disabled evolution incident removal cleanup`).
+
+This repair does not change the 40 runtime adapters, 32 content attestations, 29 compatible reservation groups, 161 unattested rows, central adapter or preflight surfaces, deterministic Join, or IW-050 admission status.
+
 The current whole-event arithmetic is **40 runtime adapters, 32 content-attested packages, 29 compatible reservation groups, and 161 unattested selectable rows out of 193**.
 
 The broad completion gap is therefore 161 selectable rows without content attestation.
@@ -174,7 +188,8 @@ No weighted source was changed by this audit, so there is no new before/after pr
 | IW-047 MEL country core, decisions, focus hooks, AI source, and localisation | Implemented package-locally. Earlier handoffs saying these files were absent are historical. |
 | IW-047 MEL central admission | Not accepted as complete and not started. Correctly blocked by portrait identity, neutral-flag provenance, probability evidence, and the central adapter/attestation/preflight/Join gates. |
 | FORM-12/13 MEL state-slot repair | Implemented and locally reconciled to state 833. The earlier state-256 hardening and design-choice wording are historical; central MEL admission remains blocked independently. |
-| IW-050 Komi package-local implementation | Implemented package-locally. The current country-core, decisions, focus-hooks, localisation, AI, map, portrait, symbol, probability, and completion handoffs are the package-local authority set. |
+| Evolution incident removal-tail repair | Implemented in `7a4e0d7a9`; the five inactive/disabled `remove_effect` branches clear their matching pending flags. Event MCP inspect/render remains partial with zero selected blocking diagnostics, and no counts or central admission/Join surfaces changed. |
+| IW-050 Komi package-local implementation and codify/corridor repair | Implemented package-locally. The current country-core, decisions, focus-hooks, localisation, AI, map, portrait, symbol, probability, completion, and codify/corridor repair handoffs are the package-local authority set. Codify writes durable sovereignty and applies major settlement; the Northern Ural corridor remains lifecycle-gated. |
 | IW-050 central admission | Not started and correctly fail-closed. No central adapter, attestation branch, normal/scenario preflight branch, or deterministic Join entry is present. |
 | MEL route-flag package | Implemented for the approved alternate-history route identities `CIVICX`, `FORESTX`, `SOCIALISTX`, and `EMERGENCYX`, with 12/12 TGA and 12/12 DDS evidence. Neutral 1936 flag provenance remains blocked; the superseded `AGRARIANX` naming is no longer current. |
 | MEL portrait package | Blocked pending an identity-safe, rights-clear source or a separately accepted institutional consumer. |
