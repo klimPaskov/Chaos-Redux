@@ -275,6 +275,7 @@ independence_wave_setup_iw_048_udm = {
 	clear_variable = independence_wave_udm_forest_rail_readiness
 	if = {
 		limit = { can_initialize_independence_wave_iw_048_package = yes }
+		set_variable = { independence_wave_udm_package_generation_id = independence_wave_generation_id }
 		country_event = { id = chaosx.nr6.350 }
 		independence_wave_udm_checkpoint_vanilla_roster = yes
 		independence_wave_ensure_udm_baseline_laws = yes
@@ -303,7 +304,7 @@ independence_wave_setup_iw_048_udm = {
 		independence_wave_add_reinforce_integrate_militias = yes
 		independence_wave_add_reinforce_regional_guards = yes
 		independence_wave_add_reinforce_secure_depots = yes
-		independence_wave_add_reinforce_terrain_units = yes
+		independence_wave_add_reinforce_factory_rail_guards = yes
 		independence_wave_add_reinforce_professional_officers = yes
 		independence_wave_load_force_package_mapping = yes
 		independence_wave_apply_dynamic_starting_force = yes
@@ -318,7 +319,13 @@ independence_wave_dispatch_udm_package_final_validation = { if = { limit = { che
 
 independence_wave_cleanup_iw_048_udm = {
 	if = {
-		limit = { original_tag = UDM check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_048 } }
+		limit = {
+			original_tag = UDM
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_048 }
+			has_variable = independence_wave_udm_package_generation_id
+			check_variable = { var = independence_wave_udm_package_generation_id value = independence_wave_generation_id compare = equals }
+			has_independence_wave_force_package_for_current_generation = yes
+		}
 		remove_mission = independence_wave_udm_hold_workshop_congress
 		remove_decision = independence_wave_udm_secure_workshop_depots
 		remove_decision = independence_wave_udm_integrate_industrial_guards
@@ -332,13 +339,14 @@ independence_wave_cleanup_iw_048_udm = {
 		remove_decision = independence_wave_udm_open_volga_ural_corridor
 		independence_wave_remove_udm_package_ideas = yes
 		set_politics = { ruling_party = democratic elections_allowed = yes }
-		set_popularities = { democratic = 60 communism = 20 neutrality = 10 fascism = 10 }
+		set_popularities = { democratic = 60 communism = 10 neutrality = 10 fascism = 20 }
 		set_party_name = { ideology = democratic long_name = UDM_democratic_party_long name = UDM_democratic_party }
 		set_party_name = { ideology = communism long_name = UDM_communism_party_long name = UDM_communism_party }
 		set_party_name = { ideology = neutrality long_name = UDM_neutrality_party_long name = UDM_neutrality_party }
 		set_party_name = { ideology = fascism long_name = UDM_fascism_party_long name = UDM_fascism_party }
 		clear_variable = independence_wave_udm_workshop_control
 		clear_variable = independence_wave_udm_forest_rail_readiness
+		clear_variable = independence_wave_udm_package_generation_id
 		clr_country_flag = independence_wave_udm_project_failure_applied
 		clr_country_flag = independence_wave_udm_roster_checkpoint
 		clr_country_flag = independence_wave_command_roster_ready
