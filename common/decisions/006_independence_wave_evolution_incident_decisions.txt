@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD = 2
 # ============================================================================
 # CHAOS REDUX - EVENT 006 EVOLUTION INCIDENT DECISIONS
 # ============================================================================
@@ -15,6 +18,7 @@ independence_wave_evolution_incident_category = {
 		visible = {
 			is_independence_wave_active_country = yes
 			has_global_flag = independence_wave_evolution_replicable_independence_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_1 }
 			NOT = { has_country_flag = independence_wave_evolution_replicable_incident_pending }
 			NOT = { has_country_flag = independence_wave_evolution_replicable_institution_compact }
 			NOT = { has_country_flag = independence_wave_evolution_replicable_recognition_campaign }
@@ -22,14 +26,19 @@ independence_wave_evolution_incident_category = {
 		available = { can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = {
 			independence_wave_decision_pay_administration_standard = yes
 			set_country_flag = independence_wave_evolution_replicable_incident_pending
 		}
 		remove_effect = { country_event = { id = chaosx.nr6.360 } }
-		cancel_trigger = { NOT = { is_independence_wave_active_country = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_1
+			}
+		}
 		cancel_effect = { clr_country_flag = independence_wave_evolution_replicable_incident_pending }
 		fire_only_once = no
 		ai_will_do = {
@@ -45,6 +54,7 @@ independence_wave_evolution_incident_category = {
 		visible = {
 			is_independence_wave_active_country = yes
 			has_global_flag = independence_wave_evolution_dormant_nations_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_2 }
 			NOT = { has_country_flag = independence_wave_evolution_dormant_incident_pending }
 			NOT = { has_country_flag = independence_wave_evolution_dormant_charter_settlement }
 			NOT = { has_country_flag = independence_wave_evolution_dormant_pluralist_compact }
@@ -58,7 +68,12 @@ independence_wave_evolution_incident_category = {
 			set_country_flag = independence_wave_evolution_dormant_incident_pending
 		}
 		remove_effect = { country_event = { id = chaosx.nr6.361 } }
-		cancel_trigger = { NOT = { is_independence_wave_active_country = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_2
+			}
+		}
 		cancel_effect = { clr_country_flag = independence_wave_evolution_dormant_incident_pending }
 		fire_only_once = no
 		ai_will_do = {
@@ -74,6 +89,7 @@ independence_wave_evolution_incident_category = {
 		visible = {
 			is_independence_wave_active_country = yes
 			has_global_flag = independence_wave_evolution_armed_birth_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_3 }
 			NOT = { has_country_flag = independence_wave_evolution_armed_incident_pending }
 			NOT = { has_country_flag = independence_wave_evolution_armed_civilian_command }
 			NOT = { has_country_flag = independence_wave_evolution_armed_frontier_mobilization }
@@ -87,7 +103,12 @@ independence_wave_evolution_incident_category = {
 			set_country_flag = independence_wave_evolution_armed_incident_pending
 		}
 		remove_effect = { country_event = { id = chaosx.nr6.362 } }
-		cancel_trigger = { NOT = { is_independence_wave_active_country = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_3
+			}
+		}
 		cancel_effect = { clr_country_flag = independence_wave_evolution_armed_incident_pending }
 		fire_only_once = no
 		ai_will_do = {
@@ -104,6 +125,7 @@ independence_wave_evolution_incident_category = {
 			is_independence_wave_active_country = yes
 			has_global_flag = independence_wave_evolution_sovereign_congress_active
 			has_global_flag = independence_wave_shared_strategic_problem
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_4 }
 			NOT = { has_country_flag = independence_wave_evolution_congress_incident_pending }
 			NOT = { has_country_flag = independence_wave_evolution_congress_rights_charter }
 			NOT = { has_country_flag = independence_wave_evolution_congress_secretariat_compromise }
@@ -111,14 +133,19 @@ independence_wave_evolution_incident_category = {
 		available = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.strategic
 		complete_effect = {
 			independence_wave_decision_pay_strategic = yes
 			set_country_flag = independence_wave_evolution_congress_incident_pending
 		}
 		remove_effect = { country_event = { id = chaosx.nr6.363 } }
-		cancel_trigger = { NOT = { is_independence_wave_active_country = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_4
+			}
+		}
 		cancel_effect = { clr_country_flag = independence_wave_evolution_congress_incident_pending }
 		fire_only_once = no
 		ai_will_do = {
@@ -134,6 +161,7 @@ independence_wave_evolution_incident_category = {
 		visible = {
 			is_independence_wave_active_country = yes
 			has_global_flag = independence_wave_evolution_open_sovereignty_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_5 }
 			NOT = { has_country_flag = independence_wave_evolution_open_incident_pending }
 			NOT = { has_country_flag = independence_wave_evolution_open_synchronized_claims }
 			NOT = { has_country_flag = independence_wave_evolution_open_containment_diplomacy }
@@ -141,14 +169,19 @@ independence_wave_evolution_incident_category = {
 		available = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.strategic
 		complete_effect = {
 			independence_wave_decision_pay_strategic = yes
 			set_country_flag = independence_wave_evolution_open_incident_pending
 		}
 		remove_effect = { country_event = { id = chaosx.nr6.364 } }
-		cancel_trigger = { NOT = { is_independence_wave_active_country = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_5
+			}
+		}
 		cancel_effect = { clr_country_flag = independence_wave_evolution_open_incident_pending }
 		fire_only_once = no
 		ai_will_do = {
