@@ -1,0 +1,54 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-153 POK COMPATIBILITY EFFECTS
+# ============================================================================
+# Dormant cleanup-safe wrappers for the IW-153 POK compatibility boundary.
+# IW-153 reuses the registered vanilla POK carrier and remains a
+# specific-community variant only and unbound. No setup, release, identity,
+# history, core, character, asset, or route effect belongs in this file until
+# a named community and its sources are accepted.
+#
+# The companion trigger file is the source-backed boundary. This file only
+# clears the future named-community selection marker after the complete
+# original-tag, Event 006 origin, package-id, and selection gates pass.
+# ============================================================================
+
+# COUNTRY scope. Internal cleanup operation for the future selector marker.
+# The marker is never set here. Clearing it is the sole persistent mutation in
+# this package-local adapter and is safe to repeat after a fully gated route
+# ends. Vanilla POK history, cores, characters, INS_releasables, and
+# indonesia_transfer_POK are deliberately untouched.
+independence_wave_iw_153_pok_compatibility_clear_named_selection = {
+	if = {
+		limit = {
+			exists = yes
+			original_tag = POK
+			has_country_flag = independence_wave_active_origin
+			NOT = { has_country_flag = independence_wave_origin_ended }
+			check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_153 }
+			has_country_flag = independence_wave_iw_153_named_community_selected
+			is_independence_wave_iw_153_pok_compatibility_context = yes
+		}
+		clr_country_flag = independence_wave_iw_153_named_community_selected
+	}
+}
+
+# COUNTRY scope. Public cleanup wrapper for future named-community callers.
+# It remains inert unless the exact POK/Event 006/IW-153/selection context is
+# live. It does not clear the Event 006 origin, package id, or any vanilla
+# country data, and it must not be wired into a central dispatcher here.
+independence_wave_cleanup_iw_153_pok_compatibility = {
+	if = {
+		limit = {
+			exists = yes
+			original_tag = POK
+			has_country_flag = independence_wave_active_origin
+			NOT = { has_country_flag = independence_wave_origin_ended }
+			check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_153 }
+			has_country_flag = independence_wave_iw_153_named_community_selected
+			is_independence_wave_iw_153_pok_compatibility_context = yes
+		}
+		independence_wave_iw_153_pok_compatibility_clear_named_selection = yes
+	}
+}
