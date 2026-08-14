@@ -1,8 +1,10 @@
 # Event 006 source-of-truth map
 
-## Current authority override (2026-08-14 IW-045 admission)
+## Current authority override (2026-08-15 registry re-audit after IW-045 admission)
 
 The current allocator pass reports 149 publishers, 32 content-attested selectable packages, 29 compatible reservation groups, 161 unattested selectable packages out of 193 non-overlay rows, and 40 runtime package adapters. The active automatic wave ladder is `3/4/5/7/10`, with World Collapse also targeting `10`. Event 006 remains **HOLD / PARTIAL** for whole-event completion.
+
+The current registry gap map is `subagent_handoffs/006_current_registry_gap_map_2026_08_15.md`. It confirms that IW-046 CHU, IW-049 BWX, IW-051 YAK, IW-052 BYA, and IW-057 FER remain outside gameplay and central admission until their identity, map, package, asset, and probability contracts are complete.
 
 The deterministic Join order is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-024, IW-026, IW-027, IW-028, IW-029, IW-030, IW-031, IW-038, IW-040, IW-044, IW-045, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184. IW-045 Bashkiria is centrally content-attested and admitted to normal and SCN-008 execution under its exact dormant BSK/state-651, host, roster, force, asset, and cleanup contract.
 

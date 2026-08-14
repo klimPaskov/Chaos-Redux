@@ -2,9 +2,11 @@
 
 The long provenance list below preserves dated implementation history. Current routing and counts are stated in the explicit authority override that follows it; older v105/v104/v103 and 81-master references in that list are not current status.
 
-## Current authority override (2026-08-14 IW-045 admission)
+## Current authority override (2026-08-15 registry re-audit after IW-045 admission)
 
 The current boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 161 unattested selectable rows, and 40 runtime adapters. Eight adapter-only IDs remain fail-closed: IW-013, IW-015, IW-043, IW-058, IW-093, IW-098, IW-177, and IW-179. IW-045 BSK is centrally attested and admitted to normal and SCN-008 execution under its exact dormant BSK/state-651, actual-host, roster, force, asset, and cleanup proofs.
+
+The current registry gap map is `subagent_handoffs/006_current_registry_gap_map_2026_08_15.md`; no additional candidate is promoted by that audit, and the 40/32/29/161 authority boundary is unchanged.
 
 The deterministic Join order is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-024, IW-026, IW-027, IW-028, IW-029, IW-030, IW-031, IW-038, IW-040, IW-044, IW-045, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184. The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10.
 

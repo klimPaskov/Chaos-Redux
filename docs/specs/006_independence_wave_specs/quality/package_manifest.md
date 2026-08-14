@@ -6,9 +6,11 @@ Architecture aligned: 2026-07-15
 
 ## Current architecture
 
-## Current package-count authority (2026-08-14 IW-045 admission)
+## Current package-count authority (2026-08-15 registry re-audit after IW-045 admission)
 
 IW-045 Bashkiria admission supersedes the earlier IW-044 paragraph below for current routing: Event 006 has 32 content-attested selectable packages across 29 compatible reservation groups, 161 unattested selectable rows, and 40 central package adapters. Eight adapter-only rows remain fail-closed (`IW-013`, `IW-015`, `IW-043`, `IW-058`, `IW-093`, `IW-098`, `IW-177`, and `IW-179`). The current deterministic Join order places IW-040 after IW-038, IW-044 after IW-040, and IW-045 after IW-044, with all three before IW-033. The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10. IW-040 reuses vanilla KUB and state 234, uses the shared full focus framework and p40 mounted-mobile forces, and carries four generated route flag ladders while leaving the vanilla base flag untouched. IW-044 reuses vanilla TAT and state 249, retains the Alemasov roster and vanilla flag surface, uses the shared full focus framework and p44 river-defector forces, and exposes Civic Concord and River Security ledgers with generation-safe cleanup. IW-045 reuses vanilla BSK and state 651, uses the p45 mounted-mobile force profile, a scoped Yakov Bykin portrait consumer, four generated route ladders, ten paid projects, and generation-safe cleanup.
+
+The current registry gap map is `../../../plans/006_independence_wave_plans/subagent_handoffs/006_current_registry_gap_map_2026_08_15.md`. It is a fail-closed research disposition and does not widen the package-count authority.
 
 The current shared-focus receipt is 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors; authored detour warnings and unrelated vanilla icon diagnostics remain, so it remains **HOLD**. Use `../../../plans/006_independence_wave_plans/subagent_handoffs/006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md` for the current-source inspect/render evidence. The IW-044 completion handoff's 184-focus/210-connector/8-crossing/16-long-connector render is a dated pre-cleanup artifact, not the current focus authority.
 
