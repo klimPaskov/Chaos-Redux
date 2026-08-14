@@ -64,7 +64,7 @@ These are accepted repository research directions, not permission to invent a ne
 
 ### Shared focus surface
 
-Fresh read-only `hoi4.focus_inspect` resolves `independence_wave_focus_tree` at revision `041d42b297734fcde47f1b1794c33ce33cd5539acb370978ddae0a341b41014b` with 184 focuses, 206 connectors, zero crossings, zero node intersections, 12 long connectors, and 14 blocking diagnostics.
+The historical pre-cleanup `hoi4.focus_inspect` receipt resolves `independence_wave_focus_tree` at revision `041d42b297734fcde47f1b1794c33ce33cd5539acb370978ddae0a341b41014b` with 184 focuses, 206 connectors, zero crossings, zero node intersections, 12 long connectors, and 14 blocking diagnostics. The current post-cleanup tree is 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors; the current focus receipt is recorded in `006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md`.
 
 The inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5330e8ebecfdccd17ff086ef6b0c4986b38f00a9f7d539443314f389807f6f69/2a54b80247613ad2ff79ff8a5dc5fc756dd6f0f9c0fceb47bc2735157374b126/focus-inspect.041d42b297734fcd.json`.
 
@@ -189,7 +189,7 @@ If the comparison remains partial because the adapter cannot evaluate the world 
 
 ## Admitted-package parity follow-up
 
-After the KUB/TAT pilot closes, produce a read-only 31-row parity matrix for the currently admitted set.
+After the KUB/TAT pilot closes, produce a read-only 32-row parity matrix for the currently admitted set.
 
 Each row should name the shared focus assignment, package decision or mission source, additive AI strategy source, actor profile, route-selection signals, reserve-floor gate, former-host response, League behavior, formable behavior, current probability receipt, and unresolved adapter limitation.
 
@@ -197,7 +197,7 @@ The parity matrix is evidence and prioritization only.
 
 It must not alter attestation, Join order, allocator weights, candidate selection, country identity, or reservation groups.
 
-Do not expand the pilot to all 31 packages in one gameplay patch.
+Do not expand the pilot to all 32 packages in one gameplay patch.
 
 Any later owner patch should be a separate bounded package family with its own baseline and same-scenario comparison.
 
@@ -239,7 +239,7 @@ No gameplay file is changed by this addendum.
 - The automatic ladder remains `3/4/5/7/10`, including World Collapse at `10`.
 - KUB and TAT keep their existing carriers, anchors, forces, leaders, assets, ledgers, projects, cleanup, and five shared focus hooks.
 - No focus node, connector, prerequisite, coordinate, icon, or localisation key is added by the AI tranche.
-- Focus inspect/render remain no worse than the current 184-focus, 206-connector, zero-crossing, zero-intersection geometry, while the existing 14 diagnostics remain visible until a separate authored-layout decision resolves them.
+- Focus inspect/render remain no worse than the current 184-focus, 196-connector, zero-crossing, zero-intersection geometry, while the existing aggregate diagnostics remain visible until separate authored-layout decisions resolve them.
 - Every nonempty named probability scenario resolves at least one eligible candidate or records an exact MCP blocker.
 - No weight patch is accepted without the mandatory same-scenario probability comparison.
 - Resource-starved scenarios prove zero willingness for actions that would breach the accepted reserve floor.
