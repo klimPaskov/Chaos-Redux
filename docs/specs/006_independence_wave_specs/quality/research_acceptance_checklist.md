@@ -54,12 +54,12 @@ Implementation reconciliation: 2026-07-14
 - [x] Reconcile all 206 packages against the installed game and current mod overrides. The dated result is in `../../../plans/006_independence_wave_plans/package_bindings/006_current_installed_map_binding_audit.md`.
 - [x] Rerun the repository and installed-game tag scan. The dated result is recorded in `../research/006_tag_collision_and_reuse_audit.md`.
 - [x] Reconcile the selectable map pool to 138 bound and 55 unbound country packages after excluding all 13 overlay rows.
-- [ ] Implement and validate the thirteen registered-tag compatibility adapters, including `POK` history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` preservation.
-- [ ] Implement and validate the thirteen exact additive overlay hooks without adding standalone countries.
+- [x] Implement and validate the thirteen registered-tag compatibility adapters, including `POK` history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` preservation. The source-level boundaries remain dormant and fail-closed until their separate package identity, asset, host, collision, and admission gates are accepted.
+- [x] Implement and validate the thirteen exact additive overlay hooks without adding standalone countries. The hooks remain outside the release selector and do not constitute standalone package admission.
 - [x] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
 - [ ] Produce and document all final visual assets.
 - [ ] Obtain permission or a waiver for `23`, or obtain user approval before reopening its recording selection.
 - [x] Trim, convert, checksum, and wire the verified `24` source.
 - [ ] Validate release safety, AI, focus, decision, scenario, and super-event behavior in the implemented mod.
 
-The unchecked items are implementation, production, or explicit rights gates. No replacement recording or fallback package is authorized by this checklist.
+The remaining unchecked items are production, explicit rights, and full runtime-validation gates. No replacement recording or fallback package is authorized by this checklist.
