@@ -42,6 +42,8 @@ The related [Open List record](https://ru.openlist.wiki/%D0%9C%D1%83%D1%80%D0%B0
 
 The conflicting 1890/1900 birth data, absent patronymic in vanilla, office dates beginning in 1937, and lack of a period image make it unsafe to equate the underspecified vanilla key with a 1936 portrait source.
 
+The exact-name [KnowBySight biography](https://www.knowbysight.info/MMM/08336.asp) corroborates the 1900 Mednoe birth entry and gives a dated service record: acting first secretary of the Komi regional VKP(b) committee from 2 November 1937 through June 1938, with arrest on 21 June 1938; it exposes no portrait or image file, cites only general archive/reference sites, and carries a site copyright notice without a reusable image license.
+
 ## 1936 institutional fallback research
 
 The Presidential Library catalog entry [От Коми Авт. области к Коми АССР](https://www.prlib.ru/item/750113) identifies a genuine 1936 publication by the Komi Oblast Executive Committee for the XI Oblast Soviet Congress: `Сыктывкар : Коми обисполком, 1936`, 48 pages.
@@ -55,6 +57,8 @@ The official National Museum of the Republic of Komi collection page [Докум
 The museum’s exhibition article [У истоков зырянского парламентаризма](https://museumkomi.ru/?p=28278) dates the first Supreme Soviet of the Komi ASSR to 26 June 1938 and discusses 1920s–1930s documents, but the web images are modern exhibition documentation rather than a 1936 institution photograph.
 
 The nearest visual historical lead, [Край, область, республика](https://ourreg.ru/2021/08/26/kraj-oblast-respublika/), explicitly captions its archival group image as delegates of the **I Congress of Soviets of the Komi Autonomous Oblast, 22–29 January 1922**, from National Museum funds; it is not a 1936 image and cannot satisfy this contract.
+
+The regional news article [Парламентские истории: первые руководители Коми](https://komiinform.ru/news/165768) includes a body-image link named `Pyataya-oblastnaya-partkonferenziya.JPG`, but the current image URL returns 404, the article does not identify Murashev in the image or provide a date/role caption for him, and the site footer states that all rights are reserved and reprinting requires written approval; this is not an admissible portrait or institutional fallback.
 
 No “provisional institution” was silently invented from these records. A future acceptable institutional source would need an explicitly named 1936 body, archive or collection attribution, date or period basis, an image that actually depicts that body, and a rights/reproduction basis.
 
@@ -90,7 +94,7 @@ The modern museum exhibition files reviewed but rejected were `IMG_0324.png` (SH
 
 ## Search ledger
 
-Searches were run on 2026-08-14 using exact English and Russian name variants, `Коми АССР`, `Коми АССР 1936`, `Коми АССР 1936 съезд`, `Коми АССР 1936 обком`, `Павел Иванович Мурашев фото`, and `Мурашев Коми обком фото`.
+Searches were run on 2026-08-14 using exact English and Russian name variants, including the `Мурашёв` spelling, `Коми АССР`, `Коми АССР 1936`, `Коми АССР 1936 съезд`, `Коми АССР 1936 обком`, `Павел Иванович Мурашев фото`, `Мурашев Коми обком фото`, and exact-name queries routed to KnowBySight and KomiInform.
 
 Wikimedia Commons API exact-name and Russian-name searches returned no matching file; category checks for the history of Komi, Syktyvkar, Komi people, and Komi ASSR exposed no 1936 institution portrait.
 
@@ -100,7 +104,7 @@ Russian State Library search returned `Ничего не найдено` for `П
 
 National Museum of the Republic of Komi site searches for `Павел Мурашев`, `Мурашев`, `съезд`, `Коми АССР`, and `1936` returned historical context and modern exhibition pages but no attributable 1936 portrait image.
 
-Image-search matches were manually rejected when they were modern people, other Murashev/Murashov individuals, later Komi leaders, unrelated historical people, or images without a source caption and rights basis.
+Image-search matches were manually rejected when they were modern people, other Murashev/Murashov individuals, later Komi leaders, unrelated historical people, the uncited KomiInform conference group, or images without a source caption and rights basis.
 
 ## Archive, processing, and wiring state
 
