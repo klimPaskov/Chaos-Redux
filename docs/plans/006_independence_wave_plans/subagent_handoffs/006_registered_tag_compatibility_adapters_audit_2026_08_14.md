@@ -2,9 +2,9 @@
 
 ## Disposition
 
-All thirteen registered-tag compatibility boundaries named by the accepted Event 006 research ledger now have source-backed preservation surfaces or a retained existing package adapter and a dated route-preservation handoff. These boundaries remain additive and fail-closed. No new country is admitted, no release selector is widened, and no central adapter, content-attestation, scenario-preflight, or Join list is changed by this audit.
+All thirteen registered-tag compatibility boundaries named by the accepted Event 006 research ledger now have source-backed preservation surfaces or a retained existing package adapter and a dated route-preservation handoff. The source-level adapter gate is therefore closed. These boundaries remain additive and fail-closed. No new country is admitted, no release selector is widened, and no central adapter, content-attestation, scenario-preflight, or Join list is changed by this audit.
 
-The acceptance checklist remains unchecked because a compatibility boundary is not the same as package admission. Portrait identity and rights, neutral or route-specific flag provenance, map and host collision, meaningful-tree, formable, typed probability, and complete package lifecycle gates remain open for the relevant rows.
+The source-level checklist closure does not constitute package admission. Portrait identity and rights, neutral or route-specific flag provenance, map and host collision, meaningful-tree, formable, typed probability, and complete package lifecycle gates remain open for the relevant rows.
 
 ## Coverage
 
