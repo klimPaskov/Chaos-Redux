@@ -17,6 +17,7 @@ This package contains accepted design, matrix criteria, planning, and handoff ma
 - 9 specification parts
 - 22 full host-country playbooks
 - 29 compact host signatures with promotion rules
+- 1 capital-only compact package for every African-capital country outside the named matrix
 - 16 priority member and restoration packages
 - 6 promoted Tier A visual/runtime packages on approved existing carriers
 - 215 candidate African polity identities
@@ -97,9 +98,9 @@ Bounded implementation, asset, achievement, decision and mission, super-event, a
 
 Source reading record, package revision review, catalog reconciliation, implementation acceptance, and improvement-loop closure review.
 
-## Current reconciliation boundary (2026-08-11)
+## Current reconciliation boundary (2026-08-15)
 
-The current source reconciliation records 44/44 achievement rows, 64/64 AI profiles, 102/102 action concepts with 96 ordinary implementations and six deliberate runtime gates, 16 implemented conditional priority packages, 16 matching implemented polity rows, 199 queued controlled-pool polity candidates, 22 full and 29 compact host signatures, six promoted Tier A packages, nine installed model packages including the elephant, 18 installed animations, four super-event roles, W4/W5 source certification, RSA Allied rupture handling, the Charter GUI, and 239 explicit asset dispositions.
+The current source reconciliation records 44/44 achievement rows, 64/64 AI profiles, 102/102 action concepts with 96 ordinary implementations and six deliberate runtime gates, 16 implemented conditional priority packages, 16 matching implemented polity rows, 199 queued controlled-pool polity candidates, 22 full and 29 compact named host signatures, one capital-only compact package for every unmapped African-capital country, six promoted Tier A packages, nine installed model packages including the elephant, 18 installed animations, four super-event roles, W4/W5 source certification, RSA Allied rupture handling, the Charter GUI, and 239 explicit asset dispositions.
 
 The 239 asset rows are `84 installed_runtime`, `28 installed_dormant`, `10 deferred_runtime_gated`, and `117 deferred_controlled_pool`, with zero `deferred_model_required`, zero `deferred_unique_package_required`, and no `pending_runtime_blocker` rows. These counts describe the current matrix and ledger; they do not replace the accepted design criteria.
 

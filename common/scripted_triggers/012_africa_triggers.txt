@@ -2,8 +2,8 @@
 # CHAOS REDUX - EVENT 012 AFRICA TRIGGERS
 # ============================================================================
 # Overview:
-# - Validates the one-shot African-rooted host pool and persistent host pointer.
-# - Classifies the 22 full and 29 compact host playbooks without changing tags.
+# - Selects every existing country whose current capital is in Africa.
+# - Classifies 22 full, 29 compact, and one capital-only host package without changing tags.
 # - Exposes the Charter relationship, capacity, promotion, and integration gates.
 # - Performs no periodic world iteration; the shared dispatcher calls the host
 #   pool only while explicitly resolving Event 12.
@@ -185,10 +185,9 @@ africa_is_compact_host_playbook_country = {
 	}
 }
 
-# COUNTRY scope during the fire-once selection pass. A candidate host is only
-# valid when its mapped overlay contains enough real African-rooted governments
-# to satisfy the frozen opening roster. This is a one-shot selection query, not
-# a recurring world scan.
+# COUNTRY scope on original SAF. This specialised Allied-rupture proof checks
+# whether the dedicated civil-war opening has enough regional governments for
+# its exile-patron handoff. It does not determine ordinary Event 12 eligibility.
 africa_has_prefire_opening_contact = {
 	OR = {
 		AND = {
@@ -293,9 +292,8 @@ africa_has_prefire_opening_contact = {
 }
 
 # COUNTRY scope on a prospective contact. The selected candidate host is saved
-# as africa_prefire_host_candidate. Every accepted playbook is explicitly
-# assigned to one controlled regional pool; several playbooks intentionally
-# share the same geography, but none reaches this trigger through an else case.
+# as africa_prefire_host_candidate. Named playbooks use their controlled regional
+# pools. An unmapped African-capital host uses every valid African government.
 africa_matches_prefire_host_contact_pool = {
 	has_event_target = africa_prefire_host_candidate
 	OR = {
@@ -358,72 +356,39 @@ africa_matches_prefire_host_contact_pool = {
 				africa_is_reunion_signature_country = yes
 			}
 		}
+		# Unmapped or dynamically created hosts use a continent-wide contact pool.
+		AND = {
+			event_target:africa_prefire_host_candidate = {
+				NOT = { africa_has_mapped_host_playbook = yes }
+			}
+			capital_scope = { is_on_continent = africa }
+		}
 	}
 }
 
-# COUNTRY scope. The mapped playbook is itself the African-rooted historical
-# package; the capital/core checks prevent relocated metropoles or occupation
-# authorities from borrowing that legitimacy. The release-candidate package
-# only takes over the generic tree. Countries with meaningful national trees
-# remain eligible as members but cannot lose their existing content to Event 12.
+# COUNTRY scope. Host eligibility is intentionally geographic and nothing more:
+# every existing country whose current capital is in Africa can receive Event 12.
+# Dossier mapping, focus-tree type, political status, capital control, contact
+# count, and country classification may shape later content but never remove a
+# valid African-capital country from the fire-once host pool.
 africa_is_eligible_host = {
 	exists = yes
-	africa_has_mapped_host_playbook = yes
-	OR = {
-		NOT = { africa_is_independence_wave_niche_host_tag = yes }
-		africa_is_valid_independence_wave_niche_host_binding = yes
-	}
-	africa_has_prefire_opening_contact = yes
-	has_focus_tree = generic_focus
-	has_capitulated = no
 	capital_scope = {
 		is_on_continent = africa
-		is_controlled_by = PREV
 	}
-	any_core_state = {
-		is_on_continent = africa
-	}
-	has_civil_war = no
-	OR = {
-		NOT = { original_tag = SAF }
-		tag = SAF
-	}
-	OR = {
-		is_government_in_exile = no
-		any_controlled_state = {
-			is_on_continent = africa
-		}
-	}
-	NOT = { is_actual_nonhuman_country = yes }
-	NOT = { is_special_chaos_country = yes }
-	NOT = { has_country_flag = africa_unifier_host }
-	NOT = { has_country_flag = africa_unified_identity }
-	NOT = { has_country_flag = africa_terminal_world_actor }
-	NOT = { has_country_flag = event_012_incompatible_terminal_actor }
-	NOT = { has_global_flag = africa_event_active }
-	NOT = { has_global_flag = africa_is_one }
-	NOT = { has_global_flag = world_end }
 }
 
 # Any scope. Explicit availability query for the random-event resolver.
 africa_has_any_eligible_host = {
 	any_country = {
-		OR = {
-			africa_is_eligible_host = yes
-			africa_rsa_shared_entry_is_eligible = yes
-		}
+		africa_is_eligible_host = yes
 	}
 }
 
-# COUNTRY scope. The shared initializer accepts either the release-candidate
-# generic host or the narrow South African meaningful-tree route. Keeping the
-# OR here centralizes the one sanctioned exception instead of weakening the
-# generic host predicate for every other country.
+# COUNTRY scope. Selection, dispatch, the entry trigger, and initialization all
+# consume the same capital-in-Africa contract.
 africa_can_initialize_selected_host = {
-	OR = {
-		africa_is_eligible_host = yes
-		africa_rsa_shared_entry_is_eligible = yes
-	}
+	africa_is_eligible_host = yes
 }
 
 # Any scope. The shared event system owns disabled/already-fired checks.
@@ -434,20 +399,14 @@ africa_automatic_event_is_available = {
 	africa_has_any_eligible_host = yes
 }
 
-# Any scope. Event Details keeps the absolute Africa lifecycle gates and
-# excludes a stale already-committed host. Host eligibility already proves the
-# minimum contact roster, while the South African route additionally proves a
-# valid patron through its narrow shared-entry trigger.
+# Any scope. Event Details keeps only the one-time lifecycle gates plus the
+# existence of at least one country whose current capital is in Africa.
 africa_manual_event_is_available = {
 	NOT = { has_global_flag = africa_event_active }
 	NOT = { has_global_flag = africa_event_resolved }
 	NOT = { has_global_flag = world_end }
 	any_country = {
-		NOT = { has_country_flag = africa_host_commit_completed }
-		OR = {
-			africa_is_eligible_host = yes
-			africa_rsa_shared_entry_is_eligible = yes
-		}
+		africa_is_eligible_host = yes
 	}
 }
 
@@ -685,11 +644,17 @@ africa_matches_current_host_overlay = {
 				africa_is_reunion_signature_country = yes
 			}
 		}
+		# Capital-only compact hosts use every African-capital government instead
+		# of borrowing a named regional dossier.
+		AND = {
+			event_target:africa_host = { check_variable = { africa_regional_overlay = constant:africa_overlay.none } }
+			capital_scope = { is_on_continent = africa }
+		}
 	}
 }
 
-# COUNTRY scope. The opening can proceed only when at least one other valid
-# regional actor exists; Event 12 rejects rather than inventing a substitute.
+# COUNTRY scope. Reports whether the live host overlay still contains another
+# valid regional actor. This can shape later content but never vetoes the entry.
 africa_has_opening_contact = {
 	any_country = {
 		africa_is_valid_relationship_target = yes

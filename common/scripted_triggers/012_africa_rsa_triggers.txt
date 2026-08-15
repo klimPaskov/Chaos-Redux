@@ -77,12 +77,10 @@ africa_rsa_has_exile_patron_candidate = {
 	}
 }
 
-# COUNTRY scope during the one-shot host candidate build, after the
-# prospective host's temporary contact pool exists. This prevents original
-# SAF from entering the weighted pool when its frozen contact set contains no
-# valid African exile patron in the temporary contact pool. Persistent Event 12
-# relationship arrays do not exist before a host has been initialized and are
-# intentionally not consulted during this prefire pass.
+# COUNTRY scope after a temporary contact pool exists. This is retained as a
+# specialised Allied-rupture proof and never filters original SAF from the
+# weighted Event 12 host pool. Persistent relationship arrays do not exist
+# before initialization and are intentionally not consulted here.
 africa_rsa_prefire_contact_pool_has_patron = {
 	any_of_scopes = {
 		array = africa_prefire_contact_pool
@@ -91,8 +89,8 @@ africa_rsa_prefire_contact_pool_has_patron = {
 }
 
 # COUNTRY scope on original SAF before the temporary contact pool exists. This
-# mirrors the South African opening overlay and proves that at least one of its
-# minimum valid contacts can also serve as the later exile patron.
+# reports whether the optional Allied-rupture route has a later exile patron;
+# it is not an Event 12 eligibility condition.
 africa_rsa_has_prefire_patron_contact = {
 	any_country = {
 		africa_is_valid_relationship_target = yes
@@ -106,12 +104,10 @@ africa_rsa_has_prefire_patron_contact = {
 	}
 }
 
-# COUNTRY scope during the shared Event 12 fire-once selection pass. South
-# Africa keeps its meaningful vanilla focus tree, so it enters through this
-# narrow branch instead of the generic-focus host gate. Before the prefire
-# roster is frozen, the patron check is deferred; after freezing, the same
-# bounded roster must contain a valid African custodian before the entry event
-# can fire. The public civil-war effect remains the final hard gate.
+# COUNTRY scope for the specialised Allied-rupture prefire proof. This is not
+# the Event 12 host gate: original SAF is eligible whenever its current capital
+# is in Africa. These narrower checks only determine whether its dedicated
+# Allied civil-war opening can replace the ordinary additive opening.
 africa_rsa_shared_entry_is_eligible = {
 	exists = yes
 	tag = SAF
