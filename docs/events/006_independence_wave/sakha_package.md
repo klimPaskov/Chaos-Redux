@@ -30,18 +30,18 @@ The force contract expects p51 `mountain_frontier` mapping with cold-weather and
 
 ## Identity and assets
 
-The package preserves the vanilla YAK history, characters, flag family, and portrait tokens.
+The package preserves the vanilla YAK history, characters, base flag family, and portrait tokens. Four generated route-only ladders now exist under `docs/assets/006_independence_wave/iw051_sakha_flags_2026_08_15/` and the matching `gfx/flags/` basenames; no vanilla YAK base or ideology file is overridden.
 
 Pavel Pevznyak has a source-backed 1936 Yakutsk role and public-domain portrait evidence, while Anatoly Pepelyayev is not role/date-valid for the 1936 opening.
 
-The package therefore requires the parent-owned `independence_wave_iw_051_identity_rights_cleared` flag before roster setup can proceed and creates no portrait or flag override.
+The package therefore requires the parent-owned `independence_wave_iw_051_identity_rights_cleared` flag before roster setup can proceed and creates no portrait or base-flag override. The route ladders are alternate-history generated syntheses, not an attested universal 1936 flag; prompt text was not co-located with the supplied masters and remains a review note.
 
 The source archive is `docs/assets/portraits/006_independence_wave/`, with originals directly in the parent and processed evidence only in its single `processed/` child; no 156x210 archive files are retained.
 
 ## Admission blockers
 
 - The state-574 map allocation still reports a collision that must be resolved before runtime admission.
-- The period Sakha flag lead remains rights and released-origin gated, so the vanilla carrier is not yet an identity admission.
+- The period Sakha flag lead remains rights and released-origin gated, while the generated route ladders are explicitly needs-user-review; neither is a neutral 1936 identity admission.
 - Portrait clearance is package-owned only after the parent reviews the Pevznyak source and rejects the role-invalid Pepelyayev route.
 - The probability adapter reports no weighted surfaces and no quantitative AI or mission balance claim is available.
 - Technology Tree Viewer evidence is unavailable, and Event 006 event inspection remains partial because workspace helper and lifecycle projection is deferred.
