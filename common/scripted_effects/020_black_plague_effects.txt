@@ -1831,6 +1831,11 @@ black_plague_start_natural_outbreak = {
 		if = {
 			limit = { check_variable = { black_plague_origin_selection_result > 0 } }
 			black_plague_initialize_runtime = yes
+			# The opening recognition report owns the natural outbreak announcement.
+			# Suppress the redundant threatened and incubating milestone notices that
+			# are created while the opening state package is being initialized.
+			set_global_flag = black_plague_report_first_threatened
+			set_global_flag = black_plague_report_first_incubating
 			event_target:black_plague_selected_origin_state = {
 				save_global_event_target_as = black_plague_origin_state
 				save_global_event_target_as = black_plague_scheduler_anchor_state
