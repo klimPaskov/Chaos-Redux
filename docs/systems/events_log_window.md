@@ -39,11 +39,12 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 ## Event Details world-end catalog
 
 - The shared Event Details popup places **World End Scenarios** below the evolution preview.
-- The list contains one row per public terminal branch owned by the selected event. Event 2 and Event 14 each demonstrate independent multi-row behavior.
+- The list contains one row per registered terminal branch owned by the selected event. Event 2 and Event 14 each demonstrate independent multi-row behavior, including registered hidden identities.
+- World-end rows use the same 41-pixel rhythm, text bounds, and checkbox alignment as evolution rows.
 - Each row shows its title, owner event, and enabled or active status. Clicking it opens the dedicated world-end scenario details popup.
 - The scenario checkbox writes only to `global.disabled_world_end_scenarios`. It does not change `global.disabled_events`, evolution state, or sibling scenario state.
 - A disabled entry is excluded at its natural automatic terminal readiness gate. Existing Chaos, world-state, route, and super-event conditions remain authoritative.
-- Hidden easter-egg terminal branches never enter the public view arrays and receive no Event Details row or control.
+- A registered hidden terminal identity still enters the view arrays and receives a row and control; its hidden visibility class remains metadata and does not reveal unrelated unregistered routes.
 - Full registry, wiring, text, and asset ownership is documented in `docs/systems/events_log_world_end_scenarios.md`.
 
 ## Evolutions tab behavior
@@ -68,7 +69,7 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - The cluster-details window shows cluster metadata, actor country, fired/skipped member counts, current or historical member status, and each member event's danger.
 - The cluster-details window puts current/unlock tier on one line and roll/member count on the next line. Roll displays `N/A` while the cluster is locked by chaos tier.
 - Cluster rows and cluster details use the same checkbox pattern as event rows. Disabling a cluster blocks automatic cluster firing but does not block manual triggering.
-- The footer bulk checkbox appears only on the Events and Clusters tabs. On Events it toggles all registered events through `global.disabled_events`; on Clusters it toggles all registered clusters through `global.disabled_event_clusters`.
+- The footer bulk checkbox appears only on the Events and Clusters tabs. On Events, a normal click toggles all registered events through `global.disabled_events`, while Shift-click toggles only the fully reworked default-enabled allowlist and leaves every other event's state unchanged. On Clusters it toggles all registered clusters through `global.disabled_event_clusters`.
 - Event rows start checked only when their event is in the reworked-event default enable allowlist. Unreworked events are seeded into `global.disabled_events` during event-system initialization, so they start unchecked and cannot fire automatically until re-enabled.
 - Member rows are sorted by danger from lower danger to higher danger.
 - Clicking a member row opens the normal event-details popup for that event while keeping the cluster-details window open.
@@ -180,7 +181,7 @@ These are defined in:
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
 ## Interactions with existing systems
-- `common/scripted_effects/chaosx_events_log_effects.txt` owns Event Logs history/evolution record insertion, actor sanitizing, default actor mapping, popup state, tab rebuilds, shared event-details rebuilds, event-detail evolution preview rows, and the public world-end registry/view state.
+- `common/scripted_effects/chaosx_events_log_effects.txt` owns Event Logs history/evolution record insertion, actor sanitizing, default actor mapping, popup state, tab rebuilds, shared event-details rebuilds, event-detail evolution preview rows, and the registered world-end registry/view state.
 - `common/scripted_effects/chaosx_logic_effects.txt` still owns random-event selection, type handling, timers, and the fired-event handlers that call the Event Logs recorders.
 - `common/scripted_effects/chaosx_settings_effects.txt` still owns settings controls and event firing helpers, but should not collect new Event Logs history/evolution display logic.
 - Scripted GUI click routing stays in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`.

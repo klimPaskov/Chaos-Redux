@@ -424,6 +424,22 @@ africa_automatic_event_is_available = {
 	africa_has_any_eligible_host = yes
 }
 
+# Any scope. Event Details keeps the absolute Africa lifecycle gates and
+# excludes a stale already-committed host before the manual prefire builder
+# performs its stricter three-contact roster probe.
+africa_manual_event_is_available = {
+	NOT = { has_global_flag = africa_event_active }
+	NOT = { has_global_flag = africa_event_resolved }
+	NOT = { has_global_flag = world_end }
+	any_country = {
+		NOT = { has_country_flag = africa_host_commit_completed }
+		OR = {
+			africa_is_eligible_host = yes
+			africa_rsa_shared_entry_is_eligible = yes
+		}
+	}
+}
+
 # COUNTRY scope.
 africa_is_current_host = {
 	has_country_flag = africa_unifier_host

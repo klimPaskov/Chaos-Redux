@@ -19,6 +19,7 @@
 
 africa_clear_prefire_context = {
 	set_temp_variable = { africa_prefire_ready = @CR_SC_AFRICA_VALUE_ZERO }
+	set_temp_variable = { africa_manual_prefire_context = @CR_SC_AFRICA_VALUE_ZERO }
 	set_temp_variable = { africa_host_selection_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
 	set_temp_variable = { africa_host_selection_weight = @CR_SC_AFRICA_VALUE_ZERO }
 	set_temp_variable = { africa_host_pool_weight_remaining = @CR_SC_AFRICA_VALUE_ZERO }
@@ -260,6 +261,12 @@ africa_select_weighted_prefire_host = {
 				save_event_target_as = africa_prefire_host
 			}
 		event_target:africa_prefire_host = {
+			if = {
+				limit = { ROOT = { check_variable = { africa_manual_prefire_context > @CR_SC_AFRICA_VALUE_ZERO } } }
+				# Event Details may retry after an abandoned prefire attempt. Rebuild
+				# the roster from a clean host context instead of reusing stale slots.
+				africa_clear_frozen_first_contact_context = yes
+			}
 			africa_build_prefire_contact_pool = yes
 			africa_freeze_prefire_contact_roster = yes
 		}
@@ -277,6 +284,51 @@ africa_prepare_random_event_fire = {
 	if = {
 		limit = { africa_automatic_event_is_available = yes }
 		africa_select_weighted_prefire_host = yes
+		if = {
+			limit = {
+				has_event_target = africa_prefire_host
+				event_target:africa_prefire_host = {
+					OR = {
+						africa_is_eligible_host = yes
+						africa_rsa_shared_entry_is_eligible = yes
+					}
+					has_country_flag = africa_prefire_contacts_frozen
+					check_variable = {
+						var = africa_frozen_first_contact_count
+						value = constant:africa_opening_contact.minimum_frozen_contacts
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			set_temp_variable = { africa_prefire_ready = constant:africa_value.one }
+		}
+		else_if = {
+			limit = { has_event_target = africa_prefire_host }
+			# A rejected frozen roster must not poison a later explicit fire
+			# attempt with stale contact flags or an old patron count.
+			event_target:africa_prefire_host = {
+				africa_clear_frozen_first_contact_context = yes
+			}
+		}
+	}
+}
+
+# Any scope. Event Details uses this explicit launch boundary instead of the
+# automatic event-pool availability helper. It retains the absolute Africa
+# lifecycle checks, then probes the same weighted host/contact builder used by
+# automatic firing. The prefire roster is rebuilt under a manual-only context
+# marker so a failed or retried manual launch cannot reuse stale contact state.
+africa_prepare_manual_event_fire = {
+	africa_clear_prefire_context = yes
+	if = {
+		limit = {
+			NOT = { has_global_flag = africa_event_active }
+			NOT = { has_global_flag = africa_event_resolved }
+			NOT = { has_global_flag = world_end }
+		}
+		set_temp_variable = { africa_manual_prefire_context = constant:africa_value.one }
+		africa_select_weighted_prefire_host = yes
+		set_temp_variable = { africa_manual_prefire_context = constant:africa_value.zero }
 		if = {
 			limit = {
 				has_event_target = africa_prefire_host

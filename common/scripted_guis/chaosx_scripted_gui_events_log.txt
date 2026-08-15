@@ -25,6 +25,10 @@ scripted_gui = {
 				events_log_toggle_header_bulk_enabled = yes
 			}
 
+			events_log_all_events_checkbox_shift_click = {
+				events_log_toggle_reworked_default_events_enabled = yes
+			}
+
 			events_log_all_clusters_checkbox_click = {
 				events_log_toggle_header_bulk_enabled = yes
 			}
@@ -200,6 +204,9 @@ scripted_gui = {
 				has_country_flag = events_log_events_tab
 			}
 			events_log_all_events_checkbox_click_enabled = {
+				always = yes
+			}
+			events_log_all_events_checkbox_shift_click_enabled = {
 				always = yes
 			}
 			events_log_all_clusters_checkbox_visible = {
@@ -1200,7 +1207,9 @@ scripted_gui = {
 			}
 
 			events_log_event_detail_entry_trigger_button_click = {
+				set_temp_variable = { events_log_manual_event_detail_trigger = 1 }
 				events_log_trigger_open_event_detail_entry = yes
+				set_temp_variable = { events_log_manual_event_detail_trigger = 0 }
 			}
 
 			events_log_event_detail_open_diplomacy_button_click = {
@@ -1314,28 +1323,67 @@ scripted_gui = {
 			}
 			events_log_event_detail_entry_trigger_button_click_enabled = {
 				OR = {
-					check_variable = {
-						var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
-						value = constant:event_system_event_type.repeatable
-						compare = equals
-					}
 					AND = {
-						OR = {
-							check_variable = {
-								var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
-								value = constant:event_system_event_type.major
-								compare = equals
-							}
-							check_variable = {
-								var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
-								value = constant:event_system_event_type.fire_once
-								compare = equals
-							}
+						check_variable = {
+							var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index
+							value = constant:africa_event.id
+							compare = equals
 						}
 						check_variable = {
 							var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
 							value = 1
 							compare = less_than
+						}
+						africa_manual_event_is_available = yes
+					}
+					AND = {
+						check_variable = {
+							var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index
+							value = constant:random_faction_event.id
+							compare = equals
+						}
+						random_faction_has_manual_dispatchable_context = yes
+					}
+					AND = {
+						NOT = {
+							OR = {
+								check_variable = {
+									var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index
+									value = constant:africa_event.id
+									compare = equals
+								}
+								check_variable = {
+									var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index
+									value = constant:random_faction_event.id
+									compare = equals
+								}
+							}
+						}
+						OR = {
+							check_variable = {
+								var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+								value = constant:event_system_event_type.repeatable
+								compare = equals
+							}
+							AND = {
+								OR = {
+									check_variable = {
+										var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+										value = constant:event_system_event_type.major
+										compare = equals
+									}
+									check_variable = {
+										var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+										value = constant:event_system_event_type.fire_once
+										compare = equals
+									}
+								}
+								check_variable = {
+									var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+									value = 1
+									compare = less_than
+								}
+							}
 						}
 					}
 				}

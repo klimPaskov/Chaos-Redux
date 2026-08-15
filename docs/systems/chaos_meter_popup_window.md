@@ -28,7 +28,8 @@ The `Status` tab shows:
 
 - current chaos value,
 - current chaos tier,
-- a short mechanics explanation.
+- a short mechanics explanation,
+- the live 480 by 80 Chaos Meter strip, using the same value-driven sprite as the topbar meter.
 
 ### History Tab
 
@@ -64,12 +65,13 @@ History rows now include per-cause reason mapping for the full chaos meter chang
 
 The `Air Cleanliness` tab shows:
 
-- current global contamination and cleanliness,
-- monthly contamination delta and natural recovery,
-- chemical/outbreak/irradiated state contribution counts,
-- one consolidated contamination stage status line,
-- active winter phase and fallout world-end progress.
-- a right-side quick mechanic overview with threshold summary.
+- current contamination and clean air in a paired two-column row,
+- last net change and applied recovery in a paired two-column row,
+- tracked source footprint and source record count in a paired two-column row,
+- lifetime rises and falls in a paired two-column row,
+- one full-width contamination stage status line,
+- the active Air Winter phase,
+- the permanent contamination source ledger below the summary.
 
 Every value/summary row in this tab has a tooltip explaining what it represents.
 

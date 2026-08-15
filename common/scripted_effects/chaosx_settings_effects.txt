@@ -4606,7 +4606,15 @@ fire_event_by_temp_id_no_cluster = {
 	}
 	if = {
 		limit = { check_variable = { event_id = constant:random_faction_event.id } }
-		random_faction_prepare_runtime_context = yes
+		if = {
+			limit = { check_variable = { events_log_manual_event_detail_trigger > 0 } }
+			set_country_flag = random_faction_exclude_dispatch_requester
+			random_faction_prepare_runtime_context = yes
+			clr_country_flag = random_faction_exclude_dispatch_requester
+		}
+		else = {
+			random_faction_prepare_runtime_context = yes
+		}
 		if = {
 			limit = {
 				OR = {
@@ -4679,7 +4687,13 @@ fire_event_by_temp_id_no_cluster = {
 	if = {
 		limit = { check_variable = { event_id = constant:africa_event.id } }
 		set_temp_variable = { africa_prefire_ready = constant:africa_value.zero }
-		africa_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { events_log_manual_event_detail_trigger > 0 } }
+			africa_prepare_manual_event_fire = yes
+		}
+		else = {
+			africa_prepare_random_event_fire = yes
+		}
 		if = {
 			limit = {
 				OR = {
