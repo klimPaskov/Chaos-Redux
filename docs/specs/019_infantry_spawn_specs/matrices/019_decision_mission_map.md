@@ -31,7 +31,7 @@ is the count authority.
 | Request Anomalous Formation | Evolution IV onward | ordinary country | containment, family cost, saturation | registry family lot | derivative risk |
 | Grant Formal Command | Evolution III onward | ordinary country | political and military authority | improves claimant lots | influence rises |
 | Reassign Loyal Formations | Evolution III onward | ordinary country | replacement officers, supply | lowers claimant force | can fail or provoke |
-| Build a Counter-Command | Evolution III onward | ordinary country | army experience and command power | lowers claimant influence, raises Muster Control, and starts the shared response lock | expensive and slow; the decision, Muster Board, and AI use the same lock |
+| Build a Counter-Command | Evolution III onward | ordinary country | army experience and command power | lowers claimant influence, raises Muster Control, and starts the shared response lock | expensive and slow; the decision and AI use the same lock |
 | Negotiate Retirement | Evolution III onward | ordinary country | status, protection, political concession | peaceful claimant removal | claimant can reject |
 | Arrest the Claimant | Evolution III onward | ordinary country | loyal units and preparation | ends claimant on success | coup or revolt on failure |
 | Accept Military Takeover | Evolution III onward | ordinary country | country political identity | avoids civil war | claimant regime takes power |
@@ -80,7 +80,7 @@ is the count authority.
 
 ## Selected-target and clutter control
 
-- Only one formation lot is selected in the Muster Board at a time.
+- Only one formation lot is selected in the shared Formation Ledger cache at a time.
 - Lot-specific decisions activate for the selected lot.
 - AI evaluates all valid lots without using the human selection flow.
 - Claimant decisions appear only for active claimants and current demands.

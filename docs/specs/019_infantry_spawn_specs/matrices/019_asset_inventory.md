@@ -33,11 +33,11 @@ Every report image receives the project report-card processing and sepia treatme
 
 Decision, idea, and focus icons require separate source artwork designed for their target size. They cannot be resized versions of one another.
 
-## Scripted GUI assets
+## Archived former-GUI assets
 
 | Asset | State variants | Target | Animation |
 | --- | --- | --- | --- |
-| Muster Board background | static | final GUI dimensions after layout | no |
+| Former Muster Board background | static | archival GUI dimensions | no |
 | Overview header | inactive, active, critical | layout-specific | critical can use seal pulse overlay |
 | Formation lot card | normal, selected, locked, resolved, dangerous | layout-specific | no |
 | Quality and coherence markers | four bands each | small UI | no |
@@ -45,7 +45,7 @@ Decision, idea, and focus icons require separate source artwork designed for the
 | Registry family card | unavailable, available, active, contained, breach | layout-specific | active emblem can animate |
 | Cost and warning markers | met, missing, cooldown, invalid target | small UI | no |
 
-## Animated packages
+## Archived animated packages
 
 | Package | Frames | Frame target | FPS | Loop | Required deliverables |
 | --- | ---: | --- | ---: | --- | --- |
@@ -54,6 +54,10 @@ Decision, idea, and focus icons require separate source artwork designed for the
 | Anomalous registry emblem | 10 | determined by registry tab | 4 to 6 | yes | same full package |
 
 Every frame must be a real generated or edited source frame. Local transform-only motion is forbidden.
+
+These former-GUI assets remain production provenance only. The accepted
+2026-08-05 surface uses ordinary Event 019 decisions and does not register a
+scripted GUI, background, frame-sheet animation, or static fallback at runtime.
 
 ## Claimant army/muster identity scenes
 

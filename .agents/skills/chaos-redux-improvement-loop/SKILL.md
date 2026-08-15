@@ -152,7 +152,7 @@ Use prose, route maps, state diagrams, package tables, UI descriptions, event fa
 
 Do not write vague lines such as `add more flavor`, `make decisions deeper`, `add a hidden formable`, `improve AI`, or `add animations`. Name the route, action, state group, cost type, reveal condition, failure consequence, asset family, and AI behavior where they matter.
 
-When the weakness is weighted AI, timing, or random selection, turn the intended improvement into named scenarios and measurable ordering, timing, dominance, or starvation expectations. Require `hoi4.probability_inspect` before analysis, then select `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, `hoi4.probability_sequence`, `hoi4.probability_compare`, or `hoi4.probability_render` according to the evidence needed. Do not ask the implementation agent to prove an exact probability from an incomplete candidate pool or undeclared external state.
+When the weakness is weighted AI, timing, or random selection, route the audit through `chaosx_ai_probability_auditor`, turn the intended improvement into named scenarios and measurable ordering, timing, dominance, or starvation expectations, and require `hoi4.probability_inspect` before analysis. Then select `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, `hoi4.probability_sequence`, `hoi4.probability_compare`, or `hoi4.probability_render` according to the evidence needed. Do not ask the implementation agent to prove an exact probability from an incomplete candidate pool or undeclared external state.
 
 ## Design moves that matter
 
@@ -238,7 +238,7 @@ Visual improvement should support mechanic clarity. It should not become decorat
 
 When an improvement changes a unit, building, creature, vehicle, aircraft, naval object, or map entity, include a 3D model review instead of treating the model as a final-render detail. Check whether the feature needs a static prop, a calibrated humanoid unit, a domain-specific mesh, or a building entity, then name the vanilla mesh/entity precedent, source-height/entity-scale crosswalk, one-image Meshy input rule, PDX material mapping, required skeletal actions, `.mesh`/`.anim` exports, reimport evidence, runtime hashes, valid map placement, and live consumer.
 
-Route bounded production to `chaosx_3d_model_pipeline` with `fork_context=false`. Keep provider source, Blender checkpoints, processed textures, and runtime handoff evidence separate from the parent-owned `.asset`, entity, `.gfx`, gameplay wiring, and in-game proof.
+Route bounded production to `chaosx_3d_model_pipeline` with `fork_context=false`. Require Meshy 6 by default, pre-authorized normal model/animation spend with confirmation only for failure-driven extra recovery, Internet-sourced-only unit audio, and bespoke vanilla-green counters backed by exact installed-vanilla inspection. Keep provider source, Blender checkpoints, processed textures, counter and sound handoffs, and runtime evidence separate from the parent-owned `.asset`, entity, `.gfx`, gameplay wiring, and in-game proof.
 
 An asset addendum can define route-specific report images, decision icons, idea icons, focus icon families, flags, portraits, faction emblems, scripted GUI panels, animated sprites, animated portrait variants, progression states, and contact sheets.
 

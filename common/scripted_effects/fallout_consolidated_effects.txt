@@ -9,6 +9,7 @@
 @CR_SC_AIR_WINTER_EVENT_OUTCOME_REFINERY_DAMAGE = 0.50
 @CR_SC_AIR_WINTER_EVENT_OUTCOME_REFINERY_OUTPUT_DAMAGE = 0.25
 @CR_SC_FALLOUT_GENERIC_DECISION_TECH_BONUS_USES = 1
+@CR_SC_FALLOUT_GENERIC_DECISION_TECH_BONUS = 0.50
 @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_FAILURE_BUILDING_DAMAGE = 3
 @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_PARTIAL_BUILDING_DAMAGE = 2
 @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_SUCCESS_BUILDING_DAMAGE = 1
@@ -14800,7 +14801,10 @@ fallout_manual_reset_runtime_ledger = {
 fallout_manual_initialize_sweep = {
 	fallout_manual_reset_runtime_ledger = yes
 	fallout_manual_capture_population_baselines = yes
-	clear_global_event_target = fallout_manual_sweep_coordinator
+	if = {
+		limit = { has_event_target = fallout_manual_sweep_coordinator }
+		clear_global_event_target = fallout_manual_sweep_coordinator
+	}
 	set_temp_variable = { fallout_manual_intensity_candidate = fallout_manual_selected_intensity_input }
 	if = {
 		limit = {
@@ -14915,9 +14919,11 @@ fallout_manual_schedule_next_batch = {
 		set_temp_variable = { fallout_manual_batch_event_id = global.fallout_manual_next_batch }
 		add_to_temp_variable = { fallout_manual_batch_event_id = constant:fallout_manual_sweep.batch_event_id_offset }
 		set_global_flag = fallout_manual_batch_event_scheduled
+		set_temp_variable = { fallout_manual_batch_delay_hours = @FALLOUT_MANUAL_BATCH_DELAY_HOURS }
 		meta_effect = {
-			text = { country_event = { id = chaosx.fallout.[EVENT_ID] hours = @FALLOUT_MANUAL_BATCH_DELAY_HOURS } }
+			text = { country_event = { id = chaosx.fallout.[EVENT_ID] hours = [BATCH_DELAY_HOURS] } }
 			EVENT_ID = "[?fallout_manual_batch_event_id|.0]"
+			BATCH_DELAY_HOURS = "[?fallout_manual_batch_delay_hours|.0]"
 		}
 	}
 }
@@ -14943,9 +14949,11 @@ fallout_manual_schedule_verifier = {
 		set_temp_variable = { fallout_manual_verifier_event_id = global.fallout_manual_verifier_retry_count }
 		add_to_temp_variable = { fallout_manual_verifier_event_id = constant:fallout_manual_sweep.verifier_event_id_offset }
 		set_global_flag = fallout_manual_verifier_event_scheduled
+		set_temp_variable = { fallout_manual_verifier_delay_hours = @FALLOUT_MANUAL_VERIFIER_DELAY_HOURS }
 		meta_effect = {
-			text = { country_event = { id = chaosx.fallout.[EVENT_ID] hours = @FALLOUT_MANUAL_VERIFIER_DELAY_HOURS } }
+			text = { country_event = { id = chaosx.fallout.[EVENT_ID] hours = [VERIFIER_DELAY_HOURS] } }
 			EVENT_ID = "[?fallout_manual_verifier_event_id|.0]"
+			VERIFIER_DELAY_HOURS = "[?fallout_manual_verifier_delay_hours|.0]"
 		}
 	}
 }
@@ -15614,7 +15622,10 @@ fallout_manual_submit_standard_request_internal = {
 		clr_global_flag = fallout_manual_request_due
 		set_variable = { global.fallout_manual_status = constant:fallout_manual_status.request_sent }
 		clr_country_flag = fallout_manual_synthetic_launcher
-		clear_global_event_target = fallout_manual_sweep_coordinator
+		if = {
+			limit = { has_event_target = fallout_manual_sweep_coordinator }
+			clear_global_event_target = fallout_manual_sweep_coordinator
+		}
 	}
 	else = {
 		set_global_flag = fallout_manual_scenario_active
@@ -15635,7 +15646,10 @@ fallout_manual_rehome_hourly_coordinator = {
 			}
 		}
 		every_country = { clr_country_flag = fallout_manual_synthetic_launcher }
-		clear_global_event_target = fallout_manual_sweep_coordinator
+		if = {
+			limit = { has_event_target = fallout_manual_sweep_coordinator }
+			clear_global_event_target = fallout_manual_sweep_coordinator
+		}
 		save_global_event_target_as = fallout_manual_sweep_coordinator
 		set_country_flag = fallout_manual_synthetic_launcher
 		clr_global_flag = fallout_manual_batch_event_scheduled
@@ -44814,7 +44828,7 @@ fallout_generic_decision_extend_regional_network = {
 	else_if = {
 		limit = { has_country_flag = fallout_generic_region_east_asia }
 		capital_scope = { add_building_construction = { type = industrial_complex level = constant:fallout_generic_decision.state_factory_gain instant_build = yes } }
-		add_tech_bonus = { name = fallout_generic_regional_agronomy bonus = constant:fallout_generic_decision.regional_tech_bonus uses = @CR_SC_FALLOUT_GENERIC_DECISION_TECH_BONUS_USES category = industry }
+		add_tech_bonus = { name = fallout_generic_regional_agronomy bonus = @CR_SC_FALLOUT_GENERIC_DECISION_TECH_BONUS uses = @CR_SC_FALLOUT_GENERIC_DECISION_TECH_BONUS_USES category = industry }
 	}
 	else_if = {
 		limit = { has_country_flag = fallout_generic_region_south_asia }

@@ -6,7 +6,7 @@ Status: reusable portrait mode rule updated; no runtime portrait files were chan
 
 ## Scope
 
-Updated only `.agents/skills/chaos-redux-comfyui-portraits/SKILL.md` and this handoff.
+Updated only `.agents/skills/chaos-redux-comfyui/SKILL.md` and this handoff.
 
 No gameplay, character, GFX, interface, localisation, asset, spreadsheet, or other skill file was edited.
 
@@ -18,7 +18,7 @@ This mode must not create or validate a provider job, configure or select a prov
 
 Provider-backed styled output remains required only when the user explicitly requests it or the task calls for a styled final, and the existing locked workflow, job schema, provider routing, output review, and `styled_final` gates remain in force for that mode.
 
-Fictional high-chaos portraits retain their provider-backed text-to-image route.
+Fictional high-chaos portraits use the native ImageGen route under the parent brief and never use the ComfyUI portrait workflow.
 
 ## Changed skill sections
 
@@ -32,12 +32,12 @@ Fictional high-chaos portraits retain their provider-backed text-to-image route.
 
 ## Preserved behavior
 
-The locked upstream workflow ids, provider persistence fields, provider-specific routing, prompt rules, output dimensions, independent review gates, durable source archive, and parent-owned runtime wiring remain in the skill.
+The locked upstream workflow ids, provider persistence fields, combined provider route sections, prompt rules, output dimensions, independent review gates, durable source archive, and parent-owned runtime wiring remain in the skill.
 
 ## Validation
 
 - Read the repository instructions, offline Paradox Wiki core pages, relevant vanilla documentation, the portrait skill, the skill-creator guidance, the event-assets portrait guidance, and the current source-placeholder policy before editing.
-- Ran `python -B C:\Users\klimp\.codex\skills\.system\skill-creator\scripts\quick_validate.py .agents\skills\chaos-redux-comfyui-portraits`.
+- Ran `python -B C:\Users\klimp\.codex\skills\.system\skill-creator\scripts\quick_validate.py .agents\skills\chaos-redux-comfyui`.
 - Re-read the edited skill and inspected its focused diff for mode wording, provider bypass, preserved workflow details, and accidental scope expansion.
 
 No simplifications or unresolved blockers remain for this skill-only change.

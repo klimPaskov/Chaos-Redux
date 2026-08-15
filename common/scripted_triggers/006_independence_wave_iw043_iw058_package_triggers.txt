@@ -404,6 +404,7 @@ is_independence_wave_formable_signature_family = {
 		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation }
 		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural }
 		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
 	}
 }
 
@@ -606,6 +607,16 @@ has_independence_wave_iw_formable_method_policy = {
 				}
 			}
 		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
+			OR = {
+				check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+				AND = {
+					check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
+					has_independence_wave_iw_formable_league_transformation_permission = yes
+				}
+			}
+		}
 	}
 }
 
@@ -657,6 +668,13 @@ has_independence_wave_iw_formable_generation_receipts = {
 			check_variable = { var = independence_wave_formable_consent_count value = constant:independence_wave_formable_signature.form18_minimum_consents compare = greater_than_or_equals }
 			check_variable = { var = independence_wave_formable_signature_anchor_receipt_count value = constant:independence_wave_formable_signature.form18_minimum_anchors compare = greater_than_or_equals }
 			has_country_flag = independence_wave_form18_settlement_receipt
+		}
+		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
+			check_variable = { var = independence_wave_formable_member_count value = independence_wave_formable_minimum_members compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_consent_count value = independence_wave_formable_minimum_consents compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_formable_signature_anchor_receipt_count value = independence_wave_formable_minimum_anchors compare = greater_than_or_equals }
+			has_country_flag = independence_wave_form16_readiness_receipt
 		}
 	}
 	has_independence_wave_iw_formable_method_policy = yes
@@ -710,7 +728,7 @@ has_independence_wave_iw043_supplied_division_candidate = {
 		has_country_flag = iw043_cavalry_detachment_created
 	}
 	any_country_division = {
-		limit = {
+		AND = {
 			has_variable = independence_wave_force_division_package_id
 			check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_043 compare = equals }
 			has_variable = independence_wave_force_division_generation_id
@@ -739,7 +757,7 @@ has_independence_wave_iw058_supplied_division_candidate = {
 		has_country_flag = iw058_mountain_scouts_created
 	}
 	any_country_division = {
-		limit = {
+		AND = {
 			has_variable = independence_wave_force_division_package_id
 			check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_058 compare = equals }
 			has_variable = independence_wave_force_division_generation_id
@@ -828,7 +846,7 @@ has_independence_wave_iw043_designated_formation = {
 	has_variable = independence_wave_iw043_designated_formation_generation
 	check_variable = { var = independence_wave_iw043_designated_formation_generation value = independence_wave_generation_id compare = equals }
 	any_country_division = {
-		limit = {
+		AND = {
 			has_variable = independence_wave_force_division_package_id
 			check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_043 compare = equals }
 			has_variable = independence_wave_force_division_generation_id
@@ -864,7 +882,7 @@ has_independence_wave_iw058_designated_formation = {
 	has_variable = independence_wave_iw058_designated_formation_generation
 	check_variable = { var = independence_wave_iw058_designated_formation_generation value = independence_wave_generation_id compare = equals }
 	any_country_division = {
-		limit = {
+		AND = {
 			has_variable = independence_wave_force_division_package_id
 			check_variable = { var = independence_wave_force_division_package_id value = constant:independence_wave_package_id.iw_058 compare = equals }
 			has_variable = independence_wave_force_division_generation_id
@@ -949,7 +967,7 @@ can_initialize_independence_wave_iw043_package = {
 		exists = yes
 		NOT = { tag = ROOT }
 	}
-	capital_scope = { state = 249 }
+	249 = { is_capital = yes }
 	has_valid_independence_wave_chu_package_mutex_for_setup = yes
 }
 
@@ -971,7 +989,7 @@ can_initialize_independence_wave_iw058_package = {
 		exists = yes
 		NOT = { tag = ROOT }
 	}
-	capital_scope = { state = 676 }
+	676 = { is_capital = yes }
 }
 
 # ---------------------------------------------------------------------------
@@ -1073,7 +1091,7 @@ can_write_independence_wave_iw043_restoration_route_proof = {
 	has_country_flag = independence_wave_iw043_route_restoration
 	NOT = { has_country_flag = independence_wave_iw043_route_federal }
 	NOT = { has_country_flag = independence_wave_iw043_route_emergency_guard }
-	has_independence_wave_iw043_anchor_secured = yes
+	independence_wave_iw043_anchor_secured = yes
 	has_valid_independence_wave_iw043_values = yes
 	check_variable = { var = iw043_congress_authority value = constant:independence_wave_iw043.capstone_authority_threshold compare = greater_than_or_equals }
 	check_variable = { var = iw043_river_control value = constant:independence_wave_iw043.capstone_river_threshold compare = greater_than_or_equals }
@@ -1097,7 +1115,7 @@ can_write_independence_wave_iw043_federal_route_proof = {
 	has_country_flag = independence_wave_iw043_route_federal
 	NOT = { has_country_flag = independence_wave_iw043_route_restoration }
 	NOT = { has_country_flag = independence_wave_iw043_route_emergency_guard }
-	has_independence_wave_iw043_anchor_secured = yes
+	independence_wave_iw043_anchor_secured = yes
 	has_valid_independence_wave_iw043_values = yes
 	check_variable = { var = iw043_congress_authority value = constant:independence_wave_iw043.capstone_authority_threshold compare = greater_than_or_equals }
 	check_variable = { var = iw043_river_control value = constant:independence_wave_iw043.capstone_river_threshold compare = greater_than_or_equals }
@@ -1285,7 +1303,7 @@ has_independence_wave_form12_readiness = {
 	has_country_flag = independence_wave_formable_family_selected
 	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.volga_ural_federation }
 	has_country_flag = independence_wave_formable_profile_loaded
-	has_independence_wave_iw043_anchor_secured = yes
+	independence_wave_iw043_anchor_secured = yes
 	has_valid_independence_wave_iw043_values = yes
 	check_variable = { var = iw043_congress_authority value = constant:independence_wave_iw043.capstone_authority_threshold compare = greater_than_or_equals }
 	check_variable = { var = iw043_river_control value = constant:independence_wave_iw043.formable_river_threshold compare = greater_than_or_equals }
@@ -1307,7 +1325,7 @@ has_independence_wave_form13_readiness = {
 	has_country_flag = independence_wave_formable_family_selected
 	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.idel_ural }
 	has_country_flag = independence_wave_formable_profile_loaded
-	has_independence_wave_iw043_anchor_secured = yes
+	independence_wave_iw043_anchor_secured = yes
 	has_valid_independence_wave_iw043_values = yes
 	check_variable = { var = iw043_congress_authority value = constant:independence_wave_iw043.capstone_authority_threshold compare = greater_than_or_equals }
 	check_variable = { var = iw043_river_control value = constant:independence_wave_iw043.formable_river_threshold compare = greater_than_or_equals }
@@ -1329,7 +1347,7 @@ has_independence_wave_form18_readiness = {
 	has_country_flag = independence_wave_formable_family_selected
 	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.mesopotamian_federation }
 	has_country_flag = independence_wave_formable_profile_loaded
-	has_independence_wave_iw058_anchor_secured = yes
+	independence_wave_iw058_anchor_secured = yes
 	has_independence_wave_iw058_all_community_guarantees = yes
 	has_valid_independence_wave_iw058_values = yes
 	check_variable = { var = iw058_council_cohesion value = constant:independence_wave_iw058.stable_cohesion_threshold compare = greater_than_or_equals }

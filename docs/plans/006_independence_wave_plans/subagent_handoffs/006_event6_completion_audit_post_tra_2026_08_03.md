@@ -107,7 +107,7 @@ The non-portrait asset surface remains substantial but partial.
 
 ### Provider-backed portrait gate
 
-The current worktree contains a persisted portrait route in `.codex/config.toml` and an exact upstream lock at `docs/systems/comfyui_portrait_pipeline/upstream-lock.json`. They agree on branch `codex/portrait-pipeline` and commit `01aca35b0a8264aaba575ae8edbf342e473fd9c1`, with workflow and model-manifest hashes and 832x1120 plus 156x210 defaults.
+The current worktree contains a persisted portrait route in `.codex/config.toml` and an exact upstream lock at `docs/systems/comfyui_portrait_pipeline/upstream-lock.json`. They agree on branch `codex/portrait-pipeline` and current commit `92c8118f9ab61a0a658af24bc6868ed7f93cdebd`, with workflow and model-manifest hashes and 832x1120 plus 156x210 defaults.
 
 That evidence does not close any Event 006 final portrait:
 

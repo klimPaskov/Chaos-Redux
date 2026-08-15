@@ -40,10 +40,12 @@ For large or multi-surface event work, use project subagents to keep the main im
 
 - Spawn `chaosx_repo_explorer` before editing when the event touches many systems or when file locations are uncertain.
 - Spawn `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist` for actual visual asset packages according to `chaos-redux-event-assets`.
-- Spawn `chaosx_3d_model_pipeline` for bounded model geometry, textures, rigs, skeletal actions, `.mesh`/`.anim` exports, reimport proof, and runtime handoff when the event owns a 3D unit or building surface.
+- Spawn `chaosx_3d_model_pipeline` for bounded Meshy 6-first model geometry, textures, rigs, skeletal actions, Internet-sourced unit sound design, bespoke vanilla-green custom-unit counter handoffs, `.mesh`/`.anim` exports, reimport proof, and runtime handoff when the event owns a 3D unit or building surface.
+- Spawn `chaosx_event_ui_worker` only when the named event specifically introduces and owns a dedicated scripted GUI or mechanic window. Never route shared event logs, event details, settings, super-event frameworks, or unrelated existing UIs to it.
 - Spawn `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` for actual super-event research packages according to `chaos-redux-super-events`.
 - Spawn `chaosx_improvement_loop_planner` after a meaningful implementation tranche when several new mechanics, country packages, formables, focus routes, decisions, scripted GUI surfaces, super-event candidates, or lore systems have been added and the event needs deeper connection. Do not spawn it again for the same event until the previous addendum is implemented, folded into specs, queued with a reason, or rejected.
 - Spawn `chaosx_focus_tree_auditor` after creating or heavily changing focus trees.
+- Spawn `chaosx_ai_probability_auditor` for every complex or balance-sensitive AI weight, MTTH, random-selection, or weighted-pool surface before completion.
 - Spawn `chaosx_event_completion_auditor` before claiming a large event, event rework, or spec-driven implementation is complete.
 - Spawn `chaosx_spreadsheet_doc_worker` after implementation when docs, catalog rows, manifests, route coverage tables, or spreadsheet-style records need to match the final repo state.
 
@@ -75,7 +77,7 @@ If the spec defines achievements, implement the full achievement surface: tracki
 
 Before completion, check every visible asset named or implied by the spec: flags, ideology flags, cosmetic flags, leaders, portraits, focus icons, decision icons, ideas, achievements, faction emblems, report or news images, super-event images, UI sprites, animated sprites, static fallbacks, and 3D model/entity consumers. Do not claim completion while required visible assets are placeholders unless the completion report says so clearly.
 
-Do not generate a real historical leader, or an invented substitute for a grounded polity. A polity is grounded when it existed in whole or in part, represents a real community, or claims continuity from a real institution. Source an attributed real male subject or authentic institutional material for those packages, document source and license status, explicitly crop a person to head-and-shoulders, preserve identity while applying the HOI4 painted finish, and compare the output with the canonical reference root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` and its role-specific contact sheet. Generate a one-person portrait only when both the polity and leader are wholly fictional and the package is deliberately high-chaos. Such a portrait must be distinctive and culturally coherent within its invented setting rather than a normal interchangeable officer. Every new flag uses imagegen. Historical flags and well-attested real symbols first require cited design research, then a strict flat reconstruction with no fabric scene, painterly flag artwork, fake lettering, or invented heraldry.
+Route every character portrait to `chaosx_portrait_creator`. Do not generate a real historical leader or an invented substitute for a grounded polity. For grounded packages, the portrait worker sources attributed real subjects or authentic institutional material, records provenance and rights status, creates the explicit crop and placeholder, and later installs the user-supplied HOI4-style final. It invokes native ImageGen only when both the polity and leader are wholly fictional and deliberately high-chaos, then processes and wires the result. Every new flag uses imagegen. Historical flags and well-attested real symbols first require cited design research, then a strict flat reconstruction with no fabric scene, painterly flag artwork, fake lettering, or invented heraldry.
 
 Any new, released, restored, transformed, or event-managed country that is expected to fight needs starting forces and a reinforcement pathway. Implement dynamic starting units, templates, equipment and manpower assumptions, commander or officer handling when relevant, and later unit growth through decisions, focuses, depots, objectives, volunteers, foreign support, mobilisation, or special mechanics. Do not leave a serious fighting country as an empty tag unless the spec says so and explains why.
 
@@ -314,7 +316,7 @@ Do not add a treaty/new world order after every contained or short-lived disaste
 
 For long or cross-file chains, use the read-only `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` tools to map entry points, branches, state and scope flow, impact, and structural changes. Event-owned GUI surfaces may also use `hoi4.gui_inspect` and `hoi4.gui_render`. Edit event source through the normal workflow, then compare and lint again. MCP evidence augments the event contract below and does not replace source review or the completion audit.
 
-For event-option `ai_chance`, event MTTH, direct random chance, and `random_list` logic, use `hoi4.probability_inspect` before choosing scenarios, then use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, or `hoi4.probability_compare` only for the surface being reviewed. Use `hoi4.probability_sequence` only when a complete custom-pool manifest explicitly declares cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states. Use `hoi4.probability_render` for timing, matrix, sensitivity, sequence, comparison, or unresolved views when they make the result easier to audit. Provide complete option or list pools when normalization applies, and provide scheduled state changes for timing questions. Treat exact, bounded, sampled, score-only, and unresolved results as different evidence; the analyzer does not choose balance targets or edit event source.
+For event-option `ai_chance`, event MTTH, direct random chance, and `random_list` logic, route the audit through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` before choosing scenarios, then use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, or `hoi4.probability_compare` only for the surface being reviewed. Use `hoi4.probability_sequence` only when a complete custom-pool manifest explicitly declares cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states. Use `hoi4.probability_render` for timing, matrix, sensitivity, sequence, comparison, or unresolved views when they make the result easier to audit. Provide complete option or list pools when normalization applies, and provide scheduled state changes for timing questions. Treat exact, bounded, sampled, score-only, and unresolved results as different evidence; the analyzer does not choose balance targets or edit event source. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis.
 
 ### 1. Classify the event first
 
@@ -662,9 +664,15 @@ Use scripted helpers for formation effects. Do not duplicate formation logic in 
 
 Hidden formables should still have implementation coverage. They need reveal events, hidden flags, visibility triggers, localisation, assets, AI rules, and cleanup.
 
+When exact state control is the formation proof, use the manifest-driven state-puzzle workflow under `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`. Keep the generated state pieces, shared territory helper, formation decision, AI path, and every in-scope decision category synchronized. Complete the companion `category_attachment_audit.md` and list every category that exposes the formable, including shared or phase-specific categories.
+
+When an event declares the strict `all_formable_categories` attachment policy, every in-scope formable category must set `scripted_gui = <generated_state_puzzle_gui_id>` and point to the generated `context_type = decision_category` block for its manifest. A category picture, text-only description, or separate status GUI does not satisfy this rule. A missing or mismatched category row is an incomplete formable surface and must remain a blocker in the handoff.
+
 ## Scripted GUI and animated event presentation
 
 Major event mechanics can use scripted GUI windows, decision-category interfaces, animated category art, animated leader portraits, or custom buttons when they make the system easier to play. Treat that UI as part of the event contract, not as decoration added later.
+
+When the event specifically adds a dedicated scripted GUI or mechanic window, route its bounded layout implementation and visual-quality pass to `chaosx_event_ui_worker`. The worker must use `hoi4.gui_inspect`, thorough `hoi4.gui_render` state/resolution/hierarchy/click-region views, an in-scope `hoi4.gui_rewrite`, and post-change comparison evidence, and must follow the full layout contract in `chaos-redux-decisions-missions`. Never send the shared event log, event-details framework, settings, super-event framework, shared registries, or unrelated existing UIs to this worker. Eligibility requires accepted spec or source evidence that the named event introduces and owns the UI.
 
 When an event uses a custom interface, align these surfaces:
 
@@ -677,6 +685,8 @@ When an event uses a custom interface, align these surfaces:
 - AI fallback behavior
 - cleanup and invalidation rules
 - documentation and asset manifest
+
+For a formable state puzzle, add the manifest-to-category attachment crosswalk to this contract. Verify every in-scope category metadata block against the generated scripted-GUI identifier and window, then use the actual read-only `mcp__hoi4_agent_tools__hoi4_gui_inspect` and `mcp__hoi4_agent_tools__hoi4_gui_render` routes for the linked category window. Do not claim category coverage from a state-piece render alone.
 
 Every player-clickable GUI button that changes gameplay must validate the same requirements as a normal decision. It must show costs and missing requirements clearly. It must call scripted effects that can also be used by AI, decisions, focuses, and cleanup systems.
 
@@ -742,6 +752,7 @@ Before closing an event task, verify:
 10. Hidden or easter-egg terminal branches are absent from public Event Details controls, public docs, and spreadsheet-facing public fields. Every terminal branch still preserves its scenario-specific flag, matching super-event linkage, 1000+ Chaos gate, world-state selection rules, and `world_end` guard.
 11. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
 12. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
+12a. For every manifest-driven formable, the category attachment audit lists all in-scope category IDs and proves each one points to the generated state-puzzle scripted GUI. A formable family that declares strict all-category coverage has no static or text-only substitute where exact state control is central.
 13. `docs/events/` is updated.
 14. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated, then `.tools/export_event_catalog_csv.py` is run so all three export-only CSV snapshots are refreshed.
 15. If assets are required, `chaos-redux-event-assets` has been used.

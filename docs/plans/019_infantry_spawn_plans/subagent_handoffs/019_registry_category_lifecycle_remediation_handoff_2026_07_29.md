@@ -1,5 +1,12 @@
 # Event 019 registry and ordinary-category lifecycle remediation handoff
 
+> **Superseded provider-inventory notice (2026-08-09):** This remediation
+> handoff predates provider 522, the expanded 18-ID owner-adapter census, and
+> the provider-side management-cost display/profile-cache callback. Its 501-503
+> lifecycle scope remains historical evidence only; use `source_of_truth_map.md`,
+> `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and
+> `.tmp/event19_docs_curator_current.md` for current provider facts.
+
 Date: 2026-07-29
 
 Scope: resolve the focused completion audit findings for dynamic Chaos-family discovery and ordinary-country Formation Management lifecycle.

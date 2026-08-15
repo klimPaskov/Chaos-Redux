@@ -40,6 +40,24 @@ Pressure, resistance, instability, or occupation conditions do not imply that th
 
 The former crisis source is retained only as inert compatibility code for stale scripted references. It is not part of the player-facing design and must remain hard-disabled in runtime triggers; new implementation work must not restore or reference its category, mission, cost, queue, or pre-event history.
 
+## Scoped conversion: Join the Independence Wave (accepted current addition, 2026-08-09)
+
+Join the Independence Wave is a voluntary conversion offer for a living, independent country that has lost at least half of its former owned-state footprint and at least two states, while retaining only states covered by one prepared Event 006 homeland package.
+
+The offer is discovered only from bounded callbacks for the affected country scopes, including war-entry observation and state-control, peace-conference, capitulation, and release changes; the addition does not introduce a daily, weekly, monthly, or on-game-start world scan.
+
+On `on_state_control_changed`, the old controller and current owner are re-evaluated without manufacturing an owned-state loss because controller changes do not prove ownership changes.
+
+War entry records the exact pre-loss owned-state baseline for both belligerents, and core-count reconstruction runs only when no prior peak baseline exists.
+
+When the shared Liberations coordinator is busy, the source schedules the hidden country-scoped retry event `chaosx.nr6.40` only after the eligible, threshold, and busy-coordinator recheck; the pending marker is `independence_wave_join_retry_pending` and the centralized retry interval is `independence_wave_join.retry_days = 7`.
+
+The retry marker clears on offer, success, decline, failure, or ineligibility, so a qualifying country receives a later bounded opportunity without holding a second release transaction or requiring a world iteration.
+
+The conversion still reserves one exact package, proves complete remaining-territory coverage, uses the ordinary frozen release transaction, and changes a human source tag only after setup, validation, and commit succeed.
+
+Decline and timeout retain the existing country and apply the scoped refusal cooldown, while failure records the normal failure receipt and uses the shared compensating rollback when safe.
+
 ### Phase 2: Wave planning
 
 The event builds and locks the release plan described in Part 1.

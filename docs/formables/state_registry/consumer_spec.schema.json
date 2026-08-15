@@ -11,6 +11,10 @@
     "status": {"type": "string", "enum": ["draft", "complete"]},
     "category_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9_.-]+$"},
     "formable_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9_.-]+$"},
+    "group_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9_.-]+$"},
+    "activation_helper": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"},
+    "group_scripted_gui_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"},
+    "group_window_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"},
     "registry": {"type": "string", "minLength": 1},
     "projection": {"$ref": "#/$defs/projection"},
     "state_ids": {
@@ -19,6 +23,7 @@
       "uniqueItems": true,
       "items": {"type": "integer", "minimum": 1}
     },
+    "summary_required_count": {"type": "integer", "minimum": 1},
     "state_groups": {
       "type": "array",
       "items": {
@@ -41,6 +46,12 @@
     "assets": {"$ref": "#/$defs/assets"},
     "output": {"$ref": "#/$defs/output"}
   },
+  "allOf": [
+    {"if": {"required": ["group_id"]}, "then": {"required": ["activation_helper"]}},
+    {"if": {"required": ["activation_helper"]}, "then": {"required": ["group_id"]}},
+    {"if": {"required": ["group_scripted_gui_id"]}, "then": {"required": ["group_id"]}},
+    {"if": {"required": ["group_window_id"]}, "then": {"required": ["group_id"]}}
+  ],
   "$defs": {
     "projection": {
       "type": "object",

@@ -1,5 +1,7 @@
 # Event 019 Final Documentation Reconciliation Handoff
 
+> **Historical closure notice (2026-08-09):** This reconciliation predates the provider-522 and expanded 18-ID Event 19 owner-adapter tranches. Its closure statements and package counters are historical evidence for the 2026-07-18 tranche; use `source_of_truth_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider status.
+
 Date: 2026-07-18  
 Role: `chaosx_documentation_curator`  
 Scope: documentation-only reconciliation after the 7/18 regional full-flag

@@ -41,7 +41,7 @@ The operational and weaponization technologies are intentionally late-game prize
 | --- | --- | --- |
 | Portal warfare | Enables generic `portal_raider` battalions and `teleportation_equipment`, then grants +12 organization, +30% breakthrough, and -25% supply consumption | +12 organization, +40% breakthrough, -25% supply consumption, and the two native Portal Warfare raid surfaces |
 | Clone formations | +8 organization, +30% defense, and +30% soft attack | +12 organization, +35% recovery rate, -40% experience loss, and +25% casualty trickleback |
-| Robot formations | +30% hard attack, breakthrough, and defense | +50% hard attack, +50% breakthrough, and +30% reliability |
+| Robot formations | Enables provider-neutral `autonomous_robot` battalions and `autonomous_robot_equipment`; the battalion belongs to both armor and mechanized-infantry modifier families, while its base chassis combines 88% hardness, 70 armor, 60 breakthrough, 50 defense, 36 soft attack, 30 hard attack, 75 piercing, and 7 km/h speed, then adds +75% hard attack, +75% breakthrough, +60% defense, and +10 organization | +75% hard attack, +75% breakthrough, and +35% reliability |
 | Paleogenetic formations | +30% soft attack, +30% breakthrough, and a 15% supply burden | +50% soft attack, +50% breakthrough, and +15% speed |
 | Xenobiological formations | +30% soft attack, +15% hard attack, +8 organization, and +30% breakthrough | +50% soft attack, +30% hard attack, and +50% breakthrough |
 | Exotic guard | +30% soft attack, hard attack, defense, and breakthrough | +60% hard attack, +50% piercing, and +40% breakthrough |

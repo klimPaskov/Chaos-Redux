@@ -6,13 +6,13 @@ FORM-09 turns a successful Balkan regional ambition into a visible federation wi
 
 ## Founding contract
 
-The carrier must own and control its registered capital anchor, load the Balkan Federation profile, discover the family, select an allowed method, complete the frozen invitation ledger, and obtain at least three members, three consents, and three controlled anchors. Eligible members are the reviewed active Event 006 packages for Epirus, Thrace, Bosnia, Macedonia, and Montenegro. Kosovo remains unavailable until it has its own admitted package and exact anchor contract.
+The carrier must own and control its registered capital anchor, load the Balkan Federation profile, discover the family, select an allowed method, complete the frozen invitation ledger, and obtain at least three members, three consents, and three controlled anchors. Eligible members are the reviewed active Event 006 packages for Epirus, Thrace, Bosnia, Macedonia, Montenegro, and Kosovo. Kosovo enters through the centrally attested IW-031 package and state 802 anchor.
 
 The transaction reserves and validates the identity before mutation. A failed proposal removes the cosmetic identity and clears the reservation receipt. A living country, a Soviet Collapse origin, an unprepared package, a country at war with the carrier, or an unfrozen consent row cannot enter the integration loop.
 
 ## Territory, armies, and autonomy
 
-Every consenting member chooses through the shared founding consent system. A member that authorizes full integration ends its Event 006 active origin with the formable-absorption reason, transfers its armed forces and stockpile, transfers only its reviewed anchor state, and grants the carrier a core on that anchor. The exact staged anchors are Thrace 184, Epirus 185, Bosnia 104, Macedonia 106, and Montenegro 105.
+Every consenting member chooses through the shared founding consent system. A member that authorizes full integration ends its Event 006 active origin with the formable-absorption reason, transfers its armed forces and stockpile, transfers only its reviewed anchor state, and grants the carrier a core on that anchor. The exact staged anchors are Thrace 184, Epirus 185, Bosnia 104, Macedonia 106, Montenegro 105, and Kosovo 802.
 
 A consenting member that does not authorize full integration remains sovereign. It keeps its tag, states, leaders, focus content, armies, and Event 006 package, receives reciprocal access and guarantees through the shared autonomous-member effect, and gains the visible `Autonomous Federal Member` idea.
 
@@ -24,4 +24,4 @@ The `BLX` flag package is stored under `docs/assets/006_independence_wave/form09
 
 ## Future extension
 
-Kosovo can join only after a researched Event 006 country package supplies a unique anchor, history and community distinction, symbols, leadership, and a complete package readiness trigger. Further Balkan border projects should consume the existing FORM-09 arbitration receipt and never infer territory from region membership alone.
+Further Balkan border projects should consume the existing FORM-09 arbitration receipt and never infer territory from region membership alone.

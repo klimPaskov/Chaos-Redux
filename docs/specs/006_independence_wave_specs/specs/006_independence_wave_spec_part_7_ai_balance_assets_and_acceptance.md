@@ -6,6 +6,26 @@ All names in this file are working labels, not final localisation.
 
 AI, balance, asset, achievement, and acceptance checks apply to the single shared `independence_wave_focus_tree` generic framework used by every admitted Event 006 release. Package and regional variation is gated shared content and scripted adapters inside that tree. A reviewed additive carrier may preserve a meaningful existing tree, currently IW-012 ICE. Bespoke country focus-tree definitions and live/in-game testing are outside the current implementation scope. This scope decision does not waive package, formable, asset, AI, balance, rights, or runtime gates.
 
+## Current addition acceptance boundary (2026-08-09)
+
+The grouped formable state-puzzle workflow is source- and asset-aligned for fourteen runtime-authored families and seventeen attached Event 006 decision categories, with 50 candidate-state rows and 100 DDS pieces.
+
+The shared GUI, generated summaries, finite state helpers, and player/AI formation gates are one contract, but the current offline GUI evidence is aggregate and does not prove family-isolated visual states, click regions, or overflow behavior.
+
+FORM-07 and FORM-48 remain intentionally readiness-controlled and fail closed, and FORM-08 remains intentionally unavailable because its researched two-state candidate set cannot satisfy the required three-state threshold; these are explicit readiness boundaries rather than completed formable availability or an approved third FORM-08 state.
+
+Join the Independence Wave is a scoped current addition for severely reduced living countries and retains the normal frozen release transaction, human continuation, decline cooldown, failure receipt, and Event Log/history contract.
+
+The Join addition now includes hidden event `chaosx.nr6.40` keyed by `independence_wave_join_retry_pending`; a 7-day retry is scheduled only after the eligible, threshold, and busy-coordinator recheck, and the pending marker clears on offer, success, decline, failure, or ineligibility.
+
+War entry records the exact pre-loss owned-state baseline, state-control callbacks only re-evaluate affected countries, and core-count reconstruction runs only when no prior peak baseline exists.
+
+These additions remain separate from whole-event completion. The grouped GUI acceptance limitation, the owner-patched Join retry/loss evidence, and any future engine-backed scenario receipts remain bounded documentation and validation surfaces rather than a waiver of the broader Event 006 HOLD / PARTIAL status.
+
+The current grouped GUI inspection is retained at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6f38780e05ee78efa5d9a7408288d4052bbf8b00f4901651df1412c86034a231/29c916409a6e614d0b7a161658e670d296fa1b53e75d14a06fd1b810c652c56f/gui-inspect.fdf2c34d03def14e.json` with shared revision `fdf2c34d03def14e0624f6dd33e6f1ac84e4167c618d8cf12ab6fcb4cd51666d`; aggregate graph and overlap diagnostics prevent family-isolated visual acceptance. A 2026-08-13 retry against `chaosx_independence_wave_formable_state_puzzle_window` and scenario `E6_FORMABLE_STATE_PUZZLE_GUI_SETTLED_2026_08_09` returned `GUI_INSPECTED` with 93 inspected elements and a paired `GUI_RENDERED` SVG; the current source map records exact artifact URIs and the remaining workspace-wide diagnostic bound.
+
+The current Join event inspect/render revision is `d0c3016e0598be2a37c11abe8b7674a20c737a74e01216fe8fa12c3bfa100c25`, as recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_join_wave_settled_filesystem_audit_2026_08_09.md`; focused source evidence is bounded and does not replace user-owned live validation.
+
 ## AI design promise
 
 Every Event 6 country must behave like a new state trying to survive. AI behavior changes with package type, government route, former-host threat, patron access, league state, geography, force strength, and chaos.
@@ -697,7 +717,7 @@ The event can be implemented in tranches, but no tranche is a fallback completio
 - origin system
 - wave planner
 - host safety
-- doubled 6, 8, 10, 14, 20 automatic ladder, including 20 at World Collapse
+- automatic 3, 4, 5, 7, 10 ladder, including 10 at World Collapse
 - registered candidate pool
 - core country values
 - basic survival decisions

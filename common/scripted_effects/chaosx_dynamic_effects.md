@@ -20,6 +20,7 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [Shared clone equipment and infantry helpers](#shared-clone-equipment-and-infantry-helpers)
 - [Mengele Directorate Event 016 prototype bridge](#mengele-directorate-event-016-prototype-bridge)
 - [Event 19 integration obligation for new custom units](#event-19-integration-obligation-for-new-custom-units)
+- [Event 006 AI reserve and ledger trigger contract](#event-006-ai-reserve-and-ledger-trigger-contract)
 
 ## modify_value_based_on_chaos_tier
 
@@ -507,3 +508,30 @@ The same change must add or update family names, descriptions, selection text, m
 Before the owning feature is considered complete, verify that the registry arrays remain aligned, every registered provider has exactly one registration and eleven callbacks, every installed combat token is covered, manifest row counts and liabilities match the real formation, trainable and spawn-only policies are enforced, management payment and refund are symmetric, derivative setup and defeat cleanup prove their owner surfaces, and Event 19 does not inherit the parent feature's progression. Run the applicable HOI4 MCP event and weighted-logic inspections for the changed provider paths. An unresolved provider, missing callback, stale cost display, generic equipment substitute, undocumented support-only exclusion, or unvalidated registry row is a blocker rather than an allowed fallback.
 
 The complete field, callback, accounting, isolation, and lifecycle contract is maintained in `docs/systems/chaos_unit_family_registry.md`. The current unit census and provider-to-token mapping are maintained in `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`.
+
+## Event 006 AI reserve and ledger trigger contract
+
+Purpose: provide reusable, package-scoped predicates for Event 006 decision AI. The contract keeps a released country from spending project resources before its foundation is settled, prefers the lower regional ledger, and suppresses a project when its post-spend reserve floor would not be preserved.
+
+Scope: country.
+
+Inputs: the carrier must already expose its package flags and initialized ledger variables. Reserve thresholds are read from `constant:independence_wave_karelia_crimea_ai_floor`.
+
+Helpers: `independence_wave_kc_ai_foundation_ready`, `independence_wave_kar_ai_lower_ledger`, `independence_wave_cri_ai_lower_ledger`, `independence_wave_kar_ai_command_manpower_floor`, `independence_wave_kar_ai_land_material_floor`, `independence_wave_cri_ai_command_manpower_floor`, `independence_wave_cri_ai_land_material_floor`, `independence_wave_cri_ai_maritime_floor`, `independence_wave_kc_ai_diplomatic_floor`, `independence_wave_kar_ai_major_security_floor`, and `independence_wave_cri_ai_major_security_floor`.
+
+Outputs: scripted triggers return a boolean result for `ai_will_do` modifiers. They do not alter ledgers, resources, flags, or decisions.
+
+Defaults: missing package flags or ledger variables fail closed. Equal ledgers receive no lower-ledger preference. Player availability and costs remain controlled by the existing `can_pay_*` triggers.
+
+Side effects: none.
+
+Example:
+
+```txt
+ai_will_do = {
+	base = constant:independence_wave_karelia_crimea_ai.standard
+	modifier = { factor = 0 NOT = { independence_wave_kc_ai_foundation_ready = yes } }
+	modifier = { factor = 2 independence_wave_kar_ai_lower_ledger = yes }
+	modifier = { factor = 0 NOT = { independence_wave_kar_ai_land_material_floor = yes } }
+}
+```

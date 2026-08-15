@@ -173,10 +173,13 @@ doctor_wu_accept_foreign_access_request = {
 				has_country_flag = doctor_wu_foreign_request_pending
 			}
 		}
-		remove_equipment_to_stockpile = { type = support_equipment amount = constant:doctor_wu_access.host_support_equipment }
-		remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:doctor_wu_access.host_motorized_equipment }
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.host_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.host_motorized_equipment }
+		remove_motorized_equipment_from_stockpile = yes
 		set_temp_variable = { doctor_wu_host_fuel_payment = constant:doctor_wu_access.host_fuel }
-		subtract_from_fuel = doctor_wu_host_fuel_payment
+		set_temp_variable = { fuel_stockpile_removal_amount = doctor_wu_host_fuel_payment }
+		remove_fuel_from_stockpile = yes
 		event_target:doctor_wu_requester = {
 			clr_country_flag = doctor_wu_foreign_request_pending
 			set_temp_variable = { doctor_wu_foreign_access_days = constant:doctor_wu_access.foreign_access_days }

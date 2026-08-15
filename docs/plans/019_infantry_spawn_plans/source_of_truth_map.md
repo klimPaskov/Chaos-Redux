@@ -1,10 +1,12 @@
 # Event 019 Documentation Source-of-Truth Map
 
-Date reconciled: 2026-07-18  
-Scope: documentation reconciliation after the regional full-flag production
-tranche. This map records current evidence and dispositions. The final
-completion audit is PASS with P0/P1/P2 = 0, and Event 019 and SCN-013 are
-`Fully Functional`.
+Date reconciled: 2026-08-09  
+Scope: current documentation reconciliation after the provider-522 and expanded
+unit-coverage tranches. The 2026-07-18 regional full-flag and whole-event audit
+remain historical evidence for their bounded surfaces; they do not close the
+current provider-extension validation boundary. This map records the current
+provider inventory, exact equipment contracts, owner gates, support-only CBRN
+boundary, MCP limitations, and plan dispositions.
 
 ## Authority order
 
@@ -14,13 +16,16 @@ completion audit is PASS with P0/P1/P2 = 0, and Event 019 and SCN-013 are
    carry the live gates and planning-only qualification.
 2. Player-facing feature status is summarized by
    `docs/events/019_infantry_spawn/overview.md` and
-   `docs/systems/triggerable_scenarios.md`.
-   `docs/events/019_infantry_spawn/systems/triggerable_scenario.md` is the SCN-013
-   implementation-facing documentation.
-3. Asset status is owned by
+   `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`, which is the
+   SCN-013 implementation-facing documentation. The old
+   `docs/systems/triggerable_scenarios.md` path is not present in the current tree
+   and must not be used as a source reference.
+3. Historical asset references name
    `docs/assets/019_infantry_spawn/manifest.md` and
-   `docs/assets/019_infantry_spawn/gfx_handoff.md`, with machine evidence in
-   the 7/18 validation and checksum records named below.
+   `docs/assets/019_infantry_spawn/gfx_handoff.md`, but the
+   `docs/assets/019_infantry_spawn/` directory is absent in the current tree.
+   Static package evidence and legacy 3D roots therefore remain unresolved
+   cross-references rather than a durable current asset authority.
 4. Working plans and subagent handoffs under
    `docs/plans/019_infantry_spawn_plans/` are evidence with an explicit
    disposition. Historical files remain available, but supersession notices
@@ -29,6 +34,11 @@ completion audit is PASS with P0/P1/P2 = 0, and Event 019 and SCN-013 are
    workbook/catalog reconciliation and export are complete, with Event 19 and
    SCN-013 promoted to `Fully Functional`. CSV exports match the workbook rows
    and remain generated outputs rather than documentation authorities.
+6. `docs/specs/019_infantry_spawn_specs/review/decision_only_surface_addendum_2026-08-05.md`
+   is the current player-facing UI decision. It supersedes the former scripted-
+   GUI implementation handoffs while preserving their production provenance as
+   archival evidence; provider coverage and registry status remain owned by the
+   Event 19 systems docs below.
 
 ## Current regional flag chain
 
@@ -77,9 +87,35 @@ generation-provenance files are retained only as historical superseded records.
 The one Event 019 registry code file remains
 `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`.
 `common/scripted_triggers/chaosx_dynamic_triggers.md` was inspected and remains
-current for the derivative classifier and registry/scenario contract. No second
-registry file, family-list edit, or gameplay documentation change is implied by
-the regional asset route.
+current for the derivative classifier and registry/scenario contract. The current
+static provider census is 18 IDs (`501-514`, `518`, `520-522`), with 12
+definitions per provider (registration plus eleven Event 19 callbacks). Event 016
+providers `504-510` use their history-derived gates; provider `522` is a separate
+Aryan clone adapter gated by `germany_mengele_is_germany_scope`,
+`germany_mengele_program_active`, the completed cloning-project and master-race-
+claim flags, and `mengele_aryan_clone_refinement_tech`. Providers 504 and 522 use
+ten combat battalions with 1,000 manpower, 90 infantry equipment, and 1 clone
+equipment per battalion, with a 1,000 manpower, 180 infantry equipment, and 2
+clone equipment sustainment contract. Provider 521 records only the combat
+`chaos_battalion`; CBRN support-only bodies and `chemical_agent_payload` remain
+parent-owned. Provider 513 is structurally covered and package-gated until Event
+012 sets `africa_strange_formation_package_ready`; static package evidence
+includes all eight combat/support unit definitions, eight meshes/entities,
+packaged DDS maps, and 49 sound files. The current worktree includes the owner
+manifest and setter in `common/scripted_effects/012_africa_strange_force_manifest_effects.txt`,
+but that file and its startup call are untracked in this audit and require parent
+integration and validation before provider 513 can be promoted from package-
+gated evidence. The provider-side `event19_get_management_cost_display` callback
+writes the presentation profile into the shared Muster Board cache without
+debiting resources; profiles `0-18` identify provider cost text and profile `99`
+identifies ledger-backed zero-debit adapters whose tooltip must state that
+obligations are tracked by the Event 19 manifest. No second registry file,
+family-list edit, or gameplay documentation change is implied by the provider
+route.
+
+The selected-family spawn verifier is now manifest-aware. It accepts a committed provider obligation tail of zero, two, seven, or sixteen rows, derives expected manpower liability and equipment debt from the committed manifest totals, and proves sequential obligation UIDs, generation/lot/unit ownership, issued versus outstanding amounts, zero payment/salvage state, outstanding status, profile-appropriate debt, and aligned tail counts before commit. Provider 518's cave package intentionally contributes zero obligation rows because both manifest needs are zero.
+
+The narrow Event 19 MCP inspect is `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics. Its current artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8b8ab34f7c29cf4c369c71654d72a847a85d4a8dc63434cb53ac7597e9e3a617/397c297d86f363f52ab7944e7a9643f05a96d2be00743315a2a57306f95d7b23/event-lint-08357425bddf.json`. The matching bounded Event 19 render request (`overview`, `chaosx.nr19.1`, max depth 2 and 240 nodes) timed out after 180 seconds and produced no artifact. The installed probability adapter cannot expose normalized odds for the dynamic provider pool (`poolComplete=false` and zero discovered candidates in the retained probability evidence). These limitations are recorded as evidence rather than promoted to a completion claim.
 
 ## Superseded or archival material
 
@@ -101,7 +137,7 @@ route readers to this map and the independent validation record. The separate
 remediation re-audit PASS handoff is the approval authority for the current
 regional candidate.
 
-## Final closure status
+## Historical 2026-07-18 closure status
 
 - Parent workbook/catalog reconciliation and export are complete.
 - Parent package inventory reconciliation is complete. The current
@@ -109,7 +145,10 @@ regional candidate.
   mismatched rows and records the 4,342-character goal prompt.
 - The mandatory final whole-event completion audit is PASS with P0/P1/P2 = 0.
 
-Event 019 and SCN-013 are `Fully Functional`. The approved engine-constrained exact-transfer and
+The 2026-07-18 audit recorded Event 019 and SCN-013 as `Fully Functional` for
+that historical tranche. The approved engine-constrained exact-transfer and
 controlled-combat-trial contracts, regional asset gate, workbook/catalog
-reconciliation, package inventory, and final audit are resolved. No closure gate
-remains. No fallback or unapproved substitute is recorded here.
+reconciliation, package inventory, and final audit were resolved for their
+bounded surfaces. That status does not include the later provider-522 or expanded
+unit-coverage extension, and no current whole-event completion claim is made here.
+No fallback or unapproved substitute is recorded here.

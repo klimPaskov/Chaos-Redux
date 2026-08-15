@@ -39,8 +39,8 @@ has_independence_wave_fer_anchor_owned = {
 
 has_independence_wave_fer_capital_anchor = {
 	OR = {
-		capital_scope = { state = 408 }
-		capital_scope = { state = 409 }
+		408 = { is_capital = yes }
+		409 = { is_capital = yes }
 	}
 }
 
@@ -67,7 +67,6 @@ can_pay_independence_wave_fer_administration_standard_cost = {
 }
 
 can_pay_independence_wave_fer_strategic_cost = {
-	num_of_civilian_factories_available_for_projects > constant:independence_wave_fer_cost.civilian_factory_floor
 	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
 	NOT = { has_war_support < constant:independence_wave_decision_cost.war_support_minor }
 	can_pay_independence_wave_diplomatic_standard_cost = yes
@@ -120,14 +119,10 @@ has_independence_wave_fer_command_roster = {
 is_independence_wave_exact_package_iw_057_tag_available = {
 	is_independence_wave_candidate_origin_available = yes
 	original_tag = FER
-	# Vanilla FER history keeps dormant FER at Chita (state 563). The shared
-	# execution pass reanchors the selected package to 408 or 409 before setup,
-	# so this pre-release identity gate must accept the historical capital while
-	# runtime readiness continues to require the selected 408/409 anchor.
-	OR = {
-		has_independence_wave_fer_capital_anchor = yes
-		capital_scope = { state = 563 }
-	}
+	# Vanilla FER history keeps the dormant carrier at Chita (state 563). The
+	# shared execution pass reanchors the selected package to 408 or 409 before
+	# setup, so this pre-release identity gate must use fixed anchor availability
+	# only. Capital-scope validation belongs to the live runtime gate below.
 	OR = {
 		408 = {
 			is_independence_wave_candidate_anchor_available = yes

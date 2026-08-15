@@ -1,5 +1,13 @@
 # Event 019 incremental registry and category lifecycle completion audit
 
+> **Superseded provider-inventory notice (2026-08-09):** This focused audit
+> predates provider 522, the expanded 18-ID owner-adapter census, and the
+> provider-side management-cost display/profile-cache callback. Its provider
+> 501-503 lifecycle findings remain historical evidence only; use
+> `source_of_truth_map.md`,
+> `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and
+> `.tmp/event19_docs_curator_current.md` for current provider facts.
+
 Date: 2026-07-29
 Role: `chaosx_event_completion_auditor`
 Mode: focused read-only audit of the latest incremental Event 019 changes

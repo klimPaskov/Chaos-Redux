@@ -1091,11 +1091,11 @@ independence_wave_form03_reopen_charter_progression = {
 			has_country_flag = independence_wave_form03_post_charter_failed
 		}
 		if = {
-			limit = { independence_wave_form03_federal_accommodation < constant:independence_wave_form03_value.compromise }
+			limit = { check_variable = { var = independence_wave_form03_federal_accommodation value = constant:independence_wave_form03_value.compromise compare = less_than } }
 			set_variable = { independence_wave_form03_federal_accommodation = constant:independence_wave_form03_value.compromise }
 		}
 		if = {
-			limit = { independence_wave_form03_industrial_integration < constant:independence_wave_form03_value.compromise }
+			limit = { check_variable = { var = independence_wave_form03_industrial_integration value = constant:independence_wave_form03_value.compromise compare = less_than } }
 			set_variable = { independence_wave_form03_industrial_integration = constant:independence_wave_form03_value.compromise }
 		}
 		set_variable = { independence_wave_form03_charter_phase = constant:independence_wave_form03_phase.compromise }
@@ -1112,7 +1112,7 @@ independence_wave_form03_reopen_charter_progression = {
 					value = constant:independence_wave_form03_value.ratified
 					compare = greater_than_or_equals
 				}
-				independence_wave_form03_industrial_integration < constant:independence_wave_form03_value.ratified
+				check_variable = { var = independence_wave_form03_industrial_integration value = constant:independence_wave_form03_value.ratified compare = less_than }
 			}
 			set_variable = { independence_wave_form03_charter_outcome = constant:independence_wave_form03_outcome.charter_without_works }
 		}
@@ -1123,7 +1123,7 @@ independence_wave_form03_reopen_charter_progression = {
 					value = constant:independence_wave_form03_value.ratified
 					compare = greater_than_or_equals
 				}
-				independence_wave_form03_federal_accommodation < constant:independence_wave_form03_value.ratified
+				check_variable = { var = independence_wave_form03_federal_accommodation value = constant:independence_wave_form03_value.ratified compare = less_than }
 			}
 			set_variable = { independence_wave_form03_charter_outcome = constant:independence_wave_form03_outcome.industrial_directorate }
 		}
@@ -1160,8 +1160,8 @@ independence_wave_form03_apply_member_withdrawal_to_carrier = {
 	if = {
 		limit = {
 			has_independence_wave_form03_post_charter_progression = yes
-			independence_wave_form03_charter_phase > constant:independence_wave_form03_phase.provisional
-			independence_wave_form03_charter_phase < constant:independence_wave_form03_phase.complete
+			check_variable = { var = independence_wave_form03_charter_phase value = constant:independence_wave_form03_phase.provisional compare = greater_than }
+			check_variable = { var = independence_wave_form03_charter_phase value = constant:independence_wave_form03_phase.complete compare = less_than }
 		}
 		set_temp_variable = { independence_wave_form03_accommodation_delta = constant:independence_wave_value.standard_loss }
 		set_temp_variable = { independence_wave_form03_integration_delta = constant:independence_wave_value.standard_loss }

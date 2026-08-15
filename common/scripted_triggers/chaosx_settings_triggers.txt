@@ -171,6 +171,47 @@ has_events_log_selected_soviet_collapse_evolution = {
 	}
 }
 
+# Input: variable `events_log_fire_candidate_id` holding an event ID.
+# Mirrors the availability rules of the single event-detail trigger button:
+# the event must be selected (enabled), unique events must not have fired yet,
+# and special events need a valid manual fire context.
+events_log_fire_candidate_is_available = {
+	NOT = { is_in_array = { global.disabled_events = events_log_fire_candidate_id } }
+	OR = {
+		AND = {
+			check_variable = { events_log_fire_candidate_id = constant:africa_event.id }
+			africa_manual_event_is_available = yes
+		}
+		AND = {
+			check_variable = { events_log_fire_candidate_id = constant:random_faction_event.id }
+			random_faction_has_manual_dispatchable_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { events_log_fire_candidate_id = constant:africa_event.id } }
+			NOT = { check_variable = { events_log_fire_candidate_id = constant:random_faction_event.id } }
+			OR = {
+				NOT = { is_in_array = { global.fired_events = events_log_fire_candidate_id } }
+				NOT = {
+					OR = {
+						is_in_array = { global.major_events = events_log_fire_candidate_id }
+						is_in_array = { global.fire_once_events = events_log_fire_candidate_id }
+					}
+				}
+			}
+		}
+	}
+}
+
+# True when at least one selected (enabled) event in the Event Logs events
+# view can currently be fired manually.
+events_log_any_selected_event_is_fireable = {
+	any_of = {
+		array = global.all_events
+		value = events_log_fire_candidate_id
+		events_log_fire_candidate_is_available = yes
+	}
+}
+
 chaosx_is_non_ai_crisis_pressure_active = {
 	is_ai = no
 	has_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
@@ -185,6 +226,23 @@ has_events_log_selected_evolution_authored_portrait = {
 			check_variable = {
 				var = events_log_selected_evolution_stage
 				value = constant:resources_found_event.evolution_iv_stage
+				compare = equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_event_id
+				value = constant:black_plague_identity.event_id
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = constant:black_plague_identity.evolution_type
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = constant:black_plague_evolution_runtime.evolution_iv_stage
 				compare = equals
 			}
 		}

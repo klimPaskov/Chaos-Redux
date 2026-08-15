@@ -1,5 +1,7 @@
 # Event 019 Infantry Spawn Final Completion Audit
 
+> **Historical closure notice (2026-08-09):** This final audit predates the provider-522 and expanded 18-ID Event 19 owner-adapter tranches. Its PASS and no-closure statements are historical evidence for the 2026-07-18 audit scope, not current provider-lifecycle proof. Use `source_of_truth_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider status.
+
 Date: 2026-07-18  
 Role: `chaosx_event_completion_auditor`  
 Mode: final read-only whole-event audit  

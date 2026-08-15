@@ -87,12 +87,14 @@ The registry provides one source of truth for Event 19 compatibility. It can als
 
 The event-agnostic Chaos family contract should remain a shared, documented
 scripted system. This implementation uses exactly one dedicated Event 19
-registry code file for the ordinary table and the initial zombie, ghost, and
-golem provider integrations. Registry constants and triggers belong in the
-existing Event 19 constants and trigger files, and startup calls belong in
-existing parent on-actions. A future family keeps its complete registration and
-provider callbacks in its own existing integration surface. Do not create
-family-specific or additional Event 19 registry files.
+registry code file for the ordinary table and the three baseline zombie, ghost,
+and golem bindings. The installed mutated zombie, elephant, Africa strange,
+additional ghost, cave, rat, and CBRN families register through owner-side
+adapters in their existing integration surfaces. Registry constants and
+triggers belong in the existing Event 19 constants and trigger files, and
+startup calls belong in existing parent on-actions. A future family keeps its
+complete registration and provider callbacks in its own existing integration
+surface. Do not create family-specific or additional Event 19 registry files.
 
 ### Required registry fields
 
@@ -207,7 +209,7 @@ No family is marked eligible until these questions have answers.
 
 ## Initial registry entries
 
-The following entries are required by the user’s design. Exact unit identifiers must be verified during implementation.
+The baseline bindings and owner-side provider rows are required by the design. Exact installed identifiers and their support boundaries are verified in `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`.
 
 ### Base Zombie Family
 
@@ -221,7 +223,7 @@ Trainable and spawnable, but only the base zombie unit is allowed.
 
 #### Excluded variants
 
-All stronger zombie variants, mutation lines, evolved zombie templates, boss units, and parent-event special formations remain excluded.
+All stronger zombie variants, mutation lines, evolved zombie templates, boss units, and parent-event special formations remain excluded from training. Installed mutated, demonic, wendigo, and armoured variants may arrive through owner-side provider 511 as spawn-only family lots. They never enter the trainable zombie ledger or parent outbreak package.
 
 #### Training rule
 
@@ -306,7 +308,7 @@ Golems require material, quarry, industry, or binding capacity. Ordinary equipme
 
 Event 19 golem units and derivative states must not set parent golem event flags, stage counters, super-events, or world-end conditions.
 
-The current public repository inspection did not establish the final golem identifiers. Implementation must verify them locally before creating the entry.
+The installed golem identifier is verified locally as `coal_golem`. It remains provider 503, spawn-only, and isolated from the KMB parent package.
 
 ## Ordinary country anomalous management
 
@@ -375,7 +377,7 @@ Working role:
 
 - appears only for a trainable registry entry
 - base zombies use this path
-- stronger zombie types remain unavailable
+- stronger zombie types remain unavailable to training, while the installed provider 511 spawn-only lot can materialize them under its owner gate
 
 ### Request an Anomalous Draw
 

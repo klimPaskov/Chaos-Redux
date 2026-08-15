@@ -52,7 +52,14 @@ infantry_spawn_prepare_current_state_context = {
 			set_temp_variable = { infantry_spawn_context_remote = 1 }
 		}
 		if = {
-			limit = { OR = { terrain = plains terrain = desert terrain = hills } }
+			limit = {
+				OR = {
+					has_state_category = pastoral
+					has_state_category = rural
+					has_state_category = town
+					has_state_category = large_town
+				}
+			}
 			set_temp_variable = { infantry_spawn_context_mobile_terrain = 1 }
 		}
 		if = {
@@ -2108,12 +2115,27 @@ infantry_spawn_record_current_ordinary_unit_obligations = {
 # ---------------------------------------------------------------------------
 
 infantry_spawn_record_current_unit_obligations = {
+	# Provider callbacks publish a manifest whose row count is not necessarily
+	# two. Capture both the manifest contract and the actual ledger tail so the
+	# Event 19 transaction verifier can reject any append/allocation mismatch.
+	set_temp_variable = { infantry_spawn_provider_manifest_committed_row_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_provider_manifest_committed_manpower = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_provider_manifest_committed_equipment_debt = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_current_provider_obligation_row_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_current_provider_manifest_row_count = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_current_provider_manifest_manpower = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_current_provider_manifest_equipment_debt = constant:infantry_spawn_event.first_index }
 	if = {
 		limit = { check_variable = { infantry_spawn_current_family_id > 0 } }
 		meta_effect = {
 			text = { chaos_unit_family_provider_[PROVIDER]_event19_reconcile_sustainment = yes }
 			PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
 		}
+		set_temp_variable = { infantry_spawn_current_provider_obligation_row_count = infantry_spawn_obligation_uid_entries^num }
+		subtract_from_temp_variable = { infantry_spawn_current_provider_obligation_row_count = infantry_spawn_obligation_row_count_before_create }
+		set_temp_variable = { infantry_spawn_current_provider_manifest_row_count = infantry_spawn_provider_manifest_committed_row_count }
+		set_temp_variable = { infantry_spawn_current_provider_manifest_manpower = infantry_spawn_provider_manifest_committed_manpower }
+		set_temp_variable = { infantry_spawn_current_provider_manifest_equipment_debt = infantry_spawn_provider_manifest_committed_equipment_debt }
 	}
 	else = { infantry_spawn_record_current_ordinary_unit_obligations = yes }
 }

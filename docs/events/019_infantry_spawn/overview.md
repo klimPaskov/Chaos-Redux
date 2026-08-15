@@ -9,6 +9,14 @@
 - World-end route: none
 - Direct scenario: `SCN-013`, **The Unbidden Muster**
 
+### Current provider-coverage reconciliation (2026-08-09)
+
+The current static provider census covers 18 IDs: `501-514`, `518`, and `520-522`. Event 016 contributes providers `504-510` plus the separate strict Aryan clone provider `522`; provider 522 requires `germany_mengele_is_germany_scope`, `germany_mengele_program_active`, the completed cloning-project flag, the master-race-claim flag, and `mengele_aryan_clone_refinement_tech` and is never an alias of provider 504.
+
+The owner-adapter census finds 12 definitions per provider (registration plus eleven Event 19 callbacks), and the shared manifest profiles 130-148 carry the exact custom equipment contracts for elephant, Africa strange formations, CBRN combat, clone, Aryan clone, and Kruger families. The provider-side management-cost display callback selects a profile-cache value for the Muster Board without debiting resources; profile 99 identifies ledger-backed zero-debit adapters whose tooltip must say that obligations are tracked by the Event 19 manifest. Provider 521 records only the combat `chaos_battalion`; CBRN headquarters, regimental support, chemical-tank support, Livens support, and `chemical_agent_payload` remain parent-owned support or operation consumers.
+
+Provider 513 is structurally covered and remains package-gated until Event 012 sets `africa_strange_formation_package_ready`. Static package evidence includes all eight combat/support unit definitions, eight meshes/entities, packaged DDS maps, and 49 sound files. The current worktree includes the setter in `common/scripted_effects/012_africa_strange_force_manifest_effects.txt` after the per-unit manifest flags, but the owner manifest and startup call are untracked in this audit and require parent integration and validation before they become completion evidence. The 2026-07-18 final-audit and catalog statements below are historical tranche evidence for the surfaces they audited and do not close the current provider-extension validation boundary.
+
 Event 19 distributes fully formed military formations to every valid country. It
 uses diminishing territorial coverage, so a large country receives more units
 without receiving one unit in every state. Each selected state generates a
@@ -25,9 +33,11 @@ P2 findings, so every gameplay specialist gate is clean. The evidence is
 recorded in
 `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_ai_balance_performance_live_final_reaudit_2026_07_16.md`.
 
-The final whole-event audit
+The 2026-07-18 final whole-event audit
 `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md`
-is PASS with P0/P1/P2 = 0 and authorizes completion status promotion. The
+was PASS with P0/P1/P2 = 0 for that historical tranche and authorized its
+completion status promotion. It did not include the later provider-coverage
+extension. The
 2026-07-18 regional flag tranche
 now contains 91 separate built-in ImageGen full-flag raws, 91 deterministic 820
 by 520 spot masters, 273 native PNGs, and 273 bottom-left-origin runtime TGAs.
@@ -39,9 +49,10 @@ is PASS and clears the regional asset gate for parent-owned package promotion.
 The machine JSON remains the immutable literal processor-state record
 `candidate_requires_independent_visual_review`; that field is superseded for
 approval by the separate PASS handoff and was not edited. Parent
-workbook/catalog export and reconciliation are complete, Event 19 and SCN-013
-now read `Fully Functional` in the catalog workbook, and parent package
-inventory verifies 33/33 current files. No closure gate remains. The three
+workbook/catalog export and reconciliation are complete for that tranche, Event
+19 and SCN-013 read `Fully Functional` in the historical catalog snapshot, and
+parent package inventory verifies 33/33 files in that snapshot. No closure gate
+remained for that tranche. The three
 accepted exceptions are controlled one-formation border trials, exact
 recorded-formation recreate/prove/delete, and the Event-019-only independent
 full-flag raw plus deterministic spot-palette normalization route. No other
@@ -93,8 +104,9 @@ combat proxy, or silent fallback is part of the accepted implementation.
    manpower liability, weighted equipment debt, quality, coherence, command,
    supply burden, and stable unit/lot/generation identifiers.
 6. The country receives Muster Control and Army Congestion pressure. Selected-lot
-   decisions and the Muster Board use the same scripted effects, and AI calls the
-   same actions after passing the same affordability and state checks.
+   decisions and the Formation Ledger decision category use the same scripted
+   effects, and AI calls the same actions after passing the same affordability and
+   state checks.
 7. Integration, standardization, supervised demobilization, specialist
    preservation, claimant responses, containment, and derivative cleanup settle
    or transfer only the exact selected rows. Missing units remain unaccounted
@@ -163,6 +175,11 @@ carry no equipment debt and instead contribute their exact issued quantity to a
 separate manpower liability. Partial payments reduce a row's weighted debt in
 the same proportion as its exact outstanding quantity. A final payment clears
 the residual exactly.
+
+Custom provider profiles 130-148 retain their exact Africa, CBRN, clone, and
+Kruger equipment tokens and use the anomalous-provider debt class rather than a
+generic proxy. Their affordability, settlement, standardization-loss, salvage,
+and rollback paths use the same exact profile totals.
 
 An unaccounted lot can be selected and settled as one exact transaction. Every
 outstanding person, weapon, vehicle, chassis, train, fuel, or anomalous-resource
@@ -255,7 +272,7 @@ Lot actions always select a stable lot UID before mutation. Standardization,
 emergency integration, supervised demobilization, and specialist preservation
 all require zero exact equipment debt and zero exact manpower liability. This
 keeps unpaid manpower in the existing liability, Army Congestion, pressure-idea,
-Muster Board accounting, and decision-availability surfaces instead of allowing
+Formation Ledger accounting, and decision-availability surfaces instead of allowing
 integration to erase it.
 
 Standardization creates at most one country-level `National Muster Standard`: a
@@ -364,7 +381,10 @@ spawn/train rule, containment profile, reinforcement cost, visual ownership,
 derivative setup, and derivative cleanup callbacks. Base zombies are the only
 trainable zombie variant among the initial families. Ghosts and golems are
 registered as spawn-only. A future provider declares its availability explicitly
-in its own row.
+in its own row. The installed owner-side rows include every custom combat-capable
+family currently present in the repository. Support-only CBRN definitions stay
+with the CBRN parent package because Event 19 divisions require a combat
+component.
 
 A country whose first Event 19 manifestation occurs while Evolution IV is
 already active receives one frozen first-family delegation. The registry selects
@@ -380,7 +400,7 @@ is eligible, the one-time pending state retries only on that country's Event 19
 pulse. Active Evolution IV transitions, scenarios, and derivatives are excluded,
 so the reception cannot duplicate or consume their routes.
 
-Every automatic Event 19 generation, direct family request, first-family reception, natural release, scenario selector, and Muster Board view scans the aligned Chaos-family registry rather than a fixed zombie, ghost, or golem list.
+Every automatic Event 19 generation, direct family request, first-family reception, natural release, scenario selector, and Formation Ledger refresh scans the aligned Chaos-family registry rather than a fixed zombie, ghost, or golem list.
 
 Rows opt into ordinary generation with `ordinary_mix` or `both`, and opt into family-only requests and derivative paths with `family_only` or `both`.
 
@@ -390,7 +410,12 @@ Provider callbacks are dispatched from the stored provider id, so a future Chaos
 
 The Event 19 implementation has exactly one dedicated registry code file:
 `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`. It owns
-the ordinary random-component table and the initial family integrations.
+the ordinary random-component table and the three baseline family bindings.
+Installed owner-side adapters cover the mutated zombie, elephant, Africa
+strange-force, additional ghost, cave brood, rat brood, CBRN combat, and the
+strictly German/Mengele-gated Aryan clone family. Their exact tokens and
+support-only boundary are recorded in
+`docs/events/019_infantry_spawn/systems/unit_family_coverage.md`.
 Registry constants and triggers are kept in the existing Event 19 constants and
 trigger files. A future family defines one complete generic provider registration
 and its Event 19 callbacks in its own integration surface, then adds one startup
@@ -441,6 +466,8 @@ auxiliary tails, restores affected aggregates, and proves aligned ledgers before
 a zombie or provider payment can be refunded. An unproved rollback remains
 quarantined and receives no refund, preventing a partial formation from becoming
 free.
+
+The selected-family spawn proof uses the provider manifest's committed row count rather than a fixed two-row assumption. It accepts provider 518's zero-obligation cave package, validates dynamic 0/2/7/16-row manifests, derives country and lot manpower liability plus equipment debt from manifest totals, and verifies the appended obligation tail's UIDs, generation/lot/unit ownership, issued/outstanding values, payment state, status, and profile-specific debt before commit.
 Natural release then runs as a locked transaction. The dynamic actor receives
 only the selected region and frozen recorded formations; its private ledgers,
 mode-appropriate claimant or provider identity, territory, capital, cores, and
@@ -457,14 +484,13 @@ character explicitly uses `female = no`. Claimants can request equipment,
 political authority, territorial autonomy, recognition, or command. The state
 can accept, refuse, counter-command, discredit, arrest, or ultimately promote a
 claimant. Counter-command and discredit responses each set their own shared
-officer-search lock in the response effect, so the decision, Muster Board, and
-AI paths observe the same interval and cannot be alternated through the GUI to
-bypass a decision cooldown.
+officer-search lock in the response effect, so the decision and AI paths observe
+the same interval and cannot be alternated to bypass a decision cooldown.
 
 A pending demand stores the issuing claimant's immutable UID separately from
-the movable Muster Board selection. Board rebuild, player decisions, scripted
-GUI buttons, AI response, timeout refusal, and deferred replay must resolve that
-same UID before accepting or refusing anything. The deferred record additionally
+the movable claimant-file selection. Ledger rebuild, player decisions, AI
+response, timeout refusal, and deferred replay must resolve that same UID before
+accepting or refusing anything. The deferred record additionally
 freezes the demand enum. Missing or mismatched ownership enters the ledger
 invariant and clears the malformed pending context; it never substitutes another
 claimant row. Every demand completion, crisis teardown, derivative conversion,
@@ -589,28 +615,24 @@ Derivative countries use the shared special-country and nonhuman classifiers.
 They remain weaker than parent Event 2, 5, or 10 actors, do not merge into those
 parents, do not increment their stages or counts, and have no world-end route.
 
-## Muster Board and AI
+## Formation Ledger decision category and AI
 
-The scripted GUI exposes Overview, Formation Lots, Command, Anomalous Registry,
-and Generation History. Command appears only with an active claimant. The
-anomalous tab appears only after Evolution IV and only when the rebuilt country
-view contains at least one locally eligible family.
-Overview can open the shared audit, begin shared standardization, or close every
-eligible resolved generation. Selected-lot and selected-family buttons likewise
-call the same effects as decisions, and AI uses equivalent affordability,
-cooldown, state, lot, and family gates.
-Each direct action keeps a transparent button hitbox with its full `pdx_tooltip`; the visible caption is a separate left-aligned overlay so the action name never inherits the engine's centered `buttonText` layout. Short captions are used only where the compact plate would otherwise crowd the text, while the tooltip retains the complete requirements, cost, and outcome description.
-The Overview surface uses the open central dossier field for active lots, unresolved records, claimant demands, anomalous saturation, pending requests, and active divisions.
-The values are read directly from the shared Event 19 counters rather than decorative placeholders.
-The ordinary Formation Management category and Muster Board remain available only while an unresolved record, live Event 19 formation, unaccounted formation, active claimant, pending Evolution III opening, deferred transaction, or running management operation exists.
-Evolution III and IV capability flags alone do not keep the surface open after a government suppresses new draws and settles the crisis.
-A completed claimant takeover or a final proven derivative revolt closes the ordinary category and Board immediately; direct-scenario actors are excluded from the ordinary surface for the duration of their isolated package.
-The shared country pulse clears an irrelevant Board-open flag before work and rechecks the same gate after management, so a later crisis can reopen the Board only through its decision doorway.
-The board is authored around the richer compact `GFX_infantry_spawn_muster_board_background` at 960 by 640: a continuous charcoal and brass frame surrounds a period muster map field with sparse red and steel drafting traces, paper seams, and one understated compass seal. Functional text, lists, army scenes, and click targets remain GUI-owned and do not paint decorative wells or slot grids. The richer source, processed review, and runtime handoff are retained under `docs/assets/019_infantry_spawn/gui_background_richer_2026_07/`.
-
-Three real frame-sheet animations provide the muster seal, critical claimant
-border, and anomalous registry emblem. Each has a player-selectable static
-fallback.
+The ordinary Formation Management category is the complete Event 019 management
+surface. `infantry_spawn_review_formation_ledger` refreshes the shared lot,
+generation, claimant, and family selection caches without changing gameplay.
+Lot disposition, request, integration, demobilization, and standardization
+decisions call the same effects used by AI. Evolution IV countries with multiple
+eligible registry families can cycle the selected family, while countries with
+multiple live claimant files can cycle the claimant file; AI instead selects the
+highest-pressure family and immutable pending-demand owner through the same
+helpers.
+The category remains visible only while an unresolved record, live Event 19
+formation, unaccounted formation, active claimant, pending Evolution III
+opening, deferred transaction, or running management operation exists.
+Evolution III and IV capability flags alone do not keep it open after a
+government suppresses new draws and settles the crisis. A completed claimant
+takeover or a final proven derivative revolt closes the ordinary category;
+direct-scenario actors remain isolated from it for the duration of their package.
 
 ## Direct scenario: SCN-013
 
@@ -718,19 +740,20 @@ The exact per-consumer inventory is maintained in
 | Eleven report cards | `gfx/event_pictures/019_infantry_spawn/` | `GFX_report_event_infantry_spawn`, four evolution sprites, and `{zombie,ghost,golem}_{release,defeat}` |
 | Twenty claimant identity scene sprites | `gfx/leaders/019_infantry_spawn/` | `GFX_portrait_infantry_spawn_claimant_01` through `_20`; each fixed slot uses an army or host scene without an individual focal human |
 | Six derivative host scene sprites | `gfx/leaders/019_infantry_spawn/` | zombie and ghost host commander and council, plus golem master builder and pattern council; each fixed slot uses an army or host scene without an individual focal human |
-| One neutral technical muster scene | `gfx/leaders/019_infantry_spawn/` | `GFX_portrait_infantry_spawn_unassigned_muster`; initializes unresolved UI/selector states without assigning a claimant or family identity |
+| One neutral technical muster scene | `gfx/leaders/019_infantry_spawn/` | `GFX_portrait_infantry_spawn_unassigned_muster`; covers unresolved selector states without assigning a claimant or family identity |
 | Forty-five focus icons | `gfx/interface/goals/019_infantry_spawn/` | `GFX_goal_<exact derivative focus id>` |
 | Forty-seven decision icons | `gfx/interface/decisions/019_infantry_spawn/` | `GFX_decision_infantry_spawn_<action>`. Missions reuse their action icon |
 | Nine idea icons | `gfx/interface/ideas/019_infantry_spawn/` | `GFX_idea_infantry_spawn_<idea>` |
 | Three category icons | `gfx/interface/019_infantry_spawn/` | formation management, claimant command, derivative operations |
 | Six board markers | `gfx/interface/019_infantry_spawn/` | cooldown, dynamic cost, quality, coherence, invalid target, warning |
-| Board background | `gfx/interface/019_infantry_spawn/` | `GFX_infantry_spawn_muster_board_background` |
-| Three animations plus fallbacks | `gfx/interface/019_infantry_spawn/` | muster seal pulse, critical command border, anomalous registry emblem |
-| Ninety-one regional flag identities | `gfx/flags/`, `medium/`, `small/` | thirteen claimant, zombie, ghost, and golem identity stems across seven origin regions. The current approved chain is 91 unmodified full-flag ImageGen raws, 91 deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs. The independent remediation re-audit is PASS and the final whole-event audit is PASS with P0/P1/P2 = 0. The machine JSON retains `candidate_requires_independent_visual_review` as its immutable processor-state field. Parent workbook/catalog export and reconciliation are complete, Event 19 and SCN-013 now read `Fully Functional`, and package inventory is complete at 33/33 current files. No closure gate remains. See `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md` |
+| Archived former-board background | `docs/assets/019_infantry_spawn/gui_background_richer_2026_07/` | retained production provenance; no runtime consumer after the decision-only conversion |
+| Archived former animations plus fallbacks | `docs/assets/019_infantry_spawn/animations/` | retained production provenance; no runtime consumer after the decision-only conversion |
+| Ninety-one regional flag identities | `gfx/flags/`, `medium/`, `small/` | thirteen claimant, zombie, ghost, and golem identity stems across seven origin regions. The historical approved chain is 91 unmodified full-flag ImageGen raws, 91 deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs. The independent remediation re-audit was PASS for that tranche; the machine JSON retains `candidate_requires_independent_visual_review` as its immutable processor-state field. The historical workbook/catalog export, 33/33 package inventory, and final whole-event audit do not include the later provider-coverage extension. See `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md` |
 | Eleven achievement triplets | `gfx/achievements/` | `<achievement_id>{,_grey,_not_eligible}.dds`, with 33 explicit aliases in `interface/chaosx_achievements.gfx` |
 
-All sprite-bearing Event 19 assets are registered in
-`interface/019_infantry_spawn.gfx`; country flags remain filename-driven. The
+All live sprite-bearing Event 19 assets are registered in
+`interface/019_infantry_spawn.gfx`; archived former-board packages are explicitly
+not registered, and country flags remain filename-driven. The
 SCN-013 generic-government path resolves these same formation scenes through
 `GetInfantrySpawnScenarioActorArmyScene`: ordinary actors display a scenario-matched
 army or muster. Exact profiles 1, 2, and 3 display the massed hosts owned by the
@@ -738,8 +761,8 @@ army or muster. Exact profiles 1, 2, and 3 display the massed hosts owned by the
 registers profile 999 displays the identity-neutral unassigned muster. Unsupported
 positive profiles are rejected and never reach this selector. Event 19 uses only
 army and massed-host presentation here and never uses a human focal authority
-image. The Muster Board layout is
-`interface/019_infantry_spawn_muster_board.gui`.
+image. The player-facing management surface is the ordinary decision category;
+no Event 019 scripted-GUI layout is runtime-wired.
 The four controlled combat trials reuse
 `GFX_decision_infantry_spawn_training_cycle`. They require no new sprite or art
 handoff.
@@ -749,6 +772,7 @@ handoff.
 - Source specification: `docs/specs/019_infantry_spawn_specs/`
 - Working plans and handoffs: `docs/plans/019_infantry_spawn_plans/`
 - Scenario contract: `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
+- Current UI decision: `docs/specs/019_infantry_spawn_specs/review/decision_only_surface_addendum_2026-08-05.md`
 - Shared family contract: `docs/systems/chaos_unit_family_registry.md`
 - Achievement contracts: `docs/achievements/019_infantry_spawn/achievements.md`
 - Asset manifest: `docs/assets/019_infantry_spawn/manifest.md`
@@ -766,11 +790,13 @@ package promotion. The machine JSON retains its immutable literal
 `candidate_requires_independent_visual_review` processor-state value. The 7/16
 `regional_variants/` composites, motif prompts, validation/checksum pair, and
 contact sheets remain archival superseded evidence. Parent workbook/catalog
-export and reconciliation are complete, Event 19 and SCN-013 now read `Fully
-Functional`, and parent package inventory is complete at 33/33 current files.
-The final completion audit is PASS with P0/P1/P2 = 0, so no closure gate remains.
-This event document preserves the three accepted exceptions and no-other-
-fallback rule rather than rewriting historical audit bodies.
+export and reconciliation are complete for the historical tranche, Event 19
+and SCN-013 read `Fully Functional` in that snapshot, and parent package
+inventory is complete at 33/33 in that snapshot. The final completion audit was
+PASS with P0/P1/P2 = 0 for the historical tranche; it is not current proof for
+the expanded provider bridge. This event document preserves the three accepted
+exceptions and no-other-fallback rule rather than rewriting historical audit
+bodies.
 
 ## Future plans and extension rules
 

@@ -31,6 +31,33 @@ function scriptIdentifier(value, field) {
 	return value;
 }
 
+function groupConfig(manifest) {
+	const declaredFields = ["activation_helper", "group_scripted_gui_id", "group_window_id"];
+	if (manifest.group_id === undefined) {
+		const stray = declaredFields.filter((field) => manifest[field] !== undefined);
+		if (stray.length) throw new Error(`${manifest.__path}: ${stray.join(", ")} require group_id`);
+		return null;
+	}
+	const groupKey = normalisedId(manifest.group_id, `${manifest.__path}: group_id`);
+	if (manifest.activation_helper === undefined || manifest.activation_helper === null) {
+		throw new Error(`${manifest.__path}: grouped manifests require activation_helper`);
+	}
+	const activationHelper = scriptIdentifier(manifest.activation_helper, `${manifest.__path}: activation_helper`);
+	const scriptedGui = manifest.group_scripted_gui_id !== undefined
+		? scriptIdentifier(manifest.group_scripted_gui_id, `${manifest.__path}: group_scripted_gui_id`)
+		: `chaosx_formable_state_puzzle_${groupKey}_scripted_gui`;
+	const window = manifest.group_window_id !== undefined
+		? scriptIdentifier(manifest.group_window_id, `${manifest.__path}: group_window_id`)
+		: `chaosx_formable_state_puzzle_${groupKey}_window`;
+	return {
+		rawId: manifest.group_id,
+		key: groupKey,
+		activationHelper,
+		scriptedGui,
+		window,
+	};
+}
+
 function runtimePath(value, field) {
 	if (typeof value !== "string" || !value.trim()) throw new Error(`${field} must be a non-empty relative path`);
 	const normalisedPath = slash(value);
@@ -50,6 +77,8 @@ function normaliseManifest(manifest, manifestPath) {
 		return {
 			...manifest,
 			decision_category: manifest.decision_category || manifest.category_id,
+			summary_required_count: manifest.summary_required_count ?? manifest.state_policy?.required_state_ids?.length,
+			__summaryRequiredCountExplicit: manifest.summary_required_count !== undefined && manifest.summary_required_count !== null,
 			__path: manifestPath,
 			__sourceSchema: manifest.schema,
 		};
@@ -100,6 +129,8 @@ function normaliseManifest(manifest, manifestPath) {
 		decision_category: manifest.category_id,
 		projection: { ...manifest.projection, canvas },
 		state_policy: { required_state_ids: requiredStateIds },
+		summary_required_count: requiredStateIds.length,
+		__summaryRequiredCountExplicit: false,
 		states,
 		__path: manifestPath,
 		__sourceSchema: "reviewed-legacy-assets/v1",
@@ -129,6 +160,9 @@ function readManifests() {
 	}
 	const seenCategories = new Map();
 	const seenFormables = new Map();
+	const seenGroups = new Map();
+	const seenScriptedGuis = new Map();
+	const seenWindows = new Map();
 	for (const manifest of manifests) {
 		const categoryKey = normalisedId(manifest.decision_category, `${manifest.__path}: decision_category`);
 		const formableKey = normalisedId(manifest.formable_id, `${manifest.__path}: formable_id`);
@@ -136,6 +170,33 @@ function readManifests() {
 		if (seenFormables.has(formableKey)) throw new Error(`Duplicate normalized formable manifest: ${manifest.formable_id} conflicts with ${seenFormables.get(formableKey)}`);
 		seenCategories.set(categoryKey, manifest.decision_category);
 		seenFormables.set(formableKey, manifest.formable_id);
+		const group = groupConfig(manifest);
+		manifest.__group = group;
+		if (group) {
+			const existingGroup = seenGroups.get(group.key);
+			if (existingGroup && (existingGroup.rawId !== group.rawId || existingGroup.scriptedGui !== group.scriptedGui || existingGroup.window !== group.window)) {
+				throw new Error(`Conflicting normalized group identifier: ${manifest.group_id} conflicts with ${existingGroup.rawId}`);
+			}
+			seenGroups.set(group.key, group);
+			const existingScriptedGui = seenScriptedGuis.get(group.scriptedGui);
+			if (existingScriptedGui && existingScriptedGui.groupKey !== group.key) {
+				throw new Error(`Duplicate scripted-GUI identifier: ${group.scriptedGui} is used by groups ${existingScriptedGui.groupKey} and ${group.key}`);
+			}
+			seenScriptedGuis.set(group.scriptedGui, { groupKey: group.key, source: manifest.__path });
+			const existingWindow = seenWindows.get(group.window);
+			if (existingWindow && existingWindow.groupKey !== group.key) {
+				throw new Error(`Duplicate group window identifier: ${group.window} is used by groups ${existingWindow.groupKey} and ${group.key}`);
+			}
+			seenWindows.set(group.window, { groupKey: group.key, source: manifest.__path });
+		} else {
+			const names = formableNames(manifest);
+			const existingScriptedGui = seenScriptedGuis.get(names.scriptedGui);
+			if (existingScriptedGui) throw new Error(`Duplicate scripted-GUI identifier: ${names.scriptedGui} conflicts with ${existingScriptedGui.source}`);
+			seenScriptedGuis.set(names.scriptedGui, { groupKey: null, source: manifest.__path });
+			const existingWindow = seenWindows.get(names.window);
+			if (existingWindow) throw new Error(`Duplicate window identifier: ${names.window} conflicts with ${existingWindow.source}`);
+			seenWindows.set(names.window, { groupKey: null, source: manifest.__path });
+		}
 	}
 
 	return manifests.sort((left, right) => left.decision_category.localeCompare(right.decision_category));
@@ -147,6 +208,7 @@ function validateManifest(manifest) {
 	}
 	normalisedId(manifest.formable_id, `${manifest.__path}: formable_id`);
 	normalisedId(manifest.decision_category, `${manifest.__path}: decision_category`);
+	groupConfig(manifest);
 	if (!Array.isArray(manifest.states) || !manifest.states.length) {
 		throw new Error(`${manifest.__path}: missing formable_id, decision_category, or states`);
 	}
@@ -165,6 +227,9 @@ function validateManifest(manifest) {
 	}
 	if (!Array.isArray(manifest.state_policy?.required_state_ids)) {
 		throw new Error(`${manifest.__path}: state_policy.required_state_ids is missing`);
+	}
+	if (!Number.isInteger(manifest.summary_required_count) || manifest.summary_required_count < 1) {
+		throw new Error(`${manifest.__path}: summary_required_count must be a positive integer`);
 	}
 
 	const ids = new Set();
@@ -234,6 +299,10 @@ function stateNames(manifest, state) {
 	};
 }
 
+function summaryCountLimit(manifest) {
+	return manifest.__summaryRequiredCountExplicit ? manifest.summary_required_count : manifest.states.length;
+}
+
 function generateGfx(manifests) {
 	const lines = [
 		"# ============================================================================",
@@ -258,6 +327,84 @@ function generateGfx(manifests) {
 	return lines.join("\n");
 }
 
+function appendFamilyGui(lines, manifest, indent, containerName) {
+	const form = formableNames(manifest);
+	const childIndent = `${indent}\t`;
+	const elementIndent = `${childIndent}\t`;
+	lines.push(`${indent}containerWindowType = {`);
+	lines.push(`${childIndent}name = ${quote(containerName)}`);
+	lines.push(`${childIndent}position = { x = 0 y = 0 }`);
+	lines.push(`${childIndent}size = { width = ${manifest.projection.canvas[0]} height = ${manifest.projection.canvas[1] + 26} }`);
+	lines.push(`${childIndent}clipping = yes`);
+	lines.push("");
+	lines.push(`${childIndent}instantTextBoxType = {`);
+	lines.push(`${elementIndent}name = ${quote(`${form.formableKey}_summary`)}`);
+	lines.push(`${elementIndent}position = { x = 0 y = 0 }`);
+	lines.push(`${elementIndent}font = \"hoi_18mbs\"`);
+	lines.push(`${elementIndent}text = ${quote(form.summaryKey)}`);
+	lines.push(`${elementIndent}format = center`);
+	lines.push(`${elementIndent}maxHeight = 22`);
+	lines.push(`${elementIndent}maxWidth = ${manifest.projection.canvas[0]}`);
+	lines.push(`${childIndent}}`);
+	lines.push("");
+	lines.push(`${childIndent}containerWindowType = {`);
+	lines.push(`${elementIndent}name = ${quote(`${form.formableKey}_map`)}`);
+	lines.push(`${elementIndent}position = { x = 0 y = 24 }`);
+	lines.push(`${elementIndent}size = { width = ${manifest.projection.canvas[0]} height = ${manifest.projection.canvas[1]} }`);
+	lines.push(`${elementIndent}clipping = yes`);
+	for (const state of manifest.states) {
+		const names = stateNames(manifest, state);
+		lines.push("");
+		lines.push(`${elementIndent}iconType = {`);
+		lines.push(`${elementIndent}\tname = ${quote(names.element)}`);
+		lines.push(`${elementIndent}\tposition = { x = ${state.canvas_position[0]} y = ${state.canvas_position[1]} }`);
+		lines.push(`${elementIndent}\tspriteType = ${quote(`GFX_${state.sprite_names.unresolved}`)}`);
+		lines.push(`${elementIndent}\tpdx_tooltip_delayed = ${quote(names.hoverKey)}`);
+		lines.push(`${elementIndent}}`);
+	}
+	lines.push(`${childIndent}}`);
+	lines.push(`${indent}}`);
+	lines.push("");
+}
+
+function appendStandaloneGui(lines, manifest) {
+	const form = formableNames(manifest);
+	lines.push("\tcontainerWindowType = {");
+	lines.push(`\t\tname = ${quote(form.window)}`);
+	lines.push("\t\tposition = { x = 0 y = 0 }");
+	lines.push(`\t\tsize = { width = 100% height = ${manifest.projection.canvas[1] + 26} }`);
+	lines.push("\t\tclipping = yes");
+	lines.push("");
+	lines.push("\t\tinstantTextBoxType = {");
+	lines.push(`\t\t\tname = ${quote(`${form.formableKey}_summary`)}`);
+	lines.push("\t\t\tposition = { x = 0 y = 0 }");
+	lines.push("\t\t\tfont = \"hoi_18mbs\"");
+	lines.push(`\t\t\ttext = ${quote(form.summaryKey)}`);
+	lines.push("\t\t\tformat = center");
+	lines.push("\t\t\tmaxHeight = 22");
+	lines.push(`\t\t\tmaxWidth = ${manifest.projection.canvas[0]}`);
+	lines.push("\t\t}");
+	lines.push("");
+	lines.push("\t\tcontainerWindowType = {");
+	lines.push(`\t\t\tname = ${quote(`${form.formableKey}_map`)}`);
+	lines.push("\t\t\tposition = { x = 0 y = 24 }");
+	lines.push(`\t\t\tsize = { width = ${manifest.projection.canvas[0]} height = ${manifest.projection.canvas[1]} }`);
+	lines.push("\t\t\tclipping = yes");
+	for (const state of manifest.states) {
+		const names = stateNames(manifest, state);
+		lines.push("");
+		lines.push("\t\t\ticonType = {");
+		lines.push(`\t\t\t\tname = ${quote(names.element)}`);
+		lines.push(`\t\t\t\tposition = { x = ${state.canvas_position[0]} y = ${state.canvas_position[1]} }`);
+		lines.push(`\t\t\t\tspriteType = ${quote(`GFX_${state.sprite_names.unresolved}`)}`);
+		lines.push(`\t\t\t\tpdx_tooltip_delayed = ${quote(names.hoverKey)}`);
+		lines.push("\t\t\t}");
+	}
+	lines.push("\t\t}");
+	lines.push("\t}");
+	lines.push("");
+}
+
 function generateGui(manifests) {
 	const lines = [
 		"# ============================================================================",
@@ -267,45 +414,101 @@ function generateGui(manifests) {
 		"",
 		"guiTypes = {",
 	];
+	for (const manifest of manifests.filter((candidate) => !candidate.__group)) {
+		appendStandaloneGui(lines, manifest);
+	}
+	const groups = new Map();
 	for (const manifest of manifests) {
-		const form = formableNames(manifest);
+		if (!manifest.__group) continue;
+		const members = groups.get(manifest.__group.key) || { config: manifest.__group, manifests: [] };
+		members.manifests.push(manifest);
+		groups.set(manifest.__group.key, members);
+	}
+	for (const { config, manifests: members } of [...groups.values()].sort((left, right) => left.config.key.localeCompare(right.config.key))) {
+		const width = Math.max(...members.map((manifest) => manifest.projection.canvas[0]));
+		const height = Math.max(...members.map((manifest) => manifest.projection.canvas[1] + 26));
 		lines.push("\tcontainerWindowType = {");
-		lines.push(`\t\tname = ${quote(form.window)}`);
+		lines.push(`\t\tname = ${quote(config.window)}`);
 		lines.push("\t\tposition = { x = 0 y = 0 }");
-		lines.push(`\t\tsize = { width = 100% height = ${manifest.projection.canvas[1] + 26} }`);
+		lines.push(`\t\tsize = { width = ${width} height = ${height} }`);
 		lines.push("\t\tclipping = yes");
 		lines.push("");
-		lines.push("\t\tinstantTextBoxType = {");
-		lines.push(`\t\t\tname = ${quote(`${form.formableKey}_summary`)}`);
-		lines.push("\t\t\tposition = { x = 0 y = 0 }");
-		lines.push("\t\t\tfont = \"hoi_18mbs\"");
-		lines.push(`\t\t\ttext = ${quote(form.summaryKey)}`);
-		lines.push("\t\t\tformat = center");
-		lines.push("\t\t\tmaxHeight = 22");
-		lines.push(`\t\t\tmaxWidth = ${manifest.projection.canvas[0]}`);
-		lines.push("\t\t}");
-		lines.push("");
-		lines.push("\t\tcontainerWindowType = {");
-		lines.push(`\t\t\tname = ${quote(`${form.formableKey}_map`)}`);
-		lines.push("\t\t\tposition = { x = 0 y = 24 }");
-		lines.push(`\t\t\tsize = { width = ${manifest.projection.canvas[0]} height = ${manifest.projection.canvas[1]} }`);
-		lines.push("\t\t\tclipping = yes");
-		for (const state of manifest.states) {
-			const names = stateNames(manifest, state);
-			lines.push("");
-			lines.push("\t\t\ticonType = {");
-			lines.push(`\t\t\t\tname = ${quote(names.element)}`);
-			lines.push(`\t\t\t\tposition = { x = ${state.canvas_position[0]} y = ${state.canvas_position[1]} }`);
-			lines.push(`\t\t\t\tspriteType = ${quote(`GFX_${state.sprite_names.unresolved}`)}`);
-			lines.push(`\t\t\t\tpdx_tooltip_delayed = ${quote(names.hoverKey)}`);
-			lines.push("\t\t\t}");
+		for (const manifest of members.sort((left, right) => left.decision_category.localeCompare(right.decision_category))) {
+			const form = formableNames(manifest);
+			appendFamilyGui(lines, manifest, "\t\t", `${form.formableKey}_overlay`);
 		}
-		lines.push("\t\t}");
-		lines.push("\t}");
-		lines.push("");
+		lines.push("\t}", "");
 	}
 	lines.push("}", "");
 	return lines.join("\n");
+}
+
+function appendFamilyProperties(lines, manifest, indent) {
+	for (const state of manifest.states) {
+		const names = stateNames(manifest, state);
+		lines.push(`${indent}${names.element} = {`);
+		lines.push(`${indent}\timage = ${quote(`[${names.spriteFunction}]`)}`);
+		lines.push(`${indent}}`);
+	}
+}
+
+function appendFamilyTriggers(lines, manifest, indent, activationHelper = null) {
+	const form = formableNames(manifest);
+	const valueIndent = `${indent}\t`;
+	if (activationHelper) {
+		lines.push(`${indent}${form.formableKey}_overlay_visible = {`);
+		lines.push(`${valueIndent}${activationHelper} = yes`);
+		lines.push(`${indent}}`);
+	}
+	const visibleStates = manifest.states.filter((state) => state.visibility_helper && !state.required);
+	for (const state of visibleStates) {
+		const names = stateNames(manifest, state);
+		lines.push(`${indent}${names.element}_visible = {`);
+		lines.push(`${valueIndent}${names.visibilityHelper} = yes`);
+		lines.push(`${indent}}`);
+	}
+}
+
+function appendFamilyScriptedGui(lines, manifest, indent, { activationHelper = null } = {}) {
+	const propertyIndent = `${indent}\t`;
+	const visibleStates = manifest.states.filter((state) => state.visibility_helper && !state.required);
+	lines.push(`${indent}properties = {`);
+	appendFamilyProperties(lines, manifest, propertyIndent);
+	lines.push(`${indent}}`);
+	if (activationHelper || visibleStates.length) {
+		lines.push(`${indent}triggers = {`);
+		appendFamilyTriggers(lines, manifest, propertyIndent, activationHelper);
+		lines.push(`${indent}}`);
+	}
+}
+
+function appendStandaloneScriptedGui(lines, manifest) {
+	const form = formableNames(manifest);
+	lines.push(`\t${form.scriptedGui} = {`);
+	lines.push("\t\tcontext_type = decision_category");
+	lines.push(`\t\twindow_name = ${quote(form.window)}`);
+	lines.push("\t\tvisible = { is_ai = no }");
+	lines.push("\t\tproperties = {");
+	const hasVisibilityHooks = manifest.states.some((state) => state.visibility_helper);
+	for (const state of manifest.states) {
+		const names = stateNames(manifest, state);
+		lines.push(`\t\t\t${names.element} = {`);
+		lines.push(`\t\t\t\timage = ${quote(`[${names.spriteFunction}]`)}`);
+		lines.push("\t\t\t}");
+		if (hasVisibilityHooks) {
+			lines.push(`\t\t\t${names.element}_visible = {`);
+			if (state.required || !names.visibilityHelper) {
+				lines.push("\t\t\t\talways = yes");
+			} else {
+				lines.push(`\t\t\t\t${names.visibilityHelper} = yes`);
+			}
+			lines.push("\t\t\t}");
+		}
+	}
+	lines.push("\t\t}");
+	lines.push("\t\tai_enabled = { always = no }");
+	lines.push("\t}");
+	lines.push("");
 }
 
 function generateScriptedGui(manifests) {
@@ -317,33 +520,41 @@ function generateScriptedGui(manifests) {
 		"",
 		"scripted_gui = {",
 	];
+	for (const manifest of manifests.filter((candidate) => !candidate.__group)) {
+		appendStandaloneScriptedGui(lines, manifest);
+	}
+	const groups = new Map();
 	for (const manifest of manifests) {
-		const form = formableNames(manifest);
-		lines.push(`\t${form.scriptedGui} = {`);
+		if (!manifest.__group) continue;
+		const members = groups.get(manifest.__group.key) || { config: manifest.__group, manifests: [] };
+		members.manifests.push(manifest);
+		groups.set(manifest.__group.key, members);
+	}
+	for (const { config, manifests: members } of [...groups.values()].sort((left, right) => left.config.key.localeCompare(right.config.key))) {
+		const sortedMembers = members.sort((left, right) => left.decision_category.localeCompare(right.decision_category));
+		lines.push(`\t${config.scriptedGui} = {`);
 		lines.push("\t\tcontext_type = decision_category");
-		lines.push(`\t\twindow_name = ${quote(form.window)}`);
-		lines.push("\t\tvisible = { is_ai = no }");
+		lines.push(`\t\twindow_name = ${quote(config.window)}`);
+		lines.push("\t\tvisible = {");
+		lines.push("\t\t\tis_ai = no");
+		lines.push("\t\t\tOR = {");
+		for (const activationHelper of [...new Set(sortedMembers.map((manifest) => manifest.__group.activationHelper))].sort()) {
+			lines.push(`\t\t\t\t${activationHelper} = yes`);
+		}
+		lines.push("\t\t\t}");
+		lines.push("\t\t}");
 		lines.push("\t\tproperties = {");
-		const hasVisibilityHooks = manifest.states.some((state) => state.visibility_helper);
-		for (const state of manifest.states) {
-			const names = stateNames(manifest, state);
-			lines.push(`\t\t\t${names.element} = {`);
-			lines.push(`\t\t\t\timage = ${quote(`[${names.spriteFunction}]`)}`);
-			lines.push("\t\t\t}");
-			if (hasVisibilityHooks) {
-				lines.push(`\t\t\t${names.element}_visible = {`);
-				if (state.required || !names.visibilityHelper) {
-					lines.push("\t\t\t\talways = yes");
-				} else {
-					lines.push(`\t\t\t\t${names.visibilityHelper} = yes`);
-				}
-				lines.push("\t\t\t}");
-			}
+		for (const manifest of sortedMembers) {
+			appendFamilyProperties(lines, manifest, "\t\t\t");
+		}
+		lines.push("\t\t}");
+		lines.push("\t\ttriggers = {");
+		for (const manifest of sortedMembers) {
+			appendFamilyTriggers(lines, manifest, "\t\t\t", manifest.__group.activationHelper);
 		}
 		lines.push("\t\t}");
 		lines.push("\t\tai_enabled = { always = no }");
-		lines.push("\t}");
-		lines.push("");
+		lines.push("\t}", "");
 	}
 	lines.push("}", "");
 	return lines.join("\n");
@@ -390,7 +601,8 @@ function generateScriptedLocalisation(manifests) {
 		lines.push("defined_text = {");
 		lines.push(`\tname = GetChaosxFormable${form.pascalKey}QualifyingCount`);
 		const optionalVisibleStates = manifest.states.filter((state) => !state.required && state.visibility_helper);
-		for (let count = manifest.states.length; count > 0; count--) {
+		const qualifyingCountLimit = summaryCountLimit(manifest);
+		for (let count = qualifyingCountLimit; count > 0; count--) {
 			lines.push("\ttext = {");
 			lines.push("\t\ttrigger = {");
 			lines.push("\t\t\tcount_triggers = {");
@@ -498,18 +710,21 @@ function generateLocalisation(manifests) {
 		"chaosx_formable_state_puzzle_summary_ready: \"§GFormation ready§!\"",
 		"chaosx_formable_state_puzzle_summary_incomplete: \"§YRequirements incomplete§!\"",
 	];
-	const maximumCount = Math.max(...manifests.map((manifest) => manifest.states.length));
+	const maximumCount = Math.max(...manifests.map((manifest) => manifest.__summaryRequiredCountExplicit
+		? Math.max(manifest.states.length, manifest.summary_required_count)
+		: manifest.states.length));
 	for (let count = 0; count <= maximumCount; count++) {
 		lines.push(`chaosx_formable_state_puzzle_count_${count}: \"${count}\"`);
 	}
 	const uniqueStates = new Set();
 	for (const manifest of manifests) {
 		const form = formableNames(manifest);
-		lines.push(`${form.summaryKey}: \"Qualifying states: §Y[GetChaosxFormable${form.pascalKey}QualifyingCount] / ${manifest.states.length}§! — [GetChaosxFormable${form.pascalKey}SummaryStatus]\"`);
+		const denominator = manifest.__summaryRequiredCountExplicit ? manifest.summary_required_count : manifest.states.length;
+		lines.push(`${form.summaryKey}: \"Qualifying states: §Y[GetChaosxFormable${form.pascalKey}QualifyingCount] / ${denominator}§! | [GetChaosxFormable${form.pascalKey}SummaryStatus]\"`);
 		for (const state of manifest.states) {
 			uniqueStates.add(state.state_id);
 			const names = stateNames(manifest, state);
-			lines.push(`${names.hoverKey}: \"§Y[${state.state_id}.GetName]§!\\nOwner: [GetChaosxFormableState${state.state_id}Owner]\\nController: [GetChaosxFormableState${state.state_id}Controller]\\nRequired control: [${names.qualificationFunction}]\\nOur core: [GetChaosxFormableState${state.state_id}CoreStatus]\"`);
+			lines.push(`${names.hoverKey}: \"§Y[${state.state_id}.GetName]§!\\nOwner: [GetChaosxFormableState${state.state_id}Owner]\\nController: [GetChaosxFormableState${state.state_id}Controller]\\nFormation status: [${names.qualificationFunction}]\\nOur core: [GetChaosxFormableState${state.state_id}CoreStatus]\"`);
 		}
 	}
 	for (const stateId of [...uniqueStates].sort((left, right) => left - right)) {
@@ -517,7 +732,7 @@ function generateLocalisation(manifests) {
 		lines.push(`chaosx_formable_state_puzzle_state_${stateId}_controller: \"[${stateId}.controller.GetNameWithFlag]\"`);
 	}
 	for (const manifest of manifests) {
-		if (!manifest.states.some((state) => !state.required && state.visibility_helper)) continue;
+		if (manifest.__summaryRequiredCountExplicit || !manifest.states.some((state) => !state.required && state.visibility_helper)) continue;
 		const form = formableNames(manifest);
 		const index = lines.findIndex((line) => line.startsWith(`${form.summaryKey}:`));
 		if (index >= 0) lines[index] = lines[index].replace(` / ${manifest.states.length}`, ` / [GetChaosxFormable${form.pascalKey}RelevantCount]`);
@@ -529,15 +744,34 @@ function generateLocalisation(manifests) {
 function write(relativePath, source) {
 	const absolutePath = path.join(workspace, relativePath);
 	fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
-	fs.writeFileSync(absolutePath, source, "utf8");
+	if (fs.existsSync(absolutePath) && fs.readFileSync(absolutePath, "utf8") === source) return;
+	for (let attempt = 0; attempt < 40; attempt++) {
+		try {
+			fs.writeFileSync(absolutePath, source, "utf8");
+			return;
+		} catch (error) {
+			if (!["EBUSY", "EPERM", "UNKNOWN"].includes(error?.code) || attempt === 39) throw error;
+			Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 250);
+		}
+	}
 }
 
 const manifests = readManifests();
 for (const manifest of manifests) validateManifest(manifest);
 
 write("interface/chaosx_formable_state_puzzles.gfx", generateGfx(manifests));
-for (const manifest of manifests) {
+for (const manifest of manifests.filter((candidate) => !candidate.__group)) {
 	write(`interface/chaosx_formable_state_puzzle_${formableNames(manifest).formableKey}.gui`, generateGui([manifest]));
+}
+const groupedManifests = new Map();
+for (const manifest of manifests) {
+	if (!manifest.__group) continue;
+	const members = groupedManifests.get(manifest.__group.key) || [];
+	members.push(manifest);
+	groupedManifests.set(manifest.__group.key, members);
+}
+for (const [groupKey, members] of groupedManifests) {
+	write(`interface/chaosx_formable_state_puzzle_group_${groupKey}.gui`, generateGui(members));
 }
 write("common/scripted_guis/chaosx_formable_state_puzzles.txt", generateScriptedGui(manifests));
 write("common/scripted_localisation/chaosx_formable_state_puzzles.txt", generateScriptedLocalisation(manifests));

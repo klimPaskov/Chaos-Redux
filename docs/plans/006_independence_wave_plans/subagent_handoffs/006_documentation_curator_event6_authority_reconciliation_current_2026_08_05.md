@@ -4,6 +4,8 @@ Date: 2026-08-05
 
 Scope: documentation-only reconciliation after CAT admission and ordinary super-event identifier normalization. Gameplay, localisation, assets, GFX, audio, specs, and the catalog workbook were not edited.
 
+> Superseded current-count notice (2026-08-05): the later Transcaucus and IW-033/IW-041 promotions supersede this handoff's 16/15/177 package arithmetic and 25-adapter list. Current Event 006 routing is 21 content-attested selectable packages across 20 compatible reservation groups, 172 unattested rows, and 30 central adapters, with ordinary super-events `23` and `24`; the owner-AI handoff adds executable foundation gating, lower-ledger preference, and post-spend reserve floors, while probability comparison and live runtime evidence remain pending. This dated handoff remains preserved evidence for the CAT-era reconciliation.
+
 ## Source-of-truth map
 
 The accepted specifications under `docs/specs/006_independence_wave_specs/` remain the design authority.
@@ -14,7 +16,7 @@ The bounded package authorities are `006_iw014_cat_standalone_admission_2026-08-
 
 The reconciled implementation-facing summaries are `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`, `docs/events/006_independence_wave/overview.md`, and `docs/specs/006_independence_wave_specs/quality/package_manifest.md`.
 
-## Current authority boundary
+## Historical CAT-era authority boundary (superseded for current package routing)
 
 | Surface | Current status |
 | --- | --- |
@@ -60,7 +62,7 @@ No prompt file was named for editing in this tranche, and no prompt was changed.
 
 The active overview super-event paragraph was joined onto complete sentence lines, and all new current-authority paragraphs use one physical line per sentence. Legacy historical prose in `006_independence_wave_resume_packet.md`, `overview.md`, and `006_source_of_truth_map.md` still contains deliberate dated hard wraps; it was not flattened because that would expand scope and disturb historical structure. If a broader prose-normalization pass is later authorized, it should be limited to those dated blocks.
 
-## Recommended parent decisions
+## Historical recommended parent decisions (pre-IW-033/IW-041 promotion)
 
 Keep the 16-attestation, 15-group, 177-unattested boundary and the 25-adapter/nine-adapter-only list as the sole current package arithmetic. Keep NAV, GLC, MNT, FIJ, and FORM-07 fail-closed until their named package/source gates pass. Keep super-event 23 blocked/incomplete and super-event 24 source-wired with partial reachability. Do not add advisor icons or infer whole-event completion from the static witness.
 

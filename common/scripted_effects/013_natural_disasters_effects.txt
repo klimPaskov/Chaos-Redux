@@ -1242,15 +1242,17 @@ natural_disaster_dispatch_queued_super_event = {
 		remove_from_array = { array = global.natural_disaster_super_event_queue_slot_entries index = 0 }
 		remove_from_array = { array = global.natural_disaster_super_event_queue_audio_entries index = 0 }
 		remove_from_array = { array = global.natural_disaster_super_event_queue_state_entries index = 0 }
+		set_temp_variable = { natural_disaster_super_event_visible_days = @ND_SUPER_EVENT_VISIBLE_DAYS }
 		meta_effect = {
 			text = {
 				set_global_flag = {
 					flag = super_event_visible
-					days = @ND_SUPER_EVENT_VISIBLE_DAYS
+					days = [SUPER_EVENT_VISIBLE_DAYS]
 					value = [NATURAL_DISASTER_SUPER_EVENT_SLOT]
 				}
 			}
 			NATURAL_DISASTER_SUPER_EVENT_SLOT = "[?natural_disaster_super_event_dispatch_slot|.0]"
+			SUPER_EVENT_VISIBLE_DAYS = "[?natural_disaster_super_event_visible_days|.0]"
 		}
 		set_variable = { global.current_super_event_audio_id = natural_disaster_super_event_dispatch_audio }
 		every_country = {
@@ -6028,7 +6030,7 @@ natural_disaster_add_warning_civilian_burden = {
 	set_variable = { natural_disaster_warning_civilian_burden_value = natural_disaster_warning_civilian_burden_count }
 	multiply_variable = { natural_disaster_warning_civilian_burden_value = constant:natural_disaster_warning_cost_fixed.civilian_burden_per_action }
 	set_country_flag = natural_disaster_warning_civilian_burden_active
-	remove_dynamic_modifier = natural_disaster_warning_civilian_burden
+	remove_dynamic_modifier = { modifier = natural_disaster_warning_civilian_burden }
 	add_dynamic_modifier = { modifier = natural_disaster_warning_civilian_burden }
 	country_event = { id = chaosx.nr13.6 days = @ND_WARNING_ACTION_LOCK_DAYS }
 }
@@ -6038,7 +6040,7 @@ natural_disaster_release_warning_civilian_burden = {
 		limit = { check_variable = { natural_disaster_warning_civilian_burden_count > 0 } }
 		subtract_from_variable = { natural_disaster_warning_civilian_burden_count = 1 }
 	}
-	remove_dynamic_modifier = natural_disaster_warning_civilian_burden
+	remove_dynamic_modifier = { modifier = natural_disaster_warning_civilian_burden }
 	if = {
 		limit = { check_variable = { natural_disaster_warning_civilian_burden_count > 0 } }
 		set_variable = { natural_disaster_warning_civilian_burden_value = natural_disaster_warning_civilian_burden_count }
@@ -7652,9 +7654,15 @@ natural_disaster_release_transferred_state_pointers = {
 		clear_variable = natural_disaster_inbound_relief_state
 		clear_variable = natural_disaster_inbound_relief_donor
 	}
-	remove_from_array = { array = natural_disaster_active_states value = event_target:natural_disaster_transfer_state }
+	if = {
+		limit = { is_in_array = { array = natural_disaster_active_states value = event_target:natural_disaster_transfer_state } }
+		remove_from_array = { array = natural_disaster_active_states value = event_target:natural_disaster_transfer_state }
+	}
 	natural_disaster_unregister_relief_recipient_country_if_inactive = yes
-	remove_from_array = { array = natural_disaster_abnormal_states value = event_target:natural_disaster_transfer_state }
+	if = {
+		limit = { is_in_array = { array = natural_disaster_abnormal_states value = event_target:natural_disaster_transfer_state } }
+		remove_from_array = { array = natural_disaster_abnormal_states value = event_target:natural_disaster_transfer_state }
+	}
 	natural_disaster_refresh_category_display_family = yes
 	if = {
 		limit = {

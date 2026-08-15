@@ -10,6 +10,10 @@ Verdict: read-only evidence is partial and remains unresolved for runtime select
 
 The audit covers the promoted IW-033 Karelia and IW-041 Crimean Tatar package wrappers in Region 04, the outer automatic allocator, the package allocation-weight helper, the package dispatch attestation list, the package decision mission scores and cancellation gates, and the package AI strategy file.
 
+## Later owner-AI source update (2026-08-05)
+
+After this read-only probability audit, the owner added `006_iw033_iw041_owner_ai_reserve_floor_patch_2026_08_05.md`. The current decision source now waits for foundation settlement, prefers the lower regional ledger, and applies centralized zero-weight post-spend reserve floors for command power, manpower, infantry equipment, support equipment, trains, convoys, fuel, and major security actions. This update does not repair the `ai_strategy_factor` adapter's `PROBABILITY_SURFACE_EMPTY` result or provide the required same-scenario `hoi4.probability_compare`; no normalized selection or balance claim follows from the source patch alone.
+
 Exact source surfaces audited:
 
 - `common/scripted_effects/006_independence_wave_packages_region_04_effects.txt:119-163` defines the Region-04 package wrappers, the automatic eight-package preparation list, and the inner `random_list`.

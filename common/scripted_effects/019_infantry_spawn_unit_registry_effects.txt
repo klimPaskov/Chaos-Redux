@@ -4098,12 +4098,14 @@ chaos_unit_family_provider_501_event19_remove_public_additions = {
 		limit = { has_variable = infantry_spawn_derivative_package_owner_uid }
 		for_each_scope_loop = {
 			array = infantry_spawn_derivative_owned_marker_states
-			limit = {
-				has_variable = infantry_spawn_derivative_site_owner_uid
-				check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+			if = {
+				limit = {
+					has_variable = infantry_spawn_derivative_site_owner_uid
+					check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+				}
+				clr_state_flag = infantry_spawn_derivative_zombie_muster_district
+				clr_state_flag = infantry_spawn_derivative_zombie_population_pressure
 			}
-			clr_state_flag = infantry_spawn_derivative_zombie_muster_district
-			clr_state_flag = infantry_spawn_derivative_zombie_population_pressure
 		}
 	}
 	chaos_unit_family_event19_cleanup_initial_provider_authority = yes
@@ -4177,6 +4179,10 @@ chaos_unit_family_provider_501_event19_reconcile_sustainment = {
 	infantry_spawn_record_provider_unit_obligations = yes
 }
 
+chaos_unit_family_provider_501_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.base_zombie }
+}
+
 # Event 19 registry-management contract. Base zombies are the only zombie
 # family exposed as trainable; this path authorizes their exact generated
 # template and never unlocks a mutated or weaponized zombie battalion.
@@ -4244,7 +4250,7 @@ chaos_unit_family_provider_501_event19_refund_management_action = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
 		}
-		add_army_experience = constant:event19_zombie_family.training_army_experience_cost
+		army_experience = constant:event19_zombie_family.training_army_experience_cost
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event19_zombie_family.training_infantry_equipment_cost }
 		add_manpower = constant:event19_zombie_family.training_manpower_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
@@ -4335,12 +4341,14 @@ chaos_unit_family_provider_502_event19_remove_public_additions = {
 		limit = { has_variable = infantry_spawn_derivative_package_owner_uid }
 		for_each_scope_loop = {
 			array = infantry_spawn_derivative_owned_marker_states
-			limit = {
-				has_variable = infantry_spawn_derivative_site_owner_uid
-				check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+			if = {
+				limit = {
+					has_variable = infantry_spawn_derivative_site_owner_uid
+					check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+				}
+				clr_state_flag = infantry_spawn_derivative_ghost_recognized_anchor
+				clr_state_flag = infantry_spawn_derivative_ghost_population_pressure
 			}
-			clr_state_flag = infantry_spawn_derivative_ghost_recognized_anchor
-			clr_state_flag = infantry_spawn_derivative_ghost_population_pressure
 		}
 	}
 	chaos_unit_family_event19_cleanup_initial_provider_authority = yes
@@ -4412,6 +4420,10 @@ chaos_unit_family_provider_502_event19_reconcile_sustainment = {
 	set_temp_variable = { infantry_spawn_provider_resource_per_battalion = constant:event19_ghost_family.infantry_equipment_per_battalion }
 	set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:event19_ghost_family.manpower_per_battalion }
 	infantry_spawn_record_provider_unit_obligations = yes
+}
+
+chaos_unit_family_provider_502_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.weak_ghost }
 }
 
 chaos_unit_family_provider_502_event19_evaluate_management = {
@@ -4560,11 +4572,13 @@ chaos_unit_family_provider_503_event19_remove_public_additions = {
 		limit = { has_variable = infantry_spawn_derivative_package_owner_uid }
 		for_each_scope_loop = {
 			array = infantry_spawn_derivative_owned_marker_states
-			limit = {
-				has_variable = infantry_spawn_derivative_site_owner_uid
-				check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+			if = {
+				limit = {
+					has_variable = infantry_spawn_derivative_site_owner_uid
+					check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+				}
+				clr_state_flag = infantry_spawn_derivative_golem_bound_district
 			}
-			clr_state_flag = infantry_spawn_derivative_golem_bound_district
 		}
 	}
 	chaos_unit_family_event19_cleanup_initial_provider_authority = yes
@@ -4640,6 +4654,10 @@ chaos_unit_family_provider_503_event19_reconcile_sustainment = {
 	set_temp_variable = { infantry_spawn_provider_resource_per_battalion = constant:event19_golem_family.coal_golem_equipment_per_battalion }
 	set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:event19_golem_family.manpower_per_battalion }
 	infantry_spawn_record_provider_unit_obligations = yes
+}
+
+chaos_unit_family_provider_503_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.coal_golem }
 }
 
 chaos_unit_family_provider_503_event19_evaluate_management = {

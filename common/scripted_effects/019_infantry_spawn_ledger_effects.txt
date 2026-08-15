@@ -1118,10 +1118,10 @@ infantry_spawn_compaction_remove_obligation_row = {
 
 # Inputs are temporary source index/UID values captured immediately before a
 # successful commit. The visible caches are already hard-capped by the Muster
-# Board and terminal compaction does not change live family aggregates.
+# Selection-cache and terminal compaction does not change live family aggregates.
 infantry_spawn_compaction_adjust_muster_board_after_lot_commit = {
 	if = {
-		limit = { has_country_flag = infantry_spawn_muster_board_open }
+		limit = { infantry_spawn_ordinary_management_category_is_relevant = yes }
 		set_temp_variable = { infantry_spawn_compaction_gui_reverse_index = infantry_spawn_muster_gui_lot_uid_entries^num }
 		subtract_from_temp_variable = { infantry_spawn_compaction_gui_reverse_index = constant:infantry_spawn_ledger_compaction.one }
 		set_temp_variable = { infantry_spawn_compaction_gui_rows_checked = constant:infantry_spawn_ledger_compaction.zero }
@@ -1148,7 +1148,7 @@ infantry_spawn_compaction_adjust_muster_board_after_lot_commit = {
 
 infantry_spawn_compaction_adjust_muster_board_after_generation_commit = {
 	if = {
-		limit = { has_country_flag = infantry_spawn_muster_board_open }
+		limit = { infantry_spawn_ordinary_management_category_is_relevant = yes }
 		set_temp_variable = { infantry_spawn_compaction_gui_reverse_index = infantry_spawn_muster_gui_generation_uid_entries^num }
 		subtract_from_temp_variable = { infantry_spawn_compaction_gui_reverse_index = constant:infantry_spawn_ledger_compaction.one }
 		set_temp_variable = { infantry_spawn_compaction_gui_rows_checked = constant:infantry_spawn_ledger_compaction.zero }

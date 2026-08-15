@@ -12,7 +12,7 @@ The source registry is immutable build input for consumers. Do not hand-edit it,
 
 The registry builder is `.tools/build_formable_state_registry.py`. It validates the source against the active map roots, checks provenance and state-ID coverage, and writes the portable registry index plus generated universal live-trigger wrappers.
 
-The consumer contract is `docs/formables/state_registry/consumer_spec.schema.json` and `docs/formables/state_registry/consumer_spec.template.json`. The schema defines the finite candidate `state_ids`, optional `state_groups`, projection, qualification and visibility policies, helper overrides, and owner output paths.
+The consumer contract is `docs/formables/state_registry/consumer_spec.schema.json` and `docs/formables/state_registry/consumer_spec.template.json`. The schema defines the finite candidate `state_ids`, optional `state_groups`, projection, qualification and visibility policies, helper overrides, and owner output paths. The companion `category_attachment_audit.md` records how the manifest's category ID is attached to each owning decision category.
 
 The consumer compiler is `.tools/build_formable_state_puzzle_consumer.py`. It reads the canonical registry and consumer spec, projects exact row runs, writes unresolved and qualifying PNG/DDS pairs and previews, records the geometry artifact, and emits a runtime-compatible manifest with per-state helper hooks. A full conversion emits `status: "complete"`; `--no-dds` deliberately emits `status: "assets_pending"` so runtime discovery cannot ingest missing DDS paths.
 
@@ -54,6 +54,8 @@ Keep `state_groups` as subsets of `state_ids` and record alternate-group meaning
 
 The consumer may choose projection canvas, padding, scale, and output paths, but it may not invent map geometry, state IDs, runtime sprite names, or GUI node positions outside the declared finite set.
 
+Before compiling, enumerate every decision category in the formable family and set the owner's attachment scope in the category audit. Under a strict family policy, the audit must list every shared and phase-specific category that exposes formation or integration decisions. The generated manifest and the audit are a joint input to review. Do not compile one category and assume that similarly named categories inherit its GUI.
+
 ### 3. Compile exact geometry and status assets
 
 Run the compiler from the mod root after the registry provenance check:
@@ -81,6 +83,8 @@ The generator skips manifests explicitly marked `draft`, `assets_pending`, or an
 
 The generated state entries are informational icons. The GUI has no state-changing click action, no fake button, and no AI-only path. The ordinary formation decision remains the only action.
 
+Complete `category_attachment_audit.md` immediately after generation. Inspect the generated scripted-GUI block and copy its exact identifier and window name into every category row. Each in-scope category metadata block must contain `scripted_gui = <generated_gui_id>`, and the generated block must use `context_type = decision_category`. A missing category attachment is a failed consumer even when the manifest, DDS files, or individual window render is valid.
+
 ## Runtime contract
 
 State qualification, ownership, control, core policy, subject exceptions, and optional relevance are evaluated live from scripted triggers. The state piece, hover, summary, formation decision `available` trigger, and AI-facing decision logic must resolve to the same qualification policy and territory helper.
@@ -107,7 +111,7 @@ After the runtime generator emits the consumer window, use the installed read-on
 - `mcp__hoi4_agent_tools__hoi4_gui_inspect` for the linked decision category, window hierarchy, icon bounds, tooltip regions, scripted-GUI properties, and generated sprite references.
 - `mcp__hoi4_agent_tools__hoi4_gui_render` for every supported resolution and the normal, hover, unresolved, qualifying, optional-hidden, long-text, and missing-localisation states relevant to the consumer.
 
-Record the returned artifact URIs and review that every piece stays inside the intended category description width, keeps its real relative position, has a tight hover region, and remains informational. If a GUI route is unavailable, record the exact blocker and do not substitute source inspection for the required visual evidence.
+Record the returned artifact URIs and review that every piece stays inside the intended category description width, keeps its real relative position, has a tight hover region, and remains informational. The inspect must also resolve the linked category's `scripted_gui` property and generated window. If a GUI route is unavailable, record the exact blocker and do not substitute source inspection for the required visual evidence.
 
 ### DDS round-trip evidence
 
@@ -119,6 +123,6 @@ There is no dedicated DDS MCP route in the installed HOI4 tool surface; the repo
 
 ## Handoff minimum
 
-The owner handoff should list the consumer spec and schema, registry content hash and map roots, builder `--check` result, compiler result and manifest path, candidate and optional visibility policy, generated runtime outputs, map and GUI MCP artifact URIs, DDS round-trip evidence, and any skipped or blocked checks.
+The owner handoff should list the consumer spec and schema, registry content hash and map roots, builder `--check` result, compiler result and manifest path, candidate and optional visibility policy, generated runtime outputs, the completed category attachment audit with every in-scope category row, map and GUI MCP artifact URIs, DDS round-trip evidence, and any skipped or blocked checks.
 
 Report every simplification explicitly. In particular, report a deferred candidate, a missing DDS, a failed provenance check, an unavailable MCP route, an unresolved engine scope, or a staged `--no-dds` build as incomplete rather than silently falling back to hand-authored geometry or cached state data.

@@ -28,7 +28,7 @@ This document describes the implemented system. The accepted design source remai
 | Condemnation UI layout | `interface/chaosx_chaos_meter_popup.gui` |
 | Dynamic UI text selection | `common/scripted_localisation/chaosx_scripted_localisation_chaos_meter.txt` |
 | Player-facing UI and decision wording | `localisation/english/condemnation_sanctions_l_english.yml` and `localisation/english/chaosx_chaos_meter_l_english.yml` |
-| Chemical source adapters | `common/scripted_effects/chemical_warfare_effects.txt`, `common/scripted_effects/chemical_ability_effects.txt`, `common/scripted_effects/chemical_air_bomb_effects.txt`, `common/scripted_effects/chemical_infantry_effects.txt`, `common/scripted_effects/chemical_tank_shell_effects.txt`, `common/scripted_effects/chemical_livens_support_effects.txt`, and `common/scripted_effects/JAP_chemical_campaign_effects.txt` |
+| Chemical source adapters | `common/scripted_effects/cbrn_chemical_raid_effects.txt`, `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`, `common/scripted_effects/cbrn_chemical_special_raid_effects.txt`, `common/scripted_effects/cbrn_chemical_state_effects.txt`, and `common/scripted_effects/JAP_chemical_campaign_effects.txt`; all release-bearing adapters dispatch through `common/scripted_effects/cbrn_exposure_effects.txt` |
 | Biological and weaponized-zombie source adapters | `common/scripted_effects/biowarfare_effects.txt` and `common/scripted_effects/zombie_special_project_effects.txt` |
 | Nuclear and thermonuclear source adapter | `common/scripted_effects/chaos_meter_effects.txt` |
 | Camp, experiment-site, restricted-site, and destroyed-record discovery adapters | `common/scripted_effects/genocide_crisis_effects.txt` |

@@ -21,6 +21,8 @@
 > `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`
 > or the newest specialist/final audit handoffs.
 
+> **Provider-extension notice (2026-08-09):** The static Event 19 provider bridge now covers 18 IDs (`501-514`, `518`, `520-522`), including the separate five-gate Event 016 Aryan clone provider 522 and exact multi-resource profiles 130-148. Provider 521 remains combat-only on the CBRN side, and provider 513 remains dormant until Event 012 sets `africa_strange_formation_package_ready`. The historical closure wording in this planning review does not replace current MCP evidence: Event 19 inspection is partial, the bounded render attempt timed out, and normalized dynamic provider-pool odds remain unresolved.
+
 ## Current implementation status
 
 The repository, offline wiki, installed HOI4 1.19.2 documentation, vanilla files,

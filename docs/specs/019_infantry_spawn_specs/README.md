@@ -12,6 +12,20 @@
 > an individual focal person. Their stable `GFX_portrait_*` names remain engine
 > and UI terminology, not a description of the depicted content.
 
+> **Current implementation extension (2026-08-09):** The accepted design remains
+> the source specification, while the implemented provider bridge now covers 18
+> static Event 19 provider IDs (`501-514`, `518`, `520-522`). Event 016 adds the
+> separate Germany/Mengele-gated Aryan clone provider 522 beside providers
+> 504-510; it never aliases provider 504. The shared manifest profiles 130-148
+> carry exact custom equipment obligations, provider 521 remains combat-only on
+> the CBRN side, and provider 513 remains dormant until Event 012 sets its
+> package-ready flag. Event 19 MCP inspection is partial and normalized dynamic
+> provider-pool odds remain unresolved, so the older `Fully Functional` and
+> no-closure language below is historical for the 2026-07-18 tranche and must not
+> be used as current provider-lifecycle proof.
+
+> The provider bridge also exposes a presentation-only `event19_get_management_cost_display` profile-cache callback alongside each provider's ten gameplay callbacks. Ledger-backed zero-debit adapters must identify that boundary in the player-facing tooltip, and the single Event 19 registry rule remains unchanged.
+
 This folder is the source planning package for Chaos Redux Event ID `19`, **Infantry Spawn**.
 
 The request label `017# Infantry Spawn` is preserved in the package history, but the catalog and current repository identify the canonical event as ID `19`. All event, file, registry, achievement, scenario, and documentation identifiers in this package therefore use `019` or event ID `19`.
@@ -25,7 +39,7 @@ The current event is a small repeatable global spawn loop. This package redesign
 3. deliberately requested armies with completely random composition and claimant generals
 4. registered Chaos unit families whose reckless use can produce independent nonhuman revolt countries
 
-The design keeps the event repeatable, prevents free equipment farming, separates ordinary lifecycle stages from true evolutions, provides AI behavior, maps the decision and scripted GUI layers, defines derivative country packages, and includes the requested immediate-mutiny triggerable scenario.
+The design keeps the event repeatable, prevents free equipment farming, separates ordinary lifecycle stages from true evolutions, provides AI behavior, maps the decision-category surface, defines derivative country packages, and includes the requested immediate-mutiny triggerable scenario.
 
 ## Folder map
 
@@ -69,6 +83,9 @@ The design keeps the event repeatable, prevents free equipment farming, separate
   now read `Fully Functional`, and package inventory is complete at 33/33
   current files. The final completion audit is PASS with P0/P1/P2 = 0, so no
   closure gate remains.
+- `review/decision_only_surface_addendum_2026-08-05.md` is the accepted current
+  UI-surface decision. It supersedes the earlier scripted-GUI implementation
+  handoffs while preserving their source-art provenance as archival evidence.
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable
   catalog source. Event 19 and SCN-013 are `Fully Functional`; the exported CSVs
   match those promoted workbook rows and remain generated outputs rather than

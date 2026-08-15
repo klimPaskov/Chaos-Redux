@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT = 1
+@CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD = 2
 # ============================================================================
 # CHAOS REDUX - EVENT 006 FORM-01, FORM-02, AND FORM-04 DECISIONS
 # ============================================================================
@@ -30,7 +34,7 @@ independence_wave_form0124_membership_category = {
 		}
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard_factory_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
 		remove_effect = {
@@ -45,6 +49,16 @@ independence_wave_form0124_membership_category = {
 				has_independence_wave_formable_transaction_lock = yes
 				has_country_flag = independence_wave_formable_active
 				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				AND = {
+					check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.balkan_federation }
+					NOT = { has_independence_wave_form09_connection_to_inviting_carrier = yes }
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.balkan_federation } }
+				custom_effect_tooltip = independence_wave_form09_invitation_response_cancel_effect_tt
 			}
 		}
 		ai_will_do = {
@@ -88,6 +102,16 @@ independence_wave_form0124_membership_category = {
 				NOT = { has_pending_independence_wave_formable_founding_invitation = yes }
 				has_independence_wave_formable_transaction_lock = yes
 				has_country_flag = independence_wave_formable_active
+				AND = {
+					check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.balkan_federation }
+					NOT = { has_independence_wave_form09_connection_to_inviting_carrier = yes }
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.balkan_federation } }
+				custom_effect_tooltip = independence_wave_form09_invitation_response_cancel_effect_tt
 			}
 		}
 		ai_will_do = {
@@ -128,6 +152,16 @@ independence_wave_form0124_membership_category = {
 			OR = {
 				NOT = { has_pending_independence_wave_formable_founding_invitation = yes }
 				has_independence_wave_formable_transaction_lock = yes
+				AND = {
+					check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.balkan_federation }
+					NOT = { has_independence_wave_form09_connection_to_inviting_carrier = yes }
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.balkan_federation } }
+				custom_effect_tooltip = independence_wave_form09_invitation_response_cancel_effect_tt
 			}
 		}
 		ai_will_do = {
@@ -170,7 +204,7 @@ independence_wave_form01_congress_category = {
 			can_pay_independence_wave_diplomatic_standard_cost = yes
 		}
 		custom_cost_text = independence_wave_form0124_administrative_diplomatic_cost
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = {
 			independence_wave_decision_pay_administration_standard = yes
@@ -195,7 +229,7 @@ independence_wave_form01_congress_category = {
 		}
 		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { independence_wave_form01_apply_language_guarantees = yes }
@@ -217,7 +251,7 @@ independence_wave_form01_congress_category = {
 		}
 		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_security_standard_factory
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.founding
 		complete_effect = { independence_wave_decision_pay_security_standard = yes }
 		remove_effect = { independence_wave_form01_apply_maritime_defence = yes }
@@ -233,7 +267,7 @@ independence_wave_form01_congress_category = {
 		available = { has_independence_wave_form01_first_stage_integration = yes can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_trigger = { has_independence_wave_form01_first_stage_integration = yes can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { independence_wave_form01_ratify_first_stage = yes }
@@ -248,7 +282,7 @@ independence_wave_form01_congress_category = {
 		available = { can_pay_independence_wave_strategic_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = { independence_wave_decision_pay_strategic = yes }
 		remove_effect = { independence_wave_form01_reopen_integration_session = yes }
@@ -278,7 +312,7 @@ independence_wave_form02_union_category = {
 		available = { can_pay_independence_wave_diplomatic_standard_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard_factory
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.founding
 		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
 		remove_effect = { independence_wave_form02_apply_convoy_chart = yes }
@@ -294,7 +328,7 @@ independence_wave_form02_union_category = {
 		available = { can_pay_independence_wave_administration_standard_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { independence_wave_form02_apply_port_standards = yes }
@@ -310,7 +344,7 @@ independence_wave_form02_union_category = {
 		available = { can_pay_independence_wave_security_standard_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_security_standard_factory
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = { independence_wave_decision_pay_security_standard = yes }
 		remove_effect = { independence_wave_form02_apply_air_warning = yes }
@@ -326,7 +360,7 @@ independence_wave_form02_union_category = {
 		available = { has_independence_wave_form02_first_stage_integration = yes can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_trigger = { has_independence_wave_form02_first_stage_integration = yes can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { independence_wave_form02_ratify_first_stage = yes }
@@ -341,7 +375,7 @@ independence_wave_form02_union_category = {
 		available = { can_pay_independence_wave_strategic_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = { independence_wave_decision_pay_strategic = yes }
 		remove_effect = { independence_wave_form02_reopen_maritime_board = yes }
@@ -371,7 +405,7 @@ independence_wave_form04_league_category = {
 		available = { can_pay_independence_wave_administration_standard_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.founding
 		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { independence_wave_form04_apply_toll_settlement = yes }
@@ -387,7 +421,7 @@ independence_wave_form04_league_category = {
 		available = { can_pay_independence_wave_diplomatic_standard_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_diplomatic_standard_factory
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
 		remove_effect = { independence_wave_form04_apply_public_peace = yes }
@@ -403,7 +437,7 @@ independence_wave_form04_league_category = {
 		available = { can_pay_independence_wave_security_standard_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_security_standard_factory
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_light }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_LIGHT }
 		days_remove = constant:independence_wave_decision_duration.long
 		complete_effect = { independence_wave_decision_pay_security_standard = yes }
 		remove_effect = { independence_wave_form04_apply_corridor_security = yes }
@@ -419,7 +453,7 @@ independence_wave_form04_league_category = {
 		available = { has_independence_wave_form04_first_stage_integration = yes can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_trigger = { has_independence_wave_form04_first_stage_integration = yes can_pay_independence_wave_administration_standard_cost = yes }
 		custom_cost_text = independence_wave_cost_administration_standard
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
 		remove_effect = { independence_wave_form04_ratify_first_stage = yes }
@@ -434,7 +468,7 @@ independence_wave_form04_league_category = {
 		available = { can_pay_independence_wave_strategic_cost = yes NOT = { has_independence_wave_form0124_active_project = yes } }
 		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
 		custom_cost_text = independence_wave_cost_strategic
-		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
 		days_remove = constant:independence_wave_decision_duration.standard
 		complete_effect = { independence_wave_decision_pay_strategic = yes }
 		remove_effect = { independence_wave_form04_reopen_league_session = yes }

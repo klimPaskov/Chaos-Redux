@@ -958,7 +958,10 @@ africa_begin_host_transfer = {
 		else = {
 			clr_country_flag = africa_unifier_host
 			clr_country_flag = africa_host_commit_completed
-			clear_global_event_target = africa_host
+			if = {
+				limit = { has_event_target = africa_host }
+				clear_global_event_target = africa_host
+			}
 			event_target:africa_host_transfer_resolver = {
 				set_country_flag = africa_host_transfer_resolver
 				country_event = { id = chaosx.nr12.230 }
@@ -992,7 +995,10 @@ africa_host_transfer_record_terminal_loss = {
 		clr_global_flag = africa_host_transfer_pending
 		clr_global_flag = africa_host_transfer_resolution_open
 		clr_global_flag = africa_host_transfer_suspended
-		clear_global_event_target = africa_host
+		if = {
+			limit = { has_event_target = africa_host }
+			clear_global_event_target = africa_host
+		}
 		clr_global_flag = africa_event_active
 		set_global_flag = africa_event_resolved
 		set_global_flag = africa_host_transfer_terminal_after_successor_loss
@@ -1063,7 +1069,10 @@ africa_host_transfer_complete_successor = {
 			africa_host_transfer_candidate_is_valid = yes
 		}
 		save_event_target_as = africa_host_transfer_new_host
-		clear_global_event_target = africa_host
+		if = {
+			limit = { has_event_target = africa_host }
+			clear_global_event_target = africa_host
+		}
 		save_global_event_target_as = africa_host
 		set_country_flag = africa_unifier_host
 		set_country_flag = africa_host_commit_completed

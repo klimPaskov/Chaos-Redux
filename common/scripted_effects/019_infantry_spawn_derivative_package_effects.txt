@@ -123,7 +123,6 @@ infantry_spawn_derivative_clear_parent_runtime_surface = {
 	clr_country_flag = infantry_spawn_anomalous_sustainment_active
 	clr_country_flag = infantry_spawn_anomalous_containment_success
 	clr_country_flag = infantry_spawn_muster_board_available
-	clr_country_flag = infantry_spawn_muster_board_open
 	clr_country_flag = infantry_spawn_muster_board_dormant
 	clr_country_flag = infantry_spawn_formation_request_available
 	clr_country_flag = infantry_spawn_evolution_i_applied
@@ -3702,6 +3701,9 @@ infantry_spawn_recover_natural_derivative_revolt_transaction = {
 				limit = { check_variable = { infantry_spawn_natural_derivative_recovery_actor_core_count = constant:infantry_spawn_weight_result.zero } }
 				# The provisional actor is not a defeated public derivative. This
 				# flag suppresses annex listeners only for this synchronous effect.
+				event_target:infantry_spawn_natural_derivative_actor = {
+					infantry_spawn_ensure_dynamic_carrier_annexable_capital = yes
+				}
 				set_global_flag = infantry_spawn_natural_derivative_recovery_annex_bypass
 				annex_country = {
 					target = event_target:infantry_spawn_natural_derivative_actor
@@ -5208,7 +5210,7 @@ infantry_spawn_run_natural_derivative_exact_transaction = {
 		if = {
 			limit = { check_variable = { infantry_spawn_natural_derivative_transfer_preflight_valid > constant:infantry_spawn_weight_result.zero } }
 			create_dynamic_country = {
-				original_tag = THIS
+				original_tag = ROOT
 				save_event_target_as = infantry_spawn_natural_derivative_actor
 				set_country_flag = infantry_spawn_derivative_country
 				set_country_flag = infantry_spawn_natural_derivative_recreated_transfer

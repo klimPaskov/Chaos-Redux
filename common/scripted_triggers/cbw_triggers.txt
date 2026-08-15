@@ -201,26 +201,6 @@ has_enemy_used_chemical_weapons = {
 	}
 }
 
-has_enemy_chemical_condemnation_considerable = {
-	any_enemy_country = {
-		check_variable = {
-			var = condemnation_chemical
-			value = constant:chem_ability_ai.retaliate_threshold.considerable
-			compare = greater_than
-		}
-	}
-}
-
-has_enemy_chemical_condemnation_very_high = {
-	any_enemy_country = {
-		check_variable = {
-			var = condemnation_chemical
-			value = constant:chem_ability_ai.retaliate_threshold.very_high
-			compare = greater_than
-		}
-	}
-}
-
 has_war_with_chinese_country = {
     has_war = yes
     OR = {
@@ -239,73 +219,11 @@ is_japan_china_chemical_campaign_war = {
     has_war_with_chinese_country = yes
 }
 
-chem_active_cylinder_type_is_chlorine = {
-    OR = {
-        AND = {
-            has_variable = chem_active_type
-            check_variable = {
-                var = chem_active_type
-                value = constant:chem_type.chlorine
-                compare = equals
-            }
-        }
-        has_trait = chemical_cylinder_active_chlorine
-    }
-}
-
-chem_active_cylinder_type_is_phosgene = {
-    OR = {
-        AND = {
-            has_variable = chem_active_type
-            check_variable = {
-                var = chem_active_type
-                value = constant:chem_type.phosgene
-                compare = equals
-            }
-        }
-        has_trait = chemical_cylinder_active_phosgene
-    }
-}
-
-chem_active_cylinder_type_is_mustard = {
-    OR = {
-        AND = {
-            has_variable = chem_active_type
-            check_variable = {
-                var = chem_active_type
-                value = constant:chem_type.mustard
-                compare = equals
-            }
-        }
-        has_trait = chemical_cylinder_active_mustard
-    }
-}
-
-chem_active_cylinder_type_is_lewisite = {
-    OR = {
-        AND = {
-            has_variable = chem_active_type
-            check_variable = {
-                var = chem_active_type
-                value = constant:chem_type.lewisite
-                compare = equals
-            }
-        }
-        has_trait = chemical_cylinder_active_lewisite
-    }
-}
-
-chem_active_cylinder_type_is_blister = {
-    OR = {
-        chem_active_cylinder_type_is_mustard = yes
-        chem_active_cylinder_type_is_lewisite = yes
-    }
-}
-
 has_japan_chemical_campaign_selected_stockpile_attack = {
     OR = {
         AND = {
             NOT = { has_variable = japan_chemical_campaign_selected_agent }
+			has_tech = mustard_gas
             has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
         AND = {
@@ -314,6 +232,7 @@ has_japan_chemical_campaign_selected_stockpile_attack = {
                 value = constant:chem_type.chlorine
                 compare = equals
             }
+			has_tech = chlorine_gas
             has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
         AND = {
@@ -322,6 +241,7 @@ has_japan_chemical_campaign_selected_stockpile_attack = {
                 value = constant:chem_type.phosgene
                 compare = equals
             }
+			has_tech = phosgene
             has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
         AND = {
@@ -330,6 +250,7 @@ has_japan_chemical_campaign_selected_stockpile_attack = {
                 value = constant:chem_type.mustard
                 compare = equals
             }
+			has_tech = mustard_gas
             has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
         AND = {
@@ -338,6 +259,7 @@ has_japan_chemical_campaign_selected_stockpile_attack = {
                 value = constant:chem_type.lewisite
                 compare = equals
             }
+			has_tech = lewisite
             has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
     }
@@ -392,6 +314,27 @@ mapmode_state_has_legacy_disease_contamination = {
 		has_dynamic_modifier = { modifier = plague_contaminated_state }
 		has_dynamic_modifier = { modifier = tularemia_contaminated_state }
 		has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+	}
+}
+
+has_japan_chemical_campaign_any_stockpile_attack = {
+	OR = {
+		AND = {
+			has_tech = chlorine_gas
+			has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+		}
+		AND = {
+			has_tech = phosgene
+			has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+		}
+		AND = {
+			has_tech = mustard_gas
+			has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+		}
+		AND = {
+			has_tech = lewisite
+			has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+		}
 	}
 }
 

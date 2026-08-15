@@ -2,10 +2,10 @@ approval_policy = "never"
 
 sandbox_mode = "danger-full-access"
 
-project_doc_max_bytes = 65536
+project_doc_max_bytes = 184320
 
 [agents]
-max_threads = 12
+max_threads = 24
 max_depth = 2
 
 [mcp_servers.hoi4_agent_tools]
@@ -42,6 +42,9 @@ enabled_tools = [
   "meshy_animate",
   "meshy_convert"
 ]
+
+[mcp_servers.meshy.tools.meshy_image_to_3d]
+approval_mode = "approve"
 
 # Production Blender route. This is the narrow allowlisted HOI4 adapter, not
 # the general-purpose Blender Python bridge.
@@ -96,11 +99,15 @@ tool_timeout_sec = 1800.0
 default_tools_approval_mode = "prompt"
 
 [agents.chaosx_3d_model_pipeline]
-description = "Creates, rigs, animates, processes, exports, audits, and documents bounded Chaos Redux HOI4 3D model packages from one approved reference image using Meshy MCP, the Blender HOI4 adapter, and io_pdx_mesh. Produces source models, Blender checkpoints, PDX textures, .mesh, .anim, previews, manifests, and runtime handoffs. Does not perform final gameplay wiring or claim in-game completion."
+description = "Creates, rigs, animates, processes, exports, audits, and documents bounded Chaos Redux HOI4 3D model packages through a Meshy 6-first workflow, including Internet-sourced custom-unit sound design and bespoke vanilla-green counter handoffs. Normal planned model and required animation spend is pre-authorized; only failure-driven extra paid recovery requires confirmation."
 config_file = "agents/chaosx_3d_model_pipeline.toml"
 
+[agents.chaosx_ai_probability_auditor]
+description = "Read-only weighted-logic auditor for Chaos Redux AI weights, probabilities, MTTH, random selection, strategy factors, and custom weighted pools. Uses the HOI4 MCP probability tools for every in-scope weighted surface and reports scenario-specific evidence without patching gameplay."
+config_file = "agents/chaosx_ai_probability_auditor.toml"
+
 [agents.chaosx_asset_source_researcher]
-description = "Finds, verifies, downloads, processes, converts, and documents real or archival visual source assets for Chaos Redux. Use for report event images, news event images, archival super-event images, real leader portraits, historical flags, and historically attested symbols. Does not edit GFX or gameplay files."
+description = "Finds, verifies, downloads, processes, converts, and documents non-portrait real or archival visual assets for Chaos Redux, including event images, super-event images, historical flags, and attested symbols. Character portraits belong entirely to chaosx_portrait_creator."
 config_file = "agents/chaosx_asset_source_researcher.toml"
 
 [agents.chaosx_country_package_auditor]
@@ -115,6 +122,10 @@ config_file = "agents/chaosx_decision_mission_auditor.toml"
 description = "Documentation cleanup and consistency subagent for Chaos Redux. Reconciles specs, plans, docs, handoffs, manifests, prompts, reports, and README files with accepted decisions and current implementation evidence. Reduces stale or duplicated docs, flags contradictions, writes source-of-truth maps and resume packets. Does not edit gameplay files or spreadsheets."
 config_file = "agents/chaosx_documentation_curator.toml"
 
+[agents.chaosx_event_ui_worker]
+description = "Implementation and visual-layout worker for a scripted GUI introduced by one named Chaos Redux event. It must use HOI4 MCP GUI inspect, render, rewrite, and post-change comparison evidence and follow the decision-layout contract. It never audits the shared event log, event-details framework, settings UI, super-event framework, or unrelated existing interfaces."
+config_file = "agents/chaosx_event_ui_worker.toml"
+
 [agents.chaosx_event_completion_auditor]
 description = "Read-only completion auditor for Chaos Redux event implementation. Compares specs, plans, prompts, and repo files, then flags missing mechanics, fallbacks, simplifications, docs gaps, asset gaps, validation gaps, and unhandled addenda."
 config_file = "agents/chaosx_event_completion_auditor.toml"
@@ -124,11 +135,11 @@ description = "Active auditor and small-patch subagent for Chaos Redux focus tre
 config_file = "agents/chaosx_focus_tree_auditor.toml"
 
 [agents.chaosx_generated_event_art]
-description = "Generates and processes non-icon fictional, symbolic, supernatural, alternate-history, WW2-style report/news/super-event, UI, flag, faction emblem, and fictional portrait art for Chaos Redux. Does not edit GFX or gameplay files."
+description = "Generates and processes non-portrait fictional, symbolic, supernatural, alternate-history, WW2-style report/news/super-event, UI, flag, and faction-emblem art for Chaos Redux. Character portraits belong entirely to chaosx_portrait_creator."
 config_file = "agents/chaosx_generated_event_art.toml"
 
 [agents.chaosx_icon_artist]
-description = "Creates generated icon asset packages and frame-by-frame small animated sprite asset packages for Chaos Redux. Does not edit GFX or gameplay files unless parent scope explicitly changes it."
+description = "Creates generated icon packages, bespoke vanilla-green custom-unit counters, and frame-by-frame small animated sprites for Chaos Redux. Unit counters require exact installed-vanilla definition/DDS and matching reference-family inspection before production."
 config_file = "agents/chaosx_icon_artist.toml"
 
 [agents.chaosx_improvement_loop_planner]
@@ -162,3 +173,7 @@ config_file = "agents/chaosx_super_event_audio_researcher.toml"
 [agents.chaosx_super_event_text_researcher]
 description = "Finds, verifies, compares, and documents quote and cultural remark candidates for Chaos Redux super-events. Does not edit localisation or event files."
 config_file = "agents/chaosx_super_event_text_researcher.toml"
+
+[agents.chaosx_portrait_creator]
+description = "Owns complete Chaos Redux portrait production: source research, fictional ImageGen, processing, DDS conversion, portrait wiring, manifests, and handoffs."
+config_file = "agents/chaosx_portrait_creator.toml"

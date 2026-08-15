@@ -8,6 +8,8 @@ Date: 2026-07-14
 > and `docs/assets/006_independence_wave/super_events/audio/production_manifest.md`
 > for current runtime and checksum authority. Audio 6001 remains blocked.
 
+Current runtime cross-reference (2026-08-05): active identifiers are ordinary audio/display/Event Log IDs `23` for The League of New States and `24` for Every Border a Casus Belli. Four-digit identifiers in this preserved pre-production handoff are historical research labels only. The current allocator boundary is 21 content-attested packages across 20 compatible reservation groups, with 172 unattested selectable rows and a 16-package static standalone witness.
+
 Mode: bounded research and permitted-source preservation only. No final audio conversion, gameplay edit, interface edit, localisation edit, workbook edit, or spec edit was made.
 
 ## Result

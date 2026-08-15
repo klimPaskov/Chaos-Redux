@@ -1,3 +1,22 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_ARMY = 350
+@CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_INFANTRY = 260
+@CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_SUPPORT = 220
+@CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_TERMINAL_CONQUEST = 1200
+@CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_TERMINAL_FRONT = 1000
+@CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_HIGH = 400
+@CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_LOW = 100
+@CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_MEDIUM = 250
+@CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_HIGH = 3000
+@CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_LOW = 1000
+@CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_MEDIUM = 2000
+@CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH = 400
+@CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_LOW = 150
+@CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_MEDIUM = 250
+@CR_SC_CANNIBALISM_WENDIGO_AI_TRAIN_PACK = 220
+@CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS = 0.50
+@CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES = 1
 # Event 014 Cannibalism scripted effects
 # Consolidated by loader surface. Identifiers, ordering, and gameplay content are preserved.
 
@@ -409,7 +428,7 @@ cannibalism_pay_international_response_cost = {
 		limit = { check_variable = { cannibalism_international_navy_experience_cost > 0 } }
 		set_temp_variable = { cannibalism_international_negative_cost = cannibalism_international_navy_experience_cost }
 		multiply_temp_variable = { cannibalism_international_negative_cost = -1 }
-		add_navy_experience = cannibalism_international_negative_cost
+		navy_experience = cannibalism_international_negative_cost
 	}
 	set_temp_variable = { cannibalism_international_negative_cost = cannibalism_international_infantry_cost }
 	multiply_temp_variable = { cannibalism_international_negative_cost = -1 }
@@ -5133,7 +5152,7 @@ cannibalism_setup_current_warlord_country = {
 			tech_recon = 1
 			motorised_infantry = 1
 			marines = 1
-			military_police = 1
+			tech_military_police = 1
 			gw_artillery = 1
 			popup = no
 		}
@@ -5170,7 +5189,7 @@ cannibalism_setup_current_warlord_country = {
 				cannibalism_mark_transferred_states_for_current_warlord = yes
 				cannibalism_prepare_current_warlord_starting_force = yes
 				cannibalism_spawn_current_warlord_starting_units = yes
-				add_army_experience = constant:cannibalism_warlord_creation.starting_army_experience
+				army_experience = constant:cannibalism_warlord_creation.starting_army_experience
 				add_command_power = constant:cannibalism_warlord_creation.starting_command_power
 				load_focus_tree = { tree = cannibalism_warlord_focus_tree keep_completed = no }
 				cannibalism_refresh_country_penalty_variables = yes
@@ -5231,7 +5250,7 @@ cannibalism_rollback_current_warlord_creation = {
 		clr_state_flag = cannibalism_warlord_formation_pending
 		if = {
 			limit = { is_core_of = event_target:cannibalism_warlord_new_country }
-			remove_state_core = event_target:cannibalism_warlord_new_country
+			event_target:cannibalism_warlord_new_country = { remove_state_core = PREV }
 		}
 		if = {
 			limit = { event_target:cannibalism_warlord_former_controller = { exists = yes } }
@@ -5733,7 +5752,7 @@ cannibalism_pay_current_command_cost = {
 cannibalism_pay_current_army_experience_cost = {
 	set_temp_variable = { cannibalism_current_cost_negative = cannibalism_current_cost }
 	multiply_temp_variable = { cannibalism_current_cost_negative = -1 }
-	add_army_experience = cannibalism_current_cost_negative
+	army_experience = cannibalism_current_cost_negative
 }
 
 cannibalism_pay_current_infantry_equipment_cost = {
@@ -6381,9 +6400,9 @@ cannibalism_wendigo_start_terminal_hunt = {
 		set_variable = { cannibalism_wendigo_terminal_hunt_due_date = global.date }
 		add_to_variable = { cannibalism_wendigo_terminal_hunt_due_date = constant:cannibalism_wendigo_terminal_hunt.mission_days }
 		activate_mission = cannibalism_wendigo_terminal_hunt_mission
-		add_ai_strategy = { type = conquer id = event_target:cannibalism_wendigo_terminal_hunt_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
-		add_ai_strategy = { type = antagonize id = event_target:cannibalism_wendigo_terminal_hunt_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
-		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_wendigo_terminal_hunt_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
+		add_ai_strategy = { type = conquer id = event_target:cannibalism_wendigo_terminal_hunt_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
+		add_ai_strategy = { type = antagonize id = event_target:cannibalism_wendigo_terminal_hunt_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
+		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_wendigo_terminal_hunt_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
 		set_temp_variable = { cannibalism_wendigo_terminal_hunt_start_result = 1 }
 	}
 }
@@ -6912,7 +6931,7 @@ cannibalism_clear_wendigo_inherited_cell_runtime = {
 		array = cannibalism_wendigo_active_cell_targets
 		if = {
 			limit = { exists = yes }
-			remove_dynamic_modifier = cannibalism_wendigo_inherited_cell_pressure
+			remove_dynamic_modifier = { modifier = cannibalism_wendigo_inherited_cell_pressure }
 			clr_country_flag = cannibalism_wendigo_inherited_cell_target
 			clr_country_flag = cannibalism_wendigo_inherited_cell_target_lock
 		}
@@ -7423,7 +7442,7 @@ cannibalism_pay_island_recon_cost = {
 	cannibalism_pay_current_command_cost = yes
 	set_temp_variable = { cannibalism_objective_experience_change = constant:cannibalism_objective_cost.island_recon_navy_experience }
 	multiply_temp_variable = { cannibalism_objective_experience_change = constant:cannibalism_objective_value.negative_one }
-	add_navy_experience = cannibalism_objective_experience_change
+	navy_experience = cannibalism_objective_experience_change
 }
 
 cannibalism_pay_feeding_state_liberation_cost = {
@@ -11478,9 +11497,9 @@ cannibalism_activate_terminal_global_war = {
 				NOT = { has_capitulated = yes }
 			}
 			event_target:cannibalism_terminal_global_actor = {
-				add_ai_strategy = { type = conquer id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_conquest }
-				add_ai_strategy = { type = antagonize id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_conquest }
-				add_ai_strategy = { type = front_unit_request id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_front }
+				add_ai_strategy = { type = conquer id = PREV value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_TERMINAL_CONQUEST }
+				add_ai_strategy = { type = antagonize id = PREV value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_TERMINAL_CONQUEST }
+				add_ai_strategy = { type = front_unit_request id = PREV value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_TERMINAL_FRONT }
 				if = {
 					limit = {
 						NOT = { has_war_with = PREV }
@@ -11643,9 +11662,9 @@ cannibalism_unified_apply_current_scored_target_priority = {
 				compare = greater_than_or_equals
 			}
 		}
-		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_high }
-		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_high }
-		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_high }
+		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_HIGH }
+		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_HIGH }
+		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_HIGH }
 	}
 	else_if = {
 		limit = {
@@ -11655,14 +11674,14 @@ cannibalism_unified_apply_current_scored_target_priority = {
 				compare = greater_than_or_equals
 			}
 		}
-		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_medium }
-		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_medium }
-		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_medium }
+		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_MEDIUM }
+		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_MEDIUM }
+		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_MEDIUM }
 	}
 	else = {
-		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_low }
-		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_low }
-		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_low }
+		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_LOW }
+		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_LOW }
+		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_TARGET_AI_UNIFIED_LOW }
 	}
 }
 
@@ -11677,14 +11696,14 @@ cannibalism_wendigo_apply_current_scored_target_priority = {
 		}
 		if = {
 			limit = { has_country_flag = cannibalism_wendigo_transformation_locked }
-			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_high }
-			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_high }
-			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_high }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_HIGH }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_HIGH }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_HIGH }
 		}
 		else = {
-			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
-			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
-			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_HIGH }
 		}
 	}
 	else_if = {
@@ -11697,27 +11716,27 @@ cannibalism_wendigo_apply_current_scored_target_priority = {
 		}
 		if = {
 			limit = { has_country_flag = cannibalism_wendigo_transformation_locked }
-			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_medium }
-			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_medium }
-			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_medium }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_MEDIUM }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_MEDIUM }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_MEDIUM }
 		}
 		else = {
-			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_medium }
-			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_medium }
-			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_medium }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_MEDIUM }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_MEDIUM }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_MEDIUM }
 		}
 	}
 	else = {
 		if = {
 			limit = { has_country_flag = cannibalism_wendigo_transformation_locked }
-			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_low }
-			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_low }
-			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_low }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_LOW }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_LOW }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_POSTLOCK_TARGET_LOW }
 		}
 		else = {
-			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_low }
-			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_low }
-			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_low }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_LOW }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_LOW }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = @CR_SC_CANNIBALISM_WENDIGO_AI_PRELOCK_TARGET_LOW }
 		}
 	}
 }
@@ -12173,11 +12192,11 @@ cannibalism_prepare_current_warlord_slot_for_unification = {
 				event_target:cannibalism_runtime_migration_destination_country = { exists = yes }
 				NOT = { is_core_of = event_target:cannibalism_runtime_migration_destination_country }
 			}
-			add_state_core = event_target:cannibalism_runtime_migration_destination_country
+			event_target:cannibalism_runtime_migration_destination_country = { add_state_core = PREV }
 		}
 		if = {
 			limit = { is_core_of = event_target:cannibalism_warlord_integration_release_country }
-			remove_state_core = event_target:cannibalism_warlord_integration_release_country
+			event_target:cannibalism_warlord_integration_release_country = { remove_state_core = PREV }
 		}
 		clr_state_flag = cannibalism_warlord_state
 		clr_state_flag = cannibalism_warlord_transfer_selected
@@ -12258,17 +12277,22 @@ cannibalism_create_integrated_warlord_commander = {
 	set_variable = { cannibalism_warlord_region = cannibalism_integration_region }
 	set_variable = { cannibalism_warlord_slot_index = cannibalism_integration_slot_index }
 	set_variable = { cannibalism_warlord_personality = cannibalism_integration_personality }
+	set_temp_variable = { cannibalism_warlord_skill = @CANNIBALISM_INTEGRATED_COMMANDER_SKILL }
+	set_temp_variable = { cannibalism_warlord_attack_skill = @CANNIBALISM_INTEGRATED_COMMANDER_ATTACK }
+	set_temp_variable = { cannibalism_warlord_defense_skill = @CANNIBALISM_INTEGRATED_COMMANDER_DEFENCE }
+	set_temp_variable = { cannibalism_warlord_planning_skill = @CANNIBALISM_INTEGRATED_COMMANDER_PLANNING }
+	set_temp_variable = { cannibalism_warlord_logistics_skill = @CANNIBALISM_INTEGRATED_COMMANDER_LOGISTICS }
 	meta_effect = {
 		text = {
 			create_corps_commander = {
 				name = "[WARLORD_NAME]"
 				picture = GFX_portrait_[WARLORD_SLOT]_warlord_[WARLORD_REGION]
 				traits = { cannibalism_host_commander [ORIGIN_TRAIT] [PERSONALITY_TRAIT] }
-				skill = @CANNIBALISM_INTEGRATED_COMMANDER_SKILL
-				attack_skill = @CANNIBALISM_INTEGRATED_COMMANDER_ATTACK
-				defense_skill = @CANNIBALISM_INTEGRATED_COMMANDER_DEFENCE
-				planning_skill = @CANNIBALISM_INTEGRATED_COMMANDER_PLANNING
-				logistics_skill = @CANNIBALISM_INTEGRATED_COMMANDER_LOGISTICS
+				skill = [WARLORD_SKILL]
+				attack_skill = [WARLORD_ATTACK_SKILL]
+				defense_skill = [WARLORD_DEFENSE_SKILL]
+				planning_skill = [WARLORD_PLANNING_SKILL]
+				logistics_skill = [WARLORD_LOGISTICS_SKILL]
 			}
 		}
 		WARLORD_NAME = "[This.GetCannibalismWarlordName]"
@@ -12276,6 +12300,11 @@ cannibalism_create_integrated_warlord_commander = {
 		WARLORD_REGION = "[This.GetCannibalismWarlordPortraitRegionToken]"
 		ORIGIN_TRAIT = "[This.GetCannibalismIntegratedOriginTraitToken]"
 		PERSONALITY_TRAIT = "[This.GetCannibalismIntegratedPersonalityTraitToken]"
+		WARLORD_SKILL = "[?cannibalism_warlord_skill|.0]"
+		WARLORD_ATTACK_SKILL = "[?cannibalism_warlord_attack_skill|.0]"
+		WARLORD_DEFENSE_SKILL = "[?cannibalism_warlord_defense_skill|.0]"
+		WARLORD_PLANNING_SKILL = "[?cannibalism_warlord_planning_skill|.0]"
+		WARLORD_LOGISTICS_SKILL = "[?cannibalism_warlord_logistics_skill|.0]"
 	}
 	clear_variable = cannibalism_warlord_name_index
 	clear_variable = cannibalism_warlord_origin
@@ -12290,17 +12319,22 @@ cannibalism_create_integrated_warlord_servant = {
 	set_variable = { cannibalism_warlord_region = cannibalism_integration_region }
 	set_variable = { cannibalism_warlord_slot_index = cannibalism_integration_slot_index }
 	set_variable = { cannibalism_warlord_personality = cannibalism_integration_personality }
+	set_temp_variable = { cannibalism_warlord_skill = @CANNIBALISM_INTEGRATED_SERVANT_SKILL }
+	set_temp_variable = { cannibalism_warlord_attack_skill = @CANNIBALISM_INTEGRATED_SERVANT_ATTACK }
+	set_temp_variable = { cannibalism_warlord_defense_skill = @CANNIBALISM_INTEGRATED_SERVANT_DEFENCE }
+	set_temp_variable = { cannibalism_warlord_planning_skill = @CANNIBALISM_INTEGRATED_SERVANT_PLANNING }
+	set_temp_variable = { cannibalism_warlord_logistics_skill = @CANNIBALISM_INTEGRATED_SERVANT_LOGISTICS }
 	meta_effect = {
 		text = {
 			create_corps_commander = {
 				name = "[WARLORD_NAME]"
 				picture = GFX_portrait_[WARLORD_SLOT]_warlord_[WARLORD_REGION]
 				traits = { cannibalism_bound_servant [ORIGIN_TRAIT] [PERSONALITY_TRAIT] }
-				skill = @CANNIBALISM_INTEGRATED_SERVANT_SKILL
-				attack_skill = @CANNIBALISM_INTEGRATED_SERVANT_ATTACK
-				defense_skill = @CANNIBALISM_INTEGRATED_SERVANT_DEFENCE
-				planning_skill = @CANNIBALISM_INTEGRATED_SERVANT_PLANNING
-				logistics_skill = @CANNIBALISM_INTEGRATED_SERVANT_LOGISTICS
+				skill = [WARLORD_SKILL]
+				attack_skill = [WARLORD_ATTACK_SKILL]
+				defense_skill = [WARLORD_DEFENSE_SKILL]
+				planning_skill = [WARLORD_PLANNING_SKILL]
+				logistics_skill = [WARLORD_LOGISTICS_SKILL]
 			}
 		}
 		WARLORD_NAME = "[This.GetCannibalismWarlordName]"
@@ -12308,6 +12342,11 @@ cannibalism_create_integrated_warlord_servant = {
 		WARLORD_REGION = "[This.GetCannibalismWarlordPortraitRegionToken]"
 		ORIGIN_TRAIT = "[This.GetCannibalismIntegratedOriginTraitToken]"
 		PERSONALITY_TRAIT = "[This.GetCannibalismIntegratedPersonalityTraitToken]"
+		WARLORD_SKILL = "[?cannibalism_warlord_skill|.0]"
+		WARLORD_ATTACK_SKILL = "[?cannibalism_warlord_attack_skill|.0]"
+		WARLORD_DEFENSE_SKILL = "[?cannibalism_warlord_defense_skill|.0]"
+		WARLORD_PLANNING_SKILL = "[?cannibalism_warlord_planning_skill|.0]"
+		WARLORD_LOGISTICS_SKILL = "[?cannibalism_warlord_logistics_skill|.0]"
 	}
 	clear_variable = cannibalism_warlord_name_index
 	clear_variable = cannibalism_warlord_origin
@@ -12321,11 +12360,11 @@ cannibalism_create_integrated_warlord_servant = {
 # ---------------------------------------------------------------------------
 
 cannibalism_apply_unified_country_ai_strategy = {
-	add_ai_strategy = { type = build_army value = constant:cannibalism_ai_strategy.hannibal_build_army }
-	add_ai_strategy = { type = equipment_production_factor id = infantry value = constant:cannibalism_ai_strategy.hannibal_build_infantry }
-	add_ai_strategy = { type = equipment_production_factor id = support value = constant:cannibalism_ai_strategy.hannibal_build_support }
-	add_ai_strategy = { type = template_prio id = infantry value = constant:cannibalism_ai_strategy.hannibal_build_army }
-	add_ai_strategy = { type = role_ratio id = infantry value = constant:cannibalism_ai_strategy.hannibal_build_infantry }
+	add_ai_strategy = { type = build_army value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_ARMY }
+	add_ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_INFANTRY }
+	add_ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_SUPPORT }
+	add_ai_strategy = { type = template_prio id = infantry value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_ARMY }
+	add_ai_strategy = { type = role_ratio id = infantry value = @CR_SC_CANNIBALISM_AI_STRATEGY_HANNIBAL_BUILD_INFANTRY }
 }
 
 cannibalism_create_unified_country_from_selected_host = {
@@ -12361,7 +12400,7 @@ cannibalism_create_unified_country_from_selected_host = {
 		CBL = {
 			union_compatible_researched_technologies_from_donor = yes
 			set_research_slots = constant:cannibalism_unification.starting_research_slots
-			set_capital = event_target:cannibalism_unification_capital_state
+			set_capital = { state = event_target:cannibalism_unification_capital_state }
 			set_politics = { ruling_party = neutrality elections_allowed = no }
 			set_variable = { cannibalism_integrated_named_commander_count = 1 }
 			set_variable = { cannibalism_integrated_servant_count = 0 }
@@ -13933,9 +13972,9 @@ cannibalism_unified_refresh_hostility_pressure = {
 	set_variable = { cannibalism_unified_hostility_airframe_surcharge = constant:cannibalism_unified_profile.zero }
 	set_variable = { cannibalism_unified_hostility_counterpressure_days = constant:cannibalism_unified_hostility.pressure_counterpressure_days }
 
-	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_pressure } } remove_dynamic_modifier = cannibalism_unified_world_hostility_pressure }
-	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_mobilized } } remove_dynamic_modifier = cannibalism_unified_world_hostility_mobilized }
-	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_total } } remove_dynamic_modifier = cannibalism_unified_world_hostility_total }
+	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_pressure } } remove_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_pressure } }
+	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_mobilized } } remove_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_mobilized } }
+	if = { limit = { has_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_total } } remove_dynamic_modifier = { modifier = cannibalism_unified_world_hostility_total } }
 
 	if = {
 		limit = { check_variable = { var = cannibalism_world_hostility value = constant:cannibalism_unified_hostility.total_threshold compare = greater_than_or_equals } }
@@ -14184,13 +14223,13 @@ cannibalism_unified_pay_current_fuel_cost = {
 cannibalism_unified_pay_current_navy_experience_cost = {
 	set_temp_variable = { cannibalism_unified_negative_cost = cannibalism_unified_navy_experience_cost }
 	multiply_temp_variable = { cannibalism_unified_negative_cost = constant:cannibalism_unified_profile.minus_one }
-	add_navy_experience = cannibalism_unified_negative_cost
+	navy_experience = cannibalism_unified_negative_cost
 }
 
 cannibalism_unified_pay_current_air_experience_cost = {
 	set_temp_variable = { cannibalism_unified_negative_cost = cannibalism_unified_air_experience_cost }
 	multiply_temp_variable = { cannibalism_unified_negative_cost = constant:cannibalism_unified_profile.minus_one }
-	add_air_experience = cannibalism_unified_negative_cost
+	air_experience = cannibalism_unified_negative_cost
 }
 
 cannibalism_unified_pay_current_airframe_cost = {
@@ -14550,7 +14589,7 @@ cannibalism_unified_execute_feeding_capital = {
 		set_state_flag = cannibalism_unified_feeding_capital
 		add_building_construction = { type = infrastructure level = constant:cannibalism_unified_operation.feeding_capital_infrastructure_levels instant_build = yes }
 	}
-	set_capital = event_target:cannibalism_unified_decision_state
+	set_capital = { state = event_target:cannibalism_unified_decision_state }
 	set_country_flag = cannibalism_unified_feeding_capital_designated
 	cannibalism_unified_record_larder_operation = yes
 }
@@ -19027,8 +19066,8 @@ cannibalism_wendigo_focus_preserve_pack_contract = {
 	}
 	if = {
 		limit = { NOT = { has_country_flag = cannibalism_wendigo_pack_contract_ai_applied } }
-		add_ai_strategy = { type = template_prio id = zombies value = constant:cannibalism_wendigo_ai.train_pack }
-		add_ai_strategy = { type = role_ratio id = zombies value = constant:cannibalism_wendigo_ai.train_pack }
+		add_ai_strategy = { type = template_prio id = zombies value = @CR_SC_CANNIBALISM_WENDIGO_AI_TRAIN_PACK }
+		add_ai_strategy = { type = role_ratio id = zombies value = @CR_SC_CANNIBALISM_WENDIGO_AI_TRAIN_PACK }
 		set_country_flag = cannibalism_wendigo_pack_contract_ai_applied
 	}
 }
@@ -19126,8 +19165,8 @@ cannibalism_wendigo_focus_preserve_the_pack = {
 	cannibalism_wendigo_focus_expand_pack_capacity = yes
 	add_tech_bonus = {
 		name = ZZZ_wendigo_preserve_the_pack_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = infantry_weapons
 	}
 }
@@ -19138,8 +19177,8 @@ cannibalism_wendigo_focus_keep_the_larder_ledger = {
 	add_political_power = constant:cannibalism_wendigo_focus.political_power_medium
 	add_tech_bonus = {
 		name = ZZZ_wendigo_keep_the_larder_ledger_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = industry
 	}
 }
@@ -19169,8 +19208,8 @@ cannibalism_wendigo_focus_open_the_winter_hunt = {
 	add_command_power = constant:cannibalism_wendigo_focus.command_power_small
 	add_tech_bonus = {
 		name = ZZZ_wendigo_open_the_winter_hunt_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = land_doctrine
 	}
 }
@@ -19185,8 +19224,8 @@ cannibalism_wendigo_focus_march_through_the_blizzard = {
 	cannibalism_wendigo_focus_add_anchor_infrastructure = yes
 	add_tech_bonus = {
 		name = ZZZ_wendigo_march_through_the_blizzard_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = support_tech
 	}
 }
@@ -19218,8 +19257,8 @@ cannibalism_wendigo_focus_drill_the_original_pack = {
 	cannibalism_wendigo_focus_expand_pack_capacity = yes
 	add_tech_bonus = {
 		name = ZZZ_wendigo_drill_the_original_pack_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = infantry_weapons
 	}
 }
@@ -19247,8 +19286,8 @@ cannibalism_wendigo_focus_expand_the_hunting_packs = {
 	add_political_power = constant:cannibalism_wendigo_focus.political_power_small
 	add_tech_bonus = {
 		name = ZZZ_wendigo_expand_the_hunting_packs_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = special_forces_doctrine
 	}
 }
@@ -19271,8 +19310,8 @@ cannibalism_wendigo_focus_keep_the_cannibal_legions = {
 	add_stability = constant:cannibalism_wendigo_focus.stability_reward
 	add_tech_bonus = {
 		name = ZZZ_wendigo_keep_the_cannibal_legions_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = land_doctrine
 	}
 }
@@ -19291,8 +19330,8 @@ cannibalism_wendigo_focus_keep_the_foreign_cells = {
 	cannibalism_wendigo_focus_apply_authority_gain = yes
 	add_tech_bonus = {
 		name = ZZZ_wendigo_keep_the_foreign_cells_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = electronics
 	}
 }
@@ -19302,8 +19341,8 @@ cannibalism_wendigo_focus_join_the_larder_routes = {
 	cannibalism_wendigo_focus_add_capital_larder_workshop = yes
 	add_tech_bonus = {
 		name = ZZZ_wendigo_join_the_larder_routes_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = industry
 	}
 }
@@ -19335,8 +19374,8 @@ cannibalism_wendigo_focus_mark_the_irreversible_road = {
 	cannibalism_wendigo_focus_apply_authority_gain = yes
 	add_tech_bonus = {
 		name = ZZZ_wendigo_mark_the_irreversible_road_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = support_tech
 	}
 }
@@ -19380,8 +19419,8 @@ cannibalism_wendigo_focus_hunt_every_remaining_capital = {
 	cannibalism_wendigo_focus_prioritize_current_enemies = yes
 	add_tech_bonus = {
 		name = ZZZ_wendigo_hunt_every_remaining_capital_bonus
-		bonus = constant:cannibalism_wendigo_focus.research_bonus
-		uses = constant:cannibalism_wendigo_focus.research_uses
+		bonus = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_BONUS
+		uses = @CR_SC_CANNIBALISM_WENDIGO_FOCUS_RESEARCH_USES
 		category = land_doctrine
 	}
 }

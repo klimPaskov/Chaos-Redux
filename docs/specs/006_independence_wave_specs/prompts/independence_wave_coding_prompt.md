@@ -34,14 +34,14 @@ Use `chaosx_repo_explorer` only if the touched-file map or precedent is unclear.
 
 ## Core release system
 
-Implement the doubled automatic wave ladder:
+Implement the active automatic wave ladder:
 
-- Calm World: 6 countries
-- Gathering Storm: 8 countries
-- Rising Chaos: 10 countries
-- Chaos Tier: 14 countries
-- Totalen Chaos: 20 countries
-- World Collapse: 20 countries, with stronger forces, instability, rarity, and ambition
+- Calm World: 3 countries
+- Gathering Storm: 4 countries
+- Rising Chaos: 5 countries
+- Chaos Tier: 7 countries
+- Totalen Chaos: 10 countries
+- World Collapse: 10 countries, with stronger forces, instability, rarity, and ambition
 
 Build the complete wave plan before releasing anything. Reserve a protected state for every host, prefer its capital, guarantee at least one surviving host state, select unique candidate anchors, trim optional territory before dropping a candidate, and reroll invalid or living tags. Execute the locked plan as one synchronized incident.
 
@@ -197,7 +197,7 @@ Use the data-driven scenario UI, confirmation flow, type control, four-stop slid
 
 ## Super-events and achievements
 
-Implement the league formation and dangerous coordinated bloc super-events from the approved text and corrected audio research. Produce both images. Produce and wire the cleared `24` audio package, preserve attribution, and keep `23` absent unless permission or a waiver clears the exact accepted recording. Reopening recording selection requires explicit user approval. Normal waves do not receive super-events.
+Implement the league formation and dangerous coordinated bloc super-events from the approved text and corrected audio research. Produce both images. Produce and wire the cleared `24` audio package, preserve attribution, and keep the `23` audio/wrapper/gameplay-firing surface absent unless permission or a waiver clears the exact accepted recording; existing researched image/text dispatch may remain documented separately. Reopening recording selection requires explicit user approval. Normal waves do not receive super-events.
 
 Implement every achievement in `matrices/006_achievement_matrix.csv`, including tracking, disqualifiers, localisation, icons, docs, origin checks, and scenario restrictions.
 

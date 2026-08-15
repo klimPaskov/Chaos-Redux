@@ -30,8 +30,9 @@ All 206 current Event 006 registry identities are grounded in real countries,
 communities, institutions, movements, restorations, or historical claims. None
 qualifies for a generated leader portrait. A grounded package remains disabled
 until every visible personal leader and commander role has a rights-cleared
-sourced real male subject, a source-pixel head-and-shoulders crop, an identity-
-preserving HOI4-painted treatment, role-correct wiring, and independent review.
+sourced real male subject, a source-pixel head-and-shoulders crop, role-correct
+placeholder processing and wiring, and independent review. Historical source
+placeholders retain the original source appearance and are not ImageGen repaints.
 A genuinely collective leader token may instead use sourced all-male archival
 material depicting the exact body or a defensible predecessor. Generated
 one-person portraits are reserved for a later package only if both its country
@@ -44,6 +45,7 @@ dossier, or `_small` portrait assets.
 - `IW-019` Sicily (`ASX`): researched 1848 S.015 constitutional-independence triplet delivered, but route ownership remains under review and the art is not a neutral baseline.
 - `IW-021` Trieste Free State (`ICX`): researched 1918-1936 civic corsesca triplet delivered; `ICX` preserves the existing Event 068 `ZIN` carrier; the separate retired `AUX` reservation is the Windows-device issue.
 - `IW-024` Banat (`AXX`): no flag produced; no attested Republic flag or approved fictional route design was found.
+- `IW-028` Epirus (`BBX`): public-domain 1914 Northern Epirus flag evidence archived and delivered as a flat ImageGen reconstruction with normal, medium, and small runtime ladders.
 
 The source and generated packages are under `docs/assets/006_independence_wave/mediterranean_danube_flag_sources_2026_07_15/` and `docs/assets/006_independence_wave/mediterranean_danube_generated_flags_2026_07_15/`. Asset delivery does not override package readiness, route, portrait, focus, mechanic, or AI gates.
 
@@ -96,6 +98,8 @@ or fictional person is not a substitute.
 IW-003 Cornwall; IW-005 Flanders; IW-006 Wallonia; IW-007 Frisia; IW-010 Saar; IW-011 Faroe Islands; IW-018 Sardinia; IW-019 Sicily; IW-021 Trieste Free State; IW-022 Dalmatia; IW-024 Banat; IW-025 Vojvodina; IW-028 Epirus; IW-032 Slavonia; IW-037 Polesia; IW-038 Ruthenia; IW-049 Mordovia; IW-061 Luristan; IW-062 Khuzestan or Arabistan; IW-063 Bakhtiari; IW-064 Circassia; IW-067 Lazistan; IW-073 Hejaz; IW-084 Kabylia; IW-086 Tripolitania; IW-087 Fezzan; IW-094 Fante; IW-123 Xhosa; IW-132 Mauritius; IW-142 Travancore; IW-145 Assam; IW-151 Minangkabau; IW-154 Bugis state; IW-156 Moluccan federation; IW-159 Shan federation; IW-162 Kachin state; IW-165 Wa state; IW-169 East Turkestan; IW-181 Acadia; IW-182 Newfoundland; IW-184 California; IW-185 Texas; IW-203 Patagonian state.
 
 IW-027 Thrace is now covered by the admitted BAX package manifest and its sourced Hristo Silyanov portrait handoff. No advisor icon surface is required.
+
+IW-028 Epirus is covered by the admitted BBX package manifest, sourced historical political and military portrait handoffs, and the historical 1914 Northern Epirus flag ladder. No advisor icon surface is required.
 
 Motif research must use the package source IDs in 006_package_research_resolution.csv as the first historical check and then record an asset-specific archive, museum, official heraldry, or public-domain file in the final manifest. A modern provincial flag is evidence of present identity, not automatic permission to backdate it to 1936.
 

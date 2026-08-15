@@ -211,3 +211,71 @@ Both family inspections retain the same workspace-wide graph truncation, 2,000 b
 Separate renders were also completed at 1920x1080 and 1366x768 over normal, hover, long-text, and missing-localisation states. FORM-12 evidence is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9654598f01c40a19da62a51464f8e7698112a52589404fd484b76aaf61e8203f/ca2b3b66277aed800a36f78dec287bd7fee3567608f20b038b98af11c83b9291/chaosx_independence_wave_formable_state_puzzle_w-full.svg`; FORM-13 evidence is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9654598f01c40a19da62a51464f8e7698112a52589404fd484b76aaf61e8203f/4a1bc813b22cac165a07f1f3b5933cf20c994718470f894400bf7171bbda3c6e/chaosx_independence_wave_formable_state_puzzle_w-full.svg`.
 
 The renders returned one aggregate full-window SVG each, with validation not passed and no family-isolated crop, hierarchy, click-region, state-gallery, resolution-gallery, or comparison artifacts. FORM-12/13 GUI acceptance therefore remains unresolved, while the state-833 source/localisation/asset contract remains unchanged and no rewrite was applied.
+
+## Current Statehood Ledger FORM-12/FORM-13 family tranche — 2026-08-14
+
+This tranche reran the exact Event 006-owned `chaosx_independence_wave_formable_state_puzzle_window` against the current linked source and the current Statehood Ledger rebind.
+
+The current authority remains 40 adapters, 32 attested packages, 29 compatible groups, and 161 unattested rows.
+
+FORM-12 and FORM-13 consume state 833 in the current runtime rebind; state 256 remains the historical Chuvashia reference and is not substituted into this GUI.
+
+The source crosswalk remains intact: `interface/chaosx_formable_state_puzzle_group_independence_wave_formables.gui` owns the 440 by 206 root, the FORM-12 and FORM-13 440 by 180 clipped maps, the five-piece state rows, and the state-833 coordinates at `x = 163`, `y = 113`; `common/scripted_guis/chaosx_formable_state_puzzles.txt` owns the dynamic FORM-12/FORM-13 state-833 image properties and the family activation visibility triggers; `interface/chaosx_formable_state_puzzles.gfx` owns both unresolved and qualifying state-833 sprites; `common/scripted_localisation/chaosx_formable_state_puzzles.txt` owns both state-833 sprite resolvers; and `localisation/english/chaosx_formable_state_puzzles_l_english.yml` owns both `/ 4` summaries and the state-833 tooltips.
+
+### Current-rebound baseline receipts
+
+The fresh current-rebound `hoi4.gui_inspect` request used scenario `E6_FORMABLE_STATE_PUZZLE_GUI_REBOUND_2026_08_14` and returned `GUI_INSPECTED` for the exact window with 93 inspected elements at shared revision `27f9716aef014d3a24111f121495ab7438f80f70822aa62cf21c003d234712ac`.
+
+The inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/da5a128a172ea88d06e7c8d12e006db165a02bec4b9b6999a0a40d62b2a3b581/3a1ea2cae15d165f4d0fb32a8095674622e805210bdafe9f4ff3ce964fa4225b/gui-inspect.27f9716aef014d3a.json`.
+
+The current-rebound inspect retained the workspace-wide graph truncation at 1,999 diagnostics and the combined validation truncation at 1,999 diagnostics, including 521 `GUI_VISIBLE_OVERLAP`, 48 `GUI_SCRIPTED_CONTEXT_INVALID`, 14 `GUI_UNRESOLVED_DYNAMIC_VALUE`, two `GUI_INCONSISTENT_ALIGNMENT`, and one `GUI_INCONSISTENT_SPACING` finding.
+
+The current-rebound inspect validation is false, with fidelity counts of 615 modelled, 15 approximated, 64 ignored, 14 missing, zero unsupported, and 15 unresolved.
+
+The matching current-rebound `hoi4.gui_render` request covered 1920x1080 and 1366x768 across normal, hover, selected, disabled, warning, active, completed, empty-list, full-list, long-text, and missing-localisation states.
+
+The render returned `GUI_RENDERED` with one full-window artifact, `MCP_RESPONSE_TRUNCATED` (`actualBytes = 41918`, `maxBytes = 32768`), and validation false: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9654598f01c40a19da62a51464f8e7698112a52589404fd484b76aaf61e8203f/5b10b94ff1def88b335726f71c049781606fdab362d4a77866839ed2e21bf944/chaosx_independence_wave_formable_state_puzzle_w-full.svg`.
+
+The current-rebound baseline therefore confirms that the route resolves the owned window, but it does not provide the requested crop, annotation, hierarchy, click-region, state-gallery, resolution-gallery, or comparison artifacts.
+
+### Fresh family-isolated FORM-12/FORM-13 inspect receipts
+
+Each family request used one scenario with no related scenarios, all fourteen activation helpers set false except the target family, the target overlay explicitly visible, every other overlay explicitly hidden, and the exact current state-833 consumer contract.
+
+FORM-12 scenario `E6_STATEHOOD_LEDGER_FORM12_STATE833_ISOLATED_2026_08_14` returned `GUI_INSPECTED` at shared revision `4d65e7ab4d5a48e4ef88b4572dfbb1c77410914aa0f6d852fc5500ad15a99433` with 93 inspected elements.
+
+FORM-12 inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4af7360dc271b4c90d68402e37d18e7e899b009d8da7f618c2fab06e41059546/a94b492b4e42f84cb0bab3bfcf72307a95c1a8b26f5055947c1fd7714525a614/gui-inspect.4d65e7ab4d5a48e4.json`.
+
+FORM-13 scenario `E6_STATEHOOD_LEDGER_FORM13_STATE833_ISOLATED_2026_08_14` returned `GUI_INSPECTED` at the same shared revision with 93 inspected elements.
+
+FORM-13 inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d97599fa74d3cc51b5a9f33a336aa3a494cf656fc599a344df5e6eb5843c65e6/d9d8ff5f2dcf4b402d9740db27fa4dbf5773d939a748d883f4e08320c6c6e477/gui-inspect.4d65e7ab4d5a48e4.json`.
+
+Both family inspect results retain the same workspace-wide source-graph ceiling of 1,999 diagnostics and the same combined validation ceiling of 1,999 diagnostics.
+
+Both family results retain 430 `GUI_VISIBLE_OVERLAP`, 48 `GUI_SCRIPTED_CONTEXT_INVALID`, 14 `GUI_UNRESOLVED_DYNAMIC_VALUE`, two `GUI_INCONSISTENT_ALIGNMENT`, and one `GUI_INCONSISTENT_SPACING` finding, with validation false and fidelity counts of 616 modelled, 15 approximated, 64 ignored, 14 missing, zero unsupported, and 14 unresolved.
+
+The unchanged 430-overlap profile in both one-family requests is aggregate/index evidence from co-located mutually exclusive definitions and unresolved scripted context, not proof of a FORM-12 or FORM-13 authored overlap.
+
+### Fresh family-isolated FORM-12/FORM-13 render receipts
+
+Each family render requested 1920x1080 and 1366x768 plus normal, hover, selected, disabled, warning, active, completed, empty-list, full-list, long-text, and missing-localisation states.
+
+FORM-12 scenario `E6_STATEHOOD_LEDGER_FORM12_STATE833_ISOLATED_RENDER_2026_08_14` returned `GUI_RENDERED` with one full-window artifact and `MCP_RESPONSE_TRUNCATED` (`actualBytes = 41935`, `maxBytes = 32768`): `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/79550e68cc0db88649eaa5b064953dd06b05cb9e10a9004dbbfb93292d13cfe0/1f1f3c475a136545e1ed2b0846b0889cde830ae638e515bd49b5d22835f643c7/chaosx_independence_wave_formable_state_puzzle_w-full.svg`.
+
+FORM-13 scenario `E6_STATEHOOD_LEDGER_FORM13_STATE833_ISOLATED_RENDER_2026_08_14` returned `GUI_RENDERED` with one full-window artifact and the same `MCP_RESPONSE_TRUNCATED` (`actualBytes = 41935`, `maxBytes = 32768`): `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/55664b39a4d6d7761293ec72c7a62d82f84256302f204614b39ff81317c230af/e7db012d9b19c61aa368a52b14488004eb2b8c6a055f0e32c235d3b786da739c/chaosx_independence_wave_formable_state_puzzle_w-full.svg`.
+
+Both returned artifacts are 1920x1080 full-window SVGs even though 1366x768 was requested, and neither returned a crop, annotation, hierarchy, click-region, state-gallery, resolution-gallery, or comparison artifact.
+
+Reading both linked SVG artifacts yielded 46,298 bytes, nine `<image>` elements, two summary labels, and the same labels `Qualifying states:`, `[dynamic_loc] / 3`, `| [dynamic_loc]`, and `OFFLINE APPROXIMATION · NOT HOI4`.
+
+The `/ 3` labels and nine-image aggregate output do not match the authored FORM-12/FORM-13 `/ 4` summaries and five-piece maps, so the family render route did not honor the requested isolation. This is an MCP renderer or fixture-resolution blocker and is not an authored GUI defect.
+
+### Read-only decision
+
+The local source contract remains internally aligned for the current state-833 rebind, including the FORM-12/FORM-13 summary requirement of four, five state-piece coordinates per family, state-833 dynamic sprite properties, family-only visibility triggers, both GFX sprite pairs, and both tooltip/localisation chains.
+
+No concrete Event 006-owned layout defect was proven by the current-rebound or family-isolated evidence, so no `hoi4.gui_rewrite` was called and no GUI, scripted-GUI, GFX, scripted-localisation, or localisation source was changed.
+
+The aggregate overlap and unresolved-context warnings must remain separated from family acceptance; deleting or moving co-located overlays to suppress them would break the accepted one-family-at-a-time geometry and would change the presentation contract without evidence.
+
+Family-isolated visual acceptance remains unresolved until the MCP route can evaluate the target scripted context and return a true target-family state/resolution/click-region comparison. Parent-owned gameplay, admission/Join, attestation, runtime loading, live HOI4 validation, and final whole-event completion remain outside this tranche.

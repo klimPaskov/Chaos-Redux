@@ -17,7 +17,7 @@ independence_wave_form09_balkan_category = {
 			NOT = { has_country_flag = independence_wave_form09_border_arbitration_complete }
 		}
 		available = {
-			is_at_war = no
+			has_war = no
 			capital_scope = { is_controlled_by = ROOT }
 			can_pay_independence_wave_diplomatic_standard_cost = yes
 		}
@@ -36,8 +36,15 @@ independence_wave_form09_balkan_category = {
 			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
 			independence_wave_decision_apply_country_deltas = yes
 		}
-		cancel_trigger = { NOT = { is_independence_wave_form09_postformation_carrier = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_form09_postformation_carrier = yes }
+				has_war = yes
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
 		cancel_effect = {
+			custom_effect_tooltip = independence_wave_form09_ratify_border_board_cancel_effect_tt
 			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
 			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
 			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }

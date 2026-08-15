@@ -245,3 +245,50 @@ attestation is restored after the independent audit. Automatic and scenario
 release-package readiness remain separate package-level gates; restoring the
 FORM-03 adapter does not bypass them. The runtime completion flag is not a
 readiness certificate.
+
+## Event 006 state-puzzle consumers
+
+The Event 006 state-puzzle group is declared by fourteen consumer specs in `docs/formables/state_registry/consumers/006_form*_state_puzzle.json`. Each spec uses `group_id = independence_wave_formables`, the shared scripted GUI `independence_wave_formable_state_puzzle_scripted_gui`, the shared window `chaosx_independence_wave_formable_state_puzzle_window`, a family activation helper, and a finite `summary_required_count`. The compiled runtime contains fourteen manifests, 50 candidate-state rows, and 100 DDS state pieces. The family territory helper shown by the window is also required by the player and AI formation gate.
+
+| Family | Candidate states | Summary count | Territory helper |
+| --- | --- | ---: | --- |
+| FORM-01 | 121, 133, 122, 14 | 4 | `independence_wave_formable_state_puzzle_form01_territory` |
+| FORM-02 | 100, 337, 331, 121, 133 | 3 members, with both Scottish compact states | `independence_wave_formable_state_puzzle_form02_territory` |
+| FORM-03 | 34, 36, 6 | 2 | `independence_wave_formable_state_puzzle_form03_territory` |
+| FORM-04 | 51, 42 | 2 | `independence_wave_formable_state_puzzle_form04_territory` |
+| FORM-05 | 1, 114, 115 | 2 | `independence_wave_formable_state_puzzle_form05_territory` |
+| FORM-07 | 165, 792, 171 | 3 | `independence_wave_formable_state_puzzle_form07_territory` |
+| FORM-08 | 84, 82 | 3 | `independence_wave_formable_state_puzzle_form08_territory` |
+| FORM-09 | 185, 184, 104, 106, 105, 802 | 3 | `independence_wave_formable_state_puzzle_form09_territory` |
+| FORM-12 | 249, 651, 833, 399, 397 | carrier plus 3 members | `independence_wave_formable_state_puzzle_form12_territory` |
+| FORM-13 | 249, 651, 833, 399, 397 | carrier plus 3 members | `independence_wave_formable_state_puzzle_form13_territory` |
+| FORM-16 | 230, 231, 229 | 3 | `independence_wave_formable_state_puzzle_form16_territory` |
+| FORM-18 | 676, 421, 413 | carrier plus 2 members | `independence_wave_formable_state_puzzle_form18_territory` |
+| FORM-39 | 636, 523, 669 | 3 | `independence_wave_formable_state_puzzle_form39_territory` |
+| FORM-48 | 378, 629, 684 | 3 | `independence_wave_formable_state_puzzle_form48_territory` |
+
+The qualification wrappers delegate to the package, tag, anchor, invitation, and frozen-consent contracts in the owning FORM trigger files. FORM-03 accepts either the second Event 006 carrier anchor or the sovereign `BEL_flanders` delegation at state 6. FORM-09 enumerates the finite twenty triplets needed for three of six candidates. FORM-12 and FORM-13 require the state 249 carrier plus three distinct consenting member anchors. FORM-18 requires the state 676 carrier plus both consenting member anchors. FORM-08 deliberately returns false because only states 84 and 82 are researched while its registry minimum is three; no third state is fabricated. No helper performs an all-country or geography scan, and the integration does not use GUI event targets.
+
+The shared GUI is attached to all seventeen current Event 006 formable decision categories: the discovery category, shared transaction and membership, FORM-01 congress, FORM-02 union, FORM-03 low countries, FORM-04 league, FORM-05 charter, FORM-08 Danube, FORM-09 Balkan, the Middle Volga Congress for FORM-12 and FORM-13, the Council of Communities for FORM-18, FORM-16 integration, FORM-39 invitation and federal compact, and FORM-48 invitation and federal compact.
+
+The exact activation helpers are in `common/scripted_triggers/006_independence_wave_formable_state_puzzle_triggers.txt`. Their pending-invitation branch is evaluated before selected/profile and post-formation branches; later branches explicitly reject a pending invitation so a category cannot expose two family overlays at once.
+
+Build handoff requirements are recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_formable_state_puzzle_gameplay_integration_2026_08_09.md`.
+
+## Current grouped-consumer authority (2026-08-09)
+
+The settled grouped workflow is current implementation evidence for fourteen runtime-authored families, seventeen category attachments, 50 candidate-state rows, and 100 DDS pieces.
+
+The complete category crosswalk is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_formable_state_puzzle_category_attachment_audit_2026_08_09.md`, and the filesystem/asset authority is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_formable_state_puzzle_settled_filesystem_audit_2026_08_09.md`.
+
+The grouped scripted GUI is presentation-only and uses `context_type = decision_category`; the shared player and AI formation gates remain the gameplay authority. Pending founding invitations take precedence over selected/profile and post-formation projections, keeping overlays mutually exclusive in live helper state.
+
+FORM-07 and FORM-48 are visible in the grouped architecture but remain readiness-controlled and fail closed under their identity, package, member, and integration gates. FORM-08 intentionally shows only states 84 and 82 with required summary count three while `independence_wave_formable_state_puzzle_form08_territory` remains false; no third state is fabricated.
+
+The current read-only GUI inspection is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6f38780e05ee78efa5d9a7408288d4052bbf8b00f4901651df1412c86034a231/29c916409a6e614d0b7a161658e670d296fa1b53e75d14a06fd1b810c652c56f/gui-inspect.fdf2c34d03def14e.json` at shared revision `fdf2c34d03def14e0624f6dd33e6f1ac84e4167c618d8cf12ab6fcb4cd51666d`.
+
+That MCP inspection preserves the current grouped source and 93 inspected elements but reports aggregate workspace graph, overlap, and unresolved-context diagnostics; it does not prove family-isolated visual acceptance. The shared registry remains source-aligned and the visual evidence remains bounded.
+
+The 2026-08-13 family-isolated retry used scenario `E6_FORMABLE_STATE_PUZZLE_GUI_SETTLED_2026_08_09` against `chaosx_independence_wave_formable_state_puzzle_window` and returned `GUI_INSPECTED` with 93 inspected elements at shared revision `7ad8f26ec4fa5f8a6627743b402b28eb49949d638fc1ebdb2223e63202226903`; its linked artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/322a492e1d4c0ef00f4752f00e50619688d679f0cd0d09eaa6228ddbd4d4cec2/5ed7229c9248a8428339b27e7dbb5a5f21b6ea4c6272d8aced607657ad566309/gui-inspect.7ad8f26ec4fa5f8a.json`. The paired render returned `GUI_RENDERED` with linked SVG `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e5cf4a0e6908e754ba9e1bae29b05ae013092399118afcfe42cedf62d2833fe9/82b305239eb8d8fd2979998fe492bd4f9f5bbaf7b5fc2d4b8aab087fbcf8a710/chaosx_independence_wave_formable_state_puzzle_w-full.svg`. The inspection remains bounded because workspace-wide symbol, overlap, and validation diagnostics are truncated; it is evidence of source/window reachability, not family-isolated visual acceptance.
+
+The current state-833 rebind for FORM-12 and FORM-13 was rebuilt from the canonical state registry. The required state sets are `249, 397, 399, 651, 833`; state 256 remains only in the separate Idel-Uralic formable. A current map inspection of states 833, 256, 249, 397, 399, and 651 returned `MAP_INSPECTED` with valid state membership and networks, while unrelated workspace locator diagnostics kept aggregate validation false. The paired state render returned `MAP_RENDERED` and passed its render validation. The current grouped GUI retry used scenario `E6_FORMABLE_STATE_PUZZLE_GUI_REBOUND_2026_08_14`, returned `GUI_INSPECTED` with 93 elements, and rendered the updated window; the linked artifacts and aggregate-diagnostic limitation are recorded in `subagent_handoffs/006_iw047_mel_package_admission_audit_current_2026_08_14.md`.

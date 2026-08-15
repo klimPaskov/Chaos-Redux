@@ -323,30 +323,32 @@ utopia_manifesto_accept_manifesto = {
 		utopia_manifesto_consume_prefire_evolution_state = yes
 		utopia_manifesto_apply_prefire_evolved_opening_packages = yes
 		utopia_manifesto_evaluate_active_evolutions = yes
-		recruit_character = utopia_manifesto_household_assembly
-		recruit_character = utopia_manifesto_commonwealth_council
-		recruit_character = utopia_manifesto_council_of_callings
-		recruit_character = utopia_manifesto_rotating_congress
-		recruit_character = utopia_manifesto_board_of_measure
-		recruit_character = utopia_manifesto_college_of_measure
-		recruit_character = utopia_manifesto_stewardship_council
-		recruit_character = utopia_manifesto_directorate_of_service
-		recruit_character = utopia_manifesto_interpreter
-		recruit_character = utopia_manifesto_general_provisioner
-		recruit_character = utopia_manifesto_secretary_of_callings
-		recruit_character = utopia_manifesto_surveyor_of_shores
-		recruit_character = utopia_manifesto_civic_engineer
-		recruit_character = utopia_manifesto_keeper_of_stores
-		recruit_character = utopia_manifesto_league_envoy
-		recruit_character = utopia_manifesto_advocate_of_limits
-		recruit_character = utopia_manifesto_public_auditor
-		recruit_character = utopia_manifesto_constitutional_jurist
-		recruit_character = utopia_manifesto_council_organizer
-		recruit_character = utopia_manifesto_social_workshop_planner
-		recruit_character = utopia_manifesto_chief_surveyor
-		recruit_character = utopia_manifesto_standards_engineer
-		recruit_character = utopia_manifesto_steward_of_service
-		recruit_character = utopia_manifesto_contract_broker
+		DJX = {
+			set_nationality = { target_country = ROOT character = utopia_manifesto_household_assembly }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_commonwealth_council }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_council_of_callings }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_rotating_congress }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_board_of_measure }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_college_of_measure }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_stewardship_council }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_directorate_of_service }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_interpreter }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_general_provisioner }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_secretary_of_callings }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_surveyor_of_shores }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_civic_engineer }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_keeper_of_stores }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_league_envoy }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_advocate_of_limits }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_public_auditor }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_constitutional_jurist }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_council_organizer }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_social_workshop_planner }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_chief_surveyor }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_standards_engineer }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_steward_of_service }
+			set_nationality = { target_country = ROOT character = utopia_manifesto_contract_broker }
+		}
 		utopia_manifesto_initialize_identity_package = yes
 		utopia_manifesto_initialize_achievement_lifecycle = yes
 		utopia_manifesto_initialize_country_idea_lifecycles = yes
@@ -2657,7 +2659,7 @@ utopia_manifesto_apply_long_supply_contract = {
 	for_each_scope_loop = {
 		array = utopia_manifesto_active_case_states
 		if = {
-			limit = { NOT = { has_resources_rights = { receiver = ROOT } } }
+			limit = { ROOT = { NOT = { has_resources_rights = { state = PREV } } } }
 			owner = {
 				give_resource_rights = {
 					receiver = ROOT
@@ -3249,7 +3251,7 @@ utopia_manifesto_unregister_root_long_supply_contract_state = {
 	if = {
 		limit = { is_in_array = { array = utopia_manifesto_long_supply_created_resource_right_founders value = ROOT } }
 		if = {
-			limit = { has_resources_rights = { receiver = ROOT } }
+			limit = { ROOT = { has_resources_rights = { state = PREV } } }
 			ROOT = { remove_resource_rights = PREV }
 		}
 		remove_from_array = { array = utopia_manifesto_long_supply_created_resource_right_founders value = ROOT }
@@ -6603,7 +6605,7 @@ utopia_manifesto_try_formalize_league_defense = {
 		clr_country_flag = utopia_manifesto_league_governance_guardians
 		clr_country_flag = utopia_manifesto_league_governance_island_secretariat
 		clr_country_flag = utopia_manifesto_league_governance_jest_council
-		if = { limit = { utopia_manifesto_is_consent_route = yes } set_country_flag = utopia_manifesto_league_governance_household_council }
+		if = { limit = { utopia_manifesto_is_consent_of_households_route = yes } set_country_flag = utopia_manifesto_league_governance_household_council }
 		else_if = { limit = { utopia_manifesto_is_common_table_route = yes } set_country_flag = utopia_manifesto_league_governance_common_table }
 		else_if = { limit = { utopia_manifesto_is_guardians_of_measure_route = yes } set_country_flag = utopia_manifesto_league_governance_guardians }
 		else_if = { limit = { utopia_manifesto_is_closed_island_route = yes } set_country_flag = utopia_manifesto_league_governance_island_secretariat }
@@ -7613,7 +7615,7 @@ utopia_manifesto_execute_paid_military_growth = {
 	multiply_temp_variable = { utopia_manifesto_negative_military_support_cost = constant:utopia_manifesto_math.negative_one }
 	multiply_temp_variable = { utopia_manifesto_negative_military_army_xp_cost = constant:utopia_manifesto_math.negative_one }
 	add_manpower = utopia_manifesto_negative_military_manpower_cost
-	add_army_experience = utopia_manifesto_negative_military_army_xp_cost
+	army_experience = utopia_manifesto_negative_military_army_xp_cost
 	add_equipment_to_stockpile = { type = infantry_equipment amount = utopia_manifesto_negative_military_infantry_cost }
 	add_equipment_to_stockpile = { type = support_equipment amount = utopia_manifesto_negative_military_support_cost }
 	utopia_manifesto_create_paid_formation_template = yes

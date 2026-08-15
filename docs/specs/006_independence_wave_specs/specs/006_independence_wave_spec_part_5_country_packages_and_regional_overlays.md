@@ -87,6 +87,8 @@ remain the design authority.
 | IW-043 Middle Volga / Volga Bulgaria | Vanilla carrier `CHU`; exact Event 006 origin and package identity | Middle Volga Congress at anchor 249, optional Cheboksary member 256, rights and river-security routes, package forces, focus/decision/localisation surfaces, centralized route politics, and cleanup | FORM-12/FORM-13 use the exact paid congress, consent, anchor, carrier-cosmetic, staged-integration, and cleanup contract. The two Volga signature achievement writers are sole and mutually exclusive |
 | IW-058 Assyria | Vanilla carrier `ASY`; exact Event 006 origin and package identity | Mosul anchor 676, Council of Communities routes, package forces, focus/decision/localisation surfaces, centralized route politics, and cleanup | FORM-18 and sovereign autonomy use the exact consent, anchor, defensive-method, carrier-cosmetic, staged-integration, and cleanup contract. The three Assyria proof writers are sole and contract-gated |
 
+Implementation reconciliation (2026-08-14): the installed map identifies state 256 as Chuvashia and state 833 as Mari El. The current FORM-12/FORM-13 generated consumers therefore use state 833 for the MEL member slot, while the `256` value in the historical IW-043 research row is retained as public-baseline traceability only. State 256 is not a MEL alias, and this reconciliation does not promote IW-043, IW-047, or either formable beyond their existing admission gates.
+
 Both packages reuse their vanilla carriers and do not create standalone country
 histories. Each has four institutional character entries. All eight visible
 institutional portraits are male and are not advisor, officer, or commander

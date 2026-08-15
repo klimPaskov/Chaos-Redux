@@ -448,7 +448,10 @@ africa_initialize_selected_host = {
 			NOT = { has_country_flag = africa_host_commit_completed }
 			has_country_flag = africa_prefire_contacts_frozen
 		}
-		clear_global_event_target = africa_host
+		if = {
+			limit = { has_event_target = africa_host }
+			clear_global_event_target = africa_host
+		}
 		save_global_event_target_as = africa_host
 		set_global_flag = africa_event_active
 		set_global_flag = africa_baseline_active
@@ -2434,4 +2437,379 @@ africa_record_playbook_signature_step = {
 		if = { limit = { check_variable = { africa_focus_signature_step = constant:africa_focus_signature_step.secure_compact_role } } set_country_flag = africa_reunion_compact_role_recorded }
 		if = { limit = { check_variable = { africa_focus_signature_step = constant:africa_focus_signature_step.prove_compact_viability } } set_country_flag = africa_reunion_compact_viability_recorded }
 	}
+}
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 EVENT 019 PROVIDER ADAPTERS
+# ============================================================================
+# Providers 512 and 513 are owned by the Africa package. Provider 512 exposes
+# chaosx_elephant; provider 513 enumerates all five combat and three support
+# strange-formation tokens. The strange provider remains dormant until the
+# exact owner package gate is true; no ordinary infantry fallback is allowed.
+# Neither provider modifies Event 019's dedicated registry file.
+# ============================================================================
+
+africa_register_event19_event12_providers = {
+	chaos_unit_family_provider_512_register = yes
+	chaos_unit_family_provider_513_register = yes
+}
+
+chaos_unit_family_provider_512_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event12_elephant.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event12_elephant.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event12_elephant.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event12_elephant.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event12_elephant.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event12_elephant.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event12_elephant.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event12_elephant.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event12_elephant.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event12_elephant.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event12_elephant.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_512_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_elephant_warfare_unlocked
+				has_country_flag = africa_elephant_host_guard_spawned
+				has_country_flag = africa_elephant_member_stockpile_granted
+			}
+			NOT = { is_actual_nonhuman_country = yes }
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+}
+
+chaos_unit_family_provider_512_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Armoured Elephant Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					chaosx_elephant = { x = 0 y = 0 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event12_elephant.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:chaos_unit_family_event12_elephant.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+}
+
+chaos_unit_family_provider_512_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_512_event19_reconcile_sustainment = {
+	# The elephant template has one 1,600-man battalion and one bespoke
+	# equipment need. Keep both rows visible to exact settlement (profile 130).
+	infantry_spawn_clear_provider_obligation_manifest = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_elephant.manpower_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_component_count = constant:chaos_unit_family_event12_elephant.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.chaosx_elephant_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_elephant.elephant_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
+}
+
+chaos_unit_family_provider_512_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.elephant }
+}
+
+chaos_unit_family_provider_512_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_elephant_warfare_unlocked
+				has_country_flag = africa_elephant_host_guard_spawned
+				has_country_flag = africa_elephant_member_stockpile_granted
+			}
+			NOT = { is_actual_nonhuman_country = yes }
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			OR = {
+				has_country_flag = africa_elephant_warfare_unlocked
+				has_country_flag = africa_elephant_host_guard_spawned
+				has_country_flag = africa_elephant_member_stockpile_granted
+			}
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_512_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_512_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_512_event19_setup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_512_derivative_noop = 0 }
+}
+chaos_unit_family_provider_512_event19_remove_public_additions = {
+	set_temp_variable = { chaos_unit_family_provider_512_derivative_noop = 0 }
+}
+chaos_unit_family_provider_512_event19_cleanup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_512_derivative_noop = 0 }
+}
+
+chaos_unit_family_provider_513_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event12_strange_force.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event12_strange_force.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event12_strange_force.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event12_strange_force.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event12_strange_force.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event12_strange_force.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event12_strange_force.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event12_strange_force.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event12_strange_force.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event12_strange_force.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event12_strange_force.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_513_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			has_global_flag = africa_strange_formation_package_ready
+			has_global_flag = africa_evolution_iii_logged
+			OR = {
+				africa_is_current_host = yes
+				africa_priority_member_has_package = yes
+			}
+			NOT = { is_actual_nonhuman_country = yes }
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+}
+
+chaos_unit_family_provider_513_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Africa Strange Formation Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					gorilla_heavy_infantry = { x = 0 y = 0 }
+					stone_cohorts = { x = 0 y = 1 }
+					riverborn = { x = 0 y = 2 }
+					forest_giants = { x = 0 y = 3 }
+					plague_carriers = { x = 0 y = 4 }
+				}
+				support = {
+					pan_sappers = { x = 0 y = 0 }
+					oracle_recon = { x = 0 y = 1 }
+					disaster_wardens = { x = 0 y = 2 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event12_strange_force.template_combat_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:chaos_unit_family_event12_strange_force.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+	set_temp_variable = { infantry_spawn_current_component_slot_kind = constant:infantry_spawn_component_kind.support }
+	set_temp_variable = { infantry_spawn_current_component_unit_profile = constant:chaos_unit_family_event12_strange_force.family_id }
+	set_temp_variable = { infantry_spawn_current_component_column = 0 }
+	set_temp_variable = { infantry_spawn_current_component_row = 0 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 1 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 2 }
+	infantry_spawn_append_current_template_component = yes
+}
+
+chaos_unit_family_provider_513_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_513_event19_reconcile_sustainment = {
+	# Every combat and support component carries its own manpower and bespoke
+	# equipment row. Do not collapse support needs into the five combat rows.
+	infantry_spawn_clear_provider_obligation_manifest = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.gorilla_heavy_infantry_manpower_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_component_count = 1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_gorilla_heavy_infantry_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.gorilla_heavy_infantry_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.pan_sappers_manpower_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_pan_sappers_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.pan_sappers_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.stone_cohorts_manpower_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_stone_cohorts_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.stone_cohorts_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.riverborn_manpower_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_riverborn_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.riverborn_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.forest_giants_manpower_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_forest_giants_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.forest_giants_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.oracle_recon_manpower_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_oracle_recon_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.oracle_recon_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.disaster_wardens_manpower_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_disaster_wardens_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.disaster_wardens_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.plague_carriers_manpower_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.africa_plague_carriers_equipment_1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event12_strange_force.plague_carriers_equipment_per_battalion }
+	infantry_spawn_queue_provider_obligation = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
+}
+
+chaos_unit_family_provider_513_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.africa_strange_force }
+}
+
+chaos_unit_family_provider_513_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			has_global_flag = africa_strange_formation_package_ready
+			has_global_flag = africa_evolution_iii_logged
+			OR = {
+				africa_is_current_host = yes
+				africa_priority_member_has_package = yes
+			}
+			NOT = { is_actual_nonhuman_country = yes }
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			has_global_flag = africa_strange_formation_package_ready
+			has_global_flag = africa_evolution_iii_logged
+			OR = {
+				africa_is_current_host = yes
+				africa_priority_member_has_package = yes
+			}
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_513_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_513_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_513_event19_setup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_513_derivative_noop = 0 }
+}
+chaos_unit_family_provider_513_event19_remove_public_additions = {
+	set_temp_variable = { chaos_unit_family_provider_513_derivative_noop = 0 }
+}
+chaos_unit_family_provider_513_event19_cleanup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_513_derivative_noop = 0 }
 }

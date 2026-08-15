@@ -1,5 +1,7 @@
 # Event 006 decision and mission audit — current worktree — 2026-08-11
 
+> Superseded for the DM-01 material-cost mismatch by `006_dm01_provisional_capital_implementation_2026_08_12.md` and the current post-fallback audit `006_dm01_current_material_commitment_audit_2026_08_12.md`. The broader decision/mission findings and MCP limitations remain historical evidence; current DM-01 source now includes the accepted equipment and isolated-transport commitment.
+
 ## Verdict
 
 This was a read-only source audit of Event 006 decisions, missions, timed objectives, categories, costs, AI gates, cancellation and cleanup, localisation surfaces, and exploit risks. No gameplay, decision, mission, AI, trigger, constant, localisation, or GUI source was changed.

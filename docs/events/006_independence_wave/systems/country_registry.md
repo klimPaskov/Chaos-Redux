@@ -50,14 +50,15 @@ The current registered Iberian carriers are resolved by package ID rather than b
 
 `NAV` and `GLC` are registered vanilla carriers, not new Chaos Redux tags. Their Event 006 setup, final-validation, and cleanup adapters are source-wired in the Iberian package dispatch and preserve vanilla history and leader rosters while loading the shared generic tree and package-specific ledgers only after the exact package ID, anchor, former-host, and origin proofs pass. Other events may reuse these carriers through `chaosx_country_independence_wave_registered`, but must record their own origin and load their own overlay instead of calling the Event 006 setup dispatcher by tag alone.
 
-The current admitted Danube and Thrace carrier examples are also resolved by package ID:
+The current admitted Danube, Thrace, and Epirus carrier examples are also resolved by package ID:
 
 | Package | Carrier | Anchor | Former host | Region | Reusable collection |
 | --- | --- | ---: | --- | --- | --- |
 | IW-024 | `AXX` Banat | 82 | `ROM` | Balkans and Danube | `chaosx_country_region_balkans_and_danube` |
 | IW-027 | `BAX` Thrace | 184 | `GRE` | Balkans and Danube | `chaosx_country_region_balkans_and_danube` |
+| IW-028 | `BBX` Epirus | 185 | `GRE` | Balkans and Danube | `chaosx_country_region_balkans_and_danube` |
 
-Later events can select these carriers from the regional collection after proving their own origin, anchor, host survival, and package readiness. They must load their own content overlay rather than inheriting the Event 006 Thrace or Banat package dispatcher.
+Later events can select these carriers from the regional collection after proving their own origin, anchor, host survival, and package readiness. They must load their own content overlay rather than inheriting the Event 006 Banat, Thrace, or Epirus package dispatcher.
 
 ## Static groups versus collections
 

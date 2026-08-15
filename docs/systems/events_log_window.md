@@ -35,6 +35,7 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - Filter options: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`.
 - Sort options: `By Event ID`, `By Fired`, `By Weight`. `By Fired` hides events with zero logged firings.
 - The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
+- The `Fire Selected` button sits next to the window `Close` button and is only visible on the Events tab. Clicking it manually fires every currently selected (enabled) event through `events_log_fire_all_selected_events`, which reuses the same manual dispatch path as the single event-detail trigger button (`fire_event_by_temp_id_no_cluster` with `events_log_manual_event_detail_trigger` set). Candidates are pre-filtered by `events_log_fire_candidate_is_available`: disabled events, already-fired major/fire-once events, Event 12 without `africa_manual_event_is_available`, and Event 17 without `random_faction_has_manual_dispatchable_context` are skipped. Per-event readiness gates inside the fire helper still apply. The button is disabled when no selected event is currently fireable (`events_log_any_selected_event_is_fireable`). Views are rebuilt afterwards through `events_log_refresh_bulk_enable_views`.
 
 ## Event Details world-end catalog
 

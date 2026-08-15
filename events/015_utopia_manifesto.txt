@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION = 25
 add_namespace = chaosx.nr15
 
 # ============================================================================
@@ -1418,7 +1421,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.46.a
-		trigger = { political_power > constant:utopia_manifesto_decision_cost.pp_medium }
+		trigger = { check_variable = { var = political_power value = constant:utopia_manifesto_decision_cost.pp_medium compare = greater_than } }
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.preferred
 			modifier = {
@@ -1878,7 +1881,7 @@ country_event = {
 					array = utopia_manifesto_active_case_targets
 					has_opinion = {
 						target = ROOT
-						value > constant:utopia_manifesto_decision_threshold.positive_opinion
+						value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION
 					}
 				}
 			}
@@ -3348,7 +3351,7 @@ country_event = {
 				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
 				has_opinion = {
 					target = FROM
-					value > constant:utopia_manifesto_decision_threshold.positive_opinion
+					value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION
 				}
 			}
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
@@ -3452,8 +3455,8 @@ country_event = {
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.preferred
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_same_ideology = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
@@ -3488,7 +3491,7 @@ country_event = {
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.guarded
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { utopia_manifesto_need_is_high = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { NOT = { utopia_manifesto_reserve_is_secure = yes } } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
@@ -3505,10 +3508,10 @@ country_event = {
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.very_low
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_same_ideology = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_sponsor_defense_guarantee } }
 		}
@@ -3525,8 +3528,8 @@ country_event = {
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war = yes }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_same_ideology = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_sponsor_defense_guarantee } }
@@ -3607,8 +3610,8 @@ country_event = {
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.strong
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_same_ideology = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { utopia_manifesto_need_is_high = yes } }
@@ -3630,8 +3633,8 @@ country_event = {
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war = yes }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_war = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_global_flag = world_in_threat }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_same_ideology = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
@@ -3647,10 +3650,10 @@ country_event = {
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.low
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_same_ideology = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.avoid FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
 		}
@@ -3728,7 +3731,7 @@ country_event = {
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.strong
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure has_war_with = FROM }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure NOT = { has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_coercive_conduct_used } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.war_pressure FROM = { has_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim } }
 		}
@@ -3742,8 +3745,8 @@ country_event = {
 		name = chaosx.nr15.217.b
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.cautious
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > constant:utopia_manifesto_decision_threshold.positive_opinion } }
-			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_same_ideology = FROM }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity has_opinion = { target = FROM value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } }
+			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_same_ideology = yes } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_league_legitimacy_proven } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_partner_autonomy_retained } }
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.continuity FROM = { has_country_flag = utopia_manifesto_sponsor_defense_guarantee } }
@@ -3787,7 +3790,7 @@ country_event = {
 				factor = constant:utopia_manifesto_narrative_ai_factor.continuity
 				has_opinion = {
 					target = FROM
-					value > constant:utopia_manifesto_decision_threshold.positive_opinion
+					value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION
 				}
 			}
 			modifier = { factor = constant:utopia_manifesto_narrative_ai_factor.blocked has_war_with = FROM }

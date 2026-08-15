@@ -6,7 +6,7 @@ This proof records the concrete chemical and biological terminal callers that no
 
 ## Chemical terminal caller
 
-`chem_unleash_stockpile_doomsday` in `common/scripted_effects/chemical_ability_effects.txt` is the stockpile doomsday decision resolver. After it consumes the four chemical payload types, applies the state contamination and unit damage, records the doomsday condemnation source, and completes treaty handling, it saves the releasing country as `fallout_request_actor_input` and submits `fallout_request_source.chemical_saturation` with terminal intensity to `fallout_request_aftermath`.
+`chem_unleash_stockpile_doomsday` in `common/scripted_effects/cbrn_chemical_doomsday_effects.txt` is the decision-facing wrapper for `cbrn_chemical_doomsday_release`. The resolver consumes each supported cylinder model once, allocates the real debited stock across exact eligible controlled states, and submits every accepted state through the shared chemical action dispatcher. After the accepted batch records disruption, deaths, contamination, medical saturation, evidence, attribution, history, treaty response, and Condemnation, it saves the releasing country as `fallout_request_actor_input` and submits `fallout_request_source.chemical_saturation` with terminal intensity to `fallout_request_aftermath`.
 
 The caller does not set `world_end`, does not write a public Fallout identity, and does not bypass the shared request ledger. The coordinator validates the explicit chemical source without requiring Air Contamination or Chaos above 1000. A request that races another terminal source is admitted only if the one shared ledger remains free.
 

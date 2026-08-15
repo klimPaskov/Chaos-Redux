@@ -399,12 +399,12 @@ def main() -> int:
 
 	constants = strip_comments(read("common/script_constants/006_independence_wave_constants.txt"))
 	for key, expected in {
-		"calm_world": 6,
-		"gathering_storm": 8,
-		"rising_chaos": 10,
-		"chaos_tier": 14,
-		"totalen_chaos": 20,
-		"world_collapse": 20,
+		"calm_world": 3,
+		"gathering_storm": 4,
+		"rising_chaos": 5,
+		"chaos_tier": 7,
+		"totalen_chaos": 10,
+		"world_collapse": 10,
 	}.items():
 		require(
 			bool(re.search(rf"(?m)^\s*{key}\s*=\s*{expected}\s*$", constants)),
@@ -471,13 +471,26 @@ def main() -> int:
 	)
 
 	# The accepted closure keeps the RHI/AJX reservation group intact and admits
-	# exactly that pair through a documented two-slot exception. Keep the
-	# canonical matrix and runtime consumers source-audited so a tempting map
+	# exactly that pair through a documented two-slot exception. IW-045 adds its
+	# independently audited RG-651 carrier without changing that exception. Keep
+	# the canonical matrix and runtime consumers source-audited so a tempting map
 	# rebind cannot silently manufacture capacity.
 	dispatch = read("common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt")
+	adapter = extract_script_block(
+		dispatch,
+		"has_independence_wave_runtime_package_adapter_for_execution_id",
+	)
 	attestation = extract_script_block(
 		dispatch,
 		"has_independence_wave_runtime_package_content_attestation_for_execution_id",
+	)
+	adapter_ids = sorted(
+		{
+			int(value)
+			for value in re.findall(
+				r"constant:independence_wave_package_id\.iw_(\d{3})", adapter
+			)
+		}
 	)
 	attested_ids = sorted(
 		{
@@ -487,11 +500,65 @@ def main() -> int:
 			)
 		}
 	)
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 24, 26, 27, 29, 33, 41, 70, 71, 72, 173, 184}
+	expected_adapter_ids = {
+		1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19,
+		23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 40, 41, 43, 44, 45, 58, 70,
+		71, 72, 93, 98, 173, 177, 179, 184,
+	}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 14, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 40, 41, 44, 45, 70, 71, 72, 173, 184}
+	require(
+		set(adapter_ids) == expected_adapter_ids,
+		"runtime adapter set changed without updating the accepted Event 006 closure: "
+		+ f"expected={sorted(expected_adapter_ids)} found={adapter_ids}",
+		errors,
+	)
 	require(
 		set(attested_ids) == expected_attested_ids,
 		"content-attestation set changed without updating the accepted Event 006 closure: "
 		+ f"expected={sorted(expected_attested_ids)} found={attested_ids}",
+		errors,
+	)
+	expected_adapter_only_ids = expected_adapter_ids - expected_attested_ids
+	require(
+		set(adapter_ids) - set(attested_ids) == expected_adapter_only_ids,
+		"adapter-only fail-closed set changed without an accepted package promotion: "
+		+ f"expected={sorted(expected_adapter_only_ids)} found={sorted(set(adapter_ids) - set(attested_ids))}",
+		errors,
+	)
+	require(
+		"has_independence_wave_runtime_package_adapter_for_execution_id = yes" in extract_script_block(
+			dispatch,
+			"is_independence_wave_runtime_package_preflight_ready",
+		)
+		and "has_independence_wave_runtime_package_content_attestation_for_execution_id = yes" in extract_script_block(
+			dispatch,
+			"is_independence_wave_runtime_package_preflight_ready",
+		),
+		"runtime preflight no longer requires both adapter and content-attestation gates",
+		errors,
+	)
+	dispatch_effects = read("common/scripted_effects/006_independence_wave_package_dispatch_effects.txt")
+	phase_families: dict[str, set[str]] = {}
+	for call, phase in re.findall(
+		r"(?m)^\t(independence_wave_dispatch_.+_package_(setup|final_validation|cleanup))\s*=\s*yes$",
+		dispatch_effects,
+	):
+		family = re.sub(r"_package_(?:setup|final_validation|cleanup)$", "", call)
+		phase_families.setdefault(family, set()).add(phase)
+	require(
+		len(phase_families) == 26,
+		"central package dispatcher family count changed: " + repr(sorted(phase_families)),
+		errors,
+	)
+	missing_phases = {
+		family: sorted({"setup", "final_validation", "cleanup"} - phases)
+		for family, phases in phase_families.items()
+		if phases != {"setup", "final_validation", "cleanup"}
+	}
+	require(
+		not missing_phases,
+		"central package dispatcher has incomplete setup/final-validation/cleanup parity: "
+		+ repr(missing_phases),
 		errors,
 	)
 	loaders: dict[int, str] = {}
@@ -529,22 +596,22 @@ def main() -> int:
 			attested_anchors[package_id] = int(anchor_match.group(1))
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
-			len(set(attested_groups.values())) == 23,
-			"accepted twenty-five-package closure no longer exposes exactly twenty-three compatible reservation groups: "
-		+ repr(attested_groups),
-		errors,
+			len(set(attested_groups.values())) == 29,
+			"accepted thirty-two-package closure no longer exposes exactly twenty-nine compatible reservation groups: "
+			+ repr(attested_groups),
+			errors,
 		)
 		require(
-		attested_groups.get(8) == "rg_rhine_saar" and attested_groups.get(10) == "rg_rhine_saar",
-		"accepted RHI/AJX shared RG-RHINE-SAAR disposition changed without a new closure: "
-		+ repr({8: attested_groups.get(8), 10: attested_groups.get(10)}),
-		errors,
+			attested_groups.get(8) == "rg_rhine_saar" and attested_groups.get(10) == "rg_rhine_saar",
+			"accepted RHI/AJX shared RG-RHINE-SAAR disposition changed without a new closure: "
+			+ repr({8: attested_groups.get(8), 10: attested_groups.get(10)}),
+			errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 25,
+			len(set(attested_anchors.values())) == 32,
 			"attested package anchors are not pairwise unique: " + repr(attested_anchors),
-		errors,
-	)
+			errors,
+		)
 		reservation_effects = read("common/scripted_effects/chaosx_liberation_release_effects.txt")
 		reservation_triggers = read("common/scripted_triggers/006_independence_wave_packages_region_01_triggers.txt")
 		capacity_triggers = read("common/scripted_triggers/006_independence_wave_triggers.txt")
@@ -666,6 +733,22 @@ def main() -> int:
 		("independence_wave_execution_country", "is_liberation_release_current_reserved_country = yes"),
 		("independence_wave_execution_sponsorship_country", "is_liberation_release_current_reserved_country = yes"),
 	):
+		if target == "independence_wave_execution_country":
+			# Event 006 validates the reserved carrier before the release effect
+			# instantiates it. The target must therefore be absent here; the
+			# sponsorship country is the already-existing side of the ledger.
+			dormant_target_validation = (
+				rf"event_target:{re.escape(target)}\s*=\s*\{{"
+				rf"(?:(?:\s*#.*\n)*)"
+				rf"\s*exists\s*=\s*no"
+				rf"\s*{re.escape(first_readiness_trigger)}"
+			)
+			require(
+				re.search(dormant_target_validation, execution_metadata) is not None,
+				f"Event 006 execution metadata does not validate dormant {target} before release",
+				errors,
+			)
+			continue
 		positive_target_validation = (
 			rf"event_target:{re.escape(target)}\s*=\s*\{{"
 			rf"\s*exists\s*=\s*yes"
@@ -926,13 +1009,14 @@ def main() -> int:
 	print(f"- publishers: {len(publishers)}")
 	print(f"- automatic/high-chaos selectable packages: {len(automatic_ids)}")
 	print(f"- SCN-008 ranked selectable packages: {len(ranked_ids)}")
+	print(f"- runtime adapters: {len(adapter_ids)}; adapter-only fail-closed IDs: " + ", ".join(f"IW{package_id:03d}" for package_id in sorted(expected_adapter_only_ids)))
 	print(f"- attested packages: {len(attested_ids)}; compatible reservation groups: {len(set(attested_groups.values()))}")
 	print(
 		"- static standalone witness: 20 admitted packages; protected former-host states "
 		+ ", ".join(f"{host}={state_id}" for host, state_id in sorted(static_witness_protected_states.items()))
 	)
 	print("- RG-RHINE-SAAR pair capacity: 2 distinct packages (IW-008 anchor 51; IW-010 anchor 42)")
-	print("- automatic counts: 6 / 8 / 10 / 14 / 20 (World Collapse 20)")
+	print("- automatic counts: 3 / 4 / 5 / 7 / 10 (World Collapse 10)")
 	print("- scenario intensities: low anchor/fragile; medium compact/viable; high extended/armed; maximum extended/high-chaos")
 	print("- scenario types: scatter; congress; host wars; universal belligerence; patrons; partition")
 	print("- pre-event crisis surface: retired; no category, mission, cost, or queue")

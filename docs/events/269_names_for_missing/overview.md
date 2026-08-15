@@ -26,14 +26,14 @@ The result installs one branch-specific timed modifier or a register backlog mod
 ## Wiring
 
 - Script: `events/fallout_world_end_events.txt`
-- Effects: `common/scripted_effects/fallout_world_end_names_missing_event_effects.txt`
-- Triggers: `common/scripted_triggers/fallout_world_end_names_missing_event_triggers.txt`
-- Constants: `common/script_constants/fallout_world_end_event_constants.txt`
-- Modifiers: `common/dynamic_modifiers/fallout_world_end_names_missing_dynamic_modifiers.txt`
-- Event Log scripted localisation: `common/scripted_localisation/fallout_world_end_names_missing_event_log_scripted_localisation.txt`
+- Effects: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Triggers: `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- Constants: `common/script_constants/fallout_consolidated_constants.txt`
+- Modifiers: `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- Event Log scripted localisation: `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 - Event Log central mappings: `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and `common/scripted_effects/chaosx_events_log_effects.txt`
-- Report art: `interface/fallout_world_end.gfx` and `gfx/event_pictures/fallout/report_event_fallout_names_missing.dds`
-- Player text: `localisation/english/fallout_world_end_names_missing_l_english.yml`
+- Report art: `interface/fallout_consolidated.gfx` and `gfx/event_pictures/fallout/report_event_fallout_names_missing.dds`
+- Player text: `localisation/english/fallout_consolidated_l_english.yml`
 
 ## Runtime review boundary
 
