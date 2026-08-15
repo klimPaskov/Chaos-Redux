@@ -91,7 +91,7 @@ Post-reconciliation IW-051 source research added two original YAK source images 
 
 Post-reconciliation BWX evidence added one original Mordovian ASSR emblem directly in the parent and two processed evidence files under `processed/`, so the latest physical audit reports 49 parent originals and 139 processed/evidence files. This does not change the flat layout, the no-`156x210` rule, or ComfyUI source selection: only direct parent source files are inputs, while processed evidence stays in `processed/`.
 
-Post-BWX IW-052 BYA portrait research added one original Erbanov source directly in the parent and eight processed provenance/crop/review files under `processed/`, so the current physical audit reports 50 parent originals and 147 processed/evidence files. The layout remains unchanged: `processed/` is the only child folder, no `156x210` archive files are retained, and only direct parent originals are ComfyUI inputs.
+Post-BWX IW-052 BYA portrait research added one original Erbanov source directly in the parent and eight processed provenance/crop/review files under `processed/`, so the physical audit reported 50 parent originals and 147 processed/evidence files. A subsequent UDM source-gate record was added directly under `processed/`, bringing the current physical audit to 50 parent originals and 148 processed/evidence files. The layout remains unchanged: `processed/` is the only child folder, no `156x210` archive files are retained, and only direct parent originals are ComfyUI inputs.
 
 A focused search across the direct Event 006 markdown scope, the resume packet, and the simplifications/blockers spec found no remaining `portraits_generated_png` reference.
 
