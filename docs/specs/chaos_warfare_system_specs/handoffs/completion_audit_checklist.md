@@ -80,6 +80,8 @@ The supported-core checklist is reconciled against source evidence and explicit 
 - [x] country starting reserves follow profiles
 - [x] military coverage uses actual equipment
 - [x] civilian distribution consumes crates based on population
+- [x] routine distribution and filter replacement use one national program per task rather than one decision card per ordinary state
+- [x] exact-state protection cards appear only for a verified local alert, contamination record, or other real state incident
 - [x] filters and damaged masks need replacement
 - [x] emergency distribution has wastage
 - [x] masks reduce every active Chemical death pipeline
@@ -114,6 +116,8 @@ The supported-core checklist is reconciled against source evidence and explicit 
 ## UI and localisation
 
 - [x] readiness, stockpiles, protection, operations, contamination, and response are readable through accepted native categories and focused subsystem UI
+- [x] inherited starting technologies, facilities, stockpiles, reserves, and doctrine do not reveal ordinary CBRN categories without a post-start reveal or live incident
+- [x] empty CBRN categories hide and all audited CBRN event definitions remain triggered-only
 - [x] irrelevant and unsupported decisions hide
 - [x] dynamic requirements have custom tooltips
 - [x] no hidden mechanics are exposed through final text
@@ -151,6 +155,7 @@ Generic achievement registry `possible = { always = yes }` is presentation-only;
 - [x] AI scenarios recorded for seven major country profiles and three minor profiles
 - [x] exact air-operation hook result documented
 - [x] no broad unapproved global pulse added
+- [x] state-target audit found no CBRN decision that exposes every ordinary controlled state; retained state targets require exact incidents, facilities, evidence, occupation records, sabotage objectives, or battlefield objectives
 - [x] final reward-density and bloat audit confirms substantial returns without adding a duplicate subsystem
 - [x] completion auditor's supported-core source blocker is closed; remaining engine and live-consumer limits are disclosed below
 
