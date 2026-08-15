@@ -55,6 +55,22 @@ All normal files are 82×52, medium files are 41×26, and small files are 10×7.
 
 The source-date conflict between the official 2 July 1992 adoption and FOTW’s 3 May 1992 report is material uncertainty for the modern flag but does not change the post-1936 conclusion.
 
+## Second source-only recheck — 2026-08-15
+
+The legal-institutional trail strengthens the fail-closed result. The [1937 Constitution of the RSFSR](https://ru.wikisource.org/wiki/%D0%9A%D0%BE%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%86%D0%B8%D1%8F_%D0%A0%D0%A1%D0%A4%D0%A1%D0%A0_(1937)) lists the Oirot Autonomous Oblast among the autonomous oblasts of the RSFSR in Article 14. Articles 73–76 define its authority as a local Soviet and require a statutory “Regulation on the Autonomous Oblast,” rather than giving it an autonomous-republic constitution or a separate state-symbol chapter. Articles 148–149 define the RSFSR coat of arms and flag, with no Oirot flag or emblem. This does not prove that no informal badge ever existed, but it blocks presenting an official Oirot state flag without a separate period instrument.
+
+The [1936 USSR Constitution transcription](https://www.hist.msu.ru/ER/Etext/cnst1936.htm) likewise defines the USSR coat of arms and flag in Articles 143–144 and its capital in Article 145. The constitutional sources therefore support only the USSR/RSFSR state-symbol layer for the 1936–1937 legal context, not an Altai/Oyrot-specific neutral flag. A host-state flag would identify the Soviet parent state and must not be silently relabelled as ALT identity.
+
+The Russian State Library catalog was rechecked as a period-source lead. Exact full-text searches returned zero hits for `"Ойротская автономная область" "флаг"` and zero for `"Ойротская автономная область" "эмблем"`. The `"Ойротская автономная область" "печать"` search returned map and administrative-history material, not an identified regional seal. These catalog counts are search evidence, not proof of universal absence, because uncatalogued or non-digitized archives may exist.
+
+The closest period records are near-misses rather than symbol sources:
+
+- [1939 administrative map of Oirot Autonomous Oblast](https://search.rsl.ru/ru/record/01010709610), prepared and printed by the 6th Cartographic Factory of GUGK and the Oirot Oblispolkom. It is direct period institutional cartography, but it is a map, not a flag or emblem, and the scan/download rights are not stated.
+- [1923 Oirat Autonomous Oblast expedition map](https://search.rsl.ru/ru/record/01008912196). It is a period geographic record, not a civic symbol, and its runtime rights are not stated.
+- [1936 issues of *Krasnaya Oirotia* / *Kyzyl Oirot*](https://search.rsl.ru/ru/record/01014764699), catalogued as the organ of the Oirot regional and Oirot-Tura party committees and the oblast Soviet. This proves an institution-owned period publication existed, but the RSL record exposes metadata rather than an inspectable scan in this access path. No masthead mark was verified, and no reuse license was provided. A newspaper masthead would also be an institutional publication mark, not a neutral national flag.
+
+The official [Altai Republic history page](https://altai-republic.ru/about-the-region/history/) confirms the Oirot Autonomous Oblast naming period, while the official [flag page](https://altai-republic.ru/flag/) dates the first state flag to 2 July 1992. The Gurkin-associated 1917 design remains a secondary/reconstructed lead with no obtained archival scan or rights receipt. The additional search therefore does not clear either the neutral-1936 gate or a route-specific period-source gate.
+
 ## Design-to-route assessment
 
 - `ALT_democratic` is visually consistent with the official post-1992 Altai Republic four-stripe flag, but the design cannot be presented as a neutral 1936 Altai/Oyrot standard.
@@ -81,6 +97,8 @@ The separate external tag audit found no external country-definition collision a
 3. If a 1917, 1921/1922, Gurkin-associated, or modern civic route is desired, obtain parent approval for the route identity and a direct source or archive scan first. Re-open the asset workflow only after historical function, date, authorship/institution, rights, and era fit are resolved.
 4. Keep the identity/leader gate and Event 005 origin/reservation gate from the package audit unresolved until their owners provide evidence. A real vanilla leader entry does not substitute for a defensible release-date institution.
 5. Preserve the separate source-contract mismatch: the accepted IW-053 force mapping says tradition **61**, while the shared `p61` constants currently show **57**. This is not a symbol decision and must be reconciled by the parent/force owner independently.
+
+The second source-only recheck leaves the final decision unchanged: **no existing ALT route gate can be cleared from the reviewed evidence without inventing history or misrepresenting a Soviet parent-state/publication symbol as Altai/Oyrot identity**.
 
 ## Asset and runtime handoff status
 
