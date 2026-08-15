@@ -1230,7 +1230,10 @@ natural_disaster_dispatch_queued_super_event = {
 		}
 		set_temp_variable = { natural_disaster_super_event_dispatch_slot = global.natural_disaster_super_event_queue_slot_entries^0 }
 		set_temp_variable = { natural_disaster_super_event_dispatch_audio = global.natural_disaster_super_event_queue_audio_entries^0 }
-		clear_global_event_target = natural_disaster_super_event_scope
+		if = {
+			limit = { has_event_target = natural_disaster_super_event_scope }
+			clear_global_event_target = natural_disaster_super_event_scope
+		}
 		if = {
 			limit = { check_variable = { global.natural_disaster_super_event_queue_state_entries^0 > 0 } }
 			var:global.natural_disaster_super_event_queue_state_entries^0 = { save_global_event_target_as = natural_disaster_super_event_scope }
@@ -1268,7 +1271,10 @@ natural_disaster_dispatch_queued_super_event = {
 natural_disaster_cleanup_super_event_target = {
 	if = {
 		limit = { NOT = { has_global_flag = super_event_visible } }
-		clear_global_event_target = natural_disaster_super_event_scope
+		if = {
+			limit = { has_event_target = natural_disaster_super_event_scope }
+			clear_global_event_target = natural_disaster_super_event_scope
+		}
 		natural_disaster_dispatch_queued_super_event = yes
 	}
 	else = {
