@@ -159,6 +159,8 @@ Audit selection separately from entity-state audio. Infantry country voices use 
 
 Research and preserve legally usable source audio under the deterministic job root, record the source page, direct download, creator, license, original checksum, derived checksum, and permitted mechanical conversion, and never synthesize a test tone or placeholder effect.
 
+Before runtime handoff, probe each installed WAV against the inspected consumer precedent. For a `Voices` category soundeffect such as `<TAG>_infantry_idle`, use signed 16-bit PCM (`pcm_s16le`), 44.1 kHz, mono, matching the installed vanilla voice assets; `pcm_f32le` float WAVs are not a valid completion format. A license-permitted mechanical conversion is `ffmpeg -map 0:a:0 -ar 44100 -ac 1 -c:a pcm_s16le -map_metadata -1`, and the handoff must retain original and derived hashes plus the `ffprobe` results.
+
 The parent must enumerate every `common/units` sub-unit that resolves the custom `sprite` token before claiming family-wide audio coverage. A sound event attached to one entity reaches only the unit consumers that resolve that entity, so deliberate exclusions must be documented and every intended family member must share the sprite binding.
 
 The parent owns final `sound/*.asset` definitions, runtime WAV copies, entity-state wiring, selection-consumer wiring, and live playback validation. The worker handoff must leave exact sound and soundeffect identifiers, selection binding scope, state synchronization points, source evidence, and remaining parent checks.
