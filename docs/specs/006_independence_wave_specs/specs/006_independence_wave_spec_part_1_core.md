@@ -308,7 +308,7 @@ The player immediately receives the country opening event, mechanic summary, fir
 
 ### Player controls a host
 
-The player receives a host crisis event and decisions to accept separation, negotiate terms, sponsor a client government, demand demobilization, prepare reconquest, or seek outside arbitration.
+After the public Event 006 report fires, the player receives a host-response event and decisions to accept separation, negotiate terms, sponsor a client government, demand demobilization, prepare reconquest, or seek outside arbitration. No host-facing wave surface exists before that report.
 
 ### Player controls a nearby country
 

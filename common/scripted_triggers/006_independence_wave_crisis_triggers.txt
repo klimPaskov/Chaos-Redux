@@ -7,34 +7,23 @@
 # ============================================================================
 
 has_independence_wave_crisis_occupation_pressure = {
-	OR = {
-		any_owned_state = {
-			NOT = { is_controlled_by = ROOT }
-			resistance > constant:independence_wave_crisis.occupied_resistance_threshold
-		}
-		any_controlled_state = {
-			NOT = { is_owned_by = ROOT }
-			resistance > constant:independence_wave_crisis.occupied_resistance_threshold
-		}
-	}
+	# Retired compatibility helper: no pre-event pressure is evaluated.
+	always = no
 }
 
 has_independence_wave_crisis_stability_pressure = {
-	has_stability < constant:independence_wave_crisis.stability_threshold
+	# Retired compatibility helper: no pre-event pressure is evaluated.
+	always = no
 }
 
 has_independence_wave_crisis_pressure = {
-	OR = {
-		has_independence_wave_crisis_occupation_pressure = yes
-		has_independence_wave_crisis_stability_pressure = yes
-	}
+	# Retired compatibility helper: no pre-event pressure is evaluated.
+	always = no
 }
 
 can_independence_wave_crisis_release_barrier = {
-	NOT = { has_global_flag = world_end }
-	NOT = { has_global_flag = independence_wave_joint_presentation_pending }
-	NOT = { SOV = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
-	can_liberation_release_reset_plan = yes
+	# Retired compatibility helper: no queued pre-event release can pass.
+	always = no
 }
 
 can_independence_wave_open_crisis = {
@@ -44,6 +33,6 @@ can_independence_wave_open_crisis = {
 }
 
 can_pay_independence_wave_crisis_cost = {
-	can_pay_independence_wave_security_standard_cost = yes
-	command_power > constant:independence_wave_decision_cost.command_power_standard
+	# Retired compatibility helper: the former costed crisis no longer exists.
+	always = no
 }

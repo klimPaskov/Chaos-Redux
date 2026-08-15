@@ -27,7 +27,7 @@ Final event-scoped asset folders should use `006_independence_wave` directly und
 Produce or hand off:
 
 - wave summary report image, 210x176
-- host crisis report image, 210x176
+- post-event host-response report image, 210x176
 - first recognition report image, 210x176
 - league congress news image, 397x153 and black and white
 - league formation super-event image, 457x328

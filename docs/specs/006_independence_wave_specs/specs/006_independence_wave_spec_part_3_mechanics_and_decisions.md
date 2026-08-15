@@ -6,11 +6,13 @@ All names in this file are working labels, not final localisation.
 
 Every country with active Independence Wave origin receives the same core survival system. Regional overlays, government routes, country ambitions, and package archetypes change how the values move and what they unlock.
 
-## Pre-wave crisis surface
+## Pre-event surface decision
 
-Countries with `has_stability` below the centralized crisis threshold, an enemy-controlled owned state whose resistance exceeds the severe-occupation threshold, or a controlled foreign-owned state above that threshold can see the Independence Wave crisis category. The category is not restricted to Event 006 countries, because the crisis belongs to the host and can be the pressure that creates a later Event 006 origin.
+There is no pre-event Independence Wave decision category, mission, pressure meter, cost, queue, or history indication. The player sees no Event 006 decision surface until the public event has fired and created an active Event 006 origin.
 
-The crisis mission uses a real equipment, manpower, command, and time commitment. Success records a crisis receipt and requests the normal synchronized wave entry. The release coordinator remains the only path that can reserve states, preserve one host remnant, resolve Event 005 collisions, and publish new countries. Failure leaves the host with an instability and resistance consequence but never releases a country directly. The Event Log records separate queued, blocked, cancelled, committed, and requester-lost outcome rows so the player can distinguish the initiating pressure from the resolution.
+Low stability, resistance, occupation, host pressure, or any other world-state condition must not expose or imply an early wave request. The normal post-event decision and mission map remains gated by the active-origin and package contracts below; the pre-event state is intentionally empty.
+
+The old crisis helpers may remain only for parser compatibility with historical scripted references. They are not a player-facing mechanic, their opening trigger is hard-disabled, and no new code may call their category, mission, cost, queue, or pre-event history keys.
 
 The system has five country values and three relationship layers.
 
