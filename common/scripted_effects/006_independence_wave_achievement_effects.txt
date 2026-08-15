@@ -424,7 +424,7 @@ independence_wave_achievement_begin_scenario_survival_challenge = {
 # remnant achievement when the host reabsorbs or subordinates the breakaway.
 independence_wave_achievement_disqualify_former_host_remnant = {
 	if = {
-		limit = { has_variable = independence_wave_former_host }
+		limit = { has_independence_wave_living_former_host = yes }
 		var:independence_wave_former_host = {
 			set_country_flag = independence_wave_achievement_host_reconquest_used
 			clear_variable = independence_wave_achievement_host_remnant_date
@@ -617,6 +617,7 @@ independence_wave_achievement_record_war = {
 	if = {
 		limit = {
 			event_target:independence_wave_achievement_war_attacker = { is_independence_wave_active_country = yes }
+			event_target:independence_wave_achievement_war_attacker = { has_independence_wave_living_former_host = yes }
 			event_target:independence_wave_achievement_war_attacker = { var:independence_wave_former_host = { tag = event_target:independence_wave_achievement_war_defender } }
 		}
 		event_target:independence_wave_achievement_war_attacker = {
@@ -634,6 +635,7 @@ independence_wave_achievement_record_war = {
 	if = {
 		limit = {
 			event_target:independence_wave_achievement_war_defender = { is_independence_wave_active_country = yes }
+			event_target:independence_wave_achievement_war_defender = { has_independence_wave_living_former_host = yes }
 			event_target:independence_wave_achievement_war_defender = { var:independence_wave_former_host = { tag = event_target:independence_wave_achievement_war_attacker } }
 		}
 		event_target:independence_wave_achievement_war_defender = {
