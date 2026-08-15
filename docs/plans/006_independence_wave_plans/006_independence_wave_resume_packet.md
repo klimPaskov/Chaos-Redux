@@ -54,6 +54,12 @@ Use `subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md`
 
 Use `subagent_handoffs/006_iw051_sakha_package_core_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_yak_portrait_source_research_2026_08_15.md`, and `subagent_handoffs/006_iw051_sakha_flag_symbol_provenance_2026_08_15.md` for the package-local YAK core and asset gates. The 574/Yakutsk anchor is an existing installed state; only new-state allocation probes collide. No central adapter, attestation, preflight, scenario, or Join entry is present.
 
+## Current IW-052 BYA continuation authority (2026-08-15)
+
+IW-052 Buryatia (`BYA`) has a package-local implementation for state 564 and the p52 mounted-mobile contract, including constants, triggers, effects, ideas, AI, decisions, localisation, cleanup, and five guarded shared-focus callbacks. It remains fail-closed outside central adapter, content attestation, normal or SCN-008 preflight, deterministic Join, and runtime asset promotion behind the parent-owned `independence_wave_iw_052_identity_rights_cleared` flag.
+
+The portrait gate has two explicitly separate source candidates. The dated Erbanov group photograph is conditional on framing and jurisdiction-specific rights review. The solo Ardan Markizov source is a 1936-valid Buryat-Mongol regional officeholder and official delegation member, but not the top regional leader. Parent review must select the accepted opening identity or require a new solo Erbanov source; no DDS, GFX, character, generic, or flag fallback was installed. The source and processed evidence follow the consolidated archive contract: originals directly in `docs/assets/portraits/006_independence_wave/`, one `processed/` child, and no retained `156x210` files. The authoritative handoffs are `subagent_handoffs/006_iw052_buryatia_package_core_implementation_2026_08_15.md` and `subagent_handoffs/006_iw052_bya_portrait_source_package_2026_08_15.md`.
+
 The 2026-08-13 pre-IW-045 boundary of 39 runtime adapters, 31 content attestations, 28 compatible reservation groups, and 162 unattested selectable rows is historical traceability only and must not drive current routing.
 
 The temporary FORM-12/13 state-256 hardening and all pre-rebind wording are superseded by the state-833 rebind and must not trigger duplicate work.
