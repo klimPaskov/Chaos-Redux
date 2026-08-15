@@ -14869,9 +14869,16 @@ fallout_manual_capture_population_baselines = {
 fallout_manual_scenario_begin = {
 	set_temp_variable = { fallout_manual_requested_intensity = fallout_manual_selected_intensity_input }
 	if = {
-		limit = { any_country = { has_country_flag = is_global_host } }
+		limit = {
+			any_country = {
+				exists = yes
+				has_country_flag = is_global_host
+				fallout_manual_sweep_can_begin = yes
+			}
+		}
 		every_country = {
 			limit = {
+				exists = yes
 				has_country_flag = is_global_host
 				fallout_manual_sweep_can_begin = yes
 			}
@@ -14881,6 +14888,11 @@ fallout_manual_scenario_begin = {
 	}
 	else_if = {
 		limit = { fallout_manual_sweep_can_begin = yes }
+		every_country = {
+			limit = { has_country_flag = is_global_host }
+			clr_country_flag = is_global_host
+		}
+		set_country_flag = is_global_host
 		set_temp_variable = { fallout_manual_selected_intensity_input = fallout_manual_requested_intensity }
 		fallout_manual_initialize_sweep = yes
 	}
