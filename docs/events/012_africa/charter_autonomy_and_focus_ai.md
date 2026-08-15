@@ -74,7 +74,7 @@ The 22 full host playbooks also activate one exact country-specific focus plan.
 Each plan translates its accepted matrix priorities into a distinct combination of shared-opening, host-signature, matching regional-overlay, support-lane, and constitutional-route weights while leaving live focus availability and `ai_will_do` gates authoritative.
 
 The continental tree is installed through `africa_load_continental_focus_tree`.
-That helper checks the active tree before loading, preserves completed-focus history during replacement, records `africa_continental_focus_tree_loaded` only after the new tree is active, and refreshes the layout once.
+That helper replaces only the generic focus tree. Ethiopia, South Africa, and every other host with a meaningful existing tree keep it and receive Event 12 through additive decisions, events, ideas, and scripted systems. When replacement is appropriate, the helper preserves completed-focus history, records `africa_continental_focus_tree_loaded` only after the new tree is active, and refreshes the layout once.
 `africa_focus_route_ensure_continental_tree_loaded` is a compatibility wrapper around the canonical helper rather than a second implementation.
 Priority packages keep their existing-tree safeguard and also preserve completed-focus history.
 When South Africa's settlement transfers League custody to the saved exile patron, the old host is retained as the chain-local `africa_focus_completion_source`.

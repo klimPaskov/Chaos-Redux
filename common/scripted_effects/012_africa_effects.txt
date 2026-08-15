@@ -5,9 +5,9 @@
 # CHAOS REDUX - EVENT 012 AFRICA EFFECTS
 # ============================================================================
 # Overview:
-# - Resolves one bounded weighted host only when Event 12 is explicitly fired.
-# - Applies one of 22 full or 29 compact playbooks while preserving the host tag,
-#   government, leaders, territory, armies, and public country identity.
+# - Resolves one bounded weighted African-capital host only when Event 12 fires.
+# - Applies a mapped dossier or capital-only compact package while preserving the
+#   host tag, government, leaders, territory, armies, and public identity.
 # - Initializes the Charter League's visible values and capped working stores.
 # - Owns atomic relationship transitions; opinion is never an input.
 # - Adds no daily, weekly, monthly, or other recurring world scan.
@@ -147,9 +147,9 @@ africa_build_prefire_contact_pool = {
 	}
 }
 
-# COUNTRY scope on the selected prospective host. Three to five distinct real
-# governments are frozen before Event 12 commits. The delayed contact event
-# consumes these regular targets and never reopens a country scan.
+# COUNTRY scope on the selected prospective host. Up to five distinct real
+# governments are frozen before Event 12 commits. Sparse and empty rosters are
+# valid; they shape the delayed opening but never veto an African-capital host.
 africa_freeze_prefire_contact_roster = {
 	set_temp_variable_to_random = {
 		var = africa_prefire_contact_target_count
@@ -194,16 +194,7 @@ africa_freeze_prefire_contact_roster = {
 		subtract_from_temp_variable = { africa_prefire_contact_pool_count = constant:africa_value.one }
 	}
 	set_variable = { africa_frozen_first_contact_count = africa_prefire_contact_slot_cursor }
-	if = {
-		limit = {
-			check_variable = {
-				var = africa_frozen_first_contact_count
-				value = constant:africa_opening_contact.minimum_frozen_contacts
-				compare = greater_than_or_equals
-			}
-		}
-		set_country_flag = africa_prefire_contacts_frozen
-	}
+	set_country_flag = africa_prefire_contacts_frozen
 	clear_temp_array = africa_prefire_contact_pool
 	set_temp_variable = { africa_prefire_contact_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
 	set_temp_variable = { africa_prefire_contact_target_count = @CR_SC_AFRICA_VALUE_ZERO }
@@ -211,32 +202,17 @@ africa_freeze_prefire_contact_roster = {
 }
 
 # COUNTRY scope. Duplicated scope entries are the engine-supported weighted
-# array pattern already used by Fury and Event 16.
+# array pattern already used by Fury and Event 16. Contact availability and the
+# specialised SAF rupture can alter the opening after selection, not eligibility.
 africa_add_current_country_to_host_selection_pool = {
-	africa_build_prefire_contact_pool = yes
-	if = {
-		limit = {
-			OR = {
-				NOT = { tag = SAF }
-				africa_rsa_prefire_contact_pool_has_patron = yes
-			}
-			check_variable = {
-				var = africa_prefire_contact_pool_count
-				value = constant:africa_opening_contact.minimum_frozen_contacts
-				compare = greater_than_or_equals
-			}
-		}
-		africa_prepare_host_selection_weight = yes
-		set_temp_variable = { africa_host_pool_weight_remaining = africa_host_selection_weight }
-		while_loop_effect = {
-			limit = { check_variable = { africa_host_pool_weight_remaining > @CR_SC_AFRICA_VALUE_ZERO } }
-			add_to_temp_array = { africa_host_selection_pool = THIS }
-			add_to_temp_variable = { africa_host_selection_pool_count = constant:africa_value.one }
-			subtract_from_temp_variable = { africa_host_pool_weight_remaining = constant:africa_value.one }
-		}
+	africa_prepare_host_selection_weight = yes
+	set_temp_variable = { africa_host_pool_weight_remaining = africa_host_selection_weight }
+	while_loop_effect = {
+		limit = { check_variable = { africa_host_pool_weight_remaining > @CR_SC_AFRICA_VALUE_ZERO } }
+		add_to_temp_array = { africa_host_selection_pool = THIS }
+		add_to_temp_variable = { africa_host_selection_pool_count = constant:africa_value.one }
+		subtract_from_temp_variable = { africa_host_pool_weight_remaining = constant:africa_value.one }
 	}
-	clear_temp_array = africa_prefire_contact_pool
-	set_temp_variable = { africa_prefire_contact_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
 	set_temp_variable = { africa_host_pool_weight_remaining = @CR_SC_AFRICA_VALUE_ZERO }
 	set_temp_variable = { africa_host_selection_weight = @CR_SC_AFRICA_VALUE_ZERO }
 }
@@ -247,10 +223,7 @@ africa_select_weighted_prefire_host = {
 	set_temp_variable = { africa_host_selection_pool_count = @CR_SC_AFRICA_VALUE_ZERO }
 	every_country = {
 		limit = {
-			OR = {
-				africa_is_eligible_host = yes
-				africa_rsa_shared_entry_is_eligible = yes
-			}
+			africa_is_eligible_host = yes
 		}
 		africa_add_current_country_to_host_selection_pool = yes
 	}
@@ -288,23 +261,15 @@ africa_prepare_random_event_fire = {
 			limit = {
 				has_event_target = africa_prefire_host
 				event_target:africa_prefire_host = {
-					OR = {
-						africa_is_eligible_host = yes
-						africa_rsa_shared_entry_is_eligible = yes
-					}
+					africa_is_eligible_host = yes
 					has_country_flag = africa_prefire_contacts_frozen
-					check_variable = {
-						var = africa_frozen_first_contact_count
-						value = constant:africa_opening_contact.minimum_frozen_contacts
-						compare = greater_than_or_equals
-					}
 				}
 			}
 			set_temp_variable = { africa_prefire_ready = constant:africa_value.one }
 		}
 		else_if = {
 			limit = { has_event_target = africa_prefire_host }
-			# A rejected frozen roster must not poison a later explicit fire
+			# A rejected selected host must not poison a later explicit fire
 			# attempt with stale contact flags or an old patron count.
 			event_target:africa_prefire_host = {
 				africa_clear_frozen_first_contact_context = yes
@@ -333,23 +298,15 @@ africa_prepare_manual_event_fire = {
 			limit = {
 				has_event_target = africa_prefire_host
 				event_target:africa_prefire_host = {
-					OR = {
-						africa_is_eligible_host = yes
-						africa_rsa_shared_entry_is_eligible = yes
-					}
+					africa_is_eligible_host = yes
 					has_country_flag = africa_prefire_contacts_frozen
-					check_variable = {
-						var = africa_frozen_first_contact_count
-						value = constant:africa_opening_contact.minimum_frozen_contacts
-						compare = greater_than_or_equals
-					}
 				}
 			}
 			set_temp_variable = { africa_prefire_ready = constant:africa_value.one }
 		}
 		else_if = {
 			limit = { has_event_target = africa_prefire_host }
-			# A rejected frozen roster must not poison a later explicit fire
+			# A rejected selected host must not poison a later explicit fire
 			# attempt with stale contact flags or an old patron count.
 			event_target:africa_prefire_host = {
 				africa_clear_frozen_first_contact_context = yes
@@ -414,8 +371,8 @@ africa_apply_mapped_host_playbook = {
 	if = { limit = { original_tag = MLW } set_variable = { africa_host_playbook = constant:africa_host_playbook.nyasaland } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa } set_variable = { africa_first_proof_type = constant:africa_proof.transport_link } }
 	if = { limit = { original_tag = MZB } set_variable = { africa_host_playbook = constant:africa_host_playbook.mozambique } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean } set_variable = { africa_first_proof_type = constant:africa_proof.aid_corridor } }
 	if = { limit = { original_tag = BOT } set_variable = { africa_host_playbook = constant:africa_host_playbook.bechuanaland } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa } set_variable = { africa_first_proof_type = constant:africa_proof.preserved_guarantee } }
-	# Event 006 shells remain fail-closed here as well as in the host pool. A
-	# direct effect call cannot assign compact content to a bare or borrowed tag.
+	# Event 006 receipts control only whether these shells receive their named
+	# dossiers. A bare or borrowed tag remains an eligible capital-only host.
 	if = { limit = { original_tag = HZX africa_is_valid_independence_wave_niche_host_binding = yes } set_variable = { africa_host_playbook = constant:africa_host_playbook.basutoland } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa } set_variable = { africa_first_proof_type = constant:africa_proof.preserved_guarantee } }
 	if = { limit = { original_tag = EUX africa_is_valid_independence_wave_niche_host_binding = yes } set_variable = { africa_host_playbook = constant:africa_host_playbook.swaziland } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.southern_africa } set_variable = { africa_first_proof_type = constant:africa_proof.diplomatic_recognition } }
 	if = { limit = { original_tag = ERI } set_variable = { africa_host_playbook = constant:africa_host_playbook.eritrea } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.nile_horn } set_variable = { africa_first_proof_type = constant:africa_proof.aid_corridor } }
@@ -425,6 +382,16 @@ africa_apply_mapped_host_playbook = {
 	if = { limit = { original_tag = FAX } set_variable = { africa_host_playbook = constant:africa_host_playbook.comoros } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands } set_variable = { africa_first_proof_type = constant:africa_proof.transport_link } }
 	if = { limit = { africa_is_seychelles_signature_country = yes } set_variable = { africa_host_playbook = constant:africa_host_playbook.seychelles } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands } set_variable = { africa_first_proof_type = constant:africa_proof.preserved_guarantee } }
 	if = { limit = { africa_is_reunion_signature_country = yes } set_variable = { africa_host_playbook = constant:africa_host_playbook.reunion } set_variable = { africa_host_depth = constant:africa_host_depth.compact } set_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands } set_variable = { africa_first_proof_type = constant:africa_proof.diplomatic_recognition } }
+
+	# Any African-capital country outside the named matrix receives the compact
+	# capital-only package. It retains neutral playbook localisation and uses the
+	# continent-wide contact pool instead of impersonating a named host dossier.
+	if = {
+		limit = { check_variable = { africa_host_playbook = constant:africa_host_playbook.none } }
+		set_variable = { africa_host_depth = constant:africa_host_depth.compact }
+		set_variable = { africa_first_proof_type = constant:africa_proof.diplomatic_recognition }
+		set_country_flag = africa_capital_only_host_package
+	}
 
 	set_variable = { africa_host_problem = africa_host_playbook }
 	set_variable = { africa_host_leverage = africa_host_playbook }
@@ -480,11 +447,6 @@ africa_initialize_selected_host = {
 			NOT = { has_global_flag = africa_event_active }
 			NOT = { has_country_flag = africa_host_commit_completed }
 			has_country_flag = africa_prefire_contacts_frozen
-			check_variable = {
-				var = africa_frozen_first_contact_count
-				value = constant:africa_opening_contact.minimum_frozen_contacts
-				compare = greater_than_or_equals
-			}
 		}
 		clear_global_event_target = africa_host
 		save_global_event_target_as = africa_host
@@ -614,8 +576,8 @@ africa_initialize_selected_host = {
 }
 
 # COUNTRY scope on the initialized host. The three distinct contact roles are
-# optional independently. The fire-once gate guarantees at least one mapped
-# contact; losing every delegation during the short delay records a real failure.
+# optional independently. Sparse or empty regional rosters remain valid and
+# resolve through the no-contact opening rather than blocking Event 12.
 africa_prepare_first_contact_targets = {
 	random_country = {
 		limit = {
@@ -1654,14 +1616,15 @@ africa_record_compact_promotion_proof = {
 # Continental focus-tree load and opening reward kernel
 # ---------------------------------------------------------------------------
 
-# COUNTRY scope on the committed host. Event 12 deliberately uses one
-# controlled replacement tree for generic hosts; original SAF keeps its
-# meaningful vanilla tree while the RSA rupture runs alongside it.
+# COUNTRY scope on the committed host. Event 12 replaces only the generic focus
+# surface. Ethiopia, South Africa, and every other host with meaningful existing
+# content keep that tree and receive the Charter systems additively.
 africa_load_continental_focus_tree = {
 	if = {
 		limit = {
 			africa_is_current_host = yes
 			NOT = { original_tag = SAF }
+			has_focus_tree = generic_focus
 			NOT = { has_focus_tree = africa_continental_focus_tree }
 			has_event_target = africa_focus_completion_source
 		}
@@ -1675,6 +1638,7 @@ africa_load_continental_focus_tree = {
 		limit = {
 			africa_is_current_host = yes
 			NOT = { original_tag = SAF }
+			has_focus_tree = generic_focus
 			NOT = { has_focus_tree = africa_continental_focus_tree }
 		}
 		load_focus_tree = {

@@ -6,7 +6,7 @@ All route, focus, decision, event-family, and mechanic names in this file are wo
 
 ## The playable promise
 
-Event 12 turns one African-rooted country into the first credible center of a continent-wide political project. The fantasy is public and simple. Africa can become one. The campaign that follows is deliberately complicated. The unifier must protect states that still fear colonial attack, prove that membership has value, build transport and military capacity across several regions, negotiate with governments that do not want to disappear, and decide whether continental unity means a federation, a union of crowns, a revolutionary state, a military order, a confederation, or a high-chaos transformation.
+Event 12 turns one country whose current capital is in Africa into the first credible center of a continent-wide political project. The fantasy is public and simple. Africa can become one. The campaign that follows is deliberately complicated. The unifier must protect states that still fear colonial attack, prove that membership has value, build transport and military capacity across several regions, negotiate with governments that do not want to disappear, and decide whether continental unity means a federation, a union of crowns, a revolutionary state, a military order, a confederation, or a high-chaos transformation.
 
 The event must not begin as a map-painting command. The opening power of the unifier comes from intervention, protection, recognition, logistics, and persuasion. Direct conquest remains possible later, especially under coercive routes, but it creates an integration burden, resistance, rival leagues, foreign sanctions, and member defections. A player who treats every African state as an immediate target should reach unity faster only when military superiority is overwhelming, and should inherit a brittle state that can break during the Scramble response crisis.
 
@@ -28,7 +28,7 @@ The design must preserve two truths at once. The unifier is the campaign protago
 - Member severity: Severe
 - Canonical entry event: `chaosx.nr12.1`
 - Public fantasy: continental unity
-- Primary actor: one valid African-rooted country
+- Primary actor: one existing country whose current capital is in Africa
 - Normal terminal milestone: control and political settlement of all African regions
 - Optional terminal campaign state: The World
 
@@ -36,34 +36,22 @@ The event is classified as minor because it begins with one country and does not
 
 ## Valid host selection
 
-The phrase “capital state is in Africa” remains the first eligibility test. It is not sufficient on its own. The event should avoid selecting a colonial metropole whose capital happened to move to Africa, a nonhuman chaos state, a country that has no plausible African political home, or a country that cannot support a playable package.
+Event 12 host eligibility has one geographic contract: the candidate exists and its current capital state is in Africa. This admits Liberia, Ethiopia, South Africa, subjects, governments in civil war, relocated governments, dynamically created countries, and every other live country whose capital is on the continent.
 
 ### Required host conditions
 
 A candidate must:
 
-- exist and control its capital
-- have its capital in an African state
-- have at least one core state in Africa
-- not be capitulated
-- not be an actual nonhuman country
-- not be the primary actor of an incompatible terminal event
-- not already possess the Africa unifier identity
-- not be in a civil war, except for the dedicated RSA branch
-- not be an exile government without controlled African territory
-- be capable of receiving a focus tree or additive focus package
+- exist
+- have its current capital in an African state
 
-### African-rooted legitimacy test
+No dossier mapping, focus-tree type, capital control, core-state count, contact count, subject status, capitulation state, civil-war state, exile state, or country classifier may narrow that pool. Event lifecycle guards still prevent a second Event 12 campaign or a launch after the shared world-end state.
 
-A candidate passes the African-rooted test if at least one of these is true:
+### Capital authority
 
-- most of its core states are in Africa
-- its original capital and political history package are African
-- it is an African release, restoration, or event-created country
-- it is a subject with an African homeland and controls its capital
-- it is an African regional state whose current capital remains in Africa after a border change
+There is no separate African-rooted legitimacy test. The current capital is authoritative. Identity, political status, regional relationships, and country history can alter weighting and package content, but cannot make an African-capital country ineligible.
 
-This test excludes global colonial powers that relocate into an African state after losing their homeland. It also prevents an unrelated occupation authority from receiving the event simply because it holds an African capital.
+If at least one live country has its capital in Africa, Event 12 can select a host. It is unavailable only when no such country exists, or when the separate event lifecycle guards have already closed the event.
 
 ### Selection weights
 
@@ -118,7 +106,7 @@ The implementation should avoid an early map name such as “African Authority�
 
 The host receives:
 
-- the shared Africa focus tree or additive tree package
+- the shared Africa focus tree when the host still uses the generic tree, or an additive event package when it already has a meaningful tree
 - the Continental Charter decision category
 - an initial national spirit representing ambition without completed capacity
 - a small pool of emergency diplomatic actions
@@ -154,7 +142,7 @@ The root event selects the host, applies the first package, records the actor, a
 
 ### First contact sequence
 
-Within a short dynamic delay, the host receives three to five regionally relevant contacts. These can include:
+Within a short dynamic delay, the host receives up to five regionally relevant contacts. Fewer than three contacts, or no surviving contact at all, never invalidates the selected host. Contacts can include:
 
 - a threatened independent African state
 - an African subject seeking support
@@ -163,7 +151,7 @@ Within a short dynamic delay, the host receives three to five regionally relevan
 - a restored polity candidate whose supporters offer local access
 - a diaspora organisation asking what return would mean in practice
 
-The player chooses which contact becomes the first priority. The choice should change early missions and relationships rather than give a small modifier.
+The player chooses which contact becomes the first priority. The choice should change early missions and relationships rather than give a small modifier. If no valid contact exists, the direct no-contact opening records that isolation and keeps the event moving.
 
 ### First proof mission
 
@@ -520,7 +508,7 @@ The post-unification escalation phase should appear through the event detail, mi
 
 Implementation of the core is incomplete unless:
 
-- host selection uses the African-rooted validity rules
+- host selection admits every existing country whose current capital is in Africa
 - every regional overlay changes actual gameplay
 - the first League member can be gained without conquest
 - independent African states can refuse and remain meaningful

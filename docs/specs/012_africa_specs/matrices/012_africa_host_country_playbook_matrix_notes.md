@@ -2,6 +2,10 @@
 
 This matrix converts the host-specific design in spec part 7 into a compact implementation and audit reference.
 
+## Capital-only host package
+
+The 22 full and 29 compact rows describe named content, not the limits of Event 12 eligibility. Every existing country whose current capital is in Africa enters the host pool. A country without a named matrix row receives the capital-only compact package, neutral scripted-localisation fallbacks, and a continent-wide contact pool. Its meaningful existing focus tree remains active; the shared continental tree replaces only a generic focus tree.
+
 ## Depth model
 
 - **Full host dossier:** 22 historically and strategically distinct starts. Each receives a bespoke starting problem, first proof mission, several overlay modules, route biases, rival pressures, a post-unification legacy, route-aware AI, and a bounded high-chaos gate.
