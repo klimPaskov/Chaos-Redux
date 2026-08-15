@@ -6,7 +6,7 @@ IW-048 is a package-local Event 006 implementation for vanilla UDM at Izhevsk, s
 
 The carrier remains the vanilla `UDM` tag, vanilla history, vanilla capital 399, vanilla Boris Berman character `UDM_boris`, vanilla leader portrait token, and vanilla normal, medium, and small ideology flag ladder. No portrait, flag, country-history, character, or `.gfx` asset was created or replaced by this tranche.
 
-The `UDM_boris` roster consumer requires the parent-owned `independence_wave_iw_048_identity_rights_cleared` flag. The flag has no local setter because the exact identity and 1936 Udmurt office remain unresolved.
+The `UDM_boris` roster consumer requires the parent-owned `independence_wave_iw_048_identity_rights_cleared` flag. The flag has no local setter because the exact identity and 1936 Udmurt office remain unresolved. The 2026-08-15 exact-name source follow-up found no rights-cleared period image; the only exact image remains a fair-use/non-free 272×359 photograph and cannot clear the portrait gate.
 
 The package uses the registry's `industrial_security` force profile and the existing shared `industrial_breakaway` package-archetype constant because the shared archetype table has no separate `industrial_security` archetype token. This mapping is documented for later admission review and does not alter the central registry.
 
@@ -32,7 +32,7 @@ The package has no dedicated Event 006 event branch. It uses the existing shared
 
 1. Reconcile the package's state-399 anchor and host binding against the current installed-map and reservation evidence.
 2. Review the industrial-breakaway archetype mapping against the registry's industrial-security force label.
-3. Obtain an independent package admission audit covering portrait/flag provenance, the retained provisional-politics design choice, focus hooks, decisions, AI, and central preflight behavior. The force-path and cleanup-generation defects are recorded as repaired in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_package_local_repairs_2026_08_14.md`.
+3. Obtain an independent package admission audit covering portrait/flag provenance, the retained provisional-politics design choice, focus hooks, decisions, AI, and central preflight behavior. The force-path and cleanup-generation defects are recorded as repaired in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_package_local_repairs_2026_08_14.md`. The negative portrait search is recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_boris_berman_portrait_source_search_followup_2026_08_15.md`.
 4. Supply typed, named probability fixtures and a same-scenario compare before making any AI or balance claim.
 5. Add central attestation, preflight, dispatcher, scenario, and Join entries only after the complete packet is accepted.
 

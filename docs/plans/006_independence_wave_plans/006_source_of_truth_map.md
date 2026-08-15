@@ -48,7 +48,7 @@ The package-local source uses the registry p48 `industrial_security` force profi
 
 UDM's local mission, ten timed projects, decisions, ideas, AI strategy, lifecycle cleanup, localisation, and five guarded shared-focus helper calls remain package-local and do not change the 40-adapter, 32-attestation, 29-group, or 161-unattested authority.
 
-The current UDM authorities are `subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md` and `subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md`; admission remains blocked on acceptance of vanilla identity/asset reuse, state-399 host/anchor binding, the force/archetype mapping, typed probability fixtures and same-scenario comparison, whole-event MCP evidence, and central wiring review.
+The current UDM authorities are `subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md`, `subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md`, and the negative portrait-source follow-up `subagent_handoffs/006_iw048_udm_boris_berman_portrait_source_search_followup_2026_08_15.md`; admission remains blocked on acceptance of vanilla identity/asset reuse, state-399 host/anchor binding, the force/archetype mapping, typed probability fixtures and same-scenario comparison, whole-event MCP evidence, and central wiring review.
 
 The UDM map receipt confirms the installed state-399 state, region, and network selection after an allocation-request collision; the mission probability receipt remains incomplete with eleven candidates, zero available candidates, and fifteen required inputs, while the AI-strategy receipt discovers no weighted surface, so no quantitative balance claim is made.
 
