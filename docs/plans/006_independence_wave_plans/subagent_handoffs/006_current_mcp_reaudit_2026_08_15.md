@@ -24,6 +24,10 @@ The focused scan reported 9,499 events, 14,688 options, 1,060 entries, 37,069 ed
 
 The engine deferred workspace-wide helper projections and lifecycle passes, so this is not a whole-event completion receipt.
 
+A focused `state_flow` pass for `chaosx.nr6.350` returned the same revision and partial boundary with artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8dda0fba1ea57dc695cd403186d5d0aab6f8b4dbfd7ce8902980fd042a4fdcc5/fcc4704d30b4bd0dfdfbb846d8528287e27b74ae61c0df890c0beaaed2c184fb/event-state_flow-76e767e6fb64.json`.
+
+The state-flow report found zero selected blocking diagnostics, but the same deferred workspace-wide helper and lifecycle projections prevent a whole-event pass claim.
+
 ## Focus MCP receipt
 
 A fresh `hoi4.focus_inspect` national-tree inspection targeted `independence_wave_focus_tree` in the same workspace.

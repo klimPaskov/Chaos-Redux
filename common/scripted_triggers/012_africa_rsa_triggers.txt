@@ -90,6 +90,22 @@ africa_rsa_prefire_contact_pool_has_patron = {
 	}
 }
 
+# COUNTRY scope on original SAF before the temporary contact pool exists. This
+# mirrors the South African opening overlay and proves that at least one of its
+# minimum valid contacts can also serve as the later exile patron.
+africa_rsa_has_prefire_patron_contact = {
+	any_country = {
+		africa_is_valid_relationship_target = yes
+		africa_rsa_is_valid_exile_patron = yes
+		NOT = { tag = PREV }
+		OR = {
+			original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW
+			original_tag = MZB original_tag = BOT original_tag = HZX original_tag = EUX
+			original_tag = ANG
+		}
+	}
+}
+
 # COUNTRY scope during the shared Event 12 fire-once selection pass. South
 # Africa keeps its meaningful vanilla focus tree, so it enters through this
 # narrow branch instead of the generic-focus host gate. Before the prefire
@@ -120,6 +136,7 @@ africa_rsa_shared_entry_is_eligible = {
 	}
 	any_core_state = { is_on_continent = africa }
 	africa_has_prefire_opening_contact = yes
+	africa_rsa_has_prefire_patron_contact = yes
 	africa_rsa_has_supported_subject_autonomy = yes
 	is_in_faction = yes
 	OR = {
@@ -200,7 +217,7 @@ africa_rsa_republican_breakaway_can_start = {
 		compare = greater_than_or_equals
 	}
 	ESX = { exists = no }
-	has_global_event_target = africa_rsa_republican_state
+	has_event_target = africa_rsa_republican_state
 	event_target:africa_rsa_republican_state = {
 		exists = yes
 		is_on_continent = africa
@@ -220,7 +237,7 @@ africa_rsa_republican_breakaway_can_start = {
 }
 
 africa_rsa_republican_breakaway_is_active = {
-	has_global_event_target = africa_rsa_republican_breakaway_country
+	has_event_target = africa_rsa_republican_breakaway_country
 	event_target:africa_rsa_republican_breakaway_country = {
 		exists = yes
 		has_country_flag = africa_rsa_republican_breakaway

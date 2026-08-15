@@ -6,7 +6,7 @@ Event 17 manual triggers can no longer select the requesting country. If no othe
 
 ## Implementation
 
-Event Details and Settings manual triggers set the shared manual-dispatch marker around `fire_event_by_temp_id_no_cluster`. The Event 17 route then sets `random_faction_exclude_dispatch_requester` only while `random_faction_prepare_runtime_context` runs. The requester is excluded during pool construction, the weighted array selection, and final target validation. Automatic timer and cluster dispatch do not set the exclusion flag and retain their existing eligible-country pool.
+Event Details and Settings manual triggers set the shared manual-dispatch marker around `fire_event_by_temp_id_no_cluster`. The Event 17 route then sets `random_faction_exclude_dispatch_requester` only while `random_faction_prepare_runtime_context` runs. The requester is excluded during pool construction, the weighted array selection, and final target validation. The manual button's availability trigger requires a non-requester candidate whose own eligibility trigger already proves a valid faction leader for that exact country; it does not rely on a separate unrelated leader scan. Automatic timer and cluster dispatch do not set the exclusion flag and retain their existing eligible-country pool.
 
 The repair is implemented in `common/scripted_effects/017_random_faction_effects.txt`, `common/scripted_triggers/017_random_faction_triggers.txt`, `common/scripted_effects/chaosx_settings_effects.txt`, and `common/scripted_guis/chaosx_scripted_gui_events_log.txt`.
 
