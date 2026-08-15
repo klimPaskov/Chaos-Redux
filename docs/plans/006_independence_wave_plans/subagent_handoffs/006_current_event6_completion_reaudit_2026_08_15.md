@@ -1,5 +1,7 @@
 # Event 006 current completion re-audit — 2026-08-15
 
+> Supersession note (2026-08-15): this audit's documentation-reconciliation recommendation has been completed in `006_iw051_yak_authority_reconciliation_2026_08_15.md`. Fresh map inspection confirms the existing YAK/state-574 anchor is valid; the earlier allocation-probe collision is not an installed-anchor defect. Retain the audit's whole-event HOLD/PARTIAL and central-admission blockers.
+
 ## Disposition
 
 Event 006 remains **HOLD / PARTIAL**.

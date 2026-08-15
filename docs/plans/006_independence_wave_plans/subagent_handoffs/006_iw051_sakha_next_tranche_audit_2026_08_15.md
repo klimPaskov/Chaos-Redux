@@ -1,5 +1,7 @@
 # IW-051 Sakha/YAK next-tranche audit — 2026-08-15
 
+> Supersession note (2026-08-15): this pre-core audit is historical. The package-local core, roster correction, and authority reconciliation now exist. Its identity/rights, flag provenance, typed-probability, and central-admission blockers remain valid; its statement that YAK package-local sources are absent and its allocation-probe collision wording are superseded.
+
 ## Disposition
 
 `BLOCKED / FAIL-CLOSED — documentation only.`

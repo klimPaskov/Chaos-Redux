@@ -1,5 +1,7 @@
 # Repo Explorer Handoff
 
+> Supersession note (2026-08-15): IW-051 YAK now has a package-local core and fresh existing-anchor map inspection. References below that describe YAK as lacking package-local mechanics or treat the allocation-probe `MAP_STATE_ID_COLLISION` as an existing-anchor defect are historical pre-core traceability. YAK remains fail-closed for identity/rights, flag provenance, typed probability, host-remnant, and central-admission gates.
+
 ## Scope read
 
 - Parent task: build the current Event 006 candidate-registry gap map and identify the safest next package tranche without inventing identity, rights, flags, portraits, map anchors, or central admission.
