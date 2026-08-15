@@ -1,0 +1,81 @@
+# Shared provider-neutral autonomous robot entity and action-synchronized sound identity.
+
+entity = {
+	name = "autonomous_robot_entity"
+	pdxmesh = "autonomous_robot_mesh"
+	default_state = "idle"
+
+	state = {
+		name = "idle"
+		animation = "idle"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { trigger_once = yes sound = { soundeffect = "autonomous_robot_idle_sfx" } }
+	}
+	state = {
+		name = "move"
+		animation = "move"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { trigger_once = yes sound = { soundeffect = "autonomous_robot_move_sfx" } }
+		event = { time = 0.0417 sound = { soundeffect = "autonomous_robot_footfall_sfx" } }
+		event = { time = 0.5833 sound = { soundeffect = "autonomous_robot_footfall_sfx" } }
+	}
+	state = {
+		name = "attack"
+		animation = "attack"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		event = { time = 0.3333 sound = { soundeffect = "autonomous_robot_dual_mg_attack_sfx" } }
+	}
+	state = {
+		name = "defend"
+		animation = "defend"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "support_attack"
+		animation = "support_attack"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		event = { time = 0.3333 sound = { soundeffect = "autonomous_robot_dual_mg_attack_sfx" } }
+	}
+	state = {
+		name = "retreat"
+		animation = "retreat"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		event = { trigger_once = yes sound = { soundeffect = "autonomous_robot_move_sfx" } }
+		event = { time = 0.0417 sound = { soundeffect = "autonomous_robot_footfall_sfx" } }
+		event = { time = 0.3333 sound = { soundeffect = "autonomous_robot_footfall_sfx" } }
+	}
+	state = {
+		name = "training"
+		animation = "training"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "death"
+		animation = "death"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		event = { time = 0.0417 sound = { soundeffect = "autonomous_robot_death_sfx" } }
+	}
+
+	scale = 0.8
+}
+
+entity = { clone = "autonomous_robot_entity" name = "autonomous_robot_entity_snow" }
+entity = { clone = "autonomous_robot_entity" name = "autonomous_robot_entity_desert" }

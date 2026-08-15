@@ -246,7 +246,7 @@ Values are Theory / Prototype / Deployment / Weaponization days. Prototype is no
 
 - **Reuse prerequisites:** late computation, electronics, advanced materials, and relevant ordinary industrial technologies.
 - **New project:** <code>sp_brilliant_scientist_autonomous_cognition</code>; <code>specialization_land</code>, <code>land_facility</code>; breakthrough 2; long/large; steel 8, tungsten 4, chromium 5, rubber 3.
-- **New operational outputs:** <code>brilliant_scientist_robot_formations_tech</code>; unit <code>kruger_robot_frame</code>; <code>kruger_robot_equipment</code>/<code>kruger_robot_equipment_1</code>.
+- **Operational outputs:** <code>brilliant_scientist_robot_formations_tech</code>; provider-neutral unit <code>autonomous_robot</code>; <code>autonomous_robot_equipment</code>/<code>autonomous_robot_equipment_1</code>.
 - **Stages:** Theory requires Computation, Electronics, and Materials; Prototype yields an autonomous device/frame; Deployment unlocks robot support and automation; Weaponization unlocks a distributed robot army/command network.
 - **Accident/countermeasure:** frame failure → network takeover → autonomous military activation. Counter with power denial, network isolation, and electronic warfare.
 - **KRG inheritance:** robot cap 8; production requires equipment, military factories, power/fuel, and maintenance.
@@ -369,7 +369,7 @@ The exact Event 016 request-source mapping is parent-owned because the current F
 | --- | --- | --- | --- |
 | Teleportation | <code>brilliant_scientist_portal_warfare_tech</code> | <code>portal_raider</code> | <code>teleportation_equipment</code>/<code>teleportation_equipment_1</code> |
 | Cloning | <code>brilliant_scientist_clone_formations_tech</code> | <code>clone_infantry</code> | Shared <code>clone_equipment</code> plus ordinary infantry equipment |
-| Robotics | <code>brilliant_scientist_robot_formations_tech</code> | <code>kruger_robot_frame</code> | <code>kruger_robot_equipment</code>/<code>kruger_robot_equipment_1</code> |
+| Robotics | <code>brilliant_scientist_robot_formations_tech</code> | <code>autonomous_robot</code> | <code>autonomous_robot_equipment</code>/<code>autonomous_robot_equipment_1</code> |
 | Paleogenetics | <code>brilliant_scientist_paleogenetic_formations_tech</code> | <code>kruger_paleogenetic_beast</code> | <code>kruger_paleogenetic_equipment</code>/<code>kruger_paleogenetic_equipment_1</code> |
 | Xenobiological synthesis | <code>brilliant_scientist_xenobiological_formations_tech</code> | <code>kruger_xenobiological_assault</code> | <code>kruger_xenobiological_equipment</code>/<code>kruger_xenobiological_equipment_1</code> |
 | Temporal | <code>brilliant_scientist_temporal_guard_tech</code> | <code>kruger_temporal_guard</code> | <code>kruger_temporal_equipment</code>/<code>kruger_temporal_equipment_1</code> |
@@ -435,7 +435,7 @@ Read-only scans covered:
 
 Findings:
 
-- No live Chaos Redux or vanilla definition exists for any reserved <code>sp_brilliant_scientist_*</code> project, <code>brilliant_scientist_*_tech</code> operational technology, <code>kruger_*</code> unit/equipment identifier, new wrapper, Paleogenetic/Xenobiological site/control marker, or Singularity pending/source adapter identifier in this handoff. The Temporal and alien-spacecraft cross-event flags are now implemented in the Event 030/Event 016 and Event 036/Event 016 bounded receipts described above.
+- This identifier map began as pre-implementation planning evidence. Current Event 016 project, operational-technology, and provider-neutral unit/equipment identifiers are implemented; the Autonomous Robot package uses the exact generic identifiers listed above. Historical reserved-name observations in this handoff are superseded by the current runtime map and API documentation. The Temporal and alien-spacecraft cross-event flags are implemented in the Event 030/Event 016 and Event 036/Event 016 bounded receipts described above.
 - No <code>KRG</code> country definition exists in Chaos Redux or vanilla. The tag is clear in the inspected approved reference mods as well.
 - Existing radar, rocket, nuclear, biological-agent, delivery-technology, bioweapon equipment, containment, contamination, Deaths, and Condemnation identifiers are live and must be reused.
 - <code>sp_mengele_cloning</code> is live but is deliberately excluded from reuse because its country-specific availability and output contract do not represent Event 016.
