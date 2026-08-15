@@ -1918,9 +1918,17 @@ camp_rework_apply_country_monthly_pressure = {
 }
 
 camp_rework_on_country_annexed = {
-	remove_from_array = {
-		array = global.camp_repression_active_countries
-		value = THIS
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.camp_repression_active_countries
+				value = THIS
+			}
+		}
+		remove_from_array = {
+			array = global.camp_repression_active_countries
+			value = THIS
+		}
 	}
 	clear_temp_array = temp_camp_rework_annexed_states
 	for_each_scope_loop = {
@@ -1936,9 +1944,17 @@ camp_rework_on_country_annexed = {
 			limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
 			set_variable = { camp_state_evidence_site_type = camp_state_site_type }
 		}
-		remove_from_array = {
-			array = global.genocide_active_camp_states
-			value = THIS
+		if = {
+			limit = {
+				is_in_array = {
+					array = global.genocide_active_camp_states
+					value = THIS
+				}
+			}
+			remove_from_array = {
+				array = global.genocide_active_camp_states
+				value = THIS
+			}
 		}
 		if = {
 			limit = { concentration_camp > 0 }
