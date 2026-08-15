@@ -887,7 +887,7 @@ infantry_spawn_clear_exact_profile_totals = {
 	set_variable = { infantry_spawn_exact_decontamination_equipment = 0 }
 	set_variable = { infantry_spawn_exact_cbrn_instrument_equipment = 0 }
 	set_variable = { infantry_spawn_exact_clone_equipment = 0 }
-	set_variable = { infantry_spawn_exact_kruger_robot_equipment_1 = 0 }
+	set_variable = { infantry_spawn_exact_autonomous_robot_equipment_1 = 0 }
 	set_variable = { infantry_spawn_exact_kruger_paleogenetic_equipment_1 = 0 }
 	set_variable = { infantry_spawn_exact_kruger_xenobiological_equipment_1 = 0 }
 	set_variable = { infantry_spawn_exact_kruger_exotic_arms_equipment_1 = 0 }
@@ -1149,8 +1149,8 @@ infantry_spawn_add_current_profile_to_exact_totals = {
 		add_to_variable = { infantry_spawn_exact_clone_equipment = infantry_spawn_exact_current_amount }
 	}
 	else_if = {
-		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_unit_registry_resource_profile.kruger_robot_equipment_1 compare = equals } }
-		add_to_variable = { infantry_spawn_exact_kruger_robot_equipment_1 = infantry_spawn_exact_current_amount }
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_unit_registry_resource_profile.autonomous_robot_equipment_1 compare = equals } }
+		add_to_variable = { infantry_spawn_exact_autonomous_robot_equipment_1 = infantry_spawn_exact_current_amount }
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_unit_registry_resource_profile.kruger_paleogenetic_equipment_1 compare = equals } }
@@ -1297,8 +1297,8 @@ infantry_spawn_scale_exact_material_totals_for_standardization = {
 	round_variable = infantry_spawn_exact_cbrn_instrument_equipment
 	multiply_variable = { infantry_spawn_exact_clone_equipment = constant:infantry_spawn_accounting.standardization_loss_share }
 	round_variable = infantry_spawn_exact_clone_equipment
-	multiply_variable = { infantry_spawn_exact_kruger_robot_equipment_1 = constant:infantry_spawn_accounting.standardization_loss_share }
-	round_variable = infantry_spawn_exact_kruger_robot_equipment_1
+	multiply_variable = { infantry_spawn_exact_autonomous_robot_equipment_1 = constant:infantry_spawn_accounting.standardization_loss_share }
+	round_variable = infantry_spawn_exact_autonomous_robot_equipment_1
 	multiply_variable = { infantry_spawn_exact_kruger_paleogenetic_equipment_1 = constant:infantry_spawn_accounting.standardization_loss_share }
 	round_variable = infantry_spawn_exact_kruger_paleogenetic_equipment_1
 	multiply_variable = { infantry_spawn_exact_kruger_xenobiological_equipment_1 = constant:infantry_spawn_accounting.standardization_loss_share }
@@ -2089,14 +2089,14 @@ infantry_spawn_apply_exact_profile_totals_to_country = {
 		add_equipment_to_stockpile = { type = clone_equipment_1 amount = infantry_spawn_exact_transfer_amount }
 	}
 	if = {
-		limit = { check_variable = { infantry_spawn_exact_kruger_robot_equipment_1 > 0 } }
+		limit = { check_variable = { infantry_spawn_exact_autonomous_robot_equipment_1 > 0 } }
 		if = {
 			limit = { check_variable = { infantry_spawn_exact_transfer_is_payment > 0 } }
 			set_temp_variable = { infantry_spawn_exact_transfer_amount = 0 }
-			subtract_from_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_kruger_robot_equipment_1 }
+			subtract_from_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_autonomous_robot_equipment_1 }
 		}
-		else = { set_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_kruger_robot_equipment_1 } }
-		add_equipment_to_stockpile = { type = kruger_robot_equipment_1 amount = infantry_spawn_exact_transfer_amount }
+		else = { set_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_autonomous_robot_equipment_1 } }
+		add_equipment_to_stockpile = { type = autonomous_robot_equipment_1 amount = infantry_spawn_exact_transfer_amount }
 	}
 	if = {
 		limit = { check_variable = { infantry_spawn_exact_kruger_paleogenetic_equipment_1 > 0 } }
@@ -4775,7 +4775,7 @@ infantry_spawn_snapshot_management_request_payment_resources = {
 	set_temp_variable = { infantry_spawn_request_pre_payment_decontamination_equipment = num_equipment@decontamination_equipment }
 	set_temp_variable = { infantry_spawn_request_pre_payment_cbrn_instrument_equipment = num_equipment@cbrn_instrument_equipment }
 	set_temp_variable = { infantry_spawn_request_pre_payment_clone_equipment = num_equipment@clone_equipment }
-	set_temp_variable = { infantry_spawn_request_pre_payment_kruger_robot_equipment_1 = num_equipment@kruger_robot_equipment_1 }
+	set_temp_variable = { infantry_spawn_request_pre_payment_autonomous_robot_equipment_1 = num_equipment@autonomous_robot_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_kruger_paleogenetic_equipment_1 = num_equipment@kruger_paleogenetic_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_kruger_xenobiological_equipment_1 = num_equipment@kruger_xenobiological_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_kruger_exotic_arms_equipment_1 = num_equipment@kruger_exotic_arms_equipment_1 }
@@ -4814,7 +4814,7 @@ infantry_spawn_verify_management_request_payment_resources_restored = {
 				NOT = { check_variable = { var = num_equipment@decontamination_equipment value = infantry_spawn_request_pre_payment_decontamination_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@cbrn_instrument_equipment value = infantry_spawn_request_pre_payment_cbrn_instrument_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@clone_equipment value = infantry_spawn_request_pre_payment_clone_equipment compare = equals } }
-				NOT = { check_variable = { var = num_equipment@kruger_robot_equipment_1 value = infantry_spawn_request_pre_payment_kruger_robot_equipment_1 compare = equals } }
+				NOT = { check_variable = { var = num_equipment@autonomous_robot_equipment_1 value = infantry_spawn_request_pre_payment_autonomous_robot_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_paleogenetic_equipment_1 value = infantry_spawn_request_pre_payment_kruger_paleogenetic_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_xenobiological_equipment_1 value = infantry_spawn_request_pre_payment_kruger_xenobiological_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_exotic_arms_equipment_1 value = infantry_spawn_request_pre_payment_kruger_exotic_arms_equipment_1 compare = equals } }
@@ -4908,7 +4908,7 @@ infantry_spawn_snapshot_management_request_transaction = {
 	set_temp_variable = { infantry_spawn_request_snapshot_decontamination_equipment = num_equipment@decontamination_equipment }
 	set_temp_variable = { infantry_spawn_request_snapshot_cbrn_instrument_equipment = num_equipment@cbrn_instrument_equipment }
 	set_temp_variable = { infantry_spawn_request_snapshot_clone_equipment = num_equipment@clone_equipment }
-	set_temp_variable = { infantry_spawn_request_snapshot_kruger_robot_equipment_1 = num_equipment@kruger_robot_equipment_1 }
+	set_temp_variable = { infantry_spawn_request_snapshot_autonomous_robot_equipment_1 = num_equipment@autonomous_robot_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_kruger_paleogenetic_equipment_1 = num_equipment@kruger_paleogenetic_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_kruger_xenobiological_equipment_1 = num_equipment@kruger_xenobiological_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_kruger_exotic_arms_equipment_1 = num_equipment@kruger_exotic_arms_equipment_1 }
@@ -5247,7 +5247,7 @@ infantry_spawn_rollback_management_request_transaction = {
 				NOT = { check_variable = { var = num_equipment@decontamination_equipment value = infantry_spawn_request_snapshot_decontamination_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@cbrn_instrument_equipment value = infantry_spawn_request_snapshot_cbrn_instrument_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@clone_equipment value = infantry_spawn_request_snapshot_clone_equipment compare = equals } }
-				NOT = { check_variable = { var = num_equipment@kruger_robot_equipment_1 value = infantry_spawn_request_snapshot_kruger_robot_equipment_1 compare = equals } }
+				NOT = { check_variable = { var = num_equipment@autonomous_robot_equipment_1 value = infantry_spawn_request_snapshot_autonomous_robot_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_paleogenetic_equipment_1 value = infantry_spawn_request_snapshot_kruger_paleogenetic_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_xenobiological_equipment_1 value = infantry_spawn_request_snapshot_kruger_xenobiological_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_exotic_arms_equipment_1 value = infantry_spawn_request_snapshot_kruger_exotic_arms_equipment_1 compare = equals } }
