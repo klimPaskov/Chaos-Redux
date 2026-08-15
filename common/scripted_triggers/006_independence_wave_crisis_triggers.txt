@@ -1,11 +1,9 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 006 PRE-WAVE CRISIS TRIGGERS
+# CHAOS REDUX - EVENT 006 RETIRED CRISIS COMPATIBILITY TRIGGERS
 # ============================================================================
-# These country-scoped triggers expose a crisis only for a low-stability host,
-# an enemy-occupied owned state, or a severely resistant foreign-owned state
-# under the country's control. No world-wide periodic scan is used. The
-# release gate delegates to the shared Liberations coordinator and never
-# bypasses its frozen-plan contract.
+# These helpers remain only so older scripted references parse safely. The
+# player-facing pre-event crisis surface was retired. No trigger here may open
+# a category, mission, queue, or early Event 006 request.
 # ============================================================================
 
 has_independence_wave_crisis_occupation_pressure = {
@@ -40,11 +38,9 @@ can_independence_wave_crisis_release_barrier = {
 }
 
 can_independence_wave_open_crisis = {
-	has_independence_wave_crisis_pressure = yes
-	NOT = { has_country_flag = independence_wave_crisis_active }
-	NOT = { has_country_flag = independence_wave_crisis_cooldown }
-	NOT = { has_global_flag = independence_wave_crisis_release_queued }
-	can_independence_wave_crisis_release_barrier = yes
+	# The Independence Wave has no pre-event decision surface. Pressure alone
+	# never creates a category, mission, queue, or implied early firing.
+	always = no
 }
 
 can_pay_independence_wave_crisis_cost = {
