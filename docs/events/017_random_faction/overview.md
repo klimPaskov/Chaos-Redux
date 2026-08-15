@@ -7,7 +7,7 @@ The catalog status is `Needs Testing`. The gameplay, localisation, assets, achie
 ## Runtime Flow
 
 1. Automatic timer firing, manual settings firing, Event Details firing, and cluster-member firing all reach the shared pre-fire route in `chaosx_settings_effects.txt`. That route calls `random_faction_prepare_runtime_context` before Event 17 is dispatched.
-2. The helper builds a weighted world pool with `is_random_faction_eligible_country`. Evolution II can also admit `is_random_faction_wartime_candidate`. It randomly selects one eligible minor, saves that country as `random_faction_target_country`, and verifies that at least one valid faction leader exists. No supported dispatch route prefers the current player country.
+2. The helper builds a weighted world pool with `is_random_faction_eligible_country`. Evolution II can also admit `is_random_faction_wartime_candidate`. Automatic and cluster dispatch use the complete eligible pool. Manual Settings and Event Details dispatch exclude the requesting country before pool construction, selection, and final validation, so the event must target another eligible country or fail closed. The selected country is saved as `random_faction_target_country` and must have at least one valid faction leader.
 3. `chaosx.nr17.1` runs in the selected country scope and routes player countries to `chaosx.nr17.10` and AI countries to `chaosx.nr17.20`.
 4. `random_faction_collect_faction_options` builds up to four distinct saved leader targets from living faction leaders that can accept the selected country.
 5. A player receives one to four visible faction options and no decline option. An AI country resolves `chaosx.nr17.20` against those same saved option targets. It does not rebuild or substitute its own option list.
