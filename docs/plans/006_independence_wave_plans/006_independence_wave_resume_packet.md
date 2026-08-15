@@ -8,6 +8,8 @@ The current boundary is 32 content-attested selectable packages across 29 compat
 
 The current registry gap map is `subagent_handoffs/006_current_registry_gap_map_2026_08_15.md`; no additional candidate is promoted by that audit, and the 40/32/29/161 authority boundary is unchanged.
 
+IW-051 YAK is now package-local rather than outside gameplay source. Commit `b79e800e1` supplies the Sakha package-local core and `6842d0c03` narrows its opening roster to source-backed `YAK_pavel_pevznyak` behind the unset identity-clearance flag. Fresh map inspection of the existing 574/Yakutsk anchor and optional 644/876/877 states succeeds; the prior `MAP_STATE_ID_COLLISION` was an invalid new-state allocation probe, not an existing-anchor collision. YAK remains fail-closed on identity/origin, flag rights, host remnant, typed probability, and central admission/Join.
+
 The deterministic Join order is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-024, IW-026, IW-027, IW-028, IW-029, IW-030, IW-031, IW-038, IW-040, IW-044, IW-045, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184. The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10.
 
 The final-source focus receipt resolves 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors; authored detour warnings and unrelated vanilla icon diagnostics remain, so focus-layout acceptance remains **HOLD**. Use `subagent_handoffs/006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md` for the current inspect/render evidence.
@@ -18,7 +20,7 @@ Current super-event identifier override (2026-08-05): Event 006 uses ordinary pr
 
 Current portrait archive layout (2026-08-14): the single archive is `docs/assets/portraits/006_independence_wave/`. Original source files are kept directly in the parent, exactly one child folder `processed/` contains processed assets and metadata, and no `156x210` image files are retained in either archive location. Runtime DDS/GFX files remain in engine-facing folders; this archive is evidence/ComfyUI input only.
 
-## Current IW-050 and IW-047 continuation authority (2026-08-14)
+## Current IW-050, IW-047, and IW-051 continuation authority (2026-08-15)
 
 IW-050 Komi and IW-047 Mari El are package-local and unadmitted, with no central adapter, content-attestation entry, normal or SCN-008 preflight branch, or deterministic Join entry.
 
@@ -45,6 +47,8 @@ The local mission, ten timed projects, lifecycle cleanup, AI strategy, localisat
 Admission remains blocked on vanilla identity/asset acceptance, state-399 host/anchor proof, the force/archetype mapping, typed probability fixtures with a same-scenario comparison, whole-event MCP evidence, and central wiring review; the current mission pool is incomplete and no quantitative AI claim is supported.
 
 Use `subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md` and `subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md` for the bounded UDM receipts, including partial Event MCP and aggregate focus diagnostics.
+
+Use `subagent_handoffs/006_iw051_sakha_package_core_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_yak_portrait_source_research_2026_08_15.md`, and `subagent_handoffs/006_iw051_sakha_flag_symbol_provenance_2026_08_15.md` for the package-local YAK core and asset gates. The 574/Yakutsk anchor is an existing installed state; only new-state allocation probes collide. No central adapter, attestation, preflight, scenario, or Join entry is present.
 
 The 2026-08-13 pre-IW-045 boundary of 39 runtime adapters, 31 content attestations, 28 compatible reservation groups, and 162 unattested selectable rows is historical traceability only and must not drive current routing.
 
