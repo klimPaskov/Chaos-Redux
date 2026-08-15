@@ -47,7 +47,14 @@ def main() -> int:
     require(effects, r"independence_wave_form16_register_readiness\s*=\s*\{", "readiness writer")
     require(effects, r"independence_wave_form16_runtime_commit_prevalidation\s*=\s*yes", "runtime prevalidation call")
     require(triggers, r"has_independence_wave_form16_runtime_commit_proof\s*=\s*\{", "runtime commit proof")
-    require(triggers, r"has_independence_wave_formable_transaction_ready\s*=\s*yes", "transaction-ready gate")
+    # The current source exposes this proof as a country flag inside the
+    # FORM-16 runtime trigger. Accept the named scripted-trigger spelling too,
+    # so the audit remains compatible with both documented source contracts.
+    require(
+        triggers,
+        r"(?:has_independence_wave_formable_transaction_ready\s*=\s*yes|has_country_flag\s*=\s*independence_wave_formable_transaction_ready)",
+        "transaction-ready gate",
+    )
     require(triggers, r"can_independence_wave_formable_pass_congress_vote\s*=\s*yes", "congress vote gate")
     require(triggers, r"independence_wave_formable_mutation_prevalidated", "mutation prevalidation")
 
