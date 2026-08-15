@@ -45,7 +45,7 @@ No runtime file is switched until the corresponding mesh, four animations, textu
 
 ## Credit gate
 
-The repository estimate for one complete Meshy 6 package with one generation attempt, rigging, and four animations is `47` credits. The seven requested packages require `329` credits before remeshes or recovery attempts. The latest live balance check returned `156`, leaving a verified shortfall of `173` credits. No downgrade, manual substitute, static-only model, or untracked provider attempt is authorized by this plan. The separately staged Wendigo reference remains outside this active seven-unit plan until a quadruped route is enabled.
+The repository estimate for one complete Meshy 6 package with one generation attempt, rigging, and four animations is `47` credits. The seven requested packages require `329` credits before remeshes or recovery attempts. The latest live balance check returned `144`, leaving a verified shortfall of `185` credits. No downgrade, manual substitute, static-only model, or untracked provider attempt is authorized by this plan. The separately staged Wendigo reference remains outside this active seven-unit plan until a quadruped route is enabled.
 
 ## Exclusions
 
