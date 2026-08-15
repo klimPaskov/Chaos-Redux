@@ -1,0 +1,233 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-053 ALTAI PACKAGE TRIGGERS
+# ============================================================================
+# ALT/state 654 identity and lifecycle proofs. These gates deliberately refuse
+# Soviet Collapse origins, Event 005 joint plans, missing host ledgers, missing
+# vanilla roster members, and an unverified force-package runtime mapping.
+# ============================================================================
+
+is_independence_wave_altai_package = {
+	original_tag = ALT
+	is_independence_wave_active_country = yes
+	has_independence_wave_altai_identity_rights_clearance = yes
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_053 }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = { has_global_flag = liberation_release_plan_includes_event5 }
+}
+
+has_independence_wave_altai_identity_rights_clearance = {
+	has_country_flag = independence_wave_iw_053_identity_rights_cleared
+}
+
+is_independence_wave_alt_package = {
+	is_independence_wave_altai_package = yes
+}
+
+is_independence_wave_altai_project_ready = {
+	is_independence_wave_altai_package = yes
+	has_country_flag = independence_wave_iw_053_setup_complete
+	has_independence_wave_force_package_for_current_generation = yes
+	NOT = { has_country_flag = independence_wave_altai_compact_crisis_failed }
+}
+
+has_independence_wave_altai_unsettled_host = {
+	OR = {
+		NOT = { has_independence_wave_living_former_host = yes }
+		AND = {
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { has_war_with = ROOT }
+		}
+	}
+}
+
+can_pay_independence_wave_altai_administration_light_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_altai_cost.civilian_factory_floor
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_light }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
+}
+
+can_pay_independence_wave_altai_administration_standard_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_altai_cost.civilian_factory_floor
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_standard }
+}
+
+can_pay_independence_wave_altai_strategic_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_altai_cost.civilian_factory_floor
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
+	NOT = { has_war_support < constant:independence_wave_decision_cost.war_support_minor }
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
+is_independence_wave_exact_package_iw_053_runtime_ready = {
+	is_independence_wave_altai_package = yes
+	has_complete_independence_wave_iw_053_package_setup = yes
+	has_independence_wave_force_package_for_current_generation = yes
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	654 = { is_owned_and_controlled_by = ROOT }
+	capital_scope = { state = 654 }
+	has_variable = independence_wave_former_host
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+}
+
+can_initialize_independence_wave_iw_053_package = {
+	is_independence_wave_altai_package = yes
+	has_independence_wave_altai_command_roster = yes
+	check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_053 }
+	check_variable = { independence_wave_region = constant:independence_wave_region.volga_urals_siberia_far_east }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.standard }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.mountain_or_frontier }
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_anchor_state = { state = 654 is_owned_and_controlled_by = ROOT }
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	capital_scope = { state = 654 }
+}
+
+has_independence_wave_altai_command_roster = {
+	has_independence_wave_altai_identity_rights_clearance = yes
+	AND = {
+		has_character = ALT_grigory_gurkin
+		has_character = ALT_samuil_yufit
+	}
+}
+
+# The package accepts the researched ALT row only when every materialized
+# runtime field agrees with the package contract. The shared p61 row currently
+# reports tradition 57 while the accepted ALT row is tradition 61; this gate
+# deliberately leaves setup blocked instead of tuning either table in place.
+has_independence_wave_altai_force_mapping_contract = {
+	has_country_flag = independence_wave_force_mapping_loaded
+	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_053 }
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+	check_variable = { independence_wave_military_tradition = constant:independence_wave_altai_force.accepted_military_tradition }
+	has_country_flag = independence_wave_reinforce_integrate_militias
+	has_country_flag = independence_wave_reinforce_regional_guards
+	has_country_flag = independence_wave_reinforce_secure_depots
+	has_country_flag = independence_wave_reinforce_terrain_units
+	has_country_flag = independence_wave_reinforce_league_cadres
+	NOT = { has_country_flag = independence_wave_reinforce_convert_defectors }
+	NOT = { has_country_flag = independence_wave_reinforce_volunteer_corridors }
+	NOT = { has_country_flag = independence_wave_reinforce_factory_rail_guards }
+	NOT = { has_country_flag = independence_wave_reinforce_foreign_arms }
+	NOT = { has_country_flag = independence_wave_reinforce_professional_officers }
+	NOT = { has_country_flag = independence_wave_reinforce_capital_border_defense }
+	NOT = { has_country_flag = independence_wave_force_navy_inheritance_enabled }
+	NOT = { has_country_flag = independence_wave_force_air_inheritance_enabled }
+}
+
+is_independence_wave_exact_package_iw_053_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = ALT
+	capital_scope = { state = 654 }
+	654 = {
+		is_independence_wave_candidate_anchor_available = yes
+		owner = { exists = yes NOT = { tag = ALT } }
+	}
+}
+
+has_stable_independence_wave_altai_compact = {
+	is_independence_wave_altai_package = yes
+	check_variable = { var = independence_wave_altai_council_cohesion value = constant:independence_wave_altai_pressure.stable compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_altai_mountain_guard_readiness value = constant:independence_wave_altai_pressure.stable compare = greater_than_or_equals }
+}
+
+has_independence_wave_altai_active_package_project = {
+	OR = {
+		has_decision = independence_wave_altai_secure_oyrot_depots
+		has_decision = independence_wave_altai_integrate_mountain_guards
+		has_decision = independence_wave_altai_register_communities
+		has_decision = independence_wave_altai_settle_former_host_ledgers
+		has_decision = independence_wave_altai_ratify_constitutional_autonomy
+		has_decision = independence_wave_altai_adopt_traditional_compact
+		has_decision = independence_wave_altai_convene_socialist_councils
+		has_decision = independence_wave_altai_establish_emergency_command
+		has_decision = independence_wave_altai_codify_durable_sovereignty
+		has_decision = independence_wave_altai_open_frontier_network
+	}
+}
+
+has_independence_wave_altai_route_government = {
+	OR = {
+		AND = { has_independence_wave_constitutional_route = yes has_country_flag = independence_wave_altai_constitutional_government }
+		AND = { has_independence_wave_popular_council_route = yes has_country_flag = independence_wave_altai_socialist_government }
+		AND = { has_independence_wave_traditional_route = yes has_country_flag = independence_wave_altai_traditional_government }
+		AND = { has_independence_wave_emergency_military_route = yes has_country_flag = independence_wave_altai_emergency_government }
+	}
+}
+
+has_prepared_independence_wave_iw_053_package_setup = {
+	is_independence_wave_altai_package = yes
+	has_country_flag = independence_wave_origin_prepared
+	check_variable = { independence_wave_region = constant:independence_wave_region.volga_urals_siberia_far_east }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.standard }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.mountain_or_frontier }
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = { state = 654 is_owned_and_controlled_by = ROOT }
+	has_variable = independence_wave_former_host
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	has_independence_wave_altai_command_roster = yes
+	has_country_flag = independence_wave_command_roster_ready
+	has_idea = civilian_economy
+	has_idea = export_focus
+	has_idea = volunteer_only
+	has_country_flag = independence_wave_full_focus_framework
+	check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+	has_country_flag = independence_wave_route_constitutional_available
+	has_country_flag = independence_wave_route_popular_council_available
+	has_country_flag = independence_wave_route_traditional_available
+	has_country_flag = independence_wave_route_emergency_military_available
+	NOT = { has_country_flag = independence_wave_route_patron_client_available }
+	has_country_flag = independence_wave_radical_sovereignty_route_excluded
+	has_country_flag = independence_wave_host_negotiation_route_available
+	has_country_flag = independence_wave_host_guarded_frontier_route_available
+	has_country_flag = independence_wave_host_association_route_available
+	has_country_flag = independence_wave_host_reclamation_route_available
+	has_country_flag = independence_wave_internal_power_struggle_registered
+	check_variable = { independence_wave_power_struggle_type = constant:independence_wave_power_struggle.municipal_commission_vs_industrial_security }
+	has_country_flag = independence_wave_ambition_family_registered
+	has_country_flag = independence_wave_league_route_available
+	NOT = { has_country_flag = independence_wave_formable_family_registered }
+	has_country_flag = independence_wave_force_mapping_loaded
+	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_053 }
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+	check_variable = { independence_wave_military_tradition = constant:independence_wave_altai_force.accepted_military_tradition }
+	has_independence_wave_altai_force_mapping_contract = yes
+	has_independence_wave_force_package_for_current_generation = yes
+	has_country_flag = independence_wave_force_package_applied
+	check_variable = { independence_wave_force_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.expected_reinforcement_pathway_count }
+	NOT = { has_country_flag = independence_wave_force_navy_inheritance_enabled }
+	NOT = { has_country_flag = independence_wave_force_air_inheritance_enabled }
+	has_country_flag = independence_wave_altai_ai_profile
+	has_country_flag = independence_wave_iw_053_lifecycle_initialized
+	OR = { has_idea = alt_fragmented_mountain_mandate has_idea = alt_altai_frontier_compact }
+	capital_scope = { state = 654 }
+}
+
+has_complete_independence_wave_iw_053_package_setup = {
+	has_prepared_independence_wave_iw_053_package_setup = yes
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_iw_053_setup_complete
+	has_country_flag = independence_wave_origin_activation_ready
+	independence_wave_active_country_arrays_are_aligned = yes
+	independence_wave_network_member_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
+	has_country_flag = independence_wave_network_member
+}
