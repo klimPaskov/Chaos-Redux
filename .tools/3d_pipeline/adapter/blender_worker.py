@@ -402,18 +402,7 @@ def prepare_pdx_export_transforms() -> Dict[str, Any]:
 
     rigs = armatures()
     if not rigs:
-        return {
-            "policy": "static_mesh_export_without_armature",
-            "armature": None,
-            "armature_world_scale_before": None,
-            "armature_data_scale_factor": None,
-            "animation_translation_channels": None,
-            "armature_world_scale_after": None,
-            "mesh_world_scales_after": {
-                obj.name: list(obj.matrix_world.to_scale())
-                for obj in mesh_objects()
-            },
-        }
+        return require_identity_static_mesh_transforms()
     if len(rigs) != 1:
         raise RuntimeError(
             f"PDX export requires exactly one working armature, found {len(rigs)}."
@@ -848,6 +837,64 @@ def world_bounds(objects: Iterable[bpy.types.Object]) -> Tuple[Vector, Vector]:
     return minimum, maximum
 
 
+def vector_record(value: Vector) -> List[float]:
+    return [float(component) for component in value]
+
+
+def bounds_record(objects: Iterable[bpy.types.Object]) -> Dict[str, List[float]]:
+    minimum, maximum = world_bounds(objects)
+    return {
+        "minimum": vector_record(minimum),
+        "maximum": vector_record(maximum),
+        "dimensions": vector_record(maximum - minimum),
+    }
+
+
+def object_transform_record(obj: bpy.types.Object) -> Dict[str, Any]:
+    return {
+        "location": [float(value) for value in obj.location],
+        "rotation_euler": [float(value) for value in obj.rotation_euler],
+        "scale": [float(value) for value in obj.scale],
+        "matrix_world": [[float(value) for value in row] for row in obj.matrix_world],
+    }
+
+
+def require_identity_static_mesh_transforms(tolerance: float = 1e-7) -> Dict[str, Any]:
+    """Fail closed when a static export retains any object-space transform."""
+
+    meshes = mesh_objects()
+    if not meshes:
+        raise RuntimeError("Static mesh validation found no approved chaosx_working mesh objects.")
+    failures = []
+    records = []
+    for obj in meshes:
+        transform = object_transform_record(obj)
+        flat_values = [
+            *transform["location"],
+            *transform["rotation_euler"],
+            *transform["scale"],
+            *(value for row in transform["matrix_world"] for value in row),
+        ]
+        if not all(math.isfinite(value) for value in flat_values):
+            failures.append(f"{obj.name}: non-finite transform")
+        if any(value <= 0.0 for value in transform["scale"]):
+            failures.append(f"{obj.name}: non-positive or negative scale {transform['scale']}")
+        if any(abs(value) > tolerance for value in transform["location"]):
+            failures.append(f"{obj.name}: non-identity location {transform['location']}")
+        if any(abs(value) > tolerance for value in transform["rotation_euler"]):
+            failures.append(f"{obj.name}: non-identity rotation {transform['rotation_euler']}")
+        if any(abs(value - 1.0) > tolerance for value in transform["scale"]):
+            failures.append(f"{obj.name}: non-identity scale {transform['scale']}")
+        records.append({"object": obj.name, "transform": transform})
+    if failures:
+        raise RuntimeError("Static PDX export transform validation failed: " + "; ".join(failures))
+    return {
+        "policy": "static_mesh_identity_transform_required",
+        "tolerance": tolerance,
+        "objects": records,
+    }
+
+
 def evaluated_world_bounds(objects: Iterable[bpy.types.Object]) -> Tuple[Vector, Vector]:
     """Measure evaluated, armature-deformed mesh vertices at the current frame."""
 
@@ -1001,36 +1048,63 @@ def controlled_decimate(target_triangles: int) -> Dict[str, Any]:
     target_for_object = max(100, int(target_triangles / len(objects)))
     details = []
     for obj in objects:
-        current = sum(max(0, len(poly.vertices) - 2) for poly in obj.data.polygons)
+        before_object = sum(max(0, len(poly.vertices) - 2) for poly in obj.data.polygons)
+        current = before_object
         if current <= target_for_object:
             continue
-        ratio = max(0.01, min(1.0, target_for_object / current))
-        bpy.ops.object.select_all(action="DESELECT")
-        obj.select_set(True)
-        bpy.context.view_layer.objects.active = obj
-        modifier = obj.modifiers.new("CHAOSX_BOUNDED_DECIMATE", type="DECIMATE")
-        modifier.ratio = ratio
-        modifier.use_collapse_triangulate = True
-        while obj.modifiers.find(modifier.name) > 0:
-            bpy.ops.object.modifier_move_up(modifier=modifier.name)
-        bpy.ops.object.modifier_apply(modifier=modifier.name)
+        passes = []
+        while current > target_for_object and len(passes) < 8:
+            ratio = max(0.01, min(1.0, target_for_object / current))
+            bpy.ops.object.select_all(action="DESELECT")
+            obj.select_set(True)
+            bpy.context.view_layer.objects.active = obj
+            modifier = obj.modifiers.new("CHAOSX_BOUNDED_DECIMATE", type="DECIMATE")
+            modifier.ratio = ratio
+            modifier.use_collapse_triangulate = False
+            while obj.modifiers.find(modifier.name) > 0:
+                bpy.ops.object.modifier_move_up(modifier=modifier.name)
+            bpy.ops.object.modifier_apply(modifier=modifier.name)
+            reduced = sum(max(0, len(poly.vertices) - 2) for poly in obj.data.polygons)
+            passes.append(
+                {
+                    "before_triangles": current,
+                    "after_triangles": reduced,
+                    "ratio": ratio,
+                }
+            )
+            if reduced >= current:
+                raise RuntimeError(
+                    f"Controlled decimation stalled for {obj.name}: {current} -> {reduced} triangles."
+                )
+            current = reduced
+        if current > target_for_object:
+            raise RuntimeError(
+                f"Controlled decimation did not reach the approved target for {obj.name}: "
+                f"{current} > {target_for_object} triangles after {len(passes)} passes."
+            )
         details.append(
             {
                 "object": obj.name,
-                "before_triangles": current,
+                "before_triangles": before_object,
                 "target_triangles": target_for_object,
-                "ratio": ratio,
+                "after_triangles": current,
+                "passes": passes,
             }
         )
     triangulate_and_normals()
     after = geometry_metrics()
+    if after["triangles"] > target_triangles:
+        raise RuntimeError(
+            "Controlled decimation exceeded its aggregate approved target: "
+            f"{after['triangles']} > {target_triangles} triangles."
+        )
     return {
         "applied": True,
         "target_triangles": target_triangles,
         "before_triangles": before["triangles"],
         "after_triangles": after["triangles"],
         "objects": details,
-        "method": "Blender DECIMATE modifier with triangulation preserved",
+        "method": "bounded iterative Blender DECIMATE collapse followed by explicit triangulation",
     }
 
 
@@ -2219,6 +2293,305 @@ def extract_textures(req: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
+def bake_static_mesh_transforms(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Bake approved static-building object transforms into mesh data."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    output = within(job, payload["output_blend_rel"], allow_missing=True)
+    asset_kind = str(payload.get("asset_kind") or "")
+    if asset_kind not in {"building", "static_building"}:
+        raise RuntimeError("Static transform baking accepts only building or static_building profiles.")
+    tolerance = float(payload.get("bounds_tolerance", 1e-5))
+    if not math.isfinite(tolerance) or tolerance <= 0.0 or tolerance > 1e-3:
+        raise RuntimeError("bounds_tolerance must be finite and within (0, 0.001].")
+
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    working = mesh_objects()
+    if not working:
+        raise RuntimeError("Static transform baking found no approved chaosx_working mesh objects.")
+    if armatures(working_only=False) or bpy.data.actions:
+        raise RuntimeError("Static transform baking rejects scenes containing armatures or actions.")
+    if any(obj.parent is not None for obj in working):
+        raise RuntimeError("Static transform baking rejects parented working mesh objects.")
+    if any(obj.modifiers for obj in working):
+        raise RuntimeError("Static transform baking requires applied working mesh modifiers.")
+
+    protected = [obj for obj in mesh_objects(working_only=False) if not obj.get("chaosx_working", False)]
+    protected_data = {obj.data for obj in protected}
+    if any(obj.data in protected_data for obj in working):
+        raise RuntimeError("Working mesh data is shared with a protected source or reference object.")
+    protected_before = {
+        obj.name: {"transform": object_transform_record(obj), "bounds": bounds_record([obj])}
+        for obj in protected
+    }
+    scene_before = bounds_record(working)
+    object_records = []
+    for obj in working:
+        before_transform = object_transform_record(obj)
+        matrix = obj.matrix_world.copy()
+        flat_matrix = [float(value) for row in matrix for value in row]
+        if not all(math.isfinite(value) for value in flat_matrix):
+            raise RuntimeError(f"{obj.name} has a non-finite world transform.")
+        if any(not math.isfinite(float(value)) or float(value) <= 0.0 for value in obj.scale):
+            raise RuntimeError(f"{obj.name} has a non-positive or negative scale: {list(obj.scale)}")
+        if matrix.to_3x3().determinant() <= 0.0:
+            raise RuntimeError(f"{obj.name} has a negative or singular world transform.")
+
+        object_before = bounds_record([obj])
+        uv_layers_before = [layer.name for layer in obj.data.uv_layers]
+        material_slots_before = [slot.material.name if slot.material else None for slot in obj.material_slots]
+        mesh_name = obj.data.name
+        object_name = obj.name
+        obj.data.transform(matrix)
+        obj.matrix_world = Matrix.Identity(4)
+        obj.location = (0.0, 0.0, 0.0)
+        obj.rotation_euler = (0.0, 0.0, 0.0)
+        obj.scale = (1.0, 1.0, 1.0)
+        obj.data.update()
+        bpy.context.view_layer.update()
+
+        object_after = bounds_record([obj])
+        deltas = {
+            key: [object_after[key][index] - object_before[key][index] for index in range(3)]
+            for key in ("minimum", "maximum", "dimensions")
+        }
+        max_drift = max(abs(value) for values in deltas.values() for value in values)
+        if max_drift > tolerance:
+            raise RuntimeError(f"{obj.name} bounds drift {max_drift} exceeded tolerance {tolerance}.")
+        if obj.name != object_name or obj.data.name != mesh_name:
+            raise RuntimeError(f"{object_name} name changed during static transform baking.")
+        if [layer.name for layer in obj.data.uv_layers] != uv_layers_before:
+            raise RuntimeError(f"{obj.name} UV layers changed during static transform baking.")
+        if [slot.material.name if slot.material else None for slot in obj.material_slots] != material_slots_before:
+            raise RuntimeError(f"{obj.name} material slots changed during static transform baking.")
+        object_records.append(
+            {
+                "object": obj.name,
+                "before_transform": before_transform,
+                "after_transform": object_transform_record(obj),
+                "before_bounds": object_before,
+                "after_bounds": object_after,
+                "bounds_delta": deltas,
+                "maximum_bounds_drift": max_drift,
+                "ground_contact_delta": object_after["minimum"][2] - object_before["minimum"][2],
+                "uv_layers": uv_layers_before,
+                "material_slots": material_slots_before,
+            }
+        )
+
+    identity_validation = require_identity_static_mesh_transforms()
+    scene_after = bounds_record(working)
+    scene_delta = {
+        key: [scene_after[key][index] - scene_before[key][index] for index in range(3)]
+        for key in ("minimum", "maximum", "dimensions")
+    }
+    maximum_scene_drift = max(abs(value) for values in scene_delta.values() for value in values)
+    if maximum_scene_drift > tolerance:
+        raise RuntimeError(f"Static working-scene bounds drift {maximum_scene_drift} exceeded tolerance {tolerance}.")
+    protected_after = {
+        obj.name: {"transform": object_transform_record(obj), "bounds": bounds_record([obj])}
+        for obj in protected
+    }
+    if protected_after != protected_before:
+        raise RuntimeError("A protected provider/source or vanilla reference object changed during baking.")
+
+    save_blend(output)
+    report = {
+        "asset_kind": asset_kind,
+        "source_blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "output_blend": str(output.relative_to(job)).replace("\\", "/"),
+        "bounds_tolerance": tolerance,
+        "scene_before_bounds": scene_before,
+        "scene_after_bounds": scene_after,
+        "scene_bounds_delta": scene_delta,
+        "maximum_scene_bounds_drift": maximum_scene_drift,
+        "protected_objects_verified_unchanged": sorted(protected_before),
+        "objects": object_records,
+        "identity_validation": identity_validation,
+    }
+    report_path = job / "blender" / "reports" / "static_transform_bake.json"
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
+def partition_static_mesh_export_batches(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Partition static geometry into material batches without changing its shape."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    output = within(job, payload["output_blend_rel"], allow_missing=True)
+    asset_kind = str(payload.get("asset_kind") or "")
+    if asset_kind not in {"building", "static_building"}:
+        raise RuntimeError("Static export batching accepts only building or static_building profiles.")
+    maximum_vertices = int(payload.get("max_export_vertices_per_batch", 60000))
+    if maximum_vertices < 3 or maximum_vertices > 65535:
+        raise RuntimeError("max_export_vertices_per_batch must be within [3, 65535].")
+    maximum_triangles = maximum_vertices // 3
+    if maximum_triangles < 1:
+        raise RuntimeError("The export batch vertex ceiling cannot contain one triangle.")
+
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    working = mesh_objects()
+    if not working:
+        raise RuntimeError("Static export batching found no approved chaosx_working mesh objects.")
+    if armatures(working_only=False) or bpy.data.actions:
+        raise RuntimeError("Static export batching rejects scenes containing armatures or actions.")
+    if any(obj.parent is not None for obj in working):
+        raise RuntimeError("Static export batching rejects parented working mesh objects.")
+    if any(obj.modifiers for obj in working):
+        raise RuntimeError("Static export batching requires applied working mesh modifiers.")
+    identity_before = require_identity_static_mesh_transforms()
+    scene_before = bounds_record(working)
+    geometry_before = geometry_metrics()
+    object_records = []
+
+    for obj in working:
+        mesh = obj.data
+        if any(len(poly.vertices) != 3 for poly in mesh.polygons):
+            raise RuntimeError(f"{obj.name} must be triangulated before static export batching.")
+        original_slot_count = len(mesh.materials)
+        if original_slot_count == 0:
+            raise RuntimeError(f"{obj.name} has no material slots to partition.")
+        bounds_before = bounds_record([obj])
+        transforms_before = object_transform_record(obj)
+        uv_layers_before = [layer.name for layer in mesh.uv_layers]
+        object_name = obj.name
+        mesh_name = mesh.name
+        batches = []
+
+        for material_index in range(original_slot_count):
+            polygons = [poly for poly in mesh.polygons if poly.material_index == material_index]
+            if not polygons:
+                continue
+            material = mesh.materials[material_index]
+            if material is None:
+                raise RuntimeError(f"{obj.name} material slot {material_index} is empty.")
+            polygons.sort(
+                key=lambda poly: (
+                    float(poly.center.x),
+                    float(poly.center.y),
+                    float(poly.center.z),
+                    int(poly.index),
+                )
+            )
+            batch_count = max(1, math.ceil(len(polygons) / maximum_triangles))
+            slot_indices = [material_index]
+            for batch_number in range(1, batch_count):
+                batch_material = material.copy()
+                batch_material.name = f"{material.name}_export_batch_{batch_number + 1:02d}"
+                mesh.materials.append(batch_material)
+                slot_indices.append(len(mesh.materials) - 1)
+            for batch_number, start in enumerate(range(0, len(polygons), maximum_triangles)):
+                batch_polygons = polygons[start:start + maximum_triangles]
+                slot_index = slot_indices[batch_number]
+                for poly in batch_polygons:
+                    poly.material_index = slot_index
+                triangle_count = len(batch_polygons)
+                batches.append(
+                    {
+                        "source_material_index": material_index,
+                        "source_material": material.name,
+                        "batch_number": batch_number + 1,
+                        "material_slot_index": slot_index,
+                        "material": mesh.materials[slot_index].name,
+                        "triangles": triangle_count,
+                        "worst_case_export_vertices": triangle_count * 3,
+                    }
+                )
+
+        mesh.update()
+        bpy.context.view_layer.update()
+        bounds_after = bounds_record([obj])
+        maximum_drift = max(
+            abs(bounds_after[key][axis] - bounds_before[key][axis])
+            for key in ("minimum", "maximum", "dimensions")
+            for axis in range(3)
+        )
+        if maximum_drift > 1e-7:
+            raise RuntimeError(f"{obj.name} bounds changed during static export batching.")
+        if obj.name != object_name or mesh.name != mesh_name:
+            raise RuntimeError(f"{object_name} name changed during static export batching.")
+        if object_transform_record(obj) != transforms_before:
+            raise RuntimeError(f"{obj.name} transform changed during static export batching.")
+        if [layer.name for layer in mesh.uv_layers] != uv_layers_before:
+            raise RuntimeError(f"{obj.name} UV layers changed during static export batching.")
+        if any(batch["worst_case_export_vertices"] > maximum_vertices for batch in batches):
+            raise RuntimeError(f"{obj.name} produced an oversized static export batch.")
+        object_records.append(
+            {
+                "object": obj.name,
+                "source_material_slots": original_slot_count,
+                "final_material_slots": len(mesh.materials),
+                "maximum_bounds_drift": maximum_drift,
+                "batches": batches,
+            }
+        )
+
+    geometry_after = geometry_metrics()
+    for key in ("objects", "vertices", "polygons", "triangles", "bounds_min", "bounds_max", "dimensions"):
+        if geometry_after[key] != geometry_before[key]:
+            raise RuntimeError(f"Static export batching changed geometry metric {key}.")
+    identity_after = require_identity_static_mesh_transforms()
+    scene_after = bounds_record(working)
+    if scene_after != scene_before:
+        raise RuntimeError("Static export batching changed working-scene bounds.")
+
+    save_blend(output)
+    report = {
+        "asset_kind": asset_kind,
+        "source_blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "output_blend": str(output.relative_to(job)).replace("\\", "/"),
+        "max_export_vertices_per_batch": maximum_vertices,
+        "max_triangles_per_batch": maximum_triangles,
+        "geometry_before": geometry_before,
+        "geometry_after": geometry_after,
+        "scene_bounds_before": scene_before,
+        "scene_bounds_after": scene_after,
+        "identity_before": identity_before,
+        "identity_after": identity_after,
+        "objects": object_records,
+    }
+    report_path = job / "blender" / "reports" / "static_export_batch_partition.json"
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
+def exported_mesh_streams(text_path: Path) -> List[Dict[str, int]]:
+    """Read per-material PDX mesh stream sizes from the exporter text proof."""
+
+    streams: List[Dict[str, int]] = []
+    current: Optional[Dict[str, int]] = None
+    for line in text_path.read_text(encoding="utf-8").splitlines():
+        if re.match(r"^\s*mesh:\s*$", line):
+            if current is not None:
+                streams.append(current)
+            current = {"stream_index": len(streams)}
+            continue
+        if current is None:
+            continue
+        position_match = re.search(r"\bp \(float,\s*(\d+)\)", line)
+        if position_match:
+            components = int(position_match.group(1))
+            if components % 3:
+                raise RuntimeError("PDX export position stream is not divisible by three.")
+            current["vertices"] = components // 3
+        triangle_match = re.search(r"\btri \(int,\s*(\d+)\)", line)
+        if triangle_match:
+            indices = int(triangle_match.group(1))
+            if indices % 3:
+                raise RuntimeError("PDX export triangle stream is not divisible by three.")
+            current["triangles"] = indices // 3
+    if current is not None:
+        streams.append(current)
+    streams = [stream for stream in streams if "vertices" in stream or "triangles" in stream]
+    if not streams or any("vertices" not in stream or "triangles" not in stream for stream in streams):
+        raise RuntimeError("Unable to prove complete per-stream vertex and triangle counts from PDX text export.")
+    return streams
+
+
 def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
@@ -2260,6 +2633,11 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         sort_verts="+",
         plain_txt=True,
     )
+    text_output = output.with_suffix(".txt")
+    streams = exported_mesh_streams(text_output)
+    oversized_streams = [stream for stream in streams if stream["vertices"] > 65535]
+    if oversized_streams:
+        raise RuntimeError(f"PDX export exceeded the 65,535-vertex per-stream limit: {oversized_streams}")
     exported_checkpoint = job / "blender" / "checkpoints" / "06_exported.blend"
     save_blend(exported_checkpoint)
     result = {
@@ -2269,6 +2647,9 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "mesh_text": str(output.with_suffix(".txt").relative_to(job)).replace("\\", "/")
         if output.with_suffix(".txt").exists()
         else None,
+        "mesh_streams": streams,
+        "maximum_stream_vertices": max(stream["vertices"] for stream in streams),
+        "vertex_stream_limit": 65535,
         "exported_checkpoint": str(exported_checkpoint.relative_to(job)).replace("\\", "/"),
         "geometry": geometry_metrics(),
         "export_transforms": export_transforms,
@@ -4587,7 +4968,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root"}:
+    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -4597,6 +4978,10 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return inspect(req)
     if operation == "process_textures":
         return extract_textures(req)
+    if operation == "bake_static_mesh_transforms":
+        return bake_static_mesh_transforms(req)
+    if operation == "partition_static_mesh_export_batches":
+        return partition_static_mesh_export_batches(req)
     if operation == "export_mesh":
         return export_mesh(req, pdx)
     if operation == "export_animation":

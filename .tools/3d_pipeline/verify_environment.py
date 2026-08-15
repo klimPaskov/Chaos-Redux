@@ -60,6 +60,36 @@ def main() -> int:
     uv = shutil.which("uv.exe") or shutil.which("uv")
     check("uv", bool(uv), uv or "uv.exe not found")
 
+    adapter_lock = lock["routes"]["blender_hoi4_adapter"]
+    adapter_config_path = REPO_ROOT / adapter_lock["config"]
+    check("blender_hoi4_adapter_config", adapter_config_path.exists(), str(adapter_config_path))
+    if adapter_config_path.exists():
+        adapter_config = json.loads(adapter_config_path.read_text(encoding="utf-8"))
+        check(
+            "blender_hoi4_adapter_version",
+            adapter_config.get("adapter_version") == adapter_lock["version"],
+            {
+                "expected": adapter_lock["version"],
+                "actual": adapter_config.get("adapter_version"),
+            },
+        )
+        check(
+            "blender_hoi4_adapter_operations",
+            adapter_config.get("operations") == adapter_lock["operations"],
+            {
+                "expected": adapter_lock["operations"],
+                "actual": adapter_config.get("operations"),
+            },
+        )
+    for relative_path, expected_hash in adapter_lock.get("source_sha256", {}).items():
+        source_path = REPO_ROOT / relative_path
+        actual_hash = sha256_file(source_path) if source_path.exists() else None
+        check(
+            f"blender_hoi4_adapter_sha256:{relative_path}",
+            actual_hash == expected_hash,
+            {"expected": expected_hash, "actual": actual_hash},
+        )
+
     blender_path = Path(lock["routes"]["blender"]["executable"])
     check("blender_executable", blender_path.exists(), str(blender_path))
     if blender_path.exists():

@@ -170,6 +170,46 @@ class BlenderAdapterClient:
             },
         )
 
+    def bake_static_mesh_transforms(
+        self,
+        job_id: str,
+        blend_rel: str,
+        output_blend_rel: str,
+        *,
+        asset_kind: str,
+        bounds_tolerance: float = 1e-5,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_bake_static_mesh_transforms",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "output_blend_rel": output_blend_rel,
+                "asset_kind": asset_kind,
+                "bounds_tolerance": bounds_tolerance,
+            },
+        )
+
+    def partition_static_mesh_export_batches(
+        self,
+        job_id: str,
+        blend_rel: str,
+        output_blend_rel: str,
+        *,
+        asset_kind: str,
+        max_export_vertices_per_batch: int = 60000,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_partition_static_mesh_export_batches",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "output_blend_rel": output_blend_rel,
+                "asset_kind": asset_kind,
+                "max_export_vertices_per_batch": max_export_vertices_per_batch,
+            },
+        )
+
     def import_animation_action(
         self,
         job_id: str,
