@@ -1,9 +1,10 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 019 MUSTER BOARD AND ANOMALOUS FAMILY MANAGEMENT
+# CHAOS REDUX - EVENT 019 FORMATION LEDGER AND ANOMALOUS FAMILY MANAGEMENT
 # ============================================================================
-# Country-scoped view builders and action dispatch for the post-Evolution III
-# Muster Board. The GUI is a player surface only: all gameplay transactions are
-# public effects also called by decisions and the country AI pulse. Family-
+# Country-scoped selection-cache builders and action dispatch for the
+# post-Evolution III decision category. The arrays retain their historical
+# `muster_gui` names for save compatibility; all player transactions are
+# ordinary decisions and the same effects are used by the country AI pulse. Family-
 # specific train/spawn/sustainment costs are provider-owned and dispatched by
 # the generic Chaos unit family registry provider id.
 # ============================================================================
@@ -154,6 +155,7 @@ infantry_spawn_muster_board_clear_view_arrays = {
 	clear_array = infantry_spawn_muster_gui_family_can_spawn_entries
 	clear_array = infantry_spawn_muster_gui_family_can_sustain_entries
 	clear_array = infantry_spawn_muster_gui_family_uses_training_entries
+	clear_array = infantry_spawn_muster_gui_family_cost_profile_entries
 	clear_array = infantry_spawn_muster_gui_family_cantonment_entries
 	clear_array = infantry_spawn_muster_gui_family_liaison_entries
 	clear_array = infantry_spawn_muster_gui_family_restricted_entries
@@ -345,11 +347,16 @@ infantry_spawn_muster_board_build_family_view = {
 					set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
 					set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
 					set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
-					meta_effect = {
-						text = { chaos_unit_family_provider_[PROVIDER]_event19_evaluate_management = yes }
-						PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
-					}
-					infantry_spawn_apply_family_request_overhead_availability = yes
+						meta_effect = {
+							text = { chaos_unit_family_provider_[PROVIDER]_event19_evaluate_management = yes }
+							PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
+						}
+						set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.none }
+						meta_effect = {
+							text = { chaos_unit_family_provider_[PROVIDER]_event19_get_management_cost_display = yes }
+							PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
+						}
+						infantry_spawn_apply_family_request_overhead_availability = yes
 					add_to_array = { array = infantry_spawn_muster_gui_family_id_entries value = infantry_spawn_current_family_id }
 					add_to_array = { array = infantry_spawn_muster_gui_family_registry_index_entries value = chaos_unit_family_registry_index }
 					add_to_array = { array = infantry_spawn_muster_gui_family_availability_entries value = global.chaos_unit_family_availability_mode_entries^chaos_unit_family_registry_index }
@@ -362,6 +369,7 @@ infantry_spawn_muster_board_build_family_view = {
 					add_to_array = { array = infantry_spawn_muster_gui_family_can_spawn_entries value = infantry_spawn_family_provider_can_spawn }
 					add_to_array = { array = infantry_spawn_muster_gui_family_can_sustain_entries value = infantry_spawn_family_provider_can_sustain }
 					add_to_array = { array = infantry_spawn_muster_gui_family_uses_training_entries value = infantry_spawn_family_provider_uses_training }
+					add_to_array = { array = infantry_spawn_muster_gui_family_cost_profile_entries value = infantry_spawn_family_provider_display_cost_profile }
 					add_to_array = { array = infantry_spawn_muster_gui_family_cantonment_entries value = infantry_spawn_family_has_cantonment }
 					add_to_array = { array = infantry_spawn_muster_gui_family_liaison_entries value = infantry_spawn_family_has_liaison }
 					add_to_array = { array = infantry_spawn_muster_gui_family_restricted_entries value = infantry_spawn_family_has_restricted_deployment }
@@ -440,61 +448,19 @@ infantry_spawn_muster_board_rebuild_view_unlocked = {
 	add_to_variable = { infantry_spawn_muster_gui_dirty = constant:infantry_spawn_muster_gui_value.one }
 }
 
-infantry_spawn_muster_board_open = {
-	if = {
-		limit = { infantry_spawn_muster_board_is_available = yes }
-		infantry_spawn_muster_board_initialize_view_state = yes
-		set_country_flag = infantry_spawn_muster_board_open
-		infantry_spawn_muster_board_rebuild_view = yes
-	}
-}
-
 infantry_spawn_muster_board_close = {
-	clr_country_flag = infantry_spawn_muster_board_open
+	# Compatibility cleanup for saves created while the optional board surface
+	# existed. Decisions do not open a window; clearing the cache prevents a
+	# closed Event 19 crisis from leaving stale family or lot selections behind.
+	infantry_spawn_muster_board_clear_view_arrays = yes
 }
 
 infantry_spawn_muster_board_close_if_irrelevant = {
 	if = {
 		limit = {
-			has_country_flag = infantry_spawn_muster_board_open
 			NOT = { infantry_spawn_ordinary_management_category_is_relevant = yes }
 		}
 		infantry_spawn_muster_board_close = yes
-	}
-}
-
-infantry_spawn_muster_board_toggle_animations = {
-	if = {
-		limit = { has_country_flag = infantry_spawn_muster_gui_animations_disabled }
-		clr_country_flag = infantry_spawn_muster_gui_animations_disabled
-	}
-	else = { set_country_flag = infantry_spawn_muster_gui_animations_disabled }
-	add_to_variable = { infantry_spawn_muster_gui_dirty = constant:infantry_spawn_muster_gui_value.one }
-}
-
-infantry_spawn_muster_board_select_lot_entry = {
-	if = {
-		limit = {
-			infantry_spawn_scenario_transaction_is_idle = yes
-			check_variable = { infantry_spawn_muster_gui_lot_index > constant:infantry_spawn_muster_gui_value.invalid_index }
-			check_variable = { var = infantry_spawn_muster_gui_lot_index value = infantry_spawn_muster_gui_lot_source_index_entries^num compare = less_than }
-		}
-		set_variable = { infantry_spawn_selected_lot_index = infantry_spawn_muster_gui_lot_source_index_entries^infantry_spawn_muster_gui_lot_index }
-		infantry_spawn_refresh_selected_lot_exact_obligations = yes
-		add_to_variable = { infantry_spawn_muster_gui_dirty = constant:infantry_spawn_muster_gui_value.one }
-	}
-}
-
-infantry_spawn_muster_board_select_family_entry = {
-	if = {
-		limit = {
-			infantry_spawn_scenario_transaction_is_idle = yes
-			check_variable = { infantry_spawn_muster_gui_family_index > constant:infantry_spawn_muster_gui_value.invalid_index }
-			check_variable = { var = infantry_spawn_muster_gui_family_index value = infantry_spawn_muster_gui_family_id_entries^num compare = less_than }
-		}
-		set_variable = { infantry_spawn_muster_gui_selected_family_view_index = infantry_spawn_muster_gui_family_index }
-		set_variable = { infantry_spawn_muster_gui_selected_family_id = infantry_spawn_muster_gui_family_id_entries^infantry_spawn_muster_gui_family_index }
-		add_to_variable = { infantry_spawn_muster_gui_dirty = constant:infantry_spawn_muster_gui_value.one }
 	}
 }
 
@@ -534,18 +500,47 @@ infantry_spawn_muster_board_cycle_claimant = {
 	add_to_variable = { infantry_spawn_muster_gui_dirty = constant:infantry_spawn_muster_gui_value.one }
 }
 
+infantry_spawn_cycle_selected_anomalous_family = {
+	if = {
+		limit = {
+			infantry_spawn_scenario_transaction_is_idle = yes
+			infantry_spawn_has_evolution_iv = yes
+		}
+		infantry_spawn_muster_board_rebuild_view = yes
+		if = {
+			limit = { infantry_spawn_muster_board_has_relevant_anomalous_family = yes }
+			if = {
+				limit = { NOT = { has_variable = infantry_spawn_muster_gui_selected_family_view_index } }
+				set_variable = { infantry_spawn_muster_gui_selected_family_view_index = constant:infantry_spawn_muster_gui_value.zero }
+			}
+			else = { add_to_variable = { infantry_spawn_muster_gui_selected_family_view_index = constant:infantry_spawn_muster_gui_value.one } }
+			if = {
+				limit = {
+					NOT = { check_variable = { var = infantry_spawn_muster_gui_selected_family_view_index value = infantry_spawn_muster_gui_family_id_entries^num compare = less_than } }
+				}
+				set_variable = { infantry_spawn_muster_gui_selected_family_view_index = constant:infantry_spawn_muster_gui_value.zero }
+			}
+			set_variable = {
+				infantry_spawn_muster_gui_selected_family_id = infantry_spawn_muster_gui_family_id_entries^infantry_spawn_muster_gui_selected_family_view_index
+			}
+			infantry_spawn_select_first_live_lot_for_selected_family = yes
+			infantry_spawn_muster_board_load_selected_claimant_view = yes
+			add_to_variable = { infantry_spawn_muster_gui_dirty = constant:infantry_spawn_muster_gui_value.one }
+		}
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Shared player/decision/AI transactions
 # ---------------------------------------------------------------------------
 
+# Historical helper name retained for save/script compatibility. The decision
+# category has no open state; this now refreshes the selection cache whenever
+# the Formation Ledger is relevant.
 infantry_spawn_muster_board_refresh_if_open = {
 	if = {
-		limit = { has_country_flag = infantry_spawn_muster_board_open }
-		if = {
-			limit = { infantry_spawn_muster_board_is_available = yes }
-			infantry_spawn_muster_board_rebuild_view = yes
-		}
-		else = { infantry_spawn_muster_board_close = yes }
+		limit = { infantry_spawn_muster_board_is_available = yes }
+		infantry_spawn_muster_board_rebuild_view = yes
 	}
 }
 
@@ -806,7 +801,7 @@ infantry_spawn_load_selected_family_registry_row = {
 			chaos_unit_family_registry_is_aligned = yes
 			check_variable = { infantry_spawn_muster_gui_selected_family_view_index > constant:infantry_spawn_muster_gui_value.invalid_index }
 			check_variable = { var = infantry_spawn_muster_gui_selected_family_view_index value = infantry_spawn_muster_gui_family_registry_index_entries^num compare = less_than }
-			check_variable = { var = infantry_spawn_muster_gui_family_registry_index_entries^infantry_spawn_muster_gui_selected_family_view_index value = constant:chaos_unit_family_registry_index.invalid compare = greater_than }
+			check_variable = { var = infantry_spawn_muster_gui_family_registry_index_entries^infantry_spawn_muster_gui_selected_family_view_index value = constant:chaos_unit_family_registry.not_found compare = greater_than }
 			check_variable = { var = infantry_spawn_muster_gui_family_registry_index_entries^infantry_spawn_muster_gui_selected_family_view_index value = global.chaos_unit_family_id_entries^num compare = less_than }
 		}
 		set_temp_variable = { chaos_unit_family_registry_index = infantry_spawn_muster_gui_family_registry_index_entries^infantry_spawn_muster_gui_selected_family_view_index }
@@ -1037,6 +1032,98 @@ infantry_spawn_verify_selected_family_training_transaction = {
 	}
 }
 
+# Provider callbacks publish one or more obligation rows through a temporary
+# manifest. Verify the whole appended tail against that manifest rather than
+# assuming one manpower row plus one equipment row. The helper also derives
+# the expected liability/debt deltas from the manifest totals and checks every
+# row's ownership, UID allocation, and untouched payment state.
+infantry_spawn_verify_selected_family_spawn_obligation_manifest = {
+	set_temp_variable = { infantry_spawn_family_obligation_rows_valid = constant:infantry_spawn_muster_gui_value.one }
+	set_temp_variable = { infantry_spawn_family_expected_obligation_count = infantry_spawn_request_snapshot_obligation_count }
+	add_to_temp_variable = { infantry_spawn_family_expected_obligation_count = infantry_spawn_current_provider_manifest_row_count }
+	set_temp_variable = { infantry_spawn_family_expected_manpower_obligation = infantry_spawn_current_provider_manifest_manpower }
+	set_temp_variable = { infantry_spawn_family_expected_manpower_liability = infantry_spawn_request_snapshot_manpower_liability }
+	add_to_temp_variable = { infantry_spawn_family_expected_manpower_liability = infantry_spawn_family_expected_manpower_obligation }
+	set_temp_variable = { infantry_spawn_family_expected_equipment_debt = infantry_spawn_request_snapshot_equipment_debt }
+	add_to_temp_variable = { infantry_spawn_family_expected_equipment_debt = infantry_spawn_current_provider_manifest_equipment_debt }
+	if = {
+		limit = {
+			OR = {
+				NOT = { check_variable = { var = infantry_spawn_obligation_uid_entries^num value = infantry_spawn_family_expected_obligation_count compare = equals } }
+				NOT = { check_variable = { var = infantry_spawn_current_provider_obligation_row_count value = infantry_spawn_current_provider_manifest_row_count compare = equals } }
+				infantry_spawn_obligation_ledger_is_aligned = no
+			}
+		}
+		set_temp_variable = { infantry_spawn_family_obligation_rows_valid = constant:infantry_spawn_muster_gui_value.zero }
+	}
+	set_temp_variable = { infantry_spawn_family_obligation_scan_index = infantry_spawn_request_snapshot_obligation_count }
+	set_temp_variable = { infantry_spawn_family_obligation_expected_uid = infantry_spawn_request_snapshot_next_obligation_uid }
+	set_temp_variable = { infantry_spawn_family_obligation_expected_uid_offset = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_family_obligation_observed_manpower = constant:infantry_spawn_event.first_index }
+	set_temp_variable = { infantry_spawn_family_obligation_observed_equipment_debt = constant:infantry_spawn_event.first_index }
+	if = {
+		limit = { check_variable = { infantry_spawn_family_obligation_rows_valid > constant:infantry_spawn_muster_gui_value.zero } }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = infantry_spawn_family_obligation_scan_index
+					value = infantry_spawn_family_expected_obligation_count
+					compare = less_than
+				}
+			}
+			set_temp_variable = { infantry_spawn_family_obligation_expected_uid = infantry_spawn_request_snapshot_next_obligation_uid }
+			set_temp_variable = { infantry_spawn_family_obligation_expected_uid_offset = infantry_spawn_family_obligation_scan_index }
+			subtract_from_temp_variable = { infantry_spawn_family_obligation_expected_uid_offset = infantry_spawn_request_snapshot_obligation_count }
+			add_to_temp_variable = { infantry_spawn_family_obligation_expected_uid = infantry_spawn_family_obligation_expected_uid_offset }
+			add_to_temp_variable = { infantry_spawn_family_obligation_expected_uid = constant:infantry_spawn_muster_gui_value.one }
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { var = infantry_spawn_obligation_uid_entries^infantry_spawn_family_obligation_scan_index value = infantry_spawn_family_obligation_expected_uid compare = equals } }
+						NOT = { check_variable = { var = infantry_spawn_obligation_generation_uid_entries^infantry_spawn_family_obligation_scan_index value = infantry_spawn_current_generation_uid compare = equals } }
+						NOT = { check_variable = { var = infantry_spawn_obligation_lot_uid_entries^infantry_spawn_family_obligation_scan_index value = infantry_spawn_current_lot_uid compare = equals } }
+						NOT = { check_variable = { var = infantry_spawn_obligation_unit_uid_entries^infantry_spawn_family_obligation_scan_index value = infantry_spawn_current_unit_uid compare = equals } }
+						NOT = { check_variable = { infantry_spawn_obligation_issued_amount_entries^infantry_spawn_family_obligation_scan_index > constant:infantry_spawn_muster_gui_value.zero } }
+						NOT = { check_variable = { var = infantry_spawn_obligation_outstanding_amount_entries^infantry_spawn_family_obligation_scan_index value = infantry_spawn_obligation_issued_amount_entries^infantry_spawn_family_obligation_scan_index compare = equals } }
+						NOT = { check_variable = { var = infantry_spawn_obligation_paid_amount_entries^infantry_spawn_family_obligation_scan_index value = constant:infantry_spawn_muster_gui_value.zero compare = equals } }
+						NOT = { check_variable = { var = infantry_spawn_obligation_salvageable_paid_amount_entries^infantry_spawn_family_obligation_scan_index value = constant:infantry_spawn_muster_gui_value.zero compare = equals } }
+						NOT = { check_variable = { var = infantry_spawn_obligation_status_entries^infantry_spawn_family_obligation_scan_index value = constant:infantry_spawn_obligation_state.outstanding compare = equals } }
+						AND = {
+							check_variable = { var = infantry_spawn_obligation_resource_profile_entries^infantry_spawn_family_obligation_scan_index value = constant:infantry_spawn_equipment_family.manpower compare = equals }
+							NOT = { check_variable = { infantry_spawn_obligation_outstanding_debt_value_entries^infantry_spawn_family_obligation_scan_index = constant:infantry_spawn_muster_gui_value.zero } }
+						}
+						AND = {
+							NOT = { check_variable = { var = infantry_spawn_obligation_resource_profile_entries^infantry_spawn_family_obligation_scan_index value = constant:infantry_spawn_equipment_family.manpower compare = equals } }
+							NOT = { check_variable = { infantry_spawn_obligation_outstanding_debt_value_entries^infantry_spawn_family_obligation_scan_index > constant:infantry_spawn_muster_gui_value.zero } }
+						}
+					}
+				}
+				set_temp_variable = { infantry_spawn_family_obligation_rows_valid = constant:infantry_spawn_muster_gui_value.zero }
+			}
+			if = {
+				limit = { check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_family_obligation_scan_index = constant:infantry_spawn_equipment_family.manpower } }
+				add_to_temp_variable = { infantry_spawn_family_obligation_observed_manpower = infantry_spawn_obligation_outstanding_amount_entries^infantry_spawn_family_obligation_scan_index }
+			}
+			else = {
+				add_to_temp_variable = { infantry_spawn_family_obligation_observed_equipment_debt = infantry_spawn_obligation_outstanding_debt_value_entries^infantry_spawn_family_obligation_scan_index }
+			}
+			add_to_temp_variable = { infantry_spawn_family_obligation_scan_index = constant:infantry_spawn_muster_gui_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { infantry_spawn_family_obligation_rows_valid > constant:infantry_spawn_muster_gui_value.zero } }
+		if = {
+			limit = {
+				OR = {
+					NOT = { check_variable = { var = infantry_spawn_family_obligation_observed_manpower value = infantry_spawn_family_expected_manpower_obligation compare = equals } }
+					NOT = { check_variable = { var = infantry_spawn_family_obligation_observed_equipment_debt value = infantry_spawn_current_provider_manifest_equipment_debt compare = equals } }
+				}
+			}
+			set_temp_variable = { infantry_spawn_family_obligation_rows_valid = constant:infantry_spawn_muster_gui_value.zero }
+		}
+	}
+}
+
 infantry_spawn_verify_selected_family_spawn_transaction = {
 	set_temp_variable = { infantry_spawn_request_generation_succeeded = infantry_spawn_family_management_result }
 	infantry_spawn_verify_management_request_materialization = yes
@@ -1061,25 +1148,7 @@ infantry_spawn_verify_selected_family_spawn_transaction = {
 	add_to_temp_variable = { infantry_spawn_family_expected_active_lot_count = constant:infantry_spawn_muster_gui_value.one }
 	set_temp_variable = { infantry_spawn_family_expected_active_division_count = infantry_spawn_request_snapshot_active_division_count }
 	add_to_temp_variable = { infantry_spawn_family_expected_active_division_count = constant:infantry_spawn_muster_gui_value.one }
-	set_temp_variable = { infantry_spawn_family_expected_obligation_count = infantry_spawn_request_snapshot_obligation_count }
-	add_to_temp_variable = { infantry_spawn_family_expected_obligation_count = constant:infantry_spawn_weight_result.two }
-	set_temp_variable = { infantry_spawn_family_manpower_obligation_index = infantry_spawn_request_snapshot_obligation_count }
-	set_temp_variable = { infantry_spawn_family_resource_obligation_index = infantry_spawn_request_snapshot_obligation_count }
-	add_to_temp_variable = { infantry_spawn_family_resource_obligation_index = constant:infantry_spawn_muster_gui_value.one }
-	set_temp_variable = { infantry_spawn_family_expected_manpower_obligation_uid = infantry_spawn_request_snapshot_next_obligation_uid }
-	add_to_temp_variable = { infantry_spawn_family_expected_manpower_obligation_uid = constant:infantry_spawn_muster_gui_value.one }
-	set_temp_variable = { infantry_spawn_family_expected_resource_obligation_uid = infantry_spawn_request_snapshot_next_obligation_uid }
-	add_to_temp_variable = { infantry_spawn_family_expected_resource_obligation_uid = constant:infantry_spawn_weight_result.two }
-	set_temp_variable = { infantry_spawn_family_expected_manpower_obligation = infantry_spawn_provider_component_count }
-	multiply_temp_variable = { infantry_spawn_family_expected_manpower_obligation = infantry_spawn_provider_manpower_per_battalion }
-	multiply_temp_variable = { infantry_spawn_family_expected_manpower_obligation = infantry_spawn_current_start_manpower }
-	set_temp_variable = { infantry_spawn_family_expected_resource_obligation = infantry_spawn_provider_component_count }
-	multiply_temp_variable = { infantry_spawn_family_expected_resource_obligation = infantry_spawn_provider_resource_per_battalion }
-	multiply_temp_variable = { infantry_spawn_family_expected_resource_obligation = infantry_spawn_current_start_equipment }
-	set_temp_variable = { infantry_spawn_family_expected_manpower_liability = infantry_spawn_request_snapshot_manpower_liability }
-	add_to_temp_variable = { infantry_spawn_family_expected_manpower_liability = infantry_spawn_family_expected_manpower_obligation }
-	set_temp_variable = { infantry_spawn_family_expected_equipment_debt = infantry_spawn_request_snapshot_equipment_debt }
-	add_to_temp_variable = { infantry_spawn_family_expected_equipment_debt = constant:infantry_spawn_accounting.anomalous_debt_per_battalion }
+	infantry_spawn_verify_selected_family_spawn_obligation_manifest = yes
 	set_temp_variable = { infantry_spawn_family_expected_global_total_lots = infantry_spawn_request_snapshot_global_total_lots }
 	set_temp_variable = { infantry_spawn_family_expected_global_total_formations = infantry_spawn_request_snapshot_global_total_formations }
 	if = {
@@ -1114,7 +1183,8 @@ infantry_spawn_verify_selected_family_spawn_transaction = {
 				NOT = { check_variable = { infantry_spawn_request_lot_allocator_delta = constant:infantry_spawn_muster_gui_value.one } }
 				NOT = { check_variable = { infantry_spawn_request_template_allocator_delta = constant:infantry_spawn_muster_gui_value.one } }
 				NOT = { check_variable = { infantry_spawn_request_unit_allocator_delta = constant:infantry_spawn_muster_gui_value.one } }
-				NOT = { check_variable = { infantry_spawn_request_obligation_allocator_delta = constant:infantry_spawn_weight_result.two } }
+				NOT = { check_variable = { var = infantry_spawn_request_obligation_allocator_delta value = infantry_spawn_current_provider_manifest_row_count compare = equals } }
+				NOT = { check_variable = { infantry_spawn_family_obligation_rows_valid = constant:infantry_spawn_muster_gui_value.one } }
 				NOT = { check_variable = { var = infantry_spawn_lot_row_index value = infantry_spawn_request_snapshot_lot_count compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_template_row_index value = infantry_spawn_request_snapshot_template_count compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_unit_row_index value = infantry_spawn_request_snapshot_unit_count compare = equals } }
@@ -1122,7 +1192,7 @@ infantry_spawn_verify_selected_family_spawn_transaction = {
 				NOT = { check_variable = { var = infantry_spawn_lot_family_id_entries^infantry_spawn_lot_row_index value = infantry_spawn_selected_family_id compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_lot_row_index value = constant:infantry_spawn_lot_family.registered_anomalous compare = equals } }
 				NOT = { check_variable = { infantry_spawn_lot_unit_count_entries^infantry_spawn_lot_row_index = constant:infantry_spawn_muster_gui_value.one } }
-				NOT = { check_variable = { var = infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_lot_row_index value = constant:infantry_spawn_accounting.anomalous_debt_per_battalion compare = equals } }
+				NOT = { check_variable = { var = infantry_spawn_lot_outstanding_debt_entries^infantry_spawn_lot_row_index value = infantry_spawn_current_provider_manifest_equipment_debt compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_lot_outstanding_manpower_entries^infantry_spawn_lot_row_index value = infantry_spawn_family_expected_manpower_obligation compare = equals } }
 				NOT = { check_variable = { infantry_spawn_template_status_entries^infantry_spawn_template_row_index = constant:infantry_spawn_template_status.spawn_only } }
 				NOT = { check_variable = { infantry_spawn_template_recruitment_mode_entries^infantry_spawn_template_row_index = constant:infantry_spawn_recruitment_mode.spawn_only } }
@@ -1135,28 +1205,6 @@ infantry_spawn_verify_selected_family_spawn_transaction = {
 				NOT = { check_variable = { var = infantry_spawn_locked_template_uid_entries^infantry_spawn_request_snapshot_locked_template_count value = infantry_spawn_current_template_uid compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_spawn_only_template_uid_entries^infantry_spawn_request_snapshot_spawn_only_template_count value = infantry_spawn_current_template_uid compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_transfer_eligible_unit_uid_entries^infantry_spawn_request_snapshot_transfer_eligible_unit_count value = infantry_spawn_current_unit_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_uid_entries^infantry_spawn_family_manpower_obligation_index value = infantry_spawn_family_expected_manpower_obligation_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_uid_entries^infantry_spawn_family_resource_obligation_index value = infantry_spawn_family_expected_resource_obligation_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_generation_uid_entries^infantry_spawn_family_manpower_obligation_index value = infantry_spawn_current_generation_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_generation_uid_entries^infantry_spawn_family_resource_obligation_index value = infantry_spawn_current_generation_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_lot_uid_entries^infantry_spawn_family_manpower_obligation_index value = infantry_spawn_current_lot_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_lot_uid_entries^infantry_spawn_family_resource_obligation_index value = infantry_spawn_current_lot_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_unit_uid_entries^infantry_spawn_family_manpower_obligation_index value = infantry_spawn_current_unit_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_unit_uid_entries^infantry_spawn_family_resource_obligation_index value = infantry_spawn_current_unit_uid compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_resource_profile_entries^infantry_spawn_family_manpower_obligation_index value = constant:infantry_spawn_equipment_family.manpower compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_resource_profile_entries^infantry_spawn_family_resource_obligation_index value = infantry_spawn_provider_resource_profile compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_issued_amount_entries^infantry_spawn_family_manpower_obligation_index value = infantry_spawn_family_expected_manpower_obligation compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_issued_amount_entries^infantry_spawn_family_resource_obligation_index value = infantry_spawn_family_expected_resource_obligation compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_paid_amount_entries^infantry_spawn_family_manpower_obligation_index value = constant:infantry_spawn_muster_gui_value.zero compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_paid_amount_entries^infantry_spawn_family_resource_obligation_index value = constant:infantry_spawn_muster_gui_value.zero compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_salvageable_paid_amount_entries^infantry_spawn_family_manpower_obligation_index value = constant:infantry_spawn_muster_gui_value.zero compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_salvageable_paid_amount_entries^infantry_spawn_family_resource_obligation_index value = constant:infantry_spawn_muster_gui_value.zero compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_outstanding_amount_entries^infantry_spawn_family_manpower_obligation_index value = infantry_spawn_family_expected_manpower_obligation compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_outstanding_amount_entries^infantry_spawn_family_resource_obligation_index value = infantry_spawn_family_expected_resource_obligation compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_outstanding_debt_value_entries^infantry_spawn_family_manpower_obligation_index value = constant:infantry_spawn_muster_gui_value.zero compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_outstanding_debt_value_entries^infantry_spawn_family_resource_obligation_index value = constant:infantry_spawn_accounting.anomalous_debt_per_battalion compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_status_entries^infantry_spawn_family_manpower_obligation_index value = constant:infantry_spawn_obligation_state.outstanding compare = equals } }
-				NOT = { check_variable = { var = infantry_spawn_obligation_status_entries^infantry_spawn_family_resource_obligation_index value = constant:infantry_spawn_obligation_state.outstanding compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_selected_state_generation_uid_entries^infantry_spawn_request_snapshot_selected_state_count value = infantry_spawn_current_generation_uid compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_selected_state_lot_uid_entries^infantry_spawn_request_snapshot_selected_state_count value = infantry_spawn_current_lot_uid compare = equals } }
 				NOT = { has_country_flag = infantry_spawn_last_family_reinforcement_spawned }

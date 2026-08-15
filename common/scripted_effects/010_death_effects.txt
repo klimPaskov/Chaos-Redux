@@ -3674,9 +3674,161 @@ death_cleanup_triggerable_scenario_context = {
 	clr_global_flag = death_triggerable_scenario_started
 	clear_variable = global.death_triggerable_scenario_intensity
 	clear_variable = global.death_triggerable_scenario_type
-	clear_global_event_target = death_trigger_actor
+	if = {
+		limit = { has_event_target = death_trigger_actor }
+		clear_global_event_target = death_trigger_actor
+	}
 	every_country = {
 		limit = { has_country_flag = death_triggerable_scenario_launcher }
 		clr_country_flag = death_triggerable_scenario_launcher
 	}
+}
+ 
+# ============================================================================
+# CHAOS REDUX - EVENT 010 EVENT 019 PROVIDER ADAPTER
+# ============================================================================
+# Provider 502 retains death_weak_ghost_host. Provider 514 owns the remaining
+# installed ghost host tokens and keeps them spawn-only with no derivative
+# package. The adapter is deliberately separate from Event 019's registry file.
+# ============================================================================
+
+death_register_event19_ghost_variant_provider = {
+	chaos_unit_family_provider_514_register = yes
+}
+
+chaos_unit_family_provider_514_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event10_ghost_variants.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event10_ghost_variants.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event10_ghost_variants.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event10_ghost_variants.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event10_ghost_variants.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event10_ghost_variants.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event10_ghost_variants.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event10_ghost_variants.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event10_ghost_variants.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event10_ghost_variants.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event10_ghost_variants.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_514_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			OR = {
+				is_death_country = yes
+				has_country_flag = infantry_spawn_ghost_derivative
+				infantry_spawn_has_evolution_iv = yes
+			}
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+}
+
+chaos_unit_family_provider_514_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Hollow Ghost Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					death_hollow_ghost_host = { x = 0 y = 0 }
+					death_last_shore_ghost_host = { x = 0 y = 1 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event10_ghost_variants.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:chaos_unit_family_event10_ghost_variants.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+}
+
+chaos_unit_family_provider_514_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_514_event19_reconcile_sustainment = {
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event10_ghost_variants.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_resource_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_resource_per_battalion = constant:chaos_unit_family_event10_ghost_variants.infantry_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event10_ghost_variants.manpower_per_battalion }
+	infantry_spawn_record_provider_unit_obligations = yes
+}
+
+chaos_unit_family_provider_514_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.greater_ghost }
+}
+
+chaos_unit_family_provider_514_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			OR = {
+				is_death_country = yes
+				has_country_flag = infantry_spawn_ghost_derivative
+				infantry_spawn_has_evolution_iv = yes
+			}
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			OR = {
+				is_death_country = yes
+				has_country_flag = infantry_spawn_ghost_derivative
+				infantry_spawn_has_evolution_iv = yes
+			}
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_514_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_514_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_514_event19_setup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_514_derivative_noop = 0 }
+}
+
+chaos_unit_family_provider_514_event19_remove_public_additions = {
+	set_temp_variable = { chaos_unit_family_provider_514_derivative_noop = 0 }
+}
+
+chaos_unit_family_provider_514_event19_cleanup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_514_derivative_noop = 0 }
 }

@@ -2,6 +2,8 @@
 
 Implement the complete Event ID `19`, Infantry Spawn, from `docs/specs/019_infantry_spawn_specs/`. Preserve the stable event identity. Treat the request prefix `017` as request metadata, not the event ID.
 
+> **Current implementation boundary (2026-08-09):** This prompt is accepted design input, not a literal instruction to move every provider callback into one file. The consolidated Event 19 registry file owns the ordinary table and baseline bindings, while owner adapters for providers `511-514`, `518`, `520-522` register from their existing parent surfaces and dispatch through the shared contract. Do not create a second registry file or migrate those owner callbacks into the consolidated file without a new accepted design decision.
+
 ## Required reading
 
 Before editing, read `AGENTS.md`, every relevant repo skill, all Event 19 spec parts, matrices, prompts, review notes, the current local Event 19 implementation, all current references to ID 19, the offline Paradox wiki pages required by AGENTS.md, vanilla documentation, and relevant vanilla or existing Chaos Redux precedents.

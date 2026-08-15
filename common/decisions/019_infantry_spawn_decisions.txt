@@ -7,19 +7,36 @@
 # ============================================================================
 
 infantry_spawn_formation_management_category = {
-	infantry_spawn_open_muster_board = {
-		icon = GFX_decision_infantry_spawn_board_open
+	infantry_spawn_review_formation_ledger = {
+		icon = GFX_decision_infantry_spawn_lot_cycle
+		visible = { infantry_spawn_muster_board_is_available = yes }
+		available = {
+			infantry_spawn_muster_board_is_available = yes
+			infantry_spawn_scenario_transaction_is_idle = yes
+		}
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_review_formation_ledger_tt
+			hidden_effect = {
+				infantry_spawn_muster_board_rebuild_view = yes
+				infantry_spawn_refresh_request_costs = yes
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_cycle_anomalous_family_decision = {
+		icon = GFX_decision_infantry_spawn_lot_cycle
 		visible = {
-			infantry_spawn_ordinary_management_category_is_relevant = yes
-			infantry_spawn_has_evolution_iii = yes
+			infantry_spawn_muster_board_is_available = yes
+			infantry_spawn_muster_board_has_multiple_anomalous_families = yes
 		}
 		available = {
 			infantry_spawn_muster_board_is_available = yes
-			NOT = { has_country_flag = infantry_spawn_muster_board_open }
+			infantry_spawn_scenario_transaction_is_idle = yes
 		}
 		complete_effect = {
-			custom_effect_tooltip = infantry_spawn_open_muster_board_tt
-			hidden_effect = { infantry_spawn_muster_board_open = yes }
+			custom_effect_tooltip = infantry_spawn_cycle_selected_anomalous_family_tt
+			hidden_effect = { infantry_spawn_cycle_selected_anomalous_family = yes }
 		}
 		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
 	}

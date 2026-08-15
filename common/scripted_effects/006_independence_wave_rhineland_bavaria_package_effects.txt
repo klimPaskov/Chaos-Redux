@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS = 0.5
+@CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES = 1
 # ============================================================================
 # CHAOS REDUX - EVENT 006 RHINELAND AND BAVARIA PACKAGE EFFECTS
 # ============================================================================
@@ -234,8 +238,6 @@ independence_wave_prepare_rhi_roster_and_portrait = {
 			gender = male
 			country_leader = { ideology = centrism traits = { } expire = "1965.1.1.1" id = -1 }
 			country_leader = { ideology = socialism traits = { } expire = "1965.1.1.1" id = -1 }
-			country_leader = { ideology = oligarchism traits = { } expire = "1965.1.1.1" id = -1 }
-			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
 		}
 	}
 	if = {
@@ -290,8 +292,6 @@ independence_wave_prepare_bay_roster_and_portrait = {
 			gender = male
 			country_leader = { ideology = centrism traits = { } expire = "1965.1.1.1" id = -1 }
 			country_leader = { ideology = socialism traits = { } expire = "1965.1.1.1" id = -1 }
-			country_leader = { ideology = oligarchism traits = { } expire = "1965.1.1.1" id = -1 }
-			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
 		}
 	}
 	if = {
@@ -494,7 +494,8 @@ independence_wave_install_rhi_patron_government = {
 		set_politics = { ruling_party = neutrality elections_allowed = no }
 		independence_wave_set_rhine_bavaria_patron_popularities = yes
 		set_party_name = { ideology = neutrality long_name = RHI_independence_wave_patron_party_long name = RHI_independence_wave_patron_party }
-		promote_character = { character = RHI_independence_wave_provisional_directorate ideology = oligarchism }
+		promote_character = { character = RHI_independence_wave_provisional_directorate ideology = centrism }
+		set_country_leader_ideology = oligarchism
 		independence_wave_remove_rhi_route_ideas = yes
 		add_ideas = rhi_patron_transit_mandate
 		set_country_flag = independence_wave_rhi_patron_government
@@ -540,7 +541,10 @@ independence_wave_install_bay_traditional_government = {
 			limit = { has_independence_wave_bay_rupprecht_available = yes }
 			promote_character = { character = BAY_rupprecht_of_bavaria ideology = despotism }
 		}
-		else = { promote_character = { character = BAY_independence_wave_state_council ideology = despotism } }
+		else = {
+			promote_character = { character = BAY_independence_wave_state_council ideology = centrism }
+			set_country_leader_ideology = despotism
+		}
 		independence_wave_remove_bay_route_ideas = yes
 		add_ideas = bay_restoration_court_settlement
 		set_country_flag = independence_wave_bay_traditional_government
@@ -589,8 +593,8 @@ independence_wave_rhi_focus_unify_rail_dispatch = {
 		}
 		add_tech_bonus = {
 			name = independence_wave_rhi_rail_industry_bonus
-			bonus = constant:independence_wave_focus_reward.technology_bonus
-			uses = constant:independence_wave_focus_reward.technology_uses
+			bonus = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS
+			uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES
 			category = industry
 		}
 		independence_wave_focus_reward_administration = yes
@@ -715,8 +719,8 @@ independence_wave_bay_focus_reconcile_landesbank_accounts = {
 		}
 		add_tech_bonus = {
 			name = independence_wave_bay_finance_industry_bonus
-			bonus = constant:independence_wave_focus_reward.technology_bonus
-			uses = constant:independence_wave_focus_reward.technology_uses
+			bonus = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS
+			uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES
 			category = industry
 		}
 		independence_wave_focus_reward_administration = yes

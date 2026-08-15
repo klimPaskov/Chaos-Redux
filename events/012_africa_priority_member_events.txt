@@ -5,17 +5,15 @@ add_namespace = africa_priority_member
 # ============================================================================
 # Reserved Event 12 range: africa_priority_member.1200 through .1299.
 # .1200 politics, .1210 League bargaining, .1220 overlap settlement, and
-# .1230 departure. .1240 is a hidden synchronous character-ownership handoff
+# .1230 departure. .1240 is a hidden synchronous character-ownership checkpoint
 # for the nine accepted vanilla carriers. All relationship effects use the
 # shared atomic state machine.
 # ============================================================================
 
-# Internal synchronous character handoff for the nine accepted vanilla
-# carriers. The seven niche Event 006 shells already own their matching
-# sovereigns in country history, so this event never changes their
-# ownership path. The completion flag and per-character guards make repeated
-# package registration or recovery calls idempotent without touching vanilla
-# country histories.
+# Internal synchronous character checkpoint for the nine accepted vanilla
+# carriers. Their package sovereigns are recruited from history/general, while
+# the seven niche Event 006 shells retain their country-history ownership path.
+# The completion flag makes repeated registration or recovery calls idempotent.
 country_event = {
 	id = africa_priority_member.1240
 	hidden = yes
@@ -27,42 +25,6 @@ country_event = {
 	}
 
 	immediate = {
-		if = {
-			limit = { africa_priority_member_package_is_sokoto = yes NOT = { has_character = africa_priority_sokoto_sovereign } }
-			recruit_character = africa_priority_sokoto_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_manden = yes NOT = { has_character = africa_priority_manden_sovereign } }
-			recruit_character = africa_priority_manden_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_kongo = yes NOT = { has_character = africa_priority_kongo_sovereign } }
-			recruit_character = africa_priority_kongo_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_buganda = yes NOT = { has_character = africa_priority_buganda_sovereign } }
-			recruit_character = africa_priority_buganda_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_aksum = yes NOT = { has_character = africa_priority_aksum_sovereign } }
-			recruit_character = africa_priority_aksum_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_harar = yes NOT = { has_character = africa_priority_harar_sovereign } }
-			recruit_character = africa_priority_harar_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_nubia = yes NOT = { has_character = africa_priority_nubia_sovereign } }
-			recruit_character = africa_priority_nubia_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_great_zimbabwe = yes NOT = { has_character = africa_priority_great_zimbabwe_sovereign } }
-			recruit_character = africa_priority_great_zimbabwe_sovereign
-		}
-		if = {
-			limit = { africa_priority_member_package_is_merina = yes NOT = { has_character = africa_priority_merina_sovereign } }
-			recruit_character = africa_priority_merina_sovereign
-		}
 		if = {
 			limit = {
 				OR = {

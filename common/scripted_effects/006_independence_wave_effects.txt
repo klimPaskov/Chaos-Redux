@@ -160,6 +160,7 @@ independence_wave_refresh_country_state = {
 		independence_wave_refresh_founding_phase = yes
 		independence_wave_refresh_strongest_patron = yes
 		independence_wave_refresh_idea_lifecycles = yes
+		independence_wave_start_provisional_capital_mission = yes
 		independence_wave_record_evolution_failure_feedback = yes
 		independence_wave_refresh_status_frame_state = yes
 		independence_wave_achievement_refresh_country_state = yes
@@ -466,6 +467,17 @@ independence_wave_reset_current_generation = {
 	clr_country_flag = independence_wave_route_emergency_military
 	clr_country_flag = independence_wave_route_patron_client
 	clr_country_flag = independence_wave_route_radical_sovereignty
+	# Package setup may exclude the radical route until a later evolution. Keep
+	# the marker generation-local even if a package-specific cleanup wrapper is
+	# unavailable during a defensive reset.
+	clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+	# Route-exclusion markers are generation-local package state. Clear every
+	# shared marker here as a defensive fallback when a package cleanup wrapper
+	# is unavailable during a reset.
+	clr_country_flag = independence_wave_traditional_route_excluded
+	clr_country_flag = independence_wave_emergency_military_route_excluded
+	clr_country_flag = independence_wave_popular_council_route_excluded
+	clr_country_flag = independence_wave_patron_client_route_excluded
 	clr_country_flag = independence_wave_route_neutral_commission
 	clr_country_flag = independence_wave_client_route_locked
 	clr_country_flag = independence_wave_provisional_phase_reached
@@ -1192,6 +1204,15 @@ independence_wave_refresh_government_idea = {
 			add_ideas = independence_wave_permanent_government
 		}
 		set_variable = { independence_wave_government_lifecycle = constant:independence_wave_lifecycle_stage.mature }
+	}
+	else_if = {
+		limit = { has_country_flag = independence_wave_dm01_capital_administration_ready }
+		if = {
+			limit = { NOT = { has_idea = independence_wave_functioning_administration } }
+			independence_wave_remove_government_ideas = yes
+			add_ideas = independence_wave_functioning_administration
+		}
+		set_variable = { independence_wave_government_lifecycle = constant:independence_wave_lifecycle_stage.mitigated }
 	}
 	else_if = {
 		limit = { check_variable = { var = independence_wave_founding_phase value = constant:independence_wave_founding_phase.provisional_state compare = greater_than_or_equals } }
@@ -2951,6 +2972,13 @@ independence_wave_end_active_origin = {
 		clr_country_flag = independence_wave_route_emergency_military
 		clr_country_flag = independence_wave_route_patron_client
 		clr_country_flag = independence_wave_route_radical_sovereignty
+		# Defensive origin cleanup for package-level route-exclusion markers.
+		# None may survive a reused Event 006 origin generation.
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_traditional_route_excluded
+		clr_country_flag = independence_wave_emergency_military_route_excluded
+		clr_country_flag = independence_wave_popular_council_route_excluded
+		clr_country_flag = independence_wave_patron_client_route_excluded
 		clr_country_flag = independence_wave_route_neutral_commission
 		clr_country_flag = independence_wave_provisional_phase_reached
 		clr_country_flag = independence_wave_recognized_phase_reached

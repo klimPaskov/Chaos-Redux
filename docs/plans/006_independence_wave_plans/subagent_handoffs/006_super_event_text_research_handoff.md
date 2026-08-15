@@ -4,6 +4,8 @@ Date: 2026-07-14
 
 Mode: bounded text research and documentation only. No gameplay, localisation, spreadsheet, asset, audio, interface, or source-specification edit was made.
 
+Current runtime cross-reference (2026-08-05): the accepted ordinary super-event identifiers are `23` for The League of New States and `24` for Every Border a Casus Belli. The current Event 006 allocator boundary is 21 content-attested packages across 20 compatible reservation groups, with 172 unattested selectable rows and a 16-package static standalone witness.
+
 ## Result
 
 Both accepted source selections pass verification:
@@ -53,7 +55,7 @@ The parent retains ownership of slot selection, localisation, scripted-localisat
 3. Assign the final super-event slots and add the four matching localisation keys for each package.
 4. Preserve the exact attribution details and ASCII omission marks from the verification note.
 5. Complete scripted-localisation, event, image, audio, docs, and spreadsheet wiring through the parent implementation path.
-6. Carry the existing `6001` recording-rights blocker into the overall League package status. The text package itself is unblocked.
+6. Carry the existing audio-`23` recording-rights blocker into the overall League package status. The text package itself is unblocked.
 
 ## Simplifications, omissions, and blockers
 
@@ -61,5 +63,5 @@ The parent retains ownership of slot selection, localisation, scripted-localisat
 - No fallback or substitute text was used.
 - Final slot selection and integrated rendering were outside the assigned documentation-only scope.
 - The source specification still contains the older descriptions until the parent accepts and folds in this plan.
-- Full League package completion remains independently blocked by the previously documented `6001` audio-rights issue.
+- Full League package completion remains independently blocked by the previously documented audio-`23` recording-rights issue.
 - No simplification was made within the assigned text-research scope.

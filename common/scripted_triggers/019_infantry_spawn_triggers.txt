@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INFANTRY_SPAWN_UNIT_REGISTRY_CARDINALITY_FIRST_MASTERY_REWARD = 1
 # ============================================================================
 # CHAOS REDUX - EVENT 019 INFANTRY SPAWN TRIGGERS
 # ============================================================================
@@ -339,7 +342,7 @@ infantry_spawn_frozen_first_family_reception_row_is_valid = {
 	has_variable = infantry_spawn_first_family_reception_nonce
 	check_variable = {
 		var = infantry_spawn_first_family_reception_registry_index
-		value = constant:chaos_unit_family_registry_index.invalid
+		value = constant:chaos_unit_family_registry.not_found
 		compare = greater_than
 	}
 	check_variable = {
@@ -961,9 +964,6 @@ infantry_spawn_exact_profile_totals_are_affordable = {
 		check_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis < 1 }
 		check_variable = { var = num_equipment@super_heavy_tank_destroyer_chassis value = infantry_spawn_exact_super_heavy_tank_destroyer_chassis compare = greater_than_or_equals }
 	}
-}
-
-infantry_spawn_selected_lot_exact_obligations_are_affordable = {
 	OR = {
 		check_variable = { infantry_spawn_exact_chaosx_elephant_equipment_1 < 1 }
 		check_variable = { var = num_equipment@chaosx_elephant_equipment_1 value = infantry_spawn_exact_chaosx_elephant_equipment_1 compare = greater_than_or_equals }
@@ -1040,6 +1040,9 @@ infantry_spawn_selected_lot_exact_obligations_are_affordable = {
 		check_variable = { infantry_spawn_exact_kruger_temporal_equipment_1 < 1 }
 		check_variable = { var = num_equipment@kruger_temporal_equipment_1 value = infantry_spawn_exact_kruger_temporal_equipment_1 compare = greater_than_or_equals }
 	}
+}
+
+infantry_spawn_selected_lot_exact_obligations_are_affordable = {
 	infantry_spawn_scenario_transaction_is_idle = yes
 	infantry_spawn_obligation_ledger_is_aligned = yes
 	infantry_spawn_lot_ledger_is_aligned = yes
@@ -1772,7 +1775,7 @@ infantry_spawn_unit_registry_gate_provider_26 = {
 infantry_spawn_unit_registry_gate_provider_27 = {
 	has_dlc = "Arms Against Tyranny"
 	has_mastery_level = {
-		amount = constant:infantry_spawn_unit_registry_cardinality.first_mastery_reward
+		amount = @CR_SC_INFANTRY_SPAWN_UNIT_REGISTRY_CARDINALITY_FIRST_MASTERY_REWARD
 		sub_doctrine = marines_1
 	}
 }

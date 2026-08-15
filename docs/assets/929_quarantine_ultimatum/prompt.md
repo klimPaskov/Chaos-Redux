@@ -1,3 +1,0 @@
-# The Quarantine Ultimatum report art prompt
-
-Create one fictional alternate-history report-event illustration for the Congo Green Basin after Fallout and Air Winter. Show a wet lower-river gate with a rope bridge, pale quarantine cloth, Basin guards, a foreign clinic team, and an inspection ledger on a rough table. Include the hill road rising behind the bridge, black wet soil, a small field clinic, and cold gray light after ash rain. Use grounded documentary realism with charcoal, moss green, river blue, and weathered cloth tones. Keep the ledger, bridge, and checkpoint legible in a 210x176 report-event crop. Do not show readable text, logos, national flags, real people, radiation symbols, sci-fi machinery, split panels, collage, or a watermark.

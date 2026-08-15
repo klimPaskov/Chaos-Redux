@@ -4,6 +4,8 @@ Date: 2026-08-05 (Europe/Kyiv).
 
 Scope: current-source audit after the IW-014 standalone admission edits. This handoff verifies full shared-tree assignment, CAT package-focus reachability, and FORM-07 late-binding safety. It does not change gameplay files, assets, or runtime wiring.
 
+> Dated CAT-tranche notice (2026-08-05): this audit's 16-attested/15-group context is historical after later IW-070/IW-071/IW-072 and IW-033/IW-041 promotions. Current Event 006 routing is 21 content-attested packages across 20 compatible groups, 172 unattested rows, and 30 central adapters; CAT focus assignment and FORM-07 fail-closed findings remain unchanged.
+
 ## Verdict
 
 The standalone CAT admission is coherent at source level. CAT receives the full `independence_wave_focus_tree`, its six CAT package focuses have reachable prerequisite paths under the documented CAT package, and the generic formable branch remains fail-closed until the complete family commit-readiness contract passes. No gameplay patch is required.

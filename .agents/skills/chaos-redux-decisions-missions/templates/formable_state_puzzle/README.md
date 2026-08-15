@@ -24,6 +24,7 @@ If any condition fails, use the state puzzle. A static picture is never a substi
 7. **AI is not a GUI.** AI uses the same formation trigger and decision conditions without opening or clicking the human-facing puzzle. The puzzle contains informational icons only; it has no fake buttons and no AI-only shortcut.
 8. **No animation.** State pieces, borders, hatches, status icons, and the static alternative are still sprites. Do not add `noOfFrames`, animation blocks, moving elements, pulse effects, or transform-only animation.
 9. **No tuning literals in call sites.** Required counts, alternate-group rules, owner/controller/core policy, thresholds, refresh cadence, and any costs belong in the owning manifest, script constants, or documented tuning files. Layout coordinates are generated from the manifest projection, not hand-tuned independently in each file.
+10. **Every in-scope category is attached.** The manifest and the companion [category attachment audit](category_attachment_audit.md) must enumerate every decision category in the formable family and the exact generated `scripted_gui` block attached to it. Under a strict family policy, a picture-only or text-only category is a failed implementation, not a static alternative.
 
 ## Package files
 
@@ -40,13 +41,14 @@ If any condition fails, use the state puzzle. A static picture is never a substi
 | `formable_state_puzzle_scripted_localisation.txt` | Dynamic sprite selection and status/tooltip localisation scaffolding. | `common/scripted_localisation/<owner>_formable_state_puzzle.txt`. | Localisation/system owner. |
 | `formable_state_puzzle_localisation.example.yml` | UTF-8 BOM example for category description, summary, state hover, and tooltip keys. | `localisation/english/<owner>_formable_state_puzzle_l_english.yml`. | Localisation owner. |
 | `static_category_picture_option.md` | Gate and snippets for the genuinely simple one-state/small-shape alternative. | Owner documentation. | Event/system owner. |
+| `category_attachment_audit.md` | Manifest-to-category crosswalk proving every in-scope category embeds the generated state-puzzle GUI. | Owner plan or handoff beside the manifest. | Parent/owner reviewer. |
 | `validation_checklist.md` | Task-specific acceptance checks and evidence record. | Owner plan or handoff. | Parent/owner reviewer. |
 
 ## Setup workflow
 
 ### 1. Lock the owner and state policy
 
-Record the formable decision ID, owning country/route, category ID, state counting rule, alternate groups, required owner/controller/core semantics, subject/ally/occupation policy, route or reveal gates, and cleanup transition. Keep the AI decision trigger independent from the GUI. If a state is counted through a subject, ally, or alternate controller, say so explicitly in `counting_rules` rather than silently broadening a generic helper.
+Record the formable decision ID, owning country/route, category ID, category family, and attachment scope together with the state counting rule, alternate groups, required owner/controller/core semantics, subject/ally/occupation policy, route or reveal gates, and cleanup transition. Keep the AI decision trigger independent from the GUI. If a state is counted through a subject, ally, or alternate controller, say so explicitly in `counting_rules` rather than silently broadening a generic helper. Use `attachment_scope = all_formable_categories` when the owning event or system establishes a strict family-wide rule, and fail closed if any family category is not listed in the audit.
 
 ### 2. Build or select the registry-backed consumer
 
@@ -84,7 +86,11 @@ Copy `formable_state_puzzle_scripted_localisation.txt` and the UTF-8 BOM YAML ex
 
 Do not print raw variable names, map hashes, implementation notes, or hidden future outcomes in player-facing text. Do not put colour control codes in scripted-localisation definitions; use the project's established localisation formatting and pair status colours with the border/hatch cues in the sprites.
 
-### 8. Validate before handing off
+### 8. Audit category attachments
+
+Complete [category_attachment_audit.md](category_attachment_audit.md) after the runtime generator emits its files. Enumerate every category that owns or exposes the formable, including shared and phase-specific categories, and verify that each metadata block sets `scripted_gui = <generated_gui_id>` for the matching manifest. Confirm that the generated block uses `context_type = decision_category`, the generated window resolves, and the category's formation decision still calls the same territory helper. A category attachment audit is required even when the state pieces themselves render correctly.
+
+### 9. Validate before handing off
 
 Run every item in `validation_checklist.md`, including the universal registry provenance gate, mandatory map/GUI MCP inspect/render artifacts, and DDS decode round-trip evidence described in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). Record skipped checks with the exact reason. A skill-local package is not an in-game completion claim. The parent still owns runtime wiring, final source review, and live-consumer validation.
 

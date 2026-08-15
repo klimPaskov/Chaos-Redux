@@ -6,22 +6,32 @@ This package implements the Event 019 scenario, **The Unbidden Muster**, as regi
 
 The source specification proposed `SCN-008`, but Independence Wave owns that live identity, IDs 1 through 11 are occupied, and Event 020 reserves raw ID 12. The shared registry therefore assigns Event 019 the first collision-free identity, `SCN-013`. Its name-sort value is `5.75`, placing The Unbidden Muster after The Hunger Lines and before The World in Fury.
 
-The current no-context registry/scenario reaudit and live-final AI, balance,
-performance, isolation, scenario-safety, and exploit reaudit each report zero
-P0, P1, or P2 findings. Every gameplay specialist gate is clean. The final
-whole-event completion audit is also PASS, and Event 19 and SCN-013 are `Fully
-Functional`. The owner-approved 7/18 regional-flag package is independently
+### Current provider-coverage boundary (2026-08-09)
+
+The current static provider census covers 18 IDs (`501-514`, `518`, `520-522`) with 12 definitions per provider (registration plus eleven Event 19 callbacks). Event 016 providers `504-510` and strict provider `522` use the shared manifest profiles 142-148; provider 522 requires the Germany/Mengele scope and program gates, the completed cloning-project and master-race-claim flags, and `mengele_aryan_clone_refinement_tech` and never enters provider 504. The management-cost display callback writes the provider's profile-cache value for the Muster Board without debiting resources; profile 99 identifies ledger-backed zero-debit adapters and their player-facing tooltip boundary.
+
+The CBRN scenario package records only the combat `chaos_battalion` provider 521. CBRN headquarters, regimental support, chemical-tank support, Livens support, and `chemical_agent_payload` remain parent-owned support or operation consumers. Provider 513 remains package-gated until Event 012 sets `africa_strange_formation_package_ready`; static package evidence includes all eight combat/support unit definitions, eight meshes/entities, packaged DDS maps, and 49 sound files. The current worktree includes that setter in `common/scripted_effects/012_africa_strange_force_manifest_effects.txt`, but its owner manifest and startup call are untracked in this audit and still need parent integration and validation.
+
+Event 19 MCP inspection remains partial, the bounded render attempt timed out, and the installed probability adapter cannot expose normalized dynamic provider-pool odds. These are evidence limitations recorded in `.tmp/event19_docs_curator_current.md`, not runtime fallbacks.
+
+The historical no-context registry/scenario reaudit and live-final AI, balance,
+performance, isolation, scenario-safety, and exploit reaudit each reported zero
+P0, P1, or P2 findings for their historical tranches. The 2026-07-18 final
+whole-event completion audit was also PASS for that historical tranche, and Event
+19 and SCN-013 were `Fully Functional` in that snapshot. The owner-approved 7/18
+regional-flag package is independently
 approved for parent-owned package promotion. It contains 91 raw sources, 91 deterministic
 spot masters, and 273 native/runtime output pairs, with visual/runtime rows
 passing. The PASS handoff is
 `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`.
 The machine JSON retains its immutable literal
 `candidate_requires_independent_visual_review` processor-state value. Parent
-workbook/catalog export and reconciliation are complete, Event 19 and SCN-013
-now read `Fully Functional`, and parent package inventory is complete at 33/33
-current files. The final completion audit
+workbook/catalog export and reconciliation are complete for that historical
+tranche, and parent package inventory is complete at 33/33 in that snapshot. The
+final completion audit
 `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md`
-is PASS with P0/P1/P2 = 0, so no closure gate remains.
+was PASS with P0/P1/P2 = 0 for that historical tranche; it does not close the
+current provider-extension validation boundary.
 
 Scenario family discovery follows Chaos unit family contract version 4. Event 19
 has exactly one dedicated registry code file,
@@ -148,7 +158,7 @@ organized passes while preserving a proved higher pre-existing same-tag stage.
 
 ## Localisation, icons, and assets
 
-Event 019 localisation covers the direct-caller confirmation, setup reports, type and reach wording, launch-state tooltips, and the generated government-leader names `infantry_spawn_scenario_muster_council` and `infantry_spawn_scenario_unbidden_assembly`. Shared GUI localisation supplies the `#013` row, The Unbidden Muster name, four type descriptions, four type labels, four intensity impacts, and blocked-launch explanations. `common/scripted_localisation/019_infantry_spawn_scenario_scripted_localisation.txt` resolves the direct report values, while `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt` resolves the shared row and confirmation values.
+Event 019 localisation covers the direct-caller confirmation, setup reports, type and reach wording, launch-state tooltips, and the generated government-leader names `infantry_spawn_scenario_muster_council` and `infantry_spawn_scenario_unbidden_assembly`. Shared scenario localisation supplies the `#013` row, The Unbidden Muster name, four type descriptions, four type labels, four intensity impacts, and blocked-launch explanations. `common/scripted_localisation/019_infantry_spawn_scenario_scripted_localisation.txt` resolves the direct report values, while `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt` resolves the shared row and confirmation values.
 
 Generic scenario governments resolve `GetInfantrySpawnScenarioActorArmyScene`
 through a meta effect before creating their technical leader. Profiles 1, 2, and
@@ -164,10 +174,9 @@ through 3.
 The scenario uses army or massed-host presentation only. No Event 19 scenario
 government uses `GFX_portrait_communist_rebels` or a generic human or unknown
 portrait. The direct reports reuse
-`GFX_report_event_infantry_spawn`, and the shared window renders its existing
-generic dynamic row and detail controls. The selector reuses sprites registered
-in `interface/019_infantry_spawn.gfx`; no scenario icon or dedicated GUI window
-is required.
+`GFX_report_event_infantry_spawn`, and the existing shared report and event-detail
+surfaces. The selector reuses sprites registered in `interface/019_infantry_spawn.gfx`;
+no scenario icon or dedicated Event 019 GUI window is required.
 
 The 20 claimant, 6 derivative, and 1 neutral fixed identity slots contain no
 individual focal person. Their `portrait` identifier names are stable engine

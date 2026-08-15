@@ -1054,9 +1054,6 @@ resources_found_cave_secure_origin = {
 
 # DHO country scope.
 resources_found_cave_recruit_commanders = {
-	if = { limit = { NOT = { has_character = DHO_thessik } } recruit_character = DHO_thessik }
-	if = { limit = { NOT = { has_character = DHO_orrukesh } } recruit_character = DHO_orrukesh }
-	if = { limit = { NOT = { has_character = DHO_khalvek } } recruit_character = DHO_khalvek }
 }
 
 # DHO country scope. Rebuilds exact active anchor totals from the persistent
@@ -2548,4 +2545,149 @@ resources_found_complete_anchor_cleanup = {
 		resources_found_offer_reconstruction_compact_choices = yes
 		OWNER = { country_event = { id = chaosx.nr18.89 hours = @CAVE_NOTICE_HOURS } }
 	}
+}
+ 
+# ============================================================================
+# CHAOS REDUX - EVENT 018 EVENT 019 PROVIDER ADAPTER
+# ============================================================================
+# Provider 518 enumerates every installed cave-brood combat token. The cave
+# package owns zero-manpower/zero-equipment obligations; Event 019 records the
+# exact family components and uses no ordinary infantry fallback.
+# ============================================================================
+
+resources_found_register_event19_cave_provider = {
+	chaos_unit_family_provider_518_register = yes
+}
+
+chaos_unit_family_provider_518_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event18_cave_brood.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event18_cave_brood.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event18_cave_brood.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event18_cave_brood.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event18_cave_brood.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event18_cave_brood.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event18_cave_brood.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event18_cave_brood.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event18_cave_brood.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event18_cave_brood.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event18_cave_brood.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_518_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			is_resources_found_cave_country = yes
+			has_country_flag = resources_found_cave_country
+			is_special_chaos_country = yes
+			is_actual_nonhuman_country = yes
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+}
+
+chaos_unit_family_provider_518_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Cave Brood Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					cave_monster_brood = { x = 0 y = 0 }
+					cave_stone_phalanx_brood = { x = 0 y = 1 }
+					cave_burrow_war_brood = { x = 0 y = 2 }
+					cave_scree_tide_brood = { x = 0 y = 3 }
+					cave_anchor_guard_brood = { x = 0 y = 4 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event18_cave_brood.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:chaos_unit_family_event18_cave_brood.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+}
+
+chaos_unit_family_provider_518_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_518_event19_reconcile_sustainment = {
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event18_cave_brood.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_resource_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_resource_per_battalion = constant:chaos_unit_family_event18_cave_brood.infantry_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event18_cave_brood.manpower_per_battalion }
+	infantry_spawn_record_provider_unit_obligations = yes
+}
+
+chaos_unit_family_provider_518_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.cave_brood }
+}
+
+chaos_unit_family_provider_518_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			is_resources_found_cave_country = yes
+			has_country_flag = resources_found_cave_country
+			is_special_chaos_country = yes
+			is_actual_nonhuman_country = yes
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			is_resources_found_cave_country = yes
+			has_country_flag = resources_found_cave_country
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_518_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_518_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_518_event19_setup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_518_derivative_noop = 0 }
+}
+chaos_unit_family_provider_518_event19_remove_public_additions = {
+	set_temp_variable = { chaos_unit_family_provider_518_derivative_noop = 0 }
+}
+chaos_unit_family_provider_518_event19_cleanup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_518_derivative_noop = 0 }
 }

@@ -3,7 +3,7 @@
 # ============================================================================
 # Package-local KUR contract. State 421 is the accepted anchor. Vanilla KUR
 # history names state 800 (Van) as capital, so every admission/runtime gate
-# that depends on the compact anchor also requires capital_scope = 421. This
+# that depends on the compact anchor also requires state 421 to be the capital. This
 # intentionally fails closed until the parent admission layer resolves the
 # 421/800 conflict; no vanilla history or map file is changed here.
 # ============================================================================
@@ -59,7 +59,7 @@ is_independence_wave_kur_project_ready = {
 	NOT = { has_country_flag = independence_wave_origin_ended }
 	NOT = { has_country_flag = independence_wave_kur_compact_crisis_failed }
 	421 = { is_owned_and_controlled_by = ROOT }
-	capital_scope = { state = 421 }
+	421 = { is_capital = yes }
 }
 
 can_pay_independence_wave_kur_administration_light_cost = {
@@ -101,7 +101,7 @@ is_independence_wave_exact_package_iw_060_runtime_ready = {
 	has_independence_wave_force_package_for_current_generation = yes
 	NOT = { has_country_flag = independence_wave_origin_ended }
 	421 = { is_owned_and_controlled_by = ROOT }
-	capital_scope = { state = 421 }
+	421 = { is_capital = yes }
 	has_variable = independence_wave_former_host
 	var:independence_wave_former_host = {
 		exists = yes
@@ -126,13 +126,12 @@ can_initialize_independence_wave_iw_060_package = {
 		has_variable = liberation_release_protected_state
 		var:liberation_release_protected_state = { is_owned_by = PREV }
 	}
-	capital_scope = { state = 421 }
+	421 = { is_capital = yes }
 }
 
 is_independence_wave_exact_package_iw_060_tag_available = {
 	is_independence_wave_candidate_origin_available = yes
 	original_tag = KUR
-	capital_scope = { state = 421 }
 	421 = {
 		is_independence_wave_candidate_anchor_available = yes
 		owner = { exists = yes NOT = { tag = KUR } }
@@ -231,7 +230,7 @@ has_prepared_independence_wave_iw_060_package_setup = {
 	has_country_flag = independence_wave_kur_ai_profile
 	has_country_flag = independence_wave_iw_060_lifecycle_initialized
 	OR = { has_idea = kur_fragmented_mountain_mandate has_idea = kur_kurdish_compact }
-	capital_scope = { state = 421 }
+	421 = { is_capital = yes }
 }
 
 has_complete_independence_wave_iw_060_package_setup = {

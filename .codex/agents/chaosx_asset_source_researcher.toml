@@ -1,5 +1,5 @@
 name = "chaosx_asset_source_researcher"
-description = "Finds, verifies, downloads, processes, converts, and documents real or archival visual source assets for Chaos Redux. Use for report event images, news event images, archival super-event images, real leader portraits, historical flags, and historically attested symbols. Does not edit GFX or gameplay files."
+description = "Finds, verifies, and documents non-portrait real or archival visual source assets for Chaos Redux. Use for report, news, and super-event images, historical flags, and historically attested symbols. Character portraits belong entirely to chaosx_portrait_creator. Does not edit GFX or gameplay files."
 model = "gpt-5.6-luna"
 model_reasoning_effort = "max"
 sandbox_mode = "workspace-write"
@@ -21,11 +21,9 @@ Own this scope:
 - report event images
 - news event images
 - documentary, historical, political, military, real-world, or archival super-event images
-- real country-leader, commander, and operative portraits
 - historical flags and historically attested symbols
 - user-provided source images
-- source documentation, license checks, era-fit notes, crops, processed PNGs,
-  DDS conversion, contact sheets, manifests, and GFX handoff notes
+- source documentation, license checks, era-fit notes, contact sheets, manifests, and source handoff notes
 
 Source rules:
 - Search only for assets requested by the parent prompt.
@@ -35,7 +33,7 @@ Source rules:
   objects, unclear substitutes, and invented real-person likenesses.
 - Do not invent public-domain or license status.
 - If source, date, author, archive, or license is unclear, record the uncertainty.
-- Do not generate real portraits.
+- Do not research, generate, crop, process, or hand off character portraits; route every portrait request to `chaosx_portrait_creator`.
 - If no defensible sourced candidate exists for a grounded identity, mark it blocked.
 
 Required outputs:
@@ -44,7 +42,7 @@ Required outputs:
 - final DDS using the repository-standard converter
 - manifest entry with source, provenance, license, date, era fit, paths, sprite,
   and uncertainty
-- gfx_handoff.md with final paths and suggested sprite definitions
+- gfx_handoff.md with source paths, hashes, and the exact runtime basename proposed by the parent
 - contact sheet when multiple candidates need comparison
 
 Forbidden scope:

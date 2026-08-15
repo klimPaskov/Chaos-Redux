@@ -619,18 +619,18 @@ africa_record_event_log_world_order_entry = {
 	set_temp_variable = { events_log_system_has_secondary_actor = africa_event_log_has_secondary_actor }
 	record_events_log_system_history_entry = yes
 	refresh_events_log_system_history_views = yes
-	clear_temp_variable = events_log_system_event_id
-	clear_temp_variable = events_log_system_event_type
-	clear_temp_variable = events_log_system_payload
-	clear_temp_variable = events_log_system_actor
-	clear_temp_variable = events_log_system_has_actor
-	clear_temp_variable = events_log_system_secondary_actor
-	clear_temp_variable = events_log_system_has_secondary_actor
-	clear_temp_variable = africa_event_log_payload
-	clear_temp_variable = africa_event_log_actor
-	clear_temp_variable = africa_event_log_has_actor
-	clear_temp_variable = africa_event_log_secondary_actor
-	clear_temp_variable = africa_event_log_has_secondary_actor
+	set_temp_variable = { events_log_system_event_id = 0 }
+	set_temp_variable = { events_log_system_event_type = 0 }
+	set_temp_variable = { events_log_system_payload = 0 }
+	set_temp_variable = { events_log_system_actor = 0 }
+	set_temp_variable = { events_log_system_has_actor = 0 }
+	set_temp_variable = { events_log_system_secondary_actor = 0 }
+	set_temp_variable = { events_log_system_has_secondary_actor = 0 }
+	set_temp_variable = { africa_event_log_payload = 0 }
+	set_temp_variable = { africa_event_log_actor = 0 }
+	set_temp_variable = { africa_event_log_has_actor = 0 }
+	set_temp_variable = { africa_event_log_secondary_actor = 0 }
+	set_temp_variable = { africa_event_log_has_secondary_actor = 0 }
 }
 
 # Refreshes visible player Event Log surfaces after a system-owned caller has
@@ -4187,6 +4187,31 @@ events_log_toggle_header_bulk_enabled = {
         limit = { has_country_flag = events_log_events_tab }
         events_log_toggle_all_events_enabled = yes
     }
+}
+
+# Fires every event currently selected (enabled) in the Event Logs events view
+# through the same manual dispatch path as the single event-detail trigger
+# button. Candidates failing the shared availability rules (disabled events,
+# already-fired unique events, missing manual fire context) are skipped, and
+# fire_event_by_temp_id_no_cluster still applies its own per-event readiness
+# gates. Views are rebuilt afterwards so fired counts and weights stay current.
+events_log_fire_all_selected_events = {
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = events_log_selected_fire_index
+		set_temp_variable = { events_log_fire_candidate_id = global.all_events^events_log_selected_fire_index }
+		if = {
+			limit = { events_log_fire_candidate_is_available = yes }
+			set_temp_variable = { event_id = events_log_fire_candidate_id }
+			set_temp_variable = { events_log_manual_event_detail_trigger = 1 }
+			fire_event_by_temp_id_no_cluster = yes
+			set_temp_variable = { events_log_manual_event_detail_trigger = 0 }
+		}
+	}
+	set_temp_variable = { event_id = 0 }
+	set_temp_variable = { events_log_fire_candidate_id = 0 }
+	events_log_refresh_bulk_enable_views = yes
 }
 
 events_log_toggle_selected_evolution_disabled = {

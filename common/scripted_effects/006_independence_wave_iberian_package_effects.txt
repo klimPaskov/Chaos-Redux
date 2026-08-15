@@ -165,6 +165,8 @@ independence_wave_install_nav_constitutional_government = {
 		set_popularities = { democratic = constant:independence_wave_iberian_politics.nav_constitutional_democratic communism = constant:independence_wave_iberian_politics.nav_constitutional_communism neutrality = constant:independence_wave_iberian_politics.nav_constitutional_neutrality fascism = constant:independence_wave_iberian_politics.nav_constitutional_fascism }
 		set_party_name = { ideology = democratic long_name = NAV_independence_wave_constitutional_fueros_long name = NAV_independence_wave_constitutional_fueros }
 		independence_wave_iberian_remove_nav_ideas = yes
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = NAV_INDEPENDENCE_WAVE_CIVICX
 		add_ideas = nav_constitutional_fueros
 		set_country_flag = independence_wave_nav_constitutional_government
 		set_temp_variable = { independence_wave_nav_fueros_delta = constant:independence_wave_iberian_pressure.standard_gain }
@@ -180,6 +182,8 @@ independence_wave_install_nav_workers_government = {
 		set_politics = { ruling_party = communism elections_allowed = no }
 		set_popularities = { democratic = constant:independence_wave_iberian_politics.nav_popular_democratic communism = constant:independence_wave_iberian_politics.nav_popular_communism neutrality = constant:independence_wave_iberian_politics.nav_popular_neutrality fascism = constant:independence_wave_iberian_politics.nav_popular_fascism }
 		independence_wave_iberian_remove_nav_ideas = yes
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = NAV_INDEPENDENCE_WAVE_SOCIALISTX
 		add_ideas = nav_workers_arsenal_council
 		set_country_flag = independence_wave_nav_workers_government
 		set_temp_variable = { independence_wave_nav_fueros_delta = constant:independence_wave_iberian_pressure.minor_gain }
@@ -195,6 +199,8 @@ independence_wave_install_nav_municipal_government = {
 		set_politics = { ruling_party = neutrality elections_allowed = yes }
 		set_popularities = { democratic = constant:independence_wave_iberian_politics.nav_traditional_democratic communism = constant:independence_wave_iberian_politics.nav_traditional_communism neutrality = constant:independence_wave_iberian_politics.nav_traditional_neutrality fascism = constant:independence_wave_iberian_politics.nav_traditional_fascism }
 		independence_wave_iberian_remove_nav_ideas = yes
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = NAV_INDEPENDENCE_WAVE_AGRARIANX
 		add_ideas = nav_municipal_fueros
 		set_country_flag = independence_wave_nav_municipal_government
 		set_temp_variable = { independence_wave_nav_fueros_delta = constant:independence_wave_iberian_pressure.major_gain }
@@ -211,6 +217,8 @@ independence_wave_install_nav_emergency_government = {
 		set_popularities = { democratic = constant:independence_wave_iberian_politics.nav_emergency_democratic communism = constant:independence_wave_iberian_politics.nav_emergency_communism neutrality = constant:independence_wave_iberian_politics.nav_emergency_neutrality fascism = constant:independence_wave_iberian_politics.nav_emergency_fascism }
 		set_party_name = { ideology = neutrality long_name = NAV_independence_wave_frontier_command_long name = NAV_independence_wave_frontier_command }
 		independence_wave_iberian_remove_nav_ideas = yes
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = NAV_INDEPENDENCE_WAVE_EMERGENCYX
 		add_ideas = nav_frontier_command
 		set_country_flag = independence_wave_nav_emergency_government
 		set_temp_variable = { independence_wave_nav_fueros_delta = constant:independence_wave_iberian_pressure.major_gain }
@@ -227,6 +235,8 @@ independence_wave_install_nav_patron_government = {
 		set_popularities = { democratic = constant:independence_wave_iberian_politics.nav_patron_democratic communism = constant:independence_wave_iberian_politics.nav_patron_communism neutrality = constant:independence_wave_iberian_politics.nav_patron_neutrality fascism = constant:independence_wave_iberian_politics.nav_patron_fascism }
 		set_party_name = { ideology = democratic long_name = NAV_independence_wave_protected_pyrenean_long name = NAV_independence_wave_protected_pyrenean }
 		independence_wave_iberian_remove_nav_ideas = yes
+		drop_cosmetic_tag = yes
+		set_cosmetic_tag = NAV_INDEPENDENCE_WAVE_CIVICX
 		add_ideas = nav_protected_pyrenean_compact
 		set_country_flag = independence_wave_nav_patron_government
 		set_temp_variable = { independence_wave_nav_fueros_delta = constant:independence_wave_iberian_pressure.minor_gain }
@@ -431,6 +441,7 @@ independence_wave_setup_iw_013_basque = {
 		set_party_name = { ideology = communism long_name = NAV_independence_wave_workers_arsenal_long name = NAV_independence_wave_workers_arsenal }
 		set_party_name = { ideology = neutrality long_name = NAV_independence_wave_municipal_fueros_long name = NAV_independence_wave_municipal_fueros }
 		set_party_name = { ideology = fascism long_name = NAV_independence_wave_frontier_command_long name = NAV_independence_wave_frontier_command }
+		set_cosmetic_tag = NAV_INDEPENDENCE_WAVE_CIVICX
 		set_variable = { independence_wave_nav_fueros_legitimacy = constant:independence_wave_iberian_pressure.nav_fueros_start }
 		set_variable = { independence_wave_nav_industrial_capacity = constant:independence_wave_iberian_pressure.nav_industry_start }
 		independence_wave_refresh_nav_compact_lifecycle = yes
@@ -561,6 +572,17 @@ independence_wave_cleanup_iw_013_basque = {
 		clr_country_flag = independence_wave_nav_factory_guards_integrated
 		clr_country_flag = independence_wave_nav_assembly_reconciled
 		clr_country_flag = independence_wave_nav_host_ledgers_settled
+		if = {
+			limit = {
+				OR = {
+					has_cosmetic_tag = NAV_INDEPENDENCE_WAVE_CIVICX
+					has_cosmetic_tag = NAV_INDEPENDENCE_WAVE_AGRARIANX
+					has_cosmetic_tag = NAV_INDEPENDENCE_WAVE_SOCIALISTX
+					has_cosmetic_tag = NAV_INDEPENDENCE_WAVE_EMERGENCYX
+				}
+			}
+			drop_cosmetic_tag = yes
+		}
 		if = { limit = { has_character = NAV_independence_wave_jose_antonio_aguirre } retire_character = NAV_independence_wave_jose_antonio_aguirre }
 	}
 }

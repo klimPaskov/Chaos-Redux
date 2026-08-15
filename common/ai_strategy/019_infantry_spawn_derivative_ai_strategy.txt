@@ -1,3 +1,20 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_ADJACENT_ATTACK = 45
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_CLAIMANT_ROUTE_OFFENSE = 20
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE = 20
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_FORMER_PARENT_ATTACK = 80
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GHOST_PRESERVATION_BIAS = 35
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GOLEM_PRESERVATION_BIAS = 50
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_INDUSTRY_STATE_PRIORITY = 40
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE = 100
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_RESOURCE_STATE_PRIORITY = 40
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SPECIES_ROUTE_FAMILY = 25
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SUPPLY_STATE_PRIORITY = 50
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_AGGRESSIVE_WAR_RELEASE = -40
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_MODERATE_WAR_RESTRAINT = 60
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_STRONG_WAR_RESTRAINT = 120
+@CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_ZOMBIE_QUANTITY_BIAS = 20
 # ============================================================================
 # CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY AI STRATEGIES
 # ============================================================================
@@ -10,10 +27,10 @@ infantry_spawn_derivative_common_profile = {
 	allowed = { always = yes }
 	enable = { infantry_spawn_derivative_package_is_active = yes }
 	abort_when_not_enabled = yes
-	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.opening_defense }
-	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.former_parent_attack }
-	ai_strategy = { type = equipment_production_factor id = support value = constant:infantry_spawn_derivative_ai.adjacent_attack }
-	ai_strategy = { type = template_prio id = infantry value = constant:infantry_spawn_derivative_ai.opening_defense }
+	ai_strategy = { type = build_army value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_FORMER_PARENT_ATTACK }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_ADJACENT_ATTACK }
+	ai_strategy = { type = template_prio id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
 }
 
 infantry_spawn_derivative_opening_survival_profile = {
@@ -23,9 +40,9 @@ infantry_spawn_derivative_opening_survival_profile = {
 		has_country_flag = infantry_spawn_derivative_opening_crisis_active
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.strong_war_restraint }
-	ai_strategy = { type = build_building id = bunker value = constant:infantry_spawn_derivative_ai.opening_defense }
-	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_STRONG_WAR_RESTRAINT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SUPPLY_STATE_PRIORITY }
 }
 
 infantry_spawn_derivative_claimant_profile = {
@@ -35,9 +52,9 @@ infantry_spawn_derivative_claimant_profile = {
 		infantry_spawn_derivative_has_claimant_route = yes
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.former_parent_attack }
-	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.former_parent_attack }
-	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.claimant_route_offense }
+	ai_strategy = { type = build_army value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_FORMER_PARENT_ATTACK }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_FORMER_PARENT_ATTACK }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_CLAIMANT_ROUTE_OFFENSE }
 }
 
 infantry_spawn_derivative_claimant_estates_profile = {
@@ -48,8 +65,8 @@ infantry_spawn_derivative_claimant_estates_profile = {
 		has_country_flag = infantry_spawn_derivative_command_estates_assigned
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.claimant_route_offense }
-	ai_strategy = { type = build_building id = bunker value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+	ai_strategy = { type = garrison value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_CLAIMANT_ROUTE_OFFENSE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE }
 }
 
 infantry_spawn_derivative_collective_profile = {
@@ -59,10 +76,10 @@ infantry_spawn_derivative_collective_profile = {
 		infantry_spawn_derivative_has_collective_route = yes
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.moderate_war_restraint }
-	ai_strategy = { type = build_building id = bunker value = constant:infantry_spawn_derivative_ai.collective_route_defense }
-	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
-	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_MODERATE_WAR_RESTRAINT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SUPPLY_STATE_PRIORITY }
+	ai_strategy = { type = garrison value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE }
 }
 
 infantry_spawn_derivative_collective_rotating_commands_profile = {
@@ -73,9 +90,9 @@ infantry_spawn_derivative_collective_rotating_commands_profile = {
 		has_country_flag = infantry_spawn_derivative_collective_rotating_commands
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.moderate_war_restraint }
-	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
-	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_MODERATE_WAR_RESTRAINT }
+	ai_strategy = { type = garrison value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SUPPLY_STATE_PRIORITY }
 }
 
 infantry_spawn_derivative_collective_central_muster_profile = {
@@ -86,8 +103,8 @@ infantry_spawn_derivative_collective_central_muster_profile = {
 		has_country_flag = infantry_spawn_derivative_collective_central_muster
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.former_parent_attack }
-	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.collective_route_defense }
+	ai_strategy = { type = build_army value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_FORMER_PARENT_ATTACK }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE }
 }
 
 infantry_spawn_derivative_species_profile = {
@@ -98,9 +115,9 @@ infantry_spawn_derivative_species_profile = {
 		has_country_flag = infantry_spawn_derivative_submission_operations_unlocked
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.aggressive_war_release }
-	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.opening_defense }
-	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.species_route_family }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_AGGRESSIVE_WAR_RELEASE }
+	ai_strategy = { type = build_army value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SPECIES_ROUTE_FAMILY }
 }
 
 infantry_spawn_derivative_species_compact_profile = {
@@ -111,9 +128,9 @@ infantry_spawn_derivative_species_compact_profile = {
 		has_country_flag = infantry_spawn_derivative_species_compact_governance
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.moderate_war_restraint }
-	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
-	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_MODERATE_WAR_RESTRAINT }
+	ai_strategy = { type = garrison value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SUPPLY_STATE_PRIORITY }
 }
 
 infantry_spawn_derivative_species_primacy_profile = {
@@ -125,17 +142,17 @@ infantry_spawn_derivative_species_primacy_profile = {
 		has_country_flag = infantry_spawn_derivative_outward_campaign_ready
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.aggressive_war_release }
-	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.opening_defense }
-	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.species_route_family }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_AGGRESSIVE_WAR_RELEASE }
+	ai_strategy = { type = build_army value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SPECIES_ROUTE_FAMILY }
 }
 
 infantry_spawn_derivative_zombie_profile = {
 	allowed = { always = yes }
 	enable = { infantry_spawn_derivative_is_zombie = yes }
 	abort_when_not_enabled = yes
-	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.opening_defense }
-	ai_strategy = { type = template_prio id = infantry value = constant:infantry_spawn_derivative_ai.opening_defense }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
+	ai_strategy = { type = template_prio id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
 }
 
 infantry_spawn_derivative_zombie_numbered_bands_profile = {
@@ -146,8 +163,8 @@ infantry_spawn_derivative_zombie_numbered_bands_profile = {
 		has_country_flag = infantry_spawn_derivative_zombie_bands_numbered
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = build_army value = constant:infantry_spawn_derivative_ai.zombie_quantity_bias }
-	ai_strategy = { type = role_ratio id = infantry value = constant:infantry_spawn_derivative_ai.zombie_quantity_bias }
+	ai_strategy = { type = build_army value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_ZOMBIE_QUANTITY_BIAS }
+	ai_strategy = { type = role_ratio id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_ZOMBIE_QUANTITY_BIAS }
 }
 
 infantry_spawn_derivative_zombie_controlled_training_profile = {
@@ -157,8 +174,8 @@ infantry_spawn_derivative_zombie_controlled_training_profile = {
 		has_country_flag = infantry_spawn_derivative_zombie_training_authorized
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = template_prio id = infantry value = constant:infantry_spawn_derivative_ai.opening_defense }
-	ai_strategy = { type = equipment_production_factor id = infantry value = constant:infantry_spawn_derivative_ai.former_parent_attack }
+	ai_strategy = { type = template_prio id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_OPENING_DEFENSE }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_FORMER_PARENT_ATTACK }
 }
 
 infantry_spawn_derivative_zombie_disciplined_column_profile = {
@@ -168,16 +185,16 @@ infantry_spawn_derivative_zombie_disciplined_column_profile = {
 		has_country_flag = infantry_spawn_derivative_zombie_hunger_disciplined
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = garrison value = constant:infantry_spawn_derivative_ai.collective_route_defense }
-	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.claimant_route_offense }
+	ai_strategy = { type = garrison value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_COLLECTIVE_ROUTE_DEFENSE }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_CLAIMANT_ROUTE_OFFENSE }
 }
 
 infantry_spawn_derivative_ghost_profile = {
 	allowed = { always = yes }
 	enable = { infantry_spawn_derivative_is_ghost = yes }
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
-	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GHOST_PRESERVATION_BIAS }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GHOST_PRESERVATION_BIAS }
 }
 
 infantry_spawn_derivative_ghost_anchor_profile = {
@@ -187,7 +204,7 @@ infantry_spawn_derivative_ghost_anchor_profile = {
 		has_country_flag = infantry_spawn_derivative_ghost_anchors_marked
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = build_building id = bunker value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GHOST_PRESERVATION_BIAS }
 }
 
 infantry_spawn_derivative_ghost_stable_procession_profile = {
@@ -197,8 +214,8 @@ infantry_spawn_derivative_ghost_stable_procession_profile = {
 		has_country_flag = infantry_spawn_derivative_ghost_procession_anchored
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
-	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.ghost_preservation_bias }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SUPPLY_STATE_PRIORITY }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GHOST_PRESERVATION_BIAS }
 }
 
 infantry_spawn_derivative_ghost_reduced_hunger_profile = {
@@ -208,15 +225,15 @@ infantry_spawn_derivative_ghost_reduced_hunger_profile = {
 		has_country_flag = infantry_spawn_derivative_ghost_decline_managed
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai_weight.strong_war_restraint }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_WEIGHT_STRONG_WAR_RESTRAINT }
 }
 
 infantry_spawn_derivative_golem_profile = {
 	allowed = { always = yes }
 	enable = { infantry_spawn_derivative_is_golem = yes }
 	abort_when_not_enabled = yes
-	ai_strategy = { type = avoid_starting_wars value = constant:infantry_spawn_derivative_ai.golem_preservation_bias }
-	ai_strategy = { type = spare_unit_factor value = constant:infantry_spawn_derivative_ai.golem_preservation_bias }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GOLEM_PRESERVATION_BIAS }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_GOLEM_PRESERVATION_BIAS }
 }
 
 infantry_spawn_derivative_golem_recovered_coal_profile = {
@@ -226,7 +243,7 @@ infantry_spawn_derivative_golem_recovered_coal_profile = {
 		has_country_flag = infantry_spawn_derivative_golem_coal_recovered
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = equipment_variant_production_factor id = coal_golem_equipment value = constant:infantry_spawn_derivative_ai.resource_state_priority }
+	ai_strategy = { type = equipment_variant_production_factor id = coal_golem_equipment value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_RESOURCE_STATE_PRIORITY }
 }
 
 infantry_spawn_derivative_golem_foundry_profile = {
@@ -236,8 +253,8 @@ infantry_spawn_derivative_golem_foundry_profile = {
 		has_country_flag = infantry_spawn_derivative_golem_foundries_open
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = build_building id = arms_factory value = constant:infantry_spawn_derivative_ai.industry_state_priority }
-	ai_strategy = { type = equipment_variant_production_factor id = coal_golem_equipment value = constant:infantry_spawn_derivative_ai.resource_state_priority }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_INDUSTRY_STATE_PRIORITY }
+	ai_strategy = { type = equipment_variant_production_factor id = coal_golem_equipment value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_RESOURCE_STATE_PRIORITY }
 }
 
 infantry_spawn_derivative_golem_shared_pattern_profile = {
@@ -247,6 +264,6 @@ infantry_spawn_derivative_golem_shared_pattern_profile = {
 		has_country_flag = infantry_spawn_derivative_golem_pattern_shared
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = equipment_production_factor id = support value = constant:infantry_spawn_derivative_ai.adjacent_attack }
-	ai_strategy = { type = build_building id = infrastructure value = constant:infantry_spawn_derivative_ai.supply_state_priority }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_ADJACENT_ATTACK }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INFANTRY_SPAWN_DERIVATIVE_AI_SUPPLY_STATE_PRIORITY }
 }

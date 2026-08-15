@@ -631,6 +631,7 @@ has_independence_wave_formable_commit_readiness = {
 can_independence_wave_commit_selected_formable = {
 	is_independence_wave_regional_power = yes
 	independence_wave_formable_profile_matches_selected_family = yes
+	has_independence_wave_selected_formable_state_puzzle_territory = yes
 	# Keep the commit allowlist explicit so generic receipts cannot promote an
 	# unresearched family or silently become a fallback adapter.
 	OR = {
@@ -693,6 +694,27 @@ can_independence_wave_commit_selected_formable = {
 	has_independence_wave_formable_commit_readiness = yes
 	NOT = { has_country_flag = independence_wave_formable_commit_pending }
 	NOT = { has_country_flag = independence_wave_formable_active }
+}
+
+# The same family-specific territory helper drives the scripted GUI summary,
+# player availability, and AI commit gate. A family without a reviewed state
+# puzzle cannot pass the generic formation transaction.
+has_independence_wave_selected_formable_state_puzzle_territory = {
+	OR = {
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state } independence_wave_formable_state_puzzle_form01_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact } independence_wave_formable_state_puzzle_form02_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation } independence_wave_formable_state_puzzle_form03_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation } independence_wave_formable_state_puzzle_form04_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation } independence_wave_formable_state_puzzle_form07_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation } independence_wave_formable_state_puzzle_form08_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } independence_wave_formable_state_puzzle_form09_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation } independence_wave_formable_state_puzzle_form12_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural } independence_wave_formable_state_puzzle_form13_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation } independence_wave_formable_state_puzzle_form16_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation } independence_wave_formable_state_puzzle_form18_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation } independence_wave_formable_state_puzzle_form39_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } independence_wave_formable_state_puzzle_form48_territory = yes }
+	}
 }
 
 can_pay_independence_wave_selected_formable_commit_cost = {

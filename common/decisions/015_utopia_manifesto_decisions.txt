@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION = 25
+@CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_STORE_GUARD_MINIMUM_DIVISIONS = 0
 # days_re_enable is a static-only decision field; retain file-scoped constants
 # for its cooldown values. Timed flag durations use script constants through a
 # temporary variable so their tuning remains shared with dynamic durations.
@@ -4473,7 +4477,7 @@ utopia_manifesto_league_category = {
 		}
 		ai_will_do = {
 			base = constant:utopia_manifesto_decision_ai.balanced
-			modifier = { factor = constant:utopia_manifesto_decision_ai.factor_preferred FROM = { has_opinion = { target = ROOT value > constant:utopia_manifesto_decision_threshold.positive_opinion } } }
+			modifier = { factor = constant:utopia_manifesto_decision_ai.factor_preferred FROM = { has_opinion = { target = ROOT value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION } } }
 		}
 	}
 
@@ -4871,7 +4875,7 @@ utopia_manifesto_defense_category = {
 							ROOT = {
 								divisions_in_state = {
 									state = PREV
-									size > constant:utopia_manifesto_decision_threshold.store_guard_minimum_divisions
+									size > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_STORE_GUARD_MINIMUM_DIVISIONS
 								}
 							}
 						}

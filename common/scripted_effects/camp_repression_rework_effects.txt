@@ -227,9 +227,17 @@ camp_rework_exclude_special_country = {
 		set_country_flag = camp_rework_special_cleanup_in_progress
 
 		camp_rework_cancel_active_expansion_projects = yes
-		remove_from_array = {
-			array = global.camp_repression_active_countries
-			value = THIS
+		if = {
+			limit = {
+				is_in_array = {
+					array = global.camp_repression_active_countries
+					value = THIS
+				}
+			}
+			remove_from_array = {
+				array = global.camp_repression_active_countries
+				value = THIS
+			}
 		}
 
 		clr_country_flag = camp_repression_ledger_open

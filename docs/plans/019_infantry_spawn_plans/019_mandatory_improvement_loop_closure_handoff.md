@@ -1,5 +1,7 @@
 # Event 19 Mandatory Improvement-Loop Planner Closure Handoff
 
+> **Historical closure notice (2026-08-09):** This closure handoff predates the provider-522 and expanded 18-ID Event 19 owner-adapter tranches. Its closure statements remain historical for the bounded 2026-07-18 tranche; use `source_of_truth_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider status.
+
 > **Superseded current-state notice (2026-07-16):** This file preserves the
 > first near-completion planner run and its then-current approval gates. The
 > authoritative improvement-loop disposition is now

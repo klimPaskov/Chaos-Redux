@@ -973,6 +973,7 @@ infantry_spawn_apply_evolution_iii_to_country = {
 		add_to_variable = { infantry_spawn_management_congestion_pressure = constant:infantry_spawn_evolution_entry.command_fracture_congestion_gain }
 		clamp_variable = { var = infantry_spawn_muster_control min = constant:infantry_spawn_control.minimum max = constant:infantry_spawn_control.maximum }
 		infantry_spawn_recalculate_country_pressure = yes
+		infantry_spawn_muster_board_rebuild_view = yes
 		infantry_spawn_schedule_country_pulse = yes
 		if = {
 			limit = {
@@ -1190,7 +1191,7 @@ infantry_spawn_load_frozen_first_family_reception_row = {
 			has_variable = infantry_spawn_first_family_reception_provider_id
 			has_variable = infantry_spawn_first_family_reception_visual_profile
 			has_variable = infantry_spawn_first_family_reception_nonce
-			check_variable = { var = infantry_spawn_first_family_reception_registry_index value = constant:chaos_unit_family_registry_index.invalid compare = greater_than }
+			check_variable = { var = infantry_spawn_first_family_reception_registry_index value = constant:chaos_unit_family_registry.not_found compare = greater_than }
 			check_variable = { var = infantry_spawn_first_family_reception_registry_index value = global.chaos_unit_family_id_entries^num compare = less_than }
 		}
 		set_temp_variable = { chaos_unit_family_registry_index = infantry_spawn_first_family_reception_registry_index }
@@ -1230,7 +1231,7 @@ infantry_spawn_apply_first_family_reception_cantonment = {
 }
 
 infantry_spawn_apply_first_family_reception_negotiated = {
-	add_army_experience = constant:infantry_spawn_first_family_reception.negotiated_army_experience_gain
+	army_experience = constant:infantry_spawn_first_family_reception.negotiated_army_experience_gain
 	subtract_from_variable = { infantry_spawn_muster_control = constant:infantry_spawn_first_family_reception.negotiated_control_loss }
 	add_to_variable = { infantry_spawn_evolution_saturation_pressure = constant:infantry_spawn_first_family_reception.negotiated_pressure_gain }
 	clamp_variable = { var = infantry_spawn_muster_control min = constant:infantry_spawn_control.minimum max = constant:infantry_spawn_control.maximum }
@@ -1356,6 +1357,7 @@ infantry_spawn_apply_evolution_iv_to_country = {
 		add_to_variable = { infantry_spawn_evolution_saturation_pressure = constant:infantry_spawn_evolution_entry.anomalous_saturation_gain }
 		clamp_variable = { var = infantry_spawn_muster_control min = constant:infantry_spawn_control.minimum max = constant:infantry_spawn_control.maximum }
 		infantry_spawn_recalculate_country_pressure = yes
+		infantry_spawn_muster_board_rebuild_view = yes
 		infantry_spawn_schedule_country_pulse = yes
 		if = {
 			limit = {

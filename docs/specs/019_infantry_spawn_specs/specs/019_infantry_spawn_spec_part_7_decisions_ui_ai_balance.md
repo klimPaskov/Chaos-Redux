@@ -1,5 +1,5 @@
 # Event 19 Infantry Spawn
-## Part 7: Decision architecture, scripted GUI, AI, tuning, and balance
+## Part 7: Decision architecture, decision-only surface, AI, tuning, and balance
 
 ## Decision-system purpose
 
@@ -10,8 +10,8 @@ The category evolves with the event.
 - Baseline shows compact audit and disposition actions.
 - Evolution I adds district organization and standardization.
 - Evolution II adds supply missions, prototype handling, and on-demand formation requests.
-- Evolution III opens the full Muster Board and claimant crisis.
-- Evolution IV adds the Anomalous Registry and family management.
+- Evolution III exposes the full Formation Ledger decision category and claimant crisis.
+- Evolution IV adds family selection and Anomalous Registry management decisions.
 
 Obsolete actions disappear or are replaced. The category should show what matters in the current phase.
 
@@ -27,13 +27,13 @@ The category appears when the country has an unresolved generation, live or unac
 
 ### Closeout state
 
-After all lots are resolved and no active claimant, opening, deferred transaction, running operation, or relevant cooldown remains, the category and Muster Board close.
+After all lots are resolved and no active claimant, opening, deferred transaction, running operation, or relevant cooldown remains, the decision category closes.
 
 The parent-side derivative revolt marker and Board close are written only after the exact transfer or one-state takeover reaches its final ownership, ledger, control, core, and diplomacy proof; pre-commit recovery and post-commit quarantine do not record a successful revolt.
 
 ### Persistent evolved state
 
-At Evolution III and IV, the Muster Board remains a doorway while the crisis is live, including the first bounded opening draw and any active claimant or formation.
+At Evolution III and IV, the Formation Ledger decision category remains available while the crisis is live, including the first bounded opening draw and any active claimant or formation.
 Persistent Evolution III or IV entitlement flags alone do not keep the ordinary category open after the country intentionally suppresses new draws and resolves the crisis.
 
 ### Invalid-country cleanup
@@ -594,7 +594,30 @@ Objective:
 
 Failure can open derivative revolt eligibility.
 
-## Scripted GUI: Muster Board
+## Decision-only Formation Ledger surface
+
+The accepted 2026-08-05 surface uses ordinary decisions rather than a custom
+scripted GUI. `infantry_spawn_review_formation_ledger` rebuilds the shared lot,
+generation, claimant, family, and request-cost caches without changing the
+country. Existing lot, request, integration, demobilization, claimant, and
+family decisions remain the substantive controls; every one carries its own
+requirements, cost text, effect tooltip, and AI weight.
+
+Evolution IV countries with more than one eligible registry family expose
+`infantry_spawn_cycle_anomalous_family_decision`. Countries with more than one
+live claimant file expose `infantry_spawn_cycle_claimant_file`. These are cursor
+decisions only. They call the same revalidated selection helpers used by the
+country AI, while AI selects the highest-pressure family and immutable pending
+demand owner directly.
+
+The category lifecycle, scenario isolation, civil-war safety, lot accounting,
+and cleanup contracts are unchanged. The historical `muster_gui` variable names
+are retained only for save compatibility and shared selection-cache code.
+
+## Archived scripted-GUI design (superseded)
+
+The following design notes document the former GUI proposal for provenance. They
+are not runtime requirements after the accepted decision-only conversion.
 
 ## Entry point
 
@@ -699,7 +722,7 @@ Useful fields:
 
 This tab can be omitted if it creates excessive implementation or performance burden. The global Event Log and a category summary are sufficient. The decision should be made during implementation after inspecting UI space.
 
-## GUI cost and tooltip rules
+## Archived GUI cost and tooltip rules
 
 Every button must show:
 
@@ -714,7 +737,7 @@ When more than four costs apply, the button shows a short requirements status an
 
 No button bypasses decision balance. The GUI and decisions call shared effects and triggers.
 
-## GUI animation plan
+## Archived GUI animation plan
 
 Animation should communicate state, not decorate every element.
 

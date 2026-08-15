@@ -41,7 +41,7 @@ Total source lines read: 10,849.
 
 ## Catalog conflict resolved by this source specification
 
-The dated Event 6 catalog draft used variable wave ranges of 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16. A later user decision supersedes that draft and sets automatic waves to 6, 8, 10, 14, and 20, including World Collapse at 20. This package treats the fixed ladder as authoritative and records both earlier catalog wordings as stale. The catalog handoff explains how the final in-game wording and workbook row should be updated after implementation.
+The dated Event 6 catalog draft used variable wave ranges of 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16. The active user decision supersedes those drafts and sets automatic waves to 3, 4, 5, 7, and 10, with World Collapse also targeting 10. Older doubled-ladder snapshots are historical traceability only. The catalog handoff records the current in-game wording and workbook row.
 
 ## Custom subagent execution status
 

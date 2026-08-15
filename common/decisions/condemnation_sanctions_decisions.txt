@@ -8,42 +8,12 @@
 # ============================================================================
 
 condemnation_target_response_category = {
-	condemnation_view_compliance_options = {
-		icon = GFX_decision_SWI_support_humanitarian_efforts
-		cost = 0
-		visible = { is_ai = no condemnation_is_concern = yes }
-		available = { NOT = { has_country_flag = condemnation_response_view_compliance } }
-		complete_effect = { hidden_effect = {
-			clr_country_flag = condemnation_response_view_defiance
-			clr_country_flag = condemnation_response_view_evasion
-			set_country_flag = condemnation_response_view_compliance
-		} }
-		ai_will_do = { base = 0 }
-	}
-
-	condemnation_view_defiance_options = {
-		icon = GFX_decision_generic_political_rally
-		cost = 0
-		visible = { is_ai = no condemnation_is_concern = yes }
-		available = { NOT = { has_country_flag = condemnation_response_view_defiance } }
-		complete_effect = { hidden_effect = {
-			clr_country_flag = condemnation_response_view_compliance
-			clr_country_flag = condemnation_response_view_evasion
-			set_country_flag = condemnation_response_view_defiance
-		} }
-		ai_will_do = { base = 0 }
-	}
-
-	condemnation_view_evasion_options = {
+	condemnation_choose_response_posture = {
 		icon = GFX_decision_generic_intelligence_operation
 		cost = 0
 		visible = { is_ai = no condemnation_is_concern = yes }
-		available = { NOT = { has_country_flag = condemnation_response_view_evasion } }
-		complete_effect = { hidden_effect = {
-			clr_country_flag = condemnation_response_view_compliance
-			clr_country_flag = condemnation_response_view_defiance
-			set_country_flag = condemnation_response_view_evasion
-		} }
+		available = { condemnation_is_concern = yes }
+		complete_effect = { country_event = { id = condemnation_sanctions.6 } }
 		ai_will_do = { base = 0 }
 	}
 

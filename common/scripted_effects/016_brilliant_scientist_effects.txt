@@ -2684,8 +2684,14 @@ brilliant_scientist_appoint_kruger_from_opening = {
 		}
 		set_global_flag = brilliant_scientist_character_transaction_lock
 		set_country_flag = brilliant_scientist_character_transaction_lock
-		KRG = {
-			if = {
+		# Pull the fixed token into the host with country-scope set_nationality.
+		# The holder search covers the normal attach; the direct dormant-tag scope
+		# mirrors the Event 015 transfer and covers the stateless-tag case where
+		# no reachable holder country owns the roster yet. This remains the only
+		# first-recruit path; recruit_character is rejected outside history files.
+		if = {
+			limit = { NOT = { has_character = KRG_warren_kruger } }
+			every_possible_country = {
 				limit = { has_character = KRG_warren_kruger }
 				set_nationality = {
 					target_country = ROOT
@@ -2693,9 +2699,21 @@ brilliant_scientist_appoint_kruger_from_opening = {
 				}
 			}
 		}
-		KRG_warren_kruger = {
-			set_character_flag = brilliant_scientist_personal_recruited
-			set_character_flag = brilliant_scientist_personal_active
+		if = {
+			limit = { NOT = { has_character = KRG_warren_kruger } }
+			KRG = {
+				set_nationality = {
+					target_country = ROOT
+					character = KRG_warren_kruger
+				}
+			}
+		}
+		if = {
+			limit = { has_character = KRG_warren_kruger }
+			KRG_warren_kruger = {
+				set_character_flag = brilliant_scientist_personal_recruited
+				set_character_flag = brilliant_scientist_personal_active
+			}
 		}
 		set_variable = { brilliant_scientist_appointment_date = global.date }
 		brilliant_scientist_initialize_host_state = yes
@@ -2793,35 +2811,38 @@ brilliant_scientist_forward_opening_to_selected_recipient = {
 # must contain exactly research_speed_factor = 1.0 and no other Event 016 idea
 # may repeat that modifier. Public and secret recruitment use this same role.
 brilliant_scientist_add_kruger_roles = {
-	add_advisor_role = {
-		character = KRG_warren_kruger
-		advisor = {
-			slot = theorist
-			ledger = army
-			cost = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
-			can_be_fired = no
-			idea_token = brilliant_scientist_warren_kruger_advisor
-			traits = {
-				brilliant_scientist_research_director
+	if = {
+		limit = { has_character = KRG_warren_kruger }
+		add_advisor_role = {
+			character = KRG_warren_kruger
+			advisor = {
+				slot = theorist
+				ledger = army
+				cost = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO
+				can_be_fired = no
+				idea_token = brilliant_scientist_warren_kruger_advisor
+				traits = {
+					brilliant_scientist_research_director
+				}
+				allowed = {}
 			}
-			allowed = {}
+			activate = yes
 		}
-		activate = yes
-	}
-	add_scientist_role = {
-		character = KRG_warren_kruger
-		scientist = {
-			desc = KRG_warren_kruger_scientist_desc
-			traits = {
-				brilliant_scientist_polymath
-			}
-			skills = {
-				specialization_nuclear = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
-				specialization_naval = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
-				specialization_air = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
-				specialization_land = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
-				specialization_biowarfare = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
-				specialization_cw = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
+		add_scientist_role = {
+			character = KRG_warren_kruger
+			scientist = {
+				desc = KRG_warren_kruger_scientist_desc
+				traits = {
+					brilliant_scientist_polymath
+				}
+				skills = {
+					specialization_nuclear = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
+					specialization_naval = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
+					specialization_air = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
+					specialization_land = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
+					specialization_biowarfare = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
+					specialization_cw = @CR_SC_BRILLIANT_SCIENTIST_VALUE_FIVE
+				}
 			}
 		}
 	}
@@ -2830,12 +2851,15 @@ brilliant_scientist_add_kruger_roles = {
 # COUNTRY scope, called before nationality changes.
 brilliant_scientist_remove_kruger_roles = {
 	if = {
-		limit = { KRG_warren_kruger = { is_hired_as_advisor = yes } }
-		deactivate_advisor = KRG_warren_kruger
-	}
-	KRG_warren_kruger = {
-		remove_advisor_role = { slot = theorist }
-		remove_scientist_role = yes
+		limit = { has_character = KRG_warren_kruger }
+		if = {
+			limit = { KRG_warren_kruger = { is_hired_as_advisor = yes } }
+			deactivate_advisor = KRG_warren_kruger
+		}
+		KRG_warren_kruger = {
+			remove_advisor_role = { slot = theorist }
+			remove_scientist_role = yes
+		}
 	}
 }
 
@@ -2844,20 +2868,23 @@ brilliant_scientist_remove_kruger_roles = {
 brilliant_scientist_refresh_kruger_portrait_stage = {
 	set_variable = { brilliant_scientist_kruger_portrait_stage = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_iv_unlocked } }
-		set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.four }
-	}
-	else_if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_iii_unlocked } }
-		set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.three }
-	}
-	else_if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_ii_unlocked } }
-		set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.two }
-	}
-	else_if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_i_unlocked } }
-		set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.one }
+		limit = { has_character = KRG_warren_kruger }
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_iv_unlocked } }
+			set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.four }
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_iii_unlocked } }
+			set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.three }
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_ii_unlocked } }
+			set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.two }
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_portrait_stage_i_unlocked } }
+			set_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.one }
+		}
 	}
 	brilliant_scientist_apply_kruger_portraits_for_current_stage = yes
 }
@@ -2872,27 +2899,33 @@ brilliant_scientist_refresh_kruger_continuity_state = {
 	clr_country_flag = brilliant_scientist_kruger_injured
 	clr_country_flag = brilliant_scientist_kruger_confined
 	if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_continuity_temporal } }
-		set_country_flag = brilliant_scientist_kruger_continuity_temporal
-	}
-	else_if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_continuity_machine } }
-		set_country_flag = brilliant_scientist_kruger_continuity_machine
-	}
-	else_if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_continuity_clone } }
-		set_country_flag = brilliant_scientist_kruger_continuity_clone
+		limit = { has_character = KRG_warren_kruger }
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_continuity_temporal } }
+			set_country_flag = brilliant_scientist_kruger_continuity_temporal
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_continuity_machine } }
+			set_country_flag = brilliant_scientist_kruger_continuity_machine
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_continuity_clone } }
+			set_country_flag = brilliant_scientist_kruger_continuity_clone
+		}
+		else = {
+			set_country_flag = brilliant_scientist_kruger_continuity_human
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_injured } }
+			set_country_flag = brilliant_scientist_kruger_injured
+		}
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_confined } }
+			set_country_flag = brilliant_scientist_kruger_confined
+		}
 	}
 	else = {
 		set_country_flag = brilliant_scientist_kruger_continuity_human
-	}
-	if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_injured } }
-		set_country_flag = brilliant_scientist_kruger_injured
-	}
-	if = {
-		limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_confined } }
-		set_country_flag = brilliant_scientist_kruger_confined
 	}
 	brilliant_scientist_refresh_kruger_portrait_stage = yes
 }

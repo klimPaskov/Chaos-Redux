@@ -65,7 +65,7 @@ Role:
 Eligible trigger families:
 
 - radical league adopts an offensive charter and reaches a military and membership threshold
-- a high-chaos 20-country wave creates several armed or radical states with synchronized claims
+- a high-chaos ten-country wave creates several armed or radical states with synchronized claims
 - several Event 6 countries launch coordinated wars against former hosts
 - a hidden formable becomes the center of an aggressive bloc
 - the league sponsors enough later breakaways to create a visible cascade

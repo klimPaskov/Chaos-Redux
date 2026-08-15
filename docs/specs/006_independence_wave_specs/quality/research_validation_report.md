@@ -57,8 +57,8 @@ Every package points to a valid reservation group and valid source IDs. A restri
 ## Map and wave checks
 
 - All 111 reservation-group rows have uniform CSV structure.
-- The first five automatic chaos-tier counts are exactly **6, 8, 10, 14, and 20**.
-- The World Collapse tuning row also targets the 20-country count and changes intensity rather than adding a terminal Event 6 branch.
+- The first five automatic chaos-tier counts are exactly **3, 4, 5, 7, and 10**.
+- The World Collapse tuning row also targets the 10-country count and changes intensity rather than adding a terminal Event 6 branch.
 - The package contains no terminal Event 6 scenario surface.
 
 Numeric state IDs remain a dated public baseline. The named geographic anchor, overlap group, compact-release rule, and host-survival rule are binding. Implementation must rebind the IDs to the installed game and current map overrides.

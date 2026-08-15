@@ -6,7 +6,9 @@ projects canonical row runs with explicit horizontal-wrap handling, writes
 unresolved/qualifying PNG and HOI4 BGRA DDS pairs, and emits the manifest read by
 ``generate_formable_state_puzzle_runtime.mjs``. Runtime qualification remains a
 live scripted-trigger decision; this command only builds the finite candidate
-geometry and records the helper hooks.
+geometry and records the helper hooks. Optional grouped-consumer metadata is
+copied into the manifest so the runtime generator can project independent
+families through one presentation-only scripted-GUI window.
 """
 
 from __future__ import annotations
@@ -96,6 +98,23 @@ def read_spec(path: Path) -> dict[str, Any]:
 		if not isinstance(spec[key], str) or not spec[key].strip():
 			raise RegistryError(f"consumer spec {key} must be a non-empty string")
 		script_token(spec[key], field=key)
+	group_id_present = "group_id" in spec
+	group_id = spec.get("group_id")
+	group_fields = ("activation_helper", "group_scripted_gui_id", "group_window_id")
+	if group_id_present:
+		if not isinstance(group_id, str) or not group_id.strip():
+			raise RegistryError("group_id must be a non-empty string when supplied")
+		script_token(group_id, field="group_id")
+		if not isinstance(spec.get("activation_helper"), str) or not spec["activation_helper"].strip():
+			raise RegistryError("grouped consumer specs require activation_helper")
+		script_identifier(spec["activation_helper"], field="activation_helper")
+		for key in ("group_scripted_gui_id", "group_window_id"):
+			if key in spec:
+				script_identifier(spec[key], field=key)
+	else:
+		unexpected_group_fields = [key for key in group_fields if key in spec]
+		if unexpected_group_fields:
+			raise RegistryError(f"{', '.join(unexpected_group_fields)} require group_id")
 	if not isinstance(spec["registry"], str) or not spec["registry"].strip():
 		raise RegistryError("consumer spec registry must be a non-empty path")
 	projection_data = spec["projection"]
@@ -112,6 +131,9 @@ def read_spec(path: Path) -> dict[str, Any]:
 		raise RegistryError("state_ids must be a non-empty list of positive integers")
 	if len(set(state_ids)) != len(state_ids):
 		raise RegistryError("state_ids must be unique")
+	summary_required_count = spec.get("summary_required_count")
+	if summary_required_count is not None and (type(summary_required_count) is not int or summary_required_count < 1):
+		raise RegistryError("summary_required_count must be a positive integer when supplied")
 	declared_state_ids = set(state_ids)
 	groups = spec.get("state_groups", [])
 	if not isinstance(groups, list):
@@ -153,6 +175,14 @@ def read_spec(path: Path) -> dict[str, Any]:
 				script_identifier(override[key], field=f"state_overrides.{key}")
 		if "required" in override and type(override["required"]) is not bool:
 			raise RegistryError("state_overrides.required must be boolean")
+	if summary_required_count is None:
+		required_state_count = sum(
+			1
+			for state_id in state_ids
+			if next((item for item in overrides if item.get("state_id") == state_id), {}).get("required", True)
+		)
+		if required_state_count < 1:
+			raise RegistryError("summary_required_count defaults to required state count, which must be positive")
 	return spec
 
 
@@ -261,6 +291,25 @@ def state_options(spec: dict[str, Any], state_ids: list[int]) -> dict[int, dict[
 			"visibility_helper": visibility_helper,
 		}
 	return result
+
+
+def summary_required_count(spec: dict[str, Any], options: dict[int, dict[str, Any]]) -> int:
+	"""Return the player-facing formation threshold for the summary denominator.
+
+	The threshold is intentionally independent from the candidate-state count. A
+	consumer may expose a predeclared candidate set whose researched proof is
+	smaller than the required formation minimum. Runtime localisation clamps the
+	visible numerator to this threshold without inventing missing state pieces.
+	"""
+	configured = spec.get("summary_required_count")
+	if configured is not None:
+		if type(configured) is not int or configured < 1:
+			raise RegistryError("summary_required_count must be a positive integer")
+		return configured
+	default = sum(1 for option in options.values() if option["required"])
+	if default < 1:
+		raise RegistryError("summary_required_count defaults to required state count, which must be positive")
+	return default
 
 
 def projection(spec: dict[str, Any], states: list[dict[str, Any]], world_width: int) -> dict[str, Any]:
@@ -391,6 +440,7 @@ def compile_consumer(spec: dict[str, Any], *, dry_run: bool, convert_dds: bool, 
 		raise RegistryError("registry does not expose a positive horizontal world width")
 	projection_data = projection(spec, states, world_width)
 	options = state_options(spec, state_ids)
+	formable_summary_required_count = summary_required_count(spec, options)
 	canvas_width, canvas_height = projection_data["canvas"]
 	default_assets = spec.get("assets", {})
 	unresolved_colour = tuple(default_assets.get("unresolved_rgba", [190, 150, 40, 230]))
@@ -506,6 +556,7 @@ def compile_consumer(spec: dict[str, Any], *, dry_run: bool, convert_dds: bool, 
 		},
 		"qualification_policy": spec.get("qualification_policy", "controlled_by_root"),
 		"visibility_policy": spec.get("visibility_policy", "required_by_consumer"),
+		"summary_required_count": formable_summary_required_count,
 		"territory_helper": territory_helper,
 		"territory_helper_source": territory_source_rel,
 		"states": state_records,
@@ -516,6 +567,13 @@ def compile_consumer(spec: dict[str, Any], *, dry_run: bool, convert_dds: bool, 
 			geometry_artifact_rel,
 		],
 	}
+	if spec.get("group_id") is not None:
+		manifest["group_id"] = spec["group_id"]
+		manifest["activation_helper"] = spec["activation_helper"]
+		if spec.get("group_scripted_gui_id") is not None:
+			manifest["group_scripted_gui_id"] = spec["group_scripted_gui_id"]
+		if spec.get("group_window_id") is not None:
+			manifest["group_window_id"] = spec["group_window_id"]
 	manifest["manifest_sha256"] = canonical_hash(manifest)
 	if not dry_run:
 		manifest_path.parent.mkdir(parents=True, exist_ok=True)

@@ -11,9 +11,6 @@
 # annexer-local retry queue used when engine deletion cannot be proven at once.
 # ============================================================================
 
-# `random_list` weights do not parse shared script-constant tokens.
-@infantry_spawn_incident_equal_weight = 1
-
 # ---------------------------------------------------------------------------
 # Telemetry, staged ideas, and shared accounting
 # ---------------------------------------------------------------------------
@@ -874,6 +871,9 @@ infantry_spawn_clear_exact_profile_totals = {
 	set_variable = { infantry_spawn_exact_self_propelled_super_heavy_artillery_equipment = 0 }
 	set_variable = { infantry_spawn_exact_super_heavy_artillery_equipment = 0 }
 	set_variable = { infantry_spawn_exact_super_heavy_tank_aa_chassis = 0 }
+	set_variable = { infantry_spawn_exact_super_heavy_tank_artillery_chassis = 0 }
+	set_variable = { infantry_spawn_exact_super_heavy_tank_chassis = 0 }
+	set_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis = 0 }
 	set_variable = { infantry_spawn_exact_chaosx_elephant_equipment_1 = 0 }
 	set_variable = { infantry_spawn_exact_africa_gorilla_heavy_infantry_equipment_1 = 0 }
 	set_variable = { infantry_spawn_exact_africa_pan_sappers_equipment_1 = 0 }
@@ -893,9 +893,6 @@ infantry_spawn_clear_exact_profile_totals = {
 	set_variable = { infantry_spawn_exact_kruger_exotic_arms_equipment_1 = 0 }
 	set_variable = { infantry_spawn_exact_teleportation_equipment_1 = 0 }
 	set_variable = { infantry_spawn_exact_kruger_temporal_equipment_1 = 0 }
-	set_variable = { infantry_spawn_exact_super_heavy_tank_artillery_chassis = 0 }
-	set_variable = { infantry_spawn_exact_super_heavy_tank_chassis = 0 }
-	set_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis = 0 }
 	set_variable = { infantry_spawn_exact_settlement_target_lot_uid = 0 }
 	set_variable = { infantry_spawn_exact_settlement_row_count = 0 }
 	set_variable = { infantry_spawn_exact_settlement_debt_value = 0 }
@@ -1096,6 +1093,9 @@ infantry_spawn_add_current_profile_to_exact_totals = {
 		add_to_variable = { infantry_spawn_exact_super_heavy_tank_chassis = infantry_spawn_exact_current_amount }
 	}
 	else_if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_unit_registry_resource_profile.super_heavy_tank_destroyer_chassis compare = equals } }
+		add_to_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis = infantry_spawn_exact_current_amount }
+	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_unit_registry_resource_profile.chaosx_elephant_equipment_1 compare = equals } }
 		add_to_variable = { infantry_spawn_exact_chaosx_elephant_equipment_1 = infantry_spawn_exact_current_amount }
@@ -1171,9 +1171,6 @@ infantry_spawn_add_current_profile_to_exact_totals = {
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_unit_registry_resource_profile.kruger_temporal_equipment_1 compare = equals } }
 		add_to_variable = { infantry_spawn_exact_kruger_temporal_equipment_1 = infantry_spawn_exact_current_amount }
-	}
-		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_unit_registry_resource_profile.super_heavy_tank_destroyer_chassis compare = equals } }
-		add_to_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis = infantry_spawn_exact_current_amount }
 	}
 	else = { set_country_flag = infantry_spawn_exact_settlement_invalid_profile }
 }
@@ -1271,6 +1268,9 @@ infantry_spawn_scale_exact_material_totals_for_standardization = {
 	multiply_variable = { infantry_spawn_exact_super_heavy_tank_artillery_chassis = constant:infantry_spawn_accounting.standardization_loss_share }
 	round_variable = infantry_spawn_exact_super_heavy_tank_artillery_chassis
 	multiply_variable = { infantry_spawn_exact_super_heavy_tank_chassis = constant:infantry_spawn_accounting.standardization_loss_share }
+	round_variable = infantry_spawn_exact_super_heavy_tank_chassis
+	multiply_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis = constant:infantry_spawn_accounting.standardization_loss_share }
+	round_variable = infantry_spawn_exact_super_heavy_tank_destroyer_chassis
 	multiply_variable = { infantry_spawn_exact_chaosx_elephant_equipment_1 = constant:infantry_spawn_accounting.standardization_loss_share }
 	round_variable = infantry_spawn_exact_chaosx_elephant_equipment_1
 	multiply_variable = { infantry_spawn_exact_africa_gorilla_heavy_infantry_equipment_1 = constant:infantry_spawn_accounting.standardization_loss_share }
@@ -1309,9 +1309,6 @@ infantry_spawn_scale_exact_material_totals_for_standardization = {
 	round_variable = infantry_spawn_exact_teleportation_equipment_1
 	multiply_variable = { infantry_spawn_exact_kruger_temporal_equipment_1 = constant:infantry_spawn_accounting.standardization_loss_share }
 	round_variable = infantry_spawn_exact_kruger_temporal_equipment_1
-	round_variable = infantry_spawn_exact_super_heavy_tank_chassis
-	multiply_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis = constant:infantry_spawn_accounting.standardization_loss_share }
-	round_variable = infantry_spawn_exact_super_heavy_tank_destroyer_chassis
 }
 
 # Input: infantry_spawn_lot_row_index. Rebuilds the conversion-loss snapshot
@@ -1958,6 +1955,9 @@ infantry_spawn_apply_exact_profile_totals_to_country = {
 			set_temp_variable = { infantry_spawn_exact_transfer_amount = 0 }
 			subtract_from_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_super_heavy_tank_destroyer_chassis }
 		}
+		else = { set_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_super_heavy_tank_destroyer_chassis } }
+		add_equipment_to_stockpile = { type = super_heavy_tank_destroyer_chassis amount = infantry_spawn_exact_transfer_amount }
+	}
 	if = {
 		limit = { check_variable = { infantry_spawn_exact_chaosx_elephant_equipment_1 > 0 } }
 		if = {
@@ -2147,9 +2147,6 @@ infantry_spawn_apply_exact_profile_totals_to_country = {
 		}
 		else = { set_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_kruger_temporal_equipment_1 } }
 		add_equipment_to_stockpile = { type = kruger_temporal_equipment_1 amount = infantry_spawn_exact_transfer_amount }
-	}
-		else = { set_temp_variable = { infantry_spawn_exact_transfer_amount = infantry_spawn_exact_super_heavy_tank_destroyer_chassis } }
-		add_equipment_to_stockpile = { type = super_heavy_tank_destroyer_chassis amount = infantry_spawn_exact_transfer_amount }
 	}
 }
 
@@ -2977,12 +2974,12 @@ infantry_spawn_build_exact_teardown_salvage = {
 					check_variable = { infantry_spawn_obligation_status_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_obligation_state.settled }
 					check_variable = { infantry_spawn_obligation_salvageable_paid_amount_entries^infantry_spawn_teardown_salvage_scan_index > 0 }
 					OR = {
-						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_unit_registry_resource_profile.africa_pan_sappers_equipment_1 }
-						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_unit_registry_resource_profile.africa_oracle_recon_equipment_1 }
-						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_unit_registry_resource_profile.africa_disaster_wardens_equipment_1 }
 						check_variable = { infantry_spawn_teardown_specialist_only = 0 }
 						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_equipment_family.support_equipment }
 						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_equipment_family.manpower }
+						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_unit_registry_resource_profile.africa_pan_sappers_equipment_1 }
+						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_unit_registry_resource_profile.africa_oracle_recon_equipment_1 }
+						check_variable = { infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index = constant:infantry_spawn_unit_registry_resource_profile.africa_disaster_wardens_equipment_1 }
 					}
 				}
 				set_temp_variable = { infantry_spawn_exact_current_profile = infantry_spawn_obligation_resource_profile_entries^infantry_spawn_teardown_salvage_scan_index }
@@ -4762,6 +4759,9 @@ infantry_spawn_snapshot_management_request_payment_resources = {
 	set_temp_variable = { infantry_spawn_request_pre_payment_fuel_k = fuel_k }
 	set_temp_variable = { infantry_spawn_request_pre_payment_infantry_equipment = num_equipment@infantry_equipment }
 	set_temp_variable = { infantry_spawn_request_pre_payment_support_equipment = num_equipment@support_equipment }
+	set_temp_variable = { infantry_spawn_request_pre_payment_motorized_equipment = num_equipment@motorized_equipment }
+	set_temp_variable = { infantry_spawn_request_pre_payment_train_equipment = num_equipment@train_equipment }
+	set_temp_variable = { infantry_spawn_request_pre_payment_coal_golem_equipment = num_equipment@coal_golem_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_chaosx_elephant_equipment_1 = num_equipment@chaosx_elephant_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_africa_gorilla_heavy_infantry_equipment_1 = num_equipment@africa_gorilla_heavy_infantry_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_africa_pan_sappers_equipment_1 = num_equipment@africa_pan_sappers_equipment_1 }
@@ -4781,9 +4781,6 @@ infantry_spawn_snapshot_management_request_payment_resources = {
 	set_temp_variable = { infantry_spawn_request_pre_payment_kruger_exotic_arms_equipment_1 = num_equipment@kruger_exotic_arms_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_teleportation_equipment_1 = num_equipment@teleportation_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_pre_payment_kruger_temporal_equipment_1 = num_equipment@kruger_temporal_equipment_1 }
-	set_temp_variable = { infantry_spawn_request_pre_payment_motorized_equipment = num_equipment@motorized_equipment }
-	set_temp_variable = { infantry_spawn_request_pre_payment_train_equipment = num_equipment@train_equipment }
-	set_temp_variable = { infantry_spawn_request_pre_payment_coal_golem_equipment = num_equipment@coal_golem_equipment_1 }
 }
 
 # Runs only after every applicable refund hook. Exact equality closes both the
@@ -4801,6 +4798,9 @@ infantry_spawn_verify_management_request_payment_resources_restored = {
 				NOT = { check_variable = { var = fuel_k value = infantry_spawn_request_pre_payment_fuel_k compare = equals } }
 				NOT = { check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_pre_payment_infantry_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_pre_payment_support_equipment compare = equals } }
+				NOT = { check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_pre_payment_motorized_equipment compare = equals } }
+				NOT = { check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_pre_payment_train_equipment compare = equals } }
+				NOT = { check_variable = { var = num_equipment@coal_golem_equipment_1 value = infantry_spawn_request_pre_payment_coal_golem_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@chaosx_elephant_equipment_1 value = infantry_spawn_request_pre_payment_chaosx_elephant_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@africa_gorilla_heavy_infantry_equipment_1 value = infantry_spawn_request_pre_payment_africa_gorilla_heavy_infantry_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@africa_pan_sappers_equipment_1 value = infantry_spawn_request_pre_payment_africa_pan_sappers_equipment_1 compare = equals } }
@@ -4820,9 +4820,6 @@ infantry_spawn_verify_management_request_payment_resources_restored = {
 				NOT = { check_variable = { var = num_equipment@kruger_exotic_arms_equipment_1 value = infantry_spawn_request_pre_payment_kruger_exotic_arms_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@teleportation_equipment_1 value = infantry_spawn_request_pre_payment_teleportation_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_temporal_equipment_1 value = infantry_spawn_request_pre_payment_kruger_temporal_equipment_1 compare = equals } }
-				NOT = { check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_pre_payment_motorized_equipment compare = equals } }
-				NOT = { check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_pre_payment_train_equipment compare = equals } }
-				NOT = { check_variable = { var = num_equipment@coal_golem_equipment_1 value = infantry_spawn_request_pre_payment_coal_golem_equipment compare = equals } }
 			}
 		}
 		set_temp_variable = { infantry_spawn_request_refund_valid = 0 }
@@ -4834,6 +4831,9 @@ infantry_spawn_verify_management_request_payment_resources_restored = {
 # Snapshots every mutable structural surface touched by a paid request.
 # Monotonic UID allocators are never rewound; rollback deletes their engine
 # objects and leaves harmless identity gaps, while successful commits prove
+# that every allocator advanced by exactly its published row delta.
+infantry_spawn_snapshot_management_request_transaction = {
+	set_temp_variable = { infantry_spawn_request_transaction_snapshot_valid = 1 }
 	# Family spawn callbacks overwrite these with their manifest contract; the
 	# zero defaults keep the shared materialization proof safe for ordinary and
 	# training-only requests that never publish provider rows.
@@ -4841,9 +4841,6 @@ infantry_spawn_verify_management_request_payment_resources_restored = {
 	set_temp_variable = { infantry_spawn_current_provider_manifest_manpower = constant:infantry_spawn_muster_gui_value.zero }
 	set_temp_variable = { infantry_spawn_current_provider_manifest_equipment_debt = constant:infantry_spawn_muster_gui_value.zero }
 	set_temp_variable = { infantry_spawn_current_provider_obligation_row_count = constant:infantry_spawn_muster_gui_value.zero }
-# that every allocator advanced by exactly its published row delta.
-infantry_spawn_snapshot_management_request_transaction = {
-	set_temp_variable = { infantry_spawn_request_transaction_snapshot_valid = 1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_generation_count = infantry_spawn_generation_uid_entries^num }
 	set_temp_variable = { infantry_spawn_request_snapshot_selected_state_count = infantry_spawn_selected_state_generation_uid_entries^num }
 	set_temp_variable = { infantry_spawn_request_snapshot_lot_count = infantry_spawn_lot_uid_entries^num }
@@ -4895,6 +4892,9 @@ infantry_spawn_snapshot_management_request_transaction = {
 	set_temp_variable = { infantry_spawn_request_snapshot_armored_car_equipment = num_equipment@armored_car_equipment }
 	set_temp_variable = { infantry_spawn_request_snapshot_helicopter_equipment = num_equipment@helicopter_equipment }
 	set_temp_variable = { infantry_spawn_request_snapshot_amphibious_mechanized_equipment = num_equipment@amphibious_mechanized_equipment }
+	set_temp_variable = { infantry_spawn_request_snapshot_anti_tank_equipment = num_equipment@anti_tank_equipment }
+	set_temp_variable = { infantry_spawn_request_snapshot_anti_air_equipment = num_equipment@anti_air_equipment }
+	set_temp_variable = { infantry_spawn_request_snapshot_coal_golem_equipment = num_equipment@coal_golem_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_chaosx_elephant_equipment_1 = num_equipment@chaosx_elephant_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_africa_gorilla_heavy_infantry_equipment_1 = num_equipment@africa_gorilla_heavy_infantry_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_africa_pan_sappers_equipment_1 = num_equipment@africa_pan_sappers_equipment_1 }
@@ -4914,9 +4914,6 @@ infantry_spawn_snapshot_management_request_transaction = {
 	set_temp_variable = { infantry_spawn_request_snapshot_kruger_exotic_arms_equipment_1 = num_equipment@kruger_exotic_arms_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_teleportation_equipment_1 = num_equipment@teleportation_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_kruger_temporal_equipment_1 = num_equipment@kruger_temporal_equipment_1 }
-	set_temp_variable = { infantry_spawn_request_snapshot_anti_tank_equipment = num_equipment@anti_tank_equipment }
-	set_temp_variable = { infantry_spawn_request_snapshot_anti_air_equipment = num_equipment@anti_air_equipment }
-	set_temp_variable = { infantry_spawn_request_snapshot_coal_golem_equipment = num_equipment@coal_golem_equipment_1 }
 	set_temp_variable = { infantry_spawn_request_snapshot_generation_audit_active = 0 }
 	if = { limit = { has_country_flag = infantry_spawn_generation_audit_active } set_temp_variable = { infantry_spawn_request_snapshot_generation_audit_active = 1 } }
 	set_temp_variable = { infantry_spawn_request_snapshot_ledger_invariant_failure = 0 }
@@ -5234,6 +5231,9 @@ infantry_spawn_rollback_management_request_transaction = {
 				NOT = { check_variable = { var = num_equipment@mechanized_equipment value = infantry_spawn_request_snapshot_mechanized_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@armored_car_equipment value = infantry_spawn_request_snapshot_armored_car_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@helicopter_equipment value = infantry_spawn_request_snapshot_helicopter_equipment compare = equals } }
+				NOT = { check_variable = { var = num_equipment@amphibious_mechanized_equipment value = infantry_spawn_request_snapshot_amphibious_mechanized_equipment compare = equals } }
+				NOT = { check_variable = { var = num_equipment@anti_tank_equipment value = infantry_spawn_request_snapshot_anti_tank_equipment compare = equals } }
+				NOT = { check_variable = { var = num_equipment@anti_air_equipment value = infantry_spawn_request_snapshot_anti_air_equipment compare = equals } }
 				NOT = { check_variable = { var = num_equipment@chaosx_elephant_equipment_1 value = infantry_spawn_request_snapshot_chaosx_elephant_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@africa_gorilla_heavy_infantry_equipment_1 value = infantry_spawn_request_snapshot_africa_gorilla_heavy_infantry_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@africa_pan_sappers_equipment_1 value = infantry_spawn_request_snapshot_africa_pan_sappers_equipment_1 compare = equals } }
@@ -5253,9 +5253,6 @@ infantry_spawn_rollback_management_request_transaction = {
 				NOT = { check_variable = { var = num_equipment@kruger_exotic_arms_equipment_1 value = infantry_spawn_request_snapshot_kruger_exotic_arms_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@teleportation_equipment_1 value = infantry_spawn_request_snapshot_teleportation_equipment_1 compare = equals } }
 				NOT = { check_variable = { var = num_equipment@kruger_temporal_equipment_1 value = infantry_spawn_request_snapshot_kruger_temporal_equipment_1 compare = equals } }
-				NOT = { check_variable = { var = num_equipment@amphibious_mechanized_equipment value = infantry_spawn_request_snapshot_amphibious_mechanized_equipment compare = equals } }
-				NOT = { check_variable = { var = num_equipment@anti_tank_equipment value = infantry_spawn_request_snapshot_anti_tank_equipment compare = equals } }
-				NOT = { check_variable = { var = num_equipment@anti_air_equipment value = infantry_spawn_request_snapshot_anti_air_equipment compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_request_current_family_training_authorized value = infantry_spawn_request_snapshot_family_training_authorized compare = equals } }
 				NOT = { check_variable = { var = infantry_spawn_request_current_family_reinforcement_spawned value = infantry_spawn_request_snapshot_family_reinforcement_spawned compare = equals } }
 				infantry_spawn_all_ledgers_are_aligned = no
@@ -6114,7 +6111,7 @@ infantry_spawn_incident_pay_motorized_equipment = {
 infantry_spawn_incident_pay_army_experience = {
 	set_temp_variable = { infantry_spawn_incident_negative_cost = 0 }
 	subtract_from_temp_variable = { infantry_spawn_incident_negative_cost = infantry_spawn_incident_resource_cost }
-	add_army_experience = infantry_spawn_incident_negative_cost
+	army_experience = infantry_spawn_incident_negative_cost
 }
 
 infantry_spawn_finish_lot_incident = {
@@ -6162,22 +6159,30 @@ infantry_spawn_dispatch_lot_incident = {
 				var:infantry_spawn_lot_origin_state_entries^infantry_spawn_incident_lot_index = {
 					save_event_target_as = infantry_spawn_incident_state
 				}
+				set_temp_variable = { infantry_spawn_incident_300_weight = constant:infantry_spawn_event_option_weight.incident_equal }
+				set_temp_variable = { infantry_spawn_incident_301_weight = constant:infantry_spawn_event_option_weight.incident_equal }
+				set_temp_variable = { infantry_spawn_incident_302_weight = constant:infantry_spawn_event_option_weight.incident_equal }
+				set_temp_variable = { infantry_spawn_incident_303_weight = constant:infantry_spawn_event_option_weight.incident_equal }
+				set_temp_variable = { infantry_spawn_incident_304_weight = constant:infantry_spawn_event_option_weight.incident_equal }
+				set_temp_variable = { infantry_spawn_incident_305_weight = constant:infantry_spawn_event_option_weight.incident_equal }
+				set_temp_variable = { infantry_spawn_incident_306_weight = constant:infantry_spawn_event_option_weight.incident_equal }
+				set_temp_variable = { infantry_spawn_incident_307_weight = constant:infantry_spawn_event_option_weight.incident_equal }
 				if = {
 					limit = { check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_incident_lot_index value = constant:infantry_spawn_lot_family.garrison_shell compare = less_than_or_equals } }
 					random_list = {
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.300 } }
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.301 } }
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.302 } }
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.303 } }
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.304 } }
+						infantry_spawn_incident_300_weight = { country_event = { id = chaosx.nr19.300 } }
+						infantry_spawn_incident_301_weight = { country_event = { id = chaosx.nr19.301 } }
+						infantry_spawn_incident_302_weight = { country_event = { id = chaosx.nr19.302 } }
+						infantry_spawn_incident_303_weight = { country_event = { id = chaosx.nr19.303 } }
+						infantry_spawn_incident_304_weight = { country_event = { id = chaosx.nr19.304 } }
 					}
 				}
 				else_if = {
 					limit = { check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_incident_lot_index value = constant:infantry_spawn_lot_family.composite_territorial_division compare = less_than_or_equals } }
 					random_list = {
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.305 } }
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.306 } }
-						@infantry_spawn_incident_equal_weight = { country_event = { id = chaosx.nr19.307 } }
+						infantry_spawn_incident_305_weight = { country_event = { id = chaosx.nr19.305 } }
+						infantry_spawn_incident_306_weight = { country_event = { id = chaosx.nr19.306 } }
+						infantry_spawn_incident_307_weight = { country_event = { id = chaosx.nr19.307 } }
 					}
 				}
 				else_if = {
@@ -7933,7 +7938,6 @@ infantry_spawn_clear_ordinary_country_runtime_flags = {
 	clr_country_flag = infantry_spawn_anomalous_sustainment_active
 	clr_country_flag = infantry_spawn_anomalous_containment_success
 	clr_country_flag = infantry_spawn_muster_board_available
-	clr_country_flag = infantry_spawn_muster_board_open
 	clr_country_flag = infantry_spawn_muster_board_dormant
 	clr_country_flag = infantry_spawn_formation_request_available
 	clr_country_flag = infantry_spawn_automatic_generation_suppressed

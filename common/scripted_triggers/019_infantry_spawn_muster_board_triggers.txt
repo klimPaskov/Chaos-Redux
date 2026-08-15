@@ -1,10 +1,10 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 019 MUSTER BOARD SHARED ACTION TRIGGERS
+# CHAOS REDUX - EVENT 019 FORMATION LEDGER SHARED ACTION TRIGGERS
 # ============================================================================
-# These gates are the single availability contract for the movable Muster
-# Board, ordinary-country decisions, and AI dispatch. Gameplay effects repeat
-# their critical ledger/resource checks before payment so stale UI state cannot
-# create a free action or mutate a resolved lot.
+# These gates are the single availability contract for the Event 019 decision
+# category and AI dispatch. Gameplay effects repeat their critical ledger and
+# resource checks before payment so stale selection state cannot create a free
+# action or mutate a resolved lot.
 # ============================================================================
 
 infantry_spawn_muster_board_is_available = {
@@ -13,13 +13,22 @@ infantry_spawn_muster_board_is_available = {
 	NOT = { has_global_flag = world_end }
 }
 
-# Country scope. The registry tab is relevant only after Evolution IV and only
-# when the rebuilt country view contains at least one locally eligible family.
+# Country scope. The anomalous-family decisions are relevant only after
+# Evolution IV and when the rebuilt country view contains an eligible family.
 infantry_spawn_muster_board_has_relevant_anomalous_family = {
 	infantry_spawn_has_evolution_iv = yes
 	check_variable = {
 		var = infantry_spawn_muster_gui_family_id_entries^num
 		value = constant:infantry_spawn_muster_gui_value.zero
+		compare = greater_than
+	}
+}
+
+infantry_spawn_muster_board_has_multiple_anomalous_families = {
+	infantry_spawn_muster_board_has_relevant_anomalous_family = yes
+	check_variable = {
+		var = infantry_spawn_muster_gui_family_id_entries^num
+		value = constant:infantry_spawn_muster_gui_value.one
 		compare = greater_than
 	}
 }
@@ -129,8 +138,8 @@ infantry_spawn_can_execute_selected_prototype_cannibalization = {
 	NOT = { has_country_flag = infantry_spawn_prototype_trial_running }
 }
 
-# Decisions and the Muster Board share these entry gates. AI countries may
-# expose the decision before their selected-lot cursor reaches the target; the
+# Decisions and the shared ledger effects use these entry gates. AI countries
+# may expose a decision before their selected-lot cursor reaches the target; the
 # action effect then selects and revalidates the exact lot before mutation.
 infantry_spawn_can_begin_prototype_preservation = {
 	OR = {

@@ -1,3 +1,0 @@
-# The Grid Vote report art prompt
-
-Create a fictional alternate-history Hearts of Iron IV report-event illustration for The Grid Vote. Show a severe East Asian post-fallout Technate power exchange hall at dusk, with technicians and neighboring settlement delegates gathered around a wall-sized hand-drawn regional power map with cables, transformer symbols, ration lamps, and four marked distribution routes. Use a sober practical mood with scarce electricity, cold ash light, repaired infrastructure, and civic negotiation. Use a sepia charcoal and muted steel-blue palette. Do not include readable text, logos, real people, national flags, watermarks, zombies, or gore.

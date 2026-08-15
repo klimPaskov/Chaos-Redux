@@ -1,5 +1,7 @@
 # Event 019 AI Audit Documentation Closure Handoff
 
+> **Historical closure notice (2026-08-09):** This audit predates the provider-522 and expanded 18-ID Event 19 owner-adapter tranches. Its zero-finding and closure statements remain historical evidence for the prior tranche; use `source_of_truth_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider status.
+
 Date: 2026-07-17
 
 ## Scope completed

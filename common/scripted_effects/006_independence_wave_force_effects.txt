@@ -209,7 +209,7 @@ independence_wave_calculate_force_budget = {
 		add_to_temp_variable = { independence_wave_force_host_weakness_component = constant:independence_wave_force_budget.host_war_bonus }
 	}
 	if = {
-		limit = { independence_wave_force_host_divisions < constant:independence_wave_force_budget.host_weak_army_division_ceiling }
+		limit = { check_variable = { var = independence_wave_force_host_divisions value = constant:independence_wave_force_budget.host_weak_army_division_ceiling compare = less_than } }
 		add_to_temp_variable = { independence_wave_force_host_weakness_component = constant:independence_wave_force_budget.host_weak_army_bonus }
 	}
 	clamp_temp_variable = {
@@ -393,7 +393,7 @@ independence_wave_calculate_force_outputs = {
 
 	set_temp_variable = { independence_wave_force_convoy_stockpile = constant:independence_wave_force_budget.minimum }
 	if = {
-		limit = { independence_wave_force_port_levels > constant:independence_wave_force_budget.minimum }
+		limit = { check_variable = { var = independence_wave_force_port_levels value = constant:independence_wave_force_budget.minimum compare = greater_than } }
 		set_temp_variable = { independence_wave_force_convoy_stockpile = independence_wave_force_port_levels }
 		multiply_temp_variable = { independence_wave_force_convoy_stockpile = constant:independence_wave_force_profile_stockpile.coastal_convoy_per_port_level }
 		if = {
@@ -763,7 +763,7 @@ independence_wave_add_opening_stockpiles = {
 		amount = independence_wave_force_support_stockpile
 	}
 	if = {
-		limit = { independence_wave_force_artillery_stockpile > constant:independence_wave_force_budget.minimum }
+		limit = { check_variable = { var = independence_wave_force_artillery_stockpile value = constant:independence_wave_force_budget.minimum compare = greater_than } }
 		add_equipment_to_stockpile = {
 			type = artillery_equipment_1
 			amount = independence_wave_force_artillery_stockpile
@@ -778,7 +778,7 @@ independence_wave_add_opening_stockpiles = {
 		amount = independence_wave_force_truck_stockpile
 	}
 	if = {
-		limit = { independence_wave_force_convoy_stockpile > constant:independence_wave_force_budget.minimum }
+		limit = { check_variable = { var = independence_wave_force_convoy_stockpile value = constant:independence_wave_force_budget.minimum compare = greater_than } }
 		add_equipment_to_stockpile = {
 			type = convoy_1
 			amount = independence_wave_force_convoy_stockpile
@@ -796,7 +796,7 @@ independence_wave_inherit_opening_technology_and_slots = {
 	if = {
 		limit = {
 			amount_research_slots < constant:independence_wave_force_research.industrial_slots
-			independence_wave_force_factory_count > constant:independence_wave_force_research.industrial_factory_gate
+			check_variable = { var = independence_wave_force_factory_count value = constant:independence_wave_force_research.industrial_factory_gate compare = greater_than }
 		}
 		set_research_slots = constant:independence_wave_force_research.industrial_slots
 	}
@@ -809,7 +809,7 @@ independence_wave_transfer_approved_opening_air_and_navy = {
 		limit = {
 			has_country_flag = independence_wave_force_navy_inheritance_enabled
 			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = greater_than_or_equals }
-			independence_wave_force_port_levels > constant:independence_wave_force_budget.minimum
+			check_variable = { var = independence_wave_force_port_levels value = constant:independence_wave_force_budget.minimum compare = greater_than }
 		}
 		set_temp_variable = { independence_wave_force_navy_ratio = constant:independence_wave_force_inheritance.armed_navy_ratio }
 		if = {

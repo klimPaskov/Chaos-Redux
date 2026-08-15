@@ -58,7 +58,7 @@ The terms `Mehmed Spaho`, `Mehmet Spaho`, `Muhamed Spaho`, `Spaho Mehmed`, `Mehm
 
 Producer visual review: PASS. The crop is a centered male head-and-shoulders frame with the original facial geometry, moustache, age, expression, hairline, collar, tie, grayscale lighting, and visible asymmetry preserved. The source caption is excluded from the runtime crop, and there are no extra people or invented insignia.
 
-Independent identity/framing/provenance audit: `PENDING_PARENT_INDEPENDENT_REVIEW`. The producer cannot self-approve this gate. The parent must compare the source master, exact crop, 156x210 candidate, DDS decode, and canonical vanilla leader references at native size and at least 4x nearest-neighbour scale, then record the independent reviewer and date. Until that review is recorded, the asset is handed off but not a fully admitted BOS country package.
+Independent identity/framing/provenance audit: **PASS, parent review 2026-08-06**. I compared the source master, exact crop, 156x210 candidate, DDS decode, and 4x nearest-neighbour review image. The crop removes the printed caption and background margin while retaining the same male face, moustache, hairline, collar, tie, expression, and grayscale tonal structure. The decoded DDS matches the processed candidate byte-for-byte under the documented BGRA contract. The result is a valid source-placeholder portrait consumer. It remains a source placeholder rather than a styled HOI4 final, and it does not by itself admit the BOS gameplay package.
 
 Current asset state: `handed_off`, portrait state `source_placeholder`.
 

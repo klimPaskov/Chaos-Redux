@@ -7,6 +7,9 @@
 # faction-wide peace effect is used by this package.
 # ============================================================================
 
+@AFRICA_RSA_REPUBLICAN_WAR_TARGET = 120
+@AFRICA_RSA_REPUBLICAN_WAR_TARGET_NEGATIVE = -120
+
 # COUNTRY scope on the actor that owns the RSA outcome. Input is the temporary
 # `africa_rsa_history_payload` value. Appends one Event 12 system-history row
 # without touching the ordinary fire-once event counters, then refreshes open
@@ -521,18 +524,18 @@ africa_rsa_initialize_republican_breakaway = {
 					# Alternate-history branch casting: the individual archival portrait is Mgolombane Sandile.
 					name = "King Mgolombane Sandile"
 					picture = GFX_portrait_012_africa_rsa_mgolombane_sandile
-					ideology = fascism
+					ideology = fascism_ideology
 					traits = { }
 				}
 				add_ai_strategy = {
 					type = prepare_for_war
 					id = event_target:africa_rsa_continental_coalition
-					value = constant:africa_rsa_ai.republican_war_target
+					value = @AFRICA_RSA_REPUBLICAN_WAR_TARGET
 				}
 				add_ai_strategy = {
 					type = antagonize
 					id = event_target:africa_rsa_continental_coalition
-					value = constant:africa_rsa_ai.republican_war_target
+					value = @AFRICA_RSA_REPUBLICAN_WAR_TARGET
 				}
 				if = {
 					limit = {
@@ -1048,7 +1051,10 @@ africa_rsa_transfer_host_to_exile_patron = {
 		set_country_flag = africa_rsa_suppressed_original_host
 	}
 	event_target:africa_rsa_exile_patron = { africa_achievement_register_valid_host_successor = yes }
-	clear_global_event_target = africa_host
+	if = {
+		limit = { has_event_target = africa_host }
+		clear_global_event_target = africa_host
+	}
 	event_target:africa_rsa_exile_patron = {
 		save_global_event_target_as = africa_host
 		set_country_flag = africa_unifier_host
@@ -1184,7 +1190,10 @@ africa_rsa_prepare_loyalist_victory = {
 		FROM = { africa_rsa_cleanup_terminal_host_runtime = yes }
 		set_country_flag = africa_rsa_no_exile_patron
 		set_global_flag = africa_rsa_exile_recovery_blocked_no_patron
-		clear_global_event_target = africa_host
+		if = {
+			limit = { has_event_target = africa_host }
+			clear_global_event_target = africa_host
+		}
 		clr_global_flag = africa_event_active
 		set_global_flag = africa_event_resolved
 	}
@@ -1476,29 +1485,29 @@ africa_rsa_clear_republican_ai_strategies = {
 		limit = { africa_rsa_republican_breakaway_is_active = yes }
 		event_target:africa_rsa_republican_breakaway_country = {
 			if = {
-				limit = { has_global_event_target = africa_rsa_continental_coalition }
+				limit = { has_event_target = africa_rsa_continental_coalition }
 				add_ai_strategy = {
 					type = prepare_for_war
 					id = event_target:africa_rsa_continental_coalition
-					value = constant:africa_rsa_ai.republican_war_target_negative
+					value = @AFRICA_RSA_REPUBLICAN_WAR_TARGET_NEGATIVE
 				}
 				add_ai_strategy = {
 					type = antagonize
 					id = event_target:africa_rsa_continental_coalition
-					value = constant:africa_rsa_ai.republican_war_target_negative
+					value = @AFRICA_RSA_REPUBLICAN_WAR_TARGET_NEGATIVE
 				}
 			}
 			if = {
-				limit = { has_global_event_target = africa_rsa_allied_union_government }
+				limit = { has_event_target = africa_rsa_allied_union_government }
 				add_ai_strategy = {
 					type = prepare_for_war
 					id = event_target:africa_rsa_allied_union_government
-					value = constant:africa_rsa_ai.republican_war_target_negative
+					value = @AFRICA_RSA_REPUBLICAN_WAR_TARGET_NEGATIVE
 				}
 				add_ai_strategy = {
 					type = antagonize
 					id = event_target:africa_rsa_allied_union_government
-					value = constant:africa_rsa_ai.republican_war_target_negative
+					value = @AFRICA_RSA_REPUBLICAN_WAR_TARGET_NEGATIVE
 				}
 			}
 		}

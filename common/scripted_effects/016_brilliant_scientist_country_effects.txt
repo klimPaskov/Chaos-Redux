@@ -987,6 +987,31 @@ brilliant_scientist_form_kruger_state_from_verified_plan = {
 		KRG_warren_kruger = { set_nationality = KRG }
 
 		KRG = {
+			# The dormant history roster may not survive on a tag that never
+			# existed before this release. Transfer any missing office token via
+			# character-scope nationality before the first office check runs;
+			# the guards keep this idempotent. recruit_character is rejected
+			# outside history files, so set_nationality is the runtime route.
+			if = {
+				limit = { NOT = { has_character = KRG_continuity_network } }
+				KRG_continuity_network = { set_nationality = KRG }
+			}
+			if = {
+				limit = { NOT = { has_character = KRG_general_staff_office } }
+				KRG_general_staff_office = { set_nationality = KRG }
+			}
+			if = {
+				limit = { NOT = { has_character = KRG_machine_command_node } }
+				KRG_machine_command_node = { set_nationality = KRG }
+			}
+			if = {
+				limit = { NOT = { has_character = KRG_clone_officer_corps } }
+				KRG_clone_officer_corps = { set_nationality = KRG }
+			}
+			if = {
+				limit = { NOT = { has_character = KRG_project_command_council } }
+				KRG_project_command_council = { set_nationality = KRG }
+			}
 			set_country_flag = brilliant_scientist_character_transaction_lock
 			save_event_target_as = brilliant_scientist_kruger_state_carrier
 			set_country_flag = brilliant_scientist_host_history

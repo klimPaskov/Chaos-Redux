@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_COMBAT_TRIAL_PARTICIPANT_UPPER_EXCLUSIVE = 2
+@CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_VALUE_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - EVENT 019 ACHIEVEMENT TRACKING TRIGGERS
 # ============================================================================
@@ -283,8 +287,8 @@ infantry_spawn_achievement_combat_trial_attacker_state_is_structurally_safe = {
 	is_owned_by = ROOT
 	is_controlled_by = ROOT
 	ROOT = {
-		divisions_in_state = { state = PREV size > constant:infantry_spawn_achievement_value.zero }
-		divisions_in_state = { state = PREV size < constant:infantry_spawn_achievement_combat_trial.participant_upper_exclusive }
+		divisions_in_state = { state = PREV size > @CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_VALUE_ZERO }
+		divisions_in_state = { state = PREV size < @CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_COMBAT_TRIAL_PARTICIPANT_UPPER_EXCLUSIVE }
 	}
 	NOT = { any_state_division = { OWNER = { NOT = { tag = ROOT } } } }
 	any_neighbor_state = { infantry_spawn_achievement_combat_trial_defender_state_is_safe = yes }
@@ -381,8 +385,8 @@ infantry_spawn_achievement_combat_trial_attacker_state_matches_frozen_division =
 	is_owned_by = ROOT
 	is_controlled_by = ROOT
 	ROOT = {
-		divisions_in_state = { state = PREV size > constant:infantry_spawn_achievement_value.zero }
-		divisions_in_state = { state = PREV size < constant:infantry_spawn_achievement_combat_trial.participant_upper_exclusive }
+		divisions_in_state = { state = PREV size > @CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_VALUE_ZERO }
+		divisions_in_state = { state = PREV size < @CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_COMBAT_TRIAL_PARTICIPANT_UPPER_EXCLUSIVE }
 	}
 	NOT = { any_state_division = { OWNER = { NOT = { tag = ROOT } } } }
 	any_state_division = {
@@ -399,8 +403,8 @@ infantry_spawn_achievement_combat_trial_attacker_state_matches_frozen_division =
 infantry_spawn_achievement_combat_trial_defender_state_matches_frozen_division = {
 	OWNER = {
 		check_variable = { var = THIS.id value = ROOT.infantry_spawn_achievement_combat_trial_defender_country compare = equals }
-		divisions_in_state = { state = PREV size > constant:infantry_spawn_achievement_value.zero }
-		divisions_in_state = { state = PREV size < constant:infantry_spawn_achievement_combat_trial.participant_upper_exclusive }
+		divisions_in_state = { state = PREV size > @CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_VALUE_ZERO }
+		divisions_in_state = { state = PREV size < @CR_SC_INFANTRY_SPAWN_ACHIEVEMENT_COMBAT_TRIAL_PARTICIPANT_UPPER_EXCLUSIVE }
 	}
 	CONTROLLER = { owns_state = PREV }
 	NOT = {

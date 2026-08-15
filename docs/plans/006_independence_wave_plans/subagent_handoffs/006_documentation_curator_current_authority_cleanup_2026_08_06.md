@@ -20,13 +20,13 @@ The current static standalone witness contains 20 packages and excludes only sel
 
 The current central dispatcher exposes 30 adapter IDs, with nine adapter-only fail-closed rows: IW-013 NAV, IW-015 GLC, IW-030 MNT, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM.
 
-The accepted automatic ladder is 6/8/10/14/20, with World Collapse targeting 20, and the 14/20 bands remain source fail-closed below admitted package and reservation capacity.
+The accepted automatic ladder is 6/8/10/14/20, with World Collapse targeting 20, and the 14/20 bands retain static capacity evidence but remain source fail-closed whenever concrete world-state host, collision, force, or synchronized-transaction predicates cannot be proven.
 
 Active super-event identifiers are ordinary `23` for The League of New States and ordinary `24` for Every Border a Casus Belli.
 
-Ordinary `23` image/text dispatch is registered, but rights-cleared audio, wrappers, and firing remain blocked, while ordinary `24` is source-wired with partial reachability under capacity and formable gates.
+Ordinary `23` image/text dispatch is registered, but rights-cleared audio, wrappers, and firing remain blocked, while ordinary `24` is source-wired with a passing static 20-package package/group capacity witness and partial live reachability under host, collision, transaction, and formable gates.
 
-NAV/IW-013 and GLC/IW-015 remain `SOURCE_PLACEHOLDER_READY / REPLACEMENT_PENDING`; their source placeholders do not constitute final HOI4-style replacement, independent review, package admission, or gameplay completion.
+NAV/IW-013 and GLC/IW-015 remain `SOURCE_PLACEHOLDER_READY` under the selected unchanged-source mode; no explicit `styled_final` request is recorded, so a provider-backed replacement is optional rather than automatically pending, and their source placeholders do not constitute independent review, package admission, or gameplay completion.
 
 ## Files and exact current-authority ranges
 
@@ -63,11 +63,11 @@ No contradiction was resolved by changing gameplay intent, the accepted specific
 
 Event 006 remains incomplete and must not be promoted to complete from this documentation cleanup.
 
-Ordinary `23` still requires rights-cleared audio, wrappers, firing, and parent approval, while ordinary `24` remains only partially reachable under capacity and formable gates.
+Ordinary `23` still requires rights-cleared audio, wrappers, firing, and parent approval, while ordinary `24` has a passing static package/group capacity witness but remains only partially reachable under live host, collision, transaction, and formable gates.
 
-The 14/20 ladder bands remain source fail-closed until admitted package and reservation capacity expands.
+The 14/20 ladder bands remain source fail-closed whenever concrete world-state admission or synchronized transaction capacity cannot be proven, even though the static 20-package witness covers package/group capacity for one frozen subset.
 
-The NAV/GLC portrait-source placeholders remain replacement-pending and do not clear package gates.
+The NAV/GLC portrait-source placeholders are selected `source_placeholder` outputs; a styled final is optional unless explicitly requested, and neither mode clears package gates.
 
 The typed KAR/CRI probability comparison and live/runtime evidence remain separate parent-owned or future evidence gates.
 

@@ -4,7 +4,7 @@ Date: `2026-08-05`.
 
 Owner scope: portrait-only production for the primary grounded candidates selected by the parent: NAV José Antonio Aguirre and GLC Alfonso Daniel Rodríguez Castelao.
 
-Disposition: `SOURCE_PLACEHOLDER_READY / REPLACEMENT_PENDING`; this handoff does not claim a final HOI4-style replacement, package admission, or gameplay completion.
+Disposition: `SOURCE_PLACEHOLDER_READY` for the selected unchanged-source mode; no explicit `styled_final` request is recorded, so a provider-backed replacement is optional rather than automatically pending. This handoff does not claim a styled final, package admission, or gameplay completion.
 
 ## Changed runtime and evidence files
 
@@ -46,7 +46,7 @@ Disposition: `SOURCE_PLACEHOLDER_READY / REPLACEMENT_PENDING`; this handoff does
 
 ## Skipped checks, blockers, and replacement state
 
-- RunPod/provider operation, final 832x1120 masters, final HOI4-style repaint, independent identity/style/provenance audit, character roster, country setup, flags, advisor icons, package attestation, and live in-game validation were skipped by scope.
-- `source_placeholder` and `replacement_pending` remain the honest states for both runtime textures.
+- Provider-backed `styled_final` operation, final 832x1120 masters, independent identity/style/provenance audit, character roster, country setup, flags, advisor icons, package attestation, and live in-game validation were skipped by scope; no styled-final request was recorded.
+- `source_placeholder` is the selected state for both runtime textures; `replacement_pending` applies only if a later explicit styled-final request remains outstanding.
 - Aguirre licensing discrepancy and Castelao unknown-author scan chain remain `needs_user_review` blockers for any final distribution or admission claim.
 - No gameplay, tag, flag, localisation, decision, focus, AI, or attestation files were edited.

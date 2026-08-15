@@ -60,7 +60,7 @@ utopia_manifesto_pay_prepared_decision_cost = {
 	if = {
 		limit = { has_variable = utopia_manifesto_cost_army_xp }
 		multiply_temp_variable = { utopia_manifesto_cost_army_xp = constant:utopia_manifesto_decision_value.cost_negation_multiplier }
-		add_army_experience = utopia_manifesto_cost_army_xp
+		army_experience = utopia_manifesto_cost_army_xp
 	}
 	if = {
 		limit = { has_variable = utopia_manifesto_cost_command_power }
@@ -104,13 +104,13 @@ utopia_manifesto_prepare_dynamic_decision_duration = {
 		}
 	}
 	if = {
-		limit = { num_of_owned_states > constant:utopia_manifesto_decision_threshold.large_country_states }
+		limit = { check_variable = { var = num_of_owned_states value = constant:utopia_manifesto_decision_threshold.large_country_states compare = greater_than } }
 		add_to_temp_variable = {
 			utopia_manifesto_duration_result = constant:utopia_manifesto_decision_duration.large_country_addition
 		}
 	}
 	if = {
-		limit = { num_of_owned_states > constant:utopia_manifesto_decision_threshold.very_large_country_states }
+		limit = { check_variable = { var = num_of_owned_states value = constant:utopia_manifesto_decision_threshold.very_large_country_states compare = greater_than } }
 		add_to_temp_variable = {
 			utopia_manifesto_duration_result = constant:utopia_manifesto_decision_duration.very_large_country_addition
 		}

@@ -1,3 +1,15 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY = 40
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY_CLEANUP = -40
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS = 30
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS_CLEANUP = -30
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY = 35
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY_CLEANUP = -35
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE = 25
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE_CLEANUP = -25
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION = 20
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION_CLEANUP = -20
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-012 ICELAND PACKAGE EFFECTS
 # ============================================================================
@@ -275,18 +287,18 @@ independence_wave_ice_apply_host_ai = {
 			NOT = { has_country_flag = independence_wave_ice_host_ai_applied }
 			has_event_target = independence_wave_setup_former_host
 		}
-		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.trade }
+		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE }
 		set_country_flag = independence_wave_ice_host_ai_trade_applied
 		if = {
 			limit = { has_independence_wave_living_former_host = yes }
-			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.diplomacy }
-			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.war_preparation }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY }
+			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION }
 			set_country_flag = independence_wave_ice_host_ai_charter_applied
 		}
 		if = {
 			limit = { has_country_flag = independence_wave_formable_family_registered }
-			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_diplomacy }
-			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_relations }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS }
 			set_country_flag = independence_wave_ice_compact_ai_applied
 		}
 		set_country_flag = independence_wave_ice_host_ai_applied
@@ -299,16 +311,16 @@ independence_wave_ice_apply_host_ai = {
 independence_wave_ice_clear_host_ai = {
 	if = {
 		limit = { has_country_flag = independence_wave_ice_host_ai_trade_applied has_event_target = independence_wave_setup_former_host }
-		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.trade_cleanup }
+		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE_CLEANUP }
 		if = {
 			limit = { has_country_flag = independence_wave_ice_host_ai_charter_applied }
-			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.diplomacy_cleanup }
-			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.war_preparation_cleanup }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY_CLEANUP }
+			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION_CLEANUP }
 		}
 		if = {
 			limit = { has_country_flag = independence_wave_ice_compact_ai_applied }
-			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_diplomacy_cleanup }
-			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_relations_cleanup }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY_CLEANUP }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS_CLEANUP }
 		}
 	}
 	clr_country_flag = independence_wave_ice_host_ai_applied

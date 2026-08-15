@@ -53,7 +53,7 @@ Event 016 registers the following generic Event 019 families from its idempotent
 | Family | Family/provider ID | Event 016 implementation consumer | Provider-owned material profile |
 | --- | ---: | --- | --- |
 | Clone Infantry | 504 | `clone_infantry`, `clone_equipment`, `infantry_equipment` | Shared clone cohorts, rifles, and exact manpower and training or sustainment costs. |
-| Autonomous Robot | 505 | `kruger_robot_frame`, `kruger_robot_equipment_1` | Robot equipment, manpower, political power, and command power callbacks. |
+| Autonomous Robot | 505 | `autonomous_robot`, `autonomous_robot_equipment_1` | Provider-neutral robot equipment, manpower, political power, and command power callbacks. |
 | Paleogenetic Creature | 506 | `kruger_paleogenetic_beast`, `kruger_paleogenetic_equipment_1` | Paleogenetic equipment, manpower, political power, and command power callbacks. |
 | Xenobiological Organism | 507 | `kruger_xenobiological_assault`, `kruger_xenobiological_equipment_1` | Xenobiological equipment, manpower, political power, and command power callbacks. |
 | Alien Interface Infantry | 508 | `kruger_exotic_guard`, `kruger_exotic_arms_equipment_1` | Alien-arms equipment, manpower, political power, and command power callbacks. |

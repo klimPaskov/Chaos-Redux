@@ -8,11 +8,13 @@ The complete evidence, official ImageGen sources, processed ladders, manifests, 
 
 The shared gate requires a final public name and political identity; a source-mode decision; an asset-specific archive, museum, official, installed, or rights-cleared source; creator or institution, date, license, and attribution; a statement identifying the historical function of the source; and an approved identity review for Groups D and E. Once cleared, every generated flag still requires a source PNG, 82x52, 41x26, and 10x7 TGA outputs, triplet readability review, route/ideology labels, and a manifest statement that calls generated work generated.
 
-## Group B — generated period civic baseline (40 still blocked)
+## Group B — generated period civic baseline (39 still blocked)
 
-Blocked packages: IW-003 Cornwall; IW-005 Flanders; IW-006 Wallonia; IW-007 Frisia; IW-010 Saar; IW-011 Faroe Islands; IW-022 Dalmatia; IW-024 Banat; IW-025 Vojvodina; IW-028 Epirus; IW-032 Slavonia; IW-037 Polesia; IW-038 Ruthenia; IW-049 Mordovia; IW-061 Luristan; IW-062 Khuzestan or Arabistan; IW-063 Bakhtiari; IW-064 Circassia; IW-067 Lazistan; IW-073 Hejaz; IW-084 Kabylia; IW-086 Tripolitania; IW-087 Fezzan; IW-094 Fante; IW-123 Xhosa; IW-132 Mauritius; IW-142 Travancore; IW-145 Assam; IW-151 Minangkabau; IW-154 Bugis state; IW-156 Moluccan federation; IW-159 Shan federation; IW-162 Kachin state; IW-165 Wa state; IW-169 East Turkestan; IW-181 Acadia; IW-182 Newfoundland; IW-184 California; IW-185 Texas; IW-203 Patagonian state.
+Blocked packages: IW-003 Cornwall; IW-005 Flanders; IW-006 Wallonia; IW-007 Frisia; IW-010 Saar; IW-011 Faroe Islands; IW-022 Dalmatia; IW-024 Banat; IW-025 Vojvodina; IW-032 Slavonia; IW-037 Polesia; IW-038 Ruthenia; IW-049 Mordovia; IW-061 Luristan; IW-062 Khuzestan or Arabistan; IW-063 Bakhtiari; IW-064 Circassia; IW-067 Lazistan; IW-073 Hejaz; IW-084 Kabylia; IW-086 Tripolitania; IW-087 Fezzan; IW-094 Fante; IW-123 Xhosa; IW-132 Mauritius; IW-142 Travancore; IW-145 Assam; IW-151 Minangkabau; IW-154 Bugis state; IW-156 Moluccan federation; IW-159 Shan federation; IW-162 Kachin state; IW-165 Wa state; IW-169 East Turkestan; IW-181 Acadia; IW-182 Newfoundland; IW-184 California; IW-185 Texas; IW-203 Patagonian state.
 
 IW-027 Thrace is admitted under the current package boundary. Its flat alternate-history civic flag ladder is retained in the event-scoped flag workspace and runtime `gfx/flags/` family.
+
+IW-028 Epirus is admitted with the historically attested 1914 Northern Epirus flag geometry. The public-domain photograph, stamp, clean reference, ImageGen reconstruction, flattened master, and runtime ladder are retained in the event-scoped flag workspace.
 
 Evidence needed: one asset-specific official or archival civic, heraldic, municipal, landscape, or administrative motif source per package, with adoption or use date, author or institution, license, attribution, historical function, and a written reason the motif may inform a fictional 1936 civic baseline without claiming historical authenticity.
 

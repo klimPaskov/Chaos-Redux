@@ -1,5 +1,7 @@
 # Event 006 decision and mission matrix current audit
 
+> Historical snapshot. Its DM-01 “garrison commitment, no click cost” row predates the accepted material-commitment implementation. Use `006_dm01_current_material_commitment_audit_2026_08_12.md` for current DM-01 behavior; the remaining matrix rows retain their dated audit evidence.
+
 Date: 2026-08-02
 
 ## Scope and disposition

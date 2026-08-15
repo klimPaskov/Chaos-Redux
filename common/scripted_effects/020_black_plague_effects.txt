@@ -1879,3 +1879,153 @@ black_plague_start_natural_outbreak = {
 		}
 	}
 }
+ 
+# ============================================================================
+# CHAOS REDUX - EVENT 020 EVENT 019 PROVIDER ADAPTER
+# ============================================================================
+# Provider 520 owns all five rat combat tokens and the rat_tunnelers support
+# token. The Rat package remains the owner of zero-manpower/zero-equipment
+# bodies; Event 019 receives an exact component manifest and no fallback unit.
+# ============================================================================
+
+black_plague_rat_register_event19_provider = {
+	chaos_unit_family_provider_520_register = yes
+}
+
+chaos_unit_family_provider_520_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event20_rat_brood.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event20_rat_brood.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event20_rat_brood.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event20_rat_brood.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event20_rat_brood.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event20_rat_brood.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event20_rat_brood.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event20_rat_brood.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event20_rat_brood.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event20_rat_brood.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event20_rat_brood.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_520_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			black_plague_rat_country_is_active = yes
+			is_special_chaos_country = yes
+			is_actual_nonhuman_country = yes
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+}
+
+chaos_unit_family_provider_520_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Rat Brood Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					rat_swarm = { x = 0 y = 0 }
+					rat_brutes = { x = 0 y = 1 }
+					rat_burrowers = { x = 0 y = 2 }
+					rat_carrion_guard = { x = 0 y = 3 }
+					rat_dock_stowaways = { x = 0 y = 4 }
+				}
+				support = {
+					rat_tunnelers = { x = 0 y = 0 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event20_rat_brood.template_combat_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:chaos_unit_family_event20_rat_brood.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+	set_temp_variable = { infantry_spawn_current_component_slot_kind = constant:infantry_spawn_component_kind.support }
+	set_temp_variable = { infantry_spawn_current_component_unit_profile = constant:chaos_unit_family_event20_rat_brood.family_id }
+	set_temp_variable = { infantry_spawn_current_component_column = 0 }
+	set_temp_variable = { infantry_spawn_current_component_row = 0 }
+	infantry_spawn_append_current_template_component = yes
+}
+
+chaos_unit_family_provider_520_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_520_event19_reconcile_sustainment = {
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event20_rat_brood.template_combat_battalions }
+	set_temp_variable = { infantry_spawn_provider_resource_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_resource_per_battalion = constant:chaos_unit_family_event20_rat_brood.infantry_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:chaos_unit_family_event20_rat_brood.manpower_per_battalion }
+	infantry_spawn_record_provider_unit_obligations = yes
+}
+
+chaos_unit_family_provider_520_event19_get_management_cost_display = {
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.rat_brood }
+}
+
+chaos_unit_family_provider_520_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			black_plague_rat_country_is_active = yes
+			is_special_chaos_country = yes
+			is_actual_nonhuman_country = yes
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			black_plague_rat_country_is_active = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_520_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_520_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_520_event19_setup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_520_derivative_noop = 0 }
+}
+chaos_unit_family_provider_520_event19_remove_public_additions = {
+	set_temp_variable = { chaos_unit_family_provider_520_derivative_noop = 0 }
+}
+chaos_unit_family_provider_520_event19_cleanup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_520_derivative_noop = 0 }
+}

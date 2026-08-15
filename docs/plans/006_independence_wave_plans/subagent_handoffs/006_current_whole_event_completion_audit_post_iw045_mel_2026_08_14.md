@@ -118,6 +118,14 @@ It failed with exact blocker `ARTIFACT_NOT_FOUND: Artifact provenance manifest i
 
 No before/after structural comparison claim is made.
 
+## Superseding focus receipt (2026-08-14)
+
+The current focus authority is `subagent_handoffs/006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md`, updated by commit `42b18cf8c`.
+
+It reports 184 focuses, 196 connectors, zero crossings, zero node intersections, two long connectors, and 14 aggregate diagnostics, with no unresolved MEL or KOM helper reference and no new source patch justified.
+
+The older focus MCP evidence below remains dated receipt evidence only.
+
 ## Focus MCP evidence
 
 Current `hoi4.focus_inspect` and `hoi4.focus_render` ran against `independence_wave_focus_tree` at revision `f1d321a29f07c97ca5def1d7196d40ae97532db15a79b9e3050d92dc7ccc02cf` and layout hash `014c594a446087d67b6623767e34af4b83a026e7446235e5a3bd3cbc4eceef2a`.
@@ -184,12 +192,12 @@ No weighted source was changed by this audit, so there is no new before/after pr
 | --- | --- |
 | IW-045 Bashkiria package-local implementation | Implemented and centrally promoted. Earlier fail-closed admission audits are historical. |
 | IW-045 central adapter/attestation/preflight/Join widening | Implemented. The dated pre-IW-045 boundary was 39 runtime adapters, 31 content attestations, 28 compatible groups, and 162 unattested rows; current counts are 40/32/29/161 without widening automatic or SCN-008 package counts. |
-| Post-IW-045 ten-line focus connector cleanup | Implemented. Current focus receipt is 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors. |
+| Post-IW-045 ten-line focus connector cleanup | Implemented. Current focus receipt is `subagent_handoffs/006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md`, with 184 focuses, 196 connectors, zero crossings, zero node intersections, and two long connectors. |
 | IW-047 MEL country core, decisions, focus hooks, AI source, and localisation | Implemented package-locally. Earlier handoffs saying these files were absent are historical. |
 | IW-047 MEL central admission | Not accepted as complete and not started. Correctly blocked by portrait identity, neutral-flag provenance, probability evidence, and the central adapter/attestation/preflight/Join gates. |
 | FORM-12/13 MEL state-slot repair | Implemented and locally reconciled to state 833. The earlier state-256 hardening and design-choice wording are historical; central MEL admission remains blocked independently. |
 | Evolution incident removal-tail repair | Implemented in `7a4e0d7a9`; the five inactive/disabled `remove_effect` branches clear their matching pending flags. Event MCP inspect/render remains partial with zero selected blocking diagnostics, and no counts or central admission/Join surfaces changed. |
-| IW-050 Komi package-local implementation and codify/corridor repair | Implemented package-locally. The current country-core, decisions, focus-hooks, localisation, AI, map, portrait, symbol, probability, completion, and codify/corridor repair handoffs are the package-local authority set. Codify writes durable sovereignty and applies major settlement; the Northern Ural corridor remains lifecycle-gated. |
+| IW-050 Komi package-local implementation and codify/corridor repair | Implemented package-locally. The current country-core, decisions, focus-hooks, localisation, AI, map, portrait, symbol, probability, completion, codify/corridor repair, and lifecycle/cost/tooltip repair handoffs are the package-local authority set. Codify writes durable sovereignty and applies major settlement; the Northern Ural corridor remains lifecycle-gated. |
 | IW-050 central admission | Not started and correctly fail-closed. No central adapter, attestation branch, normal/scenario preflight branch, or deterministic Join entry is present. |
 | MEL route-flag package | Implemented for the approved alternate-history route identities `CIVICX`, `FORESTX`, `SOCIALISTX`, and `EMERGENCYX`, with 12/12 TGA and 12/12 DDS evidence. Neutral 1936 flag provenance remains blocked; the superseded `AGRARIANX` naming is no longer current. |
 | MEL portrait package | Blocked pending an identity-safe, rights-clear source or a separately accepted institutional consumer. |

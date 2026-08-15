@@ -103,7 +103,14 @@ infantry_spawn_score_current_state = {
 		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.major_port }
 	}
 	if = {
-		limit = { terrain = urban }
+		limit = {
+			OR = {
+				has_state_category = city
+				has_state_category = large_city
+				has_state_category = metropolis
+				has_state_category = megalopolis
+			}
+		}
 		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.urban }
 	}
 	if = {
@@ -469,6 +476,7 @@ infantry_spawn_initialize_command_fracture_entry = {
 		set_variable = { infantry_spawn_country_stage = constant:infantry_spawn_stage.anomalous_muster }
 	}
 	infantry_spawn_recalculate_country_pressure = yes
+	infantry_spawn_muster_board_rebuild_view = yes
 	infantry_spawn_schedule_country_pulse = yes
 }
 

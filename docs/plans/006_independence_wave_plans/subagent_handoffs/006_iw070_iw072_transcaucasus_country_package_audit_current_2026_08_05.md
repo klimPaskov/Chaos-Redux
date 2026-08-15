@@ -4,7 +4,9 @@ Date: 2026-08-05.
 
 Scope: ARM/IW-070, GEO/IW-071, AZR/IW-072, and the installed vanilla Transcaucasian formable surface used by FORM-16. This handoff supersedes the earlier HOLD note for the pre-implementation snapshot.
 
-## Current disposition
+> Event-wide routing supersession (2026-08-05): this tranche's 19-attested/18-group arithmetic and 28-adapter snapshot remain valid as dated Transcaucus evidence but are superseded for current Event 006 routing by the later IW-033/IW-041 promotion: 21 content-attested packages, 20 compatible groups, 172 unattested rows, and 30 central adapters. Ordinary super-events are `23` and `24`; the owner-AI tranche is separately executable at source, while probability comparison and live runtime evidence remain pending.
+
+## Historical tranche disposition (superseded for event-wide routing)
 
 The three vanilla carriers now have additive Event 006 setup, package-specific ledgers and ideas, the shared generic focus tree, mapped force receipts, founding missions, costed projects, arbitration decisions, AI strategy, cleanup, central dispatch, exact tag guards, and package localisation. The packages reuse vanilla history, leaders, portraits, and flags and do not create new tags or overwrite vanilla history.
 

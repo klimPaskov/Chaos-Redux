@@ -9,7 +9,7 @@ Use this skill when a task touches decisions, missions, timed objectives, decisi
 
 This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`.
 
-For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. It may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
+For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every complex or balance-sensitive decision or mission weight to `chaosx_ai_probability_auditor` for the mandatory MCP probability pass. It may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 
 ## 1. Required reading
 
@@ -27,6 +27,7 @@ Before editing decisions or missions, read:
 - vanilla decision files from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 - vanilla documentation in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`
 - existing Chaos Redux decision categories and scripted effects that do similar work
+- `templates/formable_state_puzzle/README.md` and `universal_state_registry_workflow.md` when a formable's proof uses exact state control
 
 Do not rely on memory when syntax or UI behavior is documented.
 
@@ -37,6 +38,26 @@ A decision or mission should represent something the country is actually doing. 
 Avoid turning decisions into a store where the player spends political power for small modifiers. Do not make a decision category feel like a tray of tiny stat dust. A good decision or mission usually asks the player to commit resources, move units, hold a location, secure supply, manage foreign access, spend equipment, accept risk, meet a deadline, or change a living pressure system.
 
 A mission should feel like an order or objective. A decision should feel like a meaningful choice.
+
+### Clarity and cognitive-load gate
+
+Clarity is a completion requirement. A player should be able to look at a decision category or mechanic surface and quickly identify the current state, the main pressure or objective, and the next useful actions. If the player has to read a paragraph, remember several unrelated values, or cross-reference multiple panels before understanding what matters, the design has failed.
+
+Keep internal complexity internal. A system may use many variables, weights, and helper calculations, but the player-facing surface should expose only information that changes an immediate decision or explains an important consequence. Do not show a value merely because the script tracks it.
+
+Prefer visual communication for changing state. Use icons, meters, progress bars, threshold markers, stage frames, state pieces, map highlights, compact status labels, and clear enabled or disabled states before adding another paragraph or raw number. Text should explain the visual state, not replace it.
+
+Do not solve clutter by moving the same clutter into another tab, tooltip, category, or popup. Merge duplicate mechanics, hide internal components, phase actions by current state, and remove values or controls whose significance is weak. A mechanic that needs constant memorization of several unrelated counters should be simplified before implementation continues.
+
+Every visible value must pass this test without implementation knowledge:
+
+- what does it represent
+- what changes it
+- why does its current level matter
+- which threshold or state matters next
+- what can the player do about it
+
+If those answers are not clear from the visual treatment and a concise tooltip, merge, hide, summarize, or remove the value.
 
 ## 3. Decision and mission types
 
@@ -108,6 +129,8 @@ Useful factors:
 
 Do not copy the same cost or duration across every country unless the story and balance justify it.
 
+Dynamic does not mean player-facing. Keep formula inputs, intermediate pressures, score components, and other tuning values hidden when the player does not need to act on them directly. If several internal values contribute to one decision, summarize them into one meaningful state or total instead of exposing the full calculation.
+
 ## 4.1 Effect strength and no fairy-dust rewards
 
 Do not fill decision systems, missions, scripted GUI buttons, or formable routes with tiny bonuses that feel meaningless. Small values such as plus 1 percent, plus 2 percent, minus 3 percent, tiny political power, tiny stability, tiny war support, small generic stockpiles, or slight production nudges do not count as meaningful design by themselves.
@@ -178,20 +201,29 @@ A foreign aid decision may use political power, but it should also require relat
 
 A mobilisation decision may require manpower, equipment, training time, supply, local support, or unit placement.
 
+### Hard cost budget
+
+A decision or gameplay-changing GUI action may have at most four distinct spendable cost types. This is a hard design limit. A cost is anything the action consumes, removes, reduces, or commits as payment. Non-consumed conditions such as controlling a state, fielding a unit, holding a route, or meeting a diplomatic condition are requirements and do not count as costs.
+
+Do not hide a fifth cost in a tooltip, scripted effect, confirmation popup, or secondary panel. If an action needs more than four spendable costs, redesign it by merging costs, moving some pressure into requirements or consequences, or simplifying the action.
+
+Every player-facing cost must have the correct texticon for the value it represents. If a custom spendable value has no valid texticon, add and wire a proper texticon before using it as a displayed cost, or redesign that part of the action as a requirement, risk, or consequence. Never fall back to a literal resource name in the cost string.
+
 ## 6. Cost localisation
 
-Cost localisation should be short, readable, and icon-first.
+Cost localisation must be compact, icon-first, and limited to four distinct cost entries.
 
-Do not prefix every blocked cost line with words like `Requires` or `Needed`. In most cases, show only the value and the matching text icon.
+Every cost entry uses this form:
+
+`<amount> <matching_texticon>`
 
 Good examples:
 
 - `2,000 <infantry_equipment_texticon>`
 - `20 <army_xp_texticon> 20 <command_power_texticon>`
-- `200 <support_equipment_texticon>`
-- `Depot control`
+- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon> 200 <support_equipment_texticon>`
 
-Do not add filler words between costs.
+Do not write literal cost labels such as `Manpower:`, `Fuel:`, `Political Power:`, or `Support Equipment:` in the cost string. Do not use filler words such as `and`, `plus`, `requires`, or `needed` between cost entries. The texticon identifies the resource.
 
 Use:
 
@@ -199,16 +231,17 @@ Use:
 
 Do not use:
 
+`20 Army XP and 20 Command Power`
+
+Do not use:
+
 `20 <army_xp_texticon> and 20 <command_power_texticon>`
 
-If the country does not meet a requirement, show the missing or unmet cost in red. If the country meets the requirement, show it normally.
+If the country cannot pay a cost, show the affected amount and texticon in the blocked or red state used by the owning UI. Satisfied costs remain in the normal state.
 
-If a decision has more than three or four simultaneous costs or requirements, do not show all of them inline. Use a short scripted localisation summary:
+Requirements are separate from costs. A requirement such as `Depot control` can use concise literal text because it is not a spendable value. When a decision has many non-cost requirements, show a short summary such as `Requirements met` or `§RRequirements not met§!` and place the precise requirement list in a concise tooltip. Do not use this pattern to conceal extra spendable costs.
 
-- met: `Requirements met`
-- not met: `§RRequirements not met§!`
-
-Then put the full requirement list in a tooltip. The tooltip should still use short icon-first entries. Missing requirements should be red, while satisfied requirements should display normally.
+The same rules apply to ordinary decisions, missions with payment actions, scripted GUI buttons, confirmation windows, and any other player-facing action that spends resources.
 
 ## 7. Trigger and requirement clarity
 
@@ -550,7 +583,9 @@ Good examples:
 - a league vote increases faction cohesion or member confidence
 - a failed border mission lowers authority and raises enemy momentum
 
-If a mechanic has a total value made from several components, the UI should show a readable breakdown through scripted localisation or tooltips. Each important component should be named and use a consistent colour identity.
+Use as few player-facing values as the mechanic can support without losing meaningful choices. Normally show one primary value and no more than two supporting values. Four visible mechanic values in one surface is the hard ceiling, including the primary value. A fourth value needs a distinct cause, consequence, threshold, and player response. Internal calculations can remain numerous, but they should be hidden or summarized when the player does not need to manage each component directly.
+
+Do not expose a full component ledger by default. If a total is built from several inputs, show only the material contributors the player can act on and keep the rest internal or summarized in a concise tooltip. A breakdown that becomes another wall of values has failed the same clarity test as the main panel.
 
 Examples of colour identities:
 
@@ -561,7 +596,9 @@ Examples of colour identities:
 - old movement pressure in orange
 - faction cohesion in yellow
 
-Use project-appropriate colours, but keep each value consistent across decisions, missions, events, tooltips, and UI summaries.
+Use project-appropriate colours, but keep each value consistent across decisions, missions, events, tooltips, and UI summaries. Pair colour with a label, icon, frame, meter shape, or another non-colour cue. Do not present a plain changing number with no explained range, threshold, or gameplay meaning.
+
+A visible value has failed when the player cannot answer what changes it, why it matters, and what action responds to it. Remove, merge, summarize, or redesign such values.
 
 Balance-of-power or equivalent internal struggle mechanics should be considered when a country has competing power centers. Decisions and missions should push the balance, create risks, unlock branch content, and affect leaders, laws, advisors, events, or crises.
 
@@ -574,11 +611,15 @@ A faction should not form just because one country exists. Use minimum membershi
 
 ## 15.5 Mechanic presentation, value clarity, and faction outcomes
 
-Special mechanic values must be visible somewhere the player can understand them. A decision category can show values in its header, a custom scripted GUI, a progress meter, a scripted localisation tooltip, or national spirit tooltips
+Special mechanic values must be visible somewhere the player can understand them. A decision category can show values in its header, a custom scripted GUI, a progress meter, a scripted localisation tooltip, or national spirit tooltips.
+
+Prefer visual state over textual reporting. If a value can be communicated through a meter, fill state, threshold marker, icon state, progress ring, map highlight, card state, or short stage label, use that presentation and let the tooltip explain the exact meaning. A row of plain numbers with labels is not an acceptable substitute for visual hierarchy.
 
 When a mechanic uses a scripted GUI, consider whether it needs visual state changes. Useful presentation can include progress bars, meter fill variants, status icons, warning frames, selected and locked frames, animated frames, or frame-by-frame changes. Use visual motion or variants only when they clarify the mechanic.
 
-Special mechanics can hide future surprises, but should not hide basic cause and effect. If a visible value rises or falls, the player should understand the public reason and the broad response available.
+Do not treat dynamic text as presentation by itself. A changing number needs a labelled role, visual identity, threshold context, and visible consequence. A large collection of plain numbers is a design defect even when every number is technically dynamic.
+
+Special mechanics can hide future surprises, but should not hide basic cause and effect. If a visible value rises or falls, the player should understand the public reason, the consequence, and the broad response available. Explain this through concise labels and tooltips instead of large text blocks. Tooltips should normally fit in two to four short lines for one value or control. A longer tooltip is a redesign signal unless the extra detail is genuinely necessary. Concision must not become vagueness. State the important threshold, consequence, or blocked reason precisely.
 
 Faction, league, bloc, or coalition goals need rewards and failure states. A successful faction goal can unlock shared decisions, war goals, legitimacy, cohesion, member rewards, postwar settlements, or new faction leadership. A failed goal can reduce cohesion, trigger member exits, invite foreign pressure, start leadership contests, weaken shared defenses, or open emergency missions.
 
@@ -624,7 +665,11 @@ Large decision systems should not show every possible decision at once.
 
 Use phases, caps, priorities, regional pools, route locks, mechanic thresholds, or crisis-state filters so the player sees decisions that matter in the current situation.
 
-A decision category should feel curated by current state, not like a debug menu.
+A decision category should feel curated by current state, not like a debug menu. Treat visible decision count as a hard design budget. A phase should normally expose three to five primary decisions. Six visible primary actions is the hard maximum for one phase or state. Active missions should normally stay between one and three. If the system needs more actions, first merge weak or duplicate actions, then use state-based replacement, target selection, route gates, or phased visibility.
+
+Do not multiply decision categories, tabs, or subpanels merely to hide an oversized action list. Separate categories should represent genuinely different long-lived contexts, targets, or gameplay roles. Moving clutter elsewhere does not solve clutter.
+
+Too many decisions often means the system contains duplicate actions, weak actions, obsolete actions, or several buttons that should be one staged action. Merge or remove them before adding UI layers.
 
 Good clutter-control patterns:
 
@@ -654,6 +699,50 @@ The reusable selected-target pattern is:
 
 Do not leave stale, invalid, or irrelevant decisions visible simply because their scripted trigger is easy to write.
 
+## Decision category presentation hierarchy
+
+A complex scripted GUI is not the default presentation for a decision category. Choose the least complex surface that communicates the category's current state, purpose, and available actions clearly.
+
+Use this order:
+
+1. ordinary category icon with concise category text
+2. static category picture
+3. animated category picture with a static fallback
+4. compact attached display or category header
+5. full scripted GUI or separate mechanic window
+
+Do not move to a more complex layer only because the category is important. A static or animated category picture is often stronger for a category that needs identity and atmosphere but does not require the player to manage several live values or targets.
+
+Category pictures are especially suitable for:
+
+- propaganda and public campaigns
+- civil-war preparation, insurgency, and national preparedness
+- ideology, elections, monarchism, party control, and trade-union politics
+- faction management, diplomatic blocs, treaties, and intervention campaigns
+- formables where a territorial overview is useful but individual state pieces do not need interaction
+- one-theme crisis categories whose decisions already explain the actionable details
+
+A category picture must remain presentation. Do not draw fake buttons, meters, values, or controls into it. Do not use a full custom window when the normal decision category plus one strong picture communicates the mechanic more clearly.
+
+Use a full scripted GUI only when the player must manage a living system that cannot be read cleanly from ordinary decisions, category text, tooltips, and a category picture. Valid reasons include several interacting values, target selection, repeated map interaction, competing factions, a state-by-state formable display, or a persistent board whose state changes often.
+
+### Decision category picture reference workflow
+
+Before designing or auditing a category picture, inspect:
+
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference\icons\decision_categories\pictures`
+
+This folder is the canonical picture reference family. It is separate from `icons/decision_categories/`, which contains small category icons.
+
+The reference family must contain its own `contact_sheet.png`. If the sheet is missing, create it from the reference images, label every example with its filename and native dimensions, and update `assets/vanilla_reference/README.md` and `assets/vanilla_reference/CATALOG.md` with provenance and surface ownership. Reference images and the contact sheet are review material only and must never be wired into runtime GFX.
+
+When reviewing existing Chaos Redux decision categories, produce a category presentation audit with these columns:
+
+| Category id | Owner system | Current presentation | Recommended layer | Picture or GUI reason | Missing asset or implementation |
+| --- | --- | --- | --- | --- | --- |
+
+Identify existing categories that would benefit from a static or animated category picture and currently lack one. Do not add a picture to every category. Keep ordinary categories ordinary when a picture would add no useful identity, territorial context, or state feedback.
+
 ## Formable nation decisions
 
 Use decisions for formable nations when the player should prove control over land, complete a political route, or spend resources before changing the country identity. A formable decision should feel like a proclamation, settlement, congress, coronation, constitutional act, annexation settlement, liberation charter, or administrative project. It should not be only a hidden tag switch.
@@ -674,6 +763,44 @@ A formable decision must define:
 - cleanup for obsolete formation decisions after the formable is created
 
 State requirements must be readable. Use named state groups and custom trigger tooltips. Do not expose raw state id lists to the player unless the existing UI pattern already does that cleanly. If several alternate maps can qualify, create clear requirement groups.
+
+### Formable state-puzzle presentation standard
+
+When exact territorial control is the central proof for a formable, use the reusable formable state-puzzle presentation. The interface should show the required territory assembled from the exact in-game shapes of its states, arranged in their real geographic positions like pieces of one map.
+
+Each required state must be represented separately:
+
+- a state that does not currently satisfy the formation requirement is grey
+- a state that currently satisfies the formation requirement is green
+- borders, texture, labels, or another non-colour cue must distinguish the two states for players who cannot rely on colour alone
+- hovering a piece should name the state and explain whether it qualifies
+- the panel should show the current qualifying count, required count, and final eligibility state without exposing raw internal variables
+
+The pieces must use the exact state geometry from the installed map data. Do not approximate state outlines by hand, generate them with ImageGen, replace them with generic tiles, or use province blobs that do not match the actual formable requirement. Every piece must share one map projection, scale, origin, and border treatment so the territory assembles correctly.
+
+The display must update from current game state. Reopening or refreshing the category must show current ownership and control, subject or ally counting rules, alternate state-set rules, route locks, and formation eligibility. Do not cache a green piece after the state stops qualifying. Do not run a whole-world daily scan for this display unless the user explicitly authorizes that performance pattern. Prefer scoped scripted triggers, event-driven refresh, or the verified scripted GUI evaluation pattern.
+
+Use the same eligibility helpers for the visible pieces, the eligibility summary, and the formation decision. The GUI must never show the territory as complete while the decision rejects formation, or show it as incomplete while the decision can be taken.
+
+The state-puzzle display is a justified scripted GUI surface because it communicates dynamic exact map requirements. It should stay compact. Do not add extra meters, fake buttons, lore paragraphs, or unrelated mechanic values around the map.
+
+Create and maintain a reusable template package under:
+
+`.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`
+
+The template package should include:
+
+- `README.md` with the selection rules, ownership boundaries, and setup workflow
+- a state-manifest example that records formable id, state ids, state names, alternate groups, counting rules, projection bounds, and sprite names
+- `.gui`, `.gfx`, and scripted-GUI templates
+- scripted trigger and scripted effect helper templates
+- scripted localisation and tooltip templates
+- a static category-picture option for formables that do not need per-state interaction
+- a validation checklist covering exact geometry, projection, current control state, eligibility agreement, click and hover regions, resolution behavior, AI equivalence, cleanup, and runtime asset paths
+
+Templates are reference scaffolding. Future agents must copy and adapt them into event or system-owned files. Do not wire the skill-local template files directly into the game.
+
+AI must use the same formation conditions and decision logic without depending on the human-facing GUI. The puzzle is a player presentation layer, not the AI action path.
 
 Hidden formables need extra care. A hidden formable can be locked behind an event, secret focus, rare ideology, high chaos, special leader, historical artifact, super-event, achievement route, or scripted GUI investigation. Hidden does not mean undocumented. The implementation handoff must still define all triggers, effects, assets, and cleanup.
 
@@ -698,15 +825,115 @@ Formation systems should support partial success and failure. A country can form
 
 ## Scripted GUI decision categories and mechanic windows
 
-When a decision category controls a major mechanic, consider attaching a scripted GUI or opening a custom mechanic window from a category button. This is appropriate when the player needs to manage values, targets, meters, factions, sponsors, province groups, formable requirements, investment tracks, or competing internal blocs.
+Choose the presentation layer from the hierarchy above before creating a custom window. A major mechanic does not automatically need a full scripted GUI. Use an ordinary category with a strong static or animated picture when the player mainly needs theme, territorial context, or a clear visual identity.
 
-Use `hoi4.gui_inspect` to map linked layout, states, resolutions, click regions, localisation, sprites, fonts, and animation, then call `hoi4.gui_render` for deterministic normal, cropped, annotated, state, resolution, click-region, hierarchy, and comparison views. MCP diagnostics expose bad alignment, uneven spacing, overlapping controls, clipping, overflow, broken click regions, state mismatches, resolution drift, missing assets, and other layout defects. Use `hoi4.gui_rewrite` for an in-scope GUI change after reviewing those diagnostics and the render fidelity report. Keep gameplay validation and balance review in this skill.
+Attach a scripted GUI or open a custom mechanic window only when the player must actively manage values, targets, meters, factions, sponsors, state pieces, investment tracks, or competing internal blocs that ordinary decisions and tooltips cannot present clearly. The formable state-puzzle display is an appropriate compact scripted GUI when exact state-by-state qualification must update dynamically.
 
-A scripted GUI or custom window must have a gameplay reason. It should expose useful choices, not merely decorate a category.
+Use `hoi4.gui_inspect` to map linked layout, states, resolutions, click regions, localisation, sprites, fonts, animation, and background ownership. Then call `hoi4.gui_render` for deterministic full-window, cropped, annotated, state, resolution, click-region, hierarchy, and comparison views. MCP diagnostics expose bad alignment, uneven spacing, overlapping controls, clipping, overflow, broken click regions, state mismatches, resolution drift, missing assets, and other layout defects. Full-window and comparison renders also make poor use of the background visible, but the implementation agent must still review whether every painted region and visual anchor is being used as intended. Use `hoi4.gui_rewrite` for an in-scope GUI change after reviewing those diagnostics and the render fidelity report. Keep gameplay validation and balance review in this skill.
+
+When a named Chaos Redux event or event-owned mechanic specifically introduces its own scripted GUI, route bounded layout implementation or visual-quality work to `chaosx_event_ui_worker`. That worker must apply every rule in this section and return mandatory MCP before-and-after evidence. The decision owner retains costs, effects, availability, AI equivalents, cleanup, and balance. Never route the shared event log, event-details framework, settings, super-event framework, shared windows, or an unrelated existing GUI merely because an event opens or references it.
+
+A scripted GUI or custom window must have a gameplay reason. It should expose useful choices and state clearly. It must not exist only to make a small mechanic look larger.
+
+### GUI action integrity
+
+A GUI action follows the same cost budget as a normal decision. It may have at most four distinct spendable cost types, and every displayed cost must use the correct texticon for that value. Do not use literal resource names as a cost-string fallback, and do not hide additional spendable costs in a tooltip or confirmation window.
+
+Every button-shaped element must be one of these:
+
+- a real interactive control with a meaningful action
+- a clearly disabled control with a visible reason
+- a decorative element that cannot reasonably be mistaken for a button
+
+Do not use fake buttons, decorative frames styled like buttons, empty click boxes, dead controls, or button art with no gameplay action. Do not place a click region outside the visible button or make the click region smaller than the visual control. Informational content should use labels, status panels, icons, meters, or tooltips instead of fake controls.
+
+Every real button needs:
+
+- a clear label or icon
+- an accurate click region
+- hover, available, selected, active, completed, warning, and disabled states when relevant
+- a visible cost and requirement summary
+- a tooltip that explains the action and blocked reason
+- a scripted effect or decision action
+- an AI equivalent when AI countries can use the system
+- cleanup when the action, target, route, or mechanic becomes invalid
+
+Do not add buttons to fill empty space or manufacture the appearance of depth. Merge actions that do the same job, and remove controls whose result does not change play.
+
+### Text and explanation budget
+
+The main panel should use short labels, concise state summaries, and current actions. Do not cover the window with paragraphs, repeated descriptions, raw triggers, long instructions, or text that restates the same mechanic in several places. A category header or main explanatory block should normally fit in one to three short lines. Longer prose should move to an event, detail view, or a narrowly scoped tooltip only when the information is necessary.
+
+A mechanic still needs to be explained. Every non-obvious value, state, threshold, target, and action must have a short visible label and a concise tooltip or help surface that explains:
+
+- what it represents
+- what raises or lowers it
+- which thresholds matter
+- what it unlocks, blocks, improves, or worsens
+- what the player can do about it
+
+Tooltips should usually fit in two to four short lines for one value or action. Do not write a miniature manual inside every tooltip. If the explanation keeps growing, simplify the mechanic or replace prose with a clearer visual state. Keep the explanation precise. A short tooltip that says only `Improves readiness` or `Affects the crisis` is too vague.
+
+Keep the explanation close to the value or control it describes. Do not hide basic cause and effect in documentation outside the game. Do not use long prose to compensate for unclear layout or weak mechanics.
+
+### Visible value budget
+
+A scripted GUI should normally expose one primary mechanic value and no more than two supporting values at the same time. Four total visible mechanic values is the hard ceiling. The fourth value requires a distinct player decision, threshold, and consequence. Internal variables may be numerous, but the player-facing interface should summarize, combine, or hide values that do not need direct management.
+
+Reject value bloat. Merge values that measure the same pressure, remove values that do not change decisions, and avoid parallel meters whose effects are difficult to distinguish. Prefer meters, icons, threshold states, map highlights, stage frames, and progress visuals over rows of labelled numbers.
+
+Do not display plain dynamic numbers with no visual or gameplay significance. Every visible value needs:
+
+- a stable name
+- a clear unit, range, or direction
+- a consistent colour identity
+- a second non-colour cue such as an icon, frame, label, or meter shape
+- meaningful thresholds or states
+- visible consequences
+- at least one player action that can affect it when the mechanic allows intervention
+
+Colour alone is not enough, and an uncoloured number alone is not enough. The player should understand why the value matters without reading implementation notes.
+
+### Decision and action budget
+
+A scripted GUI must not become a wall of decisions. A single phase or state should normally show three to five primary actions. Six visible primary actions is the hard maximum. Active missions or target controls should normally stay between one and three when they share the same surface. Use phases, target selection, replacement, priorities, or conditional visibility when the full system contains more actions.
+
+Do not add tabs or subpanels only to warehouse extra buttons. Merge or remove weak actions first. Do not show every possible decision, target, mission, and upgrade at once. Obsolete, invalid, duplicate, low-impact, and route-incompatible actions must be hidden or removed. A system that needs dozens of simultaneous buttons should be redesigned before more layout work is added.
+
+### Background-first layout
+
+An ImageGen-created scripted GUI background is part of the interface design. Treat it as a functional layout blueprint, not as wallpaper behind unrelated text.
+
+Before placing controls, map the background into intended content regions. Record every prominent panel, inset, slot, frame, medallion, divider, illustration, empty field, and decorative anchor that affects placement. Each intentional functional region should have a matching GUI use, or the background should be revised.
+
+Use the whole background deliberately. This means using its intended panels and visual anchors while preserving intentional negative space. It does not mean filling every pixel.
+
+Do not:
+
+- ignore a painted panel and place unrelated text beside it
+- write text across ornaments, illustrations, borders, handles, seals, diagrams, or other visual elements
+- cover a prominent background feature with a generic text box
+- place controls between the designed slots only because the coordinates are easier
+- leave half of the functional background unused while another area is crowded
+- force content onto a background whose composition does not support the mechanic
+
+Text, values, icons, meters, cards, and buttons should align with the painted frames and content zones that were created for them. If the required content does not fit those regions, revise or regenerate the background. Do not ignore the art and layer a generic interface over it.
+
+The implementation handoff should include a background coverage map:
+
+| Background region | Intended content | GUI elements | Interaction or state | Status |
+| --- | --- | --- | --- | --- |
+
+Use full-window renders at every supported resolution and compare them with the source background. Review the normal, selected, disabled, warning, and crowded states. Confirm that text stays inside intended regions, click boxes match visible controls, no element overlaps important artwork, and no designed functional region is accidentally abandoned.
+
+### Interactive design contract
 
 Interactive GUI design should define:
 
 - entry point from the decision category
+- background coverage map and layout regions
+- primary value and supporting value hierarchy
+- visible decision and mission budget by phase
 - visible tabs, panels, cards, meters, bars, or target lists
 - button costs and requirements
 - what each button changes
@@ -718,13 +945,15 @@ Interactive GUI design should define:
 - AI equivalents for every meaningful button
 - cleanup and fallback behavior
 
-When buttons spend resources, show the cost clearly. Use icon-first cost localisation. If the GUI button has more than a few requirements, show a short requirement summary and put details in a tooltip.
+When buttons spend resources, show the cost clearly. Use icon-first cost localisation with the correct texticon for every spendable value and never more than four distinct cost types. If the GUI button has many non-cost requirements, show a short requirement summary and put the precise details in a concise tooltip. Extra costs cannot be moved into that tooltip.
 
 Do not use GUI buttons to bypass decision balance. GUI buttons should call the same scripted effect families, cost logic, validation triggers, logging, and cleanup that the normal decision system would use.
 
 ## Animated decision category presentation
 
-Decision categories and mechanic windows can use animated sprites when motion improves readability or atmosphere. Suitable uses include:
+Animation is optional. First decide whether a static category picture is sufficient. Use an animated category picture or animated GUI sprite only when motion makes a changing state easier to notice or strengthens a category whose identity depends on active propaganda, mobilization, escalating crisis, or transformation. Every animated category picture needs a static fallback.
+
+Suitable uses include:
 
 - soft glow around an available formation seal
 - warning pulse when pressure is near a threshold
@@ -759,7 +988,7 @@ AI should understand:
 
 Avoid flat `ai_will_do` when campaign state matters.
 
-For complex decision or mission weights, use `hoi4.probability_inspect` to find required inputs, `hoi4.probability_evaluate` for named campaign states, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` after a source change. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs, and use `hoi4.probability_render` when the ranking, matrix, sensitivity, comparison, or unresolved view improves review. Decision and mission `ai_will_do` results are willingness scores, so do not present them as click probabilities. Include availability, target, cost, cooldown, and route state where relevant, and retain unresolved engine state in the result.
+For complex decision or mission weights, route the analysis through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` to find required inputs, `hoi4.probability_evaluate` for named campaign states, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` after a source change. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs, and use `hoi4.probability_render` when the ranking, matrix, sensitivity, comparison, or unresolved view improves review. Decision and mission `ai_will_do` results are willingness scores, so do not present them as click probabilities. Include availability, target, cost, cooldown, and route state where relevant, and retain unresolved engine state in the result. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis.
 
 AI should not take suicidal or nonsensical decisions just because they are available.
 
@@ -838,9 +1067,17 @@ When an improvement addendum proposes decision depth, scripted GUI, or mechanic 
 
 Use scripted GUI when the player needs to read or manage values that would otherwise be buried in tooltips. Good uses include influence boards, federation congresses, formable progress, patron leverage, resource routing, public fear, occult pressure, faction cohesion, reform votes, target cards, and timed crisis panels.
 
-A GUI button should be treated like a decision. It needs cost logic, requirement logic, tooltips, scripted effects, AI equivalents, state cleanup, and a visible result. Animated buttons, glowing meters, floating seals, and warning pulses should clarify state changes. Do not use animation to hide the cost or make a weak action look important.
+The addendum must choose the presentation layer before asking for more art or controls. It should explain why an ordinary category, static category picture, animated category picture, compact attached display, or full scripted GUI is the clearest option. Name the primary value, supporting values, visible action count, active mission cap, explanation surfaces, and the content assigned to each background region when a full GUI is justified. Do not respond to a shallow mechanic by adding more meters, more decisions, more text, or more decorative buttons.
 
-For formables, the decision should verify the map state. Focuses may reveal claims, prepare institutions, or reduce costs, but the formation decision should prove control, legitimacy, recognition, or integration when those are central to the idea.
+A GUI button should be treated like a decision. It needs cost logic, requirement logic, tooltips, scripted effects, AI equivalents, state cleanup, and a visible result. Fake buttons are forbidden. Animated buttons, glowing meters, floating seals, and warning pulses should clarify state changes. Do not use animation to hide the cost or make a weak action look important.
+
+When the background is generated for a specific layout, the addendum should identify the intended panels, slots, anchors, and content regions. The implementation must fit controls to those regions or revise the background. It must not cover the artwork with generic text and controls.
+
+For formables, the decision should verify the map state. Focuses may reveal claims, prepare institutions, or reduce costs, but the formation decision should prove control, legitimacy, recognition, or integration when those are central to the idea. When exact state control is the main formation proof, the addendum should use the reusable state-puzzle template and keep the visible pieces synchronized with the real eligibility helper.
+
+The state-puzzle package is manifest-driven. Follow `templates/formable_state_puzzle/universal_state_registry_workflow.md`, generate the runtime surfaces from the complete manifest, and complete `templates/formable_state_puzzle/category_attachment_audit.md` before parent review. The audit must enumerate every category in the formable family and prove that each category metadata block attaches the exact generated `scripted_gui` whose block uses `context_type = decision_category`. Do not treat a correct state-piece render as proof that a category is attached.
+
+When an owning event or system declares a strict all-category attachment policy, every shared or phase-specific category that exposes the formable's formation or integration decisions must attach its relevant generated state-puzzle GUI. A static category picture, text-only category, or unrelated status GUI cannot replace that state-puzzle attachment when exact state control is the formation proof. Missing category coverage is a blocker and must be recorded in the owner handoff.
 
 ## Subagent patches for decision systems
 
@@ -866,7 +1103,34 @@ A decision or mission task is complete only when:
 - balance-of-power or equivalent internal struggle decisions exist when appropriate
 - faction, league, bloc, or coalition decisions include goals, membership rules, AI behavior, rewards, and success or failure states
 - special mechanics have visible UI or tooltip presentation
+- every decision category has a documented presentation choice, and the least complex adequate layer was used
+- categories suited to propaganda, ideology, preparedness, civil-war, treaty, faction, or territorial pictures have picture coverage or a clear reason to remain text-only
+- the canonical decision-category picture reference folder and its contact sheet were inspected when category pictures were created or audited
+- full scripted GUI windows are not used where a normal category plus a static or animated picture would communicate the mechanic more clearly
+- formables whose central proof is exact state control use the reusable state-puzzle presentation or document why a static territorial picture is sufficient
+- state-puzzle pieces use exact current map geometry, stay synchronized with formation eligibility, show grey and green qualification states with non-colour cues, and use the reusable template package
+- every manifest-driven formable has a completed category attachment audit with no missing, duplicate, or mismatched category IDs
+- formable category families that declare the strict state-puzzle attachment policy have every in-scope category metadata block pointing to the matching generated `scripted_gui`
 - scripted GUI mechanics use progress meters, variants, frames, or frame animations when useful
+- scripted GUI layouts were inspected and rendered with full-window, state, resolution, click-region, hierarchy, and comparison views where relevant
+- every button-shaped element is a real control, a clearly explained disabled control, or unmistakably decorative
+- no fake buttons, dead click boxes, misleading controls, or click regions that disagree with visible button bounds remain
+- main-panel text is concise and does not cover the interface with repeated explanations, raw triggers, or long paragraphs
+- category headers and main explanatory blocks normally stay within one to three short lines
+- tooltips are concise and precise, normally two to four short lines for one value or action, without vague filler
+- every non-obvious mechanic, value, threshold, and action has a concise in-game explanation
+- each scripted GUI normally shows one primary value and no more than two supporting values, with four total visible mechanic values as the hard ceiling
+- every visible value has a clear meaning, cause, threshold or state, consequence, and player response
+- plain dynamic numbers without colour, labels, threshold context, consequences, or visual significance are not used as mechanic presentation
+- visual state uses meters, icons, threshold markers, stage frames, map highlights, or comparable cues where they communicate the value more clearly than text
+- visible values use consistent colour identities plus non-colour cues
+- each phase normally shows three to five primary actions and never more than six, with active missions or target controls normally limited to one to three
+- excess actions are merged, removed, phased, selected by target, or replaced instead of being hidden in extra tabs or duplicate categories
+- no decision or gameplay-changing GUI action uses more than four distinct spendable cost types
+- every displayed spendable cost uses the correct texticon, with no literal resource-name fallback and no hidden fifth cost in a tooltip or confirmation surface
+- ImageGen-created backgrounds are treated as functional layouts, with intended panels, slots, frames, and anchors mapped to actual GUI elements
+- text and controls align with the background's designed regions and do not cover or ignore prominent artwork
+- background coverage is documented and full-window renders confirm that functional regions are used deliberately
 - visible values explain basic cause and effect without revealing hidden future surprises
 - AI decisions respect route validity and avoid impossible actions
 - shared decision systems are adapted per country where needed

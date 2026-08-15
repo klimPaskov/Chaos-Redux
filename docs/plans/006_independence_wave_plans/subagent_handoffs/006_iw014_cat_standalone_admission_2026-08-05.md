@@ -4,6 +4,8 @@ Date: 2026-08-05 (Europe/Kyiv).
 
 Scope: bounded source-level admission of IW-014 Catalonia as a complete vanilla-carrier Event 006 package. No new country, history file, flag, portrait, advisor icon, or leader was created. The FORM-07 Iberian federation remains a separate fail-closed transaction.
 
+> Dated CAT-tranche notice (2026-08-05): the 16-attested/15-group validation arithmetic below is historical tranche evidence after later IW-070/IW-071/IW-072 and IW-033/IW-041 promotions. Current Event 006 routing is 21 content-attested packages across 20 compatible groups, 172 unattested rows, and 30 central adapters; CAT's standalone admission and FORM-07 fail-closed status are unchanged.
+
 ## Accepted decision
 
 CAT is independently complete enough for Event 006 release because its carrier identity is an existing vanilla country with a current history row, state 165 capital, real male `CAT_lluis_companys` character, vanilla flag family, and preserved identity surfaces. The country package does not require the unresolved FORM-07 X identity, member roster, flag package, territory adapter, or integration adapter.
