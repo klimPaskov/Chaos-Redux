@@ -6,7 +6,7 @@ This repair is limited to the Event 011-owned `secret_alliance_counter_network_s
 
 ## Implemented layout
 
-The 720x360 background remains scaled to the 500x250 decision-category surface at `0.694444`. The title and selected lead are centered inside the upper painted strip. Evidence and Preparedness are centered over two 178x17 meters inside the second strip, with the full band names retained in hover tooltips.
+The 720x360 background remains scaled to the 500x250 decision-category surface at `0.694444`. The title and selected lead are centered inside the upper painted strip. Evidence and Preparedness occupy separate centered rows inside the second strip: equal 192-pixel label regions at y55 and centered 80x8 bars at y70, with the full band names retained in hover tooltips. All Event 011 centered text boxes use vanilla's lowercase `maxwidth` field; the former `maxWidth` spelling left them visibly anchored to the left in-game.
 
 The three 184x96 source card frames resolve to 128x67 at displayed x28, x185, and x342, y112. Their transparent click regions use the same displayed bounds, and each suspect label is centered in the parchment area to the right of its portrait slot.
 
@@ -23,9 +23,9 @@ The old scrollable objectives block was removed because it duplicated the decisi
 
 ## MCP evidence
 
-The final narrow inspection artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4c8c863afbbd1f28bfc6be60c194e8debf7680ac5cfd207d17419208e5b3b5df/66bda108e7bf48a9bcb82605b71c68fc7701596267f62f2481806eff08dc061a/gui-inspect.0b6cec564cb5be80.json`. It resolved 27 elements for the Event 011 window.
+The final narrow inspection artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2c2437d78f48e7fc2bbe6972809c184deed3f12a8db201512d5b147971388940/5f88cad39a3a659983af09e9b60a25e6507fcc4730d063a1b6fcb85904c7aa67/gui-inspect.0a6c6b016bac09b0.json`. It resolved 27 elements for the Event 011 window.
 
-The final render-matrix artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/dfc6626f94a2bca0fb0ef3b44a476fdaa5ff0e1043f2a8ea94c698af13e5a477/c42c5a8f40ead8f3ecc91792076575e8d224c35b20848db55b3c5d0488d33bcf/secret_alliance_counter_network_container-full.svg`. It covers normal, hover, selected, locked, disabled, warning, active, empty-list, full-list, minimum-value, maximum-value, long-text, and missing-localisation states at 1280x720, 1366x768, 1600x900, 1920x1080, and 2560x1440, plus 1920x1080 at UI scale 1.25.
+The final render-matrix artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/30573dc1712096fe97fc9b1a1785d9d0d40665786b3e9f13f293844e4d8dce17/24b8ca44a53fc635c0c741dc08de43287f647a6148add47b8738bbfe852413a5/secret_alliance_counter_network_container-full.svg`. It covers normal, hover, selected, locked, disabled, warning, active, empty-list, full-list, minimum-value, maximum-value, long-text, and missing-localisation states at 1280x720, 1366x768, 1600x900, 1920x1080, and 2560x1440, plus 1920x1080 at UI scale 1.25.
 
 The mandatory `hoi4.gui_rewrite` call was attempted against the exact Event 011 file and window after the layout was authored. It returned `REWRITE_STRUCTURE_LIMIT` and changed no files. The bounded source edits were therefore applied through the repository patch workflow, then re-inspected and re-rendered through the MCP.
 
