@@ -137,6 +137,10 @@ Do not create or submit a turnaround sheet, multi-view board, collage, side-prof
 
 Preflight the one input for silhouette, cropped parts, limb/component separation, dark gaps, strong shadows, background complexity, thin structures, painted details that may be mistaken for geometry, symmetry/asymmetry, unseen-side ambiguity, and source rights. An approved derived image may clarify exposure, background, or an accidental seam; it may not silently redesign the subject. Keep the original and both checksums.
 
+### Portrait fidelity gate
+
+For a portrait-inspired custom unit, compare the candidate reference against the source portrait before any paid Meshy call and lock the head/face identity, silhouette, proportions, clothing/anatomy, distinctive attachments, and palette. Do not accept a generic redesign that preserves only the unit category. Require explicit parent or user acceptance of the comparison; without it, mark the job `needs_user_review` or `blocked` and do not call Meshy. Record the source/candidate comparison, acceptance or status, and revision lineage in the job manifest, with each revision identifying its predecessor. Reference review is separate from provider generation: after approval, exactly one approved provider image is sent to Meshy, while the source portrait and comparison views remain evidence only.
+
 ## Provider generation and lineage
 
 The normal provider sequence is:
