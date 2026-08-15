@@ -1,0 +1,70 @@
+# Some AI fields reject script-constant tokens. These file-scoped values keep
+# the ALT strategy parser-safe and centralize its balance knobs.
+@CR_SC_IW_ALT_ARMY = 96
+@CR_SC_IW_ALT_PRODUCTION = 44
+@CR_SC_IW_ALT_SUPPORT = 52
+@CR_SC_IW_ALT_ARTILLERY = 22
+@CR_SC_IW_ALT_INFRASTRUCTURE = 82
+@CR_SC_IW_ALT_DEFENSE = 92
+@CR_SC_IW_ALT_EMERGENCY = 124
+@CR_SC_IW_ALT_FOUNDING_RESTRAINT = -280
+@CR_SC_IW_ALT_SETTLED_RESTRAINT = -450
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-053 ALTAI AI
+# ============================================================================
+# ALT prioritizes mountain defense, Oyrot access, and guarded former-host
+# separation. Route choice remains owned by the shared focus framework and the
+# package-local decision lane.
+# ============================================================================
+
+independence_wave_altai_mountain_survival = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_iw_053_setup_complete
+		has_country_flag = independence_wave_altai_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_ALT_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_ALT_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_ALT_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_ALT_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_ALT_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_ALT_DEFENSE }
+}
+
+independence_wave_altai_host_restraint = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_iw_053_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_altai_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_ALT_FOUNDING_RESTRAINT }
+}
+
+independence_wave_altai_settled_frontier = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_altai_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_ALT_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_ALT_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_ALT_INFRASTRUCTURE }
+}
+
+independence_wave_altai_emergency_mountain_guard = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_altai_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_ALT_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_ALT_DEFENSE }
+}
