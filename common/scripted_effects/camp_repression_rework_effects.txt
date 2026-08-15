@@ -13,7 +13,7 @@
 
 @CAMP_REWORK_BUILDING_LEVEL = 1
 
-camp_rework_initialize_country_variables = {
+camp_rework_initialize_eligible_country_variables = {
 	if = { limit = { NOT = { has_variable = camp_network_reach } } set_variable = { camp_network_reach = 0 } }
 	if = { limit = { NOT = { has_variable = camp_labor_output } } set_variable = { camp_labor_output = 0 } }
 	if = { limit = { NOT = { has_variable = camp_coercive_control } } set_variable = { camp_coercive_control = 0 } }
@@ -68,6 +68,7 @@ camp_rework_initialize_country_variables = {
 	camp_rework_apply_ai_cap = yes
 	if = {
 		limit = {
+			camp_rework_country_is_eligible = yes
 			camp_rework_country_has_focus_hook_watch = yes
 			NOT = {
 				is_in_array = {
@@ -80,6 +81,19 @@ camp_rework_initialize_country_variables = {
 			array = global.camp_repression_active_countries
 			value = THIS
 		}
+	}
+}
+
+# Country scope. This is the only public initializer for the repression
+# system. Special Chaos countries are actively scrubbed instead of receiving
+# dormant variables that could later expose ordinary-country UI or missions.
+camp_rework_initialize_country_variables = {
+	if = {
+		limit = { camp_rework_country_is_eligible = yes }
+		camp_rework_initialize_eligible_country_variables = yes
+	}
+	else = {
+		camp_rework_exclude_special_country = yes
 	}
 }
 
@@ -177,20 +191,158 @@ camp_rework_freeze_expansion_for_reform = {
 }
 
 camp_rework_register_country_for_monthly_pulse = {
-	camp_rework_initialize_country_variables = yes
 	if = {
-		limit = {
-			NOT = {
-				is_in_array = {
-					array = global.camp_repression_active_countries
-					value = THIS
+		limit = { camp_rework_country_is_eligible = yes }
+		camp_rework_initialize_eligible_country_variables = yes
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.camp_repression_active_countries
+						value = THIS
+					}
 				}
 			}
+			add_to_array = {
+				array = global.camp_repression_active_countries
+				value = THIS
+			}
 		}
-		add_to_array = {
+	}
+	else = {
+		camp_rework_exclude_special_country = yes
+	}
+}
+
+# Country scope. Removes every ordinary camp/repression consumer from a
+# country that has become a special Chaos actor. State records remain eligible
+# for the global invalid-site cleanup, but no monthly damage can run because a
+# special responsible country fails the active-site contract.
+camp_rework_exclude_special_country = {
+	if = {
+		limit = {
+			is_special_chaos_country = yes
+			NOT = { has_country_flag = camp_rework_special_cleanup_in_progress }
+		}
+		set_country_flag = camp_rework_special_cleanup_in_progress
+
+		camp_rework_cancel_active_expansion_projects = yes
+		remove_from_array = {
 			array = global.camp_repression_active_countries
 			value = THIS
 		}
+
+		clr_country_flag = camp_repression_ledger_open
+		clr_country_flag = camp_ledger_tab_overview
+		clr_country_flag = camp_ledger_tab_state_pools
+		clr_country_flag = camp_ledger_tab_sites
+		clr_country_flag = camp_ledger_tab_country
+		clr_country_flag = camp_ledger_tab_discovery
+		clr_country_flag = camp_rework_managed_network_visible
+		clr_country_flag = camp_rework_ledger_revealed_managed_directives
+		clr_country_flag = camp_rework_ledger_revealed_genocide_directives
+		clr_country_flag = camp_rework_ledger_revealed_gulag_directives
+		clr_country_flag = genocide_decisions_visible
+		clr_country_flag = genocide_gulag_decisions_visible
+		clr_country_flag = camp_rework_display_rebuild_in_progress
+		clear_variable = camp_selected_state_id
+		clear_variable = camp_rework_action_state_id
+		clear_array = camp_active_site_states
+		clear_array = camp_evidence_states
+		camp_rework_clear_ledger_arrays = yes
+
+		remove_ideas = camp_repression_network_overstretch
+		remove_ideas = camp_democratic_legitimacy_crisis
+		remove_ideas = camp_repression_reform_pressure
+		remove_ideas = generic_detention_network_administration
+		remove_ideas = generic_expanded_labor_network
+		remove_ideas = generic_overextended_repression_network
+		remove_ideas = generic_radicalized_atrocity_policy
+		remove_ideas = generic_reform_pressure
+		remove_ideas = generic_reformed_legacy
+		remove_ideas = germany_dormant_ss_camp_legacy
+		remove_ideas = germany_ss_camp_administration
+		remove_ideas = germany_ss_camp_overextension
+		remove_ideas = germany_occupied_labor_network
+		remove_ideas = germany_auschwitz_evidence_pressure
+		remove_ideas = germany_camp_reform_pressure
+		remove_ideas = germany_post_regime_camp_reckoning
+		remove_ideas = japan_dormant_occupation_apparatus
+		remove_ideas = japan_imperial_occupation_repression
+		remove_ideas = japan_forced_labor_experiment_network
+		remove_ideas = japan_biowarfare_program_overextension
+		remove_ideas = japan_biowarfare_outbreak_pressure
+		remove_ideas = japan_pingfang_exposure_pressure
+		remove_ideas = japan_imperial_army_review
+		remove_ideas = japan_reformed_biowarfare_legacy
+		remove_ideas = japan_ishii_program_authority
+		remove_ideas = japan_kwantung_medical_autonomy
+		remove_ideas = sov_dormant_gulag_legacy
+		remove_ideas = sov_gulag_network_administration
+		remove_ideas = sov_gulag_corruption_and_overextension
+		remove_ideas = sov_forced_labor_output
+		remove_ideas = sov_famine_pressure
+		remove_ideas = sov_nkvd_repression_authority
+		remove_ideas = sov_gulag_reform_pressure
+		remove_ideas = sov_post_collapse_repression_legacy
+		remove_ideas = sov_republic_fear_and_grievance
+		remove_ideas = uk_imperial_detention_legacy
+		remove_ideas = uk_imperial_detention_administration
+		remove_ideas = uk_overextended_imperial_detention
+		remove_ideas = uk_imperial_reform_credit
+		remove_ideas = uk_colonial_reckoning_pressure
+		remove_ideas = usa_wartime_security_authority
+		remove_ideas = usa_contested_relocation_authority
+		remove_ideas = usa_civil_liberties_damage
+		remove_ideas = usa_relocation_population_disruption
+		remove_ideas = usa_redress_pressure
+		remove_ideas = usa_reform_credit
+		remove_ideas = fr_camp_legacy
+		remove_ideas = vichy_collaboration_repression
+		remove_ideas = fr_north_africa_labor_burden
+		remove_ideas = fr_refugee_pressure
+		remove_ideas = free_france_reform_credit
+		remove_ideas = fr_post_liberation_reckoning
+		remove_ideas = ita_colonial_repression_legacy
+		remove_ideas = ita_desert_camp_administration
+		remove_ideas = ita_libyan_resistance_pressure
+		remove_ideas = ita_colonial_logistics_output
+		remove_ideas = ita_postwar_colonial_claim_damage
+		remove_ideas = ita_colonial_reform_credit
+		remove_ideas = bel_congo_concession_labor_system
+		remove_ideas = bel_congo_extraction_pressure
+		remove_ideas = bel_colonial_resource_output
+		remove_ideas = bel_postwar_accountability_pressure
+		remove_ideas = bel_congo_reform_credit
+		remove_ideas = raj_colonial_labor_burden
+		remove_ideas = congo_concession_labor_burden
+
+		clear_variable = camp_network_reach
+		clear_variable = camp_labor_output
+		clear_variable = camp_coercive_control
+		clear_variable = camp_population_loss_index
+		clear_variable = camp_resistance_pressure
+		clear_variable = camp_stability_damage
+		clear_variable = camp_evidence_level
+		clear_variable = camp_overstretch
+		clear_variable = camp_foreign_visibility
+		clear_variable = camp_tribunal_severity
+		clear_variable = camp_hardliner_pressure
+		clear_variable = camp_democratic_legitimacy_damage
+		clear_variable = camp_reform_pressure
+		clear_variable = camp_current_phase
+		clear_variable = camp_active_site_count
+		clear_variable = camp_closable_active_site_count
+		clear_variable = camp_detention_site_count
+		clear_variable = camp_expanded_site_count
+		clear_variable = camp_gulag_site_count
+		clear_variable = camp_experiment_site_count
+		clear_variable = camp_radicalized_site_count
+		clear_variable = camp_contaminated_site_count
+		clear_variable = camp_chemical_killing_efficiency
+		clear_variable = camp_biological_killing_efficiency
+
+		clr_country_flag = camp_rework_special_cleanup_in_progress
 	}
 }
 
@@ -467,7 +619,12 @@ camp_rework_register_active_site = {
 		set_variable = { genocide_responsible_country = ROOT }
 	}
 	if = {
-		limit = { var:genocide_responsible_country = { tag = ROOT } }
+		limit = {
+			var:genocide_responsible_country = {
+				tag = ROOT
+				camp_rework_country_is_eligible = yes
+			}
+		}
 		set_state_flag = genocide_site_has_responsible_country
 		set_state_flag = genocide_atrocity_site_known_to_regime
 		set_state_flag = camp_rework_site_active
@@ -671,7 +828,7 @@ camp_rework_clean_invalid_active_sites = {
 	clear_temp_array = temp_camp_rework_invalid_states
 }
 
-camp_rework_recalculate_country_values = {
+camp_rework_recalculate_eligible_country_values = {
 	camp_rework_initialize_country_variables = yes
 	set_variable = { camp_network_reach = 0 }
 	set_variable = { camp_labor_output = 0 }
@@ -1890,6 +2047,18 @@ camp_rework_refresh_lifecycle_ideas = {
 	camp_rework_refresh_country_specific_ideas = yes
 }
 
+# Country scope. Keeps direct legacy callers safe when a country has changed
+# into a special Chaos actor since the caller was scheduled.
+camp_rework_recalculate_country_values = {
+	if = {
+		limit = { camp_rework_country_is_eligible = yes }
+		camp_rework_recalculate_eligible_country_values = yes
+	}
+	else = {
+		camp_rework_exclude_special_country = yes
+	}
+}
+
 camp_rework_apply_country_monthly_pressure = {
 	if = {
 		limit = { has_country_flag = camp_rework_expansion_frozen }
@@ -2038,6 +2207,10 @@ camp_rework_clean_inactive_countries = {
 					exists = no
 					AND = {
 						exists = yes
+						is_special_chaos_country = yes
+					}
+					AND = {
+						exists = yes
 						NOT = { has_active_camp_network = yes }
 						NOT = { has_visible_camp_reform_work = yes }
 						NOT = { has_country_flag = camp_repression_ledger_open }
@@ -2052,9 +2225,18 @@ camp_rework_clean_inactive_countries = {
 	}
 	for_each_scope_loop = {
 		array = temp_camp_rework_inactive_countries
-		remove_from_array = {
-			array = global.camp_repression_active_countries
-			value = THIS
+		if = {
+			limit = {
+				exists = yes
+				is_special_chaos_country = yes
+			}
+			camp_rework_exclude_special_country = yes
+		}
+		else = {
+			remove_from_array = {
+				array = global.camp_repression_active_countries
+				value = THIS
+			}
 		}
 	}
 	clear_temp_array = temp_camp_rework_inactive_countries
@@ -2072,7 +2254,10 @@ camp_rework_monthly_global_pulse = {
 	for_each_scope_loop = {
 		array = global.camp_repression_active_countries
 		if = {
-			limit = { exists = yes }
+			limit = {
+				exists = yes
+				camp_rework_country_is_eligible = yes
+			}
 			camp_rework_apply_country_monthly_pressure = yes
 		}
 	}
@@ -3238,32 +3423,20 @@ camp_rework_rebuild_display_values = {
 }
 
 camp_rework_open_ledger = {
-	camp_rework_register_country_for_monthly_pulse = yes
-	if = {
-		limit = { NOT = { has_country_flag = camp_rework_managed_network_visible } }
-		set_country_flag = camp_rework_ledger_revealed_managed_directives
-		set_country_flag = camp_rework_managed_network_visible
-	}
-	if = {
-		limit = { NOT = { has_country_flag = genocide_decisions_visible } }
-		set_country_flag = camp_rework_ledger_revealed_genocide_directives
-		set_country_flag = genocide_decisions_visible
-	}
 	if = {
 		limit = {
-			original_tag = SOV
-			NOT = { has_country_flag = genocide_gulag_decisions_visible }
+			camp_rework_country_is_eligible = yes
+			has_camp_category_visible_action = yes
 		}
-		set_country_flag = camp_rework_ledger_revealed_gulag_directives
-		set_country_flag = genocide_gulag_decisions_visible
+		camp_rework_register_country_for_monthly_pulse = yes
+		set_country_flag = camp_repression_ledger_open
+		clr_country_flag = camp_ledger_tab_state_pools
+		clr_country_flag = camp_ledger_tab_sites
+		clr_country_flag = camp_ledger_tab_country
+		clr_country_flag = camp_ledger_tab_discovery
+		set_country_flag = camp_ledger_tab_overview
+		camp_rework_rebuild_display_values = yes
 	}
-	set_country_flag = camp_repression_ledger_open
-	clr_country_flag = camp_ledger_tab_state_pools
-	clr_country_flag = camp_ledger_tab_sites
-	clr_country_flag = camp_ledger_tab_country
-	clr_country_flag = camp_ledger_tab_discovery
-	set_country_flag = camp_ledger_tab_overview
-	camp_rework_rebuild_display_values = yes
 }
 
 camp_rework_close_ledger = {

@@ -9,6 +9,12 @@
 #   defined anywhere in this system.
 # ============================================================================
 
+# Country scope. Special Chaos countries use bespoke systems and never enter
+# the ordinary camp/repression registries or player-facing routes.
+camp_rework_country_is_eligible = {
+	NOT = { is_special_chaos_country = yes }
+}
+
 is_valid_camp_dormant_marker_state = {
 	has_state_flag = genocide_historical_quiet_camp
 	NOT = { has_state_flag = camp_rework_site_active }
@@ -31,6 +37,7 @@ camp_rework_state_can_accept_responsibility_from_root = {
 is_valid_camp_active_site_state = {
 	has_state_flag = camp_rework_site_active
 	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { camp_rework_country_is_eligible = yes }
 	NOT = { has_state_flag = camp_rework_site_dismantled }
 	OR = {
 		concentration_camp > 0
@@ -50,6 +57,7 @@ is_valid_camp_active_site_state = {
 
 is_valid_camp_discovery_state = {
 	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { camp_rework_country_is_eligible = yes }
 	NOT = { has_state_flag = genocide_site_discovered }
 	NOT = { has_state_flag = genocide_historical_quiet_camp }
 	OR = {
@@ -152,6 +160,7 @@ camp_rework_state_requires_unregister = {
 }
 
 has_active_camp_network = {
+	camp_rework_country_is_eligible = yes
 	OR = {
 		check_variable = { camp_active_site_count > 0 }
 		check_variable = { camp_network_reach > 0 }
@@ -160,6 +169,7 @@ has_active_camp_network = {
 }
 
 has_visible_camp_reform_work = {
+	camp_rework_country_is_eligible = yes
 	OR = {
 		check_variable = {
 			var = camp_reform_pressure
@@ -175,6 +185,7 @@ has_visible_camp_reform_work = {
 }
 
 has_camp_country_specific_route = {
+	camp_rework_country_is_eligible = yes
 	OR = {
 		original_tag = GER
 		original_tag = JAP
@@ -194,6 +205,7 @@ has_camp_country_specific_route = {
 # registered-country dispatcher. Keeping them in the bounded country array
 # lets route flags refresh after a focus completes without a world scan.
 camp_rework_country_has_focus_hook_watch = {
+	camp_rework_country_is_eligible = yes
 	OR = {
 		original_tag = GER
 		original_tag = JAP
@@ -217,6 +229,7 @@ camp_rework_country_has_actionable_pool = {
 }
 
 has_camp_country_specific_actionable_route = {
+	camp_rework_country_is_eligible = yes
 	OR = {
 		AND = {
 			original_tag = GER
@@ -316,6 +329,7 @@ has_camp_country_specific_actionable_route = {
 }
 
 camp_rework_country_uses_generic_kit = {
+	camp_rework_country_is_eligible = yes
 	NOT = {
 		OR = {
 			original_tag = GER
@@ -331,21 +345,51 @@ camp_rework_country_uses_generic_kit = {
 	}
 }
 
+camp_rework_germany_has_operational_auschwitz = {
+	camp_rework_country_is_eligible = yes
+	original_tag = GER
+	88 = {
+		is_valid_camp_active_site_state = yes
+		has_state_flag = genocide_auschwitz_experiment_site
+		camp_rework_state_has_actor_responsibility = yes
+	}
+}
+
+camp_rework_germany_mengele_is_player_relevant = {
+	camp_rework_germany_has_operational_auschwitz = yes
+	germany_mengele_program_active = yes
+	has_variable = mengele_autonomy
+	check_variable = {
+		var = mengele_autonomy
+		value = constant:germany_mengele_autonomy.warning_threshold
+		compare = greater_than_or_equals
+	}
+}
+
 has_camp_category_visible_action = {
+	camp_rework_country_is_eligible = yes
 	OR = {
-		has_active_camp_network = yes
-		has_visible_camp_reform_work = yes
-		camp_rework_country_can_activate_generic = yes
-		has_country_flag = genocide_decisions_visible
-		has_country_flag = camp_rework_managed_network_visible
-		has_camp_country_specific_actionable_route = yes
-		has_country_flag = camp_rework_dormant_route_available
-		has_country_flag = camp_rework_inherited_network
-		genocide_country_has_crisis = yes
+		original_tag = JAP
+		camp_rework_germany_has_operational_auschwitz = yes
+		AND = {
+			NOT = { original_tag = GER }
+			NOT = { original_tag = JAP }
+			OR = {
+				has_active_camp_network = yes
+				has_visible_camp_reform_work = yes
+				has_country_flag = genocide_decisions_visible
+				has_country_flag = camp_rework_managed_network_visible
+				has_country_flag = camp_rework_dormant_route_available
+				has_country_flag = camp_rework_inherited_network
+				has_country_flag = unlocked_generic_detention_network
+				genocide_country_has_crisis = yes
+			}
+		}
 	}
 }
 
 camp_rework_country_can_reform = {
+	camp_rework_country_is_eligible = yes
 	OR = {
 		has_government = democratic
 		has_country_flag = unlocked_generic_reform_and_dismantlement
@@ -357,6 +401,7 @@ camp_rework_country_can_reform = {
 }
 
 camp_rework_country_can_open_site_inspection = {
+	camp_rework_country_is_eligible = yes
 	NOT = { has_country_flag = camp_rework_inspection_active }
 	num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
 	OR = {
@@ -483,6 +528,7 @@ camp_rework_japan_can_use_restricted_method_route = {
 }
 
 camp_rework_country_can_use_restricted_method_route = {
+	camp_rework_country_is_eligible = yes
 	has_active_camp_network = yes
 	NOT = { has_country_flag = camp_rework_expansion_frozen }
 	OR = {
@@ -561,6 +607,7 @@ camp_rework_fixed_country_can_use_extermination_route = {
 }
 
 camp_rework_country_can_activate_generic = {
+	camp_rework_country_is_eligible = yes
 	camp_rework_country_uses_generic_kit = yes
 	NOT = { has_country_flag = camp_rework_expansion_frozen }
 	OR = {
@@ -628,6 +675,7 @@ camp_rework_country_can_activate_generic = {
 }
 
 camp_rework_country_can_expand_generic_labor = {
+	camp_rework_country_is_eligible = yes
 	has_active_camp_network = yes
 	NOT = { has_country_flag = camp_rework_expansion_frozen }
 	OR = {
@@ -641,6 +689,7 @@ camp_rework_country_can_expand_generic_labor = {
 }
 
 camp_rework_country_can_destroy_retreat_evidence = {
+	camp_rework_country_is_eligible = yes
 	has_active_camp_network = yes
 	NOT = { has_country_flag = camp_rework_expansion_frozen }
 	NOT = { has_country_flag = camp_rework_crisis_exposed }
