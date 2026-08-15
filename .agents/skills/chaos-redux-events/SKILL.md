@@ -405,6 +405,8 @@ Touch the relevant systems in the same change:
 - shared country classification when the event creates or manages chaos countries: register every such country in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt`, document it in `common/scripted_triggers/chaosx_dynamic_triggers.md`, also register/document it in `is_actual_nonhuman_country` when it is actually nonhuman, and avoid adding separate event-local classification triggers for the same concept
 - and much more
 
+Keep the complete bodies of `is_special_chaos_country`, `is_actual_nonhuman_country`, and `uses_normal_civilian_systems` inside `hidden_trigger`. Player-facing callers that need to explain eligibility must provide a concise custom tooltip instead of exposing the classifiers' tags, flags, or provider triggers.
+
 If you add a new reusable dynamic scripted effect (an effect that could be generalized for all events), document it in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change.
 
 ### 5. Event log integration

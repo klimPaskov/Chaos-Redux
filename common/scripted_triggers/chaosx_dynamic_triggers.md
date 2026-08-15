@@ -11,6 +11,9 @@ Use this registry only for triggers with demonstrated call-site breadth across u
 - [is_desert_state](#is_desert_state)
 - [is_special_chaos_country](#is_special_chaos_country)
 - [is_actual_nonhuman_country](#is_actual_nonhuman_country)
+- [uses_normal_civilian_systems](#uses_normal_civilian_systems)
+
+Country-classification helpers are implementation checks. Keep their complete bodies inside `hidden_trigger` so nested tags, flags, and provider triggers never leak into player-facing requirement tooltips. A caller that needs to explain an eligibility rule must provide a concise custom tooltip for that surface.
 
 ## is_desert_state
 
@@ -23,6 +26,8 @@ When adding a state, update this trigger and record the consuming event or syste
 ## is_special_chaos_country
 
 Country-scope trigger. Returns true for system actors and special scenario countries that should not be treated like normal civilian societies.
+
+The complete classifier is hidden from generated tooltips. Adding a provider must keep it inside the existing `hidden_trigger` block.
 
 Current coverage includes:
 
@@ -59,6 +64,8 @@ Current coverage includes:
 
 Country-scope trigger. Returns true only for countries that should currently be treated as actually nonhuman rather than merely unusual or scenario-specific.
 
+The complete classifier is hidden from generated tooltips. Adding a provider must keep it inside the existing `hidden_trigger` block.
+
 Current coverage includes:
 
 - `ZZZ` / original `ZZZ` outbreak countries
@@ -85,3 +92,9 @@ The current Event 019 registry/scenario v4 reaudit is clean for both shared
 classifier routes. Neither trigger contains a zombie, ghost, golem, or future
 provider list, and neither classifier contributes to a parent event's actor,
 stage, evolution, super-event, or world-end state.
+
+## uses_normal_civilian_systems
+
+Country-scope trigger. Returns true when the country is not currently classified by `is_actual_nonhuman_country` and may use ordinary civilian systems.
+
+This inverse classifier is also fully hidden. Player-facing systems that need to explain why a country is excluded must provide their own direct tooltip instead of exposing the nonhuman registry.
