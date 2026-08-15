@@ -136,4 +136,18 @@ Remaining blockers are the parent-owned identity/rights clearance, the accepted 
 
 No simplification was made beyond preserving these explicit fail-closed gates and the requested package-local ownership boundaries.
 
-No staging or commit was performed in the shared dirty worktree.
+The package-local source tranche and this handoff were committed by the parent as `d1dad8eb6` after review. The separate decision/category tranche is committed as `9a4426865`; the shared-focus callback tranche is committed as `de917ef6f`. Central admission, attestation, preflight, dispatcher, SCN-008, and Join remain intentionally untouched.
+
+## Parent current-turn evidence supersession
+
+After the package-local source was stabilized, the parent reran the mandatory probability and Event MCP surfaces against workspace `mod_chaos_redux_ea3b2d67c2c0`.
+
+The ALT mission inspection returned `PROBABILITY_SOURCE_INSPECTED`, source revision `2a004de66ea0bd47285b217f5dd5344a2654f08d3b923f84495ce1f704bdf3cc`, source hash `b67eeba93d8f5d9d52798291e90df35f9760eff4c8942be623f19ca66e1fa6fa`, 11 candidates, zero available candidates, `poolComplete = false`, and 16 required inputs. The current artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c6b12a4583406b98ca8c492e24b74df5ffa3e0a543d5d34a6a8f6fd7c8b1c2c4/35cc9ad57b7f0af7ce1745a075d56371d7e4d2435740ffadf67ee47ab18d4a31/probability-inspect-b67eeba93d8f.json`.
+
+The ALT AI strategy inspection returned `PROBABILITY_SOURCE_DISCOVERED` with `discoveryReason = no_weighted_surfaces`, zero candidates, and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ebc42736b605aac69ca8721e2253a433201a5f078ee955a632e8234d2a726e52/5582606c40e88f05fbf0a64fe1a0b50d2f63d287eab534af2bdb7e93e3877f6d/probability-inspect-866eded80f10.json`.
+
+The six-scenario ALT mission evaluation `IW053_ALT_TYPED_EMPTY_CURRENT_2026_08_15` was partial: 66 candidate/scenario rows, 146 unresolved inputs, and 11 never-eligible diagnostics across empty fixtures. It proves no numeric ranking, probability, timing, dominance, or balance claim. The primary JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/64e13d3fd262440697e87064270b3dafec0576b795ac2db747863d3a43acfac8/e6d7d1e1d6f2d0c4d1623a46a88d653568e5d1d50d1dd76b53467fd4c6bb7ad6/probability-032b886968fb82bf811ecb0e.json`.
+
+The focused Event MCP state-flow inspection for `chaosx.nr6.350` returned `EVENT_INSPECTED_PARTIAL` at revision `741883f50501db1f866db675ee6ad6cb4009a90ad539eb84b08ce5e82602f65b`, with zero selected blocking diagnostics but deferred workspace-wide helper/lifecycle projection. The state-flow artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/77fbefdffb3687d52d3392595ce0878bea1dbcc368d3560896f8044a5061b257/3c72f17222e5e4d3935ed125ad8cec16797583a927036ce79a59398a5f022b96/event-state_flow-741883f50501.json`. The corresponding state render returned `EVENT_RENDERED_PARTIAL`; its source-linked SVG is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b221ba88360f39b5b3485aae88637d83299d88a520372905c772acdff23fe5d6/027d54e90fec0714b3727143566887e1707656b80858ccf560628534069be71d/event-state-741883f50501.svg`.
+
+These parent receipts supersede older artifact examples above where they describe the same surface. ALT remains package-local and fail-closed because identity/rights, neutral flag provenance, and the p61 tradition mismatch are unresolved; no quantitative AI or full Event 006 completion claim is made.
