@@ -45,6 +45,8 @@ Keep provider and Blender integration guidance in this skill and the job's depen
 
 There is no silent fallback or simplification. Discuss every fallback with the parent/user before use and record the decision. If approval is not explicit, mark the item `blocked` or `needs_user_review`. A static animation fallback is an explicit companion artifact for review or unavailable motion, never a replacement for a requested skeletal action.
 
+After the key gate and job-root resolution, the job loader must preflight every `nonhumanoid_creature` or other nonhumanoid/creature job before any balance check or paid/provider call. Require a declared, measured `scale_crosswalk` with units and finite numeric reference dimensions, provider/Blender target dimensions, entity scale, effective runtime dimensions, and conversion or fit factor, plus a named dedicated custom-rig route and written rig map. Reject missing, pending, placeholder, non-numeric, or unmeasured crosswalk values; do not infer them from profile defaults. This preflight is also a hard gate before provider generation or export.
+
 ## Required reading and local calibration
 
 Before 3D work, read:
@@ -201,6 +203,8 @@ For static map-building materials, use the shader from the installed vanilla bui
 
 For humanoids, provider rigging is a candidate only for a clear standard humanoid biped within the verified endpoint's constraints; inspect and map it in Blender. For nonhumanoids, create a custom rig with a written rig map. For mechanical assets, use rigid components and deliberate pivots: turrets, barrels, recoil, propellers, rotors, doors, wheels, and tracks must not bend from blended weights.
 
+For winged, digitigrade, quadrupedal, multi-limbed, or otherwise nonhumanoid anatomy, the dedicated custom-rig route is mandatory. Never silently route such an asset through a humanoid armature; reject a returned humanoid armature and record the exact blocker and route status.
+
 ## Custom unit-counter companion
 
 Every new custom unit or subunit must ship with bespoke counter art for every counter surface it uses. At minimum, a land subunit that emits the standard tokens needs its own large `unit_<subunit_id>_icon` counter strip and small `onmap_unit_<subunit_id>_icon` map counter. Air and naval units need the corresponding domain-specific map counters and inverted or state variants when the verified consumer exposes them. Derive the actual required tokens from the installed unit and `interface/subuniticons.gfx`; do not infer them only from this example.
@@ -289,6 +293,8 @@ The job package must contain, as applicable:
 - for static buildings, footprint/scale evidence, meshsettings object-name evidence, dedicated spawn or provincial-anchor evidence, and runtime-consumer evidence
 
 Each model manifest entry records the asset ID/slug, profile, source reference and checksum, provider lineage, selected candidate, checkpoint, geometry counts, objects/materials, armature/bones, actions/frame data, custom-unit sound requirements and synchronization points, custom-unit counter consumers, installed-vanilla counter references, sampled green evidence, bespoke counter handoff and status, source/final textures, exports/checksums, exporter version/settings, proposed runtime identifiers, actual runtime registration only after parent wiring, live consumer, in-game evidence only after parent validation, and status. Use `complete`, `needs_user_review`, `blocked`, or `canceled`; never create a fallback completion state.
+
+For nonhumanoid/creature jobs, `manifest.md` and `runtime/handoff.md` must repeat the measured numeric scale crosswalk, dedicated rig route, `scale_crosswalk_status`, `rig_route_status`, provider/export route status, and the exact blocker text for every unavailable or pending route; a bare `blocked` or `pending` label is insufficient.
 
 When the event/system owner and slug are known, place the subagent handoff under the parent-provided `docs/plans/<owner_id>_<owner_slug>_plans/subagent_handoffs/` path. The parent must review every artifact and either wire it, queue it with a reason, reject it with a reason, or carry its blocker forward.
 
