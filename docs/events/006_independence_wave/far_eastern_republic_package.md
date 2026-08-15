@@ -8,6 +8,6 @@ Its local gameplay surface includes a 420-day founding mission, ten serialized r
 
 The setup gate requires explicit parent-owned `independence_wave_iw_057_identity_rights_cleared` and `independence_wave_iw_057_command_roster_ready` flags. No FER character, portrait, flag, cosmetic tag, vanilla history, capital transfer, or central admission is created by this package.
 
-The current source remains fail-closed because vanilla FER history uses capital state 563 while the Event 006 registry orders anchors 408 and 409, no FER institutional roster receipt is accepted, and no neutral FER flag provenance is cleared. Resolving those gates requires a parent-owned identity, capital/anchor, roster, flag, and origin decision before any central wiring.
+The dormant vanilla FER history still records capital state 563, while the Event 006 registry orders runtime anchors 408 and 409. The package-local pre-release gate now tolerates that dormant history value because shared execution reanchors FER to the selected 408/409 state before setup; runtime readiness still requires the selected anchor. FER remains fail-closed because no institutional roster receipt, neutral flag provenance, or typed probability evidence is accepted, and central wiring still requires the parent-owned identity, roster, flag, and origin gates.
 
 The package source files and their evidence are listed in the dated handoff under `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw057_far_eastern_republic_package_core_2026_08_15.md`.
