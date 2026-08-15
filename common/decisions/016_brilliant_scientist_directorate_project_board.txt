@@ -70,34 +70,41 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_approve_selected_project = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_directorate_project_selection_ready
-			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_active }
-			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_suspended }
-			NOT = { has_country_flag = brilliant_scientist_directorate_project_approval_requested }
-			NOT = { has_country_flag = brilliant_scientist_directorate_project_cancellation_requested }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_directorate_project_selection_ready
+				NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_active }
+				NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_suspended }
+				NOT = { has_country_flag = brilliant_scientist_directorate_project_approval_requested }
+				NOT = { has_country_flag = brilliant_scientist_directorate_project_cancellation_requested }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_family
-				value = constant:brilliant_scientist_project_family.none
-				compare = greater_than
-			}
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_family
-				value = constant:brilliant_scientist_project_family.max_exclusive
-				compare = less_than
-			}
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_stage
-				value = constant:brilliant_scientist_project_stage.none
-				compare = greater_than
-			}
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_stage
-				value = constant:brilliant_scientist_project_stage.max_exclusive
-				compare = less_than
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_board_action_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_family
+						value = constant:brilliant_scientist_project_family.none
+						compare = greater_than
+					}
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_family
+						value = constant:brilliant_scientist_project_family.max_exclusive
+						compare = less_than
+					}
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_stage
+						value = constant:brilliant_scientist_project_stage.none
+						compare = greater_than
+					}
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_stage
+						value = constant:brilliant_scientist_project_stage.max_exclusive
+						compare = less_than
+					}
+				}
 			}
 		}
 		cost = constant:brilliant_scientist_directorate_cost.project_approval_pp
@@ -110,18 +117,23 @@ brilliant_scientist_directorate_category = {
 		}
 		cancel_if_not_visible = yes
 		cancel_trigger = {
-			OR = {
-				NOT = { brilliant_scientist_is_current_host = yes }
-				NOT = { has_country_flag = brilliant_scientist_directorate_project_selection_ready }
-				check_variable = {
-					var = brilliant_scientist_directorate_selected_project_family
-					value = brilliant_scientist_directorate_locked_project_family
-					compare = not_equals
-				}
-				check_variable = {
-					var = brilliant_scientist_directorate_selected_project_stage
-					value = brilliant_scientist_directorate_locked_project_stage
-					compare = not_equals
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_board_action_cancel_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { brilliant_scientist_is_current_host = yes }
+						NOT = { has_country_flag = brilliant_scientist_directorate_project_selection_ready }
+						check_variable = {
+							var = brilliant_scientist_directorate_selected_project_family
+							value = brilliant_scientist_directorate_locked_project_family
+							compare = not_equals
+						}
+						check_variable = {
+							var = brilliant_scientist_directorate_selected_project_stage
+							value = brilliant_scientist_directorate_locked_project_stage
+							compare = not_equals
+						}
+					}
 				}
 			}
 		}
@@ -149,12 +161,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_suspend_selected_project = {
 		icon = GFX_decision_generic_operation
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_directorate_project_selection_ready
-			has_country_flag = brilliant_scientist_directorate_selected_project_active
-			NOT = { has_country_flag = brilliant_scientist_directorate_native_project_suspend_requested }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_directorate_project_selection_ready
+				has_country_flag = brilliant_scientist_directorate_selected_project_active
+				NOT = { has_country_flag = brilliant_scientist_directorate_native_project_suspend_requested }
+			}
 		}
-		available = { NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_board_action_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+				}
+			}
+		}
 		complete_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_directorate_selected_project_family }
 			brilliant_scientist_release_suspended_project_capacity = yes
@@ -177,15 +198,22 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_resume_selected_project = {
 		icon = GFX_decision_generic_operation
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_directorate_project_selection_ready
-			has_country_flag = brilliant_scientist_directorate_selected_project_suspended
-			NOT = { has_country_flag = brilliant_scientist_directorate_native_project_resume_requested }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_directorate_project_selection_ready
+				has_country_flag = brilliant_scientist_directorate_selected_project_suspended
+				NOT = { has_country_flag = brilliant_scientist_directorate_native_project_resume_requested }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
-			brilliant_scientist_has_capacity_to_resume_selected_project = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_board_action_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
+					brilliant_scientist_has_capacity_to_resume_selected_project = yes
+				}
+			}
 		}
 		cost = constant:brilliant_scientist_directorate_cost.project_resume_pp
 		complete_effect = {
@@ -209,16 +237,23 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_cancel_selected_project = {
 		icon = GFX_decision_generic_political_discourse
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_directorate_project_selection_ready
-			OR = {
-				has_country_flag = brilliant_scientist_directorate_selected_project_active
-				has_country_flag = brilliant_scientist_directorate_selected_project_suspended
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_directorate_project_selection_ready
+				OR = {
+					has_country_flag = brilliant_scientist_directorate_selected_project_active
+					has_country_flag = brilliant_scientist_directorate_selected_project_suspended
+				}
+				NOT = { has_country_flag = brilliant_scientist_directorate_project_cancellation_requested }
 			}
-			NOT = { has_country_flag = brilliant_scientist_directorate_project_cancellation_requested }
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_board_action_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+				}
+			}
 			brilliant_scientist_selected_project_can_be_dismantled_safely = yes
 		}
 		cost = constant:brilliant_scientist_directorate_cost.project_cancel_pp
@@ -244,36 +279,43 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_commission_independent_replication = {
 		icon = GFX_decision_generic_operation
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_directorate_project_selection_ready
-			has_country_flag = brilliant_scientist_directorate_selected_project_active
-			has_country_flag = brilliant_scientist_directorate_selected_project_replicable
-			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_replicated }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_directorate_project_selection_ready
+				has_country_flag = brilliant_scientist_directorate_selected_project_active
+				has_country_flag = brilliant_scientist_directorate_selected_project_replicable
+				NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_replicated }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
-			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.independent_replication_support_gate }
-			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.independent_replication_truck_gate }
-			has_fuel > constant:brilliant_scientist_directorate_cost.independent_replication_fuel_gate
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_family
-				value = constant:brilliant_scientist_project_family.none
-				compare = greater_than
-			}
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_family
-				value = constant:brilliant_scientist_project_family.max_exclusive
-				compare = less_than
-			}
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_stage
-				value = constant:brilliant_scientist_project_stage.none
-				compare = greater_than
-			}
-			check_variable = {
-				var = brilliant_scientist_directorate_selected_project_stage
-				value = constant:brilliant_scientist_project_stage.max_exclusive
-				compare = less_than
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_replication_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+					has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.independent_replication_support_gate }
+					has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.independent_replication_truck_gate }
+					has_fuel > constant:brilliant_scientist_directorate_cost.independent_replication_fuel_gate
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_family
+						value = constant:brilliant_scientist_project_family.none
+						compare = greater_than
+					}
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_family
+						value = constant:brilliant_scientist_project_family.max_exclusive
+						compare = less_than
+					}
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_stage
+						value = constant:brilliant_scientist_project_stage.none
+						compare = greater_than
+					}
+					check_variable = {
+						var = brilliant_scientist_directorate_selected_project_stage
+						value = constant:brilliant_scientist_project_stage.max_exclusive
+						compare = less_than
+					}
+				}
 			}
 		}
 		cost = constant:brilliant_scientist_directorate_cost.independent_replication_pp
@@ -298,19 +340,24 @@ brilliant_scientist_directorate_category = {
 		}
 		cancel_if_not_visible = yes
 		cancel_trigger = {
-			OR = {
-				NOT = { brilliant_scientist_is_current_host = yes }
-				NOT = { has_country_flag = brilliant_scientist_directorate_project_selection_ready }
-				has_country_flag = brilliant_scientist_directorate_selected_project_suspended
-				check_variable = {
-					var = brilliant_scientist_directorate_selected_project_family
-					value = brilliant_scientist_directorate_locked_project_family
-					compare = not_equals
-				}
-				check_variable = {
-					var = brilliant_scientist_directorate_selected_project_stage
-					value = brilliant_scientist_directorate_locked_project_stage
-					compare = not_equals
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_board_action_cancel_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { brilliant_scientist_is_current_host = yes }
+						NOT = { has_country_flag = brilliant_scientist_directorate_project_selection_ready }
+						has_country_flag = brilliant_scientist_directorate_selected_project_suspended
+						check_variable = {
+							var = brilliant_scientist_directorate_selected_project_family
+							value = brilliant_scientist_directorate_locked_project_family
+							compare = not_equals
+						}
+						check_variable = {
+							var = brilliant_scientist_directorate_selected_project_stage
+							value = brilliant_scientist_directorate_locked_project_stage
+							compare = not_equals
+						}
+					}
 				}
 			}
 		}
@@ -441,14 +488,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_computation_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_computational_engine
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_computational_engine
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -465,14 +519,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_materials_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_advanced_materials_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_advanced_materials
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_advanced_materials
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -489,14 +550,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_biomedical_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_biomedical_acceleration_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_biomedical_acceleration
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_biomedical_acceleration
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -513,14 +581,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_teleportation_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_teleportation_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_quantum_transit
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_quantum_transit
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -537,14 +612,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_cloning_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_cloning_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_cloning
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_cloning
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -561,14 +643,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_robotics_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_robotics_ai_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_autonomous_cognition
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_autonomous_cognition
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -585,14 +674,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_paleogenetics_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_paleogenetics_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_paleogenetics
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_paleogenetics
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -609,14 +705,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_xenobiological_synthesis_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_xenobiological_synthesis_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_xenobiological_synthesis
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_xenobiological_synthesis
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -633,14 +736,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_alien_arms_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_alien_arms_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_alien_arms
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_alien_arms
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -657,14 +767,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_temporal_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_temporal_mechanics_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_brilliant_scientist_temporal_mechanics
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_brilliant_scientist_temporal_mechanics
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -681,14 +798,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_singularity_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_strategic_singularity_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.theory }
-			check_variable = { brilliant_scientist_singularity_component_count > constant:brilliant_scientist_value.zero }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.theory }
+				check_variable = { brilliant_scientist_singularity_component_count > constant:brilliant_scientist_value.zero }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -712,11 +836,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_computation_theory = {
 		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_computation_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_computation_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_computation_theory_cost
 				hidden_trigger = {
@@ -733,7 +864,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
@@ -751,11 +889,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_computation_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_computation_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_computation_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_computation_deployment_cost
 				hidden_trigger = {
@@ -772,7 +917,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
@@ -790,11 +942,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_computation_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^0 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_computation_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_computation_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_computation_weaponization_cost
 				hidden_trigger = {
@@ -811,7 +970,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
@@ -829,11 +995,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_electronics_theory = {
 		icon = GFX_decision_brilliant_scientist_project_electronics_guidance_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_electronics_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_electronics_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_electronics_theory_cost
 				hidden_trigger = {
@@ -850,7 +1023,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics }
@@ -868,11 +1048,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_electronics_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_electronics_guidance_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_electronics_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_electronics_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_electronics_deployment_cost
 				hidden_trigger = {
@@ -889,7 +1076,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics }
@@ -907,11 +1101,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_electronics_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_electronics_guidance_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_electronics_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_electronics_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_electronics_weaponization_cost
 				hidden_trigger = {
@@ -928,7 +1129,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics }
@@ -946,11 +1154,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_materials_theory = {
 		icon = GFX_decision_brilliant_scientist_project_advanced_materials_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_materials_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_materials_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_materials_theory_cost
 				hidden_trigger = {
@@ -967,7 +1182,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials }
@@ -985,11 +1207,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_materials_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_advanced_materials_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_materials_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_materials_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_materials_deployment_cost
 				hidden_trigger = {
@@ -1006,7 +1235,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials }
@@ -1024,11 +1260,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_materials_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_advanced_materials_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^2 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_materials_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_materials_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_materials_weaponization_cost
 				hidden_trigger = {
@@ -1045,7 +1288,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials }
@@ -1063,11 +1313,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_rocketry_theory = {
 		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_rocketry_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_rocketry_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_rocketry_theory_cost
 				hidden_trigger = {
@@ -1084,7 +1341,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry }
@@ -1102,11 +1366,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_rocketry_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_rocketry_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_rocketry_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_rocketry_deployment_cost
 				hidden_trigger = {
@@ -1123,7 +1394,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry }
@@ -1141,11 +1419,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_rocketry_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_rocketry_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_rocketry_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_rocketry_weaponization_cost
 				hidden_trigger = {
@@ -1162,7 +1447,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry }
@@ -1180,11 +1472,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_high_energy_theory = {
 		icon = GFX_decision_brilliant_scientist_project_high_energy_physics_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_high_energy_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_high_energy_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_high_energy_theory_cost
 				hidden_trigger = {
@@ -1201,7 +1500,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy }
@@ -1219,11 +1525,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_high_energy_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_high_energy_physics_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_high_energy_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_high_energy_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_high_energy_deployment_cost
 				hidden_trigger = {
@@ -1240,7 +1553,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy }
@@ -1258,11 +1578,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_high_energy_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_high_energy_physics_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_high_energy_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_high_energy_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_high_energy_weaponization_cost
 				hidden_trigger = {
@@ -1279,7 +1606,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy }
@@ -1297,11 +1631,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_biomedical_theory = {
 		icon = GFX_decision_brilliant_scientist_project_biomedical_acceleration_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_biomedical_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_biomedical_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biomedical_theory_cost
 				hidden_trigger = {
@@ -1318,7 +1659,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
@@ -1336,11 +1684,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_biomedical_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_biomedical_acceleration_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_biomedical_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_biomedical_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biomedical_deployment_cost
 				hidden_trigger = {
@@ -1357,7 +1712,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
@@ -1375,11 +1737,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_biomedical_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_biomedical_acceleration_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^5 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_biomedical_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_biomedical_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biomedical_weaponization_cost
 				hidden_trigger = {
@@ -1396,7 +1765,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
@@ -1414,11 +1790,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_teleportation_theory = {
 		icon = GFX_decision_brilliant_scientist_project_teleportation_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_teleportation_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_teleportation_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_teleportation_theory_cost
 				hidden_trigger = {
@@ -1435,7 +1818,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation }
@@ -1453,11 +1843,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_teleportation_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_teleportation_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_teleportation_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_teleportation_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_teleportation_deployment_cost
 				hidden_trigger = {
@@ -1474,7 +1871,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation }
@@ -1492,11 +1896,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_teleportation_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_teleportation_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^6 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_teleportation_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_teleportation_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_teleportation_weaponization_cost
 				hidden_trigger = {
@@ -1513,7 +1924,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation }
@@ -1531,11 +1949,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_cloning_theory = {
 		icon = GFX_decision_brilliant_scientist_project_cloning_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_cloning_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_cloning_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_cloning_theory_cost
 				hidden_trigger = {
@@ -1552,7 +1977,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
@@ -1570,11 +2002,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_cloning_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_cloning_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_cloning_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_cloning_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_cloning_deployment_cost
 				hidden_trigger = {
@@ -1591,7 +2030,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
@@ -1609,11 +2055,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_cloning_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_cloning_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^7 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_cloning_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_cloning_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_cloning_weaponization_cost
 				hidden_trigger = {
@@ -1630,7 +2083,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
@@ -1648,11 +2108,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_robotics_theory = {
 		icon = GFX_decision_brilliant_scientist_project_robotics_ai_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_robotics_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_robotics_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_robotics_theory_cost
 				hidden_trigger = {
@@ -1669,7 +2136,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics }
@@ -1687,11 +2161,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_robotics_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_robotics_ai_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_robotics_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_robotics_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_robotics_deployment_cost
 				hidden_trigger = {
@@ -1708,7 +2189,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics }
@@ -1726,11 +2214,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_robotics_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_robotics_ai_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^8 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_robotics_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_robotics_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_robotics_weaponization_cost
 				hidden_trigger = {
@@ -1747,7 +2242,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics }
@@ -1765,11 +2267,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_paleogenetics_theory = {
 		icon = GFX_decision_brilliant_scientist_project_paleogenetics_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_paleogenetics_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_paleogenetics_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_paleogenetics_theory_cost
 				hidden_trigger = { brilliant_scientist_can_pay_paleogenetics_theory = yes }
@@ -1784,7 +2293,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
@@ -1802,11 +2318,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_paleogenetics_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_paleogenetics_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_paleogenetics_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_paleogenetics_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_paleogenetics_deployment_cost
 				hidden_trigger = { brilliant_scientist_can_pay_paleogenetics_deployment = yes }
@@ -1821,7 +2344,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
@@ -1839,11 +2369,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_paleogenetics_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_paleogenetics_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^9 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_paleogenetics_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_paleogenetics_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_paleogenetics_weaponization_cost
 				hidden_trigger = { brilliant_scientist_can_pay_paleogenetics_weaponization = yes }
@@ -1858,7 +2395,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
@@ -1876,11 +2420,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_xenobiological_synthesis_theory = {
 		icon = GFX_decision_brilliant_scientist_project_xenobiological_synthesis_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_xenobiological_synthesis_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_xenobiological_synthesis_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_xenobiological_synthesis_theory_cost
 				hidden_trigger = { brilliant_scientist_can_pay_xenobiological_synthesis_theory = yes }
@@ -1895,7 +2446,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
@@ -1913,11 +2471,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_xenobiological_synthesis_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_xenobiological_synthesis_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_xenobiological_synthesis_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_xenobiological_synthesis_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_xenobiological_synthesis_deployment_cost
 				hidden_trigger = { brilliant_scientist_can_pay_xenobiological_synthesis_deployment = yes }
@@ -1932,7 +2497,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
@@ -1950,11 +2522,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_xenobiological_synthesis_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_xenobiological_synthesis_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_xenobiological_synthesis_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_xenobiological_synthesis_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_xenobiological_synthesis_weaponization_cost
 				hidden_trigger = { brilliant_scientist_can_pay_xenobiological_synthesis_weaponization = yes }
@@ -1969,7 +2548,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
@@ -1987,11 +2573,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_biological_weapons_theory = {
 		icon = GFX_decision_brilliant_scientist_project_biological_weapons_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_biological_weapons_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_biological_weapons_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_weapons_theory_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_weapons_theory = yes }
@@ -2006,7 +2599,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons }
@@ -2024,11 +2624,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_biological_weapons_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_biological_weapons_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_biological_weapons_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_biological_weapons_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_weapons_deployment_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_weapons_deployment = yes }
@@ -2043,7 +2650,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons }
@@ -2061,11 +2675,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_biological_weapons_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_biological_weapons_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_biological_weapons_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_biological_weapons_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_weapons_weaponization_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_weapons_weaponization = yes }
@@ -2080,7 +2701,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons }
@@ -2098,11 +2726,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_alien_arms_theory = {
 		icon = GFX_decision_brilliant_scientist_project_alien_arms_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_alien_arms_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_alien_arms_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_alien_arms_theory_cost
 				hidden_trigger = { brilliant_scientist_can_pay_alien_arms_theory = yes }
@@ -2117,7 +2752,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms }
@@ -2135,11 +2777,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_alien_arms_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_alien_arms_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_alien_arms_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_alien_arms_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_alien_arms_deployment_cost
 				hidden_trigger = { brilliant_scientist_can_pay_alien_arms_deployment = yes }
@@ -2154,7 +2803,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms }
@@ -2172,11 +2828,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_alien_arms_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_alien_arms_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^12 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_alien_arms_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_alien_arms_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_alien_arms_weaponization_cost
 				hidden_trigger = { brilliant_scientist_can_pay_alien_arms_weaponization = yes }
@@ -2191,7 +2854,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms }
@@ -2209,11 +2879,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_temporal_theory = {
 		icon = GFX_decision_brilliant_scientist_project_temporal_mechanics_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_temporal_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_temporal_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_temporal_theory_cost
 				hidden_trigger = { brilliant_scientist_can_pay_temporal_theory = yes }
@@ -2228,7 +2905,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal }
@@ -2246,11 +2930,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_temporal_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_temporal_mechanics_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_temporal_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_temporal_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_temporal_deployment_cost
 				hidden_trigger = { brilliant_scientist_can_pay_temporal_deployment = yes }
@@ -2265,7 +2956,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal }
@@ -2283,11 +2981,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_temporal_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_temporal_mechanics_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^13 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_temporal_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_temporal_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_temporal_weaponization_cost
 				hidden_trigger = { brilliant_scientist_can_pay_temporal_weaponization = yes }
@@ -2302,7 +3007,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal }
@@ -2320,11 +3032,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_singularity_theory = {
 		icon = GFX_decision_brilliant_scientist_project_strategic_singularity_theory
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.none }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.none }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_singularity_theory = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_singularity_theory = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_singularity_theory_cost
 				hidden_trigger = { brilliant_scientist_can_pay_singularity_theory = yes }
@@ -2339,7 +3058,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
@@ -2357,11 +3083,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_singularity_deployment = {
 		icon = GFX_decision_brilliant_scientist_project_strategic_singularity_deployment
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.prototype }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.prototype }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_singularity_deployment = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_singularity_deployment = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_singularity_deployment_cost
 				hidden_trigger = { brilliant_scientist_can_pay_singularity_deployment = yes }
@@ -2376,7 +3109,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
@@ -2394,11 +3134,18 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_advance_singularity_weaponization = {
 		icon = GFX_decision_brilliant_scientist_project_strategic_singularity_weaponization
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.deployment }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.deployment }
+			}
 		}
 		available = {
-			brilliant_scientist_can_begin_singularity_weaponization = yes
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_can_begin_singularity_weaponization = yes
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_singularity_weaponization_cost
 				hidden_trigger = { brilliant_scientist_can_pay_singularity_weaponization = yes }
@@ -2413,7 +3160,14 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_begin_project_stage = yes
 		}
 		cancel_if_not_visible = yes
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_stage_cancel_tt
+				hidden_trigger = {
+					OR = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } }
+				}
+			}
+		}
 		cancel_effect = { brilliant_scientist_cancel_project_stage = yes }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
@@ -2431,14 +3185,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_electronics_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_electronics_guidance_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_air_radar
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^1 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_air_radar
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -2455,14 +3216,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_rocketry_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.theory }
-			OR = { is_special_project_completed = sp:sp_rockets_flying_bomb is_special_project_completed = sp:sp_air_jet_engine }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^3 = constant:brilliant_scientist_project_stage.theory }
+				OR = { is_special_project_completed = sp:sp_rockets_flying_bomb is_special_project_completed = sp:sp_air_jet_engine }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -2479,14 +3247,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_high_energy_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_high_energy_physics_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.theory }
-			is_special_project_completed = sp:sp_nuclear_reactor
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^4 = constant:brilliant_scientist_project_stage.theory }
+				is_special_project_completed = sp:sp_nuclear_reactor
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -2503,14 +3278,21 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_integrate_biological_weapons_prototype = {
 		icon = GFX_decision_brilliant_scientist_project_biological_weapons_prototype
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.theory }
-			OR = { is_special_project_completed = sp:anthrax_bomb is_special_project_completed = sp:tularemia_bomb is_special_project_completed = sp:plague_bomb }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^11 = constant:brilliant_scientist_project_stage.theory }
+				OR = { is_special_project_completed = sp:anthrax_bomb is_special_project_completed = sp:tularemia_bomb is_special_project_completed = sp:plague_bomb }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_prototype_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+			}
 		}
 		days_remove = constant:brilliant_scientist_project_board.native_integration_days
 		complete_effect = { set_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -2527,15 +3309,22 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_select_xeno_control_chemical = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-			NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
+				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-			check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_control_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
+					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
+				}
+			}
 		}
 		cost = constant:brilliant_scientist_project_board.xeno_control_political_power
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
@@ -2560,15 +3349,22 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_select_xeno_control_neural = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-			NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
+				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-			check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_control_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
+					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
+				}
+			}
 		}
 		cost = constant:brilliant_scientist_project_board.xeno_control_political_power
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
@@ -2593,15 +3389,22 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_select_xeno_control_machine = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-			NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
+				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-			check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_control_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
+					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_political_power compare = greater_than }
+				}
+			}
 		}
 		cost = constant:brilliant_scientist_project_board.xeno_control_political_power
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
@@ -2626,15 +3429,22 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_select_xeno_control_researched = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
-			NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				check_variable = { brilliant_scientist_project_stage_entries^10 = constant:brilliant_scientist_project_stage.theory }
+				NOT = { brilliant_scientist_xeno_control_is_locked = yes }
+			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { has_country_flag = brilliant_scientist_project_incident_active }
-			NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
-			check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_researched_political_power compare = greater_than }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_control_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
+					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.xeno_control_researched_political_power compare = greater_than }
+				}
+			}
 		}
 		cost = constant:brilliant_scientist_project_board.xeno_control_researched_political_power
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_XENO_CONTROL_CIVILIAN_FACTORIES }
@@ -2659,18 +3469,25 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_audit_singularity_facilities = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_kruger_state
-			check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.none }
-			OR = {
-				NOT = { has_country_flag = brilliant_scientist_singularity_facilities_verified }
-				NOT = { brilliant_scientist_has_required_singularity_facilities = yes }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_kruger_state
+				check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.none }
+				OR = {
+					NOT = { has_country_flag = brilliant_scientist_singularity_facilities_verified }
+					NOT = { brilliant_scientist_has_required_singularity_facilities = yes }
+				}
 			}
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-			NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_SINGULARITY_AUDIT_CIVILIAN_FACTORIES }
-			check_variable = { var = political_power value = constant:brilliant_scientist_project_board.singularity_audit_political_power compare = greater_than }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_singularity_audit_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+					NOT = { num_of_available_civilian_factories < @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_SINGULARITY_AUDIT_CIVILIAN_FACTORIES }
+					check_variable = { var = political_power value = constant:brilliant_scientist_project_board.singularity_audit_political_power compare = greater_than }
+				}
+			}
 		}
 		cost = constant:brilliant_scientist_project_board.singularity_audit_political_power
 		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_PROJECT_BOARD_SINGULARITY_AUDIT_CIVILIAN_FACTORIES }
@@ -2685,11 +3502,13 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_construct_singularity_command_node = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_singularity_command_core_complete
-			check_variable = { var = brilliant_scientist_singularity_live_command_node_count value = constant:brilliant_scientist_singularity.minimum_live_command_nodes compare = less_than }
-			check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.prototype compare = greater_than_or_equals }
-			check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.deployment compare = less_than }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_singularity_command_core_complete
+				check_variable = { var = brilliant_scientist_singularity_live_command_node_count value = constant:brilliant_scientist_singularity.minimum_live_command_nodes compare = less_than }
+				check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.prototype compare = greater_than_or_equals }
+				check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.deployment compare = less_than }
+			}
 		}
 		available = {
 			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -2712,11 +3531,13 @@ brilliant_scientist_directorate_category = {
 	brilliant_scientist_construct_singularity_power_link = {
 		icon = GFX_decision_generic_research
 		visible = {
-			brilliant_scientist_is_current_host = yes
-			has_country_flag = brilliant_scientist_singularity_power_link_complete
-			check_variable = { var = brilliant_scientist_singularity_power_link_count value = constant:brilliant_scientist_singularity.minimum_power_links compare = less_than }
-			check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.prototype compare = greater_than_or_equals }
-			check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.deployment compare = less_than }
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes
+				has_country_flag = brilliant_scientist_singularity_power_link_complete
+				check_variable = { var = brilliant_scientist_singularity_power_link_count value = constant:brilliant_scientist_singularity.minimum_power_links compare = less_than }
+				check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.prototype compare = greater_than_or_equals }
+				check_variable = { var = brilliant_scientist_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.deployment compare = less_than }
+			}
 		}
 		available = {
 			NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
@@ -2738,13 +3559,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_computation_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_computation_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_computation_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_technical_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_computation_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_computation_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -2764,9 +3594,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_computation_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_computation_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_computation_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_technical_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_technical_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_technical_incident_response = yes }
@@ -2788,13 +3627,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_electronics_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_electronics_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_electronics_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_technical_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_electronics_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_electronics_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -2814,9 +3662,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_electronics_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_electronics_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_electronics_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_technical_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_technical_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_technical_incident_response = yes }
@@ -2838,13 +3695,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_materials_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_materials_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_materials_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_industrial_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_materials_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_materials_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -2864,9 +3730,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_materials_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_materials_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_materials_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_industrial_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_industrial_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_industrial_incident_response = yes }
@@ -2888,13 +3763,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_rocketry_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_rocketry_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_rocketry_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_industrial_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_rocketry_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_rocketry_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -2914,9 +3798,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_rocketry_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_rocketry_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_rocketry_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_industrial_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_industrial_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_industrial_incident_response = yes }
@@ -2938,13 +3831,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_high_energy_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_high_energy_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_high_energy_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_industrial_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_high_energy_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_high_energy_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -2964,9 +3866,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_high_energy_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_high_energy_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_high_energy_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_industrial_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_industrial_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_industrial_incident_response = yes }
@@ -2988,13 +3899,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_biomedical_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_biomedical_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_biomedical_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_biological_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_biomedical_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_biomedical_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3014,9 +3934,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_biomedical_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_biomedical_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_biomedical_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_biological_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_incident_response = yes }
@@ -3038,13 +3967,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_teleportation_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_teleportation_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_teleportation_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_exotic_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_teleportation_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_teleportation_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3064,9 +4002,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_teleportation_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_teleportation_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_teleportation_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_exotic_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_exotic_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_exotic_incident_response = yes }
@@ -3088,13 +4035,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_cloning_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_cloning_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_cloning_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_biological_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_cloning_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_cloning_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3114,9 +4070,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_cloning_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_cloning_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_cloning_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_biological_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_incident_response = yes }
@@ -3138,13 +4103,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_robotics_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_robotics_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_robotics_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_technical_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_robotics_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_robotics_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3164,9 +4138,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_robotics_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_robotics_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_robotics_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_technical_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_technical_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_technical_incident_response = yes }
@@ -3188,13 +4171,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_paleogenetics_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_paleogenetics_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_paleogenetics_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_biological_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_paleogenetics_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_paleogenetics_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3214,9 +4206,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_paleogenetics_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_paleogenetics_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_paleogenetics_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_biological_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_incident_response = yes }
@@ -3238,13 +4239,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_xenobiological_synthesis_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_xenobiological_synthesis_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_xenobiological_synthesis_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_biological_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_xenobiological_synthesis_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_xenobiological_synthesis_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3264,9 +4274,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_xenobiological_synthesis_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_xenobiological_synthesis_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_xenobiological_synthesis_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_biological_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_incident_response = yes }
@@ -3288,13 +4307,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_biological_weapons_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_biological_weapons_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_biological_weapons_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_biological_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_biological_weapons_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_biological_weapons_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3314,9 +4342,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_biological_weapons_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_biological_weapons_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_biological_weapons_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_biological_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_biological_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_biological_incident_response = yes }
@@ -3338,13 +4375,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_alien_arms_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_alien_arms_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_alien_arms_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_exotic_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_alien_arms_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_alien_arms_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3364,9 +4410,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_alien_arms_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_alien_arms_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_alien_arms_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_exotic_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_exotic_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_exotic_incident_response = yes }
@@ -3388,13 +4443,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_temporal_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_temporal_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_temporal_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_exotic_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_temporal_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_temporal_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3414,9 +4478,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_temporal_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_temporal_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_temporal_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_exotic_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_exotic_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_exotic_incident_response = yes }
@@ -3438,13 +4511,22 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_singularity_incident_mission = {
 		icon = GFX_decision_generic_operation
-		activation = { has_country_flag = brilliant_scientist_singularity_incident_active }
+		activation = {
+			hidden_trigger = {
+				has_country_flag = brilliant_scientist_singularity_incident_active
+			}
+		}
 		available = { always = no }
 		days_mission_timeout = constant:brilliant_scientist_project_board.incident_timeout_exotic_days
 		cancel_trigger = {
-			OR = {
-				has_country_flag = brilliant_scientist_singularity_incident_resolved
-				NOT = { brilliant_scientist_is_current_host = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_cancel_tt
+				hidden_trigger = {
+					OR = {
+						has_country_flag = brilliant_scientist_singularity_incident_resolved
+						NOT = { brilliant_scientist_is_current_host = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
@@ -3464,9 +4546,18 @@ brilliant_scientist_directorate_category = {
 
 	brilliant_scientist_resolve_singularity_incident = {
 		icon = GFX_decision_generic_operation
-		visible = { brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_singularity_incident_active }
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_is_current_host = yes has_country_flag = brilliant_scientist_singularity_incident_active
+			}
+		}
 		available = {
-			brilliant_scientist_can_pay_exotic_incident_response = yes NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_project_incident_response_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = brilliant_scientist_exotic_incident_response_cost
 				hidden_trigger = { brilliant_scientist_can_pay_exotic_incident_response = yes }
