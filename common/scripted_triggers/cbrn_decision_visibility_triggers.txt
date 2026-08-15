@@ -1,0 +1,99 @@
+# ============================================================================
+# CHAOS REDUX - CBRN DECISION-SURFACE VISIBILITY TRIGGERS
+# ============================================================================
+# Overview:
+# - Separates inherited capability from an intentionally revealed gameplay
+#   surface so starting technologies, facilities, and reserves do not open
+#   CBRN categories at game start.
+# - Live attacks, contamination, outbreaks, evidence, and active diplomatic
+#   demands remain sufficient to reveal their exact response surfaces.
+# - These predicates are read-only and perform no periodic country iteration.
+# ============================================================================
+
+cbrn_protection_decision_surface_is_unlocked = {
+	OR = {
+		has_country_flag = cbrn_protection_decision_surface_unlocked
+		has_country_flag = soviet_collapse_unconventional_warfare_successor
+	}
+}
+
+cbrn_operations_decision_surface_is_unlocked = {
+	OR = {
+		has_country_flag = cbrn_operations_decision_surface_unlocked
+		has_country_flag = soviet_collapse_unconventional_warfare_successor
+	}
+}
+
+cbrn_disease_response_decision_surface_is_unlocked = {
+	OR = {
+		has_country_flag = cbrn_disease_response_decision_surface_unlocked
+		has_country_flag = mengele_clone_decision_immunity_unlocked
+		has_country_flag = soviet_collapse_unconventional_warfare_successor
+	}
+}
+
+cbrn_operations_category_visible = {
+	NOT = { is_actual_nonhuman_country = yes }
+	AND = {
+		# Both an explicit reveal state and a real capability are required. Keeping
+		# these gates inside one AND prevents inherited technology from bypassing
+		# the startup presentation clear.
+		OR = {
+			cbrn_operations_decision_surface_is_unlocked = yes
+			AND = {
+				has_doctrine = chaos_warfare
+				NOT = { has_country_flag = cbrn_chaos_warfare_adopted }
+			}
+		}
+		OR = {
+			has_doctrine = chaos_warfare
+			has_country_flag = bioweapon_available
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = tabun
+			has_tech = sarin
+			has_tech = soman
+			is_special_project_completed = sp:sp_cw_sarin_program
+			is_special_project_completed = sp:sp_cw_soman_program
+			has_tech = anthrax_bomb_delivery_systems
+			has_tech = plague_bomb_delivery_systems
+			has_tech = tularemia_bomb_delivery_systems
+			has_tech = smallpox_bomb_delivery_systems
+			has_country_flag = cbrn_occupation_nerve_suppression_history
+			has_active_mission = cbrn_chaos_warfare_establishment_mission
+			has_active_mission = cbrn_hazard_assault_training_mission
+		}
+	}
+}
+
+cbrn_international_response_category_visible = {
+	NOT = { is_actual_nonhuman_country = yes }
+	OR = {
+		has_country_flag = cbrn_inspection_demand_active
+		has_global_flag = cbrn_world_confirmed_chemical_use
+		has_global_flag = cbrn_world_confirmed_biological_use
+		any_controlled_state = { cbrn_state_has_shareable_forensic_evidence = yes }
+	}
+}
+
+cbrn_disease_response_category_visible = {
+	NOT = { is_actual_nonhuman_country = yes }
+	OR = {
+		disease_containment_board_category_is_visible = yes
+		bio_countermeasure_country_has_any_detected_outbreak = yes
+		has_neighbor_with_active_biowarfare_outbreak = yes
+		has_idea = bio_surveillance_network_idea
+		has_idea = smallpox_vaccination_program_idea
+		AND = {
+			cbrn_disease_response_decision_surface_is_unlocked = yes
+			OR = {
+				has_tech = tech_field_hospital
+				has_tech = bio_surveillance_networks
+				has_tech = pathogen_handling_protocols
+				has_tech = field_epidemiology_teams
+			}
+		}
+	}
+}

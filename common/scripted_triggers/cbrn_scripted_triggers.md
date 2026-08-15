@@ -259,7 +259,11 @@ available = {
 
 ## CBRN state distribution gates
 
-All triggers are state scoped and side-effect free. `ROOT` is the deciding country.
+Routine distribution decisions use the country-scope work queries `cbrn_country_has_priority_distribution_work`, `cbrn_country_has_full_distribution_work`, `cbrn_country_has_filter_replacement_work`, and `cbrn_country_has_occupied_distribution_work`. Each returns true only when at least one controlled state satisfies the corresponding exact state gate below. This allows one national program card without weakening the population-scaled state transaction.
+
+Decision-category presentation is separately gated by `cbrn_protection_decision_surface_is_unlocked`, `cbrn_operations_decision_surface_is_unlocked`, `cbrn_disease_response_decision_surface_is_unlocked`, `cbrn_operations_category_visible`, `cbrn_international_response_category_visible`, and `cbrn_disease_response_category_visible`. Starting capability alone does not satisfy these presentation gates; post-start route flags for the Mengele pathogen cadre and Unconventional Warfare successor, plus live emergencies and incident records, remain direct reveal conditions.
+
+The four work queries and the category-presentation predicates are country scoped. The exact eligibility predicates below are state scoped with `ROOT` as the deciding country. Every trigger is side-effect free.
 
 ### State value and base validity
 

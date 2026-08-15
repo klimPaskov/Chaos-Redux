@@ -6,13 +6,17 @@ Chaos Warfare uses the native decision-category presentation accepted by Stage 1
 
 The category uses native decision targeting, exact-state targets, trigger tooltips, AI scoring, cooldowns, and cleanup. The existing Chaos Meter tabs remain the readout for global contamination, while the CBRN decision categories provide the operation controls.
 
+All CBRN categories are dormant at new-game startup. Starting technologies, facilities, stockpiles, reserves, and inherited doctrine remain intact but do not reveal decision surfaces by themselves. Post-start CBRN research, Chaos Warfare adoption, completion of an ordinary biological-agent or nerve-agent project, activation of the Mengele pathogen-cadre or Unconventional Warfare successor route, or a live alert, contamination, outbreak, evidence record, inspection demand, or sanction activates only the relevant family. Empty categories remain hidden.
+
+Routine civilian mask issue, full distribution, filter replacement, and occupied-population supply use one national timed card per program. At completion, each program applies the existing population-scaled state transaction to eligible controlled states while real stock remains, serving the capital first where applicable. A program cancels and releases its shared lock if stock is exhausted or no eligible work remains. Exact-state cards are retained only where the player is responding to or selecting a real local incident or operation.
+
 ## Category mapping
 
 | Surface | Native category | Responsibility |
 | --- | --- | --- |
 | Command and doctrine | `cbrn_operations_category` | Institution, doctrine, use policy, readiness, HQ preparation, and conditional commissions. |
 | National protection | `cbrn_program_management_category` | Gas-mask models, filters, reserves, issue, maintenance, and national procurement. |
-| Civilian protection | `cbrn_civil_defence_category` | Registration, fitting, population-scaled distribution, alarm, shelters, and medical response. |
+| Civilian protection | `cbrn_civil_defence_category` | National population-scaled distribution and filter programs, plus exact-state alarms, shelters, emergency issue, and medical response for live incidents. |
 | International response | `cbrn_international_response_category` | Inspections, sanctions, protective aid, retaliation, and stockpile destruction. |
 | Occupation measures | `cbrn_occupation_measures_category` | Coercive Security authorization and exact-state nerve-agent suppression. |
 | Chemical battlefield release | state-targeted decisions plus native chemical raids | Explicit target-state operations. Idle aircraft and continuous missions never call the exposure pipeline. |
