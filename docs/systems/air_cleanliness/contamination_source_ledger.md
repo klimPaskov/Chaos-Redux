@@ -53,7 +53,7 @@ When Fallout permanently fixes Air Contamination at 99 percent, the refresh path
 
 `interface/chaosx_chaos_meter_popup.gui` keeps the Air Cleanliness window at its existing 500 by 343 size.
 
-The upper section contains six single-line rows for current contamination and clean air, last net change and recovery, tracked source footprint and record count, lifetime rises and falls, system status, and Air Winter phase.
+The upper section uses both halves of the window. Four paired rows place contamination beside clean air, last net change beside applied recovery, source footprint beside record count, and lifetime rises beside lifetime falls. Full-width system-status and Air Winter rows follow above the source ledger.
 
 The lower section contains a scrollable list. Each row is a full-width button and shows the source name, current contribution, last applied delta, lifetime additions, direct clearing, and observed pressure decay.
 

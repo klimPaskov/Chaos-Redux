@@ -118,7 +118,7 @@ Event Log presentation is automatic-run history only. Normal-origin Evolution II
 - Faction package: `common/factions/templates/011_secret_alliance.txt`, `common/factions/rules/011_secret_alliance_rules.txt`, `common/factions/rules/groups/011_secret_alliance_rule_groups.txt`, `common/factions/goals/011_secret_alliance_goals.txt`
 - Ideas and UI: `common/ideas/011_secret_alliance_ideas.txt`, `common/scripted_guis/011_secret_alliance_scripted_gui.txt`, `interface/011_secret_alliance.gui`, `interface/011_secret_alliance.gfx`
 - Localisation: `localisation/english/011_secret_alliance_l_english.yml` plus shared event-name, achievement, scenario, music, and super-event files
-- Event log and details: shared event-log registration, actor mapping, detail page, and Evolution I-III entries under the Event 011 ID
+- Event log and details: shared event-log registration, actor mapping, detail page, and Evolution I-III entries under the Event 011 ID. The Event Details preview registers authored stages Repeating Methods, Coordinated Interference, and Approaching Confrontation from the shared Event 011 constants.
 - Scenario registry: shared triggerable-scenario constants, effects, triggers, scripted localisation, and GUI localisation as SCN-009
 - Super-event: slot 73, audio ID 43, image `GFX_super_event_011_secret_alliance_public_reveal`
 - Music catalogue: `music/chaosx_music_track_list.html` records audio ID 43, `Revelation`, duration `01:26`, and the United States Marine Band public-domain performance. The final WAV each measure `86.101746` seconds at 44.1 kHz.

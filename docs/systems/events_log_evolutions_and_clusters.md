@@ -46,8 +46,8 @@ The zombie outbreak event has authored gameplay text in the event-details window
 	   - logged actor country link,
 	   - a portrait panel only when that evolution family has an authored portrait mapping or an intentional placeholder treatment for the selected stage,
 	   - stage-specific modifier breakdown for the zombie horde.
-21. Beneath the evolution preview, Event Details rebuilds a public world-end list from the stable scenario registry for the selected owner event.
-22. Each terminal branch has one clickable row and one persistent checkbox. Multiple branches owned by the same event remain separate, and hidden easter-egg branches are filtered before view rows are built.
+21. Beneath the evolution preview, Event Details rebuilds a registered world-end list from the stable scenario registry for the selected owner event.
+22. Each terminal branch has one clickable row and one persistent checkbox. Multiple branches owned by the same event remain separate, and registered hidden identities remain eligible for view rows while unregistered routes stay absent.
 23. Clicking a world-end row opens the scenario details popup; toggling it changes only that scenario's automatic eligibility and rebuilds the selected event's rows.
 
 Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text. The shared type selector maps the Death and Secret Alliance evolution constants to their dedicated labels rather than the generic `Evolution` fallback.
