@@ -2,7 +2,7 @@
 
 Date: 2026-08-15.
 
-Status: HOLD / needs independent framing and rights review.
+Status: HOLD / Erbanov needs independent framing and rights review; the solo Markizov alternative needs parent identity selection and independent rights review.
 
 This bounded task archived and reviewed a conditional exact-date grounded source for IW-052 Buryatia. It did not create a DDS, GFX entry, character file, character reference, parent-owned identity flag, gameplay change, localisation change, or central-admission change. RunPod was never opened or operated.
 
@@ -80,3 +80,21 @@ The parent must independently review the 4x crop against the untouched original 
 - In-game/MCP validation skipped because this is source evidence only and no runtime surface was changed.
 - Independent framing reviewer and rights reviewer are pending.
 - If independent review rejects the crop, the candidate is blocked; no fallback portrait was used.
+
+## Source-only continuation: solo period-fit alternative
+
+On 2026-08-15 a bounded follow-up search found a stronger non-group source candidate: Ardan (Ardan Angadakovich) Markizov, a Buryat-Mongol party and state official. The Russian Wikipedia API capture records him as agriculture commissar of the Buryat-Mongol ASSR and second secretary of the Buryat-Mongol regional committee in 1936-1937, and records his presence in the official Buryat-Mongol delegation at the Kremlin reception on 1936-01-27 led by Mikhei Erbanov. He is therefore valid for the requested opening date as a period-fit regional officeholder and delegation member, but he is not the top regional leader.
+
+The source is Wikimedia Commons File:Ardan Markizov.jpg: https://commons.wikimedia.org/wiki/File:Ardan_Markizov.jpg. Commons records a solo 278x385 portrait, image date `1930s`, credit `БНЦ СО РАН`, unknown author, Public domain / PD-Russia-1996 metadata, license `pd`, `Copyrighted=False`, and `AttributionRequired=False`. The untouched original is archived directly at `docs/assets/portraits/006_independence_wave/iw052_bya_ardan_markizov_source_research_2026_08_15__portrait_BYA_ardan_markizov_original.jpg` with SHA-256 `06e8c6cc3c5749ee6f637432fd52b5810b4563a82866f84f705938a122b9a136`.
+
+All alternative-source evidence is flat under the existing `docs/assets/portraits/006_independence_wave/processed/` directory. The lossless automatic YuNet crop detects one face `[69,79,169,211]`, retains `[0,0,278,374]`, and is archived as `iw052_bya_ardan_markizov_source_research_2026_08_15__portrait_BYA_ardan_markizov_source_crop.png` with SHA-256 `83470a476d3db91382d5a064decf7cf4fe1b53f84db3bb36af15dd7366327155`; the decoded RGBA equality hash is `c4558eb30d0c03bf3ccc1a569aaebf67078960d380b7d6360180d89ed2849726`. The 4x nearest review preview is 1112x1496 with SHA-256 `828ac53532b99eeae101298152c6388ded05f11bf1f5caf08ab2044fe168648a`. No 156x210 derivative was retained.
+
+The alternative evidence files are `iw052_bya_ardan_markizov_source_commons_api_2026_08_15.json`, `iw052_bya_ardan_markizov_source_commons_page_2026_08_15.html`, `iw052_bya_ardan_markizov_source_identity_russian_wikipedia_api_2026_08_15.json`, the crop JSON, `metadata__iw052_bya_ardan_markizov_source_research_2026_08_15__portrait_BYA_ardan_markizov.txt`, `metadata__iw052_bya_ardan_markizov_source_research_2026_08_15__review.md`, `metadata__iw052_bya_ardan_markizov_source_research_2026_08_15__manifest.json`, and `iw052_bya_portrait_followup_search_2026_08_15.json`. The manifest remains `source_placeholder_candidate_hold` with runtime paths null and `parent_identity_flag` null.
+
+This solo source clears the current Erbanov group-framing problem for source review, but it does not silently replace the parent-owned identity decision. The parent must explicitly choose whether the BYA opening provisional institution may use a 1936-valid second secretary/agriculture commissar and official delegation member, or whether the exact top regional leader is mandatory and Erbanov must remain the only conditional candidate. If Markizov is not accepted as the consumer, keep both source candidates fail-closed and document the required identity decision; do not relabel Markizov or a vanilla generic portrait as Erbanov. Independent rights review remains required before any runtime promotion.
+
+The bounded negative search is recorded in `docs/assets/portraits/006_independence_wave/processed/iw052_bya_portrait_followup_search_2026_08_15.json` (SHA-256 `7105494975ad451fb12250347e876fec9fd1cf4cd4892d6db7730f2575cefbd4`). Exact-name and prefix Commons searches found no solo Erbanov source beyond the known three-person photograph; the Dampilov solo candidate did not clear its conflicting rights metadata. If the parent requires the actual top regional leader rather than a 1936-valid regional officeholder and delegation member, the package remains fail-closed pending a new solo Erbanov or authentic institutional source.
+
+## Archive count receipt
+
+At completion of this source-only tranche on 2026-08-15, `docs/assets/portraits/006_independence_wave/` contained 53 direct regular files and its only child directory was `processed/`; `processed/` contained 169 direct regular files and the archive contained 222 regular files recursively. The IW-052 subset was 2 direct parent originals and 18 flat processed evidence files matching `*iw052_bya*`. The archive had zero nested directories beyond `processed/`, zero `156x210` filename matches, zero DDS files, and zero GFX files.
