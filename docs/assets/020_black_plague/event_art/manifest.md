@@ -21,3 +21,7 @@ Contact sheet: `docs/assets/020_black_plague/event_art/contact_sheet.png`.
 Prompt record: `docs/assets/020_black_plague/event_art/prompts/event20_report_news_prompts.md`.
 
 The producer did not edit GFX or gameplay files. Parent wiring for the three assets above is promoted in `events/020_black_death.txt` and `interface/020_black_plague_event_pictures.gfx`; this manifest remains the provenance record for the asset package. The five additional report-card slots are supplied by `docs/assets/020_black_plague/manifests/event20_remaining_report_art_manifest.md` and `docs/assets/020_black_plague/gfx_handoff_remaining_report_art.md`. Royal Burrows, ordinary-defeat, and route/hierarchy surfaces are supplied by their dedicated Event 020 manifests and runtime wiring. Slot-087 defeat aftermath art is supplied by the separate final handoff `2026-08-01_event20_super_event_087_art_handoff.md` and is wired under `interface/020_black_plague_super_events.gfx`.
+
+## Dedicated Event 020 news strips
+
+The nine purpose-built 397x153 black-and-white news strips requested for Event 020 are packaged under [`news_strips/`](news_strips/). Their source PNGs, processed previews, ImageGen prompts, final DDS files, contact sheets, header checks, decoded round-trip evidence, exact event-consumer mapping, proposed sprites, and parent handoff are recorded in [`news_strips/manifest.md`](news_strips/manifest.md) and [`news_strips/gfx_handoff.md`](news_strips/gfx_handoff.md). The producer did not edit event definitions or `.gfx` files; parent wiring remains pending.
