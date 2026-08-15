@@ -35,7 +35,7 @@ From the repository root, verify the selected Meshy MCP route, the pinned offici
 
 The lock and schema evidence surfaces are `.tools/3d_pipeline/config/dependencies.lock.json`, `.tools/3d_pipeline/config/meshy_tool_schema.lock.json`, and `.tools/3d_pipeline/config/blender_hoi4_adapter.json`.
 
-The current pilot lock records `@meshy-ai/meshy-mcp-server@0.4.0`, Blender `5.1.2`, the `chaosx_blender_hoi4` adapter `1.1.0`, and `io_pdx_mesh` `0.91.0` with archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`.
+Treat `.tools/3d_pipeline/config/dependencies.lock.json` as the authoritative record for the currently resolved Meshy, Blender, `chaosx_blender_hoi4`, Blender Lab MCP, and `io_pdx_mesh` versions and checksums. Do not duplicate fixed adapter versions in this README because the bootstrap may resolve a newer compatible route.
 
 The isolated Blender Lab MCP route is locked at tag `v1.0.0`, commit `03004fd0216bfe5e0a3d9ac9b47d5efadc3d78c4`, with verified server version `1.28.1` in the current dependency lock.
 
@@ -46,6 +46,8 @@ The current verified Meshy tool names are `meshy_check_balance`, `meshy_image_to
 Use only names and arguments returned by the verified live route.
 
 The existing unattended Meshy route is `wrappers/run_meshy_mcp.cmd`, and the existing unattended Blender route is `wrappers/run_blender_hoi4_adapter.cmd`, which exposes structured job-root-bounded `chaosx_blender_hoi4_*` operations and no arbitrary Blender Python, shell, URL, or unrestricted absolute write path.
+
+A running Blender process is not bridge evidence. Probe `127.0.0.1:<socket_port>` using `blender_mcp_addon.socket_port` from the dependency lock; when the endpoint is absent, start the lock-selected Blender executable hidden with `--background --online-mode --command blender_mcp --host 127.0.0.1 --port <socket_port>`, then reprobe and record the listening process before using the adapter.
 
 The adapter's `correct_action_grounding` operation is narrowly restricted to an existing attack action and the `Hips` root bone. It inserts measured integer-frame Hips-Z keys, corrects only the root contact offset, records before/after evaluated bounds, and rejects the checkpoint if any frame remains outside the contact tolerance. It does not author a replacement action, alter geometry, create a new rig, or call a provider.
 
@@ -129,11 +131,23 @@ Match custom geometry to the calibrated vanilla source height and apply entity s
 
 Keep source geometry height distinct from effective runtime height, and never guess `1.8m` or compensate with arbitrary scale.
 
-Clean, retarget, and bake humanoid animation candidates, normalize armature transforms, scale keyed location channels deliberately exactly once when units differ, define in-place or root-motion policy, check foot and ground contacts, and validate real idle, move, and attack actions when required.
+Clean, retarget, and bake humanoid animation candidates, normalize armature transforms, scale keyed location channels deliberately exactly once when units differ, define in-place or root-motion policy, check foot and ground contacts, and validate real idle, move, attack, and death actions when required.
 
 Never substitute a static still for a requested skeletal action.
 
 Export `.mesh` and `.anim` only with the locked `io_pdx_mesh` setup, then reimport or parse the actual exported bytes and save proof with output checksums.
+
+## Nonhumanoid creature route
+
+Creature jobs must declare a numeric, measured scale crosswalk against the installed vanilla runtime reference and a dedicated `creature_rig_family` before the pilot runner will check balance, call Meshy, or export anything.
+
+Winged or digitigrade bipeds use the `winged_biped` route, which creates separate wing-root, wing-mid, wing-tip, arm, hand, leg, foot, spine, neck, head, pelvis, and root bones with spatial semantic weights and authored idle, move, attack, and death actions.
+
+Do not route winged, digitigrade, or quadrupedal silhouettes through `humanoid_unit`; a pending or non-numeric creature crosswalk is a hard preflight blocker rather than a value to coerce or infer.
+
+The creature continuation stages loose components, writes a custom-rig checkpoint, preserves the complete action set across checkpoints, exports the mesh and four skeletal animations, and reimports each animation against the exported mesh before the parent can wire a runtime entity.
+
+Ground each authored action by measuring from the uncorrected pose at every frame and keying an absolute armature-object translation. Root-bone-only offsets are not sufficient when the creature mesh is parented to the armature object, and any action that fails the ground-contact gate must stop the continuation before export.
 
 ## Custom-unit sound-design handoff
 

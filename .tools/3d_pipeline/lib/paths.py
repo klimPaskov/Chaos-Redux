@@ -22,6 +22,7 @@ MODEL_ROOT = REPO_ROOT / "docs" / "assets" / OWNER_ID / "models_3d"
 PIPELINE_ROOT = REPO_ROOT / ".tools" / "3d_pipeline"
 CONFIG_ROOT = PIPELINE_ROOT / "config"
 STAGING_ROOT = PIPELINE_ROOT / "staging"
+ADAPTER_CONFIG_PATH = CONFIG_ROOT / "blender_hoi4_adapter.json"
 
 JOB_DIRS = (
     "refs/original",
@@ -66,21 +67,75 @@ def safe_slug(value: str) -> str:
     return normalized
 
 
+def read_job_document(path: Path) -> Dict[str, Any]:
+    """Read the repository's JSON-compatible job YAML or a native JSON job file."""
+
+    raw = path.read_text(encoding="utf-8")
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError:
+        try:
+            import yaml
+        except ImportError as exc:
+            raise RuntimeError(
+                "A non-JSON job.yaml requires the repository's PyYAML dependency."
+            ) from exc
+        value = yaml.safe_load(raw)
+    if not isinstance(value, dict):
+        raise ValueError(f"Job document must contain a mapping: {path}")
+    return value
+
+
+def _configured_job_overrides() -> Dict[str, Path]:
+    """Resolve allowlisted adapter job overrides without accepting arbitrary paths."""
+
+    if not ADAPTER_CONFIG_PATH.exists():
+        return {}
+    config = json.loads(ADAPTER_CONFIG_PATH.read_text(encoding="utf-8"))
+    overrides = config.get("job_overrides", {})
+    if not isinstance(overrides, dict):
+        raise ValueError("blender_hoi4_adapter.json job_overrides must be a mapping.")
+    resolved: Dict[str, Path] = {}
+    for job_id, raw_path in overrides.items():
+        if not isinstance(job_id, str) or not isinstance(raw_path, str):
+            raise ValueError("Adapter job overrides must use string ids and paths.")
+        candidate = Path(raw_path)
+        if not candidate.is_absolute():
+            candidate = REPO_ROOT / candidate
+        candidate = candidate.resolve()
+        assert_within(candidate, REPO_ROOT)
+        resolved[safe_slug(job_id)] = candidate
+    return resolved
+
+
+def _assert_supported_job_root(path: Path) -> Path:
+    """Allow only the generic pilot root or an explicit adapter override root."""
+
+    resolved = path.resolve()
+    allowed_roots = [MODEL_ROOT.resolve(), *_configured_job_overrides().values()]
+    for allowed_root in allowed_roots:
+        try:
+            resolved.relative_to(allowed_root)
+            return resolved
+        except ValueError:
+            continue
+    raise ValueError(f"Path is outside the configured 3D job roots: {resolved}")
+
+
 def resolve_job_root(asset_slug: str, owner_id: str = OWNER_ID) -> Path:
     """Resolve the only supported job root for an asset."""
 
     owner = safe_slug(owner_id)
     slug = safe_slug(asset_slug)
-    root = (MODEL_ROOT / slug).resolve()
-    assert_within(root, MODEL_ROOT)
-    return root
+    del owner
+    root = _configured_job_overrides().get(slug, MODEL_ROOT / slug)
+    return _assert_supported_job_root(root)
 
 
 def ensure_job_layout(job_root: Path) -> Path:
     """Create the deterministic job directories and return the resolved root."""
 
-    root = job_root.resolve()
-    assert_within(root, MODEL_ROOT)
+    root = _assert_supported_job_root(job_root)
     root.mkdir(parents=True, exist_ok=True)
     for relative in JOB_DIRS:
         (root / relative).mkdir(parents=True, exist_ok=True)

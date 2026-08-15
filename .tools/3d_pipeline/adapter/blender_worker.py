@@ -93,6 +93,11 @@ def load_pdx(io_pdx_root: str) -> Dict[str, Any]:
 
 
 def save_blend(path: Path) -> None:
+    # Checkpoints are the source of truth for the complete runtime action set.
+    # Keep every authored or transferred action across later saves even when
+    # Blender's single active action slot is switched during the pipeline.
+    for action in bpy.data.actions:
+        action.use_fake_user = True
     path.parent.mkdir(parents=True, exist_ok=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(path))
 
@@ -535,7 +540,7 @@ def bind_texture_sources(job: Path, payload: Dict[str, Any]) -> List[Dict[str, A
     """Bind explicit provider maps to the working materials before export."""
 
     source_rels = payload.get("texture_source_rels") or {}
-    if payload.get("asset_kind") == "humanoid" and source_rels:
+    if payload.get("asset_kind") in {"humanoid", "creature"} and source_rels:
         required = {"diffuse", "specular", "normal"}
         missing = sorted(required - set(source_rels))
         if missing:
@@ -1950,7 +1955,7 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     materials = tag_pdx_materials(pdx)
     texture_bindings = bind_texture_sources(job, payload)
     materials["texture_bindings"] = texture_bindings
-    if payload["asset_kind"] == "humanoid" and payload.get("texture_source_rels") and not image_nodes():
+    if payload["asset_kind"] in {"humanoid", "creature"} and payload.get("texture_source_rels") and not image_nodes():
         raise RuntimeError(
             "Humanoid preparation produced no image-backed material. Refusing to export a black unit."
         )
@@ -2438,6 +2443,93 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
+def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Retiming an existing action changes sample time, not skeletal motion."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    action_name = str(payload.get("action_name") or "")
+    source_fps = float(payload.get("source_fps") or 0.0)
+    target_fps = float(payload.get("target_fps") or 0.0)
+    if source_fps <= 0.0 or target_fps <= 0.0:
+        raise ValueError("Animation retiming requires positive source and target FPS values.")
+    if not action_name:
+        raise ValueError("Animation retiming requires an action name.")
+
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError(f"Animation retiming requires exactly one working armature, found {len(rigs)}.")
+    rig = rigs[0]
+    action = bpy.data.actions.get(action_name)
+    if action is None:
+        action = next(
+            (
+                candidate
+                for candidate in bpy.data.actions
+                if candidate.name.casefold() == action_name.casefold()
+            ),
+            None,
+        )
+    if action is None:
+        raise RuntimeError(f"Requested action was not found: {action_name}")
+
+    old_start = float(action.frame_range[0])
+    old_end = float(action.frame_range[1])
+    frame_ratio = target_fps / source_fps
+    moved_keyframes = 0
+    moved_handles = 0
+    for fcurve, _ in action_fcurves(action):
+        for keyframe in fcurve.keyframe_points:
+            keyframe.co.x *= frame_ratio
+            keyframe.handle_left.x *= frame_ratio
+            keyframe.handle_right.x *= frame_ratio
+            moved_keyframes += 1
+            moved_handles += 2
+        fcurve.update()
+
+    scene = bpy.context.scene
+    scene.render.fps = int(round(target_fps))
+    start = int(math.floor(float(action.frame_range[0])))
+    end = int(math.ceil(float(action.frame_range[1])))
+    if end <= start:
+        raise RuntimeError(f"Retimed action has no usable frame span: {action.name}")
+    scene.frame_start = start
+    scene.frame_end = end
+    rig.animation_data_create()
+    rig.animation_data.action = action
+    scene.frame_set(start)
+    bpy.context.view_layer.update()
+    save_blend(checkpoint)
+    result = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "action": action.name,
+        "source_fps": source_fps,
+        "target_fps": target_fps,
+        "frame_ratio": frame_ratio,
+        "frame_start_before": old_start,
+        "frame_end_before": old_end,
+        "frame_start": start,
+        "frame_end": end,
+        "moved_keyframes": moved_keyframes,
+        "moved_handles": moved_handles,
+        "fps": scene.render.fps,
+        "policy": "existing_provider_action_time_rescaled_to_required_runtime_fps",
+        "body_motion_replaced": False,
+        "new_model_created": False,
+        "new_rig_created": False,
+        "new_provider_call": False,
+        "warnings": [],
+    }
+    report = job / "blender" / "reports" / f"retime_animation_{safe_name(action.name)}.json"
+    report.parent.mkdir(parents=True, exist_ok=True)
+    report.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return result
+
+
 def normalize_exported_animation_scales(
     output: Path,
     pdx: Dict[str, Any],
@@ -2862,6 +2954,7 @@ def segment_creature_components(req: Dict[str, Any]) -> Dict[str, Any]:
 
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
+    component_prefix = safe_name(str(payload.get("component_prefix") or "elephant_component"))
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     bpy.ops.wm.open_mainfile(filepath=str(blend))
@@ -3028,7 +3121,7 @@ def segment_creature_components(req: Dict[str, Any]) -> Dict[str, Any]:
     records = []
     for index, obj in enumerate(components):
         if not spatial_mask_applied:
-            obj.name = f"elephant_component_{index:03d}"
+            obj.name = f"{component_prefix}_{index:03d}"
         records.append(_component_record(obj, index))
     save_blend(checkpoint)
     report = {
@@ -3220,11 +3313,207 @@ def _creature_bone_name_for_vertex(
     return "body"
 
 
+WINGED_BIPED_BONE_NAMES = (
+    "root",
+    "pelvis",
+    "spine",
+    "neck",
+    "head",
+    "upper_arm_left",
+    "lower_arm_left",
+    "hand_left",
+    "upper_arm_right",
+    "lower_arm_right",
+    "hand_right",
+    "upper_leg_left",
+    "lower_leg_left",
+    "foot_left",
+    "upper_leg_right",
+    "lower_leg_right",
+    "foot_right",
+    "wing_root_left",
+    "wing_mid_left",
+    "wing_tip_left",
+    "wing_root_right",
+    "wing_mid_right",
+    "wing_tip_right",
+)
+
+
+def _winged_biped_bone_name_for_vertex(
+    world_position: Vector,
+    minimum: Vector,
+    maximum: Vector,
+    object_name: str,
+) -> str:
+    """Assign one full semantic influence to a winged/digitigrade biped vertex."""
+
+    if object_name in WINGED_BIPED_BONE_NAMES:
+        return object_name
+    dimensions = maximum - minimum
+    centre = (minimum + maximum) * 0.5
+    height = max(float(dimensions.z), 1e-6)
+    length = max(float(dimensions.y), 1e-6)
+    width = max(float(dimensions.x), 1e-6)
+    z_fraction = (world_position.z - minimum.z) / height
+    y_fraction = (world_position.y - centre.y) / length
+    x_fraction = (world_position.x - centre.x) / width
+    side = "left" if x_fraction < 0.0 else "right"
+    abs_x = abs(x_fraction)
+
+    # The reference and the HOI4 unit axes use -Y as forward. Rearward,
+    # elevated geometry is therefore the folded wing plane, not a tail.
+    if abs_x > 0.25 and y_fraction > 0.06 and z_fraction > 0.48:
+        if abs_x > 0.58:
+            return f"wing_tip_{side}"
+        if abs_x > 0.38:
+            return f"wing_mid_{side}"
+        return f"wing_root_{side}"
+    if z_fraction > 0.82:
+        return "head"
+    if z_fraction > 0.67 and y_fraction < 0.04:
+        return "neck"
+    if 0.28 < z_fraction < 0.72 and 0.13 < abs_x < 0.58:
+        return f"upper_arm_{side}" if z_fraction > 0.48 else f"lower_arm_{side}"
+    if z_fraction < 0.13 and abs_x > 0.08:
+        return f"foot_{side}"
+    if z_fraction < 0.48 and abs_x > 0.09:
+        return f"upper_leg_{side}" if z_fraction > 0.22 else f"lower_leg_{side}"
+    if z_fraction > 0.45:
+        return "spine"
+    return "pelvis"
+
+
+def author_winged_biped_rig(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Create a custom rigid-semantic rig for a winged/digitigrade biped."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    rig_name = safe_name(str(payload.get("rig_name") or "winged_biped_armature"))
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    working = mesh_objects()
+    if not working:
+        raise RuntimeError("Winged biped rigging found no working meshes.")
+    for rig in armatures():
+        bpy.data.objects.remove(rig, do_unlink=True)
+    minimum, maximum = world_bounds(working)
+    dimensions = maximum - minimum
+    centre = (minimum + maximum) * 0.5
+    height = max(float(dimensions.z), 1e-6)
+    length = max(float(dimensions.y), 1e-6)
+    width = max(float(dimensions.x), 1e-6)
+    z0 = minimum.z
+    y_front = centre.y - length * 0.06
+    y_rear = centre.y + length * 0.10
+    armature_data = bpy.data.armatures.new(rig_name)
+    rig = bpy.data.objects.new(rig_name, armature_data)
+    _working_collection().objects.link(rig)
+    rig["chaosx_working"] = True
+    rig["chaosx_custom_creature_rig"] = True
+    rig["chaosx_creature_rig_family"] = "winged_biped"
+    bpy.context.view_layer.objects.active = rig
+    rig.select_set(True)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bones: Dict[str, bpy.types.EditBone] = {}
+
+    def add_bone(name: str, head: Vector, tail: Vector, parent: str | None = None) -> None:
+        bone = armature_data.edit_bones.new(name)
+        bone.head = head
+        bone.tail = tail
+        if parent:
+            bone.parent = bones[parent]
+            bone.use_connect = False
+        bones[name] = bone
+
+    add_bone("root", Vector((centre.x, centre.y, z0)), Vector((centre.x, centre.y, z0 + height * 0.12)))
+    add_bone("pelvis", Vector((centre.x, centre.y, z0 + height * 0.30)), Vector((centre.x, centre.y, z0 + height * 0.46)), "root")
+    add_bone("spine", Vector((centre.x, centre.y, z0 + height * 0.44)), Vector((centre.x, centre.y, z0 + height * 0.67)), "pelvis")
+    add_bone("neck", Vector((centre.x, y_front, z0 + height * 0.64)), Vector((centre.x, y_front, z0 + height * 0.76)), "spine")
+    add_bone("head", Vector((centre.x, y_front, z0 + height * 0.74)), Vector((centre.x, y_front - length * 0.10, z0 + height * 0.84)), "neck")
+    for side, sign in (("left", -1.0), ("right", 1.0)):
+        shoulder = Vector((centre.x + sign * width * 0.20, centre.y - length * 0.01, z0 + height * 0.64))
+        elbow = Vector((centre.x + sign * width * 0.34, centre.y - length * 0.04, z0 + height * 0.46))
+        wrist = Vector((centre.x + sign * width * 0.40, centre.y - length * 0.07, z0 + height * 0.28))
+        hand = Vector((centre.x + sign * width * 0.41, centre.y - length * 0.11, z0 + height * 0.20))
+        add_bone(f"upper_arm_{side}", shoulder, elbow, "spine")
+        add_bone(f"lower_arm_{side}", elbow, wrist, f"upper_arm_{side}")
+        add_bone(f"hand_{side}", wrist, hand, f"lower_arm_{side}")
+        hip = Vector((centre.x + sign * width * 0.13, centre.y + length * 0.01, z0 + height * 0.43))
+        knee = Vector((centre.x + sign * width * 0.16, centre.y - length * 0.02, z0 + height * 0.23))
+        ankle = Vector((centre.x + sign * width * 0.16, centre.y - length * 0.08, z0 + height * 0.08))
+        foot = Vector((centre.x + sign * width * 0.16, centre.y - length * 0.16, z0 + height * 0.04))
+        add_bone(f"upper_leg_{side}", hip, knee, "pelvis")
+        add_bone(f"lower_leg_{side}", knee, ankle, f"upper_leg_{side}")
+        add_bone(f"foot_{side}", ankle, foot, f"lower_leg_{side}")
+        wing_root = Vector((centre.x + sign * width * 0.17, y_rear, z0 + height * 0.63))
+        wing_mid = Vector((centre.x + sign * width * 0.40, y_rear + length * 0.03, z0 + height * 0.73))
+        wing_tip = Vector((centre.x + sign * width * 0.68, y_rear + length * 0.06, z0 + height * 0.80))
+        add_bone(f"wing_root_{side}", wing_root, wing_mid, "spine")
+        add_bone(f"wing_mid_{side}", wing_mid, wing_tip, f"wing_root_{side}")
+        add_bone(f"wing_tip_{side}", wing_tip, wing_tip + Vector((sign * width * 0.12, length * 0.02, height * 0.02)), f"wing_mid_{side}")
+    bpy.ops.object.mode_set(mode="OBJECT")
+    rig.show_in_front = True
+    armature_data.display_type = "BBONE"
+    records = []
+    for obj in working:
+        for group in list(obj.vertex_groups):
+            obj.vertex_groups.remove(group)
+        groups = {bone.name: obj.vertex_groups.new(name=bone.name) for bone in armature_data.bones}
+        counts: Dict[str, int] = {name: 0 for name in groups}
+        for vertex in obj.data.vertices:
+            bone_name = _winged_biped_bone_name_for_vertex(
+                obj.matrix_world @ vertex.co,
+                minimum,
+                maximum,
+                obj.name,
+            )
+            if bone_name not in groups:
+                bone_name = "spine"
+            groups[bone_name].add([vertex.index], 1.0, "REPLACE")
+            counts[bone_name] += 1
+        modifier = next((item for item in obj.modifiers if item.type == "ARMATURE"), None)
+        if modifier is None:
+            modifier = obj.modifiers.new("CHAOSX_CREATURE_ARMATURE", "ARMATURE")
+        modifier.object = rig
+        world_matrix = obj.matrix_world.copy()
+        obj.parent = rig
+        obj.parent_type = "OBJECT"
+        obj.matrix_world = world_matrix
+        records.append(
+            {
+                "object": obj.name,
+                "bone": "spatial_semantic_weights",
+                "vertices": len(obj.data.vertices),
+                "vertex_group_counts": {name: count for name, count in counts.items() if count},
+            }
+        )
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "armature": rig.name,
+        "bones": [bone.name for bone in armature_data.bones],
+        "component_bindings": records,
+        "creature_rig_family": "winged_biped",
+        "rig_map": f"{rig_name}_winged_biped_semantic_bones_v1",
+        "weight_policy": "one full influence per vertex; spatial semantic wings, limbs, head, spine, and pelvis",
+        "status": "pass",
+    }
+    report_path = job / "blender" / "reports" / "creature_rig.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
 def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
     """Create a bounded creature armature and bind the approved mesh to semantic bones."""
 
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
+    if str(payload.get("creature_rig_family") or "elephant").casefold() == "winged_biped":
+        return author_winged_biped_rig(req)
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     rider_names = {str(name) for name in payload.get("rider_component_names", [])}
@@ -3403,11 +3692,201 @@ def _action_delta(axis: str, degrees: float) -> Quaternion:
     return Quaternion(vector, math.radians(degrees))
 
 
+def author_winged_biped_action(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Author a real skeletal action on the winged/digitigrade biped rig."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    role = str(payload.get("action_role") or "").casefold()
+    action_name = safe_name(str(payload.get("action_name") or f"winged_biped_{role}"))
+    if role not in {"idle", "move", "attack", "death"}:
+        raise ValueError(f"Unsupported winged biped action role: {role}")
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError(f"Winged biped action authoring requires exactly one armature, found {len(rigs)}.")
+    rig = rigs[0]
+    rig.animation_data_create()
+    action = bpy.data.actions.get(action_name)
+    if action is not None:
+        bpy.data.actions.remove(action)
+    action = bpy.data.actions.new(action_name)
+    action.use_fake_user = True
+    rig.animation_data.action = action
+    if role == "idle":
+        frames = [0, 12, 24, 36, 48]
+    elif role == "move":
+        frames = [0, 6, 12, 18, 24]
+    elif role == "attack":
+        frames = [0, 8, 16, 24, 32]
+    else:
+        frames = [0, 12, 24, 36]
+    scene = bpy.context.scene
+    scene.render.fps = int(payload.get("fps") or 30)
+    scene.frame_start = frames[0]
+    scene.frame_end = frames[-1]
+    base = {
+        bone.name: (bone.location.copy(), bone.rotation_quaternion.copy())
+        for bone in rig.pose.bones
+    }
+
+    def phase(frame: int) -> float:
+        span = max(frames[-1] - frames[0], 1)
+        if role in {"idle", "move"}:
+            return math.sin(2.0 * math.pi * (frame - frames[0]) / span)
+        return (frame - frames[0]) / span
+
+    def rotate(name: str, axis: str, degrees: float, value: float) -> None:
+        bone = rig.pose.bones.get(name)
+        if bone is None:
+            return
+        bone.rotation_mode = "QUATERNION"
+        bone.rotation_quaternion = base[name][1] @ _action_delta(axis, degrees * value)
+
+    keyed = 0
+    for frame in frames:
+        scene.frame_set(frame)
+        p = phase(frame)
+        for bone in rig.pose.bones:
+            bone.rotation_mode = "QUATERNION"
+            bone.location = base[bone.name][0].copy()
+            bone.rotation_quaternion = base[bone.name][1].copy()
+        if role == "idle":
+            rotate("spine", "x", 1.5, p)
+            rotate("neck", "x", 2.5, p)
+            rotate("head", "z", 1.5, p)
+            for side in ("left", "right"):
+                rotate(f"wing_mid_{side}", "z", 2.0, p)
+                rotate(f"wing_tip_{side}", "z", 3.0, p)
+        elif role == "move":
+            for side, sign in (("left", 1.0), ("right", -1.0)):
+                gait = sign * p
+                rotate(f"upper_leg_{side}", "x", 8.0, gait)
+                rotate(f"lower_leg_{side}", "x", -5.0, gait)
+                rotate(f"foot_{side}", "x", 2.5, gait)
+                rotate(f"upper_arm_{side}", "x", -5.5, gait)
+                rotate(f"lower_arm_{side}", "x", 3.0, gait)
+                rotate(f"wing_mid_{side}", "z", 1.0, p)
+                rotate(f"wing_tip_{side}", "z", 1.5, p)
+            rotate("spine", "x", 2.0, p)
+            rotate("head", "z", 1.0, p)
+        elif role == "attack":
+            rotate("spine", "x", -10.0, p)
+            rotate("neck", "x", -8.0, p)
+            rotate("head", "x", -12.0, p)
+            for side, sign in (("left", 1.0), ("right", -1.0)):
+                rotate(f"upper_arm_{side}", "x", -28.0, p)
+                rotate(f"lower_arm_{side}", "x", -20.0, p)
+                rotate(f"hand_{side}", "z", 8.0 * sign, p)
+                rotate(f"wing_root_{side}", "z", 12.0 * sign, p)
+                rotate(f"wing_mid_{side}", "z", 20.0 * sign, p)
+                rotate(f"wing_tip_{side}", "z", 25.0 * sign, p)
+            rotate("upper_leg_left", "x", -5.0, p)
+            rotate("upper_leg_right", "x", -5.0, p)
+        else:
+            rotate("spine", "x", -42.0, p)
+            rotate("neck", "x", -28.0, p)
+            rotate("head", "x", -22.0, p)
+            for side, sign in (("left", 1.0), ("right", -1.0)):
+                rotate(f"upper_arm_{side}", "z", 24.0 * sign, p)
+                rotate(f"lower_arm_{side}", "z", 18.0 * sign, p)
+                rotate(f"wing_root_{side}", "z", -18.0 * sign, p)
+                rotate(f"wing_mid_{side}", "z", -26.0 * sign, p)
+                rotate(f"wing_tip_{side}", "z", -32.0 * sign, p)
+                rotate(f"upper_leg_{side}", "x", 10.0, p)
+                rotate(f"lower_leg_{side}", "x", 12.0, p)
+        for bone in rig.pose.bones:
+            bone.keyframe_insert(data_path="location", frame=frame, group=bone.name)
+            bone.keyframe_insert(data_path="rotation_quaternion", frame=frame, group=bone.name)
+            keyed += 1
+    for fcurve, _ in action_fcurves(action):
+        for keyframe in fcurve.keyframe_points:
+            keyframe.interpolation = "LINEAR"
+
+    if rig.pose.bones.get("root") is None:
+        raise RuntimeError("Winged biped action authoring requires a root bone.")
+    base_rig_location = rig.location.copy()
+    ground_samples_before = []
+    for frame in range(frames[0], frames[-1] + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        minimum, maximum = evaluated_world_bounds(mesh_objects())
+        ground_samples_before.append({"frame": frame, "ground_contact_z": float(minimum.z), "bounds_max_z": float(maximum.z)})
+    corrections = []
+    for frame in range(frames[0], frames[-1] + 1):
+        scene.frame_set(frame)
+        # Measure each pose from the uncorrected armature location.  Without
+        # this reset, previously keyed offsets are included in the next sample
+        # and the correction drifts instead of remaining an absolute offset.
+        rig.location = base_rig_location.copy()
+        bpy.context.view_layer.update()
+        minimum, _ = evaluated_world_bounds(mesh_objects())
+        correction = max(0.0, -float(minimum.z) - 0.01)
+        # Mesh objects are parented to the armature object in the custom route.
+        # Keying the root pose bone alone does not translate the evaluated object
+        # bounds, so ground correction must be authored on the armature object.
+        rig.location = base_rig_location.copy()
+        rig.location.z = base_rig_location.z + correction
+        rig.keyframe_insert(data_path="location", index=2, frame=frame, group=rig.name)
+        corrections.append(correction)
+    for fcurve, _ in action_fcurves(action):
+        if fcurve.data_path.endswith(".location") and fcurve.array_index == 2:
+            for keyframe in fcurve.keyframe_points:
+                keyframe.interpolation = "LINEAR"
+            fcurve.update()
+    ground_samples_after = []
+    for frame in range(frames[0], frames[-1] + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        minimum, maximum = evaluated_world_bounds(mesh_objects())
+        ground_samples_after.append({"frame": frame, "ground_contact_z": float(minimum.z), "bounds_max_z": float(maximum.z)})
+    minimum_ground = min(item["ground_contact_z"] for item in ground_samples_after)
+    maximum_ground = max(item["ground_contact_z"] for item in ground_samples_after)
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "armature": rig.name,
+        "action": action.name,
+        "role": role,
+        "frame_start": frames[0],
+        "frame_end": frames[-1],
+        "fps": scene.render.fps,
+        "loop": role in {"idle", "move"},
+        "keyed_bones": keyed,
+        "keyed_channels": keyed * 2,
+        "ground_contact": {
+            "minimum_z": minimum_ground,
+            "maximum_z": maximum_ground,
+            "sample_count": len(ground_samples_after),
+            "samples_before": ground_samples_before,
+            "samples_after": ground_samples_after,
+        },
+        "grounding_correction": {
+            "applied": any(value > 0.0 for value in corrections),
+            "maximum_translation_m": max(corrections, default=0.0),
+            "samples_before": ground_samples_before,
+            "samples_after": ground_samples_after,
+        },
+        "creature_rig_family": "winged_biped",
+        "policy": "blender-authored-winged-biped-semantic-skeletal-action-no-scale-channels",
+        "status": "pass" if minimum_ground >= -0.01 else "needs_grounding_review",
+    }
+    report_path = job / "blender" / "reports" / f"creature_action_{safe_name(role)}.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
 def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
     """Author one semantic skeletal action for the custom creature rig."""
 
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
+    if str(payload.get("creature_rig_family") or "elephant").casefold() == "winged_biped":
+        return author_winged_biped_action(req)
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     role = str(payload.get("action_role") or "").casefold()
@@ -3792,6 +4271,96 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
+def offset_action_root(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Apply a bounded source-space root offset to an existing action frame range."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    action_name = str(payload.get("action_name") or "")
+    frame_start = int(payload.get("frame_start"))
+    frame_end = int(payload.get("frame_end"))
+    offset_source_units = float(payload.get("offset_source_units") or 0.0)
+    axis_index = int(payload.get("axis_index", 1))
+    if not action_name:
+        raise ValueError("Root offset requires an action name.")
+    if frame_end < frame_start:
+        raise ValueError("Root offset frame_end must not precede frame_start.")
+    if axis_index not in {0, 1, 2}:
+        raise ValueError("Root offset axis_index must be 0, 1, or 2.")
+
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError(f"Root offset requires exactly one working armature, found {len(rigs)}.")
+    rig = rigs[0]
+    action = bpy.data.actions.get(action_name)
+    if action is None:
+        action = next(
+            (
+                candidate
+                for candidate in bpy.data.actions
+                if candidate.name.casefold() == action_name.casefold()
+            ),
+            None,
+        )
+    if action is None:
+        raise RuntimeError(f"Requested action was not found: {action_name}")
+    root_bone_name = str(payload.get("root_bone") or "Hips")
+    rig.animation_data_create()
+    rig.animation_data.action = action
+    root = rig.pose.bones.get(root_bone_name)
+    if root is None:
+        raise RuntimeError(f"Root offset bone was not found: {root_bone_name}")
+
+    scene = bpy.context.scene
+    scene.frame_start = frame_start
+    scene.frame_end = frame_end
+    correction_curve = None
+    path = f'pose.bones["{root_bone_name}"].location'
+    for fcurve, _ in action_fcurves(action):
+        if fcurve.data_path == path and fcurve.array_index == axis_index:
+            correction_curve = fcurve
+            break
+    for frame in range(frame_start, frame_end + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        root.location[axis_index] = float(root.location[axis_index]) + offset_source_units
+        root.keyframe_insert(data_path="location", index=axis_index, frame=frame, group=root_bone_name)
+    if correction_curve is None:
+        for fcurve, _ in action_fcurves(action):
+            if fcurve.data_path == path and fcurve.array_index == axis_index:
+                correction_curve = fcurve
+                break
+    if correction_curve is not None:
+        correction_curve.update()
+    scene.frame_set(frame_start)
+    bpy.context.view_layer.update()
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "action": action.name,
+        "root_bone": root_bone_name,
+        "axis_index": axis_index,
+        "frame_start": frame_start,
+        "frame_end": frame_end,
+        "offset_source_units": offset_source_units,
+        "corrected_frames": frame_end - frame_start + 1,
+        "policy": "bounded_existing_action_root_frame_offset_for_export_reimport_contact",
+        "body_motion_replaced": False,
+        "new_model_created": False,
+        "new_rig_created": False,
+        "new_provider_call": False,
+        "warnings": [],
+    }
+    report_path = job / "blender" / "reports" / f"offset_action_root_{safe_name(action.name)}.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
 def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
@@ -4018,7 +4587,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate"}:
+    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -4034,6 +4603,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return export_animation(req, pdx)
     if operation == "import_animation_action":
         return import_animation_action(req)
+    if operation == "retime_animation_action":
+        return retime_animation_action(req)
     if operation == "author_locomotion_action":
         return author_locomotion_action(req)
     if operation == "segment_creature_components":
@@ -4046,6 +4617,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return author_creature_action(req)
     if operation == "correct_action_grounding":
         return correct_action_grounding(req)
+    if operation == "offset_action_root":
+        return offset_action_root(req)
     if operation == "reimport_export":
         return reimport_export(req, pdx)
     if operation == "sanitize_runtime_candidate":

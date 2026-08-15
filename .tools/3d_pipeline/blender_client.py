@@ -203,6 +203,7 @@ class BlenderAdapterClient:
         rider_y_half_fraction: float = 0.42,
         rider_object_name: str = "elephant_rider_region",
         body_object_name: str = "elephant_body_region",
+        component_prefix: str = "elephant_component",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_segment_creature_components",
@@ -219,6 +220,7 @@ class BlenderAdapterClient:
                 "rider_y_half_fraction": rider_y_half_fraction,
                 "rider_object_name": rider_object_name,
                 "body_object_name": body_object_name,
+                "component_prefix": component_prefix,
             },
         )
 
@@ -251,6 +253,7 @@ class BlenderAdapterClient:
         rider_component_names: Optional[list[str]] = None,
         weight_mode: str = "semantic",
         rig_name: str = "",
+        creature_rig_family: str = "elephant",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_author_creature_rig",
@@ -261,6 +264,7 @@ class BlenderAdapterClient:
                 "rider_component_names": rider_component_names or [],
                 "weight_mode": weight_mode,
                 "rig_name": rig_name,
+                "creature_rig_family": creature_rig_family,
             },
         )
 
@@ -271,6 +275,7 @@ class BlenderAdapterClient:
         checkpoint_rel: str,
         action_role: str,
         action_name: str,
+        creature_rig_family: str = "elephant",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_author_creature_action",
@@ -280,6 +285,7 @@ class BlenderAdapterClient:
                 "checkpoint_rel": checkpoint_rel,
                 "action_role": action_role,
                 "action_name": action_name,
+                "creature_rig_family": creature_rig_family,
             },
         )
 
