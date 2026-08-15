@@ -1,0 +1,71 @@
+# Some AI fields reject script-constant tokens. These file-scoped values keep
+# the FER strategy parser-safe while matching its compact river-railway force.
+@CR_SC_IW_FER_ARMY = 86
+@CR_SC_IW_FER_PRODUCTION = 48
+@CR_SC_IW_FER_SUPPORT = 56
+@CR_SC_IW_FER_ARTILLERY = 30
+@CR_SC_IW_FER_INFRASTRUCTURE = 82
+@CR_SC_IW_FER_DEFENSE = 70
+@CR_SC_IW_FER_EMERGENCY = 122
+@CR_SC_IW_FER_FOUNDING_RESTRAINT = -270
+@CR_SC_IW_FER_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-057 FAR EASTERN REPUBLIC AI
+# ============================================================================
+# FER protects the single Far Eastern Republic anchor, invests in rail/depot continuity,
+# and avoids opportunistic wars until the former-host ledger and compact are
+# settled. Route decisions remain package-local decision/focus ownership.
+# ============================================================================
+
+independence_wave_fer_railway_port_survival = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_iw_057_setup_complete
+		has_country_flag = independence_wave_fer_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_FER_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_FER_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_FER_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_FER_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_FER_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_FER_DEFENSE }
+}
+
+independence_wave_fer_host_restraint = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_iw_057_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_fer_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_FER_FOUNDING_RESTRAINT }
+}
+
+independence_wave_fer_settled_compact = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_fer_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_FER_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_FER_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_FER_INFRASTRUCTURE }
+}
+
+independence_wave_fer_coastal_emergency_guard = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_fer_coastal_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_FER_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_FER_DEFENSE }
+}
+
