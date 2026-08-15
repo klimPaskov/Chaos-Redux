@@ -125,6 +125,7 @@ def _run(job_id: str, operation: str, payload: Dict[str, Any]) -> Dict[str, Any]
         command,
         cwd=str(REPO_ROOT),
         text=True,
+        stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         env=worker_env,
@@ -434,6 +435,30 @@ def chaosx_blender_hoi4_import_animation_action(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_retime_animation_action(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    action_name: str,
+    source_fps: float,
+    target_fps: float,
+) -> Dict[str, Any]:
+    """Retiming one existing skeletal action between explicit frame rates."""
+
+    return _run(
+        job_id,
+        "retime_animation_action",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_name": action_name,
+            "source_fps": source_fps,
+            "target_fps": target_fps,
+        },
+    )
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_author_locomotion_action(
     job_id: str,
     blend_rel: str,
@@ -467,6 +492,7 @@ def chaosx_blender_hoi4_segment_creature_components(
     rider_y_half_fraction: float = 0.42,
     rider_object_name: str = "elephant_rider_region",
     body_object_name: str = "elephant_body_region",
+    component_prefix: str = "elephant_component",
 ) -> Dict[str, Any]:
     """Split a nonhumanoid candidate into loose, rider-region, or semantic spatial components."""
 
@@ -485,6 +511,7 @@ def chaosx_blender_hoi4_segment_creature_components(
             "rider_y_half_fraction": rider_y_half_fraction,
             "rider_object_name": rider_object_name,
             "body_object_name": body_object_name,
+            "component_prefix": component_prefix,
         },
     )
 
@@ -521,6 +548,7 @@ def chaosx_blender_hoi4_author_creature_rig(
     rider_component_names: list[str] | None = None,
     weight_mode: str = "semantic",
     rig_name: str = "",
+    creature_rig_family: str = "elephant",
 ) -> Dict[str, Any]:
     """Create and checkpoint a bounded custom rig for a nonhumanoid creature candidate."""
 
@@ -533,6 +561,7 @@ def chaosx_blender_hoi4_author_creature_rig(
             "rider_component_names": rider_component_names or [],
             "weight_mode": weight_mode,
             "rig_name": rig_name,
+            "creature_rig_family": creature_rig_family,
         },
     )
 
@@ -544,6 +573,7 @@ def chaosx_blender_hoi4_author_creature_action(
     checkpoint_rel: str,
     action_role: str,
     action_name: str,
+    creature_rig_family: str = "elephant",
 ) -> Dict[str, Any]:
     """Author one real skeletal creature action and checkpoint its contact-checked result."""
 
@@ -555,6 +585,7 @@ def chaosx_blender_hoi4_author_creature_action(
             "checkpoint_rel": checkpoint_rel,
             "action_role": action_role,
             "action_name": action_name,
+            "creature_rig_family": creature_rig_family,
         },
     )
 
@@ -577,6 +608,54 @@ def chaosx_blender_hoi4_correct_action_grounding(
             "checkpoint_rel": checkpoint_rel,
             "action_name": action_name,
             "root_bone": root_bone,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_offset_action_root(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    action_name: str,
+    frame_start: int,
+    frame_end: int,
+    offset_source_units: float,
+    axis_index: int = 1,
+) -> Dict[str, Any]:
+    """Apply one bounded root-location offset to an existing action frame range."""
+
+    return _run(
+        job_id,
+        "offset_action_root",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_name": action_name,
+            "frame_start": frame_start,
+            "frame_end": frame_end,
+            "offset_source_units": offset_source_units,
+            "axis_index": axis_index,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_sanitize_runtime_candidate(
+    job_id: str,
+    blend_rel: str,
+    output_blend_rel: str = "blender/checkpoints/07_runtime_candidate_sanitized.blend",
+    target_height_m: Optional[float] = None,
+) -> Dict[str, Any]:
+    """Create a reviewable runtime checkpoint with bounded skin and material cleanup."""
+
+    return _run(
+        job_id,
+        "sanitize_runtime_candidate",
+        {
+            "blend_rel": blend_rel,
+            "output_blend_rel": output_blend_rel,
+            "target_height_m": target_height_m,
         },
     )
 

@@ -35,6 +35,7 @@ from lib.paths import (  # noqa: E402
     append_history,
     ensure_job_layout,
     file_record,
+    read_job_document,
     read_json,
     resolve_job_root,
     utc_now,
@@ -55,7 +56,8 @@ from pack_pdx_material import (  # noqa: E402
 
 
 STATIC_ASSET_KINDS = {"static", "building", "static_building"}
-REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "building", "static_building"}
+CREATURE_ASSET_KINDS = {"creature"}
+REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "creature", "building", "static_building"}
 
 
 def task_file(job: Path, stage: str) -> Path:
@@ -63,7 +65,7 @@ def task_file(job: Path, stage: str) -> Path:
 
 
 def read_job(job: Path) -> Dict[str, Any]:
-    return json.loads((job / "job.yaml").read_text(encoding="utf-8"))
+    return read_job_document(job / "job.yaml")
 
 
 def stage_vanilla_reference(job: Path, spec: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -450,9 +452,16 @@ def action_name_for_role(prep: Dict[str, Any], role: str) -> str:
     actions = prep.get("rig_and_actions", {}).get("actions", [])
     if not actions:
         raise RuntimeError(f"No Blender actions were imported for required role {role!r}.")
+    aliases = {
+        "death": ("death", "dead", "dying"),
+        "move": ("move", "walk", "run", "locomotion"),
+        "attack": ("attack", "strike", "combat"),
+        "idle": ("idle", "stand"),
+    }
+    role_terms = aliases.get(role.casefold(), (role.casefold(),))
     matches = [
         action for action in actions
-        if role.casefold() in str(action.get("name", "")).casefold()
+        if any(term in str(action.get("name", "")).casefold() for term in role_terms)
     ]
     working_matches = [
         action for action in matches
@@ -583,7 +592,7 @@ def _apply_runtime_diffuse_grade(
     gamma = float(spec.get("runtime_diffuse_gamma", 1.0))
     if gamma <= 0.0:
         raise ValueError("runtime_diffuse_gamma must be greater than zero.")
-    if abs(gamma - 1.0) < 1e-9 or spec["asset_kind"] != "humanoid":
+    if abs(gamma - 1.0) < 1e-9 or spec["asset_kind"] not in {"humanoid", "creature"}:
         return textures
 
     provider_sources = dict(
@@ -680,7 +689,7 @@ def finalize_pdx_runtime_textures(
         or spec.get("texture_source_rels")
         or {}
     )
-    if spec["asset_kind"] == "humanoid":
+    if spec["asset_kind"] in {"humanoid", "creature"}:
         # The preview binding deliberately uses roughness.png. The runtime
         # binding must always go back to the provider metallic/roughness source
         # so the PDX packed channels cannot silently be replaced by gray RGB.
@@ -693,9 +702,9 @@ def finalize_pdx_runtime_textures(
                 )
             provider_sources["specular"] = str(candidate.relative_to(job)).replace("\\", "/")
     image_names = {
-        "diffuse": "texture_0" if spec["asset_kind"] == "humanoid" else "Image_0",
-        "specular": "texture_specular" if spec["asset_kind"] == "humanoid" else "Image_1",
-        "normal": "texture_normal" if spec["asset_kind"] == "humanoid" else "Image_2",
+        "diffuse": "texture_0" if spec["asset_kind"] in {"humanoid", "creature"} else "Image_0",
+        "specular": "texture_specular" if spec["asset_kind"] in {"humanoid", "creature"} else "Image_1",
+        "normal": "texture_normal" if spec["asset_kind"] in {"humanoid", "creature"} else "Image_2",
     }
     specular_rel = provider_sources.get("specular")
     if specular_rel:
@@ -794,7 +803,7 @@ def run_candidate(spec: Dict[str, Any]) -> Dict[str, Any]:
     runtime_footprint_policy = spec.get("runtime_footprint_policy", "reject")
     texture_sources = (
         prepare_pilot_texture_sources(job, spec)
-        if spec["asset_kind"] in STATIC_ASSET_KINDS
+        if spec["asset_kind"] in STATIC_ASSET_KINDS | {"humanoid", "creature"}
         else {}
     )
     prep = blender.prepare_candidate(
@@ -863,6 +872,123 @@ def continue_static(spec: Dict[str, Any]) -> Dict[str, Any]:
         details={"mesh": file_record(mesh_file, relative_to=job), "reimport": reimport},
     )
     return {"textures": textures, "export": exported, "reimport": reimport}
+
+
+def continue_creature(spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Build, rig, animate, export, and reimport a custom nonhumanoid unit."""
+
+    slug = spec["asset_id"].rsplit(".", 1)[-1]
+    job = ensure_job_layout(resolve_job_root(slug))
+    blender = BlenderAdapterClient(REPO_ROOT)
+    candidate_report = read_json(
+        job / "blender" / "reports" / f"{spec['runtime_stem']}_candidate_prepare.json"
+    )
+    source_checkpoint = candidate_report["checkpoints"]["pre_export"]
+    component_checkpoint = "blender/checkpoints/creature_components.blend"
+    components = blender.segment_creature_components(
+        slug,
+        source_checkpoint,
+        component_checkpoint,
+        region_mode="loose",
+        component_prefix=f"{spec['runtime_stem']}_component",
+    )
+    rig_checkpoint = "blender/checkpoints/creature_rig_approved.blend"
+    rig = blender.author_creature_rig(
+        slug,
+        component_checkpoint,
+        rig_checkpoint,
+        creature_rig_family=str(spec["creature_rig_family"]),
+        weight_mode="semantic",
+        rig_name=f"{spec['runtime_stem']}_armature",
+    )
+    current_checkpoint = rig_checkpoint
+    action_reports: Dict[str, Dict[str, Any]] = {}
+    for action in spec["required_actions"]:
+        role = str(action["role"])
+        checkpoint = f"blender/checkpoints/{role}_pre_export.blend"
+        action_name = f"{spec['runtime_stem']}_{role}"
+        authored = blender.author_creature_action(
+            slug,
+            current_checkpoint,
+            checkpoint,
+            role,
+            action_name,
+            creature_rig_family=str(spec["creature_rig_family"]),
+        )
+        if authored.get("status") != "pass":
+            raise RuntimeError(
+                f"Creature action {role} failed the grounding gate: "
+                f"{authored.get('status', 'unknown')}"
+            )
+        action_reports[role] = {
+            "required_role": role,
+            "action_name": authored["action"],
+            "source_checkpoint": current_checkpoint,
+            "checkpoint": checkpoint,
+            "authoring": authored,
+            "loop": bool(action.get("loop", role in {"idle", "move"})),
+            "frame_policy": action.get("frame_policy", "blender_authored_semantic_skeletal"),
+        }
+        current_checkpoint = checkpoint
+
+    prepare_pilot_texture_sources(job, spec)
+    textures = finalize_pdx_runtime_textures(
+        job,
+        spec,
+        blender.process_textures(slug, current_checkpoint),
+    )
+    mesh_rel = f"export/mesh/{spec['runtime_stem']}.mesh"
+    mesh_export = blender.export_mesh(slug, current_checkpoint, mesh_rel)
+    animation_exports: Dict[str, Dict[str, Any]] = {}
+    reimports: Dict[str, Any] = {}
+    for role, report in action_reports.items():
+        anim_rel = f"export/anim/{spec['runtime_stem']}_{role}.anim"
+        exported = blender.export_animation(
+            slug,
+            current_checkpoint,
+            str(report["action_name"]),
+            anim_rel,
+        )
+        animation_exports[role] = {"output_rel": anim_rel, "export": exported}
+        report["output_rel"] = anim_rel
+        report["export"] = exported
+        reimports[role] = blender.reimport_export(
+            slug,
+            mesh_rel,
+            anim_rel,
+            proof_name=f"{spec['runtime_stem']}_{role}",
+        )
+    mesh_file = job / mesh_rel
+    update_job(
+        job,
+        status="pdx_exported",
+        exports={
+            "mesh": mesh_rel,
+            "animations": {role: report["output_rel"] for role, report in action_reports.items()},
+        },
+    )
+    append_history(
+        job,
+        state="pdx_exported",
+        event="creature_mesh_exported",
+        actor="chaosx_3d_model_pipeline",
+        details={
+            "creature_rig_family": spec["creature_rig_family"],
+            "components": components,
+            "rig": rig,
+            "mesh": file_record(mesh_file, relative_to=job),
+            "reimport": reimports,
+        },
+    )
+    return {
+        "components": components,
+        "rig": rig,
+        "textures": textures,
+        "mesh_export": mesh_export,
+        "animation_exports": animation_exports,
+        "action_reports": action_reports,
+        "reimport": reimports,
+    }
 
 
 def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
@@ -1161,6 +1287,68 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         ),
     }
     required_roles = {item["role"] for item in spec["required_actions"]}
+
+    if "death" in required_roles:
+        death_source = animation_downloads.get("death", {}).get("file", {}).get("relative_path")
+        if not death_source:
+            raise RuntimeError("Required death animation was not downloaded from the provider.")
+        death_prep = blender.prepare_candidate(
+            slug,
+            source_rel=death_source,
+            asset_kind="humanoid",
+            target_height_m=spec.get("blender_target_height_m", spec["target_height_m"]),
+            runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
+            runtime_stem=f"{spec['runtime_stem']}_death",
+            target_triangles=profile["triangle_range"]["working_triangle_target"],
+            excluded_provider_objects=spec.get("excluded_provider_objects"),
+            vanilla_reference=vanilla_reference,
+            texture_source_rels=texture_sources,
+            geometry_source_rel=spec.get("geometry_source_rel"),
+            repair_before_reduction=True,
+            topology_weld_distance=0.0,
+        )
+        candidate_gate(
+            job,
+            death_prep,
+            hard_max=profile["triangle_range"]["hard_max"],
+            stage="animated_candidate_death",
+        )
+        blender.save_checkpoint(
+            slug,
+            death_prep["checkpoints"]["pre_export"],
+            "death_pre_export",
+        )
+        death_blend = "blender/checkpoints/death_pre_export.blend"
+        death_action_name = action_name_for_role(death_prep, "death")
+        death_anim_rel = f"export/anim/{spec['runtime_stem']}_death.anim"
+        death_anim_export = blender.export_animation(
+            slug,
+            death_blend,
+            death_action_name,
+            death_anim_rel,
+        )
+        action_reports["death"] = {
+            "required_role": "death",
+            "action_name": death_action_name,
+            "source_checkpoint": death_blend,
+            "export": death_anim_export,
+            "output_rel": death_anim_rel,
+            "loop": False,
+            "frame_policy": next(
+                item.get("frame_policy", "provider_native_fps_in_place")
+                for item in spec["required_actions"]
+                if item["role"] == "death"
+            ),
+        }
+        death_reimport = blender.reimport_export(
+            slug,
+            mesh_rel,
+            death_anim_rel,
+            proof_name=f"{spec['runtime_stem']}_death",
+        )
+    else:
+        death_reimport = None
+
     missing_roles = required_roles.difference(action_reports)
     if missing_roles:
         raise RuntimeError(
@@ -1192,6 +1380,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
                 "attack": attack_reimport,
                 "idle": idle_reimport,
                 "move": move_reimport,
+                "death": death_reimport,
             },
         },
     )
@@ -1206,12 +1395,289 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
             "attack": attack_reimport,
             "idle": idle_reimport,
             "move": move_reimport,
+            "death": death_reimport,
         },
     }
 
 
-def main() -> int:
+def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> Dict[str, Any]:
+    """Build a pilot spec from a repository-owned specialized zombie job manifest."""
+
+    asset_profiles = read_json(PIPELINE_ROOT / "config" / "asset_profiles.json")["profiles"]
+    job_profile_name = str(job.get("profile") or "humanoid_unit")
+    is_creature = job_profile_name.startswith("nonhumanoid")
+    profile_name = (
+        "nonhumanoid_winged_biped"
+        if job_profile_name in {"nonhumanoid_winged_creature", "nonhumanoid_winged_biped"}
+        else "nonhumanoid_creature"
+        if is_creature
+        else "humanoid_unit"
+    )
+    profile = asset_profiles[profile_name]
+    manifest_path = job_root / "refs" / "original" / "input_manifest.json"
+    manifest = read_json(manifest_path) if manifest_path.exists() else {}
+    brief_path = job_root / "refs" / "briefs" / "meshy_input_prompt.md"
+    brief = brief_path.read_text(encoding="utf-8") if brief_path.exists() else str(job.get("brief", ""))
+    provider_plan = job.get("provider_plan", {})
+    blender_plan = job.get("blender_plan", {})
+    vanilla_plan = blender_plan.get("vanilla_scale_reference", {})
+    vanilla_root = Path("C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV")
+    raw_vanilla_mesh = vanilla_plan.get("mesh") or profile["vanilla_reference"]["mesh"]
+    vanilla_mesh = Path(str(raw_vanilla_mesh))
+    if not vanilla_mesh.is_absolute():
+        vanilla_mesh = vanilla_root / vanilla_mesh
+    raw_vanilla_height = (
+        job.get("vanilla_height")
+        or blender_plan.get("target_height_m")
+        or profile["vanilla_reference"]["mesh_height"]
+    )
+    raw_entity_scale = (
+        job.get("entity_scale")
+        or blender_plan.get("runtime_entity_scale")
+        or profile["vanilla_reference"]["entity_scale"]
+    )
+    reference_path = str(
+        job.get("reference")
+        or job.get("meshy_input_gate", {}).get("image")
+        or "refs/original/meshy_input.png"
+    )
+    try:
+        vanilla_height = float(raw_vanilla_height)
+        entity_scale = float(raw_entity_scale)
+    except (TypeError, ValueError):
+        if not is_creature:
+            raise ValueError(
+                f"{slug} has a non-numeric humanoid scale crosswalk: "
+                f"vanilla_height={raw_vanilla_height!r}, entity_scale={raw_entity_scale!r}"
+            )
+        return {
+            "asset_id": f"chaosx.model.pilot.{slug}",
+            "asset_kind": "creature",
+            "profile": profile_name,
+            "reference_path": reference_path,
+            "reference_generator_output": None,
+            "reference_source_mode": manifest.get("source_mode", "native_imagegen_portrait_reference"),
+            "asset_brief": brief,
+            "runtime_stem": str(
+                job.get("runtime_stem")
+                or blender_plan.get("runtime_stem")
+                or f"chaosx_{slug}"
+            ),
+            "proposed_runtime_identifiers": {
+                "entity": str(
+                    job.get("entity")
+                    or job.get("runtime", {}).get("proposed_identifiers", {}).get("entity")
+                    or f"chaosx_{slug}_entity"
+                ),
+                "consumer": "land-unit entity",
+                "route": "custom creature rig",
+            },
+            "scale_crosswalk": job.get("scale_crosswalk"),
+            "_requires_reference_approval": True,
+            "_route_status": "pending_creature_scale_crosswalk",
+            "_route_blocker": (
+                "The job manifest intentionally has no numeric creature scale crosswalk. "
+                "Measure the approved creature against the installed infantry runtime reference "
+                "before enabling paid generation or export."
+            ),
+            "_job_root": str(job_root),
+        }
+    runtime_stem = str(job.get("runtime_stem") or blender_plan.get("runtime_stem") or f"chaosx_{slug}")
+    entity = str(
+        job.get("entity")
+        or job.get("runtime", {}).get("proposed_identifiers", {}).get("entity")
+        or f"{runtime_stem}_entity"
+    )
+    target_triangles = int(
+        job.get("target_triangles")
+        or provider_plan.get("target_polycount")
+        or profile["triangle_range"]["working_triangle_target"]
+    )
+    vanilla_reference = {
+        "mesh": str(vanilla_mesh),
+        "entity": profile["vanilla_reference"]["entity"],
+        "mesh_object_names": profile["vanilla_reference"]["mesh_object_names"],
+        "exclude_name_patterns": profile["vanilla_reference"]["exclude_name_patterns"],
+        "forward_axis": profile["vanilla_reference"]["forward_axis"],
+        "up_axis": profile["vanilla_reference"]["up_axis"],
+        "mesh_height": vanilla_height,
+        "entity_scale": entity_scale,
+        "runtime_height": vanilla_height * entity_scale,
+    }
+    creature_rig_family = (
+        str(
+            job.get("creature_rig_family")
+            or ("winged_biped" if job_profile_name in {"nonhumanoid_winged_creature", "nonhumanoid_winged_biped"} else "quadruped")
+        )
+        if is_creature
+        else "humanoid"
+    )
+    if is_creature and creature_rig_family != "winged_biped":
+        route_status = "pending_creature_rig_route"
+        route_blocker = (
+            f"The selected creature rig family {creature_rig_family!r} has no enabled generic pilot route."
+        )
+    else:
+        route_status = "ready"
+        route_blocker = None
+    required_components = (
+        [
+            "complete portrait-matched nonhumanoid body",
+            "attached wings and stable digitigrade silhouette",
+            "custom creature rig with rigid semantic components",
+        ]
+        if is_creature
+        else [
+            "complete portrait-matched humanoid body",
+            "distinctive specialized zombie silhouette",
+            "grounded riggable infantry proportions",
+        ]
+    )
+    required_actions = (
+        [
+            {"role": role, "provider_action_id": None, "task_type": "blender_authored_skeletal", "fps": int(job.get("fps", 30)), "loop": role in {"idle", "move"}, "root_policy": "in_place"}
+            for role in ("idle", "move", "attack", "death")
+        ]
+        if is_creature
+        else [
+            {"role": "idle", "provider_action_id": 0, "fps": 24, "loop": True, "root_policy": "in_place"},
+            {"role": "move", "provider_action_id": None, "task_type": "blender_authored_skeletal", "fps": 24, "loop": True, "root_policy": "in_place"},
+            {"role": "attack", "provider_action_id": 4, "fps": 24, "loop": False, "root_policy": "in_place"},
+            {"role": "death", "provider_action_id": 8, "fps": 24, "loop": False, "root_policy": "in_place"},
+        ]
+    )
+    return {
+        "asset_id": f"chaosx.model.pilot.{slug}",
+        "asset_kind": "creature" if is_creature else "humanoid",
+        "profile": profile_name,
+        "reference_path": reference_path,
+        "reference_generator_output": None,
+        "reference_source_mode": manifest.get("source_mode", "native_imagegen_portrait_reference"),
+        "asset_brief": brief,
+        "required_components": required_components,
+        "forbidden_additions": [
+            "weapons",
+            "extra characters",
+            "floating disconnected geometry",
+            "multi-view board",
+            "turnaround collage",
+            "text or watermark",
+        ],
+        "target_height_m": vanilla_height,
+        "blender_target_height_m": vanilla_height,
+        "blender_effective_runtime_height_m": vanilla_height * entity_scale,
+        "runtime_entity_scale": entity_scale,
+        "runtime_diffuse_gamma": profile.get("runtime_diffuse_gamma"),
+        "vanilla_scale_reference": vanilla_reference,
+        "target_polycount": target_triangles,
+        "meshy_ai_model": str(job.get("provider_model") or provider_plan.get("ai_model") or "meshy-6"),
+        "meshy_pose_mode": provider_plan.get("pose_mode"),
+        "image_to_3d_estimate_credits": 30,
+        "rig_estimate_credits": 5,
+        "animation_estimate_credits": 3,
+        "planned_total_credits": int(job.get("estimated_credits", 47)),
+        "texture_source_rels": {
+            "diffuse": "provider/downloads/generation_model_textures/base_color.png",
+            "normal": "provider/downloads/generation_model_textures/normal.png",
+            "specular": "provider/downloads/generation_model_textures/metallic_roughness.png",
+        },
+        "required_actions": required_actions,
+        "creature_rig_family": creature_rig_family,
+        "scale_crosswalk": job.get(
+            "scale_crosswalk",
+            "overall_creature_height_matches_western_european_infantry_runtime"
+            if is_creature
+            else None,
+        ),
+        "runtime_stem": runtime_stem,
+        "proposed_runtime_identifiers": {
+            "pdxmesh": f"{runtime_stem}_mesh",
+            "entity": entity,
+            "consumer": "land-unit entity",
+            "entity_scale": entity_scale,
+        },
+        "_requires_reference_approval": True,
+        "_route_status": route_status,
+        "_route_blocker": route_blocker,
+        "_job_root": str(job_root),
+    }
+
+
+def load_pilot_configs() -> Dict[str, Dict[str, Any]]:
+    """Load generic pilots and discover configured specialized zombie jobs."""
+
     configs = read_json(PIPELINE_ROOT / "config" / "pilot_jobs.json")["pilots"]
+    adapter_config = read_json(PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json")
+    for slug, raw_root in adapter_config.get("job_overrides", {}).items():
+        if slug in {"zombies", "wendigo_zombies"} or not slug.endswith("_zombies"):
+            continue
+        job_root = Path(str(raw_root)).resolve()
+        job_file = job_root / "job.yaml"
+        if not job_file.exists():
+            continue
+        job = read_job_document(job_file)
+        configs[slug] = _specialized_zombie_spec(slug, job_root, job)
+    return configs
+
+
+def require_reference_approval(spec: Dict[str, Any]) -> None:
+    """Block paid generation until the parent has accepted the exact provider image."""
+
+    if not spec.get("_requires_reference_approval"):
+        return
+    job_root = resolve_job_root(spec["asset_id"].rsplit(".", 1)[-1])
+    manifest_path = job_root / "refs" / "original" / "input_manifest.json"
+    manifest = read_json(manifest_path)
+    status = str(manifest.get("candidate_status", "needs_user_visual_approval"))
+    if status not in {"user_accepted", "accepted", "approved"}:
+        raise RuntimeError(
+            f"{job_root.name} reference status is {status!r}; paid generation requires explicit user visual approval."
+        )
+
+
+def require_route_ready(spec: Dict[str, Any]) -> None:
+    """Refuse a job whose asset class has not completed its calibrated route design."""
+
+    status = str(spec.get("_route_status", "ready"))
+    if status == "ready":
+        return
+    blocker = str(spec.get("_route_blocker") or "The selected asset route is not ready.")
+    raise RuntimeError(
+        f"{spec['asset_id']} is blocked before provider work: route_status={status}; {blocker}"
+    )
+
+
+def preflight_selected_credits(specs: List[Dict[str, Any]], phase: str) -> None:
+    """Check the full selected tranche before any paid provider call."""
+
+    if not specs:
+        return
+    estimates = []
+    for spec in specs:
+        if not spec.get("_requires_reference_approval"):
+            continue
+        estimate = (
+            int(spec["image_to_3d_estimate_credits"])
+            if phase == "candidate"
+            else int(spec.get("planned_total_credits", 47))
+        )
+        estimates.append((spec["asset_id"], estimate))
+    total = sum(value for _, value in estimates)
+    if total == 0:
+        return
+    result = MeshyClient(REPO_ROOT).check_balance()
+    balance = balance_value(result)
+    if balance is None:
+        raise RuntimeError("Meshy balance preflight returned no numeric balance.")
+    if balance < total:
+        breakdown = ", ".join(f"{asset}={estimate}" for asset, estimate in estimates)
+        raise RuntimeError(
+            f"Meshy batch gate refused paid work: balance={balance}, required={total}; {breakdown}"
+        )
+
+
+def main() -> int:
+    configs = load_pilot_configs()
     args = sys.argv[1:]
     all_assets = "--all" in args or not args
     assets = list(configs) if all_assets else [item for item in args if not item.startswith("-")]
@@ -1223,16 +1689,24 @@ def main() -> int:
     excluded = {"--all", "--phase", phase_value}
     results = []
     assets = [item for item in assets if item not in excluded]
+    selected_specs = [configs[item] for item in assets]
+    for spec in selected_specs:
+        require_route_ready(spec)
+        require_reference_approval(spec)
+    if phase in {"full", "candidate"}:
+        preflight_selected_credits(selected_specs, phase)
     for asset in assets:
         spec = configs[asset]
         initialize_one(spec)
         if phase in {"full", "candidate"}:
             candidate = run_candidate(spec)
             results.append({"asset": asset, "candidate": candidate})
-            if phase == "candidate":
-                continue
+        if phase == "candidate":
+            continue
         if spec["asset_kind"] in STATIC_ASSET_KINDS:
             results.append({"asset": asset, "continuation": continue_static(spec)})
+        elif spec["asset_kind"] in CREATURE_ASSET_KINDS:
+            results.append({"asset": asset, "continuation": continue_creature(spec)})
         else:
             results.append({"asset": asset, "continuation": continue_humanoid(spec)})
     print(json.dumps(results, indent=2, sort_keys=True))
