@@ -1,5 +1,7 @@
 # IW-053 Altai package audit — 2026-08-15
 
+> **Superseded by the package-local tranche:** This early registry/map-only audit predates the package-local ALT source committed as `d1dad8eb6`, the decision/category tranche committed as `9a4426865`, and the guarded shared-focus callbacks committed as `de917ef6f`. Its registry-only implementation claims below are historical. The current disposition remains fail-closed for central attestation, preflight, scenario admission, Join, portrait/rights, neutral flag provenance, and the p61 force-contract mismatch; use `006_iw053_altai_package_core_recovery_2026_08_15.md` for current source coverage and MCP evidence.
+
 ## Disposition
 
 IW-053 ALT remains registry/map-ready only and is fail-closed. No package-local gameplay, central adapter, content-attestation, normal or SCN-008 preflight, deterministic Join, portrait, flag, or country-history patch is justified by the current evidence.
