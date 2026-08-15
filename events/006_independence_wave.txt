@@ -81,87 +81,27 @@ news_event = {
 	option = { name = chaosx.nr6.35.a }
 }
 
-# Host-facing crisis handoff. The mission records the request before this
-# event is scheduled; this endpoint consumes the global queue and delegates to
-# the same standalone synchronized planner used by the normal root event. A
-# busy coordinator, joint presentation, or world-end barrier leaves the queue
-# pending for the bounded retry window instead of starting a second incident.
+# Retired pre-event crisis callback. The public Event 006 report is the first
+# player-facing entry point; this compatibility endpoint must never launch a
+# wave, apply pressure, create a queue, or expose a crisis indication. It only
+# clears stale flags left by older scripted references.
 country_event = {
 	id = chaosx.nr6.3
 	hidden = yes
 	is_triggered_only = yes
 
 	immediate = {
-		if = {
-			limit = {
-				has_global_flag = independence_wave_crisis_release_queued
-				has_country_flag = independence_wave_crisis_release_requester
-				can_independence_wave_crisis_release_barrier = yes
-			}
-			clr_global_flag = independence_wave_crisis_release_queued
-			independence_wave_prepare_and_execute_standalone_incident = yes
-			if = {
-				limit = { has_global_flag = independence_wave_standalone_incident_committed }
-				set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.committed }
-				set_global_flag = independence_wave_crisis_success_receipt
-				independence_wave_record_crisis_resolution_history = yes
-				set_global_flag = independence_wave_event_log_actor_ready
-				country_event = { id = chaosx.nr6.2 }
-			}
-			else = {
-				independence_wave_apply_crisis_blocked_consequence = yes
-			}
-			independence_wave_clear_crisis_retry = yes
-			clr_country_flag = independence_wave_crisis_release_requester
-		}
-		else_if = {
-			limit = {
-				has_global_flag = independence_wave_crisis_release_queued
-				has_country_flag = independence_wave_crisis_release_requester
-			}
-			if = {
-				limit = {
-					NOT = { has_variable = independence_wave_crisis_retry_count }
-				}
-				set_variable = { independence_wave_crisis_retry_count = 0 }
-			}
-			add_to_variable = { independence_wave_crisis_retry_count = 1 }
-			if = {
-				limit = {
-					check_variable = {
-						var = independence_wave_crisis_retry_count
-						value = constant:independence_wave_crisis_timing.retry_limit
-						compare = less_than
-					}
-				}
-				set_temp_variable = { independence_wave_crisis_retry_delay = constant:independence_wave_crisis_timing.retry_days }
-				country_event = {
-					id = chaosx.nr6.3
-					days = independence_wave_crisis_retry_delay
-				}
-			}
-			else = {
-				clr_global_flag = independence_wave_crisis_release_queued
-				independence_wave_apply_crisis_blocked_consequence = yes
-				independence_wave_clear_crisis_retry = yes
-				clr_country_flag = independence_wave_crisis_release_requester
-			}
-		}
-		else_if = {
-			limit = { has_global_flag = independence_wave_crisis_release_queued }
-			clr_global_flag = independence_wave_crisis_release_queued
-			# A queued callback can outlive its requester flag after a malformed
-			# scope handoff or interrupted save.  Resolve that defensive branch as
-			# an explicit unknown failure so the shared receipt/Event Log surface
-			# cannot retain a silent global queue.
-			set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.unknown }
-			set_variable = { global.independence_wave_last_crisis_host = THIS.id }
-			set_variable = { global.independence_wave_last_crisis_date = global.date }
-			set_global_flag = independence_wave_crisis_failure_receipt
-			independence_wave_clear_crisis_retry = yes
-			independence_wave_clear_crisis_runtime = yes
-			independence_wave_record_crisis_resolution_history = yes
-		}
+		clr_global_flag = independence_wave_crisis_release_queued
+		clr_global_flag = independence_wave_crisis_requester_lost
+		clr_global_flag = independence_wave_crisis_success_receipt
+		clr_global_flag = independence_wave_crisis_failure_receipt
+		clr_country_flag = independence_wave_crisis_release_requester
+		clr_country_flag = independence_wave_crisis_active
+		clr_country_flag = independence_wave_crisis_occupation_origin
+		clr_country_flag = independence_wave_crisis_stability_origin
+		clr_country_flag = independence_wave_crisis_blocked
+		clr_country_flag = independence_wave_crisis_abandoned
+		clear_variable = independence_wave_crisis_retry_count
 	}
 }
 
