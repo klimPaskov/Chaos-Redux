@@ -1,5 +1,7 @@
 # IW-057 Far Eastern Republic package audit
 
+> **Superseded note (2026-08-15):** The capital-563 policy blocker described in this audit was narrowed by `006_iw057_fer_capital_preflight_repair_2026_08_15.md`. The package-local pre-release gate now tolerates dormant vanilla capital 563 and runtime setup still requires the selected 408/409 anchor. The remaining identity, institutional-roster, neutral-flag, typed-probability, central-attestation, preflight, and Join blockers remain current.
+
 Date: 2026-08-15
 
 Disposition: HOLD / FAIL-CLOSED. This is a read-only package and source crosswalk audit. No gameplay, country, history, localization, asset, adapter, attestation, preflight, scenario, or Join source was changed.
