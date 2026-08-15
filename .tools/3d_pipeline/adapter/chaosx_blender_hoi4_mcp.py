@@ -378,6 +378,50 @@ def chaosx_blender_hoi4_process_textures(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_bake_static_mesh_transforms(
+    job_id: str,
+    blend_rel: str,
+    output_blend_rel: str,
+    asset_kind: str,
+    bounds_tolerance: float = 1e-5,
+) -> Dict[str, Any]:
+    """Bake transforms for approved static-building working meshes only."""
+
+    return _run(
+        job_id,
+        "bake_static_mesh_transforms",
+        {
+            "blend_rel": blend_rel,
+            "output_blend_rel": output_blend_rel,
+            "asset_kind": asset_kind,
+            "bounds_tolerance": bounds_tolerance,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_partition_static_mesh_export_batches(
+    job_id: str,
+    blend_rel: str,
+    output_blend_rel: str,
+    asset_kind: str,
+    max_export_vertices_per_batch: int = 60000,
+) -> Dict[str, Any]:
+    """Partition a static building into bounded material-backed PDX mesh streams."""
+
+    return _run(
+        job_id,
+        "partition_static_mesh_export_batches",
+        {
+            "blend_rel": blend_rel,
+            "output_blend_rel": output_blend_rel,
+            "asset_kind": asset_kind,
+            "max_export_vertices_per_batch": max_export_vertices_per_batch,
+        },
+    )
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_export_mesh(
     job_id: str,
     blend_rel: str,
