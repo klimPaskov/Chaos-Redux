@@ -1,5 +1,7 @@
 # IW-057 Far Eastern Republic package core handoff
 
+> **Superseded note (2026-08-15):** The dormant-capital preflight wording below is historical for the pre-repair source. `006_iw057_fer_capital_preflight_repair_2026_08_15.md` records the current bounded trigger behavior: dormant vanilla capital 563 is accepted only before shared execution reanchors the runtime country to ordered state 408 or 409. Identity, roster, flag, probability, central-attestation, preflight, and Join gates remain unresolved.
+
 ## Disposition
 
 IW-057 FER is package-local and HOLD/FAIL-CLOSED. The source-backed adapter is implemented behind explicit parent-owned identity, rights, roster, capital, and origin gates. Central attestation, normal/scenario preflight, dispatcher, Join, vanilla FER history, portraits, flags, and cosmetic tags were intentionally left untouched.
