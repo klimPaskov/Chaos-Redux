@@ -10,12 +10,14 @@ Status: COMPLETE for the requested archive layout. This is an asset-organization
 
 ## Current layout receipt
 
-- Direct parent files: 53.
+- Direct parent files: 54.
 - Direct child directories: `processed` only.
 - Nested directories below `processed`: 0.
-- Files below `processed`: 169.
+- Files below `processed`: 175.
 - Files whose names contain `156x210`: 0.
 - Duplicate SHA-256 hashes among direct parent source files: 0.
+
+The current recursive archive total is 229 files.
 
 The parent is therefore the ComfyUI source shelf, while `processed/` is the only location for crops, review images, manifests, provenance records, and other derived evidence. No 156x210 derivative is retained in this archive.
 
