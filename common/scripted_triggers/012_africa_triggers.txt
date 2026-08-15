@@ -186,13 +186,15 @@ africa_is_compact_host_playbook_country = {
 }
 
 # COUNTRY scope during the fire-once selection pass. A candidate host is only
-# valid when its mapped overlay contains another real African-rooted government.
-# This is a one-shot selection query, not a recurring world scan.
+# valid when its mapped overlay contains enough real African-rooted governments
+# to satisfy the frozen opening roster. This is a one-shot selection query, not
+# a recurring world scan.
 africa_has_prefire_opening_contact = {
 	OR = {
 		AND = {
 			OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT }
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = { original_tag = MOR original_tag = ALG original_tag = TUN original_tag = LBA original_tag = MRT original_tag = EGY }
@@ -205,6 +207,7 @@ africa_has_prefire_opening_contact = {
 				africa_is_sao_tome_signature_country = yes
 			}
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = {
@@ -218,6 +221,7 @@ africa_has_prefire_opening_contact = {
 		AND = {
 			OR = { original_tag = MLI original_tag = NGR original_tag = VOL original_tag = CHA }
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = { original_tag = SUD original_tag = SEN original_tag = MLI original_tag = MRT original_tag = NGR original_tag = VOL original_tag = CHA original_tag = NGA original_tag = CMR }
@@ -226,6 +230,7 @@ africa_has_prefire_opening_contact = {
 		AND = {
 			OR = { original_tag = ETH original_tag = EGY original_tag = SUD original_tag = SOM original_tag = ERI original_tag = DJI }
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = { original_tag = EGY original_tag = SUD original_tag = ETH original_tag = SOM original_tag = ERI original_tag = DJI original_tag = UGA original_tag = KEN }
@@ -234,6 +239,7 @@ africa_has_prefire_opening_contact = {
 		AND = {
 			OR = { original_tag = COG original_tag = ANG original_tag = RCG original_tag = CMR original_tag = GAB original_tag = EQG }
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = { original_tag = COG original_tag = RCG original_tag = ANG original_tag = CMR original_tag = GAB original_tag = EQG original_tag = ZAM }
@@ -242,6 +248,7 @@ africa_has_prefire_opening_contact = {
 		AND = {
 			OR = { original_tag = UGA original_tag = RWA original_tag = BRD }
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = { original_tag = UGA original_tag = RWA original_tag = BRD original_tag = COG original_tag = TZN original_tag = KEN }
@@ -250,6 +257,7 @@ africa_has_prefire_opening_contact = {
 		AND = {
 			OR = { original_tag = KEN original_tag = TZN original_tag = MZB original_tag = ELX }
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = { original_tag = KEN original_tag = UGA original_tag = TZN original_tag = SOM original_tag = MZB original_tag = ELX original_tag = FAX original_tag = MAD }
@@ -258,6 +266,7 @@ africa_has_prefire_opening_contact = {
 		AND = {
 			OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = BOT original_tag = HZX original_tag = EUX }
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = { original_tag = SAF original_tag = ZIM original_tag = ZAM original_tag = MLW original_tag = MZB original_tag = BOT original_tag = HZX original_tag = EUX original_tag = ANG }
@@ -270,6 +279,7 @@ africa_has_prefire_opening_contact = {
 				africa_is_reunion_signature_country = yes
 			}
 			any_country = {
+				count = constant:africa_opening_contact.minimum_frozen_contacts
 				africa_is_valid_relationship_target = yes
 				NOT = { tag = PREV }
 				OR = {
@@ -425,8 +435,9 @@ africa_automatic_event_is_available = {
 }
 
 # Any scope. Event Details keeps the absolute Africa lifecycle gates and
-# excludes a stale already-committed host before the manual prefire builder
-# performs its stricter three-contact roster probe.
+# excludes a stale already-committed host. Host eligibility already proves the
+# minimum contact roster, while the South African route additionally proves a
+# valid patron through its narrow shared-entry trigger.
 africa_manual_event_is_available = {
 	NOT = { has_global_flag = africa_event_active }
 	NOT = { has_global_flag = africa_event_resolved }
