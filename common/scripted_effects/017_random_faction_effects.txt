@@ -147,7 +147,7 @@ random_faction_prepare_runtime_context = {
 
 random_faction_add_current_leader_to_option_pool = {
 	set_temp_variable = { random_faction_leader_weight = constant:random_faction_ai_weight.medium }
-	if = { limit = { any_country = { is_in_faction_with = PREV is_neighbor_of = ROOT } } add_to_temp_variable = { random_faction_leader_weight = constant:random_faction_ai_weight.high } }
+	if = { limit = { any_country = { is_in_faction_with = PREV is_neighbor_of = PREV.PREV } } add_to_temp_variable = { random_faction_leader_weight = constant:random_faction_ai_weight.high } }
 	if = { limit = { has_war = yes } add_to_temp_variable = { random_faction_leader_weight = constant:random_faction_ai_weight.low } }
 	clamp_temp_variable = { var = random_faction_leader_weight min = constant:random_faction_ai_weight.low max = constant:random_faction_ai_weight.urgent }
 	while_loop_effect = {
@@ -174,7 +174,7 @@ random_faction_collect_faction_options = {
 			}
 		}
 		every_country = {
-			limit = { random_faction_is_valid_faction_leader_for_root_target = yes }
+			limit = { random_faction_is_valid_faction_leader_for_prev_target = yes }
 			random_faction_add_current_leader_to_option_pool = yes
 		}
 	}
@@ -182,10 +182,10 @@ random_faction_collect_faction_options = {
 		limit = { check_variable = { random_faction_option_pool_count > 0 } }
 		random_scope_in_array = {
 			array = random_faction_option_pool
-			limit = { random_faction_is_valid_faction_leader_for_root_target = yes }
+			limit = { random_faction_is_valid_faction_leader_for_prev_target = yes }
 			save_event_target_as = random_faction_option_1_leader
 			add_to_temp_array = { random_faction_selected_options = THIS }
-			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+			PREV = { add_to_variable = { random_faction_option_count = 1 } }
 		}
 	}
 	if = {
@@ -193,12 +193,12 @@ random_faction_collect_faction_options = {
 		random_scope_in_array = {
 			array = random_faction_option_pool
 			limit = {
-				random_faction_is_valid_faction_leader_for_root_target = yes
+				random_faction_is_valid_faction_leader_for_prev_target = yes
 				NOT = { is_in_array = { array = random_faction_selected_options value = THIS } }
 			}
 			save_event_target_as = random_faction_option_2_leader
 			add_to_temp_array = { random_faction_selected_options = THIS }
-			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+			PREV = { add_to_variable = { random_faction_option_count = 1 } }
 		}
 	}
 	if = {
@@ -206,12 +206,12 @@ random_faction_collect_faction_options = {
 		random_scope_in_array = {
 			array = random_faction_option_pool
 			limit = {
-				random_faction_is_valid_faction_leader_for_root_target = yes
+				random_faction_is_valid_faction_leader_for_prev_target = yes
 				NOT = { is_in_array = { array = random_faction_selected_options value = THIS } }
 			}
 			save_event_target_as = random_faction_option_3_leader
 			add_to_temp_array = { random_faction_selected_options = THIS }
-			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+			PREV = { add_to_variable = { random_faction_option_count = 1 } }
 		}
 	}
 	if = {
@@ -219,12 +219,12 @@ random_faction_collect_faction_options = {
 		random_scope_in_array = {
 			array = random_faction_option_pool
 			limit = {
-				random_faction_is_valid_faction_leader_for_root_target = yes
+				random_faction_is_valid_faction_leader_for_prev_target = yes
 				NOT = { is_in_array = { array = random_faction_selected_options value = THIS } }
 			}
 			save_event_target_as = random_faction_option_4_leader
 			add_to_temp_array = { random_faction_selected_options = THIS }
-			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+			PREV = { add_to_variable = { random_faction_option_count = 1 } }
 		}
 	}
 	if = {
