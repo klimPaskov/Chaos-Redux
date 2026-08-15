@@ -655,6 +655,16 @@ cbrn_resolve_action_target_protection = yes
 
 ## CBRN military issue and state distribution
 
+### cbrn_reveal_protection_decision_surface, cbrn_reveal_operations_decision_surface, and cbrn_reveal_disease_response_decision_surface
+
+These country effects record that a post-start research, doctrine, special project, or incident has made the corresponding native decision family relevant. Starting capabilities are deliberately not treated as presentation permission.
+
+Scope: country. Inputs: none. Defaults: repeated calls are idempotent. Outputs: the matching country visibility flag. Side effects: decision-category visibility only; no capability, stock, readiness, or consequence value changes.
+
+### cbrn_hide_inherited_decision_surfaces_at_game_start
+
+Clears the three presentation-only visibility flags after new-game history grants and clears the transient national distribution-program lock. Scope: country. Inputs: none. Side effects: it does not remove technologies, facilities, stockpiles, reserves, doctrine, missions, or persistent program variables. The shared `on_startup` initializer calls it immediately after the history-grant dispatcher so inherited capabilities cannot expose dormant decision categories.
+
 ### cbrn_issue_requested_masks_to_military
 
 Debits a requested number of real respirator crates, preferring sealed, advanced, improved, basic, then reconditioned models, and transfers them to non-reclaimable military-issue ledgers.
@@ -712,6 +722,10 @@ event_target:cbrn_occupation_target_state = {
 ### cbrn_distribute_priority_masks_to_state, cbrn_distribute_full_masks_to_state, and cbrn_distribute_emergency_masks_to_state
 
 These state-scope wrappers supply the accepted 50-percent priority, 95-percent full, or 35-percent effective emergency targets. The shared helper derives the larger raw emergency allocation needed after reduced fitting quality and degraded filter condition; emergency issue also applies the 0.60 improvised baseline and 1.30 wastage. Defaults and side effects are those of `cbrn_distribute_requested_masks_to_state`.
+
+### cbrn_complete_priority_distribution_program, cbrn_complete_full_distribution_program, cbrn_complete_civilian_filter_replacement_program, and cbrn_complete_occupied_distribution_program
+
+These country-scope completion effects replace routine per-state decision-card multiplication. Each loops only the deciding country's controlled states, applies the existing exact state transaction to eligible states while real respirator stock remains, and preserves population, fitting, filter, infrastructure, contamination, and occupation scaling. Priority, full-distribution, and filter programs serve the capital first. They do not create a world pulse or infer an incident target.
 
 ### cbrn_debit_mask_stockpile_oldest_first
 

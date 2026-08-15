@@ -10,7 +10,7 @@ The accepted design source is `docs/specs/chaos_warfare_system_specs/`. Working 
 
 The shared Stage 1 data model defines Chemical Readiness, policy, capacities, contamination and attribution classes, protection layers, agent and route profiles, and a fail-closed chemical action-record calculator.
 
-The Stage 2 protective-equipment layer adds four producible respirator/protective-set models, one non-producible reconditioned model, three decontamination models, three instrument models, their technology branches, real national reserves, model-specific military issue, population-scaled state distribution, fitting, filter condition, loss, replacement, reconditioning, transfer cleanup, starting profiles, production AI, decisions, event handling, localisation, and type-specific assets. Existing chemical abilities now read equipment-backed respiratory and skin protection instead of treating technology ownership as protection.
+The Stage 2 protective-equipment layer adds four producible respirator/protective-set models, one non-producible reconditioned model, three decontamination models, three instrument models, their technology branches, real national reserves, model-specific military issue, population-scaled state distribution through national program cards, fitting, filter condition, loss, replacement, reconditioning, transfer cleanup, starting profiles, production AI, decisions, event handling, localisation, and type-specific assets. Existing chemical abilities now read equipment-backed respiratory and skin protection instead of treating technology ownership as protection.
 
 Medical response remains an institutional capacity backed by support equipment, trucks, field hospitals, and mapped treatment technologies. No unsupported standalone medical-equipment archetype is introduced.
 
@@ -22,7 +22,7 @@ Military mask accounting keeps two native surfaces distinct: protection reads ac
 
 1. Establish a national program and choose a use policy.
 2. Produce masks, filters, decontamination equipment, instruments, payloads, and route-specific stores.
-3. Issue military protection, build civilian reserves, and distribute protection to selected states.
+3. Issue military protection, build civilian reserves, and run national distribution programs; exact-state cards remain reserved for live alerts, contamination, outbreaks, evidence, occupation incidents, and selected operations.
 4. Equip regimental support and Army Headquarters companies.
 5. Prepare a route-specific operation with command cost, duration, cooldown, target, payload, forecast, and cleanup plan.
 6. Debit payload, resolve protection and conditions, and create one exposure record.
@@ -90,6 +90,8 @@ Ordinary biological warfare will use separate profiles for anthrax, plague, tula
 | Protection decisions | `common/decisions/cbrn_protection_decisions.txt` |
 | Protection decision effects | `common/scripted_effects/cbrn_protection_decision_effects.txt` |
 | Protection triggers | `common/scripted_triggers/cbrn_protection_triggers.txt` |
+| Decision visibility triggers | `common/scripted_triggers/cbrn_decision_visibility_triggers.txt` |
+| Decision visibility effects | `common/scripted_effects/cbrn_decision_visibility_effects.txt` |
 | Starting profiles | `common/scripted_effects/cbrn_starting_protection_effects.txt` |
 | Protection production AI | `common/ai_strategy/cbrn_protection_production.txt` |
 | Maintenance/events | `events/cbrn_protection_events.txt` |

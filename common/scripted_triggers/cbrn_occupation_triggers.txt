@@ -58,15 +58,19 @@ cbrn_occupation_protected_administration_authorization_requirements = {
 
 cbrn_occupation_category_visible = {
 	OR = {
-		has_country_flag = cbrn_occupation_coercive_security_authorized
-		has_country_flag = cbrn_occupation_protected_administration_authorized
 		has_country_flag = cbrn_occupation_nerve_suppression_history
-		cbrn_occupation_coercive_security_authorization_requirements = yes
-		cbrn_occupation_protected_administration_authorization_requirements = yes
-		has_country_flag = cbrn_program_established
-		any_controlled_state = {
-			NOT = { is_owned_by = ROOT }
-			NOT = { is_core_of = ROOT }
+		AND = {
+			cbrn_operations_decision_surface_is_unlocked = yes
+			any_controlled_state = {
+				NOT = { is_owned_by = ROOT }
+				NOT = { is_core_of = ROOT }
+			}
+			OR = {
+				has_country_flag = cbrn_occupation_coercive_security_authorized
+				has_country_flag = cbrn_occupation_protected_administration_authorized
+				cbrn_occupation_coercive_security_authorization_requirements = yes
+				cbrn_occupation_protected_administration_authorization_requirements = yes
+			}
 		}
 	}
 }

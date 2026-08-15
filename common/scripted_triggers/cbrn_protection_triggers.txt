@@ -11,29 +11,26 @@
 # ============================================================================
 
 cbrn_protection_program_category_visible = {
+	NOT = { is_actual_nonhuman_country = yes }
 	OR = {
-		cbrn_country_has_program = yes
-		has_country_flag = cbrn_national_respirator_reserve
-		has_tech = basic_gas_masks
-		has_equipment = { gas_mask_equipment > constant:cbrn_math.zero }
-		has_enemy_used_chemical_weapons = yes
-		any_controlled_state = {
-			has_state_flag = cbrn_chemical_raid_alert_active
-		}
+		cbrn_protection_decision_surface_is_unlocked = yes
+		cbrn_country_has_public_chemical_emergency = yes
+		has_country_flag = cbrn_allied_protection_request_received
+		cbrn_country_has_mask_replacement_backlog = yes
 	}
 }
 
 cbrn_civil_defence_category_visible = {
-	cbrn_protection_program_category_visible = yes
+	NOT = { is_actual_nonhuman_country = yes }
 	OR = {
-		has_country_flag = cbrn_national_respirator_reserve
-		has_country_flag = cbrn_population_registered_and_fitted
-		has_enemy_used_chemical_weapons = yes
-		any_controlled_state = {
+		cbrn_country_has_public_chemical_emergency = yes
+		AND = {
+			cbrn_protection_decision_surface_is_unlocked = yes
 			OR = {
-				has_state_flag = cbrn_chemical_raid_alert_active
-				cbrn_state_has_chemical_contamination = yes
-				check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+				cbrn_country_has_priority_distribution_work = yes
+				cbrn_country_has_full_distribution_work = yes
+				cbrn_country_has_filter_replacement_work = yes
+				cbrn_country_has_occupied_distribution_work = yes
 			}
 		}
 	}
@@ -436,6 +433,26 @@ cbrn_state_can_replace_civilian_filters = {
 	check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
 	has_variable = cbrn_civilian_mask_filter_condition
 	check_variable = { cbrn_civilian_mask_filter_condition < constant:cbrn_mask_filters.condition_full }
+}
+
+cbrn_country_has_priority_distribution_work = {
+	has_country_flag = cbrn_national_respirator_reserve
+	any_controlled_state = { cbrn_state_can_receive_priority_masks = yes }
+}
+
+cbrn_country_has_full_distribution_work = {
+	has_country_flag = cbrn_national_respirator_reserve
+	has_country_flag = cbrn_population_registered_and_fitted
+	any_controlled_state = { cbrn_state_can_receive_full_distribution = yes }
+}
+
+cbrn_country_has_filter_replacement_work = {
+	any_controlled_state = { cbrn_state_can_replace_civilian_filters = yes }
+}
+
+cbrn_country_has_occupied_distribution_work = {
+	has_country_flag = cbrn_national_respirator_reserve
+	any_controlled_state = { cbrn_state_can_receive_occupied_masks = yes }
 }
 
 cbrn_state_has_exact_chemical_raid_alert = {

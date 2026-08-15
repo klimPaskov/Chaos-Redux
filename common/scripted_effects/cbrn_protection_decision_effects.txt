@@ -168,6 +168,76 @@ cbrn_complete_state_filter_replacement = {
 	cbrn_end_state_protection_project = yes
 }
 
+cbrn_complete_priority_distribution_program = {
+	capital_scope = {
+		if = {
+			limit = {
+				cbrn_state_can_receive_priority_masks = yes
+				ROOT = { cbrn_country_has_any_mask_stock = yes }
+			}
+			cbrn_complete_priority_state_distribution = yes
+		}
+	}
+	every_controlled_state = {
+		limit = {
+			NOT = { is_capital = yes }
+			cbrn_state_can_receive_priority_masks = yes
+			ROOT = { cbrn_country_has_any_mask_stock = yes }
+		}
+		cbrn_complete_priority_state_distribution = yes
+	}
+}
+
+cbrn_complete_full_distribution_program = {
+	capital_scope = {
+		if = {
+			limit = {
+				cbrn_state_can_receive_full_distribution = yes
+				ROOT = { cbrn_country_has_any_mask_stock = yes }
+			}
+			cbrn_complete_full_state_distribution = yes
+		}
+	}
+	every_controlled_state = {
+		limit = {
+			NOT = { is_capital = yes }
+			cbrn_state_can_receive_full_distribution = yes
+			ROOT = { cbrn_country_has_any_mask_stock = yes }
+		}
+		cbrn_complete_full_state_distribution = yes
+	}
+}
+
+cbrn_complete_civilian_filter_replacement_program = {
+	capital_scope = {
+		if = {
+			limit = {
+				cbrn_state_can_replace_civilian_filters = yes
+				ROOT = { cbrn_country_has_any_mask_stock = yes }
+			}
+			cbrn_complete_state_filter_replacement = yes
+		}
+	}
+	every_controlled_state = {
+		limit = {
+			NOT = { is_capital = yes }
+			cbrn_state_can_replace_civilian_filters = yes
+			ROOT = { cbrn_country_has_any_mask_stock = yes }
+		}
+		cbrn_complete_state_filter_replacement = yes
+	}
+}
+
+cbrn_complete_occupied_distribution_program = {
+	every_controlled_state = {
+		limit = {
+			cbrn_state_can_receive_occupied_masks = yes
+			ROOT = { cbrn_country_has_any_mask_stock = yes }
+		}
+		cbrn_complete_occupied_state_distribution = yes
+	}
+}
+
 cbrn_begin_mask_reconditioning = {
 	set_temp_variable = { cbrn_support_equipment_debit_requested = constant:cbrn_protection_decision_cost.recondition_masks_support }
 	cbrn_debit_requested_support_equipment = yes
