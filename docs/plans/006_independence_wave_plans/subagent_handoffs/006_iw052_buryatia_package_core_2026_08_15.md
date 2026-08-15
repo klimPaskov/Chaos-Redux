@@ -1,5 +1,7 @@
 # IW-052 Buryatia Package-Local Audit Handoff
 
+> Historical pre-implementation audit. Superseded for current package-local source coverage by `006_iw052_buryatia_package_core_implementation_2026_08_15.md`; its missing-source findings remain useful only as the before-state baseline.
+
 ## Scope and disposition
 
 This is a read-only package-local audit for Event 006 IW-052 Buryatia (`BYA`).

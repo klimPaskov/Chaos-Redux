@@ -1,0 +1,69 @@
+# Some AI fields reject script-constant tokens. These file-scoped values mirror
+# the IW-052 package constants while keeping strategy values parser-safe.
+@CR_SC_IW_BYA_ARMY = 90
+@CR_SC_IW_BYA_PRODUCTION = 42
+@CR_SC_IW_BYA_SUPPORT = 48
+@CR_SC_IW_BYA_ARTILLERY = 24
+@CR_SC_IW_BYA_INFRASTRUCTURE = 78
+@CR_SC_IW_BYA_DEFENSE = 86
+@CR_SC_IW_BYA_EMERGENCY = 120
+@CR_SC_IW_BYA_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_BYA_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-052 BURYATIA AI
+# ============================================================================
+# AI prioritizes frontier security, baikal infrastructure, and a restrained
+# former-host relationship until the compact is settled. Route choice remains
+# owned by the shared focus framework and the BYA decision package.
+# ============================================================================
+
+independence_wave_bya_frontier_survival = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_iw_052_setup_complete
+		has_country_flag = independence_wave_bya_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BYA_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_BYA_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_BYA_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_BYA_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_BYA_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_BYA_DEFENSE }
+}
+independence_wave_bya_host_restraint = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_iw_052_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bya_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_BYA_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bya_settled_frontier = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_bya_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BYA_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_BYA_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_BYA_INFRASTRUCTURE }
+}
+
+independence_wave_bya_emergency_frontier_guard = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_bya_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BYA_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_BYA_DEFENSE }
+}

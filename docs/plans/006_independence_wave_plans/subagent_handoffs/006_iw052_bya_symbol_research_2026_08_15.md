@@ -8,6 +8,8 @@ This is a bounded, read-only source and installed-carrier audit for the IW-052 B
 
 The installed vanilla carrier is usable as an existing carrier only. The exact provenance of its neutral ideology flag is not defensible as a 1936 Buryat flag from the sources reviewed, so this audit does not approve a historical replacement or a new route variant.
 
+This handoff was re-audited against the current package-local implementation on 2026-08-15. The package-local audit still reports `BLOCKED / FAIL-CLOSED`, and no new source, rights receipt, or approved design route clears the symbol gate.
+
 ## Decision
 
 Do not generate, repaint, copy, replace, or wire a BYA neutral flag from the current evidence.
@@ -68,6 +70,18 @@ The following sources were reviewed only for provenance research. None was selec
 
 The source set therefore establishes a historical mismatch rather than a cleared candidate. The reviewed evidence does not prove that the vanilla neutral design was a 1936 Buryat state, municipal, customary, Buddhist, or frontier-institution standard.
 
+## Re-audit against current package-local implementation
+
+The current package-local receipt is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw052_buryatia_package_core_implementation_2026_08_15.md`. It confirms that IW-052 remains unadmitted because the parent-owned identity/rights receipt, leader or institutional identity evidence, symbol provenance, and weighted package evidence are absent.
+
+The current implementation adds package-local constants, triggers, effects, ideas, decisions, AI, localisation, and five shared-focus callbacks, but no asset or identity approval. `common/scripted_triggers/006_independence_wave_packages_region_05_triggers.txt:72-80` checks package-slot, `RG-564`, `BYA`, and state-564 availability. `common/scripted_effects/006_independence_wave_packages_region_05_effects.txt:96-106` loads `iw_052`, `BYA`, and state 564, while `:195` reserves only state 564. These surfaces establish a planning anchor and reservation boundary; they do not prove that a flag matches the released identity and origin.
+
+The current force mapping at `docs/plans/006_independence_wave_plans/006_force_package_mapping.csv:53` is planning metadata for a mounted-mobile Buryat frontier force. The package-local audit records that no BYA setup caller, package-local route flag, source/rights manifest, or parent-owned clearance flag such as `independence_wave_iw_052_identity_rights_cleared` exists. The vanilla BYA carrier files remain outside the mod and were not copied or altered.
+
+The package-local audit also confirms that the Event 005 `Baikal Relay Council` portrait is origin-bound and cannot be reused as Event 006 identity evidence. The separate Erbanov source-placeholder candidate is still framing/rights HOLD, and no package-local flag file appeared in the implementation, so no runtime portrait or flag approval is warranted.
+
+The exact next asset gate is therefore unchanged: the parent must publish the identity/rights decision and source receipts first. If the parent approves the installed vanilla triplet as an unclaimed baseline, preserve it without a historical provenance claim. If the parent approves an alternate, civic, or high-chaos route, provide a separate basename and explicit design brief before any ImageGen or sourced-art work. Neither path is currently cleared.
+
 ## Event 006 identity and origin gates
 
 The exact Event 006 registry and research surfaces were inspected without changing them.
@@ -111,4 +125,3 @@ To reopen the asset lane, the parent must either approve the installed vanilla t
 - No external source file was downloaded, so no external hash, processed preview, or conversion output exists.
 - No `.gfx` handoff is appropriate because no new runtime asset exists and vanilla ideology flags use the existing engine naming convention.
 - The only file produced by this task is this fail-closed documentation handoff: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw052_bya_symbol_research_2026_08_15.md`.
-
