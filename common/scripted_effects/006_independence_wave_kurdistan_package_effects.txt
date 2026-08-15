@@ -1,0 +1,489 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-060 KURDISTAN PACKAGE EFFECTS
+# ============================================================================
+# Vanilla KUR/state 421 carrier adapter. The package models a Kurdish
+# frontier council balancing Kurdish communities, mountain security, and
+# cross-border patron pressure. It
+# never creates a leader, portrait override, cosmetic tag, or vanilla history
+# mutation. The opening roster is checked only after parent-owned identity and
+# institutional-roster gates clear. Central attestation and deterministic Join
+# remain parent-owned and intentionally untouched here.
+# ============================================================================
+
+independence_wave_remove_kur_package_ideas = {
+	remove_ideas = {
+		kur_fragmented_mountain_mandate
+		kur_kurdish_compact
+		kur_federal_charter
+		kur_tribal_federal_compact
+		kur_socialist_councils
+		kur_mountain_emergency_command
+		kur_patron_protected_compact
+	}
+}
+
+independence_wave_remove_kur_route_ideas = {
+	remove_ideas = {
+		kur_federal_charter
+		kur_tribal_federal_compact
+		kur_socialist_councils
+		kur_mountain_emergency_command
+		kur_patron_protected_compact
+	}
+}
+
+independence_wave_refresh_kur_compact_lifecycle = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes }
+		remove_ideas = { kur_fragmented_mountain_mandate kur_kurdish_compact }
+		if = {
+			limit = { has_stable_independence_wave_kur_compact = yes }
+			add_ideas = kur_kurdish_compact
+			set_country_flag = independence_wave_kur_compact_stabilized
+		}
+		else = {
+			add_ideas = kur_fragmented_mountain_mandate
+			clr_country_flag = independence_wave_kur_compact_stabilized
+		}
+	}
+}
+
+# Inputs: temporary `independence_wave_kur_council_delta` and
+# `independence_wave_kur_mountain_delta`.
+independence_wave_change_kur_compact_values = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes }
+		add_to_variable = { independence_wave_kur_council_legitimacy = independence_wave_kur_council_delta }
+		add_to_variable = { independence_wave_kur_mountain_readiness = independence_wave_kur_mountain_delta }
+		clamp_variable = { var = independence_wave_kur_council_legitimacy min = constant:independence_wave_kurdistan_pressure.minimum max = constant:independence_wave_kurdistan_pressure.maximum }
+		clamp_variable = { var = independence_wave_kur_mountain_readiness min = constant:independence_wave_kurdistan_pressure.minimum max = constant:independence_wave_kurdistan_pressure.maximum }
+		independence_wave_refresh_kur_compact_lifecycle = yes
+		independence_wave_refresh_country_state = yes
+	}
+}
+
+independence_wave_kur_apply_administrative_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_kur_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_kur_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_kur_apply_major_settlement = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_kur_begin_project = {
+	clr_country_flag = independence_wave_kur_project_failure_applied
+}
+
+independence_wave_kur_apply_project_failure = {
+	if = {
+		limit = { NOT = { has_country_flag = independence_wave_kur_project_failure_applied } }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+		independence_wave_decision_apply_country_deltas = yes
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.standard_loss }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.standard_loss }
+		independence_wave_change_kur_compact_values = yes
+		set_country_flag = independence_wave_kur_project_failure_applied
+	}
+}
+
+independence_wave_kur_apply_former_host_settlement = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+independence_wave_kur_reward_network_project = {
+	independence_wave_kur_apply_major_settlement = yes
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+	independence_wave_change_network_standing = yes
+	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
+	set_temp_variable = { independence_wave_league_common_cause_delta = constant:independence_wave_value.minor_gain }
+	set_temp_variable = { independence_wave_league_patron_capture_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_league_shared_reserve_delta = constant:independence_wave_value.minor_gain }
+	set_temp_variable = { independence_wave_league_member_confidence_delta = constant:independence_wave_value.minor_gain }
+	independence_wave_change_league_values = yes
+}
+
+independence_wave_ensure_kur_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_initialize_kur_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_kurdistan_politics.start_democratic
+		communism = constant:independence_wave_kurdistan_politics.start_communism
+		neutrality = constant:independence_wave_kurdistan_politics.start_neutrality
+		fascism = constant:independence_wave_kurdistan_politics.start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = KUR_independence_wave_federal_party_long name = KUR_independence_wave_federal_party }
+	set_party_name = { ideology = communism long_name = KUR_independence_wave_socialist_party_long name = KUR_independence_wave_socialist_party }
+	set_party_name = { ideology = neutrality long_name = KUR_independence_wave_tribal_party_long name = KUR_independence_wave_tribal_party }
+	set_party_name = { ideology = fascism long_name = KUR_independence_wave_military_party_long name = KUR_independence_wave_military_party }
+	set_country_flag = independence_wave_kur_provisional_authority
+}
+
+independence_wave_install_kur_constitutional_government = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_kur_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.constitutional_republic }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_popularities = { democratic = constant:independence_wave_kurdistan_politics.federal_democratic communism = constant:independence_wave_kurdistan_politics.federal_communism neutrality = constant:independence_wave_kurdistan_politics.federal_neutrality fascism = constant:independence_wave_kurdistan_politics.federal_fascism }
+		set_party_name = { ideology = democratic long_name = KUR_independence_wave_federal_party_long name = KUR_independence_wave_federal_party }
+		independence_wave_remove_kur_route_ideas = yes
+		add_ideas = kur_federal_charter
+		set_country_flag = independence_wave_kur_federal_government
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.major_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.minor_gain }
+		independence_wave_change_kur_compact_values = yes
+	}
+}
+
+independence_wave_install_kur_traditional_government = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_kur_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.traditional_restoration }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = neutrality elections_allowed = yes }
+		set_popularities = { democratic = constant:independence_wave_kurdistan_politics.tribal_democratic communism = constant:independence_wave_kurdistan_politics.tribal_communism neutrality = constant:independence_wave_kurdistan_politics.tribal_neutrality fascism = constant:independence_wave_kurdistan_politics.tribal_fascism }
+		set_party_name = { ideology = neutrality long_name = KUR_independence_wave_tribal_party_long name = KUR_independence_wave_tribal_party }
+		independence_wave_remove_kur_route_ideas = yes
+		add_ideas = kur_tribal_federal_compact
+		set_country_flag = independence_wave_kur_tribal_federal_government
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.major_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.standard_gain }
+		independence_wave_change_kur_compact_values = yes
+	}
+}
+
+independence_wave_install_kur_socialist_government = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_kur_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.popular_council }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = communism elections_allowed = no }
+		set_popularities = { democratic = constant:independence_wave_kurdistan_politics.socialist_democratic communism = constant:independence_wave_kurdistan_politics.socialist_communism neutrality = constant:independence_wave_kurdistan_politics.socialist_neutrality fascism = constant:independence_wave_kurdistan_politics.socialist_fascism }
+		set_party_name = { ideology = communism long_name = KUR_independence_wave_socialist_party_long name = KUR_independence_wave_socialist_party }
+		independence_wave_remove_kur_route_ideas = yes
+		add_ideas = kur_socialist_councils
+		set_country_flag = independence_wave_kur_socialist_government
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.minor_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.major_gain }
+		independence_wave_change_kur_compact_values = yes
+	}
+}
+
+independence_wave_install_kur_emergency_government = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_kur_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.emergency_military }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		set_popularities = { democratic = constant:independence_wave_kurdistan_politics.military_democratic communism = constant:independence_wave_kurdistan_politics.military_communism neutrality = constant:independence_wave_kurdistan_politics.military_neutrality fascism = constant:independence_wave_kurdistan_politics.military_fascism }
+		set_party_name = { ideology = neutrality long_name = KUR_independence_wave_military_party_long name = KUR_independence_wave_military_party }
+		independence_wave_remove_kur_route_ideas = yes
+		add_ideas = kur_mountain_emergency_command
+		set_country_flag = independence_wave_kur_military_command_government
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.minor_loss }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.decisive_gain }
+		independence_wave_change_kur_compact_values = yes
+	}
+}
+
+independence_wave_install_kur_patron_government = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes has_independence_wave_patron_client_route = yes NOT = { has_independence_wave_kur_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.patron_client }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = neutrality elections_allowed = yes }
+		set_popularities = { democratic = constant:independence_wave_kurdistan_politics.patron_democratic communism = constant:independence_wave_kurdistan_politics.patron_communism neutrality = constant:independence_wave_kurdistan_politics.patron_neutrality fascism = constant:independence_wave_kurdistan_politics.patron_fascism }
+		set_party_name = { ideology = neutrality long_name = KUR_independence_wave_patron_party_long name = KUR_independence_wave_patron_party }
+		independence_wave_remove_kur_route_ideas = yes
+		add_ideas = kur_patron_protected_compact
+		set_country_flag = independence_wave_kur_patron_protection_government
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.standard_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.minor_gain }
+		independence_wave_change_kur_compact_values = yes
+	}
+}
+
+# Full shared-focus hooks.
+independence_wave_kur_focus_convene_mountain_council = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes NOT = { has_country_flag = independence_wave_kur_depots_secured } }
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.major_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.minor_gain }
+		independence_wave_change_kur_compact_values = yes
+		independence_wave_focus_reward_administration = yes
+		set_country_flag = independence_wave_kur_depots_secured
+	}
+}
+
+# Decision-layer aliases keep the paid depot project distinct from the shared
+# focus's frontier-council name while reusing the same idempotent reward.
+independence_wave_kur_focus_secure_mountain_depots = {
+	independence_wave_kur_focus_convene_mountain_council = yes
+}
+
+independence_wave_kur_focus_secure_kurdish_communities = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes NOT = { has_country_flag = independence_wave_kur_communities_guaranteed } }
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.major_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.standard_gain }
+		independence_wave_change_kur_compact_values = yes
+		independence_wave_focus_reward_public_settlement = yes
+		add_ideas = kur_tribal_federal_compact
+		set_country_flag = independence_wave_kur_communities_guaranteed
+	}
+}
+
+independence_wave_kur_focus_integrate_tribal_guards = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes NOT = { has_country_flag = independence_wave_kur_guards_integrated } }
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.minor_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.major_gain }
+		independence_wave_change_kur_compact_values = yes
+		independence_wave_focus_reward_security_reform = yes
+		set_country_flag = independence_wave_kur_guards_integrated
+	}
+}
+
+independence_wave_kur_focus_integrate_border_guards = {
+	independence_wave_kur_focus_integrate_tribal_guards = yes
+}
+
+independence_wave_kur_focus_settle_former_host_ledgers = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes NOT = { has_country_flag = independence_wave_kur_host_ledgers_settled } }
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.standard_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.standard_gain }
+		independence_wave_change_kur_compact_values = yes
+		if = {
+			limit = { NOT = { has_independence_wave_kur_unsettled_host = yes } }
+			independence_wave_kur_apply_former_host_settlement = yes
+			independence_wave_focus_progress_host_negotiations = yes
+		}
+		set_country_flag = independence_wave_kur_host_ledgers_settled
+	}
+}
+
+independence_wave_kur_focus_register_kurdish_communities = {
+	if = {
+		limit = { NOT = { has_country_flag = independence_wave_kur_communities_guaranteed } }
+		independence_wave_kur_focus_secure_kurdish_communities = yes
+	}
+}
+
+independence_wave_kur_focus_open_mountain_corridor = {
+	if = {
+		limit = { is_independence_wave_kurdistan_package = yes NOT = { has_country_flag = independence_wave_kur_mountain_corridor_open } }
+		set_temp_variable = { independence_wave_kur_council_delta = constant:independence_wave_kurdistan_pressure.standard_gain }
+		set_temp_variable = { independence_wave_kur_mountain_delta = constant:independence_wave_kurdistan_pressure.standard_gain }
+		independence_wave_change_kur_compact_values = yes
+		set_country_flag = independence_wave_kur_mountain_corridor_open
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_ambition = yes
+		independence_wave_kur_reward_network_project = yes
+	}
+}
+
+independence_wave_kur_focus_open_mountain_network_corridor = {
+	independence_wave_kur_focus_open_mountain_corridor = yes
+}
+
+# Setup, final-validation, dispatch, and cleanup. The setup is strict and never
+# mutates vanilla KUR history, flag, state, leader, portrait, or cosmetic-tag
+# definitions. Roster checkpointing is package-local and fail-closed.
+# KUR has no accepted Event 006 leader/portrait source yet. Keep the roster
+# checkpoint inert until the parent-owned identity and institutional-roster
+# flags are explicitly reviewed.
+independence_wave_kur_checkpoint_vanilla_roster = {
+	if = {
+		limit = {
+			is_independence_wave_kurdistan_package = yes
+			has_independence_wave_kur_identity_rights_clearance = yes
+			has_independence_wave_kur_command_roster = yes
+		}
+		set_country_flag = independence_wave_kur_roster_checkpoint
+	}
+}
+
+independence_wave_setup_iw_060_kurdistan = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_060_setup_complete
+	clr_country_flag = independence_wave_command_roster_ready
+	clr_country_flag = independence_wave_kur_roster_checkpoint
+	clr_country_flag = independence_wave_kur_project_failure_applied
+	clr_country_flag = independence_wave_kur_compact_crisis_resolved
+	clr_country_flag = independence_wave_kur_compact_crisis_failed
+	clr_country_flag = independence_wave_kur_provisional_authority
+	clr_country_flag = independence_wave_kur_depots_secured
+	clr_country_flag = independence_wave_kur_guards_integrated
+	clr_country_flag = independence_wave_kur_communities_guaranteed
+	clr_country_flag = independence_wave_kur_host_ledgers_settled
+	clr_country_flag = independence_wave_kur_federal_government
+	clr_country_flag = independence_wave_kur_tribal_federal_government
+	clr_country_flag = independence_wave_kur_socialist_government
+	clr_country_flag = independence_wave_kur_military_command_government
+	clr_country_flag = independence_wave_kur_patron_protection_government
+	clr_country_flag = independence_wave_kur_durable_sovereignty
+	clr_country_flag = independence_wave_kur_mountain_corridor_open
+	clr_country_flag = independence_wave_kur_ai_profile
+	clr_country_flag = independence_wave_iw_060_lifecycle_initialized
+	independence_wave_remove_kur_package_ideas = yes
+	clear_variable = independence_wave_kur_council_legitimacy
+	clear_variable = independence_wave_kur_mountain_readiness
+	if = {
+		limit = { can_initialize_independence_wave_iw_060_package = yes }
+		independence_wave_kur_checkpoint_vanilla_roster = yes
+		independence_wave_ensure_kur_baseline_laws = yes
+		independence_wave_initialize_kur_politics = yes
+		if = { limit = { has_country_flag = independence_wave_kur_roster_checkpoint } set_country_flag = independence_wave_command_roster_ready }
+		set_variable = { independence_wave_kur_council_legitimacy = constant:independence_wave_kurdistan_pressure.council_legitimacy_start }
+		set_variable = { independence_wave_kur_mountain_readiness = constant:independence_wave_kurdistan_pressure.mountain_readiness_start }
+		independence_wave_refresh_kur_compact_lifecycle = yes
+		set_country_flag = independence_wave_iw_060_lifecycle_initialized
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready }
+			independence_wave_clear_reinforcement_pathways = yes
+			independence_wave_add_reinforce_integrate_militias = yes
+			independence_wave_add_reinforce_secure_depots = yes
+			independence_wave_add_reinforce_convert_defectors = yes
+			independence_wave_add_reinforce_terrain_units = yes
+			independence_wave_add_reinforce_professional_officers = yes
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_kur_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_iw_060_package_setup = yes }
+			set_country_flag = independence_wave_iw_060_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_dispatch_kurdistan_package_setup = {
+	if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_060 } } independence_wave_setup_iw_060_kurdistan = yes }
+}
+
+independence_wave_validate_iw_060_kurdistan = {
+	if = { limit = { has_complete_independence_wave_iw_060_package_setup = yes is_independence_wave_exact_package_iw_060_runtime_ready = yes } set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected } }
+}
+
+independence_wave_dispatch_kurdistan_package_final_validation = {
+	if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_060 } } independence_wave_validate_iw_060_kurdistan = yes }
+}
+
+independence_wave_cleanup_iw_060_kurdistan = {
+	if = {
+		limit = { original_tag = KUR check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_060 } }
+		remove_mission = independence_wave_kur_hold_mountain_council
+		remove_decision = independence_wave_kur_secure_mountain_depots
+		remove_decision = independence_wave_kur_integrate_tribal_guards
+		remove_decision = independence_wave_kur_register_kurdish_communities
+		remove_decision = independence_wave_kur_settle_former_host_ledgers
+		remove_decision = independence_wave_kur_ratify_federal_charter
+		remove_decision = independence_wave_kur_adopt_tribal_federal_compact
+		remove_decision = independence_wave_kur_convene_socialist_councils
+		remove_decision = independence_wave_kur_establish_mountain_emergency_command
+		remove_decision = independence_wave_kur_accept_patron_protection
+		remove_decision = independence_wave_kur_codify_durable_sovereignty
+		remove_decision = independence_wave_kur_open_mountain_corridor
+		independence_wave_remove_kur_package_ideas = yes
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_popularities = { democratic = 50 communism = 0 neutrality = 50 fascism = 0 }
+		set_party_name = { ideology = democratic long_name = KUR_democratic_party_long name = KUR_democratic_party }
+		set_party_name = { ideology = communism long_name = KUR_communism_party_long name = KUR_communism_party }
+		set_party_name = { ideology = neutrality long_name = KUR_neutrality_party_long name = KUR_neutrality_party }
+		set_party_name = { ideology = fascism long_name = KUR_fascism_party_long name = KUR_fascism_party }
+		clear_variable = independence_wave_kur_council_legitimacy
+		clear_variable = independence_wave_kur_mountain_readiness
+		clr_country_flag = independence_wave_kur_project_failure_applied
+		clr_country_flag = independence_wave_kur_roster_checkpoint
+		clr_country_flag = independence_wave_command_roster_ready
+		clr_country_flag = independence_wave_iw_060_setup_complete
+		clr_country_flag = independence_wave_iw_060_lifecycle_initialized
+		clr_country_flag = independence_wave_kur_ai_profile
+		clr_country_flag = independence_wave_kur_provisional_authority
+		clr_country_flag = independence_wave_kur_compact_stabilized
+		clr_country_flag = independence_wave_kur_compact_crisis_resolved
+		clr_country_flag = independence_wave_kur_compact_crisis_failed
+		clr_country_flag = independence_wave_kur_depots_secured
+		clr_country_flag = independence_wave_kur_guards_integrated
+		clr_country_flag = independence_wave_kur_communities_guaranteed
+		clr_country_flag = independence_wave_kur_host_ledgers_settled
+		clr_country_flag = independence_wave_kur_federal_government
+		clr_country_flag = independence_wave_kur_tribal_federal_government
+		clr_country_flag = independence_wave_kur_socialist_government
+		clr_country_flag = independence_wave_kur_military_command_government
+		clr_country_flag = independence_wave_kur_patron_protection_government
+		clr_country_flag = independence_wave_kur_durable_sovereignty
+		clr_country_flag = independence_wave_kur_mountain_corridor_open
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+	}
+}
+
+independence_wave_dispatch_kurdistan_package_cleanup = { independence_wave_cleanup_iw_060_kurdistan = yes }
