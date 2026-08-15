@@ -587,9 +587,17 @@ camp_rework_resolve_site_evidence = {
 			camp_rework_recalculate_country_values = yes
 		}
 	}
-	remove_from_array = {
-		array = global.genocide_active_camp_states
-		value = THIS
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.genocide_active_camp_states
+				value = THIS
+			}
+		}
+		remove_from_array = {
+			array = global.genocide_active_camp_states
+			value = THIS
+		}
 	}
 	clr_state_flag = camp_rework_site_active
 	set_state_flag = camp_rework_site_evidence_resolved
@@ -603,18 +611,34 @@ camp_rework_unregister_inactive_site = {
 		limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
 		set_variable = { camp_state_evidence_site_type = camp_state_site_type }
 	}
-	remove_from_array = {
-		array = global.genocide_active_camp_states
-		value = THIS
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.genocide_active_camp_states
+				value = THIS
+			}
+		}
+		remove_from_array = {
+			array = global.genocide_active_camp_states
+			value = THIS
+		}
 	}
 	clr_state_flag = camp_rework_site_active
 	set_variable = { camp_state_site_type = constant:camp_rework_site_type.none }
 	if = {
 		limit = { has_variable = genocide_responsible_country }
 		var:genocide_responsible_country = {
-			remove_from_array = {
-				array = camp_active_site_states
-				value = PREV
+			if = {
+				limit = {
+					is_in_array = {
+						array = camp_active_site_states
+						value = PREV
+					}
+				}
+				remove_from_array = {
+					array = camp_active_site_states
+					value = PREV
+				}
 			}
 			camp_rework_validate_selected_state = yes
 			camp_rework_recalculate_country_values = yes

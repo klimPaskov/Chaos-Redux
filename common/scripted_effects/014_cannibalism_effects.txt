@@ -1368,7 +1368,13 @@ cannibalism_score_current_state = {
 		add_to_temp_variable = { cannibalism_state_score = constant:cannibalism_state_weight.low_infrastructure }
 	}
 	if = {
-		limit = { has_damaged_buildings = yes }
+		limit = {
+			check_variable = {
+				var = damaged_building_level@naval_base
+				value = constant:cannibalism_state_threshold.minimum_damaged_port_level
+				compare = greater_than
+			}
+		}
 		add_to_temp_variable = { cannibalism_state_score = constant:cannibalism_state_weight.damaged_port }
 	}
 	if = {

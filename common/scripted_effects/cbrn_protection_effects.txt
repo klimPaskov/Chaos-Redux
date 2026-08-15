@@ -1681,6 +1681,30 @@ cbrn_apply_annual_mask_storage_loss = {
 	cbrn_refresh_country_mask_snapshot = yes
 }
 
+# STATE scope. Removes only raid-response modifiers that are currently active.
+cbrn_clear_state_raid_dynamic_modifiers = {
+	if = {
+		limit = { has_dynamic_modifier = cbrn_chemical_alarm_disruption }
+		remove_dynamic_modifier = { modifier = cbrn_chemical_alarm_disruption }
+	}
+	if = {
+		limit = { has_dynamic_modifier = cbrn_civilian_shelter_disruption }
+		remove_dynamic_modifier = { modifier = cbrn_civilian_shelter_disruption }
+	}
+	if = {
+		limit = { has_dynamic_modifier = cbrn_hospitals_utilities_protected }
+		remove_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected }
+	}
+	if = {
+		limit = { has_dynamic_modifier = cbrn_industry_kept_operating }
+		remove_dynamic_modifier = { modifier = cbrn_industry_kept_operating }
+	}
+	if = {
+		limit = { has_dynamic_modifier = cbrn_emergency_distribution_disruption }
+		remove_dynamic_modifier = { modifier = cbrn_emergency_distribution_disruption }
+	}
+}
+
 cbrn_transfer_state_civilian_mask_ledger = {
 	clr_state_flag = cbrn_protection_project_active
 	clr_state_flag = cbrn_chemical_raid_alert_active
@@ -1688,11 +1712,7 @@ cbrn_transfer_state_civilian_mask_ledger = {
 	clr_state_flag = cbrn_civilians_moved_to_shelters
 	clr_state_flag = cbrn_hospitals_utilities_secured
 	clr_state_flag = cbrn_industry_ordered_to_continue
-	remove_dynamic_modifier = { modifier = cbrn_chemical_alarm_disruption }
-	remove_dynamic_modifier = { modifier = cbrn_civilian_shelter_disruption }
-	remove_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected }
-	remove_dynamic_modifier = { modifier = cbrn_industry_kept_operating }
-	remove_dynamic_modifier = { modifier = cbrn_emergency_distribution_disruption }
+	cbrn_clear_state_raid_dynamic_modifiers = yes
 	cbrn_initialize_state_protection = yes
 	cbrn_refresh_state_civilian_mask_snapshot = yes
 	set_temp_variable = { cbrn_transfer_old_total = cbrn_civilian_mask_crates }
