@@ -32,13 +32,13 @@ Selection weight should fall when:
 
 The event does not require a historical petition, autonomy flag, or active resistance movement for every candidate. Those factors improve eligibility and influence opening legitimacy. The supernatural premise is that a wave can suddenly make dormant claims politically real.
 
-### Localized Independence Wave crisis
+### Pre-event surface decision
 
-The later crisis decision adds a country-facing pressure route before the next ordinary wave. A country exposes the crisis when it has low stability, when an enemy controls one of its owned states with severe resistance, or when it controls a foreign-owned state with severe resistance. The state trigger is evaluated in the country scope, so the system does not run a world-wide daily scan.
+The Independence Wave has no pre-event pressure system. No country-facing pressure category, mission, cost, queue, history row, or other decision surface may appear before the public Event 006 report fires.
 
-The crisis is a timed, costed mission with a visible failure outcome. It consumes concrete military and administrative resources, increases domestic instability if abandoned, and records the host and crisis cause for the event log. Each queued, blocked, cancelled, committed, or requester-lost resolution receives its own visible history outcome row in addition to the initiating cause row. On successful resolution it queues the ordinary Independence Wave entry only when the shared Liberations release coordinator can reset and accept a fresh plan. The ordinary allocator then uses the current fixed chaos-band count, reserves hosts and unique anchors, rerolls living or invalid tags, and executes one synchronized incident. A crisis never directly changes ownership, creates a tag, or bypasses the reservation and host-survival contract.
+Pressure, resistance, instability, or occupation conditions do not imply that the wave has begun and do not create an early request. The synchronized allocator is entered only by the public Event 006 firing path or by explicitly post-event systems such as Join, with the normal host-survival, reservation, origin, and collision contracts unchanged.
 
-If another Liberations plan is already collecting, locked, executing, finalizing, or rolling back, the crisis remains pending rather than firing a second transaction. The pending endpoint retries against the coordinator for the centralized bounded window, then records a blocked release if the barrier never reopens. If the candidate pool cannot meet the current band target, the allocator fails closed and the crisis records a blocked release rather than annexing territory or creating a shallow package.
+The former crisis source is retained only as inert compatibility code for stale scripted references. It is not part of the player-facing design and must remain hard-disabled in runtime triggers; new implementation work must not restore or reference its category, mission, cost, queue, or pre-event history.
 
 ### Phase 2: Wave planning
 
@@ -353,10 +353,10 @@ Gameplay result:
 
 Independence Wave has five evolution stages. Each chaos tier can unlock one stage. These are genuine mutations that add new behavior. The baseline wave count remains separate.
 
-Each evolution supports two entry paths:
+Each evolution applies only after the public Event 006 report has fired:
 
 - active-event evolution, which changes countries already released by Event 6
-- pre-fire evolved opening, which changes the first package of a later wave
+- post-report opening package, which changes the first package created by a later wave
 
 The final evolution names require implementation localisation work. The labels below are structural.
 
@@ -378,9 +378,9 @@ Existing Independence Wave countries gain:
 - an early network of bilateral recognition
 - first regional conference events
 
-### Pre-fire evolved opening
+### Post-report opening package
 
-New countries start with:
+Countries released after the public report may start with:
 
 - one prepared institution, such as a civil service, militia committee, traditional court, trade office, or exile cabinet
 - slightly higher opening Legitimacy or Government Capacity
@@ -417,9 +417,9 @@ Existing countries gain:
 - new naming and cosmetic identity routes
 - regional patron and rival events
 
-### Pre-fire evolved opening
+### Post-report opening package
 
-The next wave can draw from Layers C and D. New countries receive stronger regional overlays and more distinctive leaders, institutions, units, and claims.
+After the public report, the next wave can draw from Layers C and D. New countries receive stronger regional overlays and more distinctive leaders, institutions, units, and claims.
 
 ### New incidents
 
@@ -451,9 +451,9 @@ Existing countries gain:
 - league reserve contributions
 - aggressive reclamation branches for suitable routes
 
-### Pre-fire evolved opening
+### Post-report opening package
 
-New countries can begin with:
+Countries released after the public report can begin with:
 
 - more experienced units
 - captured support equipment, artillery, trains, or aircraft when the host package supports it
@@ -496,9 +496,9 @@ Existing countries gain:
 - joint reserve and aid systems
 - leadership contests
 
-### Pre-fire evolved opening
+### Post-report opening package
 
-New countries can start with:
+Countries released after the public report can start with:
 
 - mutual recognition from existing Event 6 countries
 - a delegate already assigned to the congress
@@ -539,9 +539,9 @@ Eligible existing countries gain, subject to their accepted package route matrix
 - state sponsorship of further independence movements
 - high-risk transformation paths
 
-### Pre-fire evolved opening
+### Post-report opening package
 
-The next wave can include the rarest candidate packages and begins with maximum package variety. Some countries start unusually strong, unstable, ideological, or ambitious.
+After the public report, the next wave can include the rarest candidate packages and begins with maximum package variety. Some countries start unusually strong, unstable, ideological, or ambitious.
 
 ### New incidents
 
@@ -584,9 +584,9 @@ The event direction should mention:
 
 The player option should establish an early governing posture. The exact text may be serious, proud, anxious, traditional, revolutionary, military, religious, or darkly ironic depending on the package. Final wording belongs to implementation.
 
-## Host crisis event family
+## Post-event host response family
 
-The host event should differ according to the share of territory lost.
+After the public Event 006 report, the host-response event should differ according to the share of territory lost.
 
 ### Limited secession
 

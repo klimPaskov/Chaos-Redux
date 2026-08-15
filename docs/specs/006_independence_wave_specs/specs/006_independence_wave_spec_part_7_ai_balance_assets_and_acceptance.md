@@ -397,7 +397,7 @@ Every visible surface needs an asset family or explicit reuse plan.
 
 - wave summary report image
 - concentrated regional wave report variants
-- host crisis report image
+- post-event host-response report image
 - first recognition report image
 - first league congress news image
 - major formable news images for selected signature routes
@@ -610,7 +610,7 @@ Implementation must write final text for:
 
 - wave entry event
 - country opening events
-- host crisis events
+- post-event host-response events
 - foreign reaction events
 - evolution milestones
 - mechanic values and breakdowns
@@ -635,7 +635,7 @@ Concrete public scenes from several regions. Emphasize governments, crowds, arme
 
 Local viewpoint and urgent practical problem. Mention the institution that took power and the source of the first forces.
 
-#### Host crisis
+#### Post-event host response
 
 Focus on loss of command, divided institutions, soldiers, refugees, debt, property, and political pressure. Avoid generic humiliation language.
 
