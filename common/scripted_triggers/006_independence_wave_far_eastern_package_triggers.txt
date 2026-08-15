@@ -120,7 +120,14 @@ has_independence_wave_fer_command_roster = {
 is_independence_wave_exact_package_iw_057_tag_available = {
 	is_independence_wave_candidate_origin_available = yes
 	original_tag = FER
-	has_independence_wave_fer_capital_anchor = yes
+	# Vanilla FER history keeps dormant FER at Chita (state 563). The shared
+	# execution pass reanchors the selected package to 408 or 409 before setup,
+	# so this pre-release identity gate must accept the historical capital while
+	# runtime readiness continues to require the selected 408/409 anchor.
+	OR = {
+		has_independence_wave_fer_capital_anchor = yes
+		capital_scope = { state = 563 }
+	}
 	OR = {
 		408 = {
 			is_independence_wave_candidate_anchor_available = yes
