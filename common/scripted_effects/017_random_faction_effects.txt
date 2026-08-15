@@ -79,6 +79,10 @@ random_faction_prepare_runtime_context = {
 		every_country = {
 			limit = {
 				OR = {
+					ROOT = { NOT = { has_country_flag = random_faction_exclude_dispatch_requester } }
+					NOT = { tag = ROOT }
+				}
+				OR = {
 					is_random_faction_eligible_country = yes
 					AND = {
 						has_global_flag = random_faction_evolution_ii_unlocked
@@ -98,6 +102,10 @@ random_faction_prepare_runtime_context = {
 			array = random_faction_target_pool
 			limit = {
 				OR = {
+					ROOT = { NOT = { has_country_flag = random_faction_exclude_dispatch_requester } }
+					NOT = { tag = ROOT }
+				}
+				OR = {
 					is_random_faction_eligible_country = yes
 					AND = {
 						has_global_flag = random_faction_evolution_ii_unlocked
@@ -114,6 +122,10 @@ random_faction_prepare_runtime_context = {
 			check_variable = { random_faction_context_ready < 1 }
 			has_event_target = random_faction_target_country
 			event_target:random_faction_target_country = {
+				OR = {
+					ROOT = { NOT = { has_country_flag = random_faction_exclude_dispatch_requester } }
+					NOT = { tag = ROOT }
+				}
 				OR = {
 					is_random_faction_eligible_country = yes
 					AND = {

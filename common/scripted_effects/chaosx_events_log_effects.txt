@@ -1096,9 +1096,9 @@ record_events_log_evolution_entry = {
 # deliberately absent. Its separate settings-ledger value remains available to
 # internal request and settings gates without creating an Event Details row,
 # event history entry, evolution, or ordinary super-event registration.
-# Public visibility classifies a branch. Public-details readiness is a separate
-# implementation opt-in so registry identities can land before their complete
-# row, toggle, selector, and prose package is ready for players.
+# Visibility and details-readiness classify registry identities; they do not
+# suppress a registered row. This keeps hidden terminal identities selectable
+# and gives every implemented source event a stable owner/details contract.
 initialize_world_end_scenario_registry = {
 	clear_array = global.world_end_scenario_registry_id_entries
 	clear_array = global.world_end_scenario_registry_owner_event_id_entries
@@ -1122,6 +1122,19 @@ initialize_world_end_scenario_registry = {
 	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.zombie_apocalypse }
 	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.zombie_apocalypse }
 	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.zombie_apocalypse }
+	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
+	world_end_scenario_registry_add_entry = yes
+
+	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.final_silence }
+	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.final_silence }
+	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.primary }
+	set_temp_variable = { world_end_registry_visibility = constant:world_end_scenario_visibility.public }
+	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.ready }
+	set_temp_variable = { world_end_registry_default_enabled = constant:world_end_scenario_default_enabled.enabled }
+	set_temp_variable = { world_end_registry_scenario_flag = constant:world_end_scenario_id.final_silence }
+	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.final_silence }
+	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.final_silence }
+	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.final_silence }
 	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
 	world_end_scenario_registry_add_entry = yes
 
@@ -1229,18 +1242,31 @@ initialize_world_end_scenario_registry = {
 	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
 	world_end_scenario_registry_add_entry = yes
 
-	# Internal registry identity only. Visibility filtering keeps this branch out
-	# of Event Details rows, controls, and public text selectors.
+	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.africa_the_world }
+	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.africa_world_order }
+	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.primary }
+	set_temp_variable = { world_end_registry_visibility = constant:world_end_scenario_visibility.public }
+	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.ready }
+	set_temp_variable = { world_end_registry_default_enabled = constant:world_end_scenario_default_enabled.enabled }
+	set_temp_variable = { world_end_registry_scenario_flag = constant:world_end_scenario_id.africa_the_world }
+	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.africa_the_world }
+	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.africa_the_world }
+	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.africa_the_world }
+	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
+	world_end_scenario_registry_add_entry = yes
+
+	# Registered hidden identity. Hidden visibility remains metadata for future
+	# presentation policy, while the stable row and details contract stay usable.
 	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.weaponized_wendigo_ascendancy }
 	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.zombie_outbreak }
 	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.hidden }
 	set_temp_variable = { world_end_registry_visibility = constant:world_end_scenario_visibility.hidden }
-	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.hidden }
+	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.ready }
 	set_temp_variable = { world_end_registry_default_enabled = constant:world_end_scenario_default_enabled.enabled }
 	set_temp_variable = { world_end_registry_scenario_flag = constant:world_end_scenario_id.weaponized_wendigo_ascendancy }
 	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.weaponized_wendigo_ascendancy }
-	set_temp_variable = { world_end_registry_title_key = 0 }
-	set_temp_variable = { world_end_registry_details_key = 0 }
+	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.weaponized_wendigo_ascendancy }
+	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.weaponized_wendigo_ascendancy }
 	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
 	world_end_scenario_registry_add_entry = yes
 }
@@ -1274,7 +1300,21 @@ world_end_scenario_registry_add_entry = {
 events_log_evaluate_world_end_scenario_active = {
 	set_temp_variable = { events_log_world_end_scenario_active = 0 }
 	if = {
+		limit = {
+			check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.final_silence }
+			OR = {
+				has_global_flag = world_end_final_silence
+				has_global_flag = world_end_final_silence_completed
+			}
+		}
+		set_temp_variable = { events_log_world_end_scenario_active = 1 }
+	}
+	else_if = {
 		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.zombie_apocalypse } has_global_flag = world_end_zombies }
+		set_temp_variable = { events_log_world_end_scenario_active = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.weaponized_wendigo_ascendancy } has_global_flag = world_end_wendigo }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
@@ -1307,6 +1347,10 @@ events_log_evaluate_world_end_scenario_active = {
 	}
 	else_if = {
 		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.black_plague } has_global_flag = world_end_black_plague }
+		set_temp_variable = { events_log_world_end_scenario_active = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.africa_the_world } has_global_flag = world_end_africa_the_world }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 }
@@ -1356,17 +1400,6 @@ events_log_rebuild_event_detail_world_end_scenarios = {
 		if = {
 			limit = {
 				check_variable = { var = global.world_end_scenario_registry_owner_event_id_entries^events_log_world_end_registry_index value = event_id compare = equals }
-				check_variable = { var = global.world_end_scenario_registry_visibility_entries^events_log_world_end_registry_index value = constant:world_end_scenario_visibility.public compare = equals }
-				check_variable = { var = global.world_end_scenario_registry_public_details_ready_entries^events_log_world_end_registry_index value = constant:world_end_scenario_public_details.ready compare = equals }
-				OR = {
-					NOT = {
-						OR = {
-							check_variable = { var = global.world_end_scenario_registry_id_entries^events_log_world_end_registry_index value = constant:world_end_scenario_id.world_is_the_larder compare = equals }
-							check_variable = { var = global.world_end_scenario_registry_id_entries^events_log_world_end_registry_index value = constant:world_end_scenario_id.no_thaw_will_come compare = equals }
-						}
-					}
-					has_global_flag = cannibalism_reveal_complete
-				}
 			}
 
 			set_temp_variable = { events_log_world_end_scenario_id = global.world_end_scenario_registry_id_entries^events_log_world_end_registry_index }
@@ -2191,6 +2224,28 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_type = constant:africa_event.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:africa_evolution_runtime.log_tier_iii }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:africa_event.evolution_iii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = constant:secret_alliance_event.id
+					compare = equals
+				}
+			}
+			set_temp_variable = { events_log_event_detail_preview_type = constant:secret_alliance_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:secret_alliance_event.evolution_i_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:secret_alliance_event.evolution_i_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:secret_alliance_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:secret_alliance_event.evolution_ii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:secret_alliance_event.evolution_ii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:secret_alliance_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:secret_alliance_event.evolution_iii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:secret_alliance_event.evolution_iii_stage }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 
@@ -4033,27 +4088,10 @@ events_log_toggle_event_disabled_by_row = {
     }
 }
 
-events_log_toggle_all_events_enabled = {
-    if = {
-        limit = { check_variable = { global.disabled_events^num < 1 } }
-        clear_array = global.disabled_events
-        set_temp_variable = { events_log_all_events_count = global.all_events^num }
-        for_loop_effect = {
-            start = 0
-            end = events_log_all_events_count
-            value = i
-            add_to_array = {
-                array = global.disabled_events
-                value = global.all_events^i
-            }
-        }
-    }
-    else = {
-        clear_array = global.disabled_events
-    }
-    calculate_dynamic_major_weight_gain = yes
-    rebuild_events_log_events_view = yes
-    rebuild_events_log_cluster_view = yes
+events_log_refresh_bulk_enable_views = {
+	calculate_dynamic_major_weight_gain = yes
+	rebuild_events_log_events_view = yes
+	rebuild_events_log_cluster_view = yes
     if = {
         limit = { has_country_flag = events_log_event_details_open }
         events_log_rebuild_open_event_details_view = yes
@@ -4061,8 +4099,83 @@ events_log_toggle_all_events_enabled = {
     if = {
         limit = { has_country_flag = events_log_cluster_details_open }
         events_log_refresh_selected_cluster_details_state = yes
-        events_log_rebuild_selected_cluster_details_view = yes
-    }
+		events_log_rebuild_selected_cluster_details_view = yes
+	}
+}
+
+events_log_toggle_all_events_enabled = {
+	if = {
+		limit = { check_variable = { global.disabled_events^num < 1 } }
+		clear_array = global.disabled_events
+		set_temp_variable = { events_log_all_events_count = global.all_events^num }
+		for_loop_effect = {
+			start = 0
+			end = events_log_all_events_count
+			value = i
+			add_to_array = {
+				array = global.disabled_events
+				value = global.all_events^i
+			}
+		}
+	}
+	else = {
+		clear_array = global.disabled_events
+	}
+	events_log_refresh_bulk_enable_views = yes
+}
+
+# Shift-clicking the Events header checkbox changes only the curated set that
+# is enabled by default. Events outside that set retain their current state.
+events_log_toggle_reworked_default_events_enabled = {
+	set_temp_variable = { events_log_disabled_reworked_default_count = 0 }
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = i
+		set_temp_variable = { event_id = global.all_events^i }
+		if = {
+			limit = {
+				event_log_event_is_reworked_default_enabled = yes
+				is_in_array = { global.disabled_events = event_id }
+			}
+			add_to_temp_variable = { events_log_disabled_reworked_default_count = 1 }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { events_log_disabled_reworked_default_count > 0 } }
+		for_loop_effect = {
+			start = 0
+			end = global.all_events^num
+			value = i
+			set_temp_variable = { event_id = global.all_events^i }
+			if = {
+				limit = {
+					event_log_event_is_reworked_default_enabled = yes
+					is_in_array = { global.disabled_events = event_id }
+				}
+				remove_from_array = { global.disabled_events = event_id }
+			}
+		}
+	}
+	else = {
+		for_loop_effect = {
+			start = 0
+			end = global.all_events^num
+			value = i
+			set_temp_variable = { event_id = global.all_events^i }
+			if = {
+				limit = {
+					event_log_event_is_reworked_default_enabled = yes
+					NOT = { is_in_array = { global.disabled_events = event_id } }
+				}
+				add_to_array = { global.disabled_events = event_id }
+			}
+		}
+	}
+	events_log_refresh_bulk_enable_views = yes
+	set_temp_variable = { event_id = 0 }
+	set_temp_variable = { events_log_disabled_reworked_default_count = 0 }
 }
 
 events_log_toggle_header_bulk_enabled = {
