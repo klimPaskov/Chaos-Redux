@@ -252,6 +252,8 @@ Download and preserve the original source file under the deterministic job evide
 
 Mechanical transformations such as trimming, fading, silence removal, normalization, channel conversion, resampling, and codec conversion are permitted only when the source license allows them. Keep the original source, transformation recipe, derived checksum, and final format in the evidence package. These operations must never become a way to create audio from scratch.
 
+Probe every runtime WAV against the actual installed consumer precedent before the parent wires it. For a `Voices` category soundeffect, including `<TAG>_infantry_idle`, the default delivery contract is signed 16-bit PCM (`pcm_s16le`), 44.1 kHz, mono, matching the installed vanilla and approved custom voice precedents; a float WAV such as `pcm_f32le` must not be called runtime-compatible. A permitted mechanical conversion may use `ffmpeg -map 0:a:0 -ar 44100 -ac 1 -c:a pcm_s16le -map_metadata -1`, while preserving the original source and recording both hashes. Do not mark the handoff complete until every installed WAV has an `ffprobe` receipt for codec, sample rate, channels, and bit depth.
+
 The sound handoff must define:
 
 - the unit or subunit id and runtime consumer

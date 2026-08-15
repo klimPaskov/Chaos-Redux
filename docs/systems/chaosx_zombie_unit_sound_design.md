@@ -14,7 +14,7 @@ All twelve zombie sub-unit definitions in `common/units/zombies.txt` use `sprite
 | Entity | `zombies_entity` in `gfx/entities/chaosx_zombies.asset` | Receives state-entry sound events |
 | Selection consumer | `ZZZ_infantry_idle` | Country/original-tag infantry selection voice used by `ZZZ` zombie armies |
 | Sound definitions | `sound/chaosx_zombies_sound.asset` | Declares source WAVs and soundeffect wrappers |
-| Runtime audio | `sound/002_zombie_outbreak/zombies/*.wav` | HOI4-compatible PCM WAV assets |
+| Runtime audio | `sound/002_zombie_outbreak/zombies/*.wav` | Signed-16 PCM WAV assets (`pcm_s16le`, 44.1 kHz, mono) |
 
 The entity keeps the existing custom actions and adds one-shot sound events to the corresponding vanilla land-unit states.
 
@@ -46,6 +46,13 @@ The installed executable also contains the consumer templates `TAG_infantry_idle
 
 The entity event shape follows the offline `paradox_wiki/Entity modding - Hearts of Iron 4 Wiki.md` sound-event example.
 
+## Runtime audio format contract
+
+The installed vanilla infantry voice precedent is signed 16-bit PCM (`pcm_s16le`), 44.1 kHz, mono, and the runtime zombie voice files use that same delivery format.
+The source files remain preserved with their original checksums; the runtime copies are license-permitted mechanical derivatives.
+The deterministic conversion is `ffmpeg -map 0:a:0 -ar 44100 -ac 1 -c:a pcm_s16le -map_metadata -1`.
+A runtime unit package is not complete until `ffprobe` reports `pcm_s16le,44100,1,16` for every installed WAV, because float WAVs such as `pcm_f32le` are not accepted by the runtime voice contract.
+
 ## Source provenance and processing
 
 The idle and attack zombie vocal candidates come from [Zombie noises and moans](https://opengameart.org/content/zombie-noises-and-moans) by ianzazz, which is marked CC0 on the source page.
@@ -59,13 +66,13 @@ The selection source archive is `https://opengameart.org/sites/default/files/zom
 
 | Source member | Source SHA-256 | Runtime file | Runtime SHA-256 |
 | --- | --- | --- | --- |
-| `zombienoise1.ogg` | `E3105F5259AD8B17BD1134C5A5CEE79FC7F2F3662466D348BC05944CB92F16AE` | `zombie_idle_moan_01.wav` | `63A28AAF9A39A7F12595C47AD83AA75786015E8534B64B2408F13FD4AEF88321` |
-| `zombienoise2.ogg` | `F9E23D6545F64798D29F2B7AC767DA6208C1DC43B6D0928DC037FAE4BCA13B13` | `zombie_idle_moan_02.wav` | `0104F58C0553ECE097A957366CC892CBB322C0F7E7D0A58E0B0F749DDE1BD9B4` |
-| `zombienoise3.ogg` | `968B48B14A83A17B387E7373C83D3B9553BF21D2B0E03A67909EAD4FC21F38B1` | `zombie_idle_moan_03.wav` | `F7C21F3FA799F02BD60F42267E899FC7613140021E1124A5EF36429DEA3AD953` |
+| `zombienoise1.ogg` | `E3105F5259AD8B17BD1134C5A5CEE79FC7F2F3662466D348BC05944CB92F16AE` | `zombie_idle_moan_01.wav` | `C0AA8630E25E0A446B9605EDA6711291DE2B4F78F1AB2FB0A92C2A08A6DB94FF` |
+| `zombienoise2.ogg` | `F9E23D6545F64798D29F2B7AC767DA6208C1DC43B6D0928DC037FAE4BCA13B13` | `zombie_idle_moan_02.wav` | `8F8FAA368A6148914FDBCBA4966BF08AB8A8987481AB4D219BB931860D85DE5B` |
+| `zombienoise3.ogg` | `968B48B14A83A17B387E7373C83D3B9553BF21D2B0E03A67909EAD4FC21F38B1` | `zombie_idle_moan_03.wav` | `4D97968CFE6FFB1DCC3519A697D09402A126B0DE2C0F95CAC062F89E025C6A` |
 
-The derived files reproduce byte-for-byte with FFmpeg using `-ar 44100 -c:a pcm_f32le`; no synthesis, test tones, placeholder audio, or unrelated vanilla sound files were used.
+The derived files reproduce byte-for-byte with FFmpeg using `-map 0:a:0 -ar 44100 -ac 1 -c:a pcm_s16le -map_metadata -1`; no synthesis, test tones, placeholder audio, or unrelated vanilla sound files were used.
 
-The final assets are 44.1 kHz PCM float WAV files, preserving stereo for vocal sources and mono for the footsteps source.
+The final assets are 44.1 kHz signed 16-bit PCM WAV files in mono, matching the installed vanilla voice delivery format.
 
 ## Runtime tuning
 
@@ -76,6 +83,8 @@ The durable selection source-to-runtime mapping and checksums are recorded above
 ## Validation boundary
 
 Source files, derived WAV format, runtime file references, soundeffect identifiers, entity event identifiers, and all twelve sprite consumers were checked locally.
+
+The installed zombie WAVs were additionally probed with `ffprobe` and each reports `pcm_s16le,44100,1,16`.
 
 The `ZZZ_infantry_idle` identifier, `Voices` category membership, three selection candidates, and `ZZZ` original-tag consumer were checked against the installed vanilla voice package.
 
