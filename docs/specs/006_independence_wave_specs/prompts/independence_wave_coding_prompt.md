@@ -45,9 +45,9 @@ Implement the doubled automatic wave ladder:
 
 Build the complete wave plan before releasing anything. Reserve a protected state for every host, prefer its capital, guarantee at least one surviving host state, select unique candidate anchors, trim optional territory before dropping a candidate, and reroll invalid or living tags. Execute the locked plan as one synchronized incident.
 
-## Pre-wave crisis surface
+## Pre-event surface decision
 
-Implement the host-facing crisis as a scoped, costed mission rather than a second release path. Expose it below 35% stability, when an enemy controls an owned state above 50 resistance, or when a country controls a foreign-owned state above 50 resistance; use the centralized 120-day mission and standard security commitment. On successful resolution, queue `chaosx.nr6.3` for the ordinary current-band wave; the endpoint waits through a bounded retry window when the shared Liberations coordinator is busy and fails closed when the plan remains invalid. Busy, invalid, cancelled, or failed resolution must apply visible pressure/cooldown outcomes without changing ownership. The crisis may not add a world-wide periodic loop, create a country directly, bypass host survival, or bypass reservation and synchronized execution. Record live mission, AI, queue-cleanup, save/load, and allocator evidence separately from static source validation.
+Do not implement a pre-event Independence Wave pressure category, mission, cost, queue, history row, or other decision surface. Before the public Event 006 report fires, pressure, stability, resistance, and occupation conditions must expose absolutely nothing and must not imply that the wave has begun. The old crisis helpers may remain only as inert parser-compatibility code with a hard-disabled opening trigger; do not add new callers, localisation, UI, queue, or history for them. The first player-facing Event 006 entry point is the public event, after which the normal active-origin decision and mission map becomes available.
 
 Use the candidate registry as a data source. A candidate is runtime-eligible only when its tag, country definition, anchor, capital, flags, leader mode, starting setup, focus content, decisions, AI, and localisation are ready.
 
@@ -168,7 +168,7 @@ Implement the data-driven family registry.
 
 ## Evolutions
 
-Implement five true evolution stages with active-event and pre-fire opening effects:
+Implement five true evolution stages with active-event and post-report opening effects:
 
 1. Replicable Independence
 2. Dormant Nations
@@ -176,7 +176,7 @@ Implement five true evolution stages with active-event and pre-fire opening effe
 4. Sovereign Congress
 5. Open Sovereignty
 
-These are working labels. Write final localisation from the spec direction. Do not log ordinary wave counts as evolutions. Respect the evolution enable and disable system.
+These are working labels. Write final localisation from the spec direction. Do not log ordinary wave counts as evolutions. Respect the evolution enable and disable system. Before the public Event 006 report fires, expose absolutely nothing; evolution effects begin only after the report.
 
 ## Triggerable scenario
 

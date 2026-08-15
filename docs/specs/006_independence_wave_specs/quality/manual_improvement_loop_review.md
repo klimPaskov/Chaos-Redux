@@ -78,7 +78,7 @@ A second universal faction for moderate countries is not needed. Failed congress
 
 ### Evolutions
 
-The five evolutions add prepared institutions, dormant nations, armed openings, a sovereign congress, and open sovereignty. Each supports active-event and pre-fire entry paths. The exact wave count remains a separate chaos-tier rule.
+The five evolutions add prepared institutions, dormant nations, armed openings, a sovereign congress, and open sovereignty. Each supports active-event and post-report entry paths only. The exact wave count remains a separate chaos-tier rule, and nothing is exposed before the public report.
 
 The evolution set is complete. A sixth evolution would conflict with the five-stage project limit and would likely duplicate the triggerable scenario or league endgame.
 
