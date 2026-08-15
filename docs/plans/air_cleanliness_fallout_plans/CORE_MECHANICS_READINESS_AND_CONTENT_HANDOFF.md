@@ -18,7 +18,7 @@ The Air panel fits the existing 500 by 343 content surface. It displays total co
 
 Air Winter uses phases 0 through 6 and per-state exposure, recovery, adaptation, food, shelter, water, disease, and reclamation values. Its monthly state pass affects population through the Deaths system, buildings, supply, state categories, military movement and attrition, air operations, disease, decisions, event candidacy, and reclamation.
 
-The dedicated phase, exposure, and survival map modes consume the same state ledger. The normal map has region-sensitive snow, frost, cold rain, ash, dead vegetation, frozen water, dim light, and thaw entities. Warm regions do not receive universal snow.
+The single dedicated Air Winter mapmode uses phase colors and reports exposure and survival values from the same state ledger. The normal map has region-sensitive snow, frost, cold rain, ash, dead vegetation, frozen water, dim light, and thaw entities. Warm regions do not receive universal snow.
 
 ## Fallout request and atmosphere lock
 

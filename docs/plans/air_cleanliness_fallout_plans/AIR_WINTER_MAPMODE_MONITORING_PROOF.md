@@ -13,7 +13,7 @@ The accepted winter mapmode specification defines four viewer-specific informati
 | Atmospheric office | Viewer completed a roof-sampler project in at least one state | Trend, cause readings, and likely phase next season |
 | Terminal modelling | Global Air Contamination is at least 90 percent, or a major power has an atmospheric office | Possible Fallout classification from atmospheric evidence |
 
-The three Air Winter map modes use the same access contract. A player cannot bypass the gate by switching from the phase layer to exposure or survival. A state without initialized phase and target-phase ledgers reports that no atmospheric ledger exists instead of displaying zero-valued readings.
+The single Air Winter mapmode uses this access contract for its combined phase, exposure, and survival report. A state without initialized phase and target-phase ledgers reports that no atmospheric ledger exists instead of displaying zero-valued readings.
 
 ## Script ownership
 
@@ -21,7 +21,7 @@ The three Air Winter map modes use the same access contract. A player cannot byp
 - `common/scripted_triggers/fallout_consolidated_triggers.txt` derives the viewer's basic, office, and terminal access.
 - `common/scripted_effects/fallout_consolidated_effects.txt` grants `air_winter_atmospheric_office` when a roof-sampler project completes.
 - `common/scripted_effects/fallout_consolidated_effects.txt` reconstructs that country capability from surviving sampler states during normalisation and clears it through the bounded country reset.
-- `common/scripted_localisation/chaosx_scripted_localisation_map_modes.txt` selects one information tier for each mapmode tooltip.
+- `common/scripted_localisation/chaosx_scripted_localisation_map_modes.txt` selects one information tier for the mapmode tooltip.
 - `localisation/english/chaosx_map_modes_l_english.yml` owns the concrete player-facing reports.
 
 The monitoring level is derived for the viewing country. It is not stored as one state value because ownership, control, treaty access, and national investment can give different viewers different reports for the same state.
@@ -30,7 +30,7 @@ The monitoring level is derived for the viewing country. It is not stored as one
 
 The installed official `common/map_modes/documentation.md` states that a state mapmode evaluates the current state through `FROM` and the viewing player through `ROOT`. Chaos Redux already uses that contract in `black_plague_state_is_visible_to_mapmode_player` and `black_plague_state_details_are_visible_to_mapmode_player`.
 
-The Air Winter tooltips follow the same shape. The delayed tooltip calls `[FROM.GetAirWinter...MapModeTooltip]`. Its scripted localisation evaluates a state-scoped trigger. That trigger checks state ownership or control against `ROOT`, then checks country flags inside `ROOT`.
+The Air Winter tooltip follows the same shape. The delayed tooltip calls `[FROM.GetAirWinterPhaseMapModeTooltip]`. Its scripted localisation evaluates a state-scoped trigger. That trigger checks state ownership or control against `ROOT`, then checks country flags inside `ROOT`.
 
 ## Information boundaries
 
@@ -58,7 +58,7 @@ Completing another sampler only sets the same country flag again. Monthly state 
 
 Static inspection confirms:
 
-- all three delayed tooltips route through gated scripted localisation
+- the delayed tooltip routes through gated scripted localisation
 - initialized states test terminal selection before office, then basic, then none
 - the threshold uses one script constant
 - no Fallout survival coefficient, grade receipt, or ready flag is written

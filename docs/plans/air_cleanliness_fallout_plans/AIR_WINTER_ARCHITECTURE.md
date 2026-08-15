@@ -344,22 +344,17 @@ Phase color design:
 
 The exact palette belongs in script constants.
 
-### Mapmode layers
+### Mapmode information
 
-The accepted design discusses phase, exposure, and survival information. Engine support for cycling several data layers through one mapmode button must be verified before implementation.
+The accepted design requires phase, exposure, and survival information in one mapmode. Phase owns the state color. Exposure and survival are reported in the same viewer-gated tooltip.
 
 Required delivery:
 
-- phase mapmode
-- phase tooltip that includes exposure and forecast
+- one phase mapmode
+- one tooltip that includes exposure, survival value, and forecast
+- one selected and one deselected icon for that mapmode
 
-Optional after proof:
-
-- separate exposure mapmode
-- separate Fallout survival-value mapmode after the world rewrite
-- a scripted GUI selector tied to mapmode state if a stable precedent exists
-
-Do not promise an unsupported sublayer switch.
+Do not register separate exposure or survival mapmodes and do not promise an unsupported sublayer switch.
 
 ### Tooltip order
 

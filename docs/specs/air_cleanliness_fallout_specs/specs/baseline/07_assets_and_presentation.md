@@ -13,7 +13,7 @@ Fallout needs a new visual language. It should not reuse only old nuke icons and
 | Asset family | Source mode | Purpose |
 | --- | --- | --- |
 | Air mapmode legend | Generated UI or hand-authored UI | Shows winter phases 0 to 6. |
-| Air mapmode layer buttons | Icon artist | Switch winter, fallout exposure, and survival value layers. |
+| Air Winter mapmode button | Icon artist | Opens the single phase-based diagnostic view whose tooltip reports exposure and survival values. |
 | Winter state modifier icons | Icon artist | Haze, soot veil, black snow, long winter, dead sky. |
 | Fallout state class icons | Icon artist | Bunker city, dead city, greenhouse, badlands, forbidden zone, mutant biosphere, port remnant. |
 | Survival resource icons | Icon artist | Food, clean water, medicine, scrap, fuel, power, filters, shelter, recognition. |

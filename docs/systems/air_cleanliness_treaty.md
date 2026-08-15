@@ -94,7 +94,7 @@ Arrival applies existing Air Winter response values for filters and clinic shelt
 
 Active route states are held in a bounded registry. A route is removed before monthly winter pressure if its timed flag expires, the owner or controller changes, either country leaves the treaty, either country violates the treaty, the treaty generation changes, or the two countries enter a war. Membership removal, dissolution, annexation, and Fallout also cancel active donor projects and release exact state reservations through the dedicated donor registry.
 
-All three Air Winter map modes display whether the selected state currently has a treaty filter route.
+The Air Winter mapmode displays whether the selected state currently has a treaty filter route.
 
 ## Verification Mission
 

@@ -192,14 +192,14 @@ This pilot is not the Fallout living-world scheduler. It does not count toward a
 
 ## Map modes and normal-map proof
 
-Three registered map modes expose information through four viewer-specific monitoring levels:
+One registered Air Winter mapmode exposes information through four viewer-specific monitoring levels:
 
 - None reveals only the current phase.
 - Basic sampling reveals the current phase and one-month trend to the state owner, controller, and treaty members.
 - An Atmospheric Office reveals exact cause readings and the likely phase next season after one roof-sampler project completes.
 - Terminal Modelling reveals a possible Fallout classification after global contamination reaches 90 percent, or to a major power with an Atmospheric Office.
 
-The phase, exposure, and survival layers all use the same gate. Terminal text calls the result an atmospheric classification and warns that direct strikes or blast history can change the final grade. It does not commit the Fallout grading ledger.
+The phase color layer and its combined exposure and survival report use the same gate. Terminal text calls the result an atmospheric classification and warns that direct strikes or blast history can change the final grade. It does not commit the Fallout grading ledger.
 
 Their files are:
 
@@ -238,7 +238,7 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 | Country air operations | `GFX_air_winter_phase_2` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_phase_2.dds` | `interface/fallout_consolidated.gfx` |
 | Disease modifier | `GFX_air_winter_disease_pressure_state` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_disease_pressure_state.dds` | `interface/fallout_consolidated.gfx` |
 | Report events | `GFX_report_event_air_winter_phase_1` through `GFX_report_event_air_winter_phase_6`, `GFX_report_event_air_winter_recovery`, `GFX_report_event_air_winter_island_refugee_harbor`, `GFX_report_event_air_winter_desert_water_convoy`, and `GFX_report_event_air_winter_dead_city_salvage` | `gfx/event_pictures/fallout/` | `interface/fallout_consolidated.gfx` |
-| Map mode buttons | Selected and deselected sprites for phase, exposure, and survival | `gfx/interface/mapmode/custom/` | `interface/mapmodes_interface.gfx` |
+| Map mode button | Selected and deselected sprites for the single Air Winter phase mapmode | `gfx/interface/mapmode/custom/` | `interface/mapmodes_interface.gfx` |
 | Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/air_cleanliness_winter/decisions/` | `interface/fallout_consolidated.gfx` |
 | Regional ground and props | `air_winter_class_<class>_phase_<phase>_entity` and class prop aliases | `gfx/models/air_cleanliness_winter/regional/` | `gfx/entities/air_cleanliness_winter_regional_visuals.asset` |
 | Regional weather | Snow, cold-rain, ash, and thaw particle entities | `gfx/particles/air_cleanliness_winter/` | `gfx/entities/air_cleanliness_winter_regional_particles.asset` |
@@ -298,8 +298,8 @@ Implemented in the Air Winter tranche:
 - Population loss through the shared Deaths system.
 - Building, supply, operations, disease, and category consequences.
 - Exact 1081-state regional classification.
-- Three winter map modes.
-- Four monitoring levels across every winter mapmode tooltip.
+- One Air Winter phase mapmode with exposure and survival values in its tooltip.
+- Four monitoring levels across the Air Winter mapmode tooltip.
 - A bounded Air Cleanliness Treaty lifecycle with deterministic formation, invitation receipts, violation memory, and non-periodic annex cleanup.
 - A paid Joint Filter Convoy that applies existing response values to one exact Phase 3 or worse priority state and opens a pressure-reducing relief route for up to six months.
 - A paid secretariat Verification Mission that offers full access, records-only access, or refusal, then returns an exact seven-day result with government-aware AI and durable memory. Refusal enforces the accepted treaty expulsion, relief-loss, opinion, and embargo consequences without changing Winter or Fallout tuning formulas.

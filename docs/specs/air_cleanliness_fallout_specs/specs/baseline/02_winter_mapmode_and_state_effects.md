@@ -10,17 +10,15 @@ The new mapmode exists because the sky must be visible. The player should be abl
 
 The mapmode should not simply color every country by the same global value. It must be state-based.
 
-## Mapmode layers
+## Mapmode presentation
 
-The mapmode has three display layers controlled by small buttons or keyboard cycling.
+Air Winter owns one state-based mapmode. Winter phase is the only color layer. Exposure and survival remain live state values shown inside the same viewer-gated tooltip rather than separate mapmode buttons or keyboard-cycled views.
 
-| Layer | What it shows | Tooltip must include |
+| Surface | What it shows | Tooltip must include |
 | --- | --- | --- |
-| Winter phase | State phase 0 to 6 | Phase label, monthly death pressure, supply impact, building damage risk, category drift |
-| Fallout exposure | Radiation and dust burden | Fallout intensity, expected decay, contamination contribution, shelter protection |
-| Survival value | Why the state still matters | Food potential, water stress, shelter capacity, salvage potential, refugee pressure |
+| Air Winter | State phase 0 to 6 | Phase label, monthly death pressure, supply impact, building damage risk, category drift, Fallout intensity, expected exposure movement, contamination, shelter, survival value, food, water, reclamation, recovery, adaptation, and refugee pressure |
 
-The default view is Winter phase. The mapmode legend must show six to seven bands with readable contrast. Exact colors belong to UI implementation, but the progression should move from clean blue or green into grey, black, sick yellow, and harsh red.
+The mapmode legend must show six to seven phase bands with readable contrast. Exact colors belong to UI implementation, but the progression should move from clean blue or green into grey, black, sick yellow, and harsh red.
 
 ## Tooltip content direction
 
