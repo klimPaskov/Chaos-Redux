@@ -1,5 +1,7 @@
 # Event 006 shared decision gap scan — 2026-08-15
 
+> Superseded current-source note (2026-08-15): the former DM-62 threshold decision was resolved by `006_dm62_charter_war_mandate_factory_gate_2026_08_15.md` and commit `934405954`. The live DM-62 `available` and `custom_cost_trigger` now use `can_pay_independence_wave_diplomatic_standard_factory_cost`; the historical no-safe-gap wording below remains the pre-repair audit record.
+
 ## Disposition
 
 `NO_SAFE_SOURCE_GAP_FOUND — read-only audit.`
