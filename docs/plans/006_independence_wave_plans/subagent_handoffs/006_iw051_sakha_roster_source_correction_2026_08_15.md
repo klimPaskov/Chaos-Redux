@@ -1,5 +1,7 @@
 # IW-051 Sakha Roster Source Correction
 
+> Map-evidence note (2026-08-15): the existing 574/Yakutsk anchor passes direct map inspection. The allocation-probe `MAP_STATE_ID_COLLISION` cited below is historical; roster and central-admission gates remain as stated.
+
 ## Disposition
 
 `SOURCE-CORRECTED / CENTRAL ADMISSION STILL HOLD-FAIL-CLOSED`

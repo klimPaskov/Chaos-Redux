@@ -1,5 +1,7 @@
 # IW-051 Sakha/YAK Flag and Symbol Provenance Handoff — 2026-08-15
 
+> Map-evidence note (2026-08-15): direct inspection of existing states 574/644/876/877 passes. The allocation-probe `MAP_STATE_ID_COLLISION` is historical and does not itself block the installed YAK anchor; flag identity, origin, and rights gates remain HOLD.
+
 ## Disposition
 
 `HOLD / FAIL-CLOSED — research complete; no runtime asset selected.`

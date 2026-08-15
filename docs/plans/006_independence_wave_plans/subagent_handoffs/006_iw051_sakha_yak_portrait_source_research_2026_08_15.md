@@ -1,5 +1,7 @@
 # IW-051 Sakha/YAK identity and portrait source research handoff
 
+> Map-evidence note (2026-08-15): the existing 574/Yakutsk anchor passes direct map inspection. Any older allocation-probe `MAP_STATE_ID_COLLISION` wording is historical and does not alter the portrait source/rights disposition.
+
 Date: 2026-08-15.
 
 ## Disposition
