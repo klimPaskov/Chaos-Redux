@@ -85,6 +85,20 @@ The manual scenario owns raw id 14, one greater than the previous live maximum 1
 
 The manual row is a scenario launcher, not an ordinary Event Log entry, evolution, Event Details card, or ordinary super-event. After the seven-day barrier it enters `fallout_request_aftermath`, the same idempotent consequence coordinator used by terminal sources and 100 percent Air Contamination.
 
+## Manual launch admission and host recovery
+
+The scenario selector and the manual sweep now share `fallout_manual_sweep_can_begin` as their admission gate. A launch is unavailable while a manual sweep, countdown, Fallout request, transition, or completed Fallout world state owns the ledger. The confirmation button therefore cannot appear to accept a request that the sweep coordinator must reject.
+
+`fallout_manual_scenario_begin` recognizes a host only when the country exists, carries `is_global_host`, and passes the same admission gate. If no such host exists, the live invoking country clears stale host flags, becomes the sole host, and initializes the sweep in the same effect chain. This recovery removes the former silent branch where an obsolete host flag satisfied the outer test but no country qualified to run `fallout_manual_initialize_sweep`.
+
+## Post-fix engine-surface evidence
+
+The focused event trace for `chaosx.fallout.900` completed with zero blocking event diagnostics and produced `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/aa82481ff9d961ef960979abfef3e307930d41f2d4ae4f0d9f40f8206211598b/87a8e21862770a2a9ae20201e9247504e9484e16fcec1a12123dc6b949005df3/event-trace-8ac996f68056.json`. The timing render produced the source-linked manifest at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/88ec32ca777910f28f3036efd3b128dd9521ff5dab852dab4d156d391aadb62c/8c17bb13a35d16f14b7d03fa427950e8c36b9019defdc3c4987224d1049c4343/event-timing-8ac996f68056-manifest.json`. The event tool reports a partial result because workspace-wide scripted-helper and lifecycle projections are deferred, so this evidence does not replace the direct admission and scheduler contract checks.
+
+The Fallout scenario selector inspection resolved 36 elements for `chaosx_scenarios_window` and found no visible-overlap failure. Its full artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/3d0a44f423c5f81686fc946d37c58ed1821165bbf3837f969d168be4140e86c3/c4a3212598cd1301bc3a08dad0551a2978a2e00dc6a3e42b054f47fa47e2345c/gui-inspect.ee8f16831ad99a8d.json`. The aggregate GUI validation remains false because the global source graph exceeded its diagnostic ceiling and retained unrelated repository-wide collisions. No selector layout or click-region source changed in this fix.
+
+The required event comparison route could not consume the trace artifacts. `hoi4.event_compare` returned `EVENT_GRAPH_ARTIFACT_INVALID` because the trace artifact schema is not accepted as a comparison graph, then returned `EVENT_REVISION_NOT_CACHED` for the corresponding graph revision. This is a recorded MCP comparison blocker and is not represented as successful engine evidence.
+
 ## Validation boundary
 
 The user explicitly excluded live HOI4 testing from this goal. Static proof covers the installed-map target set, native effect construction, batch and callback identities, exact completion barrier, population reconciliation, and seven-day request handoff. Runtime performance and presentation remain user-owned campaign validation and do not disable the source path.
