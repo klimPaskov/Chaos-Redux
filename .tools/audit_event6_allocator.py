@@ -999,6 +999,18 @@ def main() -> int:
 	require("always = no" in retired_crisis_trigger, "pre-event crisis trigger is not hard-disabled", errors)
 	require(not (ROOT / "common/decisions/006_independence_wave_crisis_decisions.txt").exists(), "retired crisis decision file still exposes a player surface", errors)
 	require(not (ROOT / "common/decisions/categories/006_independence_wave_crisis_categories.txt").exists(), "retired crisis category file still exposes a player surface", errors)
+	crisis_on_actions = ROOT / "common/on_actions/006_independence_wave_crisis_on_actions.txt"
+	require(not crisis_on_actions.exists(), "retired crisis on_annex callback still registers an active on_action file", errors)
+	for relative_path in ("common", "events", "history", "interface"):
+		for path in (ROOT / relative_path).rglob("*.txt"):
+			if path in (crisis_on_actions, ROOT / "common/scripted_effects/006_independence_wave_crisis_effects.txt"):
+				continue
+			text = path.read_text(encoding="utf-8-sig")
+			require(
+				"independence_wave_recover_crisis_requester_loss" not in text,
+				f"retired crisis requester-loss callback is still called from {path.relative_to(ROOT)}",
+				errors,
+			)
 
 	if errors:
 		print("Event 006 allocator audit FAILED")
