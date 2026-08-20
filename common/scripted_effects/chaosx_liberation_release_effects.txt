@@ -1089,10 +1089,22 @@ liberation_release_validate_country_rows = {
 			}
 			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.invalid_scope }
 		}
+		# Event 006 may reserve an instantiated empty shell so its character
+		# definitions are available at startup. Treat only that dormant shell as
+		# a valid existing target; Event 005 and every living/active country must
+		# still fail the living-tag contract.
 		if = {
 			limit = {
 				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
 				event_target:liberation_validation_country = { exists = yes }
+				OR = {
+					check_variable = { liberation_validation_row_owner = constant:liberation_plan_owner.soviet_collapse }
+					NOT = {
+						event_target:liberation_validation_country = {
+							is_independence_wave_dormant_country_scope = yes
+						}
+					}
+				}
 			}
 			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.living_tag }
 		}
