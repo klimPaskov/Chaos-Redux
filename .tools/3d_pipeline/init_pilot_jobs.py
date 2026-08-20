@@ -88,6 +88,13 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
         "asset_kind": spec["asset_kind"],
         "creature_rig_family": spec.get("creature_rig_family"),
         "scale_crosswalk": spec.get("scale_crosswalk"),
+        "shared_humanoid_batch": spec.get("shared_humanoid_batch"),
+        "shared_humanoid_rig_owner": spec.get("shared_humanoid_rig_owner"),
+        "shared_humanoid_role": spec.get("shared_humanoid_role"),
+        "image_to_3d_estimate_credits": spec.get("image_to_3d_estimate_credits"),
+        "rig_estimate_credits": spec.get("rig_estimate_credits"),
+        "animation_estimate_credits": spec.get("animation_estimate_credits"),
+        "estimated_credits": spec.get("planned_total_credits"),
         "brief": spec["asset_brief"],
         "required_components": spec["required_components"],
         "forbidden_additions": spec["forbidden_additions"],
@@ -163,6 +170,13 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
             "provider_lineage",
             "creature_rig_family",
             "scale_crosswalk",
+            "shared_humanoid_batch",
+            "shared_humanoid_rig_owner",
+            "shared_humanoid_role",
+            "image_to_3d_estimate_credits",
+            "rig_estimate_credits",
+            "animation_estimate_credits",
+            "estimated_credits",
         ):
             if field in existing:
                 job[field] = existing[field]

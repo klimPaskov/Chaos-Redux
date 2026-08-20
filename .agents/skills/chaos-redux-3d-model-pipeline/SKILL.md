@@ -153,6 +153,10 @@ verified balance -> image-to-3D -> status -> immediate download
                  -> optional suitable humanoid rig/animation candidate
 ```
 
+For a configured humanoid family batch, the runner may use one verified standard humanoid rig and one provider idle/attack/death action set as the animation source for several distinct generated geometries. This is a credit-aware family route, not a static fallback: every unit still receives its own Meshy geometry task, dual-source weight transfer, textures, `.mesh`, four exported `.anim` files, and per-action reimport proofs. The shared source must be recorded with owner task IDs, copied-artifact checksums, and recipient lineage; recipient geometry may never be reused.
+
+Use the repository batch entrypoint `python .tools/3d_pipeline/run_pilot.py --specialized-zombie-batch <configured_batch_id>` when a job manifest declares `shared_humanoid_batch`, `shared_humanoid_rig_owner`, and `shared_humanoid_role`. The owner pays for the standard rig and provider actions; recipient humanoids use the locked dual-source Blender preparation and import each shared action onto their own armature. Creature jobs in the same batch remain on their dedicated custom-rig route.
+
 Use **Meshy 6** as the default image-to-3D generation model whenever the verified live route exposes model selection. Record the exact live model identifier. Never silently downgrade to an older Meshy generation model. If Meshy 6 is unavailable or incompatible, stop with `needs_user_review` or `blocked` before selecting another generation model.
 
 The ordinary planned paid path is pre-authorized. Do not ask for confirmation before the initial model generation or before planned remesh, retexture, rigging, conversion, and required animation calls belonging to the accepted brief. Check the live balance before every paid tranche and record estimates, operations, attempt numbers, and consumed credits, but routine credit use and balance checks are not confirmation gates.
