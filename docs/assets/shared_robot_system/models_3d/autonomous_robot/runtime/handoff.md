@@ -13,4 +13,6 @@ The package is installed at the mod root. Staged evidence copies remain under `r
 
 All mesh and animation exports were reimported through io_pdx_mesh. The death action received an allowlisted root-only per-frame grounding correction after its first reimport exposed late airborne contact; the final reimport remains within approximately `1.2e-5` of the ground plane.
 
-No `.asset`, entity, GFX, sound definition, gameplay, or localisation wiring was edited. Live consumer validation remains parent/user-owned.
+The sentence below records the production worker's original ownership boundary; the parent later installed the package and superseded its pending-wiring status.
+
+Current runtime authority: `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_autonomous_robot_runtime_handoff_2026-08-15.md` and the package-root `manifest.json`. The mesh, entity, eight actions, three textures, technology/equipment icons, counters, gameplay identifiers, localisation, and five positional action-sound consumers are installed. The licensed selection cue remains registered but unconsumed because no provider-neutral per-subunit selection callback exists. Live consumer validation remains user-owned.
