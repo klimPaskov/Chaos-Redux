@@ -16,7 +16,20 @@ country_event = {
 	immediate = {
 		clr_global_flag = independence_wave_event_log_actor_ready
 		if = {
-			limit = { has_global_flag = independence_wave_joint_presentation_pending }
+			# The pending flag is only a delivery receipt for a committed joint
+			# Event 005 + Event 006 plan. A stale flag must never swallow a fresh
+			# standalone invocation before the allocator has had a chance to run.
+			limit = {
+				has_global_flag = independence_wave_joint_presentation_pending
+				has_global_flag = liberation_release_joint_plan_executed
+				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+				check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.joint }
+				check_variable = {
+					var = global.independence_wave_presentation_country_count
+					value = constant:independence_wave_planner.no_candidates
+					compare = greater_than
+				}
+			}
 			clr_global_flag = independence_wave_joint_presentation_pending
 			set_global_flag = independence_wave_joint_presentation_delivered
 			if = {
@@ -29,6 +42,10 @@ country_event = {
 			country_event = { id = chaosx.nr6.2 }
 		}
 		else = {
+			# Clear an orphaned joint-delivery marker before opening a new
+			# standalone transaction. This is state cleanup only; it creates no
+			# player-facing pre-event surface.
+			clr_global_flag = independence_wave_joint_presentation_pending
 			independence_wave_prepare_and_execute_standalone_incident = yes
 			if = {
 				limit = { has_global_flag = independence_wave_standalone_incident_committed }
