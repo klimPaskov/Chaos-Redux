@@ -60,6 +60,7 @@ CREATURE_ASSET_KINDS = {"creature"}
 REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "creature", "building", "static_building"}
 MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE = 30
 MESHY_REMESH_ESTIMATE = 5
+MESHY_TEXTURED_IMAGE_MODEL_IDS = {"meshy-6", "latest"}
 
 
 def task_file(job: Path, stage: str) -> Path:
@@ -1899,10 +1900,11 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
     image_to_3d_estimate = int(
         job.get("image_to_3d_estimate_credits") or MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE
     )
-    if meshy_ai_model.lower() == "meshy-6" and bool(provider_plan.get("should_texture", True)):
+    if meshy_ai_model.lower() in MESHY_TEXTURED_IMAGE_MODEL_IDS and bool(provider_plan.get("should_texture", True)):
         # A stale job manifest may still contain the historical 20-credit
         # no-texture estimate. Never under-preflight the required textured
-        # Meshy-6 call.
+        # current Meshy route when it is explicitly selected or resolved by
+        # the live `latest` alias.
         image_to_3d_estimate = max(image_to_3d_estimate, MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE)
     remesh_estimate = int(job.get("remesh_estimate_credits") or MESHY_REMESH_ESTIMATE)
     rig_estimate = int(job.get("rig_estimate_credits") or 5)

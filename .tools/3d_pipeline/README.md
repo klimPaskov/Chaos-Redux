@@ -15,6 +15,8 @@ one approved reference image
 
 The first process gate is a non-blank `MESHY_API_KEY` environment variable.
 
+Meshy model selection is live-route gated. When the requested model is newer than the verified default, inspect the live `meshy_image_to_3d` declaration first; use `latest` only when that alias is actually declared and record the resolved provider model. Do not invent or pass an unsupported identifier such as `meshy-7`.
+
 The package never prints or writes the key.
 
 If the key is missing or blank, print this exact PowerShell command and tell the user to restart the shell or Codex:
