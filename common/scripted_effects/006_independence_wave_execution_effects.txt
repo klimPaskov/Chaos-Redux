@@ -610,6 +610,42 @@ independence_wave_execute_standalone_frozen_plan = {
 	}
 }
 
+# A failed or interrupted manual Event 006 entry can leave a standalone plan in
+# collecting, allocating, or locked state. The shared coordinator correctly
+# rejects a second begin call while that plan is active, so recover only an
+# Event 006-only plan before starting a fresh standalone transaction. Joint
+# Event 005 + Event 006 plans and any plan past the execution barrier remain
+# untouched. This is state cleanup only and never creates a player-facing cue.
+independence_wave_reset_stale_standalone_plan = {
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+			has_global_flag = liberation_release_plan_includes_event6
+			NOT = { has_global_flag = liberation_release_plan_includes_event5 }
+			NOT = { has_global_flag = liberation_release_execution_started }
+			NOT = { has_global_flag = liberation_release_finalizer_started }
+			OR = {
+				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.collecting }
+				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
+			}
+		}
+		if = {
+			limit = { check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked } }
+			liberation_release_restore_host_capitals_before_execution = yes
+		}
+		if = {
+			limit = { NOT = { has_global_flag = liberation_release_capital_restore_failed } }
+			independence_wave_clear_plan_contribution = yes
+			clr_global_flag = independence_wave_plan_contribution_ready
+			clr_global_flag = independence_wave_plan_exact_count_failed
+			clr_global_flag = independence_wave_plan_pool_exhausted
+			clr_global_flag = independence_wave_plan_optional_expansion_failed
+			liberation_release_abort_plan = yes
+		}
+	}
+}
+
 # Complete standalone Event 006 transaction. Presentation is deliberately
 # outside this effect so a failed allocation can never display a release that
 # did not happen. Pre-mutation failures restore host capitals and clear the
@@ -623,6 +659,7 @@ independence_wave_prepare_and_execute_standalone_incident = {
 	clr_global_flag = independence_wave_standalone_incident_rolled_back_after_mutation
 	set_temp_variable = { independence_wave_standalone_plan_begun = constant:independence_wave_planner.no_candidates }
 
+	independence_wave_reset_stale_standalone_plan = yes
 	independence_wave_capture_wave_tuning = yes
 	set_temp_variable = { liberation_call_mode = constant:liberation_plan_mode.automatic }
 	set_temp_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.independence_wave }
