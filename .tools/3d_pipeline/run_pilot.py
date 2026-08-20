@@ -58,6 +58,8 @@ from pack_pdx_material import (  # noqa: E402
 STATIC_ASSET_KINDS = {"static", "building", "static_building"}
 CREATURE_ASSET_KINDS = {"creature"}
 REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "creature", "building", "static_building"}
+MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE = 30
+MESHY_REMESH_ESTIMATE = 5
 
 
 def task_file(job: Path, stage: str) -> Path:
@@ -1007,6 +1009,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     )
     rig_input_id = generation_id
     remesh_id: Optional[str] = None
+    remesh_estimate = int(spec.get("remesh_estimate_credits", MESHY_REMESH_ESTIMATE))
     source_triangles = int(candidate_report.get("imported_geometry", {}).get("triangles", 0))
     if source_triangles > 300000:
         remesh_id = provider_task(
@@ -1014,12 +1017,12 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
             job,
             "rig_remesh",
             task_type="remesh",
-            estimate=spec["remesh_estimate_credits"],
+            estimate=remesh_estimate,
             input_stage="generation",
             create=lambda: client.remesh(
                 input_task_id=generation_id,
                 target_polycount=spec["rig_source_target_polycount"],
-                estimate_credits=spec["remesh_estimate_credits"],
+                estimate_credits=remesh_estimate,
             ),
         )
         remesh_glb = download_once(
@@ -1836,6 +1839,31 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
             {"role": "death", "provider_action_id": 8, "fps": 24, "loop": False, "root_policy": "in_place"},
         ]
     )
+    meshy_ai_model = str(job.get("provider_model") or provider_plan.get("ai_model") or "meshy-6")
+    image_to_3d_estimate = int(
+        job.get("image_to_3d_estimate_credits") or MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE
+    )
+    if meshy_ai_model.lower() == "meshy-6" and bool(provider_plan.get("should_texture", True)):
+        # A stale job manifest may still contain the historical 20-credit
+        # no-texture estimate. Never under-preflight the required textured
+        # Meshy-6 call.
+        image_to_3d_estimate = max(image_to_3d_estimate, MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE)
+    remesh_estimate = int(job.get("remesh_estimate_credits") or MESHY_REMESH_ESTIMATE)
+    rig_estimate = int(job.get("rig_estimate_credits") or 5)
+    animation_estimate = int(job.get("animation_estimate_credits") or 3)
+    planned_total = int(
+        job.get("estimated_credits")
+        or (
+            image_to_3d_estimate
+            if is_creature
+            else image_to_3d_estimate + remesh_estimate + rig_estimate + (3 * animation_estimate)
+        )
+    )
+    required_minimum = (
+        image_to_3d_estimate
+        if is_creature
+        else image_to_3d_estimate + remesh_estimate + rig_estimate + (3 * animation_estimate)
+    )
     return {
         "asset_id": f"chaosx.model.pilot.{slug}",
         "asset_kind": "creature" if is_creature else "humanoid",
@@ -1860,15 +1888,16 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
         "runtime_diffuse_gamma": profile.get("runtime_diffuse_gamma"),
         "vanilla_scale_reference": vanilla_reference,
         "target_polycount": target_triangles,
-        "meshy_ai_model": str(job.get("provider_model") or provider_plan.get("ai_model") or "meshy-6"),
+        "meshy_ai_model": meshy_ai_model,
         "meshy_pose_mode": provider_plan.get("pose_mode"),
-        "image_to_3d_estimate_credits": int(job.get("image_to_3d_estimate_credits") or 20),
-        "rig_estimate_credits": int(job.get("rig_estimate_credits") or 5),
-        "animation_estimate_credits": int(job.get("animation_estimate_credits") or 3),
-        "planned_total_credits": int(
-            job.get("estimated_credits")
-            or (20 if is_creature else 34)
-        ),
+        # Meshy-6 with PBR texturing is billed at 30 credits on the verified
+        # live route. Keep this fallback aligned with the required textured
+        # request instead of the 20-credit no-texture rate.
+        "image_to_3d_estimate_credits": image_to_3d_estimate,
+        "remesh_estimate_credits": remesh_estimate,
+        "rig_estimate_credits": rig_estimate,
+        "animation_estimate_credits": animation_estimate,
+        "planned_total_credits": max(planned_total, required_minimum),
         "texture_source_rels": {
             "diffuse": "provider/downloads/generation_model_textures/base_color.png",
             "normal": "provider/downloads/generation_model_textures/normal.png",
@@ -1955,7 +1984,7 @@ def preflight_selected_credits(specs: List[Dict[str, Any]], phase: str) -> None:
         estimate = (
             int(spec["image_to_3d_estimate_credits"])
             if phase == "candidate"
-            else int(spec.get("planned_total_credits", 47))
+            else int(spec.get("planned_total_credits", 44 if spec.get("asset_kind") == "humanoid" else 30))
         )
         estimates.append((spec["asset_id"], estimate))
     total = sum(value for _, value in estimates)
@@ -2032,6 +2061,15 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
     for spec in recipient_specs + creature_specs:
         job = ensure_job_layout(resolve_job_root(spec["asset_id"].rsplit(".", 1)[-1]))
         add_pending(job, "generation", int(spec["image_to_3d_estimate_credits"]))
+    # Meshy image-to-3D can return a source above the rig endpoint's 300,000
+    # triangle limit even when the requested target is 30,000. Reserve the
+    # owner's conditional remesh before generation so the batch cannot spend
+    # the balance needed to finish its own rig path.
+    add_pending(
+        owner_job,
+        "rig_remesh",
+        int(owner_spec.get("remesh_estimate_credits", MESHY_REMESH_ESTIMATE)),
+    )
     add_pending(owner_job, "rig", int(owner_spec["rig_estimate_credits"]))
     for role in ("idle", "attack", "death"):
         add_pending(owner_job, f"animation_{role}", int(owner_spec["animation_estimate_credits"]))
