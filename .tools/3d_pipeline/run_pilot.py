@@ -1400,6 +1400,296 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _copy_shared_provider_artifact(source: Path, destination: Path) -> Dict[str, Any]:
+    """Copy one immutable provider artifact while refusing lineage drift."""
+
+    if not source.is_file():
+        raise FileNotFoundError(f"Shared provider artifact is missing: {source}")
+    source_record = file_record(source)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.exists():
+        destination_record = file_record(destination)
+        if destination_record["sha256"] != source_record["sha256"]:
+            raise RuntimeError(
+                "Refusing to overwrite a shared provider artifact with a different checksum: "
+                f"{destination}"
+            )
+    else:
+        shutil.copy2(source, destination)
+    return file_record(destination)
+
+
+def prepare_shared_humanoid_lineage(
+    owner_spec: Dict[str, Any],
+    recipient_specs: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Distribute one verified humanoid rig/action set to distinct geometries.
+
+    Meshy is used once for the standard humanoid rig and its three provider
+    actions. Each recipient still receives its own generated geometry, its own
+    weighted mesh, its own exported four-action package, and its own reimport
+    proofs. Sharing the standard skeleton/action source is an explicit HOI4
+    unit-family optimization, not a static or unanimated fallback.
+    """
+
+    owner_slug = owner_spec["asset_id"].rsplit(".", 1)[-1]
+    owner_job = ensure_job_layout(resolve_job_root(owner_slug))
+    artifact_names = {
+        "rig_glb": "provider/downloads/rigged_provider_model.glb",
+        "rig_fbx": "provider/downloads/rigged_provider_model.fbx",
+        "idle_glb": "provider/downloads/animation_idle_provider.glb",
+        "idle_fbx": "provider/downloads/animation_idle_provider.fbx",
+        "attack_glb": "provider/downloads/animation_attack_provider.glb",
+        "attack_fbx": "provider/downloads/animation_attack_provider.fbx",
+        "death_glb": "provider/downloads/animation_death_provider.glb",
+        "death_fbx": "provider/downloads/animation_death_provider.fbx",
+    }
+    owner_artifacts = {
+        key: file_record(owner_job / relative_path, relative_to=owner_job)
+        for key, relative_path in artifact_names.items()
+    }
+    task_lineage = {
+        "owner": owner_slug,
+        "rig_task": existing_task(owner_job, "rig"),
+        "animation_tasks": {
+            role: existing_task(owner_job, f"animation_{role}")
+            for role in ("idle", "attack", "death")
+        },
+    }
+    for key, record in owner_artifacts.items():
+        if not (owner_job / record["relative_path"]).is_file():
+            raise FileNotFoundError(
+                f"Shared humanoid source {key} is missing from owner job: "
+                f"{owner_job / record['relative_path']}"
+            )
+
+    recipients: Dict[str, Any] = {}
+    for recipient_spec in recipient_specs:
+        recipient_slug = recipient_spec["asset_id"].rsplit(".", 1)[-1]
+        recipient_job = ensure_job_layout(resolve_job_root(recipient_slug))
+        destination_root = recipient_job / "provider" / "shared_humanoid"
+        copied: Dict[str, Any] = {}
+        for key, relative_path in artifact_names.items():
+            source = owner_job / relative_path
+            destination = destination_root / Path(relative_path).name
+            copied[key] = _copy_shared_provider_artifact(source, destination)
+            copied[key]["relative_path"] = str(destination.relative_to(recipient_job)).replace("\\", "/")
+        lineage = {
+            "schema_version": "1.0.0",
+            "policy": "shared_standard_humanoid_rig_and_provider_actions_bound_to_distinct_recipient_geometry",
+            "owner_job": str(owner_job),
+            "owner_slug": owner_slug,
+            "owner_task_lineage": task_lineage,
+            "owner_artifacts": owner_artifacts,
+            "recipient_slug": recipient_slug,
+            "copied_artifacts": copied,
+            "paid_calls_for_recipient": 0,
+            "forbidden_substitutes": ["static_mesh_only", "missing_actions", "reused_geometry"],
+            "recorded_at": utc_now(),
+        }
+        write_json(recipient_job / "provider" / "shared_humanoid_lineage.json", lineage)
+        update_job(
+            recipient_job,
+            shared_humanoid_lineage=lineage,
+            provider_lineage={
+                "rig_owner": owner_slug,
+                "rig_task_id": task_lineage["rig_task"].get("task_id")
+                if isinstance(task_lineage["rig_task"], dict)
+                else None,
+                "animation_task_ids": {
+                    role: record.get("task_id") if isinstance(record, dict) else None
+                    for role, record in task_lineage["animation_tasks"].items()
+                },
+            },
+        )
+        append_history(
+            recipient_job,
+            state="shared_humanoid_lineage_ready",
+            event="shared_humanoid_provider_sources_copied",
+            actor="chaosx_3d_model_pipeline",
+            details={"owner": owner_slug, "artifacts": copied},
+        )
+        recipients[recipient_slug] = lineage
+    return {"owner": owner_slug, "recipients": recipients, "owner_artifacts": owner_artifacts}
+
+
+def continue_humanoid_shared(
+    spec: Dict[str, Any],
+    lineage: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Build a distinct humanoid package from a shared verified rig/action source."""
+
+    slug = spec["asset_id"].rsplit(".", 1)[-1]
+    job = ensure_job_layout(resolve_job_root(slug))
+    blender = BlenderAdapterClient(REPO_ROOT)
+    shared_rig_rel = "provider/shared_humanoid/rigged_provider_model.glb"
+    generation_rel = "provider/downloads/generation_model.glb"
+    if not (job / shared_rig_rel).is_file():
+        raise FileNotFoundError(f"Shared humanoid rig source is missing: {job / shared_rig_rel}")
+    if not (job / generation_rel).is_file():
+        raise FileNotFoundError(f"Recipient generation geometry is missing: {job / generation_rel}")
+    vanilla_reference = stage_vanilla_reference(job, spec)
+    profile = read_json(PIPELINE_ROOT / "config" / "asset_profiles.json")["profiles"][spec["profile"]]
+    texture_sources = prepare_pilot_texture_sources(job, spec)
+    prep = blender.prepare_candidate(
+        slug,
+        source_rel=shared_rig_rel,
+        geometry_source_rel=generation_rel,
+        asset_kind="humanoid",
+        target_height_m=spec.get("blender_target_height_m", spec["target_height_m"]),
+        runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
+        runtime_stem=f"{spec['runtime_stem']}_shared_rigged",
+        target_triangles=profile["triangle_range"]["working_triangle_target"],
+        vanilla_reference=vanilla_reference,
+        texture_source_rels=texture_sources,
+        repair_before_reduction=True,
+        topology_weld_distance=0.0,
+        max_runtime_footprint_m=spec.get("max_runtime_footprint_m"),
+        runtime_footprint_policy=spec.get("runtime_footprint_policy", "reject"),
+    )
+    candidate_gate(
+        job,
+        prep,
+        hard_max=profile["triangle_range"]["hard_max"],
+        stage="shared_humanoid_candidate",
+        max_runtime_footprint_m=spec.get("max_runtime_footprint_m"),
+        runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
+    )
+
+    action_reports: Dict[str, Dict[str, Any]] = {}
+    idle_source = "provider/shared_humanoid/animation_idle_provider.glb"
+    idle_checkpoint = "blender/checkpoints/shared_idle_pre_export.blend"
+    idle_action_name = f"{spec['runtime_stem']}_idle"
+    idle = blender.import_animation_action(
+        slug,
+        prep["checkpoints"]["pre_export"],
+        idle_source,
+        idle_checkpoint,
+        idle_action_name,
+    )
+    action_reports["idle"] = {
+        "required_role": "idle",
+        "action_name": idle["action"],
+        "source_checkpoint": prep["checkpoints"]["pre_export"],
+        "checkpoint": idle_checkpoint,
+        "import": idle,
+        "loop": True,
+    }
+
+    move_checkpoint = "blender/checkpoints/shared_move_pre_export.blend"
+    move_action_name = f"{spec['runtime_stem']}_move"
+    move = blender.author_locomotion_action(
+        slug,
+        idle_checkpoint,
+        move_checkpoint,
+        move_action_name,
+    )
+    action_reports["move"] = {
+        "required_role": "move",
+        "action_name": move["action"],
+        "source_checkpoint": idle_checkpoint,
+        "checkpoint": move_checkpoint,
+        "authoring": move,
+        "loop": True,
+    }
+
+    attack_checkpoint = "blender/checkpoints/shared_attack_pre_export.blend"
+    attack_action_name = f"{spec['runtime_stem']}_attack"
+    attack = blender.import_animation_action(
+        slug,
+        move_checkpoint,
+        "provider/shared_humanoid/animation_attack_provider.glb",
+        attack_checkpoint,
+        attack_action_name,
+    )
+    action_reports["attack"] = {
+        "required_role": "attack",
+        "action_name": attack["action"],
+        "source_checkpoint": move_checkpoint,
+        "checkpoint": attack_checkpoint,
+        "import": attack,
+        "loop": False,
+    }
+
+    death_checkpoint = "blender/checkpoints/shared_death_pre_export.blend"
+    death_action_name = f"{spec['runtime_stem']}_death"
+    death = blender.import_animation_action(
+        slug,
+        attack_checkpoint,
+        "provider/shared_humanoid/animation_death_provider.glb",
+        death_checkpoint,
+        death_action_name,
+    )
+    action_reports["death"] = {
+        "required_role": "death",
+        "action_name": death["action"],
+        "source_checkpoint": attack_checkpoint,
+        "checkpoint": death_checkpoint,
+        "import": death,
+        "loop": False,
+    }
+
+    textures = finalize_pdx_runtime_textures(
+        job,
+        spec,
+        blender.process_textures(slug, death_checkpoint),
+    )
+    mesh_rel = f"export/mesh/{spec['runtime_stem']}.mesh"
+    mesh_export = blender.export_mesh(slug, death_checkpoint, mesh_rel)
+    reimports: Dict[str, Any] = {}
+    for role, report in action_reports.items():
+        anim_rel = f"export/anim/{spec['runtime_stem']}_{role}.anim"
+        report["output_rel"] = anim_rel
+        report["export"] = blender.export_animation(
+            slug,
+            str(report["checkpoint"]),
+            str(report["action_name"]),
+            anim_rel,
+        )
+        reimports[role] = blender.reimport_export(
+            slug,
+            mesh_rel,
+            anim_rel,
+            proof_name=f"{spec['runtime_stem']}_{role}",
+        )
+
+    mesh_file = job / mesh_rel
+    update_job(
+        job,
+        status="pdx_exported",
+        exports={
+            "mesh": mesh_rel,
+            "animations": {role: report["output_rel"] for role, report in action_reports.items()},
+        },
+        shared_humanoid_runtime={
+            "lineage_owner": lineage.get("owner_slug"),
+            "recipient_geometry": generation_rel,
+            "distinct_runtime_mesh": mesh_rel,
+            "distinct_runtime_animations": True,
+        },
+    )
+    append_history(
+        job,
+        state="pdx_exported",
+        event="shared_humanoid_mesh_exported",
+        actor="chaosx_3d_model_pipeline",
+        details={
+            "lineage_owner": lineage.get("owner_slug"),
+            "mesh": file_record(mesh_file, relative_to=job),
+            "actions": action_reports,
+            "reimport": reimports,
+        },
+    )
+    return {
+        "lineage_owner": lineage.get("owner_slug"),
+        "prepare": prep,
+        "textures": textures,
+        "mesh_export": mesh_export,
+        "action_reports": action_reports,
+        "reimport": reimports,
+    }
+
+
 def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> Dict[str, Any]:
     """Build a pilot spec from a repository-owned specialized zombie job manifest."""
 
@@ -1572,10 +1862,13 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
         "target_polycount": target_triangles,
         "meshy_ai_model": str(job.get("provider_model") or provider_plan.get("ai_model") or "meshy-6"),
         "meshy_pose_mode": provider_plan.get("pose_mode"),
-        "image_to_3d_estimate_credits": 30,
-        "rig_estimate_credits": 5,
-        "animation_estimate_credits": 3,
-        "planned_total_credits": int(job.get("estimated_credits", 47)),
+        "image_to_3d_estimate_credits": int(job.get("image_to_3d_estimate_credits") or 20),
+        "rig_estimate_credits": int(job.get("rig_estimate_credits") or 5),
+        "animation_estimate_credits": int(job.get("animation_estimate_credits") or 3),
+        "planned_total_credits": int(
+            job.get("estimated_credits")
+            or (20 if is_creature else 34)
+        ),
         "texture_source_rels": {
             "diffuse": "provider/downloads/generation_model_textures/base_color.png",
             "normal": "provider/downloads/generation_model_textures/normal.png",
@@ -1590,6 +1883,9 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
             else None,
         ),
         "runtime_stem": runtime_stem,
+        "shared_humanoid_batch": job.get("shared_humanoid_batch"),
+        "shared_humanoid_rig_owner": job.get("shared_humanoid_rig_owner"),
+        "shared_humanoid_role": job.get("shared_humanoid_role"),
         "proposed_runtime_identifiers": {
             "pdxmesh": f"{runtime_stem}_mesh",
             "entity": entity,
@@ -1676,9 +1972,139 @@ def preflight_selected_credits(specs: List[Dict[str, Any]], phase: str) -> None:
         )
 
 
+def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
+    """Produce a configured specialized-unit batch with one shared humanoid rig.
+
+    The batch still makes one distinct Meshy geometry task per unit. Only the
+    standard humanoid rig and its provider idle/attack/death actions are shared;
+    every recipient receives its own weighted geometry, exported mesh, four
+    exported actions, textures, and reimport proofs. Creature jobs stay on their
+    custom Blender route.
+    """
+
+    configs = load_pilot_configs()
+    selected = [
+        (slug, spec)
+        for slug, spec in configs.items()
+        if spec.get("shared_humanoid_batch") == batch_id
+    ]
+    if not selected:
+        raise RuntimeError(f"No configured specialized 3D jobs belong to batch {batch_id!r}.")
+    selected.sort(key=lambda item: item[0])
+    for _, spec in selected:
+        require_route_ready(spec)
+        require_reference_approval(spec)
+
+    owner_slugs = {
+        str(spec.get("shared_humanoid_rig_owner") or "")
+        for _, spec in selected
+        if spec.get("asset_kind") == "humanoid"
+    }
+    owner_slugs.discard("")
+    if len(owner_slugs) != 1:
+        raise RuntimeError(
+            f"Shared humanoid batch {batch_id!r} must declare exactly one rig owner; "
+            f"found {sorted(owner_slugs)}."
+        )
+    owner_slug = next(iter(owner_slugs))
+    specs_by_slug = dict(selected)
+    owner_spec = specs_by_slug.get(owner_slug)
+    if owner_spec is None or owner_spec.get("asset_kind") != "humanoid":
+        raise RuntimeError(f"Shared humanoid rig owner {owner_slug!r} is not a selected humanoid job.")
+    recipient_specs = [
+        spec
+        for slug, spec in selected
+        if slug != owner_slug and spec.get("asset_kind") == "humanoid"
+    ]
+    creature_specs = [spec for _, spec in selected if spec.get("asset_kind") == "creature"]
+
+    for _, spec in selected:
+        initialize_one(spec)
+
+    owner_job = ensure_job_layout(resolve_job_root(owner_slug))
+    pending_estimates: List[Dict[str, Any]] = []
+
+    def add_pending(job: Path, stage: str, estimate: int) -> None:
+        if existing_task(job, stage) is None:
+            pending_estimates.append({"job": job.name, "stage": stage, "estimate_credits": estimate})
+
+    add_pending(owner_job, "generation", int(owner_spec["image_to_3d_estimate_credits"]))
+    for spec in recipient_specs + creature_specs:
+        job = ensure_job_layout(resolve_job_root(spec["asset_id"].rsplit(".", 1)[-1]))
+        add_pending(job, "generation", int(spec["image_to_3d_estimate_credits"]))
+    add_pending(owner_job, "rig", int(owner_spec["rig_estimate_credits"]))
+    for role in ("idle", "attack", "death"):
+        add_pending(owner_job, f"animation_{role}", int(owner_spec["animation_estimate_credits"]))
+
+    required_credits = sum(int(item["estimate_credits"]) for item in pending_estimates)
+    balance_result = MeshyClient(REPO_ROOT).check_balance()
+    balance = balance_value(balance_result)
+    if balance is None:
+        raise RuntimeError("Specialized zombie batch preflight returned no numeric balance.")
+    write_json(
+        owner_job / "provider" / "credits" / "specialized_batch_preflight.json",
+        {
+            "schema_version": "1.0.0",
+            "batch_id": batch_id,
+            "owner": owner_slug,
+            "selected_jobs": [slug for slug, _ in selected],
+            "balance_before_paid_work": balance,
+            "required_credits_for_missing_paid_stages": required_credits,
+            "pending_stages": pending_estimates,
+            "shared_humanoid_policy": "one_verified_standard_rig_and_three_provider_actions; distinct_geometry_and_exports_per_unit",
+            "paid_call_authorized_by": "user_task",
+            "recorded_at": utc_now(),
+        },
+    )
+    if balance < required_credits:
+        breakdown = ", ".join(
+            f"{item['job']}:{item['stage']}={item['estimate_credits']}"
+            for item in pending_estimates
+        )
+        raise RuntimeError(
+            f"Specialized zombie batch gate refused paid work: balance={balance}, "
+            f"required={required_credits}; {breakdown}"
+        )
+
+    results: List[Dict[str, Any]] = []
+    owner_candidate = run_candidate(owner_spec)
+    results.append({"asset": owner_slug, "candidate": owner_candidate})
+    owner_continuation = continue_humanoid(owner_spec)
+    results.append({"asset": owner_slug, "continuation": owner_continuation})
+
+    for spec in recipient_specs + creature_specs:
+        slug = spec["asset_id"].rsplit(".", 1)[-1]
+        candidate = run_candidate(spec)
+        results.append({"asset": slug, "candidate": candidate})
+
+    lineage = prepare_shared_humanoid_lineage(owner_spec, recipient_specs)
+    for spec in recipient_specs:
+        slug = spec["asset_id"].rsplit(".", 1)[-1]
+        results.append(
+            {
+                "asset": slug,
+                "continuation": continue_humanoid_shared(
+                    spec,
+                    lineage["recipients"][slug],
+                ),
+            }
+        )
+    for spec in creature_specs:
+        slug = spec["asset_id"].rsplit(".", 1)[-1]
+        results.append({"asset": slug, "continuation": continue_creature(spec)})
+    return results
+
+
 def main() -> int:
     configs = load_pilot_configs()
     args = sys.argv[1:]
+    if "--specialized-zombie-batch" in args:
+        index = args.index("--specialized-zombie-batch")
+        if index + 1 >= len(args) or args[index + 1].startswith("-"):
+            raise RuntimeError("--specialized-zombie-batch requires a configured batch id.")
+        batch_id = args[index + 1]
+        print(json.dumps(run_specialized_zombie_batch(batch_id), indent=2, sort_keys=True))
+        return 0
     all_assets = "--all" in args or not args
     assets = list(configs) if all_assets else [item for item in args if not item.startswith("-")]
     phase = "full"

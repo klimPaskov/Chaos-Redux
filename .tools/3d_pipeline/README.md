@@ -135,6 +135,18 @@ Clean, retarget, and bake humanoid animation candidates, normalize armature tran
 
 Never substitute a static still for a requested skeletal action.
 
+### Credit-aware humanoid family batches
+
+When several custom units use the same verified standard humanoid skeleton, a job family may declare `shared_humanoid_batch`, `shared_humanoid_rig_owner`, and `shared_humanoid_role` in its job manifest. Run:
+
+~~~powershell
+python .tools/3d_pipeline/run_pilot.py --specialized-zombie-batch <configured_batch_id>
+~~~
+
+The batch creates one distinct Meshy image-to-3D geometry candidate per unit, pays for the owner rig and provider idle/attack/death actions once, copies those immutable provider artifacts with checksums, and binds every recipient's own geometry to that shared standard skeleton through the locked dual-source Blender operation. Every recipient exports its own `.mesh`, idle/move/attack/death `.anim` files, textures, and reimport proofs. Sharing a skeleton/action source never permits reused geometry, a static-only package, or skipped action validation. Creature jobs in the batch continue through their dedicated Blender rig/action route.
+
+The specialized zombie manifests use the verified Meshy-6 estimates of 20 credits for image-to-3D, 5 for rigging, and 3 per provider animation. The shared seven-unit route therefore preflights only the owner rig plus its three provider actions and one geometry generation per unit; planned paid work is still checked against the live balance before calls.
+
 Export `.mesh` and `.anim` only with the locked `io_pdx_mesh` setup, then reimport or parse the actual exported bytes and save proof with output checksums.
 
 ## Nonhumanoid creature route
