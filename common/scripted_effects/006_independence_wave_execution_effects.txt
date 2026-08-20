@@ -215,17 +215,34 @@ independence_wave_release_one_frozen_country = {
 			add_core_of = event_target:independence_wave_execution_country
 		}
 	}
-	event_target:independence_wave_execution_former_host = {
-		release = event_target:independence_wave_execution_country
-		if = {
-			limit = {
+	# Startup history keeps a few custom Event 006 carriers as empty shells so
+	# their character definitions can be recruited during history setup. HOI4's
+	# release effect is a no-op when the target country already exists, and that
+	# no-op is invalid for a shell without a capital. State transfer below is the
+	# actual formation step for such dormant shells; only absent tags need the
+	# release call. Living targets are rejected by plan validation before this
+	# point and therefore never gain a bypass here.
+	if = {
+		limit = {
+			NOT = {
 				event_target:independence_wave_execution_country = {
-					is_subject_of = event_target:independence_wave_execution_former_host
+					exists = yes
+					is_independence_wave_dormant_country_scope = yes
 				}
 			}
-			set_autonomy = {
-				target = event_target:independence_wave_execution_country
-				autonomy_state = autonomy_free
+		}
+		event_target:independence_wave_execution_former_host = {
+			release = event_target:independence_wave_execution_country
+			if = {
+				limit = {
+					event_target:independence_wave_execution_country = {
+						is_subject_of = event_target:independence_wave_execution_former_host
+					}
+				}
+				set_autonomy = {
+					target = event_target:independence_wave_execution_country
+					autonomy_state = autonomy_free
+				}
 			}
 		}
 	}
