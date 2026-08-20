@@ -1,4 +1,106 @@
 # Specialized zombie model production handoff
+## Final stopped state — 2026-08-20
+
+Status: `blocked_insufficient_balance_after_local_infected_repair`. This section supersedes every older status or estimate below.
+
+The production worker stopped further paid/provider work after the verified balance gate. The current Meshy balance is `164`. After the first textured Meshy 6 generation consumed `30` credits, the missing scheduled tranche is at least `199`: six distinct textured geometry generations at the observed `30` credits each (`180`), the owner's reserved over-limit remesh (`5`), one shared humanoid rig (`5`), and three shared provider actions (`9`). The shortfall is `35` credits before any recovery. No retry, remesh, rig, animation, conversion, or additional generation was called, and total paid consumption remains exactly `30` credits. The runner now declares and reserves the verified remesh estimate instead of indexing a missing manifest key.
+
+The infected candidate is visually accepted by the user. A bounded, unpaid Blender adapter repair was completed from the immutable downloaded GLB with `repair_before_reduction=true` and `topology_weld_distance=0.0005`. It reduced the final boundary report from `29,140` edges / `1,344` components to `253` edges / `67` components, retained `0` non-manifold edges and `0` degenerate faces, produced `29,997` triangles, and preserved calibrated height `7.3542885780` with effective runtime height `5.8834308624` at entity scale `0.8`. Adapter request/result lineage is `89e0212e86284e7da613354d01b45ea3`. The repair preserved the source GLB and wrote a protected repaired source blend, standard checkpoints, a prepare report, and seven rendered views. The repaired underside render is still blank, and six boundary components were rejected during bounded capping while non-manifold-producing changes were rolled back. Therefore the repaired checkpoint is useful parent-integrable evidence but is not promoted as final geometry, and no rig/export was attempted.
+
+Two earlier unpaid repair invocations (`137f0f311cfb4711ac78514985ec664b` and `b68a54ab991640279f55c104a8c7d203`) failed closed before source import because the vanilla-reference payload did not use the adapter's required `mesh_rel` key. They made no model mutation and incurred no provider charge.
+
+Per-unit final state:
+
+| Unit | Final state |
+| --- | --- |
+| `infected_zombies` | User-accepted Meshy task `01a01ea2-759b-7acf-a44b-d2fda3d5759d`; locally repaired checkpoint preserved; blocked before rig/material finalization/actions/export/reimport by residual underside/topology evidence and the batch credit gate. |
+| `rabid_zombies` | Accepted single input preserved; no provider task; blocked by the `164 < 199` full-tranche gate. |
+| `parasitic_zombies` | Accepted revision 8 SHA-256 `70E47C655B3F920C2FC9FA6069B26BF1D33F11038F85402A5ED91DE1338E1186` preserved; no provider task; blocked by the same gate. |
+| `mutant_zombies` | Accepted single input preserved; no provider task; blocked by the same gate. |
+| `undead_zombies` | Accepted single input preserved; no provider task; blocked by the same gate. |
+| `necrotic_zombies` | Accepted single input preserved; no provider task; blocked by the same gate. |
+| `demonic_zombies` | Accepted single input and dedicated `winged_biped` route preserved; no provider task; blocked by the same gate. |
+
+No package has final `.mesh`, `.anim`, packed PDX DDS materials, completed rig/weights/actions, export, or actual-byte reimport proof. Existing CC0 sound-source packages and bespoke two-state vanilla-green counter packages remain preserved with their prior provenance and round-trip evidence; sound selection remains blocked on the exact country/original-tag consumer, and counters remain `needs_user_review`. No gameplay, GFX, entity, unit, sound-definition, localisation, event, focus, decision, history, AI, on-action, spreadsheet, shared base-zombie, or armored-zombie file was wired or replaced.
+
+The exact machine-readable stop record is `docs/assets/002_zombie_outbreak/models_3d/infected_zombies/provider/credits/final_batch_blocker.json`. The changed/created-file checksum ledger is `docs/assets/002_zombie_outbreak/models_3d/production_attempt_sha256sums.txt`; it includes the provider artifacts, Blender checkpoints/reports/previews/logs, package documents, companion evidence, and handoff surfaces created or changed by this production attempt. The parent may integrate the preserved infected provider artifacts and repaired checkpoint, but must not treat it as an exported runtime package or an in-game completion.
+
+## Current production attempt — 2026-08-20
+
+Status: `blocked_after_rejected_first_candidate`. This section supersedes the older credit/approval audit below.
+
+### Outcome
+
+The exact configured batch command was run after the API-key, dependency-lock, live-schema, Blender bridge, and io_pdx_mesh checks passed. Only `infected_zombies` reached Meshy. Meshy 6 task `01a01ea2-759b-7acf-a44b-d2fda3d5759d` succeeded and its GLB/FBX were downloaded immediately, but independent Blender review rejected the candidate: after reduction to 30,000 triangles it still reported 29,140 boundary edges across 1,344 boundary components; the underside render was blank; and no wireframe/untextured view was produced. The runner then stopped on a missing `remesh_estimate_credits` key before any rig, provider animation, final material, export, or reimport call.
+
+The paid estimate also changed materially. The task was estimated at 20 credits but consumed 30, reducing the verified live balance from 194 to 164. At the observed rate, the six remaining geometry calls require 180 credits, before the owner's reserved 5-credit remesh, shared 5-credit rig, and three 3-credit animations. The complete seven-unit tranche is therefore underfunded by at least 35 credits before recovery. The runner's undeclared-remesh-estimate defect is fixed in the follow-up workflow change; no retry, remesh, rig, animation, or other paid recovery was attempted.
+
+### Per-unit production status
+
+| Unit | Provider/model status | Model/action/export status | Companion status |
+| --- | --- | --- | --- |
+| `infected_zombies` | Meshy 6 candidate rejected; task `01a01ea2-759b-7acf-a44b-d2fda3d5759d` | Blocked before rig/actions/material finalization/export/reimport | CC0 audio candidates preserved; selection consumer blocked. Bespoke counters await parent review. |
+| `rabid_zombies` | No provider call; accepted input preserved | Blocked by full-batch credit gate | Same companion disposition. |
+| `parasitic_zombies` | No provider call; accepted revision 8 SHA-256 `70E47C655B3F920C2FC9FA6069B26BF1D33F11038F85402A5ED91DE1338E1186` preserved | Blocked by full-batch credit gate | Same companion disposition. |
+| `mutant_zombies` | No provider call; accepted input preserved | Blocked by full-batch credit gate | Same companion disposition. |
+| `undead_zombies` | No provider call; accepted input preserved | Blocked by full-batch credit gate | Same companion disposition. |
+| `necrotic_zombies` | No provider call; accepted input preserved | Blocked by full-batch credit gate | Same companion disposition. |
+| `demonic_zombies` | No provider call; accepted input preserved | Dedicated `winged_biped` rig/action route remains required; blocked by full-batch credit gate | Same companion disposition. |
+
+No model package is complete. No `.mesh`, `.anim`, final packed model DDS set, accepted rig, weight audit, action audit, or actual-byte reimport proof exists for any unit.
+
+### Provider and Blender lineage
+
+- Paid operation: `meshy_image_to_3d`, `ai_model=meshy-6`, exactly one `file_path` input, estimated 20 credits, consumed 30 credits.
+- Free operations: balance checks, task status, GLB download, and FBX download.
+- Infected GLB: `provider/downloads/generation_model.glb`, 22,727,912 bytes, SHA-256 `42F92D0B78137A61703E058F38C5EA16E48B3AF9B922DE2DAAA86C3233129810`.
+- Infected FBX: `provider/downloads/generation_model.fbx`, 32,777,628 bytes, SHA-256 `4BB90E50B3095501AFF9ADA7E31C5D702D8A9991407C2EAE6D130E42650FD48C`.
+- Protected source blend: SHA-256 `C873A61EA5426C9F48939B6C64D25F60501937E1CBDF97A045F9243BB2424B8F`.
+- Checkpoints: imported `6A4C86B3EFB23FACB99AAD999CA39FB5AEDB0D09C52B350ECB54998B84F54CE5`; geometry `8A050CDCF88D2555FFFBF3F8E6390AD6FA07D51EA5D24DC956097CE6297582A2`; pre-export `F56774D5F6B3F4691E06BBC59444E8A8ED20CF7F9BAB7585654CA2D1CDE87E20`.
+- Adapter log identifier: `bc672a3656694b14b495c96633ad74df`. Blender 5.1.2, build `ec6e62d40fa9`; adapter `chaosx_blender_hoi4` 1.5.0; io_pdx_mesh 0.91.0.
+- Infected calibration: installed `western_european_infantry.mesh`, source height 7.351824797689915, entity scale 0.8, effective runtime height 5.881459838151932, forward -Y, up +Z. Candidate final mesh height was 7.3558130264 before rejection.
+- Missing capabilities/evidence: effective underside render, wireframe/untextured render, final packed PDX material pass, rig/weights/actions, export, and reimport.
+
+### Sound companion status
+
+All seven packages preserve original downloaded audio, source-page HTML, direct-download provenance, creator, CC0 1.0 terms, download date, per-file SHA-256, and ffprobe-format inventories under each unit's `sound/` folder. No audio was generated or synthesized. Archive extraction was byte-preserving; no runtime-ready derivative was created in this tranche. Role proposals cover selection, idle/ambient, movement, attack/impact, special where applicable, and death with normalized animation phases in each `sound/source_provenance.md`.
+
+Primary licensed source pages include:
+
+- infected: OpenGameArt [Zombies Sound Pack](https://opengameart.org/content/zombies-sound-pack) and [Footsteps](https://opengameart.org/content/footsteps-0), CC0 1.0.
+- rabid: [Monster snarls](https://opengameart.org/content/monster-snarls), [Fleshy Bone Break/Snap SFX](https://opengameart.org/content/fleshy-bone-breaksnap-sfx), [Death sounds](https://opengameart.org/content/death-sounds-0), and Footsteps, CC0 1.0.
+- parasitic: [Insect or alien scream](https://opengameart.org/content/insect-or-alien-scream), [40 CC0 water/splash/slime SFX](https://opengameart.org/content/40-cc0-water-splash-slime-sfx), Death sounds, and Footsteps, CC0 1.0.
+- mutant: [CC0 Deep Monster Roar](https://opengameart.org/content/cc0-deep-monster-roar), zombie-noise, Fleshy Bone Break, Death sounds, and Footsteps sources recorded in its provenance file, CC0 1.0.
+- undead: [Zomby SFX Pack](https://opengameart.org/content/zomby-sfx-pack), bone-rattle, Death sounds, and Footsteps sources recorded in its provenance file, CC0 1.0.
+- necrotic: [25 CC0 mud SFX](https://opengameart.org/content/25-cc0-mud-sfx), [Slimy monster or murder sounds](https://opengameart.org/content/slimy-monster-or-murder-sounds9), Zomby SFX Pack, and Footsteps, CC0 1.0.
+- demonic: [Demon voice](https://opengameart.org/content/demon-voice), [Horror scream1](https://opengameart.org/content/horror-scream1), Deep Monster Roar, Fleshy Bone Break, and Footsteps, CC0 1.0.
+
+Selection binding remains blocked for all seven because installed infantry selection resolves country/original-tag-wide `<TAG>_infantry_idle` and related voice templates, not a per-subunit selector. The parent must resolve the exact owning tag and ensure ordinary infantry is not unintentionally replaced before choosing or converting a selection clip.
+
+### Counter companion status
+
+The existing icon-artist output covers both required consumers for every unit: `GFX_unit_<unit>_icon_medium` at 152×42/2 frames and `GFX_unit_<unit>_icon_medium_white` at 60×12/2 frames. Installed references were `interface/subuniticons.gfx`, `unit_infantry_icon.dds`, and `onmap_unit_infantry_icon.dds`; matching skill-local families were `units/land/counters_large/` and `units/land/map_counters/`. Frame 0 is normal and frame 1 is the pale alternate state. The sampled normal green includes `#496a49`; every opaque output colour is a subset of the matching installed frame palette.
+
+All fourteen DDS files have exact dimensions and pixel-identical decoded round trips, and each unit's large and small hashes are recorded in `counter_evidence/validation_summary.json`. The packages remain `needs_user_review` until the parent reviews the contact sheets and deliberately promotes them to runtime paths. No runtime GFX or DDS was changed.
+
+### Dependency and evidence hashes
+
+- `.tools/3d_pipeline/config/dependencies.lock.json`: `9D8F2158CD5712079603BF706337EA967EF85158B19BD8C6412A9C9606DE8460`.
+- `.tools/3d_pipeline/config/meshy_tool_schema.lock.json`: `3BA8321E82BC32B78D00781C85BCE1A3DDFA566A63ECC133AB302752CD085189`.
+- `.tools/3d_pipeline/config/blender_hoi4_adapter.json`: `649890ADEC2925DCA2637A1896B3E8452B99815722CFCB216E1C0101E2935C2D`.
+- Final environment report: `.tools/3d_pipeline/reports/environment_report.json`; live balance 164; no dependency findings.
+- Complete changed/created-file ledger: `docs/assets/002_zombie_outbreak/models_3d/production_attempt_sha256sums.txt`.
+
+### Parent action required
+
+1. Decide whether to authorize a paid recovery generation for rejected `infected_zombies`; the route must also correct the missing remesh configuration and require usable underside plus wireframe/untextured evidence.
+2. Add enough credits to cover the newly observed 30-credit generation cost for all remaining units plus rig/actions and any explicitly planned remesh. Do not resume from the old 154-credit estimate.
+3. Review the counter contact sheets and promote accepted DDS files through parent-owned runtime GFX/copies.
+4. Resolve the exact country/original-tag voice consumer, audition sources, make only license-permitted mechanical conversions, and wire sound definitions/entity events.
+5. After accepted model production, wire `.mesh`, `.anim`, packed DDS, `.asset`, entity states, unit consumers, and perform live in-game validation.
+
+No simplification or fallback was used. The base zombies model and all armored variants were untouched. No in-game completion is claimed.
+
 
 Status: `blocked_before_paid_generation`.
 

@@ -157,9 +157,13 @@ For a configured humanoid family batch, the runner may use one verified standard
 
 Use the repository batch entrypoint `python .tools/3d_pipeline/run_pilot.py --specialized-zombie-batch <configured_batch_id>` when a job manifest declares `shared_humanoid_batch`, `shared_humanoid_rig_owner`, and `shared_humanoid_role`. The owner pays for the standard rig and provider actions; recipient humanoids use the locked dual-source Blender preparation and import each shared action onto their own armature. Creature jobs in the same batch remain on their dedicated custom-rig route.
 
+Before a humanoid source over 300,000 triangles reaches `meshy_remesh`, every job manifest and generated spec must declare the verified `remesh_estimate_credits = 5` estimate, or the loader must apply and materialize that verified default; the runner must never index an undeclared `remesh_estimate_credits` key.
+
 Use **Meshy 6** as the default image-to-3D generation model whenever the verified live route exposes model selection. Record the exact live model identifier. Never silently downgrade to an older Meshy generation model. If Meshy 6 is unavailable or incompatible, stop with `needs_user_review` or `blocked` before selecting another generation model.
 
 The ordinary planned paid path is pre-authorized. Do not ask for confirmation before the initial model generation or before planned remesh, retexture, rigging, conversion, and required animation calls belonging to the accepted brief. Check the live balance before every paid tranche and record estimates, operations, attempt numbers, and consumed credits, but routine credit use and balance checks are not confirmation gates.
+
+For the live locked Meshy MCP route with `ai_model=meshy-6`, `enable_pbr=true`, and `should_texture=true`, require a live cost/preflight record before the image-to-3D call and reconcile it with the response and post-call balance. The verified charge is 30 credits even when the response estimate is 20; treat 30 as the textured Meshy-6 cost and never use 20 as its cost for planning or reconciliation.
 
 Ask for confirmation only before additional paid recovery made necessary by a failed or rejected generation, remesh, retexture, rig, conversion, or animation attempt. State the failed operation, credits consumed, proposed extra operation, estimated extra cost, and remaining balance. In every other case, do not ask for credit-spend confirmation. Inspect the live schema before paid calls; do not promise a general geometry prompt when the current Image-to-3D surface exposes only texture-direction text. Record the exact verified arguments and response/task IDs without exposing the API key.
 
