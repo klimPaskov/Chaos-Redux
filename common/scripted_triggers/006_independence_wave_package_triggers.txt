@@ -17,15 +17,40 @@ is_independence_wave_candidate_anchor_available = {
 	NOT = { is_liberation_release_current_protected_state = yes }
 }
 
-# COUNTRY scope. Shared absence, reservation, and origin-system proof. This is
-# intentionally separate from package readiness: reused vanilla tags cannot be
-# granted build flags through duplicate dormant-country history files.
-# Dormant carriers have no capital scope until the release is created. Package
-# availability must therefore prove the fixed anchor/host below, never resolve
-# `capital_scope` from this nonexistent country scope.
+# COUNTRY scope. Shared dormant-carrier, reservation, and origin-system proof.
+# This is intentionally separate from package readiness: reused vanilla tags
+# cannot be granted build flags through duplicate dormant-country history files.
+# A few custom Event 006 carrier shells are instantiated by startup history so
+# their character definitions can be parsed. They are still dormant when they
+# own and control no states. Treat that empty shell exactly like an absent tag;
+# living countries remain excluded by the owned/control-state checks below.
+# The reservation marker is intentionally not part of this predicate: the
+# selected dormant target receives that marker before execution preflight, and
+# the allocator checks duplicate reservations separately.
+is_independence_wave_dormant_country_scope = {
+	OR = {
+		exists = no
+		AND = {
+			exists = yes
+			check_variable = { var = num_owned_states value = 0 compare = equals }
+			check_variable = { var = num_controlled_states value = 0 compare = equals }
+			NOT = { has_country_flag = independence_wave_active_origin }
+			NOT = { has_country_flag = independence_wave_origin_prepared }
+			NOT = { has_country_flag = independence_wave_origin_committed }
+		}
+	}
+}
+
 is_independence_wave_candidate_origin_available = {
-	exists = no
-	NOT = { is_liberation_release_current_reserved_country = yes }
+	is_independence_wave_dormant_country_scope = yes
+	# A frozen target is checked again after reservation during execution
+	# preflight. Allow that same-plan reservation to pass the immutable package
+	# identity trigger, while rejecting a stale reservation marker from another
+	# plan. The reservation effect still rejects duplicate array entries.
+	OR = {
+		NOT = { has_country_flag = liberation_release_reserved_country }
+		is_liberation_release_current_reserved_country = yes
+	}
 	NOT = {
 		has_variable = independence_wave_last_rejected_plan_id
 		check_variable = {
