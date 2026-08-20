@@ -465,7 +465,7 @@ liberation_release_add_country_reservation = {
 			has_event_target = liberation_candidate_anchor
 			has_event_target = liberation_candidate_primary_host
 			event_target:liberation_candidate_country = {
-				NOT = { exists = yes }
+				is_independence_wave_dormant_country_scope = yes
 				NOT = { is_in_array = { array = global.liberation_plan_countries value = THIS } }
 			}
 			NOT = { is_in_array = { array = global.liberation_plan_package_ids value = liberation_candidate_package_id } }
@@ -530,7 +530,7 @@ liberation_release_add_country_reservation = {
 	else_if = {
 		limit = {
 			has_event_target = liberation_candidate_country
-			event_target:liberation_candidate_country = { exists = yes }
+			event_target:liberation_candidate_country = { NOT = { is_independence_wave_dormant_country_scope = yes } }
 		}
 		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.living_tag }
 	}

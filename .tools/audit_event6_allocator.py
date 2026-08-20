@@ -735,12 +735,13 @@ def main() -> int:
 	):
 		if target == "independence_wave_execution_country":
 			# Event 006 validates the reserved carrier before the release effect
-			# instantiates it. The target must therefore be absent here; the
-			# sponsorship country is the already-existing side of the ledger.
+			# activates it. The target is normally absent, but an empty startup
+			# carrier shell is also valid; the sponsorship country is the already-
+			# existing side of the ledger.
 			dormant_target_validation = (
 				rf"event_target:{re.escape(target)}\s*=\s*\{{"
 				rf"(?:(?:\s*#.*\n)*)"
-				rf"\s*exists\s*=\s*no"
+				rf"\s*(?:exists\s*=\s*no|is_independence_wave_dormant_country_scope\s*=\s*yes)"
 				rf"\s*{re.escape(first_readiness_trigger)}"
 			)
 			require(
