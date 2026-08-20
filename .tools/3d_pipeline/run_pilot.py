@@ -199,6 +199,53 @@ def save_task(
     )
 
 
+def record_paid_reconciliation(
+    job: Path,
+    stage: str,
+    *,
+    balance_before: Optional[int],
+    balance_after: Optional[int],
+    final: Dict[str, Any],
+    estimate: int,
+) -> None:
+    """Persist provider-reported cost and the observed account balance delta."""
+
+    consumed = _first_key(final, ("consumed_credits", "credits_used", "credit_cost"))
+    try:
+        observed_delta = (
+            int(balance_before) - int(balance_after)
+            if balance_before is not None and balance_after is not None
+            else None
+        )
+    except (TypeError, ValueError):
+        observed_delta = None
+    try:
+        provider_consumed = int(consumed) if consumed is not None else None
+    except (TypeError, ValueError):
+        provider_consumed = None
+    if balance_before is None or balance_after is None:
+        status = "missing_balance_boundary"
+    elif provider_consumed is None:
+        status = "missing_provider_consumption"
+    elif observed_delta != provider_consumed:
+        status = "balance_delta_mismatch"
+    else:
+        status = "reconciled"
+    write_json(
+        job / "provider" / "credits" / f"{stage}_reconciliation.json",
+        {
+            "timestamp": utc_now(),
+            "stage": stage,
+            "status": status,
+            "estimate_credits": estimate,
+            "provider_consumed_credits": provider_consumed,
+            "balance_before_paid_call": balance_before,
+            "balance_after_task": balance_after,
+            "observed_balance_delta": observed_delta,
+        },
+    )
+
+
 def existing_task(job: Path, stage: str) -> Optional[Dict[str, Any]]:
     path = task_file(job, stage)
     return read_json(path) if path.exists() else None
@@ -284,7 +331,7 @@ def provider_task(
             "No paid retry is permitted: " + str(task_file(job, stage))
         )
     balance_result = client.check_balance()
-    record_balance(job, stage, balance_result, estimate)
+    balance_before = record_balance(job, stage, balance_result, estimate)
     initial = create()
     task_id = task_id_from(initial)
     write_json(
@@ -322,6 +369,15 @@ def provider_task(
         final=final,
         estimate=estimate,
         input_stage=input_stage,
+    )
+    balance_after = balance_value(client.check_balance())
+    record_paid_reconciliation(
+        job,
+        stage,
+        balance_before=balance_before,
+        balance_after=balance_after,
+        final=final,
+        estimate=estimate,
     )
     return task_id
 
