@@ -1,0 +1,44 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE RESPONSE SCRIPTED GUI
+# ============================================================================
+# Read-only binding for the dedicated national response category. All gameplay
+# actions remain ordinary decisions and this attachment has no click effects.
+# ============================================================================
+
+scripted_gui = {
+	black_plague_response_category_scripted_gui = {
+		context_type = decision_category
+		window_name = "black_plague_response_category_window"
+
+		visible = {
+			is_ai = no
+			black_plague_strategic_response_category_is_visible = yes
+		}
+
+		triggers = {
+			black_plague_response_gui_progress_fill_1_visible = {
+				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.low_band compare = greater_than_or_equals }
+			}
+			black_plague_response_gui_progress_fill_2_visible = {
+				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.medium_band compare = greater_than_or_equals }
+			}
+			black_plague_response_gui_progress_fill_3_visible = {
+				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.high_band compare = greater_than_or_equals }
+			}
+			black_plague_response_gui_progress_fill_4_visible = {
+				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.extreme_band compare = greater_than_or_equals }
+			}
+			black_plague_response_gui_progress_fill_5_visible = {
+				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.maximum compare = greater_than_or_equals }
+			}
+			black_plague_response_gui_capacity_warning_visible = {
+				OR = {
+					NOT = { has_variable = black_plague_response_capacity_remaining }
+					NOT = { check_variable = { var = black_plague_response_capacity_remaining value = constant:black_plague_value.zero compare = greater_than } }
+				}
+			}
+		}
+
+		ai_enabled = { always = no }
+	}
+}
