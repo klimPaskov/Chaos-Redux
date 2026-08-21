@@ -1,0 +1,25 @@
+# ============================================================================
+# CHAOS REDUX - TEST COUNTRY DAILY REFILL
+# ============================================================================
+# The CXT-specific hook avoids a global country iteration and is dormant until
+# the console harness has initialized the test country.
+# ============================================================================
+
+on_actions = {
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				chaosx_test_country_refill_resources = yes
+			}
+		}
+	}
+	on_weekly_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				chaosx_test_country_fill_stockpile = yes
+			}
+		}
+	}
+}
