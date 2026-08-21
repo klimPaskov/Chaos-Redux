@@ -12,6 +12,192 @@
 #   execution is owned by the separate Event 005/Event 006 joint dispatcher.
 # ============================================================================
 
+# Clear the previous standalone transaction receipt when a new manual entry
+# begins. The receipt survives the coordinator cleanup between entries so the
+# last result can be inspected without exposing a player-facing surface.
+independence_wave_clear_standalone_terminal_receipt = {
+	clr_global_flag = independence_wave_terminal_receipt_ready
+	clr_global_flag = independence_wave_terminal_receipt_committed
+	clr_global_flag = independence_wave_terminal_receipt_cancelled_before_mutation
+	clr_global_flag = independence_wave_terminal_receipt_failed_after_mutation
+	clr_global_flag = independence_wave_terminal_receipt_failed_during_finalization
+	clr_global_flag = independence_wave_terminal_receipt_rolled_back_after_mutation
+	clr_global_flag = independence_wave_terminal_receipt_rollback_completed
+	clr_global_flag = independence_wave_terminal_receipt_rollback_failed
+	clr_global_flag = independence_wave_terminal_receipt_finalization_failed
+	clr_global_flag = independence_wave_terminal_receipt_capital_restore_failed
+	clr_global_flag = independence_wave_terminal_receipt_optional_expansion_failed
+	clear_variable = global.independence_wave_terminal_receipt_plan_id
+	clear_variable = global.independence_wave_terminal_receipt_started_date
+	clear_variable = global.independence_wave_terminal_receipt_committed_date
+	clear_variable = global.independence_wave_terminal_receipt_snapshot_date
+	clear_variable = global.independence_wave_terminal_receipt_phase
+	clear_variable = global.independence_wave_terminal_receipt_last_failure
+	clear_variable = global.independence_wave_terminal_receipt_finalization_failure
+	clear_variable = global.independence_wave_terminal_receipt_rollback_failure
+	clear_variable = global.independence_wave_terminal_receipt_target_count
+	clear_variable = global.independence_wave_terminal_receipt_selected_count
+	clear_variable = global.independence_wave_terminal_receipt_attempt_count
+	clear_variable = global.independence_wave_terminal_receipt_sponsorship_count
+	clear_variable = global.independence_wave_terminal_receipt_expected_state_count
+	clear_variable = global.independence_wave_terminal_receipt_instantiated_count
+	clear_variable = global.independence_wave_terminal_receipt_transferred_state_count
+	clear_variable = global.independence_wave_terminal_receipt_prepared_count
+	clear_variable = global.independence_wave_terminal_receipt_activated_count
+	clear_variable = global.independence_wave_terminal_receipt_validated_count
+	clear_variable = global.independence_wave_terminal_receipt_initialized_count
+	clear_variable = global.independence_wave_terminal_receipt_chaos_band
+}
+
+# Snapshot the standalone transaction before a later coordinator reset can
+# clear the plan id, phase, failure fields, arrays, or execution counters. This
+# is diagnostic state only. It never feeds allocation, release, UI, decisions,
+# missions, costs, queues, or pre-event pressure.
+independence_wave_snapshot_standalone_terminal_receipt = {
+	independence_wave_clear_standalone_terminal_receipt = yes
+	set_variable = { global.independence_wave_terminal_receipt_snapshot_date = global.date }
+	set_variable = { global.independence_wave_terminal_receipt_plan_id = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_started_date = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_committed_date = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_phase = constant:liberation_plan_phase.idle }
+	set_variable = { global.independence_wave_terminal_receipt_last_failure = constant:liberation_plan_reject_reason.none }
+	set_variable = { global.independence_wave_terminal_receipt_finalization_failure = constant:liberation_finalization_failure.none }
+	set_variable = { global.independence_wave_terminal_receipt_rollback_failure = constant:liberation_rollback_failure.none }
+	set_variable = { global.independence_wave_terminal_receipt_target_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_selected_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_attempt_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_sponsorship_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_expected_state_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_instantiated_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_transferred_state_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_prepared_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_activated_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_validated_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_initialized_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_terminal_receipt_chaos_band = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = { has_variable = global.liberation_plan_id }
+		set_variable = { global.independence_wave_terminal_receipt_plan_id = global.liberation_plan_id }
+	}
+	if = {
+		limit = { has_variable = global.liberation_plan_started_date }
+		set_variable = { global.independence_wave_terminal_receipt_started_date = global.liberation_plan_started_date }
+	}
+	if = {
+		limit = { has_variable = global.liberation_plan_committed_date }
+		set_variable = { global.independence_wave_terminal_receipt_committed_date = global.liberation_plan_committed_date }
+	}
+	if = {
+		limit = { has_variable = global.liberation_plan_phase }
+		set_variable = { global.independence_wave_terminal_receipt_phase = global.liberation_plan_phase }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_execution_last_failure }
+		set_variable = { global.independence_wave_terminal_receipt_last_failure = global.independence_wave_execution_last_failure }
+	}
+	else_if = {
+		limit = { has_variable = global.liberation_plan_last_failure }
+		set_variable = { global.independence_wave_terminal_receipt_last_failure = global.liberation_plan_last_failure }
+	}
+	if = {
+		limit = { has_variable = global.liberation_plan_finalization_failure }
+		set_variable = { global.independence_wave_terminal_receipt_finalization_failure = global.liberation_plan_finalization_failure }
+	}
+	if = {
+		limit = { has_variable = global.liberation_plan_rollback_failure }
+		set_variable = { global.independence_wave_terminal_receipt_rollback_failure = global.liberation_plan_rollback_failure }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_target_count }
+		set_variable = { global.independence_wave_terminal_receipt_target_count = global.independence_wave_plan_target_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_selected_count }
+		set_variable = { global.independence_wave_terminal_receipt_selected_count = global.independence_wave_plan_selected_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_attempt_count }
+		set_variable = { global.independence_wave_terminal_receipt_attempt_count = global.independence_wave_plan_attempt_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_sponsorship_count }
+		set_variable = { global.independence_wave_terminal_receipt_sponsorship_count = global.independence_wave_plan_sponsorship_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_chaos_band }
+		set_variable = { global.independence_wave_terminal_receipt_chaos_band = global.independence_wave_plan_chaos_band }
+	}
+	if = {
+		limit = { has_variable = independence_wave_execution_expected_state_count }
+		set_variable = { global.independence_wave_terminal_receipt_expected_state_count = independence_wave_execution_expected_state_count }
+	}
+	if = {
+		limit = { has_variable = independence_wave_execution_instantiated_count }
+		set_variable = { global.independence_wave_terminal_receipt_instantiated_count = independence_wave_execution_instantiated_count }
+	}
+	if = {
+		limit = { has_variable = independence_wave_execution_transferred_state_count }
+		set_variable = { global.independence_wave_terminal_receipt_transferred_state_count = independence_wave_execution_transferred_state_count }
+	}
+	if = {
+		limit = { has_variable = independence_wave_execution_prepared_count }
+		set_variable = { global.independence_wave_terminal_receipt_prepared_count = independence_wave_execution_prepared_count }
+	}
+	if = {
+		limit = { has_variable = independence_wave_execution_activated_count }
+		set_variable = { global.independence_wave_terminal_receipt_activated_count = independence_wave_execution_activated_count }
+	}
+	if = {
+		limit = { has_variable = independence_wave_execution_validated_count }
+		set_variable = { global.independence_wave_terminal_receipt_validated_count = independence_wave_execution_validated_count }
+	}
+	if = {
+		limit = { has_variable = independence_wave_execution_initialized_count }
+		set_variable = { global.independence_wave_terminal_receipt_initialized_count = independence_wave_execution_initialized_count }
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_standalone_incident_committed }
+		set_global_flag = independence_wave_terminal_receipt_committed
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_standalone_incident_cancelled_before_mutation }
+		set_global_flag = independence_wave_terminal_receipt_cancelled_before_mutation
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_standalone_incident_failed_after_mutation }
+		set_global_flag = independence_wave_terminal_receipt_failed_after_mutation
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_standalone_incident_failed_during_finalization }
+		set_global_flag = independence_wave_terminal_receipt_failed_during_finalization
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_standalone_incident_rolled_back_after_mutation }
+		set_global_flag = independence_wave_terminal_receipt_rolled_back_after_mutation
+	}
+	if = {
+		limit = { has_global_flag = liberation_release_plan_rollback_completed }
+		set_global_flag = independence_wave_terminal_receipt_rollback_completed
+	}
+	if = {
+		limit = { has_global_flag = liberation_release_plan_rollback_failed }
+		set_global_flag = independence_wave_terminal_receipt_rollback_failed
+	}
+	if = {
+		limit = { has_global_flag = liberation_release_plan_finalization_failed }
+		set_global_flag = independence_wave_terminal_receipt_finalization_failed
+	}
+	if = {
+		limit = { has_global_flag = liberation_release_capital_restore_failed }
+		set_global_flag = independence_wave_terminal_receipt_capital_restore_failed
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_plan_optional_expansion_failed }
+		set_global_flag = independence_wave_terminal_receipt_optional_expansion_failed
+	}
+	set_global_flag = independence_wave_terminal_receipt_ready
+}
+
 independence_wave_validate_execution_metadata = {
 	set_temp_variable = { independence_wave_execution_validation_failure = constant:liberation_plan_reject_reason.none }
 	if = {
@@ -657,6 +843,7 @@ independence_wave_prepare_and_execute_standalone_incident = {
 	clr_global_flag = independence_wave_standalone_incident_failed_after_mutation
 	clr_global_flag = independence_wave_standalone_incident_failed_during_finalization
 	clr_global_flag = independence_wave_standalone_incident_rolled_back_after_mutation
+	independence_wave_clear_standalone_terminal_receipt = yes
 	set_temp_variable = { independence_wave_standalone_plan_begun = constant:independence_wave_planner.no_candidates }
 
 	independence_wave_reset_stale_standalone_plan = yes
@@ -733,4 +920,5 @@ independence_wave_prepare_and_execute_standalone_incident = {
 		}
 		else = { liberation_release_abort_plan = yes }
 	}
+	independence_wave_snapshot_standalone_terminal_receipt = yes
 }
