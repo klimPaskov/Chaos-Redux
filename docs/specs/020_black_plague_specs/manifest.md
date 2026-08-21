@@ -11,7 +11,7 @@
 - Total bytes excluding this manifest: **440,452**
 - Goal prompt length: **3,998 characters before its final newline**
 - Planning status: revised complete design handoff with current static-runtime reconciliation
-- Incorporated corrections: instant triggerable scenario; one dedicated Black Plague national-response category alongside shared state containment; Black Plague-specific state decisions inside the shared category; and black mapmode fill for established Black Plague states
+- Incorporated corrections: instant triggerable scenario; one dedicated Black Plague national-response category alongside shared state containment; a read-only dedicated response dashboard; Black Plague-specific state decisions inside the shared category; and black mapmode fill for established Black Plague states
 - Runtime identity: exactly two Rat tags, reusable `RTA` and separate `RTX`; no additional Rat country tags are permitted
 - Focus surfaces: 52 RTA focus nodes and 71 RTX focus nodes are the current documented runtime counts, confirmed by the source files and the 2026-08-05 national focus inspections
 - Native last-response missions: `Hold the Line` and `Secure the Refuge` use native `activate_mission` and `days_mission_timeout` declarations
@@ -29,6 +29,7 @@
 
 - `corrections/2026-07-29_two_rat_tags.md`: exactly-two-tag runtime correction
 - `corrections/2026-08-09_dedicated_response_category.md`: dedicated national cure and strategic-management category correction preserving the shared selected-state containment category
+- `corrections/2026-08-21_dedicated_response_scripted_gui.md`: compact Event 020 dashboard correction preserving ordinary decisions as the sole action surface
 
 ### focus_graphs
 
