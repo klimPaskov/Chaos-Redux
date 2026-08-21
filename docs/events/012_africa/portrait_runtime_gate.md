@@ -1,15 +1,15 @@
 # Event 012 Africa sovereign portrait runtime gate
 
-Event 012 uses one source policy for historical sovereigns and a separate asset policy for fictional high-chaos identities. Every historical sovereign row now has a male-only character definition and a direct source-crop/resized runtime DDS; the source records remain explicit when the image is an artifact, map, statue, or office placeholder rather than a claimed facial likeness.
+Event 012 uses one source policy for historical sovereigns and a separate asset policy for fictional high-chaos identities. Every historical sovereign row has a male-only character definition and a direct 156x210 runtime DDS; the source records remain explicit when an image is an artifact, map, statue, office placeholder, or user-supplied portrait rather than a claimed facial likeness.
 
 ## Runtime flow
 
 1. The package keeps the existing direct carrier tag and never creates a new tag or cosmetic carrier.
 2. The three constitutional installation effects always run the accepted settlement installer, which adds the package's stable male sovereign role; `africa_priority_member_portrait_runtime_is_approved` records runtime coverage for audits and is not a politics-only fallback gate.
-3. The source-locked runtime map covers all sixteen male sovereign consumers: named historical rulers where the source is exact, and clearly labelled coin, map, statue, artifact, or office placeholders where a face is not safely claimable.
+3. The runtime map covers all sixteen male sovereign consumers. Fifteen priority-member consumers now use the supplied portrait replacements in their existing source-locked runtime paths; Buganda remains on its existing source-locked placeholder because no Buganda replacement was supplied.
 4. The shared portrait trigger remains an audit surface for the existing runtime sprite and source-backed identity map; provenance metadata and any later final male-actor replacement are optional release-handoff refinements, not a reason to suppress the sovereign settlement path or block Event 012 source completion.
 5. The direct-source map records Ezana of Aksum, Taharqa of Kush, Radama II of Merina, Mansa Musa-associated Catalan Atlas art, the Kilwa map panel, and the Great Zimbabwe Bird artifact without presenting any of them as an invented modern face.
-6. The portrait worker can replace each source-locked placeholder with its accepted male ruler/person crop in place; no portrait identifier, tag, or package store needs to change.
+6. The supplied portrait replacements are installed in place; no portrait identifier, tag, character definition, or package store needs to change. The extra Merina Radama I file is not wired because no runtime character consumer references it.
 
 Fictional, alternate-history, nonhuman, and supernatural identities use the separate `fictional_high_chaos` asset family. The six male fictional portraits are installed with their accepted country, model, and package gates and never relabel a historical source gap.
 
@@ -21,4 +21,4 @@ The historical leader sprites remain in `interface/012_africa_priority_member_ch
 
 ## Remaining acceptance
 
-The sixteen historical rows are accepted source-cropped or artifact/map/office placeholders with transparent provenance labels. A future portrait pass may review rights, campaign-date eligibility, or replace a placeholder with an exact male ruler/person crop, but no such optional refinement blocks Event 012 source completion. Do not add lion heads, masks, spears, face paint, crowns, or insignia that are not visible in the selected historical source. The six fictional portrait packages and nine model consumers are installed, while final package, localisation, and live-consumer audits remain separate source or user-owned boundaries.
+Fifteen historical priority-member rows use the supplied portrait replacements and one row, Buganda, remains an explicitly source-locked placeholder. The RSA branch uses the supplied Mgolombane Sandile portrait. Do not add lion heads, masks, spears, face paint, crowns, or insignia that are not visible in the selected portrait. The six fictional portrait packages and nine model consumers are installed, while final package, localisation, and live-consumer audits remain separate source or user-owned boundaries.
