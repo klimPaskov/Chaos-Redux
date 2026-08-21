@@ -2,6 +2,8 @@
 
 Status: implemented, exported, reimported, visually reviewed, and synchronized to runtime; user-owned live HOI4 confirmation remains.
 
+Superseded for active runtime packaging by `2026-08-21_facility_render_stream_repair.md` after live screenshots proved that the earlier exports still used unsafe stream density and incomplete `meshsettings` registration. This file remains the historical record of the transform-bake repair.
+
 ## Reported defect
 
 The chemical and biological facility map models rendered as stretched triangle webs in HOI4. Runtime wiring, entity scale, texture selection, building definitions, and dedicated spawn pools were already unique and correct, so the repair remained confined to the two model jobs, the static-building export adapter, and the two runtime `.mesh` files.
