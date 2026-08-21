@@ -10,6 +10,7 @@ Event 006 remains **HOLD / PARTIAL** against the accepted Independence Wave spec
 - `events/006_independence_wave.txt` keeps `chaosx.nr6.350` hidden and trigger-only, and the root event still presents only after a committed standalone or joint transaction.
 - `common/scripted_effects/006_independence_wave_execution_effects.txt` records a non-player-facing terminal receipt for the standalone transaction, including plan phase, failure class, selected/expected counts, execution counters, and outcome flags.
 - The Banat, Thrace, and Epirus dormant-carrier availability triggers use fixed anchor states 82, 184, and 185 with explicit ROM/GRE host ownership checks and no `capital_scope`. This prevents invalid-capital errors on AXX, BAX, and BBX before allocation. `.tools/audit_event6_allocator.py` now asserts that regression contract.
+- The shared dormant-carrier predicate now uses the documented `num_of_controlled_states > 0` trigger guard instead of the invalid `num_controlled_states` variable. Existing empty carrier shells can therefore pass the dormant check while living countries remain excluded, allowing a direct Event 006 trigger to reserve and instantiate the admitted partial package set.
 
 ## Portrait wiring
 
