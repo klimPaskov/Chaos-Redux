@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import filecmp
+import os
 import shutil
 import sys
 import tempfile
@@ -174,6 +175,7 @@ def parse_args() -> argparse.Namespace:
 	)
 	parser.add_argument("--zip", action="store_true", help="also create a ZIP archive beside the folder")
 	parser.add_argument("--dry-run", action="store_true", help="list package contents without writing files")
+	parser.add_argument("--open", action="store_true", dest="open_output", help="open the package folder when done")
 	parser.add_argument("--pause", action="store_true", help=argparse.SUPPRESS)
 	return parser.parse_args()
 
@@ -181,7 +183,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
 	args = parse_args()
 	try:
-		build_package(args.output.expanduser().resolve(), repository_root(), make_zip=args.zip, dry_run=args.dry_run)
+		output = args.output.expanduser().resolve()
+		build_package(output, repository_root(), make_zip=args.zip, dry_run=args.dry_run)
+		if args.open_output and not args.dry_run:
+			if sys.platform == "win32":
+				os.startfile(output)
+			else:
+				print(f"Open the package folder: {output}")
 	except Exception as error:
 		print(f"Packaging failed: {error}", file=sys.stderr)
 		return 1
