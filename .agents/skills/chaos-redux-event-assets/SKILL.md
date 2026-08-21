@@ -656,7 +656,7 @@ Every icon, counter, or emblem package requires a native-size contact sheet comp
 
 Route 3D model production to `chaos-redux-3d-model-pipeline` and `chaosx_3d_model_pipeline`. The 3D worker owns the mandatory custom-unit counter requirement and bounded `chaosx_icon_artist` handoff, while this 2D asset pipeline owns final counter art. Equipment art, division emblems, and frame-sheet animation remain separate production surfaces.
 
-Before any provider or paid work, the 3D route must verify a nonblank `MESHY_API_KEY`, the selected pinned Meshy MCP route, the narrow Blender HOI4 adapter, the installed Blender version, and the checksum-locked `io_pdx_mesh` setup.
+Before any provider or paid work, the 3D route must verify a nonblank `MESHY_API_KEY`, the selected pinned Meshy 7 MCP route with the exact `meshy-7` image-to-3D identifier, the narrow Blender HOI4 adapter, the installed Blender version, and the checksum-locked `io_pdx_mesh` setup.
 
 When a ready reference is absent, the route creates exactly one clean `meshy_input.png` for the asset. Never create or send side-profile sheets, turnaround boards, collages, or multi-view boards to Meshy. Contact sheets and Blender renders are QA evidence only.
 

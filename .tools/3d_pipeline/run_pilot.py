@@ -253,6 +253,22 @@ def existing_task(job: Path, stage: str) -> Optional[Dict[str, Any]]:
     return read_json(path) if path.exists() else None
 
 
+def task_model_url(job: Path, stage: str, format_name: str) -> str:
+    """Read one official signed artifact URL from an immutable completed task record."""
+
+    task = existing_task(job, stage)
+    if not task or task.get("status") not in {"SUCCEEDED", "SUCCESS", "COMPLETED", "DONE"}:
+        raise RuntimeError(f"Cannot resolve a provider artifact URL from incomplete stage {stage!r}.")
+    final = task.get("final_response")
+    model_urls = final.get("model_urls") if isinstance(final, dict) else None
+    url = model_urls.get(format_name) if isinstance(model_urls, dict) else None
+    if not isinstance(url, str) or not url.startswith("https://assets.meshy.ai/"):
+        raise RuntimeError(
+            f"Completed provider stage {stage!r} did not expose a valid Meshy artifact URL for {format_name!r}."
+        )
+    return url
+
+
 def generation_stage_for(spec: Dict[str, Any]) -> str:
     """Return the immutable provider stage selected for this geometry attempt."""
 
@@ -1156,6 +1172,125 @@ def continue_creature(spec: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def continue_humanoid_local(spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Finish a Meshy 7 humanoid geometry package through the local rig route."""
+
+    slug = spec["asset_id"].rsplit(".", 1)[-1]
+    job = ensure_job_layout(resolve_job_root(slug))
+    blender = BlenderAdapterClient(REPO_ROOT)
+    generation_stage = generation_stage_for(spec)
+    generation = existing_task(job, generation_stage)
+    if not generation or generation.get("status") not in {"SUCCEEDED", "SUCCESS", "COMPLETED", "DONE"}:
+        raise RuntimeError("Local humanoid continuation requires a completed Meshy 7 geometry task.")
+    candidate_report = read_json(
+        job / "blender" / "reports" / f"{spec['runtime_stem']}_candidate_prepare.json"
+    )
+    source_checkpoint = candidate_report["checkpoints"]["pre_export"]
+    rig_checkpoint = "blender/checkpoints/humanoid_rig_approved.blend"
+    rig = blender.author_humanoid_rig(
+        slug,
+        source_checkpoint,
+        rig_checkpoint,
+        rig_name=f"{spec['runtime_stem']}_armature",
+    )
+    if rig.get("status") != "pass":
+        raise RuntimeError(f"Local humanoid rig failed: {rig.get('status', 'unknown')}")
+
+    action_checkpoint = "blender/checkpoints/humanoid_actions_approved.blend"
+    action_names = {
+        role: f"{spec['runtime_stem']}_{role}"
+        for role in ("idle", "move", "attack", "death")
+    }
+    actions = blender.author_humanoid_actions(
+        slug,
+        rig_checkpoint,
+        action_checkpoint,
+        action_names=action_names,
+        fps=24,
+    )
+    if actions.get("status") != "pass":
+        raise RuntimeError(f"Local humanoid actions failed: {actions.get('status', 'unknown')}")
+
+    textures = finalize_pdx_runtime_textures(
+        job,
+        spec,
+        blender.process_textures(slug, action_checkpoint),
+    )
+    mesh_rel = f"export/mesh/{spec['runtime_stem']}.mesh"
+    mesh_export = blender.export_mesh(slug, action_checkpoint, mesh_rel)
+    action_reports: Dict[str, Dict[str, Any]] = {}
+    reimports: Dict[str, Any] = {}
+    for role in ("idle", "move", "attack", "death"):
+        anim_rel = f"export/anim/{spec['runtime_stem']}_{role}.anim"
+        exported = blender.export_animation(
+            slug,
+            action_checkpoint,
+            action_names[role],
+            anim_rel,
+        )
+        action_reports[role] = {
+            "required_role": role,
+            "action_name": action_names[role],
+            "source_checkpoint": action_checkpoint,
+            "output_rel": anim_rel,
+            "authoring": actions["actions"][role],
+            "export": exported,
+            "loop": role in {"idle", "move"},
+            "frame_policy": "24fps_in_place_blender_authored_skeletal",
+        }
+        reimports[role] = blender.reimport_export(
+            slug,
+            mesh_rel,
+            anim_rel,
+            proof_name=f"{spec['runtime_stem']}_{role}",
+        )
+
+    mesh_file = job / mesh_rel
+    update_job(
+        job,
+        status="pdx_exported",
+        humanoid_rig_route="blender_failure_recovery_humanoid_v1",
+        provider_rig_task=None,
+        exports={
+            "mesh": mesh_rel,
+            "animations": {role: report["output_rel"] for role, report in action_reports.items()},
+        },
+        runtime_source={
+            "geometry_generation_stage": generation_stage,
+            "geometry_generation_task_id": generation.get("task_id"),
+            "geometry_source_policy": "Meshy 7 generated geometry",
+            "rig_source_policy": "repository-owned Blender humanoid recovery route after failed provider rig attempts",
+            "distinct_geometry_package": True,
+            "distinct_runtime_animations": True,
+        },
+    )
+    append_history(
+        job,
+        state="pdx_exported",
+        event="humanoid_local_recovery_exported",
+        actor="chaosx_3d_model_pipeline",
+        details={
+            "generation_stage": generation_stage,
+            "generation_task_id": generation.get("task_id"),
+            "rig": rig,
+            "actions": actions,
+            "mesh": file_record(mesh_file, relative_to=job),
+            "reimport": reimports,
+        },
+    )
+    return {
+        "generation_stage": generation_stage,
+        "generation_task_id": generation.get("task_id"),
+        "rig": rig,
+        "actions": actions,
+        "textures": textures,
+        "mesh_export": mesh_export,
+        "action_reports": action_reports,
+        "reimport": reimports,
+        "route": "blender_failure_recovery_humanoid_v1",
+    }
+
+
 def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     slug = spec["asset_id"].rsplit(".", 1)[-1]
     job = ensure_job_layout(resolve_job_root(slug))
@@ -1174,6 +1309,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         job / "blender" / "reports" / f"{spec['runtime_stem']}_candidate_prepare.json"
     )
     rig_input_id = generation_id
+    rig_input_url: Optional[str] = None
     remesh_id: Optional[str] = None
     remesh_estimate = int(spec.get("remesh_estimate_credits", MESHY_REMESH_ESTIMATE))
     source_triangles = int(candidate_report.get("imported_geometry", {}).get("triangles", 0))
@@ -1212,6 +1348,13 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         prepare_pilot_texture_sources(job, spec)
         rig_input_id = remesh_id
 
+    rig_input_mode = str(spec.get("rig_input_mode") or "input_task_id").casefold()
+    if rig_input_mode not in {"input_task_id", "model_url"}:
+        raise RuntimeError(f"Unsupported humanoid rig input mode: {rig_input_mode!r}.")
+    if rig_input_mode == "model_url":
+        source_stage = remesh_stage if remesh_id else generation_stage
+        rig_input_url = task_model_url(job, source_stage, "glb")
+
     rig_id = provider_task(
         client,
         job,
@@ -1220,7 +1363,8 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         estimate=spec["rig_estimate_credits"],
         input_stage=remesh_stage if remesh_id else generation_stage,
         create=lambda: client.rig(
-            input_task_id=rig_input_id,
+            input_task_id=rig_input_id if rig_input_url is None else None,
+            model_url=rig_input_url,
             height_meters=spec["target_height_m"],
             estimate_credits=spec["rig_estimate_credits"],
         ),
@@ -2091,6 +2235,8 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
         "planned_total_credits": max(planned_total, required_minimum),
         "generation_stage": generation_stage,
         "rig_stage": job.get("rig_stage"),
+        "rig_input_mode": str(job.get("rig_input_mode") or "input_task_id"),
+        "humanoid_rig_route": str(job.get("humanoid_rig_route") or ""),
         "provider_paid_attempts": int(provider_plan.get("paid_attempts") or 1),
         "provider_retry_paid_calls": bool(provider_plan.get("retry_paid_calls", False)),
         "texture_source_rels": {
@@ -2196,14 +2342,24 @@ def preflight_selected_credits(specs: List[Dict[str, Any]], phase: str) -> None:
         )
 
 
-def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
-    """Produce a configured specialized-unit batch with one shared humanoid rig.
+def uses_local_humanoid_route(spec: Dict[str, Any]) -> bool:
+    """Return whether a job explicitly selected the failure-driven local rig route."""
 
-    The batch still makes one distinct Meshy geometry task per unit. Only the
-    standard humanoid rig and its provider idle/attack/death actions are shared;
-    every recipient receives its own weighted geometry, exported mesh, four
-    exported actions, textures, and reimport proofs. Creature jobs stay on their
-    custom Blender route.
+    return (
+        spec.get("asset_kind") == "humanoid"
+        and str(spec.get("humanoid_rig_route") or "").casefold()
+        == "blender_failure_recovery_humanoid_v1"
+    )
+
+
+def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
+    """Produce a configured specialized-unit batch with explicit per-job rig routes.
+
+    The batch always keeps one distinct Meshy 7 geometry task per unit. Jobs
+    that explicitly select the local failure-recovery route receive their own
+    locally authored rig and four skeletal actions. Provider-rig jobs retain the
+    shared-humanoid lineage route. Creature jobs stay on their custom Blender
+    route.
     """
 
     configs = load_pilot_configs()
@@ -2241,6 +2397,10 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
         if slug != owner_slug and spec.get("asset_kind") == "humanoid"
     ]
     creature_specs = [spec for _, spec in selected if spec.get("asset_kind") == "creature"]
+    humanoid_specs = [owner_spec] + recipient_specs
+    local_humanoid_batch = bool(humanoid_specs) and all(
+        uses_local_humanoid_route(spec) for spec in humanoid_specs
+    )
 
     for _, spec in selected:
         initialize_one(spec)
@@ -2280,26 +2440,27 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
             generation_stage_for(spec),
             int(spec["image_to_3d_estimate_credits"]),
         )
-    # Meshy image-to-3D can return a source above the rig endpoint's 300,000
-    # triangle limit even when the requested target is 30,000. Reserve the
-    # owner's conditional remesh before generation so the batch cannot spend
-    # the balance needed to finish its own rig path.
-    add_pending(
-        owner_job,
-        continuation_stage_for(owner_spec, "rig_remesh"),
-        int(owner_spec.get("remesh_estimate_credits", MESHY_REMESH_ESTIMATE)),
-    )
-    add_pending(
-        owner_job,
-        rig_stage_for(owner_spec),
-        int(owner_spec["rig_estimate_credits"]),
-    )
-    for role in ("idle", "attack", "death"):
+    if not local_humanoid_batch:
+        # Meshy image-to-3D can return a source above the rig endpoint's
+        # triangle limit even when the requested target is lower. Reserve the
+        # owner's conditional provider postprocess stages before generation so
+        # the batch cannot spend the balance needed to finish its own rig path.
         add_pending(
             owner_job,
-            animation_stage_for(owner_spec, role),
-            int(owner_spec["animation_estimate_credits"]),
+            continuation_stage_for(owner_spec, "rig_remesh"),
+            int(owner_spec.get("remesh_estimate_credits", MESHY_REMESH_ESTIMATE)),
         )
+        add_pending(
+            owner_job,
+            rig_stage_for(owner_spec),
+            int(owner_spec["rig_estimate_credits"]),
+        )
+        for role in ("idle", "attack", "death"):
+            add_pending(
+                owner_job,
+                animation_stage_for(owner_spec, role),
+                int(owner_spec["animation_estimate_credits"]),
+            )
 
     required_credits = sum(int(item["estimate_credits"]) for item in pending_estimates)
     balance: Optional[int] = None
@@ -2321,7 +2482,12 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
             ),
             "required_credits_for_missing_paid_stages": required_credits,
             "pending_stages": pending_estimates,
-            "shared_humanoid_policy": "one_verified_standard_rig_and_three_provider_actions; distinct_geometry_and_exports_per_unit",
+            "humanoid_policy": (
+                "distinct Meshy 7 geometry plus per-job local Blender rig and four skeletal actions"
+                if local_humanoid_batch
+                else "one verified standard provider rig and three provider actions; distinct geometry and exports per unit"
+            ),
+            "local_humanoid_batch": local_humanoid_batch,
             "paid_call_authorized_by": "user_task",
             "recorded_at": utc_now(),
         },
@@ -2346,7 +2512,11 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
             else run_candidate(owner_spec)
         )
         results.append({"asset": owner_slug, "candidate": owner_candidate})
-        owner_continuation = continue_humanoid(owner_spec)
+        owner_continuation = (
+            continue_humanoid_local(owner_spec)
+            if local_humanoid_batch
+            else continue_humanoid(owner_spec)
+        )
         results.append({"asset": owner_slug, "continuation": owner_continuation})
 
     for spec in recipient_specs + creature_specs:
@@ -2357,6 +2527,26 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
             else run_candidate(spec)
         )
         results.append({"asset": slug, "candidate": candidate})
+
+    if local_humanoid_batch:
+        for spec in recipient_specs:
+            slug = spec["asset_id"].rsplit(".", 1)[-1]
+            if current_status(spec) == "pdx_exported":
+                results.append({"asset": slug, "status": "reused_pdx_exported"})
+                continue
+            results.append(
+                {
+                    "asset": slug,
+                    "continuation": continue_humanoid_local(spec),
+                }
+            )
+        for spec in creature_specs:
+            slug = spec["asset_id"].rsplit(".", 1)[-1]
+            if current_status(spec) == "pdx_exported":
+                results.append({"asset": slug, "status": "reused_pdx_exported"})
+                continue
+            results.append({"asset": slug, "continuation": continue_creature(spec)})
+        return results
 
     lineage = prepare_shared_humanoid_lineage(owner_spec, recipient_specs)
     for spec in recipient_specs:
@@ -2421,7 +2611,12 @@ def main() -> int:
         elif spec["asset_kind"] in CREATURE_ASSET_KINDS:
             results.append({"asset": asset, "continuation": continue_creature(spec)})
         else:
-            results.append({"asset": asset, "continuation": continue_humanoid(spec)})
+            continuation = (
+                continue_humanoid_local(spec)
+                if uses_local_humanoid_route(spec)
+                else continue_humanoid(spec)
+            )
+            results.append({"asset": asset, "continuation": continuation})
     print(json.dumps(results, indent=2, sort_keys=True))
     return 0
 

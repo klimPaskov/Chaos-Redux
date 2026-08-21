@@ -245,6 +245,8 @@ Runtime texticons are part of model QA. If a custom subunit id is consumed by `c
 Rig work follows `07_rigging_and_animation_pipeline.md`. The Blender stage may:
 
 - import and preserve a provider rig
+- after two failed task-ID rig attempts and one separately authorized signed-artifact recovery failure, invoke the explicit `blender_failure_recovery_humanoid_v1` route on the completed Meshy 7 geometry
+- create the repository's 24-bone HOI4 humanoid rig through the allowlisted `author_humanoid_rig` operation
 - map or rebuild bones
 - create a custom armature
 - create control bones not exported to runtime when supported
@@ -252,9 +254,13 @@ Rig work follows `07_rigging_and_animation_pipeline.md`. The Blender stage may:
 - assign and normalize weights
 - bake constraints into export actions
 
+The local humanoid recovery route keeps each unit's Meshy 7 geometry distinct, caps each vertex at three same-region influences, writes a rig report and approved checkpoint, and never substitutes a static mesh for a requested action.
+
 ## Action processing
 
 Each action is isolated and named by semantic role. The scene must not rely on an arbitrary active action at export time.
+
+The allowlisted `author_humanoid_actions` operation creates real idle, move, attack, and death skeletal actions together at the calibrated FPS, with no scale channels and measured in-place grounding. Export and reimport every action independently and retain the proof scene for each one. Creature action authoring applies a 1 mm positive grounding clearance and records the 10 mm acceptance tolerance so floating-point rounding cannot reject a contact sample at the boundary.
 
 Action report fields:
 
