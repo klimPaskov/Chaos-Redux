@@ -126,6 +126,20 @@ Events that require a specific country or small set of country tags must have a 
 
 The Holy Realm uses this rule directly. Tibet is the normal host. If Tibet no longer exists, Bhutan or Nepal can host. If all three are gone or invalid, event ID `3` has no live weight.
 
+### Event Chaos Levels
+
+Every registered normal event has a minimum Chaos level from 1, Calm World, through 6, World Collapse.
+
+The automatic picker requires the current global Chaos tier to meet or exceed the event's registered level before the event contributes weight.
+
+A locked event keeps its stored weight, cap, fired history, and recovery state. Its weight is not overwritten with zero, and it becomes eligible as soon as the threshold is met.
+
+Event Chaos levels are separate from evolution requirements and event-cluster unlock tiers. A clustered event must meet its own level before the cluster checks its unlock tier and member-specific minimum tiers.
+
+Normal manual event firing respects the event level. Force Trigger Mode may bypass it, while manual cluster forcing and triggerable scenarios retain their separate behavior.
+
+Event Details shows the numeric level and tier name. An Events-tab row that is locked by this requirement shows `N/A` instead of selectable weight.
+
 ### Fire-Once Events
 
 - **Initial State**: Weight starts at 1000
@@ -376,13 +390,15 @@ The event logs window tracks what has happened and what can still happen.
 - Tabs: **Status**, **History**, **Evolutions**, **Events**, **Clusters**
 - **Events** tab lists all available events.
 - **Clusters** tab lists cluster firings and member skip/fired reasons.
-- You can filter events by **All / Enabled / Disabled**.
+- You can filter events by enabled state, event type, or one of the six exact Chaos levels.
 - You can sort by **Event ID**, **Fired count**, or **Weight** (ascending/descending).
 - Each event row has a quick toggle button to enable/disable that event.
 
 Any row in **History**, **Evolutions**, **Events**, or **Clusters** can be clicked to open a separate detail window.
 
 Event Details places **World End Scenarios** below the evolution preview. Each public terminal branch owned by that event has its own clickable row, status, details view, and persistent checkbox. Events with several public endings show several independently controlled rows. Hidden easter-egg endings do not appear in this catalog or its controls.
+
+Event Details also shows the selected event's numeric, tier-coloured Chaos level. A locked row shows `N/A` weight and identifies the named tier required for automatic or normal manual firing.
 
 <!-- IMAGE PLACEHOLDER: Events tab with filter/sort/toggle controls -->
 <!-- IMAGE PLACEHOLDER: Multiple event detail windows opened at once -->
@@ -392,6 +408,8 @@ Event Details places **World End Scenarios** below the evolution preview. Each p
 ## Event Clusters
 
 Event clusters are linked groups of normal events. The random-event picker still selects one event first. If that event belongs to a cluster, the cluster can roll to fire the wider incident instead of only the selected event.
+
+The selected event's Chaos level and the cluster unlock tier are independent. The event gate is checked first, then the cluster and member gates apply. White Peace therefore cannot enter automatically during Calm World even though the Peace cluster itself unlocks at Calm World.
 
 Cluster firing counts as one global pacing event. Member events still apply their effects, log entries, repeatable cap changes, fire-once removal, fired history, and event details, but they do not each advance the event timer or apply the dynamic major-event gain.
 

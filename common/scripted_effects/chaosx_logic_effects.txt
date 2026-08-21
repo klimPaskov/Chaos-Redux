@@ -6,6 +6,7 @@
 # SYSTEM FEATURES:
 # - Dynamic timer system with daily checks and adaptive intervals
 # - Weight-based event selection with recovery mechanics
+# - Per-event Chaos-level eligibility with preserved stored weights
 # - Major/minor event classification with different behaviors
 # - Per-event cap management with X% reduction per firing
 # - Comprehensive debug logging and monitoring
@@ -58,7 +59,9 @@ initialize_event_system = {
     clear_array = global.events_log_events_view_enabled_entries
     clear_array = global.events_log_events_view_unique_entries
     clear_array = global.events_log_events_view_weight_entries
+	clear_array = global.events_log_events_view_chaos_level_entries
     clear_array = global.events_log_open_event_detail_entries
+	clear_array = global.events_log_open_event_detail_chaos_level_entries
 	clear_array = global.events_log_open_event_detail_secondary_actor_entries
 	clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
     clear_array = global.events_log_event_detail_evolution_type_entries
@@ -133,6 +136,7 @@ initialize_event_system = {
 
     initialize_event_categories = yes
     initialize_all_events_array = yes
+	initialize_event_chaos_level_registry = yes
 	initialize_world_end_scenario_registry = yes
     initialize_default_disabled_events_for_rework_queue = yes
     count_total_events_plus_one = yes
@@ -146,6 +150,64 @@ initialize_event_system = {
 
     set_global_flag = event_system_initialized
     clr_global_flag = event_system_initializing
+}
+
+# Build one required Chaos-tier row for every registered normal event.
+# Player-facing Chaos levels are one-based; stored tier IDs use the existing
+# zero-based chaos_meter_tier_id constants.
+initialize_event_chaos_level_registry = {
+	clear_array = global.event_chaos_level_entries
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = event_chaos_level_registry_index
+		set_temp_variable = { event_chaos_level_registry_event_id = global.all_events^event_chaos_level_registry_index }
+		set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_0 }
+		if = {
+			limit = { check_variable = { event_chaos_level_registry_event_id = constant:white_peace_event_log.event_id } }
+			set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_1 }
+		}
+		add_to_array = {
+			array = global.event_chaos_level_entries
+			value = event_chaos_level_registry_required_tier
+		}
+	}
+}
+
+# Resolve the required internal Chaos tier for event_id.
+# Input: event_id. Output: event_required_chaos_level.
+get_event_required_chaos_level = {
+	set_temp_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_0 }
+	set_temp_variable = { event_chaos_level_resolver_found = 0 }
+	set_temp_variable = { event_chaos_level_resolver_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { event_chaos_level_resolver_found = 0 }
+			check_variable = { event_chaos_level_resolver_index < global.all_events^num }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.all_events^event_chaos_level_resolver_index
+					value = event_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { event_required_chaos_level = global.event_chaos_level_entries^event_chaos_level_resolver_index }
+			set_temp_variable = { event_chaos_level_resolver_found = 1 }
+		}
+		add_to_temp_variable = { event_chaos_level_resolver_index = 1 }
+	}
+}
+
+# Evaluate the central Chaos-level gate after get_event_required_chaos_level.
+# Output: event_required_chaos_level_is_met_value.
+evaluate_event_required_chaos_level = {
+	set_temp_variable = { event_required_chaos_level_is_met_value = 0 }
+	if = {
+		limit = { event_required_chaos_level_is_met = yes }
+		set_temp_variable = { event_required_chaos_level_is_met_value = 1 }
+	}
 }
 
 initialize_dynamic_timer = {
@@ -527,10 +589,13 @@ evaluate_random_event_active_pool_candidate = {
 		set_temp_variable = { independence_wave_direct_availability_context_injected = 1 }
 	}
 	get_event_type = yes
+	get_event_required_chaos_level = yes
+	evaluate_event_required_chaos_level = yes
 
 	if = {
 		limit = {
 			OR = {
+				check_variable = { event_required_chaos_level_is_met_value = 0 }
 				is_in_array = { global.disabled_events = event_id }
 				AND = {
 					check_variable = { event_id = 91 }
@@ -728,6 +793,8 @@ update_repeatable_event_weights = {
         value = i
 
         set_temp_variable = { event_id = global.repeatable_events^i }
+		get_event_required_chaos_level = yes
+		evaluate_event_required_chaos_level = yes
 		set_temp_variable = { event_weight = 0 }
 		if = {
 			limit = {
@@ -746,7 +813,10 @@ update_repeatable_event_weights = {
 
         # If weight is less than the event's cap, increase to next multiple of 40 (capped at the event's individual cap)
         if = {
-            limit = { check_variable = { event_weight < event_cap } }
+            limit = {
+				check_variable = { event_required_chaos_level_is_met_value > 0 }
+				check_variable = { event_weight < event_cap }
+			}
             # If weight is 0, set to 1
             if = {
                 limit = { OR = { check_variable = { event_weight = 0 } } }

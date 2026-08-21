@@ -1622,14 +1622,17 @@ update_event_id_display = {
         set_country_flag = settings_event_id_zero
         set_variable = { settings_event_id = constant:event_system_event_type.unknown }
         set_variable = { settings_event_type = constant:event_system_event_type.unknown }
+		set_variable = { settings_selected_event_required_chaos_level = constant:chaos_meter_tier_id.tier_0 }
     }
     else = {
         clr_country_flag = settings_event_id_zero
         set_temp_variable = { event_id = settings_selected_event_id }
         get_event_type = yes
+		get_event_required_chaos_level = yes
 
         set_variable = { settings_event_id = settings_selected_event_id }
         set_variable = { settings_event_type = event_type }
+		set_variable = { settings_selected_event_required_chaos_level = event_required_chaos_level }
     }
 
     update_unfired_events_counts = yes
@@ -1669,9 +1672,14 @@ trigger_selected_event = {
         }
         else = {
             get_event_type = yes
+			get_event_required_chaos_level = yes
             set_variable = { settings_event_type = event_type }
 
             set_temp_variable = { can_fire = 1 }
+			if = {
+				limit = { NOT = { event_required_chaos_level_is_met = yes } }
+				set_temp_variable = { can_fire = 0 }
+			}
             if = {
                 limit = {
                     OR = {
