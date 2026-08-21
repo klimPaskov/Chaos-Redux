@@ -17,7 +17,7 @@ SNAPSHOT_DATE: Final[str] = "2026-07-22"
 MODEL_COSTS: Final[dict[str, tuple[int, int]]] = {
     "smart_topology": (5, 15),
     "other": (5, 15),
-    "meshy6": (20, 30),
+    "meshy7": (20, 30),
     "lowpoly_t1": (20, 30),
 }
 

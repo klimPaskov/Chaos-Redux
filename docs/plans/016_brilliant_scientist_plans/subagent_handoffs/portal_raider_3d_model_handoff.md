@@ -4,7 +4,7 @@
 
 Status: **blocked at the semantic generation gate; package incomplete**.
 
-The complete evidence package is at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`. The single authorized Meshy 6 task `019fe7dc-382e-7dc2-a7aa-8d57ff8d3d89` technically succeeded and consumed 30 credits, but the generated model omitted the mandatory ray rifle. Multi-view Blender evidence confirms the omission. The job permits zero extra recovery credits and zero extra paid attempts, so no further generation, remesh, retexture, rig, conversion, or animation call was made.
+The complete evidence package is at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`. The single authorized legacy Meshy task `019fe7dc-382e-7dc2-a7aa-8d57ff8d3d89` technically succeeded and consumed 30 credits, but the generated model omitted the mandatory ray rifle. Multi-view Blender evidence confirms the omission. The job permits zero extra recovery credits and zero extra paid attempts, so no further generation, remesh, retexture, rig, conversion, or animation call was made.
 
 ## Completed evidence and preparation
 
@@ -40,6 +40,6 @@ The complete evidence package is at `docs/assets/shared_portal_raider_system/mod
 
 ## Required decision
 
-Ask the user whether to authorize one additional failure-recovery Meshy 6 generation. Do not reuse the prior planned-attempt budget. If approved, state the new credit and attempt ceiling explicitly, then resume from generation while preserving this rejected task as immutable evidence.
+Ask the user whether to authorize one additional failure-recovery Meshy 7 generation. Do not reuse the prior planned-attempt budget. If approved, state the new credit and attempt ceiling explicitly, then resume from generation while preserving this rejected task as immutable evidence.
 
 No unapproved fallback or simplification was used. No in-game completion is claimed.

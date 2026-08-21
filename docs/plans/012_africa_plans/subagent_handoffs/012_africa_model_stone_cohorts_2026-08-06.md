@@ -4,7 +4,7 @@ Superseded by `012_africa_models_runtime_completion_2026-08-06.md`; the complete
 
 ## Outcome
 
-The package is `blocked`, not complete. Meshy 6 generated and downloaded the provider candidate successfully. The repository-owned Blender HOI4 adapter now resolves the correct Event 012 job root and passes health, but its live MCP declaration exposes only 9 of the 18 operations in the dependency lock. Work stopped before Blender mutation or any further paid tranche because required creature/hybrid rig, action, grounding/root-motion, retime/import, calibration, segmentation, and sanitization operations are not callable.
+The package is `blocked`, not complete. A legacy Meshy task generated and downloaded the provider candidate successfully. The repository-owned Blender HOI4 adapter now resolves the correct Event 012 job root and passes health, but its live MCP declaration exposes only 9 of the 18 operations in the dependency lock. Work stopped before Blender mutation or any further paid tranche because required creature/hybrid rig, action, grounding/root-motion, retime/import, calibration, segmentation, and sanitization operations are not callable. Any regeneration uses Meshy 7.
 
 ## Files created or changed
 
@@ -17,16 +17,16 @@ The package is `blocked`, not complete. Meshy 6 generated and downloaded the pro
 - `docs/assets/012_africa/models_3d/stone_cohorts/provider/requests/image_to_3d_request.json`
 - `docs/assets/012_africa/models_3d/stone_cohorts/provider/responses/image_to_3d_response.json`
 - `docs/assets/012_africa/models_3d/stone_cohorts/provider/credits/generation_credits.json`
-- `docs/assets/012_africa/models_3d/stone_cohorts/provider/downloads/stone_cohorts_meshy6_source.glb`
-- `docs/assets/012_africa/models_3d/stone_cohorts/provider/downloads/stone_cohorts_meshy6_source.fbx`
-- `docs/assets/012_africa/models_3d/stone_cohorts/provider/downloads/stone_cohorts_meshy6_source_textures/*`
+- Archived provider GLB recorded in the job manifest.
+- Archived provider FBX recorded in the job manifest.
+- Archived provider source textures recorded in the job manifest.
 - `docs/assets/012_africa/models_3d/stone_cohorts/evidence/dependency_lock_evidence.md`
 - `docs/plans/012_africa_plans/subagent_handoffs/012_africa_model_stone_cohorts_2026-08-06.md`
 
 ## Provider lineage and credits
 
 - Tool: `meshy_image_to_3d` through official `@meshy-ai/meshy-mcp-server` `0.4.0`.
-- Live model: `meshy-6`; triangle topology; PBR; T-pose; one local `file_path`; multiview disabled.
+- Current required model for recovery: `meshy-7`; triangle topology; PBR; T-pose; one local `file_path`; multiview disabled.
 - Task id: `019fd7ae-83a0-792c-8a2e-c1199c678f6d`.
 - Result: succeeded.
 - Estimate: `20` credits; actual: `30` credits.
@@ -39,8 +39,8 @@ The package is `blocked`, not complete. Meshy 6 generated and downloaded the pro
 | Artifact | SHA-256 |
 | --- | --- |
 | `refs/original/meshy_input.png` | `9A03A8057E8A11BAFA3642B707636825F3C3EE104B68F0B4275837CB3AC0B4B0` |
-| `provider/downloads/stone_cohorts_meshy6_source.glb` | `E84736BEC9FFB0C71913BBFC2EB6969635030EDAA2B9D2954DFAAFB2814CE667` |
-| `provider/downloads/stone_cohorts_meshy6_source.fbx` | `4180B6DEF99E08AD3372B68A26BB63D4505B36D6B64D0DC5DA41955B7CF6A037` |
+| Archived provider GLB | `E84736BEC9FFB0C71913BBFC2EB6969635030EDAA2B9D2954DFAAFB2814CE667` |
+| Archived provider FBX | `4180B6DEF99E08AD3372B68A26BB63D4505B36D6B64D0DC5DA41955B7CF6A037` |
 | `base_color.png` | `D5335573A9E1BF6ADD67319F5818BAF6E02208FAD53072C306076DA55EDA3E28` |
 | `metallic.png` | `46FEE7B3C5658928124DF25B8B83B83DE538B47774513FCDBA88DD0645DE9FB9` |
 | `roughness.png` | `40EDD085D2A4C162452464106958FF02A08A809D5B6A6E0FCFE87523D8BFA2EA` |

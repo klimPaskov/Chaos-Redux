@@ -30,7 +30,7 @@ The authorized existing handoff and integration addendum were inspected but not 
 - Current locked Blender HOI4 adapter: `chaosx_blender_hoi4` 1.2.2. The historical production handoff records adapter 1.2.0; this audit used no Blender mutation and did not rewrite historical lineage.
 - Blender lock: 5.1.2 build `ec6e62d40fa9`. The executable's Windows file metadata reports the 5.1 product line. Blender was not started.
 - `io_pdx_mesh`: 0.91.0. Installed manifest SHA-256 `C6865CEB3CE323BD54255BB37FF860E03607BD2AABED4057E9DCBE04C29682EC`; locked archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`, exactly matching `.tools/3d_pipeline/vendor/io_pdx_mesh/blender-io_pdx_mesh.zip`.
-- No provider, balance, paid, Blender, or adapter operation was called. Audit credit consumption was zero. Historical lineage remains one Meshy-6 image-to-3D task `019fd394-e30c-7fbb-b0da-ee8078b86c38`, 20 estimated and 30 consumed credits, with no paid retry or downstream provider operation.
+- No provider, balance, paid, Blender, or adapter operation was called. Audit credit consumption was zero. Historical lineage remains one legacy Meshy image-to-3D task `019fd394-e30c-7fbb-b0da-ee8078b86c38`, 20 estimated and 30 consumed credits, with no paid retry or downstream provider operation. Meshy 7 is required for future generation.
 
 ## Actual-byte mesh and animation audit
 

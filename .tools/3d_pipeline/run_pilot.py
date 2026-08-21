@@ -43,6 +43,7 @@ from lib.paths import (  # noqa: E402
 )
 from meshy_client import (  # noqa: E402
     MeshyClient,
+    MeshyTaskFailed,
     _first_key,
     _payload,
     status_from,
@@ -60,7 +61,7 @@ CREATURE_ASSET_KINDS = {"creature"}
 REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "creature", "building", "static_building"}
 MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE = 30
 MESHY_REMESH_ESTIMATE = 5
-MESHY_TEXTURED_IMAGE_MODEL_IDS = {"meshy-6", "latest"}
+MESHY_TEXTURED_IMAGE_MODEL_IDS = {"meshy-7"}
 
 
 def task_file(job: Path, stage: str) -> Path:
@@ -252,6 +253,71 @@ def existing_task(job: Path, stage: str) -> Optional[Dict[str, Any]]:
     return read_json(path) if path.exists() else None
 
 
+def generation_stage_for(spec: Dict[str, Any]) -> str:
+    """Return the immutable provider stage selected for this geometry attempt."""
+
+    stage = str(spec.get("generation_stage") or "generation").strip()
+    if (stage != "generation" and not stage.startswith("generation_")) or any(
+        character not in "abcdefghijklmnopqrstuvwxyz0123456789_" for character in stage
+    ):
+        raise ValueError(f"Invalid generation stage {stage!r}.")
+    return stage
+
+
+def generation_download_name(spec: Dict[str, Any], extension: str) -> str:
+    """Keep every accepted or rejected provider attempt as a separate artifact."""
+
+    return f"{generation_stage_for(spec)}_model.{extension.lstrip('.')}"
+
+
+def continuation_stage_for(spec: Dict[str, Any], base_stage: str) -> str:
+    """Keep every downstream paid provider stage bound to its generation attempt."""
+
+    generation_stage = generation_stage_for(spec)
+    if generation_stage == "generation":
+        return base_stage
+    return f"{generation_stage}_{base_stage}"
+
+
+def continuation_download_name(spec: Dict[str, Any], filename: str) -> str:
+    """Prevent a new provider attempt from overwriting earlier downloaded lineage."""
+
+    generation_stage = generation_stage_for(spec)
+    if generation_stage == "generation":
+        return filename
+    return f"{generation_stage}_{filename}"
+
+
+def rig_stage_for(spec: Dict[str, Any]) -> str:
+    """Resolve an explicitly authorized rig recovery without reusing a failed task."""
+
+    return str(spec.get("rig_stage") or continuation_stage_for(spec, "rig"))
+
+
+def rig_download_name(spec: Dict[str, Any], extension: str) -> str:
+    rig_stage = rig_stage_for(spec)
+    default_stage = continuation_stage_for(spec, "rig")
+    if rig_stage == default_stage:
+        return continuation_download_name(spec, f"rigged_provider_model.{extension}")
+    return f"{rig_stage}_provider_model.{extension}"
+
+
+def animation_stage_for(spec: Dict[str, Any], role: str) -> str:
+    rig_stage = rig_stage_for(spec)
+    default_rig_stage = continuation_stage_for(spec, "rig")
+    if rig_stage == default_rig_stage:
+        return continuation_stage_for(spec, f"animation_{role}")
+    return f"{rig_stage}_animation_{role}"
+
+
+def animation_download_name(spec: Dict[str, Any], role: str, extension: str) -> str:
+    stage = animation_stage_for(spec, role)
+    default_stage = continuation_stage_for(spec, f"animation_{role}")
+    if stage == default_stage:
+        return continuation_download_name(spec, f"animation_{role}_provider.{extension}")
+    return f"{stage}_provider.{extension}"
+
+
 def recover_unrecorded_task(
     job: Path,
     *,
@@ -312,10 +378,23 @@ def provider_task(
         if existing.get("status") in {"SUCCEEDED", "SUCCESS", "COMPLETED", "DONE"}:
             return str(existing["task_id"])
         if existing.get("task_id") and existing.get("status") in {"PENDING", "IN_PROGRESS", "UNKNOWN"}:
-            final = client.wait_for_task(
-                str(existing["task_id"]),
-                task_type=task_type,
-            )
+            try:
+                final = client.wait_for_task(
+                    str(existing["task_id"]),
+                    task_type=task_type,
+                )
+            except MeshyTaskFailed as exc:
+                save_task(
+                    job,
+                    stage,
+                    task_id=str(existing["task_id"]),
+                    task_type=task_type,
+                    initial=existing.get("initial_response", {}),
+                    final=exc.final,
+                    estimate=estimate,
+                    input_stage=input_stage,
+                )
+                raise
             save_task(
                 job,
                 stage,
@@ -360,7 +439,32 @@ def provider_task(
         actor="meshy_mcp",
         details={"task_id": task_id, "task_type": task_type, "estimated_credits": estimate},
     )
-    final = client.wait_for_task(task_id, task_type=task_type)
+    try:
+        final = client.wait_for_task(task_id, task_type=task_type)
+    except MeshyTaskFailed as exc:
+        save_task(
+            job,
+            stage,
+            task_id=task_id,
+            task_type=task_type,
+            initial=initial,
+            final=exc.final,
+            estimate=estimate,
+            input_stage=input_stage,
+        )
+        try:
+            balance_after = balance_value(client.check_balance())
+            record_paid_reconciliation(
+                job,
+                stage,
+                balance_before=balance_before,
+                balance_after=balance_after,
+                final=exc.final,
+                estimate=estimate,
+            )
+        except Exception:
+            pass
+        raise
     save_task(
         job,
         stage,
@@ -811,50 +915,52 @@ def run_candidate(spec: Dict[str, Any]) -> Dict[str, Any]:
     client = MeshyClient(REPO_ROOT, job)
     blender = BlenderAdapterClient(REPO_ROOT)
     vanilla_reference = stage_vanilla_reference(job, spec)
-    generation_stage = "generation"
-    generation = recover_unrecorded_task(
-        job,
-        stage=generation_stage,
-        task_type="image-to-3d",
-        estimate=spec["image_to_3d_estimate_credits"],
-        response_name_fragment="image_to_3d",
-    )
-    if generation:
-        generation_id = str(generation["task_id"])
-    else:
-        reference = job / spec["reference_path"]
-        generation_id = provider_task(
-            client,
+    generation_stage = generation_stage_for(spec)
+    # The legacy unrecorded-task recovery scans response names that do not
+    # contain a logical attempt id. Restrict it to the original stage so a
+    # rejected response can never be mistaken for an explicitly authorised
+    # recovery attempt.
+    if generation_stage == "generation":
+        recover_unrecorded_task(
             job,
-            generation_stage,
+            stage=generation_stage,
             task_type="image-to-3d",
             estimate=spec["image_to_3d_estimate_credits"],
-            create=lambda: client.image_to_3d(
-                image_path=reference,
-                ai_model=spec["meshy_ai_model"],
-                model_type="standard",
-                pose_mode=spec["meshy_pose_mode"],
-                target_polycount=spec["target_polycount"],
-                estimate_credits=spec["image_to_3d_estimate_credits"],
-            ),
+            response_name_fragment="image_to_3d",
         )
+    reference = job / spec["reference_path"]
+    generation_id = provider_task(
+        client,
+        job,
+        generation_stage,
+        task_type="image-to-3d",
+        estimate=spec["image_to_3d_estimate_credits"],
+        create=lambda: client.image_to_3d(
+            image_path=reference,
+            ai_model=spec["meshy_ai_model"],
+            model_type="standard",
+            pose_mode=spec["meshy_pose_mode"],
+            target_polycount=spec["target_polycount"],
+            estimate_credits=spec["image_to_3d_estimate_credits"],
+        ),
+    )
     generation_glb = download_once(
         client,
         job,
-        stage="generation_glb",
+        stage=f"{generation_stage}_glb",
         task_id=generation_id,
         task_type="image-to-3d",
         format_name="glb",
-        filename="generation_model.glb",
+        filename=generation_download_name(spec, "glb"),
     )
     download_once(
         client,
         job,
-        stage="generation_fbx",
+        stage=f"{generation_stage}_fbx",
         task_id=generation_id,
         task_type="image-to-3d",
         format_name="fbx",
-        filename="generation_model.fbx",
+        filename=generation_download_name(spec, "fbx"),
     )
     profile = read_json(PIPELINE_ROOT / "config" / "asset_profiles.json")["profiles"][spec["profile"]]
     footprint_config = profile.get("footprint", {})
@@ -1056,10 +1162,13 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     client = MeshyClient(REPO_ROOT, job)
     blender = BlenderAdapterClient(REPO_ROOT)
     vanilla_reference = stage_vanilla_reference(job, spec)
-    generation = existing_task(job, "generation")
+    generation_stage = generation_stage_for(spec)
+    generation = existing_task(job, generation_stage)
     if not generation:
         raise RuntimeError("Humanoid generation must be completed before continuation.")
     generation_id = str(generation["task_id"])
+    remesh_stage = continuation_stage_for(spec, "rig_remesh")
+    rig_stage = rig_stage_for(spec)
 
     candidate_report = read_json(
         job / "blender" / "reports" / f"{spec['runtime_stem']}_candidate_prepare.json"
@@ -1072,10 +1181,10 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         remesh_id = provider_task(
             client,
             job,
-            "rig_remesh",
+            remesh_stage,
             task_type="remesh",
             estimate=remesh_estimate,
-            input_stage="generation",
+            input_stage=generation_stage,
             create=lambda: client.remesh(
                 input_task_id=generation_id,
                 target_polycount=spec["rig_source_target_polycount"],
@@ -1085,20 +1194,20 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         remesh_glb = download_once(
             client,
             job,
-            stage="rig_remesh_glb",
+            stage=continuation_stage_for(spec, "rig_remesh_glb"),
             task_id=remesh_id,
             task_type="remesh",
             format_name="glb",
-            filename="remesh_model.glb",
+            filename=continuation_download_name(spec, "remesh_model.glb"),
         )
         download_once(
             client,
             job,
-            stage="rig_remesh_fbx",
+            stage=continuation_stage_for(spec, "rig_remesh_fbx"),
             task_id=remesh_id,
             task_type="remesh",
             format_name="fbx",
-            filename="remesh_model.fbx",
+            filename=continuation_download_name(spec, "remesh_model.fbx"),
         )
         prepare_pilot_texture_sources(job, spec)
         rig_input_id = remesh_id
@@ -1106,10 +1215,10 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     rig_id = provider_task(
         client,
         job,
-        "rig",
+        rig_stage,
         task_type="rigging",
         estimate=spec["rig_estimate_credits"],
-        input_stage="rig_remesh" if remesh_id else "generation",
+        input_stage=remesh_stage if remesh_id else generation_stage,
         create=lambda: client.rig(
             input_task_id=rig_input_id,
             height_meters=spec["target_height_m"],
@@ -1119,11 +1228,11 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     rig_glb = download_once(
         client,
         job,
-        stage="rigged_provider_glb",
+        stage=f"{rig_stage}_provider_glb",
         task_id=rig_id,
         task_type="rigging",
         format_name="glb",
-        filename="rigged_provider_model.glb",
+        filename=rig_download_name(spec, "glb"),
         include_textures=False,
         allow_url_only=True,
         fetch_provider_url=True,
@@ -1131,11 +1240,11 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     download_once(
         client,
         job,
-        stage="rigged_provider_fbx",
+        stage=f"{rig_stage}_provider_fbx",
         task_id=rig_id,
         task_type="rigging",
         format_name="fbx",
-        filename="rigged_provider_model.fbx",
+        filename=rig_download_name(spec, "fbx"),
         include_textures=False,
         allow_url_only=True,
         fetch_provider_url=True,
@@ -1150,14 +1259,14 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
             raise RuntimeError(
                 f"Required action {role} has no provider action id or Blender authoring route."
             )
-        stage = f"animation_{role}"
+        stage = animation_stage_for(spec, role)
         animation_id = provider_task(
             client,
             job,
             stage,
             task_type="animation",
             estimate=spec["animation_estimate_credits"],
-            input_stage="rig",
+            input_stage=rig_stage,
             create=lambda action_id=action["provider_action_id"]: client.animate(
                 rig_task_id=rig_id,
                 action_id=action_id,
@@ -1171,7 +1280,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
             task_id=animation_id,
             task_type="animation",
             format_name="glb",
-            filename=f"animation_{role}_provider.glb",
+            filename=animation_download_name(spec, role, "glb"),
             include_textures=False,
             allow_url_only=True,
             fetch_provider_url=True,
@@ -1183,7 +1292,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
             task_id=animation_id,
             task_type="animation",
             format_name="fbx",
-            filename=f"animation_{role}_provider.fbx",
+            filename=animation_download_name(spec, role, "fbx"),
             include_textures=False,
             allow_url_only=True,
             fetch_provider_url=True,
@@ -1495,14 +1604,14 @@ def prepare_shared_humanoid_lineage(
     owner_slug = owner_spec["asset_id"].rsplit(".", 1)[-1]
     owner_job = ensure_job_layout(resolve_job_root(owner_slug))
     artifact_names = {
-        "rig_glb": "provider/downloads/rigged_provider_model.glb",
-        "rig_fbx": "provider/downloads/rigged_provider_model.fbx",
-        "idle_glb": "provider/downloads/animation_idle_provider.glb",
-        "idle_fbx": "provider/downloads/animation_idle_provider.fbx",
-        "attack_glb": "provider/downloads/animation_attack_provider.glb",
-        "attack_fbx": "provider/downloads/animation_attack_provider.fbx",
-        "death_glb": "provider/downloads/animation_death_provider.glb",
-        "death_fbx": "provider/downloads/animation_death_provider.fbx",
+        "rig_glb": f"provider/downloads/{rig_download_name(owner_spec, 'glb')}",
+        "rig_fbx": f"provider/downloads/{rig_download_name(owner_spec, 'fbx')}",
+        "idle_glb": f"provider/downloads/{animation_download_name(owner_spec, 'idle', 'glb')}",
+        "idle_fbx": f"provider/downloads/{animation_download_name(owner_spec, 'idle', 'fbx')}",
+        "attack_glb": f"provider/downloads/{animation_download_name(owner_spec, 'attack', 'glb')}",
+        "attack_fbx": f"provider/downloads/{animation_download_name(owner_spec, 'attack', 'fbx')}",
+        "death_glb": f"provider/downloads/{animation_download_name(owner_spec, 'death', 'glb')}",
+        "death_fbx": f"provider/downloads/{animation_download_name(owner_spec, 'death', 'fbx')}",
     }
     owner_artifacts = {
         key: file_record(owner_job / relative_path, relative_to=owner_job)
@@ -1510,9 +1619,12 @@ def prepare_shared_humanoid_lineage(
     }
     task_lineage = {
         "owner": owner_slug,
-        "rig_task": existing_task(owner_job, "rig"),
+        "rig_task": existing_task(owner_job, rig_stage_for(owner_spec)),
         "animation_tasks": {
-            role: existing_task(owner_job, f"animation_{role}")
+            role: existing_task(
+                owner_job,
+                animation_stage_for(owner_spec, role),
+            )
             for role in ("idle", "attack", "death")
         },
     }
@@ -1583,7 +1695,7 @@ def continue_humanoid_shared(
     job = ensure_job_layout(resolve_job_root(slug))
     blender = BlenderAdapterClient(REPO_ROOT)
     shared_rig_rel = "provider/shared_humanoid/rigged_provider_model.glb"
-    generation_rel = "provider/downloads/generation_model.glb"
+    generation_rel = f"provider/downloads/{generation_download_name(spec, 'glb')}"
     if not (job / shared_rig_rel).is_file():
         raise FileNotFoundError(f"Shared humanoid rig source is missing: {job / shared_rig_rel}")
     if not (job / generation_rel).is_file():
@@ -1600,6 +1712,7 @@ def continue_humanoid_shared(
         runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
         runtime_stem=f"{spec['runtime_stem']}_shared_rigged",
         target_triangles=profile["triangle_range"]["working_triangle_target"],
+        excluded_provider_objects=spec.get("excluded_provider_objects"),
         vanilla_reference=vanilla_reference,
         texture_source_rels=texture_sources,
         repair_before_reduction=True,
@@ -1843,6 +1956,11 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
         or provider_plan.get("target_polycount")
         or profile["triangle_range"]["working_triangle_target"]
     )
+    rig_source_target_polycount = int(
+        job.get("rig_source_target_polycount")
+        or provider_plan.get("rig_source_target_polycount")
+        or target_triangles
+    )
     vanilla_reference = {
         "mesh": str(vanilla_mesh),
         "entity": profile["vanilla_reference"]["entity"],
@@ -1896,15 +2014,25 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
             {"role": "death", "provider_action_id": 8, "fps": 24, "loop": False, "root_policy": "in_place"},
         ]
     )
-    meshy_ai_model = str(job.get("provider_model") or provider_plan.get("ai_model") or "meshy-6")
+    meshy_ai_model = str(job.get("provider_model") or provider_plan.get("ai_model") or "meshy-7")
+    resolved_meshy_ai_model = str(
+        job.get("resolved_provider_model")
+        or provider_plan.get("resolved_ai_model")
+        or meshy_ai_model
+    )
+    if meshy_ai_model.lower() != "meshy-7" or resolved_meshy_ai_model.lower() != "meshy-7":
+        raise RuntimeError(
+            "The Chaos Redux 3D workflow requires explicit Meshy 7 generation. "
+            f"Received provider_model={meshy_ai_model!r}, "
+            f"resolved_provider_model={resolved_meshy_ai_model!r}."
+        )
+    generation_stage = str(job.get("generation_stage") or "generation")
     image_to_3d_estimate = int(
         job.get("image_to_3d_estimate_credits") or MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE
     )
     if meshy_ai_model.lower() in MESHY_TEXTURED_IMAGE_MODEL_IDS and bool(provider_plan.get("should_texture", True)):
-        # A stale job manifest may still contain the historical 20-credit
-        # no-texture estimate. Never under-preflight the required textured
-        # current Meshy route when it is explicitly selected or resolved by
-        # the live `latest` alias.
+        # A stale job manifest may still contain a 20-credit no-texture
+        # estimate. Never under-preflight the required textured Meshy 7 route.
         image_to_3d_estimate = max(image_to_3d_estimate, MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE)
     remesh_estimate = int(job.get("remesh_estimate_credits") or MESHY_REMESH_ESTIMATE)
     rig_estimate = int(job.get("rig_estimate_credits") or 5)
@@ -1939,6 +2067,10 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
             "turnaround collage",
             "text or watermark",
         ],
+        "excluded_provider_objects": list(
+            job.get("excluded_provider_objects")
+            or (["Icosphere"] if not is_creature else [])
+        ),
         "target_height_m": vanilla_height,
         "blender_target_height_m": vanilla_height,
         "blender_effective_runtime_height_m": vanilla_height * entity_scale,
@@ -1946,20 +2078,25 @@ def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> 
         "runtime_diffuse_gamma": profile.get("runtime_diffuse_gamma"),
         "vanilla_scale_reference": vanilla_reference,
         "target_polycount": target_triangles,
+        "rig_source_target_polycount": rig_source_target_polycount,
         "meshy_ai_model": meshy_ai_model,
+        "resolved_meshy_ai_model": resolved_meshy_ai_model,
         "meshy_pose_mode": provider_plan.get("pose_mode"),
-        # Meshy-6 with PBR texturing is billed at 30 credits on the verified
-        # live route. Keep this fallback aligned with the required textured
-        # request instead of the 20-credit no-texture rate.
+        # Textured Meshy 7 generation is billed at 30 credits. Keep this
+        # fallback aligned with the required textured request.
         "image_to_3d_estimate_credits": image_to_3d_estimate,
         "remesh_estimate_credits": remesh_estimate,
         "rig_estimate_credits": rig_estimate,
         "animation_estimate_credits": animation_estimate,
         "planned_total_credits": max(planned_total, required_minimum),
+        "generation_stage": generation_stage,
+        "rig_stage": job.get("rig_stage"),
+        "provider_paid_attempts": int(provider_plan.get("paid_attempts") or 1),
+        "provider_retry_paid_calls": bool(provider_plan.get("retry_paid_calls", False)),
         "texture_source_rels": {
-            "diffuse": "provider/downloads/generation_model_textures/base_color.png",
-            "normal": "provider/downloads/generation_model_textures/normal.png",
-            "specular": "provider/downloads/generation_model_textures/metallic_roughness.png",
+            "diffuse": f"provider/downloads/{generation_stage}_model_textures/base_color.png",
+            "normal": f"provider/downloads/{generation_stage}_model_textures/normal.png",
+            "specular": f"provider/downloads/{generation_stage}_model_textures/metallic_roughness.png",
         },
         "required_actions": required_actions,
         "creature_rig_family": creature_rig_family,
@@ -2108,6 +2245,22 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
     for _, spec in selected:
         initialize_one(spec)
 
+    def current_status(spec: Dict[str, Any]) -> str:
+        slug = spec["asset_id"].rsplit(".", 1)[-1]
+        return str(read_job(ensure_job_layout(resolve_job_root(slug))).get("status", "preflight"))
+
+    def saved_candidate_ready(spec: Dict[str, Any]) -> bool:
+        slug = spec["asset_id"].rsplit(".", 1)[-1]
+        job = ensure_job_layout(resolve_job_root(slug))
+        task = existing_task(job, generation_stage_for(spec))
+        report = job / "blender" / "reports" / f"{spec['runtime_stem']}_candidate_prepare.json"
+        return bool(
+            task
+            and task.get("status") in {"SUCCEEDED", "SUCCESS", "COMPLETED", "DONE"}
+            and report.is_file()
+            and (job / "provider" / "downloads" / generation_download_name(spec, "glb")).is_file()
+        )
+
     owner_job = ensure_job_layout(resolve_job_root(owner_slug))
     pending_estimates: List[Dict[str, Any]] = []
 
@@ -2115,28 +2268,46 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
         if existing_task(job, stage) is None:
             pending_estimates.append({"job": job.name, "stage": stage, "estimate_credits": estimate})
 
-    add_pending(owner_job, "generation", int(owner_spec["image_to_3d_estimate_credits"]))
+    add_pending(
+        owner_job,
+        generation_stage_for(owner_spec),
+        int(owner_spec["image_to_3d_estimate_credits"]),
+    )
     for spec in recipient_specs + creature_specs:
         job = ensure_job_layout(resolve_job_root(spec["asset_id"].rsplit(".", 1)[-1]))
-        add_pending(job, "generation", int(spec["image_to_3d_estimate_credits"]))
+        add_pending(
+            job,
+            generation_stage_for(spec),
+            int(spec["image_to_3d_estimate_credits"]),
+        )
     # Meshy image-to-3D can return a source above the rig endpoint's 300,000
     # triangle limit even when the requested target is 30,000. Reserve the
     # owner's conditional remesh before generation so the batch cannot spend
     # the balance needed to finish its own rig path.
     add_pending(
         owner_job,
-        "rig_remesh",
+        continuation_stage_for(owner_spec, "rig_remesh"),
         int(owner_spec.get("remesh_estimate_credits", MESHY_REMESH_ESTIMATE)),
     )
-    add_pending(owner_job, "rig", int(owner_spec["rig_estimate_credits"]))
+    add_pending(
+        owner_job,
+        rig_stage_for(owner_spec),
+        int(owner_spec["rig_estimate_credits"]),
+    )
     for role in ("idle", "attack", "death"):
-        add_pending(owner_job, f"animation_{role}", int(owner_spec["animation_estimate_credits"]))
+        add_pending(
+            owner_job,
+            animation_stage_for(owner_spec, role),
+            int(owner_spec["animation_estimate_credits"]),
+        )
 
     required_credits = sum(int(item["estimate_credits"]) for item in pending_estimates)
-    balance_result = MeshyClient(REPO_ROOT).check_balance()
-    balance = balance_value(balance_result)
-    if balance is None:
-        raise RuntimeError("Specialized zombie batch preflight returned no numeric balance.")
+    balance: Optional[int] = None
+    if required_credits:
+        balance_result = MeshyClient(REPO_ROOT).check_balance()
+        balance = balance_value(balance_result)
+        if balance is None:
+            raise RuntimeError("Specialized zombie batch preflight returned no numeric balance.")
     write_json(
         owner_job / "provider" / "credits" / "specialized_batch_preflight.json",
         {
@@ -2145,6 +2316,9 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
             "owner": owner_slug,
             "selected_jobs": [slug for slug, _ in selected],
             "balance_before_paid_work": balance,
+            "balance_probe_status": (
+                "passed" if required_credits else "not_required_no_pending_paid_stages"
+            ),
             "required_credits_for_missing_paid_stages": required_credits,
             "pending_stages": pending_estimates,
             "shared_humanoid_policy": "one_verified_standard_rig_and_three_provider_actions; distinct_geometry_and_exports_per_unit",
@@ -2152,7 +2326,7 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
             "recorded_at": utc_now(),
         },
     )
-    if balance < required_credits:
+    if required_credits and balance is not None and balance < required_credits:
         breakdown = ", ".join(
             f"{item['job']}:{item['stage']}={item['estimate_credits']}"
             for item in pending_estimates
@@ -2163,19 +2337,33 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
         )
 
     results: List[Dict[str, Any]] = []
-    owner_candidate = run_candidate(owner_spec)
-    results.append({"asset": owner_slug, "candidate": owner_candidate})
-    owner_continuation = continue_humanoid(owner_spec)
-    results.append({"asset": owner_slug, "continuation": owner_continuation})
+    if current_status(owner_spec) == "pdx_exported":
+        results.append({"asset": owner_slug, "status": "reused_pdx_exported"})
+    else:
+        owner_candidate = (
+            {"status": "reused_saved_candidate"}
+            if saved_candidate_ready(owner_spec)
+            else run_candidate(owner_spec)
+        )
+        results.append({"asset": owner_slug, "candidate": owner_candidate})
+        owner_continuation = continue_humanoid(owner_spec)
+        results.append({"asset": owner_slug, "continuation": owner_continuation})
 
     for spec in recipient_specs + creature_specs:
         slug = spec["asset_id"].rsplit(".", 1)[-1]
-        candidate = run_candidate(spec)
+        candidate = (
+            {"status": "reused_saved_candidate"}
+            if saved_candidate_ready(spec)
+            else run_candidate(spec)
+        )
         results.append({"asset": slug, "candidate": candidate})
 
     lineage = prepare_shared_humanoid_lineage(owner_spec, recipient_specs)
     for spec in recipient_specs:
         slug = spec["asset_id"].rsplit(".", 1)[-1]
+        if current_status(spec) == "pdx_exported":
+            results.append({"asset": slug, "status": "reused_pdx_exported"})
+            continue
         results.append(
             {
                 "asset": slug,
@@ -2187,6 +2375,9 @@ def run_specialized_zombie_batch(batch_id: str) -> List[Dict[str, Any]]:
         )
     for spec in creature_specs:
         slug = spec["asset_id"].rsplit(".", 1)[-1]
+        if current_status(spec) == "pdx_exported":
+            results.append({"asset": slug, "status": "reused_pdx_exported"})
+            continue
         results.append({"asset": slug, "continuation": continue_creature(spec)})
     return results
 

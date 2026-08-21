@@ -45,7 +45,7 @@ No runtime file is switched until the corresponding mesh, four animations, textu
 
 ## Credit gate
 
-The repository estimate for one complete Meshy 6 package with one generation attempt, rigging, and four animations is `47` credits. The seven requested packages require `329` credits before remeshes or recovery attempts. The latest live balance check returned `144`, leaving a verified shortfall of `185` credits. No downgrade, manual substitute, static-only model, or untracked provider attempt is authorized by this plan. The separately staged Wendigo reference remains outside this active seven-unit plan until a quadruped route is enabled.
+The repository uses Meshy 7 for all seven distinct textured geometry generations. The shared-humanoid route preflights up to `234` credits for seven 30-credit generations plus the owner's conditional 5-credit remesh, 5-credit rig, and three 3-credit provider actions. No downgrade, manual substitute, static-only model, or untracked provider attempt is authorized by this plan. The separately staged Wendigo reference remains outside this active seven-unit plan until a quadruped route is enabled.
 
 ## Exclusions
 

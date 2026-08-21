@@ -50,8 +50,8 @@ Snapshot date: 2026-07-22. Recheck before implementation.
 | --- | ---: |
 | Image-to-3D, smart topology, no texture | 5 |
 | Image-to-3D, smart topology, textured | 15 |
-| Image-to-3D, Meshy-6 or low-poly family, no texture | 20 |
-| Image-to-3D, Meshy-6 or low-poly family, textured | 30 |
+| Image-to-3D, Meshy 7, no texture | 20 |
+| Image-to-3D, Meshy 7, textured | 30 |
 | Retexture | 10 |
 | Remesh | 5 |
 | Convert | 1 |
@@ -64,7 +64,7 @@ Example planning totals:
 
 ```text
 smart-topology textured humanoid + rig + 3 actions = 29 credits
-Meshy-6 textured humanoid + rig + 3 actions = 44 credits
+Meshy 7 textured humanoid + rig + 3 actions = 44 credits
 smart-topology textured static prop + remesh = 20 credits
 ```
 

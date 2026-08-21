@@ -3,7 +3,7 @@
 
 Status: `blocked_insufficient_balance_after_local_infected_repair`. This section supersedes every older status or estimate below.
 
-The production worker stopped further paid/provider work after the verified balance gate. The current Meshy balance is `164`. After the first textured Meshy 6 generation consumed `30` credits, the missing scheduled tranche is at least `199`: six distinct textured geometry generations at the observed `30` credits each (`180`), the owner's reserved over-limit remesh (`5`), one shared humanoid rig (`5`), and three shared provider actions (`9`). The shortfall is `35` credits before any recovery. No retry, remesh, rig, animation, conversion, or additional generation was called, and total paid consumption remains exactly `30` credits. The runner now declares and reserves the verified remesh estimate instead of indexing a missing manifest key.
+The production worker stopped further paid/provider work after the historical verified balance gate. The recorded Meshy balance was `164`. After the first textured legacy provider generation consumed `30` credits, the missing scheduled tranche was at least `199`: six distinct textured geometry generations at the observed `30` credits each (`180`), the owner's reserved over-limit remesh (`5`), one shared humanoid rig (`5`), and three shared provider actions (`9`). The shortfall was `35` credits before any recovery. No retry, remesh, rig, animation, conversion, or additional generation was called in that tranche, and total paid consumption remained exactly `30` credits. The active recovery route uses Meshy 7 and reserves the verified remesh estimate.
 
 The infected candidate is visually accepted by the user. A bounded, unpaid Blender adapter repair was completed from the immutable downloaded GLB with `repair_before_reduction=true` and `topology_weld_distance=0.0005`. It reduced the final boundary report from `29,140` edges / `1,344` components to `253` edges / `67` components, retained `0` non-manifold edges and `0` degenerate faces, produced `29,997` triangles, and preserved calibrated height `7.3542885780` with effective runtime height `5.8834308624` at entity scale `0.8`. Adapter request/result lineage is `89e0212e86284e7da613354d01b45ea3`. The repair preserved the source GLB and wrote a protected repaired source blend, standard checkpoints, a prepare report, and seven rendered views. The repaired underside render is still blank, and six boundary components were rejected during bounded capping while non-manifold-producing changes were rolled back. Therefore the repaired checkpoint is useful parent-integrable evidence but is not promoted as final geometry, and no rig/export was attempted.
 
@@ -31,7 +31,7 @@ Status: `blocked_after_rejected_first_candidate`. This section supersedes the ol
 
 ### Outcome
 
-The exact configured batch command was run after the API-key, dependency-lock, live-schema, Blender bridge, and io_pdx_mesh checks passed. Only `infected_zombies` reached Meshy. Meshy 6 task `01a01ea2-759b-7acf-a44b-d2fda3d5759d` succeeded and its GLB/FBX were downloaded immediately, but independent Blender review rejected the candidate: after reduction to 30,000 triangles it still reported 29,140 boundary edges across 1,344 boundary components; the underside render was blank; and no wireframe/untextured view was produced. The runner then stopped on a missing `remesh_estimate_credits` key before any rig, provider animation, final material, export, or reimport call.
+The exact configured batch command was run after the API-key, dependency-lock, live-schema, Blender bridge, and io_pdx_mesh checks passed. Only `infected_zombies` reached Meshy. Legacy task `01a01ea2-759b-7acf-a44b-d2fda3d5759d` succeeded and its GLB/FBX were downloaded immediately, but independent Blender review rejected the candidate: after reduction to 30,000 triangles it still reported 29,140 boundary edges across 1,344 boundary components; the underside render was blank; and no wireframe/untextured view was produced. The runner then stopped on a missing `remesh_estimate_credits` key before any rig, provider animation, final material, export, or reimport call.
 
 The paid estimate also changed materially. The task was estimated at 20 credits but consumed 30, reducing the verified live balance from 194 to 164. At the observed rate, the six remaining geometry calls require 180 credits, before the owner's reserved 5-credit remesh, shared 5-credit rig, and three 3-credit animations. The complete seven-unit tranche is therefore underfunded by at least 35 credits before recovery. The runner's undeclared-remesh-estimate defect is fixed in the follow-up workflow change; no retry, remesh, rig, animation, or other paid recovery was attempted.
 
@@ -39,7 +39,7 @@ The paid estimate also changed materially. The task was estimated at 20 credits 
 
 | Unit | Provider/model status | Model/action/export status | Companion status |
 | --- | --- | --- | --- |
-| `infected_zombies` | Meshy 6 candidate rejected; task `01a01ea2-759b-7acf-a44b-d2fda3d5759d` | Blocked before rig/actions/material finalization/export/reimport | CC0 audio candidates preserved; selection consumer blocked. Bespoke counters await parent review. |
+| `infected_zombies` | Legacy provider candidate rejected; task `01a01ea2-759b-7acf-a44b-d2fda3d5759d` | Blocked before rig/actions/material finalization/export/reimport | CC0 audio candidates preserved; selection consumer blocked. Bespoke counters await parent review. |
 | `rabid_zombies` | No provider call; accepted input preserved | Blocked by full-batch credit gate | Same companion disposition. |
 | `parasitic_zombies` | No provider call; accepted revision 8 SHA-256 `70E47C655B3F920C2FC9FA6069B26BF1D33F11038F85402A5ED91DE1338E1186` preserved | Blocked by full-batch credit gate | Same companion disposition. |
 | `mutant_zombies` | No provider call; accepted input preserved | Blocked by full-batch credit gate | Same companion disposition. |
@@ -51,7 +51,7 @@ No model package is complete. No `.mesh`, `.anim`, final packed model DDS set, a
 
 ### Provider and Blender lineage
 
-- Paid operation: `meshy_image_to_3d`, `ai_model=meshy-6`, exactly one `file_path` input, estimated 20 credits, consumed 30 credits.
+- Paid operation: `meshy_image_to_3d`, legacy provider task, exactly one `file_path` input, estimated 20 credits, consumed 30 credits.
 - Free operations: balance checks, task status, GLB download, and FBX download.
 - Infected GLB: `provider/downloads/generation_model.glb`, 22,727,912 bytes, SHA-256 `42F92D0B78137A61703E058F38C5EA16E48B3AF9B922DE2DAAA86C3233129810`.
 - Infected FBX: `provider/downloads/generation_model.fbx`, 32,777,628 bytes, SHA-256 `4BB90E50B3095501AFF9ADA7E31C5D702D8A9991407C2EAE6D130E42650FD48C`.
@@ -108,11 +108,11 @@ The active working set contains the seven requested non-armored specialized zomb
 
 Each package has an event-scoped job root under `docs/assets/002_zombie_outbreak/models_3d/<unit>/`, exactly one hashed `refs/original/meshy_input.png`, an `input_manifest.json`, a portrait-fidelity brief, a `job.yaml`, and a manifest. Vanilla calibration meshes are copied read-only under each `refs/vanilla/` folder.
 
-The current provider gate is recorded in `docs/assets/002_zombie_outbreak/models_3d/provider_credit_gate.json`. Meshy 6 generation, rigging, four skeletal actions per unit, material processing, PDX export, reimport proof, sourced unit audio, bespoke counters, and runtime wiring have not started because the seven-package tranche requires 329 credits before recovery and the latest balance is 144, leaving a 185-credit shortfall.
+The historical provider gate is recorded in `docs/assets/002_zombie_outbreak/models_3d/provider_credit_gate.json`. The active Meshy 7 route supersedes that stale shortfall calculation and uses the shared-humanoid batch preflight recorded with the current jobs.
 
 The parent owns the eventual `.gfx`, `.asset`, `common/units`, sound definitions, counter GFX, gameplay wiring, and live in-game validation. No runtime file points to any incomplete job root.
 
-When the credit gate clears, spawn one `chaosx_3d_model_pipeline` worker per disjoint job root with `fork_context=false`, pass the exact job brief and dependency lock, keep Meshy 6 as the provider model, require the four named actions and custom-unit sound/counter receipts, and stop for parent review before runtime promotion. Failure-driven paid recovery requires a separate user-approved credit decision; planned initial generation and required animation spend does not.
+When the credit gate clears, spawn one `chaosx_3d_model_pipeline` worker per disjoint job root with `fork_context=false`, pass the exact job brief and dependency lock, require Meshy 7, the four named actions, and custom-unit sound/counter receipts, and stop for parent review before runtime promotion. Failure-driven paid recovery requires a separate user-approved credit decision; planned initial generation and required animation spend does not.
 
 ## Audit outcome
 
@@ -140,7 +140,7 @@ Estimated credits for this audit: `0`. Consumed credits for this audit: `0`. Pro
 ## Dependency-lock and route-schema evidence
 
 - `MESHY_API_KEY` was present and nonblank before repository intake; the secret was not printed or archived.
-- Official Meshy route: `@meshy-ai/meshy-mcp-server` `0.4.0`, git head `d8c77d1cb897e345eb41d38b510b8391b1664346`, wrapper `.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd`, schema revision `live-declaration-2026-08-05`, and exposed model selection includes `meshy-6`.
+- Official Meshy route: `@meshy-ai/meshy-mcp-server` `0.4.0`, git head `d8c77d1cb897e345eb41d38b510b8391b1664346`, wrapper `.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd`, repository compatibility revision `meshy-7-v4`, and verified explicit model selection `meshy-7`.
 - Verified Meshy tools are `meshy_check_balance` (free), `meshy_image_to_3d` (paid; exactly one of `file_path`, `image_url`, or `input_task_id`), `meshy_get_task_status` (free; requires `task_id`), `meshy_download_model` (free; requires `task_id`), `meshy_remesh` (paid; exclusive `input_task_id` or `model_url`), `meshy_rig` (paid; exclusive `input_task_id` or `model_url`), `meshy_convert` (paid; requires `target_formats` and one model input), and `meshy_animate` (paid; requires `rig_task_id` and `action_id`). No general geometry prompt is exposed by the locked image-to-3D schema.
 - Blender is `5.1.2`, build hash `ec6e62d40fa9`, Windows release build dated `2026-05-19`.
 - Blender Lab MCP is tag `v1.0.0`, server `1.28.1`, git commit and observed vendor head `03004fd0216bfe5e0a3d9ac9b47d5efadc3d78c4`, with add-on manifest version `1.0.0`.

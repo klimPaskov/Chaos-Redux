@@ -2,11 +2,11 @@
 
 Date: 2026-08-06.
 
-Status: the eight model packages are complete through Meshy 6, Blender/io_pdx_mesh export, five 30 FPS skeletal actions, DDS processing, and reimport proof. Parent integration installed the entity, bespoke counter, source-audio, and readiness receipts after this bounded model handoff.
+Status: the eight historical model packages are complete through their archived Meshy provider lineage, Blender/io_pdx_mesh export, five 30 FPS skeletal actions, DDS processing, and reimport proof. Parent integration installed the entity, bespoke counter, source-audio, and readiness receipts after this bounded model handoff. Meshy 7 is required for future generation.
 
 ## Shared production contract
 
-Each package uses exactly one archived reference image, Meshy 6 image-to-3D with GLB and FBX outputs, the measured vanilla `asian_infantry.mesh` height of `7.516803`, entity scale `1.0`, a `25,000` triangle runtime candidate, semantic rigging, root-channel grounding, PDX `.mesh`, five `.anim` exports, DDS maps, and per-action Blender reimport proofs. No new country tag, generic visual alias, copied runtime mesh, generated audio, or placeholder counter was used.
+Each package uses exactly one archived reference image, archived Meshy image-to-3D GLB and FBX outputs, the measured vanilla `asian_infantry.mesh` height of `7.516803`, entity scale `1.0`, a `25,000` triangle runtime candidate, semantic rigging, root-channel grounding, PDX `.mesh`, five `.anim` exports, DDS maps, and per-action Blender reimport proofs. No new country tag, generic visual alias, copied runtime mesh, generated audio, or placeholder counter was used.
 
 ## Completed packages
 

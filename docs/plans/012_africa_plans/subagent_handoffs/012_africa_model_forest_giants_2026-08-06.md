@@ -28,14 +28,14 @@ Full route, version, and checksum evidence is at `docs/assets/012_africa/models_
 
 - Provider task IDs: none.
 - Provider response IDs: none.
-- Planned initial Meshy 6 image-to-3D estimate: `20` credits.
+- Planned initial Meshy 7 image-to-3D estimate: `30` credits when textured.
 - Credits consumed: `0`.
 - No recovery attempt is authorized (`0` credits and `0` attempts).
 
 ## Required outputs that remain blocked
 
 - exactly one recorded ImageGen Meshy reference and checksum
-- Meshy 6 generation and immediate GLB/FBX download/checksums
+- Meshy 7 generation and immediate GLB/FBX download/checksums
 - multiview geometry review and protected provider source
 - installed-vanilla scale measurement and 2.50x crosswalk
 - PDX textures and DDS evidence

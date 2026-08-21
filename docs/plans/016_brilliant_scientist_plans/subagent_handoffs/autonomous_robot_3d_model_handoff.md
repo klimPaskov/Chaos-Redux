@@ -6,7 +6,7 @@ The deterministic package root is `docs/assets/shared_robot_system/models_3d/aut
 
 ## Provider lineage and cost
 
-- Meshy 6 generation `01a001f1-9a6f-73c0-a45a-88082c95421c`: 30 credits.
+- Legacy Meshy generation `01a001f1-9a6f-73c0-a45a-88082c95421c`: 30 credits. Future regeneration uses Meshy 7.
 - 300k remesh `01a0040a-c4cb-7dd8-9aa3-952c2a6f206d`: 5 credits; rejected at 310,853 faces.
 - 280k remesh `01a00422-4450-762d-8fbd-db589e6e9bf9`: 5 credits; accepted at 290,165 faces.
 - Rig `01a0043b-dc34-7795-a542-7d9657a3820e`: 5 credits; succeeded with 24 bones.

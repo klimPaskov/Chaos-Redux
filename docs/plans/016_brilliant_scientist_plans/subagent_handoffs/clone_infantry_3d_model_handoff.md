@@ -12,7 +12,7 @@ Deterministic job root: `docs/assets/shared_clone_system/models_3d/clone_infantr
 
 ## Outcome
 
-The job produced a clean weaponless Meshy 6 recovery mesh, a verified PDX material set, a 24-bone rig, nine exported and reimported skeletal action candidates, a legally sourced human-infantry audio package, and bespoke frame-aware counters plus clone-cohort equipment and technology art under `counter_art/`. The original fused-rifle candidate remains preserved as rejected evidence.
+The job produced a clean weaponless legacy Meshy recovery mesh, a verified PDX material set, a 24-bone rig, nine exported and reimported skeletal action candidates, a legally sourced human-infantry audio package, and bespoke frame-aware counters plus clone-cohort equipment and technology art under `counter_art/`. The original fused-rifle candidate remains preserved as rejected evidence. Future regeneration uses Meshy 7.
 
 The exact installed vanilla `ENG_weapon_rifle.mesh` is staged with matching hashes and reimports with genuine `muzzle` and `cartridge` locators. The package still cannot be marked complete because locked adapter 1.2.2 has no operation to attach that second mesh to recovered `RightHand`, fit or reorient its local transform, preserve the locator hierarchy, or render combined attack/support/training contact and muzzle-alignment proofs. The recovery death terminal offset was independently repaired and verified through export/reimport.
 
@@ -27,7 +27,7 @@ The exact installed vanilla `ENG_weapon_rifle.mesh` is staged with matching hash
 ## Provider and credit lineage
 
 - Reference: `refs/original/meshy_input.png`, SHA-256 `adfe9bf039975e6048daf64d06c2aa45562adbb96c1074330d04bb3293db5981`.
-- Meshy 6 generation task `019fd2f4-8ffa-7c67-8c2d-cfc3503f6f9c`, 30 credits.
+- Legacy Meshy generation task `019fd2f4-8ffa-7c67-8c2d-cfc3503f6f9c`, 30 credits.
 - Rig task `019fd311-4488-7174-905a-ae7b87d7e378`, 5 credits.
 - Eight paid animation task ids and their downloaded GLB/FBX hashes are recorded in the job provider manifests and `blender/reports/action_manifest.md`, 24 credits total.
 - Attributable spend: 59 credits. Latest observed balance: 740. The 30-credit difference between attributable spend and the shared-account balance delta is not claimed by this job.
@@ -80,7 +80,7 @@ The earlier rifle-based archetype experiment is rejected source evidence only an
 
 ## Recovery requiring confirmation
 
-Do not spend recovery credits without user confirmation. The least-risk route is a clean weaponless Meshy 6 humanoid plus a separately attached vanilla-compatible weapon and verified muzzle/cartridge locators. A full fresh provider tranche is estimated at 59 credits (30 generation + 5 rig + 24 actions). A narrower 44-credit tranche (30 + 5 + 9 for attack/support/training) risks incompatible action reuse. A repository-adapter/runtime attachment strategy must be verified before either paid route, because regeneration alone does not solve weapon binding.
+Do not spend recovery credits without user confirmation. The least-risk route is a clean weaponless Meshy 7 humanoid plus a separately attached vanilla-compatible weapon and verified muzzle/cartridge locators. A full fresh provider tranche is estimated at 59 credits (30 generation + 5 rig + 24 actions). A narrower 44-credit tranche (30 + 5 + 9 for attack/support/training) risks incompatible action reuse. A repository-adapter/runtime attachment strategy must be verified before either paid route, because regeneration alone does not solve weapon binding.
 
 ## Remaining parent work
 
@@ -99,7 +99,7 @@ No static action, renamed vanilla counter, generic placeholder, raw roughness-as
 
 ## Recovery completion addendum — 2026-08-06
 
-The user-authorized 59-credit weaponless recovery completed without retry: Meshy 6 task `019fd5c7-4456-74a5-b276-2c2694e5c9bc` cost 30, rig task `019fd5d0-471a-76c3-962a-171f0bb253fe` cost 5, and eight action tasks cost 24. The balance moved from 657 before recovery to 598 after recovery. No paid budget remains.
+The user-authorized 59-credit weaponless recovery completed without retry: legacy Meshy task `019fd5c7-4456-74a5-b276-2c2694e5c9bc` cost 30, rig task `019fd5d0-471a-76c3-962a-171f0bb253fe` cost 5, and eight action tasks cost 24. The balance moved from 657 before recovery to 598 after recovery. No paid budget remains.
 
 The clean selected recovery mesh is `export/recovery/mesh/clone_infantry.mesh`, SHA-256 `b45d4eb3c63e9346125b372746113cca7d87687dcf9df1db426a4b247a13c0e6`. It is weaponless, 30,000 triangles, one UV mesh, 24 bones, and reimports through io_pdx_mesh. The provider-added `Icosphere` calibration object was explicitly excluded. Weight transfer covered all 23,520 source vertices; exporter sanitization enforces four influences and normalization. Thirty-eight small boundary edges remain and require review.
 
