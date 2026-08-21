@@ -1107,8 +1107,20 @@ def main() -> int:
 			errors,
 		)
 		require(
-		f"owner = {{ exists = yes tag = {host_tag} }}" in package_triggers,
-		f"dormant package trigger {relative_path} lost host-owner proof for {host_tag}",
+			f"owner = {{ exists = yes tag = {host_tag} }}" in package_triggers,
+			f"dormant package trigger {relative_path} lost host-owner proof for {host_tag}",
+			errors,
+		)
+
+	dormant_triggers = read("common/scripted_triggers/006_independence_wave_package_triggers.txt")
+	require(
+		"num_controlled_states" not in dormant_triggers,
+		"dormant-carrier trigger still uses the invalid num_controlled_states variable",
+		errors,
+	)
+	require(
+		"NOT = { num_of_controlled_states > 0 }" in dormant_triggers,
+		"dormant-carrier trigger lost the documented zero-controlled-state guard",
 		errors,
 	)
 
