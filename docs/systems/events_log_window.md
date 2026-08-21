@@ -30,12 +30,21 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - If Event 17's stored leader no longer exists, the selected minor remains visible and neutral result text states that the country which led the faction at accession no longer exists. If no leader has been bound yet, the row uses an unresolved result instead of substituting a later live faction.
 
 ## Events tab behavior
-- Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event.
+- Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event and as `N/A` when a normal eligibility gate such as the event Chaos level is not met.
 - Event rows show `ID`, `Type`, `Weight`, `Fired`, and enabled state on the top line; the event name is kept alone on the second line.
-- Filter options: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`.
+- Filter options: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`, and one exact filter for each of the six event Chaos levels.
 - Sort options: `By Event ID`, `By Fired`, `By Weight`. `By Fired` hides events with zero logged firings.
 - The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
-- The `Fire Selected` button sits next to the window `Close` button and is only visible on the Events tab. Clicking it manually fires every currently selected (enabled) event through `events_log_fire_all_selected_events`, which reuses the same manual dispatch path as the single event-detail trigger button (`fire_event_by_temp_id_no_cluster` with `events_log_manual_event_detail_trigger` set). Candidates are pre-filtered by `events_log_fire_candidate_is_available`: disabled events, already-fired major/fire-once events, Event 12 without `africa_manual_event_is_available`, and Event 17 without `random_faction_has_manual_dispatchable_context` are skipped. Per-event readiness gates inside the fire helper still apply. The button is disabled when no selected event is currently fireable (`events_log_any_selected_event_is_fireable`). Views are rebuilt afterwards through `events_log_refresh_bulk_enable_views`.
+- The `Fire Selected` button sits next to the window `Close` button and is only visible on the Events tab. Clicking it manually fires every currently selected event through `events_log_fire_all_selected_events`, which reuses the same manual dispatch path as the single event-detail trigger button. Candidates are pre-filtered by `events_log_fire_candidate_is_available`: disabled events, Chaos-locked events outside Force Trigger Mode, already-fired major or fire-once events, Event 12 without `africa_manual_event_is_available`, and Event 17 without `random_faction_has_manual_dispatchable_context` are skipped. Per-event readiness gates inside the fire helper still apply. The button is disabled when no selected event is currently fireable. Views are rebuilt afterwards through `events_log_refresh_bulk_enable_views`.
+
+## Event Chaos level presentation
+
+- `global.events_log_events_view_chaos_level_entries` carries the registered internal tier beside each rebuilt Events-tab row.
+- `global.events_log_open_event_detail_chaos_level_entries` carries the same value into the movable Event Details window.
+- Event Details presents `Chaos lvl: <number>` with the existing colour and name for that tier.
+- A row below its required tier shows `N/A` for weight and a tooltip such as `Requires Gathering Storm` without changing the enabled checkbox.
+- The Chaos-level filters compare the aligned tier entry, so sorting and filtering preserve the event-to-level association.
+- Normal Event Details and bulk manual firing respect the level, while Force Trigger Mode may bypass it.
 
 ## Event Details world-end catalog
 
@@ -93,6 +102,7 @@ Events-tab metadata arrays:
 - `global.events_log_events_view_enabled_entries`
 - `global.events_log_events_view_unique_entries`
 - `global.events_log_events_view_weight_entries`
+- `global.events_log_events_view_chaos_level_entries`
 
 Source history arrays:
 - `global.events_log_history_sequence_entries`
@@ -119,6 +129,7 @@ Selected and open Event Details secondary-actor state:
 - `events_log_history_selected_has_secondary_actor`
 - `global.events_log_open_event_detail_secondary_actor_entries`
 - `global.events_log_open_event_detail_has_secondary_actor_entries`
+- `global.events_log_open_event_detail_chaos_level_entries`
 
 World-end registry and Event Details state:
 

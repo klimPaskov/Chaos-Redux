@@ -184,29 +184,35 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogEventsFilterType
 	text = {
-		trigger = { check_variable = { settings_events_log_events_filter_type = 0 } }
+		trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.all } }
 		localization_key = chaosx.events_log.events.filter.all
 	}
 	text = {
-		trigger = { check_variable = { settings_events_log_events_filter_type = 1 } }
+		trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.enabled } }
 		localization_key = chaosx.events_log.events.filter.enabled
 	}
 	text = {
-		trigger = { check_variable = { settings_events_log_events_filter_type = 2 } }
+		trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.disabled } }
 		localization_key = chaosx.events_log.events.filter.disabled
 	}
 	text = {
-		trigger = { check_variable = { settings_events_log_events_filter_type = 3 } }
+		trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.repeatable } }
 		localization_key = chaosx.events_log.events.filter.repeatable
 	}
 	text = {
-		trigger = { check_variable = { settings_events_log_events_filter_type = 4 } }
+		trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.fire_once } }
 		localization_key = chaosx.events_log.events.filter.fire_once
 	}
 	text = {
-		trigger = { check_variable = { settings_events_log_events_filter_type = 5 } }
+		trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.major } }
 		localization_key = chaosx.events_log.events.filter.major
 	}
+	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_1 } } localization_key = chaosx.events_log.events.filter.chaos_level_1 }
+	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_2 } } localization_key = chaosx.events_log.events.filter.chaos_level_2 }
+	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_3 } } localization_key = chaosx.events_log.events.filter.chaos_level_3 }
+	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_4 } } localization_key = chaosx.events_log.events.filter.chaos_level_4 }
+	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_5 } } localization_key = chaosx.events_log.events.filter.chaos_level_5 }
+	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_6 } } localization_key = chaosx.events_log.events.filter.chaos_level_6 }
 	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.events.filter.all
@@ -12993,6 +12999,46 @@ defined_text = {
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.strategic_singularity compare = equals } } localization_key = chaosx.events_log.world_end.strategic_singularity.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.africa_the_world compare = equals } } localization_key = chaosx.events_log.world_end.africa_the_world.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.weaponized_wendigo_ascendancy compare = equals } } localization_key = chaosx.events_log.world_end.weaponized_wendigo_ascendancy.title }
+}
+
+defined_text = {
+	name = GetEventsLogEventChaosLevelColored
+	text = { trigger = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_0 compare = equals } } localization_key = chaosx.event_chaos.level.1 }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_1 compare = equals } } localization_key = chaosx.event_chaos.level.2 }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_2 compare = equals } } localization_key = chaosx.event_chaos.level.3 }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_3 compare = equals } } localization_key = chaosx.event_chaos.level.4 }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_4 compare = equals } } localization_key = chaosx.event_chaos.level.5 }
+	text = { trigger = { always = yes } localization_key = chaosx.event_chaos.level.6 }
+}
+
+defined_text = {
+	name = GetEventsLogEventChaosRequirementLabel
+	text = { trigger = { NOT = { events_log_events_view_chaos_level_is_met = yes } check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_1 compare = equals } } localization_key = chaosx.event_chaos.requires.2 }
+	text = { trigger = { NOT = { events_log_events_view_chaos_level_is_met = yes } check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_2 compare = equals } } localization_key = chaosx.event_chaos.requires.3 }
+	text = { trigger = { NOT = { events_log_events_view_chaos_level_is_met = yes } check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_3 compare = equals } } localization_key = chaosx.event_chaos.requires.4 }
+	text = { trigger = { NOT = { events_log_events_view_chaos_level_is_met = yes } check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_4 compare = equals } } localization_key = chaosx.event_chaos.requires.5 }
+	text = { trigger = { NOT = { events_log_events_view_chaos_level_is_met = yes } check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_final compare = equals } } localization_key = chaosx.event_chaos.requires.6 }
+	text = { trigger = { always = yes } localization_key = chaosx.event_chaos.catalog.available }
+}
+
+defined_text = {
+	name = GetEventsLogDetailChaosLevelColored
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_0 compare = equals } } localization_key = chaosx.event_chaos.level.1 }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_1 compare = equals } } localization_key = chaosx.event_chaos.level.2 }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_2 compare = equals } } localization_key = chaosx.event_chaos.level.3 }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_3 compare = equals } } localization_key = chaosx.event_chaos.level.4 }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_4 compare = equals } } localization_key = chaosx.event_chaos.level.5 }
+	text = { trigger = { always = yes } localization_key = chaosx.event_chaos.level.6 }
+}
+
+defined_text = {
+	name = GetEventsLogDetailChaosRequirementStatus
+	text = { trigger = { events_log_open_detail_chaos_level_is_met = yes } localization_key = chaosx.event_chaos.requirement_met }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_1 compare = equals } } localization_key = chaosx.event_chaos.requires.2 }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_2 compare = equals } } localization_key = chaosx.event_chaos.requires.3 }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_3 compare = equals } } localization_key = chaosx.event_chaos.requires.4 }
+	text = { trigger = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_4 compare = equals } } localization_key = chaosx.event_chaos.requires.5 }
+	text = { trigger = { always = yes } localization_key = chaosx.event_chaos.requires.6 }
 }
 
 defined_text = {

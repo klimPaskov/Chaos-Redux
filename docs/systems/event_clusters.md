@@ -17,7 +17,7 @@ The registered clusters are:
 
 ## Runtime Flow
 
-1. The daily event timer selects a normal event through existing weighted selection.
+1. The daily event timer selects a normal event through existing weighted selection, including that event's independent minimum Chaos level.
 2. The timer marks `automatic_event_firing_context` and calls `fire_event_by_temp_id`.
 3. `fire_event_by_temp_id` checks whether the selected event belongs to a cluster. The cluster roll only runs while `automatic_event_firing_context` is present.
 4. If the selected event has a cluster, the system checks cluster type, unlock tier, cooldown, member availability, and the chaos-scaled cluster roll.
@@ -28,6 +28,8 @@ The registered clusters are:
 9. If the cluster does not fire, the selected event fires normally.
 
 Manual event triggering uses `fire_event_by_temp_id_no_cluster` directly. If a future manual call site reaches `fire_event_by_temp_id`, the missing `automatic_event_firing_context` prevents the cluster roll. Cluster triggering has its own settings UI path through `trigger_selected_event_cluster`, which force-fires a known cluster instead of rolling from a manually triggered event.
+
+An event Chaos level and a cluster unlock tier are separate requirements. Automatic firing first requires the selected event to meet its own level, then the cluster and participating members must meet their own unlock tiers. Event 9 therefore remains unavailable at Calm World even though the Peace cluster unlocks at Calm World. Manual cluster forcing retains its existing bypass behavior.
 
 ## Tuning
 
