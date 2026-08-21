@@ -1,0 +1,60 @@
+# Event 006 exact existing portrait-consumer audit
+
+Date: 2026-08-21.
+
+Scope: audit the fourteen user-supplied DDS files left unmapped by `006_portrait_wiring_supplied_runtime_2026_08_21.md` against the current Event 006 runtime DDS basenames, portrait-specific `.gfx` entries, and live character portrait consumers.
+
+Decision: **no safe exact wiring exists for any of the fourteen files.** No runtime DDS, portrait `.gfx`, character definition, gameplay file, localisation file, or shared UI file was changed. The only file changed by this audit is this handoff.
+
+## Review basis
+
+The supplied files were checked at `C:\Users\klimp\Documents\ComfyUI Workflows\HOI4\hoi4_portraits_output\output\156x210\iw\dds`.
+
+Every file below independently passes the legacy one-level BGRA contract: `DDS ` magic, `DDS_HEADER` size `124`, declared `156x210`, file length `131168` bytes, pixel-format size `32`, flags `65`, fourCC `0`, 32-bit pixels, masks `00FF0000/0000FF00/000000FF/FF000000`, `DDSCAPS_TEXTURE` `00001000`, and alpha range `255..255`.
+
+The matching installed-vanilla full-portrait references were inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/contact_sheet.png` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/commanders/contact_sheet.png`. The separate `65x67` advisor references were also inspected at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/contact_sheet.png`; none of these fourteen files has an authorized dossier-card consumer.
+
+The portrait/gfx syntax and consumer rules were checked against `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md`, the required core offline wiki pages, and the installed vanilla `documentation/effects_documentation.md` `set_portraits` and portrait-effect entries.
+
+## Supplied DDS evidence and exact-consumer result
+
+| Supplied DDS | Dimensions and SHA-256 | Existing consumer evidence | Result |
+|---|---|---|---|
+| `iw051_sakha_yak_anatoly_pepelyayev_research_2026_08_15__portrait_YAK_anatoly_pepelyayev_original_00002.dds` | `156x210`, `131168` bytes, `B01B99C37A3E636DB8D860C59693DAA735F4593548689AC498CFA70239DE2C1B` | Vanilla `common/characters/YAK.txt:15-26` uses `YAK_anatoly_pepelyayev` and `GFX_portrait_Anatoly_Pepelyayev`; vanilla `interface/_leader_portraits.gfx:7461` resolves that token to a generic Asian texture. No Event 006 character, runtime basename, or portrait `.gfx` key exists. | **Blocked.** A global vanilla override would exceed this Event 006 wiring scope. |
+| `iw051_sakha_yak_pavel_pevznyak_source_placeholder_2026_08_15__portrait_YAK_pavel_pevznyak_original_00002.dds` | `156x210`, `131168` bytes, `7FCB0B641C7A390CC3F0C38A4028242E6248F24246D3D468EC2B80B99D910E6F` | Vanilla `common/characters/YAK.txt:2-13` uses `YAK_pavel_pevznyak` and `GFX_portrait_Pavel_Pevznyak`; vanilla `interface/_leader_portraits.gfx:7456` resolves that token to a generic Asian texture. The Event 006 Sakha package has only a package trigger reference at `common/scripted_triggers/006_independence_wave_sakha_package_triggers.txt:108`, not a portrait consumer or admitted Event 006 runtime basename. | **Blocked.** Replacing the vanilla sprite would be a global override and the package remains fail-closed. |
+| `iw052_bya_ardan_markizov_source_research_2026_08_15__portrait_BYA_ardan_markizov_original_00002.dds` | `156x210`, `131168` bytes, `A75FC9449BB87CB1D5182CFBF5EB35A8033C016CAE172BD9A828C9B0DAC1A61F` | No `BYA_ardan_markizov` character or portrait key exists in the mod or installed vanilla. The only matching Event 005 surface is the unrelated institutional `GFX_portrait_BYA_baikal_relay_council` at `interface/005_soviet_collapse.gfx:1963`, which points to `gfx/leaders/005_soviet_collapse/BYA_leader.dds`. | **Blocked.** Event 005 institutional art is not an Event 006 person consumer. |
+| `iw052_bya_mikhei_erbanov_source_research_2026_08_15__portrait_BYA_mikhei_erbanov_original_00002.dds` | `156x210`, `131168` bytes, `72C693E538DCCA71FF90A125EF83358107388F147E8B3DF8B25221110063A16E` | No `BYA_mikhei_erbanov` character or portrait key exists in the mod or installed vanilla. Vanilla BYA defines only `BYA_seymon_ignatyev` and `BYA_bidia_dandaron`; the mod's BYA surface is the unrelated Event 005 `BYA_baikal_relay_council` sprite. | **Blocked.** No exact Event 006 identity-safe consumer exists. |
+| `iw053_altai_grigory_gurkin_source_original_2026_08_15_00002.dds` | `156x210`, `131168` bytes, `0D0F4256D1B0BEC248AF91A34955C46053A6535F74E28F0E8EE441EDEEBA9ECD` | Vanilla `common/characters/ALT.txt:2-13` uses `ALT_grigory_gurkin` and `GFX_portrait_Grigory_Gurkin`; vanilla `interface/_leader_portraits.gfx:3064` resolves that token to a generic Asian texture. No Event 006 ALT runtime basename or portrait `.gfx` key exists. | **Blocked.** A vanilla/global replacement is outside this exact Event 006 wiring audit. |
+| `iw053_altai_samuil_yufit_source_original_2026_08_15_00002.dds` | `156x210`, `131168` bytes, `D52E9210C5E799F0A8373ECA6952ACE9067010D8EE15196AC15D051C921F6952` | Vanilla `common/characters/ALT.txt:15-26` uses `ALT_samuil_yufit` and `GFX_portrait_Samuil_Yufit`; vanilla `interface/_leader_portraits.gfx:3069` resolves that token to a generic Asian texture. No Event 006 ALT runtime basename or portrait `.gfx` key exists. | **Blocked.** No exact Event 006 consumer exists. |
+| `iw057_fer_alexander_krasnoshchyokov_source_original_00002.dds` | `156x210`, `131168` bytes, `D77715B47690703331F14551444FFE4EC3FF201078E3D43AFC2705666923E84E` | No `FER_alexander_krasnoshchyokov` character or portrait key exists in the mod or installed vanilla. The only matching mod surface is unrelated Event 005 institutional `GFX_portrait_FER_far_eastern_republic_council` at `interface/005_soviet_collapse.gfx:1954`, pointing to `gfx/leaders/005_soviet_collapse/FER_leader.dds`. | **Blocked.** The IW-057 FER package remains unadmitted and the Event 005 institution cannot be relabelled. |
+| `iw057_fer_pyotr_nikiforov_source_original_00002.dds` | `156x210`, `131168` bytes, `7AA7778130B9DE37D1E6CECB98E4B70C5C1073CCBFF29873702989332E241D95` | No `FER_pyotr_nikiforov` character or portrait key exists in the mod or installed vanilla. The only FER runtime surface is the unrelated Event 005 council sprite and DDS described above. | **Blocked.** No exact Event 006 consumer exists. |
+| `iw060_kur_seyid_riza__portrait_kur_seyid_riza_original_00002.dds` | `156x210`, `131168` bytes, `5F5C00EFAC5524EB75F9AA172D63E0F0FD2C08FFCAE2F777675D7FE8370AB1A1` | Vanilla `common/characters/KUR.txt:69-88` uses `KUR_seyid_riza` and `GFX_portrait_kur_seyid_riza`; vanilla `interface/_leader_portraits.gfx:1904-1910` owns its large and small portrait sprites. No Event 006 KUR runtime basename or portrait `.gfx` key exists. | **Blocked.** Replacing the vanilla large sprite would be a global override and the IW-060 package remains blocked. |
+| `portrait_ACX_cornish_port_and_mines_committee_source_00002.dds` | `156x210`, `131168` bytes, `48755C4C9AFE3C20AC9F98C1E9283AD0C976BCCF6EE4AF0FD8549351525ACEFD` | A same-stem readiness DDS exists at `gfx/leaders/006_independence_wave/portrait_ACX_cornish_port_and_mines_committee.dds` with SHA-256 `2B3B98F4621BC43F0F517A28F984337755BF193746D0DADCEDFFEB4F2CD9A0B8`, but exact search finds no `GFX_portrait_ACX_cornish_port_and_mines_committee` sprite and no live ACX character definition. | **Blocked.** The existing file is an unwired readiness candidate, not an existing live consumer; adding one would admit gameplay outside scope. |
+| `portrait_ARX_gioacchino_solinas_source_00002.dds` | `156x210`, `131168` bytes, `8E48F76061E93BCA7343E6CB44BE2078707292C240EDAB2F7C0A44A6484781B9` | Event 006 `common/characters/006_independence_wave_mediterranean_characters.txt:97-120` owns the distinct `ARX_emilio_lussu`, `ARX_luigi_mella_santelia`, and `ARX_gavino_piras` consumers with `GFX_portrait_ARX_independence_wave_emilio_lussu`, `...luigi_mella_santelia`, and `...vittorio_verne`; `interface/006_independence_wave_mediterranean_portraits.gfx:20-29` registers those three keys. No Gioacchino key or exact runtime basename exists. | **Blocked.** Reusing any ARX runtime would relabel another real person. |
+| `portrait_FIJ_ratu_sir_lala_sukuna_source_00002.dds` | `156x210`, `131168` bytes, `00D565861009060937E8ED1A32D2B76C77A80BB59450AF6AF5C4D3038CF2F542` | Event 006 `common/characters/006_independence_wave_pacific_characters.txt:61-73` owns the institutional `FIJ_independence_wave_founding_congress_chair` consumer, and `interface/006_independence_wave_pacific_portraits.gfx:25-26` registers `GFX_portrait_FIJ_independence_wave_founding_congress_chair` to `portrait_FIJ_independence_wave_founding_congress_chair.dds`. No Sukuna key or exact runtime basename exists. | **Blocked.** Mapping Sukuna onto the institutional chair would relabel a grounded real person/role. |
+| `portrait_FIJ_vishnu_deo_source_00002.dds` | `156x210`, `131168` bytes, `C9C5A7CDFECAD00FE72D51E7365AAD7EDC7E0EAF9AA52FA9E884370BA6080B06` | The only Event 006 FIJ character and `.gfx` consumer is the founding-congress chair listed above; no Vishnu Deo character, sprite, or exact runtime basename exists. | **Blocked.** No identity-safe existing consumer exists, and the FIJ source/role gate remains unresolved. |
+| `portrait_GLC_alexandre_boveda_source_00002.dds` | `156x210`, `131168` bytes, `4F2A1208BE9D4FA772596C9EBA9AAA284D8D12CA7926C77DA5355BD33E6BD32B` | Event 006 `common/characters/006_independence_wave_iberian_commanders.txt:31-45` owns `GLC_independence_wave_alfonso_daniel_castelao` with `GFX_portrait_GLC_alfonso_daniel_castelao`; `interface/006_independence_wave_iberian_portraits.gfx:15-16` registers `portrait_GLC_alfonso_daniel_castelao.dds`. No Alexandre Bóveda key or exact runtime basename exists. | **Blocked.** Reusing Castelao's runtime path would relabel a different real person. |
+
+## Wiring and replacement state
+
+No supplied file was copied, renamed, converted, or installed. No PNG output was created, and no DDS output was generated by this audit; the supplied DDS files remain external user inputs only.
+
+No new `.gfx` entry or character portrait reference was added. Existing live Event 006 portrait wiring remains unchanged, including the ARX, FIJ, and GLC consumers listed above. The ACX same-stem DDS remains an unwired readiness candidate.
+
+All fourteen states remain **unmapped and unpromoted**; this audit does not promote any file to `source_placeholder`, `styled_final`, `replacement_pending`, or runtime-ready status.
+
+The current external directory's ALT hashes differ from the historical values repeated for ALT in the earlier 2026-08-21 wiring handoff: the files currently present are `0D0F4256D1B0BEC248AF91A34955C46053A6535F74E28F0E8EE441EDEEBA9ECD` for Gurkin and `D52E9210C5E799F0A8373ECA6952ACE9067010D8EE15196AC15D051C921F6952` for Yufit. The current bytes above are the audit authority; no runtime mutation was made.
+
+## Skipped checks and blockers
+
+Internet source research, durable source-archive creation, crop/equality evidence, PNG processing, independent identity/framing/provenance review, and DDS conversion were intentionally skipped because this was a no-change exact-consumer audit of already supplied DDS inputs; existing provenance and prior portrait-worker handoffs remain the source records.
+
+RunPod was not opened, operated, configured, queued, or monitored.
+
+The blockers are exact consumer absence, package admission/role gates, global-vanilla override scope, and the identity-safety prohibition on assigning one real person's supplied portrait to another person's or institution's existing runtime basename.
+
+## Changed files
+
+- `docs/plans/006_independence_wave_plans/subagent_handoffs/006_portrait_exact_existing_consumer_audit_2026_08_21.md`
+
+No gameplay, character identity, traits, events, decisions, countries, localisation, focus trees, or shared UI files were changed.
