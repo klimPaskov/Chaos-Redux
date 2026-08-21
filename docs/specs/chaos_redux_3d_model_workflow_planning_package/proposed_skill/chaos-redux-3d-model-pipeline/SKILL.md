@@ -139,14 +139,15 @@ Check the final single Meshy input image, whether user-supplied or workflow-gene
 - limb and component separation
 - dark gaps that may become holes
 - strong shadows
-- background complexity
+- native transparency and preserved alpha for a workflow-generated reference
+- background complexity for an inherited, sourced, or user-provided opaque reference
 - thin structures
 - painted detail that may be mistaken for geometry
 - symmetry and intended asymmetry
 - unseen-side ambiguity
 - source rights
 
-Preserve the original. An approved derived image may clarify exposure, background, or an accidental dark seam, but it may not silently redesign the subject.
+Preserve the original. Request a real transparent background in the initial ImageGen call for every workflow-generated reference and preserve its alpha. Background removal is fallback-only when native transparency fails or an inherited, sourced, or user-provided reference has an unwanted opaque backdrop. An approved derived image may clarify exposure, perform that documented fallback, or fix an accidental dark seam, but it may not silently redesign the subject.
 
 ## Meshy generation rules
 

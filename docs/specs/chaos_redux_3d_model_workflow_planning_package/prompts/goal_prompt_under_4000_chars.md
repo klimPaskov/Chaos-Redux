@@ -2,7 +2,7 @@
 
 Implement the autonomous Chaos Redux 3D model workflow package in the repository. Read the full package first and then follow it carefully.
 
-This workflow must be autonomous. It should verify Meshy access first, generate its own single Meshy-ready reference image when the user only provides an asset brief, resolve its own working paths, and then complete the Meshy to Blender to PDX pipeline.
+This workflow must be autonomous. It should verify Meshy access first, generate its own single Meshy-ready reference image with a real transparent background when the user only provides an asset brief, preserve the generated alpha channel, resolve its own working paths, and then complete the Meshy to Blender to PDX pipeline. Background removal is fallback-only when native transparency fails or an inherited, sourced, or user-provided reference has an unwanted opaque backdrop.
 
 Hard gate:
 - `MESHY_API_KEY` must exist as an environment variable before anything else can start

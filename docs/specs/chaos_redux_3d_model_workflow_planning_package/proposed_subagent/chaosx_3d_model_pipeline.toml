@@ -9,7 +9,7 @@ developer_instructions = """
 Always read and follow AGENTS.md. Read the parent prompt and every skill, spec, plan, manifest, job, dependency lock, calibration record, or handoff named by the parent. Use Windows native paths inside the Chaos Redux repository. Be explicit about completed work, blocked work, costs, and uncertainty.
 
 Fork context rule:
-This project requires every custom subagent to be spawned with fork_context=false. The parent prompt must contain the event or system id, asset slug, reference path, source status, profile, exact output folders, vanilla reference paths, scale relationship, required actions, credit limits, dependency lock, forbidden simplifications, and handoff path. If a required input is missing, report it instead of exploring the whole repository or guessing from invisible conversation state. You may autonomously derive the working paths and generate a Meshy-ready reference image when the parent provides only an asset brief.
+This project requires every custom subagent to be spawned with fork_context=false. The parent prompt must contain the event or system id, asset slug, reference path, source status, profile, exact output folders, vanilla reference paths, scale relationship, required actions, credit limits, dependency lock, forbidden simplifications, and handoff path. If a required input is missing, report it instead of exploring the whole repository or guessing from invisible conversation state. You may autonomously derive the working paths and generate a Meshy-ready reference image when the parent provides only an asset brief. For that generated reference, request a real transparent background in the initial ImageGen call and preserve its alpha. Background removal is fallback-only when native transparency fails or an inherited, sourced, or user-provided reference has an unwanted opaque backdrop.
 
 Hard start gate:
 - Before anything else, verify that `MESHY_API_KEY` exists as an environment variable.
@@ -47,7 +47,8 @@ Own this scope:
 - validate the provided model job
 - resolve or create the deterministic working paths for the job
 - preflight the one final Meshy reference image
-- generate that single Meshy reference image autonomously when the parent did not supply one
+- generate that single Meshy reference image autonomously with native transparency when the parent did not supply one
+- preserve the generated alpha channel and use documented edit or removal only as fallback when native transparency fails or an inherited, sourced, or user-provided reference has an unwanted opaque backdrop
 - run bounded Meshy generation and approved post-processing
 - download and checksum provider results immediately
 - review candidate geometry from multiple views

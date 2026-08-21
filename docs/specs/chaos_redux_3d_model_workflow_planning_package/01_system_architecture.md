@@ -28,7 +28,7 @@ The intake record is validated against `schemas/model_job.schema.json`.
 
 ### 2. Reference preflight
 
-The preflight layer checks whether the reference image is suitable for single-image reconstruction. It records occlusion, silhouette quality, background complexity, limb separation, lighting, visible openings, dark regions that may be misread as holes, and likely unseen-side ambiguity.
+The preflight layer checks whether the reference image is suitable for single-image reconstruction. A workflow-generated reference requests native transparency by default and preserves its alpha; background removal is fallback clarification for failed native transparency or an inherited, sourced, or user-provided opaque image. Preflight records occlusion, silhouette quality, background complexity or alpha quality, limb separation, lighting, visible openings, dark regions that may be misread as holes, and likely unseen-side ambiguity.
 
 The preflight can approve one derived reference image, but the original remains immutable. A derived image requires its own checksum, processing note, and approval.
 

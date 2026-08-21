@@ -61,6 +61,7 @@ The workflow does not treat an AI-generated model as game-ready. It uses explici
 6. **Exact HOI4 budgets come from local vanilla precedents.** Tutorial numbers and Meshy defaults are seed heuristics, not universal engine limits.
 7. **No silent fallbacks are allowed.** A requested animation cannot be replaced by a static asset, and an unverified export cannot be called complete.
 8. **Final completion requires runtime proof.** Source art, Meshy output, a `.blend`, textures, `.mesh`, required `.anim` files, entity handoff, preview evidence, and in-game validation must all be represented in the requirement-to-runtime crosswalk.
+9. **Workflow-generated references use native transparency.** Request a real transparent background in the initial ImageGen call and preserve its alpha; background removal is fallback-only when native transparency fails or an inherited, sourced, or user-provided reference has an unwanted opaque backdrop.
 
 ## Installation status
 
@@ -273,7 +274,7 @@ The intake record is validated against `schemas/model_job.schema.json`.
 
 ### 2. Reference preflight
 
-The preflight layer checks whether the reference image is suitable for single-image reconstruction. It records occlusion, silhouette quality, background complexity, limb separation, lighting, visible openings, dark regions that may be misread as holes, and likely unseen-side ambiguity.
+The preflight layer checks whether the reference image is suitable for single-image reconstruction. A workflow-generated reference requests native transparency by default and preserves its alpha; background removal is fallback clarification for failed native transparency or an inherited, sourced, or user-provided opaque image. Preflight records occlusion, silhouette quality, background complexity or alpha quality, limb separation, lighting, visible openings, dark regions that may be misread as holes, and likely unseen-side ambiguity.
 
 The preflight can approve one derived reference image, but the original remains immutable. A derived image requires its own checksum, processing note, and approval.
 
@@ -853,7 +854,7 @@ The reference receives one of four statuses:
 
 A derived reference may perform only approved clarification work such as:
 
-- background removal
+- fallback background removal when native transparent generation was unavailable or failed, or when an inherited, sourced, or user-provided opaque backdrop interferes with reconstruction
 - exposure correction
 - filling an obviously accidental dark seam that the generator may interpret as a hole
 - cropping to one complete subject
@@ -1084,7 +1085,8 @@ Prefer:
 
 - one complete subject
 - unobstructed silhouette
-- neutral or simple background
+- a native transparent background for workflow-generated references, with preserved alpha and clean subject edges
+- a neutral or simple background only for inherited, sourced, or user-provided references that legitimately remain opaque
 - strong separation between limbs, turrets, wings, legs, antennae, and body
 - even lighting
 - minimal cast shadow
@@ -1103,6 +1105,8 @@ Flag:
 - painted details that could be mistaken for geometry
 - multiple subjects
 - readable text that should not become texture noise
+
+For a workflow-generated reference, request genuine transparency in the first ImageGen call. Do not make background removal part of the normal route. If native transparency fails validation, first use ImageGen edit-to-transparency; use a verified local background-removal process only as a documented fallback, then recheck alpha bounds, halos, matte pixels, cast-shadow remnants, and subject integrity before provider submission.
 
 ## Generation defaults
 
@@ -3302,7 +3306,8 @@ After the primary pilots pass:
 | dark joint looks like a hole | Preflight warning or derived-reference approval required |
 | cropped barrel or limb | Block before generation |
 | multiple subjects | Block or crop to one approved subject |
-| opaque background with strong shadow | Warn and remove background or approve risk |
+| workflow-generated reference has an opaque background or strong shadow | Reject the source and request native transparent output; use documented edit/removal only if native transparency fails |
+| inherited, sourced, or user-provided reference has an opaque background with a strong shadow | Warn and use documented fallback removal or approve the reconstruction risk |
 | source rights omitted | Block |
 
 ### Provider tests

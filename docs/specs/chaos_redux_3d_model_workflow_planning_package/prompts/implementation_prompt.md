@@ -28,7 +28,7 @@ Work in this order:
 6. Prove clean-machine add-on persistence and MCP connectivity.
 7. Promote the skill, tools, and subagent TOMLs into the repository, adapting only paths that the repository actually uses.
 8. Update AGENTS.md and chaos-redux-subagents only with concise routing rules. Do not create a central MCP router skill.
-9. For each pilot asset, resolve the working paths automatically. If no ready Meshy reference image exists, generate exactly one Meshy-ready reference image autonomously from the asset brief and save it into the resolved job path. Do not generate side-profile sheets or multi-view boards for Meshy.
+9. For each pilot asset, resolve the working paths automatically. If no ready Meshy reference image exists, generate exactly one Meshy-ready reference image autonomously from the asset brief, request a real transparent background in the initial ImageGen call, preserve its alpha channel, and save it into the resolved job path. Background removal is fallback-only when native transparency fails or an inherited, sourced, or user-provided reference has an unwanted opaque backdrop. Do not generate side-profile sheets or multi-view boards for Meshy.
 10. Run a static prop pilot from one final reference image. Produce the full manifest, DDS, mesh, reimport evidence, handoff, and in-game capture.
 11. Run an animated humanoid pilot. Test Meshy rigging and three required actions, clean them in Blender, export, reimport, wire, and capture in game.
 12. Run `chaosx_3d_model_auditor` for each pilot.

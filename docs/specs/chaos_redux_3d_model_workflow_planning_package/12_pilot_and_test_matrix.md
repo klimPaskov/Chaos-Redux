@@ -168,7 +168,8 @@ After the primary pilots pass:
 | dark joint looks like a hole | Preflight warning or derived-reference approval required |
 | cropped barrel or limb | Block before generation |
 | multiple subjects | Block or crop to one approved subject |
-| opaque background with strong shadow | Warn and remove background or approve risk |
+| workflow-generated reference has an opaque background or strong shadow | Reject the source and request native transparent output; use documented edit/removal only if native transparency fails |
+| inherited, sourced, or user-provided reference has an opaque background with a strong shadow | Warn and use documented fallback removal or approve the reconstruction risk |
 | source rights omitted | Block |
 
 ### Provider tests
