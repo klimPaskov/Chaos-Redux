@@ -1,0 +1,24 @@
+# ============================================================================
+# CHAOS REDUX - TEST COUNTRY TRIGGERS
+# ============================================================================
+# Overview:
+# - Identifies states already occupied by a special-project facility.
+# - Keeps each of the six CXT specializations in a distinct legal facility
+#   state, including one coastal campus for the naval specialization.
+# ============================================================================
+
+chaosx_test_country_state_has_special_facility = {
+	OR = {
+		naval_facility > 0
+		nuclear_facility > 0
+		air_facility > 0
+		land_facility > 0
+		biowarfare_facility > 0
+		cw_facility > 0
+	}
+}
+
+chaosx_test_country_state_can_host_special_facility = {
+	is_controlled_by = ROOT
+	NOT = { chaosx_test_country_state_has_special_facility = yes }
+}

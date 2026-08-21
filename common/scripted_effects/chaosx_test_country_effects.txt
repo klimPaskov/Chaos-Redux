@@ -1,0 +1,258 @@
+# ============================================================================
+# CHAOS REDUX - TEST COUNTRY HARNESS
+# ============================================================================
+# Overview:
+# - The public console entry point is "e chaosx_test".
+# - Switches the current player to CXT, annexes the former player country
+#   without importing vanilla divisions, and preserves the former capital.
+# - Completes the merged technology and special-project inventories, activates
+#   Chaos Warfare, provisions every Chaos Redux land unit, and turns on the
+#   shared CBRN and camp systems.
+# - Maintains tag-specific daily resources and weekly stockpile replenishment
+#   without a world iteration.
+# ============================================================================
+
+chaosx_test_country_refill_resources = {
+	add_political_power = constant:chaosx_test_country.political_power_refill
+	add_command_power = constant:chaosx_test_country.command_power_refill
+	army_experience = constant:chaosx_test_country.army_experience_refill
+	navy_experience = constant:chaosx_test_country.navy_experience_refill
+	air_experience = constant:chaosx_test_country.air_experience_refill
+	add_manpower = constant:chaosx_test_country.manpower_refill
+	add_nuclear_bombs = constant:chaosx_test_country.nuclear_bombs_refill
+	set_fuel_ratio = 1
+	add_stability = 1
+	add_war_support = 1
+}
+
+chaosx_test_country_ensure_facility_states = {
+	if = {
+		limit = {
+			NOT = {
+				any_owned_state = {
+					is_controlled_by = ROOT
+					is_coastal = yes
+					NOT = { chaosx_test_country_state_has_special_facility = yes }
+				}
+			}
+		}
+		random_state = {
+			limit = {
+				is_coastal = yes
+				NOT = { is_owned_by = ROOT }
+				NOT = { chaosx_test_country_state_has_special_facility = yes }
+			}
+			transfer_state_to = ROOT
+		}
+	}
+
+	set_temp_variable = { chaosx_test_empty_facility_states = 0 }
+	every_owned_state = {
+		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+		add_to_temp_variable = { chaosx_test_empty_facility_states = 1 }
+	}
+	set_temp_variable = { chaosx_test_facility_state_transfer_failed = 0 }
+	while_loop_effect = {
+		break = chaosx_test_facility_state_transfer_failed
+		limit = {
+			check_variable = {
+				var = chaosx_test_empty_facility_states
+				value = constant:chaosx_test_country_count.minimum_facility_states
+				compare = less_than
+			}
+		}
+		set_temp_variable = { chaosx_test_facility_state_transfer_succeeded = 0 }
+		random_state = {
+			limit = {
+				NOT = { is_owned_by = ROOT }
+				NOT = { chaosx_test_country_state_has_special_facility = yes }
+			}
+			transfer_state_to = ROOT
+			set_temp_variable = { chaosx_test_facility_state_transfer_succeeded = 1 }
+		}
+		if = {
+			limit = { check_variable = { chaosx_test_facility_state_transfer_succeeded > 0 } }
+			add_to_temp_variable = { chaosx_test_empty_facility_states = 1 }
+		}
+		else = {
+			set_temp_variable = { chaosx_test_facility_state_transfer_failed = 1 }
+		}
+	}
+}
+
+chaosx_test_country_ensure_occupation_fixture = {
+	if = {
+		limit = {
+			NOT = {
+				any_controlled_state = {
+					NOT = { is_owned_by = ROOT }
+					NOT = { is_core_of = ROOT }
+				}
+			}
+		}
+		random_state = {
+			limit = {
+				NOT = { is_owned_by = ROOT }
+				NOT = { is_core_of = ROOT }
+				NOT = { is_capital = yes }
+				state_population_k > 0
+			}
+			set_state_controller_to = ROOT
+		}
+	}
+}
+
+chaosx_test_country_build_special_facilities = {
+	chaosx_test_country_ensure_facility_states = yes
+	random_owned_controlled_state = {
+		limit = {
+			is_coastal = yes
+			chaosx_test_country_state_can_host_special_facility = yes
+		}
+		construct_building_in_random_province = { naval_facility = 1 }
+	}
+	random_owned_controlled_state = {
+		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+		construct_building_in_random_province = { nuclear_facility = 1 }
+	}
+	random_owned_controlled_state = {
+		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+		construct_building_in_random_province = { air_facility = 1 }
+	}
+	random_owned_controlled_state = {
+		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+		construct_building_in_random_province = { land_facility = 1 }
+	}
+	random_owned_controlled_state = {
+		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+		construct_building_in_random_province = { biowarfare_facility = 1 }
+	}
+	random_owned_controlled_state = {
+		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+		construct_building_in_random_province = { cw_facility = 1 }
+	}
+}
+
+chaosx_test_country_complete_chaos_warfare = {
+	set_grand_doctrine = chaos_warfare
+	set_sub_doctrine = extermination_columns
+	set_sub_doctrine = contaminant_firebases
+	set_sub_doctrine = chemical_suppression
+	set_sub_doctrine = integrated_chemical_operations
+	add_mastery = {
+		amount = constant:chaosx_test_country.doctrine_mastery
+		folder = land
+		grand_doctrine = chaos_warfare
+	}
+	cbrn_migrate_legacy_chaos_warfare = yes
+	cbrn_complete_chaos_warfare_establishment = yes
+	remove_mission = cbrn_chaos_warfare_establishment_mission
+
+	cbrn_initialize_country_data = yes
+	cbrn_initialize_payload_logistics = yes
+	cbrn_initialize_battlefield_operation_selection = yes
+	cbrn_occupation_initialize_action_conditions = yes
+	cbrn_reveal_protection_decision_surface = yes
+	cbrn_reveal_operations_decision_surface = yes
+	cbrn_reveal_disease_response_decision_surface = yes
+	set_country_flag = cbrn_civil_defence_established
+	set_country_flag = cbrn_national_respirator_reserve
+	set_country_flag = cbrn_population_registered_and_fitted
+	set_country_flag = cbrn_confirmed_chemical_attack_victim_history
+	set_country_flag = cbrn_occupation_coercive_security_authorized
+	set_country_flag = cbrn_occupation_protected_administration_authorized
+	set_country_flag = cbrn_nerve_suppression_policy_authorized
+	set_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+	set_country_flag = concentration_occupation_law_unlocked
+	set_variable = { chemical_readiness_cap = constant:cbrn_meter.maximum }
+	set_variable = { chemical_readiness = constant:cbrn_meter.maximum }
+	set_variable = { cbrn_decontamination_capacity = constant:cbrn_meter.maximum }
+	set_variable = { cbrn_medical_capacity = constant:cbrn_meter.maximum }
+	set_variable = { cbrn_biological_security = constant:cbrn_meter.maximum }
+	set_variable = { cbrn_attribution_control = constant:cbrn_meter.maximum }
+	set_variable = { cbrn_command_integration = constant:cbrn_meter.maximum }
+	set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_chaos_warfare }
+	cbrn_set_use_policy = yes
+}
+
+chaosx_test_country_activate_camp_systems = {
+	genocide_initialize_system_if_needed = yes
+	genocide_initialize_country_variables = yes
+	camp_rework_initialize_country_variables = yes
+	genocide_activate_crisis = yes
+	set_country_flag = genocide_extreme_doctrine_unlocked
+	set_country_flag = genocide_decisions_visible
+	set_country_flag = genocide_gulag_decisions_visible
+	camp_rework_gui_reveal_country_directives = yes
+	capital_scope = {
+		genocide_register_concentration_site_for_root = yes
+		set_temp_variable = { genocide_requested_concentration_level = constant:genocide_camp_level.major }
+		genocide_ensure_concentration_camp_level = yes
+		genocide_register_extermination_site_for_root = yes
+		genocide_register_gulag_site_for_root = yes
+		if = {
+			limit = { NOT = { concentration_camp > 0 } }
+			set_building_level = {
+				type = concentration_camp
+				level = constant:genocide_camp_level.standard
+			}
+			set_state_flag = genocide_concentration_site
+			chaosx_refresh_camp_visual_anchor = yes
+		}
+	}
+}
+
+chaosx_test_country_initial_setup = {
+	set_country_flag = chaosx_test_country_initialized
+	set_research_slots = constant:chaosx_test_country_count.research_slots
+	chaosx_test_country_build_special_facilities = yes
+	chaosx_test_country_ensure_occupation_fixture = yes
+	chaosx_test_country_complete_all_special_projects = yes
+	chaosx_test_country_complete_all_technologies = yes
+	chaosx_test_country_complete_chaos_warfare = yes
+	chaosx_test_country_activate_camp_systems = yes
+	chaosx_test_country_fill_stockpile = yes
+	chaosx_test_country_refill_resources = yes
+	chaosx_test_country_create_unit_roster = yes
+}
+
+chaosx_test_country_refresh = {
+	chaosx_test_country_complete_all_technologies = yes
+	chaosx_test_country_fill_stockpile = yes
+	chaosx_test_country_refill_resources = yes
+}
+
+chaosx_test = {
+	if = {
+		limit = { tag = CXT }
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_test_country_initialized } }
+			chaosx_test_country_initial_setup = yes
+		}
+		else = {
+			chaosx_test_country_refresh = yes
+		}
+	}
+	else = {
+		save_event_target_as = chaosx_test_origin_country
+		capital_scope = { save_event_target_as = chaosx_test_origin_capital_state }
+		CXT = {
+			change_tag_from = event_target:chaosx_test_origin_country
+			annex_country = {
+				target = event_target:chaosx_test_origin_country
+				transfer_troops = no
+			}
+			set_capital = {
+				state = event_target:chaosx_test_origin_capital_state
+				remember_old_capital = no
+			}
+			if = {
+				limit = { NOT = { has_country_flag = chaosx_test_country_initialized } }
+				chaosx_test_country_initial_setup = yes
+			}
+			else = {
+				chaosx_test_country_refresh = yes
+			}
+		}
+	}
+}
