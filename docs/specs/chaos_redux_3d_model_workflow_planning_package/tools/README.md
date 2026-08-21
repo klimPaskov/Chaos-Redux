@@ -7,8 +7,8 @@ Uses the 2026-07-22 API pricing snapshot to estimate a job. It does not call Mes
 Examples:
 
 ```bash
-python estimate_meshy_credits.py --model smart_topology --textured --rig --animations 3
-python estimate_meshy_credits.py --model meshy7 --textured --generation-attempts 2 --remesh 1 --animations 3 --retry-reserve-percent 20 --json
+python estimate_meshy_credits.py --model meshy-7 --textured --rig --animations 3
+python estimate_meshy_credits.py --model meshy-7 --textured --generation-attempts 2 --remesh 1 --animations 3 --retry-reserve-percent 20 --json
 ```
 
 ## `hash_artifacts.py`

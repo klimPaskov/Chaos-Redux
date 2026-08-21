@@ -24,6 +24,8 @@ from mathutils.kdtree import KDTree
 
 
 PREVIEW_LIGHT_REFERENCE_HEIGHT = 7.3518242835
+CREATURE_GROUND_CONTACT_TOLERANCE_M = 0.01
+CREATURE_GROUND_CONTACT_CLEARANCE_M = 0.001
 
 
 def parse_args() -> argparse.Namespace:
@@ -3022,6 +3024,449 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
     return result
 
 
+HUMANOID_BONE_NAMES = (
+    "Hips",
+    "Spine",
+    "Spine01",
+    "Spine02",
+    "neck",
+    "Head",
+    "headfront",
+    "head_end",
+    "LeftShoulder",
+    "LeftArm",
+    "LeftForeArm",
+    "LeftHand",
+    "RightShoulder",
+    "RightArm",
+    "RightForeArm",
+    "RightHand",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+)
+
+
+def _humanoid_bone_name_for_vertex(
+    world_position: Vector,
+    minimum: Vector,
+    maximum: Vector,
+) -> str:
+    """Choose a deterministic HOI4 humanoid influence from the mesh silhouette."""
+
+    dimensions = maximum - minimum
+    centre = (minimum + maximum) * 0.5
+    height = max(float(dimensions.z), 1e-6)
+    width = max(float(dimensions.x), 1e-6)
+    length = max(float(dimensions.y), 1e-6)
+    z_fraction = (world_position.z - minimum.z) / height
+    x_fraction = (world_position.x - centre.x) / width
+    y_fraction = (world_position.y - centre.y) / length
+    abs_x = abs(x_fraction)
+    side = "Left" if x_fraction < 0.0 else "Right"
+
+    if z_fraction > 0.91:
+        return "head_end"
+    if z_fraction > 0.84 and y_fraction < -0.08:
+        return "headfront"
+    if z_fraction > 0.79:
+        return "Head"
+    if z_fraction > 0.69 and abs_x < 0.18:
+        return "neck"
+    if z_fraction > 0.58 and abs_x > 0.12:
+        return f"{side}Shoulder"
+    if z_fraction > 0.43 and abs_x > 0.13:
+        return f"{side}Arm"
+    if z_fraction > 0.27 and abs_x > 0.10:
+        return f"{side}ForeArm"
+    if z_fraction > 0.16 and abs_x > 0.08:
+        return f"{side}Hand"
+    if z_fraction < 0.13 and abs_x > 0.07:
+        return f"{side}ToeBase" if y_fraction < -0.04 else f"{side}Foot"
+    if z_fraction < 0.46 and abs_x > 0.08:
+        return f"{side}Leg" if z_fraction < 0.28 else f"{side}UpLeg"
+    if z_fraction > 0.63:
+        return "Spine02"
+    if z_fraction > 0.49:
+        return "Spine01"
+    if z_fraction > 0.33:
+        return "Spine"
+    return "Hips"
+
+
+def _humanoid_weight_candidates(primary: str) -> List[str]:
+    """Return a small same-region chain for bounded blended weights."""
+
+    if primary in {"Head", "headfront", "head_end", "neck"}:
+        return ["neck", "Head", "headfront", "head_end"]
+    if primary.startswith("Left"):
+        if primary in {"LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand"}:
+            return ["LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand"]
+        if primary in {"LeftUpLeg", "LeftLeg", "LeftFoot", "LeftToeBase"}:
+            return ["LeftUpLeg", "LeftLeg", "LeftFoot", "LeftToeBase"]
+    if primary.startswith("Right"):
+        if primary in {"RightShoulder", "RightArm", "RightForeArm", "RightHand"}:
+            return ["RightShoulder", "RightArm", "RightForeArm", "RightHand"]
+        if primary in {"RightUpLeg", "RightLeg", "RightFoot", "RightToeBase"}:
+            return ["RightUpLeg", "RightLeg", "RightFoot", "RightToeBase"]
+    if primary == "Spine02":
+        return ["Spine01", "Spine02", "neck"]
+    if primary == "Spine01":
+        return ["Spine", "Spine01", "Spine02"]
+    if primary == "Spine":
+        return ["Hips", "Spine", "Spine01"]
+    return ["Hips", "Spine", "Spine01"]
+
+
+def _point_segment_distance(point: Vector, start: Vector, end: Vector) -> float:
+    segment = end - start
+    length_squared = float(segment.length_squared)
+    if length_squared <= 1e-12:
+        return float((point - start).length)
+    factor = max(0.0, min(1.0, float((point - start).dot(segment)) / length_squared))
+    return float((point - (start + factor * segment)).length)
+
+
+def author_humanoid_rig(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Create the repository's bounded HOI4 humanoid rig on approved geometry."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    rig_name = safe_name(str(payload.get("rig_name") or "chaosx_humanoid_armature"))
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    working = mesh_objects()
+    if not working:
+        raise RuntimeError("Humanoid rigging found no approved working meshes.")
+    for rig in armatures():
+        bpy.data.objects.remove(rig, do_unlink=True)
+
+    minimum, maximum = world_bounds(working)
+    dimensions = maximum - minimum
+    centre = (minimum + maximum) * 0.5
+    height = max(float(dimensions.z), 1e-6)
+    width = max(float(dimensions.x), 1e-6)
+    length = max(float(dimensions.y), 1e-6)
+    z0 = minimum.z
+    y_front = centre.y - length * 0.08
+    y_rear = centre.y + length * 0.04
+    armature_data = bpy.data.armatures.new(rig_name)
+    rig = bpy.data.objects.new(rig_name, armature_data)
+    _working_collection().objects.link(rig)
+    rig["chaosx_working"] = True
+    rig["chaosx_humanoid_rig"] = True
+    rig["chaosx_humanoid_rig_route"] = "blender_failure_recovery_humanoid_v1"
+    rig["chaosx_skeleton_contract"] = "hoi4_standard_humanoid_24_bone"
+    bpy.context.view_layer.objects.active = rig
+    rig.select_set(True)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bones: Dict[str, bpy.types.EditBone] = {}
+
+    def add_bone(name: str, head: Vector, tail: Vector, parent: Optional[str] = None) -> None:
+        bone = armature_data.edit_bones.new(name)
+        bone.head = head
+        bone.tail = tail
+        if parent:
+            bone.parent = bones[parent]
+            bone.use_connect = False
+        bones[name] = bone
+
+    add_bone("Hips", Vector((centre.x, centre.y, z0 + height * 0.34)), Vector((centre.x, centre.y, z0 + height * 0.43)))
+    add_bone("Spine", Vector((centre.x, centre.y, z0 + height * 0.41)), Vector((centre.x, centre.y, z0 + height * 0.51)), "Hips")
+    add_bone("Spine01", Vector((centre.x, centre.y, z0 + height * 0.49)), Vector((centre.x, centre.y, z0 + height * 0.61)), "Spine")
+    add_bone("Spine02", Vector((centre.x, centre.y, z0 + height * 0.59)), Vector((centre.x, centre.y, z0 + height * 0.70)), "Spine01")
+    add_bone("neck", Vector((centre.x, y_front, z0 + height * 0.68)), Vector((centre.x, y_front, z0 + height * 0.78)), "Spine02")
+    add_bone("Head", Vector((centre.x, y_front, z0 + height * 0.76)), Vector((centre.x, y_front, z0 + height * 0.87)), "neck")
+    add_bone("headfront", Vector((centre.x, y_front, z0 + height * 0.82)), Vector((centre.x, y_front - length * 0.08, z0 + height * 0.84)), "Head")
+    add_bone("head_end", Vector((centre.x, y_front, z0 + height * 0.86)), Vector((centre.x, y_front, z0 + height * 0.96)), "Head")
+
+    for side, sign in (("Left", -1.0), ("Right", 1.0)):
+        shoulder = Vector((centre.x + sign * width * 0.18, centre.y - length * 0.01, z0 + height * 0.66))
+        elbow = Vector((centre.x + sign * width * 0.32, centre.y - length * 0.04, z0 + height * 0.50))
+        wrist = Vector((centre.x + sign * width * 0.38, centre.y - length * 0.07, z0 + height * 0.33))
+        hand = Vector((centre.x + sign * width * 0.39, centre.y - length * 0.10, z0 + height * 0.22))
+        add_bone(f"{side}Shoulder", shoulder, elbow, "Spine02")
+        add_bone(f"{side}Arm", elbow, wrist, f"{side}Shoulder")
+        add_bone(f"{side}ForeArm", wrist, hand, f"{side}Arm")
+        add_bone(f"{side}Hand", hand, hand + Vector((0.0, -length * 0.06, -height * 0.04)), f"{side}ForeArm")
+
+        hip = Vector((centre.x + sign * width * 0.10, centre.y + length * 0.01, z0 + height * 0.35))
+        knee = Vector((centre.x + sign * width * 0.12, centre.y + length * 0.01, z0 + height * 0.20))
+        ankle = Vector((centre.x + sign * width * 0.12, centre.y - length * 0.02, z0 + height * 0.08))
+        toe = Vector((centre.x + sign * width * 0.12, centre.y - length * 0.13, z0 + height * 0.035))
+        add_bone(f"{side}UpLeg", hip, knee, "Hips")
+        add_bone(f"{side}Leg", knee, ankle, f"{side}UpLeg")
+        add_bone(f"{side}Foot", ankle, toe, f"{side}Leg")
+        add_bone(f"{side}ToeBase", toe, toe + Vector((0.0, -length * 0.07, 0.0)), f"{side}Foot")
+
+    bpy.ops.object.mode_set(mode="OBJECT")
+    rig.show_in_front = True
+    armature_data.display_type = "BBONE"
+    segments = {
+        bone.name: (Vector(bone.head_local), Vector(bone.tail_local))
+        for bone in armature_data.bones
+    }
+    records = []
+    for obj in working:
+        for group in list(obj.vertex_groups):
+            obj.vertex_groups.remove(group)
+        groups = {name: obj.vertex_groups.new(name=name) for name in HUMANOID_BONE_NAMES}
+        counts: Dict[str, int] = {name: 0 for name in groups}
+        influence_histogram: Dict[str, int] = {"1": 0, "2": 0, "3": 0}
+        for vertex in obj.data.vertices:
+            world_position = obj.matrix_world @ vertex.co
+            primary = _humanoid_bone_name_for_vertex(world_position, minimum, maximum)
+            candidates = [name for name in _humanoid_weight_candidates(primary) if name in segments]
+            ranked = sorted(
+                (
+                    _point_segment_distance(world_position, *segments[name]),
+                    name,
+                )
+                for name in candidates
+            )[:3]
+            names = [name for _, name in ranked]
+            if primary not in names:
+                names = [primary] + names[:2]
+            names = list(dict.fromkeys(name for name in names if name in groups))[:3]
+            if not names:
+                names = ["Hips"]
+            if primary in names:
+                names.remove(primary)
+            weights = {primary: 0.68}
+            if names:
+                inverse = [1.0 / max(next((distance for distance, name in ranked if name == item), 1.0), 1e-4) for item in names]
+                inverse_total = sum(inverse)
+                for name, value in zip(names, inverse):
+                    weights[name] = 0.32 * value / max(inverse_total, 1e-8)
+            total = sum(weights.values())
+            for name, weight in weights.items():
+                groups[name].add([vertex.index], weight / max(total, 1e-8), "REPLACE")
+                counts[name] += 1
+            influence_histogram[str(len(weights))] = influence_histogram.get(str(len(weights)), 0) + 1
+        modifier = next((item for item in obj.modifiers if item.type == "ARMATURE"), None)
+        if modifier is None:
+            modifier = obj.modifiers.new("CHAOSX_HUMANOID_ARMATURE", "ARMATURE")
+        modifier.object = rig
+        world_matrix = obj.matrix_world.copy()
+        obj.parent = rig
+        obj.parent_type = "OBJECT"
+        obj.matrix_world = world_matrix
+        records.append(
+            {
+                "object": obj.name,
+                "vertices": len(obj.data.vertices),
+                "vertex_group_counts": {name: count for name, count in counts.items() if count},
+                "influence_histogram": influence_histogram,
+            }
+        )
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "armature": rig.name,
+        "bones": [bone.name for bone in armature_data.bones],
+        "bone_count": len(armature_data.bones),
+        "component_bindings": records,
+        "rig_route": "blender_failure_recovery_humanoid_v1",
+        "rig_map": f"{rig_name}_hoi4_standard_humanoid_24_bones_v1",
+        "weight_policy": "bounded same-region blended weights with at most three influences per vertex; no unweighted vertices",
+        "source_policy": "Meshy 7 geometry retained; provider rig is not used",
+        "status": "pass" if len(armature_data.bones) == len(HUMANOID_BONE_NAMES) else "failed",
+    }
+    report_path = job / "blender" / "reports" / "humanoid_rig.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
+def author_humanoid_actions(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Author the four required in-place HOI4 humanoid skeletal actions."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError(f"Humanoid action authoring requires exactly one armature, found {len(rigs)}.")
+    rig = rigs[0]
+    rig.animation_data_create()
+    scene = bpy.context.scene
+    scene.render.fps = int(payload.get("fps") or 24)
+    base_rig_location = rig.location.copy()
+    action_reports: Dict[str, Dict[str, Any]] = {}
+
+    def role_frames(role: str) -> List[int]:
+        return {
+            "idle": [0, 12, 24, 36, 48],
+            "move": [0, 6, 12, 18, 24],
+            "attack": [0, 8, 16, 24, 32],
+            "death": [0, 12, 24, 36],
+        }[role]
+
+    def phase(role: str, frame: int, frames: List[int]) -> float:
+        normalized = (frame - frames[0]) / max(frames[-1] - frames[0], 1)
+        if role in {"idle", "move"}:
+            return math.sin(2.0 * math.pi * normalized)
+        if role == "attack":
+            return math.sin(math.pi * normalized)
+        return normalized
+
+    for role in ("idle", "move", "attack", "death"):
+        frames = role_frames(role)
+        action_name = safe_name(str(payload.get("action_names", {}).get(role) or f"chaosx_humanoid_{role}"))
+        old_action = bpy.data.actions.get(action_name)
+        if old_action is not None:
+            bpy.data.actions.remove(old_action)
+        action = bpy.data.actions.new(action_name)
+        action.use_fake_user = True
+        rig.animation_data.action = action
+        scene.frame_start = frames[0]
+        scene.frame_end = frames[-1]
+        base = {}
+        for bone in rig.pose.bones:
+            bone.rotation_mode = "QUATERNION"
+            base[bone.name] = (bone.location.copy(), bone.rotation_quaternion.copy())
+
+        def rotate(name: str, axis: str, degrees: float, value: float) -> None:
+            bone = rig.pose.bones.get(name)
+            if bone is None:
+                return
+            bone.rotation_mode = "QUATERNION"
+            bone.rotation_quaternion = base[name][1] @ _action_delta(axis, degrees * value)
+
+        for frame in frames:
+            scene.frame_set(frame)
+            p = phase(role, frame, frames)
+            for bone in rig.pose.bones:
+                bone.rotation_mode = "QUATERNION"
+                bone.location = base[bone.name][0].copy()
+                bone.rotation_quaternion = base[bone.name][1].copy()
+                bone.scale = (1.0, 1.0, 1.0)
+            if role == "idle":
+                rotate("Spine01", "x", 1.0, p)
+                rotate("Spine02", "x", 1.5, p)
+                rotate("neck", "x", 2.0, p)
+                rotate("Head", "z", 1.0, p)
+                rotate("LeftForeArm", "x", 1.0, p)
+                rotate("RightForeArm", "x", -1.0, p)
+            elif role == "move":
+                for side, sign in (("Left", 1.0), ("Right", -1.0)):
+                    gait = sign * p
+                    rotate(f"{side}UpLeg", "x", 24.0, gait)
+                    rotate(f"{side}Leg", "x", -10.0, gait)
+                    rotate(f"{side}Foot", "x", 8.0, gait)
+                    rotate(f"{side}Arm", "x", -16.0, gait)
+                    rotate(f"{side}ForeArm", "x", -6.0, gait)
+                rotate("Spine01", "x", 2.0, p)
+                rotate("Spine02", "x", 1.5, p)
+                rotate("neck", "x", -1.0, p)
+                rotate("Head", "z", 1.0, p)
+                hips = rig.pose.bones.get("Hips")
+                if hips is not None:
+                    hips.location = base["Hips"][0] + Vector((0.0, 0.0, 0.001 * p))
+            elif role == "attack":
+                rotate("Spine01", "x", -10.0, p)
+                rotate("Spine02", "x", -8.0, p)
+                rotate("neck", "x", -8.0, p)
+                rotate("Head", "x", -12.0, p)
+                for side, sign in (("Left", 1.0), ("Right", -1.0)):
+                    rotate(f"{side}Shoulder", "x", -22.0, p)
+                    rotate(f"{side}Arm", "x", -30.0, p)
+                    rotate(f"{side}ForeArm", "x", -18.0, p)
+                    rotate(f"{side}Hand", "z", 8.0 * sign, p)
+                    rotate(f"{side}UpLeg", "x", -5.0, p)
+            else:
+                rotate("Spine", "x", -34.0, p)
+                rotate("Spine01", "x", -38.0, p)
+                rotate("Spine02", "x", -28.0, p)
+                rotate("neck", "x", -24.0, p)
+                rotate("Head", "x", -18.0, p)
+                for side, sign in (("Left", 1.0), ("Right", -1.0)):
+                    rotate(f"{side}Shoulder", "z", 20.0 * sign, p)
+                    rotate(f"{side}Arm", "z", 28.0 * sign, p)
+                    rotate(f"{side}ForeArm", "z", 20.0 * sign, p)
+                    rotate(f"{side}UpLeg", "x", 8.0, p)
+                    rotate(f"{side}Leg", "x", 12.0, p)
+            for bone in rig.pose.bones:
+                bone.keyframe_insert(data_path="location", frame=frame, group=bone.name)
+                bone.keyframe_insert(data_path="rotation_quaternion", frame=frame, group=bone.name)
+
+        for fcurve, _ in action_fcurves(action):
+            for keyframe in fcurve.keyframe_points:
+                keyframe.interpolation = "LINEAR"
+
+        ground_samples_before = []
+        ground_samples_after = []
+        corrections = []
+        for frame in range(frames[0], frames[-1] + 1):
+            scene.frame_set(frame)
+            rig.location = base_rig_location.copy()
+            bpy.context.view_layer.update()
+            minimum, maximum = evaluated_world_bounds(mesh_objects())
+            ground_samples_before.append({"frame": frame, "ground_contact_z": float(minimum.z), "bounds_max_z": float(maximum.z)})
+            correction = max(0.0, -float(minimum.z))
+            rig.location.z = base_rig_location.z + correction
+            rig.keyframe_insert(data_path="location", index=2, frame=frame, group=rig.name)
+            bpy.context.view_layer.update()
+            corrected_minimum, corrected_maximum = evaluated_world_bounds(mesh_objects())
+            ground_samples_after.append({"frame": frame, "ground_contact_z": float(corrected_minimum.z), "bounds_max_z": float(corrected_maximum.z)})
+            corrections.append(correction)
+
+        scene.frame_set(frames[0])
+        rig.location = base_rig_location.copy()
+        metrics = action_metrics()
+        report = {
+            "action": action.name,
+            "role": role,
+            "frame_start": frames[0],
+            "frame_end": frames[-1],
+            "fps": scene.render.fps,
+            "loop": role in {"idle", "move"},
+            "keyed_bones": len(rig.pose.bones) * len(frames),
+            "keyed_channels": len(rig.pose.bones) * len(frames) * 2,
+            "ground_contact": {
+                "minimum_z": min(item["ground_contact_z"] for item in ground_samples_after),
+                "maximum_z": max(item["ground_contact_z"] for item in ground_samples_after),
+                "samples_before": ground_samples_before,
+                "samples_after": ground_samples_after,
+            },
+            "grounding_correction": {
+                "applied": any(value > 0.0 for value in corrections),
+                "maximum_translation_m": max(corrections, default=0.0),
+            },
+            "policy": "blender-authored-hoi4-humanoid-skeletal-action-in-place-no-scale-channels",
+            "rig_and_actions": metrics,
+            "status": "pass" if min(item["ground_contact_z"] for item in ground_samples_after) >= -0.01 else "needs_grounding_review",
+        }
+        report_path = job / "blender" / "reports" / f"humanoid_action_{role}.json"
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        action_reports[role] = report
+
+    save_blend(checkpoint)
+    result = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "armature": rig.name,
+        "actions": action_reports,
+        "required_roles": ["idle", "move", "attack", "death"],
+        "source_policy": "Meshy 7 geometry retained; actions authored locally only after provider-rig recovery failure",
+        "status": "pass" if all(item.get("status") == "pass" for item in action_reports.values()) else "needs_grounding_review",
+    }
+    report_path = job / "blender" / "reports" / "humanoid_actions.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return result
+
+
 def author_locomotion_action(req: Dict[str, Any]) -> Dict[str, Any]:
     """Author a small in-place walk cycle on the approved humanoid rig."""
 
@@ -3494,6 +3939,24 @@ def segment_creature_components(req: Dict[str, Any]) -> Dict[str, Any]:
         components = [obj for obj in collection.objects if obj.type == "MESH"]
     if not components:
         raise RuntimeError("Creature segmentation produced no mesh components.")
+    discarded_degenerate_components = []
+    retained_components = []
+    for obj in components:
+        if len(obj.data.polygons) == 0:
+            discarded_degenerate_components.append(
+                {
+                    "object": obj.name,
+                    "vertices": len(obj.data.vertices),
+                    "polygons": 0,
+                    "reason": "zero_face_component_cannot_be_reimported_as_a_runtime_mesh_node",
+                }
+            )
+            bpy.data.objects.remove(obj, do_unlink=True)
+        else:
+            retained_components.append(obj)
+    components = retained_components
+    if not components:
+        raise RuntimeError("Creature segmentation retained no renderable mesh components.")
     for obj in components:
         obj["chaosx_working"] = True
         obj["chaosx_creature_component"] = True
@@ -3511,6 +3974,7 @@ def segment_creature_components(req: Dict[str, Any]) -> Dict[str, Any]:
         "source_working_objects": sorted(before_names),
         "component_count": len(records),
         "components": records,
+        "discarded_degenerate_components": discarded_degenerate_components,
         "method": (
             "explicit polygon-centroid spatial rider/semantic mask on a fused approved working mesh"
             if spatial_mask_applied
@@ -4204,7 +4668,10 @@ def author_winged_biped_action(req: Dict[str, Any]) -> Dict[str, Any]:
         rig.location = base_rig_location.copy()
         bpy.context.view_layer.update()
         minimum, _ = evaluated_world_bounds(mesh_objects())
-        correction = max(0.0, -float(minimum.z) - 0.01)
+        correction = max(
+            0.0,
+            -float(minimum.z) + CREATURE_GROUND_CONTACT_CLEARANCE_M,
+        )
         # Mesh objects are parented to the armature object in the custom route.
         # Keying the root pose bone alone does not translate the evaluated object
         # bounds, so ground correction must be authored on the armature object.
@@ -4253,7 +4720,11 @@ def author_winged_biped_action(req: Dict[str, Any]) -> Dict[str, Any]:
         },
         "creature_rig_family": "winged_biped",
         "policy": "blender-authored-winged-biped-semantic-skeletal-action-no-scale-channels",
-        "status": "pass" if minimum_ground >= -0.01 else "needs_grounding_review",
+        "status": (
+            "pass"
+            if minimum_ground >= -CREATURE_GROUND_CONTACT_TOLERANCE_M
+            else "needs_grounding_review"
+        ),
     }
     report_path = job / "blender" / "reports" / f"creature_action_{safe_name(role)}.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)
@@ -4406,7 +4877,8 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
     grounding_correction = {
         "applied": False,
         "root_bone": "root",
-        "epsilon_m": 0.001,
+        "epsilon_m": CREATURE_GROUND_CONTACT_TOLERANCE_M,
+        "clearance_m": CREATURE_GROUND_CONTACT_CLEARANCE_M,
         "maximum_translation_m": 0.0,
         "samples_before": ground_samples,
     }
@@ -4424,7 +4896,10 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
         # Do not claim a lift when the semantic body channel cannot move the
         # rigidly separated shell in Blender's evaluated armature; such a case
         # remains visible as a failed contact sample instead of a silent fix.
-        correction = max(0.0, -float(current_minimum.z) - 0.01)
+        correction = max(
+            0.0,
+            -float(current_minimum.z) + CREATURE_GROUND_CONTACT_CLEARANCE_M,
+        )
         if correction:
             # Lift the common root so the correction is represented once in
             # the exported skeleton and is not multiplied down child bones.
@@ -4481,7 +4956,11 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
         },
         "grounding_correction": grounding_correction,
         "policy": "blender-authored-semantic-skeletal-action-no-scale-channels",
-        "status": "pass" if minimum_ground >= -0.01 else "needs_grounding_review",
+        "status": (
+            "pass"
+            if minimum_ground >= -CREATURE_GROUND_CONTACT_TOLERANCE_M
+            else "needs_grounding_review"
+        ),
     }
     report_path = job / "blender" / "reports" / f"creature_action_{safe_name(role)}.json"
     report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -4990,6 +5469,10 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return import_animation_action(req)
     if operation == "retime_animation_action":
         return retime_animation_action(req)
+    if operation == "author_humanoid_rig":
+        return author_humanoid_rig(req)
+    if operation == "author_humanoid_actions":
+        return author_humanoid_actions(req)
     if operation == "author_locomotion_action":
         return author_locomotion_action(req)
     if operation == "segment_creature_components":

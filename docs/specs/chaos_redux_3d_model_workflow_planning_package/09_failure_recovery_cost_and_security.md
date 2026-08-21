@@ -65,6 +65,10 @@ Example planning totals:
 ```text
 smart-topology textured humanoid + rig + 3 actions = 29 credits
 Meshy 7 textured humanoid + rig + 3 actions = 44 credits
+
+When a rig task fails twice with the same task-ID input, do not repeat that input unchanged. If the completed Meshy 7 source task exposes an official signed `https://assets.meshy.ai/` artifact URL, use a separately authorized, attempt-scoped MCP recovery with `model_url`, record the source stage and new task lineage, and redact the signed URL from evidence.
+
+If that separately authorized recovery also fails, stop paid provider-rig retries. A job may then select `blender_failure_recovery_humanoid_v1`, which uses the allowlisted Blender `author_humanoid_rig` and `author_humanoid_actions` operations on the same completed Meshy 7 geometry. The route must produce the 24-bone HOI4 skeleton, bounded weights, four real skeletal actions, exports, reimports, and immutable route evidence. It is an explicit failure-driven recovery, not a static animation or reused-geometry substitute.
 smart-topology textured static prop + remesh = 20 credits
 ```
 

@@ -523,6 +523,48 @@ def chaosx_blender_hoi4_author_locomotion_action(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_author_humanoid_rig(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    rig_name: str = "",
+) -> Dict[str, Any]:
+    """Create the bounded HOI4 24-bone humanoid rig on approved geometry."""
+
+    return _run(
+        job_id,
+        "author_humanoid_rig",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "rig_name": rig_name,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_author_humanoid_actions(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    action_names: Dict[str, str] | None = None,
+    fps: int = 24,
+) -> Dict[str, Any]:
+    """Author the required idle, move, attack, and death skeletal actions."""
+
+    return _run(
+        job_id,
+        "author_humanoid_actions",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_names": action_names or {},
+            "fps": fps,
+        },
+    )
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_segment_creature_components(
     job_id: str,
     blend_rel: str,

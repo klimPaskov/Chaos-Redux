@@ -432,14 +432,27 @@ class MeshyClient:
         )
         return {"task_id": task_id, "task_type": task_type, "format": format_name, "file": record}
 
-    def rig(self, *, input_task_id: str, height_meters: float, estimate_credits: int) -> Dict[str, Any]:
+    def rig(
+        self,
+        *,
+        input_task_id: Optional[str] = None,
+        model_url: Optional[str] = None,
+        height_meters: float,
+        estimate_credits: int,
+    ) -> Dict[str, Any]:
+        if bool(input_task_id) == bool(model_url):
+            raise ValueError("Meshy rigging requires exactly one of input_task_id or model_url.")
+        arguments: Dict[str, Any] = {
+            "height_meters": height_meters,
+            "response_format": "json",
+        }
+        if input_task_id:
+            arguments["input_task_id"] = input_task_id
+        if model_url:
+            arguments["model_url"] = model_url
         return self.call(
             "meshy_rig",
-            {
-                "input_task_id": input_task_id,
-                "height_meters": height_meters,
-                "response_format": "json",
-            },
+            arguments,
             paid=True,
             estimate_credits=estimate_credits,
             timeout_seconds=1800,

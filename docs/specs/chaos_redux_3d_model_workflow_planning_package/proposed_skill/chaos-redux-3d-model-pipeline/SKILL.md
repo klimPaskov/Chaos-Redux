@@ -7,7 +7,7 @@ description: Use when creating, rigging, animating, converting, exporting, audit
 
 Use this skill for final 3D geometry and skeletal animation assets.
 
-This skill owns the workflow from one approved reference image through Meshy generation, Blender normalization, PDX materials, rigs, actions, Paradox export, QA evidence, and runtime handoff.
+This skill owns the workflow from one approved reference image through Meshy 7 generation, Blender normalization, PDX materials, rigs, actions, Paradox export, QA evidence, and runtime handoff.
 
 It does not treat 2D equipment illustrations, map counters, focus icons, or concept art as final 3D models. Those remain with `chaos-redux-event-assets` and its normal asset routes.
 
@@ -78,20 +78,30 @@ Do not use for:
 
 ## Tool architecture
 
-### Meshy
+### Meshy 7
 
-Use the official Meshy MCP server through a version-pinned wrapper. Store the API key only in an environment variable or secret store.
+Use the repository-owned Meshy 7 MCP compatibility route through `.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd` and `run_meshy_mcp.ps1`. Before geometry generation, require the live `meshy_image_to_3d` schema to use `ai_model = meshy-7`, confirm the dependency lock's `verified_image_models` contains only `meshy-7`, and record the compatibility revision and model evidence. If Meshy 7 or the compatibility route is unavailable or incompatible, stop with `needs_user_review` or `blocked`; do not use an alias, direct REST fallback, or unverified generation route. Store the API key only in an environment variable or secret store.
+
+The verified MCP tool identifiers are:
+
+- `mcp__meshy__meshy_check_balance`
+- `mcp__meshy__meshy_image_to_3d`
+- `mcp__meshy__meshy_get_task_status`
+- `mcp__meshy__meshy_download_model`
+- `mcp__meshy__meshy_remesh`
+- `mcp__meshy__meshy_rig`
+- `mcp__meshy__meshy_convert`
+- `mcp__meshy__meshy_animate`
 
 The normal tool route is:
 
 ```text
-balance -> image-to-3D -> status -> immediate download
+balance -> Meshy 7 image-to-3D -> status -> immediate download
         -> optional remesh or retexture
-        -> optional humanoid rig
-        -> optional provider animation candidates
+        -> optional Meshy 7 humanoid rig/action candidates
 ```
 
-Inspect the live MCP tool schema before paid calls. Record the server version and exact arguments.
+Inspect the live MCP tool schema before paid calls. Use only the verified identifiers above and record the server version, compatibility revision, exact `ai_model = meshy-7` argument, and all other arguments.
 
 ### Blender
 
@@ -156,6 +166,7 @@ Preserve the original. Request a real transparent background in the initial Imag
 - use the calibrated profile target, not one universal count
 - enable PBR maps when textures are required
 - remove baked lighting when supported and appropriate
+- require `ai_model = meshy-7` for every image-to-3D geometry task
 - use an A or T pose for riggable humanoids when supported
 - use `none` or the suitable provider pose for static or mechanical assets
 - download GLB as the canonical provider archive and FBX when rigs or actions require it
@@ -236,6 +247,8 @@ Record:
 - bounds, origin, and ground or water contact
 - profile semantic checks
 
+For `nonhumanoid_creature` jobs, run `segment_creature_components` before export and inspect every fragment's face count. Discard and report every zero-face fragment, exclude it from the export collection and runtime candidate, and fail closed if any empty mesh node reaches export or reimport.
+
 Final topology is triangular unless a locally verified engine path says otherwise.
 
 ## Materials
@@ -248,11 +261,17 @@ Do not pass materials QA with missing, black, magenta, invisible, accidentally t
 
 ### Humanoid
 
-Meshy rigging may be used as a candidate only for a clear standard humanoid biped within the live endpoint's constraints. Inspect and map it in Blender. Retarget or rebuild when the provider hierarchy does not match the runtime precedent.
+Meshy 7 rigging may be used as a candidate only for a clear standard humanoid biped within the live endpoint's constraints. Inspect and map it in Blender. If two provider rig attempts for the same geometry task fail and the signed artifact-URL recovery also fails, stop provider retries and select `humanoid_rig_route = blender_failure_recovery_humanoid_v1`. Keep the approved Meshy 7 geometry canonical and author the 24-bone humanoid rig locally through the verified Blender HOI4 adapter using `mcp__blender_hoi4__chaosx_blender_hoi4_author_humanoid_rig`. Use `mcp__blender_hoi4__chaosx_blender_hoi4_author_humanoid_actions` to author real idle, move, attack, and death actions on that same geometry at 24 FPS. Then use `mcp__blender_hoi4__chaosx_blender_hoi4_export_animation` and `mcp__blender_hoi4__chaosx_blender_hoi4_reimport_export` separately for every action. It must not substitute a static pose or reuse another unit's geometry or actions.
 
 ### Nonhumanoid
 
 Create a custom Blender rig. Write a rig map first. Use a root, body segments, limb chains, and disconnected IK controls where needed. Chain length follows the actual limb, not a fixed tutorial value.
+
+### Creature segmentation and grounding
+
+During creature segmentation and export, discard and report every zero-face mesh fragment by object or node name and face count. Empty fragments must never enter the export collection, runtime candidate, or reimport proof.
+
+For every creature action, correct the lowest contact point to a positive 1 mm ground clearance. After correction, accept at most 10 mm of measured ground-contact tolerance, record the per-action measurements, and reject any action outside that limit.
 
 ### Mechanical
 
@@ -301,6 +320,8 @@ Re-import or parse the export when supported. In-game validation remains mandato
 
 ## Required output package
 
+Treat sourced unit audio and bespoke vanilla-green counter handoffs as normal 3D package outputs; final sound definitions, counter wiring, runtime integration, and in-game validation remain parent-owned.
+
 ```text
 job and history
 reference and preflight
@@ -310,6 +331,8 @@ geometry, material, rig, weight, and action reports
 source and final textures
 animation previews
 final `.mesh` and `.anim`
+sourced unit-audio candidates, licensing evidence, synchronization handoff
+bespoke vanilla-green counter handoff, installed-vanilla inspection, and palette evidence
 export log
 manifest
 runtime handoff

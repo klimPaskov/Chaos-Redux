@@ -241,6 +241,10 @@ def redact(value: Any) -> Any:
         "access_token",
         "refresh_token",
         "token",
+        "model_url",
+        "model_urls",
+        "download_url",
+        "url",
     }
     if isinstance(value, dict):
         return {

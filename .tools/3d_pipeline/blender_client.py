@@ -170,6 +170,42 @@ class BlenderAdapterClient:
             },
         )
 
+    def author_humanoid_rig(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        rig_name: str = "",
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_author_humanoid_rig",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "rig_name": rig_name,
+            },
+        )
+
+    def author_humanoid_actions(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        action_names: Optional[Dict[str, str]] = None,
+        fps: int = 24,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_author_humanoid_actions",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "action_names": action_names or {},
+                "fps": fps,
+            },
+        )
+
     def bake_static_mesh_transforms(
         self,
         job_id: str,

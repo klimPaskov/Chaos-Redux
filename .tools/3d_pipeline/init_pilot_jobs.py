@@ -99,6 +99,8 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
         "estimated_credits": spec.get("planned_total_credits"),
         "generation_stage": spec.get("generation_stage", "generation"),
         "rig_stage": spec.get("rig_stage"),
+        "rig_input_mode": spec.get("rig_input_mode", "input_task_id"),
+        "humanoid_rig_route": spec.get("humanoid_rig_route", ""),
         "brief": spec["asset_brief"],
         "required_components": spec["required_components"],
         "forbidden_additions": spec["forbidden_additions"],
@@ -187,6 +189,8 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
             "estimated_credits",
             "generation_stage",
             "rig_stage",
+            "rig_input_mode",
+            "humanoid_rig_route",
             "excluded_provider_objects",
         ):
             if field in existing:

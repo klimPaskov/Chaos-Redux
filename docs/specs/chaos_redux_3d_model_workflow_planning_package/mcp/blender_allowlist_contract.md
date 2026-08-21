@@ -149,6 +149,18 @@ Renders controlled preview views for material QA.
 
 Inspects and registers an imported armature without changing it.
 
+### `blender_hoi4_author_humanoid_rig`
+
+Creates the bounded repository-owned 24-bone humanoid skeleton on an approved Meshy 7 geometry checkpoint, binds audited weights with explicit influence limits, and writes a new checkpoint and rig report.
+
+Inputs:
+
+- approved source checkpoint inside the job root
+- output checkpoint path
+- stable runtime rig name
+
+The operation cannot download provider artifacts, read URLs, execute caller-supplied code, or overwrite an approved checkpoint.
+
 ### `blender_hoi4_create_rig_from_recipe`
 
 Creates a rig from a version-controlled recipe ID and structured landmark coordinates.
@@ -187,6 +199,19 @@ Uses a named semantic mapping, explicit FPS, frame range, root policy, and bake 
 ### `blender_hoi4_author_action_from_recipe`
 
 Creates mechanical or simple creature actions from a version-controlled recipe plus numeric key poses. Complex authored animation still requires artist review.
+
+### `blender_hoi4_author_humanoid_actions`
+
+Creates the repository-owned idle, move, attack, and death skeletal actions on an approved humanoid rig checkpoint at the requested calibrated FPS. The operation keys real bone transforms, removes scale channels, applies in-place root policy, saves a new checkpoint, and writes per-action reports.
+
+Inputs:
+
+- approved humanoid rig checkpoint inside the job root
+- output checkpoint path
+- explicit action-name map
+- FPS
+
+The action set cannot be replaced with a static pose or borrowed geometry.
 
 ### `blender_hoi4_audit_action`
 

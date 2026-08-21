@@ -86,20 +86,20 @@ if (-not $gateMatch.Success) {
 }
 $normalizedGate = $gateReplacement.TrimStart("`r", "`n")
 $toolText = $toolText.Remove($gateMatch.Index, $gateMatch.Length).Insert($gateMatch.Index, $normalizedGate)
-$toolText = [regex]::Replace($toolText, 'meshy-[0-6]', 'meshy-7')
+$toolText = [regex]::Replace($toolText, 'meshy-\d+', 'meshy-7')
 $toolText = $toolText.Replace('"meshy-7", "meshy-7", "meshy-7"', '"meshy-7"')
 [System.IO.File]::WriteAllText($generationToolPath, $toolText, $utf8NoBom)
 
 $schemaText = [System.IO.File]::ReadAllText($generationSchemaPath, $utf8NoBom)
-$schemaText = [regex]::Replace($schemaText, 'meshy-[0-6]', 'meshy-7')
+$schemaText = [regex]::Replace($schemaText, 'meshy-\d+', 'meshy-7')
 $schemaText = $schemaText.Replace("'meshy-7', 'meshy-7', or 'latest'", "'meshy-7'")
 $schemaText = $schemaText.Replace("'meshy-7', 'meshy-7', 'meshy-7', or 'latest'", "'meshy-7'")
 [System.IO.File]::WriteAllText($generationSchemaPath, $schemaText, $utf8NoBom)
 
 Get-ChildItem -LiteralPath (Join-Path $packageRoot "dist") -Recurse -Filter "*.js" | ForEach-Object {
 	$runtimeText = [System.IO.File]::ReadAllText($_.FullName, $utf8NoBom)
-	$runtimeText = [regex]::Replace($runtimeText, '(?i)meshy-[0-6]', 'meshy-7')
-	$runtimeText = [regex]::Replace($runtimeText, 'Meshy [0-6]', 'Meshy 7')
+	$runtimeText = [regex]::Replace($runtimeText, '(?i)meshy-\d+', 'meshy-7')
+	$runtimeText = [regex]::Replace($runtimeText, 'Meshy \d+', 'Meshy 7')
 	[System.IO.File]::WriteAllText($_.FullName, $runtimeText, $utf8NoBom)
 }
 
