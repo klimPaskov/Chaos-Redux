@@ -694,6 +694,80 @@ def main() -> int:
 			)
 
 	execution = read("common/scripted_effects/006_independence_wave_execution_effects.txt")
+	try:
+		standalone = extract_script_block(execution, "independence_wave_prepare_and_execute_standalone_incident")
+		receipt = extract_script_block(execution, "independence_wave_snapshot_standalone_terminal_receipt")
+	except ValueError as exc:
+		errors.append(str(exc))
+		standalone = ""
+		receipt = ""
+	for needle, label in (
+		("independence_wave_clear_standalone_terminal_receipt = yes", "standalone receipt reset"),
+		("independence_wave_snapshot_standalone_terminal_receipt = yes", "standalone terminal receipt snapshot"),
+		("liberation_release_begin_plan = yes", "standalone plan begin"),
+		("independence_wave_allocate_automatic_packages = yes", "standalone automatic allocation"),
+		("independence_wave_expand_selected_optional_territory = yes", "standalone optional territory pass"),
+		("independence_wave_execute_standalone_frozen_plan = yes", "standalone frozen execution"),
+	):
+		require(needle in standalone, f"standalone flow is missing {label}", errors)
+	if standalone:
+		require_order(
+			standalone,
+			[
+				("receipt reset", "independence_wave_clear_standalone_terminal_receipt = yes"),
+				("plan begin", "liberation_release_begin_plan = yes"),
+				("terminal receipt", "independence_wave_snapshot_standalone_terminal_receipt = yes"),
+			],
+			"standalone terminal receipt flow",
+			errors,
+		)
+	for needle, label in (
+		("global.independence_wave_terminal_receipt_plan_id", "plan id"),
+		("global.independence_wave_terminal_receipt_started_date", "started date"),
+		("global.independence_wave_terminal_receipt_committed_date", "committed date"),
+		("global.independence_wave_terminal_receipt_phase", "terminal phase"),
+		("global.independence_wave_terminal_receipt_last_failure", "last failure"),
+		("global.independence_wave_terminal_receipt_finalization_failure", "finalization failure"),
+		("global.independence_wave_terminal_receipt_rollback_failure", "rollback failure"),
+		("global.independence_wave_terminal_receipt_selected_count", "selected count"),
+		("global.independence_wave_terminal_receipt_target_count", "target count"),
+		("global.independence_wave_terminal_receipt_instantiated_count", "instantiated count"),
+		("global.independence_wave_terminal_receipt_transferred_state_count", "transferred state count"),
+		("global.independence_wave_terminal_receipt_prepared_count", "prepared count"),
+		("global.independence_wave_terminal_receipt_activated_count", "activated count"),
+		("global.independence_wave_terminal_receipt_validated_count", "validated count"),
+		("global.independence_wave_terminal_receipt_initialized_count", "initialized count"),
+	):
+		require(needle in receipt, f"terminal receipt is missing {label}", errors)
+	for needle, label in (
+		("set_global_flag = independence_wave_terminal_receipt_ready", "receipt-ready flag"),
+		("set_global_flag = independence_wave_terminal_receipt_committed", "committed outcome receipt"),
+		("set_global_flag = independence_wave_terminal_receipt_cancelled_before_mutation", "pre-mutation cancellation receipt"),
+		("set_global_flag = independence_wave_terminal_receipt_failed_after_mutation", "post-mutation failure receipt"),
+		("set_global_flag = independence_wave_terminal_receipt_failed_during_finalization", "finalization failure receipt"),
+		("set_global_flag = independence_wave_terminal_receipt_rolled_back_after_mutation", "compensating rollback receipt"),
+	):
+		require(needle in receipt, f"terminal receipt is missing {label}", errors)
+	for needle, label in (
+		("independence_wave_transfer_frozen_states = yes", "planned state transfer"),
+		("set_capital = {", "capital finalization"),
+		("is_independence_wave_dormant_country_scope = yes", "dormant-shell validation"),
+		("independence_wave_clear_plan_contribution = yes", "contribution cleanup"),
+	):
+		require(needle in execution, f"Event 006 execution is missing {label}", errors)
+	event_root = read("events/006_independence_wave.txt")
+	try:
+		root_entry = extract_script_block(event_root, "country_event")
+	except ValueError as exc:
+		errors.append(str(exc))
+		root_entry = ""
+	for needle, label in (
+		("independence_wave_joint_presentation_pending", "joint-delivery marker guard"),
+		("independence_wave_prepare_and_execute_standalone_incident = yes", "standalone fallback entry"),
+		("has_global_flag = independence_wave_standalone_incident_committed", "committed-only presentation gate"),
+		("country_event = { id = chaosx.nr6.2 }", "public report dispatch"),
+	):
+		require(needle in root_entry, f"Event 006 root is missing {label}", errors)
 	static_witness_protected_states = validate_static_20_witness(
 		binding_rows,
 		installed_reservation_rows,
