@@ -22,14 +22,14 @@ Prompt:
 | File | Purpose | Dimensions / format |
 |---|---|---|
 | `source/cxt_flag_imagegen.png` | Untouched native ImageGen source master | `1774x887`, RGB PNG |
-| `processed/cxt_flag_preview.png` | Cropped and resized review preview | `820x520`, RGB PNG |
-| `processed/cxt_flag_preview.dds` | Repository-standard BGRA DDS conversion of the processed review preview | `820x520`, legacy uncompressed one-level BGRA DDS |
+| `processed/cxt_flag_preview.png` | Cropped, hard-edged, controlled four-colour review derivative | `820x520`, RGB PNG |
+| `processed/cxt_flag_preview.dds` | Repository-standard BGRA DDS conversion of the flat processed review derivative | `820x520`, legacy uncompressed one-level BGRA DDS |
 | `contact_sheet.png` | Review sheet containing source, processed preview, and all runtime sizes | `1100x820`, RGB PNG |
 | `gfx/flags/CXT.tga` | Runtime normal flag | `82x52`, uncompressed 32-bit true-color TGA |
 | `gfx/flags/medium/CXT.tga` | Runtime medium flag | `41x26`, uncompressed 32-bit true-color TGA |
 | `gfx/flags/small/CXT.tga` | Runtime small flag | `10x7`, uncompressed 32-bit true-color TGA |
 
-The source was center-cropped from `1774x887` to `1399x887` to match the required `82:52` runtime aspect ratio, then resized mechanically. No local vector trace, palette swap, primitive redraw, or generated-art replacement was used.
+The source was center-cropped from `1774x887` to `1399x887` to match the required `82:52` runtime aspect ratio. The derivative was then deterministically classified into exactly four fixed RGB colours — charcoal `(31,32,35)`, toxic chartreuse `(184,224,4)`, white `(255,255,255)`, and crimson `(207,20,53)` — before nearest-neighbour export, producing hard colour-block edges with no gradient or vignette. No local vector trace, primitive emblem redraw, or generated-art replacement was used. The `10x7` ladder was manually simplified from the classified raster so a compact white reticle/diamond and two crimson warning pixels remain visible.
 
 ## Format and origin validation
 
@@ -43,9 +43,9 @@ The DDS preview was converted with `.agents/skills/chaos-redux-event-assets/tool
 
 ## Colour and design notes
 
-The design uses a dark charcoal field (dominant sampled RGB approximately `31,31,34`), a vivid toxic-chartreuse diagonal band (approximately `181,221,7`), pure white calibration geometry, and a restrained crimson warning wedge (approximately `207,18,53`). The central white calibration reticle is enclosed by a gear-like ring, with three asymmetric cardinal markers and the separate crimson warning accent. The silhouette remains visible in the normal and medium exports; the small export intentionally retains the strongest band/ring/marker contrast available at `10x7`.
+The flat derivative uses exactly four colours: dark charcoal `(31,32,35)`, vivid toxic chartreuse `(184,224,4)`, white `(255,255,255)`, and restrained crimson `(207,20,53)`. The central white calibration reticle is enclosed by a gear-like ring, with three asymmetric cardinal markers and the separate crimson warning accent. The normal and medium exports preserve the generated emblem silhouette with crisp block edges. The manually simplified small export uses a compact white reticle/diamond mark at the centre and a two-pixel crimson warning wedge at the lower-right of the mark.
 
-The source and all runtime exports are flat, orthographic flag graphics. There are no readable letters, numbers, text, watermarks, flagpoles, fabric folds, lighting, shadows, gradients as a design element, historical insignia, or real-world flag references.
+The source remains the untouched native ImageGen master; the processed preview and runtime ladder are the controlled flat derivative. The processed/runtime files contain no gradient, vignette, shading, readable letters, numbers, text, watermarks, flagpoles, fabric folds, lighting, shadows, historical insignia, or real-world flag references.
 
 ## Provenance and licensing
 
@@ -54,9 +54,9 @@ This is original fictional art generated for Chaos Redux with the built-in OpenA
 ## SHA-256 evidence
 
 - `source/cxt_flag_imagegen.png`: `BF509E0DF259B509861727ED73439A9D69B43D90F04C98A5029AF565A1B5FBC5`
-- `processed/cxt_flag_preview.png`: `86185A76316235D29EEC4234F9A68D7F346FD6D7481A3F9944839A115FFD3488`
-- `processed/cxt_flag_preview.dds`: `BEF5DFD1675300D4DF85C141F76384A846BFC8312DF6C0D43EB666B480576A7F`
-- `contact_sheet.png`: `AF15125CB29C2CA79EEED9416ED9E8A42D91E4ACD1720ACD7F9D5F6DA271C4EF`
-- `gfx/flags/CXT.tga`: `900685181AD5104EE93CE91E81BCD5F166A3BE74F19530EE279272CECC4DD31F`
-- `gfx/flags/medium/CXT.tga`: `7CB5854D1BA3B0D06D1BC128003486FA24E9EFFEE6D2FD6D283F97FCD5CCC418`
-- `gfx/flags/small/CXT.tga`: `B6ECC3A9A8EF2F5253926AAF5DB7C78B500CF148B537FB6FBE5B8636B40FDFC6`
+- `processed/cxt_flag_preview.png`: `5C5D0EA6905683D50EFE339B68392626FBBBDBA59E143BC8F4F17A804C900B50`
+- `processed/cxt_flag_preview.dds`: `8EFEF3F100CDE0FD2EB3ABD70DB038A4686E783E7776D37825ACC8C72E5D5FF3`
+- `contact_sheet.png`: `3CEAD75F2F3A7B4F4843C281E6A03BF6C9B42400A60479EF29B545E73ABE4BE3`
+- `gfx/flags/CXT.tga`: `668F84FB3AEDD878E17FFCFA0B8738B9134D261B3959B2BEE7591A50C663328E`
+- `gfx/flags/medium/CXT.tga`: `1DA1903266605501E3D9656A63ADF5A97F24C51B0191E9BB8C32F0AE692E7162`
+- `gfx/flags/small/CXT.tga`: `25E4766458B4785710EB36679D5C34B19C14B1A351644F7753C98EEF01AA6C48`

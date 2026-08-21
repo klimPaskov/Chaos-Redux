@@ -30,13 +30,14 @@
 
 - Canonical flat-flag references were inspected from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/`, including its ladder contact sheet.
 - Installed Vanilla `USA_communism.tga` normal, medium, and small files were inspected for TGA type, bit depth, descriptor, origin, and exact lengths.
-- All three CXT TGAs are type `2`, uncompressed, 32-bit, descriptor `0x08`, bottom-left origin, and exact required dimensions/lengths.
+- The source ImageGen PNG is unchanged; the processed preview and all runtime exports now contain exactly four RGB colours: charcoal `(31,32,35)`, toxic chartreuse `(184,224,4)`, white `(255,255,255)`, and crimson `(207,20,53)`.
+- All three CXT TGAs are type `2`, uncompressed, 32-bit, descriptor `0x08`, bottom-left origin, exact required dimensions/lengths, and no TGA footer or top-origin bit.
 - The processed preview was converted with the repository-standard DDS converter and its legacy BGRA header, dimensions, caps, and exact file length were checked.
-- `contact_sheet.png` visually compares the ImageGen source, processed crop, and all three decoded runtime ladders.
+- `contact_sheet.png` visually compares the untouched ImageGen source, flat processed crop, and all three decoded runtime ladders. The native `10x7` review shows the manually simplified white reticle/diamond and crimson warning pixels.
 - No `.gfx`, gameplay, localisation, country, event, spreadsheet, or shared documentation files were edited.
 
 ## Use notes and remaining risk
 
-The flag is deliberately artificial and symbolic: charcoal field, chartreuse proving band, white calibration/gear sigil, and one crimson warning marker. The normal and medium exports retain the emblem's outer silhouette. At `10x7`, the generated emblem necessarily compresses into a compact high-contrast mark; the contact sheet documents the native result.
+The flag is deliberately artificial and symbolic: charcoal field, chartreuse proving band, white calibration/gear sigil, and one crimson warning marker. The processed/runtime ladder is a genuinely flat four-colour derivative with hard edges and no gradient/vignette. The normal and medium exports retain the emblem's outer silhouette. At `10x7`, the manually simplified raster retains a compact white reticle/diamond and crimson warning pixels; the contact sheet documents the native result.
 
 No in-game validation is claimed. The parent agent should perform the normal CXT consumer check in its own runtime validation pass.
