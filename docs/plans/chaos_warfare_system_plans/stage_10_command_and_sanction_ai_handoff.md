@@ -1,5 +1,9 @@
 # Stage 10 command and sanction AI handoff
 
+## Later surface correction
+
+The twelve generic supply-chain decision variants described below are no longer player- or AI-accessible. Their identifiers and resolver remain migration-only. Current covert ordinary-agent deployment uses native operative operations.
+
 ## Status
 
 This tranche implements route-aware Headquarters role arbitration, condemned-target response profiles, automatic sanction participation, radical-route faction shielding, continued biological pressure near victory, and ordinary-release shutdown during national collapse.
@@ -48,7 +52,7 @@ The participant loop is not a broad all-country on action. It runs only from a c
 
 ## Biological operation continuity
 
-The four ordinary strategic raids, four ordinary battlefield raids, four ordinary operative releases, twelve accepted supply-chain sabotage variants, and two Japan-China campaign actions stop receiving AI selection when the actor reaches its own near-capitulation threshold.
+The four ordinary strategic raids, four ordinary battlefield raids, four ordinary operative releases, and two Japan-China campaign actions stop receiving AI selection when the actor reaches its own near-capitulation threshold.
 
 An unrestricted actor under formal censure receives the continued-operation factor only while a current enemy has crossed the exact near-victory surrender threshold.
 
@@ -56,7 +60,7 @@ The separate weaponized-zombie operation is not part of this rule.
 
 The doomsday decision remains separate. Ordinary release routes never substitute for it during collapse.
 
-The accepted covert food, water, and medical supply-chain decisions remain distinct from ordinary strategic and battlefield biological raids and do not replace them.
+The retired food, water, and medical supply-chain decisions receive no AI selection. Native operative operations remain distinct from strategic and battlefield biological raids.
 
 ## Biological potency and raid probability
 

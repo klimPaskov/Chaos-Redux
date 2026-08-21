@@ -9,7 +9,7 @@ Status markers used in the reconciliation below: `[x]` means exact current sourc
 | Native selected-state Chemical air raid | `[~]` source-audited | Native reservation, selected-state preservation, shared dispatch, and failed-attempt accounting are source-proven; live consumer validation remains user-owned. |
 | Continuous ordinary-air contamination | `[!]` fail-closed | No verified current-version eligible-activity hook exists; no estimator or fallback is permitted. |
 | Ground Chemical exact-state operation | `[!]` fail-closed | Exact Army Headquarters weather/terrain receipt remains unavailable. |
-| Nerve suppression | `[x]` supported camp route | Toxic Armored Warfare mastery unlocks nerve-agent camp methods after a nerve agent is researched; real payload, deaths, contamination, evidence, and consequences use the existing camp pipeline. |
+| Nerve suppression | `[x]` supported camp route | Gas-Chamber Saturation Drills unlocks nerve-agent camp methods after a nerve agent is researched; real payload, deaths, contamination, evidence, and consequences use the existing camp pipeline. |
 | Hardened Mobile Plant | `omitted` | No exact bombing or facility-capture equipment-loss transaction is exposed; the trait and its substitute reliability bonus were removed. |
 | Native decision-category presentation | `[x]` accepted | Native categories are accepted; no new all-purpose scripted GUI is required. |
 | Window-only animation concepts | `rejected` for the current surface | No accepted custom-window consumer exists for the readiness seal, contamination border, or operation-preparation concepts. |
@@ -17,6 +17,8 @@ Status markers used in the reconciliation below: `[x]` means exact current sourc
 | Historically sourced unique national MIO identities | `skipped as non-core` | Generic family identities, distinct trees, and differentiated country AI remain active; no historical corporation is invented. |
 
 The supported-core checklist is reconciled against source evidence and explicit omissions. A checked item has the evidence named below; an omitted engine-bound surface remains a disclosed blocker for user review.
+
+The final supported-core disposition, fresh specialist handoffs, anti-bloat corrections, facility stream repair, and exact remaining blockers are recorded in `docs/plans/chaos_warfare_system_plans/2026-08-21_supported_core_closure_audit.md`.
 
 ## Doctrine
 
@@ -91,7 +93,7 @@ The supported-core checklist is reconciled against source evidence and explicit 
 
 - [x] nerve suppression uses the exact selected camp action rather than the unsupported occupation estimator
 - [x] researched nerve-agent camp methods debit payload and create deaths, contamination, evidence, and consequences
-- [x] no genocide infrastructure is unlocked by doctrine
+- [x] Gas-Chamber Saturation Drills unlocks the stronger camp killing method, while construction and activation of camp infrastructure remain owned by the existing repression system
 - [x] separately active camp responsibility can be discovered after liberation
 
 ## Shared consequences
@@ -155,7 +157,7 @@ Generic achievement registry `possible = { always = yes }` is presentation-only;
 - [x] AI scenarios recorded for seven major country profiles and three minor profiles
 - [x] exact air-operation hook result documented
 - [x] no broad unapproved global pulse added
-- [x] state-target audit found no CBRN decision that exposes every ordinary controlled state; retained state targets require exact incidents, facilities, evidence, occupation records, sabotage objectives, or battlefield objectives
+- [x] state-target audit found no active CBRN decision that exposes every ordinary controlled state; the generic biological state-card family and superseded coercive occupation route are invisible migration surfaces, external occupation aid requires an exact chemical alert, contamination, outbreak, or trauma record, and other retained state targets require exact incidents, facilities, evidence, historically bounded campaign objectives, or battlefield objectives
 - [x] final reward-density and bloat audit confirms substantial returns without adding a duplicate subsystem
 - [x] completion auditor's supported-core source blocker is closed; remaining engine and live-consumer limits are disclosed below
 

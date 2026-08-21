@@ -76,7 +76,7 @@ Exact names should follow repository convention.
 | `common/decisions/categories/cbrn_warfare_categories.txt` | decision categories and scripted GUI entry |
 | `common/scripted_guis/cbrn_warfare_scripted_guis.txt` | custom CBRN window if accepted |
 | `common/scripted_localisation/cbrn_warfare_scripted_localisation.txt` | dynamic values, targets, requirements and status |
-| `common/ai_strategy/cbrn_warfare_ai.txt` | posture, research, production, templates, use and response |
+| `common/ai_strategy/cbrn_country_profiles.txt`, `cbrn_protection_production.txt`, `cbrn_regimental_support.txt`, `chemical_warfare_research.txt`, `chemical_warfare_cylinders.txt`, `chemical_warfare_livens.txt`, `chemical_warfare_tank_shells.txt`, and `biological_warfare_production.txt` | posture, research, protection, payload, unit, and production differentiation |
 | `common/military_industrial_organization/organizations/cbrn_organizations.txt` | generic and country program designers if current schema uses this path |
 | `common/military_industrial_organization/policies/cbrn_policies.txt` | only if verified and useful |
 

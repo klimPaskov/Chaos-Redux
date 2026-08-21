@@ -12,6 +12,8 @@ The principal player-reward weakness was not missing content. Several active rew
 
 Adding another agent family, support-company family, headquarters company, general CBRN meter, all-purpose scripted GUI, delivery estimator, or ordinary-use event chain would duplicate existing decisions without adding meaningful player choice. Those additions are rejected as bloat.
 
+The later 2026-08-21 closure pass removes two further card-volume risks. The twelve generic biological supply-chain state-target decisions can no longer list new targets because their shared actor gate is migration-only, while the four native espionage operations remain the covert route. External occupation aid now requires an exact chemical alert, contamination, outbreak, or trauma record, so it cannot create cards for every ordinary occupied state.
+
 ## Reward-density result
 
 ### Doctrine and mastery

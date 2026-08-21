@@ -1,5 +1,9 @@
 # CBRN decision-surface and state-card closure
 
+## Later correction
+
+The generic biological supply-chain decision family and the superseded coercive occupation authorization are now invisible migration surfaces. They cannot create new state cards. Covert ordinary-agent deployment uses native operative operations, while Protected Occupation Administration and exact external protective aid remain supported.
+
 Date: 2026-08-15
 
 Status: supported playable core remains source-ready. No additional decision family or scripted GUI is recommended.
@@ -10,7 +14,7 @@ The CBRN decision presentation is dormant at new-game startup unless a scenario 
 
 The routine protection layer no longer creates one decision card for every controlled state. `cbrn_priority_state_mask_issue`, `cbrn_full_state_mask_distribution`, `cbrn_replace_state_mask_filters`, and `cbrn_supply_occupied_population` are country-level timed programs. Their completion helpers serve only eligible controlled states, preserve the accepted population-scaled stock transactions, serve the capital first where applicable, stop when real mask stock is exhausted, and cancel cleanly if their stock or eligible work disappears.
 
-Exact-state decisions remain only where selecting or responding to a real local state is the mechanic. The retained families cover verified chemical alerts and contamination, targeted battlefield releases, biological sabotage, raid staging and arsenal facilities, occupied-state measures, forensic evidence, international decontamination, and tracked disease incidents. The state-target audit found no remaining CBRN predicate that exposes every ordinary controlled state.
+Exact-state decisions remain only where selecting or responding to a real local state is the mechanic. The retained families cover verified chemical alerts and contamination, supported battlefield objectives, raid staging and arsenal facilities, historically bounded Japan actions, protective occupation measures, forensic evidence, international decontamination, and tracked disease incidents. The generic biological state-card family is disabled, and the state-target audit found no active CBRN predicate that exposes every ordinary controlled state.
 
 All 73 audited Chemical, Biological, CBRN, and Condemnation event definitions remain `is_triggered_only = yes`. No MTTH event or broad daily, weekly, or monthly all-country CBRN pulse was introduced.
 
@@ -34,4 +38,4 @@ The required AI comparison ran across the four converted programs and retained d
 
 Stop broad expansion. The correction makes the existing loop quieter and more legible without reducing exact-state operations. Another general CBRN meter, all-purpose scripted GUI, state-card family, periodic reveal pulse, or decision-store layer would add maintenance and player noise without adding a new choice.
 
-The genuine engine and user-owned limits recorded in `2026-08-09_reward_density_and_bloat_audit.md` remain unchanged. Continuous ordinary-air contamination, unavailable exact ground-condition receipts, the separate legacy selected-state occupation suppression operation, Hardened Mobile Plant, receipt-dependent skipped achievements, and live in-game consumer validation remain disclosed omissions. No estimator, proxy target, neutral condition receipt, random-state fallback, or broad periodic pulse was introduced.
+The genuine engine and user-owned limits recorded in `2026-08-09_reward_density_and_bloat_audit.md` remain unchanged. Continuous ordinary-air contamination, unavailable exact ground-condition receipts, the separate legacy selected-state occupation suppression operation, Hardened Mobile Plant, receipt-dependent skipped achievements, and live in-game consumer validation remain disclosed omissions. The generic biological state-card family is retired as unnecessary bloat. No estimator, proxy target, neutral condition receipt, random-state fallback, or broad periodic pulse was introduced.

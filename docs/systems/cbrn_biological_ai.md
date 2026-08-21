@@ -81,7 +81,7 @@ Their different payload reservations, preparation costs, lifecycle profiles, cou
 - `cbrn_ai_has_conventional_army_deficit` pauses offensive expansion before ordinary army supply is sacrificed.
 - Special-project completion grants the exact delivery technology that enables the exact payload model.
 - Ordinary strategic and battlefield deployment remains on the raid surfaces.
-- Ordinary covert food, water, and medical supply-chain sabotage uses both the native exact-state land-raid category and the separate exact-state timed covert-decision family with agent-and-doctrine variants; it does not replace either ordinary strategic or battlefield raid surface. The two historically scoped Japan-China actions and biological doomsday release remain decisions.
+- Ordinary covert deployment uses the four native operative operations. The generic state-target supply-chain decision family is invisible migration code because it would generate one card per eligible state. Strategic and battlefield deployment remain raids, while the two historically scoped Japan-China actions and biological doomsday release remain decisions.
 - Historically precise Japan-China campaign releases remain targeted decisions.
 - Biological doomsday release remains a decision.
 - An unrestricted actor under formal censure receives a continuation preference only when a current enemy has reached the exact near-victory surrender threshold.
