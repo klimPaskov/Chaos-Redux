@@ -1,6 +1,10 @@
 # Stage 7 Biological Supply-Chain Sabotage Validation
 
-Status: the exact-state timed covert-decision route is live. Strategic and battlefield biological delivery remain on their dedicated raid surfaces. Stage 7 and the overall Chaos Warfare goal remain incomplete.
+## Superseded player surface
+
+This file records the original implementation proof. The generic twelve-decision surface is no longer player- or AI-accessible because native state-target decisions create one card per eligible state. Its identifiers, committed ledger, resolver, and cleanup remain only for migration safety. Current covert ordinary-agent deployment uses native operative operations.
+
+Status: historical validation record for an invisible migration route. Strategic and battlefield biological delivery remain on their dedicated raid surfaces.
 
 ## Accepted requirement coverage
 

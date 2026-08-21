@@ -223,7 +223,7 @@ It targets concentrated armies and supply areas. It has lower strategic spread t
 
 ### Sabotage of food, water, or medical systems
 
-Covert decision family. It creates lower initial dose, high attribution uncertainty, and severe political consequence after discovery.
+Covert deployment uses the native operative-operation family. It creates lower initial dose, high attribution uncertainty, and severe political consequence after discovery without generating one decision card for every eligible state.
 
 ## Chaos Warfare doctrine interaction
 
@@ -232,6 +232,8 @@ Chaos Warfare doctrine is an escalation path. It may raise seed potency, outbrea
 Condemnation is the only consequence record doctrine may reduce. Doctrine may not reduce physical payload debit, evidence, attribution, deaths or death history, contamination or contamination history, medical saturation or medical history, confirmed-use history, domestic war-support penalties, biological-use counters, accident records, resistance trauma, or public-harm floors.
 
 Doctrine cannot create, reveal, authorize, or unlock camps, extermination sites, experiment sites, restricted chemical sites, or generic concentration laws. Any separately authorized interaction with an existing camp system is limited to increasing its already resolved killing efficiency. It cannot change that system's evidence, discovery, responsibility, resistance, trauma, Condemnation, or historical records.
+
+Specification 08 contains the later accepted camp-specific correction. Gas-Chamber Saturation Drills may reduce new forensic-evidence generation for that one existing-camp nerve method while preserving evidence and every other record. The exception does not apply to biological operations or any other CBRN route.
 
 ## Current implementation boundary
 
@@ -247,9 +249,7 @@ The current-version `on_operative_captured` hook reads the captured character's 
 
 Theater Contamination and Terminal Hazard doctrine increase operation success and refund bounded Command Power after resolution while leaving the native equipment cost intact. Operation AI uses defensive-profile suppression and agent-specific target-country evidence. The native API cannot rank the eventual selected state, and current-version triggers expose no exact state-scope frontline predicate; Tularemia therefore uses only verified troop-presence and supply-node evidence rather than unrelated buildings or an estimator.
 
-The covert supply-chain sabotage tranche implements four exact-state timed decision families for Anthrax, Plague, Tularemia, and Smallpox. Each player-facing action penetrates the selected state's combined public food, water, and medical network, immediately consumes the exact matching payload model, support equipment, and Command Power, and preserves its selected state and victim controller in a committed ledger. Partial and full releases enter the shared ordinary lifecycle through the private `food_water_medical_sabotage` route. Failed or cancelled attempts can create low-confidence evidence and hidden Condemnation only when the complete committed ledger remains provable; they never create release or completed-use history. Invalid records fail closed without an alternate state, proxy, payload refund, or doctrine Command Power refund.
-
-The three mutually exclusive doctrine variants keep every preparation time inside the accepted 120–300-day range. Theater Contamination and Terminal Hazard increase success, shorten preparation and cooldown, raise downstream biological harm through the shared lifecycle, and refund bounded Command Power only after a valid resolution. They do not reduce payload or support-equipment debit, evidence, attribution, deaths, contamination, medical saturation, history, or public-harm floors. Route-aware AI uses retaliation, first-use and unrestricted-use authority, defensive-profile suppression, domestic safety, national consequence exposure, agent-specific target evidence, and the Japan-China historical profile without inventing a target state.
+The generic exact-state supply-chain decision tranche is retired. Native `state_target` decisions expand into one card for every eligible state, which violates the accepted non-spam decision-surface rule. The four native operative operations provide the covert ordinary-agent route, the Japan–China campaign retains its two historically bounded exact-state decisions, strategic and battlefield deployment retain their raid surfaces, and doomsday release remains a decision. Legacy supply-chain decision identifiers and resolvers remain fail-closed for migration: no country can list a new target, while an already committed exact ledger can still finish or clean up without an alternate state, proxy, payload refund, or fabricated release.
 
 The ordinary lifecycle reads `smallpox_vaccination_program_idea` directly for agent-specific growth, spread, and death multipliers. Recovery calls `bio_lifecycle_cleanup_state_response_if_no_ordinary_episode` for the exact state. This removes field hospitals, quarantine, stale legacy protection state, and the quarantine modifier only after no ordinary episode remains.
 

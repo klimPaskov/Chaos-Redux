@@ -106,7 +106,7 @@ Audit double counting.
 
 ## Stage 9: Suppression and occupation
 
-Implement Nerve Agent Suppression as a targeted decision with immediate value, delayed trauma, deaths, evidence, and Condemnation. Remove doctrine-linked genocide terminology and maintain camp-system separation.
+Implement Nerve-Agent Camp Methods as the killing-efficiency mastery reward of Gas-Chamber Saturation Drills. The mastery plus any researched nerve agent unlocks the method; runtime use consumes real cylinders and records deaths, contamination, resistance trauma, evidence, attribution, and Condemnation through the established camp action. Retain the superseded selected-state occupation route only as invisible migration code.
 
 ## Stage 10: AI and country differentiation
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The supported occupation CBRN system provides two distinct occupation policies and real protective aid to foreign-occupied civilians. The old mobile nerve-suppression operation is retained as inactive compatibility code because the installed engine surface does not provide its selected-state condition and target-loss receipts. The accepted nerve-suppression gameplay route instead belongs to Gas-Chamber Saturation Drills: the doctrine mastery unlocks nerve-agent camp methods once a nerve agent is researched, and the established camp transaction supplies the exact target, payload debit, deaths, contamination, evidence, and consequence record.
+The supported occupation CBRN system provides Protected Occupation Administration and real protective aid to foreign-occupied civilians during an exact chemical alert, chemical contamination incident, biological outbreak, or recorded nerve-suppression trauma. This incident gate prevents the global state-target decision from listing every ordinary occupied state. CBRN Coercive Security and the old mobile nerve-suppression operation are retained as inactive compatibility code because the installed engine surface does not provide the selected-state condition and target-loss receipts required by that route. The accepted nerve-suppression gameplay route instead belongs to Gas-Chamber Saturation Drills: the doctrine mastery unlocks nerve-agent camp methods once a nerve agent is researched, and the established camp transaction supplies the exact target, payload debit, deaths, contamination, evidence, and consequence record.
 
 The doctrine does not create a camp by itself, but its third Toxic Armored Warfare mastery authorizes a stronger and more efficient nerve-agent method in an already active camp network. A researched Tabun, Sarin, or Soman technology and enough matching cylinders are the only additional method requirements. The camp system retains ownership of infrastructure, responsibility, resistance, discovery, evidence, deaths, contamination, and Condemnation.
 
@@ -14,13 +14,13 @@ The following occupation-policy and mobile-detachment material describes retaine
 
 ### Occupation policies
 
-### CBRN Coercive Security
+### CBRN Coercive Security (inactive compatibility)
 
 Authorization costs 75 Political Power and requires Armor mastery 3, Armored Agent Delivery, an eligible completed nerve-agent project, and advanced protection.
 
-The law provides a strong resistance-target reduction at the cost of compliance, local factories, local resources, garrison equipment pressure, and increased garrison damage. It authorizes the later nerve-suppression decision surface but does not release an agent or create a consequence by itself.
+The identifier and law effects remain for migration, but no player or AI can newly authorize this route. Existing records do not release an agent or create a consequence by themselves.
 
-The AI can authorize and select the law only with an aggressive route, extreme-use policy, advanced protection, a real nerve-agent stockpile, the complete operation support package, high Chemical Readiness, a fielded Nerve Suppression Detachment, tolerable Condemnation and import vulnerability, and no mask replacement backlog.
+The AI cannot newly authorize or select this law.
 
 ### Protected Occupation Administration
 

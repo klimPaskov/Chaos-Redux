@@ -358,6 +358,8 @@ Unlocks:
 
 The later accepted doctrine clarification limits mitigation to Condemnation impact. Doctrine may increase physical CBRN harm and may reduce the Condemnation result through the bounded shared multiplier, but it cannot reduce or erase friendly deaths, accidental spread, evidence, attribution, contamination, trauma, responsibility, history, or any other physical or forensic consequence.
 
+The still-later accepted correction in specification 08 governs one narrow exception: Gas-Chamber Saturation Drills may reduce the amount of new forensic evidence produced by its existing-camp nerve method. It cannot erase evidence, discovery, responsibility, attribution, deaths, contamination, trauma, Condemnation, or history, and the exception does not apply to any other CBRN route.
+
 ### Mastery 5: Theater CBRN Overmatch
 
 Unlocks:

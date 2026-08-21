@@ -1,5 +1,9 @@
 # Stage 7: Biological Lifecycle, Delivery, Safety, and Countermeasures
 
+## Later surface correction
+
+The generic twelve-decision supply-chain tranche described below is retired from player and AI access because native state-target decisions create one card per eligible state. Its identifiers and exact ledger remain migration-only. Active covert ordinary-agent deployment uses the four native operative operations; strategic and battlefield delivery remain raids; Japan's historically bounded actions and doomsday release remain decisions.
+
 Status: in progress. The overall Chaos Warfare goal remains incomplete.
 
 Disposition: partially implemented and still active. The completed tranche below is implemented. All remaining acceptance work stays queued in this plan.

@@ -10,6 +10,10 @@ It is not an in-game test claim. Repository policy assigns live Hearts of Iron I
 
 The later core-first disposition removes unsupported surfaces from the completion gate. The inactive definitions remain migration-safe compatibility code behind false verified-current-version hooks, and their player-facing selector or commissioning controls require those same hooks. This report does not treat their absence as supported behavior.
 
+The 2026-08-21 anti-bloat correction also retires the twelve generic biological supply-chain state-target decision variants. Existing committed records retain their resolver and cleanup path, but no new cards can be listed. The active covert biological route is the four native espionage operations; strategic and battlefield raids, historically bounded Japan-China decisions, facility recovery raids, and the doomsday decision remain distinct supported consumers.
+
+External protective occupation aid remains supported only for a state with an exact chemical alert, chemical contamination, biological outbreak, or recorded nerve-suppression trauma. Ordinary occupied states do not generate aid cards, and nonhuman Chaos countries cannot enter the occupation category.
+
 The `hoi4.probability_inspect` AI-strategy audit verified the installed game as Operation Postern 1.19.2.0 with checksum `d245`, scanned `common/ai_strategy/cbrn_country_profiles.txt`, and found 57 current strategy-factor consumers with no unsupported parser construct. Its pool is intentionally incomplete because strategy factors modify downstream scores and are not a categorical probability pool. The result is score evidence, not click probability.
 
 ## Achievement reachability audit

@@ -57,8 +57,11 @@ cbrn_occupation_protected_administration_authorization_requirements = {
 }
 
 cbrn_occupation_category_visible = {
+	NOT = { is_actual_nonhuman_country = yes }
 	OR = {
+		# Existing compatibility records may still need disclosure or cleanup.
 		has_country_flag = cbrn_occupation_nerve_suppression_history
+		# The defensive occupation and external-aid routes remain supported.
 		AND = {
 			cbrn_operations_decision_surface_is_unlocked = yes
 			any_controlled_state = {
@@ -66,11 +69,13 @@ cbrn_occupation_category_visible = {
 				NOT = { is_core_of = ROOT }
 			}
 			OR = {
-				has_country_flag = cbrn_occupation_coercive_security_authorized
 				has_country_flag = cbrn_occupation_protected_administration_authorized
-				cbrn_occupation_coercive_security_authorization_requirements = yes
 				cbrn_occupation_protected_administration_authorization_requirements = yes
 			}
+		}
+		AND = {
+			cbrn_occupation_country_can_supply_external_protective_aid = yes
+			any_state = { cbrn_occupation_state_can_receive_external_protective_aid = yes }
 		}
 	}
 }
@@ -470,10 +475,25 @@ cbrn_occupation_ai_can_prepare_nerve_suppression = {
 }
 
 cbrn_occupation_country_can_supply_external_protective_aid = {
+	NOT = { is_actual_nonhuman_country = yes }
 	has_country_flag = cbrn_program_established
 	cbrn_country_has_any_mask_stock = yes
 	NOT = {
 		num_of_civilian_factories_available_for_projects < constant:cbrn_occupation_decision_cost.protective_aid_factories
+	}
+}
+
+cbrn_occupation_state_has_external_protective_aid_emergency = {
+	OR = {
+		has_state_flag = cbrn_chemical_raid_alert_active
+		cbrn_state_has_chemical_contamination = yes
+		is_biowarfare_contaminated_state = yes
+		AND = {
+			has_variable = cbrn_occupation_nerve_suppression_trauma
+			check_variable = {
+				cbrn_occupation_nerve_suppression_trauma > constant:cbrn_math.zero
+			}
+		}
 	}
 }
 
@@ -486,6 +506,7 @@ cbrn_occupation_state_can_receive_external_protective_aid = {
 	NOT = { is_core_of = controller }
 	NOT = { has_state_flag = cbrn_protection_project_active }
 	NOT = { has_state_flag = cbrn_occupation_external_aid_project_active }
+	cbrn_occupation_state_has_external_protective_aid_emergency = yes
 	cbrn_state_has_occupied_distribution_gap = yes
 }
 
