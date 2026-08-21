@@ -263,6 +263,14 @@ Post-change inspect artifact:
 
 `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d50225f5bcca59e5c139eedb0afa694ce5140a710e2412d76725b35693729519/f03819061f531acda6aec1607cdb06d7501217e285bdb2de230b9705cec6a213/gui-inspect.28f1ae5094bca1e4.json`
 
+Post-change comparison render artifact:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/29182e68329fd1531a7a026e2b5db937a9a6bc19b2cb30734fb6d8b71447c95e/fe61d8cdeb46d0057d3990579009187859210eeecab265af327fd0327a5b4908/utopia_manifesto_ledger_container-full.svg`
+
+The post-change render repeated the pre-change normal, hover, selected, disabled, warning, active, long-text, and missing-localisation matrix at `1920x1080` UI scale `1.0`, `1366x768` UI scale `1.0`, and `2560x1440` UI scale `1.25` with the pre-change scenario supplied as the comparison baseline.
+
+Its SHA-256 is `29182e68329fd1531a7a026e2b5db937a9a6bc19b2cb30734fb6d8b71447c95e`, identical to the pre-change full-window render, proving that the localisation-only repair did not change geometry, hierarchy, state placement, or click layout.
+
 Post-fix scoped results:
 
 - 75 inspected elements
@@ -272,9 +280,7 @@ Post-fix scoped results:
 - 35 localisation references resolving
 - exactly one Utopia decision-category scripted-GUI attachment
 
-The post-change proof is an inspect artifact rather than a new full render because the source change only supplied missing tooltip strings and did not change geometry, sprites, states, visibility, or click regions.
-
-The before render and after inspect therefore establish unchanged layout plus repaired localisation resolution.
+The before-and-after renders establish unchanged layout, hierarchy, state placement, and click geometry, while the post-change inspect establishes repaired localisation resolution.
 
 ## Files changed by this audit
 
