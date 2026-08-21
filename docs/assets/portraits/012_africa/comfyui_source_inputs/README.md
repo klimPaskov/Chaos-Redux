@@ -1,11 +1,11 @@
 # Event 012 ComfyUI source inputs
 
-Use only the PNG files in this folder for the user-run ComfyUI portrait workflow.
+Use only the 17 named PNG files in the table below for the user-run ComfyUI portrait workflow.
 
-Each grounded portrait has exactly one authoritative pre-resize source input here.
-The filenames already match their intended runtime portrait basenames, so select the PNG for the portrait you are replacing and drop that single file into the workflow.
+Each grounded portrait has one authoritative pre-resize PNG input in the table. The filenames already match their intended runtime portrait basenames, so select the PNG for the portrait you are replacing and drop that single file into the workflow.
 
-This folder deliberately contains no `156x210` images, DDS files, fictional ImageGen portraits, evolution art, contact sheets, crop metadata, or rejected alternatives.
+None of the authoritative workflow inputs is a `156x210` export. The folder contains no DDS files, fictional ImageGen portraits, evolution art, contact sheets, or crop metadata.
+`portrait_012_africa_priority_merina_sovereign_source_radama_i.jpg` is retained as evidence only. It is not a ComfyUI input and has no current runtime consumer.
 Do not use similarly named files elsewhere in the Event 012 archive as ComfyUI inputs; those are provenance, processing, or runtime evidence.
 
 | ComfyUI input | Grounded subject | Runtime portrait target |
