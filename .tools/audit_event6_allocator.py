@@ -1086,6 +1086,32 @@ def main() -> int:
 				errors,
 			)
 
+	# Dormant Event 006 carriers must be checked through their fixed anchor
+	# state, never through capital_scope. A dormant carrier has no valid capital
+	# by design, so capital_scope here produces the runtime error reported for
+	# BBX, BAX, and AXX and can suppress the package pool before allocation.
+	for relative_path, anchor_state, host_tag in (
+		("common/scripted_triggers/006_independence_wave_epirus_package_triggers.txt", "185", "GRE"),
+		("common/scripted_triggers/006_independence_wave_thrace_package_triggers.txt", "184", "GRE"),
+		("common/scripted_triggers/006_independence_wave_banat_package_triggers.txt", "82", "ROM"),
+	):
+		package_triggers = read(relative_path)
+		require(
+			"capital_scope" not in package_triggers,
+			f"dormant package trigger {relative_path} still dereferences capital_scope",
+			errors,
+		)
+		require(
+			re.search(rf"(?m)^\s*{anchor_state}\s*=\s*\{{", package_triggers) is not None,
+			f"dormant package trigger {relative_path} lost fixed anchor state {anchor_state}",
+			errors,
+		)
+		require(
+		f"owner = {{ exists = yes tag = {host_tag} }}" in package_triggers,
+		f"dormant package trigger {relative_path} lost host-owner proof for {host_tag}",
+		errors,
+	)
+
 	if errors:
 		print("Event 006 allocator audit FAILED")
 		for error in errors:
