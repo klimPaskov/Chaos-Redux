@@ -2,7 +2,7 @@
 
 ## Result
 
-The one approved native ImageGen reference was submitted once to Meshy 6 and completed as task `019fd39c-3f8e-7f96-bd04-214ccbb7d64f` in response group `d60d46ca-ef2d-43f4-ab50-84b883e9e946`. The provider consumed 30 credits. The GLB and FBX outputs, request/response evidence, hashes, Blender checkpoints, previews, DDS packs, exports, and reimport proof are retained under `docs/assets/020_black_plague/models_3d/rat_ground_unit_shared/`.
+The one approved native ImageGen reference was submitted once to a legacy Meshy provider task `019fd39c-3f8e-7f96-bd04-214ccbb7d64f` in response group `d60d46ca-ef2d-43f4-ab50-84b883e9e946`. The provider consumed 30 credits. The GLB and FBX outputs, request/response evidence, hashes, Blender checkpoints, previews, DDS packs, exports, and reimport proof are retained under `docs/assets/020_black_plague/models_3d/rat_ground_unit_shared/`. Meshy 7 is required for future generation.
 
 ## Production evidence
 

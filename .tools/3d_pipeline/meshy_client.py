@@ -38,6 +38,16 @@ REQUIRED_KEY_MESSAGE = (
 )
 
 
+class MeshyTaskFailed(MCPRouteError):
+    """Carry the provider's final task payload into immutable failure evidence."""
+
+    def __init__(self, task_id: str, status: str, final: Dict[str, Any]):
+        super().__init__(f"Meshy task {task_id} ended in {status}.")
+        self.task_id = task_id
+        self.status = status
+        self.final = final
+
+
 def require_meshy_key() -> None:
     """Hard gate before any provider or downstream work."""
 
@@ -126,6 +136,7 @@ class MeshyClient:
             "provider": "meshy",
             "server_package": "@meshy-ai/meshy-mcp-server",
             "server_version": os.environ.get("MESHY_MCP_VERSION", "0.4.0"),
+            "server_compatibility": "chaos-redux-meshy-7-v4",
             "tool": tool,
             "paid": paid,
             "request": redacted_arguments,
@@ -192,7 +203,11 @@ class MeshyClient:
         )
 
     def check_balance(self) -> Dict[str, Any]:
-        return self.call("meshy_check_balance", {}, paid=False, timeout_seconds=120)
+        # The pinned stdio server can take longer than two minutes to resolve
+        # and complete a cold authenticated probe even when the route is
+        # healthy. Keep this read-only hard gate below the paid-call timeout,
+        # but do not misclassify verified startup latency as a provider failure.
+        return self.call("meshy_check_balance", {}, paid=False, timeout_seconds=300)
 
     def image_to_3d(
         self,
@@ -259,7 +274,7 @@ class MeshyClient:
             if status in {"SUCCEEDED", "SUCCESS", "COMPLETED", "DONE"}:
                 return last
             if status in {"FAILED", "ERROR", "CANCELED", "CANCELLED"}:
-                raise MCPRouteError(f"Meshy task {task_id} ended in {status}.")
+                raise MeshyTaskFailed(task_id, status, last)
         raise MCPRouteError(f"Meshy task {task_id} did not finish within {timeout_seconds}s.")
 
     def download(

@@ -13,6 +13,48 @@ class MCPRouteError(RuntimeError):
     """Raised when an MCP process cannot initialize or complete a call."""
 
 
+def _terminate_windows_descendants(root_pid: int) -> None:
+    """Clean up only processes spawned beneath one completed MCP wrapper."""
+
+    if os.name != "nt":
+        return
+    script = r"""
+$rootPid = [int]$env:CHAOSX_MCP_ROOT_PID
+$all = @(Get-CimInstance Win32_Process)
+$known = [System.Collections.Generic.HashSet[int]]::new()
+$null = $known.Add($rootPid)
+$descendants = [System.Collections.Generic.List[int]]::new()
+do {
+	$added = $false
+	foreach ($process in $all) {
+		if ($known.Contains([int]$process.ParentProcessId) -and -not $known.Contains([int]$process.ProcessId)) {
+			$null = $known.Add([int]$process.ProcessId)
+			$descendants.Add([int]$process.ProcessId)
+			$added = $true
+		}
+	}
+} while ($added)
+for ($index = $descendants.Count - 1; $index -ge 0; $index--) {
+	Stop-Process -Id $descendants[$index] -Force -ErrorAction SilentlyContinue
+}
+Stop-Process -Id $rootPid -Force -ErrorAction SilentlyContinue
+"""
+    process_env = os.environ.copy()
+    process_env["CHAOSX_MCP_ROOT_PID"] = str(root_pid)
+    try:
+        subprocess.run(
+            ["powershell.exe", "-NoProfile", "-Command", script],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            env=process_env,
+            timeout=15,
+            check=False,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+    except (OSError, subprocess.SubprocessError):
+        pass
+
+
 def _json_lines(output: str) -> Iterable[Dict[str, Any]]:
     decoder = json.JSONDecoder()
     cursor = 0
@@ -73,24 +115,42 @@ def call_stdio(
         process_env.update(env)
     request = "\n".join(json.dumps(message, separators=(",", ":")) for message in messages) + "\n"
 
+    process: Optional[subprocess.Popen[str]] = None
     try:
-        completed = subprocess.run(
+        process = subprocess.Popen(
             list(command),
-            input=request,
             text=True,
             encoding="utf-8",
             errors="replace",
+            stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=str(cwd) if cwd else None,
             env=process_env,
-            timeout=timeout_seconds,
-            check=False,
+        )
+        stdout_text, stderr_text = process.communicate(request, timeout=timeout_seconds)
+        completed = subprocess.CompletedProcess(
+            list(command),
+            process.returncode,
+            stdout_text,
+            stderr_text,
         )
     except subprocess.TimeoutExpired as exc:
+        if process is not None:
+            process.kill()
+            process.communicate()
         raise MCPRouteError(f"MCP route timed out after {timeout_seconds}s: {command}") from exc
     except OSError as exc:
         raise MCPRouteError(f"Unable to start MCP route: {command}") from exc
+    finally:
+        if process is not None:
+            _terminate_windows_descendants(process.pid)
+            if process.poll() is None:
+                try:
+                    process.kill()
+                    process.wait(timeout=5)
+                except (OSError, subprocess.SubprocessError):
+                    pass
 
     responses = list(_json_lines(completed.stdout))
     response = next((item for item in reversed(responses) if item.get("id") == 2), None)

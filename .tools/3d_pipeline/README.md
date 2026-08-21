@@ -15,7 +15,9 @@ one approved reference image
 
 The first process gate is a non-blank `MESHY_API_KEY` environment variable.
 
-Meshy model selection is live-route gated. When the requested model is newer than the verified default, inspect the live `meshy_image_to_3d` declaration first; use `latest` only when that alias is actually declared and record the resolved provider model. Do not invent or pass an unsupported identifier such as `meshy-7`.
+Meshy model selection is live-route gated. Meshy 7 is the only accepted generation model. Inspect the repository-owned `meshy_image_to_3d` declaration before paid work and pass explicit `ai_model: meshy-7`; the wrapper applies a deterministic compatibility patch when the official Meshy API changes before the published MCP package. Require `tools/list` proof, record the exact provider model, and never use an alias, relabel an older output, or bypass MCP with a hidden REST call.
+
+The compatibility patch must be idempotent and UTF-8 stable. Verify it with two consecutive schema probes and reject patched runtime files above the wrapper's size guard. The shared stdio client owns cleanup of descendants created by each exact wrapper process so repeated status polls do not leave provider servers running after the call returns.
 
 The package never prints or writes the key.
 
@@ -147,7 +149,7 @@ python .tools/3d_pipeline/run_pilot.py --specialized-zombie-batch <configured_ba
 
 The batch creates one distinct Meshy image-to-3D geometry candidate per unit, pays for the owner rig and provider idle/attack/death actions once, copies those immutable provider artifacts with checksums, and binds every recipient's own geometry to that shared standard skeleton through the locked dual-source Blender operation. Every recipient exports its own `.mesh`, idle/move/attack/death `.anim` files, textures, and reimport proofs. Sharing a skeleton/action source never permits reused geometry, a static-only package, or skipped action validation. Creature jobs in the batch continue through their dedicated Blender rig/action route.
 
-The specialized zombie manifests use the verified textured Meshy-6 estimate of 30 credits for image-to-3D, 5 for a required over-300,000-triangle remesh when the source exceeds the rig limit, 5 for rigging, and 3 per provider animation. The shared seven-unit route therefore preflights every unit's geometry plus the owner's conditional rig/remesh/action stages; planned paid work is still checked against the live balance before calls, every paid task writes a before/after balance reconciliation, and the provider's actual `consumed_credits` value supersedes the estimate for later runs.
+The specialized zombie manifests use the verified textured Meshy 7 estimate of 30 credits for image-to-3D, 5 for a required over-300,000-triangle remesh when the source exceeds the rig limit, 5 for rigging, and 3 per provider animation. The shared seven-unit route therefore preflights every unit's geometry plus the owner's conditional rig/remesh/action stages; planned paid work is still checked against the live balance before calls, every paid task writes a before/after balance reconciliation, and the provider's actual `consumed_credits` value supersedes the estimate for later runs.
 
 Export `.mesh` and `.anim` only with the locked `io_pdx_mesh` setup, then reimport or parse the actual exported bytes and save proof with output checksums.
 

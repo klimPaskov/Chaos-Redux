@@ -8,7 +8,7 @@ The values in this section are the original production-run lineage. Current 2026
 
 - Reference: `docs/assets/018_resources_found/models_3d/cave_monster/refs/original/meshy_input.png`, SHA-256 `F04C5C4B934959D436A1888A3AB0F520D054ECE9CBE56A58D95C5CD22967A361`.
 - Official Meshy MCP: `@meshy-ai/meshy-mcp-server` 0.4.0, git head `d8c77d1cb897e345eb41d38b510b8391b1664346`, wrapper `.tools/3d_pipeline/wrappers/run_meshy_mcp.cmd`.
-- One Meshy-6 image-to-3D call: task `019fd394-e30c-7fbb-b0da-ee8078b86c38`, 20 estimated credits, 30 consumed credits. No retry, remesh, retexture, provider rig, conversion, or provider animation call was used.
+- One legacy Meshy image-to-3D call: task `019fd394-e30c-7fbb-b0da-ee8078b86c38`, 20 estimated credits, 30 consumed credits. No retry, remesh, retexture, provider rig, conversion, or provider animation call was used. Future regeneration uses Meshy 7.
 - Locked Blender adapter: 1.2.0, wrapper `.tools/3d_pipeline/wrappers/run_blender_hoi4_adapter.cmd`; Blender 5.1.2 build `ec6e62d40fa9`; io_pdx_mesh 0.91.0.
 - Lock hashes: dependencies `F84BC430746C016888D3AEFE2D5ED2969E5E5B8CF90D7EEBD52EB9C49DB08431`; Meshy schema `DBB9CAD7FB12AFE81ECA05A2F381EF4251C035F4D22BF17856A2F6D41F16A62D`; adapter config `0AE3432A008C06F7C7ECFC2877B5C2775C12C0B9C0AD5FCD68F412B0C76722E6`.
 - Initial adapter requests rejected an absolute path and unsupported metallic/roughness roles. Their immutable result logs are retained. Corrected preparation request `d9cc5b3bf6504924912e75618b566689` passed.
@@ -17,8 +17,8 @@ The values in this section are the original production-run lineage. Current 2026
 
 | File | Bytes | SHA-256 |
 | --- | ---: | --- |
-| `provider/downloads/cave_monster_meshy6.glb` | 31,304,560 | `B1F260FA6BE86F89B9D56CD5647403398CF0E3FEC5F86E0C95E797C3BF1ED3C3` |
-| `provider/downloads/cave_monster_meshy6.fbx` | 45,159,996 | `515543F98A1965D702BD28BEC228B36B7E036957F4B437B4E2228A34AA178261` |
+| Archived provider GLB | 31,304,560 | `B1F260FA6BE86F89B9D56CD5647403398CF0E3FEC5F86E0C95E797C3BF1ED3C3` |
+| Archived provider FBX | 45,159,996 | `515543F98A1965D702BD28BEC228B36B7E036957F4B437B4E2228A34AA178261` |
 | `export/mesh/resources_found_cave_monster.mesh` | 1,876,278 | `60C256EC1D958F77A93B6F9019A4B7C60072EA2F6B13E69C3672B84C474A491C` |
 | `export/anim/resources_found_cave_monster_idle.anim` | 25,276 | `A8EA9301744231054D3DA131AAF7D2EF264E13FD48A5F737325BA531DC9762D0` |
 | `export/anim/resources_found_cave_monster_move.anim` | 14,367 | `077D8ADCB45484215DB7BA6F4F45D95B184785358441DA67980B0D061EB52246` |

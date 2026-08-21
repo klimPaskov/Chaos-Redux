@@ -92,13 +92,17 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
         "shared_humanoid_rig_owner": spec.get("shared_humanoid_rig_owner"),
         "shared_humanoid_role": spec.get("shared_humanoid_role"),
         "image_to_3d_estimate_credits": spec.get("image_to_3d_estimate_credits"),
+        "rig_source_target_polycount": spec.get("rig_source_target_polycount"),
         "remesh_estimate_credits": spec.get("remesh_estimate_credits"),
         "rig_estimate_credits": spec.get("rig_estimate_credits"),
         "animation_estimate_credits": spec.get("animation_estimate_credits"),
         "estimated_credits": spec.get("planned_total_credits"),
+        "generation_stage": spec.get("generation_stage", "generation"),
+        "rig_stage": spec.get("rig_stage"),
         "brief": spec["asset_brief"],
         "required_components": spec["required_components"],
         "forbidden_additions": spec["forbidden_additions"],
+        "excluded_provider_objects": spec.get("excluded_provider_objects", []),
         "source": {
             "mode": spec["reference_source_mode"],
             "authorization": "User-authorized agent-generated pilot reference.",
@@ -115,14 +119,15 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
         },
         "provider_plan": {
             "ai_model": spec["meshy_ai_model"],
+            "resolved_ai_model": spec.get("resolved_meshy_ai_model", spec["meshy_ai_model"]),
             "model_type": "standard",
             "pose_mode": spec["meshy_pose_mode"],
             "topology": "triangle",
             "target_polycount": spec["target_polycount"],
             "enable_pbr": True,
             "should_texture": True,
-            "paid_attempts": 1,
-            "retry_paid_calls": False,
+            "paid_attempts": spec.get("provider_paid_attempts", 1),
+            "retry_paid_calls": spec.get("provider_retry_paid_calls", False),
             "estimated_credits": {
                 key: value
                 for key, value in (
@@ -175,10 +180,14 @@ def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
             "shared_humanoid_rig_owner",
             "shared_humanoid_role",
             "image_to_3d_estimate_credits",
+            "rig_source_target_polycount",
             "remesh_estimate_credits",
             "rig_estimate_credits",
             "animation_estimate_credits",
             "estimated_credits",
+            "generation_stage",
+            "rig_stage",
+            "excluded_provider_objects",
         ):
             if field in existing:
                 job[field] = existing[field]

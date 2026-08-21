@@ -68,7 +68,7 @@ Post-restart retry evidence:
 
 ## Blocked requirements
 
-- Meshy 6 image-to-3D generation and immediate download/checksum.
+- Meshy 7 image-to-3D generation and immediate download/checksum.
 - Candidate multi-view geometry review, repair, triangulation, and protected source/working checkpoints.
 - Measured vanilla source height, 1.35x target-height crosswalk, axes, ground contact, and entity-scale proof.
 - PDX material conversion and source/final texture evidence.

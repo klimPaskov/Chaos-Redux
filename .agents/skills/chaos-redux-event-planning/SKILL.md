@@ -1090,7 +1090,7 @@ For a building or map entity, define the building key, entity key, mesh key, sta
 
 If the user does not provide a ready reference image, plan exactly one clean Meshy-ready reference image for the asset and route it through the approved image-generation workflow before the provider gate.
 
-Meshy 6 is the default generation model. The plan must forbid silent downgrade to an older model and require the exact live model identifier in provider evidence.
+Meshy 7 is the generation model. The plan must forbid silent downgrade and require the exact live model identifier in provider evidence.
 
 Normal planned generation, remesh/retexture, rigging, conversion, and required animation credit use is pre-authorized and must not trigger a confirmation prompt. Require confirmation only before additional paid recovery caused by a failed or rejected provider operation, otherwise the worker must not ask for credit confirmation.
 
@@ -1108,7 +1108,7 @@ The model package must plan provider lineage, Blender source and normalized/repa
 
 The asset prompt must distinguish provider source files from final runtime copies. It must require a final hash-aware synchronization step so an older mapped texture, mesh, entity, or animation cannot overwrite the approved runtime candidate.
 
-Route production to `chaosx_3d_model_pipeline` with `fork_context=false` and give it the exact job root, reference status, asset profile, vanilla references, scale relationship, action list, custom-unit sound roles, counter consumers/tokens and inspected vanilla paths, dependency lock, baseline planned paid operations, extra-recovery credit limits, and handoff path. Require Meshy 6 as the default and the no-routine-confirmation credit policy.
+Route production to `chaosx_3d_model_pipeline` with `fork_context=false` and give it the exact job root, reference status, asset profile, vanilla references, scale relationship, action list, custom-unit sound roles, counter consumers/tokens and inspected vanilla paths, dependency lock, baseline planned paid operations, extra-recovery credit limits, and handoff path. Require Meshy 7 and the no-routine-confirmation credit policy.
 
 The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, live runtime validation, and in-game evidence.
 

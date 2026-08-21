@@ -9,7 +9,7 @@ The package root is `docs/assets/010_death/models_3d/ghost_hosts`. Detailed vali
 ## Provider and cost lineage
 
 - The only provider input was `refs/original/meshy_input.png`, 1024x1536, 2,314,312 bytes, SHA-256 `1E639F23A5F6E7447B5A6BA590546FC70547E5F73457A474C8D42C3E7E68E596`. No second input, turnaround, collage, side sheet, or multi-view provider image was created.
-- Meshy 6 generation task `019fd5e1-5b10-7987-bb1d-39dea4078341`: 30 credits. GLB SHA-256 `2FDE05AF70E5A371EFC23A45E2E8873DF5DA427ED80324B640990C6CFBCFCA98`; FBX SHA-256 `094635F69A115061CFE664674D54FE4CC2F2263FDE0236BC4940E4ADF2BBF598`.
+- Legacy Meshy generation task `019fd5e1-5b10-7987-bb1d-39dea4078341`: 30 credits. GLB SHA-256 `2FDE05AF70E5A371EFC23A45E2E8873DF5DA427ED80324B640990C6CFBCFCA98`; FBX SHA-256 `094635F69A115061CFE664674D54FE4CC2F2263FDE0236BC4940E4ADF2BBF598`. Future regeneration uses Meshy 7.
 - Rig task `019fd5e7-93d7-7ad0-84bc-1a9689fbd6b0`: 5 credits, measured provider height 1.8984103203 m. Rigged GLB SHA-256 `8E85A1D42429D3751DFDF92ED92A92A4323178E953971AAA468419B488940C9F`.
 - Idle task `019fd5e9-86fd-7cc9-a649-8ef75d18e402`, attack task `019fd5e9-8978-7ae7-8f8a-15d8507ee296`, death task `019fd5e9-8b5b-7f13-8e19-04c621c5a705`: 3 credits each, all converted to 24 FPS by the provider.
 - Balance: 598 before generation, 554 after all calls. Total consumed: 44 credits. Extra recovery consumed: 0.

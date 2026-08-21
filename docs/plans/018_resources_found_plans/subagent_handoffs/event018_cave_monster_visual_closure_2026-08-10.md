@@ -16,7 +16,7 @@ This audit inspected only Event 018 cave-monster runtime model/action evidence a
 - Current Blender HOI4 adapter config SHA-256 at this audit's final read: `7757DCF814D748A0C1F3B792B7DB7BBC03B3338C168D4BDDE2E1BFD93BF1B3E5`. The fresh evidence-generation requests record the earlier config SHA-256 `225D5BE4E7517B2C340EDF2D0F7AD522A7940664B09A7A193F68C5941D45748B`; both expose adapter `chaosx_blender_hoi4` 1.2.2, the same cave-monster override, and the required `reimport_export` operation. The config was concurrently modified outside this audit and was not edited here.
 - Locked route: official `@meshy-ai/meshy-mcp-server` 0.4.0 at git head `d8c77d1cb897e345eb41d38b510b8391b1664346`; no route call was made.
 - Locked static evidence stack: Blender 5.1.2 build `ec6e62d40fa9`, `chaosx_blender_hoi4` 1.2.2, and checksum-locked `io_pdx_mesh` 0.91.0.
-- Historical provider lineage remains Meshy-6 task `019fd394-e30c-7fbb-b0da-ee8078b86c38`, 20 estimated and 30 consumed credits. This audit estimated and consumed zero credits.
+- Historical provider lineage remains legacy Meshy task `019fd394-e30c-7fbb-b0da-ee8078b86c38`, 20 estimated and 30 consumed credits. This audit estimated and consumed zero credits. Meshy 7 is required for future generation.
 
 ## Runtime and selected-export identity
 

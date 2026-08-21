@@ -56,7 +56,7 @@ Official source:
 Snapshot:
 
 - smart-topology Image-to-3D: 5 credits without texture, 15 with texture
-- Meshy-6 or low-poly family Image-to-3D: 20 without texture, 30 with texture
+- Meshy 7 Image-to-3D: 20 without texture, 30 with texture
 - retexture: 10
 - remesh: 5
 - convert: 1

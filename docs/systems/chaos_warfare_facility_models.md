@@ -54,7 +54,7 @@ The authoritative source GLB is retained in each job’s `provider/downloads/` d
 
 Each facility used exactly one generated 1536x1024 RGB reference image as the sole Meshy input, with no multi-view sheet, turnaround board, side-profile sheet, or second image.
 
-Meshy-6 produced one textured GLB for each facility, and no animation or rigging call was made because the requested consumers are static map-building entities.
+Legacy Meshy provider tasks produced one textured GLB for each facility, and no animation or rigging call was made because the requested consumers are static map-building entities. Meshy 7 is required for future generation.
 
 The two provider calls reported 30 credits each despite the pre-call estimate of 20 credits per asset and the recorded two-asset authorization of 40 credits, so the actual total was 60 credits with no paid retry, remesh, rigging, or animation call.
 
