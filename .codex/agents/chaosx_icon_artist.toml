@@ -23,6 +23,19 @@ chaos-redux-frame-animation and preserve real source frames; do not fake motion
 with offsets, filters, blur, glow pulses, rotation, scaling, warping, recolours,
 or simple shape overlays.
 
+For every alpha-backed icon, counter, emblem, overlay, glow, warning, route-state,
+or decorative sprite, request a genuine transparent background in the initial
+ImageGen call and preserve that alpha through processing, animation-sheet
+assembly, resizing, and DDS conversion. Do not generate an opaque or chroma
+background as the normal route. Use an opaque painted canvas only when the
+inspected consumer and reference family require it.
+
+Background removal is fallback-only when native transparency fails validation or
+an inherited, sourced, or user-provided input has an unwanted opaque backdrop.
+Follow the event-assets fallback order, preserve the untouched source, record the
+edit or verified local tool and settings, and reject clipped edges, coloured spill,
+matte pixels, fake checkerboards, halos, or unintended transparent holes.
+
 Scope:
 - focus, idea, national-spirit, officer-corps-spirit, decision, decision-category,
   mission, achievement, technology, scripted-GUI, formable-seal, warning, glow,
@@ -65,11 +78,12 @@ Workflow:
 1. Read the parent prompt and required skill sections.
 2. Preserve parent-provided names and paths.
 3. Inspect the matching canonical reference family.
-4. Generate source art.
+4. Generate source art with native transparency for every alpha-backed family.
 5. Process exact target-size PNG previews.
 6. Convert previews with
    .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py.
-7. Verify dimensions and transparency when required.
+7. Verify dimensions and preserved alpha for every alpha-backed family, including
+   fallback evidence only when native transparency failed or the source began opaque.
 8. Update the manifest, gfx_handoff.md, and contact sheet when useful.
 9. Report completed, blocked, and needs_user_review items.
 

@@ -219,7 +219,20 @@ Use Codex's official `$imagegen` skill by default for:
 
 When creating generated assets, follow the `$imagegen` skill workflow. Do not define a separate image generation route in this skill.
 
-For transparent icons, ask `$imagegen` for the required transparent output and follow the `$imagegen` skill's transparent image workflow. The final PNG must have real transparency, no fake checkerboard, no white halo, no white outline, and no opaque square background unless the asset type explicitly uses a painted backdrop.
+For every alpha-backed asset family, ask `$imagegen` for genuine transparency in the initial generation and preserve that alpha. This is the default for icons, counters, emblems, overlays, decorative UI pieces, transparent animation frames, and any other family whose inspected consumer leaves unused canvas transparent. The final PNG must have real transparency, no fake checkerboard, no white halo, no white outline, and no opaque square background unless the inspected asset type explicitly uses a painted backdrop.
+
+### Native transparency and background-removal fallback
+
+Do not generate an alpha-backed asset on an opaque or chroma background as the normal route. Request a real transparent background in the first built-in ImageGen call, retain that native-alpha source PNG, and preserve its alpha through crop, alignment, resizing, frame assembly, and DDS conversion.
+
+Validate native transparency before processing: unused corners and padding must contain real zero-alpha pixels, the painted subject must retain nonzero alpha and complete edges, and the image must contain no fake checkerboard, matte, halo, key colour, or unintended transparent holes.
+
+Background removal remains a fallback for either of these cases:
+
+- the built-in ImageGen result ignored the transparency request or failed alpha validation
+- an inherited, internet-sourced, or user-provided image has an unwanted opaque backdrop and the accepted asset type requires transparency
+
+First use a targeted built-in ImageGen edit that changes only the background to real transparency and preserves the subject, silhouette, colours, internal opacity, framing, and edge detail. If that still fails, use a deterministic local background-removal or chroma-key process only when its tool is actually installed and verified in the current environment. Preserve the untouched source, record the tool and settings, inspect for spill and clipped edges, and compare the repaired candidate with the source. If no verified fallback tool exists or removal damages the subject, mark the asset `blocked` or `needs_user_review`; do not invent a helper path or silently ship an opaque square.
 
 If `$imagegen` is unavailable, report that clearly and stop before using an alternate route.
 
@@ -403,17 +416,17 @@ Generated artwork must be real source art that can be processed into the final g
 
 Small gameplay icons must be readable at their final in-game size.
 
-- Use transparent backgrounds for asset types that are transparent in vanilla, especially idea and decision icons and small symbolic interface icons.
+- Use native transparent ImageGen backgrounds by default for asset types that are transparent in vanilla, especially idea and decision icons, counters, emblems, overlays, and small symbolic interface icons.
 - Keep unused pixels fully transparent. Do not leave a square opaque fill behind icons unless the asset type explicitly uses a painted frame or backdrop.
 - Give the icon silhouette a dark or black outline and a subtle drop shadow when the icon is displayed over variable UI backgrounds. Do not leave some chroma green outline on the icon.
 - Avoid tiny interior detail that disappears at 45x45 or 64x64. Favor one clear subject, strong value contrast, and a centered silhouette.
 - Avoid fake checkerboard pixels, white halos, white outlines, oversized medallion fills, and square opaque backdrops.
 
-For every generated icon, follow the `$imagegen` skill's transparent image workflow. Preserve the original generated image, create a processed PNG preview, convert to DDS, and validate the final appearance over a checker background before treating the icon as complete.
+For every generated alpha-backed icon, follow the `$imagegen` skill's native transparent image workflow. Preserve the original native-alpha generated image, create a processed PNG preview without flattening the alpha, convert to DDS, and validate the final appearance over contrasting solid and checker review backgrounds before treating the icon as complete. Use the fallback background-removal route above only when native transparency failed or an imported source began opaque.
 
 The final icon should have transparent unused canvas, no fake checker or matte pixels, no transparent holes inside the painted subject, a slight black outline, a subtle drop shadow, and a centered subject that remains readable at final size.
 
-Generated icon packages must keep visible `$imagegen` source evidence: save the source atlas or source PNGs, record the prompt and source mode in the manifest, process to real transparent backgrounds, and include a contact sheet that shows final alignment, dimensions, transparency, and absence of white matte or opaque square backgrounds. Do not mark a generated icon complete if the final art is a primitive local drawing, a resized unrelated icon, or a locally assembled shape substitute instead of imagegen or sourced artwork.
+Generated icon packages must keep visible `$imagegen` source evidence: save the source atlas or source PNGs, record the prompt, source mode, and background mode in the manifest, preserve native transparency by default, and include a contact sheet that shows final alignment, dimensions, transparency, and absence of white matte or opaque square backgrounds. If fallback removal was required, record why, which verified edit or tool was used, and the edge-validation result. Do not mark a generated icon complete if the final art is a primitive local drawing, a resized unrelated icon, or a locally assembled shape substitute instead of imagegen or sourced artwork.
 
 ## 5.2 Icon type separation rules
 
@@ -464,10 +477,11 @@ For every asset package:
    A grounded identity must use a sourced real person, an unavailable defensible source is `blocked`, never a generated substitute.
    Before sourcing or wiring a real-person leader, commander, operative, or named officeholder, apply the portrait subject ownership gate above and record its evidence.
    Missing or contradictory source-mode or ownership evidence fails closed.
+   For every alpha-backed generated asset, set the background mode to native transparency by default. Use an opaque background only when the inspected vanilla or Chaos Redux consumer requires a full painted canvas. Record fallback removal only after native transparency fails or an inherited, sourced, or user-provided image needs conversion to the consumer's required alpha treatment.
 11. For every grounded real-person leader, commander, operative, or named-officeholder portrait, create the exact crop evidence, preserve the durable source/prompt pair, and follow section 21.
 12. Complete section 21 review, a pending or failed identity gate is `needs_user_review` or `blocked`, never wired.
 13. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
-14. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
+14. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill. For alpha-backed families, request a real transparent background in the initial call and preserve that alpha; do not plan routine background removal.
 15. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
 16. For user-provided assets, record that the image was provided by the user.
 17. Save the original generated, sourced, or provided image as a source PNG.
@@ -533,6 +547,7 @@ Each asset entry should include:
 - asset type
 - intended in-game use
 - source mode: `$imagegen`, portrait-production output, internet source image, or user-provided source image
+- background mode: `native_transparent`, `consumer_opaque`, or `fallback_removed`, including the fallback reason and verified edit/tool when applicable
 - image generation prompt if generated with `$imagegen`
 - source link if internet-sourced
 - source author, archive, or collection if available
@@ -625,9 +640,9 @@ Apply this contract to every small template, facility, or unit icon, including l
 
 Before generation, inspect the actual installed-vanilla consumer definition and DDS, plus the exact matching reference family and contact sheet under `assets/vanilla_reference/`. Record the owning `.gfx`, `.gui`, unit, building, or template definition, runtime token or sprite, native canvas, frame count and order, frame or state semantics, alpha and background treatment, border, sampled palette, silhouette footprint, shading, and contrast. If the consumer, DDS, or matching reference family cannot be inspected, mark the asset `blocked` instead of guessing.
 
-Use the built-in ImageGen tool for each distinct final asset and retain its exact prompt and native source PNG in the evidence package. Generate the icon or glyph as real raster source art, pixel art, pixel-grid or nearest-neighbor final scaling, primitive local drawings, SVG-only reconstruction, resized cross-type substitutes, opaque backgrounds, and generic white duplicates are prohibited. Nearest-neighbor is permitted only for enlarged inspection previews.
+Use the built-in ImageGen tool for each distinct final asset and retain its exact prompt and native source PNG in the evidence package. Generate the icon or glyph as real raster source art with a genuine transparent background in the initial call. Pixel art, pixel-grid or nearest-neighbor final scaling, primitive local drawings, SVG-only reconstruction, resized cross-type substitutes, opaque backgrounds, and generic white duplicates are prohibited. Nearest-neighbor is permitted only for enlarged inspection previews.
 
-For transparent sources, use the approved built-in ImageGen chroma-key-to-alpha workflow and the installed `remove_chroma_key.py` helper described by the ImageGen skill, then validate transparent corners, no key-coloured fringe, and no fake checkerboard or matte. Downsample smoothly with bicubic or Lanczos to the inspected native runtime canvas, preserve the intended transparent bounds, and record the visible alpha bounding box, centered footprint, frame boundaries, and per-frame footprint against the vanilla reference. Do not promote a candidate whose silhouette is clipped, off-center, too small, or too detailed at native size.
+Preserve the native ImageGen alpha through processing, then validate transparent corners, no coloured fringe, no fake checkerboard or matte, and no unintended transparent holes. If native transparency fails, follow the fallback route in section 3: first a targeted built-in edit-to-transparency, then an actually installed and verified local removal process only if needed. Downsample smoothly with bicubic or Lanczos to the inspected native runtime canvas, preserve the intended transparent bounds, and record the visible alpha bounding box, centered footprint, frame boundaries, and per-frame footprint against the vanilla reference. Do not promote a candidate whose silhouette is clipped, off-center, too small, too detailed at native size, or damaged by fallback removal.
 
 For a large land division counter, the final file is one transparent `152x42` strip containing two adjacent `76x42` frames with no gap. The left frame is a compact muted vanilla-green silhouette for the normal large-counter state. The right frame is a separate sparse pale or white generic schematic glyph for the alternate or template state and is never a detailed white repaint or duplicate of the left frame. Differentiate each unit by role and silhouette while staying within the same restrained vanilla vocabulary.
 
@@ -697,7 +712,7 @@ Do not rely on text inside generated images. Generated text is unreliable.
 
 Prefer strong symbols, clear silhouettes, and readable composition.
 
-For transparent icon prompts, explicitly request a transparent canvas, no fake checkerboard, no white rim, no white/colored outline, no glow, no sticker border, no opaque square background, and a clean silhouette suitable for HOI4 UI.
+For icon, counter, emblem, overlay, and decorative-sprite prompts, request a genuinely transparent canvas by default, no fake checkerboard, no white rim, no white/colored outline, no glow, no sticker border, no opaque square background, and a clean silhouette suitable for HOI4 UI. Use a full painted background only when the inspected consumer and reference family require one.
 
 ## 12. Internet source image rules
 
@@ -862,7 +877,7 @@ Do not derive idea or national spirit icons from focus icons. They must be desig
 
 Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
 
-Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
+Use the `$imagegen` skill's native transparent image workflow by default. Use an opaque background only when the inspected idea or national-spirit consumer and reference family require a painted full canvas.
 
 Inspect `icons/ideas/` and the matching row in `CATALOG.md` before generating or processing idea icons.
 
@@ -896,7 +911,7 @@ Every focus icon should support the focus tree's story, ideology, or gameplay pu
 
 Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
 
-Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
+Use the `$imagegen` skill's native transparent image workflow by default. Use an opaque background only when the inspected focus consumer and reference family require a painted full canvas.
 
 Inspect `icons/national_focus/` and the matching row in `CATALOG.md` before generating or processing focus icons. Do not force every focus source onto an older nominal canvas when the owning sprite and current vanilla precedent use a different native canvas.
 
@@ -930,7 +945,7 @@ decision_category_
 
 Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
 
-Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
+Use the `$imagegen` skill's native transparent image workflow by default. Use an opaque background only when the inspected decision-system consumer and reference family require a painted full canvas.
 
 Inspect `icons/decisions/`, `icons/missions/`, or `icons/decision_categories/` as appropriate before generating or processing decision-system icons. Missions use the decision icon pipeline but still need mission-specific semantic readability.
 
@@ -1174,6 +1189,8 @@ Use `$imagegen` for:
 - propaganda visuals
 - report board visual elements
 
+Generated seals, emblems, overlays, decorations, button art, and other alpha-backed UI pieces request native transparency in the initial call. Illustrated full-panel backgrounds and other deliberately painted canvases remain opaque when the consumer requires them. Background removal follows section 3 only as a fallback.
+
 Use normal UI editing for:
 
 - exact layout slicing
@@ -1329,7 +1346,7 @@ After conversion, confirm that:
 
 - the DDS exists
 - the dimensions are correct
-- the background is transparent for icons
+- native or fallback-validated transparency is preserved for every alpha-backed icon, counter, emblem, overlay, and decorative sprite
 - the filename is stable
 - the file is in the correct mod folder, including the event-scoped folder or documented root-only exception
 - the `.gfx` path points to the DDS
@@ -1417,7 +1434,7 @@ The contact sheet should make it easy to see:
 - selected final version
 - rejected alternatives if relevant
 
-For the small-icon and counter contract, the sheet must also show the native ImageGen source, processed transparency, enlarged smooth preview, and decoded DDS round-trip with dimensions, frame labels, and visible-bounds notes.
+For the small-icon and counter contract, the sheet must also show the native-alpha ImageGen source, processed transparency, enlarged smooth preview, and decoded DDS round-trip with dimensions, frame labels, and visible-bounds notes. If fallback removal was used, include the untouched opaque source and repaired edge comparison.
 
 ## 28. Handling blocked assets
 
@@ -1465,5 +1482,5 @@ Before finishing, confirm:
 26. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package, one pipeline was not resized or relabeled to substitute for another. A 3D package also proves the one-image Meshy input rule, provider lineage, vanilla scale calibration, PDX material mapping, topology repair, required skeletal actions, `.mesh`/`.anim` reimport, hash-aware runtime synchronization, parent-owned wiring, and a live consumer.
 27. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
 28. When the event goal is complete, the temporary event asset workspace is absent, while `docs/assets/portraits/<event_id>_<event_slug>/` retains every sourced portrait under its runtime basename. No runtime reference points into the archive.
-29. Every small template, facility, unit, counter, and emblem asset has exact installed-vanilla consumer and reference-family evidence, a distinct built-in ImageGen source prompt and PNG, approved chroma-key-to-alpha processing, smooth native-canvas scaling, visible-bounds and footprint checks, decoded DDS round-trip evidence, and parent contact-sheet review without fallback or silent old-candidate synchronization.
+29. Every small template, facility, unit, counter, and emblem asset has exact installed-vanilla consumer and reference-family evidence, a distinct built-in ImageGen prompt and native-transparent source PNG, preserved alpha through smooth native-canvas scaling, visible-bounds and footprint checks, decoded DDS round-trip evidence, and parent contact-sheet review without silent old-candidate synchronization. Any fallback background removal is explicitly justified, tool-recorded, edge-validated, and shown against the untouched source.
 30. Large land counters and division-template emblems obey the separate canvases, frame semantics, footprints, palettes, and role-differentiation contract in section 9.1.

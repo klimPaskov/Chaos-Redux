@@ -21,7 +21,9 @@ Hard rules:
 - [ ] Complete subject is visible.
 - [ ] No required limb, barrel, wing, mast, wheel, tail, or roofline is cropped.
 - [ ] Silhouette is readable.
-- [ ] Background is simple enough to separate.
+- [ ] A workflow-generated reference has genuine native transparency and preserved alpha.
+- [ ] An inherited, sourced, or user-provided opaque reference has a background simple enough to separate, or a documented fallback removal was validated.
+- [ ] Transparent edges contain no halo, matte, fake checkerboard, clipped detail, or cast-shadow remnant.
 - [ ] Cast shadow does not look like geometry.
 - [ ] Subject is not heavily foreshortened.
 - [ ] The image is large enough to inspect component edges.

@@ -21,7 +21,8 @@ Prefer:
 
 - one complete subject
 - unobstructed silhouette
-- neutral or simple background
+- a native transparent background for workflow-generated references, with preserved alpha and clean subject edges
+- a neutral or simple background only for inherited, sourced, or user-provided references that legitimately remain opaque
 - strong separation between limbs, turrets, wings, legs, antennae, and body
 - even lighting
 - minimal cast shadow
@@ -40,6 +41,8 @@ Flag:
 - painted details that could be mistaken for geometry
 - multiple subjects
 - readable text that should not become texture noise
+
+For a workflow-generated reference, request genuine transparency in the first ImageGen call. Do not make background removal part of the normal route. If native transparency fails validation, first use ImageGen edit-to-transparency; use a verified local background-removal process only as a documented fallback, then recheck alpha bounds, halos, matte pixels, cast-shadow remnants, and subject integrity before provider submission.
 
 ## Generation defaults
 
@@ -255,4 +258,4 @@ The live balance and live provider pricing page override package examples. `tool
 
 Before any modeling work begins, verify that `MESHY_API_KEY` exists as an environment variable. If it is missing, stop and instruct the user to run the documented PowerShell command, then restart the shell or Codex.
 
-This workflow may generate its own Meshy-ready reference image when the user provides only an asset brief. Meshy still receives exactly one clean final reference image. Do not create side-profile sheets, multi-view boards, or other multi-image collages for Meshy. The workflow resolves its own deterministic working paths and saves the final reference image there before Meshy starts.
+This workflow may generate its own Meshy-ready reference image when the user provides only an asset brief. That initial ImageGen request uses a real transparent background by default and preserves the alpha channel; background removal is fallback-only when native transparency fails or an inherited, sourced, or user-provided reference has an unwanted opaque backdrop. Meshy still receives exactly one clean final reference image. Do not create side-profile sheets, multi-view boards, or other multi-image collages for Meshy. The workflow resolves its own deterministic working paths and saves the final reference image there before Meshy starts.

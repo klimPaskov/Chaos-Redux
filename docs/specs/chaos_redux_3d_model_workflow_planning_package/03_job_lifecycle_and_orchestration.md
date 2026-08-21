@@ -92,7 +92,7 @@ The reference receives one of four statuses:
 
 A derived reference may perform only approved clarification work such as:
 
-- background removal
+- fallback background removal when native transparent generation was unavailable or failed, or when an inherited, sourced, or user-provided opaque backdrop interferes with reconstruction
 - exposure correction
 - filling an obviously accidental dark seam that the generator may interpret as a hole
 - cropping to one complete subject
@@ -297,4 +297,4 @@ Cancellation stops new paid work and Blender writes. It does not delete evidence
 
 Before any modeling work begins, verify that `MESHY_API_KEY` exists as an environment variable. If it is missing, stop and instruct the user to run the documented PowerShell command, then restart the shell or Codex.
 
-This workflow may generate its own Meshy-ready reference image when the user provides only an asset brief. Meshy still receives exactly one clean final reference image. Do not create side-profile sheets, multi-view boards, or other multi-image collages for Meshy. The workflow resolves its own deterministic working paths and saves the final reference image there before Meshy starts.
+This workflow may generate its own Meshy-ready reference image when the user provides only an asset brief. Ask ImageGen for a real transparent background in that initial generation and preserve the alpha channel in the saved source. Do not run background removal as a normal processing step; use an edit-to-transparency or verified local removal pass only when native transparency failed or the selected reference is inherited, sourced, or user-provided with an unwanted opaque backdrop. Meshy still receives exactly one clean final reference image. Do not create side-profile sheets, multi-view boards, or other multi-image collages for Meshy. The workflow resolves its own deterministic working paths and saves the final reference image there before Meshy starts.

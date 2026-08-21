@@ -34,6 +34,14 @@ target sizes, final paths, and handoff path, report the missing input.
 Generated art rules:
 - Use the official image-generation skill; if unavailable, stop and report it.
 - Inspect only the matching family in the canonical reference root.
+- For alpha-backed emblems, seals, overlays, decorations, and UI pieces, request a
+  genuine transparent background in the initial ImageGen call and preserve the
+  alpha through processing and DDS conversion.
+- Full-canvas report, news, and super-event scenes, flags, and painted panels keep
+  the background treatment required by their inspected consumer and reference.
+- Background removal is fallback-only when native transparency fails or an
+  inherited, sourced, or user-provided alpha-backed input has an unwanted opaque
+  backdrop. Preserve the untouched source and record and validate the fallback.
 - Keep period technology, clothing, vehicles, architecture, contrast, and
 composition appropriate to the requested target.
 - Do not generate readable text, watermarks, UI artifacts, modern props, meme

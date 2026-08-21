@@ -7,6 +7,7 @@ The package is planning and bootstrap material. It does not claim that Meshy, Bl
 ## Locked design decisions
 
 - One final reference image is the standard Meshy input. If the user does not provide one, the workflow must generate one autonomously before Meshy starts.
+- A workflow-generated Meshy reference requests a native transparent background by default and preserves that alpha. Background removal is a fallback only for failed native transparency or an inherited, sourced, or user-provided opaque reference whose backdrop interferes with geometry separation.
 - Additional instructions guide reference preparation, texture prompting, quality checks, rig choice, animation requirements, and Blender processing. The current single-image Meshy endpoint does not expose a general geometry text prompt, so geometry instructions are acceptance criteria rather than a promise that Meshy will follow arbitrary shape edits.
 - Meshy auto-rigging is used only for textured humanoid bipeds with clear limbs.
 - Creatures, vehicles, buildings, weapons, and unusual bodies use Blender custom rigs when animation is required.
