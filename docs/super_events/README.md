@@ -4,6 +4,7 @@ Event-specific research is grouped by event. Shared quote and audio ledgers rema
 
 | Event or system | Documentation |
 | --- | --- |
+| 005 Soviet Collapse | [`005_soviet_collapse/text_research.md`](005_soviet_collapse/text_research.md) |
 | 006 Independence Wave | [`006_independence_wave/research.md`](006_independence_wave/research.md) |
 | 010 Death | [`010_death/`](010_death/) |
 | 011 Secret Alliance | [`011_secret_alliance/research.md`](011_secret_alliance/research.md) |
@@ -19,5 +20,5 @@ Shared records:
 
 - [`super_event_audio_packages.md`](super_event_audio_packages.md)
 - [`super_event_quote_sources.md`](super_event_quote_sources.md)
-- `source_audio/`
-- `processed_audio/`
+- [`source_audio/`](source_audio/)
+- [`processed_audio/`](processed_audio/)

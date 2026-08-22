@@ -12,10 +12,11 @@ This directory separates current implementation documentation, accepted design s
 | [`systems/`](systems/README.md) | Shared or cross-event mechanics that do not belong to one event package. |
 | [`achievements/`](achievements/README.md) | Event achievement contracts, grouped by event. |
 | [`super_events/`](super_events/README.md) | Super-event research, text, audio, and provenance records, grouped by event where applicable. |
-| `biological_warfare/` | Biological warfare subsystem documentation. |
-| `chemical_warfare/` | Chemical warfare subsystem documentation. |
-| `assets/` | Active asset-production evidence, manifests, previews, and handoffs. |
-| `spreadsheets/` | The event catalog workbook and its generated export snapshots. |
+| [`formables/`](formables/README.md) | Formable-state contracts, consumer specifications, and generated state-puzzle evidence. |
+| [`systems/cbrn_warfare/`](systems/cbrn_warfare/) | Shared chemical, biological, condemnation, and related CBRN system documentation. |
+| [`assets/`](assets/) | Active asset-production evidence, manifests, previews, and handoffs. Asset workspaces retain their own provenance and do not require a central README. |
+| [`spreadsheets/`](spreadsheets/README.md) | The event catalog source workbook, generated catalog exports, and the separate doctrine workbook. |
+| [`testing/`](testing/README.md) | Test-country guidance and dated live-QA evidence. |
 
 ## Source-of-truth rules
 
@@ -27,4 +28,3 @@ This directory separates current implementation documentation, accepted design s
 - Historical evidence is preserved and identified through package indexes or superseded notices rather than deleted.
 - New dated documents use `YYYY-MM-DD_<scope>_<type>.md`.
 - Markdown sentences are not hard-wrapped.
-
