@@ -306,11 +306,11 @@ The lifecycle files are concurrent implementation work. Event 016 integration de
 - **Reuse cross-event gate:** Event 025 Antarctic UFO success idea <code>antarctica_success</code> remains the actual recovered-artifact prerequisite. Its qualifying success now also presents the bounded Event 016 report <code>chaosx.nr16.17</code> and writes the persistent receipt <code>brilliant_scientist_alien_artifact_contact</code>; the report does not replace the idea gate or assert an origin conclusion.
 - **Conditional Event 036 hook:** `chaosx.nr36.2` is the authenticated spacecraft outcome. It now sets exact flag <code>brilliant_scientist_alien_spacecraft_recovered</code> on the recovering country, and an active Event 016 host presents the one-time report <code>chaosx.nr16.18</code>. The report preserves the physical evidence gate without advancing Alien Arms, and the flag remains country-owned rather than following Kruger.
 - **New project:** <code>sp_brilliant_scientist_alien_arms</code>; <code>specialization_nuclear</code>, <code>nuclear_facility</code>; breakthrough 3; long/large; steel 4, tungsten 7, chromium 6, rubber 3.
-- **New outputs:** <code>brilliant_scientist_exotic_guard_tech</code>; unit <code>kruger_exotic_guard</code>; <code>kruger_exotic_arms_equipment</code>/<code>kruger_exotic_arms_equipment_1</code>.
+- **Outputs:** <code>brilliant_scientist_alien_infantry_tech</code>; unit <code>alien_infantry</code>; <code>alien_laser_weapon_equipment</code>/<code>alien_laser_weapon_equipment_1</code>; and source-counted landing access.
 - **Stages:** Theory requires <code>antarctica_success</code> or the conditional Event 036 flag plus High Energy; Prototype interfaces with one weapon/shield; Deployment unlocks elite equipment; Weaponization unlocks strategic field projectors.
 - **Accident/countermeasure:** interface injury → energy breach → unknown strategic effect. Counter with material denial, interface specialists, and protection.
 - **KRG inheritance:** exotic cap 4; exact stage and equipment production, not free recovered artifacts.
-- **Asset IDs:** <code>GFX_sp_brilliant_scientist_alien_arms</code>, <code>GFX_brilliant_scientist_project_alien_arms</code>, <code>GFX_brilliant_scientist_exotic_guard_tech_medium</code>, equipment/unit icons.
+- **Asset IDs:** <code>GFX_sp_brilliant_scientist_alien_arms</code>, <code>GFX_brilliant_scientist_project_alien_arms</code>, <code>GFX_brilliant_scientist_alien_infantry_tech_medium</code>, <code>GFX_brilliant_scientist_alien_predictive_warfare_tech_medium</code>, equipment/unit icons.
 - **Unique reward:** <code>sp_brilliant_scientist_alien_arms_reward_interface_breach</code>.
 - **AI:** rare/desperation family; requires authenticated artifact, High Energy, materials, secure interface staff, and a strategic threat.
 
@@ -373,7 +373,7 @@ The exact Event 016 request-source mapping is parent-owned because the current F
 | Paleogenetics | <code>brilliant_scientist_paleogenetic_formations_tech</code> | <code>kruger_paleogenetic_beast</code> | <code>kruger_paleogenetic_equipment</code>/<code>kruger_paleogenetic_equipment_1</code> |
 | Xenobiological synthesis | <code>brilliant_scientist_xenobiological_formations_tech</code> | <code>kruger_xenobiological_assault</code> | <code>kruger_xenobiological_equipment</code>/<code>kruger_xenobiological_equipment_1</code> |
 | Temporal | <code>brilliant_scientist_temporal_guard_tech</code> | <code>kruger_temporal_guard</code> | <code>kruger_temporal_equipment</code>/<code>kruger_temporal_equipment_1</code> |
-| Alien arms | <code>brilliant_scientist_exotic_guard_tech</code> | <code>kruger_exotic_guard</code> | <code>kruger_exotic_arms_equipment</code>/<code>kruger_exotic_arms_equipment_1</code> |
+| Alien arms | <code>brilliant_scientist_alien_infantry_tech</code> | <code>alien_infantry</code> | <code>alien_laser_weapon_equipment</code>/<code>alien_laser_weapon_equipment_1</code> |
 
 Every new equipment archetype must be added to <code>common/script_enums.txt</code> under <code>script_enum_equipment_bonus_type</code> in the same implementation change. The corresponding technology/equipment/unit icons and localisation are required; these are not placeholder-free merely because their identifiers are reserved.
 

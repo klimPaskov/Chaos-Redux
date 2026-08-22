@@ -551,7 +551,7 @@ Costs:
 Supports:
 
 - Rocketry.
-- Exotic arms.
+- Alien arms.
 - Robots.
 - Strategic weapons.
 - Hardened facilities.
@@ -992,7 +992,7 @@ AI hosts need route personalities rather than random clicks.
 | Host profile | Preferred governance | Project preference | Confrontation behavior |
 | --- | --- | --- | --- |
 | Liberal institutional | Public council, independent teams, publication | Electronics, industry, medicine, defensive projects | Negotiates limits or peaceful charter |
-| Wartime emergency | Secret office, concentrated facilities | Rockets, atomic, exotic arms, biomedical military work | Delays confrontation until war pressure falls |
+| Wartime emergency | Secret office, concentrated facilities | Rockets, atomic, alien arms, biomedical military work | Delays confrontation until war pressure falls |
 | Authoritarian security | Military office, laboratory guard, compartmentalization | Weapons, AI, biological, surveillance | Grants Mandate, later attempts seizure if control falls |
 | Small threatened state | Mixed governance, foreign protection | Industry, defensive weapons, cloning or robots if desperate | Bargains for security or grants charter |
 | Technocratic opportunist | Private concession, concentrated network | Broad portfolio and synergies | Accepts high dependence and risks takeover |

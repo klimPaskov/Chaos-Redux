@@ -10,7 +10,7 @@ The dedicated `chaosx_ai_probability_auditor` run did not return usable evidence
 
 ## Reusable custom-technology pool
 
-The audited selector is `chaosx_grant_random_custom_operational_technology` in `common/scripted_effects/016_brilliant_scientist_custom_technology_api_effects.txt`. It has seven base families: Portal Warfare, Clone Formations, Autonomous Robots, Paleogenetics, Xenobiology, Exotic Arms, and Temporal Guard. Each unowned family receives `constant:chaosx_custom_technology_tuning.random_candidate_weight`, whose current value is 1; an already-owned family receives zero weight.
+The audited selector is `chaosx_grant_random_custom_operational_technology` in `common/scripted_effects/016_brilliant_scientist_custom_technology_api_effects.txt`. It has seven base families: Portal Warfare, Clone Formations, Autonomous Robots, Paleogenetics, Xenobiology, Alien Infantry, and Temporal Guard. Each unowned family receives `constant:chaosx_custom_technology_tuning.random_candidate_weight`, whose current value is 1; an already-owned family receives zero weight.
 
 Fresh `hoi4.probability_inspect` with the `random_list` adapter returned `PROBABILITY_SOURCE_INSPECTED`, `poolComplete=true`, seven candidates, seven required inputs, and zero unresolved inputs. Source hash: `c6523f553c75404f013d67dd9659b7bd7cc1adf775eed6672d814b797e1b465f`. Source revision: `f7640688dafc72fbf8ba0db3454b1a6d190185571a981e745e80b30d6bf1582e`. Inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/00893de0152c7cc6fbd3d4cafc4e280b2322c3243e47e796511bfa030acf43f1/669c7df25995a10ee5e4a8003acfaade90ca3b7cb2a0d2047964249c970d2b39/probability-inspect-c6523f553c75.json`.
 
