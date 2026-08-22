@@ -90,14 +90,6 @@ black_plague_rat_initialize_runtime = {
 	}
 }
 
-black_plague_rat_set_initial_evolution_ready_day = {
-	if = {
-		limit = { NOT = { has_variable = global.black_plague_evolution_i_ready_day } }
-		set_variable = { global.black_plague_evolution_i_ready_day = global.date }
-		add_to_variable = { global.black_plague_evolution_i_ready_day = constant:black_plague_rat_evolution.establishment_days }
-	}
-}
-
 black_plague_rat_schedule_next_evolution_check = {
 	set_temp_variable = { black_plague_rat_evolution_delay_days = constant:black_plague_rat_evolution.check_retry_days }
 	if = {
@@ -1012,34 +1004,6 @@ black_plague_rat_king_resolve_defeat = {
 				set_global_flag = black_plague_rat_king_aftermath_actor_unavailable
 			}
 		}
-	}
-}
-
-# ---------------------------------------------------------------------------
-# Event Log evolution context
-# ---------------------------------------------------------------------------
-
-black_plague_rat_load_evolution_log_context = {
-	set_temp_variable = { events_log_evolution_event_id = constant:black_plague_identity.event_id }
-	set_temp_variable = { events_log_evolution_type = constant:black_plague_identity.evolution_type }
-	set_temp_variable = { events_log_evolution_stage = black_plague_rat_evolution_stage }
-	set_temp_variable = { events_log_evolution_tier = black_plague_rat_evolution_stage }
-	set_temp_variable = { events_log_evolution_has_actor = constant:black_plague_value.zero }
-	if = {
-		limit = {
-			has_event_target = black_plague_rat_evolution_actor
-			event_target:black_plague_rat_evolution_actor = { exists = yes }
-		}
-		event_target:black_plague_rat_evolution_actor = { save_event_target_as = events_log_evolution_actor }
-		set_temp_variable = { events_log_evolution_has_actor = constant:black_plague_value.one }
-	}
-}
-
-black_plague_rat_record_current_evolution = {
-	black_plague_rat_load_evolution_log_context = yes
-	if = {
-		limit = { check_variable = { events_log_evolution_has_actor = constant:black_plague_value.one } }
-		record_events_log_evolution_entry = yes
 	}
 }
 
