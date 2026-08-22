@@ -28,7 +28,7 @@ The active `black_plague_evolution_record_stage` and `black_plague_evolution_run
 
 Exact and identifier-family searches across gameplay, scripted localisation, localisation, interface, and documentation found no live consumer or dynamically generated call for the deleted definitions.
 
-Historical audit handoffs that describe the superseded implementation remain unchanged as historical evidence.
+Historical audit handoffs retain their original observations as provenance, with explicit cleanup-status notes marking the retired helper family as superseded.
 
 ## Player-facing prose cleanup
 
