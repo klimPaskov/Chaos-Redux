@@ -18,6 +18,10 @@ The 2026-08-22 retired-crisis neutralization also replaces every legacy crisis e
 
 The 2026-08-21 parent tranche remains implemented as source evidence: synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors for IW-024/IW-027/IW-028, the documented dormant-shell guard, and 37 byte-preserving supplied portrait installs with 14 intentionally unmapped files.
 
+Commit `b77f9fd45` additionally repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission or changing the 32/161 boundary; its bounded runtime handoff is `subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
+
+Commit `abb0a8c83` repairs the Event 005-aware joint-capacity witness for the nine admitted packages that were previously absent from it (IW-024, IW-027, IW-028, IW-030, IW-031, IW-038, IW-040, IW-044, and IW-045). The current source has 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 content attestations; this does not widen admission or substitute for live release receipts. Its handoff is `subagent_handoffs/006_event6_joint_capacity_wrapper_2026-08-22.md`.
+
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with the terminal receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and the portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
 
 The 2026-08-22 portrait-consumer tranche adds the exact gated IW-051 YAK Pavel Pevznyak consumer, bringing the installed supplied set to 38 and leaving 13 files intentionally unmapped. Its handoff is `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`; the package remains package-local and fail-closed.
@@ -42,9 +46,9 @@ The 2026-08-22 decision and mission audit leaves the broad surface **PARTIAL / H
 
 Its bounded audit and GUI receipts are in `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-22.md`.
 
-The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the queued four-group payment redesign.
+The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the remaining package cost-prose, automatic-disclosure, category-density, and typed-probability follow-up.
 
-The compact Pacific cost disclosure patch is source-applied, but over-budget payment palettes, package cost prose, category density, DM-01 dynamic disclosure, and complete typed probability evidence remain queued design and balance work.
+The 2026-08-22 four-group cost palette tranche is source-applied for DM-51, DM-52, DM-56, DM-57, DM-58, the shared and six admitted package strategic helpers, the Pacific island strategic helper, the Transcaucasus material-security projects, FORM-03 charter reopening, IW-058 corridor fortification, FORM-05 charter and board projects, FORM-39 shipping and plebiscite projects, and MNT durable sovereignty. Its authoritative handoff is `subagent_handoffs/006_event6_four_group_cost_palette_tranche_2026-08-22.md`. The active custom-cost scan now reports zero keys above four normalized spendable groups; package cost prose, automatic DM-01 disclosure, category density, and complete typed probability evidence remain queued design and balance work.
 
 The custom probability-auditor route was unavailable, direct MCP discovery was incomplete, and no same-scenario probability comparison or quantitative balance claim is recorded.
 
@@ -68,7 +72,7 @@ The Statehood Ledger and formable-puzzle GUI receipts remain fidelity evidence w
 
 - Complete central admission for the 161 unattested selectable rows and preserve fail-closed package, identity, map, rights, roster, force, probability, and cleanup gates.
 - Obtain the required named-scenario probability audit and same-scenario comparison across event, decision, mission, focus, host, league, patron, and allocator surfaces before any weighted-logic change or balance claim.
-- Decide and implement the four-group payment palettes, matching payment effects, triggers, AI weights, custom-cost text, blocked text, and tooltips, then add DM-01 dynamic pre-activation disclosure and review high-density categories.
+- Reconcile remaining package cost prose and uncosted or automatic surfaces, add DM-01 dynamic pre-activation disclosure, and review high-density categories without reintroducing multi-charge cost bundles.
 - Re-run focus inspect/render after any parent-owned graph change and separately resolve the remaining authored layout warnings; focus lint/validate routes remain unavailable.
 - Continue the bounded Statehood Ledger/formable GUI tranche and obtain clean family-isolated hierarchy, resolution, click-region, overflow, rewrite/compare, and runtime evidence.
 - Keep FORM-06 through FORM-47 fail-closed except for explicitly admitted bounded families, keep FORM-42 blocked, and keep FORM-48 unreachable until the FSM member contract is admitted.
@@ -155,13 +159,13 @@ The 2026-08-13 pre-IW-045 boundary of 39 runtime adapters, 31 content attestatio
 
 The temporary FORM-12/13 state-256 fail-closed hardening and all pre-rebind wording are historical evidence after the state-833 rebind and must not trigger duplicate implementation.
 
-## Current IW-051 YAK package-local authority (2026-08-15)
+## Current IW-051 YAK package-local authority (2026-08-22 correction over the 2026-08-15 core)
 
 IW-051 Sakha is package-local and remains absent from central content attestation, normal or SCN-008 preflight, deterministic Join, and central Event 006 admission. Commit `b79e800e1` supplies its constants, triggers, effects, ideas, decisions, AI strategy, localisation, and five shared-focus callbacks; roster correction `6842d0c03` narrows the opening to the source-backed `YAK_pavel_pevznyak` consumer behind the unset parent-owned `independence_wave_iw_051_identity_rights_cleared` flag.
 
 The installed-map authority is the existing state 574/Yakutsk anchor with optional 644/876/877 extensions in RG-574. Fresh `hoi4.map_inspect` state selection for 574, 644, 876, and 877 returned `MAP_INSPECTED`; state membership, networks, and geometry passed, with only unrelated global building/port locator diagnostics. The earlier `MAP_STATE_ID_COLLISION` receipt came from an allocation probe requesting a new state ID 574, which correctly collides with `game:history/states/574-Siberia 1.txt`; it is not evidence that the existing YAK anchor is duplicated or unusable.
 
-YAK remains fail-closed on released-identity/origin matching, rights-cleared flag provenance, the parent-owned identity flag, host-remnant admission, typed mission/random-list fixtures, and central adapter/attestation/preflight/Join wiring. Pavel Pevznyak has a source-backed 1936 Sakha role and portrait placeholder archive, but no runtime DDS/GFX override is installed; the 1926 Yakut ASSR flag is a provenance lead rather than an admitted runtime asset. Use `subagent_handoffs/006_iw051_sakha_package_core_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_yak_portrait_source_research_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_flag_symbol_provenance_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_next_tranche_audit_2026_08_15.md`, and `subagent_handoffs/006_event6_completion_reaudit_2026_08_15.md` for the current package and evidence boundaries.
+YAK remains fail-closed on released-identity/origin matching, rights-cleared flag provenance, the parent-owned identity flag, host-remnant admission, typed mission/random-list fixtures, and central adapter/attestation/preflight/Join wiring. Commit `795dc9bed` adds a package-gated source-placeholder runtime consumer for `YAK_pavel_pevznyak` with its dedicated DDS/GFX mapping; this is a consumer correction, not central admission or rights clearance. The 1926 Yakut ASSR flag is a provenance lead rather than an admitted runtime asset. Use `subagent_handoffs/006_iw051_sakha_package_core_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_yak_portrait_source_research_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_flag_symbol_provenance_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_next_tranche_audit_2026_08_15.md`, `subagent_handoffs/006_event6_completion_reaudit_2026_08_15.md`, `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`, and `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_22.md` for the current package and evidence boundaries.
 
 ## Current IW-052 BYA package-local authority (2026-08-15)
 

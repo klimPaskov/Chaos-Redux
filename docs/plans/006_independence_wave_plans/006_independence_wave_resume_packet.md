@@ -1,6 +1,6 @@
 # Event 006 resume packet
 
-The long provenance list below preserves dated implementation history. Current routing and counts are stated in the explicit authority override that follows it; older v105/v104/v103 and 81-master references in that list are not current status.
+The long provenance list below preserves dated implementation history. Current routing and counts are stated in the explicit authority override that follows it; older v105/v104/v103, 27-package, and 81-master references in that list are not current status.
 
 ## Current authority override (2026-08-22 after release-scope, focus, and catalog reconciliation)
 
@@ -19,6 +19,8 @@ The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger
 The 2026-08-22 retired-crisis neutralization replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
 
 The 2026-08-21 parent tranche supplies synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors, a corrected dormant-shell guard, and 37 byte-preserving supplied portrait installs; 14 supplied portrait files remain intentionally unmapped.
+
+Commit `b77f9fd45` additionally repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission or changing the 32/161 boundary; its bounded runtime handoff is `subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
 
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with terminal-receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
 
@@ -44,9 +46,11 @@ The 2026-08-22 decision and mission audit leaves the surface **PARTIAL / HOLD**.
 
 Its bounded audit and GUI receipts are in `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-22.md`.
 
-The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the queued four-group payment redesign.
+The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the remaining package cost-prose, automatic-disclosure, category-density, and typed-probability follow-up.
 
-The compact Pacific cost disclosure patch is source-applied, but over-budget payment palettes, package cost prose, category density, DM-01 dynamic disclosure, and complete typed probability evidence remain queued.
+The 2026-08-22 four-group cost palette tranche is source-applied for the named shared, package, Pacific, Transcaucasus, FORM-03, IW-058, FORM-05, FORM-39, and MNT surfaces in `subagent_handoffs/006_event6_four_group_cost_palette_tranche_2026-08-22.md`; package cost prose, automatic DM-01 disclosure, category density, and complete typed probability evidence remain queued.
+
+Commit `abb0a8c83` closes the Event 005-aware joint-capacity parity gap for the nine admitted packages that were previously absent from that witness: IW-024, IW-027, IW-028, IW-030, IW-031, IW-038, IW-040, IW-044, and IW-045. The current source now has 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 content attestations. This is static source evidence only; ordinary live release and terminal receipts remain unproven.
 
 The custom probability-auditor route was unavailable, direct MCP discovery was incomplete, and no same-scenario probability comparison or quantitative balance claim is recorded.
 
@@ -60,7 +64,7 @@ They differ only on whether C7 required a replacement or already matched; preser
 
 1. Preserve the 32/29/40/161 boundary and complete package admission only through independent identity, map, rights, roster, force, probability, host, collision, and cleanup evidence.
 2. Obtain the named-scenario probability audit and same-scenario compare across event, decision, mission, focus, host, league, patron, and allocator surfaces before weighted-logic changes.
-3. Decide four-group payment palettes, update matching effects/triggers/AI/custom-cost/blocked text, add DM-01 dynamic disclosure, and review high-density decision categories.
+3. Reconcile remaining package cost prose and uncosted or automatic surfaces, add DM-01 dynamic pre-activation disclosure, and review high-density decision categories without reintroducing multi-charge cost bundles.
 4. Re-run focus inspect/render after any parent-owned source change and resolve the remaining authored layout warnings; focus lint/validate routes remain unavailable.
 5. Continue the bounded Statehood Ledger/formable GUI tranche with clean family-isolated layout, hierarchy, resolution, click-region, overflow, rewrite/compare, and runtime evidence.
 6. Keep FORM-06 through FORM-47 fail-closed except explicitly admitted bounded families, keep FORM-42 blocked, and keep FORM-48 unreachable until FSM is independently admitted.
@@ -99,7 +103,7 @@ IW-055 Nenets (`NEN`) remains research-only and fail-closed. The registry and in
 
 IW-060 Kurdistan (`KUR`) now has a package-local constants, triggers, effects, ideas, AI, decisions, category, localisation, and five guarded shared-focus callback tranche, but remains outside central adapter, content attestation, normal and SCN-008 preflight, deterministic Join, and release selection. The package follows public research anchor state 421, requires the parent-owned identity-rights flag and vanilla KUR roster, and uses the p72 mountain-frontier force contract; the installed binding at state 1001, vanilla capital state 800, and public/Form-18 state 421 are unresolved authority conflicts, not aliases. The package-local fix aligning the socialist route-government flag with its installer is source-complete, but no map, history, formable, portrait, flag, attestation, or Join fallback was added. Use `subagent_handoffs/006_iw060_kur_identity_symbol_research_2026_08_15.md`, `006_iw060_kur_portrait_gate_2026_08_15.md`, and `006_iw060_kur_package_core_blocker_2026_08_15.md`; typed probability and whole-event MCP evidence remain incomplete.
 
-IW-051 YAK is now package-local rather than outside gameplay source. Commit `b79e800e1` supplies the Sakha package-local core and `6842d0c03` narrows its opening roster to source-backed `YAK_pavel_pevznyak` behind the unset identity-clearance flag. Fresh map inspection of the existing 574/Yakutsk anchor and optional 644/876/877 states succeeds; the prior `MAP_STATE_ID_COLLISION` was an invalid new-state allocation probe, not an existing-anchor collision. YAK remains fail-closed on identity/origin, flag rights, host remnant, typed probability, and central admission/Join.
+IW-051 YAK is now package-local rather than outside gameplay source. Commit `b79e800e1` supplies the Sakha package-local core and `6842d0c03` narrows its opening roster to source-backed `YAK_pavel_pevznyak` behind the unset identity-clearance flag, while `795dc9bed` adds its package-gated source-placeholder portrait consumer. Fresh map inspection of the existing 574/Yakutsk anchor and optional 644/876/877 states succeeds; the prior `MAP_STATE_ID_COLLISION` was an invalid new-state allocation probe, not an existing-anchor collision. YAK remains fail-closed on identity/origin, flag rights, host remnant, typed probability, and central admission/Join.
 
 The deterministic Join order is IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-014, IW-017, IW-018, IW-019, IW-023, IW-024, IW-026, IW-027, IW-028, IW-029, IW-030, IW-031, IW-038, IW-040, IW-044, IW-045, IW-033, IW-041, IW-070, IW-071, IW-072, IW-173, and IW-184. The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10.
 
