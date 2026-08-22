@@ -1,46 +1,54 @@
-# Event 014 model source research C
+# Event 014 model source research C — modern artwork revision
 
-Status: three legally usable Internet-sourced visual references are archived and selected for parent review. Each source has an untouched download, an RGBA PNG preview, a repository-converter DDS evidence copy, a source manifest, and an archived source page where the page was available.
+Status: three modern visual references are archived and selected for parent review. The selections are modern game art, game concept art, and professional fantasy character art as required by the latest user correction. The downloaded originals, source-page records, manifests, processed PNG previews, DDS evidence copies, rejected alternatives, and ImageGen adaptation briefs are separate from the superseded archival set.
 
 This package covers only `cannibal_march_predation_column`, `cannibal_network_cadre`, and `cannibal_bone_riders`. It does not create or approve final model geometry, does not run ImageGen or Meshy, and does not edit gameplay, runtime, entity, unit, `.gfx`, `.asset`, event, localisation, or existing production manifest files.
 
-The user-provided attachment `C:/Users/klimp/AppData/Local/Temp/codex-clipboard-59672c99-c6a5-4728-9ab5-71e311186bd4.png` was explicitly excluded and was not opened, copied, or used.
+The user-provided attachment `C:/Users/klimp/AppData/Local/Temp/codex-clipboard-59672c99-c6a5-4728-9ab5-71e311186bd4.png` was explicitly excluded and was not opened, copied, or used. Attachment #2 was excluded entirely.
 
-## Selected references
+## Modern selections
 
-| Job | Proposed runtime basename | Source and license | Downloaded dimensions | Original SHA-256 | Fit summary |
-| --- | --- | --- | --- | --- | --- |
-| `cannibal_march_predation_column` | `cannibal_march_predation_column` | [Warrior with an Axe and Study of a Leg](https://commons.wikimedia.org/wiki/File:Warrior_with_an_Axe_and_Study_of_a_Leg_MET_DT6226.jpg), Fernand Cormon, 1897, Met object 1989.286.7; Commons file states CC0 1.0 | 1920x2746 | `E4F3DC05A815561EAE9120F97D5C1BFF8F9CCD3780B74E6ACA72632EC8245FFC` | Forward-loaded crouch/stride, visible boots and lower legs, broad axe crossing the torso, and a second compact haft/weapon; useful for a fast lightly equipped pursuit silhouette and paired-axe weapon logic. |
-| `cannibal_network_cadre` | `cannibal_network_cadre` | [Kylix (cup) depicting a kneeling archer](https://artmuseum.princeton.edu/art/collections/objects/109374), attributed to the Pithos Painter, ca. 490 BCE, Princeton object 2015-11; Princeton policy permits free download/use of public-domain work images without approval | 3000x2325 | `A300824E860ED5081BC3BF3E1B169DDF681C570713C772AD72C2B527FF75AC27` | Compact kneeling/crouched profile with bow arm, draw direction, and quiver; useful for a low scout/courier silhouette that can later add a knife and use a short bow or sling. |
-| `cannibal_bone_riders` | `cannibal_bone_riders` | [Soldaat met speer te paard in een rivier](https://www.rijksmuseum.nl/en/collection/object/Soldaat-met-speer-te-paard-in-een-rivier--a528c46bb93ae7249f4c4185f293e723), Jean Audran after Charles Le Brun, 1677-1756, Rijksmuseum RP-P-1967-203; object record states Public domain | 1743x1864 | `9C29933C376B8BF16D7FB76E41FE95A6A30D43A1FC7052AB14DCCE1C2FE592C8` | Complete horse with body, hindquarters, lifted forelegs, hooves, and ground contact; rider leans forward and holds a spear one-handed, giving strong action and later sling/short-javelin logic for rigging. |
+| Job | Selected source and usage status | Downloaded original | Dimensions and SHA-256 | Fit and required transformation |
+| --- | --- | --- | --- | --- |
+| `cannibal_march_predation_column` | [Best Classes in Dark and Darker](https://mobalytics.gg/blog/tier-lists/dark-and-darker-best-classes/) barbarian action artwork, direct image [download](https://cdnportal.mobalytics.gg/production/2022/12/97984ea9-dark-and-darker-f-barbarian-1.jpg); uncredited game artwork hosted by Mobalytics; license not stated; reference-only and not licensed. | `docs/assets/014_cannibalism/models_3d/cannibal_march_predation_column/refs/sourced/modern/original/cannibal_march_predation_column_modern_dark_and_darker_barbarian.jpg` | 848x951; `199E5E18F68835525A83F0B7CC16EB011FD0D08AD4A0D6859C0C7CC1065B89A8` | Full-body forward charge with two compact axes and readable leg separation. The adaptation must remove the source game's helmet, fur, armor, backpack, face, colors, and recognizable design language and produce the requested bare-chested, dark-haired, lightly equipped pursuit runner. |
+| `cannibal_network_cadre` | [archer](https://opengameart.org/content/archer-0) by kirill777; source page states CC-BY 3.0; research attribution required; final model must still be substantially original. Direct image [download](https://opengameart.org/sites/default/files/net%D0%B5_0.jpg). | `docs/assets/014_cannibalism/models_3d/cannibal_network_cadre/refs/sourced/modern/original/cannibal_network_cadre_modern_oga_archer_concept.jpg` | 1602x1199; `FF2EC66A332FDDDDE8A4757EE39E74A4D30F2F024F4E6D61B3C1AC8524D67F5F` | Modern game concept collage includes a crouched bow draw, full-body scout silhouettes, quiver, and compact gear. The adaptation must create one gaunt crouched scout/courier, add a readable knife, remove source hood, cloak, colors, labels, exact poses, and ornaments, and avoid cultural authenticity cues. |
+| `cannibal_bone_riders` | [Lines](https://www.abetaraky.com/lines-1/) by Abe Taraky, image `Rider_09d_AT_NS.jpg`; portfolio explicitly states copyright © Abe Taraky 2024 and prohibits unauthorized reproduction/distribution; reference-only and not licensed. Direct image [download](https://images.squarespace-cdn.com/content/v1/59fa66de4c326d506e72b58f/1708734525574-XW0WGI64JDC7RJ7O7ER6/Rider_09d_AT_NS.jpg). | `docs/assets/014_cannibalism/models_3d/cannibal_bone_riders/refs/sourced/modern/original/cannibal_bone_riders_modern_abe_taraky_rider.jpg` | 848x1300; `128AACEFC917DA785C1B67F9EDC01BB9BCF26CAB9BDD3893877DCC60889845D0` | Professional fantasy artwork supplies the extreme mounted counterbalance and bone silhouette. The adaptation must show a complete living horse under sparse bone armour, all four legs for rigging, a generic skull-like helmet, a one-handed sling, and a stone pouch with visible stones; it must not retain the undead skeletal anatomy or copy the source character. |
 
 Access date for all three sources: 2026-08-22 (Europe/Kiev).
 
-## Durable repository paths
+## Per-job records
 
-Each job's full provenance, source-page URLs, creator/title/date/license, fit rationale, adaptation boundary, uncertainty, source/preview/DDS hashes, and exact dimensions is in `refs/sourced/source_manifest.json`.
+Each modern source directory contains `source_manifest.json`, an archived source page or provenance capture, the untouched original, `processed/` RGBA PNG evidence, `dds/` converter evidence, and `imagegen_adaptation_brief.md`.
 
-- March original: `docs/assets/014_cannibalism/models_3d/cannibal_march_predation_column/refs/sourced/original/cannibal_march_predation_column_source.jpg`.
-- March preview and DDS: `.../cannibal_march_predation_column/refs/sourced/processed/cannibal_march_predation_column_source.png` and `.../cannibal_march_predation_column/refs/sourced/dds/cannibal_march_predation_column_source.dds`.
-- Network original: `docs/assets/014_cannibalism/models_3d/cannibal_network_cadre/refs/sourced/original/cannibal_network_cadre_source.jpg`.
-- Network preview and DDS: `.../cannibal_network_cadre/refs/sourced/processed/cannibal_network_cadre_source.png` and `.../cannibal_network_cadre/refs/sourced/dds/cannibal_network_cadre_source.dds`.
-- Bone Riders original: `docs/assets/014_cannibalism/models_3d/cannibal_bone_riders/refs/sourced/original/cannibal_bone_riders_source.jpg`.
-- Bone Riders preview and DDS: `.../cannibal_bone_riders/refs/sourced/processed/cannibal_bone_riders_source.png` and `.../cannibal_bone_riders/refs/sourced/dds/cannibal_bone_riders_source.dds`.
+- March manifest: `docs/assets/014_cannibalism/models_3d/cannibal_march_predation_column/refs/sourced/modern/source_manifest.json`.
+- March adaptation brief: `docs/assets/014_cannibalism/models_3d/cannibal_march_predation_column/refs/sourced/modern/imagegen_adaptation_brief.md`.
+- Network manifest: `docs/assets/014_cannibalism/models_3d/cannibal_network_cadre/refs/sourced/modern/source_manifest.json`.
+- Network adaptation brief: `docs/assets/014_cannibalism/models_3d/cannibal_network_cadre/refs/sourced/modern/imagegen_adaptation_brief.md`.
+- Bone Riders manifest: `docs/assets/014_cannibalism/models_3d/cannibal_bone_riders/refs/sourced/modern/source_manifest.json`.
+- Bone Riders adaptation brief: `docs/assets/014_cannibalism/models_3d/cannibal_bone_riders/refs/sourced/modern/imagegen_adaptation_brief.md`.
 
-The PNGs are native-resolution RGBA decodes with no crop, repaint, recolour, or background removal. The DDS files are evidence-only one-level uncompressed BGRA conversions made with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; none is a runtime texture or 2D sprite.
+The group-C-specific modern contact sheet is `docs/assets/014_cannibalism/models_3d/sourced_reference_contact_sheet_modern_group_c.png` with SHA-256 `493B987028BF66483B7A7AF46C69C046DB1917C90D666C7F74A7EC8692738958` and dimensions 1640x984. It compares the three selections with representative rejected modern alternatives and does not alter the shared group-B contact sheet.
 
-## Runtime handoff boundary
+The group-C-specific modern graphics handoff is `docs/assets/014_cannibalism/models_3d/gfx_handoff_modern_group_c.md`. It lists proposed downstream entity tokens and runtime basenames without wiring them.
 
-The proposed downstream entity tokens are `cannibal_march_predation_column_entity`, `cannibal_network_cadre_entity`, and `cannibal_bone_riders_entity`. The proposed runtime roots are `gfx/models/units/014_cannibalism/cannibal_march_predation_column/`, `gfx/models/units/014_cannibalism/cannibal_network_cadre/`, and `gfx/models/units/014_cannibalism/cannibal_bone_riders/`; a 3D entity has no 2D sprite field.
+The selected PNG previews are native-resolution RGBA conversions with no crop, repaint, recolour, or background removal. The DDS files are one-level uncompressed BGRA evidence conversions made with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; none is a runtime texture or 2D sprite.
 
-These references are design direction for a later one-image model-input step. Adaptation must independently create the fictional Event 014 subjects, remove source-specific historical costume cues, and preserve the requested action/weapon logic. Do not copy the images as final model art, claim historical or cultural authenticity, or carry forward identifiable living Indigenous regalia, sacred motifs, or culture-specific paint.
+## Adaptation boundary and safety
 
-## Uncertainty and review notes
+All three selected works are reference direction only. ImageGen must create substantially original model-sheet artwork and must not copy distinctive faces, logos, costumes, exact poses, source-specific props, or recognizable game or artist character designs.
 
-The March Commons page declares a 2797x4000 original, but Wikimedia returned HTTP 429 for that original during access; the archived 1920x2746 rendition is a complete full-subject image and its CC0 file-page record is preserved. The Met object page supplies institutional provenance but states that its image cannot be downloaded, so parent review should confirm that the Commons CC0 record is the intended reuse basis before any redistributed adaptation.
+March's selected artwork is intentionally stronger on aggressive action and paired-axe readability than the rejected OGA turnaround, but its heavy armor conflicts with the requested lightly equipped runner; that conflict is explicitly resolved in the adaptation brief.
 
-The Network reference is a museum photograph of a vessel, with the crouched archer bounded inside a tondo rather than isolated on a plain canvas; later adaptation must redraw the figure as a standalone courier and must not reproduce the pottery or inscription.
+Network's CC-BY source supports attribution and generic adaptation, but the collage format and source-specific hood and cape still require a new one-subject composition and a separately visible knife.
 
-The Bone Riders reference is a public-domain print of a historical/classical military scene; use only the complete horse anatomy, rider seat, forward action, and one-handed weapon handling, replacing the helmet, armor, and spear during adaptation.
+Bone Riders is the main legal and geometric blocker: Abe Taraky's source is clearly copyrighted and lacks a complete horse, sling, stone pouch, and skull helmet. It is retained only as reference direction, and the adaptation brief makes each missing requirement mandatory rather than implying the source supplies it.
 
-No contact sheet was created because one candidate was selected for each job and no unresolved multi-candidate comparison remained. Parent approval is still required before these references become exact model inputs.
+No selected source uses identifiable living Indigenous regalia, sacred motifs, culture-specific paint, or cultural authenticity claims. No user attachment was used.
+
+## Rejected and superseded evidence
+
+The earlier archival files and manifests remain in place and were not silently deleted. Every modern per-job manifest records the prior manifest path and marks it `superseded_rejected_archival` because the user correction excludes archival photographs, museum paintings or drawings, historical plates, antiquities, and archaeological art.
+
+Representative rejected modern alternatives are retained and documented in the per-job manifests. The March OGA barbarian is permissively licensed but too static and marked with unsuitable blue paint; the Sketchfab orc is not clearly reusable. The Bone Riders MyMiniFactory render has useful skull and horse cues but is a paid product with no stated reuse license and a cropped horse; the Commons exhibit photo is the wrong source family.
+
+There are no gameplay, runtime, GFX, entity, or unit changes in this handoff. Parent approval is required before any modern reference is passed to ImageGen or Meshy.
