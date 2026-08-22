@@ -1,6 +1,6 @@
 # Famine and Migration Generated Report-Art Manifest
 
-Status: handed_off. This package contains the complete seven-row generated report-image family accepted by `docs/specs/famine_and_migration_system_specs/famine_and_migration_system_asset_matrix.csv`. The main agent owns final `.gfx` registration and event/report wiring.
+Status: source GFX registered; this package contains the complete seven-row generated report-image family accepted by `docs/specs/famine_and_migration_system_specs/famine_and_migration_system_asset_matrix.csv`. The main agent owns event/report consumer wiring and final runtime validation.
 
 Source mode: generated with the official built-in ImageGen workflow. Generation fits because the accepted rows are fictional or dynamic shared-system incidents and do not require a specific real photograph, named person, or identifiable historical victim. The wartime evacuation row is generated period documentary art rather than archival sourcing because the matrix permits either mode and no exact historical image is required. The nuclear evacuation row is alternate-history documentary art.
 
@@ -58,4 +58,4 @@ No event IDs, localisation keys, `.gfx` edits, gameplay files, decisions, GUIs, 
 
 ## Blockers and review gates
 
-No asset is blocked. Final user-side in-game visual approval and parent-owned `.gfx`/event consumer wiring remain open integration gates. The exact event IDs and consumer branches were not supplied to this asset worker, so this package does not invent them.
+No asset is blocked. Current source contains the package `.gfx` registrations, while final user-side in-game visual approval and event consumer wiring remain open integration gates. The exact event IDs and consumer branches were not supplied to this asset worker, so this package does not invent them.

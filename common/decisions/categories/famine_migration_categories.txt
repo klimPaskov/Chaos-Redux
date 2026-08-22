@@ -1,0 +1,37 @@
+# Chaos Redux shared famine and migration decision category.
+# The category is intentionally ordinary. State modifiers and map highlights
+# carry the primary and supporting values, so no shared scripted GUI is needed.
+
+chaosx_famine_migration_category = {
+	visible = {
+		hidden_trigger = {
+			NOT = { is_special_chaos_country = yes }
+			uses_normal_civilian_systems = yes
+		}
+		NOT = { has_country_flag = famine_migration_decision_dormant }
+		OR = {
+			# Active and resolution phases remain visible while their selected
+			# cohort or reception load is being worked, even if pressure briefly
+			# dips below the reveal threshold.
+			AND = {
+				OR = {
+					has_country_flag = famine_migration_decision_active
+					has_country_flag = famine_migration_decision_resolution
+				}
+				OR = {
+					has_country_flag = famine_migration_displacement_country_active
+					any_owned_state = { has_state_flag = famine_migration_food_security_active }
+					check_variable = { famine_migration_reception_load > constant:famine_migration_decision_threshold.category_reception_load }
+				}
+			}
+			# The registered-state scheduler sets this phase only after a sustained
+			# or large incident. The category therefore does not rescan owned states
+			# merely because the decisions UI is open.
+			has_country_flag = famine_migration_decision_emerging
+		}
+	}
+	visible_when_empty = no
+	icon = GFX_fm_cat_displacement
+	picture = GFX_fm_pic_displacement
+	priority = constant:famine_migration_decision_timing.category_priority
+}

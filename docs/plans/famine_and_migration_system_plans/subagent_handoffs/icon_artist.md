@@ -1,6 +1,6 @@
 # Icon artist handoff: famine and migration system
 
-Status: complete for the assigned icon surfaces; parent wiring remains.
+Status: complete for the assigned icon surfaces and the Deaths texticon follow-up; current GFX/localisation wiring is present, while visual runtime validation remains parent-owned.
 
 ## Delivered files
 
@@ -35,5 +35,8 @@ Achievement gray states were derived as grayscale from each completed master; no
 ## Remaining boundaries
 
 - `fm_pic_displacement` is intentionally not included: it is the separate opaque 114x101 decision-category picture surface and belongs to generated event-art work.
-- `fm_deaths_famine` and `fm_deaths_displacement` remain uncreated because the parent did not provide a verified Deaths reason-icon/texticon consumer. This is a consumer-proof blocker, not a substituted asset.
+- `fm_deaths_famine` and `fm_deaths_displacement` are now delivered as parent-wiring texticons under `gfx/texticons/` at 18x18. Source prompts, original PNGs, processed PNGs, DDS round-trips, validation JSON, and a 4x contact sheet are under `docs/assets/famine_and_migration_system/{prompts,source,processed,dds_roundtrip,contact_sheets}/deaths/`. Sprite IDs `GFX_fm_deaths_famine` and `GFX_fm_deaths_displacement` are registered in `interface/chaosx_texticons.gfx`.
+- The Deaths details surface remains a text-key renderer around `interface/chaosx_chaos_meter_popup.gui:1971-1979` and `common/scripted_guis/chaosx_scripted_gui_chaos_meter.txt:848-860`, while the current cause localisation consumes the registered inline texticons.
+- `localisation/english/chaosx_chaos_meter_l_english.yml` consumes `£fm_deaths_famine` in `chaos_meter.deaths.cause.famine` and `£fm_deaths_displacement` in `chaos_meter.deaths.cause.forced_displacement`, with the file's UTF-8 BOM and existing wording preserved.
+- Deaths DDS validation: both outputs are 18x18, 1-level uncompressed BGRA8, 1,424 bytes, alpha 0..255, and byte-identical to processed PNG round-trips (0 mismatches). SHA-256: `fm_deaths_famine.dds` `3016C7B420C59A626C52DA344B6B73340602BA74CACA8FA763E1AD86F6010DD4`; `fm_deaths_displacement.dds` `4CC527A54F5B304EB92DD3573280315096BF14E7BBA2BC90BFD4D4EDBC635F23`.
 - Parent agent owns `.gfx`, gameplay, localisation, achievement definitions, and final in-game consumer validation.

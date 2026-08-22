@@ -52,4 +52,4 @@ The processed PNG alpha range is `(255, 255)`. The DDS payload contains 46,056 b
 
 ## Parent boundary
 
-The parent agent must register the proposed sprite and bind the shared decision category's `picture` field. The existing 52×40 `GFX_fm_cat_displacement` category icon is not a substitute for this 114×101 picture. No gameplay, decision, localisation, GUI, or `.gfx` file was edited by this package.
+Current source registers the proposed sprite and binds the shared decision category's `picture` field. The existing 52×40 `GFX_fm_cat_displacement` category icon is not a substitute for this 114×101 picture. No gameplay, decision, localisation, GUI, or `.gfx` file was edited by this package, and parent visual runtime validation remains open.

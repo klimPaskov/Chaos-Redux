@@ -1,0 +1,166 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION SCRIPTED LOCALISATION
+# ============================================================================
+# Player-facing selectors for the shared category, state profile context,
+# movement route, and cohort source. Formatting remains in localisation files.
+# ============================================================================
+
+defined_text = {
+	name = GetFamineMigrationCategoryPhase
+	text = { trigger = { has_country_flag = famine_migration_decision_resolution } localization_key = famine_migration_category_phase_resolution }
+	text = { trigger = { has_country_flag = famine_migration_decision_active } localization_key = famine_migration_category_phase_active }
+	text = { trigger = { has_country_flag = famine_migration_decision_emerging } localization_key = famine_migration_category_phase_emerging }
+	text = { trigger = { always = yes } localization_key = famine_migration_category_phase_dormant }
+}
+
+defined_text = {
+	name = GetFamineMigrationNationalFoodStage
+	text = { trigger = { any_owned_state = { has_state_flag = famine_migration_food_stage_catastrophic } } localization_key = famine_migration_food_stage_catastrophic }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_migration_food_stage_famine } } localization_key = famine_migration_food_stage_famine }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_migration_food_stage_acute_shortage } } localization_key = famine_migration_food_stage_acute_shortage }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_migration_food_stage_supply_strain } } localization_key = famine_migration_food_stage_supply_strain }
+	text = { trigger = { always = yes } localization_key = famine_migration_food_stage_stable }
+}
+
+defined_text = {
+	name = GetFamineMigrationBorderPolicy
+	text = { trigger = { check_variable = { famine_migration_border_policy = constant:famine_migration_border_policy.humanitarian_open } } localization_key = famine_migration_border_policy_open }
+	text = { trigger = { check_variable = { famine_migration_border_policy = constant:famine_migration_border_policy.controlled } } localization_key = famine_migration_border_policy_controlled }
+	text = { trigger = { check_variable = { famine_migration_border_policy = constant:famine_migration_border_policy.transit_only } } localization_key = famine_migration_border_policy_transit }
+	text = { trigger = { check_variable = { famine_migration_border_policy = constant:famine_migration_border_policy.quarantine } } localization_key = famine_migration_border_policy_quarantine }
+	text = { trigger = { check_variable = { famine_migration_border_policy = constant:famine_migration_border_policy.closed } } localization_key = famine_migration_border_policy_closed }
+	text = { trigger = { check_variable = { famine_migration_border_policy = constant:famine_migration_border_policy.violent } } localization_key = famine_migration_border_policy_violent }
+	text = { trigger = { check_variable = { famine_migration_border_policy = constant:famine_migration_border_policy.forced_return } } localization_key = famine_migration_border_policy_forced_return }
+	text = { trigger = { always = yes } localization_key = famine_migration_border_policy_unset }
+}
+
+defined_text = {
+	name = GetFamineMigrationHistoricalProfileName
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_soviet_1932_memory } } localization_key = famine_migration_profile_soviet_1932_memory }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_china_henan_1942 } } localization_key = famine_migration_profile_china_henan_1942 }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_china_policy_famine } } localization_key = famine_migration_profile_china_policy_famine }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_bengal_1943 } } localization_key = famine_migration_profile_bengal_1943 }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_vietnam_1944 } } localization_key = famine_migration_profile_vietnam_1944 }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_java_1944 } } localization_key = famine_migration_profile_java_1944 }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_greece_1941 } } localization_key = famine_migration_profile_greece_1941 }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_leningrad_siege } } localization_key = famine_migration_profile_leningrad_siege }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_dutch_hunger_winter } } localization_key = famine_migration_profile_dutch_hunger_winter }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_spain_early_1940s } } localization_key = famine_migration_profile_spain_early_1940s }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_ireland_memory } } localization_key = famine_migration_profile_ireland_memory }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_brazil_ceara } } localization_key = famine_migration_profile_brazil_ceara }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_congo_interaction } } localization_key = famine_migration_profile_congo_interaction }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_ethiopia_policy } } localization_key = famine_migration_profile_ethiopia_policy }
+	text = { trigger = { check_variable = { famine_migration_profile_context_id = constant:famine_migration_profile_id.hist_nuclear_winter_global } } localization_key = famine_migration_profile_nuclear_winter_global }
+	text = { trigger = { always = yes } localization_key = famine_migration_profile_none }
+}
+
+defined_text = {
+	name = GetFamineMigrationHistoricalProfileMode
+	text = { trigger = { check_variable = { famine_migration_profile_mode = constant:famine_migration_profile_mode.memory } } localization_key = famine_migration_profile_mode_memory }
+	text = { trigger = { check_variable = { famine_migration_profile_mode = constant:famine_migration_profile_mode.historical_window } } localization_key = famine_migration_profile_mode_window }
+	text = { trigger = { check_variable = { famine_migration_profile_mode = constant:famine_migration_profile_mode.policy_analogue } } localization_key = famine_migration_profile_mode_analogue }
+	text = { trigger = { check_variable = { famine_migration_profile_mode = constant:famine_migration_profile_mode.dynamic_regional } } localization_key = famine_migration_profile_mode_regional }
+	text = { trigger = { always = yes } localization_key = famine_migration_profile_mode_regional }
+}
+
+defined_text = {
+	name = GetFamineMigrationRouteState
+	text = { trigger = { check_variable = { famine_migration_transfer_result = constant:famine_migration_route_result.valid } } localization_key = famine_migration_route_valid }
+	text = { trigger = { check_variable = { famine_migration_transfer_result = constant:famine_migration_route_result.blocked } } localization_key = famine_migration_route_blocked }
+	text = { trigger = { check_variable = { famine_migration_transfer_result = constant:famine_migration_route_result.trapped } } localization_key = famine_migration_route_trapped }
+	text = { trigger = { always = yes } localization_key = famine_migration_route_invalid }
+}
+
+defined_text = {
+	name = GetFamineMigrationCohortName
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.occupation_policy } } localization_key = famine_migration_cohort_occupation }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.camp_repression } } localization_key = famine_migration_cohort_camp }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.gulag_repression } } localization_key = famine_migration_cohort_gulag }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.forced_labor } } localization_key = famine_migration_cohort_forced_labor }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.deportation } } localization_key = famine_migration_cohort_deportation }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.strategic_bombing } } localization_key = famine_migration_cohort_bombing }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.nuclear_strike } } localization_key = famine_migration_cohort_nuclear }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.fallout } } localization_key = famine_migration_cohort_fallout }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.outbreak } } localization_key = famine_migration_cohort_outbreak }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.natural_disaster } } localization_key = famine_migration_cohort_disaster }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.war } } localization_key = famine_migration_cohort_war }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.peace } } localization_key = famine_migration_cohort_peace }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.event } } localization_key = famine_migration_cohort_event }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.blockade } } localization_key = famine_migration_cohort_blockade }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.resource_shortage } } localization_key = famine_migration_cohort_shortage }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.evacuation } } localization_key = famine_migration_cohort_evacuation }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.internal_displacement } } localization_key = famine_migration_cohort_internal }
+	text = { trigger = { check_variable = { famine_migration_cohort_resolved_source = constant:famine_migration_pressure_source.cross_border_flight } } localization_key = famine_migration_cohort_refugees }
+	text = { trigger = { always = yes } localization_key = famine_migration_cohort_unknown }
+}
+
+defined_text = {
+	name = GetFamineMigrationPp10Cost
+	text = { trigger = { has_political_power > 10 } localization_key = famine_migration_cost_pp_10_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_pp_10_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationPp20Cost
+	text = { trigger = { has_political_power > 20 } localization_key = famine_migration_cost_pp_20_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_pp_20_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationPp35Cost
+	text = { trigger = { has_political_power > 35 } localization_key = famine_migration_cost_pp_35_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_pp_35_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationTrain5Cost
+	text = { trigger = { has_equipment = { train_equipment > 5 } } localization_key = famine_migration_cost_train_5_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_train_5_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationTrain10Cost
+	text = { trigger = { has_equipment = { train_equipment > 10 } } localization_key = famine_migration_cost_train_10_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_train_10_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationConvoy5Cost
+	text = { trigger = { has_equipment = { convoy > 5 } } localization_key = famine_migration_cost_convoy_5_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_convoy_5_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationConvoy10Cost
+	text = { trigger = { has_equipment = { convoy > 10 } } localization_key = famine_migration_cost_convoy_10_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_convoy_10_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationSupport50Cost
+	text = { trigger = { has_equipment = { support_equipment > 50 } } localization_key = famine_migration_cost_support_50_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_support_50_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationSupport100Cost
+	text = { trigger = { has_equipment = { support_equipment > 100 } } localization_key = famine_migration_cost_support_100_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_support_100_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationInfantry100Cost
+	text = { trigger = { has_equipment = { infantry_equipment > 100 } } localization_key = famine_migration_cost_infantry_100_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_infantry_100_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationInfantry250Cost
+	text = { trigger = { has_equipment = { infantry_equipment > 250 } } localization_key = famine_migration_cost_infantry_250_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_infantry_250_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationFuel500Cost
+	text = { trigger = { has_fuel > 500 } localization_key = famine_migration_cost_fuel_500_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_fuel_500_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationFuel1000Cost
+	text = { trigger = { has_fuel > 1000 } localization_key = famine_migration_cost_fuel_1000_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_fuel_1000_blocked }
+}
+defined_text = {
+	name = GetFamineMigrationAirXp10Cost
+	text = { trigger = { has_air_experience > 10 } localization_key = famine_migration_cost_air_xp_10_ready }
+	text = { trigger = { always = yes } localization_key = famine_migration_cost_air_xp_10_blocked }
+}
