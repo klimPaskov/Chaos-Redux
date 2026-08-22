@@ -337,3 +337,39 @@ famine_migration_cohort_cleanup_request_is_valid = {
 		check_variable = { var = famine_migration_cohort_cleanup_proven value = constant:famine_migration_runtime.zero compare = greater_than }
 	}
 }
+
+# Public reserve mutation contracts. Each helper requires explicit owner proof;
+# a missing request, actor, source, or route marker fails closed.
+famine_migration_food_reserve_release_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_food_reserve_release_request_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_release_amount value = constant:famine_migration_food_reserve.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_release_actor_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+	}
+}
+
+famine_migration_food_reserve_import_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_food_reserve_import_request_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_import_amount value = constant:famine_migration_food_reserve.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_import_source_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_import_actor_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+	}
+}
+
+famine_migration_food_reserve_transfer_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_food_reserve_transfer_request_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_transfer_amount value = constant:famine_migration_food_reserve.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_transfer_route_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_food_reserve_transfer_actor_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		has_event_target = famine_migration_food_reserve_destination
+		event_target:famine_migration_food_reserve_destination = {
+			famine_migration_state_is_valid = yes
+		}
+		NOT = { state = event_target:famine_migration_food_reserve_destination }
+	}
+}

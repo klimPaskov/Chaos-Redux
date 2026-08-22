@@ -21,7 +21,9 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [Shared alien-infantry contact and landing API](#shared-alien-infantry-contact-and-landing-api)
 - [Mengele Directorate Event 016 prototype bridge](#mengele-directorate-event-016-prototype-bridge)
 - [Event 19 integration obligation for new custom units](#event-19-integration-obligation-for-new-custom-units)
+- [Event 19 derivative opening local-asset audit](#event-19-derivative-opening-local-asset-audit)
 - [Event 006 AI reserve and ledger trigger contract](#event-006-ai-reserve-and-ledger-trigger-contract)
+- [Famine and migration food-reserve ledger](#famine-and-migration-food-reserve-ledger)
 - [Famine and migration runtime registry](#famine-and-migration-runtime-registry)
 - [Famine and migration pressure adapters](#famine-and-migration-pressure-adapters)
 - [Exact civilian transfer contract](#exact-civilian-transfer-contract)
@@ -516,13 +518,15 @@ The integration is owner-side. Do not add a fixed family list to Event 19, do no
 
 When a new unit belongs to an already registered family, extend that family's owner adapter, template builder, token coverage, obligation manifest, and cleanup contract instead of allocating a second provider merely to enumerate another battalion. When the unit has a distinct availability, lot, sustainment, containment, derivative, AI, visual, cleanup, or parent-isolation identity, register one new family and provider ID.
 
-Every new Event 19-capable family must provide one registration surface and all eleven provider callbacks:
+Every new Event 19-capable family must provide one registration surface and all thirteen provider callbacks:
 
 - `chaos_unit_family_provider_N_event19_evaluate_eligibility`
 - `chaos_unit_family_provider_N_event19_build_template`
 - `chaos_unit_family_provider_N_event19_spawn_unit`
 - `chaos_unit_family_provider_N_event19_reconcile_sustainment`
-- `chaos_unit_family_provider_N_event19_get_management_cost_display`
+- `chaos_unit_family_provider_N_event19_get_equipment_token`
+- `chaos_unit_family_provider_N_event19_publish_custom_equipment_tokens`
+- `chaos_unit_family_provider_N_event19_get_presentation`
 - `chaos_unit_family_provider_N_event19_evaluate_management`
 - `chaos_unit_family_provider_N_event19_pay_management_action`
 - `chaos_unit_family_provider_N_event19_refund_management_action`
@@ -532,13 +536,61 @@ Every new Event 19-capable family must provide one registration surface and all 
 
 The callbacks must preserve the owner's real technology, source-event, train-versus-spawn, parent-isolation, and equipment rules. They must not substitute ordinary infantry, borrow another family's presentation, activate parent stages or evolutions, or propagate parent counts, wars, deaths, super-events, or world-end progression. A future provider uses the neutral army visual profile unless it owns a separately supported profile. Support-only definitions are not registered as standalone families because HOI4 cannot create a division without a combat regiment. They remain parent-owned obligations or join an inseparable provider formation that contains a valid combat component.
 
-The owner must publish exact manpower and equipment requirements through the Event 19 obligation manifest. A provider with no separate standing stockpile debit must explicitly commit a zero-row manifest and select the ledger-backed zero-debit cost-display profile. `event19_get_management_cost_display` is presentation-only. Payment occurs only through `event19_pay_management_action`, and a failed build or spawn must restore the same resources through `event19_refund_management_action`.
+The owner publishes exact manpower and equipment requirements through `event19_reconcile_sustainment`. Every non-generic equipment profile is a stable numeric constant in the owner's own constants file; the pair of family ID and profile is the save-compatible resolver identity. `event19_get_equipment_token` maps the current profile to the concrete local equipment token and sets `infantry_spawn_family_provider_equipment_is_specialist` when the row uses specialist salvage. Generic infantry, support, motorized, and coal-golem profiles may delegate to `infantry_spawn_provider_get_standard_equipment_token`. Unknown positive profiles fail closed.
+
+`event19_publish_custom_equipment_tokens` calls `infantry_spawn_register_current_family_custom_equipment_token` once for every non-generic equipment type the provider can debit or refund. Event 19 dispatches every registered provider publisher when it snapshots pre-payment and post-payment stockpiles, so a future equipment type enters affordability, payment, rollback, derivative materialization, and exploit proof without an Event 19 equipment-list edit. Providers with no custom equipment explicitly return no token. Provider-owned debit and refund effects remain the only authority for direct request costs; Event 19 snapshots their published tokens and proves exact restoration instead of applying a second debit or refund.
+
+`event19_get_presentation` returns positive localisation-key tokens in `infantry_spawn_family_provider_name_loc_token`, `infantry_spawn_family_provider_request_cost_loc_token`, and `infantry_spawn_family_provider_sustainment_cost_loc_token`. The Muster decisions, first-reception evidence, reports, and derivative records freeze or cache those tokens and render them with `GetTokenLocalizedKey`. A missing or malformed presentation token rejects the provider row; Event 19 does not substitute another family's name or cost text.
+
+Payment occurs only through `event19_pay_management_action`, and a failed build or spawn restores the same resources through `event19_refund_management_action`. Event 19 owns only its shared request overhead. Pre-payment snapshots prove exact refund symmetry; transaction snapshots prove that structural rollback did not mutate provider stockpiles. Selected-lot exact obligations use country-persistent aligned token and amount arrays because decision availability is evaluated after the cache refresh effect returns.
 
 The same change must add or update family names, descriptions, selection text, management costs, blocked tooltips, AI eligibility, and any derivative identity text exposed to the player. It must also update `docs/systems/cbrn_warfare/chaos_unit_family_registry.md` and `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`. If the event catalog describes the affected family coverage, update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and regenerate its CSV exports through the repository exporter.
 
-Before the owning feature is considered complete, verify that the registry arrays remain aligned, every registered provider has exactly one registration and eleven callbacks, every installed combat token is covered, manifest row counts and liabilities match the real formation, trainable and spawn-only policies are enforced, management payment and refund are symmetric, derivative setup and defeat cleanup prove their owner surfaces, and Event 19 does not inherit the parent feature's progression. Run the applicable HOI4 MCP event and weighted-logic inspections for the changed provider paths. An unresolved provider, missing callback, stale cost display, generic equipment substitute, undocumented support-only exclusion, or unvalidated registry row is a blocker rather than an allowed fallback.
+Before the owning feature is considered complete, verify that the registry arrays remain aligned, every registered provider has exactly one registration and thirteen callbacks, every installed combat token has an explicit provider disposition, every non-generic equipment token resolves to a concrete local definition, manifest row counts and liabilities match the real formation, trainable and spawn-only policies are enforced, management payment and refund are symmetric, derivative setup and defeat cleanup prove their owner surfaces, and Event 19 does not inherit the parent feature's progression. Run the applicable HOI4 MCP event and weighted-logic inspections for the changed provider paths. An unresolved provider, missing callback, stale presentation token, generic equipment substitute, undocumented support-only exclusion, or unvalidated registry row is a blocker rather than an allowed fallback.
 
 The complete field, callback, accounting, isolation, and lifecycle contract is maintained in `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`. The current unit census and provider-to-token mapping are maintained in `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`.
+
+## Event 19 derivative opening local-asset audit
+
+Purpose: record the local economy and logistics a dynamic Event 19 derivative actually received, classify its opening capacity, and retire the temporary shortfall burden after the opening inventory focus proves that the seized district has been catalogued.
+
+Owner source: `common/scripted_effects/019_infantry_spawn_derivative_package_effects.txt`.
+
+Scope: country after the derivative owns its opening states and has initialized or adopted its private Event 19 ledger.
+
+Effect: `infantry_spawn_derivative_reconcile_starting_local_assets`.
+
+Inputs: the current country scope; owned-state totals; `num_of_factories`, `num_of_civilian_factories`, `num_of_military_factories`, `num_of_naval_factories`, `amount_research_slots`, `fuel_ratio`, standard equipment stockpiles, `infantry_spawn_equipment_debt`, `infantry_spawn_manpower_liability`, and `infantry_spawn_active_division_count`; state-level population, infrastructure, railway, port, supply-node, and local-resource values; and owner-published custom-equipment token and amount arrays returned through the registered Event 19 provider publishers.
+
+Outputs: persistent `infantry_spawn_derivative_opening_owned_state_count`, `infantry_spawn_derivative_opening_factory_count`, `infantry_spawn_derivative_opening_civilian_factory_count`, `infantry_spawn_derivative_opening_military_factory_count`, `infantry_spawn_derivative_opening_naval_factory_count`, `infantry_spawn_derivative_opening_population_k`, `infantry_spawn_derivative_opening_infrastructure_score`, `infantry_spawn_derivative_opening_railway_state_count`, `infantry_spawn_derivative_opening_port_level_count`, `infantry_spawn_derivative_opening_supply_node_count`, `infantry_spawn_derivative_opening_local_resource_total`, `infantry_spawn_derivative_opening_research_slot_count`, `infantry_spawn_derivative_opening_fuel_ratio`, `infantry_spawn_derivative_opening_infantry_equipment`, `infantry_spawn_derivative_opening_support_equipment`, `infantry_spawn_derivative_opening_motorized_equipment`, `infantry_spawn_derivative_opening_train_equipment`, `infantry_spawn_derivative_opening_convoy_equipment`, `infantry_spawn_derivative_opening_equipment_obligation`, `infantry_spawn_derivative_opening_manpower_obligation`, `infantry_spawn_derivative_opening_active_formation_count`, `infantry_spawn_derivative_opening_custom_equipment_total`, and `infantry_spawn_derivative_opening_local_capacity_score`.
+
+Outputs also include exactly one of `infantry_spawn_derivative_local_assets_fragile`, `infantry_spawn_derivative_local_assets_strained`, or `infantry_spawn_derivative_local_assets_viable` country flags. A fragile result adds the temporary `infantry_spawn_derivative_local_asset_shortfall` idea.
+
+Defaults: thresholds come from `constant:infantry_spawn_derivative_opening_asset` with minimum railway level `1`, factory and military-factory presence floors `1`, infrastructure-per-state floor `1`, population floor `100` thousand, local-resource floor `1`, infantry-equipment floor `100`, support-equipment floor `10`, motorized-equipment floor `10`, train-equipment floor `1`, convoy-equipment floor `5`, custom-equipment floor `1`, fragile score ceiling `4`, and strained score ceiling `8`. Missing optional local assets contribute zero evidence, and a mismatched custom-equipment token and amount array fails closed through the ledger-invariant path.
+
+Side effects: the effect clears and rewrites the opening snapshot arrays, dispatches registered provider custom-equipment publishers, clears the three capacity flags and the prior shortfall-resolved flag, then adds the fragile idea or sets the strained/viable flag. It never creates factories, infrastructure, supply assets, or a generic economy grant.
+
+Effect: `infantry_spawn_derivative_resolve_opening_local_asset_shortfall`.
+
+Scope: country on the opening inventory focus `infantry_spawn_derivative_inventory_the_seized_districts` after the local asset audit.
+
+Inputs: the current country scope and the existing temporary shortfall idea.
+
+Outputs: removes `infantry_spawn_derivative_local_asset_shortfall` and sets `infantry_spawn_derivative_local_asset_shortfall_resolved`.
+
+Defaults: the effect is idempotent when the idea is absent and does not require a fragile classification before setting the proof flag.
+
+Side effects: opening measurements, capacity flags, private ledgers, factories, infrastructure, stockpiles, and provider-owned arrays remain unchanged. The effect only retires the temporary burden and records the resolved proof.
+
+Example:
+
+```txt
+# Called during dynamic derivative setup after the opening states and private ledger exist.
+infantry_spawn_derivative_reconcile_starting_local_assets = yes
+
+# Called by the opening inventory focus after its district-catalogue work.
+infantry_spawn_derivative_resolve_opening_local_asset_shortfall = yes
+```
 
 ## Event 006 AI reserve and ledger trigger contract
 
@@ -739,6 +791,55 @@ When a state has trapped population, the evaluator derives normalized trapped ne
 The stage entry thresholds are stable below 25, supply strain at 25, acute shortage at 50, famine at 75, and catastrophic famine at 100. Each upward transition requires a candidate duration of 7, 7, 14, 21, or 30 days for stable, supply strain, acute shortage, famine, and catastrophic famine respectively. Recovery uses hysteresis thresholds of 20, 40, 60, and 80 and durations of 14, 21, 30, and 45 days for the active stage. `famine_migration_food_incident_count` increments on acute-or-worse entry and stage flags are reset atomically.
 
 `famine_migration_apply_famine_mortality` runs only for acute shortage, famine, or catastrophic famine after its stage exposure minimum and due date. It derives population from `state_population_k * constant:chaos_meter_deaths.people_per_k`, reserves the larger of the dynamic 15 percent protected floor and the centralized minimum floor, and scales the pulse by stage rate, exposure, vulnerability, transport/need access, extraction, environment, governance, and relief factors. It calls `apply_exact_state_civilian_population_loss` exactly once with the protected floor, the actual famine reason, and death logging enabled, then stores the helper's `state_civilian_population_loss_applied` result. There is no fixed historical death outcome and no second debit.
+
+## Famine and migration food-reserve ledger
+
+Purpose: maintain a state-owned food reserve amount, capacity, target, replenishment/depletion history, and explicit decision-facing relief outputs without introducing a flat modifier or changing population.
+
+Owner source: `common/scripted_effects/chaosx_famine_migration_effects.txt` with tuning in `common/script_constants/famine_migration_constants.txt`.
+
+Scope: state. The evaluator invokes the refresh and date-idempotent update only for states already present in the bounded active-food registry, so reserve work remains sparse and never scans the world.
+
+Units: one reserve unit is one thousand-person-day. A state with `state_population_k = 1000` therefore consumes approximately 1000 reserve units per day, and a 30-day target is approximately 30000 units before the logistics factor.
+
+Capacity formula: `daily_need = round(max(1, state_population_k * constant:famine_migration_food_reserve.daily_need_per_k))`, `logistics_factor = clamp(constant:famine_migration_food_reserve.logistics_factor_base + infrastructure_level * constant:famine_migration_food_reserve.logistics_factor_per_infrastructure - component_transport * constant:famine_migration_food_reserve.transport_capacity_penalty - component_production * constant:famine_migration_food_reserve.production_capacity_penalty, logistics_factor_minimum, logistics_factor_maximum)`, `capacity = round(max(1, daily_need * capacity_days * logistics_factor))`, and `target = min(capacity, round(max(1, daily_need * target_days * logistics_factor)))`.
+
+Initialization: the first valid refresh does not invent stock. An owner must provide a positive `famine_migration_food_reserve_initial_amount` with `famine_migration_food_reserve_initialization_proven > 0`, or an existing positive reserve amount must already be present in the save; only then does the helper set `famine_migration_food_reserve_initialized`. A zero amount remains zero until an explicit import or proven initial allocation, while a live amount is never silently raised to capacity.
+
+Stable replenishment formula: once per game date, an initialized stable state adds `min(target - amount, round(daily_need * replenishment_per_k_per_day * max(replenishment_factor_minimum, 1 - component_production / 100) * max(replenishment_factor_minimum, 1 - component_transport / 100) * logistics_factor))`; an uninitialized zero ledger does not self-create stock.
+
+Active depletion formula: once per game date, supply strain, acute shortage, famine, or catastrophic famine removes `min(amount, round(daily_need * stage_depletion_share * max(depletion_factor_minimum, component_need / 100)))`, where the stage shares are centralized as 0.05, 0.20, 0.50, and 1.00.
+
+Score relief formula: `reserve_relief = clamp((amount / daily_need) * relief_per_day_covered + famine_migration_food_reserve_relief, 0, relief_maximum)`. The evaluator adds this bounded value to the existing normalized relief component before applying the centralized food-score weights.
+
+Persistent state fields: `famine_migration_food_reserve_amount`, `..._initial_amount`, `..._initialization_proven`, `..._capacity`, `..._target`, `..._daily_need`, `..._logistics_factor`, `..._relief`, `..._last_update_date`, `..._last_replenished`, `..._last_depleted`, `..._last_imported`, `..._last_consumed`, `..._last_transfer_in`, `..._last_transfer_out`, and cumulative `..._total_replenished`, `..._total_depleted`, `..._total_imported`, `..._total_consumed`, `..._total_transfer_in`, and `..._total_transfer_out` are initialized by `famine_migration_initialize_food_state`.
+
+`famine_migration_refresh_food_reserve_capacity` is a state-scope read/initialize helper. It takes live state population, infrastructure, and already-composed production/transport components, writes persistent capacity/target/need/logistics fields, and returns temporary `famine_migration_food_reserve_refresh_result`, `..._capacity_output`, `..._target_output`, `..._amount_output`, `..._daily_need_output`, and `..._logistics_factor_output`.
+
+`famine_migration_update_food_reserve` is a state-scope date-idempotent mutation helper. It returns temporary `famine_migration_food_reserve_update_result`, `..._replenished_output`, `..._depleted_output`, `..._amount_output`, `..._daily_need_output`, and `..._relief_output`; repeated calls on the same game date do not replenish, deplete, or decay relief a second time.
+
+`famine_migration_consume_food_reserve_for_relief` and its public aliases `famine_migration_release_food_reserves` and `famine_migration_consume_food_reserves_as_relief` accept positive `famine_migration_food_reserve_release_amount` only with `..._release_request_proven` and `..._release_actor_proven`. They return temporary `..._consume_result`, `..._consumed_output`, `..._relief_granted_output`, and `..._remaining_output`, consume only the actual available amount, add bounded transient relief, and clear the one-shot request/proof variables.
+
+`famine_migration_add_food_reserves` and its public alias `famine_migration_import_food_reserves` accept positive `famine_migration_food_reserve_import_amount` only with `..._import_request_proven`, `..._import_source_proven`, and `..._import_actor_proven`. They return temporary `..._add_result`, `..._added_output`, `..._remaining_output`, and `..._capacity_output`, credit only free capacity, record the exact accepted amount in the import totals, and clear one-shot inputs.
+
+`famine_migration_transfer_food_reserves` and its public alias `famine_migration_requisition_food_reserves` run in the source state and require positive `famine_migration_food_reserve_transfer_amount`, `..._transfer_request_proven`, `..._transfer_route_proven`, `..._transfer_actor_proven`, and the regular event target `famine_migration_food_reserve_destination`. The destination must be a distinct valid state. The helper returns temporary `..._transfer_result`, `..._transfer_source_debit_output`, `..._transfer_destination_credit_output`, and `..._transfer_remaining_output`.
+
+Transfer conservation: `accepted = min(request, source_amount, destination_capacity - destination_amount)`, source debit and destination credit are measured from the actual before/after values, and a residual is rolled back before cumulative transfer ledgers advance. The valid result requires `source_debit - destination_credit = 0`, and the two actual amounts are then written once to `..._total_transfer_out` and `..._total_transfer_in`; no population or logistics ledger is touched.
+
+Decision integration contract: an owner decision proves authority and route/source context, sets one documented request bundle, calls the matching public alias in the actual state scope, reads explicit accepted/result outputs in the same effect chain, and never edits `famine_migration_food_reserve_amount` directly. Decisions can display capacity, target, amount, and accepted output through their own localisation consumer without introducing a second reserve stockpile.
+
+Cleanup: state registration cleanup removes active flags and transient food components but intentionally does not clear reserve amount, capacity, target, initialization, cumulative totals, or historical population ledgers. Retirement therefore stops scheduling without erasing reserve history; a later valid owner context can refresh capacity and resume the ledger.
+
+Example:
+
+```txt
+# State-scope owner decision transaction.
+set_variable = { famine_migration_food_reserve_release_amount = 250 }
+set_variable = { famine_migration_food_reserve_release_request_proven = 1 }
+set_variable = { famine_migration_food_reserve_release_actor_proven = 1 }
+famine_migration_release_food_reserves = yes
+# Read famine_migration_food_reserve_consume_result and accepted outputs here.
+```
 
 ## Registry-only scheduling and lifecycle
 

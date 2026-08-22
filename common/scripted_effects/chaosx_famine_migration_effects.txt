@@ -2055,6 +2055,27 @@ famine_migration_initialize_food_state = {
 	if = { limit = { NOT = { has_variable = famine_migration_component_vulnerability } } set_variable = { famine_migration_component_vulnerability = constant:famine_migration_food_component.zero } }
 	if = { limit = { NOT = { has_variable = famine_migration_component_governance } } set_variable = { famine_migration_component_governance = constant:famine_migration_food_component.zero } }
 	if = { limit = { NOT = { has_variable = famine_migration_component_relief } } set_variable = { famine_migration_component_relief = constant:famine_migration_food_component.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_amount } } set_variable = { famine_migration_food_reserve_amount = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_initial_amount } } set_variable = { famine_migration_food_reserve_initial_amount = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_initialization_proven } } set_variable = { famine_migration_food_reserve_initialization_proven = constant:famine_migration_runtime.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_capacity } } set_variable = { famine_migration_food_reserve_capacity = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_target } } set_variable = { famine_migration_food_reserve_target = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_daily_need } } set_variable = { famine_migration_food_reserve_daily_need = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_logistics_factor } } set_variable = { famine_migration_food_reserve_logistics_factor = constant:famine_migration_food_reserve.logistics_factor_minimum } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_relief } } set_variable = { famine_migration_food_reserve_relief = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_last_update_date } } set_variable = { famine_migration_food_reserve_last_update_date = constant:famine_migration_runtime.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_last_replenished } } set_variable = { famine_migration_food_reserve_last_replenished = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_last_depleted } } set_variable = { famine_migration_food_reserve_last_depleted = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_last_imported } } set_variable = { famine_migration_food_reserve_last_imported = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_last_consumed } } set_variable = { famine_migration_food_reserve_last_consumed = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_last_transfer_in } } set_variable = { famine_migration_food_reserve_last_transfer_in = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_last_transfer_out } } set_variable = { famine_migration_food_reserve_last_transfer_out = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_total_replenished } } set_variable = { famine_migration_food_reserve_total_replenished = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_total_depleted } } set_variable = { famine_migration_food_reserve_total_depleted = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_total_imported } } set_variable = { famine_migration_food_reserve_total_imported = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_total_consumed } } set_variable = { famine_migration_food_reserve_total_consumed = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_total_transfer_in } } set_variable = { famine_migration_food_reserve_total_transfer_in = constant:famine_migration_food_reserve.zero } }
+	if = { limit = { NOT = { has_variable = famine_migration_food_reserve_total_transfer_out } } set_variable = { famine_migration_food_reserve_total_transfer_out = constant:famine_migration_food_reserve.zero } }
 	if = { limit = { NOT = { has_variable = famine_migration_state_reception_load } } set_variable = { famine_migration_state_reception_load = constant:famine_migration_population.zero } }
 	if = { limit = { NOT = { has_variable = famine_migration_state_resettled_population } } set_variable = { famine_migration_state_resettled_population = constant:famine_migration_population.zero } }
 	if = { limit = { NOT = { has_variable = famine_migration_state_returned_population } } set_variable = { famine_migration_state_returned_population = constant:famine_migration_population.zero } }
@@ -2917,6 +2938,31 @@ famine_migration_evaluate_food_security = {
 	add_to_variable = { famine_migration_component_relief = famine_migration_external_relief }
 	clamp_variable = { var = famine_migration_component_relief min = constant:famine_migration_food_component.zero max = constant:famine_migration_food_component.maximum }
 
+	# Reserve stock is a state-owned relief source. The update is registry-only
+	# through the caller and is idempotent for the current game date.
+	famine_migration_update_food_reserve = yes
+	set_temp_variable = { famine_migration_food_reserve_stock_relief = constant:famine_migration_food_reserve.zero }
+	if = {
+		limit = { check_variable = { var = famine_migration_food_reserve_daily_need value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+		set_temp_variable = { famine_migration_food_reserve_stock_relief = famine_migration_food_reserve_amount }
+		divide_temp_variable = { famine_migration_food_reserve_stock_relief = famine_migration_food_reserve_daily_need }
+		multiply_temp_variable = { famine_migration_food_reserve_stock_relief = constant:famine_migration_food_reserve.relief_per_day_covered }
+		clamp_temp_variable = {
+			var = famine_migration_food_reserve_stock_relief
+			min = constant:famine_migration_food_reserve.zero
+			max = constant:famine_migration_food_reserve.relief_maximum
+		}
+	}
+	add_to_temp_variable = { famine_migration_food_reserve_stock_relief = famine_migration_food_reserve_relief }
+	clamp_temp_variable = {
+		var = famine_migration_food_reserve_stock_relief
+		min = constant:famine_migration_food_reserve.zero
+		max = constant:famine_migration_food_reserve.relief_maximum
+	}
+	set_temp_variable = { famine_migration_food_reserve_score_relief_output = famine_migration_food_reserve_stock_relief }
+	add_to_variable = { famine_migration_component_relief = famine_migration_food_reserve_stock_relief }
+	clamp_variable = { var = famine_migration_component_relief min = constant:famine_migration_food_component.zero max = constant:famine_migration_food_component.maximum }
+
 	set_temp_variable = { famine_migration_food_score_raw = famine_migration_component_production }
 	multiply_temp_variable = { famine_migration_food_score_raw = constant:famine_migration_food_weight.production }
 	set_temp_variable = { famine_migration_food_component_weighted = famine_migration_component_transport }
@@ -3012,6 +3058,396 @@ famine_migration_evaluate_food_security = {
 	famine_migration_achievement_process_state = yes
 	famine_migration_retire_recovered_state = yes
 	}
+}
+
+# Refreshes the state-owned reserve ledger from live population and logistics.
+# Reserve units are thousand-person-days; this effect never changes population
+# and preserves the amount and cumulative totals across state retirement.
+famine_migration_refresh_food_reserve_capacity = {
+	set_temp_variable = { famine_migration_food_reserve_refresh_result = constant:famine_migration_runtime.zero }
+	set_temp_variable = { famine_migration_food_reserve_capacity_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_target_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_amount_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_daily_need_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_logistics_factor_output = constant:famine_migration_food_reserve.zero }
+	if = {
+		limit = { famine_migration_state_is_valid = yes }
+		famine_migration_initialize_food_state = yes
+		set_temp_variable = { famine_migration_food_reserve_logistics_factor_calculated = constant:famine_migration_food_reserve.logistics_factor_base }
+		set_temp_variable = { famine_migration_food_reserve_infrastructure = infrastructure_level }
+		multiply_temp_variable = { famine_migration_food_reserve_infrastructure = constant:famine_migration_food_reserve.logistics_factor_per_infrastructure }
+		add_to_temp_variable = { famine_migration_food_reserve_logistics_factor_calculated = famine_migration_food_reserve_infrastructure }
+		set_temp_variable = { famine_migration_food_reserve_transport_penalty = famine_migration_component_transport }
+		multiply_temp_variable = { famine_migration_food_reserve_transport_penalty = constant:famine_migration_food_reserve.transport_capacity_penalty }
+		subtract_from_temp_variable = { famine_migration_food_reserve_logistics_factor_calculated = famine_migration_food_reserve_transport_penalty }
+		set_temp_variable = { famine_migration_food_reserve_production_penalty = famine_migration_component_production }
+		multiply_temp_variable = { famine_migration_food_reserve_production_penalty = constant:famine_migration_food_reserve.production_capacity_penalty }
+		subtract_from_temp_variable = { famine_migration_food_reserve_logistics_factor_calculated = famine_migration_food_reserve_production_penalty }
+		clamp_temp_variable = {
+			var = famine_migration_food_reserve_logistics_factor_calculated
+			min = constant:famine_migration_food_reserve.logistics_factor_minimum
+			max = constant:famine_migration_food_reserve.logistics_factor_maximum
+		}
+		set_variable = { famine_migration_food_reserve_logistics_factor = famine_migration_food_reserve_logistics_factor_calculated }
+		set_variable = { famine_migration_food_reserve_daily_need = state_population_k }
+		multiply_variable = { famine_migration_food_reserve_daily_need = constant:famine_migration_food_reserve.daily_need_per_k }
+		round_variable = famine_migration_food_reserve_daily_need
+		clamp_variable = { var = famine_migration_food_reserve_daily_need min = constant:famine_migration_food_reserve.minimum_units }
+		set_temp_variable = { famine_migration_food_reserve_capacity_calculated = famine_migration_food_reserve_daily_need }
+		multiply_temp_variable = { famine_migration_food_reserve_capacity_calculated = constant:famine_migration_food_reserve.capacity_days }
+		multiply_temp_variable = { famine_migration_food_reserve_capacity_calculated = famine_migration_food_reserve_logistics_factor }
+		round_temp_variable = famine_migration_food_reserve_capacity_calculated
+		clamp_temp_variable = { var = famine_migration_food_reserve_capacity_calculated min = constant:famine_migration_food_reserve.minimum_units }
+		set_variable = { famine_migration_food_reserve_capacity = famine_migration_food_reserve_capacity_calculated }
+		set_temp_variable = { famine_migration_food_reserve_target_calculated = famine_migration_food_reserve_daily_need }
+		multiply_temp_variable = { famine_migration_food_reserve_target_calculated = constant:famine_migration_food_reserve.target_days }
+		multiply_temp_variable = { famine_migration_food_reserve_target_calculated = famine_migration_food_reserve_logistics_factor }
+		round_temp_variable = famine_migration_food_reserve_target_calculated
+		clamp_temp_variable = {
+			var = famine_migration_food_reserve_target_calculated
+			min = constant:famine_migration_food_reserve.minimum_units
+			max = famine_migration_food_reserve_capacity
+		}
+		set_variable = { famine_migration_food_reserve_target = famine_migration_food_reserve_target_calculated }
+		clamp_variable = { var = famine_migration_food_reserve_amount min = constant:famine_migration_food_reserve.zero }
+		if = {
+			limit = { NOT = { has_state_flag = famine_migration_food_reserve_initialized } }
+			if = {
+				limit = {
+					check_variable = { var = famine_migration_food_reserve_initialization_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+					check_variable = { var = famine_migration_food_reserve_initial_amount value = constant:famine_migration_food_reserve.zero compare = greater_than }
+				}
+				set_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_initial_amount }
+				round_variable = famine_migration_food_reserve_amount
+				clamp_variable = {
+					var = famine_migration_food_reserve_amount
+					min = constant:famine_migration_food_reserve.zero
+					max = famine_migration_food_reserve_capacity
+				}
+				set_state_flag = famine_migration_food_reserve_initialized
+			}
+			if = {
+				limit = {
+					NOT = { has_state_flag = famine_migration_food_reserve_initialized }
+					check_variable = { var = famine_migration_food_reserve_amount value = constant:famine_migration_food_reserve.zero compare = greater_than }
+				}
+				# A positive amount already present in a save is durable evidence;
+				# zero is not promoted to an invented starting stockpile.
+				set_state_flag = famine_migration_food_reserve_initialized
+			}
+		}
+		set_temp_variable = { famine_migration_food_reserve_capacity_output = famine_migration_food_reserve_capacity }
+		set_temp_variable = { famine_migration_food_reserve_target_output = famine_migration_food_reserve_target }
+		set_temp_variable = { famine_migration_food_reserve_amount_output = famine_migration_food_reserve_amount }
+		set_temp_variable = { famine_migration_food_reserve_daily_need_output = famine_migration_food_reserve_daily_need }
+		set_temp_variable = { famine_migration_food_reserve_logistics_factor_output = famine_migration_food_reserve_logistics_factor }
+		set_temp_variable = { famine_migration_food_reserve_refresh_result = constant:famine_migration_runtime.one }
+	}
+}
+
+# Applies at most one reserve update per game date. A stable state replenishes
+# toward target, while an active shortage depletes stock by stage and need.
+famine_migration_update_food_reserve = {
+	set_temp_variable = { famine_migration_food_reserve_update_result = constant:famine_migration_runtime.zero }
+	set_temp_variable = { famine_migration_food_reserve_replenished_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_depleted_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_amount_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_daily_need_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_relief_output = constant:famine_migration_food_reserve.zero }
+	if = {
+		limit = { famine_migration_state_is_valid = yes }
+		famine_migration_refresh_food_reserve_capacity = yes
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = famine_migration_food_reserve_last_update_date }
+					check_variable = { var = famine_migration_food_reserve_last_update_date value = global.date compare = less_than }
+				}
+			}
+			set_variable = { famine_migration_food_reserve_last_update_date = global.date }
+			set_variable = { famine_migration_food_reserve_last_replenished = constant:famine_migration_food_reserve.zero }
+			set_variable = { famine_migration_food_reserve_last_depleted = constant:famine_migration_food_reserve.zero }
+			if = {
+				limit = { check_variable = { var = famine_migration_food_reserve_relief value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+				subtract_from_variable = { famine_migration_food_reserve_relief = constant:famine_migration_food_reserve.relief_decay_per_day }
+				clamp_variable = { var = famine_migration_food_reserve_relief min = constant:famine_migration_food_reserve.zero max = constant:famine_migration_food_reserve.relief_maximum }
+			}
+			if = {
+				limit = { famine_migration_food_stage_is_active = yes }
+				set_temp_variable = { famine_migration_food_reserve_depletion_share = constant:famine_migration_food_reserve.zero }
+				if = { limit = { check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.supply_strain compare = equals } } set_temp_variable = { famine_migration_food_reserve_depletion_share = constant:famine_migration_food_reserve.supply_strain_depletion_share } }
+				if = { limit = { check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.acute_shortage compare = equals } } set_temp_variable = { famine_migration_food_reserve_depletion_share = constant:famine_migration_food_reserve.acute_shortage_depletion_share } }
+				if = { limit = { check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.famine compare = equals } } set_temp_variable = { famine_migration_food_reserve_depletion_share = constant:famine_migration_food_reserve.famine_depletion_share } }
+				if = { limit = { check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.catastrophic_famine compare = equals } } set_temp_variable = { famine_migration_food_reserve_depletion_share = constant:famine_migration_food_reserve.catastrophic_depletion_share } }
+				set_temp_variable = { famine_migration_food_reserve_depletion_factor = famine_migration_component_need }
+				divide_temp_variable = { famine_migration_food_reserve_depletion_factor = constant:famine_migration_food_component.component_scale }
+				clamp_temp_variable = {
+					var = famine_migration_food_reserve_depletion_factor
+					min = constant:famine_migration_food_reserve.depletion_factor_minimum
+					max = constant:famine_migration_food_weight.component_factor_base
+				}
+				set_temp_variable = { famine_migration_food_reserve_depletion_amount = famine_migration_food_reserve_daily_need }
+				multiply_temp_variable = { famine_migration_food_reserve_depletion_amount = famine_migration_food_reserve_depletion_share }
+				multiply_temp_variable = { famine_migration_food_reserve_depletion_amount = famine_migration_food_reserve_depletion_factor }
+				round_temp_variable = famine_migration_food_reserve_depletion_amount
+				clamp_temp_variable = {
+					var = famine_migration_food_reserve_depletion_amount
+					min = constant:famine_migration_food_reserve.zero
+					max = famine_migration_food_reserve_amount
+				}
+				if = {
+					limit = { check_variable = { var = famine_migration_food_reserve_depletion_amount value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+					subtract_from_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_depletion_amount }
+					set_variable = { famine_migration_food_reserve_last_depleted = famine_migration_food_reserve_depletion_amount }
+					add_to_variable = { famine_migration_food_reserve_total_depleted = famine_migration_food_reserve_depletion_amount }
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						has_state_flag = famine_migration_food_reserve_initialized
+						check_variable = { var = famine_migration_food_reserve_amount value = famine_migration_food_reserve_target compare = less_than }
+					}
+					set_temp_variable = { famine_migration_food_reserve_production_factor = constant:famine_migration_food_weight.component_factor_base }
+					set_temp_variable = { famine_migration_food_reserve_production_pressure = famine_migration_component_production }
+					divide_temp_variable = { famine_migration_food_reserve_production_pressure = constant:famine_migration_food_component.component_scale }
+					subtract_from_temp_variable = { famine_migration_food_reserve_production_factor = famine_migration_food_reserve_production_pressure }
+					clamp_temp_variable = {
+						var = famine_migration_food_reserve_production_factor
+						min = constant:famine_migration_food_reserve.replenishment_factor_minimum
+						max = constant:famine_migration_food_weight.component_factor_base
+					}
+					set_temp_variable = { famine_migration_food_reserve_transport_factor = constant:famine_migration_food_weight.component_factor_base }
+					set_temp_variable = { famine_migration_food_reserve_transport_pressure = famine_migration_component_transport }
+					divide_temp_variable = { famine_migration_food_reserve_transport_pressure = constant:famine_migration_food_component.component_scale }
+					subtract_from_temp_variable = { famine_migration_food_reserve_transport_factor = famine_migration_food_reserve_transport_pressure }
+					clamp_temp_variable = {
+						var = famine_migration_food_reserve_transport_factor
+						min = constant:famine_migration_food_reserve.replenishment_factor_minimum
+						max = constant:famine_migration_food_weight.component_factor_base
+					}
+					set_temp_variable = { famine_migration_food_reserve_replenishment_amount = famine_migration_food_reserve_daily_need }
+					multiply_temp_variable = { famine_migration_food_reserve_replenishment_amount = constant:famine_migration_food_reserve.replenishment_per_k_per_day }
+					multiply_temp_variable = { famine_migration_food_reserve_replenishment_amount = famine_migration_food_reserve_production_factor }
+					multiply_temp_variable = { famine_migration_food_reserve_replenishment_amount = famine_migration_food_reserve_transport_factor }
+					multiply_temp_variable = { famine_migration_food_reserve_replenishment_amount = famine_migration_food_reserve_logistics_factor }
+					round_temp_variable = famine_migration_food_reserve_replenishment_amount
+					set_temp_variable = { famine_migration_food_reserve_available_capacity = famine_migration_food_reserve_target }
+					subtract_from_temp_variable = { famine_migration_food_reserve_available_capacity = famine_migration_food_reserve_amount }
+					clamp_temp_variable = { var = famine_migration_food_reserve_available_capacity min = constant:famine_migration_food_reserve.zero }
+					clamp_temp_variable = {
+						var = famine_migration_food_reserve_replenishment_amount
+						min = constant:famine_migration_food_reserve.zero
+						max = famine_migration_food_reserve_available_capacity
+					}
+					if = {
+						limit = { check_variable = { var = famine_migration_food_reserve_replenishment_amount value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+						add_to_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_replenishment_amount }
+						set_variable = { famine_migration_food_reserve_last_replenished = famine_migration_food_reserve_replenishment_amount }
+						add_to_variable = { famine_migration_food_reserve_total_replenished = famine_migration_food_reserve_replenishment_amount }
+					}
+				}
+			}
+		}
+		set_temp_variable = { famine_migration_food_reserve_replenished_output = famine_migration_food_reserve_last_replenished }
+		set_temp_variable = { famine_migration_food_reserve_depleted_output = famine_migration_food_reserve_last_depleted }
+		set_temp_variable = { famine_migration_food_reserve_amount_output = famine_migration_food_reserve_amount }
+		set_temp_variable = { famine_migration_food_reserve_daily_need_output = famine_migration_food_reserve_daily_need }
+		set_temp_variable = { famine_migration_food_reserve_relief_output = famine_migration_food_reserve_relief }
+		set_temp_variable = { famine_migration_food_reserve_update_result = constant:famine_migration_runtime.one }
+	}
+}
+
+# Consumes actual stock and grants a bounded transient relief projection. The
+# amount output is the exact debit; an over-sized request is safely partial.
+famine_migration_consume_food_reserve_for_relief = {
+	set_temp_variable = { famine_migration_food_reserve_consume_result = constant:famine_migration_route_result.invalid }
+	set_temp_variable = { famine_migration_food_reserve_consumed_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_relief_granted_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_remaining_output = constant:famine_migration_food_reserve.zero }
+	if = {
+		limit = { famine_migration_food_reserve_release_request_is_valid = yes }
+		famine_migration_refresh_food_reserve_capacity = yes
+		set_temp_variable = { famine_migration_food_reserve_consume_amount = famine_migration_food_reserve_release_amount }
+		clamp_temp_variable = {
+			var = famine_migration_food_reserve_consume_amount
+			min = constant:famine_migration_food_reserve.zero
+			max = famine_migration_food_reserve_amount
+		}
+		round_temp_variable = famine_migration_food_reserve_consume_amount
+		if = {
+			limit = { check_variable = { var = famine_migration_food_reserve_consume_amount value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+			subtract_from_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_consume_amount }
+			add_to_variable = { famine_migration_food_reserve_total_consumed = famine_migration_food_reserve_consume_amount }
+			set_variable = { famine_migration_food_reserve_last_consumed = famine_migration_food_reserve_consume_amount }
+			set_temp_variable = { famine_migration_food_reserve_relief_available = constant:famine_migration_food_reserve.relief_maximum }
+			subtract_from_temp_variable = { famine_migration_food_reserve_relief_available = famine_migration_food_reserve_relief }
+			clamp_temp_variable = { var = famine_migration_food_reserve_relief_available min = constant:famine_migration_food_reserve.zero }
+			set_temp_variable = { famine_migration_food_reserve_relief_granted = famine_migration_food_reserve_consume_amount }
+			divide_temp_variable = { famine_migration_food_reserve_relief_granted = famine_migration_food_reserve_daily_need }
+			multiply_temp_variable = { famine_migration_food_reserve_relief_granted = constant:famine_migration_food_reserve.relief_per_day_covered }
+			clamp_temp_variable = {
+				var = famine_migration_food_reserve_relief_granted
+				min = constant:famine_migration_food_reserve.zero
+				max = famine_migration_food_reserve_relief_available
+			}
+			add_to_variable = { famine_migration_food_reserve_relief = famine_migration_food_reserve_relief_granted }
+			clamp_variable = { var = famine_migration_food_reserve_relief min = constant:famine_migration_food_reserve.zero max = constant:famine_migration_food_reserve.relief_maximum }
+			set_temp_variable = { famine_migration_food_reserve_consumed_output = famine_migration_food_reserve_consume_amount }
+			set_temp_variable = { famine_migration_food_reserve_relief_granted_output = famine_migration_food_reserve_relief_granted }
+			set_temp_variable = { famine_migration_food_reserve_consume_result = constant:famine_migration_route_result.valid }
+		}
+		set_temp_variable = { famine_migration_food_reserve_remaining_output = famine_migration_food_reserve_amount }
+	}
+	clear_variable = famine_migration_food_reserve_release_amount
+	clear_variable = famine_migration_food_reserve_release_request_proven
+	clear_variable = famine_migration_food_reserve_release_actor_proven
+}
+
+# Adds external/imported stock only up to the current state capacity. The
+# accepted amount is returned so a caller cannot silently duplicate excess.
+famine_migration_add_food_reserves = {
+	set_temp_variable = { famine_migration_food_reserve_add_result = constant:famine_migration_route_result.invalid }
+	set_temp_variable = { famine_migration_food_reserve_added_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_remaining_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_capacity_output = constant:famine_migration_food_reserve.zero }
+	if = {
+		limit = { famine_migration_food_reserve_import_request_is_valid = yes }
+		famine_migration_refresh_food_reserve_capacity = yes
+		set_temp_variable = { famine_migration_food_reserve_import_available = famine_migration_food_reserve_capacity }
+		subtract_from_temp_variable = { famine_migration_food_reserve_import_available = famine_migration_food_reserve_amount }
+		clamp_temp_variable = { var = famine_migration_food_reserve_import_available min = constant:famine_migration_food_reserve.zero }
+		set_temp_variable = { famine_migration_food_reserve_import_amount_applied = famine_migration_food_reserve_import_amount }
+		clamp_temp_variable = {
+			var = famine_migration_food_reserve_import_amount_applied
+			min = constant:famine_migration_food_reserve.zero
+			max = famine_migration_food_reserve_import_available
+		}
+		round_temp_variable = famine_migration_food_reserve_import_amount_applied
+		if = {
+			limit = { check_variable = { var = famine_migration_food_reserve_import_amount_applied value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+			add_to_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_import_amount_applied }
+			add_to_variable = { famine_migration_food_reserve_total_imported = famine_migration_food_reserve_import_amount_applied }
+			set_variable = { famine_migration_food_reserve_last_imported = famine_migration_food_reserve_import_amount_applied }
+			set_temp_variable = { famine_migration_food_reserve_added_output = famine_migration_food_reserve_import_amount_applied }
+			set_temp_variable = { famine_migration_food_reserve_add_result = constant:famine_migration_route_result.valid }
+		}
+		set_temp_variable = { famine_migration_food_reserve_remaining_output = famine_migration_food_reserve_amount }
+		set_temp_variable = { famine_migration_food_reserve_capacity_output = famine_migration_food_reserve_capacity }
+	}
+	clear_variable = famine_migration_food_reserve_import_amount
+	clear_variable = famine_migration_food_reserve_import_request_proven
+	clear_variable = famine_migration_food_reserve_import_source_proven
+	clear_variable = famine_migration_food_reserve_import_actor_proven
+}
+
+# Exact state-to-state reserve transfer. The accepted amount is debited once
+# from the source and credited once to the destination; a non-zero residual
+# triggers rollback before either cumulative transfer ledger is advanced.
+famine_migration_transfer_food_reserves = {
+	set_temp_variable = { famine_migration_food_reserve_transfer_result = constant:famine_migration_route_result.invalid }
+	set_temp_variable = { famine_migration_food_reserve_transfer_source_debit_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_transfer_destination_credit_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_transfer_remaining_output = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_destination_available = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_destination_credit = constant:famine_migration_food_reserve.zero }
+	set_temp_variable = { famine_migration_food_reserve_transfer_same_state = constant:famine_migration_runtime.zero }
+	if = {
+		limit = { famine_migration_food_reserve_transfer_request_is_valid = yes }
+		famine_migration_refresh_food_reserve_capacity = yes
+		save_event_target_as = famine_migration_food_reserve_source
+		event_target:famine_migration_food_reserve_destination = {
+			famine_migration_refresh_food_reserve_capacity = yes
+			set_temp_variable = { famine_migration_food_reserve_destination_available = famine_migration_food_reserve_capacity }
+			subtract_from_temp_variable = { famine_migration_food_reserve_destination_available = famine_migration_food_reserve_amount }
+			clamp_temp_variable = { var = famine_migration_food_reserve_destination_available min = constant:famine_migration_food_reserve.zero }
+			if = {
+				limit = { state = event_target:famine_migration_food_reserve_source }
+				set_temp_variable = { famine_migration_food_reserve_transfer_same_state = constant:famine_migration_runtime.one }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = famine_migration_food_reserve_transfer_same_state value = constant:famine_migration_runtime.zero compare = equals } }
+			set_temp_variable = { famine_migration_food_reserve_transfer_applied = famine_migration_food_reserve_transfer_amount }
+			clamp_temp_variable = {
+				var = famine_migration_food_reserve_transfer_applied
+				min = constant:famine_migration_food_reserve.zero
+				max = famine_migration_food_reserve_amount
+			}
+			clamp_temp_variable = {
+				var = famine_migration_food_reserve_transfer_applied
+				min = constant:famine_migration_food_reserve.zero
+				max = famine_migration_food_reserve_destination_available
+			}
+			round_temp_variable = famine_migration_food_reserve_transfer_applied
+			if = {
+				limit = { check_variable = { var = famine_migration_food_reserve_transfer_applied value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+				set_temp_variable = { famine_migration_food_reserve_transfer_source_before = famine_migration_food_reserve_amount }
+				subtract_from_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_transfer_applied }
+				set_temp_variable = { famine_migration_food_reserve_transfer_source_debit = famine_migration_food_reserve_transfer_source_before }
+				subtract_from_temp_variable = { famine_migration_food_reserve_transfer_source_debit = famine_migration_food_reserve_amount }
+				event_target:famine_migration_food_reserve_destination = {
+					set_temp_variable = { famine_migration_food_reserve_destination_before = famine_migration_food_reserve_amount }
+					add_to_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_transfer_applied }
+					set_temp_variable = { famine_migration_food_reserve_destination_credit = famine_migration_food_reserve_amount }
+					subtract_from_temp_variable = { famine_migration_food_reserve_destination_credit = famine_migration_food_reserve_destination_before }
+				}
+				set_temp_variable = { famine_migration_food_reserve_transfer_residual = famine_migration_food_reserve_transfer_source_debit }
+				subtract_from_temp_variable = { famine_migration_food_reserve_transfer_residual = famine_migration_food_reserve_destination_credit }
+				if = {
+					limit = { check_variable = { var = famine_migration_food_reserve_transfer_residual value = constant:famine_migration_food_reserve.zero compare = greater_than } }
+					add_to_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_transfer_residual }
+				}
+				if = {
+					limit = { check_variable = { var = famine_migration_food_reserve_transfer_residual value = constant:famine_migration_food_reserve.zero compare = less_than } }
+					set_temp_variable = { famine_migration_food_reserve_transfer_excess = famine_migration_food_reserve_transfer_residual }
+					multiply_temp_variable = { famine_migration_food_reserve_transfer_excess = constant:chaos_meter_deaths.negative_one }
+					event_target:famine_migration_food_reserve_destination = {
+						subtract_from_variable = { famine_migration_food_reserve_amount = famine_migration_food_reserve_transfer_excess }
+					}
+					subtract_from_temp_variable = { famine_migration_food_reserve_destination_credit = famine_migration_food_reserve_transfer_excess }
+				}
+				set_temp_variable = { famine_migration_food_reserve_transfer_source_debit = famine_migration_food_reserve_transfer_source_before }
+				subtract_from_temp_variable = { famine_migration_food_reserve_transfer_source_debit = famine_migration_food_reserve_amount }
+				set_temp_variable = { famine_migration_food_reserve_transfer_residual = famine_migration_food_reserve_transfer_source_debit }
+				subtract_from_temp_variable = { famine_migration_food_reserve_transfer_residual = famine_migration_food_reserve_destination_credit }
+				if = {
+					limit = { check_variable = { var = famine_migration_food_reserve_transfer_residual value = constant:famine_migration_food_reserve.zero compare = equals } }
+					add_to_variable = { famine_migration_food_reserve_total_transfer_out = famine_migration_food_reserve_transfer_source_debit }
+					set_variable = { famine_migration_food_reserve_last_transfer_out = famine_migration_food_reserve_transfer_source_debit }
+					event_target:famine_migration_food_reserve_destination = {
+						add_to_variable = { famine_migration_food_reserve_total_transfer_in = famine_migration_food_reserve_destination_credit }
+						set_variable = { famine_migration_food_reserve_last_transfer_in = famine_migration_food_reserve_destination_credit }
+					}
+					set_temp_variable = { famine_migration_food_reserve_transfer_source_debit_output = famine_migration_food_reserve_transfer_source_debit }
+					set_temp_variable = { famine_migration_food_reserve_transfer_destination_credit_output = famine_migration_food_reserve_destination_credit }
+					set_temp_variable = { famine_migration_food_reserve_transfer_result = constant:famine_migration_route_result.valid }
+				}
+			}
+		}
+		set_temp_variable = { famine_migration_food_reserve_transfer_remaining_output = famine_migration_food_reserve_amount }
+	}
+	clear_variable = famine_migration_food_reserve_transfer_amount
+	clear_variable = famine_migration_food_reserve_transfer_request_proven
+	clear_variable = famine_migration_food_reserve_transfer_route_proven
+	clear_variable = famine_migration_food_reserve_transfer_actor_proven
+}
+
+# Stable public names used by owner decisions and future scripted GUI surfaces.
+famine_migration_release_food_reserves = {
+	famine_migration_consume_food_reserve_for_relief = yes
+}
+
+famine_migration_consume_food_reserves_as_relief = {
+	famine_migration_consume_food_reserve_for_relief = yes
+}
+
+famine_migration_import_food_reserves = {
+	famine_migration_add_food_reserves = yes
+}
+
+famine_migration_requisition_food_reserves = {
+	famine_migration_transfer_food_reserves = yes
 }
 
 # One mortality pulse is one call to the shared exact state-loss helper. The

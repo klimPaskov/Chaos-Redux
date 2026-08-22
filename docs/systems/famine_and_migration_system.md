@@ -20,7 +20,7 @@ Subagent handoffs remain evidence for parent review, not independent approval of
 
 | Surface | Current evidence | Documentation status | Remaining gate |
 | --- | --- | --- | --- |
-| Food-security evaluator | `famine_migration_evaluate_food_security` composes eight normalized inputs with centralized weights and hysteresis thresholds. | Source and public contract documented. | Parent gameplay and balance review remains required. |
+| Food-security evaluator | `famine_migration_evaluate_food_security` composes eight normalized inputs with centralized weights and hysteresis thresholds, and integrates the state-owned persistent food reserve ledger. | Source and public contract documented. | Parent gameplay and balance review remains required. |
 | Famine mortality | `famine_migration_apply_famine_mortality` uses measured state population, a protected floor, dynamic exposure factors, and one `From famine` population-loss transaction. | Exact ownership and no-double-debit contract documented. | Runtime validation and balance evidence remain open. |
 | Civilian transfer | `famine_migration_transfer_civilians_exact` validates one route, debits origin once, separates route deaths, credits survivors, restores any uncredited destination residual to origin, and records a conservation residual. | Accepted contract documented. | Parent review of all owner call sites remains required. |
 | Sparse scheduler | The host-only coordinator processes historical anchors/candidates, active food states, active displacement states, and active displacement countries. | Registry and lifecycle documented. | Runtime save/load and long-run behavior remain unproven here. |
@@ -225,6 +225,28 @@ The fixture deliberately creates no route, transfer, severe famine, mortality tr
 
 Startup and `on_daily_CXT` registration are additive and idempotent, as documented in `docs/testing/chaosx_test_country.md`.
 
+## Persistent food-reserve ledger
+
+The food-security state owns a sparse reserve ledger in addition to the normalized pressure score. It is a bounded supporting input, not a second economic simulator: it stores one amount, one capacity, one target, one date guard, bounded daily replenishment/depletion, and cumulative transaction totals per already-registered state, with no goods types, market prices, national stockpile, world scan, or parallel population ledger.
+
+Reserve units are thousand-person-days, so `state_population_k` is the population driver without a raw-person overflow. `daily_need = round(max(1, state_population_k * constant:famine_migration_food_reserve.daily_need_per_k))`; `logistics_factor` is the clamped base plus infrastructure contribution minus normalized production and transport penalties; `capacity = round(max(1, daily_need * capacity_days * logistics_factor))`; and `target = min(capacity, round(max(1, daily_need * target_days * logistics_factor)))`.
+
+Initialized stable states replenish once per game date toward target using daily need, production and transport headroom, and logistics factor. An uninitialized zero ledger does not self-create stock. Active supply strain, acute shortage, famine, and catastrophic famine states deplete once per game date using centralized shares 0.05, 0.20, 0.50, and 1.00 multiplied by daily need and normalized component need. Both paths cap the actual mutation at the remaining target gap or current amount and record exact last-day and cumulative totals.
+
+The first refresh does not assert an unowned stockpile. An owner must set a positive `famine_migration_food_reserve_initial_amount` together with `famine_migration_food_reserve_initialization_proven > 0`, or a positive amount must already exist in a save, before `famine_migration_food_reserve_initialized` is set. A zero amount therefore remains zero until an explicit proven import or initial allocation, which keeps initialization fail-closed when no vanilla state-level food-stock carrier is available.
+
+`famine_migration_consume_food_reserve_for_relief` consumes only the actual amount available and returns `famine_migration_food_reserve_consume_result`, `..._consumed_output`, `..._relief_granted_output`, and `..._remaining_output`. Public aliases are `famine_migration_release_food_reserves` and `famine_migration_consume_food_reserves_as_relief`.
+
+`famine_migration_add_food_reserves` accepts only proven positive import requests, credits free capacity, and returns `famine_migration_food_reserve_add_result`, `..._added_output`, `..._remaining_output`, and `..._capacity_output`. Its public alias is `famine_migration_import_food_reserves`.
+
+`famine_migration_transfer_food_reserves` runs in a proven source state with a distinct regular event-target destination. It returns `famine_migration_food_reserve_transfer_result`, `..._transfer_source_debit_output`, `..._transfer_destination_credit_output`, and `..._transfer_remaining_output`. Accepted amount is `min(request, source amount, destination free capacity)`; the actual source debit and destination credit are measured after mutation, any non-zero residual is rolled back, and cumulative transfer totals advance only when `source_debit - destination_credit = 0`. Its public alias is `famine_migration_requisition_food_reserves`.
+
+The evaluator adds `clamp((reserve_amount / daily_need) * constant:famine_migration_food_reserve.relief_per_day_covered + famine_migration_food_reserve_relief, 0, constant:famine_migration_food_reserve.relief_maximum)` to the existing normalized relief component. Reserve relief decays once per day, is separate from historical population ledgers, and never changes population.
+
+State cleanup removes active registration and transient pressure components but preserves reserve amount, capacity, target, initialization proof, last-update date, cumulative reserve totals, and all historical/population ledgers. The bounded runtime coordinator reaches the update only through the existing active-food registry.
+
+Decision owners set one documented request/proof bundle, call the matching public alias in the actual state scope, read the explicit result and accepted outputs in the same effect chain, and do not write reserve amount directly. This contract leaves decision costs, AI weights, localisation, and presentation ownership to the decision tranche.
+
 ## Audit evidence and limitations
 
 The current bounded HOI4 map inspection returned `MAP_INSPECTED` for 32 requested historical-profile states and passed state definitions, bitmap, state-region membership, adjacency, supply, and railway checks.
@@ -243,12 +265,12 @@ The available GUI route modeled zero elements for the hardcoded `mapmodes` windo
 
 ## Open blockers and parent decisions
 
-1. Decide whether the current bounded relief input and decision pressure model is the accepted representation of food reserves or whether a distinct reserve stockpile contract is required.
-2. Resolve the owner-source blockers listed in `docs/plans/famine_and_migration_system_plans/subagent_handoffs/adapter_wiring_closure.md` for occupation-law changes, strategic bombing, deportation, war/peace state aftermath, event and cluster members, and unavailable Event 118/120/131/149 roots. The validated Air/Fallout, camps, CBRN, Black Plague, Event 013, and nuclear adapters are wired without duplicate deaths or new pacing scans.
-3. Resolve the report-picture carrier conflict and provide report-event registry and consumer ownership for the delivered report assets and category picture without adding a replacement random-event ID or pool entry.
-4. Rerun the named 20 weighted scenarios through the required probability inspection and compare workflow with stable scenario inputs.
-5. Complete the achievement audit for disqualifier producers, cohort lifecycle evidence, and cleanup/identity transitions before any unlock-completion claim.
-6. Obtain a supported mapmode GUI/render artifact or retain the current runtime visual gate as an explicit external validation requirement.
-7. Review the unrelated `map/buildings.txt` locator diagnostics separately from this system.
+1. Resolve the owner-source blockers listed in `docs/plans/famine_and_migration_system_plans/subagent_handoffs/adapter_wiring_closure.md` for occupation-law changes, strategic bombing, deportation, war/peace state aftermath, event and cluster members, and unavailable Event 118/120/131/149 roots. The validated Air/Fallout, camps, CBRN, Black Plague, Event 013, and nuclear adapters are wired without duplicate deaths or new pacing scans.
+2. Resolve the report-picture carrier conflict and provide report-event registry and consumer ownership for the delivered report assets and category picture without adding a replacement random-event ID or pool entry.
+3. Rerun the named 20 weighted scenarios through the required probability inspection and compare workflow with stable scenario inputs.
+4. Complete the achievement audit for disqualifier producers, cohort lifecycle evidence, and cleanup/identity transitions before any unlock-completion claim.
+5. Obtain a supported mapmode GUI/render artifact or retain the current runtime visual gate as an explicit external validation requirement.
+6. Review the unrelated `map/buildings.txt` locator diagnostics separately from this system.
+7. Provide an owner-supplied, proven initial reserve amount or import source for states that should begin with non-zero stock; the scoped engine APIs expose no vanilla state-level food-stock carrier, so the ledger remains zero until that causality is supplied.
 
 No gameplay completion claim is made until these gates and parent-owned runtime checks are resolved.
