@@ -136,10 +136,13 @@ has_valid_independence_wave_setup_input = {
 	has_event_target = independence_wave_setup_anchor_state
 	event_target:independence_wave_setup_former_host = {
 		exists = yes
-		NOT = { tag = ROOT }
+		NOT = { tag = PREV }
 	}
 	event_target:independence_wave_setup_anchor_state = {
-		is_owned_by = ROOT
+		# This trigger is evaluated inside the target country during package
+		# setup. PREV is that country; ROOT is still the country that fired the
+		# event and may be the former host.
+		is_owned_by = PREV
 	}
 	check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_plan.first_package_id compare = greater_than_or_equals }
 	check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_registry.package_count compare = less_than_or_equals }

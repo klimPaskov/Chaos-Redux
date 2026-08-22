@@ -729,7 +729,7 @@ independence_wave_create_opening_divisions = {
 			event_target:independence_wave_setup_anchor_state = {
 				create_unit = {
 					division = "division_template = \"[IW_TEMPLATE]\" start_experience_factor = [IW_EXPERIENCE] start_equipment_factor = [IW_EQUIPMENT] start_manpower_factor = [IW_MANPOWER]"
-					owner = ROOT
+					owner = event_target:independence_wave_force_application_country
 					allow_spawning_on_enemy_provs = no
 					count = [IW_COUNT]
 				}
@@ -748,7 +748,7 @@ independence_wave_create_opening_divisions = {
 	every_country_division = {
 		limit = { NOT = { is_in_array = { array = independence_wave_precreate_division_scopes value = THIS } } }
 		set_variable = { independence_wave_force_division_package_id = independence_wave_setup_package_id }
-		set_variable = { independence_wave_force_division_generation_id = ROOT.independence_wave_generation_id }
+		set_variable = { independence_wave_force_division_generation_id = event_target:independence_wave_force_application_country.independence_wave_generation_id }
 	}
 	clear_temp_array = independence_wave_precreate_division_scopes
 }
@@ -872,6 +872,7 @@ independence_wave_apply_dynamic_starting_force = {
 	set_temp_variable = { independence_wave_force_application_success = constant:independence_wave_planner.no_candidates }
 	if = {
 		limit = { can_apply_independence_wave_force_package = yes }
+		save_event_target_as = independence_wave_force_application_country
 		independence_wave_collect_force_inputs = yes
 		independence_wave_calculate_force_budget = yes
 		independence_wave_calculate_force_outputs = yes
