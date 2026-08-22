@@ -42,9 +42,11 @@ can_pay_independence_wave_form05_administration_light_cost = {
 	has_manpower > constant:independence_wave_decision_cost.manpower_light
 }
 
-# Opening, customs, and proclamation each debit both the light administrative
-# palette and the standard diplomatic palette. The combined gate proves the
-# full Command Power total before either helper can spend it.
+# Opening and customs debit both the light administrative palette and the
+# standard diplomatic palette. Their combined gate proves the full Command
+# Power total before either helper can spend it. Proclamation is a strategic
+# charter declaration and uses the shared strategic palette instead of adding
+# a second administrative manpower charge.
 can_pay_independence_wave_form05_combined_administrative_diplomatic_cost = {
 	command_power > constant:independence_wave_form05_decision_cost.combined_command_power
 	has_manpower > constant:independence_wave_decision_cost.manpower_light
@@ -52,19 +54,16 @@ can_pay_independence_wave_form05_combined_administrative_diplomatic_cost = {
 }
 
 # The shared strategic trigger carries a multi-factory gate. FORM-05 retains the
-# full strategic stability, war-support, Command Power, and convoy expenditure
-# while its decision supplies the one-factory island assignment separately.
+# strategic stability, Command Power, and convoy expenditure while its decision
+# supplies the one-factory island assignment separately.
 can_pay_independence_wave_form05_strategic_cost = {
 	has_stability > constant:independence_wave_decision_cost.stability_standard
-	has_war_support > constant:independence_wave_decision_cost.war_support_minor
 	can_pay_independence_wave_diplomatic_standard_cost = yes
 	has_independence_wave_form05_standard_convoy_capacity = yes
 }
 
 can_pay_independence_wave_form05_proclamation_cost = {
-	has_stability > constant:independence_wave_decision_cost.stability_standard
-	has_war_support > constant:independence_wave_decision_cost.war_support_minor
-	can_pay_independence_wave_form05_combined_administrative_diplomatic_cost = yes
+	can_pay_independence_wave_form05_strategic_cost = yes
 }
 
 has_independence_wave_form05_exact_carrier_anchor = {

@@ -276,11 +276,47 @@ can_pay_independence_wave_security_standard_cost = {
 	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
 }
 
+# Material security projects that add their own command-power reserve use the
+# four-group personnel-and-equipment palette and do not duplicate the shared XP
+# charge from the general security action.
+can_pay_independence_wave_security_material_standard_cost = {
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+}
+
 can_pay_independence_wave_security_major_cost = {
 	has_manpower > constant:independence_wave_decision_cost.manpower_major
 	has_army_experience > constant:independence_wave_decision_cost.army_experience_major
 	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major }
 	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_major }
+}
+
+# Major shared actions use dedicated four-group palettes. Keeping their
+# affordability checks separate prevents a composite action from silently
+# charging a fifth resource through one of the broad standard helpers.
+can_pay_independence_wave_border_ultimatum_cost = {
+	has_stability > constant:independence_wave_decision_cost.stability_standard
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+}
+
+can_pay_independence_wave_coordinated_operation_cost = {
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	OR = {
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+	}
+	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+}
+
+can_pay_independence_wave_integration_cost = {
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
 }
 
 # DM-01 reserves the infantry and support equipment at mission start. The
@@ -350,7 +386,14 @@ can_pay_independence_wave_provisional_capital_cost = {
 can_pay_independence_wave_strategic_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
 	has_stability > constant:independence_wave_decision_cost.stability_standard
-	has_war_support > constant:independence_wave_decision_cost.war_support_minor
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
+# Major strategic actions reserve the major project factory commitment while
+# keeping the same stability, command-power, and transport payment palette.
+can_pay_independence_wave_strategic_major_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_major
+	has_stability > constant:independence_wave_decision_cost.stability_standard
 	can_pay_independence_wave_diplomatic_standard_cost = yes
 }
 
