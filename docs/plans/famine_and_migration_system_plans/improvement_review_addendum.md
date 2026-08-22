@@ -4,6 +4,8 @@ Date: 2026-08-22.
 
 Status: closure deferred. The implemented shared system is already broad and mechanically deep enough that another expansion layer would add bloat. Completion still requires a bounded set of accepted-design integrations, evidence producers, and audit gates. This addendum does not authorize new gameplay breadth.
 
+Closure update: the adapter and achievement workers have concluded. Their real owner hooks are accepted, while the missing producers recorded in `adapter_wiring_closure.md` and `achievement_hook_closure.md` remain open. The final completion audit also found that the older probability artifacts are stale against final source hash `62b30cfc...`. See `completion_report.md` for the authoritative current verdict.
+
 ## Disposition vocabulary
 
 - `required-before-completion` means the accepted specification or repository completion rules already require the item. It is not an optional expansion.
