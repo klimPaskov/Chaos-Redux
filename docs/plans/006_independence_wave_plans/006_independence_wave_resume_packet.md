@@ -50,13 +50,15 @@ The 2026-08-22 decision and mission audit leaves the surface **PARTIAL / HOLD**.
 
 Its bounded audit and GUI receipts are in `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-22.md`.
 
-The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the remaining package cost-prose, automatic-disclosure, category-density, and typed-probability follow-up.
+The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the remaining package cost-prose, other uncosted surfaces, category-density, and typed-probability follow-up, while DM-01 automatic disclosure is covered separately by the later source handoff below.
 
 The 2026-08-22 four-group cost palette tranche is source-applied for the named shared, package, Pacific, Transcaucasus, FORM-03, IW-058, FORM-05, FORM-39, and MNT surfaces in `subagent_handoffs/006_event6_four_group_cost_palette_tranche_2026-08-22.md`; DM-01 automatic pre-activation cost disclosure is source-applied in `subagent_handoffs/006_event6_dm01_cost_disclosure_2026_08_22.md`, while package cost prose, category density, complete typed probability evidence, and live tooltip observation remain queued.
 
 Commit `abb0a8c83` closes the Event 005-aware joint-capacity parity gap for the nine admitted packages that were previously absent from that witness: IW-024, IW-027, IW-028, IW-030, IW-031, IW-038, IW-040, IW-044, and IW-045. The current source now has 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 content attestations. This is static source evidence only; ordinary live release and terminal receipts remain unproven.
 
 Commit `d6abc3792` repairs the joint partial-wave expected-count witness by recomputing `global.liberation_plan_expected_country_count` from the actual Event 005 and Event 006 selected counts before optional expansion and lock. The stale joint-count rejection is source-resolved, while joint execution and terminal receipts remain unproven; evidence is `subagent_handoffs/006_joint_partial_wave_expected_count_repair_2026_08_20.md`.
+
+Commit `a2abd65d7` supersedes that partial-wave reconciliation as the current exact-count contract: an undersized automatic pool preserves the nominal `3/4/5/7/10` target and fails closed with `insufficient_pool`; neither the standalone allocator nor the coupled Event 005/006 path rewrites target or shared expected counts from `selected_count`. Evidence is `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md`.
 
 The custom probability-auditor route was unavailable, direct MCP discovery was incomplete, and no same-scenario probability comparison or quantitative balance claim is recorded.
 
@@ -89,7 +91,9 @@ The latest Event MCP evidence remains partial, and the post-release-scope refres
 
 The current whole-event receipt is `subagent_handoffs/006_event006_completion_audit_followup_2026-08-22.md`, and the timeout limitation is recorded in `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
 
-The current weighted-logic handoff is `subagent_handoffs/006_event6_probability_audit_2026-08-22.md`; the outer allocator source inspect succeeded, but all named band evaluations timed out and the partial-wave fallback remains an accepted-design decision point rather than a balance closure.
+The current exact-count override is `a2abd65d7` and `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md`: undersized automatic pools preserve the nominal `3/4/5/7/10` target and fail closed with `insufficient_pool`; no package-level probability or balance closure follows from the outer allocator evidence.
+
+The current weighted-logic handoff is `subagent_handoffs/006_event6_probability_audit_2026-08-22.md`; package-level readiness remains incomplete, and the exact-ladder fail-closed override is source-applied. No package-level probability or balance closure is recorded.
 
 The documentation refresh used the required read-only MCP routes as evidence only. Focus inspect/render succeeded with source-linked artifacts `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/82134a911b47667107aea044403f10988a84cb2750256a9878bdc785efee02bb/d7c47fb733e6ae01ea91be8b32c888ea8f235ad4ffbdc5e9921188f014ff556a/focus-inspect.1b9d867a468a8e6e.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fab904c1192ff8397e2534bcea48635166ca17ad076a405c8167ecc4eee5f79d/66d845c20b28e6a96957b8d19d187d9f53eb5333dffae664610e7425094da81c/independence_wave_focus_tree.focus.svg`; status GUI inspect/render succeeded, formable GUI render succeeded, formable GUI inspect returned `ARTIFACT_STORAGE_LIMIT`, Event inspect returned `INTERNAL_ERROR` after a valid selector, and map inspect timed out after 180 seconds. These results refresh evidence and limitations only, and do not convert partial artifacts into runtime acceptance.
 
