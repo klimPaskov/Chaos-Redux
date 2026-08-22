@@ -4,7 +4,7 @@ Date: 2026-08-22.
 
 Owner: `chaosx_asset_source_researcher` scope, modern sourced visual-reference research only.
 
-Status: one modern artwork reference has been acquired for each requested 3D job. All three are marked `needs_user_review` for parent approval of the exact ImageGen input and adaptation boundary. No ImageGen or Meshy call was made, and no gameplay, runtime, entity, GFX, event, localisation, processed, or DDS asset was edited or created.
+Status: the first-pass trio below is superseded by the 2026-08-22 visual-strength redo documented at `docs/assets/014_cannibalism/models_3d/sourced_reference_manifest_group_a_redo_2026-08-22.md`. The redo returns three modern-art candidates per job and marks all shortlisted material `reference_only`; parent approval of the text-only adaptation boundary remains required. No ImageGen or Meshy call was made, and no gameplay, runtime, entity, GFX, event, localisation, processed, or DDS asset was edited or created.
 
 ## Selected modern references
 
@@ -44,6 +44,28 @@ The user-provided images were treated as design-direction only and were not open
 
 No archival, museum, historical, modern reenactment, identifiable living Indigenous regalia, sacred motif, or culture-specific body-paint reference is retained in this modern-only package.
 
-No contact sheet was created because exactly one modern candidate was selected per requested job and no unresolved candidate comparison remains. Shared `sourced_reference_manifest.md`, `sourced_reference_contact_sheet.png`, and `gfx_handoff.md` were not overwritten.
+The first-pass package had no contact sheet because its one-candidate selections were later rejected. The redo comparison sheet is `docs/assets/014_cannibalism/models_3d/sourced_reference_contact_sheet_group_a_redo_2026-08-22.png` with SHA-256 `6ACB2245ADE395D99B3BE95618207BB78E06EDC587BC18B6064EA13EDAE34198`. Shared `sourced_reference_manifest.md`, `sourced_reference_contact_sheet.png`, and `gfx_handoff.md` were not overwritten.
 
 This handoff does not claim that any generated adaptation is automatically covered by the source license. The Scavenger CC BY-SA source requires attribution and share-alike review, the Feast Guard CC0 source has no mandatory attribution but still requires substantial originality for the requested design, and the Feast Cohort custom permission should be reviewed before redistributing the untouched animated GIF. Parent-owned ImageGen adaptation, Meshy submission, model production, runtime wiring, GFX wiring, and final legal approval remain outstanding.
+
+## 2026-08-22 redo after parent visual review
+
+The parent rejected the first-pass Scavenger static line drawing, Feast Guard rough sketch or collage, and Feast Cohort tiny isometric sprite as insufficiently strong for model adaptation. Those originals remain retained and are marked superseded in each job's `refs/sourced/source_provenance.md`.
+
+The complete redo comparison, source URLs, creator or rights-holder fields, access date, dimensions, hashes, source-page evidence hashes, fit notes, reserve candidates, and text-only adaptation boundaries are recorded in `docs/assets/014_cannibalism/models_3d/sourced_reference_manifest_group_a_redo_2026-08-22.md`.
+
+### Redo recommendations
+
+| Job | Recommended candidate | Why it is the strongest role fit | Candidate file |
+| --- | --- | --- | --- |
+| `cannibal_scavenger_warband` | A3 — Grace Mojica, `Totol - Game Character - Run Cycle [Animation]` | Readable full-body running pose with a lifted foot, staff-sized weapon, and clear diagonal silhouette; use text-described mechanics only because the page identifies Brainz Games property and shows no reuse license. | `docs/assets/014_cannibalism/models_3d/cannibal_scavenger_warband/refs/sourced/candidates/redo_2026-08-22/shortlist/a03_sketchfab_totol_run_cycle.jpeg` |
+| `cannibal_feast_guard` | B1 — Serge Derugin, `Warrior Character (game ready)` | Professional front, rear, and side game-ready views with an axe, shield, broad braced stance, and clean modeling logic; adapt to a stockier body and requested round shield, jaw-mask, and cleaver or axe. | `docs/assets/014_cannibalism/models_3d/cannibal_feast_guard/refs/sourced/candidates/redo_2026-08-22/shortlist/a01_behance_serge_derugin_warrior.jpg` |
+| `cannibal_feast_cohort` | C3 — Epics N Stuffs, `Halberdier 1D Human` tabletop miniature render | Detailed full-body modern miniature with both hands visibly braced on a long halberd, a wide aggressive stance, and clean material separation; use only text-described generic polearm mechanics and do not reproduce branding or the exact miniature. | `docs/assets/014_cannibalism/models_3d/cannibal_feast_cohort/refs/sourced/candidates/redo_2026-08-22/shortlist/a04_epicsnstuffs_halberdier_miniature.jpg` |
+
+All nine shortlisted previews are commercial or copyrighted presentation images with no project reuse license confirmed, so they are archived as `reference_only` comparison evidence and must not be passed as pixels to ImageGen. The parent should write an independently composed ImageGen prompt from the manifest's adaptation notes and should not upload these previews or any user-provided attachment as ImageGen inputs.
+
+The six user-provided attachments were treated as design-direction only and were not opened, copied, archived, or used as model inputs. The explicitly excluded path `C:/Users/klimp/AppData/Local/Temp/codex-clipboard-59672c99-c6a5-4728-9ab5-71e311186bd4.png` was not used.
+
+No identifiable living Indigenous regalia, sacred motif, or culture-specific body paint was selected. The cohort C2 source contains distinctive East Asian armor and ornament and is explicitly marked as text-only support; those details must be excluded from the adaptation.
+
+Remaining blocker: parent approval is required before ImageGen chooses one text-only adaptation brief per job. No final model input, Meshy job, runtime wiring, or GFX handoff is claimed by this source-research package.
