@@ -1,0 +1,86 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION REGISTRY ON ACTIONS
+# ============================================================================
+# The existing host-only chaos-meter daily coordinator invokes the registry
+# processor. Lifecycle callbacks here touch the documented callback scopes and
+# enqueue bounded reassessment/cleanup work.
+# No callback here introduces a new periodic world-wide iteration.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				famine_migration_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				famine_migration_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > constant:famine_migration_runtime.zero } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+		# FROM.FROM is the state; ROOT is the new controller and FROM the old.
+		FROM.FROM = { famine_migration_handle_state_control_change = yes }
+	}
+	}
+
+	on_annex = {
+		effect = {
+		# The former country scope is bounded to its owned states. State-control
+		# callbacks handle states that changed hands before this hook executes.
+		FROM = {
+			every_owned_state = { famine_migration_cleanup_state_registration = yes }
+			famine_migration_cleanup_country_registration = yes
+		}
+	}
+	}
+
+	on_war_relation_added = {
+		effect = {
+		ROOT = { famine_migration_mark_country_war_reassessment = yes }
+		FROM = { famine_migration_mark_country_war_reassessment = yes }
+	}
+	}
+
+	on_peace = {
+		effect = {
+		famine_migration_mark_country_peace_reassessment = yes
+	}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+		ROOT = { famine_migration_mark_country_peace_reassessment = yes }
+		FROM = { famine_migration_mark_country_peace_reassessment = yes }
+	}
+	}
+
+	on_nuke_drop = {
+		effect = {
+		# FROM is the nuked state in the documented callback scope.
+		FROM = {
+			set_temp_variable = { famine_migration_pressure_request_proven = constant:famine_migration_runtime.one }
+			set_temp_variable = { famine_migration_pressure_request_amount = state_population_k }
+			multiply_temp_variable = { famine_migration_pressure_request_amount = constant:famine_migration_population.people_per_k }
+			multiply_temp_variable = { famine_migration_pressure_request_amount = constant:famine_migration_adapter_pressure.nuclear_strike_population_fraction }
+			round_temp_variable = famine_migration_pressure_request_amount
+			set_temp_variable = { famine_migration_pressure_request_actor_proven = constant:famine_migration_runtime.one }
+			famine_migration_request_nuclear_pressure = yes
+			famine_migration_handle_nuclear_state_change = yes
+		}
+	}
+	}
+}
