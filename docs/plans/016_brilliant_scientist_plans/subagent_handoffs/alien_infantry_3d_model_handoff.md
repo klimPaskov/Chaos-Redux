@@ -65,4 +65,6 @@ The icon tranche completed both original alien-head/laser-rifle counters and ins
 
 One additional Meshy 7 image-to-3D generation from a rifle-silhouette-preserving cleanup is the proposed recovery, estimated at 30 extra credits. It is failure-driven and has not been launched. User confirmation is required before that spend. Until an accepted rifle-bearing candidate completes rigging, all seven actions, PDX export/reimport, sound synchronization, and parent runtime wiring, this package must remain incomplete.
 
-No gameplay unit stats, API/contact logic, DHR country files, focus files, global infantry voices, or live consumers were edited. No commit was created.
+On 2026-08-22, a read-only provider recheck confirmed task `01a02497-1fb9-7a1b-bec6-ec388d54a016` remains `SUCCEEDED` and consumed 30 credits. The live account balance was 626 credits. A technically successful but rejected task is not refunded, and the verified provider exposes no free retry or correction operation that can restore the missing rifle. No paid operation was started during this recheck.
+
+No gameplay unit stats, API/contact logic, DHR country files, focus files, global infantry voices, or live consumers were edited by the model worker. The parent later committed the reviewed blocked evidence package with the rest of the asset and audit documentation.

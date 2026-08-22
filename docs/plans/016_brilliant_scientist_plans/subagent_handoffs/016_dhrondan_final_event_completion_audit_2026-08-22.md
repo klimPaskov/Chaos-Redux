@@ -12,6 +12,8 @@ Audit mode: read-only except for this handoff.
 
 Overall Event 016/D’Rhondan completion status: **blocked and incomplete**.
 
+Post-audit MCP recovery evidence is recorded in `016_dhrondan_mcp_evidence_recovery_2026-08-22.md`. It supersedes the timeout-only evidence for Events `.40`, `.46`, `.47`, `.48`, Event 019 `.1`, both Alien Infantry hidden technologies, and the static map render. Those routes now return artifacts. They remain partial where the server defers large-workspace helper and lifecycle projections, and they do not resolve the rejected 3D model, dynamic transfer acceptance, the disconnected-enclave rule conflict, or user-owned in-game acceptance.
+
 The accepted non-model gameplay package is broadly present and source-consistent.
 
 The current Event 019 provider-508 transaction passes the requested source-level conservation audit: Event 019’s exact deletion ID reaches the shared API-created cohort, each provider-508 request or scenario actor is exactly one cohort, the five synchronous wrappers defer telemetry until their outer commit, same-tag failure retains persistent receipts through delayed cleanup retries, one successful cohort consumes exactly 2,000 laser weapons, one proven rollback refunds exactly 2,000 once, and no state history, landing history, Alien Presence, Pact Strain, cooldown, or D’Rhondan callback is written before the applicable commit.
