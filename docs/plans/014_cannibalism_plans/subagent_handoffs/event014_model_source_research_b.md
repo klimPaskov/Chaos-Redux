@@ -2,91 +2,138 @@
 
 Date: 2026-08-22.
 
-Owner: `chaosx_asset_source_researcher` scope, sourced visual-reference research only.
+Owner: `chaosx_asset_source_researcher`, modern visual-reference research only.
 
-## Current status
+## Status
 
-One defensible public-domain or clearly reusable Internet source has been acquired for each requested 3D job. Originals, native-resolution PNG previews, repository-standard DDS evidence copies, archived source pages or access notes, a comparison contact sheet, a provenance manifest, and this handoff are present. Each source is `source_status: complete` and `review_status: needs_user_review`; the parent agent must approve the exact adapted one-image model input before any Meshy work.
+The corrected modern-artwork source set is complete for Bone Guard, Island Reavers, and Siege Eaters, subject to parent review of the exact adaptation directions.
 
-No ImageGen or Meshy call was made. No gameplay, runtime, GFX, unit, event, localisation, or existing production manifest was edited.
+Each job has an attributed source-page snapshot, downloaded original, native-resolution processed PNG preview, repository-standard DDS evidence copy, active JSON manifest, and contact-sheet entry under `docs/assets/014_cannibalism/models_3d/`.
 
-## Candidate 1: `cannibal_bone_guard`
+All selected sources are `reference-only`, `not licensed`, and no permission to redistribute them or use them as final art is claimed.
 
-Source: [Wikimedia Commons — Swabian School, *Knight in Armor, Holding a Halberd*, c. 1500](https://commons.wikimedia.org/wiki/File:Swabian_School,_Knight_in_Armor,_Holding_a_Halberd,_c._1500,_NGA_75855.jpg).
+No ImageGen or Meshy call was made.
 
-Institutional record: [National Gallery of Art object 75855](https://purl.org/nga/collection/artobject/75855).
+No gameplay, runtime, GFX, entity, animation, event, unit, localisation, or parent production file was edited.
 
-Direct downloadable original: [NGA Open Access image via Wikimedia upload](https://upload.wikimedia.org/wikipedia/commons/b/b5/Swabian_School%2C_Knight_in_Armor%2C_Holding_a_Halberd%2C_c._1500%2C_NGA_75855.jpg).
+The adaptation brief is [014_modern_model_source_adaptation_brief_2026-08-22.md](../014_modern_model_source_adaptation_brief_2026-08-22.md).
 
-Creator and date: Swabian School, individual artist not named, circa 1500.
+## `cannibal_bone_guard`
 
-License: CC0 1.0 / National Gallery of Art Open Access as stated by the Commons file record.
+Selected modern source: [Vornyx — The Bone Hunter](https://vorynx.artstation.com/projects/QKA8L4).
 
-Archived original: `docs/assets/014_cannibalism/models_3d/cannibal_bone_guard/refs/sourced/original/swabian_school_knight_in_armor_halberd_nga_75855.jpg`.
+Direct downloadable original: [ArtStation CDN original](https://cdna.artstation.com/p/assets/images/images/098/168/360/large/vornyx-asset.webp?1776368125).
 
-SHA-256: `78004D92EEE571BB5B6A83BD14D17A042484BB77FAA4A3DD52D36A64DD085930`.
+Creator: Vornyx, illustrator and capsule artist working in character design.
 
-Dimensions: 1723 × 4000 pixels.
+Rights: the page displays `© All rights reserved` and no reuse license, so this is `reference-only`, `not licensed`.
 
-Fit: full-body three-quarter plate armor, articulated limbs, layered waist/hip protection, and a long polearm grip support the requested towering heavy silhouette and axe/poleaxe stance.
+Access date: 2026-08-22.
 
-Review blocker: the halberd is primarily one-handed and its upper head exits the canvas; the adapted design must create a complete massive two-handed axe/poleaxe and independently add fictional bone trophies. It supplies no skull/rib/spine material logic.
+Original: `docs/assets/014_cannibalism/models_3d/cannibal_bone_guard/refs/sourced/modern/original/vornyx_the_bone_hunter.webp`.
 
-## Candidate 2: `cannibal_island_reavers`
+Original dimensions and SHA-256: `718x966`; `5614DF48DAE6E960EBB7F058A261CFD7B06B86EEDF7BCE2BD5D04BA99A1507CF`.
 
-Source: [Wikimedia Commons — *Soldier with shield and lance*](https://commons.wikimedia.org/wiki/File:Soldier_with_shield_and_lance_(NYPL_b14896507-92914).tiff).
+Processed PNG: `docs/assets/014_cannibalism/models_3d/cannibal_bone_guard/refs/sourced/modern/processed/vornyx_the_bone_hunter.png`.
 
-Institutional record: [New York Public Library Digital Collections item](https://digitalcollections.nypl.org/items/510d47d9-8cf8-a3d9-e040-e00a18064a99).
+Processed dimensions and SHA-256: `718x966`; `CACDF16A59280358446149071DBB40F59A9FA1A16FA66F0C7FE6BD7242774B6B`.
 
-Direct downloadable original: [NYPL scan via Wikimedia upload](https://upload.wikimedia.org/wikipedia/commons/1/12/Soldier_with_shield_and_lance_%28NYPL_b14896507-92914%29.tiff).
+DDS evidence: `docs/assets/014_cannibalism/models_3d/cannibal_bone_guard/refs/sourced/modern/dds/vornyx_the_bone_hunter.dds`.
 
-Creator and date: original artist and exact date are not stated; the sheet is attributed to the NYPL Vinkhuijzen Collection of Military Uniforms, with Eighty Years' War context only.
+DDS dimensions and SHA-256: `718x966`; `691B1709594A94F3A75F8BD3B7769A7E9706841CB5A3F1D0CCDD0A885BADFC1F`.
 
-License: public-domain scan / Public Domain Mark as stated by the Commons record, which describes a mechanical scan of a public-domain original with no known restrictions.
+Fit: use only the high-level bone-material hierarchy, chunky full-body silhouette, dark under-structure, and hand-to-weapon relationship.
 
-Archived original: `docs/assets/014_cannibalism/models_3d/cannibal_island_reavers/refs/sourced/original/soldier_with_shield_and_lance_nypl_b14896507_92914.tiff`.
+Parent correction recorded: the source is too light and stylized and its weapon is too small, so the adaptation must become a towering near-total skull, rib, spine, and long-bone armored figure with a massive two-handed axe or poleaxe.
 
-SHA-256: `35D33D203119C12F5652B27F0787539294304BE2FC6CC6348DC2B5843108D79B`.
+Do not copy its face, mask, armor arrangement, palette, costume, pose trace, weapon geometry, or background.
 
-Dimensions: 2320 × 2694 pixels.
+## `cannibal_island_reavers`
 
-Fit: full-body offset stance, diagonal lance/spear, turned torso, and shield-bearing arm give an agile raider silhouette and clear long-weapon hand relationship; the source is free of modern reenactment cues, living Indigenous regalia, sacred motifs, and culture-specific paint.
+Selected modern source: [Michael Merulla — Bellovesus / Atlantean coastal raider](https://merulla.artstation.com/projects/KOAX5R).
 
-Review blocker: visible book/plate edges remain, the shield is larger than a compact boarding shield, and there is no boarding axe or harpoon barb; the exact artist/date are unknown and must not be invented. Adapt the stance and hand relationship rather than copying the sheet as final art.
+Direct downloadable original: [ArtStation CDN original](https://cdnb.artstation.com/p/assets/images/images/058/011/633/large/michael-merulla-atlantean-raider7.jpg?1673202139).
 
-## Candidate 3: `cannibal_siege_eaters`
+Creator: Michael Merulla, character and concept artist.
 
-Source: [The Metropolitan Museum of Art — Domenico Beccafumi, *Hercules, Standing with a Club*](https://www.metmuseum.org/art/collection/search/336114).
+Rights: the portfolio page does not identify a reuse license, so this is `reference-only`, `not licensed`.
 
-Institutional API record: [Met collection API object 336114](https://collectionapi.metmuseum.org/public/collection/v1/objects/336114).
+Access date: 2026-08-22.
 
-Direct downloadable original: [Met primary image](https://images.metmuseum.org/CRDImages/dp/original/DP-22565-001.jpg).
+Original: `docs/assets/014_cannibalism/models_3d/cannibal_island_reavers/refs/sourced/modern/original/michael_merulla_atlantean_coastal_raider7.jpg`.
 
-Creator and date: Domenico Beccafumi (Italian, 1484–1551), 1530–1540.
+Original dimensions and SHA-256: `1169x1653`; `ED8B320958F2E8A1C5E6A34A15482FE70ECD926CE579D4B82EEA3DBABE9A008B`.
 
-License: Met Open Access / CC0 1.0; the API record explicitly identifies the object as public domain.
+Processed PNG: `docs/assets/014_cannibalism/models_3d/cannibal_island_reavers/refs/sourced/modern/processed/michael_merulla_atlantean_coastal_raider7.png`.
 
-Archived original: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/refs/sourced/original/hercules_standing_with_a_club_met_dp22565_001.jpg`.
+Processed dimensions and SHA-256: `1169x1653`; `DB19507891219A3EAC3DF290E281231A97B2501AAB077F616BABA6C32754C05E`.
 
-SHA-256: `EB9356C83251AAAF718B29CAB9BEE11BD32A7FBFCEA5E8A2CB0748793313D43D`.
+DDS evidence: `docs/assets/014_cannibalism/models_3d/cannibal_island_reavers/refs/sourced/modern/dds/michael_merulla_atlantean_coastal_raider7.dds`.
 
-Dimensions: 2519 × 4000 pixels.
+DDS dimensions and SHA-256: `1169x1653`; `990869A818D3936A3555318FCC46DDE3E17D06CDE5E2D8614B1175DB12C95EFE`.
 
-Fit: full-body broad torso, bent-knee weight-bearing posture, and long club establish mass, balance, and heavy-tool silhouette for the breacher role.
+Fit: use only the high-level coastal silhouette, spear relationship, shield-side balance, and agile boarding posture.
 
-Review blocker: this is a nude mythological study rather than an armored combatant and the club is not a sledgehammer. Adapt anatomy and tool pose only, then independently design the ram-skull mask, asymmetrical dark segmented arm armor, ragged waist cloth, and sledgehammer/maul. Do not treat the nude source as final costume direction.
+Parent correction recorded: strip shell and Greek-like decorative cues, the blue-and-gold palette, and the fictional Atlantean identity, then adapt to a culture-neutral low skull helmet, rope harness, rib armor, damaged naval workwear, low lunge, harpoon or spear, and boarding axe or compact shield.
 
-## Package paths and validation
+Do not copy its face, helmet, shell motifs, palette, costume, pose trace, weapon geometry, background, or fictional identity.
 
-- Full provenance manifest: `docs/assets/014_cannibalism/models_3d/sourced_reference_manifest.md`.
-- Runtime/GFX boundary handoff: `docs/assets/014_cannibalism/models_3d/gfx_handoff.md`.
-- Combined contact sheet: `docs/assets/014_cannibalism/models_3d/sourced_reference_contact_sheet.png`.
-- Each job has `refs/sourced/original/`, `refs/sourced/processed/`, `refs/sourced/dds/`, and `refs/sourced/source_pages/` directories.
-- PNGs are native-resolution RGBA decodes without crop or stretch.
-- DDS files have a legacy `DDS ` header, native source dimensions, and one-level uncompressed BGRA/B8G8R8A8 output from `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
+## `cannibal_siege_eaters`
 
-## Parent next steps
+Selected modern source: [Christian Hadfield — Fantasy D&D Character Illustration: Half-Orc Oathbreaker Paladin](https://www.artstation.com/artwork/ELxLZn).
 
-Review the contact sheet and manifest, then approve or reject each source as the single adapted reference for its job. If approved, create a derivative or ImageGen adaptation that preserves the source's pose/material logic while adding only the fictional requested design, and record lineage to the immutable original. Keep the production manifests and all runtime wiring parent-owned. Do not wire the evidence DDS files as sprites or model runtime assets.
+Date note: the page says `Posted 5 years ago`, the image URL epoch points to 2021, and page metadata shows 2025, so the exact artwork date is uncertain and is not asserted.
+
+Direct downloadable original: [ArtStation CDN original](https://cdna.artstation.com/p/assets/images/images/040/292/342/large/christian-hadfield-half-orc-oath-breaker-paladin-by-christian-hadfield-low-rez.jpg?1628438037).
+
+Creator: Christian Hadfield, character artist and illustrator.
+
+Rights: the source page does not identify a reuse license and is treated as all-rights-reserved portfolio artwork, so this is `reference-only`, `not licensed`.
+
+The source page carries a `NoAI` tag, so its image was archived for provenance but must not be uploaded to ImageGen or another image model; use only the written high-level adaptation brief.
+
+Access date: 2026-08-22.
+
+Original: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/refs/sourced/modern/original/christian_hadfield_two_handed_maul.jpg`.
+
+Original dimensions and SHA-256: `1561x2000`; `452DB65BEB8E2C070D264945BD4F83382E1B0B02DF88496F1F04B4C3CC132225`.
+
+Processed PNG: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/refs/sourced/modern/processed/christian_hadfield_two_handed_maul.png`.
+
+Processed dimensions and SHA-256: `1561x2000`; `54E7A0BF1DD9E7073A0EFFFF2ABE48ED9422C388011C9BBC810AF211CBE7E9C7`.
+
+DDS evidence: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/refs/sourced/modern/dds/christian_hadfield_two_handed_maul.dds`.
+
+DDS dimensions and SHA-256: `1561x2000`; `11789CE2D0FE5A7AD70D0B1F7AB49EAB52875C8A0818232EC0F954E940DA9674`.
+
+Fit: use only high-level two-handed maul mechanics, low breacher stance, weight-bearing balance, and layered material read.
+
+Parent correction recorded: the source is too armored and knightly and not broad enough, so the adaptation must become a broader massive bare or lightly covered breacher with a non-ceremonial horned animal-skull mask, asymmetric scavenged arm protection, bone bindings, ragged waist cloth, and a sledgehammer, maul, heavy cleavers, or entrenching tool.
+
+A modern [Jacquelin Moulder Sledgehammer Rock Creature](https://jacqui.artstation.com/projects/mDR9XZ) was reviewed as a mass-and-tool comparison but was not acquired or selected as the source because it is a separate all-rights-reserved creature design and is less human-readable for this unit.
+
+Do not copy the named Half-Orc Oathbreaker identity, face, horned helmet, armor, cross or chain motifs, glowing maul, palette, pose trace, scenery, or tabletop-IP identity.
+
+## Superseded archival batch
+
+The earlier public-domain and institutional archival source set is rejected by the user's modern-artwork correction.
+
+The old per-job manifests are preserved as `refs/sourced/rejected_archival/manifest_archival_2026-08-22.json`, the former combined manifest is preserved as `sourced_reference_manifest_archival_rejected_2026-08-22.md`, and the former GFX handoff is preserved as `gfx_handoff_archival_rejected_2026-08-22.md`.
+
+The old archival originals, processed files, DDS evidence, source notes, and comparison sheet remain available for audit history and are not silently deleted.
+
+The prior archival handoff commit was `3b2c6b12f`.
+
+The old batch must not guide ImageGen, enter `refs/original/meshy_input.png`, be submitted to Meshy, or be wired to runtime.
+
+## Explicit exclusions and handoff boundary
 
 The excluded path `C:/Users/klimp/AppData/Local/Temp/codex-clipboard-59672c99-c6a5-4728-9ab5-71e311186bd4.png` was not opened or used.
+
+The user's six attachments were not used as Internet sources, model inputs, or copied material.
+
+The parent-facing adaptation brief is `docs/plans/014_cannibalism_plans/014_modern_model_source_adaptation_brief_2026-08-22.md`.
+
+Only a parent-approved substantially original `refs/original/meshy_input.png` may be sent to Meshy 7.
+
+The parent owns ImageGen execution, Meshy submission, model production, runtime wiring, and final validation.
