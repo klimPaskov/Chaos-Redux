@@ -56,7 +56,7 @@ The current bounded map MCP artifact is `hoi4-agent://workspace/mod_chaos_redux_
 
 That artifact confirms the requested state records and core map geometry but retains unrelated `map/buildings.txt` locator diagnostics.
 
-The probability baseline is a pre-change audit, and the post-change decision handoff records a 20-scenario evaluation timeout with no completed compare artifact.
+The probability baseline is pre-change absence evidence. The older post audit completed a partial 20-scenario `mission_ai_will_do` evaluation with 59 unresolved inputs and only a current/current comparison. A final mandatory inspect on source hash `62b30cfcbe4843be15c75cde4b6200b823c98aafaba768c88f12181df458faf0` again redirected the empty decision adapter to the mission adapter. Because the older scenario artifacts use source hash `c874297e...`, all 20 named scenarios remain unresolved for the current revision and no genuine baseline/post comparison exists.
 
 The mapmode GUI route modeled zero hardcoded `mapmodes` elements and timed out during render, so source evidence is not represented as a complete visual runtime proof.
 
@@ -73,5 +73,7 @@ Do not clear integration, resettlement, or return ledgers when documenting dorma
 Do not invent an Event 149 source or replacement ID; the spreadsheet worker has reconciled the exported retirement wording and unavailable status.
 
 Do not claim historical profile activation, achievement unlocks, weighted balance, or visual mapmode completion from source presence alone.
+
+The authoritative closure status is `docs/plans/famine_and_migration_system_plans/completion_report.md`. Adapter and achievement closure handoffs supersede earlier descriptions of those workers as pending, but their recorded missing producers remain blockers.
 
 Ideology remains a bounded AI modifier only after policy, destination, and route gates pass; persecution, famine, bombing, camps, occupation conduct, and contamination override affinity and no ideology can authorize an unsafe route.
