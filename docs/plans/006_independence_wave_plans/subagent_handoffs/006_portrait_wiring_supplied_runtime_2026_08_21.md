@@ -1,5 +1,7 @@
 # Event 006 supplied portrait runtime wiring handoff
 
+> Superseded on 2026-08-22 by `006_portrait_wiring_supplied_runtime_2026_08_22.md`. This dated handoff is retained for traceability; the current state is 38 verified runtime mappings and 13 explicitly unresolved supplied files.
+
 Date: 2026-08-21.
 
 Scope: install the user-supplied DDS files from `C:\Users\klimp\Documents\ComfyUI Workflows\HOI4\hoi4_portraits_output\output\156x210\iw\dds` into existing Event 006 runtime basenames. The supplied files were treated as approved 156x210 source-placeholder runtime inputs. No RunPod operation, source research, repaint, PNG creation, or extra source folder was used.
