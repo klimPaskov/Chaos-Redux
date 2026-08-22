@@ -1,300 +1,41 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 006 PRE-WAVE CRISIS EFFECTS
+# CHAOS REDUX - EVENT 006 RETIRED CRISIS COMPATIBILITY EFFECTS
 # ============================================================================
-# A crisis is a timed host operation. It pays a real security commitment when
-# selected, records whether occupation or instability opened it, and requests
-# the normal Event 006 entry only after the mission resolves and the shared
-# coordinator is reset. No effect in this file changes state ownership.
+# The pre-event Independence Wave crisis was retired. These identifiers remain
+# as empty compatibility stubs so stale scripted references parse without
+# creating pressure, costs, cooldowns, queues, history entries, or early event
+# requests. The public Event 006 root is the only release entry point.
 # ============================================================================
 
 independence_wave_pay_crisis_cost = {
-	add_manpower = constant:independence_wave_decision_cost.manpower_standard_spend
-	army_experience = constant:independence_wave_decision_cost.army_experience_standard_spend
-	add_command_power = constant:independence_wave_decision_cost.command_power_standard_spend
-	add_equipment_to_stockpile = {
-		type = infantry_equipment
-		amount = constant:independence_wave_decision_cost.infantry_standard_spend
-	}
-	add_equipment_to_stockpile = {
-		type = support_equipment
-		amount = constant:independence_wave_decision_cost.support_standard_spend
-	}
-	add_stability = constant:independence_wave_crisis.stability_open_loss
-	set_country_flag = independence_wave_crisis_active
-	if = {
-		limit = { has_independence_wave_crisis_occupation_pressure = yes }
-		set_country_flag = independence_wave_crisis_occupation_origin
-	}
-	if = {
-		limit = { has_independence_wave_crisis_stability_pressure = yes }
-		set_country_flag = independence_wave_crisis_stability_origin
-	}
 }
 
 independence_wave_set_crisis_cooldown = {
-	set_temp_variable = { independence_wave_crisis_cooldown_days = constant:independence_wave_crisis_timing.cooldown_days }
-	set_country_flag = {
-		flag = independence_wave_crisis_cooldown
-		days = independence_wave_crisis_cooldown_days
-	}
 }
 
 independence_wave_clear_crisis_runtime = {
-	clr_country_flag = independence_wave_crisis_active
-	clr_country_flag = independence_wave_crisis_occupation_origin
-	clr_country_flag = independence_wave_crisis_stability_origin
 }
 
 independence_wave_apply_crisis_blocked_consequence = {
-	set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.blocked }
-	# A second host can time out while another request owns the shared queue.
-	# Its origin flags are still live here, so preserve that host's initiating
-	# cause before applying the shared blocked-pressure consequence. A queued
-	# requester already cleared those flags when its cause row was written.
-	if = {
-		limit = {
-			OR = {
-				has_country_flag = independence_wave_crisis_occupation_origin
-				has_country_flag = independence_wave_crisis_stability_origin
-			}
-		}
-		independence_wave_record_crisis_history = yes
-	}
-	set_global_flag = independence_wave_crisis_failure_receipt
-	add_stability = constant:independence_wave_crisis.stability_failure_loss
-	add_war_support = constant:independence_wave_crisis.war_support_failure_gain
-	if = {
-		limit = { has_independence_wave_crisis_occupation_pressure = yes }
-		if = {
-			limit = {
-				any_owned_state = {
-					NOT = { is_controlled_by = ROOT }
-					resistance > constant:independence_wave_crisis.occupied_resistance_threshold
-				}
-			}
-			random_owned_state = {
-				limit = {
-					NOT = { is_controlled_by = ROOT }
-					resistance > constant:independence_wave_crisis.occupied_resistance_threshold
-				}
-				add_resistance = constant:independence_wave_crisis.resistance_failure_gain
-			}
-		}
-		else = {
-			random_controlled_state = {
-				limit = {
-					NOT = { is_owned_by = ROOT }
-					resistance > constant:independence_wave_crisis.occupied_resistance_threshold
-				}
-				add_resistance = constant:independence_wave_crisis.resistance_failure_gain
-			}
-		}
-	}
-	set_country_flag = independence_wave_crisis_blocked
-	independence_wave_record_crisis_resolution_history = yes
 }
 
 independence_wave_record_crisis_history = {
-	set_temp_variable = { independence_wave_crisis_history_payload = constant:independence_wave_crisis_history.stability }
-	if = {
-		limit = {
-			has_country_flag = independence_wave_crisis_occupation_origin
-			has_country_flag = independence_wave_crisis_stability_origin
-		}
-		set_temp_variable = { independence_wave_crisis_history_payload = constant:independence_wave_crisis_history.combined }
-	}
-	else_if = {
-		limit = { has_country_flag = independence_wave_crisis_occupation_origin }
-		set_temp_variable = { independence_wave_crisis_history_payload = constant:independence_wave_crisis_history.occupation }
-	}
-	set_variable = { global.independence_wave_last_crisis_host = THIS.id }
-	set_variable = { global.independence_wave_last_crisis_cause = independence_wave_crisis_history_payload }
-	set_variable = { global.independence_wave_last_crisis_date = global.date }
-	set_global_flag = independence_wave_crisis_receipt_ready
-	set_temp_variable = { events_log_system_event_id = constant:independence_wave_event.id }
-	set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.repeatable }
-	set_temp_variable = { events_log_system_payload = independence_wave_crisis_history_payload }
-	set_temp_variable = { events_log_system_actor = THIS.id }
-	set_temp_variable = { events_log_system_has_actor = constant:independence_wave_plan.loop_increment }
-	set_temp_variable = { events_log_system_secondary_actor = constant:independence_wave_value.minimum }
-	set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_value.minimum }
-	record_events_log_system_history_entry = yes
-	refresh_events_log_system_history_views = yes
-	set_temp_variable = { independence_wave_crisis_history_payload = 0 }
-	set_temp_variable = { events_log_system_event_id = 0 }
-	set_temp_variable = { events_log_system_event_type = 0 }
-	set_temp_variable = { events_log_system_payload = 0 }
-	set_temp_variable = { events_log_system_actor = 0 }
-	set_temp_variable = { events_log_system_has_actor = 0 }
-	set_temp_variable = { events_log_system_secondary_actor = 0 }
-	set_temp_variable = { events_log_system_has_secondary_actor = 0 }
 }
 
 independence_wave_record_crisis_resolution_history = {
-	set_temp_variable = { independence_wave_crisis_resolution_history_payload = constant:independence_wave_crisis_resolution_history.unknown }
-	if = {
-		limit = {
-			check_variable = {
-				var = global.independence_wave_last_crisis_resolution
-				value = constant:independence_wave_crisis_resolution.queued
-				compare = equals
-			}
-		}
-		set_temp_variable = { independence_wave_crisis_resolution_history_payload = constant:independence_wave_crisis_resolution_history.queued }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = global.independence_wave_last_crisis_resolution
-				value = constant:independence_wave_crisis_resolution.blocked
-				compare = equals
-			}
-		}
-		set_temp_variable = { independence_wave_crisis_resolution_history_payload = constant:independence_wave_crisis_resolution_history.blocked }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = global.independence_wave_last_crisis_resolution
-				value = constant:independence_wave_crisis_resolution.cancelled
-				compare = equals
-			}
-		}
-		set_temp_variable = { independence_wave_crisis_resolution_history_payload = constant:independence_wave_crisis_resolution_history.cancelled }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = global.independence_wave_last_crisis_resolution
-				value = constant:independence_wave_crisis_resolution.committed
-				compare = equals
-			}
-		}
-		set_temp_variable = { independence_wave_crisis_resolution_history_payload = constant:independence_wave_crisis_resolution_history.committed }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = global.independence_wave_last_crisis_resolution
-				value = constant:independence_wave_crisis_resolution.requester_lost
-				compare = equals
-			}
-		}
-		set_temp_variable = { independence_wave_crisis_resolution_history_payload = constant:independence_wave_crisis_resolution_history.requester_lost }
-	}
-	set_temp_variable = { events_log_system_event_id = constant:independence_wave_event.id }
-	set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.repeatable }
-	set_temp_variable = { events_log_system_payload = independence_wave_crisis_resolution_history_payload }
-	set_temp_variable = { events_log_system_actor = THIS.id }
-	set_temp_variable = { events_log_system_has_actor = constant:independence_wave_plan.loop_increment }
-	set_temp_variable = { events_log_system_secondary_actor = constant:independence_wave_value.minimum }
-	set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_value.minimum }
-	record_events_log_system_history_entry = yes
-	refresh_events_log_system_history_views = yes
-	set_temp_variable = { independence_wave_crisis_resolution_history_payload = 0 }
-	set_temp_variable = { events_log_system_event_id = 0 }
-	set_temp_variable = { events_log_system_event_type = 0 }
-	set_temp_variable = { events_log_system_payload = 0 }
-	set_temp_variable = { events_log_system_actor = 0 }
-	set_temp_variable = { events_log_system_has_actor = 0 }
-	set_temp_variable = { events_log_system_secondary_actor = 0 }
-	set_temp_variable = { events_log_system_has_secondary_actor = 0 }
 }
 
 independence_wave_queue_crisis_release = {
-	set_global_flag = independence_wave_crisis_release_queued
-	clr_global_flag = independence_wave_crisis_requester_lost
-	clr_global_flag = independence_wave_crisis_success_receipt
-	clr_global_flag = independence_wave_crisis_failure_receipt
-	# A fresh queue is a new transaction. Do not carry terminal outcome flags
-	# from an earlier blocked or abandoned request into the queued lifecycle.
-	clr_country_flag = independence_wave_crisis_blocked
-	clr_country_flag = independence_wave_crisis_abandoned
-	set_country_flag = independence_wave_crisis_release_requester
-	set_variable = { independence_wave_crisis_retry_count = 0 }
-	set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.queued }
-	independence_wave_record_crisis_history = yes
-	independence_wave_record_crisis_resolution_history = yes
-	independence_wave_set_crisis_cooldown = yes
-	independence_wave_clear_crisis_runtime = yes
-	set_temp_variable = { independence_wave_crisis_retry_delay = constant:independence_wave_crisis_timing.retry_days }
-	country_event = {
-		id = chaosx.nr6.3
-		days = independence_wave_crisis_retry_delay
-	}
 }
 
 independence_wave_clear_crisis_retry = {
-	clear_variable = independence_wave_crisis_retry_count
 }
 
 independence_wave_resolve_pre_wave_crisis = {
-	if = {
-		limit = {
-			has_independence_wave_crisis_pressure = yes
-			NOT = { has_global_flag = independence_wave_crisis_release_queued }
-		}
-		independence_wave_queue_crisis_release = yes
-	}
-	else = {
-		independence_wave_apply_crisis_blocked_consequence = yes
-		independence_wave_set_crisis_cooldown = yes
-		independence_wave_clear_crisis_runtime = yes
-	}
 }
 
 independence_wave_cancel_pre_wave_crisis = {
-	set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.cancelled }
-	set_global_flag = independence_wave_crisis_failure_receipt
-	add_stability = constant:independence_wave_crisis.stability_failure_loss
-	# Preserve the initiating host/cause Event Log row even when pressure falls
-	# away before the ordinary release queue is created.
-	independence_wave_record_crisis_history = yes
-	independence_wave_record_crisis_resolution_history = yes
-	independence_wave_set_crisis_cooldown = yes
-	independence_wave_clear_crisis_runtime = yes
-	set_country_flag = independence_wave_crisis_abandoned
 }
 
-# The scheduled country callback cannot execute after its requester is annexed.
-# The annexation on-action calls this narrow recovery effect before the victim
-# scope disappears, clearing the global queue and recording a visible receipt
-# instead of leaving a stranded release request.
 independence_wave_recover_crisis_requester_loss = {
-	if = {
-		limit = {
-			FROM = { has_country_flag = independence_wave_crisis_release_requester }
-			has_global_flag = independence_wave_crisis_release_queued
-		}
-		clr_global_flag = independence_wave_crisis_release_queued
-		set_global_flag = independence_wave_crisis_requester_lost
-		set_global_flag = independence_wave_crisis_failure_receipt
-		set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.requester_lost }
-		set_variable = { global.independence_wave_last_crisis_date = global.date }
-		FROM = {
-			set_variable = { global.independence_wave_last_crisis_host = THIS.id }
-			independence_wave_clear_crisis_retry = yes
-			clr_country_flag = independence_wave_crisis_release_requester
-			clr_country_flag = independence_wave_crisis_active
-			clr_country_flag = independence_wave_crisis_occupation_origin
-			clr_country_flag = independence_wave_crisis_stability_origin
-			independence_wave_record_crisis_resolution_history = yes
-		}
-		set_temp_variable = { events_log_system_event_id = constant:independence_wave_event.id }
-		set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.repeatable }
-		set_temp_variable = { events_log_system_payload = constant:independence_wave_crisis_history.requester_lost }
-		set_temp_variable = { events_log_system_actor = FROM.id }
-		set_temp_variable = { events_log_system_has_actor = constant:independence_wave_plan.loop_increment }
-		set_temp_variable = { events_log_system_secondary_actor = constant:independence_wave_value.minimum }
-		set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_value.minimum }
-		record_events_log_system_history_entry = yes
-		refresh_events_log_system_history_views = yes
-		set_temp_variable = { events_log_system_event_id = 0 }
-		set_temp_variable = { events_log_system_event_type = 0 }
-		set_temp_variable = { events_log_system_payload = 0 }
-		set_temp_variable = { events_log_system_actor = 0 }
-		set_temp_variable = { events_log_system_has_actor = 0 }
-		set_temp_variable = { events_log_system_secondary_actor = 0 }
-		set_temp_variable = { events_log_system_has_secondary_actor = 0 }
-	}
 }
