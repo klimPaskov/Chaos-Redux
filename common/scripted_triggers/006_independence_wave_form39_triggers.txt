@@ -194,9 +194,13 @@ has_independence_wave_form39_project_active = {
 can_pay_independence_wave_form39_shipping_cost = {
 	is_independence_wave_form39_postformation_carrier = yes
 	has_independence_wave_form39_bound_members = yes
+	has_stability > constant:independence_wave_decision_cost.stability_standard
 	command_power > constant:independence_wave_formable_cost.civic_command_power
-	can_pay_independence_wave_strategic_cost = yes
-	can_pay_independence_wave_administration_standard_cost = yes
+	OR = {
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+	}
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
 	NOT = { has_independence_wave_form39_project_active = yes }
 }
 
@@ -221,8 +225,7 @@ can_pay_independence_wave_form39_plebiscite_cost = {
 	is_independence_wave_form39_postformation_carrier = yes
 	has_independence_wave_form39_bound_members = yes
 	command_power > constant:independence_wave_decision_cost.command_power_standard
-	can_pay_independence_wave_strategic_cost = yes
-	can_pay_independence_wave_security_standard_cost = yes
+	can_pay_independence_wave_security_material_standard_cost = yes
 	NOT = { has_independence_wave_form39_project_active = yes }
 }
 
