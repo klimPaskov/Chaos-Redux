@@ -16,15 +16,19 @@ The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger
 
 The 2026-08-22 retired-crisis neutralization also replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
 
-The 2026-08-21 parent tranche remains implemented as source evidence: synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors for IW-024/IW-027/IW-028, the documented dormant-shell guard, and 37 byte-preserving supplied portrait installs with 14 intentionally unmapped files.
+The 2026-08-21 parent tranche remains implemented as source evidence: synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors for IW-024/IW-027/IW-028, the documented dormant-shell guard, and its then-current 37 byte-preserving supplied portrait installs with 14 intentionally unmapped files; that portrait count is historical and is superseded by the 2026-08-22 consumer tranche below.
 
 Commit `b77f9fd45` additionally repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission or changing the 32/161 boundary; its bounded runtime handoff is `subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
 
 Commit `abb0a8c83` repairs the Event 005-aware joint-capacity witness for the nine admitted packages that were previously absent from it (IW-024, IW-027, IW-028, IW-030, IW-031, IW-038, IW-040, IW-044, and IW-045). The current source has 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 content attestations; this does not widen admission or substitute for live release receipts. Its handoff is `subagent_handoffs/006_event6_joint_capacity_wrapper_2026-08-22.md`.
 
+Commit `d6abc3792` repairs the joint partial-wave expected-count witness by recomputing `global.liberation_plan_expected_country_count` from the actual Event 005 and Event 006 selected counts before optional expansion and lock. This closes the stale expected-count rejection path in source, but joint execution and terminal receipts remain unproven; its evidence handoff is `subagent_handoffs/006_joint_partial_wave_expected_count_repair_2026_08_20.md`.
+
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with the terminal receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and the portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
 
 The 2026-08-22 portrait-consumer tranche adds the exact gated IW-051 YAK Pavel Pevznyak consumer, bringing the installed supplied set to 38 and leaving 13 files intentionally unmapped. Its handoff is `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`; the package remains package-local and fail-closed.
+
+The dormant-carrier and capital-scope repair is source-closed for the admitted AXX, BAX, and BBX anchors: fixed numeric capital states 82, 184, and 185 replace the invalid dormant `capital_scope` path, while the b77f9 baseline-law ordering repair covers AXX, BAX, BBX, AFX, and AGX. The focused scan found no `capital_scope` in the three package files; this is static source evidence only.
 
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the owner of opening divisions.
 
@@ -39,6 +43,8 @@ The latest focus receipt reports 184 focuses, 195 connectors, zero crossings, an
 The graph correction handoff is `subagent_handoffs/006_event6_focus_prerequisite_repair_2026-08-22.md`.
 
 Seven Event 006 layout warnings and fourteen unrelated vanilla continuous-focus icon diagnostics remain, so the focus surface stays **HOLD** and no focus completion claim is authorized.
+
+Current static source checks pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, and Statehood Ledger semantic matrix audits. They confirm the 149-publisher/126-automatic/138-scenario-ranked inventory, 40 adapters, 32 attestations, 29 compatible groups, 102 complete flag families, all 32 scenario cells plus eight edge cases, and the admitted ARM/GEO/AZR contract; they do not prove live event execution, GUI acceptance, or balance.
 
 The 2026-08-22 focus overlay audit remains route-coverage evidence for 318 definitions, resolved Event 006 icons, and resolved Event 006 localisation; its pre-repair connector count is superseded by the later prerequisite-repair receipt.
 
@@ -63,6 +69,8 @@ The current event MCP evidence remains partial: the latest recorded `chaosx.nr6.
 The current whole-event receipt is `subagent_handoffs/006_event006_completion_audit_followup_2026-08-22.md`, and the timeout limitation is recorded in `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
 
 The current weighted-logic handoff is `subagent_handoffs/006_event6_probability_audit_2026-08-22.md`; the outer allocator source inspect succeeded, but all named band evaluations timed out and the partial-wave fallback remains an accepted-design decision point rather than a balance closure.
+
+Super-event 23 remains blocked on the accepted London Brass Players recording because United States/worldwide redistribution permission for the exact recording is unverified. The 2026-08-22 v117 re-verification keeps *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as the strongest rights-complete research candidate, but it is not promoted or wired; parent/user approval, ShareAlike integration treatment, human audition, and the source URL caveat remain open. Audio ID 23, wrappers, and firing remain absent.
 
 The bounded IW-070/IW-071/IW-072 country-package audit is `subagent_handoffs/006_event6_transcaucasus_package_2026-08-22.md`; it found no safe gameplay patch and keeps ARM, GEO, and AZR at their existing static-admission boundary.
 

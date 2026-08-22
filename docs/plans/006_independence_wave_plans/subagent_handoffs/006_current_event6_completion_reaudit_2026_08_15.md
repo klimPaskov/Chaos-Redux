@@ -1,6 +1,6 @@
 # Event 006 current completion re-audit — 2026-08-15
 
-> Supersession note (2026-08-15): this audit's documentation-reconciliation recommendation has been completed in `006_iw051_yak_authority_reconciliation_2026_08_15.md`. Fresh map inspection confirms the existing YAK/state-574 anchor is valid; the earlier allocation-probe collision is not an installed-anchor defect. Retain the audit's whole-event HOLD/PARTIAL and central-admission blockers.
+> Supersession note (2026-08-22): this dated audit remains historical evidence for the whole-event HOLD/PARTIAL and central-admission blockers. Its IW-051 no-runtime-portrait and allocation-collision wording is superseded by commits `795dc9bed` and `6d8426272` plus the bounded map evidence in the current source-of-truth map; its dormant-carrier baseline wording is superseded by `b77f9fd45`. Use `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` for current routing, and do not reopen the historical documentation tranche.
 
 ## Disposition
 
