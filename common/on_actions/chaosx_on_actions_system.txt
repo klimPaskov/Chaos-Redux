@@ -65,12 +65,6 @@ on_actions = {
                     }
                 }
 
-                # Initialize tracking flag if not set
-                if = {
-                    limit = { NOT = { has_country_flag = was_human_yesterday } }
-                    clr_country_flag = was_human_yesterday
-                }
-
                 # Check for tag switch TO this country (now human, wasn't yesterday)
                 if = {
                     limit = {
@@ -92,11 +86,6 @@ on_actions = {
                             limit = { NOT = { is_in_array = { array = global.enabled_countries_list value = THIS } } }
                             add_to_array = { array = global.enabled_countries_list value = THIS }
                             add_to_variable = { global.enabled_countries_count = 1 }
-                            if = {
-                                limit = { check_variable = { global.enabled_countries_count > 7 } }
-                                set_temp_variable = { i = global.enabled_countries_count }
-                                subtract_from_temp_variable = { i = 7 }
-                            }
                         }
 
                         log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for new human player [This.GetTag] ([This.GetName])"
