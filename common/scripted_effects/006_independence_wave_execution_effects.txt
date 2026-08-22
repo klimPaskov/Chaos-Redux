@@ -505,6 +505,39 @@ independence_wave_transfer_frozen_states = {
 	}
 }
 
+# A dormant carrier can pass package setup with the frozen anchor marked as its
+# capital, but the engine only has a live capital after the state owner and
+# controller have been transferred. Re-apply the exact anchor here so absent or
+# empty-shell carriers become playable countries before final validation.
+independence_wave_assign_frozen_country_capitals = {
+	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = independence_wave_execution_package_index
+				value = global.independence_wave_plan_selected_count
+				compare = less_than
+			}
+		}
+		independence_wave_load_frozen_country_execution_context = yes
+		event_target:independence_wave_execution_country = {
+			if = {
+				limit = {
+					event_target:independence_wave_execution_anchor = {
+						is_owned_by = event_target:independence_wave_execution_country
+						is_controlled_by = event_target:independence_wave_execution_country
+					}
+				}
+				set_capital = {
+					state = event_target:independence_wave_execution_anchor
+					remember_old_capital = no
+				}
+			}
+		}
+		add_to_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.loop_increment }
+	}
+}
+
 # Input: `independence_wave_execution_package_index`. Publishes the exact frozen
 # country, anchor, former host, package values, and setup event targets used by
 # every initialization pass.
@@ -721,6 +754,7 @@ independence_wave_execute_standalone_frozen_plan = {
 							}
 						}
 						independence_wave_transfer_frozen_states = yes
+						independence_wave_assign_frozen_country_capitals = yes
 					}
 					if = {
 						limit = {
