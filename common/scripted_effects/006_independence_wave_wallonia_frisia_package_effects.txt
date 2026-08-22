@@ -748,9 +748,24 @@ independence_wave_schedule_afx_ambition_incident = {
 # Exact package setup
 # ---------------------------------------------------------------------------
 
+independence_wave_ensure_afx_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_ensure_agx_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
 independence_wave_setup_iw_006_wallonia = {
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_006_setup_complete
+	# AFX may be created from an absent-at-start carrier. Ensure its baseline
+	# laws exist before the package initialization contract is evaluated.
+	independence_wave_ensure_afx_baseline_laws = yes
 	if = {
 		limit = { can_initialize_independence_wave_iw_006_package = yes }
 		independence_wave_initialize_afx_politics = yes
@@ -799,6 +814,9 @@ independence_wave_setup_iw_006_wallonia = {
 independence_wave_setup_iw_007_frisia = {
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_007_setup_complete
+	# AGX may be created from an absent-at-start carrier. Ensure its baseline
+	# laws exist before the package initialization contract is evaluated.
+	independence_wave_ensure_agx_baseline_laws = yes
 	if = {
 		limit = { can_initialize_independence_wave_iw_007_package = yes }
 		independence_wave_initialize_agx_politics = yes
