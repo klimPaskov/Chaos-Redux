@@ -4,7 +4,7 @@ Read and apply this policy before searching for or approving a 3D model referenc
 
 The selected model reference must be modern designed artwork. Prioritize game concept art, game character or unit art, game production or promotional art, tabletop or miniature concepts or renders, fantasy or horror illustration, and professional character or creature design sheets.
 
-Archival photographs, museum works, historical paintings or drawings, historical plates, antiquities, archaeological images, ethnographic records, reenactment photography, and documentary imagery cannot satisfy the source gate. Never store, describe, or hand off any of them as the selected model reference.
+Archival photographs, museum works, historical paintings or drawings, historical plates, antiquities, archaeological images, ethnographic records, reenactment photography, and documentary imagery cannot satisfy the source gate. Do not collect them as model-reference candidates, place them on the shortlist, include them in model comparison sheets, or hand them off as selected references.
 
 Excluded material may be consulted only as separately labelled background context when genuinely necessary. Its pixels must never enter ImageGen, Meshy, a model-reference adaptation, or a source comparison presented for model approval.
 
