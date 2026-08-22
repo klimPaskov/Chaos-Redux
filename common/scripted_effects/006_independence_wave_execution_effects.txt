@@ -797,12 +797,37 @@ independence_wave_execute_standalone_frozen_plan = {
 }
 
 # A failed or interrupted manual Event 006 entry can leave a standalone plan in
-# collecting, allocating, or locked state. The shared coordinator correctly
-# rejects a second begin call while that plan is active, so recover only an
-# Event 006-only plan before starting a fresh standalone transaction. Joint
-# Event 005 + Event 006 plans and any plan past the execution barrier remain
-# untouched. This is state cleanup only and never creates a player-facing cue.
+# collecting, allocating, locked, or retryable rollback_failed state. The shared
+# coordinator correctly rejects a second begin call while that plan is active,
+# so recover only an Event 006-only plan before starting a fresh standalone
+# transaction. Joint Event 005 + Event 006 plans and any plan past the
+# finalizer barrier remain untouched. This is state cleanup only and never
+# creates a player-facing cue.
 independence_wave_reset_stale_standalone_plan = {
+	# A post-mutation compensation failure retains the frozen ledger and the
+	# execution barrier. Retry that ledger exactly once through the shared,
+	# idempotent compensation path; never bypass a finalizer failure, because a
+	# finalizer may already have performed irreversible package work.
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+			has_global_flag = liberation_release_plan_includes_event6
+			NOT = { has_global_flag = liberation_release_plan_includes_event5 }
+			has_global_flag = liberation_release_execution_started
+			NOT = { has_global_flag = liberation_release_finalizer_started }
+			NOT = { has_global_flag = liberation_release_plan_finalization_failed }
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.rollback_failed }
+		}
+		liberation_release_execute_compensating_rollback = yes
+		if = {
+			limit = { check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted } }
+			liberation_release_reset_plan = yes
+		}
+	}
+
+	# A failed or interrupted pre-execution entry can leave a standalone plan in
+	# collecting, allocating, or locked state. Restore any relocated capital and
+	# clear the contribution before starting a fresh transaction.
 	if = {
 		limit = {
 			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
