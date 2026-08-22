@@ -22,6 +22,11 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [Mengele Directorate Event 016 prototype bridge](#mengele-directorate-event-016-prototype-bridge)
 - [Event 19 integration obligation for new custom units](#event-19-integration-obligation-for-new-custom-units)
 - [Event 006 AI reserve and ledger trigger contract](#event-006-ai-reserve-and-ledger-trigger-contract)
+- [Famine and migration runtime registry](#famine-and-migration-runtime-registry)
+- [Famine and migration pressure adapters](#famine-and-migration-pressure-adapters)
+- [Exact civilian transfer contract](#exact-civilian-transfer-contract)
+- [Border, reception, return, and cohort contracts](#border-reception-return-and-cohort-contracts)
+- [Famine and migration cleanup](#famine-and-migration-cleanup)
 
 ## modify_value_based_on_chaos_tier
 
@@ -561,3 +566,212 @@ ai_will_do = {
 	modifier = { factor = 0 NOT = { independence_wave_kar_ai_land_material_floor = yes } }
 }
 ```
+
+## Famine and migration runtime registry
+
+The public registry effects live in `common/scripted_effects/chaosx_famine_migration_effects.txt` and are lazy-initialized by `famine_migration_initialize_runtime`.
+
+`famine_migration_register_active_food_state` and `famine_migration_unregister_active_food_state` use the global `famine_migration_active_food_states` array and its count variable.
+
+`famine_migration_register_active_displacement_state` and `famine_migration_unregister_active_displacement_state` use the global `famine_migration_active_displacement_states` array and its count variable.
+
+`famine_migration_register_active_displacement_country` and `famine_migration_unregister_active_displacement_country` use the global `famine_migration_active_displacement_countries` array and its count variable.
+
+`famine_migration_retire_inactive_displacement_country` is the non-destructive country-scope retirement path. It requires the category to be dormant, no selected cohort, no positive reception load, and no owned active food or displacement state. It removes live scheduler and selection state while preserving historical integration, resettlement, and return totals for mapmode, achievement, and documentation consumers.
+
+`famine_migration_refresh_decision_phase_from_state` is the state-scope category projection. It reveals the emerging phase only when the state reaches the centralized sustained-exposure, repeated-incident, large-flight, trapped-population, or reception-load threshold, registers the owner country, and clears dormancy. It has no output variable and never scans unregistered states or countries.
+
+Scope is state for state registries and country for the country registry.
+
+Inputs are the current valid state or country scope; registry effects do not accept an implicit world scan.
+
+Outputs are the bounded global arrays, count variables, and `famine_migration_registry_result` temporary value (`1` for an accepted entry and `0` for an invalid scope).
+
+Defaults are empty arrays and zero counts on the first explicit call in a save.
+
+Side effects are state flags `famine_migration_food_security_active` and `famine_migration_displacement_active`, country flag `famine_migration_displacement_active`, and removal of stale state or country data during unregister calls.
+
+Example:
+
+```txt
+set_temp_variable = { famine_migration_pressure_request_proven = 1 }
+set_temp_variable = { famine_migration_pressure_request_amount = 12000 }
+famine_migration_request_famine_pressure = yes
+```
+
+The CXT fixture in `common/scripted_effects/famine_migration_cxt_test_effects.txt` registers the token `chaosx_cxt_extension_famine_migration` through the bounded general-system extension contract. When the fixture is initialized, it gives the test country reception capacity, submits capital-state surface inputs at the supply-strain threshold with relief at zero, and records proof without creating a transfer, route, severe famine, or mortality transaction. Startup and `on_daily_CXT` registration are additive and idempotent, so this fixture is test-only evidence rather than ordinary gameplay setup.
+
+## Famine and migration pressure adapters
+
+`famine_migration_apply_pressure_request` is the shared state-scope adapter for one positive pressure request.
+
+Inputs are `famine_migration_pressure_request_proven`, `famine_migration_pressure_request_amount`, `famine_migration_pressure_request_source`, and `famine_migration_pressure_request_actor_proven` temporary variables.
+
+`famine_migration_pressure_request_apply_food` and `famine_migration_pressure_request_apply_flight` optionally route the amount to food-security pressure, flight pressure, or both.
+
+Missing apply flags default to food only, while missing proof, source, actor, or amount fails closed.
+
+Outputs are state variables `famine_migration_food_pressure` and `famine_migration_flight_pressure`, source variable `famine_migration_last_pressure_source`, and temporary result `famine_migration_pressure_request_result`.
+
+Side effects are idempotent registration in the active food-security and displacement registries and clearing of one-shot request inputs.
+
+The named wrappers `famine_migration_request_occupation_pressure`, `famine_migration_request_camp_pressure`, `famine_migration_request_gulag_pressure`, `famine_migration_request_forced_labor_pressure`, `famine_migration_request_deportation_pressure`, `famine_migration_request_bombing_pressure`, `famine_migration_request_nuclear_pressure`, `famine_migration_request_fallout_pressure`, `famine_migration_request_outbreak_pressure`, `famine_migration_request_disaster_pressure`, `famine_migration_request_war_pressure`, `famine_migration_request_peace_pressure`, and `famine_migration_request_event_pressure` set the source enum and delegate to the shared adapter.
+
+The additional owner seams `famine_migration_request_air_cleanliness_pressure`, `famine_migration_request_chemical_aftermath_pressure`, `famine_migration_request_biological_warfare_pressure`, `famine_migration_request_cluster_pressure`, and `famine_migration_request_scenario_pressure` do the same for Air Cleanliness contamination, chemical aftermath, biological warfare/outbreak callers, cluster-level causal records, and scenario-level causal records. They are input contracts only; Air Cleanliness and chemical/biological owners retain their direct effects, and catalog-only concepts 118, 120, and 131 have no fabricated event source.
+
+`famine_migration_request_blockade_pressure` additionally requires `famine_migration_blockade_proof = yes` before delegating.
+
+`famine_migration_request_famine_pressure` and its explicit alias `famine_migration_request_food_security_pressure` select the resource-shortage source and food route.
+
+`famine_migration_request_flight_pressure` and its explicit alias `famine_migration_request_displacement_pressure` select the event source and flight route.
+
+Owner systems remain responsible for setting the source-specific proof and amount at their existing call sites.
+
+## Exact civilian transfer contract
+
+`famine_migration_transfer_civilians_exact` is a state-scope state-to-state civilian movement contract.
+
+Inputs are `famine_migration_transfer_request_proven`, positive `famine_migration_transfer_people`, `famine_migration_transfer_minimum_origin_remaining`, `famine_migration_transfer_route_deaths_requested`, `famine_migration_transfer_log_deaths`, and optional `famine_migration_transfer_route_death_reason`.
+
+The caller must save the destination state as the regular event target `famine_migration_route_destination` and supply route border, transport, safety, actor, destination food, and destination reception proof variables before calling.
+
+Outputs are `famine_migration_transfer_result`, `famine_migration_transfer_actual_origin_debit`, `famine_migration_transfer_route_deaths`, `famine_migration_transfer_survivor_credit`, and `famine_migration_transfer_conservation_ledger` temporary variables.
+
+Optional `famine_migration_transfer_target_country` and `famine_migration_transfer_has_target_country` are passed to the Deaths registrar for actor attribution when route deaths are logged.
+
+The result is `constant:famine_migration_route_result.valid` only when the actual origin debit equals route deaths plus destination credit.
+
+The effect debits the origin once through `apply_state_population_loss_without_recruitable_manpower_gain`, measures exact people by multiplying `state_population_k` deltas by `constant:chaos_meter_deaths.people_per_k`, credits only survivors with positive state-scope `add_manpower`, and reconciles any owner or controller manpower change observed around that positive add.
+
+Route deaths are a slice of the already debited population and never cause a second state debit.
+
+When logging is enabled, route deaths call `chaos_meter_register_deaths` with `chaos_deaths_apply_state_pop = 0` and `chaos_deaths_record_state_ledger = 1`, so the Deaths ledger records the loss without removing population again.
+
+Global conservation counters are `famine_migration_conservation_debit`, `famine_migration_conservation_credit`, `famine_migration_conservation_route_deaths`, and `famine_migration_conservation_residual`.
+
+Invalid route requests clear one-shot inputs and leave population unchanged.
+
+Example:
+
+```txt
+# The destination pointer is already resolved by the caller.
+var:famine_migration_destination_state = {
+	save_event_target_as = famine_migration_route_destination
+	set_variable = { famine_migration_destination_food_safe_proven = 1 }
+	set_variable = { famine_migration_destination_reception_proven = 1 }
+}
+# Return to the origin-state scope before submitting the movement request.
+set_temp_variable = { famine_migration_transfer_request_proven = 1 }
+set_temp_variable = { famine_migration_transfer_people = 20000 }
+set_temp_variable = { famine_migration_route_border_proven = 1 }
+set_temp_variable = { famine_migration_route_transport_proven = 1 }
+set_temp_variable = { famine_migration_route_safety_proven = 1 }
+set_temp_variable = { famine_migration_route_actor_proven = 1 }
+famine_migration_transfer_civilians_exact = yes
+```
+
+`famine_migration_resolve_route` is a read-only state-scope adapter that evaluates the same route, destination, and proof inputs as the transfer contract and returns `famine_migration_route_resolution_result` (`valid` or `invalid`) without changing population.
+
+`famine_migration_apply_destination_credit` is the destination-state helper called only by the exact transfer contract.
+
+It requires destination food and reception proof plus a positive temporary destination request, and returns the actual positive state-population credit in `famine_migration_transfer_destination_actual_credit`.
+
+`famine_migration_restore_origin_population_residual` is the origin-state rollback helper used only when the destination state API credits fewer survivors than the actual origin debit. Input is positive temporary `famine_migration_origin_restore_request`; output is actual restored state population in `famine_migration_origin_restore_actual`. It reconciles incidental owner/controller recruitable-manpower gains, clears the request, and lets the parent transfer recompute the conservation equation before accepting the transaction.
+
+## Border, reception, return, and cohort contracts
+
+The persistent cohort ledger is owned by `famine_migration_record_displaced_cohort`, `famine_migration_bind_cohort_destination`, `famine_migration_bind_cohort_destination_forced`, `famine_migration_resolve_cohort_origin`, `famine_migration_update_cohort_host_after_transfer`, `famine_migration_cleanup_cohort_record`, and `famine_migration_cleanup_cohort_records_for_state`.
+
+`famine_migration_record_displaced_cohort` is a state-scope effect. The caller supplies a positive amount, owner proof, and a non-unknown source; the effect records `global.famine_migration_cohort_ids`, original state, current host, owner, amount, source, and status in aligned arrays. The origin is only an unbound placeholder in the destination slot, and no destination is valid until a destination-state consumer calls a bind effect inside that actual state scope. The effect persists `famine_migration_current_cohort_id` on the host state and, when unambiguous, `famine_migration_current_country_cohort_id` for the owner country.
+
+`famine_migration_bind_cohort_destination` must run in the actual destination state and requires food-safe and reception-safe proof. `famine_migration_bind_cohort_destination_forced` must also run in the actual destination state, but requires explicit actor/policy proof and records `destination_bound_unsafe` without asserting safety; this is the deportation/forced-movement history contract. Both effects save the destination event target for the current chain and update the durable host/destination row.
+
+`famine_migration_rebind_cohort_destination_safe` is the voluntary third-country resettlement update contract. The caller first resolves the persisted cohort, then enters the actual new destination state and supplies `famine_migration_cohort_resettlement_rebind_request_proven`, `..._food_safe_proven`, `..._reception_proven`, `..._route_proven`, and `..._actor_proven`. The trigger validates the current host and persisted owner targets, rejects a destination equal to the current host, and the effect accepts only `destination_bound` rows. It replaces aligned destination and host entries, preserves origin, owner, status, and survivor amount, returns `famine_migration_cohort_resettlement_rebind_result`, and never creates or removes population. It saves the actual destination as `famine_migration_route_destination` for the current chain.
+
+`famine_migration_resolve_cohort_origin` derives a requested row from an explicit cohort ID or from an unambiguous host-state selection, returns the persisted original state and current host targets, and returns a bound destination target only for safe or unsafe bound rows. A decision transaction must call this resolver before testing event targets because ordinary event targets do not survive across transactions. Voluntary return requires the persisted original state plus food, route, housing, persecution, contamination, and host-safety proof; forced return resolves that same original state but intentionally uses its separate unsafe-host and policy proof and does not call the normal destination safety trigger. Missing, stale, or ambiguous IDs fail closed, and no random safe neighbor is ever selected.
+
+The exact transfer's origin debit is the survivors plus route deaths, while destination credit is survivors only. After a successful transfer, `famine_migration_update_cohort_host_after_transfer` replaces the host and persisted amount with `famine_migration_transfer_survivor_credit`; a zero survivor credit removes the row so route deaths cannot be resurrected. `famine_migration_cleanup_cohort_record` removes all aligned entries by explicit ID, while the state invalidation helper removes rows touching an invalid state. State selection is authoritative for host decisions; the country selection is only a bounded owner-side convenience and is cleared on zero or ambiguous rows.
+
+`famine_migration_set_border_policy` is a country-scope adapter that accepts one enum request from `famine_migration_border_policy` and returns `famine_migration_border_policy_result`.
+
+The accepted policies are humanitarian open, controlled, transit-only, quarantine, closed, violent, and forced return.
+
+Invalid policy tokens are rejected and the request is cleared.
+
+`famine_migration_register_trapped_population` is a state-scope adapter that accepts a positive `famine_migration_trapped_request_amount`, sets the trapped flag, registers the state and owner country, and returns `famine_migration_trapped_result`.
+
+`famine_migration_refresh_reception_capacity` is a country-scope adapter that accepts a positive absolute `famine_migration_reception_capacity_request`, stores it, registers the country, and returns `famine_migration_reception_result`.
+
+`famine_migration_apply_reception_delta` is the centralized exact accounting seam for accepted survivor credits and debits. It runs in the actual destination state with a positive `famine_migration_reception_delta_amount`, one `famine_migration_reception_delta_request_proven` marker, and `famine_migration_reception_delta_mode = constant:famine_migration_reception_delta.credit` or `.debit`. A credit adds the same actual survivor amount to `famine_migration_state_reception_load` and its owner-country `famine_migration_reception_load`; a debit requires both ledgers to contain the full amount before subtracting from both. It returns `famine_migration_reception_delta_applied` and `famine_migration_reception_delta_result`, refreshes reception/overcrowded state flags and modifiers, and clears one-shot inputs. It does not infer or repeat a transfer, so callers use it once per exact survivor transaction.
+
+`famine_migration_record_state_resettlement_projection` and `famine_migration_record_state_return_projection` record positive survivor projection amounts in the actual destination/origin state, set their explicit state flags, refresh modifiers, and never create population. `famine_migration_state_flight_population` and `famine_migration_state_trapped_population` mirror accepted flight/trapped request amounts while the existing displacement/trapped flags remain authoritative. State cleanup and displacement unregister clear all projection variables and flags; country cleanup clears reception, integration, resettlement, and return projections.
+
+`famine_migration_evaluate_voluntary_return` requires all return proof inputs checked by `famine_migration_return_request_is_valid`, sets `famine_migration_voluntary_return_eligible`, and returns `famine_migration_return_result`.
+
+`famine_migration_integrate_displaced_cohort` requires explicit cohort, capacity, and policy proof and records integrated population without creating population.
+
+`famine_migration_resettle_displaced_cohort` requires an event-target destination plus destination proof and records resettled population without creating population.
+
+`famine_migration_force_return_cohort` requires unsafe-host proof, forced-return policy proof, and a valid destination target, then sets `famine_migration_forced_return_pending` for the owner to execute through the exact transfer contract.
+
+`famine_migration_mark_cohort_resolution_transaction` is a country-scope marker for a parent return or explicit cleanup consumer. After its exact transaction succeeds, the caller supplies `famine_migration_cohort_resolution_transaction_request_proven`; the effect sets `famine_migration_cohort_resolution_transaction_proven` and returns `famine_migration_cohort_resolution_transaction_result`. The bounded registered-country processor aggregates nonterminal aligned cohort amounts owned by that country into `famine_migration_achievement_cohort_people`, calls `famine_migration_achievement_record_major_cohort_duration`, and sets `famine_migration_achievement_all_major_cohorts_resolved` only when a previously tracked major total reaches zero with that marker. Integration and safe resettlement set the marker on successful completion; return and cleanup consumers must call the marker explicitly after valid completion.
+
+All cohort adapters fail closed when proof or capacity is missing and clear one-shot request values after evaluation.
+
+## Dynamic food-security evaluator and mortality
+
+`famine_migration_submit_surface_context` is a state-scope owner adapter. The caller supplies explicit proof and normalized `famine_migration_input_production`, `famine_migration_input_transport`, `famine_migration_input_extraction`, `famine_migration_input_need`, `famine_migration_input_environment`, `famine_migration_input_vulnerability`, `famine_migration_input_governance`, and `famine_migration_input_relief` values on a 0-100 pressure scale.
+
+The evaluator adds read-only public context from the existing Air Cleanliness, fallout, camp/genocide, occupation, war, outbreak, and disaster surfaces when their state or proof inputs exist. It never owns those systems' direct damage. Air contamination bands use the existing 25/50/75/100 global flags, while state Air exposure, strategic bombing pressure, nuclear fallout intensity, dynamic fallout/chemical modifiers, camp variables, and explicit local war/occupation/outbreak/disaster proof remain state-local inputs.
+
+`famine_migration_resolve_occupation_profile` reads state-scope `occupation_law` and maps the audited vanilla tokens `foreign_civilian_oversight`, `local_police_force_garrison`, `secret_police_oversight`, `military_governor_occupation`, `martial_law_occupation`, `forced_labor_occupation`, `harsh_quotas_occupation`, and `brutally_oppressive_occupation`, plus Chaos Redux's `concentration`, `cbrn_coercive_security_occupation`, and `cbrn_protected_occupation_administration`, to bounded protective, standard, extraction, forced-labor, collective-punishment, population-transfer, or exterminatory context. It is read-only and does not invent an occupation-law change hook.
+
+`famine_migration_resolve_historical_profile_context` is the sole profile eligibility resolver. It reads the requested profile ID but accepts it only when the audited state ID, owner/controller, date window, occupation/policy or route causal proof, and current food pressure conditions for that profile all pass; memory profiles additionally require explicit owner-supplied `famine_migration_profile_memory_proven` evidence and never activate from a date alone, policy analogues require the resolved occupation-law profile, and the nuclear-winter profile requires an active registered state plus Air Cleanliness/local vulnerability evidence. The resolver contains the fifteen profile-specific branches and fails closed for unmapped states or missing owner surfaces.
+
+`famine_migration_apply_historical_profile_context` calls the resolver, writes dynamic starting component context and a mode (`memory`, `historical_window`, `policy_analogue`, or `dynamic_regional`), and never writes a historical death total. It clears stale context when a profile leaves its audited window or loses causal proof, so a prior profile cannot continue contributing pressure.
+
+`famine_migration_register_historical_profile_anchor_state` and `famine_migration_unregister_historical_profile_anchor_state` maintain the bounded audited map-anchor registry. `famine_migration_bootstrap_historical_profile_anchors` seeds the registry once through exact `random_state` calls whose priority and limit each name one centralized state ID, including all 22 Spain anchors audited by `map-inspect.a672f4ba67035c47.json` (SHA-256 `01e2214cf4c25a9f39d32a7317c205984140281c120885e91905db7f2982c723`). `famine_migration_select_historical_profile_id` chooses among the fifteen profile IDs only after checking the mapped state, owner/controller, date, policy/war/food/route evidence, memory proof, or Air evidence. `famine_migration_process_registered_historical_profile_anchor` re-runs that selector from the host-only coordinator so a profile can enter its future date window without an owner setting an arbitrary profile boolean. `famine_migration_register_historical_profile_candidate_state` still adds a state only after the resolver's named result predicate is true, and `famine_migration_process_registered_historical_profile_candidate` refreshes those sparse validated candidates. `global.famine_migration_historical_profile_anchor_states` and `global.famine_migration_historical_profile_candidate_states` are explicit bounded registries, not map scans; their active flags and predicates expose lifecycle to callers and cleanup.
+
+`famine_migration_evaluate_food_security` composes named components dynamically. Its score is `clamp(((1.15*production) + (1.10*transport) + (1.25*extraction) + (1.00*need) + (0.80*environment) + (0.90*vulnerability) + (0.95*governance) - (1.20*relief)) / 7.15, 0, 200)` after each component is clamped to 0-100. These values are centralized in `famine_migration_food_weight` and are not repeated in callers.
+
+When a state has trapped population, the evaluator derives normalized trapped need pressure as `clamp((trapped_population / (state_population_k * constant:chaos_meter_deaths.people_per_k)) * 100, 0, 100)`. That pressure is added to both the normalized need and vulnerability components before the weighted score is composed, so a trapped population contributes according to its share of the state's measured civilian population rather than as an unbounded raw headcount.
+
+The stage entry thresholds are stable below 25, supply strain at 25, acute shortage at 50, famine at 75, and catastrophic famine at 100. Each upward transition requires a candidate duration of 7, 7, 14, 21, or 30 days for stable, supply strain, acute shortage, famine, and catastrophic famine respectively. Recovery uses hysteresis thresholds of 20, 40, 60, and 80 and durations of 14, 21, 30, and 45 days for the active stage. `famine_migration_food_incident_count` increments on acute-or-worse entry and stage flags are reset atomically.
+
+`famine_migration_apply_famine_mortality` runs only for acute shortage, famine, or catastrophic famine after its stage exposure minimum and due date. It derives population from `state_population_k * constant:chaos_meter_deaths.people_per_k`, reserves the larger of the dynamic 15 percent protected floor and the centralized minimum floor, and scales the pulse by stage rate, exposure, vulnerability, transport/need access, extraction, environment, governance, and relief factors. It calls `apply_exact_state_civilian_population_loss` exactly once with the protected floor, the actual famine reason, and death logging enabled, then stores the helper's `state_civilian_population_loss_applied` result. There is no fixed historical death outcome and no second debit.
+
+## Registry-only scheduling and lifecycle
+
+`famine_migration_process_registered_runtime` is called by the existing `is_global_host` country guard in `common/on_actions/chaosx_on_actions_chaos_meter.txt`. It performs the one-time exact-anchor bootstrap, then uses `for_each_scope_loop` on `global.famine_migration_historical_profile_anchor_states`, `global.famine_migration_historical_profile_candidate_states`, `global.famine_migration_active_food_states`, `global.famine_migration_active_displacement_states`, and `global.famine_migration_active_displacement_countries`, so work is proportional to registered entries and never invokes `every_state` or `every_country`. The nuclear on-action also registers its actual nuked state as an anchor, allowing the Air Cleanliness profile to enter only after the state is active and local Air/food proof is present.
+
+`famine_migration_process_registered_food_state`, `famine_migration_process_registered_displacement_state`, and `famine_migration_process_registered_displacement_country` validate each scope and retire invalid or recovered entries. `famine_migration_handle_state_control_change`, `famine_migration_mark_country_war_reassessment`, `famine_migration_mark_country_peace_reassessment`, and `famine_migration_handle_nuclear_state_change` are lifecycle adapters for the documented `on_state_control_changed`, `on_war_relation_added`, `on_peace`, `on_peaceconference_ended`, `on_annex`, and `on_nuke_drop` scopes.
+
+`famine_migration_retire_recovered_state` clears active surface/profile flags, removes the historical-profile candidate, and removes a stable, pressure-free state from the registries without touching any other state.
+
+## Movement request adapter names
+
+`famine_migration_request_internal_displacement`, `famine_migration_request_cross_border_flight`, `famine_migration_request_organized_evacuation`, and `famine_migration_request_deportation_flow` are skeleton consumers for owner-local gameplay. Each requires positive amount and actor proof plus its route, border, transport, or policy proof; each fails closed and clears one-shot request values. They register flight/food pressure but do not debit population or fabricate a destination. Existing aliases `famine_migration_request_reception_capacity`, `famine_migration_request_integration`, `famine_migration_request_resettlement`, `famine_migration_request_voluntary_return`, and `famine_migration_request_forced_return` expose stable names for later decision owners.
+
+## Famine and migration cleanup
+
+`famine_migration_cleanup_route_request` clears one-shot route proof, amount, death, and result values; regular event targets are intentionally left to their engine lifecycle and are not global targets.
+
+`famine_migration_cleanup_state_registration` is a state-scope cleanup helper for state invalidation, annexation, control loss, destination loss, or route cancellation.
+
+It removes the state from both active state registries and clears food, flight, trapped, and source variables without scanning other states.
+
+`famine_migration_cleanup_country_registration` is a country-scope cleanup helper for annexation, peace, country-classification, or explicit destination invalidation.
+
+It runs when `famine_migration_cleanup_requested > 0` or the country no longer satisfies `famine_migration_country_is_valid`, removes the country from the displacement registry, clears lifecycle flags, and clears reception and integration variables.
+
+The dormant-country retirement effect is narrower than full country-registration cleanup: it removes only an inactive scheduler entry and its transient state, so historical integration, resettlement, and return ledgers remain available to achievement and history consumers.
+
+## Famine and migration dynamic state modifiers
+
+The state-scoped definitions live in `common/dynamic_modifiers/famine_migration_state_modifiers.txt` and use the existing `GFX_fm_state_*` icons. `famine_migration_refresh_dynamic_modifiers` removes all nine famine/migration modifier families, then adds the stage and flow families whose state flags are active. `famine_migration_clear_dynamic_modifiers` removes the same set and forces one modifier refresh.
+
+Stage families are `famine_migration_state_supply_strain`, `famine_migration_state_acute_shortage`, `famine_migration_state_famine`, and `famine_migration_state_catastrophic_famine`. They consume only centralized `famine_migration_modifier` constants for local supplies, production speed, local resources, supply impact, controller attrition, and controller movement speed. The modifiers supplement the normalized evaluator score; they do not write or replace any food-pressure variable.
+
+Flow families are `famine_migration_state_exodus`, `famine_migration_state_reception`, `famine_migration_state_overcrowded`, `famine_migration_state_trapped_border`, and `famine_migration_state_return`. Exodus consumes the existing `famine_migration_displacement_active` state flag, and trapped-border consumes the existing `famine_migration_population_trapped` flag. Reception, overcrowded, and return are derived by `famine_migration_refresh_reception_context` from validated state and owner-country ledgers after accepted reception, resettlement, or return transactions. The shared layer never infers a policy outcome from a country-only capacity or return variable, and owner callers remain responsible for supplying the transaction proof.
+
+Every stage transition and evaluator pass refreshes the modifiers. State cleanup clears them before unregistering the state and also clears the three owner flow-context flags. Control-change and nuclear lifecycle handlers refresh the current flag set. Repeated refresh and cleanup calls are safe because removal precedes addition and `remove_trigger` mirrors each enable flag.

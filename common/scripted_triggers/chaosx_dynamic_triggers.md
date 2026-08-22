@@ -12,6 +12,7 @@ Use this registry only for triggers with demonstrated call-site breadth across u
 - [is_special_chaos_country](#is_special_chaos_country)
 - [is_actual_nonhuman_country](#is_actual_nonhuman_country)
 - [uses_normal_civilian_systems](#uses_normal_civilian_systems)
+- [Famine and migration validation contracts](#famine-and-migration-validation-contracts)
 
 Country-classification helpers are implementation checks. Keep their complete bodies inside `hidden_trigger` so nested tags, flags, and provider triggers never leak into player-facing requirement tooltips. A caller that needs to explain an eligibility rule must provide a concise custom tooltip for that surface.
 
@@ -98,3 +99,35 @@ stage, evolution, super-event, or world-end state.
 Country-scope trigger. Returns true when the country is not currently classified by `is_actual_nonhuman_country` and may use ordinary civilian systems.
 
 This inverse classifier is also fully hidden. Player-facing systems that need to explain why a country is excluded must provide their own direct tooltip instead of exposing the nonhuman registry.
+
+## Famine and migration validation contracts
+
+The famine and migration predicates live in `common/scripted_triggers/chaosx_famine_migration_triggers.txt`.
+
+`famine_migration_country_is_valid` accepts only an existing country that is neither a special Chaos actor nor an actual nonhuman country, using the shared `is_special_chaos_country`, `is_actual_nonhuman_country` through `uses_normal_civilian_systems`, and normal-civilian classifiers.
+
+`famine_migration_state_is_valid` requires an existing populated state whose owner and controller both pass the shared human-civilian classifier.
+
+`famine_migration_pressure_request_is_valid` requires a valid state, positive amount, non-unknown source, actor proof, and an explicit request proof flag.
+
+`famine_migration_route_request_is_valid` requires positive people, border, transport, safety, and actor proof plus a saved destination event target that passes `famine_migration_destination_is_valid`.
+
+`famine_migration_destination_is_valid` requires a valid destination state and explicit food-safety and reception-capacity proof.
+
+`famine_migration_blockade_proof` is deliberately conjunctive and requires owner and controller war state plus island, isolation, maritime-dependence, either route or port disruption, either convoy or escort shortage, no-humanitarian-corridor, and insufficient-local-food proof.
+
+`famine_migration_return_request_is_valid` requires explicit origin-safety, route, food, housing, persecution, contamination, and host-acceptance proof.
+
+`famine_migration_border_policy_is_valid` accepts only the seven constants in `famine_migration_border_policy`.
+
+All predicates are hidden and read-only. Missing variables evaluate to zero, so incomplete requests fail closed without a fallback route.
+
+`famine_migration_state_has_active_context` recognizes only valid states with a submitted context, profile, or positive food pressure, keeping the scheduled registry sparse.
+
+`famine_migration_food_stage_is_active` and `famine_migration_food_stage_requires_mortality` distinguish non-stable stages and acute-or-worse stages for evaluator and mortality gating.
+
+`famine_migration_state_can_retire` requires a valid stable state without positive food pressure; `famine_migration_retire_recovered_state` then clears active context flags and unregisters the state. `famine_migration_surface_context_request_is_valid` requires a valid state plus explicit surface and actor proof.
+
+`famine_migration_historical_profile_context_is_resolved` is true only inside the resolver's successful audited result, and `famine_migration_historical_profile_candidate_is_valid` is true only for a valid state with an active registered profile candidate and one of the fifteen centralized profile IDs. The separate `famine_migration_historical_profile_anchor_active` flag marks a state in the bounded audited anchor registry; the anchor processor selects a profile ID from live map/date/control/causal inputs before invoking the resolver. The resolver itself supplies the profile-specific state/date/control/causal gates; caller-set context booleans cannot bypass them.
+
+`famine_migration_cohort_record_request_is_valid`, `famine_migration_cohort_destination_bind_request_is_valid`, `famine_migration_cohort_resettlement_rebind_request_is_valid`, `famine_migration_cohort_forced_destination_bind_request_is_valid`, `famine_migration_cohort_origin_resolution_is_valid`, `famine_migration_cohort_destination_resolution_is_valid`, `famine_migration_forced_return_request_is_valid`, `famine_migration_reception_delta_request_is_valid`, and `famine_migration_cohort_cleanup_request_is_valid` validate the persisted cohort ledger, exact reception accounting, and return contracts. The rebind predicate requires the resolved current host/owner targets, new destination, positive food/reception/route/actor proof, and rejects the current host as destination. The destination-resolution predicate intentionally calls normal destination safety, so unsafe forced-bound rows remain resolvable for forced-return metadata but fail safe resettlement.
