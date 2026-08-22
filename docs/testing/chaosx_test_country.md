@@ -58,7 +58,7 @@ Dedicated light, medium, and heavy flame-tank variants are registered so the cus
 
 The tag-specific `on_weekly_CXT` hook replenishes that full stockpile throughout play, including equipment supplied through the opt-in registry.
 
-The tag-specific `on_daily_CXT` hook restores political power, command power, army experience, navy experience, air experience, manpower, nuclear bombs, fuel, stability, and war support. It also runs the registered project, equipment, and unit synchronizers, so an additive package registration is consumed without a global country iteration.
+The tag-specific `on_daily_CXT` hook restores political power, command power, army experience, navy experience, air experience, manpower, nuclear bombs, fuel, stability, and war support. It also runs the registered project, equipment, unit, and general-system synchronizers, so an additive package registration is consumed without a global country iteration. The famine and migration package registers a bounded general-system fixture that gives CXT reception capacity and places its capital at the supply-strain threshold without creating a route, population transfer, severe famine, or mortality transaction.
 
 CXT receives 50 research slots even though all current technologies are completed immediately.
 
