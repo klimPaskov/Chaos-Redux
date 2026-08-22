@@ -4,6 +4,8 @@ Date: 2026-07-10
 
 Role: read-only repository exploration and implementation handoff
 
+> Cleanup status, 2026-08-22: This report remains a historical exploration snapshot. The launcher list below predates the retirement of `holy_realm_prepare_final_silence`; the surviving `holy_realm_complete_terminal_final_silence` helper now requests the shared Fallout aftermath before the shared world-end lock is written. Do not use the old Holy Realm launcher entries as current call-site evidence.
+
 ## Executive finding
 
 Event 017 has a complete four-part design package and a preserved final asset package. The committed branch at the start of this exploration still contained the inert Event 017 placeholder. A concurrent implementation pass populated the Event 017 gameplay files and many shared registries while this report was being prepared. Those concurrent files are mapped below, but this report does not treat them as audited or complete.
@@ -348,8 +350,8 @@ The current `on_government_change` cleanup remains useful, but it should not be 
 There is no single world-end on-action. Exact launchers must call `random_faction_cleanup_after_world_end` after setting `world_end`:
 
 - `events/002_zombie_outbreak.txt`, zombie and wendigo terminal branches
-- `common/scripted_effects/003_holy_realm_effects.txt`, `holy_realm_prepare_final_silence`
-- `common/scripted_effects/003_holy_realm_effects.txt`, `holy_realm_complete_terminal_final_silence`
+- Historical only: `common/scripted_effects/003_holy_realm_effects.txt`, `holy_realm_prepare_final_silence`, was removed after exact reference checks proved it superseded and uncalled.
+- `common/scripted_effects/003_holy_realm_effects.txt`, `holy_realm_complete_terminal_final_silence`, is no longer a direct shared `world_end` setter; it hands the terminal consequence to the Fallout coordinator.
 - `common/scripted_effects/007_fury_effects.txt`, `fury_start_world_end`
 - `common/scripted_effects/010_death_effects.txt`, `death_try_start_world_end`
 - `common/scripted_effects/germany_mengele_effects.txt`, `mengele_clone_world_order_launch`
