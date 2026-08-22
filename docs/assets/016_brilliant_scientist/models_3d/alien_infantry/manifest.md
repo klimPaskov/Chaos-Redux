@@ -80,3 +80,5 @@ Status: `needs_user_review`; the first Meshy 7 candidate is rejected and no reco
 ## Recovery gate
 
 The bounded recovery proposal is one additional Meshy 7 image-to-3D generation from a rifle-silhouette-preserving alpha cleanup, estimated at 30 extra credits. Because it is failure-driven paid recovery, authorization is pending. No recovery, rig, animation, or export operation may start until the user confirms it.
+
+Read-only recovery recheck on 2026-08-22 confirmed that task `01a02497-1fb9-7a1b-bec6-ec388d54a016` remains technically successful with 30 credits consumed. The live balance was 626 credits. The provider offers no verified zero-credit correction route for restoring the omitted rifle, so the package remains blocked without launching another paid operation or adopting an explicitly approved manual-modeling fallback.
