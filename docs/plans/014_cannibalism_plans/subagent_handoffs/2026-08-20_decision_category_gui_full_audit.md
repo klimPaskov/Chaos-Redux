@@ -36,7 +36,7 @@ The four background payloads exactly match their parent bounds:
 | Revealed | 470x380 |
 | Wendigo | 470x400 |
 
-Every real control has a matching scripted-GUI effect. The Early network button also has matching visibility and click-enabled gates. The four animation toggles are intentionally presentation-only, use the vanilla button hover treatment, and do not bypass decisions, missions, costs, population transactions, or AI.
+The Early network button is the only control on the four compact decision-category headers and has matching visibility and click-enabled gates. Decorative motion plays automatically and is not presented as a player-facing mechanic or preference.
 
 The pre-reveal Early and Warlord windows do not contain Hannibal localisation, portrait sprites, reveal-only metadata, or reveal-only controls. Reveal and Wendigo names and portrait consumers remain gated behind `cannibalism_reveal_complete`.
 
@@ -54,27 +54,23 @@ The seven-counter layout was reduced to four actionable readout groups: Larder, 
 
 The redundant continental target card was removed from this compact header. The loyalty card shows the integrated-warlord count; the autonomous count remains in its tooltip. The terminal-ready layout therefore exposes at most Global Larder, Network Reach, integrated warlords, and terminal progress.
 
-The 94x86 unification seal is rendered at 0.75 scale at x356,y234. Its effective bounds are x356..426.5 and y234..298.5, leaving a four-pixel gap below the loyalty card and a 5.5-pixel gap above the terminal band. The animation button moved to y346, leaving two pixels below the terminal band and ending at y375.24 inside the 380-pixel window.
+The 94x86 unification seal is rendered at 0.75 scale at x356,y234. Its effective bounds are x356..426.5 and y234..298.5, leaving a four-pixel gap below the loyalty card and a 5.5-pixel gap above the terminal band.
 
 ### Wendigo command
 
 The redundant Winter Victories row was removed from the category header. The terminal band now reports a distinct `Terminal lock engaged` status instead of repeating transformation progress. The existing transformation row and tooltips retain progression and counterplay information.
 
-The 64x64 anchor pulse moved to x310,y248, ending at y312. The terminal band begins at y320 and the animation button begins at y362, leaving clean eight-pixel and two-pixel gaps respectively.
+The 64x64 anchor pulse moved to x310,y248, ending at y312. The terminal band begins at y320, leaving a clean eight-pixel gap.
 
 ## Click regions and interaction density
 
-The five real controls remain inside their parent windows and do not overlap each other or any post-change terminal band:
+The only remaining decision-category control stays inside its parent window and does not overlap the surrounding content:
 
 | Window/control | Effective click bounds |
 | --- | --- |
-| Early animation | x14..119.78, y266..295.24 |
 | Early network ledger | x335..440.78, y266..295.24 |
-| Warlord animation | x14..119.78, y302..331.24 |
-| Revealed animation | x14..119.78, y346..375.24 |
-| Wendigo animation | x14..119.78, y362..391.24 |
 
-No new action, hidden click target, gameplay cost, or AI-only route was added. Animated/static sibling visibility remains mutually exclusive under `cannibalism_gui_animations_disabled`.
+No new action, hidden click target, gameplay cost, or AI-only route was added. The Event 014 motion layers are active by default; their static siblings remain registered asset fallbacks but are hidden in the live scripted GUI.
 
 ## MCP evidence
 
@@ -109,13 +105,16 @@ The four pre-change renders covered `normal`, `hover`, `disabled`, `warning`, `a
 ## Files changed
 
 - `interface/014_cannibalism_frontline_hunger.gui`
+- `common/scripted_guis/014_cannibalism_scripted_gui.txt`
+- `common/scripted_effects/014_cannibalism_effects.txt`
 - `localisation/english/014_cannibalism_l_english.yml`
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/2026-08-20_decision_category_gui_full_audit.md`
 
-The decision categories, scripted GUI effects/triggers, gameplay decisions, AI, costs, events, focus trees, GFX registrations, portraits, and audio were not changed.
+The decision categories, gameplay decisions, AI, costs, events, focus trees, GFX registrations, portraits, and audio were not changed.
 
 ## Simplifications, omissions, and blockers
 
 - The MCP rewrite route was exercised but could not write because its repository-wide safety gate encountered unrelated Event 003/Event 005 collisions and a truncated global graph. The proposal was reviewed and applied manually; selected Event 014 post-inspects and renders then returned `ok`.
 - The complete pre-change matrix covered all four supported resolutions and all requested state families. Full post-change cross-product renders repeatedly exceeded the MCP 180-second call limit, including Warlord 1280x720 and final Revealed hover-only retries. Post-change evidence therefore uses fresh selected-window inspections plus Early 1280x720 and Warlord/Revealed/Wendigo 1920x1080 renders, backed by exact fixed-size source bounds and unchanged button sprites.
+- The 2026-08-22 cosmetic-control removal was followed by fresh `hoi4.gui_inspect` and single-state `hoi4.gui_render` attempts. The MCP server timed out at 180 seconds before returning an artifact for both the Early and Warlord retry. Source inspection confirms the five removed button definitions have no remaining click regions or handlers, but the missing fresh MCP artifact remains an explicit tooling blocker rather than equivalent engine evidence.
 - No gameplay fallback, art fallback, reused interface from another event, or out-of-scope GUI change was made.
