@@ -14,6 +14,8 @@ Preserve the user correction as an invariant: nothing is visible before Event 00
 
 The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger-only `chaosx.nr6.3` cleanup preserve that boundary; the retired crisis helpers remain hard-disabled compatibility surfaces with no pressure category, mission, cost, queue, history row, or early request.
 
+The 2026-08-22 retired-crisis neutralization also replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
+
 The 2026-08-21 parent tranche remains implemented as source evidence: synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors for IW-024/IW-027/IW-028, the documented dormant-shell guard, and 37 byte-preserving supplied portrait installs with 14 intentionally unmapped files.
 
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with the terminal receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and the portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.

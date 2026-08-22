@@ -16,6 +16,8 @@ Preserve the user correction exactly: nothing is visible before Event 006 fires.
 
 The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger-only `chaosx.nr6.3` cleanup must not expose a pre-event pressure category, mission, cost, queue, history row, or request.
 
+The 2026-08-22 retired-crisis neutralization replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
+
 The 2026-08-21 parent tranche supplies synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors, a corrected dormant-shell guard, and 37 byte-preserving supplied portrait installs; 14 supplied portrait files remain intentionally unmapped.
 
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with terminal-receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
