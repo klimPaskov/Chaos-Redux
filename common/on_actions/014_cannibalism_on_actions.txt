@@ -12,6 +12,33 @@
 # ============================================================================
 
 on_actions = {
+	# Pre-register the package through the repo-standard bounded country scope so
+	# the first console setup consumes every Event 014 definition immediately.
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				cannibalism_register_event19_provider = yes
+				cannibalism_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	# The CXT registration bus is tag-scoped and idempotent. This fallback also
+	# picks up the package after a mod update to an existing save.
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				cannibalism_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+
 	on_war_relation_added = {
 		effect = { cannibalism_handle_wendigo_receipt_war_relation_added = yes }
 	}

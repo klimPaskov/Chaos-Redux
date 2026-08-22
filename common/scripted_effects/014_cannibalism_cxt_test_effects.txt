@@ -1,0 +1,55 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CXT TEST REGISTRATION
+# ============================================================================
+# Overview:
+# - Registers one package-owned setup effect with the CXT dynamic harness.
+# - That setup effect registers all Event 014 irregular infantry.
+# - Registers their existing vanilla equipment dependencies for replenishment.
+# - Is idempotent so startup and tag-scoped daily hooks can share one effect.
+# ============================================================================
+
+cannibalism_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event014_cannibalism
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event014_cannibalism_apply = {
+	if = {
+		limit = { NOT = { has_global_flag = cannibalism_cxt_irregular_units_registered } }
+
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_scavenger_warband }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_feast_guard }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_feast_cohort }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_bone_guard }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_bone_riders }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_island_reavers }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_siege_eaters }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_march_predation_column }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:cannibal_network_cadre }
+		chaosx_test_country_register_frontline_subunit = yes
+
+		# Event 014 uses these existing vanilla equipment definitions and does not
+		# add another equipment archetype.
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:infantry_equipment_3 }
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:support_equipment_1 }
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:artillery_equipment_3 }
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:motorized_equipment_1 }
+		chaosx_test_country_register_equipment = yes
+
+		set_global_flag = cannibalism_cxt_irregular_units_registered
+	}
+}

@@ -26,6 +26,8 @@ If CXT has already been initialized in the save, the same command refreshes tech
 
 The static roster is generated from the 88 land sub-units present when the harness baseline was reviewed. Package-owned registrations extend that roster at runtime without regenerating the core helper.
 
+Event 014 registers nine additional frontline tokens at runtime, including `cannibal_bone_riders`; its locked `Scavenged Elephant Column` uses the installed vanilla `elephantry` token and therefore does not add a second elephant sub-unit or model.
+
 The static baseline contains 41 frontline battalions and 47 support companies. Runtime registrations add their own frontline or support definitions to that baseline.
 
 Every sub-unit is explicitly unlocked and receives a dedicated recruitable template with `force_allow_recruiting = yes`.
@@ -34,7 +36,7 @@ Each frontline template contains one instance of its Chaos Redux battalion.
 
 Each support template contains the requested Chaos Redux support company plus a compatible Chaos Redux line anchor, using `autonomous_robot` where the support company excludes infantry groups and `chaos_battalion` otherwise.
 
-Three fully equipped, fully manned, fully experienced divisions are spawned from every template, for 264 static divisions plus three for every registered unit definition.
+Three fully equipped, fully manned, fully experienced divisions are spawned from every template, for 264 static divisions plus three for every registered unit definition. The Event 014 extension therefore contributes 27 runtime frontline divisions when the nine registered tokens are consumed.
 
 ## Technology, projects, and doctrine
 
@@ -58,7 +60,7 @@ Dedicated light, medium, and heavy flame-tank variants are registered so the cus
 
 The tag-specific `on_weekly_CXT` hook replenishes that full stockpile throughout play, including equipment supplied through the opt-in registry.
 
-The tag-specific `on_daily_CXT` hook restores political power, command power, army experience, navy experience, air experience, manpower, nuclear bombs, fuel, stability, and war support. It also runs the registered project, equipment, unit, and general-system synchronizers, so an additive package registration is consumed without a global country iteration. The famine and migration package registers a bounded general-system fixture that gives CXT reception capacity and places its capital at the supply-strain threshold without creating a route, population transfer, severe famine, or mortality transaction.
+The tag-specific `on_daily_CXT` hook restores political power, command power, army experience, navy experience, air experience, manpower, nuclear bombs, fuel, stability, and war support. It also runs the registered project, equipment, unit, and general-system synchronizers, so an additive package registration is consumed without a global country iteration. Event 014 registers all nine custom frontline tokens through one idempotent extension effect on startup and repairs existing saves through the same tag-scoped daily path. The famine and migration package registers a bounded general-system fixture that gives CXT reception capacity and places its capital at the supply-strain threshold without creating a route, population transfer, severe famine, or mortality transaction.
 
 CXT receives 50 research slots even though all current technologies are completed immediately.
 
@@ -104,6 +106,8 @@ Every package calls the same idempotent extension-registration wrapper from an a
 
 The dynamic unit helpers create one recruitable template and three fully equipped divisions for each newly registered token, then record the token in a CXT-local processed array to prevent duplicate spawns. They do not enumerate or infer sub-unit definitions on their own.
 
+Every new land sub-unit also requires an explicit Event 19 disposition in the same owner change. A combat unit either extends an existing Chaos unit-family provider or receives one new owner-side provider registration with the complete thirteen-callback Event 19 API. A support unit is recorded as an inseparable provider attachment, an explicitly parent-owned support consumer, or a rejected standalone lot with the engine reason documented. The owner must update `docs/events/019_infantry_spawn/systems/unit_family_coverage.md` and the reusable contract in `common/scripted_effects/chaosx_dynamic_effects.md`. A future family must not add an Event 19 family list, custom-equipment switch, localisation switch, or second Event 19 registry file.
+
 ## Special facilities
 
 CXT receives one naval, nuclear, air, land, biowarfare, and chemical-warfare facility.
@@ -145,7 +149,7 @@ No additional player-facing idea, decision, focus, or UI icon is required for th
 
 ## Maintenance
 
-When Chaos Redux adds a technology definition, no CXT inventory edit is required because the runtime technology array is scanned. Every package that adds a special project, concrete equipment type, land sub-unit, special facility, doctrine, or general system must add its hidden-idea carrier, idempotent `_apply` setup effect, startup registration, and tag-specific daily repair call in the same change. The explicit 83-project, 71-equipment, and 88-static-sub-unit baselines remain reviewable snapshots; package registrations extend them additively at runtime.
+When Chaos Redux adds a technology definition, no CXT inventory edit is required because the runtime technology array is scanned. Every package that adds a special project, concrete equipment type, land sub-unit, special facility, doctrine, or general system must add its hidden-idea carrier, idempotent `_apply` setup effect, startup registration, and tag-specific daily repair call in the same change. A new land sub-unit must also complete the Event 19 disposition and provider obligations described above. The explicit 83-project, 71-equipment, and 88-static-sub-unit baselines remain reviewable snapshots; package registrations extend them additively at runtime. Event 014's nine-token extension is documented in the unit inventory above and does not alter those static baselines.
 
 The one-time initialization flag is `chaosx_test_country_initialized`.
 
