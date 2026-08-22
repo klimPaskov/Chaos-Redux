@@ -34,6 +34,8 @@ The source handoff is `subagent_handoffs/006_event006_release_scope_fix_2026-08-
 
 Its static allocator audit passed, but the post-change Event MCP refresh timed out and no newer event revision or live terminal outcome is claimed.
 
+The later 2026-08-22 post-transfer capital assignment repair reapplies each selected package's frozen anchor as the released country's capital after ownership and controller transfer and before final package validation. It closes the demonstrated dormant-carrier capital path for AXX, BAX, and BBX in source, while no live terminal receipt is claimed. Its handoff is `subagent_handoffs/006_event6_post_transfer_capital_assignment_2026_08_22.md`.
+
 The 2026-08-22 focus prerequisite repair supersedes the prior two-isolated-node wording.
 
 The latest focus receipt is 184 focuses, 195 connectors, zero crossings, and zero node intersections after restoring the explicit military-archetype prerequisite on `independence_wave_standardize_with_league` and `independence_wave_preserve_independent_command`.
@@ -50,7 +52,7 @@ Its bounded audit and GUI receipts are in `subagent_handoffs/006_event6_decision
 
 The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the remaining package cost-prose, automatic-disclosure, category-density, and typed-probability follow-up.
 
-The 2026-08-22 four-group cost palette tranche is source-applied for the named shared, package, Pacific, Transcaucasus, FORM-03, IW-058, FORM-05, FORM-39, and MNT surfaces in `subagent_handoffs/006_event6_four_group_cost_palette_tranche_2026-08-22.md`; package cost prose, automatic DM-01 disclosure, category density, and complete typed probability evidence remain queued.
+The 2026-08-22 four-group cost palette tranche is source-applied for the named shared, package, Pacific, Transcaucasus, FORM-03, IW-058, FORM-05, FORM-39, and MNT surfaces in `subagent_handoffs/006_event6_four_group_cost_palette_tranche_2026-08-22.md`; DM-01 automatic pre-activation cost disclosure is source-applied in `subagent_handoffs/006_event6_dm01_cost_disclosure_2026_08_22.md`, while package cost prose, category density, complete typed probability evidence, and live tooltip observation remain queued.
 
 Commit `abb0a8c83` closes the Event 005-aware joint-capacity parity gap for the nine admitted packages that were previously absent from that witness: IW-024, IW-027, IW-028, IW-030, IW-031, IW-038, IW-040, IW-044, and IW-045. The current source now has 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 content attestations. This is static source evidence only; ordinary live release and terminal receipts remain unproven.
 
@@ -72,7 +74,7 @@ Super-event 23 remains blocked on the accepted London Brass Players recording be
 
 1. Preserve the 32/29/40/161 boundary and complete package admission only through independent identity, map, rights, roster, force, probability, host, collision, and cleanup evidence.
 2. Obtain the named-scenario probability audit and same-scenario compare across event, decision, mission, focus, host, league, patron, and allocator surfaces before weighted-logic changes.
-3. Reconcile remaining package cost prose and uncosted or automatic surfaces, add DM-01 dynamic pre-activation disclosure, and review high-density decision categories without reintroducing multi-charge cost bundles.
+3. Verify the DM-01 dynamic pre-activation disclosure in the live tooltip, reconcile remaining package cost prose and uncosted surfaces, and review high-density decision categories without reintroducing multi-charge cost bundles.
 4. Re-run focus inspect/render after any parent-owned source change and resolve the remaining authored layout warnings; focus lint/validate routes remain unavailable.
 5. Continue the bounded Statehood Ledger/formable GUI tranche with clean family-isolated layout, hierarchy, resolution, click-region, overflow, rewrite/compare, and runtime evidence.
 6. Keep FORM-06 through FORM-47 fail-closed except explicitly admitted bounded families, keep FORM-42 blocked, and keep FORM-48 unreachable until FSM is independently admitted.
@@ -88,6 +90,8 @@ The latest Event MCP evidence remains partial, and the post-release-scope refres
 The current whole-event receipt is `subagent_handoffs/006_event006_completion_audit_followup_2026-08-22.md`, and the timeout limitation is recorded in `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
 
 The current weighted-logic handoff is `subagent_handoffs/006_event6_probability_audit_2026-08-22.md`; the outer allocator source inspect succeeded, but all named band evaluations timed out and the partial-wave fallback remains an accepted-design decision point rather than a balance closure.
+
+The documentation refresh used the required read-only MCP routes as evidence only. Focus inspect/render succeeded with source-linked artifacts `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/82134a911b47667107aea044403f10988a84cb2750256a9878bdc785efee02bb/d7c47fb733e6ae01ea91be8b32c888ea8f235ad4ffbdc5e9921188f014ff556a/focus-inspect.1b9d867a468a8e6e.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fab904c1192ff8397e2534bcea48635166ca17ad076a405c8167ecc4eee5f79d/66d845c20b28e6a96957b8d19d187d9f53eb5333dffae664610e7425094da81c/independence_wave_focus_tree.focus.svg`; status GUI inspect/render succeeded, formable GUI render succeeded, formable GUI inspect returned `ARTIFACT_STORAGE_LIMIT`, Event inspect returned `INTERNAL_ERROR` after a valid selector, and map inspect timed out after 180 seconds. These results refresh evidence and limitations only, and do not convert partial artifacts into runtime acceptance.
 
 The bounded IW-070/IW-071/IW-072 country-package audit is `subagent_handoffs/006_event6_transcaucasus_package_2026-08-22.md`; it found no safe gameplay patch and keeps ARM, GEO, and AZR at their existing static-admission boundary.
 
