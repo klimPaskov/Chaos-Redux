@@ -97,12 +97,5 @@ The research-complete package resolves all 206 candidates into 102 custom Event 
 
 The earlier `../../plans/006_independence_wave_plans/subagent_handoffs/006_country_tag_registry_handoff.md` is retained as historical reservation evidence only. Its 128-new-tag, 107-shell, and 21-inert ledger is superseded by the canonical candidate registry and the current binding/tag-safety sources above.
 
-This README describes accepted design and research, not the moving implementation
-baseline. Current production, wiring, audit, and blocker status lives in
-`../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. In
-particular, the 24 derivative and slot-24 runtime package are implemented,
-while most country packages, FORM-06 through FORM-48, remaining animation
-families, final catalog alignment, and whole-event validation remain incomplete.
-All sixteen achievement definitions, their localisation pairs, and the 48
-normal/grey/not-eligible icon states are source-present; achievement reachability
-remains partial where its owning country or formable package is not admitted.
+This README describes accepted design and research, not the moving implementation baseline. Current production, wiring, audit, and blocker status lives in `../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. In particular, the 24 derivative and slot-24 runtime package are implemented, while most country packages, FORM-06 through FORM-48, remaining animation families, final catalog alignment, and whole-event validation remain incomplete.
+All sixteen achievement definitions, their localisation pairs, and the 48 normal/grey/not-eligible icon states are source-present; achievement reachability remains partial where its owning country or formable package is not admitted.

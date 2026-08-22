@@ -1,28 +1,8 @@
 # Event 19 Infantry Spawn Planning Package
 
-> **Current-state routing (2026-07-18):** This source specification is paired
-> with the implemented and resolved near-completion addendum at
-> `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`.
-> Older references below to a closure without an addendum or to two pending
-> owner decisions are historical. Exactly two engine-constrained substitutes
-> were approved: exact recorded-formation recreate/prove/delete and controlled
-> one-formation combat trials. The addendum findings were implemented. The 27
-> fixed technical identity slots are 20 claimant army/muster scenes, 6
-> fantastical massed-host scenes, and 1 neutral unassigned muster scene, never
-> an individual focal person. Their stable `GFX_portrait_*` names remain engine
-> and UI terminology, not a description of the depicted content.
+> **Current-state routing (2026-07-18):** This source specification is paired with the implemented and resolved near-completion addendum at `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`. Older references below to a closure without an addendum or to two pending owner decisions are historical. Exactly two engine-constrained substitutes were approved: exact recorded-formation recreate/prove/delete and controlled one-formation combat trials. The addendum findings were implemented. The 27 fixed technical identity slots are 20 claimant army/muster scenes, 6 fantastical massed-host scenes, and 1 neutral unassigned muster scene, never an individual focal person. Their stable `GFX_portrait_*` names remain engine and UI terminology, not a description of the depicted content.
 
-> **Current implementation extension (2026-08-09):** The accepted design remains
-> the source specification, while the implemented provider bridge now covers 18
-> static Event 19 provider IDs (`501-514`, `518`, `520-522`). Event 016 adds the
-> separate Germany/Mengele-gated Aryan clone provider 522 beside providers
-> 504-510; it never aliases provider 504. The shared manifest profiles 130-148
-> carry exact custom equipment obligations, provider 521 remains combat-only on
-> the CBRN side, and provider 513 remains dormant until Event 012 sets its
-> package-ready flag. Event 19 MCP inspection is partial and normalized dynamic
-> provider-pool odds remain unresolved, so the older `Fully Functional` and
-> no-closure language below is historical for the 2026-07-18 tranche and must not
-> be used as current provider-lifecycle proof.
+> **Current implementation extension (2026-08-09):** The accepted design remains the source specification, while the implemented provider bridge now covers 18 static Event 19 provider IDs (`501-514`, `518`, `520-522`). Event 016 adds the separate Germany/Mengele-gated Aryan clone provider 522 beside providers 504-510; it never aliases provider 504. The shared manifest profiles 130-148 carry exact custom equipment obligations, provider 521 remains combat-only on the CBRN side, and provider 513 remains dormant until Event 012 sets its package-ready flag. Event 19 MCP inspection is partial and normalized dynamic provider-pool odds remain unresolved, so the older `Fully Functional` and no-closure language below is historical for the 2026-07-18 tranche and must not be used as current provider-lifecycle proof.
 
 > The provider bridge also exposes a presentation-only `event19_get_management_cost_display` profile-cache callback alongside each provider's ten gameplay callbacks. Ledger-backed zero-debit adapters must identify that boundary in the player-facing tooltip, and the single Event 19 registry rule remains unchanged.
 
