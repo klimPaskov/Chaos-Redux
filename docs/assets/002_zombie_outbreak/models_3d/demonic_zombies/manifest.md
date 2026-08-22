@@ -28,4 +28,4 @@ This package uses one approved portrait-matched reference image and Meshy 7 geom
 
 ## Preservation boundary
 
-The shared base `zombies` unit, `sprite = zombies`, base entity, and all armored zombie variants remain unchanged. Runtime package readiness is proven by source/export/reimport evidence; live HOI4 playback and visual acceptance remain user-owned.
+The base `zombies` unit remains on `sprite = zombies`. The armored undead, necrotic, and demonic variants intentionally reuse their matching specialized parent sprites while retaining `map_icon_category = armored`. Runtime package readiness is proven by source/export/reimport evidence; live HOI4 playback and visual acceptance remain user-owned.
