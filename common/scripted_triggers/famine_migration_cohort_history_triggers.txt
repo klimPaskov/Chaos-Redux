@@ -1,0 +1,68 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION COHORT HISTORY TRIGGERS
+# ============================================================================
+# Read-only alignment predicates for the sparse cohort visit-history ledger.
+# The history arrays and the live cohort arrays are separate contracts so a
+# cleanup can still remove stale history after its live row has gone away.
+# These triggers never scan countries, states, or provinces and never mutate
+# either ledger.
+# ============================================================================
+
+famine_migration_cohort_history_arrays_are_aligned = {
+	has_variable = global.famine_migration_cohort_history_count
+	check_variable = {
+		var = global.famine_migration_cohort_history_ids^num
+		value = global.famine_migration_cohort_history_states^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_history_count
+		value = global.famine_migration_cohort_history_ids^num
+		compare = equals
+	}
+}
+
+famine_migration_cohort_history_live_ledger_arrays_are_aligned = {
+	has_variable = global.famine_migration_cohort_count
+	check_variable = {
+		var = global.famine_migration_cohort_ids^num
+		value = global.famine_migration_cohort_origins^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_ids^num
+		value = global.famine_migration_cohort_hosts^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_ids^num
+		value = global.famine_migration_cohort_destinations^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_ids^num
+		value = global.famine_migration_cohort_owners^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_ids^num
+		value = global.famine_migration_cohort_amounts^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_ids^num
+		value = global.famine_migration_cohort_sources^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_ids^num
+		value = global.famine_migration_cohort_statuses^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.famine_migration_cohort_count
+		value = global.famine_migration_cohort_ids^num
+		compare = equals
+	}
+	famine_migration_cohort_history_arrays_are_aligned = yes
+}
