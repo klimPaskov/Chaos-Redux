@@ -34,7 +34,7 @@ The required offline Paradox wiki core pages and the relevant national-focus, ev
 
 The relevant vanilla documentation under `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\` was consulted, including script concepts/constants, triggers, effects, modifiers, dynamic variables, event, decision, focus, AI, and localisation documentation.
 
-The skill-referenced `common\mtth\chaosx_mtth_variables.md` is absent; the repository contains `common\mtth\chaosx_mtth_variables.txt` instead. This documentation-path mismatch is recorded as a blocker, not silently substituted.
+Parent review confirmed that the current `chaos-redux-mtth` skill references the existing `common\mtth\chaosx_mtth_variables.txt` file. The earlier `.md` path observation was stale and is not a blocker.
 
 ## MCP audit matrix
 
