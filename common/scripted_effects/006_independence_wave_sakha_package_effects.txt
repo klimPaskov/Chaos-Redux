@@ -4,8 +4,9 @@
 # Vanilla YAK/state-574 carrier adapter. The package models an arctic
 # council balancing Lena communities and river-guard security. It never
 # creates a leader or mutates the global vanilla portrait token. The exact
-# vanilla YAK roster is checkpointed locally only after identity clearance,
-# and never writes a portrait override.
+# vanilla YAK roster is checkpointed locally only after identity clearance;
+# its source-backed Pavel character receives a guarded character-scoped
+# portrait override, restored by cleanup.
 # Central attestation and deterministic Join are parent-owned gates and now
 # route through the central admission contract after the package audit.
 # ============================================================================
@@ -334,13 +335,45 @@ independence_wave_yak_checkpoint_vanilla_roster = {
 	}
 }
 
+independence_wave_yak_apply_source_portrait = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_yak_roster_checkpoint
+			has_character = YAK_pavel_pevznyak
+			NOT = { has_country_flag = independence_wave_yak_portrait_override }
+		}
+		set_portraits = {
+			character = YAK_pavel_pevznyak
+			civilian = {
+				large = GFX_portrait_YAK_independence_wave_pavel_pevznyak
+			}
+		}
+		set_country_flag = independence_wave_yak_portrait_override
+	}
+}
+
 # Setup, final-validation, dispatch, and cleanup. The setup is strict and never
-# mutates vanilla YAK history, flag, state, leader, or portrait definitions.
+# mutates vanilla YAK history, flag, state, leader, or static portrait
+# definitions; the runtime character-scoped override is guarded by the
+# package-local roster checkpoint.
 independence_wave_setup_iw_051_sakha = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_yak_portrait_override
+			has_character = YAK_pavel_pevznyak
+		}
+		set_portraits = {
+			character = YAK_pavel_pevznyak
+			civilian = {
+				large = GFX_portrait_Pavel_Pevznyak
+			}
+		}
+	}
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_051_setup_complete
 	clr_country_flag = independence_wave_command_roster_ready
 	clr_country_flag = independence_wave_yak_roster_checkpoint
+	clr_country_flag = independence_wave_yak_portrait_override
 	clr_country_flag = independence_wave_yak_project_failure_applied
 	clr_country_flag = independence_wave_yak_compact_crisis_resolved
 	clr_country_flag = independence_wave_yak_compact_crisis_failed
@@ -363,6 +396,7 @@ independence_wave_setup_iw_051_sakha = {
 	if = {
 		limit = { can_initialize_independence_wave_iw_051_package = yes }
 		independence_wave_yak_checkpoint_vanilla_roster = yes
+		independence_wave_yak_apply_source_portrait = yes
 		independence_wave_ensure_yak_baseline_laws = yes
 		independence_wave_initialize_yak_politics = yes
 		if = { limit = { has_country_flag = independence_wave_yak_roster_checkpoint } set_country_flag = independence_wave_command_roster_ready }
@@ -434,6 +468,19 @@ independence_wave_cleanup_iw_051_sakha = {
 		remove_decision = independence_wave_yak_codify_durable_sovereignty
 		remove_decision = independence_wave_yak_open_lena_network_corridor
 		independence_wave_remove_yak_package_ideas = yes
+		if = {
+			limit = {
+				has_country_flag = independence_wave_yak_portrait_override
+				has_character = YAK_pavel_pevznyak
+			}
+			set_portraits = {
+				character = YAK_pavel_pevznyak
+				civilian = {
+					large = GFX_portrait_Pavel_Pevznyak
+				}
+			}
+			clr_country_flag = independence_wave_yak_portrait_override
+		}
 		drop_cosmetic_tag = yes
 		set_politics = { ruling_party = democratic elections_allowed = yes }
 		set_popularities = { democratic = 60 communism = 20 neutrality = 20 fascism = 0 }
