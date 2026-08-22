@@ -1274,14 +1274,6 @@ liberations_joint_prepare_and_execute_incident = {
 				has_global_flag = soviet_collapse_joint_plan_contribution_ready
 				has_global_flag = independence_wave_plan_contribution_ready
 			}
-			# The Event 006 allocator may commit a smaller source-complete subset when
-			# its nominal pool is exhausted. Reconcile the shared contract to the
-			# actual contribution from both planners before optional expansion and
-			# locking, otherwise a joint partial plan retains the nominal Event 006
-			# count and fails the shared array-length validation.
-			set_temp_variable = { liberations_joint_expected_country_count = global.soviet_collapse_joint_plan_selected_count }
-			add_to_temp_variable = { liberations_joint_expected_country_count = global.independence_wave_plan_selected_count }
-			set_variable = { global.liberation_plan_expected_country_count = liberations_joint_expected_country_count }
 			SOV = { soviet_collapse_joint_expand_selected_compact_territory = yes }
 		}
 		if = {

@@ -121,30 +121,6 @@ independence_wave_allocate_automatic_packages = {
 				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
 			}
 		}
-		else_if = {
-			# A source-complete package set can be smaller than the nominal wave
-			# band while the rest of the package families are still being built.
-			# Commit the valid candidates that were actually selected instead of
-			# suppressing the entire incident after the pool is exhausted.
-			limit = {
-				has_global_flag = independence_wave_plan_pool_exhausted
-				check_variable = {
-					var = global.independence_wave_plan_selected_count
-					value = constant:independence_wave_planner.no_candidates
-					compare = greater_than
-				}
-			}
-			set_variable = { global.independence_wave_plan_target_count = global.independence_wave_plan_selected_count }
-			set_variable = { global.liberation_plan_expected_country_count = global.independence_wave_plan_selected_count }
-			if = {
-				limit = { independence_wave_plan_metadata_arrays_are_aligned = yes }
-				set_global_flag = independence_wave_plan_contribution_ready
-			}
-			else = {
-				set_global_flag = independence_wave_plan_exact_count_failed
-				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
-			}
-		}
 		else = {
 			set_global_flag = independence_wave_plan_exact_count_failed
 			set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.insufficient_pool }
