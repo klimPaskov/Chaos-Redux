@@ -1,0 +1,226 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION OUTBOUND OWNER ADAPTERS
+# ============================================================================
+# Country-scoped evidence transactions into Condemnation. The shared famine
+# system supplies the proven act; Condemnation owns visibility, aggregation,
+# sanctions, and diplomatic consequences.
+# ============================================================================
+
+# STATE scope. Owner systems may use this only for newly proven direct deaths
+# that they do not already debit. Route deaths remain inside the exact transfer
+# ledger and famine mortality remains inside the food evaluator.
+famine_migration_apply_related_state_deaths_exact = {
+	set_temp_variable = { famine_migration_related_deaths_applied = constant:famine_migration_population.zero }
+	if = {
+		limit = {
+			famine_migration_state_is_valid = yes
+			check_variable = { famine_migration_related_deaths_request_proven > constant:famine_migration_runtime.zero }
+			check_variable = { famine_migration_related_deaths_requested > constant:famine_migration_population.zero }
+			OR = {
+				check_variable = { famine_migration_related_deaths_reason = constant:chaos_meter_deaths_reason.occupation_repression }
+				check_variable = { famine_migration_related_deaths_reason = constant:chaos_meter_deaths_reason.forced_labor }
+				check_variable = { famine_migration_related_deaths_reason = constant:chaos_meter_deaths_reason.forced_displacement }
+			}
+		}
+		set_temp_variable = { state_civilian_population_loss_requested = famine_migration_related_deaths_requested }
+		set_temp_variable = { state_civilian_population_loss_reason = famine_migration_related_deaths_reason }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:chaos_meter_deaths.one }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.one }
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
+		if = {
+			limit = { check_variable = { famine_migration_related_deaths_minimum_remaining > constant:famine_migration_population.zero } }
+			set_temp_variable = { state_civilian_population_loss_minimum_remaining = famine_migration_related_deaths_minimum_remaining }
+		}
+		apply_exact_state_civilian_population_loss = yes
+		set_temp_variable = { famine_migration_related_deaths_applied = state_civilian_population_loss_applied }
+	}
+	set_temp_variable = { famine_migration_related_deaths_request_proven = constant:famine_migration_runtime.zero }
+	set_temp_variable = { famine_migration_related_deaths_requested = constant:famine_migration_population.zero }
+	set_temp_variable = { famine_migration_related_deaths_minimum_remaining = constant:famine_migration_population.zero }
+	set_temp_variable = { famine_migration_related_deaths_reason = constant:chaos_meter_deaths_reason.unknown }
+}
+
+famine_migration_apply_occupation_repression_deaths_exact = {
+	set_temp_variable = { famine_migration_related_deaths_reason = constant:chaos_meter_deaths_reason.occupation_repression }
+	famine_migration_apply_related_state_deaths_exact = yes
+}
+
+famine_migration_apply_forced_labor_deaths_exact = {
+	set_temp_variable = { famine_migration_related_deaths_reason = constant:chaos_meter_deaths_reason.forced_labor }
+	famine_migration_apply_related_state_deaths_exact = yes
+}
+
+# This direct-death adapter excludes movement debits. Exact transfer route
+# deaths are already recorded by famine_migration_transfer_civilians_exact.
+famine_migration_apply_forced_displacement_deaths_exact = {
+	set_temp_variable = { famine_migration_related_deaths_reason = constant:chaos_meter_deaths_reason.forced_displacement }
+	famine_migration_apply_related_state_deaths_exact = yes
+}
+
+# STATE scope. Air Cleanliness owns the direct civilian loss. This adapter
+# registers only the already-applied amount as shared food pressure and never
+# applies a second population loss.
+famine_migration_adapt_air_winter_state = {
+	if = {
+		limit = {
+			famine_migration_state_is_valid = yes
+			check_variable = { state_civilian_population_loss_applied > constant:famine_migration_population.zero }
+		}
+		set_temp_variable = { famine_migration_pressure_request_proven = constant:famine_migration_runtime.one }
+		set_temp_variable = { famine_migration_pressure_request_amount = state_civilian_population_loss_applied }
+		set_temp_variable = { famine_migration_pressure_request_actor_proven = constant:famine_migration_runtime.one }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+			famine_migration_request_fallout_pressure = yes
+		}
+		else = {
+			famine_migration_request_air_cleanliness_pressure = yes
+		}
+	}
+}
+
+# STATE scope. Camp and genocide owners have already applied the exact Deaths
+# amount and credited the responsible country before this adapter runs.
+famine_migration_adapt_camp_state = {
+	if = {
+		limit = {
+			famine_migration_state_is_valid = yes
+			has_variable = camp_site_last_month_deaths
+			check_variable = { camp_site_last_month_deaths > constant:famine_migration_population.zero }
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		set_temp_variable = { famine_migration_pressure_request_proven = constant:famine_migration_runtime.one }
+		set_temp_variable = { famine_migration_pressure_request_amount = camp_site_last_month_deaths }
+		set_temp_variable = { famine_migration_pressure_request_actor_proven = constant:famine_migration_runtime.one }
+		if = {
+			limit = { has_variable = camp_state_site_type }
+			if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag } }
+				famine_migration_request_gulag_pressure = yes
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor } }
+				famine_migration_request_forced_labor_pressure = yes
+			}
+			else = {
+				famine_migration_request_camp_pressure = yes
+			}
+		}
+		else = {
+			famine_migration_request_camp_pressure = yes
+		}
+	}
+}
+
+# STATE scope. A resolved CBRN operation exposes the exact actor, target state,
+# route, and applied civilian deaths. Shared pressure is delayed consequence;
+# no second Deaths debit is made here.
+famine_migration_adapt_chemical_state = {
+	if = {
+		limit = {
+			famine_migration_state_is_valid = yes
+			has_variable = cbrn_occupation_last_civilian_deaths
+			check_variable = { cbrn_occupation_last_civilian_deaths > constant:famine_migration_population.zero }
+			has_variable = cbrn_occupation_responsible_country
+			var:cbrn_occupation_responsible_country = { exists = yes }
+		}
+		set_temp_variable = { famine_migration_pressure_request_proven = constant:famine_migration_runtime.one }
+		set_temp_variable = { famine_migration_pressure_request_amount = cbrn_occupation_last_civilian_deaths }
+		set_temp_variable = { famine_migration_pressure_request_actor_proven = constant:famine_migration_runtime.one }
+		famine_migration_request_chemical_aftermath_pressure = yes
+	}
+}
+
+# STATE scope. Black Plague owns the resolved outbreak and exact population
+# loss. Rat-controlled/nonhuman states are rejected by the shared state
+# classifier and therefore never enter this adapter.
+famine_migration_adapt_black_plague_state = {
+	if = {
+		limit = {
+			famine_migration_state_is_valid = yes
+			black_plague_state_is_established = yes
+			check_variable = { state_civilian_population_loss_applied > constant:famine_migration_population.zero }
+			OR = {
+				NOT = { has_variable = black_plague_provenance }
+				NOT = { check_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation } }
+			}
+		}
+		set_temp_variable = { famine_migration_pressure_request_proven = constant:famine_migration_runtime.one }
+		set_temp_variable = { famine_migration_pressure_request_amount = state_civilian_population_loss_applied }
+		set_temp_variable = { famine_migration_pressure_request_actor_proven = constant:famine_migration_runtime.one }
+		famine_migration_request_outbreak_pressure = yes
+	}
+}
+
+# STATE scope. Event 013 owns the resolved disaster and exact civilian loss;
+# this call registers the same applied amount as food pressure only.
+famine_migration_adapt_natural_disaster_state = {
+	if = {
+		limit = {
+			famine_migration_state_is_valid = yes
+			has_variable = natural_disaster_last_deaths
+			check_variable = { natural_disaster_last_deaths > constant:famine_migration_population.zero }
+		}
+		set_temp_variable = { famine_migration_pressure_request_proven = constant:famine_migration_runtime.one }
+		set_temp_variable = { famine_migration_pressure_request_amount = natural_disaster_last_deaths }
+		set_temp_variable = { famine_migration_pressure_request_actor_proven = constant:famine_migration_runtime.one }
+		famine_migration_request_disaster_pressure = yes
+	}
+}
+
+famine_migration_condemn_deliberate_starvation = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { condemnation_base_gain = constant:famine_migration_condemnation_gain.deliberate_starvation }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.deliberate_starvation }
+	condemnation_add_source = yes
+}
+
+famine_migration_condemn_relief_obstruction = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { condemnation_base_gain = constant:famine_migration_condemnation_gain.relief_obstruction }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.relief_obstruction }
+	condemnation_add_source = yes
+}
+
+famine_migration_condemn_deportation = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { condemnation_base_gain = constant:famine_migration_condemnation_gain.deportation }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.deportation }
+	condemnation_add_source = yes
+}
+
+famine_migration_condemn_forced_return = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { condemnation_base_gain = constant:famine_migration_condemnation_gain.forced_return }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.forced_return }
+	condemnation_add_source = yes
+}
+
+famine_migration_condemn_violent_pushback = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { condemnation_base_gain = constant:famine_migration_condemnation_gain.violent_pushback }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.violent_pushback }
+	condemnation_add_source = yes
+}
+
+famine_migration_condemn_concealment = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+	set_temp_variable = { condemnation_base_gain = constant:famine_migration_condemnation_gain.concealment }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.concealment_operation }
+	condemnation_add_source = yes
+	set_country_flag = famine_migration_achievement_blockade_concealed_mortality
+}
