@@ -16,14 +16,14 @@ No Git commit was created because the parent explicitly requested no commit.
 | --- | --- | --- |
 | Rat country identity | `docs/specs/020_black_plague_specs/corrections/2026-07-29_two_rat_tags.md` and `docs/specs/020_black_plague_specs/README.md` | Accepted source. Exactly two tags are allowed: reusable `RTA` carrier and separate `RTX` Rat King. Additional broods are internal RTA state markers, basin variables, strength pools, and army allocations. |
 | Triggerable scenario contract | `docs/specs/020_black_plague_specs/specs/020_black_plague_spec_part_9_triggerable_scenario.md` and `docs/specs/020_black_plague_specs/matrices/triggerable_scenario_matrix.md` | Accepted source. `SCN-012` directly seeds the disease, forces Evolutions I through IV, creates or reuses RTA internal broods, creates or preserves RTX, and never scales country-tag count. |
-| Current scenario-system summary | `docs/systems/triggerable_scenarios.md` | Updated to describe the reusable RTA carrier, internal brood markers, and separate RTX. |
+| Current scenario-system summary | `docs/systems/event_system/triggerable_scenarios.md` | Updated to describe the reusable RTA carrier, internal brood markers, and separate RTX. |
 | Event and cluster IDs | `common/script_constants/020_black_plague_constants.txt`, `common/script_constants/event_cluster_constants.txt`, and `docs/specs/020_black_plague_specs/matrices/event_chain_map.md` | Static evidence resolves the Diseases cluster to `8`, the scenario to `SCN-012`, and the launch report to `chaosx.nr20.90`. The matrix no longer instructs implementers to allocate new IDs. |
 | Catalog wording contract | `docs/specs/020_black_plague_specs/matrices/catalog_update_draft.md` | Updated from proposed rows to live Event 20, Diseases cluster `8`, and SCN-012 wording with user-owned `Needs Testing` status. |
 | Runtime-facing event overview | `docs/events/020_black_plague/overview.md` | Left unchanged in this pass because it already records cluster `8`, SCN-012, and the RTA/RTX two-tag contract. Parent worktree edits were preserved. |
 
 ## Files changed
 
-- `docs/systems/triggerable_scenarios.md`
+- `docs/systems/event_system/triggerable_scenarios.md`
 - `docs/specs/020_black_plague_specs/matrices/catalog_update_draft.md`
 - `docs/specs/020_black_plague_specs/matrices/country_package_matrix.md`
 - `docs/specs/020_black_plague_specs/matrices/event_chain_map.md`
@@ -53,7 +53,7 @@ No Git commit was created because the parent explicitly requested no commit.
 
 ## Contradictions resolved
 
-- `docs/systems/triggerable_scenarios.md` no longer says SCN-012 creates independent Rat Nation countries. It now describes one reusable RTA carrier with internal brood markers plus RTX.
+- `docs/systems/event_system/triggerable_scenarios.md` no longer says SCN-012 creates independent Rat Nation countries. It now describes one reusable RTA carrier with internal brood markers plus RTX.
 - `country_package_matrix.md` and `implementation_acceptance_checklist.md` no longer define a finite multi-tag pool or several independent Rat Nation tags. They require exactly RTA and RTX.
 - `event_chain_map.md` no longer describes `.40` and `.41` as allocating a new rat tag, and its namespace preamble no longer tells implementers to assign unresolved event IDs.
 - `evolution_matrix.md` now names the RTA carrier and internal brood markers for Evolution III and the RTX tag for Evolution IV.
@@ -96,7 +96,7 @@ No Git commit was created because the parent explicitly requested no commit.
 ## Validation performed
 
 - Read-only searches confirmed current Event 020 docs now reference `RTA`, `RTX`, cluster `8`, and `SCN-012` in the reconciled surfaces.
-- Targeted searches confirmed `docs/systems/triggerable_scenarios.md` no longer contains the stale SCN-012 phrase `creates independent Rat Nations`.
+- Targeted searches confirmed `docs/systems/event_system/triggerable_scenarios.md` no longer contains the stale SCN-012 phrase `creates independent Rat Nations`.
 - Targeted searches confirmed the current matrices no longer contain `finite tag pool`, `finite dormant pool`, `new rat tag`, or `planning allocations` in their active contract lines.
 - Targeted searches verified the historical source ledger, review, and 2024 handoffs carry explicit historical or superseded labels where old claims remain.
 - `git diff --stat` was reviewed for only the documentation surfaces listed above. No gameplay, asset, model, spreadsheet, or CSV path was touched by this pass.

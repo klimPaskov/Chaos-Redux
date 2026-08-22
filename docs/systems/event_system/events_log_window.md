@@ -55,7 +55,7 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - The scenario checkbox writes only to `global.disabled_world_end_scenarios`. It does not change `global.disabled_events`, evolution state, or sibling scenario state.
 - A disabled entry is excluded at its natural automatic terminal readiness gate. Existing Chaos, world-state, route, and super-event conditions remain authoritative.
 - A registered hidden terminal identity still enters the view arrays and receives a row and control; its hidden visibility class remains metadata and does not reveal unrelated unregistered routes.
-- Full registry, wiring, text, and asset ownership is documented in `docs/systems/events_log_world_end_scenarios.md`.
+- Full registry, wiring, text, and asset ownership is documented in `docs/systems/event_system/events_log_world_end_scenarios.md`.
 
 ## Evolutions tab behavior
 - Logs registered evolution entries, including all three Event 17 stages after they actually unlock.

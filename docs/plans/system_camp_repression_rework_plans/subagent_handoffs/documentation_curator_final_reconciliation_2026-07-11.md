@@ -23,7 +23,7 @@ Mode: documentation patch only. This pass did not edit gameplay script, localisa
 - `docs/plans/system_camp_repression_rework_plans/core_script_architecture_handoff.md`
 - `docs/plans/system_camp_repression_rework_plans/system_camp_repression_rework_improvement_addendum.md`
 - `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/documentation_curator_reconciliation_2026-07-11.md`
-- `docs/systems/genocide_crisis_system.md`
+- `docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md`
 - this handoff.
 
 ## Promoted current implementation facts

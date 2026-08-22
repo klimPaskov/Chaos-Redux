@@ -39,7 +39,7 @@ The design keeps the event repeatable, prevents free equipment farming, separate
 - `docs/events/019_infantry_spawn/systems/triggerable_scenario.md` owns the direct
   scenario contract. The live identity is `SCN-013`; proposed `SCN-008`
   collided with Independence Wave.
-- `docs/systems/chaos_unit_family_registry.md` owns registry contract version 4.
+- `docs/systems/cbrn_warfare/chaos_unit_family_registry.md` owns registry contract version 4.
   Event 19 has exactly one dedicated registry code file:
   `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`.
 - `common/scripted_triggers/chaosx_dynamic_triggers.md` owns the shared special

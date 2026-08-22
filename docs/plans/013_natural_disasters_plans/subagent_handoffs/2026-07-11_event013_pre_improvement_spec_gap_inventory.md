@@ -273,7 +273,7 @@ Introduce meteor-origin context. Allow fire-bearing hail as a linked ordinary se
 
 - `docs/events/013_natural_disasters/overview.md:109` says warning costs include war support as appropriate; the 75-warning block has no war-support cost.
 - `docs/events/013_natural_disasters/overview.md:130` says the selected GUI card shows sequence id; the selected-card localisation does not display it, and the GUI has no sequence-id text field.
-- `docs/events/013_natural_disasters/overview.md:175` and `docs/systems/event_clusters.md:80-84` describe five distinct logical cluster season roles that are not carried through dispatch.
+- `docs/events/013_natural_disasters/overview.md:175` and `docs/systems/event_system/event_clusters.md:80-84` describe five distinct logical cluster season roles that are not carried through dispatch.
 - `localisation/english/013_natural_disasters_l_english.yml:343`, `:370`, and workbook Evolution III prose call the urgency list a path/expected next-hit order, while `:397-403` accurately identifies it as hazard priority.
 - Read-only workbook inspection found `Events!G14 = Needs Testing` and `Scenarios!G8 = Needs Testing`, but `Clusters!G6 = Implemented`. The improvement handoff explicitly says Cluster 5 must remain incomplete until the scenario matrix passes: `docs/plans/013_natural_disasters_plans/013_improvement_loop_handoff.md:115-119`.
 - `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md:60` and `013_event_completion_final_audit.md:13` correctly acknowledge that no live-engine scenarios were executed, but both documents also claim no accepted-surface simplification remains. The P0/P1 findings above contradict that closure wording.

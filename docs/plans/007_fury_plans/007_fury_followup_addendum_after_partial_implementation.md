@@ -391,7 +391,7 @@ The main agent should expect to touch these surfaces if this addendum is accepte
 - `docs/assets/007_fury/manifest.md`
 - `docs/assets/007_fury/gfx_handoff.md`
 - `docs/super_events/` or equivalent Fury super-event research note
-- `docs/systems/triggerable_scenarios.md` if scenario achievement/launch semantics change
+- `docs/systems/event_system/triggerable_scenarios.md` if scenario achievement/launch semantics change
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` after final implementation
 
 Do not add a whole-world `on_weekly`, `on_daily`, or `on_monthly` scan for these systems. Fury already has a self-scheduled actor loop; keep actor updates scoped to active Fury actors and explicit scenario/world-end setup effects.

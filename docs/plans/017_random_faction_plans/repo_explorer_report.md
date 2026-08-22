@@ -197,7 +197,7 @@ Event 017 should follow that full pattern. Adding only the main evolution names 
 | `common/script_constants/event_cluster_constants.txt` | add the Event 017 participation constant if the optional-member route is selected |
 | `common/scripted_effects/chaosx_event_cluster_effects.txt`, `event_belongs_to_cluster` | map Event 017 to Diplomatic Panic |
 | `common/scripted_effects/chaosx_event_cluster_effects.txt`, `load_event_cluster_members` | append an aligned Event 017 row to the Diplomatic Panic member arrays |
-| `docs/systems/event_clusters.md` | list Event 017 and describe its diplomatic pressure role |
+| `docs/systems/event_system/event_clusters.md` | list Event 017 and describe its diplomatic pressure role |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, `Clusters` | change the Diplomatic Panic member cell from `8` to the established multi-member string `8, 17` |
 
 The specification requires a low-severity diplomacy member. It leaves required versus optional to the cluster design. The removed implementation used an optional low-severity tier-zero row and `event_cluster_member_participation.random_faction = 65`. That `65` is historical tuning, not a value mandated by the specification. If retained, it should be reviewed against Event 008 cadence and documented as the chosen value.
@@ -246,7 +246,7 @@ No duplicate art production is needed unless an asset review finds a concrete de
 | Path | Required final state |
 | --- | --- |
 | `docs/events/017_random_faction/overview.md` | full current mechanic, flow, eligibility, memory, decisions, evolutions, logs, cluster, achievements, assets, cleanup, tuning, future plans |
-| `docs/systems/event_clusters.md` | Event 017 membership and role |
+| `docs/systems/event_system/event_clusters.md` | Event 017 membership and role |
 | `docs/assets/017_random_faction/manifest.md` | exact final sprite and runtime wiring state |
 | `docs/assets/017_random_faction/gfx_handoff.md` | no stale registration claims |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, `Events!18` | final name, detail text, Evo I to III, type, cluster id, severity, and status |

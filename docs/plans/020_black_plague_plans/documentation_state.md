@@ -25,7 +25,7 @@ This ledger is the current documentation source map for Event 020 after the shar
 | Runtime summary | `docs/events/020_black_plague/overview.md` | Updated to 52/71 and the shared model/entity runtime handoff; live validation remains open. |
 | Asset requirements | `docs/specs/020_black_plague_specs/matrices/asset_inventory.md` | Updated with the shared model package, six subunit consumers, five locked templates, and review-gated status. |
 | Focus layout | `docs/plans/020_black_plague_plans/2026-08-05_focus_gui_mcp_layout_audit.md` | Current layout evidence; this pass does not modify its bounded GUI or focus geometry. |
-| Rat route behavior | `docs/events/020_black_plague/rat_route_depth.md` and `docs/systems/black_plague_rat_route_modules.md` | Updated to consume the shared model package without adding route-specific models. |
+| Rat route behavior | `docs/events/020_black_plague/rat_route_depth.md` and `docs/events/020_black_plague/rat_route_modules.md` | Updated to consume the shared model package without adding route-specific models. |
 | Rat King route | `docs/events/020_black_plague/rat_king_depth.md` | Updated to reuse the shared model package and preserve the no-separate-King-model boundary. |
 | Model production | `docs/plans/020_black_plague_plans/subagent_handoffs/2026-08-05_event020_rat_shared_3d_model_handoff.md` and `docs/plans/020_black_plague_plans/rat_ground_unit_shared_3d_model_brief.md` | Promoted worker/runtime evidence; parent-owned sound, counter, and live validation remain open. |
 | Scenario behavior | `docs/plans/020_black_plague_plans/2026-08-02_event20_scenario_content_handoff.md` and Part 9 | Accepted two-tag/idempotent contract; no rollback completion claim. |

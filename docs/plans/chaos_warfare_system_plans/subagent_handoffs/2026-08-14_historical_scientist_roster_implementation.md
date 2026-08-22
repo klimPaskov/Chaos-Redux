@@ -19,7 +19,7 @@ All 67 characters are recruited once by their country-scoped startup grant.
 
 ## Profile calibration
 
-The complete 67-row specialization, skill, and trait matrix is documented in `docs/systems/cbrn_historical_scientists.md`.
+The complete 67-row specialization, skill, and trait matrix is documented in `docs/systems/cbrn_warfare/cbrn_historical_scientists.md`.
 
 Ratings use file-scoped constants for skill 1 through 4, with no skill-5 profiles.
 

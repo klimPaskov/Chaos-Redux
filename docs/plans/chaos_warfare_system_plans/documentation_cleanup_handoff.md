@@ -91,9 +91,9 @@ Patching is allowed for the five named surfaces and was applied there. No deleti
 
 ## Queued broader cleanup order outside this pass
 
-1. Reconcile `docs/systems/cbrn_chemical_delivery.md` with the canonical chemical-state ledger, targeted continuing-death events, the doomsday batch adapter, and the current route list.
-2. Reconcile `docs/chemical_warfare/chemical_warfare_documentation.md` with the current doomsday Condemnation tuning and the inactive legacy support/cylinder paths.
-3. Reconcile `docs/systems/cbrn_designers.md` with the current selected-state raid gate, the grant-only aircraft module boundary, and the explicit Hardened Mobile Plant engine limitation.
+1. Reconcile `docs/systems/cbrn_warfare/cbrn_chemical_delivery.md` with the canonical chemical-state ledger, targeted continuing-death events, the doomsday batch adapter, and the current route list.
+2. Reconcile `docs/systems/cbrn_warfare/chemical_warfare/chemical_warfare_documentation.md` with the current doomsday Condemnation tuning and the inactive legacy support/cylinder paths.
+3. Reconcile `docs/systems/cbrn_warfare/cbrn_designers.md` with the current selected-state raid gate, the grant-only aircraft module boundary, and the explicit Hardened Mobile Plant engine limitation.
 4. Check the biological lifecycle, countermeasure, Japan campaign, and biological sabotage documentation against the four-agent potency hierarchy and the agent-neutral native raid success factors.
 5. Check every specialist prompt and implementation-stage report for wording that implies an estimator, a broad periodic pulse, an unapproved fallback, or doctrine control over camp creation or responsibility.
 6. Update the completion audit checklist and requirement traceability ledger only after each item has evidence in source files or an explicitly recorded engine limitation.

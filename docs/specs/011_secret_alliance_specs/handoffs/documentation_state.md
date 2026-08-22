@@ -18,7 +18,7 @@
 | Asset and animation evidence | `docs/assets/011_secret_alliance/asset_register.md`, `manifest.md`, `manifest_icons_ui_animation.md`, and `notes/validation.md` |
 | Audio rights and conversion | `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md` and `docs/super_events/super_event_audio_packages.md` |
 | Achievements | `docs/achievements/011_secret_alliance/achievements.md` and live definitions |
-| Scenario | `docs/systems/triggerable_scenarios.md`, spec part 4, and live SCN-009 registration |
+| Scenario | `docs/systems/event_system/triggerable_scenarios.md`, spec part 4, and live SCN-009 registration |
 | Workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and `handoffs/spreadsheet_handoff.md` |
 
 ## Historical design disposition

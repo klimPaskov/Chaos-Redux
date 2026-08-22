@@ -173,7 +173,7 @@ At minimum, update:
 - Any event-system docs under `docs/systems/` that describe major event weight gain.
 - Any settings docs that describe the `Major Event Weight` numeric input.
 - Any event log, status tab, or debug docs that show major gain as a fixed value.
-- `docs/systems/event_clusters.md` or equivalent cluster docs if they mention that clusters affect major weights.
+- `docs/systems/event_system/event_clusters.md` or equivalent cluster docs if they mention that clusters affect major weights.
 - `common/scripted_effects/chaosx_dynamic_effects.md` if new dynamic helper effects are added there.
 
 The docs should explain that 150 is the baseline gain at the baseline pool ratio, not an always-fixed gain.

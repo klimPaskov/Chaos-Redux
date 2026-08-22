@@ -70,7 +70,7 @@ Evidence:
 - `common/scripted_effects/cbrn_consequence_effects.txt`
 - `common/scripted_effects/cbrn_chemical_state_effects.txt`
 - `common/scripted_effects/cbrn_action_record_effects.txt`
-- `docs/systems/cbrn_chemical_delivery.md`
+- `docs/systems/cbrn_warfare/cbrn_chemical_delivery.md`
 - `docs/plans/chaos_warfare_system_plans/2026-07-29_stage_14_package_scenario_evidence.md`
 
 The source scenario evidence confirms that failed raids cannot create contamination or confirmed-use history, successful raids preserve the selected state, continuing deaths have one state-owned stream, and doctrine cannot bypass evidence or public-harm floors.
@@ -113,8 +113,8 @@ Evidence:
 - `common/decisions/condemnation_sanctions_decisions.txt`
 - `common/scripted_effects/condemnation_sanctions_effects.txt`
 - `common/decisions/cbrn_diplomacy_decisions.txt`
-- `docs/systems/condemnation_sanctions.md`
-- `docs/systems/cbrn_diplomacy_actions.md`
+- `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`
+- `docs/systems/cbrn_warfare/cbrn_diplomacy_actions.md`
 
 The occupation package has authorization, exact-state preparation, delayed trauma, discovery, protective aid, records, and cleanup architecture in `common/decisions/cbrn_occupation_decisions.txt`, `common/scripted_effects/cbrn_occupation_effects.txt`, and `common/scripted_triggers/cbrn_occupation_triggers.txt`. Doctrine does not create, unlock, select, authorize, or conceal camp infrastructure.
 
@@ -130,7 +130,7 @@ AI receives no free stock, readiness, policy, target, condition receipt, protect
 
 ### Player feedback, assets, achievements, and adjacent routes
 
-Stage 11 accepts either a dedicated management window or a staged native decision-category presentation. The implemented native presentation and category ownership are documented in `docs/systems/cbrn_operations_surface.md` and accepted by `docs/specs/chaos_warfare_system_specs/handoffs/staged_implementation_plan.md`.
+Stage 11 accepts either a dedicated management window or a staged native decision-category presentation. The implemented native presentation and category ownership are documented in `docs/systems/cbrn_warfare/cbrn_operations_surface.md` and accepted by `docs/specs/chaos_warfare_system_specs/handoffs/staged_implementation_plan.md`.
 
 The absence of a second all-purpose CBRN scripted GUI is therefore not a missing mechanic. The biological containment GUI remains a focused subsystem surface rather than a duplicate national command window.
 
@@ -160,7 +160,7 @@ Exact evidence:
 - `common/scripted_triggers/cbrn_battlefield_operation_triggers.txt`
 - `common/decisions/cbrn_battlefield_operation_decisions.txt`
 - `common/scripted_effects/cbrn_battlefield_operation_effects.txt`
-- `docs/systems/cbrn_battlefield_operations.md`
+- `docs/systems/cbrn_warfare/cbrn_battlefield_operations.md`
 - Scenarios 1 through 3 in `docs/plans/chaos_warfare_system_plans/2026-07-29_stage_14_package_scenario_evidence.md`
 
 Required parent action: perform one final current-version source audit for an exact selected-state Army Headquarters weather and terrain receipt and an exact target pointer. Wire it only if the receipt is real and preserves the selected state through commitment, resolution, AI eligibility, and cleanup.
@@ -179,7 +179,7 @@ Exact evidence:
 - `common/decisions/cbrn_occupation_decisions.txt`
 - `common/scripted_effects/cbrn_occupation_effects.txt`
 - `common/on_actions/cbrn_occupation_on_actions.txt`
-- `docs/systems/cbrn_occupation_and_nerve_suppression.md`
+- `docs/systems/cbrn_warfare/cbrn_occupation_and_nerve_suppression.md`
 - `docs/plans/chaos_warfare_system_plans/stage_9_decision_mission_audit_handoff.md`
 - Scenario 6 in `docs/plans/chaos_warfare_system_plans/2026-07-29_stage_14_package_scenario_evidence.md`
 
@@ -195,7 +195,7 @@ Exact evidence:
 
 - `common/military_industrial_organization/organizations/cbrn_protection_biological_organizations.txt`
 - `common/scripted_effects/cbrn_designer_effects.txt`
-- `docs/systems/cbrn_designers.md`
+- `docs/systems/cbrn_warfare/cbrn_designers.md`
 - `docs/plans/chaos_warfare_system_plans/documentation_state.md`
 
 Required parent action: make one final exact-hook audit. Implement only an exact transaction. Do not use national-stockpile estimates, bombing-history proxies, arbitrary deductions, or unrelated modifiers.
@@ -258,8 +258,8 @@ Exact evidence:
 - `docs/specs/chaos_warfare_system_specs/handoffs/completion_audit_checklist.md`
 - `docs/plans/chaos_warfare_system_plans/documentation_cleanup_handoff.md`
 - `docs/plans/chaos_warfare_system_plans/documentation_state.md`
-- `docs/systems/cbrn_chemical_delivery.md`
-- `docs/chemical_warfare/chemical_warfare_documentation.md`
+- `docs/systems/cbrn_warfare/cbrn_chemical_delivery.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/chemical_warfare_documentation.md`
 
 This is reconciliation work, not permission to remove accepted requirements.
 

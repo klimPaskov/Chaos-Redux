@@ -85,7 +85,7 @@ Do not simply dispatch `infantry_spawn_cleanup_current_family_lot` during annex 
 
 ## Finding REG-019-P2-001 — payment result token is stale in documentation
 
-`docs/systems/chaos_unit_family_registry.md` says `event19_pay_management_action` must set `infantry_spawn_family_management_payment_success`. That token does not occur in gameplay source.
+`docs/systems/cbrn_warfare/chaos_unit_family_registry.md` says `event19_pay_management_action` must set `infantry_spawn_family_management_payment_success`. That token does not occur in gameplay source.
 
 All three providers and all derivative/Muster consumers consistently use:
 

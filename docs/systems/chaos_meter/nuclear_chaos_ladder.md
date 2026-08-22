@@ -35,7 +35,7 @@ The chaos ladder and condemnation gain are separate. Every strike records either
 
 Nuclear condemnation tuning lives in `common/script_constants/condemnation_sanctions_constants.txt`. A normal strike starts at `55`, adds `0.55` per million people, applies shared state-density scaling, and then applies extra `1.15`, `1.35`, or `1.65` population-band multipliers above `5`, `10`, or `20` million people. A capital adds `35`, and a state with more than `8` industrial complexes adds `20`. Strikes against a non-belligerent or an ally or subject each apply `1.50`. Thermonuclear use multiplies that calculated base by `2.25`. Measured civilian deaths then add one point per `10,000` up to `100`, and fallout intensity adds `0.50` per point up to `50`. Major severity applies to a normal strike, while doomsday severity applies to the thermonuclear result.
 
-There is no country-pair exemption. The full source, tier, sanctions, and UI model is documented in `docs/systems/condemnation_sanctions.md`.
+There is no country-pair exemption. The full source, tier, sanctions, and UI model is documented in `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`.
 
 ## Player-Facing References
 

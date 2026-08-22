@@ -103,7 +103,7 @@ The current source-of-truth surfaces are:
 - `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/decision_mission_final_audit_2026-07-11.md`
 - `docs/plans/system_camp_repression_rework_plans/major_country_kit_implementation_map.md`
 - `docs/plans/system_camp_repression_rework_plans/colonial_country_kit_implementation_map.md`
-- `docs/systems/genocide_crisis_system.md`
+- `docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md`
 - `docs/super_events/system_camp_repression_rework_super_event_research.md`
 - this completion report.
 

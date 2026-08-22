@@ -199,7 +199,7 @@ Accepted Last Transformer disposition:
 
 Current implementation authority:
 
-- `docs/systems/air_contamination_mechanic.md` describes the live Air Contamination system.
+- `docs/systems/air_cleanliness/air_contamination_mechanic.md` describes the live Air Contamination system.
 - `docs/systems/air_cleanliness/winter.md` describes the live Air Winter implementation and its reported gaps.
 - `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md` records the overall partial status and hard blockers.
 - `docs/plans/air_cleanliness_fallout_plans/CORE_MECHANICS_READINESS_AND_CONTENT_HANDOFF.md` records the accepted static-core boundary: the exact 10,154-province sweep and seven-day barrier, thirty-tag fracture, universal focus/decision package, Year Ten route, and GUI phase/dirty ledger.

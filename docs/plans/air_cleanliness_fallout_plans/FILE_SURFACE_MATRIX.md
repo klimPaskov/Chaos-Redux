@@ -85,13 +85,13 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 | scenario event | `events/fallout_world_end_events.txt` | own Fallout confirmation, launch, countdown, and completion events while the generic scenario system only calls the entry | 5 |
 | strike helper | new Fallout effects file | apply exact thermonuclear province sweep and aggregate logging | 5 |
 | countdown | new Fallout effects and events | persist seven-day countdown and survive save-load | 5 |
-| documentation | `docs/systems/triggerable_scenarios.md` and Fallout system docs | document the allocated scenario id and launch behavior | 5 |
+| documentation | `docs/systems/event_system/triggerable_scenarios.md` and Fallout system docs | document the allocated scenario id and launch behavior | 5 |
 
 ## Cross-surface documentation and records
 
 | Surface | Planned action | Tranche |
 | --- | --- | --- |
-| `docs/systems/air_contamination_mechanic.md` | rewrite against implemented phases, treaty, triggers, and transition | each tranche |
+| `docs/systems/air_cleanliness/air_contamination_mechanic.md` | rewrite against implemented phases, treaty, triggers, and transition | each tranche |
 | `docs/systems/state_map_modes.md` | update verified slots and winter behavior | 1 |
 | Fallout event doc | add one canonical implementation document | 3 onward |
 | `CHAOS_REDUX_MECHANICS.md` | add Fallout as an explicit exception to ordinary chaos-above-1000 world ends | 4 |

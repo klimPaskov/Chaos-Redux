@@ -91,7 +91,7 @@ The implementation should promote Event 20 to `SCN-012`, not retain the planning
 | Scenario assets | No dedicated row art required | Part 9 correctly reuses the generic window |
 | Resulting Rat Nation and Rat King assets | Missing blocker | The repository has response-decision source art, but no Event 20 rat flags, portraits, focus icons, rat decision art, coronation report art, or final manifest |
 | Event documentation | Stale | `docs/events/020_black_plague/overview.md:127-130` still lists the response board, decisions, Doctor Wu bridge, evolutions, rat packages, scenario, logs, catalog, and workbook together as remaining tranches even though some response surfaces now exist |
-| Triggerable-scenario system documentation | Stale | `docs/systems/triggerable_scenarios.md` has no SCN-012 Event 20 row |
+| Triggerable-scenario system documentation | Stale | `docs/systems/event_system/triggerable_scenarios.md` has no SCN-012 Event 20 row |
 | Catalog workbook | Stale | The `Events` row remains `Black Plague` / `To Be Reworked`, the `Clusters` sheet has no matching Black Plague row, and the `Scenarios` sheet has no Event 20 or SCN-012 row |
 
 ## Concrete live-source findings
@@ -249,7 +249,7 @@ The coronation super-event research exists in the planning pack, but there is no
 
 Documentation gaps are:
 
-- no SCN-012 entry in `docs/systems/triggerable_scenarios.md`;
+- no SCN-012 entry in `docs/systems/event_system/triggerable_scenarios.md`;
 - stale `docs/events/020_black_plague/overview.md` implementation status;
 - no Event 20 scenario implementation handoff;
 - no Event 20 scenario row in the workbook;
@@ -284,7 +284,7 @@ The workbook should be updated only after final in-game wording and implementati
 8. Add one global launch report, Event 20 event-details text, one base event history row, Evolutions I-IV details, actor mappings, and one coronation presentation call.
 9. Add the permanent scenario achievement disqualifier to every Event 20 achievement evaluator.
 10. Run the full four-intensity and cross-case matrix, including active outbreak, existing broods, existing King, duplicate-history, tag pressure, repeat launch, map refresh, save and reload, and Maximum performance.
-11. Update `docs/events/020_black_plague/overview.md`, `docs/systems/triggerable_scenarios.md`, the final asset manifests, and the source workbook from verified implementation facts.
+11. Update `docs/events/020_black_plague/overview.md`, `docs/systems/event_system/triggerable_scenarios.md`, the final asset manifests, and the source workbook from verified implementation facts.
 
 ## Files changed
 

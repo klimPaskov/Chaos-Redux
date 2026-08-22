@@ -19,7 +19,7 @@ Implemented directly by the parent after the bounded scripted-system subagent wa
 - `common/raids/categories/chaosx_raid_categories.txt`
 - `common/scripted_effects/biological_lifecycle_effects.txt`
 - `localisation/english/biological_facility_recovery_raids_l_english.yml`
-- `docs/systems/captured_biological_facility_recovery.md`
+- `docs/systems/cbrn_warfare/biological_warfare/captured_biological_facility_recovery.md`
 
 Raid icons and their source package were committed separately in `faebc4b5a`.
 

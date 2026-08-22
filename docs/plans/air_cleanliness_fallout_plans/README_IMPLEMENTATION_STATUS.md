@@ -279,7 +279,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 - Orientation immediate-resource pilot proof: `FALLOUT_ORIENTATION_RESOURCE_PILOT_EVENT_PROOF.md`
 - Orientation government-authority pilot proof: `FALLOUT_ORIENTATION_GOVERNMENT_PILOT_EVENT_PROOF.md`
 - Implementation tranches: `IMPLEMENTATION_TRANCHE_PLAN.md`
-- Gameplay status for Air Cleanliness: `docs/systems/air_contamination_mechanic.md`
+- Gameplay status for Air Cleanliness: `docs/systems/air_cleanliness/air_contamination_mechanic.md`
 - Manual runtime constants: `common/script_constants/fallout_consolidated_constants.txt`
 - Manual sweep effects: `common/scripted_effects/fallout_consolidated_effects.txt`
 - Manual coordinator effects: `common/scripted_effects/fallout_consolidated_effects.txt`

@@ -85,7 +85,7 @@ This creates a direct death-toll consequence for repression-heavy occupation pol
 
 ## Zombie-Controlled State Decay
 
-Zombie-controlled states now use a separate long-form collapse mechanic documented in `docs/biological_warfare/zombie_state_decay_and_civilian_deaths.md`.
+Zombie-controlled states now use a separate long-form collapse mechanic documented in `docs/systems/cbrn_warfare/biological_warfare/zombie_state_decay_and_civilian_deaths.md`.
 
 Summary:
 

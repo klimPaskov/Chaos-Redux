@@ -377,7 +377,7 @@ Narrow shared edits that are safe and required:
 - `common/scripted_triggers/chaosx_settings_triggers.txt`: include `constant:africa_event.id` in the normal-event settings classifier.
 - `common/script_constants/event_cluster_constants.txt`: set `event_cluster_formables.unlock_tier` to tier 3.
 - `common/scripted_effects/chaosx_event_cluster_effects.txt`: retain Event 12 as Formables required, tier 4, Severe, using constants. Do not make the fire-once member repeatable.
-- `docs/systems/event_clusters.md`: replace the reserved Formables description and record tier-3 cluster/tier-4 member behavior.
+- `docs/systems/event_system/event_clusters.md`: replace the reserved Formables description and record tier-3 cluster/tier-4 member behavior.
 - `common/scripted_effects/chaosx_events_log_effects.txt` plus Event Details/evolution localisation and GUI registries: map Event 12 actor to committed `africa_host`, and register the three logged evolutions.
 
 At the time of the final review, the live active-pool gate, settings classifier, Formables member tier/danger, and `.1` immediate host commit are already correct. The Formables unlock constant and cluster documentation still need alignment.

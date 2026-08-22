@@ -45,9 +45,9 @@ The CBRN helper index is `common/scripted_effects/cbrn_scripted_effects.md`.
 
 It now indexes the achievement, battlefield, biological-Air-Cleanliness, camp, chemical-state, doomsday, occupation, headquarters, and existing CBRN-specific helper files.
 
-The canonical chemical delivery contract is `docs/systems/cbrn_chemical_delivery.md`.
+The canonical chemical delivery contract is `docs/systems/cbrn_warfare/cbrn_chemical_delivery.md`.
 
-The broader legacy and historical chemical route context is `docs/chemical_warfare/chemical_warfare_documentation.md`.
+The broader legacy and historical chemical route context is `docs/systems/cbrn_warfare/chemical_warfare/chemical_warfare_documentation.md`.
 
 Designer, headquarters, protective-equipment, biological-lifecycle, and consequence details remain in their subsystem documentation and require the cleanup pass recorded in `documentation_cleanup_handoff.md`.
 

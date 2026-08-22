@@ -162,9 +162,9 @@ A new GUI and GFX file can own the CBRN window if the existing decision GUI is u
 Update or supersede:
 
 - `CHAOS_REDUX_MECHANICS.md`
-- all existing `docs/chemical_warfare/chaos_warfare_*.md`
+- all existing `docs/systems/cbrn_warfare/chemical_warfare/chaos_warfare_*.md`
 - chemical and biological system docs
-- `docs/systems/condemnation_sanctions.md`
+- `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`
 - Deaths and Air Cleanliness docs
 - doctrine spreadsheet if still authoritative
 - event docs and event catalog rows only where actual event behavior changes

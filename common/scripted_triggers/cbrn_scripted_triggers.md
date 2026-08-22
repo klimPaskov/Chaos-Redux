@@ -555,7 +555,7 @@ Scope is country; outputs are boolean only; no trigger starts a mission, removes
 - `cbrn_chaos_warfare_has_all_tracks_active`: all four accepted subdoctrines currently active.
 - `cbrn_chaos_warfare_has_any_track_mastery_five`: any accepted track at mastery 5.
 - `cbrn_chaos_warfare_has_advanced_protection`: Advanced Gas Masks, Sealed Assault Protection, or explicit equivalent-project flag.
-- `cbrn_can_claim_protective_foundation`, `cbrn_can_claim_delivery_integration`, `cbrn_can_claim_theater_exploitation`, and `cbrn_can_claim_terminal_command`: exact one-time institutional gates described in `docs/systems/chaos_warfare_doctrine.md`.
+- `cbrn_can_claim_protective_foundation`, `cbrn_can_claim_delivery_integration`, `cbrn_can_claim_theater_exploitation`, and `cbrn_can_claim_terminal_command`: exact one-time institutional gates described in `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`.
 - `cbrn_country_has_active_decontamination_corridor`: country has at least one army leader with the active corridor trait.
 - `cbrn_state_can_receive_theater_decontamination`: state-scoped target gate requiring ROOT control, actual chemical contamination, and no active assignment lock.
 

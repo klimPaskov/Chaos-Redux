@@ -23,7 +23,7 @@ The current source map is [`../documentation_state.md`](../documentation_state.m
 - `docs/events/020_black_plague/overview.md`
 - `docs/events/020_black_plague/rat_route_depth.md`
 - `docs/events/020_black_plague/rat_king_depth.md`
-- `docs/systems/black_plague_rat_route_modules.md`
+- `docs/events/020_black_plague/rat_route_modules.md`
 - `docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md`
 - `docs/plans/020_black_plague_plans/2026-08-01_event20_consequence_and_aftermath_addendum.md`
 - `docs/plans/020_black_plague_plans/2026-08-01_event20_content_tranche_handoff.md`

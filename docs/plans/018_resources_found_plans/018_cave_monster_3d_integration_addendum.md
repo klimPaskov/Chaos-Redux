@@ -126,6 +126,6 @@ This file remains under `docs/plans/018_resources_found_plans/` as the bounded s
 
 It should not be promoted into the source specification because it does not change the accepted Event 018 design.
 
-Durable consumer, synchronization, hash, provenance, and validation facts belong in `docs/systems/resources_found_cave_monster_model.md`, `docs/events/018_resources_found/assets.md`, this addendum, and `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The temporary reconstructed evidence roots remain non-runtime dependencies and must be retained until the parent closes the overall Event 018 goal.
+Durable consumer, synchronization, hash, provenance, and validation facts belong in `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`, `docs/events/018_resources_found/assets.md`, this addendum, and `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The temporary reconstructed evidence roots remain non-runtime dependencies and must be retained until the parent closes the overall Event 018 goal.
 
 The narrow 3D-tranche closure note is `docs/plans/018_resources_found_plans/subagent_handoffs/event018_cave_monster_visual_closure_2026-08-10.md`. No additional broad Event 018 improvement pass is justified by this tranche.

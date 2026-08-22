@@ -42,7 +42,7 @@ The decisive source and documentation hashes were:
 - `common/scripted_effects/019_infantry_spawn_pulse_effects.txt`: `4AE09E6D3A236C447C32A2A90406B8C0B5012C8BEDD4934366F2D30E0C098326`;
 - `common/scripted_effects/019_infantry_spawn_scenario_effects.txt`: `9CD662C437740F33A884A4971046BA8CCFF4E64F4B0A75589CBB970DA9419A86`;
 - `docs/events/019_infantry_spawn/overview.md`: `4ACA1E794BB0216328685223890661E370A35DF3C93C6E4D264912D995163ED4`;
-- `docs/systems/chaos_unit_family_registry.md`: `BB7E57A0678CF96BEDE8FC015927D875901588A1DDABE613C28C7734CE7D1394`;
+- `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`: `BB7E57A0678CF96BEDE8FC015927D875901588A1DDABE613C28C7734CE7D1394`;
 - `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_7_decisions_ui_ai_balance.md`: `D942C2BDCDF86EB392DA38571E1ACDD21F0115D399D5395409B92BB626DD29C0`;
 - `019_registry_category_lifecycle_remediation_handoff_2026_07_29.md`: `23D674E2A8372316CFCFF7CE43475B795AEA790A27E9B1F47301DD23230BC50F`.
 
@@ -188,9 +188,9 @@ The stale Board-open state identified by the previous audit is therefore cleared
 
 `docs/events/019_infantry_spawn/overview.md:605-608` now documents quiet closeout, final-proven claimant or derivative closure, direct-scenario exclusion, and passive pulse cleanup.
 
-`docs/systems/chaos_unit_family_registry.md:13-32` replaces the stale pre-incremental completion paragraph with the current registry and lifecycle disposition.
+`docs/systems/cbrn_warfare/chaos_unit_family_registry.md:13-32` replaces the stale pre-incremental completion paragraph with the current registry and lifecycle disposition.
 
-`docs/systems/chaos_unit_family_registry.md:46` documents the distinction between `candidate_eligible` and `candidate_native`.
+`docs/systems/cbrn_warfare/chaos_unit_family_registry.md:46` documents the distinction between `candidate_eligible` and `candidate_native`.
 
 `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_7_decisions_ui_ai_balance.md:23-49` promotes the live category inventory, final-success ordering, quiet evolved closeout, and direct-scenario invalidation into the source specification.
 

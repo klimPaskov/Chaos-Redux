@@ -17,8 +17,8 @@ This tranche owns only the shared Natural Disasters cluster and triggerable-scen
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
 - `localisation/english/chaosx_gui_l_english.yml`
-- `docs/systems/event_clusters.md`
-- `docs/systems/triggerable_scenarios.md`
+- `docs/systems/event_system/event_clusters.md`
+- `docs/systems/event_system/triggerable_scenarios.md`
 - this handoff
 
 ## Natural Disasters cluster

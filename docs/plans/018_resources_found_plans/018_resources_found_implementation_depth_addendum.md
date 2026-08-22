@@ -29,7 +29,7 @@ No item was rejected, deferred, or replaced by a fallback. No new depth addendum
 
 ## Post-completion documentation disposition
 
-The event-scoped `docs/assets/018_resources_found/` workspace is temporary production and review evidence, never a runtime dependency. Its bounded cave-monster reconstruction tranche remains present while final Event 018 evidence gates are open. Durable runtime inventory, provenance conclusions, rights records, and review outcomes are maintained in `docs/events/018_resources_found/assets.md`, `docs/super_events/018_resources_found/`, `docs/systems/resources_found_cave_monster_model.md`, and the named Event 018 plan handoffs. Delete the temporary workspace only after genuine goal closure.
+The event-scoped `docs/assets/018_resources_found/` workspace is temporary production and review evidence, never a runtime dependency. Its bounded cave-monster reconstruction tranche remains present while final Event 018 evidence gates are open. Durable runtime inventory, provenance conclusions, rights records, and review outcomes are maintained in `docs/events/018_resources_found/assets.md`, `docs/super_events/018_resources_found/`, `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`, and the named Event 018 plan handoffs. Delete the temporary workspace only after genuine goal closure.
 
 ## Reference basis
 

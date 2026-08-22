@@ -111,7 +111,7 @@ Japanese Anthrax weaponization capability is well attested, while the exact supp
 
 The occupation-link gate, target thresholds, costs, cooldowns, and AI weights are gameplay tuning rather than quantitative historical estimates.
 
-The research links and confidence notes are recorded in `docs/biological_warfare/japan_china_biological_campaign.md`.
+The research links and confidence notes are recorded in `docs/systems/cbrn_warfare/biological_warfare/japan_china_biological_campaign.md`.
 
 ## Asset Audit
 

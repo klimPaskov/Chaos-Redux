@@ -85,7 +85,7 @@ Major events and country-creation events need route-specific AI. Implement focus
 
 When an event needs a reusable country carrier, consult
 `common/collections/chaosx_country_collections.txt` and
-`docs/systems/006_independence_wave_country_registry.md` before reserving a
+`docs/events/006_independence_wave/systems/country_registry.md` before reserving a
 new tag. Use the `chaosx_country_*` collection that matches the region or
 origin, then record the consuming event's own provenance and package identity
 before loading content. Do not create a duplicate tag for an Event 006 or
@@ -255,7 +255,7 @@ Use this contract when adding a scenario for an event:
 6. Add scenario name, sort text, detail text, type labels, and intensity impact text in `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`.
 7. Add or update player-facing labels, tooltips, confirmation text, and scenario event text in `localisation/english/chaosx_gui_l_english.yml`.
 8. Update `interface/chaosx.gui` only when the existing scenario window cannot present the new controls cleanly.
-9. Document the scenario in the relevant event doc or scenario doc, for example in `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/systems/triggerable_scenarios.md`.
+9. Document the scenario in the relevant event doc or scenario doc, for example in `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/systems/event_system/triggerable_scenarios.md`.
 
 The scenario window is data-driven. It should use `global.triggerable_scenario_view_ids` for the sortable list, log-style entries for scenario rows, and a detail panel that updates from the selected entry. Do not hardcode one button per scenario when the registry and dynamic list can handle it.
 

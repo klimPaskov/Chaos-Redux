@@ -39,7 +39,7 @@ Weaponized zombies remain outside the ordinary-pathogen project, treatment, payl
 - `common/dynamic_modifiers/biowarfare_state_modifiers.txt` exposes distinct detected-outbreak and quarantine effects.
 - `interface/biological_countermeasures.gfx` registers the type-correct countermeasure sprites.
 - `localisation/english/chaosx_decisions_l_english.yml`, `localisation/english/chaosx_ideas_l_english.yml`, and `localisation/english/chaosx_modifiers_l_english.yml` describe current costs, state effects, commitments, and failure behavior.
-- `docs/biological_warfare/biological_countermeasures.md` documents the mechanic, ownership, assets, AI behavior, and future work.
+- `docs/systems/cbrn_warfare/biological_warfare/biological_countermeasures.md` documents the mechanic, ownership, assets, AI behavior, and future work.
 
 ## Costs and commitments
 

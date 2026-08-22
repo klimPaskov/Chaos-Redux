@@ -51,7 +51,7 @@ Recommended file surfaces:
   - `common/scripted_guis/chaosx_scripted_gui_settings.txt`
   - `events/chaosx_triggerable_scenarios.txt`
   - `localisation/english/chaosx_gui_l_english.yml`
-  - `docs/systems/triggerable_scenarios.md`
+  - `docs/systems/event_system/triggerable_scenarios.md`
   - `docs/systems/world_threat_mechanic.md`
 
 ## Helper Map

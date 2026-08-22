@@ -70,7 +70,7 @@ The exploration covered:
 - `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt:58-135`
   registers those IDs and the GUI/selection/launch code assumes the registry is
   unique.
-- `docs/systems/triggerable_scenarios.md:97-103` also reserves SCN008 for
+- `docs/systems/event_system/triggerable_scenarios.md:97-103` also reserves SCN008 for
   Africa Is One and documents SCN009 as Coalition Unmasked.
 - A concurrent, currently untracked draft at
   `common/script_constants/014_cannibalism_scenario_constants.txt` assigns the
@@ -342,7 +342,7 @@ fixed-tag swap for the dynamic Wendigo route.
 | Super events | `interface/chaosx_super_events.gfx`; `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`; `localisation/english/chaosx_gui_l_english.yml` and/or Event 014 loc | Register four non-colliding entries: reveal, ordinary world end, Wendigo-Hannibal world end, and global defeat/aftermath. Keep unrevealed UI spoiler-safe. |
 | Super-event audio | `sound/chaosx_sound.asset`; `music/chaosx_music_track_list.html`; Event 014 audio folders | Register the resolved IDs as sound. Never reuse Holy Realm ID 51. Review concurrent dirty edits instead of overwriting them. |
 | Achievements | `common/achievements/chaos_redux_achievements.txt`; `interface/chaosx_achievements.gfx`; `localisation/english/chaosx_achievements_l_english.yml` | Implement all 18 exact spec contracts, three sprites each, stable progress flags/counters, tag-transfer preservation, anti-spoiler text, and explicit scenario eligibility. Existing 13 old triplets are insufficient. |
-| Triggerable scenario | `common/script_constants/chaosx_triggerable_scenarios_constants.txt`; `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`; `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt`; `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`; scenario GUI and loc; `docs/systems/triggerable_scenarios.md` | Register ID 10, add sorted selector, display text, type/scale controls, validation, launch effect, notifications, and docs. Do not replace SCN008 or SCN009. |
+| Triggerable scenario | `common/script_constants/chaosx_triggerable_scenarios_constants.txt`; `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`; `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt`; `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`; scenario GUI and loc; `docs/systems/event_system/triggerable_scenarios.md` | Register ID 10, add sorted selector, display text, type/scale controls, validation, launch effect, notifications, and docs. Do not replace SCN008 or SCN009. |
 | Event workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | After gameplay wording is final, replace row 14 placeholder with the exact Event 014 description/details/evolutions/world-end text and add scenario ID 10. Do not add cluster membership. Use the spreadsheet worker after implementation facts exist. |
 | Mechanic docs | `docs/` and source specs | Add the required implementation doc with step-by-step mechanics, integration map, tuning variables, AI, assets/sprites, future plans, and known limits. Fold accepted design changes back into the source specs rather than leaving them only in plans. |
 

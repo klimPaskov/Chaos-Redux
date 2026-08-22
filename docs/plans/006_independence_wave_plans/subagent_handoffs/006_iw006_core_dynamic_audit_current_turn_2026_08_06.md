@@ -56,6 +56,6 @@ Read-only `hoi4.event_inspect` scans for `chaosx.nr6.1` and `events/006_independ
 
 ## Limitations and follow-up
 
-No game launch, save/load, live ownership scenario, Event Log render, or mission-timer playback was performed because those checks belong to the parent/user boundary. The requested `docs/systems/006_independence_wave_country_registry.md` path is absent; the existing authoritative registry docs are under `docs/events/006_independence_wave/systems/country_registry.md` and `docs/events/006_independence_wave/country_api.md`. Existing terminal crisis flags currently have no consumers elsewhere, so the patch is forward-safe lifecycle hygiene rather than a presently visible UI fix. No gameplay simplification was introduced, and no other safe source patch was identified.
+No game launch, save/load, live ownership scenario, Event Log render, or mission-timer playback was performed because those checks belong to the parent/user boundary. The requested `docs/events/006_independence_wave/systems/country_registry.md` path is absent; the existing authoritative registry docs are under `docs/events/006_independence_wave/systems/country_registry.md` and `docs/events/006_independence_wave/country_api.md`. Existing terminal crisis flags currently have no consumers elsewhere, so the patch is forward-safe lifecycle hygiene rather than a presently visible UI fix. No gameplay simplification was introduced, and no other safe source patch was identified.
 
 Parent owns final review and commit for this shared worktree.

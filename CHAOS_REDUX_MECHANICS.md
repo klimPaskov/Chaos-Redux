@@ -318,7 +318,7 @@ At International Concern, likely participants begin monitoring the target with l
 
 Active volunteers and attachés can be recalled, new lend-lease agreements from sanction participants are blocked, and new volunteer or attaché violations are detected. Already active lend-lease, production licences, and research-sharing membership cannot be generically cancelled or revoked by this system.
 
-Detailed implementation and tuning reference: `docs/systems/condemnation_sanctions.md`.
+Detailed implementation and tuning reference: `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`.
 
 ### Deaths System
 
@@ -541,11 +541,11 @@ Event-fire log output is opt-in.
 
 Supporting documentation:
 
-- `docs/systems/events_log_window.md`
-- `docs/systems/events_log_evolutions_and_clusters.md`
-- `docs/systems/chaosx_event_logging_controls.md`
-- `docs/systems/settings_miscellaneous_menu.md`
-- `docs/systems/settings_numeric_manual_inputs.md`
+- `docs/systems/event_system/events_log_window.md`
+- `docs/systems/event_system/events_log_evolutions_and_clusters.md`
+- `docs/systems/chaosx_settings/chaosx_event_logging_controls.md`
+- `docs/systems/chaosx_settings/settings_miscellaneous_menu.md`
+- `docs/systems/chaosx_settings/settings_numeric_manual_inputs.md`
 
 ---
 
@@ -963,16 +963,16 @@ Activation effects:
 - AI receives no free payload, readiness, operation, or protection shortcut.
 - Nonhuman countries receive zero weight for the institutional CBRN package.
 
-The mastery subsections above preserve the established compatibility IDs and route ancestry. Exact current institutions, technology commissions, equipment requirements, readiness caps, operation gates, officer-corps effects, and balance values are maintained in `docs/systems/chaos_warfare_doctrine.md`.
+The mastery subsections above preserve the established compatibility IDs and route ancestry. Exact current institutions, technology commissions, equipment requirements, readiness caps, operation gates, officer-corps effects, and balance values are maintained in `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`.
 
 Supporting documentation:
 
-- `docs/chemical_warfare/chaos_warfare_grand_doctrine_update.md`
-- `docs/chemical_warfare/chaos_warfare_extermination_columns.md`
-- `docs/chemical_warfare/chaos_warfare_chemical_suppression.md`
-- `docs/chemical_warfare/chaos_warfare_combat_support.md`
-- `docs/chemical_warfare/chaos_warfare_integrated_chemical_operations.md`
-- `docs/chemical_warfare/chaos_warfare_subdoctrine_visibility_and_ai.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/chaos_warfare_grand_doctrine_update.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/chaos_warfare_extermination_columns.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/chaos_warfare_chemical_suppression.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/chaos_warfare_combat_support.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/chaos_warfare_integrated_chemical_operations.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/chaos_warfare_subdoctrine_visibility_and_ai.md`
 
 ---
 
@@ -992,8 +992,8 @@ Regimental CBRN companies form the division layer. They provide protection, reco
 
 Supporting documentation:
 
-- `docs/systems/cbrn_hq_command.md`
-- `docs/chemical_warfare/cbrn_regimental_support.md`
+- `docs/systems/cbrn_warfare/cbrn_hq_command.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/cbrn_regimental_support.md`
 
 ### Protection and Civil Defence
 
@@ -1007,7 +1007,7 @@ The Military Industrial Organization layer includes chemical munitions, air deli
 
 Exact chemical-rack weight, range, and agility behavior uses grant-only module technologies because current MIO filters cannot prove that an aircraft variant carries one specific chemical rack. This prevents chemical-designer bonuses from applying to ordinary aircraft.
 
-Supporting documentation: `docs/systems/cbrn_designers.md`.
+Supporting documentation: `docs/systems/cbrn_warfare/cbrn_designers.md`.
 
 ### Unified Action Records
 
@@ -1017,7 +1017,7 @@ Each record stores the attacker, affected country, exact target state, date, wea
 
 Each record also creates a dedicated Event Log history row. The action ledger remains separate from the Deaths, Air Cleanliness, outbreak, Condemnation, and diplomacy ledgers.
 
-Supporting documentation: `docs/systems/cbrn_action_records.md`.
+Supporting documentation: `docs/systems/cbrn_warfare/cbrn_action_records.md`.
 
 ### International Response
 
@@ -1027,8 +1027,8 @@ Every action uses a stored country or state target and consumes real equipment, 
 
 Supporting documentation:
 
-- `docs/systems/cbrn_diplomacy_actions.md`
-- `docs/systems/condemnation_sanctions.md`
+- `docs/systems/cbrn_warfare/cbrn_diplomacy_actions.md`
+- `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`
 
 ### Occupation Policies
 
@@ -1041,7 +1041,7 @@ The legacy `concentration` occupation-law ID remains hidden and modifier-free fo
 
 The Nerve Agent Suppression Detachment and exact-state suppression transaction remain fail-closed. The engine does not expose the verified state-condition and target-loss receipts required by the accepted design. Its commissioning and operation controls remain hidden, and no estimator or fallback is used.
 
-Supporting documentation: `docs/systems/cbrn_occupation_and_nerve_suppression.md`.
+Supporting documentation: `docs/systems/cbrn_warfare/cbrn_occupation_and_nerve_suppression.md`.
 
 ---
 
@@ -1063,7 +1063,7 @@ Supporting documentation:
 
 - `docs/events/006_independence_wave/systems/country_registry.md`
 - `docs/events/006_independence_wave/systems/formable_registry.md`
-- `docs/systems/chaos_unit_family_registry.md`
+- `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`
 
 ### Startup History Compatibility
 
@@ -1094,9 +1094,9 @@ The mod includes a custom main menu, welcome surface, settings interface, Event 
 Supporting documentation:
 
 - `docs/systems/main_menu_redesign.md`
-- `docs/systems/chaosx_help_window.md`
-- `docs/systems/chaosx_settings_export.md`
-- `docs/systems/gfx_icon_flag_mapmode_cleanup.md`
+- `docs/systems/chaosx_settings/chaosx_help_window.md`
+- `docs/systems/chaosx_settings/chaosx_settings_export.md`
+- `docs/plans/repo_cleanup/gfx_icon_flag_mapmode_cleanup.md`
 
 ### 3D Runtime Assets
 
@@ -1104,6 +1104,6 @@ The 3D unit and facility pipeline uses explicit model, material, animation, scal
 
 Supporting documentation:
 
-- `docs/systems/chaos_warfare_facility_models.md`
+- `docs/systems/3d_model_pipeline/chaos_warfare_facility_models.md`
 - `docs/specs/chaos_redux_3d_model_workflow_planning_package/`
 - `docs/assets/chaos_redux_3d_model_pilots/`

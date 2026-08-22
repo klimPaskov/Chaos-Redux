@@ -830,7 +830,7 @@ Animation is optional. If a scripted GUI sanctions panel is created, a subtle st
 Update documentation after implementation:
 
 - `CHAOS_REDUX_MECHANICS.md` condemnation section
-- dedicated system doc, suggested path `docs/systems/condemnation_sanctions.md`
+- dedicated system doc, suggested path `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`
 - chemical warfare docs where condemnation gain and mitigation are described
 - biological warfare docs where bioweapon condemnation is described
 - camps and genocide docs where discovery-driven condemnation is described

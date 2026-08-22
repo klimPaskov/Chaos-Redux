@@ -125,7 +125,7 @@ No `hoi4.gui_rewrite` was issued. A rewrite would target shared `interface/chaos
 
 ## References inspected
 
-The accepted Event 006 specifications are `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md` and `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md`. The system contract is `docs/systems/triggerable_scenarios.md`. The preceding wording authority is `006_scn008_detail_localisation_fit_audit_2026_08_15.md`.
+The accepted Event 006 specifications are `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md` and `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md`. The system contract is `docs/systems/event_system/triggerable_scenarios.md`. The preceding wording authority is `006_scn008_detail_localisation_fit_audit_2026_08_15.md`.
 
 The required offline Paradox pages were consulted for Interface Modding, Scripted GUI Modding, Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding. Vanilla documentation was consulted in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`, including script concepts, triggers, effects, and localisation formatting. The vanilla `war_escalation_scripted_gui` and `war_escalation_scripted_gui.gui` were inspected as the closest compact scripted-GUI precedent.
 
