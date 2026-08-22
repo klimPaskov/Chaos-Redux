@@ -1,0 +1,179 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 D'RHONDAN COUNTRY DECISIONS
+# ============================================================================
+# State reclamation, disconnected-enclave support, postwar integration, and
+# Covenant diplomacy are explicit player/AI actions. No periodic world scan is
+# used. Targeted surfaces revalidate their state or country before resolution.
+# ============================================================================
+
+dhrondan_sovereignty_category = {
+	dhrondan_reclaim_landing_site = {
+		icon = GFX_decision_dhrondan_reclamation
+		state_target = yes
+		target_root_trigger = {
+			dhrondan_country_is_active = yes
+			has_country_flag = dhrondan_reclamation_declared
+		}
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = dhrondan_reclamation_target_requirements_tt
+					dhrondan_state_can_be_reclaimed = yes
+				}
+			}
+		}
+		available = {
+			dhrondan_reclamation_decision_can_complete = yes
+		}
+		cost = constant:dhrondan_decision_cost.reclamation
+		days_remove = constant:dhrondan_decision_duration.reclamation
+		cancel_trigger = { NOT = { dhrondan_reclamation_decision_can_complete = yes } }
+		remove_effect = {
+			if = {
+				limit = { dhrondan_reclamation_decision_can_complete = yes }
+				set_temp_variable = { dhrondan_reclamation_expire_days = constant:dhrondan_decision_duration.reclamation_wargoal }
+				custom_effect_tooltip = dhrondan_reclamation_wargoal_issued_tt
+				FROM = {
+					owner = { save_event_target_as = dhrondan_reclamation_target }
+					set_state_flag = {
+						flag = dhrondan_reclamation_wargoal_issued
+						days = dhrondan_reclamation_expire_days
+					}
+				}
+				meta_effect = {
+					text = {
+						create_wargoal = {
+							type = take_state_focus
+							target = event_target:dhrondan_reclamation_target
+							generator = { [DHR_RECLAMATION_STATE] }
+							expire = [DHR_RECLAMATION_EXPIRE]
+						}
+					}
+					DHR_RECLAMATION_STATE = "[FROM.GetID]"
+					DHR_RECLAMATION_EXPIRE = "[?dhrondan_reclamation_expire_days|.0]"
+				}
+				add_opinion_modifier = { target = event_target:dhrondan_reclamation_target modifier = dhrondan_reclamation_demand }
+			}
+		}
+		days_re_enable = constant:dhrondan_decision_duration.repeat_cooldown
+		ai_will_do = {
+			base = constant:dhrondan_ai.standard
+			modifier = { factor = constant:dhrondan_ai.preferred dhrondan_is_imperial_regime = yes }
+			modifier = { factor = constant:dhrondan_ai.low dhrondan_is_covenant_regime = yes }
+		}
+	}
+
+	dhrondan_establish_enclave_supply_bridge = {
+		icon = GFX_decision_dhrondan_enclave_supply
+		state_target = yes
+		target_root_trigger = {
+			dhrondan_country_is_active = yes
+			has_country_flag = dhrondan_enclave_crisis_active
+		}
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = dhrondan_enclave_target_requirements_tt
+					dhrondan_state_can_receive_enclave_support = yes
+				}
+			}
+		}
+		available = { dhrondan_enclave_decision_can_complete = yes }
+		cost = constant:dhrondan_decision_cost.enclave_supply
+		days_remove = constant:dhrondan_decision_duration.enclave_supply
+		cancel_trigger = { NOT = { dhrondan_enclave_decision_can_complete = yes } }
+		remove_effect = {
+			if = {
+				limit = { dhrondan_enclave_decision_can_complete = yes }
+				custom_effect_tooltip = dhrondan_enclave_crisis_resolved_tt
+				FROM = {
+					add_building_construction = {
+						type = infrastructure
+						level = constant:dhrondan_decision_reward.infrastructure_levels
+						instant_build = yes
+					}
+					set_state_flag = dhrondan_enclave_supply_bridge_completed
+				}
+				if = {
+					limit = { dhrondan_all_disconnected_enclaves_supported = yes }
+					clr_country_flag = dhrondan_enclave_crisis_active
+					set_country_flag = dhrondan_enclave_crisis_resolved
+					add_stability = constant:dhrondan_decision_reward.stability_small
+				}
+			}
+		}
+		ai_will_do = { base = constant:dhrondan_ai.urgent }
+	}
+
+	dhrondan_integrate_reclaimed_landing_site = {
+		icon = GFX_decision_dhrondan_state_integration
+		state_target = yes
+		target_root_trigger = {
+			dhrondan_country_is_active = yes
+			has_country_flag = dhrondan_integration_started
+			has_war = no
+		}
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = dhrondan_integration_target_requirements_tt
+					dhrondan_state_can_be_integrated = yes
+				}
+			}
+		}
+		available = { dhrondan_integration_decision_can_complete = yes }
+		cost = constant:dhrondan_decision_cost.state_integration
+		days_remove = constant:dhrondan_decision_duration.state_integration
+		cancel_trigger = { NOT = { dhrondan_integration_decision_can_complete = yes } }
+		remove_effect = {
+			if = {
+				limit = { dhrondan_integration_decision_can_complete = yes }
+				custom_effect_tooltip = dhrondan_postwar_integration_completed_tt
+				FROM = { add_core_of = ROOT }
+				set_country_flag = dhrondan_postwar_integration_completed
+				add_war_support = constant:dhrondan_decision_reward.war_support_small
+			}
+		}
+		ai_will_do = {
+			base = constant:dhrondan_ai.standard
+			modifier = { factor = constant:dhrondan_ai.preferred dhrondan_is_synod_regime = yes }
+			modifier = { factor = constant:dhrondan_ai.preferred dhrondan_is_covenant_regime = yes }
+		}
+	}
+
+	dhrondan_offer_two_world_compact = {
+		icon = GFX_decision_dhrondan_two_world_compact
+		target_root_trigger = {
+			dhrondan_is_covenant_regime = yes
+			has_country_flag = dhrondan_integration_started
+		}
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = dhrondan_compact_target_requirements_tt
+					dhrondan_is_valid_compact_partner = yes
+				}
+			}
+		}
+		available = {
+			FROM = { dhrondan_is_valid_compact_partner = yes }
+			custom_trigger_tooltip = {
+				tooltip = dhrondan_diplomatic_offer_active_tt
+				NOT = { has_country_flag = dhrondan_diplomatic_offer_active }
+			}
+		}
+		cost = constant:dhrondan_decision_cost.diplomatic_compact
+		complete_effect = {
+			clr_country_flag = dhrondan_diplomatic_offer_delivered
+			set_country_flag = dhrondan_diplomatic_offer_active
+			save_event_target_as = dhrondan_diplomatic_actor
+			country_event = { id = chaosx.nr16.52 days = 1 }
+			FROM = {
+				save_global_event_target_as = dhrondan_diplomatic_offer_target
+				country_event = { id = chaosx.nr16.49 }
+			}
+		}
+		days_re_enable = constant:dhrondan_decision_duration.repeat_cooldown
+		ai_will_do = { base = constant:dhrondan_ai.preferred }
+	}
+}

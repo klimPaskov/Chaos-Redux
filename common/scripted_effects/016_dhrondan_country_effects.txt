@@ -1,0 +1,480 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 EMPIRE OF D'RHONDA RUNTIME
+# ============================================================================
+# Public entry point: `dhrondan_start_revolt = yes` in the pact-host COUNTRY
+# scope. It captures the first viable marked capital, releases or rejoins fixed
+# tag DHR, transfers host-owned landing states without displacing third-party
+# occupiers, transfers the laser stockpile, and creates the one-time force.
+#
+# Persistent country entry points used by the focus package:
+# - `dhrondan_install_imperial_regime = yes`
+# - `dhrondan_install_synod_regime = yes`
+# - `dhrondan_install_covenant_regime = yes`
+# ============================================================================
+
+# COUNTRY scope on the pact host. Captures values before any ownership change.
+dhrondan_capture_revolt_inputs = {
+	save_event_target_as = dhrondan_revolt_host
+	set_temp_variable = { dhrondan_revolt_marked_states = constant:dhrondan_value.zero }
+	set_temp_variable = { dhrondan_revolt_arrivals_remaining = constant:dhrondan_value.zero }
+	set_temp_variable = { dhrondan_revolt_arrival_cohorts = constant:dhrondan_value.zero }
+	set_temp_variable = { dhrondan_revolt_initial_cohorts = constant:dhrondan_value.zero }
+	set_temp_variable = { dhrondan_revolt_released_tag = constant:dhrondan_value.zero }
+	if = {
+		limit = { has_variable = dhrondan_arrival_count }
+		set_temp_variable = { dhrondan_revolt_arrivals_remaining = dhrondan_arrival_count }
+	}
+	every_state = {
+		limit = { dhrondan_state_is_landing_site = yes }
+		add_to_temp_variable = { dhrondan_revolt_marked_states = constant:dhrondan_value.one }
+	}
+	every_owned_state = {
+		limit = { dhrondan_state_is_landing_site = yes }
+		if = {
+			limit = {
+				is_controlled_by = event_target:dhrondan_revolt_host
+				impassable = no
+				NOT = { has_event_target = dhrondan_revolt_capital }
+			}
+			save_event_target_as = dhrondan_revolt_capital
+		}
+	}
+	if = {
+		limit = { NOT = { has_event_target = dhrondan_revolt_capital } }
+		every_owned_state = {
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				impassable = no
+				NOT = { has_event_target = dhrondan_revolt_capital }
+			}
+			save_event_target_as = dhrondan_revolt_capital
+		}
+	}
+	while = {
+		limit = {
+			check_variable = { dhrondan_revolt_arrivals_remaining > constant:dhrondan_value.one }
+			check_variable = { dhrondan_revolt_arrival_cohorts < constant:dhrondan_initial_force.maximum_cohorts }
+		}
+		subtract_from_temp_variable = { dhrondan_revolt_arrivals_remaining = constant:dhrondan_initial_force.arrivals_per_cohort }
+		add_to_temp_variable = { dhrondan_revolt_arrival_cohorts = constant:dhrondan_value.one }
+	}
+	set_temp_variable = { dhrondan_revolt_initial_cohorts = dhrondan_revolt_marked_states }
+	add_to_temp_variable = { dhrondan_revolt_initial_cohorts = dhrondan_revolt_arrival_cohorts }
+	if = {
+		limit = { check_variable = { dhrondan_revolt_initial_cohorts < constant:dhrondan_initial_force.minimum_cohorts } }
+		set_temp_variable = { dhrondan_revolt_initial_cohorts = constant:dhrondan_initial_force.minimum_cohorts }
+	}
+	if = {
+		limit = { check_variable = { dhrondan_revolt_initial_cohorts > constant:dhrondan_initial_force.maximum_cohorts } }
+		set_temp_variable = { dhrondan_revolt_initial_cohorts = constant:dhrondan_initial_force.maximum_cohorts }
+	}
+}
+
+# STATE scope. The pact host is `event_target:dhrondan_revolt_host`.
+dhrondan_transfer_current_landing_state = {
+	add_core_of = DHR
+	if = {
+		limit = { is_controlled_by = event_target:dhrondan_revolt_host }
+		transfer_state_to = DHR
+	}
+	else = { set_state_owner_to = DHR }
+	add_core_of = event_target:dhrondan_revolt_host
+}
+
+# COUNTRY scope on the pact host. Release uses only the selected viable core on
+# first formation. The explicit pass then handles every still host-owned marker.
+dhrondan_release_and_transfer_landing_states = {
+	event_target:dhrondan_revolt_capital = { add_core_of = DHR }
+	if = {
+		limit = { DHR = { exists = no } }
+		set_temp_variable = { dhrondan_revolt_released_tag = constant:dhrondan_value.one }
+		release = DHR
+	}
+	if = {
+		limit = { check_variable = { dhrondan_revolt_released_tag = constant:dhrondan_value.one } }
+		event_target:dhrondan_revolt_capital = { add_core_of = event_target:dhrondan_revolt_host }
+	}
+	every_owned_state = {
+		limit = { dhrondan_state_is_landing_site = yes }
+		dhrondan_transfer_current_landing_state = yes
+	}
+	every_state = {
+		limit = {
+			dhrondan_state_is_landing_site = yes
+			NOT = { is_owned_by = DHR }
+		}
+		add_claim_by = DHR
+	}
+	if = {
+		limit = { check_variable = { dhrondan_revolt_released_tag = constant:dhrondan_value.one } }
+		DHR = {
+			set_capital = {
+				state = event_target:dhrondan_revolt_capital
+				remember_old_capital = no
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the pact host. Divisions vanish without equipment refund,
+# then every laser weapon still in the host stockpile is sent to fixed tag DHR.
+dhrondan_conserve_revolt_military_assets = {
+	delete_units = {
+		division_template = "D’Rhondan Landing Cohort"
+		disband = no
+	}
+	send_equipment = {
+		target = DHR
+		type = alien_laser_weapon_equipment_1
+		amount = num_equipment@alien_laser_weapon_equipment_1
+	}
+}
+
+# COUNTRY scope on DHR. Only a bounded terrestrial baseline is inherited.
+dhrondan_inherit_revolt_host_technology = {
+	set_technology = { infantry_weapons = constant:dhrondan_value.one popup = no }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = infantry_weapons1 } } set_technology = { infantry_weapons1 = constant:dhrondan_value.one popup = no } }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = basic_machine_tools } } set_technology = { basic_machine_tools = constant:dhrondan_value.one popup = no } }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = construction1 } } set_technology = { construction1 = constant:dhrondan_value.one popup = no } }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = electronic_mechanical_engineering } } set_technology = { electronic_mechanical_engineering = constant:dhrondan_value.one popup = no } }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = radio } } set_technology = { radio = constant:dhrondan_value.one popup = no } }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = motorised_infantry } } set_technology = { motorised_infantry = constant:dhrondan_value.one popup = no } }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = tech_engineers } } set_technology = { tech_engineers = constant:dhrondan_value.one popup = no } }
+	if = { limit = { event_target:dhrondan_revolt_host = { has_tech = tech_recon } } set_technology = { tech_recon = constant:dhrondan_value.one popup = no } }
+}
+
+# COUNTRY scope on DHR. Roles are added once and can be promoted again after a
+# release without creating a second character or a second country-leader role.
+dhrondan_ensure_vael_role = {
+	DHR_emperor_vael_ix = {
+		if = {
+			limit = { NOT = { can_be_country_leader = yes } }
+			add_country_leader_role = {
+				promote_leader = no
+				country_leader = {
+					ideology = despotism
+					desc = DHR_emperor_vael_ix_desc
+					traits = { dhrondan_ninth_diadem }
+				}
+			}
+		}
+	}
+}
+
+dhrondan_ensure_sera_role = {
+	DHR_first_calculant_sera_qel = {
+		if = {
+			limit = { NOT = { can_be_country_leader = yes } }
+			add_country_leader_role = {
+				promote_leader = no
+				country_leader = {
+					ideology = oligarchism
+					desc = DHR_first_calculant_sera_qel_desc
+					traits = { dhrondan_predictive_calculus }
+				}
+			}
+		}
+	}
+}
+
+dhrondan_ensure_ilyr_role = {
+	DHR_speaker_ilyr_ren = {
+		if = {
+			limit = { NOT = { can_be_country_leader = yes } }
+			add_country_leader_role = {
+				promote_leader = no
+				country_leader = {
+					ideology = liberalism
+					desc = DHR_speaker_ilyr_ren_desc
+					traits = { dhrondan_two_world_speaker }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on DHR. This provisional head does not select a focus route.
+dhrondan_install_provisional_government = {
+	dhrondan_ensure_vael_role = yes
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = {
+		democratic = constant:dhrondan_country.no_support
+		fascism = constant:dhrondan_country.no_support
+		communism = constant:dhrondan_country.no_support
+		neutrality = constant:dhrondan_country.full_support
+	}
+	promote_character = DHR_emperor_vael_ix
+}
+
+# COUNTRY scope on DHR. Called by the Imperial route focus helper.
+dhrondan_install_imperial_regime = {
+	dhrondan_ensure_vael_role = yes
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = {
+		democratic = constant:dhrondan_country.secondary_support
+		fascism = constant:dhrondan_country.no_support
+		communism = constant:dhrondan_country.no_support
+		neutrality = constant:dhrondan_country.route_support
+	}
+	set_cosmetic_tag = DHR_IMPERIAL
+	promote_character = DHR_emperor_vael_ix
+}
+
+# COUNTRY scope on DHR. Neutrality is the intentional technocratic mapping.
+dhrondan_install_synod_regime = {
+	dhrondan_ensure_sera_role = yes
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = {
+		democratic = constant:dhrondan_country.secondary_support
+		fascism = constant:dhrondan_country.no_support
+		communism = constant:dhrondan_country.no_support
+		neutrality = constant:dhrondan_country.route_support
+	}
+	set_cosmetic_tag = DHR_SYNOD
+	promote_character = DHR_first_calculant_sera_qel
+}
+
+# COUNTRY scope on DHR. Called by the Covenant route focus helper.
+dhrondan_install_covenant_regime = {
+	dhrondan_ensure_ilyr_role = yes
+	set_politics = { ruling_party = democratic elections_allowed = yes }
+	set_popularities = {
+		democratic = constant:dhrondan_country.route_support
+		fascism = constant:dhrondan_country.no_support
+		communism = constant:dhrondan_country.no_support
+		neutrality = constant:dhrondan_country.secondary_support
+	}
+	set_cosmetic_tag = DHR_COVENANT
+	promote_character = DHR_speaker_ilyr_ren
+}
+
+# COUNTRY scope on DHR. Every compact response and invalidation path uses this
+# effect so the active receipt, delivery receipt, and persistent target cannot
+# drift apart.
+dhrondan_clear_diplomatic_offer = {
+	clr_country_flag = dhrondan_diplomatic_offer_active
+	clr_country_flag = dhrondan_diplomatic_offer_delivered
+	clear_global_event_target = dhrondan_diplomatic_offer_target
+}
+
+# COUNTRY scope on DHR. Safe to call on first release and every later re-release.
+dhrondan_initialize_country_runtime = {
+	load_focus_tree = { tree = dhrondan_focus_tree keep_completed = yes }
+	set_country_flag = dhrondan_alien_infantry_training_forbidden
+	set_variable = { dhrondan_landing_equipment_cost = constant:alien_infantry_landing.reserve_equipment }
+	dhrondan_inherit_revolt_host_technology = yes
+	if = {
+		limit = { amount_research_slots < constant:dhrondan_country.starting_research_slots }
+		set_research_slots = constant:dhrondan_country.starting_research_slots
+	}
+	if = {
+		limit = { NOT = { has_global_flag = dhrondan_country_opening_grant_consumed } }
+		set_global_flag = dhrondan_country_opening_grant_consumed
+		add_political_power = constant:dhrondan_country.starting_political_power
+		set_stability = constant:dhrondan_country_factor.starting_stability
+		set_war_support = constant:dhrondan_country_factor.starting_war_support
+	}
+	if = {
+		limit = { has_country_flag = dhrondan_imperial_route }
+		dhrondan_install_imperial_regime = yes
+	}
+	else_if = {
+		limit = { has_country_flag = dhrondan_synod_route }
+		dhrondan_install_synod_regime = yes
+	}
+	else_if = {
+		limit = { has_country_flag = dhrondan_covenant_route }
+		dhrondan_install_covenant_regime = yes
+	}
+	else = { dhrondan_install_provisional_government = yes }
+	if = {
+		limit = { has_country_flag = dhrondan_diplomatic_offer_active }
+		country_event = { id = chaosx.nr16.52 days = 1 }
+	}
+	else = { clear_global_event_target = dhrondan_diplomatic_offer_target }
+	set_country_flag = dhrondan_runtime_initialized
+}
+
+# COUNTRY scope on DHR. The public alien-infantry API contract is applied by
+# `dhrondan_deploy_initial_cohorts` below, after its source receipt is granted.
+dhrondan_grant_initial_expedition_stores = {
+	set_temp_variable = { dhrondan_initial_store_amount = dhrondan_revolt_initial_cohorts }
+	multiply_temp_variable = { dhrondan_initial_store_amount = constant:alien_infantry_landing.reserve_equipment }
+	add_equipment_to_stockpile = {
+		type = alien_laser_weapon_equipment_1
+		amount = dhrondan_initial_store_amount
+	}
+}
+
+# COUNTRY scope on DHR. Input is the persistent cohort remainder established by
+# the first revolt. The public API's sovereignty batch mode keeps its exact
+# 2,000-equipment debit while permitting several cohorts in one transaction.
+dhrondan_prepare_initial_enclave_components = {
+	every_owned_state = {
+		clr_state_flag = dhrondan_initial_enclave_candidate
+		clr_state_flag = dhrondan_initial_enclave_component
+		clr_state_flag = dhrondan_initial_enclave_seed
+		if = {
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				is_controlled_by = ROOT
+				is_in_home_area = no
+				impassable = no
+			}
+			set_state_flag = dhrondan_initial_enclave_candidate
+		}
+	}
+}
+
+# COUNTRY scope on DHR. The selected candidate seed is expanded through every
+# adjacent DHR-owned and DHR-controlled state outside the capital home area.
+# This produces one exact component in the engine's state-neighbor graph
+# without relying on a static state list.
+dhrondan_flood_fill_initial_enclave_component = {
+	event_target:dhrondan_initial_enclave_seed = {
+		set_state_flag = dhrondan_initial_enclave_component
+	}
+	set_temp_variable = { dhrondan_initial_enclave_component_expanded = constant:dhrondan_value.one }
+	while = {
+		limit = { check_variable = { dhrondan_initial_enclave_component_expanded > constant:dhrondan_value.zero } }
+		set_temp_variable = { dhrondan_initial_enclave_component_expanded = constant:dhrondan_value.zero }
+		every_owned_state = {
+			limit = {
+				is_controlled_by = ROOT
+				is_in_home_area = no
+				impassable = no
+				NOT = { has_state_flag = dhrondan_initial_enclave_component }
+				any_neighbor_state = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					has_state_flag = dhrondan_initial_enclave_component
+				}
+			}
+			set_state_flag = dhrondan_initial_enclave_component
+			set_temp_variable = { dhrondan_initial_enclave_component_expanded = constant:dhrondan_value.one }
+		}
+	}
+}
+
+# COUNTRY scope on DHR. Selects the first outstanding marked seed, proves its
+# connected component, and creates at most one cohort for that component.
+dhrondan_deploy_next_initial_enclave_cohort = {
+	every_owned_state = {
+		limit = {
+			has_state_flag = dhrondan_initial_enclave_candidate
+			ROOT = {
+				NOT = { any_owned_state = { has_state_flag = dhrondan_initial_enclave_seed } }
+			}
+		}
+		set_state_flag = dhrondan_initial_enclave_seed
+		save_event_target_as = dhrondan_initial_enclave_seed
+	}
+	dhrondan_flood_fill_initial_enclave_component = yes
+	if = {
+		limit = {
+			check_variable = { dhrondan_initial_cohorts_remaining > constant:dhrondan_value.zero }
+			NOT = {
+				any_owned_state = {
+					has_state_flag = dhrondan_initial_enclave_component
+					has_state_flag = dhrondan_initial_enclave_cohort_deployed
+				}
+			}
+		}
+		set_variable = { dhrondan_landing_state_id = event_target:dhrondan_initial_enclave_seed.id }
+		alien_infantry_spawn_landing_cohort = yes
+		if = {
+			limit = { check_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one } }
+			subtract_from_variable = { dhrondan_initial_cohorts_remaining = constant:dhrondan_value.one }
+			event_target:dhrondan_initial_enclave_seed = { set_state_flag = dhrondan_initial_enclave_cohort_deployed }
+		}
+	}
+	every_owned_state = {
+		limit = { has_state_flag = dhrondan_initial_enclave_component }
+		clr_state_flag = dhrondan_initial_enclave_candidate
+		clr_state_flag = dhrondan_initial_enclave_component
+		clr_state_flag = dhrondan_initial_enclave_seed
+	}
+}
+
+dhrondan_deploy_initial_cohorts = {
+	set_temp_variable = { alien_infantry_landing_batch_mode = constant:alien_infantry_landing.one }
+	set_temp_variable = { alien_infantry_initial_force_mode = constant:alien_infantry_landing.one }
+	set_temp_variable = { dhrondan_initial_spawn_attempts = constant:dhrondan_value.zero }
+	dhrondan_prepare_initial_enclave_components = yes
+	while = {
+		limit = {
+			check_variable = { dhrondan_initial_cohorts_remaining > constant:dhrondan_value.zero }
+			any_owned_state = { has_state_flag = dhrondan_initial_enclave_candidate }
+		}
+		dhrondan_deploy_next_initial_enclave_cohort = yes
+	}
+	every_owned_state = {
+		clr_state_flag = dhrondan_initial_enclave_candidate
+		clr_state_flag = dhrondan_initial_enclave_component
+		clr_state_flag = dhrondan_initial_enclave_seed
+	}
+	while = {
+		limit = {
+			check_variable = { dhrondan_initial_cohorts_remaining > constant:dhrondan_value.zero }
+			check_variable = { dhrondan_initial_spawn_attempts < constant:dhrondan_initial_force.spawn_loop_safety_cap }
+		}
+		add_to_temp_variable = { dhrondan_initial_spawn_attempts = constant:dhrondan_value.one }
+		set_variable = { dhrondan_landing_state_id = event_target:dhrondan_revolt_capital.id }
+		alien_infantry_spawn_landing_cohort = yes
+		if = {
+			limit = { check_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one } }
+			subtract_from_variable = { dhrondan_initial_cohorts_remaining = constant:dhrondan_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { dhrondan_initial_cohorts_remaining < constant:dhrondan_value.one } }
+		clear_variable = dhrondan_initial_cohorts_remaining
+		set_global_flag = dhrondan_initial_force_consumed
+	}
+	set_temp_variable = { alien_infantry_initial_force_mode = constant:dhrondan_value.zero }
+	set_temp_variable = { alien_infantry_landing_batch_mode = constant:dhrondan_value.zero }
+}
+
+# COUNTRY scope on the pact host. This is the exact bridge called by Event .47.
+dhrondan_start_revolt = {
+	if = {
+		limit = { dhrondan_revolt_can_commit = yes }
+		set_global_flag = dhrondan_revolt_transaction_lock
+		dhrondan_capture_revolt_inputs = yes
+		if = {
+			limit = { NOT = { has_event_target = dhrondan_origin_host } }
+			save_global_event_target_as = dhrondan_origin_host
+		}
+		dhrondan_release_and_transfer_landing_states = yes
+		if = {
+			limit = {
+				DHR = { exists = yes }
+				event_target:dhrondan_revolt_capital = { is_owned_by = DHR }
+			}
+			dhrondan_conserve_revolt_military_assets = yes
+			set_country_flag = dhrondan_rebellion_bridge_called
+			DHR = {
+				dhrondan_initialize_country_runtime = yes
+				set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.dhrondan_sovereignty }
+				alien_infantry_grant_contact = yes
+				alien_infantry_reconcile_country = yes
+				if = {
+					limit = { NOT = { has_global_flag = dhrondan_initial_force_consumed } }
+					if = {
+						limit = { NOT = { has_global_flag = dhrondan_initial_stores_granted } }
+						set_global_flag = dhrondan_initial_stores_granted
+						set_variable = { dhrondan_initial_cohorts_remaining = dhrondan_revolt_initial_cohorts }
+						dhrondan_grant_initial_expedition_stores = yes
+					}
+					dhrondan_deploy_initial_cohorts = yes
+				}
+				if = {
+					limit = { NOT = { has_global_flag = dhrondan_sovereignty_formed } }
+					set_global_flag = dhrondan_sovereignty_formed
+					news_event = { id = chaosx.nr16.48 }
+				}
+			}
+		}
+		clr_global_flag = dhrondan_revolt_transaction_lock
+	}
+}

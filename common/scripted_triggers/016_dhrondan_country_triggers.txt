@@ -1,0 +1,177 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 EMPIRE OF D'RHONDA COUNTRY TRIGGERS
+# ============================================================================
+# Reusable country, state, regime, reclamation, enclave, and diplomatic gates.
+# The landing-state and arrival receipts are owned by Events .40-.47.
+# ============================================================================
+
+# COUNTRY scope.
+dhrondan_country_is_active = {
+	tag = DHR
+	exists = yes
+	NOT = { has_global_flag = world_end }
+}
+
+# STATE scope.
+dhrondan_state_is_landing_site = {
+	has_state_flag = dhrondan_landing_state
+}
+
+# COUNTRY scope on the pact host. Prefer an immediately controlled, passable
+# capital, but permit a host-owned passable landing state under third-party
+# occupation as the last viable fallback.
+dhrondan_has_viable_revolt_capital = {
+	any_owned_state = {
+		dhrondan_state_is_landing_site = yes
+		impassable = no
+	}
+}
+
+# COUNTRY scope on the pact host.
+dhrondan_revolt_can_commit = {
+	exists = yes
+	NOT = { tag = DHR }
+	dhrondan_has_viable_revolt_capital = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = dhrondan_revolt_transaction_lock }
+}
+
+# COUNTRY scope on DHR.
+dhrondan_is_imperial_regime = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_imperial_route
+}
+
+# COUNTRY scope on DHR.
+dhrondan_is_synod_regime = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_synod_route
+}
+
+# COUNTRY scope on DHR.
+dhrondan_is_covenant_regime = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_covenant_route
+}
+
+# COUNTRY scope on DHR.
+dhrondan_has_disconnected_landing_enclave = {
+	any_owned_state = {
+		dhrondan_state_is_landing_site = yes
+		is_controlled_by = ROOT
+		is_in_home_area = no
+	}
+}
+
+# COUNTRY scope on DHR.
+dhrondan_all_disconnected_enclaves_supported = {
+	NOT = {
+		any_owned_state = {
+			dhrondan_state_is_landing_site = yes
+			is_controlled_by = ROOT
+			is_in_home_area = no
+			NOT = { has_state_flag = dhrondan_enclave_supply_bridge_completed }
+		}
+	}
+}
+
+# STATE scope with DHR as ROOT.
+dhrondan_state_can_receive_enclave_support = {
+	dhrondan_state_is_landing_site = yes
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	is_in_home_area = no
+	infrastructure < constant:dhrondan_decision_limit.maximum_infrastructure
+	NOT = { has_state_flag = dhrondan_enclave_supply_bridge_completed }
+}
+
+# STATE scope with DHR as ROOT.
+dhrondan_state_can_be_reclaimed = {
+	dhrondan_state_is_landing_site = yes
+	is_claimed_by = ROOT
+	NOT = { is_owned_by = ROOT }
+	NOT = { has_state_flag = dhrondan_reclamation_wargoal_issued }
+	owner = { exists = yes }
+}
+
+# STATE scope with DHR as ROOT.
+dhrondan_state_can_be_integrated = {
+	dhrondan_state_is_landing_site = yes
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+}
+
+# COUNTRY scope on a proposed diplomatic partner, with DHR as ROOT.
+dhrondan_is_valid_compact_partner = {
+	exists = yes
+	NOT = { tag = DHR }
+	is_subject = no
+	ROOT = { is_subject = no }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_non_aggression_pact_with = ROOT }
+	NOT = { has_country_flag = dhrondan_two_world_compact_partner }
+}
+
+# COUNTRY scope on DHR during a running reclamation state decision. The state
+# target remains FROM, so both territorial and diplomatic legality are checked
+# again at completion rather than only when the decision starts.
+dhrondan_reclamation_decision_can_complete = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_reclamation_declared
+	FROM = {
+		dhrondan_state_can_be_reclaimed = yes
+		owner = {
+			exists = yes
+			ROOT = { can_declare_war_on = PREV }
+			NOT = { has_war_with = ROOT }
+		}
+	}
+}
+
+# COUNTRY scope on DHR during a running enclave state decision.
+dhrondan_enclave_decision_can_complete = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_enclave_crisis_active
+	FROM = { dhrondan_state_can_receive_enclave_support = yes }
+}
+
+# COUNTRY scope on DHR during a running integration state decision. State
+# integration is intentionally postwar and cancels if any war begins.
+dhrondan_integration_decision_can_complete = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_integration_started
+	has_war = no
+	FROM = { dhrondan_state_can_be_integrated = yes }
+}
+
+# COUNTRY scope on the recipient of Event .49. The regular actor target is
+# carried by the event chain; the global offer target prevents another country
+# from resolving a popup that outlived its targeted-decision context.
+dhrondan_compact_response_is_valid = {
+	exists = yes
+	NOT = { has_global_flag = world_end }
+	is_subject = no
+	NOT = { has_country_flag = dhrondan_two_world_compact_partner }
+	has_event_target = dhrondan_diplomatic_actor
+	has_event_target = dhrondan_diplomatic_offer_target
+	event_target:dhrondan_diplomatic_offer_target = { tag = ROOT }
+	event_target:dhrondan_diplomatic_actor = {
+		exists = yes
+		tag = DHR
+		dhrondan_is_covenant_regime = yes
+		has_country_flag = dhrondan_diplomatic_offer_active
+		is_subject = no
+		NOT = { has_war_with = ROOT }
+		NOT = { has_non_aggression_pact_with = ROOT }
+	}
+}
+
+# COUNTRY scope on DHR. This is the alternative completion hook for the
+# existing Event 016 achievement "Not From Here". It does not add an entry.
+dhrondan_existing_achievement_route_is_complete = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_achievement_route_hook_ready
+	has_country_flag = dhrondan_postwar_integration_completed
+	has_country_flag = dhrondan_diplomatic_compact_concluded
+}

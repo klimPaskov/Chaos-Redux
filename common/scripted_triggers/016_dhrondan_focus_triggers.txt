@@ -1,0 +1,61 @@
+# ============================================================================
+# CHAOS REDUX - EMPIRE OF D'RHONDA FOCUS TRIGGERS
+# ============================================================================
+# Tree-local route and lifecycle readers. Country-package, landing API,
+# decision, event, and map consumers may use these stable contracts without
+# importing the focus source itself.
+# ============================================================================
+
+dhrondan_focus_country_is_active = {
+	tag = DHR
+}
+
+dhrondan_focus_has_landing_network = {
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_landing_network_enabled
+}
+
+dhrondan_focus_has_political_route = {
+	OR = {
+		has_country_flag = dhrondan_imperial_route
+		has_country_flag = dhrondan_synod_route
+		has_country_flag = dhrondan_covenant_route
+	}
+}
+
+dhrondan_focus_is_imperial = {
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_imperial_route
+}
+
+dhrondan_focus_is_synod = {
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_synod_route
+}
+
+dhrondan_focus_is_covenant = {
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_covenant_route
+}
+
+dhrondan_focus_is_in_crisis = {
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_enclave_crisis_active
+}
+
+dhrondan_focus_has_origin_host_reclamation = {
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_reclamation_declared
+}
+
+dhrondan_focus_has_postwar_integration = {
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_integration_started
+}
+
+dhrondan_focus_cannot_train_alien_infantry = {
+	# DHR's military contract is deliberately negative: alien infantry is
+	# supplied only through the generic, paid landing API, never training.
+	dhrondan_focus_country_is_active = yes
+	has_country_flag = dhrondan_alien_infantry_training_forbidden
+}

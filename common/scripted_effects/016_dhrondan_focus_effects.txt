@@ -1,0 +1,291 @@
+# ============================================================================
+# CHAOS REDUX - EMPIRE OF D'RHONDA FOCUS EFFECTS
+# ============================================================================
+# Narrow focus-owned transitions for DHR. These effects deliberately expose
+# API and decision contracts through flags and variables; they never create a
+# division, train alien infantry, or grant a free cohort. The parent-owned
+# generic landing API consumes dhrondan_landing_equipment_cost when enabled.
+# ============================================================================
+
+@dhr_focus_building_level = 1
+@dhr_focus_research_slots = 1
+
+dhrondan_focus_clear_homeworld_lifecycle = {
+	if = { limit = { has_idea = dhrondan_homeworld_fragmentation } remove_ideas = dhrondan_homeworld_fragmentation }
+	if = { limit = { has_idea = dhrondan_homeworld_cohesion } remove_ideas = dhrondan_homeworld_cohesion }
+	if = { limit = { has_idea = dhrondan_imperial_mandate } remove_ideas = dhrondan_imperial_mandate }
+	if = { limit = { has_idea = dhrondan_synod_calculus } remove_ideas = dhrondan_synod_calculus }
+	if = { limit = { has_idea = dhrondan_covenant_compact } remove_ideas = dhrondan_covenant_compact }
+}
+
+dhrondan_focus_set_homeworld_fragmentation = {
+	dhrondan_focus_clear_homeworld_lifecycle = yes
+	add_ideas = dhrondan_homeworld_fragmentation
+	set_country_flag = dhrondan_homeworld_fragmentation_active
+	clr_country_flag = dhrondan_homeworld_cohesion_active
+	clr_country_flag = dhrondan_political_settlement_active
+}
+
+dhrondan_focus_set_homeworld_cohesion = {
+	dhrondan_focus_clear_homeworld_lifecycle = yes
+	add_ideas = dhrondan_homeworld_cohesion
+	clr_country_flag = dhrondan_homeworld_fragmentation_active
+	set_country_flag = dhrondan_homeworld_cohesion_active
+	clr_country_flag = dhrondan_political_settlement_active
+}
+
+dhrondan_focus_set_imperial_mandate = {
+	dhrondan_focus_clear_homeworld_lifecycle = yes
+	add_ideas = dhrondan_imperial_mandate
+	clr_country_flag = dhrondan_homeworld_fragmentation_active
+	clr_country_flag = dhrondan_homeworld_cohesion_active
+	set_country_flag = dhrondan_political_settlement_active
+}
+
+dhrondan_focus_set_synod_calculus = {
+	dhrondan_focus_clear_homeworld_lifecycle = yes
+	add_ideas = dhrondan_synod_calculus
+	clr_country_flag = dhrondan_homeworld_fragmentation_active
+	clr_country_flag = dhrondan_homeworld_cohesion_active
+	set_country_flag = dhrondan_political_settlement_active
+}
+
+dhrondan_focus_set_covenant_compact = {
+	dhrondan_focus_clear_homeworld_lifecycle = yes
+	add_ideas = dhrondan_covenant_compact
+	clr_country_flag = dhrondan_homeworld_fragmentation_active
+	clr_country_flag = dhrondan_homeworld_cohesion_active
+	set_country_flag = dhrondan_political_settlement_active
+}
+
+dhrondan_focus_clear_predictive_lifecycle = {
+	if = { limit = { has_idea = dhrondan_predictive_lag } remove_ideas = dhrondan_predictive_lag }
+	if = { limit = { has_idea = dhrondan_predictive_sight } remove_ideas = dhrondan_predictive_sight }
+	if = { limit = { has_idea = dhrondan_predictive_command } remove_ideas = dhrondan_predictive_command }
+}
+
+dhrondan_focus_set_predictive_lag = {
+	dhrondan_focus_clear_predictive_lifecycle = yes
+	add_ideas = dhrondan_predictive_lag
+	set_country_flag = dhrondan_predictive_lag_active
+	clr_country_flag = dhrondan_predictive_sight_active
+	clr_country_flag = dhrondan_predictive_command_active
+}
+
+dhrondan_focus_set_predictive_sight = {
+	dhrondan_focus_clear_predictive_lifecycle = yes
+	add_ideas = dhrondan_predictive_sight
+	clr_country_flag = dhrondan_predictive_lag_active
+	set_country_flag = dhrondan_predictive_sight_active
+	clr_country_flag = dhrondan_predictive_command_active
+}
+
+dhrondan_focus_set_predictive_command = {
+	dhrondan_focus_clear_predictive_lifecycle = yes
+	add_ideas = dhrondan_predictive_command
+	clr_country_flag = dhrondan_predictive_lag_active
+	clr_country_flag = dhrondan_predictive_sight_active
+	set_country_flag = dhrondan_predictive_command_active
+}
+
+dhrondan_focus_clear_offworld_lifecycle = {
+	if = { limit = { has_idea = dhrondan_offworld_isolation } remove_ideas = dhrondan_offworld_isolation }
+	if = { limit = { has_idea = dhrondan_offworld_relay } remove_ideas = dhrondan_offworld_relay }
+	if = { limit = { has_idea = dhrondan_offworld_corridor } remove_ideas = dhrondan_offworld_corridor }
+}
+
+dhrondan_focus_set_offworld_isolation = {
+	dhrondan_focus_clear_offworld_lifecycle = yes
+	add_ideas = dhrondan_offworld_isolation
+	set_country_flag = dhrondan_offworld_isolation_active
+	clr_country_flag = dhrondan_offworld_relay_active
+	clr_country_flag = dhrondan_offworld_corridor_active
+}
+
+dhrondan_focus_set_offworld_relay = {
+	dhrondan_focus_clear_offworld_lifecycle = yes
+	add_ideas = dhrondan_offworld_relay
+	clr_country_flag = dhrondan_offworld_isolation_active
+	set_country_flag = dhrondan_offworld_relay_active
+	clr_country_flag = dhrondan_offworld_corridor_active
+}
+
+dhrondan_focus_set_offworld_corridor = {
+	dhrondan_focus_clear_offworld_lifecycle = yes
+	add_ideas = dhrondan_offworld_corridor
+	clr_country_flag = dhrondan_offworld_isolation_active
+	clr_country_flag = dhrondan_offworld_relay_active
+	set_country_flag = dhrondan_offworld_corridor_active
+}
+
+dhrondan_focus_enable_landing_network = {
+	set_country_flag = dhrondan_landing_network_enabled
+	set_country_flag = dhrondan_alien_infantry_training_forbidden
+	set_variable = { dhrondan_landing_equipment_cost = constant:alien_infantry_landing.reserve_equipment }
+}
+
+dhrondan_focus_prepare_landing_cohort = {
+	dhrondan_focus_enable_landing_network = yes
+}
+
+dhrondan_focus_mark_origin_host_reclamation = {
+	set_country_flag = dhrondan_reclamation_declared
+}
+
+dhrondan_focus_mark_postwar_integration = {
+	set_country_flag = dhrondan_integration_started
+}
+
+dhrondan_focus_mark_enclave_crisis = {
+	set_country_flag = dhrondan_enclave_crisis_active
+}
+
+dhrondan_focus_clear_enclave_crisis = {
+	clr_country_flag = dhrondan_enclave_crisis_active
+	set_country_flag = dhrondan_enclave_crisis_resolved
+}
+
+dhrondan_focus_set_imperial_route = {
+	set_country_flag = dhrondan_imperial_route
+	clr_country_flag = dhrondan_synod_route
+	clr_country_flag = dhrondan_covenant_route
+	set_country_flag = dhrondan_regime_installed
+	set_cosmetic_tag = DHR_IMPERIAL
+	dhrondan_install_imperial_regime = yes
+}
+
+dhrondan_focus_set_synod_route = {
+	clr_country_flag = dhrondan_imperial_route
+	set_country_flag = dhrondan_synod_route
+	clr_country_flag = dhrondan_covenant_route
+	set_country_flag = dhrondan_regime_installed
+	set_cosmetic_tag = DHR_SYNOD
+	dhrondan_install_synod_regime = yes
+}
+
+dhrondan_focus_set_covenant_route = {
+	clr_country_flag = dhrondan_imperial_route
+	clr_country_flag = dhrondan_synod_route
+	set_country_flag = dhrondan_covenant_route
+	set_country_flag = dhrondan_regime_installed
+	set_cosmetic_tag = DHR_COVENANT
+	dhrondan_install_covenant_regime = yes
+}
+
+dhrondan_focus_open_laboratory_program = {
+	set_country_flag = dhrondan_laboratory_economy_unlocked
+	set_country_flag = dhrondan_laser_production_program_active
+}
+
+dhrondan_focus_expand_laser_production = {
+	set_country_flag = dhrondan_laser_production_expanded
+	random_owned_controlled_state = {
+		limit = {
+			free_building_slots = {
+				building = arms_factory
+				size > 0
+				include_locked = yes
+			}
+		}
+		add_extra_state_shared_building_slots = @dhr_focus_building_level
+		add_building_construction = {
+			type = arms_factory
+			level = @dhr_focus_building_level
+			instant_build = yes
+		}
+	}
+}
+
+dhrondan_focus_add_civilian_complex = {
+	random_owned_controlled_state = {
+		limit = {
+			free_building_slots = {
+				building = industrial_complex
+				size > 0
+				include_locked = yes
+			}
+		}
+		add_extra_state_shared_building_slots = @dhr_focus_building_level
+		add_building_construction = {
+			type = industrial_complex
+			level = @dhr_focus_building_level
+			instant_build = yes
+		}
+	}
+}
+
+dhrondan_focus_add_ground_logistics = {
+	capital_scope = {
+		add_building_construction = {
+			type = infrastructure
+			level = @dhr_focus_building_level
+			instant_build = yes
+		}
+	}
+}
+
+dhrondan_focus_add_air_relay = {
+	capital_scope = {
+		add_building_construction = {
+			type = air_base
+			level = @dhr_focus_building_level
+			instant_build = yes
+		}
+		add_building_construction = {
+			type = radar_station
+			level = @dhr_focus_building_level
+			instant_build = yes
+		}
+	}
+}
+
+dhrondan_focus_add_orbital_dockyard = {
+	random_owned_controlled_state = {
+		limit = {
+			is_coastal = yes
+			free_building_slots = {
+				building = dockyard
+				size > 0
+				include_locked = yes
+			}
+		}
+		add_extra_state_shared_building_slots = @dhr_focus_building_level
+		add_building_construction = {
+			type = dockyard
+			level = @dhr_focus_building_level
+			instant_build = yes
+		}
+	}
+}
+
+dhrondan_focus_add_lab_capacity = {
+	set_country_flag = dhrondan_lab_capacity_expanded
+	add_research_slot = @dhr_focus_research_slots
+}
+
+dhrondan_focus_add_predictive_readiness = {
+	set_country_flag = dhrondan_predictive_readiness_improved
+	army_experience = constant:dhrondan_focus_reward.army_experience_small
+	add_command_power = constant:dhrondan_focus_reward.command_power_small
+}
+
+dhrondan_focus_add_orbital_support = {
+	set_country_flag = dhrondan_orbital_support_improved
+	air_experience = constant:dhrondan_focus_reward.air_experience_small
+	navy_experience = constant:dhrondan_focus_reward.navy_experience_small
+}
+
+dhrondan_focus_add_diplomatic_credit = {
+	set_country_flag = dhrondan_diplomatic_credit_established
+	add_political_power = constant:dhrondan_focus_reward.political_power_small
+}
+
+dhrondan_focus_open_world_order = {
+	set_country_flag = dhrondan_world_order_decisions_unlocked
+	set_country_flag = dhrondan_world_order_claim_contract_ready
+	add_war_support = constant:dhrondan_focus_bonus.war_support_small
+}
+
+dhrondan_focus_award_achievement_hook = {
+	set_country_flag = dhrondan_achievement_route_hook_ready
+}
