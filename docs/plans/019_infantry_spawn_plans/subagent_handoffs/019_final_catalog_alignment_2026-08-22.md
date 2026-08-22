@@ -27,7 +27,6 @@ The exporter completed successfully and refreshed the export-only snapshots. Fie
 - `docs/spreadsheets/chaos_redux_clusters_catalog.csv`: 14 rows, 7 columns, SHA-256 `0bdd2e73f4c556af5fbdb028a2bbae258ef4d3402450d4bb112a63644047d299`
 - `docs/spreadsheets/chaos_redux_scenarios_catalog.csv`: 12 rows, 6 columns, SHA-256 `8d31d120dd81adb3ef48bae2afed8cf539bb4f23a60b04771c1eacc57875a398`
 
-## Unresolved mismatch
+## Verified scenario identity
 
-The parent task names `SCN-008` as Event 19's direct scenario and asks for four Event 19 types. The current source-of-truth map, Event 19 overview, triggerable-scenario documentation, scripted localisation, and scenario localisation identify the live Event 19 scenario as `SCN-013`, **The Unbidden Muster**, because Independence Wave owns `SCN-008`. Current `SCN-008` is **Every Banner Rises** with eight type options. I did not overwrite `Scenarios!A8:F8`, because doing so would corrupt the unrelated Independence Wave catalog row. Parent direction is required if the requested `SCN-008` identity is intentional.
-
+The Part 8 scenario-acceptance specification explicitly approves `SCN-013` as Event 19's direct scenario and records it as the first collision-free identity. The Event 19 README and implementation documentation confirm that proposed `SCN-008` was superseded because Independence Wave owns that occupied identity. `SCN-013`, **The Unbidden Muster**, is therefore the approved live identity with four player-facing types and four Low/Medium/High/Maximum intensity stops. `SCN-008` remains Event 006 / Independence Wave's **Every Banner Rises** scenario with its existing eight type options. The catalog correctly preserves both rows; no scenario identity or catalog blocker remains.
