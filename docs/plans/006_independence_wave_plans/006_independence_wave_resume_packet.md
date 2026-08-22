@@ -20,6 +20,8 @@ The 2026-08-21 parent tranche supplies synchronous roster checkpoints, committed
 
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with terminal-receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
 
+The 2026-08-22 portrait-consumer tranche adds the exact gated IW-051 YAK Pavel Pevznyak consumer, bringing the installed supplied set to 38 and leaving 13 files intentionally unmapped. Its handoff is `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`; YAK remains package-local and fail-closed.
+
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the opening-division owner.
 
 The source handoff is `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
@@ -39,6 +41,8 @@ The focus overlay audit remains route-coverage evidence for 318 definitions, res
 The 2026-08-22 decision and mission audit leaves the surface **PARTIAL / HOLD**.
 
 Its bounded audit and GUI receipts are in `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-22.md`.
+
+The narrow decision-surface completion-tooltip and active-category patch is recorded in `subagent_handoffs/006_event6_decision_surface_2026-08-22.md`; it does not close the queued four-group payment redesign.
 
 The compact Pacific cost disclosure patch is source-applied, but over-budget payment palettes, package cost prose, category density, DM-01 dynamic disclosure, and complete typed probability evidence remain queued.
 
@@ -68,6 +72,10 @@ Use the accepted seven-part specification for design intent, this 2026-08-22 ove
 The latest Event MCP evidence remains partial, and the post-release-scope refresh timed out; `hoi4.event_compare` remains blocked by the missing cached prior revision.
 
 The current whole-event receipt is `subagent_handoffs/006_event006_completion_audit_followup_2026-08-22.md`, and the timeout limitation is recorded in `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
+
+The current weighted-logic handoff is `subagent_handoffs/006_event6_probability_audit_2026-08-22.md`; the outer allocator source inspect succeeded, but all named band evaluations timed out and the partial-wave fallback remains an accepted-design decision point rather than a balance closure.
+
+The bounded IW-070/IW-071/IW-072 country-package audit is `subagent_handoffs/006_event6_transcaucasus_package_2026-08-22.md`; it found no safe gameplay patch and keeps ARM, GEO, and AZR at their existing static-admission boundary.
 
 The GUI inspect/render results remain fidelity evidence with workspace-global diagnostics and do not establish clean runtime acceptance.
 
