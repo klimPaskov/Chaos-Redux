@@ -78,7 +78,7 @@ The Fury source uses `world_threat_source_fury` during its terminal world-end br
 
 The Death source uses `death_refresh_world_threat_source` in `common/scripted_effects/010_death_effects.txt`. It activates only after Death is publicly revealed by consuming a mainland state above the reveal population threshold, and clears when Death is defeated.
 
-The Cannibalism source uses `cannibalism_refresh_world_threat_source` in `common/scripted_effects/014_cannibalism_core_effects.txt`. It activates only when the Event 014 system has reached meaningful military scale through multiple warlord countries, a mature international network, the unified Host, or the merged Wendigo route. It clears after those conditions disappear or global Event 014 cleanup completes.
+The Cannibalism source uses `cannibalism_refresh_world_threat_source` in `common/scripted_effects/014_cannibalism_effects.txt`. It activates only when the Event 014 system has reached meaningful military scale through multiple warlord countries, a mature international network, the unified Host, or the merged Wendigo route. It clears after those conditions disappear or global Event 014 cleanup completes.
 
 The Black Plague source is refreshed by `black_plague_scenario_refresh_shared_threat` in `common/scripted_effects/020_black_plague_scenario_effects.txt`. It activates for Evolution III, the Rat King state, or the configured established-state threshold, and clears when none of those conditions remain.
 
@@ -151,7 +151,7 @@ Everything should fold back into the same source-counted system.
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
 - `common/scripted_effects/003_holy_realm_effects.txt`
 - `common/scripted_effects/010_death_effects.txt`
-- `common/scripted_effects/014_cannibalism_core_effects.txt`
+- `common/scripted_effects/014_cannibalism_effects.txt`
 - `common/scripted_effects/016_brilliant_scientist_super_event_effects.txt`
 - `common/scripted_effects/018_resources_found_cave_effects.txt`
 - `common/scripted_effects/020_black_plague_scenario_effects.txt`
