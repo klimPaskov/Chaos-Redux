@@ -3,6 +3,7 @@
 # ============================================================================
 # Overview:
 # - Completes every installed vanilla and Chaos Redux special project.
+# - Completes registered future projects through a persistent opt-in array.
 # - Projects are completed before the final technology grant so all project outputs resolve first.
 # ============================================================================
 
@@ -90,4 +91,41 @@ chaosx_test_country_complete_all_special_projects = {
 	complete_special_project = sp:tularemia_bomb
 	complete_special_project = sp:weaponize_the_zombies
 	complete_special_project = sp:zombie_cure_bomb
+	chaosx_test_country_complete_registered_special_projects = yes
+}
+
+# Input: temporary variable chaosx_test_country_registration_special_project
+# containing an sp:<project_id> special-project scope. Special projects use the
+# dedicated sp: scope form rather than the token:<id> form used by equipment and
+# sub-units. The owning package's registered CXT setup effect calls this helper;
+# the registry persists globally for the save.
+chaosx_test_country_register_special_project = {
+	if = {
+		limit = { has_variable = chaosx_test_country_registration_special_project }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.chaosx_test_country_registered_special_projects
+						value = chaosx_test_country_registration_special_project
+					}
+				}
+			}
+			add_to_array = {
+				array = global.chaosx_test_country_registered_special_projects
+				value = chaosx_test_country_registration_special_project
+			}
+		}
+	}
+}
+
+chaosx_test_country_complete_registered_special_projects = {
+	for_each_loop = {
+		array = global.chaosx_test_country_registered_special_projects
+		value = chaosx_test_country_current_special_project
+		if = {
+			limit = { NOT = { is_special_project_completed = var:chaosx_test_country_current_special_project } }
+			complete_special_project = var:chaosx_test_country_current_special_project
+		}
+	}
 }

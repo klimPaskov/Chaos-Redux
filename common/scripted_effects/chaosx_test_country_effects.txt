@@ -5,9 +5,9 @@
 # - The public console entry point is "e chaosx_test".
 # - Switches the current player to CXT, annexes the former player country
 #   without importing vanilla divisions, and preserves the former capital.
-# - Completes the merged technology and special-project inventories, activates
-#   Chaos Warfare, provisions every Chaos Redux land unit, and turns on the
-#   shared CBRN and camp systems.
+# - Enumerates the runtime technology database, consumes registered projects,
+#   equipment, units, and package setup effects, activates Chaos Warfare, and
+#   turns on the shared CBRN and camp systems.
 # - Maintains tag-specific daily resources and weekly stockpile replenishment
 #   without a world iteration.
 # ============================================================================
@@ -202,6 +202,43 @@ chaosx_test_country_activate_camp_systems = {
 	}
 }
 
+# Input: temporary variable chaosx_test_country_registration_extension_effect
+# containing token:<hidden_idea_carrier>. The matching scripted effect must use
+# the carrier id plus an _apply suffix, be safe in country scope, and be
+# idempotent because CXT invokes it from its daily repair bus.
+chaosx_test_country_register_extension_effect = {
+	set_temp_variable = { chaosx_test_country_extension_registration_added = 0 }
+	if = {
+		limit = { has_variable = chaosx_test_country_registration_extension_effect }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.chaosx_test_country_registered_extension_effects
+						value = chaosx_test_country_registration_extension_effect
+					}
+				}
+			}
+			add_to_array = {
+				array = global.chaosx_test_country_registered_extension_effects
+				value = chaosx_test_country_registration_extension_effect
+			}
+			set_temp_variable = { chaosx_test_country_extension_registration_added = 1 }
+		}
+	}
+}
+
+chaosx_test_country_apply_registered_extension_effects = {
+	for_each_loop = {
+		array = global.chaosx_test_country_registered_extension_effects
+		value = chaosx_test_country_current_extension_effect
+		meta_effect = {
+			text = { [EXTENSION_EFFECT]_apply = yes }
+			EXTENSION_EFFECT = "[?chaosx_test_country_current_extension_effect.GetTokenKey]"
+		}
+	}
+}
+
 chaosx_test_country_initial_setup = {
 	set_country_flag = chaosx_test_country_initialized
 	set_research_slots = constant:chaosx_test_country_count.research_slots
@@ -214,12 +251,29 @@ chaosx_test_country_initial_setup = {
 	chaosx_test_country_fill_stockpile = yes
 	chaosx_test_country_refill_resources = yes
 	chaosx_test_country_create_unit_roster = yes
+	chaosx_test_country_sync_registered_content = yes
 }
 
 chaosx_test_country_refresh = {
 	chaosx_test_country_complete_all_technologies = yes
+	chaosx_test_country_sync_registered_content = yes
 	chaosx_test_country_fill_stockpile = yes
 	chaosx_test_country_refill_resources = yes
+}
+
+# Daily CXT consumes package setup effects registered through the documented
+# startup and tag-scoped repair hooks. Every package effect must be idempotent.
+chaosx_test_country_sync_registered_content = {
+	chaosx_test_country_apply_registered_extension_effects = yes
+	chaosx_test_country_complete_registered_special_projects = yes
+	chaosx_test_country_fill_registered_equipment = yes
+	chaosx_test_country_create_registered_unit_roster = yes
+}
+
+# Weekly CXT performs the bounded runtime technology scan. Its on-action caller
+# invokes the full static and registered stockpile helper once afterward.
+chaosx_test_country_sync_dynamic_content = {
+	chaosx_test_country_complete_all_technologies = yes
 }
 
 chaosx_test = {

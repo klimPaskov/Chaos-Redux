@@ -4,6 +4,7 @@
 # Overview:
 # - Unlocks every Chaos Redux land sub-unit and creates one recruitable template for each.
 # - Spawns three fully equipped and fully manned divisions from every test template.
+# - Supports opt-in registration of future frontline and support sub-units.
 # ============================================================================
 
 @CXT_TEST_UNIT_COUNT = 3
@@ -1820,6 +1821,172 @@ chaosx_test_country_create_unit_roster = {
 			owner = PREV
 			count = @CXT_TEST_UNIT_COUNT
 			allow_spawning_on_enemy_provs = yes
+		}
+	}
+}
+
+# Input: temporary variable chaosx_test_country_registration_frontline_subunit
+# containing token:<subunit_id>. The owning package's registered CXT setup
+# effect should call this helper.
+chaosx_test_country_register_frontline_subunit = {
+	if = {
+		limit = { has_variable = chaosx_test_country_registration_frontline_subunit }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.chaosx_test_country_registered_frontline_subunits
+						value = chaosx_test_country_registration_frontline_subunit
+					}
+				}
+			}
+			add_to_array = {
+				array = global.chaosx_test_country_registered_frontline_subunits
+				value = chaosx_test_country_registration_frontline_subunit
+			}
+		}
+	}
+}
+
+# Inputs: temporary variables chaosx_test_country_registration_support_subunit
+# and chaosx_test_country_registration_support_anchor, each containing
+# token:<subunit_id>. The owning package's registered CXT setup effect should
+# call this helper.
+# A support company needs a compatible line anchor for its generated CXT
+# template; the caller owns that compatibility decision.
+chaosx_test_country_register_support_subunit = {
+	if = {
+		limit = {
+			has_variable = chaosx_test_country_registration_support_subunit
+			has_variable = chaosx_test_country_registration_support_anchor
+		}
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.chaosx_test_country_registered_support_subunits
+						value = chaosx_test_country_registration_support_subunit
+					}
+				}
+			}
+			add_to_array = {
+				array = global.chaosx_test_country_registered_support_subunits
+				value = chaosx_test_country_registration_support_subunit
+			}
+			add_to_array = {
+				array = global.chaosx_test_country_registered_support_anchors
+				value = chaosx_test_country_registration_support_anchor
+			}
+		}
+	}
+}
+
+chaosx_test_country_create_registered_frontline_subunit = {
+	meta_effect = {
+		text = {
+			unlock_subunit = [UNIT]
+			division_template = {
+				name = "CXT Registered - [UNIT]"
+				is_locked = no
+				force_allow_recruiting = yes
+				regiments = {
+					[UNIT] = { x = 0 y = 0 }
+				}
+			}
+		}
+		UNIT = "[?chaosx_test_country_current_frontline_subunit.GetTokenKey]"
+	}
+	capital_scope = {
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"CXT Registered - [UNIT]\" division_template = \"CXT Registered - [UNIT]\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+					count = @CXT_TEST_UNIT_COUNT
+					allow_spawning_on_enemy_provs = yes
+				}
+			}
+			UNIT = "[?chaosx_test_country_current_frontline_subunit.GetTokenKey]"
+		}
+	}
+}
+
+chaosx_test_country_create_registered_support_subunit = {
+	meta_effect = {
+		text = {
+			unlock_subunit = [UNIT]
+			division_template = {
+				name = "CXT Registered - [UNIT]"
+				is_locked = no
+				force_allow_recruiting = yes
+				regiments = {
+					[ANCHOR] = { x = 0 y = 0 }
+				}
+				support = {
+					[UNIT] = { x = 0 y = 1 }
+				}
+			}
+		}
+		UNIT = "[?chaosx_test_country_current_support_subunit.GetTokenKey]"
+		ANCHOR = "[?chaosx_test_country_current_support_anchor.GetTokenKey]"
+	}
+	capital_scope = {
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"CXT Registered - [UNIT]\" division_template = \"CXT Registered - [UNIT]\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+					count = @CXT_TEST_UNIT_COUNT
+					allow_spawning_on_enemy_provs = yes
+				}
+			}
+			UNIT = "[?chaosx_test_country_current_support_subunit.GetTokenKey]"
+		}
+	}
+}
+
+chaosx_test_country_create_registered_unit_roster = {
+	for_each_loop = {
+		array = global.chaosx_test_country_registered_frontline_subunits
+		value = chaosx_test_country_current_frontline_subunit
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = chaosx_test_country_processed_frontline_subunits
+						value = chaosx_test_country_current_frontline_subunit
+					}
+				}
+			}
+			chaosx_test_country_create_registered_frontline_subunit = yes
+			add_to_array = {
+				array = chaosx_test_country_processed_frontline_subunits
+				value = chaosx_test_country_current_frontline_subunit
+			}
+		}
+	}
+	for_each_loop = {
+		array = global.chaosx_test_country_registered_support_subunits
+		value = chaosx_test_country_current_support_subunit
+		index = chaosx_test_country_current_support_index
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = chaosx_test_country_processed_support_subunits
+						value = chaosx_test_country_current_support_subunit
+					}
+				}
+			}
+			set_temp_variable = {
+				var = chaosx_test_country_current_support_anchor
+				value = global.chaosx_test_country_registered_support_anchors^chaosx_test_country_current_support_index
+			}
+			chaosx_test_country_create_registered_support_subunit = yes
+			add_to_array = {
+				array = chaosx_test_country_processed_support_subunits
+				value = chaosx_test_country_current_support_subunit
+			}
 		}
 	}
 }

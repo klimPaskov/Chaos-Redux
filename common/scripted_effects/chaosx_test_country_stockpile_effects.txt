@@ -4,6 +4,7 @@
 # Overview:
 # - Registers dedicated flame-tank variants for custom chemical support units.
 # - Adds a million units of every concrete Chaos Redux equipment type and its vanilla dependencies.
+# - Adds registered future equipment through a token-aware meta-effect loop.
 # ============================================================================
 
 chaosx_test_country_register_flame_tank_variants = {
@@ -333,5 +334,46 @@ chaosx_test_country_fill_stockpile = {
 	add_equipment_to_stockpile = {
 		type = heavy_tank_flame_chassis
 		amount = constant:chaosx_test_country.stockpile_amount
+	}
+	chaosx_test_country_fill_registered_equipment = yes
+}
+
+# Input: temporary variable chaosx_test_country_registration_equipment
+# containing token:<equipment_id>. Equipment definitions do not expose a
+# runtime database array, so future equipment opts in through this contract from
+# the owning package's registered CXT setup effect.
+chaosx_test_country_register_equipment = {
+	if = {
+		limit = { has_variable = chaosx_test_country_registration_equipment }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.chaosx_test_country_registered_equipment
+						value = chaosx_test_country_registration_equipment
+					}
+				}
+			}
+			add_to_array = {
+				array = global.chaosx_test_country_registered_equipment
+				value = chaosx_test_country_registration_equipment
+			}
+		}
+	}
+}
+
+chaosx_test_country_fill_registered_equipment = {
+	for_each_loop = {
+		array = global.chaosx_test_country_registered_equipment
+		value = chaosx_test_country_current_equipment
+		meta_effect = {
+			text = {
+				add_equipment_to_stockpile = {
+					type = [EQUIPMENT]
+					amount = constant:chaosx_test_country.stockpile_amount
+				}
+			}
+			EQUIPMENT = "[?chaosx_test_country_current_equipment.GetTokenKey]"
+		}
 	}
 }
