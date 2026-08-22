@@ -191,6 +191,38 @@ famine_migration_food_score = {
 	catastrophic_recovery_threshold = 80
 }
 
+# Persistent reserve units are thousand-person-days: one unit covers one day
+# of food for one thousand civilians. Capacity and replenishment therefore
+# scale with the live state population without touching the population ledger.
+famine_migration_food_reserve = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	minimum_units = 1
+	daily_need_per_k = 1.00
+	capacity_days = 45.00
+	target_days = 30.00
+	logistics_factor_base = 0.50
+	logistics_factor_per_infrastructure = 0.10
+	logistics_factor_minimum = 0.25
+	logistics_factor_maximum = 1.25
+	transport_capacity_penalty = 0.003
+	production_capacity_penalty = 0.002
+	replenishment_per_k_per_day = 0.15
+	replenishment_factor_minimum = 0.10
+	depletion_factor_minimum = 0.25
+	supply_strain_depletion_share = 0.05
+	acute_shortage_depletion_share = 0.20
+	famine_depletion_share = 0.50
+	catastrophic_depletion_share = 1.00
+	relief_per_day_covered = 1.50
+	relief_maximum = 35.00
+	relief_decay_per_day = 0.50
+}
+
 famine_migration_food_timing = {
 	schema = {
 		any_key = yes
