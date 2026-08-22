@@ -1,0 +1,381 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 D'RHONDAN CONTACT EFFECTS
+# ============================================================================
+# Owns envoy-craft completion, the two bounded expedition obligations, pact
+# receipts, landing history callbacks, and the country-scoped rebellion pulse.
+# Public alien-infantry APIs and the DHR revolt implementation remain external.
+# ============================================================================
+
+# COUNTRY scope. The Antarctic recovery is a one-time project-completion bypass
+# only for the active Kruger host. Event 036's spacecraft receipt is not read.
+dhrondan_try_apply_antarctic_craft_bypass = {
+	if = {
+		limit = { dhrondan_antarctic_craft_bypass_is_valid = yes }
+		set_country_flag = dhrondan_antarctic_craft_bypass_consumed
+		complete_special_project = {
+			project = sp:sp_dhrondan_envoy_craft
+			show_modifiers = no
+		}
+	}
+}
+
+# COUNTRY scope. Project output and script-completion routes share this guarded
+# hook, so the craft report and Mengele completion receipt cannot duplicate.
+dhrondan_complete_envoy_craft = {
+	if = {
+		limit = { NOT = { has_country_flag = dhrondan_envoy_craft_completed } }
+		set_country_flag = dhrondan_envoy_craft_completed
+		if = {
+			limit = { is_mengele_clone_directorate_country = yes }
+			set_country_flag = directorate_special_project_dhrondan_envoy_craft_completed
+			clr_country_flag = directorate_special_project_dhrondan_envoy_craft_available
+		}
+		country_event = { id = chaosx.nr16.40 }
+	}
+}
+
+# COUNTRY scope on the active host. The fixed-character receipt is authoritative;
+# the country flag is only a host-local presentation mirror.
+dhrondan_apply_kruger_authorization_directorate_changes = {
+	if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			KRG_warren_kruger = { NOT = { has_character_flag = dhrondan_kruger_authorization_reward_received } }
+		}
+		KRG_warren_kruger = { set_character_flag = dhrondan_kruger_authorization_reward_received }
+		set_country_flag = dhrondan_kruger_authorization_changes_applied
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+		brilliant_scientist_change_mandate = yes
+		brilliant_scientist_change_dependence = yes
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+		brilliant_scientist_change_exposure = yes
+		multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+		brilliant_scientist_change_grievance = yes
+	}
+	else_if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			KRG_warren_kruger = { has_character_flag = dhrondan_kruger_authorization_reward_received }
+		}
+		set_country_flag = dhrondan_kruger_authorization_changes_applied
+	}
+}
+
+# COUNTRY scope on the active host. The fixed-character receipt is authoritative;
+# the country flag is only a host-local presentation mirror.
+dhrondan_apply_kruger_return_directorate_changes = {
+	if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			KRG_warren_kruger = { NOT = { has_character_flag = dhrondan_kruger_return_reward_received } }
+		}
+		KRG_warren_kruger = { set_character_flag = dhrondan_kruger_return_reward_received }
+		set_country_flag = dhrondan_kruger_return_changes_applied
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+		brilliant_scientist_change_mandate = yes
+		brilliant_scientist_change_dependence = yes
+		brilliant_scientist_change_independent_capacity = yes
+	}
+	else_if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			KRG_warren_kruger = { has_character_flag = dhrondan_kruger_return_reward_received }
+		}
+		set_country_flag = dhrondan_kruger_return_changes_applied
+	}
+}
+
+# COUNTRY scope. The fixed character token is suspended through the same role
+# helpers and transaction lock used by atomic host transfers. The character
+# flag is the authoritative obligation; country flags are mission mirrors.
+dhrondan_suspend_kruger_for_expedition = {
+	if = {
+		limit = {
+			dhrondan_kruger_expedition_is_available = yes
+			NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+		}
+		set_global_flag = brilliant_scientist_character_transaction_lock
+		set_country_flag = brilliant_scientist_character_transaction_lock
+		KRG_warren_kruger = { set_character_flag = dhrondan_kruger_expedition_obligation }
+		brilliant_scientist_remove_kruger_roles = yes
+		set_country_flag = dhrondan_expedition_in_progress
+		set_country_flag = dhrondan_kruger_expedition_in_progress
+		clr_country_flag = dhrondan_expedition_audience_pending
+		clr_country_flag = brilliant_scientist_character_transaction_lock
+		clr_global_flag = brilliant_scientist_character_transaction_lock
+	}
+}
+
+# COUNTRY scope. Idempotently restores only the canonical fixed token and never
+# recruits, transfers, or duplicates it.
+dhrondan_restore_kruger_after_expedition = {
+	if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			KRG_warren_kruger = { has_character_flag = dhrondan_kruger_expedition_obligation }
+		}
+		set_global_flag = brilliant_scientist_character_transaction_lock
+		set_country_flag = brilliant_scientist_character_transaction_lock
+		KRG_warren_kruger = { clr_character_flag = dhrondan_kruger_expedition_obligation }
+		if = {
+			limit = {
+				brilliant_scientist_is_current_host = yes
+				KRG_warren_kruger = {
+					has_character_flag = brilliant_scientist_personal_active
+					NOT = { has_character_flag = brilliant_scientist_personal_injured }
+					NOT = { has_character_flag = brilliant_scientist_personal_confined }
+				}
+			}
+			brilliant_scientist_add_kruger_roles = yes
+		}
+		clr_country_flag = brilliant_scientist_character_transaction_lock
+		clr_global_flag = brilliant_scientist_character_transaction_lock
+	}
+}
+
+# COUNTRY scope. Decision cost pays political power; this helper consumes the
+# exact fuel, applies the Directorate authorization once, and opens the mission.
+dhrondan_begin_kruger_expedition = {
+	if = {
+		limit = {
+			dhrondan_kruger_expedition_is_available = yes
+			dhrondan_can_pay_expedition_fuel = yes
+		}
+		dhrondan_suspend_kruger_for_expedition = yes
+		if = {
+			limit = { has_country_flag = dhrondan_kruger_expedition_in_progress }
+			set_temp_variable = { dhrondan_expedition_fuel_debit = constant:dhrondan_contact.expedition_fuel_cost }
+			multiply_temp_variable = { dhrondan_expedition_fuel_debit = constant:brilliant_scientist_directorate_value.negative_one }
+			add_fuel = dhrondan_expedition_fuel_debit
+			dhrondan_apply_kruger_authorization_directorate_changes = yes
+			set_variable = { dhrondan_expedition_days = constant:dhrondan_contact.expedition_days }
+			activate_mission = dhrondan_kruger_expedition_mission
+			country_event = { id = chaosx.nr16.41 }
+		}
+	}
+}
+
+# COUNTRY scope. The independent Mengele route shares only cost, duration, and
+# presentation. It never calls an Event 016 Directorate-variable mutation.
+dhrondan_begin_mengele_expedition = {
+	if = {
+		limit = {
+			dhrondan_mengele_expedition_is_available = yes
+			dhrondan_can_pay_expedition_fuel = yes
+		}
+		set_country_flag = dhrondan_expedition_in_progress
+		set_country_flag = dhrondan_mengele_expedition_in_progress
+		clr_country_flag = dhrondan_expedition_audience_pending
+		set_temp_variable = { dhrondan_expedition_fuel_debit = constant:dhrondan_contact.expedition_fuel_cost }
+		multiply_temp_variable = { dhrondan_expedition_fuel_debit = constant:brilliant_scientist_directorate_value.negative_one }
+		add_fuel = dhrondan_expedition_fuel_debit
+		set_variable = { dhrondan_expedition_days = constant:dhrondan_contact.expedition_days }
+		activate_mission = dhrondan_mengele_expedition_mission
+		country_event = { id = chaosx.nr16.41 }
+	}
+}
+
+# COUNTRY scope. Event .40 has one AI option and calls this exact affordability
+# path, so an eligible AI authorizes immediately instead of competing in the
+# general decision queue. The visible decisions retain a dominant retry weight.
+dhrondan_ai_try_authorize_expedition = {
+	if = {
+		limit = {
+			is_ai = yes
+			dhrondan_can_pay_expedition_political_power = yes
+			dhrondan_can_pay_expedition_fuel = yes
+			OR = {
+				dhrondan_kruger_expedition_is_available = yes
+				dhrondan_mengele_expedition_is_available = yes
+			}
+		}
+		set_temp_variable = { dhrondan_expedition_political_power_debit = constant:dhrondan_contact.expedition_political_power_cost }
+		multiply_temp_variable = { dhrondan_expedition_political_power_debit = constant:brilliant_scientist_directorate_value.negative_one }
+		add_political_power = dhrondan_expedition_political_power_debit
+		if = {
+			limit = { dhrondan_kruger_expedition_is_available = yes }
+			dhrondan_begin_kruger_expedition = yes
+		}
+		else_if = {
+			limit = { dhrondan_mengele_expedition_is_available = yes }
+			dhrondan_begin_mengele_expedition = yes
+		}
+	}
+}
+
+# COUNTRY scope. Called by the mission timeout after its route remains valid.
+dhrondan_open_planetary_audience = {
+	if = {
+		limit = { has_country_flag = dhrondan_expedition_in_progress }
+		set_country_flag = dhrondan_expedition_audience_pending
+		country_event = { id = chaosx.nr16.42 }
+	}
+}
+
+# COUNTRY scope. Common exact cleanup after success or failure.
+dhrondan_clear_expedition_state = {
+	dhrondan_restore_kruger_after_expedition = yes
+	clr_country_flag = dhrondan_expedition_in_progress
+	clr_country_flag = dhrondan_kruger_expedition_in_progress
+	clr_country_flag = dhrondan_mengele_expedition_in_progress
+	clr_country_flag = dhrondan_expedition_audience_pending
+	clear_variable = dhrondan_expedition_days
+}
+
+# COUNTRY scope. Inputs are inferred only from the route flags established at
+# mission start. API-source input is patched to the provider's stable contract.
+dhrondan_authorize_pact_and_return = {
+	if = {
+		limit = {
+			has_country_flag = dhrondan_expedition_in_progress
+			has_country_flag = dhrondan_expedition_audience_pending
+			OR = {
+				dhrondan_kruger_expedition_remains_valid = yes
+				dhrondan_mengele_expedition_remains_valid = yes
+			}
+		}
+		if = {
+			limit = { dhrondan_kruger_expedition_remains_valid = yes }
+			dhrondan_apply_kruger_return_directorate_changes = yes
+			KRG_warren_kruger = { set_character_flag = dhrondan_kruger_pact_completed }
+			set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.kruger_pact }
+			set_country_flag = dhrondan_kruger_contact_receipt
+			set_country_flag = dhrondan_kruger_return_report_pending
+			clr_country_flag = dhrondan_mengele_return_report_pending
+		}
+		else_if = {
+			limit = { dhrondan_mengele_expedition_remains_valid = yes }
+			set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.mengele_expedition }
+			set_country_flag = dhrondan_mengele_contact_receipt
+			set_country_flag = dhrondan_mengele_return_report_pending
+			clr_country_flag = dhrondan_kruger_return_report_pending
+		}
+		if = {
+			limit = { NOT = { has_country_flag = dhrondan_pact_established } }
+			set_country_flag = dhrondan_pact_established
+		}
+		alien_infantry_grant_contact = yes
+		dhrondan_refresh_rebellion_pulse = yes
+		dhrondan_clear_expedition_state = yes
+		country_event = { id = chaosx.nr16.43 }
+	}
+	else_if = {
+		limit = {
+			has_country_flag = dhrondan_expedition_in_progress
+			has_country_flag = dhrondan_expedition_audience_pending
+		}
+		dhrondan_fail_expedition = yes
+	}
+}
+
+# COUNTRY scope. Failure and cancellation are repeat-safe and grant no receipt,
+# pact state, or successful-return Directorate changes.
+dhrondan_fail_expedition = {
+	if = {
+		limit = { has_country_flag = dhrondan_expedition_in_progress }
+		if = {
+			limit = { has_country_flag = dhrondan_kruger_expedition_in_progress }
+			set_country_flag = dhrondan_kruger_failure_report_pending
+			clr_country_flag = dhrondan_mengele_failure_report_pending
+		}
+		else = {
+			set_country_flag = dhrondan_mengele_failure_report_pending
+			clr_country_flag = dhrondan_kruger_failure_report_pending
+		}
+		dhrondan_clear_expedition_state = yes
+		country_event = { id = chaosx.nr16.45 }
+	}
+}
+
+# COUNTRY scope, called only after the public alien API has completed its generic
+# paid-landing bookkeeping. The API owns the marked state, persistent history,
+# arrival total, Alien Presence, and Pact Strain for every source. This Event 016
+# callback owns only pact-host presentation and rebellion refresh.
+dhrondan_record_successful_landing = {
+	if = {
+		limit = { has_country_flag = dhrondan_pact_established }
+		country_event = { id = chaosx.nr16.44 }
+		dhrondan_refresh_rebellion_pulse = yes
+	}
+}
+
+# COUNTRY scope. The decision owns PP; this applies the exact strain reduction,
+# clamps at zero, and refreshes the country mission gate without scanning.
+dhrondan_honor_accord = {
+	subtract_from_variable = { dhrondan_pact_strain = constant:dhrondan_contact.pact_honor_strain_reduction }
+	if = {
+		limit = { check_variable = { dhrondan_pact_strain < constant:dhrondan_contact.zero } }
+		set_variable = { dhrondan_pact_strain = constant:dhrondan_contact.zero }
+	}
+	set_temp_variable = { dhrondan_honor_accord_cooldown_days = constant:dhrondan_contact.pact_honor_cooldown_days }
+	set_country_flag = {
+		flag = dhrondan_honor_accord_cooldown
+		days = dhrondan_honor_accord_cooldown_days
+	}
+	dhrondan_refresh_rebellion_pulse = yes
+}
+
+# COUNTRY scope. Activates or removes the single bounded pulse only for this
+# pact host. The warning is one-time presentation, not a probability roll.
+dhrondan_refresh_rebellion_pulse = {
+	if = {
+		limit = { dhrondan_rebellion_pulse_is_eligible = yes }
+		if = {
+			limit = { NOT = { has_country_flag = dhrondan_rebellion_warning_seen } }
+			set_country_flag = dhrondan_rebellion_warning_seen
+			country_event = { id = chaosx.nr16.46 }
+		}
+		if = {
+			limit = { NOT = { has_active_mission = dhrondan_rebellion_pulse_mission } }
+			activate_mission = dhrondan_rebellion_pulse_mission
+		}
+	}
+	else = {
+		remove_mission = dhrondan_rebellion_pulse_mission
+	}
+}
+
+# COUNTRY scope. Exact tier order is 40, then 20, then the qualifying 10 base.
+dhrondan_resolve_rebellion_pulse = {
+	if = {
+		limit = { dhrondan_rebellion_pulse_is_eligible = yes }
+		set_temp_variable = { dhrondan_revolt_weight = constant:dhrondan_contact.rebellion_chance_low }
+		if = {
+			limit = { dhrondan_rebellion_high_tier_is_active = yes }
+			set_temp_variable = { dhrondan_revolt_weight = constant:dhrondan_contact.rebellion_chance_high }
+		}
+		else_if = {
+			limit = { dhrondan_rebellion_medium_tier_is_active = yes }
+			set_temp_variable = { dhrondan_revolt_weight = constant:dhrondan_contact.rebellion_chance_medium }
+		}
+		set_temp_variable = { dhrondan_no_revolt_weight = constant:dhrondan_contact.probability_total }
+		subtract_from_temp_variable = { dhrondan_no_revolt_weight = dhrondan_revolt_weight }
+		random_list = {
+			dhrondan_revolt_weight = {
+				set_country_flag = dhrondan_rebellion_triggered
+				country_event = { id = chaosx.nr16.47 }
+			}
+			dhrondan_no_revolt_weight = {
+				dhrondan_refresh_rebellion_pulse = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope. External country-package implementation owns every formation,
+# territory, stockpile, and news side effect behind this stable bridge.
+dhrondan_begin_rebellion_bridge = {
+	if = {
+		limit = {
+			has_country_flag = dhrondan_rebellion_triggered
+			NOT = { has_country_flag = dhrondan_rebellion_bridge_called }
+		}
+		dhrondan_start_revolt = yes
+		if = {
+			limit = { NOT = { has_country_flag = dhrondan_rebellion_bridge_called } }
+			clr_country_flag = dhrondan_rebellion_triggered
+			dhrondan_refresh_rebellion_pulse = yes
+		}
+	}
+}

@@ -1,0 +1,204 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 D'RHONDAN CONTACT TRIGGERS
+# ============================================================================
+# Side-effect-free gates for envoy-craft access, the two expedition routes,
+# pact maintenance, and the bounded country rebellion pulse.
+# ============================================================================
+
+dhrondan_envoy_craft_has_route_access = {
+	OR = {
+		brilliant_scientist_is_current_host = yes
+		brilliant_scientist_is_kruger_sovereign_country = yes
+		AND = {
+			is_mengele_clone_directorate_country = yes
+			OR = {
+				has_country_flag = directorate_special_projects_all_available
+				has_country_flag = directorate_special_project_dhrondan_envoy_craft_available
+			}
+		}
+		has_country_flag = dhrondan_envoy_craft_future_event_access
+	}
+}
+
+# Kruger and KRG use the Event 016 prototype receipts. Mengele's independent
+# bridge reads its three matching completed projects plus the vanilla rocket
+# and atomic programs that stand in for the two families it does not clone.
+dhrondan_envoy_craft_has_operational_work = {
+	OR = {
+		AND = {
+			brilliant_scientist_kruger_focus_alien_arms_deployment_is_operational = yes
+			brilliant_scientist_kruger_focus_has_rocketry_deployment = yes
+			brilliant_scientist_kruger_focus_has_high_energy_deployment = yes
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^0
+				value = constant:brilliant_scientist_project_stage.deployment
+				compare = greater_than_or_equals
+			}
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.computation } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.computation } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.computation } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.computation } }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^2
+				value = constant:brilliant_scientist_project_stage.deployment
+				compare = greater_than_or_equals
+			}
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.materials } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.materials } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.materials } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.materials } }
+		}
+		AND = {
+			is_mengele_clone_directorate_country = yes
+			has_country_flag = directorate_special_project_alien_arms_completed
+			has_country_flag = directorate_special_project_materials_completed
+			has_country_flag = directorate_special_project_computation_completed
+			has_tech = rocket_engines
+			has_tech = atomic_research
+		}
+	}
+}
+
+dhrondan_envoy_craft_is_visible = {
+	dhrondan_envoy_craft_has_route_access = yes
+	NOT = { is_special_project_completed = sp:sp_dhrondan_envoy_craft }
+	NOT = { has_global_flag = world_end }
+}
+
+dhrondan_envoy_craft_is_available = {
+	dhrondan_envoy_craft_is_visible = yes
+	dhrondan_envoy_craft_has_operational_work = yes
+}
+
+dhrondan_envoy_craft_random_completion_is_valid = {
+	dhrondan_envoy_craft_is_available = yes
+}
+
+dhrondan_antarctic_craft_bypass_is_valid = {
+	brilliant_scientist_is_current_host = yes
+	has_idea = antarctica_success
+	NOT = { is_special_project_completed = sp:sp_dhrondan_envoy_craft }
+	NOT = { has_country_flag = dhrondan_antarctic_craft_bypass_consumed }
+	NOT = { has_global_flag = world_end }
+}
+
+dhrondan_kruger_expedition_is_available = {
+	brilliant_scientist_is_current_host = yes
+	is_special_project_completed = sp:sp_dhrondan_envoy_craft
+	has_character = KRG_warren_kruger
+	KRG_warren_kruger = {
+		has_character_flag = brilliant_scientist_personal_active
+		NOT = { has_character_flag = brilliant_scientist_personal_injured }
+		NOT = { has_character_flag = brilliant_scientist_personal_confined }
+		NOT = { has_character_flag = dhrondan_kruger_expedition_obligation }
+		NOT = { has_character_flag = dhrondan_kruger_pact_completed }
+	}
+	NOT = { has_country_flag = dhrondan_pact_established }
+	NOT = { has_country_flag = dhrondan_expedition_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { has_global_flag = world_end }
+}
+
+dhrondan_mengele_expedition_is_available = {
+	is_mengele_clone_directorate_country = yes
+	is_special_project_completed = sp:sp_dhrondan_envoy_craft
+	NOT = { has_country_flag = dhrondan_pact_established }
+	NOT = { has_country_flag = dhrondan_expedition_in_progress }
+	NOT = { has_global_flag = world_end }
+}
+
+dhrondan_can_pay_expedition_fuel = {
+	NOT = { has_fuel < constant:dhrondan_contact.expedition_fuel_cost }
+}
+
+dhrondan_can_pay_expedition_political_power = {
+	NOT = { has_political_power < constant:dhrondan_contact.expedition_political_power_cost }
+}
+
+dhrondan_kruger_expedition_remains_valid = {
+	brilliant_scientist_is_current_host = yes
+	has_country_flag = dhrondan_expedition_in_progress
+	has_country_flag = dhrondan_kruger_expedition_in_progress
+	has_character = KRG_warren_kruger
+	KRG_warren_kruger = {
+		has_character_flag = brilliant_scientist_personal_active
+		has_character_flag = dhrondan_kruger_expedition_obligation
+		NOT = { has_character_flag = brilliant_scientist_personal_injured }
+		NOT = { has_character_flag = brilliant_scientist_personal_confined }
+		NOT = { has_character_flag = dhrondan_kruger_pact_completed }
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+dhrondan_mengele_expedition_remains_valid = {
+	is_mengele_clone_directorate_country = yes
+	has_country_flag = dhrondan_expedition_in_progress
+	has_country_flag = dhrondan_mengele_expedition_in_progress
+	NOT = { has_global_flag = world_end }
+}
+
+dhrondan_rebellion_pulse_is_eligible = {
+	has_country_flag = dhrondan_pact_established
+	NOT = { has_country_flag = dhrondan_rebellion_triggered }
+	check_variable = {
+		var = dhrondan_arrival_count
+		value = constant:dhrondan_contact.rebellion_arrival_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = dhrondan_pact_strain
+		value = constant:dhrondan_contact.rebellion_strain_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:dhrondan_contact.rebellion_chaos_gate
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+dhrondan_rebellion_high_tier_is_active = {
+	check_variable = {
+		var = dhrondan_arrival_count
+		value = constant:dhrondan_contact.rebellion_arrival_high_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:dhrondan_contact.rebellion_chaos_high
+		compare = greater_than_or_equals
+	}
+}
+
+dhrondan_rebellion_medium_tier_is_active = {
+	OR = {
+		AND = {
+			check_variable = {
+				var = dhrondan_arrival_count
+				value = constant:dhrondan_contact.rebellion_arrival_medium_minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = { dhrondan_arrival_count < constant:dhrondan_contact.rebellion_arrival_high_minimum }
+		}
+		check_variable = {
+			var = dhrondan_pact_strain
+			value = constant:dhrondan_contact.rebellion_strain_high
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:dhrondan_contact.rebellion_chaos_high
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+dhrondan_can_honor_accord = {
+	has_country_flag = dhrondan_pact_established
+	check_variable = { dhrondan_pact_strain > constant:dhrondan_contact.zero }
+	NOT = { has_country_flag = dhrondan_honor_accord_cooldown }
+	NOT = { has_country_flag = dhrondan_rebellion_triggered }
+	NOT = { has_global_flag = world_end }
+}

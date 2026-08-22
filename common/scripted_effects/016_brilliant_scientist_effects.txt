@@ -2934,6 +2934,11 @@ brilliant_scientist_refresh_kruger_continuity_state = {
 # brilliant_scientist_transfer_recipient. All validation occurs before the
 # first mutation. Output temp brilliant_scientist_transfer_committed.
 brilliant_scientist_transfer_kruger_atomically = {
+	if = {
+		limit = { has_country_flag = dhrondan_kruger_expedition_in_progress }
+		remove_mission = dhrondan_kruger_expedition_mission
+		dhrondan_fail_expedition = yes
+	}
 	set_temp_variable = { brilliant_scientist_transfer_committed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_transfer_inputs_are_valid = yes }
@@ -3187,6 +3192,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 				country_event = { id = chaosx.nr16.6 days = 1 }
 			}
 			brilliant_scientist_add_kruger_roles = yes
+			dhrondan_try_apply_antarctic_craft_bypass = yes
 			brilliant_scientist_inherit_kruger_carried_portfolio = yes
 			brilliant_scientist_achievement_inherit_origin_investigation = yes
 			brilliant_scientist_achievement_record_host_entry = yes

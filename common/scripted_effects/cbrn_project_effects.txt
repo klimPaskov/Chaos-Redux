@@ -22,8 +22,10 @@ grant_random_chaos_special_project_available_tech = {
 				NOT = { is_special_project_completed = sp:black_plague_weaponization_program }
 				NOT = { has_tech = sarin }
 				NOT = { has_tech = soman }
+				dhrondan_envoy_craft_random_completion_is_valid = yes
 			}
 		}
+		set_temp_variable = { chaos_random_dhrondan_envoy_craft_roll = constant:dhrondan_contact.project_selector_weight }
 		random_list = {
 			10 = {
 				modifier = { factor = 0 has_tech = anthrax_bomb_delivery_systems }
@@ -71,6 +73,14 @@ grant_random_chaos_special_project_available_tech = {
 				complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
 				complete_special_project = { project = sp:sp_cw_soman_program show_modifiers = no }
 				set_technology = { sarin = 1 soman = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+			chaos_random_dhrondan_envoy_craft_roll = {
+				modifier = {
+					factor = 0
+					NOT = { dhrondan_envoy_craft_random_completion_is_valid = yes }
+				}
+				complete_special_project = { project = sp:sp_dhrondan_envoy_craft show_modifiers = no }
 				set_country_flag = chaos_random_special_project_granted
 			}
 		}
