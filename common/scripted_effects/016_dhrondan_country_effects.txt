@@ -4,7 +4,9 @@
 # Public entry point: `dhrondan_start_revolt = yes` in the pact-host COUNTRY
 # scope. It captures the first viable marked capital, releases or rejoins fixed
 # tag DHR, transfers host-owned landing states without displacing third-party
-# occupiers, transfers the laser stockpile, and creates the one-time force.
+# occupiers, transfers the laser stockpile, and creates the one-time force. The
+# ordinary force formula remains capped, while disconnected landing components
+# receive one costed supplemental cohort each if that capped reserve runs out.
 #
 # Persistent country entry points used by the focus package:
 # - `dhrondan_install_imperial_regime = yes`
@@ -306,6 +308,21 @@ dhrondan_grant_initial_expedition_stores = {
 	}
 }
 
+# COUNTRY scope on DHR. The ordinary opening grant remains capped at fifteen.
+# If more disconnected landing components exist, this one-time revolt path adds
+# exactly one further cohort reserve for the next uncovered component. The API
+# still debits the full 2,000 weapons on materialization, and the persistent
+# extension count makes the exceptional force size auditable.
+dhrondan_grant_initial_enclave_floor_store = {
+	set_temp_variable = { dhrondan_initial_enclave_floor_store_amount = constant:alien_infantry_landing.reserve_equipment }
+	add_equipment_to_stockpile = {
+		type = alien_laser_weapon_equipment_1
+		amount = dhrondan_initial_enclave_floor_store_amount
+	}
+	add_to_variable = { dhrondan_initial_cohorts_remaining = constant:dhrondan_value.one }
+	add_to_variable = { dhrondan_initial_enclave_floor_extensions = constant:dhrondan_value.one }
+}
+
 # COUNTRY scope on DHR. Input is the persistent cohort remainder established by
 # the first revolt. The public API's sovereignty batch mode keeps its exact
 # 2,000-equipment debit while permitting several cohorts in one transaction.
@@ -371,6 +388,10 @@ dhrondan_deploy_next_initial_enclave_cohort = {
 	}
 	dhrondan_flood_fill_initial_enclave_component = yes
 	if = {
+		limit = { check_variable = { dhrondan_initial_cohorts_remaining < constant:dhrondan_value.one } }
+		dhrondan_grant_initial_enclave_floor_store = yes
+	}
+	if = {
 		limit = {
 			check_variable = { dhrondan_initial_cohorts_remaining > constant:dhrondan_value.zero }
 			NOT = {
@@ -402,10 +423,7 @@ dhrondan_deploy_initial_cohorts = {
 	set_temp_variable = { dhrondan_initial_spawn_attempts = constant:dhrondan_value.zero }
 	dhrondan_prepare_initial_enclave_components = yes
 	while = {
-		limit = {
-			check_variable = { dhrondan_initial_cohorts_remaining > constant:dhrondan_value.zero }
-			any_owned_state = { has_state_flag = dhrondan_initial_enclave_candidate }
-		}
+		limit = { any_owned_state = { has_state_flag = dhrondan_initial_enclave_candidate } }
 		dhrondan_deploy_next_initial_enclave_cohort = yes
 	}
 	every_owned_state = {

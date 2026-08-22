@@ -49,8 +49,8 @@ This checklist is the parent-owned acceptance contract for the alien-infantry AP
 - DHR receives cores on transferred territory while the origin host retains its cores for reclamation.
 - The first viable marked state becomes the capital, with a deterministic viable marked-state fallback.
 - Surviving host alien formations are deleted without refund, the full host alien-laser stockpile moves to DHR, and one-time expedition stores are consumed to create the initial army.
-- Initial cohorts equal `max(5, min(15, marked_states + floor(arrivals / 2)))`; each consumes 2,000 weapons.
-- Every disconnected transferred enclave receives at least one cohort before remaining cohorts concentrate at the capital.
+- The ordinary initial cohort grant equals `max(5, min(15, marked_states + floor(arrivals / 2)))`; each cohort consumes 2,000 weapons.
+- Every disconnected transferred enclave receives at least one cohort before remaining cohorts concentrate at the capital. If more than fifteen viable components exist, each component beyond the fifteenth receives one separately recorded supplemental cohort and one matching 2,000-weapon grant; those supplemental stores cannot create additional capital cohorts.
 - If DHR already exists, a later uprising joins the existing empire. Reinitialization after annexation does not duplicate characters, ideas, equipment, or one-time forces.
 
 ## Country routes and focus tree

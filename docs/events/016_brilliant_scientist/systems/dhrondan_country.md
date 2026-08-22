@@ -16,7 +16,7 @@ The runtime proceeds as one guarded transaction:
 
 1. It requires at least one host-owned, passable state carrying `dhrondan_landing_state`.
 2. It records the pact host, the first host-controlled and passable marked capital when one exists, then falls back to the first host-owned and passable marked state even if a third party controls it.
-3. It counts every state carrying `dhrondan_landing_state`, including markers no longer owned by the pact host, then calculates `max(5, min(15, marked_states + floor(arrivals / 2)))` with a subtract-by-two loop, so no rounding mode can change the result.
+3. It counts every state carrying `dhrondan_landing_state`, including markers no longer owned by the pact host, then calculates the ordinary opening force as `max(5, min(15, marked_states + floor(arrivals / 2)))` with a subtract-by-two loop, so no rounding mode can change the result.
 4. It adds a DHR core to the selected capital and releases DHR if the fixed tag is not active.
 5. Because the engine’s `release` effect removes a releasing-country core from transferred release states, it immediately restores the origin host core on the released capital.
 6. It adds a DHR core to every other marked state still owned by the host and restores the origin host core after transfer.
@@ -28,19 +28,18 @@ The runtime proceeds as one guarded transaction:
 12. Every surviving host division using the locked `D’Rhondan Landing Cohort` template is deleted with `disband = no`, so no equipment returns to the host.
 13. Every `alien_laser_weapon_equipment_1` unit remaining in the host stockpile is sent to DHR.
 14. DHR reloads `dhrondan_focus_tree` while preserving completed DHR focuses, restores its regime and leader, restores the sovereignty contact receipt, and reconciles the shared alien-infantry API.
-15. The first successful formation receives one-time expedition stores equal to 2,000 laser weapons per calculated cohort and consumes those stores through the shared locked-cohort API.
+15. The first successful formation receives one-time expedition stores equal to 2,000 laser weapons per ordinary calculated cohort and consumes those stores through the shared locked-cohort API.
 16. The runtime uses `is_in_home_area = no` plus repeated DHR `every_owned_state` passes whose frontier test is `any_neighbor_state` to group passable DHR-owned and DHR-controlled states into unique components in the engine’s state-neighbor graph. Each component containing a marked landing state receives one cohort before the remaining cohorts are placed in the capital.
-17. The formation news event fires once, and the Event 016 details text gains a sovereignty aftermath paragraph.
+17. If the ordinary capped reserve is exhausted while an uncovered component remains, the one-time formation path grants exactly one supplemental 2,000-weapon reserve for that component, records it in `dhrondan_initial_enclave_floor_extensions`, and consumes it through the same API. Supplemental reserves are created only inside the component-first pass, so they cannot increase the later capital concentration.
+18. The formation news event fires once, and the Event 016 details text gains a sovereignty aftermath paragraph.
 
 The fixed tag, startup character registry, global opening-grant receipts, and global initial-force receipt make later uprisings and release after annexation idempotent.
 
 Later host rebellions transfer their marked states and laser stockpile into the active DHR tag, add claims for lost marked states, and do not repeat the opening political-power grant, stability reset, war-support reset, news event, expedition stores, or initial cohort package.
 
-Because each controlled disconnected component contains at least one marked state, the accepted force formula supplies enough cohorts to cover every such component whenever there are at most 15 components.
+Because each controlled disconnected component contains at least one marked state, the ordinary formula supplies enough cohorts to cover every such component whenever there are at most fifteen components.
 
-If more than 15 controlled disconnected components exist at formation, the requirement to deploy one cohort in every component contradicts the simultaneous maximum-army requirement of 15.
-
-The runtime preserves the max-15 invariant and allocates the available cohorts to the first 15 engine-enumerated components; it does not create an unapproved sixteenth cohort.
+The user-approved enclave precedence rule resolves the former extreme-case conflict: fifteen remains the ordinary force cap, but a revolt with more than fifteen viable disconnected components receives only the additional costed cohorts required to seed those components. The persistent extension counter proves exactly how far the opening force exceeded its normal cap.
 
 ## Country identity and politics
 
