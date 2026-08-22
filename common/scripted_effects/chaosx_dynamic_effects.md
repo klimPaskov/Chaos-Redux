@@ -18,6 +18,7 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [Stockpile debit helpers](#stockpile-debit-helpers)
 - [Shared clone equipment and infantry helpers](#shared-clone-equipment-and-infantry-helpers)
+- [Shared alien-infantry contact and landing API](#shared-alien-infantry-contact-and-landing-api)
 - [Mengele Directorate Event 016 prototype bridge](#mengele-directorate-event-016-prototype-bridge)
 - [Event 19 integration obligation for new custom units](#event-19-integration-obligation-for-new-custom-units)
 - [Event 006 AI reserve and ledger trigger contract](#event-006-ai-reserve-and-ledger-trigger-contract)
@@ -426,7 +427,7 @@ Side effects: a valid grant records an external knowledge ledger flag, restores 
 Example:
 
 ```txt
-set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.exotic }
+set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.alien_infantry }
 chaosx_grant_custom_operational_technology = yes
 ```
 
@@ -452,6 +453,31 @@ Example:
 clone_grant_infantry_access = yes
 add_equipment_to_stockpile = { type = clone_equipment_1 amount = 10 }
 clone_refresh_reserve_manpower = yes
+```
+
+## Shared alien-infantry contact and landing API
+
+Purpose: grant or revoke provider-neutral contact, maintain the single locked alien template, and create one paid D’Rhondan landing cohort through a state-targeted reservation or another explicitly authorized caller.
+
+Definitions: public effects are implemented in `common/scripted_effects/016_alien_infantry_api_effects.txt`; public readers are implemented in `common/scripted_triggers/016_alien_infantry_api_triggers.txt`; tuning and stable receipt IDs are defined in `common/script_constants/016_alien_infantry_api_constants.txt`.
+
+Scope: country for `alien_infantry_grant_contact`, `alien_infantry_revoke_contact`, `alien_infantry_can_call_landing`, `alien_infantry_spawn_landing_cohort`, and `alien_infantry_reconcile_country`. `alien_infantry_landing_state_is_valid` is a state-scope reader with the calling country as `ROOT`.
+
+Inputs: grant and revoke read temporary `alien_infantry_contact_source_id` from `constant:alien_infantry_contact_source.*`. A landing caller stores its selected state ID in country variable `dhrondan_landing_state_id`. Direct spawn callers must have the exact laser stockpile and a valid selected state; the ordinary decision path debits the fixed reserve before its seven-day mission begins.
+
+Outputs: contact reconciliation grants the hidden operational alien-infantry technology, creates and relocks the ten-battalion `D’Rhondan Landing Cohort`, and exposes laser production while at least one receipt remains. A successful spawn creates exactly one fully equipped cohort, marks the state, and records the persistent landing counters. `alien_infantry_landing_spawn_succeeded` is a temporary one-or-zero result for callers that need transaction evidence.
+
+Defaults: unknown receipt IDs are safe no-ops. Revoking one receipt never removes another provider’s entitlement. A missing, invalid, uncontrolled, or impassable state prevents direct materialization. The ordinary pending path refunds exactly one 2,000-weapon reservation when contact or state control is lost.
+
+Side effects: a normal successful landing adds one arrival, one Alien Presence, five Pact Strain, one history receipt, and the bounded landing cooldown. The sovereignty bootstrap mode is restricted to DHR’s positive sovereignty receipt and still consumes 2,000 weapons per cohort, but it does not impersonate pact-host arrivals or apply the ordinary cooldown. Event 019 provider 508 is a one-request provider: automatic generation and scenario actors materialize exactly one cohort even when the enclosing scenario targets several states. The provider supplies its allocated engine deletion ID and uses private `alien_infantry_commit_event19_landing` and `alien_infantry_rollback_event19_landing` hooks. The cohort and exact laser debit materialize first, while state flags, pact telemetry, cooldown, and callbacks remain deferred until the enclosing Event 019 ledger transaction commits. Same-tag scenario receipts are stored persistently on the actor country so asynchronous rollback retries retain the deletion ID and proven debit state; rollback deletes the exact cohort and refunds the one proven 2,000-weapon debit only after Event 019 proves that the package objects are absent and verifies its restored snapshot.
+
+Example:
+
+```txt
+set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.future }
+alien_infantry_grant_contact = yes
+set_variable = { dhrondan_landing_state_id = FROM.id }
+alien_infantry_spawn_landing_cohort = yes
 ```
 
 ## Mengele Directorate Event 016 prototype bridge

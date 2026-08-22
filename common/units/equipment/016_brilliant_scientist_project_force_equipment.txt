@@ -2,34 +2,29 @@
 # CHAOS REDUX - EVENT 016 PROJECT FORCE EQUIPMENT
 # ============================================================================
 # Six non-interchangeable production lines sustain the portal, robot,
-# paleogenetic, xenobiological, exotic-arms, and temporal force families.
-# Production is available while the matching project deployment remains active
-# in the Event 016 ledger. A living Kruger makes the line directly usable once
-# its stage is present; the former facility/terminal checks remain available to
-# a transferred or recovered package. No stockpile is granted by this file.
+# paleogenetic, xenobiological, alien-laser, and temporal force families.
+# Five legacy lines follow their matching Event 016 project deployment and
+# facility state. Alien laser production instead requires a positive receipt
+# through the shared source-counted contact API. No stockpile is granted here.
 # ============================================================================
 
 # Equipment definition fields do not accept script-constant tokens. These
 # file-scoped values mirror the shared Event 016 equipment constants.
-# Keep the active-Kruger gate inline inside can_be_produced. Calling the shared
-# raid scripted trigger from this equipment consumer causes a launch-time
-# access violation in HOI4 1.19.2 even though the trigger is safe elsewhere.
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_AIR_ATTACK = 6
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_ALUMINIUM = 3
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_ARMOR = 30
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_BREAKTHROUGH = 22
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_BUILD_COST = 18
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_CHROMIUM = 4
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_DEFENSE = 18
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_FUEL = 1
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_HARD_ATTACK = 24
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_HARDNESS = 0.50
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_LEND_LEASE_COST = 6
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_PIERCING = 55
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_RELIABILITY = 0.65
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_SOFT_ATTACK = 18
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_SPEED = 5
-@BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_TUNGSTEN = 4
+# Keep the active-Kruger gates for legacy equipment inline inside
+# can_be_produced. Calling the shared raid scripted trigger from those consumers
+# causes a launch-time access violation in HOI4 1.19.2 even though it is safe
+# elsewhere. The provider-neutral alien contact trigger is intentionally shared.
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_AIR_ATTACK = 10
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_ARMOR = 30
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_BREAKTHROUGH = 40
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_BUILD_COST = 0.75
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_DEFENSE = 60
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_HARD_ATTACK = 20
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_HARDNESS = 0.40
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_PIERCING = 80
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_RELIABILITY = 0.98
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_SOFT_ATTACK = 30
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_SPEED = 6.50
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_PALEOGENETIC_AIR_ATTACK = 0
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_PALEOGENETIC_ARMOR = 12
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_PALEOGENETIC_BREAKTHROUGH = 18
@@ -599,110 +594,34 @@ equipments = {
 		visual_level = 0
 	}
 
-	kruger_exotic_arms_equipment = {
+	alien_laser_weapon_equipment = {
 		year = @BRILLIANT_SCIENTIST_PROJECT_FORCE_START_YEAR
 		is_archetype = yes
 		is_buildable = no
-		picture = archetype_infantry_equipment
+		picture = alien_laser_weapon_equipment
 		type = infantry
 		group_by = archetype
-		sprite = infantry_equipment
+		sprite = alien_laser_weapon_equipment
 		can_license = no
 		interface_category = interface_category_land
-		maximum_speed = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_SPEED
-		reliability = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_RELIABILITY
-		defense = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_DEFENSE
-		breakthrough = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_BREAKTHROUGH
-		hardness = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_HARDNESS
-		armor_value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_ARMOR
-		soft_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_SOFT_ATTACK
-		hard_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_HARD_ATTACK
-		ap_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_PIERCING
-		air_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_AIR_ATTACK
-		lend_lease_cost = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_LEND_LEASE_COST
-		build_cost_ic = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_BUILD_COST
-		fuel_consumption = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_FUEL
-		resources = {
-			tungsten = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_TUNGSTEN
-			chromium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_CHROMIUM
-			aluminium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_ALUMINIUM
-		}
-		can_be_produced = {
-			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ALIEN_ARMS } }
-			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ALIEN_ARMS } }
-			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ALIEN_ARMS } }
-			OR = {
-				has_country_flag = chaosx_custom_technology_exotic_operational
-				check_variable = {
-					var = brilliant_scientist_project_stage_entries^12
-					value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT
-					compare = greater_than_or_equals
-				}
-			}
-			OR = {
-				has_country_flag = chaosx_custom_technology_exotic_operational
-				AND = {
-					OR = {
-						has_country_flag = brilliant_scientist_current_host
-						AND = {
-							OR = {
-								original_tag = KRG
-								has_country_flag = brilliant_scientist_host_transformed_into_kruger_state
-							}
-							has_country_flag = brilliant_scientist_kruger_state_active
-							NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
-						}
-					}
-					has_character = KRG_warren_kruger
-					KRG_warren_kruger = {
-						has_character_flag = brilliant_scientist_personal_active
-					}
-				}
-				AND = {
-					has_character = KRG_warren_kruger
-					KRG_warren_kruger = {
-						OR = {
-							has_character_flag = brilliant_scientist_personal_alien_arms_deployment
-							has_character_flag = brilliant_scientist_personal_alien_arms_weaponization
-						}
-					}
-				}
-				AND = {
-					has_country_flag = brilliant_scientist_alien_arms_deployment_completed
-					has_country_flag = brilliant_scientist_alien_interface_chamber
-				}
-			}
-			OR = {
-				has_country_flag = chaosx_custom_technology_exotic_operational
-				AND = {
-					OR = {
-						has_country_flag = brilliant_scientist_current_host
-						AND = {
-							OR = {
-								original_tag = KRG
-								has_country_flag = brilliant_scientist_host_transformed_into_kruger_state
-							}
-							has_country_flag = brilliant_scientist_kruger_state_active
-							NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
-						}
-					}
-					has_character = KRG_warren_kruger
-					KRG_warren_kruger = {
-						has_character_flag = brilliant_scientist_personal_active
-					}
-				}
-				AND = {
-					has_country_flag = brilliant_scientist_alien_interface_chamber
-					any_owned_state = { has_state_flag = brilliant_scientist_alien_interface_chamber }
-				}
-			}
-		}
+		maximum_speed = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_SPEED
+		reliability = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_RELIABILITY
+		defense = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_DEFENSE
+		breakthrough = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_BREAKTHROUGH
+		hardness = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_HARDNESS
+		armor_value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_ARMOR
+		soft_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_SOFT_ATTACK
+		hard_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_HARD_ATTACK
+		ap_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_PIERCING
+		air_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_AIR_ATTACK
+		build_cost_ic = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_BUILD_COST
+		can_be_produced = { alien_infantry_has_contact = yes }
 		can_be_lend_leased = { always = no }
 	}
 
-	kruger_exotic_arms_equipment_1 = {
+	alien_laser_weapon_equipment_1 = {
 		year = @BRILLIANT_SCIENTIST_PROJECT_FORCE_START_YEAR
-		archetype = kruger_exotic_arms_equipment
+		archetype = alien_laser_weapon_equipment
 		active = no
 		is_buildable = yes
 		priority = @BRILLIANT_SCIENTIST_PROJECT_FORCE_VARIANT_PRIORITY

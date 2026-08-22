@@ -4,7 +4,7 @@ This API gives other events, decisions, focuses, and scripted systems a neutral 
 
 ## Public effects
 
-`chaosx_grant_custom_operational_technology` runs in country scope. Set `chaosx_custom_technology_family` to one of `constant:chaosx_custom_technology_family.portal`, `clone`, `robot`, `paleogenetic`, `xenobiological`, `exotic`, or `temporal` before calling it. It grants the matching operational technology, sets a durable external operational/grant flag, and rebuilds the existing runtime package. The temporary output `chaosx_custom_technology_grant_applied` is `1` for a valid selector and `0` for an invalid selector.
+`chaosx_grant_custom_operational_technology` runs in country scope. Set `chaosx_custom_technology_family` to one of `constant:chaosx_custom_technology_family.portal`, `clone`, `robot`, `paleogenetic`, `xenobiological`, `alien_infantry`, or `temporal` before calling it. It grants the matching operational technology, sets a durable external operational/grant flag, and rebuilds the existing runtime package. The temporary output `chaosx_custom_technology_grant_applied` is `1` for a valid selector and `0` for an invalid selector.
 
 `chaosx_grant_custom_technology_upgrade` runs in country scope. Set `chaosx_custom_technology_upgrade` to one of the seven `*_weaponization` selectors or the four `xeno_*_control` selectors. It first grants the matching operational base through the private core, then grants the dependency-safe upgrade, sets the external grant ledger flag, and rebuilds the runtime package. Weaponization upgrades never grant an orphan technology. The four control selectors also set neutral `chaosx_custom_technology_xeno_control_*` flags; they do not create Event 016 control ideas. The temporary output `chaosx_custom_technology_upgrade_applied` is `1` for a valid selector and `0` for an invalid selector.
 
@@ -29,14 +29,14 @@ The clear helper conditionally removes each of the eighteen custom technologies 
 | `family.robot` | `brilliant_scientist_robot_formations_tech` |
 | `family.paleogenetic` | `brilliant_scientist_paleogenetic_formations_tech` |
 | `family.xenobiological` | `brilliant_scientist_xenobiological_formations_tech` |
-| `family.exotic` | `brilliant_scientist_exotic_guard_tech` |
+| `family.alien_infantry` | `brilliant_scientist_alien_infantry_tech` |
 | `family.temporal` | `brilliant_scientist_temporal_guard_tech` |
 | `upgrade.portal_weaponization` | `brilliant_scientist_portal_warfare_weaponization_tech` |
 | `upgrade.clone_weaponization` | `brilliant_scientist_clone_formations_weaponization_tech` |
 | `upgrade.robot_weaponization` | `brilliant_scientist_robot_formations_weaponization_tech` |
 | `upgrade.paleogenetic_weaponization` | `brilliant_scientist_paleogenetic_formations_weaponization_tech` |
 | `upgrade.xenobiological_weaponization` | `brilliant_scientist_xenobiological_formations_weaponization_tech` |
-| `upgrade.exotic_weaponization` | `brilliant_scientist_exotic_guard_weaponization_tech` |
+| `upgrade.alien_predictive_warfare_weaponization` | `brilliant_scientist_alien_predictive_warfare_tech` |
 | `upgrade.temporal_weaponization` | `brilliant_scientist_temporal_guard_weaponization_tech` |
 | `upgrade.xeno_chemical_control` | `brilliant_scientist_xeno_chemical_control_tech` |
 | `upgrade.xeno_neural_control` | `brilliant_scientist_xeno_neural_control_tech` |

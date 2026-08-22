@@ -1,0 +1,77 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 ALIEN INFANTRY LANDING DECISION AND MISSION
+# ============================================================================
+# One state-targeted reservation at a time. The mission holds 2,000 laser
+# weapons for seven days, refunds on cancellation/loss, and delegates completion
+# to the reusable alien-infantry public API.
+# ============================================================================
+
+alien_infantry_landing_category = {
+	alien_infantry_call_landing = {
+		icon = GFX_decision_dhrondan_ufo_landing
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			alien_infantry_can_call_landing = yes
+		}
+		target_trigger = {
+			FROM = { alien_infantry_landing_state_is_valid = yes }
+		}
+		visible = {
+			FROM = { alien_infantry_landing_state_is_valid = yes }
+		}
+		available = { alien_infantry_can_call_landing = yes }
+		custom_cost_trigger = {
+			hidden_trigger = { alien_infantry_can_call_landing = yes }
+		}
+		custom_cost_text = alien_infantry_landing_reserve_cost_text
+		days_remove = constant:alien_infantry_landing.one
+		complete_effect = {
+			custom_effect_tooltip = alien_infantry_call_landing_effect_tt
+			hidden_effect = {
+				set_variable = { dhrondan_landing_state_id = FROM.id }
+				alien_infantry_begin_landing_reservation = yes
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			NOT = { alien_infantry_can_call_landing = yes }
+		}
+		ai_will_do = {
+			base = constant:alien_infantry_landing_ai.standard
+			modifier = {
+				factor = constant:alien_infantry_landing_ai.network_factor
+				has_country_flag = dhrondan_landing_network_enabled
+			}
+			modifier = {
+				factor = constant:alien_infantry_landing_ai.reserve_priority_factor
+				has_country_flag = dhrondan_landing_reserve_supply_priority
+			}
+			modifier = {
+				factor = constant:alien_infantry_landing_ai.guarded_descent_factor
+				has_country_flag = dhrondan_descent_windows_guarded
+			}
+			modifier = {
+				factor = constant:alien_infantry_landing_ai.near_space_factor
+				has_country_flag = dhrondan_near_space_secured
+			}
+		}
+	}
+
+	alien_infantry_landing_mission = {
+		icon = GFX_decision_dhrondan_ufo_landing
+		activation = { has_country_flag = alien_infantry_landing_pending }
+		days_mission_timeout = var:alien_infantry_landing_reservation_days
+		is_good = yes
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			NOT = { alien_infantry_landing_reservation_is_valid = yes }
+		}
+		cancel_effect = {
+			hidden_effect = { alien_infantry_cancel_landing_reservation = yes }
+		}
+		timeout_effect = {
+			hidden_effect = { alien_infantry_spawn_landing_cohort = yes }
+		}
+	}
+}

@@ -618,7 +618,7 @@ infantry_spawn_calculate_current_obligation_outstanding_debt_value = {
 				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.autonomous_robot_equipment_1 }
 				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_paleogenetic_equipment_1 }
 				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_xenobiological_equipment_1 }
-				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_exotic_arms_equipment_1 }
+				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.alien_laser_weapon_equipment_1 }
 				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.teleportation_equipment_1 }
 				check_variable = { infantry_spawn_current_obligation_resource_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_temporal_equipment_1 }
 			}
@@ -838,7 +838,22 @@ infantry_spawn_record_provider_obligation_manifest = {
 		set_temp_variable = { infantry_spawn_current_obligation_status = constant:infantry_spawn_obligation_state.outstanding }
 		if = {
 			limit = { check_variable = { infantry_spawn_current_obligation_issued > 0 } }
-			infantry_spawn_append_current_obligation_row = yes
+			# Provider 508 cohorts are materialized and paid by the shared
+			# alien-infantry API. Do not append a stale Event 019 obligation row
+			# after that API transaction; ordinary provider-neutral request
+			# overhead remains owned by Event 019 outside this row ledger.
+			if = {
+				limit = {
+					NOT = {
+						check_variable = {
+							var = infantry_spawn_current_registry_provider_id
+							value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+							compare = equals
+						}
+					}
+				}
+				infantry_spawn_append_current_obligation_row = yes
+			}
 			if = {
 				limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
 				add_to_temp_variable = { infantry_spawn_provider_manifest_committed_row_count = constant:infantry_spawn_muster_gui_value.one }

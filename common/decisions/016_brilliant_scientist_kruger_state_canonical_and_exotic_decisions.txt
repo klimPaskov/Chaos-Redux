@@ -12,7 +12,7 @@
 
 brilliant_scientist_krg_exotic_and_biological_category = {
 	brilliant_scientist_krg_recruit_interface_specialist = {
-		icon = GFX_decision_brilliant_scientist_krg_exotic_guard
+		icon = GFX_decision_brilliant_scientist_krg_staff_recruitment
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
 			has_country_flag = brilliant_scientist_focus_unlock_finite_interface_specialists
@@ -34,22 +34,23 @@ brilliant_scientist_krg_exotic_and_biological_category = {
 		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
 	}
 
-	brilliant_scientist_krg_fabricate_exotic_guard_batch = {
-		icon = GFX_decision_brilliant_scientist_krg_exotic_guard
+	brilliant_scientist_krg_fabricate_alien_laser_batch = {
+		icon = GFX_decision_brilliant_scientist_krg_alien_laser_batch
 		visible = {
 			brilliant_scientist_krg_decisions_are_active = yes
 			OR = {
 				brilliant_scientist_kruger_raid_ai_is_active = yes
 				AND = {
-					has_country_flag = brilliant_scientist_focus_unlock_bounded_exotic_guard_production
+					has_country_flag = brilliant_scientist_focus_unlock_bounded_alien_laser_production
 					has_country_flag = brilliant_scientist_krg_interface_security_staffed
 				}
 			}
 		}
 		available = {
+			alien_infantry_has_contact = yes
 			brilliant_scientist_kruger_focus_alien_arms_is_operational = yes
 			brilliant_scientist_krg_can_pay_project_batch_cost = yes
-			check_variable = { brilliant_scientist_krg_exotic_guard_batches < constant:brilliant_scientist_krg_capacity.exotic_guard_batch_maximum }
+			check_variable = { brilliant_scientist_krg_alien_laser_batches < constant:brilliant_scientist_krg_capacity.alien_laser_batch_maximum }
 		}
 		cost = constant:brilliant_scientist_krg_cost.pp_heavy
 		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
@@ -58,11 +59,12 @@ brilliant_scientist_krg_exotic_and_biological_category = {
 		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
 		cancel_trigger = {
 			OR = {
+				NOT = { alien_infantry_has_contact = yes }
 				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
 				NOT = { brilliant_scientist_kruger_focus_alien_arms_is_operational = yes }
 			}
 		}
-		remove_effect = { brilliant_scientist_krg_complete_exotic_guard_batch = yes }
+		remove_effect = { brilliant_scientist_krg_complete_alien_laser_batch = yes }
 		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
 	}
 }

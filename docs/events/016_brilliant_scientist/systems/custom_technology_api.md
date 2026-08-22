@@ -6,7 +6,7 @@ The API never grants vanilla computing, radar, industry, rocketry, nuclear, medi
 
 ## Public grant effects
 
-`chaosx_grant_custom_operational_technology` accepts the temporary selector `chaosx_custom_technology_family`. The seven valid values are `constant:chaosx_custom_technology_family.portal`, `.clone`, `.robot`, `.paleogenetic`, `.xenobiological`, `.exotic`, and `.temporal`. A valid call grants the matching base custom technology, records an external knowledge flag, and rebuilds the existing runtime consumers. `chaosx_custom_technology_grant_applied` reports `1` for a valid selector and `0` for an invalid selector.
+`chaosx_grant_custom_operational_technology` accepts the temporary selector `chaosx_custom_technology_family`. The seven valid values are `constant:chaosx_custom_technology_family.portal`, `.clone`, `.robot`, `.paleogenetic`, `.xenobiological`, `.alien_infantry`, and `.temporal`. A valid call grants the matching base custom technology, records an external knowledge flag, and rebuilds the existing runtime consumers. `chaosx_custom_technology_grant_applied` reports `1` for a valid selector and `0` for an invalid selector.
 
 `chaosx_grant_custom_technology_upgrade` accepts the temporary selector `chaosx_custom_technology_upgrade`. The valid values are the seven `*_weaponization` entries and the four `xeno_*_control` entries defined in `common/script_constants/016_brilliant_scientist_custom_technology_constants.txt`. The effect grants the matching operational base first, then the selected upgrade, so no weaponization or control technology can be awarded without its static dependency. `chaosx_custom_technology_upgrade_applied` reports whether the selector was valid.
 
@@ -28,7 +28,7 @@ chaosx_grant_custom_operational_technology = yes
 | Robot formations | `brilliant_scientist_robot_formations_tech` | `brilliant_scientist_robot_formations_weaponization_tech` |
 | Paleogenetic formations | `brilliant_scientist_paleogenetic_formations_tech` | `brilliant_scientist_paleogenetic_formations_weaponization_tech` |
 | Xenobiological formations | `brilliant_scientist_xenobiological_formations_tech` | `brilliant_scientist_xenobiological_formations_weaponization_tech` |
-| Exotic guard | `brilliant_scientist_exotic_guard_tech` | `brilliant_scientist_exotic_guard_weaponization_tech` |
+| Alien infantry | `brilliant_scientist_alien_infantry_tech` | `brilliant_scientist_alien_predictive_warfare_tech` |
 | Temporal guard | `brilliant_scientist_temporal_guard_tech` | `brilliant_scientist_temporal_guard_weaponization_tech` |
 
 The four xenobiological refinements are `brilliant_scientist_xeno_chemical_control_tech`, `brilliant_scientist_xeno_neural_control_tech`, `brilliant_scientist_xeno_machine_control_tech`, and `brilliant_scientist_xeno_researched_control_tech`.
@@ -44,7 +44,7 @@ The operational and weaponization technologies are intentionally late-game prize
 | Robot formations | Enables provider-neutral `autonomous_robot` battalions and `autonomous_robot_equipment`; the battalion belongs to both armor and mechanized-infantry modifier families, while its base chassis combines 88% hardness, 70 armor, 60 breakthrough, 50 defense, 36 soft attack, 30 hard attack, 75 piercing, and 7 km/h speed, then adds +75% hard attack, +75% breakthrough, +60% defense, and +10 organization | +75% hard attack, +75% breakthrough, and +35% reliability |
 | Paleogenetic formations | +30% soft attack, +30% breakthrough, and a 15% supply burden | +50% soft attack, +50% breakthrough, and +15% speed |
 | Xenobiological formations | +30% soft attack, +15% hard attack, +8 organization, and +30% breakthrough | +50% soft attack, +30% hard attack, and +50% breakthrough |
-| Exotic guard | +30% soft attack, hard attack, defense, and breakthrough | +60% hard attack, +50% piercing, and +40% breakthrough |
+| Alien infantry | Laser-equipped alien formations and the shared landing API | Predictive Vector Assault and Probability Screen tactics |
 | Temporal guard | +12 organization and +30% defense | +12 organization, +50% defense, and -50% experience loss |
 
 The xenobiological control technologies remain mutually exclusive refinements. Their shared combat scale is +15% for a minor bonus, +30% for a standard bonus, +8 or +12 organization, and -25% supply consumption for the chemical control logistics effect.

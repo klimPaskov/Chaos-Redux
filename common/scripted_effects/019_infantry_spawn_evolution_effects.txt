@@ -1292,6 +1292,16 @@ infantry_spawn_materialize_first_family_reception_package = {
 		infantry_spawn_verify_selected_family_spawn_transaction = yes
 		if = {
 			limit = { check_variable = { infantry_spawn_request_transaction_committed > constant:infantry_spawn_weight_result.zero } }
+			if = {
+				limit = {
+					check_variable = {
+						var = infantry_spawn_current_registry_provider_id
+						value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+						compare = equals
+					}
+				}
+				chaos_unit_family_provider_508_event19_commit_landing = yes
+			}
 			set_temp_variable = { infantry_spawn_first_family_reception_package_committed = constant:infantry_spawn_weight_result.one }
 		}
 		else = {

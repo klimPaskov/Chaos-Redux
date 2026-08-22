@@ -39,11 +39,6 @@ brilliant_scientist_revoke_project_force_template_authorizations = {
 		set_division_template_cap = { division_template = "Xenobiological Assault Organisms" division_cap = brilliant_scientist_project_force_zero_division_cap }
 	}
 	if = {
-		limit = { has_template = "Exotic Interface Guard" }
-		set_division_force_allow_recruiting = { division_template = "Exotic Interface Guard" force_allow_recruiting = no }
-		set_division_template_cap = { division_template = "Exotic Interface Guard" division_cap = brilliant_scientist_project_force_zero_division_cap }
-	}
-	if = {
 		limit = { has_template = "Temporal Continuity Guard" }
 		set_division_force_allow_recruiting = { division_template = "Temporal Continuity Guard" force_allow_recruiting = no }
 		set_division_template_cap = { division_template = "Temporal Continuity Guard" division_cap = brilliant_scientist_project_force_zero_division_cap }
@@ -54,6 +49,20 @@ brilliant_scientist_revoke_project_force_template_authorizations = {
 # biological delivery technologies and bioweapon flags are deliberately not
 # revoked because other systems can grant and consume them independently.
 brilliant_scientist_clear_project_force_runtime_package = {
+	# Event 019's provider registration grants only source receipt 3 to this
+	# runtime country. Rebuilds begin by revoking that exact source, while the
+	# shared API preserves every independent source receipt (1, 2, 4, and 5).
+	if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_receipt_event019_provider_508
+				value = constant:alien_infantry_landing.zero
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.event019_provider_508 }
+		alien_infantry_revoke_contact = yes
+	}
 	set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_value.zero }
 	set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_value.zero }
 	set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_value.zero }
@@ -67,14 +76,14 @@ brilliant_scientist_clear_project_force_runtime_package = {
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_robot_formations_granted } } set_technology = { brilliant_scientist_robot_formations_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_paleogenetic_formations_granted } } set_technology = { brilliant_scientist_paleogenetic_formations_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_xenobiological_formations_granted } } set_technology = { brilliant_scientist_xenobiological_formations_tech = 0 popup = no } }
-	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_exotic_guard_granted } } set_technology = { brilliant_scientist_exotic_guard_tech = 0 popup = no } }
+	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_alien_infantry_granted } } set_technology = { brilliant_scientist_alien_infantry_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_temporal_guard_granted } } set_technology = { brilliant_scientist_temporal_guard_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_portal_warfare_weaponization_granted } } set_technology = { brilliant_scientist_portal_warfare_weaponization_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_clone_formations_weaponization_granted } } set_technology = { brilliant_scientist_clone_formations_weaponization_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_robot_formations_weaponization_granted } } set_technology = { brilliant_scientist_robot_formations_weaponization_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_paleogenetic_formations_weaponization_granted } } set_technology = { brilliant_scientist_paleogenetic_formations_weaponization_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_xenobiological_formations_weaponization_granted } } set_technology = { brilliant_scientist_xenobiological_formations_weaponization_tech = 0 popup = no } }
-	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_exotic_guard_weaponization_granted } } set_technology = { brilliant_scientist_exotic_guard_weaponization_tech = 0 popup = no } }
+	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_alien_predictive_warfare_granted } } set_technology = { brilliant_scientist_alien_predictive_warfare_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_temporal_guard_weaponization_granted } } set_technology = { brilliant_scientist_temporal_guard_weaponization_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_xeno_chemical_control_granted } } set_technology = { brilliant_scientist_xeno_chemical_control_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_xeno_neural_control_granted } } set_technology = { brilliant_scientist_xeno_neural_control_tech = 0 popup = no } }
@@ -299,25 +308,6 @@ brilliant_scientist_define_project_force_templates = {
 	if = {
 		limit = {
 			OR = {
-				has_country_flag = brilliant_scientist_project_force_alien_arms_active
-				has_country_flag = chaosx_custom_technology_exotic_operational
-			}
-			NOT = { has_template = "Exotic Interface Guard" }
-		}
-		division_template = {
-			name = "Exotic Interface Guard"
-			regiments = {
-				kruger_exotic_guard = { x = 0 y = 0 }
-				kruger_exotic_guard = { x = 0 y = 1 }
-				kruger_exotic_guard = { x = 1 y = 0 }
-				kruger_exotic_guard = { x = 1 y = 1 }
-				kruger_exotic_guard = { x = 2 y = 0 }
-			}
-		}
-	}
-	if = {
-		limit = {
-			OR = {
 				has_country_flag = brilliant_scientist_project_force_temporal_active
 				has_country_flag = chaosx_custom_technology_temporal_operational
 			}
@@ -447,26 +437,6 @@ brilliant_scientist_define_project_force_templates = {
 		}
 	}
 	if = {
-		limit = { has_template = "Exotic Interface Guard" }
-		set_division_template_lock = { division_template = "Exotic Interface Guard" is_locked = yes }
-		if = {
-			limit = {
-				OR = {
-					brilliant_scientist_has_alien_arms_force_deployment = yes
-					has_country_flag = chaosx_custom_technology_exotic_operational
-				}
-			}
-			set_variable = { brilliant_scientist_project_force_alien_arms_division_cap = constant:brilliant_scientist_project_force_cap.alien_arms }
-			set_division_template_cap = { division_template = "Exotic Interface Guard" division_cap = brilliant_scientist_project_force_alien_arms_division_cap }
-			set_division_force_allow_recruiting = { division_template = "Exotic Interface Guard" force_allow_recruiting = yes }
-		}
-		else = {
-			set_variable = { brilliant_scientist_project_force_alien_arms_division_cap = constant:brilliant_scientist_value.zero }
-			set_division_template_cap = { division_template = "Exotic Interface Guard" division_cap = brilliant_scientist_project_force_alien_arms_division_cap }
-			set_division_force_allow_recruiting = { division_template = "Exotic Interface Guard" force_allow_recruiting = no }
-		}
-	}
-	if = {
 		limit = { has_template = "Temporal Continuity Guard" }
 		set_division_template_lock = { division_template = "Temporal Continuity Guard" is_locked = yes }
 		if = {
@@ -576,11 +546,11 @@ brilliant_scientist_rebuild_project_force_runtime_package = {
 
 	if = {
 		limit = { brilliant_scientist_has_alien_arms_force_history_deployment = yes }
-		set_technology = { brilliant_scientist_exotic_guard_tech = 1 popup = no }
+		set_technology = { brilliant_scientist_alien_infantry_tech = 1 popup = no }
 		set_country_flag = brilliant_scientist_project_force_alien_arms_active
 		if = {
 			limit = { brilliant_scientist_has_alien_arms_force_history_weaponization = yes }
-			set_technology = { brilliant_scientist_exotic_guard_weaponization_tech = 1 popup = no }
+			set_technology = { brilliant_scientist_alien_predictive_warfare_tech = 1 popup = no }
 			set_country_flag = brilliant_scientist_project_force_alien_arms_weaponized
 			set_country_flag = brilliant_scientist_alien_arms_military_package_ready
 		}
@@ -865,38 +835,9 @@ brilliant_scientist_spawn_xenobiological_project_force = {
 }
 
 brilliant_scientist_spawn_alien_arms_project_force = {
-	if = {
-		limit = { brilliant_scientist_can_materialize_alien_arms_project_force = yes }
-		set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.deployment }
-		set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.exotic_deployment_units }
-		if = {
-			limit = { brilliant_scientist_has_alien_arms_force_history_weaponization = yes }
-			set_temp_variable = { brilliant_scientist_project_force_formation_stage = constant:brilliant_scientist_project_stage.weaponization }
-			set_temp_variable = { brilliant_scientist_project_force_formation_units = constant:brilliant_scientist_project_force_formation.exotic_weaponization_units }
-		}
-		brilliant_scientist_load_project_force_formation_quality = yes
-		random_owned_controlled_state = {
-			limit = { is_controlled_by = event_target:brilliant_scientist_kruger_state_carrier }
-			meta_effect = {
-				text = {
-					create_unit = {
-						division = "name = \"Exotic Interface Guard\" division_template = \"Exotic Interface Guard\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
-						owner = event_target:brilliant_scientist_kruger_state_carrier
-						allow_spawning_on_enemy_provs = no
-						count = [COUNT]
-					}
-				}
-				EXPERIENCE = "[?brilliant_scientist_project_force_start_experience|.2]"
-				EQUIPMENT = "[?brilliant_scientist_project_force_start_equipment|.2]"
-				MANPOWER = "[?brilliant_scientist_project_force_start_manpower|.2]"
-				COUNT = "[?brilliant_scientist_project_force_formation_units|.0]"
-			}
-			event_target:brilliant_scientist_kruger_state_carrier = {
-				set_variable = { brilliant_scientist_project_force_alien_arms_formation_count = brilliant_scientist_project_force_formation_units }
-				set_country_flag = brilliant_scientist_project_force_alien_arms_materialized
-			}
-		}
-	}
+	# Alien Arms no longer creates a recruitable project-force template. The
+	# source-counted contact API owns every locked landing cohort.
+	event_target:brilliant_scientist_kruger_state_carrier = { alien_infantry_reconcile_country = yes }
 }
 
 brilliant_scientist_spawn_temporal_project_force = {

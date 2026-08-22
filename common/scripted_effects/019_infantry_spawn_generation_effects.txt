@@ -1540,14 +1540,29 @@ infantry_spawn_count_current_template_components = {
 
 infantry_spawn_verify_current_template_exists = {
 	set_temp_variable = { infantry_spawn_current_template_exists = 0 }
-	meta_effect = {
-		text = {
-			if = {
-				limit = { has_template = "Unbidden Muster [TEMPLATE_UID]" }
-				set_temp_variable = { infantry_spawn_current_template_exists = 1 }
+	if = {
+		limit = {
+			check_variable = {
+				var = infantry_spawn_current_registry_provider_id
+				value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+				compare = equals
 			}
 		}
-		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+		if = {
+			limit = { has_template = "D’Rhondan Landing Cohort" }
+			set_temp_variable = { infantry_spawn_current_template_exists = 1 }
+		}
+	}
+	else = {
+		meta_effect = {
+			text = {
+				if = {
+					limit = { has_template = "Unbidden Muster [TEMPLATE_UID]" }
+					set_temp_variable = { infantry_spawn_current_template_exists = 1 }
+				}
+			}
+			TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+		}
 	}
 }
 
@@ -2183,6 +2198,16 @@ infantry_spawn_capture_and_mark_current_live_division = {
 infantry_spawn_rollback_current_unit_transaction = {
 	delete_unit = { id = infantry_spawn_current_delete_cohort_id disband = no }
 	if = {
+		limit = {
+			check_variable = {
+				var = infantry_spawn_current_registry_provider_id
+				value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+				compare = equals
+			}
+		}
+		chaos_unit_family_provider_508_event19_rollback_landing = yes
+	}
+	if = {
 		limit = { check_variable = { var = infantry_spawn_unit_uid_entries^num value = infantry_spawn_unit_row_count_before_create compare = greater_than } }
 		remove_from_array = { array = infantry_spawn_unit_uid_entries index = infantry_spawn_unit_row_count_before_create }
 		remove_from_array = { array = infantry_spawn_unit_delete_cohort_id_entries index = infantry_spawn_unit_row_count_before_create }
@@ -2258,23 +2283,35 @@ infantry_spawn_spawn_current_template_unit = {
 			value = THIS
 		}
 	}
-	event_target:infantry_spawn_current_origin_state = {
-		meta_effect = {
-			text = {
-				create_unit = {
-					division = "name = \"Unbidden Formation [UNIT_UID]\" division_template = \"Unbidden Muster [TEMPLATE_UID]\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
-					owner = event_target:infantry_spawn_generation_country
-					count = 1
-					id = [DELETE_COHORT_ID]
-					allow_spawning_on_enemy_provs = no
-				}
+	if = {
+		limit = {
+			check_variable = {
+				var = infantry_spawn_current_registry_provider_id
+				value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+				compare = equals
 			}
-			UNIT_UID = "[?infantry_spawn_current_unit_uid|.0]"
-			TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
-			START_EXPERIENCE = "[?infantry_spawn_current_start_experience|.2]"
-			START_EQUIPMENT = "[?infantry_spawn_current_start_equipment|.2]"
-			START_MANPOWER = "[?infantry_spawn_current_start_manpower|.2]"
-			DELETE_COHORT_ID = "[?infantry_spawn_current_delete_cohort_id|.0]"
+		}
+		chaos_unit_family_provider_508_event19_materialize_landing = yes
+	}
+	else = {
+		event_target:infantry_spawn_current_origin_state = {
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Unbidden Formation [UNIT_UID]\" division_template = \"Unbidden Muster [TEMPLATE_UID]\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+						owner = event_target:infantry_spawn_generation_country
+						count = 1
+						id = [DELETE_COHORT_ID]
+						allow_spawning_on_enemy_provs = no
+					}
+				}
+				UNIT_UID = "[?infantry_spawn_current_unit_uid|.0]"
+				TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+				START_EXPERIENCE = "[?infantry_spawn_current_start_experience|.2]"
+				START_EQUIPMENT = "[?infantry_spawn_current_start_equipment|.2]"
+				START_MANPOWER = "[?infantry_spawn_current_start_manpower|.2]"
+				DELETE_COHORT_ID = "[?infantry_spawn_current_delete_cohort_id|.0]"
+			}
 		}
 	}
 	set_temp_variable = { infantry_spawn_divisions_after_create = num_divisions }
@@ -2313,6 +2350,22 @@ infantry_spawn_spawn_current_template_unit = {
 					check_variable = { var = infantry_spawn_event19_delete_cohort_id value = infantry_spawn_current_delete_cohort_id compare = equals }
 				}
 			}
+			if = {
+				limit = {
+					check_variable = {
+						var = infantry_spawn_current_registry_provider_id
+						value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+						compare = equals
+					}
+					NOT = {
+						OR = {
+							has_country_flag = alien_infantry_event19_outer_transaction
+							check_variable = { alien_infantry_event19_outer_transaction = constant:alien_infantry_landing.one compare = equals }
+						}
+					}
+				}
+				chaos_unit_family_provider_508_event19_commit_landing = yes
+			}
 			infantry_spawn_achievement_register_current_generated_division = yes
 			if = {
 				limit = {
@@ -2334,6 +2387,16 @@ infantry_spawn_spawn_current_template_unit = {
 	}
 	else = {
 		delete_unit = { id = infantry_spawn_current_delete_cohort_id disband = no }
+		if = {
+			limit = {
+				check_variable = {
+					var = infantry_spawn_current_registry_provider_id
+					value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+					compare = equals
+				}
+			}
+			chaos_unit_family_provider_508_event19_rollback_landing = yes
+		}
 		infantry_spawn_mark_ledger_invariant_failure = yes
 	}
 	clear_temp_array = infantry_spawn_precreate_division_scopes
@@ -2357,6 +2420,19 @@ infantry_spawn_process_selected_ordinary_state = {
 			limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
 			infantry_spawn_append_selected_state_row = yes
 			infantry_spawn_roll_units_for_current_state = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = infantry_spawn_current_registry_provider_id
+						value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+						compare = equals
+					}
+				}
+				# One Event 019 request materializes one API-owned cohort. The
+				# shared API's ordinary cooldown remains authoritative between
+				# requests; batch mode is reserved for DHR bootstrap only.
+				set_temp_variable = { infantry_spawn_current_state_unit_target = 1 }
+			}
 			set_temp_variable = { infantry_spawn_current_state_unit_index = 0 }
 			while_loop_effect = {
 				limit = {
@@ -2392,6 +2468,19 @@ infantry_spawn_process_selected_registered_state = {
 			limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
 			infantry_spawn_append_selected_state_row = yes
 			infantry_spawn_roll_units_for_current_state = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = infantry_spawn_current_registry_provider_id
+						value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+						compare = equals
+					}
+				}
+				# One Event 019 request materializes one API-owned cohort. The
+				# shared API's ordinary cooldown remains authoritative between
+				# requests; batch mode is reserved for DHR bootstrap only.
+				set_temp_variable = { infantry_spawn_current_state_unit_target = 1 }
+			}
 			set_temp_variable = { infantry_spawn_current_state_unit_index = 0 }
 			while_loop_effect = {
 				limit = {

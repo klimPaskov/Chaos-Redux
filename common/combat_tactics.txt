@@ -1258,3 +1258,64 @@ tactic_chemical_barrage = {
 	attacker = @CHEM_BARRAGE_TACTIC_ATTACKER
 	defender = @CHEM_BARRAGE_TACTIC_DEFENDER
 }
+
+# ============================================================================
+# CHAOS REDUX - ALIEN PREDICTIVE WARFARE TACTICS
+# ============================================================================
+# These high-impact tactics are available only to combatants fielding the
+# reusable alien_infantry battalion after its predictive-warfare bridge is
+# granted. Their standard-phase gates prevent them from replacing phase-owned
+# tactics, while the battalion gate excludes ordinary formations.
+# ============================================================================
+
+@ALIEN_PREDICTIVE_TACTIC_BASE = 4
+@ALIEN_VECTOR_ASSAULT_ATTACKER = 0.35
+@ALIEN_VECTOR_ASSAULT_DEFENDER = -0.15
+@ALIEN_VECTOR_ASSAULT_MOVEMENT = 0.25
+@ALIEN_VECTOR_ASSAULT_ORG_DAMAGE = 0.30
+@ALIEN_PROBABILITY_SCREEN_ATTACKER = -0.35
+@ALIEN_PROBABILITY_SCREEN_DEFENDER = 0.30
+@ALIEN_PROBABILITY_SCREEN_ORG_DAMAGE = -0.30
+
+tactic_alien_predictive_vector_assault = {
+	is_attacker = yes
+	trigger = {
+		is_attacker = yes
+		phase = no
+		has_unit_type = alien_infantry
+	}
+
+	active = no
+
+	base = {
+		factor = @ALIEN_PREDICTIVE_TACTIC_BASE
+	}
+
+	picture = tactic_alien_predictive_vector_assault
+
+	attacker_movement_speed = @ALIEN_VECTOR_ASSAULT_MOVEMENT
+	attacker = @ALIEN_VECTOR_ASSAULT_ATTACKER
+	defender = @ALIEN_VECTOR_ASSAULT_DEFENDER
+	attacker_org_damage_modifier = @ALIEN_VECTOR_ASSAULT_ORG_DAMAGE
+}
+
+tactic_alien_probability_screen = {
+	is_attacker = no
+	trigger = {
+		is_attacker = no
+		phase = no
+		has_unit_type = alien_infantry
+	}
+
+	active = no
+
+	base = {
+		factor = @ALIEN_PREDICTIVE_TACTIC_BASE
+	}
+
+	picture = tactic_alien_probability_screen
+
+	attacker = @ALIEN_PROBABILITY_SCREEN_ATTACKER
+	defender = @ALIEN_PROBABILITY_SCREEN_DEFENDER
+	attacker_org_damage_modifier = @ALIEN_PROBABILITY_SCREEN_ORG_DAMAGE
+}
