@@ -1,0 +1,765 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION SCRIPT CONSTANTS
+# ============================================================================
+# Shared enum and numeric values for the famine-security, displacement, route,
+# and reception contracts. Runtime state lives on states/countries and in the
+# bounded registries; these constants only provide stable tuning identifiers.
+# ============================================================================
+
+famine_migration_runtime = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	five = 5
+	six = 6
+	seven = 7
+	eight = 8
+	first_array_index = 0
+	array_index_increment = 1
+	next_cohort_id_start = 1
+}
+
+famine_migration_pressure_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unknown = 0
+	occupation_policy = 1
+	camp_repression = 2
+	gulag_repression = 3
+	forced_labor = 4
+	deportation = 5
+	strategic_bombing = 6
+	nuclear_strike = 7
+	fallout = 8
+	outbreak = 9
+	natural_disaster = 10
+	war = 11
+	peace = 12
+	event = 13
+	blockade = 14
+	resource_shortage = 15
+	evacuation = 16
+	internal_displacement = 17
+	cross_border_flight = 18
+	air_cleanliness = 19
+	chemical_aftermath = 20
+	biological_warfare = 21
+	cluster = 22
+	scenario = 23
+}
+
+famine_migration_food_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	stable = 0
+	supply_strain = 1
+	acute_shortage = 2
+	famine = 3
+	catastrophic_famine = 4
+}
+
+famine_migration_border_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	humanitarian_open = 1
+	controlled = 2
+	transit_only = 3
+	quarantine = 4
+	closed = 5
+	violent = 6
+	forced_return = 7
+}
+
+famine_migration_route_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	invalid = 0
+	valid = 1
+	blocked = 2
+	trapped = 3
+}
+
+# Cohort records are aligned entries in the bounded global ledger. An
+# unbound destination is represented by the recorded origin scope only; no
+# effect may invent a replacement state when the destination is absent.
+famine_migration_cohort_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	active = 1
+	destination_bound = 2
+	completed = 3
+	invalid = 4
+	destination_bound_unsafe = 5
+}
+
+# Reception accounting accepts only positive actual survivor deltas. The
+# shared effect applies the same delta to the destination state and its owner
+# country, so mapmode and country-category consumers cannot drift.
+famine_migration_reception_delta = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	credit = 1
+	debit = 2
+}
+
+famine_migration_population = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	people_per_k = 1000
+	minimum_request = 1
+}
+
+# Food-security components are normalized to a 0-100 pressure scale before
+# weighting. The score is intentionally a composed value, not a flat modifier.
+famine_migration_food_component = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	maximum = 100
+	component_scale = 100
+}
+
+famine_migration_food_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	production = 1.15
+	transport = 1.10
+	extraction = 1.25
+	need = 1.00
+	environment = 0.80
+	vulnerability = 0.90
+	governance = 0.95
+	relief = 1.20
+	pressure_normalizer = 7.15
+	component_factor_base = 1.00
+	access_transport_share = 0.65
+	access_need_share = 0.35
+}
+
+famine_migration_food_score = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	maximum = 200
+	supply_strain_threshold = 25
+	acute_shortage_threshold = 50
+	famine_threshold = 75
+	catastrophic_threshold = 100
+	supply_strain_recovery_threshold = 20
+	acute_shortage_recovery_threshold = 40
+	famine_recovery_threshold = 60
+	catastrophic_recovery_threshold = 80
+}
+
+famine_migration_food_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	stable_candidate_days = 7
+	supply_strain_candidate_days = 7
+	acute_shortage_candidate_days = 14
+	famine_candidate_days = 21
+	catastrophic_candidate_days = 30
+	stable_recovery_days = 7
+	supply_strain_recovery_days = 14
+	acute_shortage_recovery_days = 21
+	famine_recovery_days = 30
+	catastrophic_recovery_days = 45
+	maximum_exposure_days = 180
+}
+
+famine_migration_mortality = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	acute_shortage_rate = 0.0004
+	famine_rate = 0.0015
+	catastrophic_rate = 0.0030
+	acute_shortage_interval_days = 14
+	famine_interval_days = 7
+	catastrophic_interval_days = 3
+	acute_shortage_minimum_exposure_days = 14
+	famine_minimum_exposure_days = 7
+	catastrophic_minimum_exposure_days = 3
+	exposure_multiplier_per_day = 0.01
+	minimum_exposure_multiplier = 1.00
+	maximum_exposure_multiplier = 3.00
+	protected_floor_share = 0.15
+	protected_floor_people = 1000
+	minimum_pulse_people = 1
+	access_transport_share = 0.65
+	access_need_share = 0.35
+	minimum_relief_factor = 0
+	maximum_relief_factor = 1
+}
+
+# These values are bounded owner inputs, not direct death effects. They let
+# existing owner systems expose a state-specific consequence without moving
+# ownership of their damage, camps, contamination, or direct deaths.
+famine_migration_surface_context = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	war_transport_pressure = 8
+	war_need_pressure = 4
+	air_band_spread_pressure = 10
+	air_band_winter_pressure = 25
+	air_band_severe_pressure = 40
+	air_band_irreversible_pressure = 60
+	air_exposure_vulnerability = 0.50
+	fallout_environment_pressure = 25
+	outbreak_vulnerability = 20
+	disaster_production_pressure = 20
+	camp_extraction_pressure = 20
+	camp_vulnerability_pressure = 25
+	forced_labor_vulnerability = 25
+	occupation_transport_pressure = 10
+	occupation_governance_pressure = 15
+	chemical_environment_pressure = 15
+	disaster_need_pressure = 15
+	occupation_vulnerability_pressure = 10
+	outbreak_environment_pressure = 10
+	camp_governance_pressure = 15
+	occupation_extraction_pressure = 20
+	occupation_forced_extraction_pressure = 35
+	occupation_forced_governance_pressure = 25
+	occupation_forced_vulnerability_pressure = 30
+	occupation_collective_punishment_pressure = 30
+	occupation_transfer_vulnerability_pressure = 35
+}
+
+famine_migration_occupation_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	protective = 1
+	standard = 2
+	extraction = 3
+	forced_labor = 4
+	collective_punishment = 5
+	population_transfer = 6
+	exterminatory = 7
+}
+
+# State ids are the audited vanilla map anchors used by profile resolution.
+# A profile still requires live causal proof; an id alone never activates it.
+famine_migration_profile_state_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	soviet_kiev = 193
+	soviet_western_kiev = 202
+	soviet_kharkov = 221
+	soviet_odessa = 192
+	soviet_stalino = 227
+	soviet_caucasus_mountains = 233
+	soviet_kazakhstan_north = 583
+	soviet_kazakhstan_central = 589
+	soviet_kazakhstan_south = 590
+	soviet_rostov = 218
+	soviet_saratov = 239
+	henan = 607
+	east_bengal = 430
+	west_bengal = 431
+	vietnam_tonkin = 671
+	vietnam_cochinchina = 1066
+	java_west = 335
+	java_east = 1051
+	greece = 47
+	greece_peloponnese = 186
+	greece_aegean = 187
+	leningrad = 195
+	holland = 7
+	friesland = 36
+	ireland = 113
+	ceara = 935
+	congo = 295
+	middle_congo = 772
+	ethiopia = 271
+	tigray = 842
+	spain_madrid = 41
+	spain_catalonia = 165
+	spain_western_aragon = 166
+	spain_valencia = 167
+	spain_murcia = 168
+	spain_sevilla = 169
+	spain_extremadura = 170
+	spain_galicia = 171
+	spain_navarre = 172
+	spain_granada = 173
+	spain_leon = 174
+	spain_ciudad_real = 175
+	spain_burgos = 176
+	spain_balearic_islands = 177
+	spain_canary_islands = 178
+	spain_salamanca = 788
+	spain_cordoba = 789
+	spain_asturias = 790
+	spain_valladolid = 791
+	spain_basque_country = 792
+	spain_guadalajara = 793
+	spain_eastern_aragon = 794
+}
+
+famine_migration_profile_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	hist_soviet_1932_memory = 1
+	hist_china_henan_1942 = 2
+	hist_china_policy_famine = 3
+	hist_bengal_1943 = 4
+	hist_vietnam_1944 = 5
+	hist_java_1944 = 6
+	hist_greece_1941 = 7
+	hist_leningrad_siege = 8
+	hist_dutch_hunger_winter = 9
+	hist_spain_early_1940s = 10
+	hist_ireland_memory = 11
+	hist_brazil_ceara = 12
+	hist_congo_interaction = 13
+	hist_ethiopia_policy = 14
+	hist_nuclear_winter_global = 15
+}
+
+famine_migration_profile_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	memory = 1
+	historical_window = 2
+	policy_analogue = 3
+	dynamic_regional = 4
+}
+
+# Profile values are starting context points. They seed component composition
+# only after an owner proves the mapped state; no key is a casualty target.
+famine_migration_profile_context = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	soviet_production = 10
+	soviet_transport = 10
+	soviet_extraction = 25
+	soviet_need = 10
+	soviet_environment = 0
+	soviet_vulnerability = 25
+	soviet_governance = 20
+	soviet_relief = 5
+
+	henan_production = 30
+	henan_transport = 25
+	henan_extraction = 25
+	henan_need = 15
+	henan_environment = 20
+	henan_vulnerability = 10
+	henan_governance = 20
+	henan_relief = 5
+
+	china_policy_production = 20
+	china_policy_transport = 20
+	china_policy_extraction = 35
+	china_policy_need = 20
+	china_policy_environment = 5
+	china_policy_vulnerability = 20
+	china_policy_governance = 30
+	china_policy_relief = 0
+
+	bengal_production = 20
+	bengal_transport = 35
+	bengal_extraction = 20
+	bengal_need = 25
+	bengal_environment = 15
+	bengal_vulnerability = 20
+	bengal_governance = 20
+	bengal_relief = 5
+
+	vietnam_production = 25
+	vietnam_transport = 30
+	vietnam_extraction = 25
+	vietnam_need = 20
+	vietnam_environment = 10
+	vietnam_vulnerability = 15
+	vietnam_governance = 20
+	vietnam_relief = 5
+
+	java_production = 25
+	java_transport = 30
+	java_extraction = 30
+	java_need = 20
+	java_environment = 10
+	java_vulnerability = 20
+	java_governance = 20
+	java_relief = 0
+
+	greece_production = 20
+	greece_transport = 40
+	greece_extraction = 30
+	greece_need = 25
+	greece_environment = 10
+	greece_vulnerability = 20
+	greece_governance = 25
+	greece_relief = 5
+
+	leningrad_production = 15
+	leningrad_transport = 45
+	leningrad_extraction = 15
+	leningrad_need = 30
+	leningrad_environment = 20
+	leningrad_vulnerability = 30
+	leningrad_governance = 20
+	leningrad_relief = 5
+
+	dutch_production = 15
+	dutch_transport = 40
+	dutch_extraction = 25
+	dutch_need = 20
+	dutch_environment = 20
+	dutch_vulnerability = 25
+	dutch_governance = 15
+	dutch_relief = 5
+
+	spain_production = 20
+	spain_transport = 30
+	spain_extraction = 25
+	spain_need = 20
+	spain_environment = 5
+	spain_vulnerability = 15
+	spain_governance = 20
+	spain_relief = 10
+
+	ireland_production = 10
+	ireland_transport = 10
+	ireland_extraction = 10
+	ireland_need = 0
+	ireland_environment = 0
+	ireland_vulnerability = 20
+	ireland_governance = 10
+	ireland_relief = 15
+
+	brazil_production = 35
+	brazil_transport = 20
+	brazil_extraction = 15
+	brazil_need = 20
+	brazil_environment = 30
+	brazil_vulnerability = 20
+	brazil_governance = 15
+	brazil_relief = 10
+
+	congo_production = 30
+	congo_transport = 30
+	congo_extraction = 25
+	congo_need = 20
+	congo_environment = 15
+	congo_vulnerability = 25
+	congo_governance = 30
+	congo_relief = 0
+
+	ethiopia_production = 30
+	ethiopia_transport = 25
+	ethiopia_extraction = 25
+	ethiopia_need = 20
+	ethiopia_environment = 20
+	ethiopia_vulnerability = 25
+	ethiopia_governance = 35
+	ethiopia_relief = 0
+
+	nuclear_winter_production = 35
+	nuclear_winter_transport = 30
+	nuclear_winter_extraction = 10
+	nuclear_winter_need = 25
+	nuclear_winter_environment = 45
+	nuclear_winter_vulnerability = 35
+	nuclear_winter_governance = 15
+	nuclear_winter_relief = 0
+}
+
+# State modifier values are small consequences layered on top of the dynamic
+# food score. Each active stage has one icon-bearing modifier and old stages
+# are removed by the shared refresh effect before the new stage is added.
+famine_migration_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	supply_local_supplies = -0.05
+	supply_production = -0.05
+	supply_resources = -0.05
+	supply_attrition = 0.01
+	acute_local_supplies = -0.10
+	acute_production = -0.10
+	acute_resources = -0.10
+	acute_supply_impact = 0.05
+	acute_attrition = 0.02
+	acute_speed = -0.05
+	famine_local_supplies = -0.20
+	famine_production = -0.20
+	famine_resources = -0.15
+	famine_supply_impact = 0.10
+	famine_attrition = 0.04
+	famine_speed = -0.10
+	catastrophic_local_supplies = -0.35
+	catastrophic_production = -0.35
+	catastrophic_resources = -0.25
+	catastrophic_supply_impact = 0.20
+	catastrophic_attrition = 0.08
+	catastrophic_speed = -0.20
+	exodus_production = -0.05
+	exodus_speed = -0.05
+	reception_local_supplies = -0.05
+	reception_production = -0.05
+	overcrowded_local_supplies = -0.15
+	overcrowded_attrition = 0.03
+	trapped_local_supplies = -0.10
+	trapped_speed = -0.05
+	return_production = -0.03
+}
+
+# Decision-surface tuning is shared so category visibility, mission timing,
+# outcome costs, and route-risk calculations cannot drift between files.
+famine_migration_decision_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	category_priority = 95
+	mission_secure_relief_timeout = 120
+	mission_corridor_timeout = 90
+	mission_reception_timeout = 150
+	decision_short = 10
+	decision_brief = 14
+	decision_warning = 18
+	decision_standard = 21
+	decision_route = 28
+	decision_extended = 30
+	decision_long = 35
+	decision_integration = 45
+	decision_reenable_short = 45
+	decision_reenable_standard = 60
+	decision_reenable_route = 75
+	decision_reenable_long = 90
+	decision_reenable_integration = 120
+}
+
+famine_migration_decision_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	category_food_exposure_days = 14
+	category_food_incidents = 2
+	category_flight_people = 5000
+	category_trapped_people = 1000
+	category_reception_load = 5000
+	category_state_count = 2
+	air_experience_minimum = 50
+	transfer_share = 0.05
+	transfer_minimum_origin_share = 0.30
+	trapped_cohort_share = 0.01
+	conceal_pressure = 1000
+	extraction_pressure = 2000
+	forced_return_base_route_death_share = 0.01
+	forced_return_famine_route_death_share = 0.04
+	forced_return_catastrophic_route_death_share = 0.08
+	forced_return_persecution_route_death_share = 0.08
+	forced_return_contamination_route_death_share = 0.06
+	forced_return_bombing_route_death_share = 0.06
+	forced_return_unsafe_route_death_share = 0.04
+	forced_return_max_route_death_share = 0.50
+	relief_quarter = 0.25
+	relief_third = 0.33
+	relief_half = 0.50
+}
+
+# AI bases and factors are centralized so decision weights can be audited and
+# compared without hiding balance values in individual action blocks.
+famine_migration_decision_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	prepare_base = 5
+	prepare_factor_1 = 3
+	prepare_factor_2 = 2
+	open_departure_base = 8
+	open_departure_factor_1 = 2
+	open_departure_factor_2 = 2
+	restrict_departure_base = 1
+	restrict_departure_factor_1 = 3
+	restrict_departure_factor_2 = 2
+	restrict_departure_factor_3 = 1.5
+	close_border_base = 1
+	close_border_factor_1 = 3
+	close_border_factor_2 = 2
+	close_border_factor_3 = 0.2
+	release_reserves_base = 12
+	release_reserves_factor_1 = 3
+	release_reserves_factor_2 = 2
+	release_reserves_factor_3 = 0.5
+	emergency_imports_base = 9
+	emergency_imports_factor_1 = 3
+	emergency_imports_factor_2 = 0.1
+	repair_relief_route_base = 14
+	repair_relief_route_factor_1 = 3
+	repair_relief_route_factor_2 = 2
+	escorted_relief_convoy_base = 16
+	escorted_relief_convoy_factor_1 = 4
+	escorted_relief_convoy_factor_2 = 0.25
+	emergency_airlift_base = 8
+	emergency_airlift_factor_1 = 5
+	emergency_airlift_factor_2 = 0.5
+	invite_relief_base = 7
+	invite_relief_factor_1 = 4
+	invite_relief_factor_2 = 2
+	famine_evacuation_base = 10
+	famine_evacuation_factor_1 = 4
+	famine_evacuation_factor_2 = 3
+	famine_evacuation_factor_3 = 2
+	evacuate_vulnerable_base = 13
+	evacuate_vulnerable_factor_1 = 4
+	evacuate_vulnerable_factor_2 = 3
+	evacuate_workers_base = 8
+	evacuate_workers_factor_1 = 3
+	evacuate_workers_factor_2 = 2
+	requisition_safer_state_base = 5
+	requisition_safer_state_factor_1 = 3
+	requisition_safer_state_factor_2 = 0.3
+	conceal_crisis_base = 1
+	conceal_crisis_factor_1 = 3
+	conceal_crisis_factor_2 = 2
+	conceal_crisis_factor_3 = 0.25
+	maintain_extraction_base = 2
+	maintain_extraction_factor_1 = 3
+	maintain_extraction_factor_2 = 2
+	maintain_extraction_factor_3 = 2
+	maintain_extraction_factor_4 = 0.1
+	negotiate_corridor_base = 12
+	negotiate_corridor_factor_1 = 4
+	negotiate_corridor_factor_2 = 2
+	open_reception_base = 10
+	open_reception_factor_1 = 4
+	open_reception_factor_2 = 3
+	open_reception_factor_3 = 0.2
+	controlled_medical_reception_base = 14
+	controlled_medical_reception_factor_1 = 4
+	controlled_medical_reception_factor_2 = 3
+	controlled_medical_reception_factor_3 = 0.25
+	distribute_arrivals_base = 9
+	distribute_arrivals_factor_1 = 4
+	distribute_arrivals_factor_2 = 3
+	transit_only_base = 6
+	transit_only_factor_1 = 3
+	transit_only_factor_2 = 2
+	enforce_closure_base = 1
+	enforce_closure_factor_1 = 3
+	enforce_closure_factor_2 = 2
+	enforce_closure_factor_3 = 3
+	local_integration_base = 12
+	local_integration_factor_1 = 4
+	local_integration_factor_2 = 3
+	local_integration_factor_3 = 0.3
+	third_country_resettlement_base = 7
+	third_country_resettlement_factor_1 = 4
+	third_country_resettlement_factor_2 = 3
+	voluntary_return_base = 10
+	voluntary_return_factor_1 = 5
+	voluntary_return_factor_2 = 4
+	voluntary_return_factor_3 = 0
+	forced_repatriation_base = 0.2
+	forced_repatriation_factor_1 = 4
+	forced_repatriation_factor_2 = 2
+	forced_repatriation_factor_3 = 3
+	forced_repatriation_factor_4 = 0
+}
+
+famine_migration_decision_outcome = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	mission_secure_relief_success_stability = 0.02
+	mission_secure_relief_timeout_stability = -0.03
+	mission_secure_relief_timeout_war_support = -0.02
+	mission_corridor_success_stability = 0.03
+	mission_corridor_success_war_support = 0.01
+	mission_corridor_timeout_stability = -0.04
+	mission_corridor_timeout_war_support = -0.03
+	mission_reception_success_stability = 0.02
+	mission_reception_timeout_stability = -0.05
+	mission_reception_timeout_war_support = -0.03
+	mission_reception_success_political_power = 5
+	decision_minor_stability = 0.01
+	decision_minor_stability_negative = -0.01
+	decision_standard_stability = 0.02
+	decision_standard_stability_negative = -0.02
+	decision_maintain_extraction_war_support = 0.02
+	decision_heavy_stability_negative = -0.03
+	decision_repatriation_stability_negative = -0.05
+	decision_repatriation_war_support = 0.03
+	decision_close_border_stability_negative = -0.02
+	decision_close_border_war_support_negative = -0.02
+}

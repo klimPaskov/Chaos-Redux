@@ -1,0 +1,105 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION STATE DYNAMIC MODIFIERS
+# ============================================================================
+# The food-security evaluator owns the score, stage flags, and mortality.
+# These state-scoped modifiers expose bounded supply, production, mobility, and
+# reception consequences for the active flags. The refresh effect removes all
+# families before adding the current set, so stage changes and cleanup are safe.
+# ============================================================================
+
+famine_migration_state_supply_strain = {
+	icon = GFX_fm_state_supply_strain
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_food_stage_supply_strain }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_food_stage_supply_strain } }
+	local_supplies = constant:famine_migration_modifier.supply_local_supplies
+	state_production_speed_buildings_factor = constant:famine_migration_modifier.supply_production
+	local_resources_factor = constant:famine_migration_modifier.supply_resources
+	attrition_for_controller = constant:famine_migration_modifier.supply_attrition
+}
+
+famine_migration_state_acute_shortage = {
+	icon = GFX_fm_state_acute_shortage
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_food_stage_acute_shortage }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_food_stage_acute_shortage } }
+	local_supplies = constant:famine_migration_modifier.acute_local_supplies
+	state_production_speed_buildings_factor = constant:famine_migration_modifier.acute_production
+	local_resources_factor = constant:famine_migration_modifier.acute_resources
+	local_supply_impact_factor = constant:famine_migration_modifier.acute_supply_impact
+	attrition_for_controller = constant:famine_migration_modifier.acute_attrition
+	army_speed_factor_for_controller = constant:famine_migration_modifier.acute_speed
+}
+
+famine_migration_state_famine = {
+	icon = GFX_fm_state_famine
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_food_stage_famine }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_food_stage_famine } }
+	local_supplies = constant:famine_migration_modifier.famine_local_supplies
+	state_production_speed_buildings_factor = constant:famine_migration_modifier.famine_production
+	local_resources_factor = constant:famine_migration_modifier.famine_resources
+	local_supply_impact_factor = constant:famine_migration_modifier.famine_supply_impact
+	attrition_for_controller = constant:famine_migration_modifier.famine_attrition
+	army_speed_factor_for_controller = constant:famine_migration_modifier.famine_speed
+}
+
+famine_migration_state_catastrophic_famine = {
+	icon = GFX_fm_state_catastrophic_famine
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_food_stage_catastrophic }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_food_stage_catastrophic } }
+	local_supplies = constant:famine_migration_modifier.catastrophic_local_supplies
+	state_production_speed_buildings_factor = constant:famine_migration_modifier.catastrophic_production
+	local_resources_factor = constant:famine_migration_modifier.catastrophic_resources
+	local_supply_impact_factor = constant:famine_migration_modifier.catastrophic_supply_impact
+	attrition_for_controller = constant:famine_migration_modifier.catastrophic_attrition
+	army_speed_factor_for_controller = constant:famine_migration_modifier.catastrophic_speed
+}
+
+famine_migration_state_exodus = {
+	icon = GFX_fm_state_exodus
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_displacement_active }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_displacement_active } }
+	state_production_speed_buildings_factor = constant:famine_migration_modifier.exodus_production
+	army_speed_factor_for_controller = constant:famine_migration_modifier.exodus_speed
+}
+
+# Reception, overcrowding, and return are explicit state-context contracts for
+# the owner decisions. Those owners set one context flag and call the public
+# refresh effect after changing it; this file never infers a policy outcome.
+famine_migration_state_reception = {
+	icon = GFX_fm_state_reception
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_reception_context_active }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_reception_context_active } }
+	local_supplies = constant:famine_migration_modifier.reception_local_supplies
+	state_production_speed_buildings_factor = constant:famine_migration_modifier.reception_production
+}
+
+famine_migration_state_overcrowded = {
+	icon = GFX_fm_state_overcrowded
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_overcrowded_context_active }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_overcrowded_context_active } }
+	local_supplies = constant:famine_migration_modifier.overcrowded_local_supplies
+	attrition_for_controller = constant:famine_migration_modifier.overcrowded_attrition
+}
+
+famine_migration_state_trapped_border = {
+	icon = GFX_fm_state_trapped_border
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_population_trapped }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_population_trapped } }
+	local_supplies = constant:famine_migration_modifier.trapped_local_supplies
+	army_speed_factor_for_controller = constant:famine_migration_modifier.trapped_speed
+}
+
+famine_migration_state_return = {
+	icon = GFX_fm_state_return
+	attacker_modifier = yes
+	enable = { has_state_flag = famine_migration_return_context_active }
+	remove_trigger = { NOT = { has_state_flag = famine_migration_return_context_active } }
+	state_production_speed_buildings_factor = constant:famine_migration_modifier.return_production
+}

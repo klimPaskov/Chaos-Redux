@@ -383,4 +383,227 @@ scripted_map_modes = {
 		update_daily = yes
 	}
 
+	famine_state_map_mode = {
+		top = {
+			type = state
+			thickness = yes
+			color = {
+				FROM = {
+					set_temp_variable = { red = constant:state_map_modes_famine.stable_red }
+					set_temp_variable = { green = constant:state_map_modes_famine.stable_green }
+					set_temp_variable = { blue = constant:state_map_modes_famine.stable_blue }
+					set_temp_variable = { alpha = constant:state_map_modes_famine.stable_alpha }
+					set_temp_variable = { thickness = constant:state_map_modes_famine.stable_thickness }
+
+					if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.catastrophic_famine } }
+						set_temp_variable = { red = constant:state_map_modes_famine.catastrophic_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.catastrophic_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.catastrophic_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.catastrophic_alpha }
+						set_temp_variable = { thickness = constant:state_map_modes_famine.catastrophic_thickness }
+						set_temp_variable = { highlighted = constant:state_map_modes_famine.highlighted }
+					}
+					else_if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.famine } }
+						set_temp_variable = { red = constant:state_map_modes_famine.famine_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.famine_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.famine_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.famine_alpha }
+						set_temp_variable = { thickness = constant:state_map_modes_famine.famine_thickness }
+					}
+					else_if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.acute_shortage } }
+						set_temp_variable = { red = constant:state_map_modes_famine.acute_shortage_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.acute_shortage_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.acute_shortage_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.acute_shortage_alpha }
+						set_temp_variable = { thickness = constant:state_map_modes_famine.acute_thickness }
+					}
+					else_if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.supply_strain } }
+						set_temp_variable = { red = constant:state_map_modes_famine.supply_strain_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.supply_strain_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.supply_strain_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.supply_strain_alpha }
+						set_temp_variable = { thickness = constant:state_map_modes_famine.strain_thickness }
+					}
+				}
+				always = yes
+			}
+		}
+
+		bottom = {
+			type = state
+			color = {
+				FROM = {
+					set_temp_variable = { red = constant:state_map_modes_famine.background_red }
+					set_temp_variable = { green = constant:state_map_modes_famine.background_green }
+					set_temp_variable = { blue = constant:state_map_modes_famine.background_blue }
+					set_temp_variable = { alpha = constant:state_map_modes_famine.background_alpha }
+
+					if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.catastrophic_famine } }
+						set_temp_variable = { red = constant:state_map_modes_famine.catastrophic_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.catastrophic_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.catastrophic_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.catastrophic_alpha }
+					}
+					else_if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.famine } }
+						set_temp_variable = { red = constant:state_map_modes_famine.famine_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.famine_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.famine_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.famine_alpha }
+					}
+					else_if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.acute_shortage } }
+						set_temp_variable = { red = constant:state_map_modes_famine.acute_shortage_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.acute_shortage_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.acute_shortage_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.acute_shortage_alpha }
+					}
+					else_if = {
+						limit = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.supply_strain } }
+						set_temp_variable = { red = constant:state_map_modes_famine.supply_strain_red }
+						set_temp_variable = { green = constant:state_map_modes_famine.supply_strain_green }
+						set_temp_variable = { blue = constant:state_map_modes_famine.supply_strain_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_famine.supply_strain_alpha }
+					}
+				}
+				always = yes
+			}
+		}
+
+		far_text = country
+		near_text = state
+		update_daily = yes
+	}
+
+	migration_state_map_mode = {
+		top = {
+			type = state
+			thickness = yes
+			color = {
+				FROM = {
+					set_temp_variable = { red = constant:state_map_modes_migration.background_red }
+					set_temp_variable = { green = constant:state_map_modes_migration.background_green }
+					set_temp_variable = { blue = constant:state_map_modes_migration.background_blue }
+					set_temp_variable = { alpha = constant:state_map_modes_migration.background_alpha }
+					set_temp_variable = { thickness = constant:state_map_modes_migration.ordinary_thickness }
+
+					if = {
+						limit = { has_state_flag = famine_migration_population_trapped }
+						set_temp_variable = { red = constant:state_map_modes_migration.trapped_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.trapped_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.trapped_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.trapped_alpha }
+						set_temp_variable = { thickness = constant:state_map_modes_migration.critical_thickness }
+						set_temp_variable = { highlighted = constant:state_map_modes_migration.highlighted }
+					}
+					else_if = {
+						limit = {
+							has_state_flag = famine_migration_displacement_active
+							check_variable = { famine_migration_flight_pressure > constant:famine_migration_population.zero }
+						}
+						set_temp_variable = { red = constant:state_map_modes_migration.exodus_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.exodus_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.exodus_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.exodus_alpha }
+						set_temp_variable = { thickness = constant:state_map_modes_migration.active_thickness }
+					}
+					else_if = {
+						limit = { has_state_flag = famine_migration_overcrowded_context_active }
+						set_temp_variable = { red = constant:state_map_modes_migration.overcrowded_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.overcrowded_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.overcrowded_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.overcrowded_alpha }
+						set_temp_variable = { thickness = constant:state_map_modes_migration.active_thickness }
+					}
+					else_if = {
+						limit = {
+							OR = {
+								has_state_flag = famine_migration_return_context_active
+								has_state_flag = famine_migration_state_resettlement_context_active
+							}
+						}
+						set_temp_variable = { red = constant:state_map_modes_migration.return_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.return_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.return_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.return_alpha }
+					}
+					else_if = {
+						limit = { has_state_flag = famine_migration_reception_context_active }
+						set_temp_variable = { red = constant:state_map_modes_migration.reception_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.reception_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.reception_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.reception_alpha }
+					}
+				}
+				always = yes
+			}
+		}
+
+		bottom = {
+			type = state
+			color = {
+				FROM = {
+					set_temp_variable = { red = constant:state_map_modes_migration.background_red }
+					set_temp_variable = { green = constant:state_map_modes_migration.background_green }
+					set_temp_variable = { blue = constant:state_map_modes_migration.background_blue }
+					set_temp_variable = { alpha = constant:state_map_modes_migration.background_alpha }
+
+					if = {
+						limit = { has_state_flag = famine_migration_population_trapped }
+						set_temp_variable = { red = constant:state_map_modes_migration.trapped_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.trapped_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.trapped_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.trapped_alpha }
+					}
+					else_if = {
+						limit = {
+							has_state_flag = famine_migration_displacement_active
+							check_variable = { famine_migration_flight_pressure > constant:famine_migration_population.zero }
+						}
+						set_temp_variable = { red = constant:state_map_modes_migration.exodus_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.exodus_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.exodus_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.exodus_alpha }
+					}
+					else_if = {
+						limit = { has_state_flag = famine_migration_overcrowded_context_active }
+						set_temp_variable = { red = constant:state_map_modes_migration.overcrowded_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.overcrowded_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.overcrowded_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.overcrowded_alpha }
+					}
+					else_if = {
+						limit = {
+							OR = {
+								has_state_flag = famine_migration_return_context_active
+								has_state_flag = famine_migration_state_resettlement_context_active
+							}
+						}
+						set_temp_variable = { red = constant:state_map_modes_migration.return_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.return_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.return_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.return_alpha }
+					}
+					else_if = {
+						limit = { has_state_flag = famine_migration_reception_context_active }
+						set_temp_variable = { red = constant:state_map_modes_migration.reception_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.reception_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.reception_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.reception_alpha }
+					}
+				}
+				always = yes
+			}
+		}
+
+		far_text = country
+		near_text = state
+		update_daily = yes
+	}
+
 }

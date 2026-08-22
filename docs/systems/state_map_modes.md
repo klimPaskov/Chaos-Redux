@@ -1,12 +1,14 @@
 # State Map Modes
 
-This adds three scripted state map modes for crisis visibility without duplicating gameplay logic.
+This adds five scripted state map modes for crisis visibility without duplicating gameplay logic.
 
 ## What was added
 
 1. `contaminated_states_map_mode`
 2. `deaths_state_map_mode`
 3. `air_winter_state_map_mode`
+4. `famine_state_map_mode`
+5. `migration_state_map_mode`
 
 The contamination view reads the live state contamination systems:
 
@@ -73,6 +75,24 @@ The Air Winter package exposes one engine-native scripted state mapmode.
 
 The single button retains the normal scripted-mapmode render path, daily refresh, state tooltips, and ordinary map selection behavior. Its values come from the Air Winter monthly state update rather than a second visual-only calculation. Exposure and survival remain gameplay ledgers, not separate mapmode registrations.
 
+## Famine map mode
+
+`famine_state_map_mode` is the single dedicated food-security view. It reads the live `famine_migration_food_stage` and `famine_migration_food_security_score` ledgers and distinguishes stable supply, supply strain, acute shortage, famine, and catastrophic famine. The stage drives the visible fill and border, while the persisted score is an owner/controller tooltip ledger rather than a second visual band. Catastrophic states pulse and receive the heaviest border. Owners and controllers can inspect the score, exposure duration, all eight normalized components, and the state's recorded famine deaths; other viewers receive the public stage only.
+
+## Migration map mode
+
+`migration_state_map_mode` is the single dedicated civilian-movement view. It combines displacement origins, trapped populations, reception, overcrowding, resettlement, and return projections in one state layer. Its visual priority is trapped population, active exodus, overcrowded reception, resettlement or return, then ordinary reception. Owners and controllers can inspect exact flight pressure, trapped population, state reception load, state resettlement and return outcomes, and the owning country's reception, capacity, integration, and resettlement ledgers. The mapmode does not create or infer a route, scan global cohort arrays, or draw route arrows; it visualizes state-local projections and owner-country ledgers written by validated exact-transfer and cohort transactions, while persistent cohort destination and status remain transaction-ledger data.
+
+The package has exactly two dedicated mapmodes for this system, `famine_state_map_mode` and `migration_state_map_mode`. The other three mapmodes documented in this file belong to contamination, civilian deaths, and Air Winter and are not famine or migration variants.
+
+## Mapmode evidence and limits
+
+The current bounded HOI4 map inspection covered 32 requested historical-profile states and returned `MAP_INSPECTED` with artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/34498d56d4bf765796f793b12431c8e42bf07506d9484b1c7f3a961900f58b1d/66c0aca0d881147df54e388a8d987bf4f8422ed0c1b6fa779fc8ea008ddb3eb0/map-inspect.456c28c5a8e6bad1.json`. The artifact passed state definitions, bitmap, state-region membership, adjacency, supply, and railway checks and reported no unknown or missing requested state IDs.
+
+That MCP run still reported unrelated workspace-wide floating-harbor and building-position diagnostics from `map/buildings.txt`, with 2,654 omitted diagnostics after the retained-error ceiling. The mapmode source was not changed to address those unrelated errors.
+
+The installed GUI route does not provide a dedicated scripted-mapmode inspection surface in this workspace. Existing GUI inspection modeled zero elements for the hardcoded `mapmodes` window, and the corresponding render attempt timed out without a payload, so this documentation records source and artifact evidence without claiming a complete visual runtime gate.
+
 ## Files
 
 - Map mode definitions: `common/map_modes/chaosx_state_map_modes.txt`
@@ -100,6 +120,10 @@ Scripted map modes do not resolve those shared-strip positions directly. They re
 - `GFX_mapmode_buttons_selected_small_contaminated_states_map_mode`
 - `GFX_mapmode_buttons_deselected_small_air_winter_state_map_mode`
 - `GFX_mapmode_buttons_selected_small_air_winter_state_map_mode`
+- `GFX_mapmode_buttons_deselected_small_famine_state_map_mode`
+- `GFX_mapmode_buttons_selected_small_famine_state_map_mode`
+- `GFX_mapmode_buttons_deselected_small_migration_state_map_mode`
+- `GFX_mapmode_buttons_selected_small_migration_state_map_mode`
 
 Their dedicated `20x18` DDS files live under `gfx/interface/mapmode/custom/`. Source and processed PNG copies are recorded under `docs/assets/shared_gfx_cleanup/`.
 

@@ -1,0 +1,339 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION SCRIPTED TRIGGERS
+# ============================================================================
+# Fail-closed predicates shared by food-security pressure, displacement,
+# route, blockade, reception, and return adapters. These triggers validate
+# explicit caller proof; they never scan the world or mutate runtime state.
+# ============================================================================
+
+famine_migration_country_is_valid = {
+	hidden_trigger = {
+		scope_exists = yes
+		is_special_chaos_country = no
+		uses_normal_civilian_systems = yes
+	}
+}
+
+famine_migration_state_is_valid = {
+	hidden_trigger = {
+		scope_exists = yes
+		check_variable = { var = state_population_k > constant:famine_migration_population.zero  }
+		OWNER = {
+			famine_migration_country_is_valid = yes
+		}
+		CONTROLLER = {
+			famine_migration_country_is_valid = yes
+		}
+	}
+}
+
+famine_migration_pressure_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_pressure_request_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_pressure_request_amount > constant:famine_migration_population.zero  }
+		check_variable = { var = famine_migration_pressure_request_source > constant:famine_migration_pressure_source.unknown  }
+		check_variable = { var = famine_migration_pressure_request_actor_proven > constant:famine_migration_runtime.zero  }
+	}
+}
+
+famine_migration_route_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_transfer_request_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_transfer_people > constant:famine_migration_population.zero  }
+		check_variable = { var = famine_migration_route_border_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_route_transport_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_route_safety_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_route_actor_proven > constant:famine_migration_runtime.zero  }
+		has_event_target = famine_migration_route_destination
+		event_target:famine_migration_route_destination = {
+			famine_migration_destination_is_valid = yes
+		}
+	}
+}
+
+famine_migration_destination_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		OR = {
+			AND = {
+				check_variable = { var = famine_migration_destination_food_safe_proven > constant:famine_migration_runtime.zero  }
+				check_variable = { var = famine_migration_destination_reception_proven > constant:famine_migration_runtime.zero  }
+			}
+			famine_migration_forced_return_destination_is_valid = yes
+		}
+	}
+}
+
+# A forced return may target the persisted original state even when that state
+# is not food- or reception-safe. The state-local proof is set only by the
+# validated forced-return effect and is cleared after the one transfer attempt
+# or route cleanup, so ordinary route requests cannot inherit unsafe access.
+famine_migration_forced_return_destination_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_forced_return_destination_proven value = constant:famine_migration_runtime.one compare = equals }
+	}
+}
+
+famine_migration_reception_delta_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_reception_delta_request_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_reception_delta_amount > constant:famine_migration_population.zero  }
+		OR = {
+			check_variable = { var = famine_migration_reception_delta_mode value = constant:famine_migration_reception_delta.credit compare = equals }
+			check_variable = { var = famine_migration_reception_delta_mode value = constant:famine_migration_reception_delta.debit compare = equals }
+		}
+		OWNER = { famine_migration_country_is_valid = yes }
+		OR = {
+			check_variable = { var = famine_migration_reception_delta_mode value = constant:famine_migration_reception_delta.credit compare = equals }
+			AND = {
+				check_variable = { var = famine_migration_state_reception_load value = famine_migration_reception_delta_amount compare = greater_than_or_equals }
+				OWNER = { check_variable = { var = famine_migration_reception_load value = famine_migration_reception_delta_amount compare = greater_than_or_equals } }
+			}
+		}
+	}
+}
+
+# Every condition is binding. A caller must provide the explicit physical and
+# political proof in addition to the engine's owner/controller war state.
+famine_migration_blockade_proof = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		OWNER = { has_war = yes }
+		CONTROLLER = { has_war = yes }
+		check_variable = { var = famine_migration_blockade_island_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_blockade_isolation_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_blockade_maritime_dependence_proven > constant:famine_migration_runtime.zero  }
+		OR = {
+			check_variable = { var = famine_migration_blockade_route_disrupted_proven > constant:famine_migration_runtime.zero  }
+			check_variable = { var = famine_migration_blockade_port_disrupted_proven > constant:famine_migration_runtime.zero  }
+		}
+		OR = {
+			check_variable = { var = famine_migration_blockade_convoy_shortage_proven > constant:famine_migration_runtime.zero  }
+			check_variable = { var = famine_migration_blockade_escort_shortage_proven > constant:famine_migration_runtime.zero  }
+		}
+		check_variable = { var = famine_migration_blockade_no_humanitarian_corridor_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_blockade_local_food_insufficient_proven > constant:famine_migration_runtime.zero  }
+	}
+}
+
+famine_migration_return_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_country_is_valid = yes
+		check_variable = { var = famine_migration_cohort_id_request value = constant:famine_migration_runtime.zero compare = greater_than }
+		famine_migration_cohort_origin_resolution_is_valid = yes
+		check_variable = { var = famine_migration_return_request_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_return_origin_safe_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_return_route_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_return_food_safe_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_return_housing_ready_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_return_persecution_clear_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_return_contamination_clear_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_return_host_allows_proven > constant:famine_migration_runtime.zero  }
+	}
+}
+
+famine_migration_border_policy_is_valid = {
+	hidden_trigger = {
+		famine_migration_country_is_valid = yes
+		OR = {
+			check_variable = { var = famine_migration_border_policy_request value = constant:famine_migration_border_policy.humanitarian_open   compare = equals }
+			check_variable = { var = famine_migration_border_policy_request value = constant:famine_migration_border_policy.controlled   compare = equals }
+			check_variable = { var = famine_migration_border_policy_request value = constant:famine_migration_border_policy.transit_only   compare = equals }
+			check_variable = { var = famine_migration_border_policy_request value = constant:famine_migration_border_policy.quarantine   compare = equals }
+			check_variable = { var = famine_migration_border_policy_request value = constant:famine_migration_border_policy.closed   compare = equals }
+			check_variable = { var = famine_migration_border_policy_request value = constant:famine_migration_border_policy.violent   compare = equals }
+			check_variable = { var = famine_migration_border_policy_request value = constant:famine_migration_border_policy.forced_return   compare = equals }
+		}
+	}
+}
+
+# A state is eligible for the scheduled evaluator only while an owner has
+# deliberately submitted a context or a pressure request. This keeps the
+# registry sparse and avoids a world scan hidden inside a trigger.
+famine_migration_state_has_active_context = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		OR = {
+			has_state_flag = famine_migration_food_security_active
+			has_state_flag = famine_migration_surface_context_active
+			has_state_flag = famine_migration_profile_context_active
+			check_variable = { var = famine_migration_food_pressure > constant:famine_migration_population.zero  }
+		}
+	}
+}
+
+famine_migration_food_stage_is_active = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = {
+			var = famine_migration_food_stage
+			value = constant:famine_migration_food_stage.stable
+
+			compare = greater_than
+		}
+	}
+}
+
+famine_migration_food_stage_requires_mortality = {
+	hidden_trigger = {
+		famine_migration_food_stage_is_active = yes
+		OR = {
+			check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.acute_shortage compare = greater_than_or_equals }
+			check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.famine compare = greater_than_or_equals }
+			check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.catastrophic_famine compare = greater_than_or_equals }
+		}
+	}
+}
+
+famine_migration_state_can_retire = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		OR = {
+			NOT = { has_variable = famine_migration_food_stage }
+			check_variable = { var = famine_migration_food_stage value = constant:famine_migration_food_stage.stable compare = equals }
+		}
+		NOT = { check_variable = { var = famine_migration_food_pressure > constant:famine_migration_population.zero  } }
+	}
+}
+
+famine_migration_surface_context_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_surface_context_proven > constant:famine_migration_runtime.zero  }
+		check_variable = { var = famine_migration_surface_context_actor_proven > constant:famine_migration_runtime.zero  }
+	}
+}
+
+famine_migration_historical_profile_context_is_resolved = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_profile_mapping_result value = constant:famine_migration_runtime.one compare = equals }
+		check_variable = { var = famine_migration_historical_profile_state_proven value = constant:famine_migration_runtime.one compare = equals }
+		check_variable = { var = famine_migration_historical_profile_context_proven value = constant:famine_migration_runtime.one compare = equals }
+	}
+}
+
+famine_migration_historical_profile_candidate_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		has_state_flag = famine_migration_historical_profile_candidate_active
+		OR = {
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_soviet_1932_memory compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_china_henan_1942 compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_china_policy_famine compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_bengal_1943 compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_vietnam_1944 compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_java_1944 compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_greece_1941 compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_leningrad_siege compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_dutch_hunger_winter compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_spain_early_1940s compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_ireland_memory compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_brazil_ceara compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_congo_interaction compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_ethiopia_policy compare = equals }
+			check_variable = { var = famine_migration_historical_profile_id value = constant:famine_migration_profile_id.hist_nuclear_winter_global compare = equals }
+		}
+	}
+}
+
+# Cohort ledger requests are explicit and amount-owned. The effect records the
+# current state as origin and host; it never fabricates a destination scope.
+famine_migration_cohort_record_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_cohort_record_request_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_record_amount value = constant:famine_migration_population.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_record_owner_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_record_source value = constant:famine_migration_pressure_source.unknown compare = greater_than }
+	}
+}
+
+famine_migration_cohort_destination_bind_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_cohort_id_request value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_destination_food_safe_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_destination_reception_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+	}
+}
+
+# Safe third-country resettlement rebinds an already received, nonterminal row
+# from the actual new destination state. It requires the resolver's persisted
+# host and owner targets plus explicit food, reception, route, and actor proof.
+# The effect changes only aligned host/destination identity; it never creates,
+# debits, credits, or duplicates population.
+famine_migration_cohort_resettlement_rebind_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_cohort_id_request value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_resettlement_rebind_request_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_resettlement_food_safe_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_resettlement_reception_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_resettlement_route_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_resettlement_actor_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		has_event_target = famine_migration_cohort_host
+		event_target:famine_migration_cohort_host = {
+			famine_migration_state_is_valid = yes
+			OWNER = { famine_migration_country_is_valid = yes }
+		}
+		has_event_target = famine_migration_cohort_owner
+		event_target:famine_migration_cohort_owner = { famine_migration_country_is_valid = yes }
+		NOT = { state = event_target:famine_migration_cohort_host }
+	}
+}
+
+famine_migration_cohort_forced_destination_bind_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		check_variable = { var = famine_migration_cohort_id_request value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_forced_bind_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_forced_bind_actor_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_forced_bind_policy_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+	}
+}
+
+famine_migration_cohort_origin_resolution_is_valid = {
+	hidden_trigger = {
+		check_variable = { var = famine_migration_cohort_origin_resolution_result value = constant:famine_migration_route_result.valid compare = equals }
+		has_event_target = famine_migration_cohort_origin
+		event_target:famine_migration_cohort_origin = {
+			famine_migration_state_is_valid = yes
+		}
+	}
+}
+
+famine_migration_cohort_destination_resolution_is_valid = {
+	hidden_trigger = {
+		check_variable = { var = famine_migration_cohort_destination_resolution_result value = constant:famine_migration_route_result.valid compare = equals }
+		has_event_target = famine_migration_cohort_destination
+		event_target:famine_migration_cohort_destination = {
+			famine_migration_destination_is_valid = yes
+		}
+	}
+}
+
+# Forced return intentionally validates only the persisted origin identity and
+# the explicit forced-return policy. It does not call the normal destination
+# safety trigger, because forced return is allowed to represent unsafe return
+# conditions that the caller has separately acknowledged.
+famine_migration_forced_return_request_is_valid = {
+	hidden_trigger = {
+		famine_migration_country_is_valid = yes
+		check_variable = { var = famine_migration_forced_return_request_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_forced_return_unsafe_host_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_forced_return_policy_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+		famine_migration_cohort_origin_resolution_is_valid = yes
+	}
+}
+
+famine_migration_cohort_cleanup_request_is_valid = {
+	hidden_trigger = {
+		check_variable = { var = famine_migration_cohort_id_request value = constant:famine_migration_runtime.zero compare = greater_than }
+		check_variable = { var = famine_migration_cohort_cleanup_proven value = constant:famine_migration_runtime.zero compare = greater_than }
+	}
+}

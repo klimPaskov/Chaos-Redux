@@ -1,6 +1,6 @@
 # Famine and Migration Generated Event-Art Handoff
 
-Status: complete for the seven accepted generated report-image rows and the follow-up `fm_pic_displacement` decision-category picture. Parent owns `.gfx` registration, event IDs, localisation, decision-category wiring, and final runtime wiring. No gameplay, localisation, GUI, event, decision, focus, country, spreadsheet, flag, portrait, super-event, animation, or `.gfx` file was edited.
+Status: complete for the seven accepted generated report-image rows and the follow-up `fm_pic_displacement` decision-category picture. Current source contains the package `.gfx` registrations; parent owns event IDs, localisation, decision-category wiring, report consumers, and final runtime validation. No gameplay, localisation, GUI, event, decision, focus, country, spreadsheet, flag, portrait, super-event, animation, or `.gfx` file was edited by this handoff.
 
 ## Completed family
 

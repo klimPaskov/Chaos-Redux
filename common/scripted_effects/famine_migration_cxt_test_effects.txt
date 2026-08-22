@@ -1,0 +1,41 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION CXT TEST REGISTRATION
+# ============================================================================
+# Registers one idempotent general-system fixture through the CXT extension
+# bus. The fixture gives CXT a bounded supply-strain state and reception
+# capacity without creating a severe famine, migration route, or population
+# transaction. Ordinary gameplay never calls this setup effect.
+# ============================================================================
+
+famine_migration_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_famine_migration
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_famine_migration_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = famine_migration_cxt_fixture_initialized }
+		}
+		set_country_flag = famine_migration_cxt_fixture_initialized
+		set_temp_variable = { famine_migration_reception_capacity_request = constant:famine_migration_decision_threshold.category_reception_load }
+		famine_migration_refresh_reception_capacity = yes
+		capital_scope = {
+			set_temp_variable = { famine_migration_input_production = constant:famine_migration_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_migration_input_transport = constant:famine_migration_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_migration_input_extraction = constant:famine_migration_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_migration_input_need = constant:famine_migration_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_migration_input_environment = constant:famine_migration_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_migration_input_vulnerability = constant:famine_migration_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_migration_input_governance = constant:famine_migration_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_migration_input_relief = constant:famine_migration_food_component.zero }
+			set_temp_variable = { famine_migration_surface_context_proven = constant:famine_migration_runtime.one }
+			set_temp_variable = { famine_migration_surface_context_actor_proven = constant:famine_migration_runtime.one }
+			famine_migration_submit_surface_context = yes
+		}
+	}
+}
