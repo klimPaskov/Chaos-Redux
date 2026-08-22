@@ -2,6 +2,8 @@
 
 > Superseded by the two-tag correction handoff dated 2026-07-29. This historical audit predates the registered package and the single reusable RTA carrier; its former multi-carrier findings are retained for provenance only, not as current implementation requirements.
 
+> Cleanup status, 2026-08-22: The original assessments of `black_plague_rat_record_current_evolution` and `black_plague_rat_evolution_*_is_eligible` describe helpers that were later superseded and then removed after exact direct, dynamic, scripted-localisation, GUI, documentation, and asset-reference checks. Current evolution ownership belongs to `black_plague_evolution_record_stage`, `black_plague_evolution_runtime_pulse`, and the `black_plague_evolution_*_is_ready` triggers; the historical findings below must not be used to restore the retired helper family.
+
 ## Scope and ownership
 
 This audit covers the rat effects, triggers, constants, MTTH, country registration, history, units, ideas, focus trees, decisions, AI, localisation, assets, and Event 20 callback surfaces required by docs/specs/020_black_plague_specs/specs/020_black_plague_spec_part_4_evolutions_and_rat_emergence.md, part_5_rat_nations.md, part_6_rat_king.md, and part_7_world_end_and_aftermath.md.
