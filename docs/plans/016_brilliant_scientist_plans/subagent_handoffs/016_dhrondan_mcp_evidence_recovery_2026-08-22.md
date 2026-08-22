@@ -39,6 +39,10 @@ The Event reports remain incomplete for full helper execution because the worksp
 
 A bounded state inspection also returned the selected state record, but its workspace-wide map diagnostics included unrelated position and floating-harbor rows from `map/buildings.txt`. That inspection does not establish or reject the DHR transfer helper. The map renderer is static and cannot represent the runtime marked-state selection, third-party controller preservation, lost-state claim conversion, disconnected-component discovery, or later uprising join behavior.
 
+## Comparison boundary
+
+Fresh `hoi4.event_compare` and `hoi4.tech_compare` calls without a preserved pre-implementation graph returned `EVENT_COMPARISON_BASELINE_REQUIRED` and `TECH_COMPARISON_BASELINE_REQUIRED`. Attempts to use current lint and overview artifacts as substitute baselines returned `EVENT_GRAPH_ARTIFACT_INVALID` because those artifacts do not carry the comparison graph schema. No synthetic before-and-after claim is made. The current renders, inspections, state-flow report, and trace remain post-implementation structural evidence only.
+
 ## Meshy read-only recovery check
 
 Task `01a02497-1fb9-7a1b-bec6-ec388d54a016` remains `SUCCEEDED` at 100 percent and reports exactly 30 consumed credits. The live Meshy balance was 626 credits on 2026-08-22. The candidate remains rejected because it omits the required laser rifle. A successful rejected task is not eligible for a failed-task refund, and no verified free correction operation exists in the locked route.
