@@ -1,8 +1,83 @@
 # Event 006 source-of-truth map
 
-## Current authority override (2026-08-15 registry re-audit after IW-045 admission)
+## Current authority override (2026-08-22 after release-scope, focus, and catalog reconciliation)
 
-The current allocator pass reports 149 publishers, 32 content-attested selectable packages, 29 compatible reservation groups, 161 unattested selectable packages out of 193 non-overlay rows, and 40 runtime package adapters. The active automatic wave ladder is `3/4/5/7/10`, with World Collapse also targeting `10`. Event 006 remains **HOLD / PARTIAL** for whole-event completion.
+The whole-event disposition remains **HOLD / PARTIAL**.
+
+The current partial boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime package adapters, and 161 unattested selectable rows out of 193 non-overlay rows.
+
+The eight adapter-only rows remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM.
+
+The active automatic ladder remains `3/4/5/7/10`, with World Collapse also targeting `10`, and the deterministic Join order remains the 32-ID order recorded below.
+
+Preserve the user correction as an invariant: nothing is visible before Event 006 fires.
+
+The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger-only `chaosx.nr6.3` cleanup preserve that boundary; the retired crisis helpers remain hard-disabled compatibility surfaces with no pressure category, mission, cost, queue, history row, or early request.
+
+The 2026-08-21 parent tranche remains implemented as source evidence: synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors for IW-024/IW-027/IW-028, the documented dormant-shell guard, and 37 byte-preserving supplied portrait installs with 14 intentionally unmapped files.
+
+Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with the terminal receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and the portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
+
+The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the owner of opening divisions.
+
+The source handoff is `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
+
+The release-scope handoff reports a passing static allocator audit, but its post-change Event MCP refresh timed out and no newer event revision or live transaction receipt is claimed.
+
+The 2026-08-22 focus prerequisite repair supersedes the earlier isolated-node wording for current graph status.
+
+The latest focus receipt reports 184 focuses, 195 connectors, zero crossings, and zero node intersections after restoring the explicit military-archetype prerequisite on `independence_wave_standardize_with_league` and `independence_wave_preserve_independent_command`.
+
+The graph correction handoff is `subagent_handoffs/006_event6_focus_prerequisite_repair_2026-08-22.md`.
+
+Seven Event 006 layout warnings and fourteen unrelated vanilla continuous-focus icon diagnostics remain, so the focus surface stays **HOLD** and no focus completion claim is authorized.
+
+The 2026-08-22 focus overlay audit remains route-coverage evidence for 318 definitions, resolved Event 006 icons, and resolved Event 006 localisation; its pre-repair connector count is superseded by the later prerequisite-repair receipt.
+
+The 2026-08-22 decision and mission audit leaves the broad surface **PARTIAL / HOLD**.
+
+Its bounded audit and GUI receipts are in `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-22.md`.
+
+The compact Pacific cost disclosure patch is source-applied, but over-budget payment palettes, package cost prose, category density, DM-01 dynamic disclosure, and complete typed probability evidence remain queued design and balance work.
+
+The custom probability-auditor route was unavailable, direct MCP discovery was incomplete, and no same-scenario probability comparison or quantitative balance claim is recorded.
+
+The 2026-08-22 catalog handoffs agree on the final state: `Events!C7` matches `chaosx.events_log.window.event_details.independence_wave`, all three export snapshots were refreshed successfully, Event 006 remains `Partially Available`, SCN-008 remains `Unavailable`, and the mixed Liberations cluster remains `Partially Available`.
+
+The final-state receipts are `subagent_handoffs/006_event6_catalog_alignment_2026-08-22.md` and `subagent_handoffs/006_event6_catalog_reconcile_2026-08-22.md`.
+
+The two catalog handoffs differ only on process history, with one recording a C7 replacement and the other recording an already-matching cell; preserve that provenance discrepancy for parent review without changing the reconciled final state.
+
+The current event MCP evidence remains partial: the latest recorded `chaosx.nr6.1` inspect and state render are source-linked partial artifacts, while the post-release-scope refresh timed out and `hoi4.event_compare` remains blocked by missing cached prior revisions.
+
+The current whole-event receipt is `subagent_handoffs/006_event006_completion_audit_followup_2026-08-22.md`, and the timeout limitation is recorded in `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
+
+The Statehood Ledger and formable-puzzle GUI receipts remain fidelity evidence with workspace-global diagnostics, not clean runtime acceptance.
+
+### Current queued tranches
+
+- Complete central admission for the 161 unattested selectable rows and preserve fail-closed package, identity, map, rights, roster, force, probability, and cleanup gates.
+- Obtain the required named-scenario probability audit and same-scenario comparison across event, decision, mission, focus, host, league, patron, and allocator surfaces before any weighted-logic change or balance claim.
+- Decide and implement the four-group payment palettes, matching payment effects, triggers, AI weights, custom-cost text, blocked text, and tooltips, then add DM-01 dynamic pre-activation disclosure and review high-density categories.
+- Re-run focus inspect/render after any parent-owned graph change and separately resolve the remaining authored layout warnings; focus lint/validate routes remain unavailable.
+- Continue the bounded Statehood Ledger/formable GUI tranche and obtain clean family-isolated hierarchy, resolution, click-region, overflow, rewrite/compare, and runtime evidence.
+- Keep FORM-06 through FORM-47 fail-closed except for explicitly admitted bounded families, keep FORM-42 blocked, and keep FORM-48 unreachable until the FSM member contract is admitted.
+- Preserve ordinary super-event `24` while keeping super-event `23` blocked on exact redistribution rights and requiring parent approval before any replacement research is selected.
+- Obtain a user-supplied standalone terminal receipt before treating the source-level receipt contract as a successful live release.
+
+### Current source-of-truth order
+
+Accepted Event 006 specifications define design intent.
+
+This 2026-08-22 override and the dated 2026-08-22 handoffs define the current implementation boundary and corrections.
+
+The older 2026-08-15 registry and focus/catalog paragraphs below remain historical evidence unless explicitly restated above.
+
+Do not rewrite accepted specifications to match partial implementation, promote a package because an adapter or asset exists, restore a retired pre-event surface, or infer live gameplay from static or partial MCP evidence.
+
+## Historical authority baseline (2026-08-15; superseded by the 2026-08-22 override)
+
+The 2026-08-15 allocator pass reported 149 publishers, 32 content-attested selectable packages, 29 compatible reservation groups, 161 unattested selectable packages out of 193 non-overlay rows, and 40 runtime package adapters. Its package arithmetic remains unchanged by the later bounded fixes, while the focus and catalog details are superseded by the 2026-08-22 override above.
 
 The current registry gap map is `subagent_handoffs/006_current_registry_gap_map_2026_08_15.md`. It confirms that IW-046 CHU and IW-049 BWX remain outside gameplay and central admission until their identity, map, package, asset, and probability contracts are complete. IW-057 FER now has a package-local constants/triggers/effects/ideas/AI/decisions/localisation and shared-focus tranche, but remains outside central runtime admission pending institutional-roster, neutral-flag, and typed-probability evidence. Its exact package authority uses the ordered available runtime anchors 408 and 409, with shared execution selecting the available anchor before setup; use `subagent_handoffs/006_iw057_fer_capital_preflight_repair_2026_08_15.md`, `subagent_handoffs/006_iw057_far_eastern_republic_package_core_2026_08_15.md`, and `subagent_handoffs/006_iw057_far_eastern_republic_package_audit_2026_08_15.md`. IW-051 YAK, IW-052 BYA, and IW-060 KUR now have package-local implementations behind parent-owned identity, map, and rights gates, but remain outside central runtime admission pending independent asset and typed-probability acceptance.
 
@@ -130,9 +205,9 @@ Pre-TRA standalone capacity witness (dated 2026-08-03): `subagent_handoffs/006_e
 
 Current-count override: any historical paragraph below that says 80/74/6, 81, 82, or 83 portrait masters or 295/111/50 focus arithmetic is traceability only. The current archive contains 50 original source images directly under the flat parent `docs/assets/portraits/006_independence_wave/`, with 148 processed/evidence files kept under its sole `processed/` subfolder and no `156x210` files retained in either location. The current generic focus inspection is 184 direct plus 134 shared definitions with 27 imports, 318 unique definitions and 345 raw entries. Use the current portrait archive handoff, the fresh whole-event audit, and the current dated package/portrait handoffs for admission decisions.
 
-Current catalog override: the workbook source and regenerated CSV mirrors were reconciled in commit `6226c6f30`, with the latest Event 006 mirror correction recorded in commit `45d8529cf`. Event 006 is `Partially Available`, SCN-008 is `Unavailable`, and the mixed Liberations cluster remains `Partially Available`; wording fields were not changed. Commit `162a25655` is superseded historical traceability. Any downstream paragraph describing the pre-reconciliation `Partially Available`/`Playable` status is dated audit traceability only.
+Historical catalog baseline (2026-08-15; superseded by the 2026-08-22 catalog handoffs): the workbook source and regenerated CSV mirrors were reconciled in commit `6226c6f30`, with the latest Event 006 mirror correction recorded in commit `45d8529cf`. The final catalog statuses remain `Partially Available` for Event 006, `Unavailable` for SCN-008, and `Partially Available` for the mixed Liberations cluster; the 2026-08-22 handoffs are current for the C7 wording and export receipt.
 
-Current focus-repair override: the latest current receipt resolves 184 focuses and 196 connectors with zero crossings and zero node intersections. Two intentional long connectors remain: `independence_wave_adopt_military_archetype_program` to `independence_wave_preserve_independent_command`, and `independence_wave_define_former_host_policy` to `independence_wave_inherit_successor_ledger`; they are layout warnings, not broken prerequisites. The 14 blocking diagnostics reported by MCP include installed vanilla continuous-focus sources and authored detour warnings, so they do not authorize another source rewrite without a concrete route defect. Older 192-, 193-, and 206-connector wording below remains dated traceability only.
+Historical focus-repair baseline (2026-08-15; superseded by the 2026-08-22 prerequisite repair): the prior receipt resolved 184 focuses and 196 connectors with zero crossings and zero node intersections. The 2026-08-22 repair restored the two military-archetype connectors and reports 195 connectors with zero crossings and zero node intersections; older 192-, 193-, and 196-connector wording below remains dated traceability only.
 
 Current overlay-watch override: `subagent_handoffs/006_overlay_watch_permanent_identity_loss_cleanup_2026_08_03.md` records the implemented 30-day permanent-identity-loss cleanup for IW-022, IW-025, and IW-035, and `subagent_handoffs/006_overlay_watch_permanent_identity_loss_reaudit_2026_08_03.md` records the source PASS. The former policy HOLD is superseded for source routing; temporary suspension/resumption remains, while live/save-load verification is still outside the evidence claim.
 
@@ -175,7 +250,7 @@ The MAC probability receipt is bounded: `ai_strategy_factor` returns `PROBABILIT
 7. Preserve the source-level Statehood Ledger semantic strips, `de36a366e` `Animate` toggle, and static DDS fallback. Treat the explicit League phase-group selector as a source PASS after the parent patch; retain the handoff's bounded GUI/render semantic matrix, click-region, return-to-state, and live animation observations as follow-up evidence rather than a whole-event completion claim.
 8. Use the SCN-008 source-driven matrix of eight player-facing modes by four intensities, or 32 cells. Retain six numeric families in implementation and three separate Universal Belligerence rule rows in source/MCP evidence. Do not treat the historical six-by-four shorthand as the current acceptance matrix; live playback is optional future QA.
 9. Treat the five evolution incident families and the paid Armed Birth frontier-reserve follow-through as source-wired under `9231c15f5` and the current DM-22 gate. Keep package admission and the whole-event static blockers open until their owning audits close them.
-10. Treat the v70/v111 fourteen-blocker, 43-crossing, parent-reflow 186-connector, and related figures as historical Event 006 focus-layout evidence, and use `subagent_handoffs/006_post_iw045_focus_authored_diagnostic_closure_handoff_2026_08_14.md` as current focus evidence. The current inspection resolves 184 focuses and 196 connectors with zero crossings, zero node intersections, and two long connectors, while authored detours and unrelated vanilla continuous-palette diagnostics remain documented scope notes. Probability inspection remains separate and bounded. The v97 audit resolves CAT ownership as a full-framework minimal-tree exception; keep CAT and FORM-07 fail-closed for their identity, flag, member-adapter, and readiness gates before any package admission claim.
+10. Treat the v70/v111 fourteen-blocker, 43-crossing, parent-reflow 186-connector, and related figures as historical Event 006 focus-layout evidence, and use `subagent_handoffs/006_event6_focus_prerequisite_repair_2026-08-22.md` as the latest graph correction evidence together with `subagent_handoffs/006_event6_focus_overlay_audit_2026-08-22.md` for route coverage. The latest inspection resolves 184 focuses and 195 connectors with zero crossings and zero node intersections, while seven authored layout warnings and fourteen unrelated vanilla continuous-palette diagnostics remain documented scope notes. Probability inspection remains separate and bounded. The v97 audit resolves CAT ownership as a full-framework minimal-tree exception; keep CAT and FORM-07 fail-closed for their identity, flag, member-adapter, and readiness gates before any package admission claim.
 11. Retain COR in the dated 23-package static attestation set while carrying its v66 PARTIAL audit limitations. Do not convert missing runtime compile/allocation or Technology Tree Viewer evidence into a gameplay closure claim.
 12. Use the v71 decision and v72 localisation audits as bounded source evidence. Preserve the v98-passed 32-cell and edge-case receipts, while retaining the package, capacity, runtime, GUI/event-log, and catalog/source acceptance gaps in the whole-event HOLD/PARTIAL report.
 
