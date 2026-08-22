@@ -48,7 +48,7 @@ Pillow decoded the DDS at `156x210`, and its RGBA pixels exactly equal the RGB c
 
 ## Portrait-specific GFX wiring
 
-Added [interface/006_independence_wave_iw045_bashkiria_portraits.gfx](../../../interface/006_independence_wave_iw045_bashkiria_portraits.gfx).
+Added [interface/006_independence_wave_iw045_bashkiria_portraits.gfx](../../../../interface/006_independence_wave_iw045_bashkiria_portraits.gfx).
 
 The stable sprite token is `GFX_portrait_BSK_independence_wave_yakov_bykin`.
 

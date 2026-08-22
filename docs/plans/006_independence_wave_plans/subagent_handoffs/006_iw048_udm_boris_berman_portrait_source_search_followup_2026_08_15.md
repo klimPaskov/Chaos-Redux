@@ -2,7 +2,7 @@
 
 Date: 2026-08-15
 
-Status: `blocked` / durable negative result. A second bounded source-only pass found no new exact Boris Zakharovich Berman image with clear public-domain or redistributable rights. The detailed search log is in [the processed follow-up record](../../../assets/portraits/006_independence_wave/processed/iw048_udm_boris_berman_source_search_followup_2026_08_15.md).
+Status: `blocked` / durable negative result. A second bounded source-only pass found no new exact Boris Zakharovich Berman image with clear public-domain or redistributable rights. The referenced processed follow-up record is no longer present; this handoff retains the negative result, and the missing evidence prevents promotion.
 
 ## Search result
 
