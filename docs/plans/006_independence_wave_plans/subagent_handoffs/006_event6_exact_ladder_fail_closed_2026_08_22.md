@@ -20,8 +20,9 @@ An undersized automatic pool cannot become a smaller public wave. The nominal ta
 ## Evidence
 
 - The read-only completion audit `006_event6_completion_gap_audit_2026-08-22.md` identified the target rewrite as the highest-value accepted-design defect and supplied the exact two-file owner patch.
-- Fresh static allocator audit remains required after this source change; the current source-level invariant is that no `set_variable` assigns either target or expected count from `selected_count` in the removed branch.
-- Fresh `hoi4.event_inspect` lint for `chaosx.nr6.1` returned `EVENT_INSPECTED_PARTIAL`, status `ok`, zero blocking diagnostics, with workspace-wide helper projections deferred.
+- Fresh static validation passes after this source change: the allocator audit reports the exact `3 / 4 / 5 / 7 / 10` ladder, World Collapse `10`, 32 attestations, 29 compatible groups, and the retired pre-event crisis surface; the country API, strict flag-family, SCN-008 matrix, and FORM-16 audits also pass.
+- The current source-level invariant is that no `set_variable` assigns either target or expected count from `selected_count` in the removed branch; the only joint expected-count assignment is the initial Event 005 plus nominal Event 006 setup before selection validation.
+- Fresh `hoi4.event_inspect` lint for `chaosx.nr6.1` returned `EVENT_INSPECTED_PARTIAL`, status `ok`, zero blocking diagnostics, and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/66722145672f058de718c8a3d267bdfb78f17270a903d73b832bef1806c110ed/263c99bfae490e3b0728cbf12f6edac988c5783780cffce4a5fdc7269a76615a/event-lint-2be037dcc948.json`; workspace-wide helper projections remain deferred.
 
 ## Remaining evidence limits
 
