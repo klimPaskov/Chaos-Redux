@@ -6,7 +6,7 @@ Status: `blocked` / fail-closed at rights. The exact vanilla consumer now has a 
 
 ## Parent decision
 
-Keep `UDM_boris` on runtime `HOLD`. Do not admit UDM, change central admission/Join, install DDS/GFX, or substitute a generic/generated face. The complete evidence is in [the processed source-gate record](../../../assets/portraits/006_independence_wave/processed/iw048_udm_boris_berman_source_gate_2026_08_15.md).
+Keep `UDM_boris` on runtime `HOLD`. Do not admit UDM, change central admission/Join, install DDS/GFX, or substitute a generic/generated face. The referenced processed source-gate record is no longer present; this handoff preserves the fail-closed disposition, but the missing evidence prevents promotion.
 
 ## Exact consumer and resolved identity
 

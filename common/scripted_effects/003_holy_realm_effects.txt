@@ -1433,48 +1433,6 @@ holy_realm_core_himalayan_mandala_states = {
 	}
 }
 
-holy_realm_core_northern_indian_register_states = {
-	every_owned_state = {
-		limit = {
-			is_controlled_by = ROOT
-			holy_realm_northern_indian_core_state = yes
-			NOT = { is_core_of = ROOT }
-		}
-		add_core_of = ROOT
-		set_resistance = 2
-		set_state_flag = holy_realm_integrated_mandala_state
-		set_state_flag = holy_realm_arhat_registered_state
-	}
-}
-
-holy_realm_core_western_chinese_register_states = {
-	every_owned_state = {
-		limit = {
-			is_controlled_by = ROOT
-			holy_realm_western_chinese_core_state = yes
-			NOT = { is_core_of = ROOT }
-		}
-		add_core_of = ROOT
-		set_resistance = 4
-		set_state_flag = holy_realm_integrated_mandala_state
-		set_state_flag = holy_realm_arhat_registered_state
-	}
-}
-
-holy_realm_core_eastern_chinese_register_states = {
-	every_owned_state = {
-		limit = {
-			is_controlled_by = ROOT
-			holy_realm_eastern_chinese_core_state = yes
-			NOT = { is_core_of = ROOT }
-		}
-		add_core_of = ROOT
-		set_resistance = 6
-		set_state_flag = holy_realm_integrated_mandala_state
-		set_state_flag = holy_realm_arhat_registered_state
-	}
-}
-
 holy_realm_add_buddha_mandate_regional_claims = {
 	323 = { add_claim_by = ROOT }
 	324 = { add_claim_by = ROOT }
@@ -2274,52 +2232,6 @@ holy_realm_open_vow_against_annihilation_branch = {
 		limit = { NOT = { has_completed_focus = THR_lamps_remain_lit } }
 		complete_national_focus = THR_lamps_remain_lit
 	}
-}
-
-holy_realm_prepare_final_silence = {
-	# Final Silence remains a Holy Realm doctrine and cause-memory label, but it
-	# no longer owns a world-end flag, generic diplomacy cleanup, contamination
-	# lock, or ordinary super-event route. The terminal branch below requests the
-	# Fallout consequence through the shared coordinator.
-	clr_country_flag = holy_realm_stage_refuge
-	clr_country_flag = holy_realm_stage_bodhisattva
-	clr_country_flag = holy_realm_stage_arhat_administration
-	clr_country_flag = holy_realm_stage_buddha_mandate
-	clr_country_flag = holy_realm_stage_divine_sovereignty
-	set_country_flag = holy_realm_stage_final_silence
-	set_country_flag = holy_realm_final_silence_prepared
-	set_global_flag = holy_realm_global_warning
-	set_variable = { global.holy_realm_final_silence_wave = 0 }
-	if = {
-		limit = { holy_realm_uses_thermonuclear_final_silence = yes }
-		set_country_flag = holy_realm_thermonuclear_doctrine
-		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_thermonuclear_gain }
-		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
-		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_thermonuclear }
-		set_temp_variable = { holy_realm_final_contamination = constant:holy_realm_final_silence.thermonuclear_fallout_intensity }
-	}
-	else = {
-		clr_country_flag = holy_realm_thermonuclear_doctrine
-		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
-		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
-		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_normal }
-		set_temp_variable = { holy_realm_final_contamination = constant:holy_realm_final_silence.normal_fallout_intensity }
-	}
-	holy_realm_add_chaos = yes
-	# Dramatic audio is owned by the later Fallout blackout, not by a Final
-	# Silence super-event.
-	set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
-	set_temp_variable = { condemnation_base_gain = holy_realm_final_condemnation }
-	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
-	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
-	set_temp_variable = { condemnation_civilian_deaths = 0 }
-	set_temp_variable = { condemnation_contamination_value = holy_realm_final_contamination }
-	set_temp_variable = { condemnation_victim_country = THIS }
-	set_temp_variable = { condemnation_context_type = constant:condemnation_context.final_silence }
-	condemnation_add_source = yes
-	set_country_flag = used_unconventional_weapon
-	air_cleanliness_treaty_on_unconventional_use = yes
-	holy_realm_refresh_world_threat_source = yes
 }
 
 holy_realm_complete_terminal_final_silence = {
