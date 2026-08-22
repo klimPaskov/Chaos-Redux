@@ -6,12 +6,20 @@ if ([string]::IsNullOrWhiteSpace($env:MESHY_API_KEY)) {
 
 $packageVersion = if ([string]::IsNullOrWhiteSpace($env:MESHY_MCP_VERSION)) { "0.4.0" } else { $env:MESHY_MCP_VERSION }
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..\..")).Path
+$dependencyLockPath = Join-Path $repoRoot ".tools\3d_pipeline\config\dependencies.lock.json"
+$dependencyLock = Get-Content -LiteralPath $dependencyLockPath -Raw | ConvertFrom-Json
+$sdkVersion = $dependencyLock.routes.meshy_mcp.resolved_dependencies.modelcontextprotocol_sdk.version
+if ([string]::IsNullOrWhiteSpace($sdkVersion)) {
+	throw "The dependency lock does not define the Meshy MCP SDK compatibility version."
+}
 $runtimeVersionSlug = $packageVersion.Replace(".", "_")
-$runtimeRoot = Join-Path $repoRoot ".tmp\meshy_mcp_compat_v4_$runtimeVersionSlug"
+$sdkVersionSlug = $sdkVersion.Replace(".", "_")
+$runtimeRoot = Join-Path $repoRoot ".tmp\meshy_mcp_compat_v4_${runtimeVersionSlug}_sdk_$sdkVersionSlug"
 $packageRoot = Join-Path $runtimeRoot "node_modules\@meshy-ai\meshy-mcp-server"
 $manifestPath = Join-Path $packageRoot "package.json"
 $sdkManifestPath = Join-Path $runtimeRoot "node_modules\@modelcontextprotocol\sdk\package.json"
-$honoManifestPath = Join-Path $runtimeRoot "node_modules\hono\package.json"
+$sdkServerEntryPath = Join-Path $runtimeRoot "node_modules\@modelcontextprotocol\sdk\dist\esm\server\index.js"
+$sdkStreamableHttpPath = Join-Path $runtimeRoot "node_modules\@modelcontextprotocol\sdk\dist\esm\server\streamableHttp.js"
 
 $npmExe = "C:\Program Files\nodejs\npm.cmd"
 if (-not (Test-Path -LiteralPath $npmExe)) {
@@ -22,19 +30,44 @@ if (-not (Test-Path -LiteralPath $nodeExe)) {
 	$nodeExe = (Get-Command node.exe -ErrorAction Stop).Source
 }
 
+$runtimeMutexName = "Local\ChaosReduxMeshyMcpCompat_${runtimeVersionSlug}_sdk_$sdkVersionSlug"
+$runtimeMutex = [System.Threading.Mutex]::new($false, $runtimeMutexName)
+$runtimeMutexHeld = $false
+try {
+	try {
+		$runtimeMutexHeld = $runtimeMutex.WaitOne([TimeSpan]::FromMinutes(5))
+	}
+	catch [System.Threading.AbandonedMutexException] {
+		$runtimeMutexHeld = $true
+	}
+	if (-not $runtimeMutexHeld) {
+		throw "Timed out waiting for the locked Meshy MCP compatibility runtime."
+	}
+
 $installedVersion = $null
 if (Test-Path -LiteralPath $manifestPath) {
 	$installedVersion = (Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json).version
 }
+$installedSdkVersion = $null
+if (Test-Path -LiteralPath $sdkManifestPath) {
+	$installedSdkVersion = (Get-Content -LiteralPath $sdkManifestPath -Raw | ConvertFrom-Json).version
+}
 if (
 	$installedVersion -ne $packageVersion -or
-	-not (Test-Path -LiteralPath $sdkManifestPath) -or
-	-not (Test-Path -LiteralPath $honoManifestPath)
+	$installedSdkVersion -ne $sdkVersion -or
+	-not (Test-Path -LiteralPath $sdkServerEntryPath) -or
+	-not (Test-Path -LiteralPath $sdkStreamableHttpPath)
 ) {
 	New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
-	& $npmExe install --prefix $runtimeRoot --no-save "@meshy-ai/meshy-mcp-server@$packageVersion" | Out-Null
+	& $npmExe install --prefix $runtimeRoot --no-save --save-exact --force "@meshy-ai/meshy-mcp-server@$packageVersion" "@modelcontextprotocol/sdk@$sdkVersion" | Out-Null
 	if ($LASTEXITCODE -ne 0) {
-		throw "Failed to install @meshy-ai/meshy-mcp-server@$packageVersion."
+		throw "Failed to install @meshy-ai/meshy-mcp-server@$packageVersion with @modelcontextprotocol/sdk@$sdkVersion."
+	}
+	if (
+		-not (Test-Path -LiteralPath $sdkServerEntryPath) -or
+		-not (Test-Path -LiteralPath $sdkStreamableHttpPath)
+	) {
+		throw "The reconstructed Meshy MCP compatibility runtime is missing a locked SDK server entry point."
 	}
 }
 
@@ -105,6 +138,13 @@ Get-ChildItem -LiteralPath (Join-Path $packageRoot "dist") -Recurse -Filter "*.j
 
 if ((Get-Item -LiteralPath $generationToolPath).Length -gt 5MB) {
 	throw "Meshy MCP compatibility output exceeded the safe size limit. Refusing to start the route."
+}
+}
+finally {
+	if ($runtimeMutexHeld) {
+		$runtimeMutex.ReleaseMutex()
+	}
+	$runtimeMutex.Dispose()
 }
 
 $entryPoint = Join-Path $packageRoot "dist\index.js"
