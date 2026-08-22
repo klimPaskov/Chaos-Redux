@@ -128,7 +128,7 @@ During the architecture pass, parallel uncommitted files appeared at `common/scr
 - scenario scripted GUI, GUI, and scripted localisation registry files.
 - `common/achievements/chaos_redux_achievements.txt` and `interface/chaosx_achievements.gfx`.
 - Event Logs name, detail, evolution, actor, and weight mappings.
-- `docs/events/011_secret_alliance/overview.md`, `docs/systems/triggerable_scenarios.md`, `docs/systems/custom_achievements.md`, the Event 011 asset manifest, and spreadsheet rows.
+- `docs/events/011_secret_alliance/overview.md`, `docs/systems/event_system/triggerable_scenarios.md`, `docs/systems/custom_achievements.md`, the Event 011 asset manifest, and spreadsheet rows.
 
 ## One-context state contract
 
@@ -754,7 +754,7 @@ Extend all data-driven surfaces:
 - select/cycle type controls and scripted localisation.
 - `triggerable_scenario_can_launch_selected`.
 - `trigger_selected_chaosx_scenario` with `trigger_secret_alliance_coalition_unmasked_scenario`.
-- scenario event/confirmation text and `docs/systems/triggerable_scenarios.md`.
+- scenario event/confirmation text and `docs/systems/event_system/triggerable_scenarios.md`.
 
 Confirmation reads selected type and intensity at launch time. Before any selection, snapshot them on the target as `secret_alliance_scenario_type_snapshot` and `secret_alliance_scenario_intensity_snapshot`. Also set immutable `secret_alliance_scenario_maximum_snapshot` when applicable. Later GUI changes cannot change the run or achievement eligibility.
 

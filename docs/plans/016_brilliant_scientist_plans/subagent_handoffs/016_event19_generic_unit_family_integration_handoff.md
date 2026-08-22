@@ -21,7 +21,7 @@ Existing Event 016 native materialisation remains authoritative and unchanged.
 - `common/ideas/016_brilliant_scientist_project_force_ideas.txt` adds seven hidden provider-owned family ideas used by generic derivative public packages.
 - `events/019_infantry_spawn.txt` adds generic Event 019 provider release and defeat presentation events 918 and 919.
 - `localisation/english/019_infrantry_spawn_l_english.yml` localizes the generic provider reports and neutral host commander name.
-- `docs/systems/chaos_unit_family_registry.md` records the five rows, neutral visual contract, provider-owned custom equipment accounting, and generic derivative receipt behavior.
+- `docs/systems/cbrn_warfare/chaos_unit_family_registry.md` records the five rows, neutral visual contract, provider-owned custom equipment accounting, and generic derivative receipt behavior.
 - `docs/plans/016_brilliant_scientist_plans/016_event19_generic_unit_family_3d_model_backlog.md` records the deferred reusable model packages and runtime consumers.
 
 ## Helper map

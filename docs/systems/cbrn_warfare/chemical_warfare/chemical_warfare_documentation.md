@@ -20,7 +20,7 @@ Every release-bearing adapter must supply an exact state, a researched and route
 
 The dispatcher records hostile disruption, friendly exposure where applicable, civilian deaths, canonical state contamination, continuing deaths, medical saturation, evidence, attribution, confirmed-use history, treaty response, Condemnation, and victim memory. Dimercaprol reduces general chemical deaths by 15%, adds a further 50% reduction against blister-agent deaths, and reduces medical saturation by 35%; it does not protect against political or evidentiary consequences.
 
-The canonical contract and complete source map are documented in `docs/systems/cbrn_chemical_delivery.md`.
+The canonical contract and complete source map are documented in `docs/systems/cbrn_warfare/cbrn_chemical_delivery.md`.
 
 ## Equipment and formations
 
@@ -60,4 +60,4 @@ AI adoption and escalation are profile-aware. Prepared, military-first, industri
 - Restricted sites: `common/scripted_effects/cbrn_camp_effects.txt`
 - Protection and state recovery: `common/scripted_effects/cbrn_protection_effects.txt`, `common/scripted_effects/cbrn_chemical_state_effects.txt`, and `events/cbrn_chemical_delivery_events.txt`
 - Doctrine and officer corps: `common/doctrines/grand_doctrines/chaos_warfare_grand_doctrine.txt`, `common/doctrines/subdoctrines/land/chaos_warfare_*_subdoctrines.txt`, and `common/ideas/cbw_spirits.txt`
-- Consequences: `common/scripted_effects/condemnation_sanctions_effects.txt` and `docs/systems/condemnation_sanctions.md`
+- Consequences: `common/scripted_effects/condemnation_sanctions_effects.txt` and `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`

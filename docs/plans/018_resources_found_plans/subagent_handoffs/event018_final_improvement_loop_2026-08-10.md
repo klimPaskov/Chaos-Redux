@@ -201,7 +201,7 @@ No further historical or regional research is required. Adding a reenactment rou
 - `docs/events/018_resources_found/assets.md`
 - `docs/achievements/018_resources_found/achievements.md`
 - `docs/super_events/018_resources_found/overview.md`
-- `docs/systems/resources_found_cave_monster_model.md`
+- `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`
 - `events/018_random_resource.txt`
 - `common/national_focus/018_resources_found_cave_focus_tree.txt`
 - `common/decisions/018_resources_found_decisions.txt`

@@ -25,7 +25,7 @@ The parent changed:
 
 - `common/ai_strategy/chemical_warfare_livens.txt`
 - `common/ai_strategy/chemical_warfare_tank_shells.txt`
-- `docs/chemical_warfare/cbrn_regimental_support.md`
+- `docs/systems/cbrn_warfare/chemical_warfare/cbrn_regimental_support.md`
 
 Every Livens research, production, and template-pressure block and every armored-delivery production or template-pressure block now requires `cbrn_ai_can_expand_offensive_cbrn_production`.
 

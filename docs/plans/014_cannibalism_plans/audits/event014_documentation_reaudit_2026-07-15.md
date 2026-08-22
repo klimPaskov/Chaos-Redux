@@ -49,7 +49,7 @@ Every correction required by `event014_improvement_loop_reaudit_2026-07-15.md` i
 - The focus-closure addendum no longer invents inherited prison-origin knowledge and records the live prison/camp route as an independent score factor.
 - Both accepted addenda use the live 38-icon count.
 - The post-implementation addendum points to the real `static_icons_imagegen/unified_decisions` source, processed, contact-sheet, manifest, and three row-range handoff paths.
-- `docs/systems/triggerable_scenarios.md` records `SCN-010` as `Fully Functional` and documents the exact atomic preflight boundary.
+- `docs/systems/event_system/triggerable_scenarios.md` records `SCN-010` as `Fully Functional` and documents the exact atomic preflight boundary.
 
 ## Secrecy and retired-origin disposition
 
@@ -72,7 +72,7 @@ Current mentions of the retired Prison Host are limited to explicit removal, exc
 - `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md`
 - `docs/specs/014_cannibalism_specs/matrices/decision_mission_matrix.md`
 - `docs/events/014_cannibalism/overview.md`
-- `docs/systems/triggerable_scenarios.md`
+- `docs/systems/event_system/triggerable_scenarios.md`
 - `docs/assets/014_cannibalism/manifest.md`
 - `docs/assets/014_cannibalism/gfx_handoff.md`
 - `docs/plans/014_cannibalism_plans/014_removed_origin_cleanup_2026-07-15.md`

@@ -2,7 +2,7 @@
 
 ## Source of truth
 
-This file documents the legacy `chemical_suppression` compatibility identifier. The complete accepted doctrine design and current implementation are documented in `docs/systems/chaos_warfare_doctrine.md`.
+This file documents the legacy `chemical_suppression` compatibility identifier. The complete accepted doctrine design and current implementation are documented in `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`.
 
 The player-facing track is Toxic Armored Warfare. Its implementation is in `common/doctrines/subdoctrines/land/chaos_warfare_armor_subdoctrines.txt`, with shared gates and state changes in the CBRN doctrine trigger and effect files.
 

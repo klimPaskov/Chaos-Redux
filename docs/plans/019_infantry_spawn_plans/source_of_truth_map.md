@@ -18,7 +18,7 @@ boundary, MCP limitations, and plan dispositions.
    `docs/events/019_infantry_spawn/overview.md` and
    `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`, which is the
    SCN-013 implementation-facing documentation. The old
-   `docs/systems/triggerable_scenarios.md` path is not present in the current tree
+   `docs/systems/event_system/triggerable_scenarios.md` path is not present in the current tree
    and must not be used as a source reference.
 3. Historical asset references name
    `docs/assets/019_infantry_spawn/manifest.md` and

@@ -21,7 +21,7 @@ Mode: documentation patch only. No gameplay, localisation, workbook, spreadsheet
 - `docs/specs/system_camp_repression_rework_specs/specs/system_camp_repression_rework_spec_part_2_country_systems_major_powers.md`
 - `docs/specs/system_camp_repression_rework_specs/specs/system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks.md`
 - `docs/specs/system_camp_repression_rework_specs/specs/system_camp_repression_rework_spec_part_7_implementation_checklist_validation.md`
-- `docs/systems/genocide_crisis_system.md`
+- `docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md`
 - `docs/super_events/system_camp_repression_rework_super_event_research.md`
 - this handoff.
 

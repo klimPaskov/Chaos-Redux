@@ -12,8 +12,8 @@ The overall Stage 7 biological-warfare package and the full CBRN goal remain inc
 | --- | --- | --- |
 | `docs/specs/chaos_warfare_system_specs/specs/06_biological_warfare_and_outbreaks.md` | Accepted biological-warfare source specification | Current doctrine boundaries and implemented tranche boundary promoted into the accepted spec. Remaining accepted routes and acceptance criteria are unchanged. |
 | `docs/plans/chaos_warfare_system_plans/2026-07-14_stage_7_biological_lifecycle.md` | Active Stage 7 working plan | Partially implemented and still active. Completed strategic raid and lifecycle cleanup items are recorded. Unproven Stage 7 acceptance work remains queued. |
-| `docs/biological_warfare/strategic_biological_raids.md` | Current implementation reference for the four ordinary-pathogen strategic raids | Current for exact selected states, exact reservation and debit, six outcomes, state-owned lifecycle scheduling, cleanup, staging sprite, and existing raid icon reuse. |
-| `docs/systems/chaos_warfare_doctrine.md` | Current doctrine behavior and integration reference | Current for biological escalation, bounded deployment savings, Condemnation-only mitigation, separately authorized existing-camp efficiency, and the prohibition on camp or generic concentration-law authorization. |
+| `docs/systems/cbrn_warfare/biological_warfare/strategic_biological_raids.md` | Current implementation reference for the four ordinary-pathogen strategic raids | Current for exact selected states, exact reservation and debit, six outcomes, state-owned lifecycle scheduling, cleanup, staging sprite, and existing raid icon reuse. |
+| `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md` | Current doctrine behavior and integration reference | Current for biological escalation, bounded deployment savings, Condemnation-only mitigation, separately authorized existing-camp efficiency, and the prohibition on camp or generic concentration-law authorization. |
 | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/validation.md` | Narrow validation record for the staging decision icon | Current. Sprite wiring is verified. Existing raid icons are recorded as byte-preserved reuse. This record does not close Stage 7 assets. |
 | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/manifest.md` | Asset manifest for the staging decision icon | Left unchanged. The current worktree already records `interface/biological_warfare.gfx` and narrow asset-package completion. |
 | `docs/assets/chaos_warfare_system/stage_7_biological_warfare/gfx_handoff.md` | Fulfilled sprite handoff for the staging decision icon | Left unchanged. The current worktree already records the registered sprite and no remaining wiring risk. |
@@ -24,8 +24,8 @@ The overall Stage 7 biological-warfare package and the full CBRN goal remain inc
 
 - `docs/specs/chaos_warfare_system_specs/specs/06_biological_warfare_and_outbreaks.md`
 - `docs/plans/chaos_warfare_system_plans/2026-07-14_stage_7_biological_lifecycle.md`
-- `docs/biological_warfare/strategic_biological_raids.md`
-- `docs/systems/chaos_warfare_doctrine.md`
+- `docs/systems/cbrn_warfare/biological_warfare/strategic_biological_raids.md`
+- `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`
 - `docs/assets/chaos_warfare_system/stage_7_biological_warfare/validation.md`
 - `docs/plans/system_camp_repression_rework_plans/core_contract_audit.md`
 - `docs/plans/chaos_warfare_system_plans/subagent_handoffs/2026-07-16_strategic_biological_documentation_curator.md`

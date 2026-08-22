@@ -7,7 +7,7 @@ Source of truth: `docs/specs/018_resources_found_specs/`
 
 ## Superseded map notice
 
-This is a 2026-07-11 planning snapshot, not a current implementation queue. The implemented and audited state is recorded in `docs/events/018_resources_found/`, `docs/super_events/018_resources_found/`, `docs/achievements/018_resources_found/`, `docs/systems/resources_found_cave_monster_model.md`, `018_static_acceptance_report.md`, and the current Event 018 handoffs. The event-scoped `docs/assets/018_resources_found/` folder is temporary evidence rather than a runtime dependency. A bounded cave-monster reconstruction tranche is retained there while final evidence gates remain open; historical tranche instructions must not recreate deleted production material, and the retained workspace must be removed only after genuine goal closure.
+This is a 2026-07-11 planning snapshot, not a current implementation queue. The implemented and audited state is recorded in `docs/events/018_resources_found/`, `docs/super_events/018_resources_found/`, `docs/achievements/018_resources_found/`, `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`, `018_static_acceptance_report.md`, and the current Event 018 handoffs. The event-scoped `docs/assets/018_resources_found/` folder is temporary evidence rather than a runtime dependency. A bounded cave-monster reconstruction tranche is retained there while final evidence gates remain open; historical tranche instructions must not recreate deleted production material, and the retained workspace must be removed only after genuine goal closure.
 
 ## 1. Purpose and constraints
 

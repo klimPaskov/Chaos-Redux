@@ -146,8 +146,8 @@ The accepted source-of-truth review says broad expansion should stop until the c
 - `docs/specs/020_black_plague_specs/matrices/event_chain_map.md:10,39` conflicts with the live use of `chaosx.nr20.4` for SCN-012 instead of `.90`.
 - `docs/specs/020_black_plague_specs/matrices/achievement_matrix.md` still includes the five-rival One Crown, Many Tails condition that cannot exist under exactly two tags.
 - `docs/plans/020_black_plague_plans/rat_absorption_follow_up.md` describes a paid absorption decision that the 2026-08-01 decision audit removed. It should be superseded by the current automatic state-marker consolidation and post-grace transfer implementation.
-- `docs/systems/air_contamination_mechanic.md` still says SCN-012 has no live public row according to the current localisation handoff.
-- `docs/systems/event_clusters.md:62-63` repeats the Diseases unlock-tier line after the current patch.
+- `docs/systems/air_cleanliness/air_contamination_mechanic.md` still says SCN-012 has no live public row according to the current localisation handoff.
+- `docs/systems/event_system/event_clusters.md:62-63` repeats the Diseases unlock-tier line after the current patch.
 
 The four current 2026-08-01 subagent patches each have a handoff note under `docs/plans/020_black_plague_plans/subagent_handoffs/`.
 

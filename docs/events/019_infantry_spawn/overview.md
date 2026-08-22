@@ -773,7 +773,7 @@ handoff.
 - Working plans and handoffs: `docs/plans/019_infantry_spawn_plans/`
 - Scenario contract: `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
 - Current UI decision: `docs/specs/019_infantry_spawn_specs/review/decision_only_surface_addendum_2026-08-05.md`
-- Shared family contract: `docs/systems/chaos_unit_family_registry.md`
+- Shared family contract: `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`
 - Achievement contracts: `docs/achievements/019_infantry_spawn/achievements.md`
 - Asset manifest: `docs/assets/019_infantry_spawn/manifest.md`
 - Asset GFX handoff: `docs/assets/019_infantry_spawn/gfx_handoff.md`

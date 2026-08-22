@@ -100,7 +100,7 @@ There are no mixed files. Every shared candidate below is unrelated to Event 014
 | common/scripted_effects/chaosx_triggerable_scenarios_effects.txt | New-side anchors 54-57, 158-165, 249-256, 296-303, 382-389, 568-575, 806-813, 890-897, and 1022-1037 | Event 019/SCN-013 only; unrelated; exclude |
 | common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt | @@ -239,0 +240,7 | Event 019/SCN-013 only; unrelated; exclude |
 | common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt | New-side anchors 59-62, 126-129, 193-196, 457-484, 814-841, 1138-1162, and 1244-1271 | Event 019/SCN-013 only; unrelated; exclude |
-| docs/systems/triggerable_scenarios.md | @@ -47,0 +48; @@ -137,0 +139,8 | Event 019/SCN-013 documentation only; unrelated; exclude |
+| docs/systems/event_system/triggerable_scenarios.md | @@ -47,0 +48; @@ -137,0 +139,8 | Event 019/SCN-013 documentation only; unrelated; exclude |
 | common/scripted_effects/chaosx_dynamic_effects.txt | @@ -502,65 +501,0 | CBRN helper removal only; unrelated; exclude |
 | common/scripted_effects/chaosx_dynamic_effects.md | Hunk starts at old/new lines 3, 7, 29, 36, 39, 767/744, 934/925, and 1010/973 | CBRN documentation relocation and general registry-policy edits only; unrelated; exclude |
 | common/scripted_effects/chaosx_logic_effects.txt | @@ -37,2 +37,3; @@ -219 +220; @@ -513,0 +515,13; @@ -564 +578,4; @@ -573,0 +591,6 | Event 006 and Event 019 pool/plumbing changes only; unrelated; exclude |
@@ -108,8 +108,8 @@ There are no mixed files. Every shared candidate below is unrelated to Event 014
 | common/scripted_effects/chaos_meter_effects.txt | New-side anchors 167, 780, 1066-1075, 1511, 1650-1653, 1713, 1856, 2343, 2375, and 2440-2452 | Event 019 ghost-decline accounting only; unrelated; exclude |
 | common/scripted_localisation/chaosx_scripted_localisation_chaos_meter.txt | @@ -3424,0 +3425,17; @@ -3967,0 +3985,10; @@ -4181,0 +4209,10 | Event 019 ghost-decline display only; unrelated; exclude |
 | localisation/english/chaosx_chaos_meter_l_english.yml | @@ -302,2 +302,2; @@ -323,0 +324 | Event 019 ghost-decline text only. Existing Cannibalism selector text is unchanged; unrelated; exclude |
-| docs/systems/chaos_meter_popup_window.md | @@ -171,0 +172; @@ -190,0 +192,6; @@ -199,0 +207 | Event 019 ghost-decline documentation only; unrelated; exclude |
-| docs/systems/chaos_meter_deaths_mechanic.md | @@ -29,0 +30; @@ -95,0 +97,5 | Event 019 ghost-decline documentation only; unrelated; exclude |
+| docs/systems/chaos_meter/chaos_meter_popup_window.md | @@ -171,0 +172; @@ -190,0 +192,6; @@ -199,0 +207 | Event 019 ghost-decline documentation only; unrelated; exclude |
+| docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md | @@ -29,0 +30; @@ -95,0 +97,5 | Event 019 ghost-decline documentation only; unrelated; exclude |
 | localisation/english/chaosx_raids_l_english.yml | Hunk starts at 9, 12/13, 15/17, 18/21, and 19/24 | Biological/CBRN raid wording only; unrelated; exclude |
 | docs/spreadsheets/chaos_redux_events_catalog.xlsx | Binary workbook; cell comparison found changes only in Events row 16 (Event 015), Events row 20 (Event 019), and new Scenarios row 11 (SCN-013) | No Event 014 cell, formatting-table, or scenario-row delta; unrelated; exclude the whole workbook |
 

@@ -104,7 +104,7 @@ Doctrine icon registration:
 
 The integrated-operations multiplier is applied only to Condemnation impact for each qualifying chemical or biological record before the value enters the shared bucket. It does not erase the public source, recent-use and repeat-use memory, source context, Air Cleanliness Treaty reaction, or sanction consequences. Chemical air activity uses `chemical_air_strike` only after a selected-state raid proves execution; ordinary continuous air activity remains ineligible. Biological outbreak strikes use `biological_outbreak`, and hostile weaponized-zombie deployment uses `weaponized_zombies`.
 
-The canonical source, tier, participant, decay, and UI behavior is documented in `docs/systems/condemnation_sanctions.md`.
+The canonical source, tier, participant, decay, and UI behavior is documented in `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`.
 
 ## Icons
 

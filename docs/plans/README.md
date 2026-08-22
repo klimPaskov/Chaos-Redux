@@ -49,7 +49,7 @@ This directory is the working documentation area. Accepted design belongs in `do
 | Germany Mengele path | [`germany_mengele_path_plans/`](germany_mengele_path_plans/) |
 | GFX, icon, flag, and map-mode cleanup | [`gfx_icon_flag_mapmode_cleanup_plans/`](gfx_icon_flag_mapmode_cleanup_plans/) |
 | Player-facing text style | [`player_facing_text_style_cleanup/`](player_facing_text_style_cleanup/) |
-| Repository cleanup | [`repo_cleanup/`](repo_cleanup/) |
+| Repository cleanup | [`repo_cleanup/`](repo_cleanup/README.md) |
 | Shared GFX asset integrity | [`shared_gfx_asset_integrity_plans/`](shared_gfx_asset_integrity_plans/) |
 | System camp repression rework | [`system_camp_repression_rework_plans/`](system_camp_repression_rework_plans/) |
 | World-end scenarios | [`world_end_scenarios_plans/`](world_end_scenarios_plans/) |

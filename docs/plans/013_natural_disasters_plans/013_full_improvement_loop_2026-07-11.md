@@ -435,7 +435,7 @@ After implementation and runtime proof:
 
 1. Promote accepted clarifications from this plan into the relevant Event 013 source specs.
 2. Update `docs/events/013_natural_disasters/overview.md` with the verified report, active-card, Skyfall, and physical-map behavior.
-3. Update `docs/systems/event_clusters.md` with verified five-role dispatch behavior.
+3. Update `docs/systems/event_system/event_clusters.md` with verified five-role dispatch behavior.
 4. Update Event 013 super-event documentation only for gates that passed their scenarios.
 5. Update `docs/assets/013_natural_disasters/gfx_handoff.md` with final marker and timeline wiring. Do not request replacement art.
 6. Reconcile Event, Scenarios, and Clusters rows in `docs/spreadsheets/chaos_redux_events_catalog.xlsx` using the `xlsx` skill.

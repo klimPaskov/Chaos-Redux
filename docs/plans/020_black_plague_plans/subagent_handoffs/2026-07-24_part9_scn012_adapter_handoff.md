@@ -20,7 +20,7 @@ This is a bounded adapter and audit handoff, not completion of Part 9.
 - `common/scripted_triggers/020_black_plague_scenario_triggers.txt`: `black_plague_scenario_rat_country_package_is_ready`, `black_plague_scenario_rat_king_package_is_ready`, `black_plague_scenario_commit_provider_is_ready`, and `black_plague_scenario_can_launch_from_triggerable_scenarios`.
 - `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`: SCN-012 selected name, row name, row ID, description, fixed type, intensity impact, and launch-status branches.
 - `localisation/english/chaosx_gui_l_english.yml`: `chaosx.scenarios.entry.id.black_plague`, `chaosx.scenarios.black_plague.*`, `chaosx.scenarios.type.black_plague.instant_plague_kingdoms`, and `chaosx.scenarios.launch_status.black_plague.*`.
-- `docs/systems/triggerable_scenarios.md`: SCN-012 adapter status.
+- `docs/systems/event_system/triggerable_scenarios.md`: SCN-012 adapter status.
 - `docs/specs/020_black_plague_specs/specs/020_black_plague_spec_part_9_triggerable_scenario.md` and `docs/specs/020_black_plague_specs/matrices/triggerable_scenario_matrix.md`: corrected the stale planning identity to `SCN-012`.
 
 ## Before and after

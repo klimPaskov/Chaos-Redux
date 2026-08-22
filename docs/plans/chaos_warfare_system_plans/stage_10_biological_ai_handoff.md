@@ -16,7 +16,7 @@ Stage 10 remains incomplete until regimental templates, the final operation audi
   - Replaces generic tag, government, factory, war, and strength-ratio weights for Anthrax, Plague, Tularemia, and Smallpox with route-aware gates.
 - `common/ai_strategy/biological_warfare_production.txt`
   - Adds exact-model normal, Japan-China, and desperate biological payload surplus strategies.
-- `docs/systems/cbrn_biological_ai.md`
+- `docs/systems/cbrn_warfare/cbrn_biological_ai.md`
   - Records the implemented selector, potency and delivery-odds boundary, engine behavior, asset boundary, and remaining Stage 10 integration.
 - `docs/plans/chaos_warfare_system_plans/stage_10_biological_ai_handoff.md`
   - This handoff.

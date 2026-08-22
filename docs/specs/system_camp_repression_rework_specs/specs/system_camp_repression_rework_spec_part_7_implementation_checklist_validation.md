@@ -112,7 +112,7 @@ Country-specific packages can live inside the shared `genocide_crisis` files or 
 | `localisation/english/chaosx_gui_l_english.yml` | Add category header, GUI labels, buttons, and tooltips. |
 | `common/scripted_localisation/chaosx_scripted_localisation_chaos_meter.txt` | Confirm Deaths and Condemnation summaries still display camp reasons correctly. |
 | `common/scripted_localisation/chaosx_scripted_localisation_genocide_crisis.txt` if created | Add compact display localisation from Part 6. |
-| `docs/systems/genocide_crisis_system.md` | Update current system documentation after implementation. |
+| `docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md` | Update current system documentation after implementation. |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | Update only after implemented event details and player-facing localisation are final. |
 
 ## New or updated helper map

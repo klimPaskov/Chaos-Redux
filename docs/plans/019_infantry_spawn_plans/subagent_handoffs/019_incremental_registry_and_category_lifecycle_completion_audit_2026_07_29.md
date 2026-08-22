@@ -189,7 +189,7 @@ This is not a failure of the requested decision-category visibility, but it cont
 | --- | --- |
 | `019_ordinary_management_category_lifecycle_handoff_2026_07_29.md` | Accepted for the shared category gate, `visible_when_empty = no`, claimant close, evolved quiet category closeout, and player/AI gate parity. Not accepted as completion proof for success-gated derivative closure or passive Board-flag cleanup. |
 | `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_7_decisions_ui_ai_balance.md` | The category lifecycle requirements are promoted into the source specification, but the successful-derivative wording is only partially implemented. |
-| `docs/systems/chaos_unit_family_registry.md` | The external one-row/provider-callback architecture remains valid. Its completion-status paragraph predates the latest selection change and cannot establish that current providers participate in ordinary automatic generation. |
+| `docs/systems/cbrn_warfare/chaos_unit_family_registry.md` | The external one-row/provider-callback architecture remains valid. Its completion-status paragraph predates the latest selection change and cannot establish that current providers participate in ordinary automatic generation. |
 | Latest `core_effects` and shared registry-trigger diffs | No current implementation handoff or accepted-plan disposition was located. The lifecycle handoff's changed-file list does not mention either registry file. |
 | `019_final_completion_audit_2026_07_18.md` and derived “no closure gate remains” statements | Historical for this incremental scope. They predate the 2026-07-29 registry and category changes and do not supersede the open findings in this audit. |
 
@@ -201,7 +201,7 @@ This is not a failure of the requested decision-category visibility, but it cont
 
 The lifecycle handoff calls `infantry_spawn_achievement_revolt_history` a completed parent-side revolt marker even though source stamps it before final success proof.
 
-`docs/systems/chaos_unit_family_registry.md:13-33` still presents the pre-incremental registry audits as current completion proof and says no closure gate remains.
+`docs/systems/cbrn_warfare/chaos_unit_family_registry.md:13-33` still presents the pre-incremental registry audits as current completion proof and says no closure gate remains.
 
 The shared registry document does not explain the new distinction between row policy, `chaos_unit_family_candidate_eligible`, and the `chaos_unit_family_candidate_native` receipt now required by ordinary automatic generation.
 

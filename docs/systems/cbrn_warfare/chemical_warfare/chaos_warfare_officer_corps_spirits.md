@@ -17,7 +17,7 @@ The active officer-corps package uses a Chemical Operations Academy, three mutua
 
 - Key: `cbrn_theater_contamination_doctrine_spirit`
 - Availability: Theater Exploitation milestone.
-- Effects: +30% planning speed, -20% attrition, and +20% supply consumption, with the larger CBRN delivery, biological-lifecycle, preparation, and cleanup effects documented in `docs/systems/chaos_warfare_doctrine.md`.
+- Effects: +30% planning speed, -20% attrition, and +20% supply consumption, with the larger CBRN delivery, biological-lifecycle, preparation, and cleanup effects documented in `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`.
 
 - Key: `cbrn_terminal_hazard_doctrine_spirit`
 - Availability: Terminal CBRN Command milestone plus Unrestricted Chaos Warfare policy.

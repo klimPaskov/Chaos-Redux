@@ -52,7 +52,7 @@ Instead, a strike applies or strengthens `nuclear_fallout_state` on the target s
 
 That fallout intensity then contributes contamination monthly through the state loop, the same way chemical states do.
 
-The same hook also adds direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`.
+The same hook also adds direct chaos through the shared nuclear-use ladder documented in `docs/systems/chaos_meter/nuclear_chaos_ladder.md`.
 
 ### 3) Chaos synchronization
 
@@ -84,7 +84,7 @@ At `75%` contamination (`constant:air_contamination_threshold_bp.winter_75`), th
 - Fallout preserves treaty membership and betrayal memory while silently cancelling active projects, invitations, and relief routes.
 - A treaty-specific global event (`chaosx_contamination.11`) reports coordinated cleanup waves.
 
-The full lifecycle, tuning, cleanup behavior, and remaining treaty omissions are documented in `docs/systems/air_cleanliness_treaty.md`.
+The full lifecycle, tuning, cleanup behavior, and remaining treaty omissions are documented in `docs/systems/air_cleanliness/air_cleanliness_treaty.md`.
 
 ## Threshold Behavior
 
@@ -151,7 +151,7 @@ The condemnation tab displays:
 - sortable country rows with total, tier, recent gain, main source, sanction count, highest active sanction tier, and compliance state,
 - a selected-country detail view with public-source breakdown, current and peak tier, participant counts, estimated trade dependency, practical penalties, decay, and compliance state.
 
-Hidden evidence is excluded from the list and detail snapshot until it is disclosed. Exact bilateral trade is unavailable to script, so the displayed trade value is an aggregate complementarity estimate. See `docs/systems/condemnation_sanctions.md` for the complete UI read model and embargo ownership rules.
+Hidden evidence is excluded from the list and detail snapshot until it is disclosed. Exact bilateral trade is unavailable to script, so the displayed trade value is an aggregate complementarity estimate. See `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md` for the complete UI read model and embargo ownership rules.
 
 ## World-End Integration
 

@@ -83,7 +83,7 @@ The sourced-audio package has four licensed immutable originals, recorded source
 
 - `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`.
 - `docs/plans/018_resources_found_plans/018_cave_monster_3d_integration_addendum.md`.
-- `docs/systems/resources_found_cave_monster_model.md`.
+- `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`.
 - `docs/events/018_resources_found/assets.md`.
 - `docs/plans/018_resources_found_plans/subagent_handoffs/event018_cave_monster_visual_closure_2026-08-10.md`.
 

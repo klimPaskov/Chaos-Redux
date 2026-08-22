@@ -38,7 +38,7 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 | Historical super-event research | `subagent_handoffs/super_event_text_research.md` | Preserves candidate selection and sourcing while marking superseded wording and wiring notes as chronology. |
 | Assets | `docs/assets/011_secret_alliance/asset_register.md`, `manifest.md`, `manifest_icons_ui_animation.md`, and `notes/validation.md` | Final paths, sprites, source ledgers, animation frames, 57-DDS validator, achievement triplets, and explicit `chaosx.nr11.21` art reuse. |
 | Achievements | `docs/achievements/011_secret_alliance/achievements.md` and live definitions | Six implemented achievement contracts with origin and anti-farming snapshots. |
-| Manual scenario | `docs/systems/triggerable_scenarios.md`, accepted spec part 4, and live SCN-009 implementation | Five AI-only compositions, four intensities, manual bypasses, retained safety gates, and workbook status. |
+| Manual scenario | `docs/systems/event_system/triggerable_scenarios.md`, accepted spec part 4, and live SCN-009 implementation | Five AI-only compositions, four intensities, manual bypasses, retained safety gates, and workbook status. |
 | Workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | SHA-256 `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`; `Events!M12` and `Scenarios!F9` are `Implemented`; no formula error cells or formula error tokens. |
 | Audio | `docs/super_events/super_event_audio_packages.md` and `subagent_handoffs/super_event_audio_research.md` | Audio ID `43`, final `Revelation` WAV, exact duration `86.101746` seconds, 44.1 kHz, and separate public-domain evidence for the composition and federal-government recording. |
 

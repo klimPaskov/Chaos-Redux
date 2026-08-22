@@ -2,7 +2,7 @@
 
 ## Current Implementation Note
 
-This is the original source concept for the implemented `genocide_crisis` system. The current implementation lives in `docs/systems/genocide_crisis_system.md` and uses the existing `genocide_crisis` file family, active-state monthly processing through `global.genocide_active_camp_states`, and physical discovery through state control or defeat hooks. Older references in this concept to domestic leak popups, random report events, or Soviet archive/document reveal content are superseded: internal pressure now stays mechanical through variables, decisions, state modifiers, Deaths integration, and concrete discovery.
+This is the original source concept for the implemented `genocide_crisis` system. The current implementation lives in `docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md` and uses the existing `genocide_crisis` file family, active-state monthly processing through `global.genocide_active_camp_states`, and physical discovery through state control or defeat hooks. Older references in this concept to domestic leak popups, random report events, or Soviet archive/document reveal content are superseded: internal pressure now stays mechanical through variables, decisions, state modifiers, Deaths integration, and concrete discovery.
 
 ## Purpose
 

@@ -13,7 +13,7 @@ The stable cluster ID remains `6`. The repeatable cluster unlocks at Chaos Tier 
 ## Changes
 
 - `common/script_constants/event_cluster_constants.txt` now sets `event_cluster_formables.unlock_tier = 3`.
-- `docs/systems/event_clusters.md` describes Africa Is One as the required Severe member and records the tier-3 cluster / tier-4 member split.
+- `docs/systems/event_system/event_clusters.md` describes Africa Is One as the required Severe member and records the tier-3 cluster / tier-4 member split.
 - `localisation/english/chaosx_gui_l_english.yml` replaces the stale “no playable formable escalation” cluster description with the protection-first, consent-based Formables wording.
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` updates only the cluster-6 description, member list (`12`), and status (`In progress`) on the `Clusters` sheet. All unrelated workbook cell values were checked unchanged.
 - The required exporter regenerated the three read-only catalog CSV snapshots.

@@ -29,7 +29,7 @@ Deaths are currently registered from:
 8. Fallout's one-time grade-based state loss through an observed post-mutation Deaths transaction.
 9. Event 19 ghost-derivative decline through its long-cadence exact state-population transaction.
 
-Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
+Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/chaos_meter/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
 
 ## State Population Impact
 

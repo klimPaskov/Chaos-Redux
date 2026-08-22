@@ -58,7 +58,7 @@ Maximum permanent stacks and operational multipliers are enumerated there. The s
 - All 45 original Stage 5 runtime DDS paths remain uniquely registered and exist. The follow-up asset package adds four doctrine-style replacement icons and 20 regenerated large counter DDS files without replacing the preserved grand-doctrine source or legacy military-raid icon family. The package contains independent visible concepts, source captures, alpha masters, processed PNGs, contact sheets, a dimension/alpha inventory, provenance prompts, manifests, and GFX handoffs.
 - Parent visual review accepted all nine contact sheets, including the independent institutional-review ledger/dossier icon.
 - The original 45 Stage 5 DDS files and the follow-up doctrine/counter DDS files use the standard 128-byte uncompressed BGRA header, texture caps, real alpha, exact declared dimensions, and no mipmaps.
-- `docs/systems/chaos_warfare_doctrine.md`, `docs/systems/cbrn_hq_command.md`, the dynamic helper references, asset package, implementation plan, balance report, and improvement-loop addendum match the implemented Stage 5 surface.
+- `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`, `docs/systems/cbrn_warfare/cbrn_hq_command.md`, the dynamic helper references, asset package, implementation plan, balance report, and improvement-loop addendum match the implemented Stage 5 surface.
 
 ## Engine limits and later-stage ownership
 

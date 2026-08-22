@@ -42,7 +42,7 @@ The inventory combined direct filesystem enumeration with Git tracking checks so
 
 ## Stale links and status text corrected
 
-The only missing local Markdown target found across the original 71 READMEs was `docs/specs/condemnation_system_specs/README.md` pointing to the former `docs/systems/condemnation_sanctions.md` path.
+The only missing local Markdown target found across the original 71 READMEs was `docs/specs/condemnation_system_specs/README.md` pointing to the former `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md` path.
 
 It now points to `docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md`.
 

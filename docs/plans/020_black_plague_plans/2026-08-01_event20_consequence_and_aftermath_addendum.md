@@ -416,7 +416,7 @@ The following documentation updates are already promoted or being reconciled:
 
 - `docs/events/020_black_plague/overview.md`
 - `docs/events/020_black_plague/shared_response.md`
-- `docs/systems/black_plague_rat_route_modules.md`
+- `docs/events/020_black_plague/rat_route_modules.md`
 - `docs/assets/020_black_plague/event_art/manifest.md`
 - `docs/assets/020_black_plague/rat_identity_asset_manifest.md`
 - `docs/assets/020_black_plague/audio_manifest.md`

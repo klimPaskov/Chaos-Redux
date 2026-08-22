@@ -43,7 +43,7 @@ Primary script and data files:
 
 Related non-zombie UI documentation:
 
-- `docs/systems/events_log_evolutions_and_clusters.md`
+- `docs/systems/event_system/events_log_evolutions_and_clusters.md`
 
 ## Events Log Integration
 
@@ -696,7 +696,7 @@ Current coastal breakout tuning:
 - transfers those states to `ZZZ`
 - spawns `24` `Brainzz Horde` divisions in each breakout state
 
-The independent Fallout system is documented in `docs/systems/air_contamination_mechanic.md` and the `docs/specs/air_cleanliness_fallout_specs/` package. Its dedicated event namespace, blackout GUI, assets, and audio are outside the Zombie Outbreak contract.
+The independent Fallout system is documented in `docs/systems/air_cleanliness/air_contamination_mechanic.md` and the `docs/specs/air_cleanliness_fallout_specs/` package. Its dedicated event namespace, blackout GUI, assets, and audio are outside the Zombie Outbreak contract.
 
 ### 10. Refugee evacuation subevent: `chaosx.nr2.10`
 

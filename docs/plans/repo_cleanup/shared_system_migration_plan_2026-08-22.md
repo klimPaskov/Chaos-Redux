@@ -598,7 +598,7 @@ An approved selector migration must update `localisation/english/chaosx_event_na
 
 An approved new dynamic helper must be documented in `common/scripted_effects/chaosx_dynamic_effects.md` only when it belongs to the shared dynamic-effect API; Event 006 helpers remain documented in `common/scripted_effects/006_independence_wave_country_registry_effects.md` or the owning Event 006 markdown file, and Event 019 contracts must be documented with the Event 019 registry/spec source.
 
-An approved Event Log functional consolidation must update `docs/systems/events_log_window.md`, `docs/systems/events_log_evolutions_and_clusters.md`, and `docs/systems/events_log_world_end_scenarios.md` if their ownership or lifecycle descriptions change; it must not update the interface layout description to claim a geometry change.
+An approved Event Log functional consolidation must update `docs/systems/event_system/events_log_window.md`, `docs/systems/event_system/events_log_evolutions_and_clusters.md`, and `docs/systems/event_system/events_log_world_end_scenarios.md` if their ownership or lifecycle descriptions change; it must not update the interface layout description to claim a geometry change.
 
 Event catalog rows are changed only when player-facing event detail, evolution, or cluster wording changes; the workbook is the editable source and the export command must be run after a successful workbook update.
 

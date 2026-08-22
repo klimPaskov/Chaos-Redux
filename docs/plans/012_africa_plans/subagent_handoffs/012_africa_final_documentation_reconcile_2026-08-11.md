@@ -28,7 +28,7 @@ The permanent Charter presentation contract is now normative in `docs/specs/012_
 | `012_africa_final_current_decision_audit_2026-08-11.md` | Current owner evidence | Exact 102/102 source census and six intentional gates are accepted; fresh MCP routes remain artifact-manifest blocked. |
 | `012_africa_final_current_source_certification_2026-08-11.md` | Current certification handoff | Independent source-completion summary for achievements, actions, AI, priority packages, assets, event evidence, and limitations. |
 | `012_africa_implementation_source_map.md` | Current source map with historical sections | Current release-candidate counts and carrier/queue boundaries are explicit; its opening and historical baseline sections remain provenance. |
-| `docs/systems/triggerable_scenarios.md` | Current system documentation | The retired fake Event012 `SCN-011`/Africa scenario reservation was removed; no Event012 scenario reservation remains. |
+| `docs/systems/event_system/triggerable_scenarios.md` | Current system documentation | The retired fake Event012 `SCN-011`/Africa scenario reservation was removed; no Event012 scenario reservation remains. |
 
 The 199 controlled-pool polity candidates and six intentional action gates remain queued or gated by design. They were not silently promoted, flattened, or treated as gameplay omissions.
 
@@ -64,7 +64,7 @@ Historical addenda and older owner handoffs retain some deliberate or legacy har
 ## Files changed in this reconciliation pass
 
 - `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv`
-- `docs/systems/triggerable_scenarios.md`
+- `docs/systems/event_system/triggerable_scenarios.md`
 - `docs/plans/012_africa_plans/012_africa_implementation_source_map.md`
 - `docs/events/012_africa/overview.md`
 - `docs/plans/012_africa_plans/012_africa_achievements_handoff.md`

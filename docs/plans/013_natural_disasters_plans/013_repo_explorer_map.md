@@ -365,7 +365,7 @@ The live cluster framework is owned by:
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
 - `localisation/english/chaosx_gui_l_english.yml`
-- `docs/systems/event_clusters.md`
+- `docs/systems/event_system/event_clusters.md`
 
 Cluster id `5` is currently unused between Peace (`4`) and Formables (`6`), and the removal diff confirms it formerly belonged to Natural Disasters. Re-register `event_cluster_id.natural_disasters = 5` as a fresh implementation choice, not by copying the old membership code.
 
@@ -405,7 +405,7 @@ The triggerable-scenario framework already has the correct generic four-stop int
 - `events/chaosx_triggerable_scenarios.txt`
 - `interface/chaosx.gui`
 - `localisation/english/chaosx_gui_l_english.yml`
-- `docs/systems/triggerable_scenarios.md`
+- `docs/systems/event_system/triggerable_scenarios.md`
 
 `triggerable_scenario_id.reserved_7` is the clean registry slot for Disaster Barrage. Replace the reserved id with `disaster_barrage = 7`, remove the initialization reset that treats 7 as invalid, add a name sort value, and register it in `triggerable_scenarios_initialize_registry`.
 
@@ -543,9 +543,9 @@ Source-of-truth specs remain in `docs/specs/013_natural_disasters_specs/`. Accep
 Required documentation surfaces after gameplay wording stabilizes:
 
 - `docs/events/013_natural_disasters/overview.md`
-- `docs/systems/event_clusters.md`
-- `docs/systems/triggerable_scenarios.md`
-- `docs/systems/chaos_meter_deaths_mechanic.md` for the new death reason/source
+- `docs/systems/event_system/event_clusters.md`
+- `docs/systems/event_system/triggerable_scenarios.md`
+- `docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md` for the new death reason/source
 - `common/scripted_effects/chaosx_dynamic_effects.md` for the public API
 - `docs/assets/013_natural_disasters/manifest.md`
 - `docs/assets/013_natural_disasters/gfx_handoff.md`

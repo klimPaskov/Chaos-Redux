@@ -52,7 +52,7 @@
 | `common/country_tags/chaosx_countries.txt` | custom base tag pool | registers general Chaos tags and 34 Soviet Collapse successors |
 | `common/scripted_effects/007_fury_effects.txt` | runtime country-package and focus precedent | applies flags, ideas, focus tree, template, units, and follow-up events |
 | `common/national_focus/*.txt` | focus composition and current event tree ownership | must be audited before shared Fallout branches are added |
-| `docs/systems/air_contamination_mechanic.md` | current Air documentation | contains stale recovery, treaty, event id, and super-event claims |
+| `docs/systems/air_cleanliness/air_contamination_mechanic.md` | current Air documentation | contains stale recovery, treaty, event id, and super-event claims |
 | `CHAOS_REDUX_MECHANICS.md` | root mechanics description | world-end section assumes chaos-above-1000 normal super-events |
 
 ## Existing patterns to reuse

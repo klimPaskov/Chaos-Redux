@@ -105,10 +105,10 @@ handoffs available through 2026-07-16.
     - recorded the clean scoped reaudit, catalog status, implemented evolution
       lock integration, leader/council metadata, fixed-scene scope, and pending
       flag gate.
-14. `docs/systems/chaos_unit_family_registry.md`
+14. `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`
     - added current v4 status, sole-file ownership, nine-callback proof,
       leadership/council metadata, and exact list-free classifier requirements.
-15. `docs/systems/triggerable_scenarios.md`
+15. `docs/systems/event_system/triggerable_scenarios.md`
     - documented the SCN-008 collision, canonical SCN-013 source, clean scoped
       audit, and retained `In progress` status.
 16. `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_documentation_curator_live_reconciliation_2026_07_16.md`

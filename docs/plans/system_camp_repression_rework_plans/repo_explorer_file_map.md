@@ -56,16 +56,16 @@ Accepted package consulted in full:
 
 Current project documentation consulted:
 
-- docs/systems/genocide_crisis_system.md
-- docs/systems/genocide_mechanics_spec.md
-- docs/systems/chaos_meter_deaths_mechanic.md
-- docs/systems/chaos_meter_deaths_and_events_log_ui.md
-- docs/systems/condemnation_sanctions.md
+- docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md
+- docs/systems/cbrn_warfare/genocide/genocide_mechanics_spec.md
+- docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md
+- docs/systems/chaos_meter/chaos_meter_deaths_and_events_log_ui.md
+- docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md
 - docs/events/germany_mengele/overview.md
 - docs/events/005_soviet_collapse/overview.md
-- docs/chemical_warfare/japan_chemical_campaign_decisions.md
-- docs/chemical_warfare/chemical_warfare_documentation.md
-- docs/biological_warfare/biowarfare_system.md
+- docs/systems/cbrn_warfare/chemical_warfare/japan_chemical_campaign_decisions.md
+- docs/systems/cbrn_warfare/chemical_warfare/chemical_warfare_documentation.md
+- docs/systems/cbrn_warfare/biological_warfare/biowarfare_system.md
 
 ## 3. Source-of-truth contradiction
 
@@ -328,7 +328,7 @@ Primary files:
 - common/dynamic_modifiers/condemnation_sanctions_dynamic_modifiers.txt.
 - common/ideas/condemnation_sanctions_ideas.txt.
 - localisation/english/condemnation_sanctions_l_english.yml.
-- docs/systems/condemnation_sanctions.md.
+- docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md.
 
 The system already separates hidden and public source buckets and provides contexts for camp discovery, experiments, restricted chemical sites, inspections, observers, operations, restricted operations, and destroyed records. The camp system also has its own 25/50/75/100 threshold events. The rework should preserve the shared condemnation ledger but explicitly reconcile these two threshold systems rather than adding a third.
 
@@ -360,7 +360,7 @@ Relevant biological files:
 - common/special_projects/projects/biowarfare_main_projects.txt.
 - common/special_projects/prototype_rewards/generic_biowarfare_prototype_rewards.txt.
 - interface/special_projects/biowarfare.gfx.
-- docs/biological_warfare/biowarfare_system.md.
+- docs/systems/cbrn_warfare/biological_warfare/biowarfare_system.md.
 
 The Japanese prison-experiment decision already rolls possible anthrax, tularemia, or plague contamination. It has no outbreak-accident risk variable, Pingfang facility progression, Ishii influence, Kwantung autonomy, or containment branch.
 
@@ -533,10 +533,10 @@ Presentation/docs:
 - localisation/english/_chaosx_events_l_english.yml
 - localisation/english/germany_mengele_l_english.yml
 - localisation/english/005_soviet_collapse_l_english.yml when bridge text changes
-- docs/systems/genocide_crisis_system.md
-- docs/systems/genocide_mechanics_spec.md
-- docs/systems/chaos_meter_deaths_mechanic.md if Deaths semantics change
-- docs/systems/condemnation_sanctions.md if new contexts/sources are added
+- docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md
+- docs/systems/cbrn_warfare/genocide/genocide_mechanics_spec.md
+- docs/systems/chaos_meter/chaos_meter_deaths_mechanic.md if Deaths semantics change
+- docs/systems/cbrn_warfare/condemnation/condemnation_sanctions.md if new contexts/sources are added
 - docs/events/germany_mengele/overview.md
 - docs/events/005_soviet_collapse/overview.md
 - common/scripted_effects/chaosx_dynamic_effects.md only if a new shared dynamic helper is added to chaosx_dynamic_effects.txt.
@@ -552,7 +552,7 @@ Prefer subsystem separation for readability:
 - localisation/english/camp_repression_rework_l_english.yml
 - events/camp_repression_country_events.txt or bounded country-specific event files
 - optional country-specific constants/effects/decisions for Ishii if the shared genocide files become unwieldy
-- docs/systems/genocide_crisis_system.md as the required mechanic document
+- docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md as the required mechanic document
 - docs/assets/system_camp_repression_rework/manifest.md and prompt/handoff files after IDs stabilize
 
 Avoid creating separate duplicated lifecycle engines for each country. Shared registration, pressure, Deaths, exposure, cleanup, and GUI cache logic should remain centralized.
