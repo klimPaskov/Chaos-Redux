@@ -10,7 +10,7 @@ This handoff records the deferred visual package inventory requested for Event 0
 
 ## Evidence reviewed
 
-- Event 016 defines six route-specific project-force consumers and reuses the shared `clone_infantry` consumer for cloning: `kruger_portal_raider`, `kruger_robot_frame`, `kruger_paleogenetic_beast`, `kruger_xenobiological_assault`, `kruger_exotic_guard`, and `kruger_temporal_guard`.
+- Event 016 defines project-force consumers and reuses shared generic consumers where future events need the same formation: `portal_raider`, `autonomous_robot`, `clone_infantry`, `kruger_paleogenetic_beast`, `kruger_xenobiological_assault`, `alien_infantry`, and `kruger_temporal_guard`.
 - `common/units/equipment/016_brilliant_scientist_project_force_equipment.txt` supplies the corresponding portal, clone, robot, paleogenetic, xenobiological, alien-arms, and temporal equipment archetypes.
 - `common/scripted_effects/016_brilliant_scientist_project_force_event19_effects.txt` exposes Event 019 provider identities 504-508 for clone, robot, paleogenetic, xenobiological, and alien-interface families only.
 - Portal-raider and temporal-guard units remain native Event 016 consumers. Their future infantry-spawn provider contracts are documented as targets, not runtime references.

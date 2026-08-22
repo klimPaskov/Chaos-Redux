@@ -14,7 +14,7 @@ The six Event 016 project-force equipment archetypes now use loader-safe file-lo
 - `kruger_robot_equipment`
 - `kruger_paleogenetic_equipment`
 - `kruger_xenobiological_equipment`
-- `kruger_exotic_arms_equipment`
+- `alien_laser_weapon_equipment`
 - `kruger_temporal_equipment`
 
 ## Evidence

@@ -42,4 +42,4 @@ Transfer reconciliation clears an unshown pending report on the former host. Res
 
 ## Deferred boundaries
 
-Dedicated accident, security, black-and-white news, and defeat/remnant art remain queued. Event 016-specific 3D models remain deferred as requested, including portal raiders, clone infantry, autonomous robots, paleogenetic beasts, xenobiological assault organisms, exotic guards, and temporal guards.
+Dedicated accident, security, black-and-white news, and defeat/remnant art remain queued. The unit-model backlog covers portal raiders, clone infantry, autonomous robots, paleogenetic beasts, xenobiological assault organisms, generic alien infantry, and temporal guards; installed packages and current blockers are tracked in their model handoffs.

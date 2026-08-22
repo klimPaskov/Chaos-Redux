@@ -10,7 +10,8 @@
 | --- | --- | --- |
 | Clone Infantry | Installed and reusable generic model/entity package | Parent-owned live playback and any remaining action review stay separate from Event 016 completion. |
 | Portal Raider | Counter art complete and wired through `interface/portal_raider_system.gfx` | Runtime model/entity, actions, and sounds are rejected and unwired pending user-approved paid recovery after the failed semantic generation task. |
-| Autonomous Robot, Paleogenetic Creature, Xenobiological Organism, Alien Interface Infantry, Temporal Guard | Queued outside the current scope | Keep vanilla sprite/map-icon presentation until a separately approved 3D package is produced and wired. |
+| Alien Infantry | Reusable 2D unit, counter, equipment, technology, tactic, decision, event, focus, flag, portrait, and country-interface assets are installed and wired | The rifle-bearing 3D model was rejected because its generated geometry omitted the weapon; Meshy 7 recovery, seven genuine actions, PDX export/reimport evidence, and synchronized runtime sound wiring remain blocked pending failure-recovery approval. |
+| Autonomous Robot, Paleogenetic Creature, Xenobiological Organism, Temporal Guard | Queued outside the current scope | Keep their existing presentation until each separately scoped 3D package is produced and wired. |
 
 ## Portraits and character assets
 

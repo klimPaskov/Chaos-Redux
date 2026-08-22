@@ -26,7 +26,7 @@ The remaining apparent synergy candidates already overlap substantial implemente
 - Advanced Materials plus Robotics overlaps machine power, frame repair, assembly, command protocol, and machine-force production.
 - Cloning, Paleogenetics, and Xenobiological combinations overlap bounded breeding or production cycles, hatcheries, veterinary support, control-mode choice, medical fabrication, escape response, and corresponding KRG route focuses.
 - Computation or Robotics plus Temporal overlaps the implemented anchor, authentication, observer, rescue, stabilization, continuity, succession, and temporal-guard surfaces in `016_brilliant_scientist_kruger_state_portal_temporal_decisions.txt`.
-- Alien Arms plus High Energy overlaps `KRG_prepare_strategic_delivery_architecture`, `KRG_arm_the_exotic_guard`, the exact Singularity component ledger, arming, fail-deadly, disarmament, and terminal paths.
+- Alien Arms plus High Energy overlaps `KRG_prepare_strategic_delivery_architecture`, `KRG_arm_the_alien_cohorts`, the exact Singularity component ledger, arming, fail-deadly, disarmament, and terminal paths.
 
 The “Public computation plus independent teams” promise is already substantively represented by the former-host recovery and foreign-operation layers:
 

@@ -18,9 +18,9 @@ No Antarctic future event was added. No visual assets, models, event-localisatio
 
 ## Eighteen-ID surface
 
-Operational IDs: `brilliant_scientist_portal_warfare_tech`, `brilliant_scientist_clone_formations_tech`, `brilliant_scientist_robot_formations_tech`, `brilliant_scientist_paleogenetic_formations_tech`, `brilliant_scientist_xenobiological_formations_tech`, `brilliant_scientist_exotic_guard_tech`, and `brilliant_scientist_temporal_guard_tech`.
+Operational IDs: `brilliant_scientist_portal_warfare_tech`, `brilliant_scientist_clone_formations_tech`, `brilliant_scientist_robot_formations_tech`, `brilliant_scientist_paleogenetic_formations_tech`, `brilliant_scientist_xenobiological_formations_tech`, `brilliant_scientist_alien_infantry_tech`, and `brilliant_scientist_temporal_guard_tech`.
 
-Weaponization IDs: `brilliant_scientist_portal_warfare_weaponization_tech`, `brilliant_scientist_clone_formations_weaponization_tech`, `brilliant_scientist_robot_formations_weaponization_tech`, `brilliant_scientist_paleogenetic_formations_weaponization_tech`, `brilliant_scientist_xenobiological_formations_weaponization_tech`, `brilliant_scientist_exotic_guard_weaponization_tech`, and `brilliant_scientist_temporal_guard_weaponization_tech`.
+Weaponization IDs: `brilliant_scientist_portal_warfare_weaponization_tech`, `brilliant_scientist_clone_formations_weaponization_tech`, `brilliant_scientist_robot_formations_weaponization_tech`, `brilliant_scientist_paleogenetic_formations_weaponization_tech`, `brilliant_scientist_xenobiological_formations_weaponization_tech`, `brilliant_scientist_alien_predictive_warfare_tech`, and `brilliant_scientist_temporal_guard_weaponization_tech`.
 
 Xenobiological control IDs: `brilliant_scientist_xeno_chemical_control_tech`, `brilliant_scientist_xeno_neural_control_tech`, `brilliant_scientist_xeno_machine_control_tech`, and `brilliant_scientist_xeno_researched_control_tech`.
 
