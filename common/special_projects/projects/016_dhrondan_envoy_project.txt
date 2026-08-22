@@ -1,0 +1,46 @@
+# Static database resource fields do not accept script-constant tokens.
+# These file-scoped values mirror dhrondan_contact.project_resource_cost.
+@CR_SC_DHRONDAN_ENVOY_ALUMINIUM = 5
+@CR_SC_DHRONDAN_ENVOY_CHROMIUM = 5
+@CR_SC_DHRONDAN_ENVOY_RUBBER = 5
+@CR_SC_DHRONDAN_ENVOY_TUNGSTEN = 5
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 D'RHONDAN ENVOY CRAFT
+# ============================================================================
+# A unique air-specialization UFO project shared by the Kruger, KRG, Mengele,
+# Antarctic-recovery, and explicitly receipted future-event routes.
+# ============================================================================
+
+sp_dhrondan_envoy_craft = {
+	specialization = specialization_air
+	allowed = { }
+	visible = { FROM = { dhrondan_envoy_craft_is_visible = yes } }
+	available = { FROM = { dhrondan_envoy_craft_is_available = yes } }
+	icon = GFX_sp_dhrondan_envoy_craft
+	breakthrough_cost = { specialization_air = constant:dhrondan_contact.project_breakthrough_cost }
+	prototype_time = sp_time.prototype.very_long
+	complexity = sp_complexity.insane
+	resource_cost = {
+		resources = {
+		aluminium = @CR_SC_DHRONDAN_ENVOY_ALUMINIUM
+		tungsten = @CR_SC_DHRONDAN_ENVOY_TUNGSTEN
+		chromium = @CR_SC_DHRONDAN_ENVOY_CHROMIUM
+		rubber = @CR_SC_DHRONDAN_ENVOY_RUBBER
+		}
+	}
+	ai_will_do = {
+		base = constant:dhrondan_contact_ai.standard
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = dhrondan_envoy_craft_complete_tt
+			dhrondan_complete_envoy_craft = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_air_generic_reward_scientist_xp_1
+		sp_air_generic_reward_major_progress_1
+		sp_air_generic_reward_test_failure_1
+	}
+}

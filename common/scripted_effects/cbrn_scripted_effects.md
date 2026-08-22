@@ -129,7 +129,7 @@ These helpers do not scan all countries or states periodically, infer a target, 
 
 ## grant_random_chaos_special_project_available_tech
 
-This country-scope effect grants one not-yet-owned biological, chemical, plague-weaponization, or weaponized-zombie special-project unlock to event-family routes explicitly integrated with the CBRN project pool. It is CBRN-owned and is not a shared cross-system dynamic effect.
+This country-scope effect grants one eligible not-yet-owned Chaos Redux special project to event-family routes explicitly integrated with the shared random-project pool. It is CBRN-owned and is not a shared cross-system dynamic effect.
 
 Inputs: none.
 Output: may complete one special project and set the matching delivery technology.
@@ -145,6 +145,7 @@ Current registry entries:
 - `black_plague_weaponization_program` -> its native completion output, including `plague_bomb_delivery_systems`
 - `sp_cw_sarin_program` -> `sarin`
 - `sp_cw_soman_program` -> `soman`
+- `sp_dhrondan_envoy_craft` -> its guarded completion hook when the current country has a valid craft route and all operational-work gates
 
 Every future Chaos Redux special project must be reviewed against this registry when it is added. Add each in-scope CBRN project with its exact completion output and an eligibility gate based on the project itself when technologies are shared; document every intentional exclusion here so no project is silently omitted. This invariant keeps existing focus, decision, and event rewards synchronized with the complete eligible CBRN pool.
 

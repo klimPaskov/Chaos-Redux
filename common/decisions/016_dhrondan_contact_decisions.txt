@@ -1,0 +1,145 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 D'RHONDAN CONTACT DECISIONS AND MISSIONS
+# ============================================================================
+# Immediate authorization decisions open two route-specific 180-day missions.
+# A compact status row exposes pact values, while one repeatable accord action
+# reduces strain. The rebellion pulse is country-scoped and self-renewing.
+# ============================================================================
+
+dhrondan_contact_category = {
+	dhrondan_contact_status_header = {
+		icon = GFX_decision_honor_dhrondan_accord
+		visible = { has_country_flag = dhrondan_pact_established }
+		available = { always = no }
+		ai_will_do = { base = constant:dhrondan_contact_ai.never }
+	}
+
+	dhrondan_send_kruger_to_dhronda = {
+		icon = GFX_decision_send_kruger_to_dhronda
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			is_special_project_completed = sp:sp_dhrondan_envoy_craft
+			NOT = { has_country_flag = dhrondan_pact_established }
+		}
+		available = {
+			dhrondan_kruger_expedition_is_available = yes
+			custom_trigger_tooltip = {
+				tooltip = dhrondan_expedition_fuel_cost_tt
+				hidden_trigger = { dhrondan_can_pay_expedition_fuel = yes }
+			}
+		}
+		cost = constant:dhrondan_contact.expedition_political_power_cost
+		days_remove = constant:dhrondan_contact.one
+		complete_effect = {
+			custom_effect_tooltip = dhrondan_send_kruger_to_dhronda_effect_tt
+			hidden_effect = { dhrondan_begin_kruger_expedition = yes }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { dhrondan_kruger_expedition_is_available = yes }
+				NOT = { dhrondan_can_pay_expedition_fuel = yes }
+			}
+		}
+		ai_will_do = { base = constant:dhrondan_contact_ai.dominant }
+	}
+
+	dhrondan_send_mengele_to_dhronda = {
+		icon = GFX_decision_send_mengele_to_dhronda
+		visible = {
+			is_mengele_clone_directorate_country = yes
+			is_special_project_completed = sp:sp_dhrondan_envoy_craft
+			NOT = { has_country_flag = dhrondan_pact_established }
+		}
+		available = {
+			dhrondan_mengele_expedition_is_available = yes
+			custom_trigger_tooltip = {
+				tooltip = dhrondan_expedition_fuel_cost_tt
+				hidden_trigger = { dhrondan_can_pay_expedition_fuel = yes }
+			}
+		}
+		cost = constant:dhrondan_contact.expedition_political_power_cost
+		days_remove = constant:dhrondan_contact.one
+		complete_effect = {
+			custom_effect_tooltip = dhrondan_send_mengele_to_dhronda_effect_tt
+			hidden_effect = { dhrondan_begin_mengele_expedition = yes }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { dhrondan_mengele_expedition_is_available = yes }
+				NOT = { dhrondan_can_pay_expedition_fuel = yes }
+			}
+		}
+		ai_will_do = { base = constant:dhrondan_contact_ai.dominant }
+	}
+
+	dhrondan_honor_accord = {
+		icon = GFX_decision_honor_dhrondan_accord
+		visible = { has_country_flag = dhrondan_pact_established }
+		available = { dhrondan_can_honor_accord = yes }
+		cost = constant:dhrondan_contact.pact_honor_political_power_cost
+		days_remove = constant:dhrondan_contact.one
+		complete_effect = {
+			custom_effect_tooltip = dhrondan_honor_accord_effect_tt
+			hidden_effect = { dhrondan_honor_accord = yes }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = { NOT = { dhrondan_can_honor_accord = yes } }
+		ai_will_do = {
+			base = constant:dhrondan_contact_ai.low
+			modifier = {
+				factor = constant:dhrondan_contact_ai.strained_factor
+				check_variable = {
+					var = dhrondan_pact_strain
+					value = constant:dhrondan_contact.rebellion_strain_high
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	dhrondan_kruger_expedition_mission = {
+		icon = GFX_decision_send_kruger_to_dhronda
+		activation = { has_country_flag = dhrondan_kruger_expedition_in_progress }
+		days_mission_timeout = var:dhrondan_expedition_days
+		is_good = yes
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = { NOT = { dhrondan_kruger_expedition_remains_valid = yes } }
+		cancel_effect = { hidden_effect = { dhrondan_fail_expedition = yes } }
+		timeout_effect = {
+			if = {
+				limit = { dhrondan_kruger_expedition_remains_valid = yes }
+				dhrondan_open_planetary_audience = yes
+			}
+			else = { dhrondan_fail_expedition = yes }
+		}
+	}
+
+	dhrondan_mengele_expedition_mission = {
+		icon = GFX_decision_send_mengele_to_dhronda
+		activation = { has_country_flag = dhrondan_mengele_expedition_in_progress }
+		days_mission_timeout = var:dhrondan_expedition_days
+		is_good = yes
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = { NOT = { dhrondan_mengele_expedition_remains_valid = yes } }
+		cancel_effect = { hidden_effect = { dhrondan_fail_expedition = yes } }
+		timeout_effect = {
+			if = {
+				limit = { dhrondan_mengele_expedition_remains_valid = yes }
+				dhrondan_open_planetary_audience = yes
+			}
+			else = { dhrondan_fail_expedition = yes }
+		}
+	}
+
+	dhrondan_rebellion_pulse_mission = {
+		icon = GFX_decision_dhrondan_ufo_landing
+		activation = { dhrondan_rebellion_pulse_is_eligible = yes }
+		days_mission_timeout = constant:dhrondan_contact.rebellion_pulse_days
+		is_good = no
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = { NOT = { dhrondan_rebellion_pulse_is_eligible = yes } }
+		timeout_effect = { hidden_effect = { dhrondan_resolve_rebellion_pulse = yes } }
+	}
+}
