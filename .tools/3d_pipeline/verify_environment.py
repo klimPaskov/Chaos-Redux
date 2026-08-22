@@ -29,6 +29,7 @@ sys.path.insert(0, str(PIPELINE_ROOT))
 
 from lib.paths import file_record, sha256_file, utc_now, write_json  # noqa: E402
 from meshy_client import MeshyClient, _payload  # noqa: E402
+from lib.mcp_stdio import call_stdio  # noqa: E402
 
 
 def command_version(command: List[str]) -> str:
@@ -41,6 +42,46 @@ def command_version(command: List[str]) -> str:
         check=False,
     )
     return completed.stdout.strip()
+
+
+def exact_meshy_route_processes(wrapper: Path, entry_point: Path) -> List[Dict[str, Any]]:
+    """Return only live processes belonging to this repository's Meshy route."""
+
+    if os.name != "nt":
+        return []
+    process_env = os.environ.copy()
+    process_env["CHAOSX_MESHY_WRAPPER"] = str(wrapper.resolve())
+    process_env["CHAOSX_MESHY_ENTRY"] = str(entry_point.resolve())
+    script = r"""
+$wrapper = $env:CHAOSX_MESHY_WRAPPER
+$entry = $env:CHAOSX_MESHY_ENTRY
+$matches = @(Get-CimInstance Win32_Process | Where-Object {
+	($_.Name -eq 'powershell.exe' -and $_.CommandLine -like "*$wrapper*") -or
+	($_.Name -eq 'node.exe' -and $_.CommandLine -like "*$entry*")
+} | Select-Object ProcessId, ParentProcessId, Name, CommandLine)
+if ($matches.Count -eq 0) {
+	'[]'
+}
+else {
+	ConvertTo-Json -InputObject @($matches) -Compress
+}
+"""
+    completed = subprocess.run(
+        ["powershell.exe", "-NoProfile", "-Command", script],
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=process_env,
+        timeout=30,
+        check=False,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(completed.stderr.strip() or "Unable to inspect Meshy route processes.")
+    decoded = json.loads(completed.stdout.strip() or "[]")
+    return decoded if isinstance(decoded, list) else [decoded]
 
 
 def main() -> int:
@@ -59,6 +100,44 @@ def main() -> int:
     check("npx", bool(npx), npx or "npx.exe not found")
     uv = shutil.which("uv.exe") or shutil.which("uv")
     check("uv", bool(uv), uv or "uv.exe not found")
+
+    meshy_lock = lock["routes"]["meshy_mcp"]
+    runtime_slug = meshy_lock["version"].replace(".", "_")
+    sdk_lock = meshy_lock["resolved_dependencies"]["modelcontextprotocol_sdk"]
+    sdk_slug = sdk_lock["version"].replace(".", "_")
+    meshy_runtime = REPO_ROOT / ".tmp" / f"meshy_mcp_compat_v4_{runtime_slug}_sdk_{sdk_slug}"
+    meshy_manifest = meshy_runtime / "node_modules" / "@meshy-ai" / "meshy-mcp-server" / "package.json"
+    sdk_manifest = meshy_runtime / "node_modules" / "@modelcontextprotocol" / "sdk" / "package.json"
+    sdk_entries = [sdk_manifest.parent / item for item in sdk_lock["required_entry_points"]]
+    meshy_entry = meshy_manifest.parent / "dist" / "index.js"
+
+    def check_meshy_runtime() -> None:
+        actual_meshy_version = None
+        if meshy_manifest.exists():
+            actual_meshy_version = json.loads(meshy_manifest.read_text(encoding="utf-8"))["version"]
+        check(
+            "meshy_mcp_package_version",
+            actual_meshy_version == meshy_lock["version"],
+            {"expected": meshy_lock["version"], "actual": actual_meshy_version},
+        )
+        actual_sdk_version = None
+        if sdk_manifest.exists():
+            actual_sdk_version = json.loads(sdk_manifest.read_text(encoding="utf-8"))["version"]
+        check(
+            "meshy_mcp_sdk_version",
+            actual_sdk_version == sdk_lock["version"],
+            {"expected": sdk_lock["version"], "actual": actual_sdk_version},
+        )
+        for sdk_entry in sdk_entries:
+            relative_entry = sdk_entry.relative_to(sdk_manifest.parent).as_posix()
+            check(
+                f"meshy_mcp_sdk_entry_point:{relative_entry}",
+                sdk_entry.exists(),
+                str(sdk_entry),
+            )
+
+    if not probe_meshy:
+        check_meshy_runtime()
 
     adapter_lock = lock["routes"]["blender_hoi4_adapter"]
     adapter_config_path = REPO_ROOT / adapter_lock["config"]
@@ -151,13 +230,37 @@ def main() -> int:
     meshy_report: Dict[str, Any] = {}
     if probe_meshy:
         try:
+            wrapper = REPO_ROOT / meshy_lock["wrapper"]
+            command = ["cmd.exe", "/d", "/c", "call", str(wrapper)]
+            listed = call_stdio(command, list_tools=True, timeout_seconds=300, cwd=REPO_ROOT)
+            check_meshy_runtime()
+            live_tools = {item.get("name"): item for item in listed.get("tools", [])}
+            required_tools = set(meshy_lock["verified_tools"])
+            missing_tools = sorted(required_tools - set(live_tools))
+            image_schema = live_tools.get("meshy_image_to_3d", {}).get("inputSchema", {})
+            schema_text = json.dumps(image_schema, sort_keys=True)
+            check(
+                "meshy_mcp_tools_list",
+                not missing_tools,
+                {"required": sorted(required_tools), "missing": missing_tools},
+            )
+            check(
+                "meshy_mcp_meshy_7_schema",
+                '"meshy-7"' in schema_text,
+                {"tool": "meshy_image_to_3d", "model": "meshy-7"},
+            )
             result = MeshyClient(REPO_ROOT).check_balance()
             meshy_report = {
                 "route": "verified",
                 "server_version": os.environ.get("MESHY_MCP_VERSION", "0.4.0"),
+                "tools": sorted(live_tools),
+                "image_model": "meshy-7",
                 "public_result": _payload(result),
             }
             check("meshy_mcp_balance_probe", True, meshy_report["public_result"])
+            wrapper_ps1 = REPO_ROOT / meshy_lock["compatibility_wrapper"]
+            leaked_processes = exact_meshy_route_processes(wrapper_ps1, meshy_entry)
+            check("meshy_mcp_process_cleanup", not leaked_processes, leaked_processes)
         except Exception as exc:
             check("meshy_mcp_balance_probe", False, str(exc))
             meshy_report = {"route": "failed", "error": str(exc)}

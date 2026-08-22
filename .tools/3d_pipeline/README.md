@@ -49,6 +49,12 @@ The current verified Meshy tool names are `meshy_check_balance`, `meshy_image_to
 
 Use only names and arguments returned by the verified live route.
 
+### Meshy runtime recovery
+
+Lock the official `@meshy-ai/meshy-mcp-server` and its transitive `@modelcontextprotocol/sdk` by exact version, package integrity, and git head in `config/dependencies.lock.json`. Keep a versioned compatibility runtime keyed by those versions, verify both `dist/esm/server/index.js` and `dist/esm/server/streamableHttp.js`, and serialize install and patch work with a named interprocess mutex. Apply the patch once per runtime file and record matching patched-file checksums or sizes across the consecutive probes to prove idempotence.
+
+After install and patch, run two consecutive `tools/list` probes and one concurrent probe pair through `wrappers/run_meshy_mcp.cmd`; every response must expose `meshy_image_to_3d` with `meshy-7`, then run a live `meshy_check_balance` probe through the same route. Enumerate only processes matching the exact wrapper or provider entrypoint and require zero matches before any paid call. On Windows, attach each stdio wrapper to a kill-on-close Job Object or equivalent process-tree owner because descendants can outlive JSON-RPC completion; any remaining exact-route process fails the health gate.
+
 The existing unattended Meshy route is `wrappers/run_meshy_mcp.cmd`, and the existing unattended Blender route is `wrappers/run_blender_hoi4_adapter.cmd`, which exposes structured job-root-bounded `chaosx_blender_hoi4_*` operations and no arbitrary Blender Python, shell, URL, or unrestricted absolute write path.
 
 A running Blender process is not bridge evidence. Probe `127.0.0.1:<socket_port>` using `blender_mcp_addon.socket_port` from the dependency lock; when the endpoint is absent, start the lock-selected Blender executable hidden with `--background --online-mode --command blender_mcp --host 127.0.0.1 --port <socket_port>`, then reprobe and record the listening process before using the adapter.
