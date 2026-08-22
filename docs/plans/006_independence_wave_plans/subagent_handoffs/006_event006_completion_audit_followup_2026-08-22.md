@@ -1,5 +1,7 @@
 # Event 006 completion audit follow-up
 
+> Current-authority notice (2026-08-22): this follow-up is a dated audit snapshot, not the current source of truth. Use `006_source_of_truth_map.md`, `006_independence_wave_resume_packet.md`, and the current portrait handoff for the authoritative boundary. The portrait tranche is now 38 installed supplied source placeholders with 13 intentionally unmapped files; the current focus receipt is 184 focuses and 195 connectors. The named four-group cost surfaces are superseded by `006_event6_four_group_cost_palette_tranche_2026-08-22.md`; package cost prose, automatic DM-01 material disclosure, category density, typed probability, runtime transaction evidence, broader admission, isolated GUI evidence, and Super-event 23 rights/audio remain open.
+
 Date: 2026-08-22
 
 Audit mode: read-only whole-event completion audit
@@ -24,7 +26,7 @@ The current focus prerequisite defect and catalog wording drift are closed. They
 
 The current release-scope correction addresses a concrete source error across all 32 admitted packages, but complete transaction acceptance remains unavailable because the event MCP projection is partial, the post-change event render timed out, and no matching terminal runtime receipt is available.
 
-The largest remaining implementation gaps are package admission breadth, the incomplete 48-family formable contract, accepted decision cost-limit violations, whole-event weighted-AI evidence, super-event 23 audio rights and wiring, blocked portrait consumers and package rosters, and incomplete GUI or event-chain MCP acceptance.
+The largest remaining implementation gaps are package admission breadth, the incomplete 48-family formable contract, package cost-prose and automatic DM-01 disclosure, whole-event weighted-AI evidence, super-event 23 audio rights and wiring, blocked portrait consumers and package rosters, and incomplete GUI or event-chain MCP acceptance.
 
 ## Completion status by surface
 
@@ -38,7 +40,7 @@ The largest remaining implementation gaps are package admission breadth, the inc
 | Country packages | PARTIAL | 32 packages are centrally attested. Another nine rows have package-local source without central admission. Eight more rows are adapter-only and fail closed. Most of the remaining registry is metadata or research rather than complete gameplay. |
 | Regional overlays | SOURCE-PRESENT, ACCEPTANCE PARTIAL | Thirteen overlays remain excluded from the release selector and have additive source hooks. Their wider route-preservation, network, league, formable, asset, and probability obligations are not all accepted. |
 | Shared focus framework | STRUCTURALLY REPAIRED, WHOLE-SURFACE PARTIAL | The latest successful MCP receipt reports 184 focuses and 195 connectors after restoring visible ownership for `independence_wave_standardize_with_league` and `independence_wave_preserve_independent_command`. It has zero crossings and zero node intersections. Seven authored long-connector or linear-detour warnings and unrelated vanilla continuous-focus diagnostics remain. |
-| Decisions and missions | DESIGN DEFECTS REMAIN | Broad shared, package, host, patron, league, scenario, and formable decision families exist. Several current paid actions exceed the accepted maximum of four spendable cost groups. Typed probability, failure-state, rescue, leadership, and full package reachability evidence remain incomplete. |
+| Decisions and missions | DESIGN DEFECTS REMAIN | Broad shared, package, host, patron, league, scenario, and formable decision families exist. The named shared four-group payment surfaces are source-corrected; package cost prose, automatic DM-01 disclosure, category density, typed probability, failure-state, rescue, leadership, and full package reachability evidence remain incomplete. |
 | Country values and Statehood Ledger | SOURCE-PRESENT, RUNTIME UNVERIFIED | Five tabs, semantic frames, four animated siblings, cleanup, and static fallbacks pass the source matrix. Runtime rendering, save/load state restoration, semantic threshold playback, and interaction evidence are not claimed. |
 | League of New States | PARTIAL | Charter, membership, conflict, sanction, expulsion, leadership, Event Details, achievement, and super-event hooks exist. Whole-lifecycle probability, failure, rescue, and operational reachability evidence remain incomplete. |
 | Formable registry | PARTIAL AND FAIL-CLOSED | The registry contains 48 families. Fourteen families have grouped state-puzzle consumers and seventeen Event 006 categories attach the shared GUI. This leaves 34 families without a current grouped consumer. A consumer does not prove formation availability. FORM-08 intentionally remains unavailable with only two researched displayed states and no invented third state. FORM-48 remains unreachable while FSM is unadmitted. FORM-42 remains specifically blocked. |
@@ -47,11 +49,11 @@ The largest remaining implementation gaps are package admission breadth, the inc
 | AI and probability | BLOCKED FOR WHOLE-EVENT ACCEPTANCE | Weighted source is extensive, but the complete named-scenario audit and same-scenario comparisons are absent across allocator, decisions, missions, focuses, strategy factors, league, patron, formable, and package surfaces. Current source inspection timed out after adapter discovery. |
 | Achievements | SOURCE-PRESENT, REACHABILITY PARTIAL | Sixteen definitions, 48 localisation keys, 48 icon states, and proof-writer references exist. Signature, league, formable, and package achievements remain conditional on incomplete owning routes. |
 | Flags | FINISHED STATICALLY | The strict audit passes all 102 custom Event 006 tag families. This does not admit package identities whose wider source, roster, map, and gameplay contracts remain blocked. |
-| Portraits | PARTIAL | Thirty-seven user-supplied DDS files are installed against exact existing consumers. Fourteen supplied files remain correctly unmapped because no identity-safe existing Event 006 consumer exists. Wider package rosters and source or role gates continue to block central admission. |
+| Portraits | PARTIAL | Thirty-eight user-supplied DDS files are installed against exact existing consumers. Thirteen supplied files remain correctly unmapped because no identity-safe existing Event 006 consumer exists. Wider package rosters and source or role gates continue to block central admission. |
 | Super-event 23 | BLOCKED AND UNWIRED | The accepted London Brass Players recording lacks the required United States redistribution clearance. No replacement is approved. Audio, sound wrappers, and firing remain absent. |
 | Super-event 24 | SOURCE-WIRED, REACHABILITY PARTIAL | Image, verified audio, definitions, predicates, history, localisation, and queued playback exist. Complete qualifying reachability still depends on package, league, and formable paths. |
 | Catalog | CURRENTLY ALIGNED | `Events!C7` now matches the active Event Details localisation and the three CSV mirrors have been regenerated. Event 006 remains `Partially Available`, the Liberations cluster remains `Partially Available`, and SCN-008 remains `Unavailable`. |
-| Documentation authority | PARTIAL AND LOCALLY STALE | The current HOLD boundary and package counts are accurate. The source-of-truth map and package manifest still cite the older 184-focus and 196-connector receipt instead of the current 195-connector repair and do not yet promote the 2026-08-22 release-scope correction into the primary authority block. |
+| Documentation authority | RECONCILED, HISTORICAL SNAPSHOT | The current HOLD boundary and package counts remain useful as of this dated audit. The source-of-truth map, resume packet, and current portrait handoff now supersede the older focus, connector, portrait, and release-scope wording. |
 
 ## Concrete source gaps
 
@@ -74,11 +76,11 @@ The static twenty-package witness means the maximum automatic wave of ten is no 
 
 Disposition: **161 selectable rows remain missing or unattested**.
 
-### 2. Active paid decisions exceed the accepted cost complexity limit
+### 2. Remaining decision and mission disclosure gaps
 
-The current decision audit found multiple active cost contracts above the accepted maximum of four spendable groups.
+The dated decision audit found multiple active cost contracts above the accepted maximum of four spendable groups. That finding is retained below as historical evidence; the named shared surfaces are superseded by the accepted four-group tranche. The remaining open work is package cost prose, automatic DM-01 material disclosure, category-density review, and typed probability evidence.
 
-The clearest shared violations are:
+The clearest shared violations recorded by that dated audit were:
 
 - `independence_wave_cost_border_ultimatum_major`, nine groups
 - `independence_wave_cost_reclamation_front`, eight groups
@@ -92,7 +94,7 @@ Additional five-group violations exist in AGX, FORM-03, IW-058, IW-070, IW-071, 
 
 This is not a localisation-only defect. The matching trigger, payment effect, AI behavior, blocked tooltip, and visible cost must change together.
 
-Disposition: **accepted mechanics requirement violated on active source**.
+Disposition at the dated audit: **accepted mechanics requirement violated on active source**. The shared surfaces listed above are not current patch targets; use the four-group tranche handoff and current source when evaluating remaining work.
 
 ### 3. The latest release-scope correction lacks full acceptance evidence
 
@@ -136,9 +138,9 @@ Disposition: **source-present, quantitative acceptance missing**.
 
 ### 6. Portrait files do not resolve missing gameplay consumers
 
-The 37 installed supplied DDS files preserve exact existing Event 006 consumers.
+The 37 installed supplied DDS files reported by this dated audit preserve exact existing Event 006 consumers. The current portrait handoff records 38 installed supplied source placeholders.
 
-The fourteen blocked supplied files are YAK two, BYA two, ALT two, FER two, KUR one, ACX one, ARX Gioacchino Solinas one, FIJ two, and GLC Alexandre Bóveda one.
+The fourteen blocked supplied files reported by this dated audit were YAK two, BYA two, ALT two, FER two, KUR one, ACX one, ARX Gioacchino Solinas one, FIJ two, and GLC Alexandre Bóveda one. The current handoff records thirteen intentionally unmapped files after the later exact-consumer tranche.
 
 They must remain unmapped until an exact role and character consumer is accepted. Wiring them by replacing a vanilla global portrait, assigning them to another real person, or inventing a character would cross the package and identity contract.
 
@@ -168,7 +170,7 @@ Disposition: **blocked on rights or explicit design change, then production and 
 | FORM-08 two-state presentation | ACCEPTED fail-closed state. Do not invent a third state. |
 | SCN-008 32-cell matrix | IMPLEMENTED statically, MCP and complete lifecycle evidence queued. |
 | Sixteen achievements | SOURCE-WIRED, owning-route reachability partial. |
-| Thirty-seven supplied portrait replacements | INSTALLED against exact consumers. Fourteen unmatched supplied files remain blocked. |
+| Thirty-seven supplied portrait replacements | INSTALLED against exact consumers in this dated audit. The later portrait tranche records thirty-eight installed files and thirteen unmatched supplied files remain blocked. |
 | Super-event 23 | BLOCKED on accepted audio rights. No fallback authorized. |
 | Super-event 24 | SOURCE-WIRED, final qualifying reachability partial. |
 | Current catalog reconciliation | IMPLEMENTED and exported. |
@@ -195,19 +197,19 @@ Disposition: **blocked on rights or explicit design change, then production and 
 
 These MCP failures are exact tooling limits. They are not source defects and they are not completion evidence.
 
-## Documentation gaps
+## Documentation gaps in this historical snapshot
 
-- `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` and `docs/specs/006_independence_wave_specs/quality/package_manifest.md` still cite the superseded 184-focus and 196-connector receipt. The current repaired count is 195 connectors.
-- The primary current-authority block does not yet promote the 2026-08-22 release-scope correction and its partial MCP result.
+- At the time of this audit, `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` and `docs/specs/006_independence_wave_specs/quality/package_manifest.md` still cited the superseded 184-focus and 196-connector receipt. Later authority reconciliation records the repaired 195-connector count.
+- At the time of this audit, the primary current-authority block did not yet promote the 2026-08-22 release-scope correction and its partial MCP result. Later authority reconciliation records that correction.
 - The source-of-truth map contains extensive superseded count amendments. The current 32, 29, 161, and 40 boundary is present, but later readers must traverse a large historical ledger to distinguish it.
 - Catalog drift is closed and should not remain in later completion reports as an active blocker.
 - The prior focus isolation defect is closed and should not remain in later completion reports as an active blocker.
 
 ## Recommended next bounded actions
 
-### Priority 1: repair the active shared decision cost contract
+### Priority 1: close the remaining decision and probability contract
 
-Choose no more than four spendable cost groups for the active shared major actions, beginning with border ultimatum, reclamation front, breakaway sponsorship, major integration, security, and strategic actions.
+Use the accepted four-group tranche as the source of truth for shared major actions. The remaining work is package cost prose, automatic DM-01 material disclosure, category density, and typed probability evidence; do not reopen the superseded shared-cost list below without a new baseline.
 
 Update each payment effect, affordability trigger, blocked tooltip, visible cost, AI reserve floor, and documentation row together.
 
