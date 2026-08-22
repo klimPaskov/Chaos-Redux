@@ -1,0 +1,426 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION ACHIEVEMENT EVIDENCE
+# ============================================================================
+# Persistent evidence hooks for the eight shared-system achievements. These
+# helpers observe completed food, route, transfer, reception, and policy
+# transactions; they never move population, apply mortality, or create a
+# second crisis meter.
+# ============================================================================
+
+famine_migration_achievement_initialize_country = {
+	if = {
+		limit = { NOT = { has_country_flag = famine_migration_achievement_tracking_initialized } }
+		set_country_flag = famine_migration_achievement_tracking_initialized
+		set_variable = { famine_migration_achievement_initial_core_population = constant:famine_migration_achievement_value.zero }
+		every_core_state = {
+			set_temp_variable = { famine_migration_achievement_state_population_people = state_population_k }
+			multiply_temp_variable = { famine_migration_achievement_state_population_people = constant:famine_migration_achievement_value.people_per_k }
+			add_to_variable = { PREV.famine_migration_achievement_initial_core_population = famine_migration_achievement_state_population_people }
+		}
+		set_variable = { famine_migration_achievement_integration_population_target = famine_migration_achievement_initial_core_population }
+		multiply_variable = { famine_migration_achievement_integration_population_target = constant:famine_migration_achievement_threshold.integration_host_population_share }
+		set_variable = { famine_migration_achievement_national_threatened_target = famine_migration_achievement_initial_core_population }
+		multiply_variable = { famine_migration_achievement_national_threatened_target = constant:famine_migration_achievement_threshold.national_threatened_share }
+		set_variable = { famine_migration_achievement_distinct_origin_count = constant:famine_migration_achievement_value.zero }
+		set_variable = { famine_migration_achievement_severe_core_state_count = constant:famine_migration_achievement_value.zero }
+		set_variable = { famine_migration_achievement_recovered_core_state_count = constant:famine_migration_achievement_value.zero }
+		set_variable = { famine_migration_achievement_threatened_population = constant:famine_migration_achievement_value.zero }
+		clear_array = famine_migration_achievement_origin_country_ids
+		clear_array = famine_migration_achievement_gate_protected_cohort_ids
+	}
+}
+
+# STATE scope. Called after the food stage transition and mortality transaction.
+famine_migration_achievement_process_state = {
+	if = {
+		limit = { OWNER = { exists = yes } }
+		OWNER = { famine_migration_achievement_initialize_country = yes }
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_migration_achievement_blockade_state
+			has_state_category = wasteland
+			OWNER = { exists = yes }
+		}
+		OWNER = { famine_migration_achievement_record_blockade_wasteland = yes }
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_migration_food_security_active
+			check_variable = { famine_migration_component_extraction > constant:famine_migration_food_component.zero }
+			NOT = { has_state_flag = famine_migration_achievement_extraction_shock_recorded }
+		}
+		set_state_flag = famine_migration_achievement_extraction_shock_recorded
+		OWNER = { famine_migration_achievement_record_extraction_shock = yes }
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_migration_achievement_extraction_shock_recorded
+			check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.stable }
+			OWNER = { has_country_flag = famine_migration_achievement_extraction_suspended_before_catastrophic }
+		}
+		OWNER = { famine_migration_achievement_record_extraction_recovery = yes }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = famine_migration_food_stage_famine
+				has_state_flag = famine_migration_food_stage_catastrophic
+			}
+			NOT = { has_state_flag = famine_migration_achievement_severe_recorded }
+		}
+		set_state_flag = famine_migration_achievement_severe_recorded
+		set_variable = { famine_migration_achievement_crisis_start_population = state_population_k }
+		multiply_variable = { famine_migration_achievement_crisis_start_population = constant:famine_migration_achievement_value.people_per_k }
+		set_variable = { famine_migration_achievement_protected_floor = famine_migration_achievement_crisis_start_population }
+		multiply_variable = { famine_migration_achievement_protected_floor = constant:famine_migration_achievement_threshold.protected_recovery_floor_share }
+		if = {
+			limit = { is_core_of = OWNER }
+			OWNER = {
+				add_to_variable = { famine_migration_achievement_severe_core_state_count = constant:famine_migration_achievement_value.one }
+				add_to_variable = { famine_migration_achievement_threatened_population = famine_migration_achievement_crisis_start_population }
+				if = {
+					limit = {
+						check_variable = {
+							var = famine_migration_achievement_threatened_population
+							value = famine_migration_achievement_national_threatened_target
+							compare = greater_than_or_equals
+						}
+					}
+					set_country_flag = famine_migration_achievement_national_threatened_share_met
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_migration_achievement_severe_recorded
+			check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.stable }
+			NOT = { has_state_flag = famine_migration_achievement_recovery_recorded }
+		}
+		set_state_flag = famine_migration_achievement_recovery_recorded
+		if = {
+			limit = { is_core_of = OWNER }
+			OWNER = {
+				add_to_variable = { famine_migration_achievement_recovered_core_state_count = constant:famine_migration_achievement_value.one }
+				if = {
+					limit = {
+						check_variable = {
+							var = famine_migration_achievement_recovered_core_state_count
+							value = famine_migration_achievement_severe_core_state_count
+							compare = greater_than_or_equals
+						}
+					}
+					set_country_flag = famine_migration_achievement_all_famine_states_recovered
+				}
+			}
+		}
+		if = {
+			limit = { has_state_flag = famine_migration_achievement_blockade_state }
+			set_temp_variable = { famine_migration_achievement_blockade_survivors = state_population_k }
+			multiply_temp_variable = { famine_migration_achievement_blockade_survivors = constant:famine_migration_achievement_value.people_per_k }
+			set_temp_variable = { famine_migration_achievement_blockade_survival_target = famine_migration_achievement_blockade_start_population }
+			multiply_temp_variable = { famine_migration_achievement_blockade_survival_target = constant:famine_migration_achievement_threshold.blockade_survival_share }
+			OWNER = {
+				set_country_flag = famine_migration_achievement_blockade_recovered
+				if = {
+					limit = {
+						check_variable = {
+							var = famine_migration_achievement_blockade_survivors
+							value = famine_migration_achievement_blockade_survival_target
+							compare = greater_than_or_equals
+						}
+					}
+					set_country_flag = famine_migration_achievement_blockade_survival_met
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_migration_achievement_severe_recorded
+			check_variable = { famine_migration_achievement_protected_floor > constant:famine_migration_achievement_value.zero }
+		}
+		set_temp_variable = { famine_migration_achievement_current_population_people = state_population_k }
+		multiply_temp_variable = { famine_migration_achievement_current_population_people = constant:famine_migration_achievement_value.people_per_k }
+		if = {
+			limit = {
+			check_variable = {
+				var = famine_migration_achievement_current_population_people
+				value = famine_migration_achievement_protected_floor
+				compare = less_than
+			}
+			}
+			OWNER = { set_country_flag = famine_migration_achievement_core_floor_breached }
+		}
+	}
+	if = {
+		limit = {
+			famine_migration_blockade_proof = yes
+			OR = {
+				has_state_flag = famine_migration_food_stage_famine
+				has_state_flag = famine_migration_food_stage_catastrophic
+			}
+			NOT = { has_state_flag = famine_migration_achievement_blockade_state }
+		}
+		set_state_flag = famine_migration_achievement_blockade_state
+		set_variable = { famine_migration_achievement_blockade_start_population = state_population_k }
+		multiply_variable = { famine_migration_achievement_blockade_start_population = constant:famine_migration_achievement_value.people_per_k }
+		OWNER = { set_country_flag = famine_migration_achievement_blockade_famine_proven }
+	}
+}
+
+# COUNTRY scope. The completed exact-transfer transaction supplies the origin
+# country id and the actual debit. Cycling the same origin never increments the
+# distinct-origin counter twice.
+famine_migration_achievement_record_arrival = {
+	famine_migration_achievement_initialize_country = yes
+	if = {
+		limit = {
+			check_variable = { famine_migration_transfer_actual_origin_debit > constant:famine_migration_achievement_value.zero }
+			check_variable = { famine_migration_transfer_origin_country_id > constant:famine_migration_achievement_value.zero }
+			NOT = {
+				is_in_array = {
+					array = famine_migration_achievement_origin_country_ids
+					value = famine_migration_transfer_origin_country_id
+				}
+			}
+		}
+		add_to_array = { array = famine_migration_achievement_origin_country_ids value = famine_migration_transfer_origin_country_id }
+		set_variable = { famine_migration_achievement_distinct_origin_count = famine_migration_achievement_origin_country_ids^num }
+	}
+}
+
+# COUNTRY scope. The caller supplies the currently tracked cohort population.
+famine_migration_achievement_record_major_cohort_duration = {
+	famine_migration_achievement_initialize_country = yes
+	set_temp_variable = { famine_migration_achievement_major_cohort_target = famine_migration_achievement_initial_core_population }
+	multiply_temp_variable = { famine_migration_achievement_major_cohort_target = constant:famine_migration_achievement_threshold.major_cohort_country_share }
+	clamp_temp_variable = {
+		var = famine_migration_achievement_major_cohort_target
+		min = constant:famine_migration_achievement_threshold.major_cohort_minimum_people
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = famine_migration_achievement_cohort_people
+				value = famine_migration_achievement_major_cohort_target
+				compare = greater_than_or_equals
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = famine_migration_achievement_major_cohort_start_date } }
+			set_variable = { famine_migration_achievement_major_cohort_start_date = global.date }
+			set_variable = { famine_migration_achievement_major_cohort_maturity_date = global.date }
+			add_to_variable = { famine_migration_achievement_major_cohort_maturity_date = constant:famine_migration_achievement_threshold.major_displacement_days }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.date
+					value = famine_migration_achievement_major_cohort_maturity_date
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = famine_migration_achievement_major_cohort_displaced_long_enough
+		}
+	}
+}
+
+famine_migration_achievement_record_blockade_relief = {
+	set_country_flag = famine_migration_achievement_blockade_relief_restored
+}
+
+famine_migration_achievement_record_blockade_wasteland = {
+	set_country_flag = famine_migration_achievement_blockade_wasteland
+}
+
+famine_migration_achievement_record_gate_crisis = {
+	famine_migration_achievement_initialize_country = yes
+	set_country_flag = famine_migration_achievement_gate_major_crisis
+	set_variable = { famine_migration_achievement_gate_valid_people = famine_migration_achievement_gate_people }
+	set_variable = { famine_migration_achievement_gate_protected_people = constant:famine_migration_achievement_value.zero }
+}
+
+famine_migration_achievement_record_gate_protection = {
+	set_temp_variable = { famine_migration_achievement_gate_cohort_id = famine_migration_cohort_id_to_move }
+	if = {
+		limit = { NOT = { check_variable = { famine_migration_achievement_gate_cohort_id > constant:famine_migration_achievement_value.zero } } }
+		set_temp_variable = { famine_migration_achievement_gate_cohort_id = famine_migration_cohort_id_result }
+	}
+	if = {
+		limit = {
+			check_variable = { famine_migration_transfer_result = constant:famine_migration_route_result.valid }
+			check_variable = { famine_migration_transfer_actual_origin_debit > constant:famine_migration_achievement_value.zero }
+			check_variable = { famine_migration_achievement_gate_cohort_id > constant:famine_migration_achievement_value.zero }
+			NOT = {
+				is_in_array = {
+					array = famine_migration_achievement_gate_protected_cohort_ids
+					value = famine_migration_achievement_gate_cohort_id
+				}
+			}
+		}
+		add_to_array = { array = famine_migration_achievement_gate_protected_cohort_ids value = famine_migration_achievement_gate_cohort_id }
+		add_to_variable = { famine_migration_achievement_gate_protected_people = famine_migration_transfer_actual_origin_debit }
+		clamp_variable = {
+			var = famine_migration_achievement_gate_protected_people
+			max = famine_migration_achievement_gate_valid_people
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = famine_migration_achievement_gate_protected_people
+				value = famine_migration_achievement_gate_valid_people
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = famine_migration_achievement_gate_all_protected
+	}
+}
+
+famine_migration_achievement_record_durable_outcome = {
+	if = {
+		limit = {
+			has_country_flag = famine_migration_achievement_gate_major_crisis
+			has_country_flag = famine_migration_achievement_gate_all_protected
+			has_country_flag = famine_migration_achievement_gate_reception_safe
+		}
+		set_country_flag = famine_migration_achievement_gate_durable_outcome
+	}
+	if = {
+		limit = {
+			has_country_flag = famine_migration_achievement_outbreak_exposed_cohort_received
+			has_country_flag = famine_migration_achievement_controlled_medical_reception_used
+			has_country_flag = famine_migration_achievement_medical_reception_no_outbreak
+			has_country_flag = famine_migration_achievement_medical_reception_not_overloaded
+		}
+		set_country_flag = famine_migration_achievement_medical_reception_durable_outcome
+	}
+}
+
+famine_migration_achievement_record_voluntary_return = {
+	if = {
+		limit = {
+			check_variable = { famine_migration_return_result = constant:famine_migration_runtime.one }
+			check_variable = { famine_migration_transfer_result = constant:famine_migration_route_result.valid }
+			check_variable = { famine_migration_return_eligible_people > constant:famine_migration_achievement_value.zero }
+		}
+		set_country_flag = famine_migration_achievement_return_cause_ended
+		set_country_flag = famine_migration_achievement_return_origin_food_safe
+		set_country_flag = famine_migration_achievement_return_origin_housing_safe
+		set_country_flag = famine_migration_achievement_return_route_safe
+		set_country_flag = famine_migration_achievement_return_protection_safe
+		set_temp_variable = { famine_migration_return_large_majority_target = famine_migration_return_eligible_people }
+		multiply_temp_variable = { famine_migration_return_large_majority_target = constant:famine_migration_achievement_threshold.return_large_majority_share }
+		if = {
+			limit = {
+			check_variable = {
+				var = famine_migration_transfer_actual_origin_debit
+				value = famine_migration_return_large_majority_target
+				compare = greater_than_or_equals
+			}
+			}
+			set_country_flag = famine_migration_achievement_return_large_majority
+		}
+	}
+}
+
+famine_migration_achievement_record_forced_return = {
+	set_country_flag = famine_migration_achievement_forced_return_used
+	set_country_flag = famine_migration_achievement_blockade_forced_removal
+}
+
+famine_migration_achievement_record_predatory_requisition = {
+	set_country_flag = famine_migration_achievement_blockade_predatory_requisition
+}
+
+famine_migration_achievement_record_violent_pushback = {
+	set_country_flag = famine_migration_achievement_violent_pushback_used
+}
+
+famine_migration_achievement_record_protected_internment = {
+	set_country_flag = famine_migration_achievement_protected_internment_used
+}
+
+famine_migration_achievement_record_protected_forced_labor = {
+	set_country_flag = famine_migration_achievement_protected_forced_labor_used
+}
+
+famine_migration_achievement_record_transfer_cycle_failure = {
+	set_country_flag = famine_migration_achievement_transfer_cycle_detected
+	set_country_flag = famine_migration_achievement_return_ledger_failed
+}
+
+famine_migration_achievement_record_blockade_self_route_exploit = {
+	set_country_flag = famine_migration_achievement_blockade_self_route_exploit
+}
+
+famine_migration_achievement_record_corridor_started = {
+	set_country_flag = famine_migration_achievement_corridor_front_proven
+	set_country_flag = famine_migration_achievement_corridor_target_proven
+	if = {
+		limit = {
+			PREV = {
+				OR = {
+					has_state_flag = famine_migration_crisis_concealed
+					has_state_flag = famine_migration_extraction_active
+				}
+			}
+		}
+		set_country_flag = famine_migration_achievement_corridor_manufactured_crisis
+	}
+}
+
+famine_migration_achievement_record_corridor_completed = {
+	set_country_flag = famine_migration_achievement_corridor_held_full_term
+	set_country_flag = famine_migration_achievement_corridor_resolved_crisis
+}
+
+famine_migration_achievement_record_medical_reception = {
+	set_country_flag = famine_migration_achievement_outbreak_exposed_cohort_received
+	set_country_flag = famine_migration_achievement_controlled_medical_reception_used
+}
+
+famine_migration_achievement_record_reception_safe = {
+	set_country_flag = famine_migration_achievement_gate_reception_safe
+	if = {
+		limit = { has_country_flag = famine_migration_achievement_controlled_medical_reception_used }
+		set_country_flag = famine_migration_achievement_medical_reception_no_outbreak
+		set_country_flag = famine_migration_achievement_medical_reception_not_overloaded
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_owned_state = {
+					OR = {
+						has_state_flag = famine_migration_food_stage_acute_shortage
+						has_state_flag = famine_migration_food_stage_famine
+						has_state_flag = famine_migration_food_stage_catastrophic
+					}
+				}
+			}
+		}
+		set_country_flag = famine_migration_achievement_receiving_states_food_safe
+	}
+}
+
+famine_migration_achievement_record_extraction_shock = {
+	set_country_flag = famine_migration_achievement_extraction_shock_proven
+}
+
+famine_migration_achievement_record_extraction_suspended = {
+	set_country_flag = famine_migration_achievement_extraction_suspended_before_catastrophic
+}
+
+famine_migration_achievement_record_extraction_recovery = {
+	set_country_flag = famine_migration_achievement_extraction_state_recovered
+}
+
+famine_migration_achievement_record_alternative_logistics = {
+	set_country_flag = famine_migration_achievement_alternative_logistics_proven
+}
+
+famine_migration_achievement_record_tag_switch = {
+	set_country_flag = famine_migration_achievement_tag_switch_disqualified
+}

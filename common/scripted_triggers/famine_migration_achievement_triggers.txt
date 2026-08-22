@@ -1,0 +1,122 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION ACHIEVEMENT CONTRACTS
+# ============================================================================
+# These predicates consume persistent evidence written by the shared food,
+# cohort, route, and decision transactions. None completes from a stage flag
+# alone, and all fail closed for debug, forced, or scenario shortcuts.
+# ============================================================================
+
+famine_migration_achievement_natural_campaign_is_valid = {
+	is_ai = no
+	is_special_chaos_country = no
+	uses_normal_civilian_systems = yes
+	NOT = { is_debug = yes }
+	NOT = { has_country_flag = force_trigger_mode_enabled }
+	NOT = { has_country_flag = famine_migration_achievement_debug_or_scenario_disqualified }
+	NOT = { has_global_flag = famine_migration_achievement_debug_or_scenario_disqualified }
+}
+
+famine_migration_achievement_break_the_blockade_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	has_country_flag = famine_migration_achievement_blockade_famine_proven
+	has_country_flag = famine_migration_achievement_blockade_relief_restored
+	has_country_flag = famine_migration_achievement_blockade_recovered
+	has_country_flag = famine_migration_achievement_blockade_survival_met
+	NOT = { has_country_flag = famine_migration_achievement_blockade_forced_removal }
+	NOT = { has_country_flag = famine_migration_achievement_blockade_predatory_requisition }
+	NOT = { has_country_flag = famine_migration_achievement_blockade_concealed_mortality }
+	NOT = { has_country_flag = famine_migration_achievement_blockade_wasteland }
+	NOT = { has_country_flag = famine_migration_achievement_blockade_self_route_exploit }
+}
+
+famine_migration_achievement_no_one_left_at_the_gate_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	has_country_flag = famine_migration_achievement_gate_major_crisis
+	has_country_flag = famine_migration_achievement_gate_all_protected
+	has_country_flag = famine_migration_achievement_gate_durable_outcome
+	has_country_flag = famine_migration_achievement_gate_reception_safe
+	NOT = { has_country_flag = famine_migration_achievement_violent_pushback_used }
+	NOT = { has_country_flag = famine_migration_achievement_forced_return_used }
+	NOT = { has_country_flag = famine_migration_achievement_protected_internment_used }
+	NOT = { has_country_flag = famine_migration_achievement_protected_forced_labor_used }
+}
+
+famine_migration_achievement_roads_home_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	has_country_flag = famine_migration_achievement_major_cohort_displaced_long_enough
+	has_country_flag = famine_migration_achievement_return_cause_ended
+	has_country_flag = famine_migration_achievement_return_origin_food_safe
+	has_country_flag = famine_migration_achievement_return_origin_housing_safe
+	has_country_flag = famine_migration_achievement_return_route_safe
+	has_country_flag = famine_migration_achievement_return_protection_safe
+	has_country_flag = famine_migration_achievement_return_large_majority
+	NOT = { has_country_flag = famine_migration_achievement_forced_return_used }
+	NOT = { has_country_flag = famine_migration_achievement_return_ledger_failed }
+}
+
+famine_migration_achievement_bread_across_the_front_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	has_country_flag = famine_migration_achievement_corridor_front_proven
+	has_country_flag = famine_migration_achievement_corridor_target_proven
+	has_country_flag = famine_migration_achievement_corridor_held_full_term
+	has_country_flag = famine_migration_achievement_corridor_resolved_crisis
+	NOT = { has_country_flag = famine_migration_achievement_corridor_attacked }
+	NOT = { has_country_flag = famine_migration_achievement_corridor_manufactured_crisis }
+}
+
+famine_migration_achievement_hungry_not_contagious_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	has_country_flag = famine_migration_achievement_outbreak_exposed_cohort_received
+	has_country_flag = famine_migration_achievement_controlled_medical_reception_used
+	has_country_flag = famine_migration_achievement_medical_reception_no_outbreak
+	has_country_flag = famine_migration_achievement_medical_reception_not_overloaded
+	has_country_flag = famine_migration_achievement_medical_reception_durable_outcome
+	NOT = { has_country_flag = famine_migration_achievement_protected_internment_used }
+	NOT = { has_country_flag = famine_migration_achievement_protected_forced_labor_used }
+	NOT = { has_country_flag = famine_migration_achievement_forced_return_used }
+}
+
+famine_migration_achievement_a_place_at_the_table_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	check_variable = {
+		var = famine_migration_achievement_distinct_origin_count
+		value = constant:famine_migration_achievement_threshold.integration_distinct_origins
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = famine_migration_integrated_population
+		value = famine_migration_achievement_integration_population_target
+		compare = greater_than_or_equals
+	}
+	stability > constant:famine_migration_achievement_threshold.integration_stability
+	has_country_flag = famine_migration_achievement_receiving_states_food_safe
+	NOT = { has_country_flag = famine_migration_achievement_transfer_cycle_detected }
+	NOT = { has_country_flag = famine_migration_achievement_violent_pushback_used }
+	NOT = { has_country_flag = famine_migration_achievement_protected_forced_labor_used }
+	NOT = { has_country_flag = famine_migration_achievement_forced_return_used }
+}
+
+famine_migration_achievement_the_grain_stayed_home_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	has_country_flag = famine_migration_achievement_extraction_shock_proven
+	has_country_flag = famine_migration_achievement_extraction_suspended_before_catastrophic
+	has_country_flag = famine_migration_achievement_extraction_state_recovered
+	has_country_flag = famine_migration_achievement_alternative_logistics_proven
+	NOT = { has_country_flag = famine_migration_achievement_requisitioned_strained_state }
+}
+
+famine_migration_achievement_the_country_did_not_empty_is_complete = {
+	famine_migration_achievement_natural_campaign_is_valid = yes
+	check_variable = {
+		var = famine_migration_achievement_severe_core_state_count
+		value = constant:famine_migration_achievement_threshold.severe_core_state_count
+		compare = greater_than_or_equals
+	}
+	has_country_flag = famine_migration_achievement_national_threatened_share_met
+	has_country_flag = famine_migration_achievement_all_famine_states_recovered
+	has_country_flag = famine_migration_achievement_all_major_cohorts_resolved
+	is_subject = no
+	exists = yes
+	NOT = { has_country_flag = famine_migration_achievement_core_floor_breached }
+	NOT = { has_country_flag = famine_migration_achievement_tag_switch_disqualified }
+}
