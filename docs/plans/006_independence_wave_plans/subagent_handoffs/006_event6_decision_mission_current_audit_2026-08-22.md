@@ -10,6 +10,8 @@ Status: bounded audit complete; Event 006 decision and mission work remains PART
 
 This handoff follows commit `0f398e5a8` and preserves the current compact localisation edits and all unrelated worktree changes.
 
+> Subsequent tranche note (2026-08-22): commit `f7d950fd6` applies the four-group cost palette to the named decision and project surfaces and supersedes this handoff's over-budget findings for those surfaces. Retain the package cost-prose, automatic DM-01 disclosure, category-density, and typed-probability findings as open follow-up; the four-group tranche handoff is `006_event6_four_group_cost_palette_tranche_2026-08-22.md`.
+
 ## Scope and authority
 
 The review covered the accepted Event 006 decision and mission prompt, mechanics specification Part 3, AI/balance/acceptance specification Part 7, decision-mission matrix `docs/specs/006_independence_wave_specs/matrices/006_decision_mission_map.csv`, wave tuning matrix, shared decision files, package decision files, scripted payment and trigger helpers, decision categories, package and shared English localisation, and the two Event 006 scripted GUI surfaces.
@@ -126,13 +128,13 @@ The broader mission scan found automatic founding-crisis missions that intention
 | DM-01 provisional capital | Released country, founding category | Capital state, control, garrison, equipment, and supply or transport availability | Short band, normally 30–75 days after modifiers | Timeout establishes the provisional capital; capital or garrison loss cancels and invokes relocation or failure cleanup | Low while the active founding mission and start flags are present; automatic material commitment still needs clearer disclosure |
 | DM-02 provisional administration | Released country, founding category | Capital and economic or administration requirements with the active founding mission gate | Matrix-defined early founding band | Completion applies success; timeout applies salary or administration crisis failure | Low while active founding mission and route flags are held |
 | Komi founding crisis | KOM owner, northern compact category | Package project-ready trigger, capital, force, and state requirements | `founding_mission_days = 420` | Completion or stable cancel resolves the project; timeout and unstable cancel fail and clean package state | Active-package-project trigger serializes the project set |
-| Pacific island strategic decisions | Pacific package owner, package strategic surface | Island route checks, diplomatic target and material thresholds | Package strategic project duration, commonly 90 days | Existing complete, timeout, and cancel paths remain unchanged | Route flags and active project gating are present; five-type payment remains a balance concern |
+| Pacific island strategic decisions | Pacific package owner, package strategic surface | Island route checks, diplomatic target and material thresholds | Package strategic project duration, commonly 90 days | Existing complete, timeout, and cancel paths remain unchanged | Route flags and active project gating are present; the at-audit five-type payment finding is superseded for the named Pacific surface by `f7d950fd6`; package cost-prose and typed-probability follow-up remain open |
 
 ## Cost and requirement clarity audit
 
 Shared light administration and diplomatic payments are within the four-group budget.
 
-Shared security standard factory, strategic, border, integration, breakaway, reclamation, and Pacific strategic bundles exceed the accepted four-group budget as listed above.
+Shared security standard factory, strategic, border, integration, breakaway, reclamation, and Pacific strategic bundles exceeded the accepted four-group budget in this audit snapshot; the named surfaces are superseded by the `f7d950fd6` four-group tranche, while package cost-prose, automatic DM-01 disclosure, category-density, and typed-probability gaps remain open.
 
 The Pacific trigger `can_pay_independence_wave_pacific_island_strategic_cost` and effect `independence_wave_pacific_pay_island_strategic_cost` agree on the five actual spendable values, so the applied patch does not hide a payment mismatch.
 
@@ -214,7 +216,7 @@ GUI rewrite was skipped because this audit found no safe, local GUI source defec
 
 ## Remaining blockers
 
-The parent must decide whether to redesign the over-budget payment palettes or queue them as a broader Event 006 balance tranche; localisation-only shortening would be unsafe.
+The parent should use `006_event6_four_group_cost_palette_tranche_2026-08-22.md` for the accepted four-group payment surfaces and retain this audit's remaining package cost-prose, automatic DM-01 disclosure, category-density, and typed-probability follow-up; localisation-only shortening of payment logic remains unsafe.
 
 The parent must obtain a callable `chaosx_ai_probability_auditor` route or document an approved equivalent before making AI or weighted-logic changes.
 
