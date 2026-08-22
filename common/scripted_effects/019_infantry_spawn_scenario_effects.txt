@@ -1191,6 +1191,16 @@ infantry_spawn_scenario_materialize_one_takeover_family_formation = {
 			if = {
 				limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
 				infantry_spawn_append_selected_state_row = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = infantry_spawn_current_registry_provider_id
+							value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+							compare = equals
+						}
+					}
+					set_country_flag = alien_infantry_event19_outer_transaction
+				}
 				meta_effect = {
 					text = { chaos_unit_family_provider_[PROVIDER]_event19_spawn_unit = yes }
 					PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
@@ -1217,13 +1227,26 @@ infantry_spawn_scenario_run_anomalous_rising_package = {
 	set_temp_variable = {
 		infantry_spawn_scenario_family_formations_materialized = constant:infantry_spawn_scenario_value.zero
 	}
+	set_temp_variable = {
+		infantry_spawn_scenario_actor_family_formation_target = global.infantry_spawn_scenario_family_formation_target
+	}
 	if = {
 		limit = { is_infantry_spawn_derivative_country = yes }
+		if = {
+			limit = {
+				check_variable = {
+					var = infantry_spawn_derivative_provider_id
+					value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { infantry_spawn_scenario_actor_family_formation_target = constant:alien_infantry_landing.one }
+		}
 		while_loop_effect = {
 			limit = {
 				check_variable = {
 					var = infantry_spawn_scenario_family_formation_index
-					value = global.infantry_spawn_scenario_family_formation_target
+					value = infantry_spawn_scenario_actor_family_formation_target
 					compare = less_than
 				}
 				NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
@@ -1263,11 +1286,21 @@ infantry_spawn_scenario_run_anomalous_rising_package = {
 			set_variable = {
 				infantry_spawn_scenario_anomalous_family_id = infantry_spawn_scenario_selected_family_id
 			}
+			if = {
+				limit = {
+					check_variable = {
+						var = infantry_spawn_scenario_selected_provider_id
+						value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+						compare = equals
+					}
+				}
+				set_temp_variable = { infantry_spawn_scenario_actor_family_formation_target = constant:alien_infantry_landing.one }
+			}
 			while_loop_effect = {
 				limit = {
 					check_variable = {
 						var = infantry_spawn_scenario_family_formation_index
-						value = global.infantry_spawn_scenario_family_formation_target
+					value = infantry_spawn_scenario_actor_family_formation_target
 						compare = less_than
 					}
 					NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
@@ -1295,7 +1328,7 @@ infantry_spawn_scenario_run_anomalous_rising_package = {
 		limit = {
 			check_variable = {
 				var = infantry_spawn_scenario_family_formations_materialized
-				value = global.infantry_spawn_scenario_family_formation_target
+				value = infantry_spawn_scenario_actor_family_formation_target
 				compare = not_equals
 			}
 		}
@@ -1528,22 +1561,22 @@ infantry_spawn_scenario_evaluate_actor_package = {
 			}
 			check_variable = {
 				var = infantry_spawn_scenario_family_formations_materialized
-				value = global.infantry_spawn_scenario_family_formation_target
+				value = infantry_spawn_scenario_actor_family_formation_target
 				compare = equals
 			}
 			check_variable = {
 				var = infantry_spawn_scenario_generation_rows_created
-				value = global.infantry_spawn_scenario_family_formation_target
+				value = infantry_spawn_scenario_actor_family_formation_target
 				compare = equals
 			}
 			check_variable = {
 				var = infantry_spawn_scenario_lot_rows_created
-				value = global.infantry_spawn_scenario_family_formation_target
+				value = infantry_spawn_scenario_actor_family_formation_target
 				compare = equals
 			}
 			check_variable = {
 				var = infantry_spawn_scenario_unit_rows_created
-				value = global.infantry_spawn_scenario_family_formation_target
+				value = infantry_spawn_scenario_actor_family_formation_target
 				compare = equals
 			}
 			check_variable = {
@@ -2243,6 +2276,16 @@ infantry_spawn_scenario_attempt_same_tag_rollback = {
 					compare = equals
 				}
 			}
+			# Provider 508 reserves a real 2,000-gun landing inside this package.
+			# Refund only after the transaction proves its injected cohort absent;
+			# persistent provider flags keep an asynchronous cleanup retry exact.
+			if = {
+				limit = {
+					has_country_flag = alien_infantry_event19_outer_transaction
+					has_country_flag = alien_infantry_event19_deferred_debit_committed
+				}
+				alien_infantry_rollback_event19_landing = yes
+			}
 			if = {
 				limit = { has_country_flag = infantry_spawn_scenario_same_tag_had_aligned_ledgers }
 				infantry_spawn_scenario_resize_same_tag_ledger_tails = yes
@@ -2696,6 +2739,13 @@ infantry_spawn_scenario_finalize_actor_setup = {
 						}
 					}
 					infantry_spawn_scenario_declare_regional_wars = yes
+					if = {
+						limit = {
+							has_country_flag = alien_infantry_event19_outer_transaction
+							has_country_flag = alien_infantry_event19_deferred_debit_committed
+						}
+						alien_infantry_commit_event19_landing = yes
+					}
 					set_country_flag = infantry_spawn_scenario_actor_setup_complete
 					if = {
 						limit = { has_country_flag = infantry_spawn_scenario_takeover_actor }

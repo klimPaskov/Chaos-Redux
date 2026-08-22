@@ -54,9 +54,11 @@ brilliant_scientist_register_event19_project_force_providers = {
 		limit = {
 			OR = {
 				has_country_flag = brilliant_scientist_project_force_alien_arms_active
-				has_country_flag = chaosx_custom_technology_exotic_operational
+				has_country_flag = chaosx_custom_technology_alien_infantry_operational
 			}
 		}
+		set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.event019_provider_508 }
+		alien_infantry_grant_contact = yes
 		chaos_unit_family_provider_508_register = yes
 	}
 	if = {
@@ -165,19 +167,19 @@ chaos_unit_family_provider_507_register = {
 }
 
 chaos_unit_family_provider_508_register = {
-	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event16_alien_interface_infantry.family_id }
-	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event16_alien_interface_infantry.provider_id }
-	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event16_alien_interface_infantry.source_event_id }
-	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.trainable_and_spawnable }
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event16_alien_infantry.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event16_alien_infantry.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event16_alien_infantry.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
 	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
-	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event16_alien_interface_infantry.derivative_profile }
-	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_profile }
-	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event16_alien_interface_infantry.containment_profile }
-	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event16_alien_interface_infantry.ai_class }
-	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event16_alien_interface_infantry.visual_profile }
-	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event16_alien_interface_infantry.cleanup_profile }
-	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event16_alien_interface_infantry.parent_isolation_profile }
-	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event16_alien_interface_infantry.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event16_alien_infantry.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event16_alien_infantry.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event16_alien_infantry.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event16_alien_infantry.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event16_alien_infantry.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event16_alien_infantry.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event16_alien_infantry.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event16_alien_infantry.spawn_weight }
 	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
 	chaos_unit_family_register_current_provider = yes
 }
@@ -358,26 +360,6 @@ brilliant_scientist_event19_build_project_force_template = {
 		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_xenobiological_organism.template_battalions }
 	}
 	else_if = {
-		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals } }
-		meta_effect = {
-			text = {
-				division_template = {
-					name = "Alien Interface Infantry Formation [TEMPLATE_UID]"
-					is_locked = yes
-					force_allow_recruiting = no
-					priority = 0
-					regiments = {
-						kruger_exotic_guard = { x = 0 y = 0 }
-						kruger_exotic_guard = { x = 0 y = 1 }
-						kruger_exotic_guard = { x = 0 y = 2 }
-					}
-				}
-			}
-			TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
-		}
-		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_alien_interface_infantry.template_battalions }
-	}
-	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.portal compare = equals } }
 		meta_effect = {
 			text = {
@@ -526,23 +508,9 @@ brilliant_scientist_event19_reconcile_project_force_sustainment = {
 		infantry_spawn_queue_provider_obligation = yes
 	}
 	else_if = {
-		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals } }
-		set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_alien_interface_infantry.template_battalions }
-		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
-		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.manpower_per_battalion }
-		set_temp_variable = { infantry_spawn_provider_manifest_component_count = infantry_spawn_provider_component_count }
-		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
-		infantry_spawn_queue_provider_obligation = yes
-		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.kruger_exotic_arms_equipment_1 }
-		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.kruger_exotic_arms_equipment_per_battalion }
-		set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
-		infantry_spawn_queue_provider_obligation = yes
-		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
-		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.infantry_equipment_per_battalion }
-		infantry_spawn_queue_provider_obligation = yes
-		set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
-		set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event16_alien_interface_infantry.support_equipment_per_battalion }
-		infantry_spawn_queue_provider_obligation = yes
+		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals } }
+		# Explicit no-op: provider 508 is fully sustained by the shared landing
+		# API and owns no Event 019 manpower or stockpile obligation rows.
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.portal compare = equals } }
@@ -619,8 +587,8 @@ brilliant_scientist_event19_evaluate_project_force_eligibility = {
 					brilliant_scientist_event19_xenobiological_provider_unlocked = yes
 				}
 				AND = {
-					check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals }
-					brilliant_scientist_event19_alien_interface_provider_unlocked = yes
+					check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals }
+					brilliant_scientist_event19_alien_infantry_provider_unlocked = yes
 				}
 				AND = {
 					check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.portal compare = equals }
@@ -658,7 +626,7 @@ chaos_unit_family_provider_507_event19_evaluate_eligibility = {
 }
 
 chaos_unit_family_provider_508_event19_evaluate_eligibility = {
-	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.alien_interface }
+	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.alien_infantry }
 	brilliant_scientist_event19_evaluate_project_force_eligibility = yes
 }
 
@@ -698,8 +666,13 @@ chaos_unit_family_provider_507_event19_build_template = {
 }
 
 chaos_unit_family_provider_508_event19_build_template = {
-	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.alien_interface }
-	brilliant_scientist_event19_build_project_force_template = yes
+	# Provider 508 consumes the API-owned fixed template. Event 019 records ten
+	# combat components for ledger alignment but never creates a second editable
+	# or trainable template.
+	alien_infantry_ensure_landing_template = yes
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event16_alien_infantry.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = infantry_spawn_current_family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
 }
 
 chaos_unit_family_provider_509_event19_build_template = {
@@ -721,6 +694,28 @@ chaos_unit_family_provider_504_event19_spawn_unit = { infantry_spawn_spawn_curre
 chaos_unit_family_provider_505_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_506_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_507_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
+
+# Provider 508 owns a deferred materialization transaction. The API receives
+# Event 019's exact engine deletion id, while state history and pact telemetry
+# remain deferred until Event 019 proves its ledgers and commits the cohort.
+chaos_unit_family_provider_508_event19_materialize_landing = {
+	event_target:infantry_spawn_generation_country = {
+		set_country_flag = alien_infantry_event19_deferred_mode
+		set_temp_variable = { alien_infantry_event19_deferred_mode = constant:alien_infantry_landing.one }
+		set_variable = { alien_infantry_event19_delete_cohort_id = infantry_spawn_current_delete_cohort_id }
+		set_variable = { dhrondan_landing_state_id = event_target:infantry_spawn_current_origin_state.id }
+		alien_infantry_spawn_landing_cohort = yes
+	}
+}
+
+chaos_unit_family_provider_508_event19_commit_landing = {
+	event_target:infantry_spawn_generation_country = { alien_infantry_commit_event19_landing = yes }
+}
+
+chaos_unit_family_provider_508_event19_rollback_landing = {
+	event_target:infantry_spawn_generation_country = { alien_infantry_rollback_event19_landing = yes }
+}
+
 chaos_unit_family_provider_508_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_509_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
 chaos_unit_family_provider_510_event19_spawn_unit = { infantry_spawn_spawn_current_template_unit = yes }
@@ -747,8 +742,10 @@ chaos_unit_family_provider_507_event19_reconcile_sustainment = {
 }
 
 chaos_unit_family_provider_508_event19_reconcile_sustainment = {
-	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.alien_interface }
-	brilliant_scientist_event19_reconcile_project_force_sustainment = yes
+	# Explicit framework callback no-op for the API-owned fixed cohort.
+	infantry_spawn_clear_provider_obligation_manifest = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
 }
 
 chaos_unit_family_provider_509_event19_reconcile_sustainment = {
@@ -841,15 +838,10 @@ brilliant_scientist_event19_evaluate_project_force_management = {
 	}
 	if = {
 		limit = {
-			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals }
-			brilliant_scientist_event19_alien_interface_provider_unlocked = yes
-			NOT = { has_political_power < constant:chaos_unit_family_event16_alien_interface_infantry.training_political_power_cost }
-			NOT = { command_power < constant:chaos_unit_family_event16_alien_interface_infantry.training_command_power_cost }
-			check_variable = { var = num_equipment@kruger_exotic_arms_equipment_1 value = constant:chaos_unit_family_event16_alien_interface_infantry.training_equipment_cost compare = greater_than_or_equals }
-			check_variable = { var = manpower value = constant:chaos_unit_family_event16_alien_interface_infantry.training_manpower_cost compare = greater_than_or_equals }
-			infantry_spawn_country_has_eligible_state = yes
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals }
+			brilliant_scientist_event19_alien_infantry_provider_unlocked = yes
 		}
-		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+		# Explicit no-op: provider 508 has no Event 019 training/payment gate.
 	}
 	if = {
 		limit = {
@@ -938,13 +930,10 @@ brilliant_scientist_event19_evaluate_project_force_management = {
 	if = {
 		limit = {
 			check_variable = { infantry_spawn_family_live_division_count > 0 }
-			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals }
-			brilliant_scientist_event19_alien_interface_provider_unlocked = yes
-			NOT = { has_political_power < constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_political_power_cost }
-			check_variable = { var = num_equipment@kruger_exotic_arms_equipment_1 value = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_equipment_cost compare = greater_than_or_equals }
-			check_variable = { var = manpower value = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_manpower_cost compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals }
+			brilliant_scientist_event19_alien_infantry_provider_unlocked = yes
 		}
-		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+		# Explicit no-op: the fixed cohort has no separate Event 019 sustainment ledger.
 	}
 	if = {
 		limit = {
@@ -983,7 +972,7 @@ chaos_unit_family_provider_507_event19_get_management_cost_display = {
 	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.xenobiological_organism }
 }
 chaos_unit_family_provider_508_event19_get_management_cost_display = {
-	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.alien_interface }
+	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.alien_infantry }
 }
 chaos_unit_family_provider_509_event19_get_management_cost_display = {
 	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.portal_raider }
@@ -1012,8 +1001,18 @@ chaos_unit_family_provider_507_event19_evaluate_management = {
 	brilliant_scientist_event19_evaluate_project_force_management = yes
 }
 chaos_unit_family_provider_508_event19_evaluate_management = {
-	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.alien_interface }
-	brilliant_scientist_event19_evaluate_project_force_management = yes
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			brilliant_scientist_event19_alien_infantry_provider_unlocked = yes
+			alien_infantry_can_call_landing = yes
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
 }
 chaos_unit_family_provider_509_event19_evaluate_management = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.portal }
@@ -1156,22 +1155,11 @@ brilliant_scientist_event19_pay_project_force_management = {
 	if = {
 		limit = {
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
-			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals }
 			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
 		}
-		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_alien_interface_infantry.training_political_power_cost }
-		add_political_power = infantry_spawn_family_provider_negative_cost
-		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_alien_interface_infantry.training_command_power_cost }
-		add_command_power = infantry_spawn_family_provider_negative_cost
-		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_alien_interface_infantry.training_equipment_cost }
-		add_equipment_to_stockpile = { type = kruger_exotic_arms_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
-		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_alien_interface_infantry.training_manpower_cost }
-		add_manpower = infantry_spawn_family_provider_negative_cost
-		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+		# Explicit no-op: the shared landing API owns the exact 2,000-laser
+		# reservation and Event 019 contributes only ordinary request overhead.
 	}
 	if = {
 		limit = {
@@ -1287,18 +1275,9 @@ brilliant_scientist_event19_pay_project_force_management = {
 		limit = {
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
 			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
-			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals }
 		}
-		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_political_power_cost }
-		add_political_power = infantry_spawn_family_provider_negative_cost
-		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_equipment_cost }
-		add_equipment_to_stockpile = { type = kruger_exotic_arms_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
-		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_manpower_cost }
-		add_manpower = infantry_spawn_family_provider_negative_cost
-		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+		# Explicit no-op: provider 508 has no separate Event 019 sustainment.
 	}
 	if = {
 		limit = {
@@ -1403,13 +1382,9 @@ brilliant_scientist_event19_refund_project_force_management = {
 		limit = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
-			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals }
 		}
-		add_political_power = constant:chaos_unit_family_event16_alien_interface_infantry.training_political_power_cost
-		add_command_power = constant:chaos_unit_family_event16_alien_interface_infantry.training_command_power_cost
-		add_equipment_to_stockpile = { type = kruger_exotic_arms_equipment_1 amount = constant:chaos_unit_family_event16_alien_interface_infantry.training_equipment_cost }
-		add_manpower = constant:chaos_unit_family_event16_alien_interface_infantry.training_manpower_cost
-		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+		# Explicit no-op: provider 508 never pays through this legacy refund body.
 	}
 	if = {
 		limit = {
@@ -1497,12 +1472,9 @@ brilliant_scientist_event19_refund_project_force_management = {
 		limit = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
-			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_interface compare = equals }
+			check_variable = { var = infantry_spawn_event16_provider_kind value = constant:chaos_unit_family_event16_provider_kind.alien_infantry compare = equals }
 		}
-		add_political_power = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_political_power_cost
-		add_equipment_to_stockpile = { type = kruger_exotic_arms_equipment_1 amount = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_equipment_cost }
-		add_manpower = constant:chaos_unit_family_event16_alien_interface_infantry.sustainment_manpower_cost
-		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+		# Explicit no-op: provider 508 has no separate sustainment payment.
 	}
 	if = {
 		limit = {
@@ -1545,8 +1517,16 @@ chaos_unit_family_provider_507_event19_pay_management_action = {
 	brilliant_scientist_event19_pay_project_force_management = yes
 }
 chaos_unit_family_provider_508_event19_pay_management_action = {
-	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.alien_interface }
-	brilliant_scientist_event19_pay_project_force_management = yes
+	# The shared landing effect debits the exact 2,000-laser reserve at the
+	# selected state. This callback only satisfies Event 019's transaction gate.
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
 }
 chaos_unit_family_provider_509_event19_pay_management_action = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.portal }
@@ -1578,8 +1558,14 @@ chaos_unit_family_provider_507_event19_refund_management_action = {
 	brilliant_scientist_event19_refund_project_force_management = yes
 }
 chaos_unit_family_provider_508_event19_refund_management_action = {
-	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.alien_interface }
-	brilliant_scientist_event19_refund_project_force_management = yes
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		# Structural rollback owns a materialized cohort's exact deletion and
+		# 2,000-laser refund. This idempotent callback can only cancel a surviving
+		# pre-materialization reservation and therefore cannot refund twice.
+		alien_infantry_cancel_landing_reservation = yes
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
 }
 chaos_unit_family_provider_509_event19_refund_management_action = {
 	set_temp_variable = { infantry_spawn_event16_provider_kind = constant:chaos_unit_family_event16_provider_kind.portal }
@@ -1639,8 +1625,8 @@ brilliant_scientist_event19_install_project_force_public_package = {
 		add_ideas = brilliant_scientist_event19_xenobiological_host
 	}
 	else_if = {
-		limit = { check_variable = { var = infantry_spawn_derivative_family_id value = constant:chaos_unit_family_event16_alien_interface_infantry.family_id compare = equals } }
-		add_ideas = brilliant_scientist_event19_alien_interface_host
+		limit = { check_variable = { var = infantry_spawn_derivative_family_id value = constant:chaos_unit_family_event16_alien_infantry.family_id compare = equals } }
+		add_ideas = brilliant_scientist_event19_alien_infantry_host
 	}
 	else_if = {
 		limit = { check_variable = { var = infantry_spawn_derivative_family_id value = constant:chaos_unit_family_event16_portal_raider.family_id compare = equals } }
@@ -1681,8 +1667,8 @@ brilliant_scientist_event19_setup_project_force_derivative = {
 					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_xenobiological_organism.provider_id }
 				}
 				AND = {
-					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_alien_interface_infantry.family_id }
-					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_alien_interface_infantry.provider_id }
+					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_alien_infantry.family_id }
+					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_alien_infantry.provider_id }
 				}
 				AND = {
 					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_portal_raider.family_id }
@@ -1754,7 +1740,7 @@ brilliant_scientist_event19_remove_project_force_public_additions = {
 	remove_ideas = brilliant_scientist_event19_robot_host
 	remove_ideas = brilliant_scientist_event19_paleogenetic_host
 	remove_ideas = brilliant_scientist_event19_xenobiological_host
-	remove_ideas = brilliant_scientist_event19_alien_interface_host
+remove_ideas = brilliant_scientist_event19_alien_infantry_host
 	remove_ideas = brilliant_scientist_event19_portal_host
 	remove_ideas = brilliant_scientist_event19_temporal_host
 	clear_variable = infantry_spawn_event16_provider_route
@@ -1793,8 +1779,8 @@ brilliant_scientist_event19_cleanup_project_force_derivative = {
 					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_xenobiological_organism.provider_id }
 				}
 				AND = {
-					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_alien_interface_infantry.family_id }
-					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_alien_interface_infantry.provider_id }
+					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_alien_infantry.family_id }
+					check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_alien_infantry.provider_id }
 				}
 				AND = {
 					check_variable = { infantry_spawn_derivative_family_id = constant:chaos_unit_family_event16_portal_raider.family_id }
@@ -1838,7 +1824,13 @@ chaos_unit_family_provider_505_event19_setup_derivative = {
 }
 chaos_unit_family_provider_506_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
 chaos_unit_family_provider_507_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
-chaos_unit_family_provider_508_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
+chaos_unit_family_provider_508_event19_setup_derivative = {
+	# Derivative setup owns only the provider-508 contact receipt; the shared
+	# API supplies the operational technology and locked landing template.
+	set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.event019_provider_508 }
+	alien_infantry_grant_contact = yes
+	brilliant_scientist_event19_setup_project_force_derivative = yes
+}
 chaos_unit_family_provider_509_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
 chaos_unit_family_provider_510_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
 chaos_unit_family_provider_522_event19_setup_derivative = { brilliant_scientist_event19_setup_project_force_derivative = yes }
@@ -1865,7 +1857,12 @@ chaos_unit_family_provider_507_event19_cleanup_derivative = {
 	if = { limit = { check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_xenobiological_organism.provider_id } } brilliant_scientist_event19_cleanup_project_force_derivative = yes }
 }
 chaos_unit_family_provider_508_event19_cleanup_derivative = {
-	if = { limit = { check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_alien_interface_infantry.provider_id } } brilliant_scientist_event19_cleanup_project_force_derivative = yes }
+	if = {
+		limit = { check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_alien_infantry.provider_id } }
+		set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.event019_provider_508 }
+		alien_infantry_revoke_contact = yes
+		brilliant_scientist_event19_cleanup_project_force_derivative = yes
+	}
 }
 chaos_unit_family_provider_509_event19_cleanup_derivative = {
 	if = { limit = { check_variable = { infantry_spawn_derivative_provider_id = constant:chaos_unit_family_event16_portal_raider.provider_id } } brilliant_scientist_event19_cleanup_project_force_derivative = yes }

@@ -5733,6 +5733,16 @@ infantry_spawn_derivative_materialize_one_family_formation = {
 					check_variable = { infantry_spawn_current_generation_lot_count = constant:infantry_spawn_derivative_package_value.one }
 					check_variable = { infantry_spawn_current_generation_unit_count = constant:infantry_spawn_derivative_package_value.one }
 				}
+				if = {
+					limit = {
+						check_variable = {
+							var = infantry_spawn_current_registry_provider_id
+							value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+							compare = equals
+						}
+					}
+					chaos_unit_family_provider_508_event19_commit_landing = yes
+				}
 				set_temp_variable = { infantry_spawn_derivative_materialization_succeeded = constant:infantry_spawn_derivative_package_value.one }
 				add_to_variable = { infantry_spawn_derivative_reinforcement_count = constant:infantry_spawn_derivative_package_value.one }
 			}
@@ -5782,6 +5792,16 @@ infantry_spawn_derivative_rally_claimant_guard = {
 				infantry_spawn_update_current_generation_totals = yes
 				if = {
 					limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+					if = {
+						limit = {
+							check_variable = {
+								var = infantry_spawn_current_registry_provider_id
+								value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+								compare = equals
+							}
+						}
+						chaos_unit_family_provider_508_event19_commit_landing = yes
+					}
 					if = {
 						limit = { check_variable = { infantry_spawn_unresolved_generation_count > constant:infantry_spawn_derivative_package_value.zero } }
 						subtract_from_variable = { infantry_spawn_unresolved_generation_count = constant:infantry_spawn_derivative_package_value.one }

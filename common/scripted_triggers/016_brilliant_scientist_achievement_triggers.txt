@@ -288,14 +288,19 @@ brilliant_scientist_achievement_yesterday_sent_help_is_complete = {
 
 brilliant_scientist_achievement_not_from_here_is_complete = {
 	brilliant_scientist_achievement_has_unforced_history = yes
-	brilliant_scientist_achievement_actor_has_event_role = yes
-	has_country_flag = brilliant_scientist_origin_conclusion_locked
-	has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance
-	has_country_flag = brilliant_scientist_origin_evidence_authenticated
-	has_country_flag = brilliant_scientist_origin_public_proof_published
-	check_variable = { brilliant_scientist_origin_conclusion = constant:brilliant_scientist_origin.extraterrestrial_provenance }
-	check_variable = { var = brilliant_scientist_origin_independent_evidence_count value = constant:brilliant_scientist_origin.public_proof_minimum compare = greater_than_or_equals }
-	check_variable = { var = brilliant_scientist_origin_authenticated_source_count value = constant:brilliant_scientist_origin.authenticated_sources_minimum compare = greater_than_or_equals }
+	OR = {
+		AND = {
+			brilliant_scientist_achievement_actor_has_event_role = yes
+			has_country_flag = brilliant_scientist_origin_conclusion_locked
+			has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance
+			has_country_flag = brilliant_scientist_origin_evidence_authenticated
+			has_country_flag = brilliant_scientist_origin_public_proof_published
+			check_variable = { brilliant_scientist_origin_conclusion = constant:brilliant_scientist_origin.extraterrestrial_provenance }
+			check_variable = { var = brilliant_scientist_origin_independent_evidence_count value = constant:brilliant_scientist_origin.public_proof_minimum compare = greater_than_or_equals }
+			check_variable = { var = brilliant_scientist_origin_authenticated_source_count value = constant:brilliant_scientist_origin.authenticated_sources_minimum compare = greater_than_or_equals }
+		}
+		dhrondan_existing_achievement_route_is_complete = yes
+	}
 }
 
 brilliant_scientist_achievement_no_second_sun_is_complete = {

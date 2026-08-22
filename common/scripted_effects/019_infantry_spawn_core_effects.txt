@@ -427,6 +427,20 @@ infantry_spawn_begin_country_generation = {
 		set_temp_variable = { infantry_spawn_current_generation_status = constant:infantry_spawn_generation_status.open }
 		infantry_spawn_append_current_generation_row = yes
 		infantry_spawn_select_native_registered_family = yes
+		# Provider 508 is a one-cohort landing API. An automatic generation may
+		# select several ordinary states, but alien contact materializes exactly
+		# one state-scoped landing so its 2,000-gun debit, history, and cooldown
+		# remain one atomic request.
+		if = {
+			limit = {
+				check_variable = {
+					var = infantry_spawn_current_registry_provider_id
+					value = constant:chaos_unit_family_event16_alien_infantry.provider_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { infantry_spawn_selected_state_target = constant:alien_infantry_landing.one }
+		}
 		save_event_target_as = infantry_spawn_generation_country
 
 		while_loop_effect = {

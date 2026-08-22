@@ -1,0 +1,83 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 ALIEN INFANTRY PUBLIC API TRIGGERS
+# ============================================================================
+# COUNTRY and STATE readers for source-counted contact, landing reservations,
+# and the single locked landing template. These triggers never mutate state.
+# ============================================================================
+
+# COUNTRY scope. A positive receipt from any independent source authorizes the
+# shared laser-production/contact surface. Alien Arms technology alone does not.
+alien_infantry_has_contact = {
+	OR = {
+		check_variable = {
+			var = alien_infantry_contact_receipt_kruger_pact
+			value = constant:alien_infantry_landing.zero
+			compare = greater_than
+		}
+		check_variable = {
+			var = alien_infantry_contact_receipt_mengele_expedition
+			value = constant:alien_infantry_landing.zero
+			compare = greater_than
+		}
+		check_variable = {
+			var = alien_infantry_contact_receipt_event019_provider_508
+			value = constant:alien_infantry_landing.zero
+			compare = greater_than
+		}
+		check_variable = {
+			var = alien_infantry_contact_receipt_dhrondan_sovereignty
+			value = constant:alien_infantry_landing.zero
+			compare = greater_than
+		}
+		check_variable = {
+			var = alien_infantry_contact_receipt_future
+			value = constant:alien_infantry_landing.zero
+			compare = greater_than
+		}
+	}
+}
+
+# STATE scope. ROOT is the host country in state-targeted decisions and in the
+# country-variable state resolver used by the landing mission. A marked state
+# remains a valid landing site while it stays controlled by the host; repeated
+# cohorts are intentionally allowed for the arrival/rebellion ladder.
+alien_infantry_landing_state_is_valid = {
+	impassable = no
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+}
+
+# COUNTRY scope. The state target is a country-scoped numeric state id, not a
+# global event target; two countries can therefore hold pending landings at once.
+alien_infantry_landing_target_is_valid = {
+	has_variable = dhrondan_landing_state_id
+	var:dhrondan_landing_state_id = {
+		alien_infantry_landing_state_is_valid = yes
+	}
+}
+
+# COUNTRY scope. Pending reservation remains valid only while contact and the
+# selected controlled state survive. Losing the state therefore refunds it.
+alien_infantry_landing_reservation_is_valid = {
+	has_country_flag = alien_infantry_landing_pending
+	alien_infantry_has_contact = yes
+	alien_infantry_landing_target_is_valid = yes
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. This is the public decision/API gate. Stockpile equipment is
+# checked before reservation and the target-specific check runs in target_trigger.
+alien_infantry_can_call_landing = {
+	alien_infantry_has_contact = yes
+	NOT = { has_country_flag = alien_infantry_landing_pending }
+	NOT = { has_country_flag = alien_infantry_landing_cooldown }
+	NOT = { has_global_flag = world_end }
+	check_variable = {
+		var = num_equipment@alien_laser_weapon_equipment_1
+		value = constant:alien_infantry_landing.reserve_equipment
+		compare = greater_than_or_equals
+	}
+	any_controlled_state = {
+		alien_infantry_landing_state_is_valid = yes
+	}
+}

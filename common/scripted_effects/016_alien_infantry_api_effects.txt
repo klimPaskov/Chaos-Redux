@@ -1,0 +1,546 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 ALIEN INFANTRY PUBLIC API EFFECTS
+# ============================================================================
+# Public COUNTRY-scope contracts for source-counted contact and the single
+# state-targeted D'Rhondan landing lifecycle. Event 019 and future consumers
+# call these effects instead of training, manpower, or copied spawn callbacks.
+# ============================================================================
+
+# COUNTRY scope. Idempotently establishes exactly one numeric receipt for the
+# source selected by alien_infantry_contact_source_id. Callers set that input as
+# a temporary variable immediately before this effect.
+alien_infantry_grant_contact = {
+	if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.kruger_pact
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_kruger_pact = constant:alien_infantry_landing.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.mengele_expedition
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_mengele_expedition = constant:alien_infantry_landing.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.event019_provider_508
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_event019_provider_508 = constant:alien_infantry_landing.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.dhrondan_sovereignty
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_dhrondan_sovereignty = constant:alien_infantry_landing.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.future
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_future = constant:alien_infantry_landing.one }
+	}
+	alien_infantry_ensure_operational_technology = yes
+	alien_infantry_reconcile_country = yes
+}
+
+# COUNTRY scope. The operational technology is an entitlement of any positive
+# contact receipt. This helper is deliberately limited to the base alien-
+# infantry technology; predictive warfare remains a separate upgrade grant.
+alien_infantry_ensure_operational_technology = {
+	if = {
+		limit = { alien_infantry_has_contact = yes }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.alien_infantry }
+		chaosx_grant_custom_operational_technology_core = yes
+	}
+}
+
+# COUNTRY scope. Revokes only the selected receipt; all other source receipts
+# remain untouched. This makes Event 019 cleanup safe for shared hosts.
+alien_infantry_revoke_contact = {
+	if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.kruger_pact
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_kruger_pact = constant:alien_infantry_landing.zero }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.mengele_expedition
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_mengele_expedition = constant:alien_infantry_landing.zero }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.event019_provider_508
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_event019_provider_508 = constant:alien_infantry_landing.zero }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.dhrondan_sovereignty
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_dhrondan_sovereignty = constant:alien_infantry_landing.zero }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_contact_source_id
+				value = constant:alien_infantry_contact_source.future
+				compare = equals
+			}
+		}
+		set_variable = { alien_infantry_contact_receipt_future = constant:alien_infantry_landing.zero }
+	}
+	alien_infantry_reconcile_country = yes
+}
+
+# COUNTRY scope. Creates the one locked, non-recruitable landing template before
+# reconciling persistent counters and the compact contact flag. The template
+# guard is idempotent so every public source can call reconciliation safely.
+alien_infantry_ensure_landing_template = {
+	if = {
+		limit = { NOT = { has_template = "D’Rhondan Landing Cohort" } }
+		division_template = {
+			name = "D’Rhondan Landing Cohort"
+			is_locked = yes
+			force_allow_recruiting = no
+			priority = 1
+			regiments = {
+				alien_infantry = { x = 0 y = 0 }
+				alien_infantry = { x = 0 y = 1 }
+				alien_infantry = { x = 1 y = 0 }
+				alien_infantry = { x = 1 y = 1 }
+				alien_infantry = { x = 2 y = 0 }
+				alien_infantry = { x = 2 y = 1 }
+				alien_infantry = { x = 3 y = 0 }
+				alien_infantry = { x = 3 y = 1 }
+				alien_infantry = { x = 4 y = 0 }
+				alien_infantry = { x = 4 y = 1 }
+			}
+		}
+	}
+	if = {
+		limit = { has_template = "D’Rhondan Landing Cohort" }
+		set_division_template_lock = {
+			division_template = "D’Rhondan Landing Cohort"
+			is_locked = yes
+		}
+		set_division_force_allow_recruiting = {
+			division_template = "D’Rhondan Landing Cohort"
+			force_allow_recruiting = no
+		}
+	}
+}
+
+# COUNTRY scope. Initializes persistent counters and synchronizes the compact
+# contact flag. A pending reservation is refunded here if a source disappears
+# or its selected state is no longer valid.
+alien_infantry_reconcile_country = {
+	if = {
+		limit = { alien_infantry_has_contact = yes }
+		alien_infantry_ensure_operational_technology = yes
+		alien_infantry_ensure_landing_template = yes
+	}
+	if = {
+		limit = { NOT = { has_variable = dhrondan_arrival_count } }
+		set_variable = { dhrondan_arrival_count = constant:alien_infantry_landing.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = dhrondan_alien_presence } }
+		set_variable = { dhrondan_alien_presence = constant:alien_infantry_landing.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = dhrondan_pact_strain } }
+		set_variable = { dhrondan_pact_strain = constant:alien_infantry_landing.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = dhrondan_landing_history_count } }
+		set_variable = { dhrondan_landing_history_count = constant:alien_infantry_landing.zero }
+	}
+	if = {
+		limit = { alien_infantry_has_contact = yes }
+		set_country_flag = alien_infantry_contact_active
+	}
+	else = {
+		clr_country_flag = alien_infantry_contact_active
+	}
+	if = {
+		limit = {
+			has_country_flag = alien_infantry_landing_pending
+			NOT = { alien_infantry_landing_reservation_is_valid = yes }
+		}
+		alien_infantry_cancel_landing_reservation = yes
+	}
+	if = {
+		limit = { NOT = { has_country_flag = alien_infantry_landing_pending } }
+		clear_variable = alien_infantry_landing_reservation_days
+		clear_variable = dhrondan_landing_state_id
+	}
+}
+
+# COUNTRY scope. State-targeted decision entry point. The selected state id is
+# saved by the caller in dhrondan_landing_state_id before this effect runs.
+alien_infantry_begin_landing_reservation = {
+	if = {
+		limit = {
+			alien_infantry_can_call_landing = yes
+			alien_infantry_landing_target_is_valid = yes
+		}
+		set_temp_variable = { alien_infantry_equipment_debit = constant:alien_infantry_landing.reserve_equipment }
+		multiply_temp_variable = { alien_infantry_equipment_debit = constant:alien_infantry_landing.negative_one }
+		add_equipment_to_stockpile = {
+			type = alien_laser_weapon_equipment_1
+			amount = alien_infantry_equipment_debit
+		}
+		set_country_flag = alien_infantry_landing_pending
+		set_variable = { alien_infantry_landing_reservation_days = constant:alien_infantry_landing.reservation_days }
+		activate_mission = alien_infantry_landing_mission
+	}
+}
+
+# COUNTRY scope. Refunds exactly one pending reserve and clears only landing
+# lifecycle state. Clearing the pending flag first makes cancellation repeat-safe.
+alien_infantry_cancel_landing_reservation = {
+	if = {
+		limit = { has_country_flag = alien_infantry_landing_pending }
+		clr_country_flag = alien_infantry_landing_pending
+		add_equipment_to_stockpile = {
+			type = alien_laser_weapon_equipment_1
+			amount = constant:alien_infantry_landing.reserve_equipment
+		}
+		remove_mission = alien_infantry_landing_mission
+		clear_variable = alien_infantry_landing_reservation_days
+		clear_variable = dhrondan_landing_state_id
+	}
+}
+
+# COUNTRY scope. Applies the ordinary landing-recovery ladder. DHR focus
+# upgrades select the shortest earned tier without changing the seven-day
+# reservation or the fixed 2,000-weapon debit.
+alien_infantry_apply_landing_cooldown = {
+	set_temp_variable = { alien_infantry_landing_cooldown_days = constant:alien_infantry_landing.cooldown_days }
+	if = {
+		limit = {
+			tag = DHR
+			has_country_flag = dhrondan_landing_network_enabled
+		}
+		set_temp_variable = { alien_infantry_landing_cooldown_days = constant:alien_infantry_landing.cooldown_days_network }
+	}
+	if = {
+		limit = {
+			tag = DHR
+			has_country_flag = dhrondan_descent_windows_guarded
+		}
+		set_temp_variable = { alien_infantry_landing_cooldown_days = constant:alien_infantry_landing.cooldown_days_guarded_descent }
+	}
+	if = {
+		limit = {
+			tag = DHR
+			has_country_flag = dhrondan_near_space_secured
+		}
+		set_temp_variable = { alien_infantry_landing_cooldown_days = constant:alien_infantry_landing.cooldown_days_near_space }
+	}
+	set_country_flag = {
+		flag = alien_infantry_landing_cooldown
+		days = alien_infantry_landing_cooldown_days
+	}
+}
+
+# COUNTRY scope. Spawns exactly one fully equipped locked cohort at the saved
+# state. Direct callers pay the fixed reserve immediately; the pending decision
+# path has already removed that reserve and therefore does not debit twice.
+# `alien_infantry_initial_force_mode = 1` is a temporary D'Rhondan bootstrap
+# input. It is honored only together with batch mode and a positive sovereignty
+# receipt; that narrow branch keeps the cohort debit/spawn contract but omits
+# pact-host telemetry and the ordinary landing callback.
+alien_infantry_spawn_landing_cohort = {
+	if = {
+		limit = { alien_infantry_has_contact = yes }
+		alien_infantry_ensure_landing_template = yes
+	}
+	set_temp_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.zero }
+	set_temp_variable = { alien_infantry_landing_direct_debit = constant:alien_infantry_landing.zero }
+	set_temp_variable = { alien_infantry_landing_initial_force_mode = constant:alien_infantry_landing.zero }
+	if = {
+		limit = { has_country_flag = alien_infantry_event19_deferred_mode }
+		clr_country_flag = alien_infantry_event19_deferred_debit_committed
+		set_temp_variable = { alien_infantry_event19_deferred_debit_committed = constant:alien_infantry_landing.zero }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = alien_infantry_initial_force_mode
+				value = constant:alien_infantry_landing.one
+				compare = equals
+			}
+			check_variable = {
+				var = alien_infantry_landing_batch_mode
+				value = constant:alien_infantry_landing.one
+				compare = equals
+			}
+			check_variable = {
+				var = alien_infantry_contact_receipt_dhrondan_sovereignty
+				value = constant:alien_infantry_landing.zero
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { alien_infantry_landing_initial_force_mode = constant:alien_infantry_landing.one }
+	}
+	if = {
+		limit = {
+			alien_infantry_has_contact = yes
+			OR = {
+				AND = {
+					has_country_flag = alien_infantry_landing_pending
+				NOT = {
+					check_variable = {
+						var = alien_infantry_landing_batch_mode
+						value = constant:alien_infantry_landing.one
+						compare = equals
+					}
+				}
+				}
+				AND = {
+					OR = {
+						NOT = { has_country_flag = alien_infantry_landing_cooldown }
+						AND = {
+							check_variable = {
+								var = alien_infantry_landing_batch_mode
+								value = constant:alien_infantry_landing.one
+								compare = equals
+							}
+							check_variable = {
+								var = alien_infantry_contact_receipt_dhrondan_sovereignty
+								value = constant:alien_infantry_landing.zero
+								compare = greater_than
+							}
+						}
+					}
+					check_variable = {
+						var = num_equipment@alien_laser_weapon_equipment_1
+						value = constant:alien_infantry_landing.reserve_equipment
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			alien_infantry_landing_target_is_valid = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = alien_infantry_landing_pending } }
+			set_temp_variable = { alien_infantry_landing_direct_debit = constant:alien_infantry_landing.one }
+			set_temp_variable = { alien_infantry_equipment_debit = constant:alien_infantry_landing.reserve_equipment }
+			multiply_temp_variable = { alien_infantry_equipment_debit = constant:alien_infantry_landing.negative_one }
+			add_equipment_to_stockpile = {
+				type = alien_laser_weapon_equipment_1
+				amount = alien_infantry_equipment_debit
+			}
+		}
+		set_temp_variable = { alien_infantry_landing_divisions_before_create = num_divisions }
+		if = {
+			limit = { has_country_flag = alien_infantry_event19_deferred_mode }
+			var:dhrondan_landing_state_id = {
+				meta_effect = {
+					text = {
+						create_unit = {
+							division = "name = \"D’Rhondan Landing Cohort\" division_template = \"D’Rhondan Landing Cohort\" start_experience_factor = 1.0 start_equipment_factor = 1.0 start_manpower_factor = 1.0"
+							owner = ROOT
+							count = 1
+							id = [DELETE_COHORT_ID]
+							allow_spawning_on_enemy_provs = no
+						}
+					}
+					DELETE_COHORT_ID = "[?alien_infantry_event19_delete_cohort_id|.0]"
+				}
+			}
+		}
+		else = {
+			var:dhrondan_landing_state_id = {
+				create_unit = {
+					division = "name = \"D’Rhondan Landing Cohort\" division_template = \"D’Rhondan Landing Cohort\" start_experience_factor = 1.0 start_equipment_factor = 1.0 start_manpower_factor = 1.0"
+					owner = ROOT
+					count = 1
+					allow_spawning_on_enemy_provs = no
+				}
+			}
+		}
+		set_temp_variable = { alien_infantry_landing_divisions_after_create = num_divisions }
+		set_temp_variable = { alien_infantry_landing_create_delta = alien_infantry_landing_divisions_after_create }
+		subtract_from_temp_variable = { alien_infantry_landing_create_delta = alien_infantry_landing_divisions_before_create }
+		if = {
+			limit = {
+				check_variable = {
+					var = alien_infantry_landing_create_delta
+					value = constant:alien_infantry_landing.one
+					compare = equals
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { alien_infantry_landing_initial_force_mode = constant:alien_infantry_landing.zero compare = equals }
+					NOT = { has_country_flag = alien_infantry_event19_deferred_mode }
+				}
+				add_to_variable = { dhrondan_arrival_count = constant:alien_infantry_landing.arrival_gain }
+				add_to_variable = { dhrondan_alien_presence = constant:alien_infantry_landing.presence_gain }
+				add_to_variable = { dhrondan_pact_strain = constant:alien_infantry_landing.strain_gain }
+				add_to_variable = { dhrondan_landing_history_count = constant:alien_infantry_landing.history_gain }
+			}
+			if = {
+				limit = { NOT = { has_country_flag = alien_infantry_event19_deferred_mode } }
+				var:dhrondan_landing_state_id = {
+					set_state_flag = dhrondan_landing_state
+					set_state_flag = dhrondan_landing_history_recorded
+				}
+			}
+			set_temp_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one }
+			if = {
+				limit = { has_country_flag = alien_infantry_event19_deferred_mode }
+				set_country_flag = alien_infantry_event19_deferred_debit_committed
+				set_temp_variable = { alien_infantry_event19_deferred_debit_committed = constant:alien_infantry_landing.one }
+			}
+			if = {
+				limit = { has_country_flag = alien_infantry_landing_pending }
+				clr_country_flag = alien_infantry_landing_pending
+				remove_mission = alien_infantry_landing_mission
+				clear_variable = alien_infantry_landing_reservation_days
+			}
+			# DHR sovereignty batch calls are an explicit one-time expedition input.
+			# They still debit 2,000 weapons per cohort, but do not establish a
+			# cooldown during the immediate batch chain. Ordinary calls retain the
+			# thirty-day cooldown.
+			if = {
+				limit = {
+					NOT = {
+						check_variable = {
+							var = alien_infantry_landing_batch_mode
+							value = constant:alien_infantry_landing.one
+							compare = equals
+						}
+					}
+					NOT = { has_country_flag = alien_infantry_event19_deferred_mode }
+				}
+				alien_infantry_apply_landing_cooldown = yes
+			}
+			if = {
+				limit = {
+					check_variable = { alien_infantry_landing_initial_force_mode = constant:alien_infantry_landing.zero compare = equals }
+					NOT = { has_country_flag = alien_infantry_event19_deferred_mode }
+				}
+				dhrondan_record_successful_landing = yes
+			}
+		}
+		else = {
+			# A failed materialization owns no cohort. Refund exactly the one
+			# 2,000-equipment reservation, and make repeat cleanup idempotent.
+			if = {
+				limit = { has_country_flag = alien_infantry_landing_pending }
+				alien_infantry_cancel_landing_reservation = yes
+			}
+			else_if = {
+				limit = { check_variable = { alien_infantry_landing_direct_debit = constant:alien_infantry_landing.one compare = equals } }
+				add_equipment_to_stockpile = {
+					type = alien_laser_weapon_equipment_1
+					amount = constant:alien_infantry_landing.reserve_equipment
+				}
+			}
+			clear_variable = dhrondan_landing_state_id
+		}
+		if = {
+			limit = { NOT = { has_country_flag = alien_infantry_event19_deferred_mode } }
+			clear_variable = dhrondan_landing_state_id
+		}
+	}
+}
+
+# COUNTRY scope on the Event 019 generation country. Event 019 calls this only
+# after its unit, lot, and obligation ledgers accept the materialized cohort.
+# Territorial history and pact telemetry therefore cannot outlive a failed
+# Event 019 transaction.
+alien_infantry_commit_event19_landing = {
+	if = {
+		limit = {
+			has_country_flag = alien_infantry_event19_deferred_mode
+			has_country_flag = alien_infantry_event19_deferred_debit_committed
+			check_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one compare = equals }
+			has_variable = dhrondan_landing_state_id
+		}
+		var:dhrondan_landing_state_id = {
+			set_state_flag = dhrondan_landing_state
+			set_state_flag = dhrondan_landing_history_recorded
+		}
+		add_to_variable = { dhrondan_arrival_count = constant:alien_infantry_landing.arrival_gain }
+		add_to_variable = { dhrondan_alien_presence = constant:alien_infantry_landing.presence_gain }
+		add_to_variable = { dhrondan_pact_strain = constant:alien_infantry_landing.strain_gain }
+		add_to_variable = { dhrondan_landing_history_count = constant:alien_infantry_landing.history_gain }
+		alien_infantry_apply_landing_cooldown = yes
+		dhrondan_record_successful_landing = yes
+	}
+	clear_variable = dhrondan_landing_state_id
+	clr_country_flag = alien_infantry_event19_deferred_debit_committed
+	clr_country_flag = alien_infantry_event19_deferred_mode
+	clear_variable = alien_infantry_event19_delete_cohort_id
+	clr_country_flag = alien_infantry_event19_outer_transaction
+	set_temp_variable = { alien_infantry_event19_deferred_debit_committed = constant:alien_infantry_landing.zero }
+	set_temp_variable = { alien_infantry_event19_deferred_mode = constant:alien_infantry_landing.zero }
+	set_temp_variable = { alien_infantry_event19_outer_transaction = constant:alien_infantry_landing.zero }
+}
+
+# COUNTRY scope on the Event 019 generation country. Event 019 has already
+# deleted the cohort by its injected engine id. Refund only a proven API debit;
+# deferred materialization has not yet written state history or pact telemetry.
+alien_infantry_rollback_event19_landing = {
+	if = {
+		limit = {
+			has_country_flag = alien_infantry_event19_deferred_mode
+			has_country_flag = alien_infantry_event19_deferred_debit_committed
+		}
+		add_equipment_to_stockpile = {
+			type = alien_laser_weapon_equipment_1
+			amount = constant:alien_infantry_landing.reserve_equipment
+		}
+	}
+	clear_variable = dhrondan_landing_state_id
+	clr_country_flag = alien_infantry_event19_deferred_debit_committed
+	clr_country_flag = alien_infantry_event19_deferred_mode
+	clear_variable = alien_infantry_event19_delete_cohort_id
+	clr_country_flag = alien_infantry_event19_outer_transaction
+	set_temp_variable = { alien_infantry_event19_deferred_debit_committed = constant:alien_infantry_landing.zero }
+	set_temp_variable = { alien_infantry_event19_deferred_mode = constant:alien_infantry_landing.zero }
+	set_temp_variable = { alien_infantry_event19_outer_transaction = constant:alien_infantry_landing.zero }
+}
