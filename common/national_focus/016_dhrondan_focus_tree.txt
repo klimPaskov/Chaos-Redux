@@ -1,0 +1,1254 @@
+# ============================================================================
+# CHAOS REDUX - EMPIRE OF D'RHONDA NATIONAL FOCUS TREE
+# ============================================================================
+# Exactly 88 focuses: 8 survival, 24 political, 10 laboratory economy,
+# 12 predictive warfare, 8 orbital support, 8 diplomacy and intelligence,
+# 12 expansion and world order, and 6 enclave-crisis or late-game focuses.
+# The tree never creates alien divisions or equipment. It only enables the
+# paid landing contract, whose shared cost is 2,000 Alien Laser Weapons.
+# ============================================================================
+
+@dhr_cost_emergency = 3
+@dhr_cost_short = 4
+@dhr_cost_standard = 5
+@dhr_cost_long = 8
+@dhr_cost_major = 10
+@dhr_cost_crisis = 7
+@dhr_ai_standard = 5
+@dhr_ai_preferred = 10
+@dhr_ai_urgent = 20
+@dhr_ai_route_factor = 2
+@dhr_ai_world_threshold = 0.5
+@dhr_tree_priority = 100
+@dhr_bonus_use = 1
+
+focus_tree = {
+	id = dhrondan_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = @dhr_tree_priority
+			original_tag = DHR
+		}
+	}
+
+	default = no
+	reset_on_civilwar = no
+	continuous_focus_position = { x = 2200 y = 1400 }
+	initial_show_position = { focus = DHR_beneath_an_alien_sky }
+
+	shortcut = { name = DHR_survival_shortcut target = DHR_beneath_an_alien_sky scroll_wheel_factor = 0.80 }
+	shortcut = { name = DHR_imperial_shortcut target = DHR_vael_ix_takes_the_throne scroll_wheel_factor = 0.70 }
+	shortcut = { name = DHR_synod_shortcut target = DHR_sera_qel_presents_the_calculus scroll_wheel_factor = 0.70 }
+	shortcut = { name = DHR_covenant_shortcut target = DHR_ilyr_ren_opens_the_chamber scroll_wheel_factor = 0.70 }
+	shortcut = { name = DHR_laboratory_shortcut target = DHR_relight_the_field_laboratories scroll_wheel_factor = 0.75 }
+	shortcut = { name = DHR_army_shortcut target = DHR_restore_the_predictive_staff scroll_wheel_factor = 0.75 }
+	shortcut = { name = DHR_orbital_shortcut target = DHR_reassemble_the_orbital_office scroll_wheel_factor = 0.75 }
+	shortcut = { name = DHR_diplomacy_shortcut target = DHR_open_the_translation_bureaus scroll_wheel_factor = 0.75 }
+	shortcut = { name = DHR_expansion_shortcut target = DHR_define_the_two_worlds_question scroll_wheel_factor = 0.70 }
+	shortcut = { name = DHR_crisis_shortcut target = DHR_the_enclaves_refuse_the_ledger scroll_wheel_factor = 0.75 }
+
+	# ------------------------------------------------------------------------
+	# Survival and landing-network trunk (8)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_beneath_an_alien_sky
+		icon = GFX_goal_DHR_beneath_an_alien_sky
+		x = 20
+		y = 0
+		cost = @dhr_cost_emergency
+		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			dhrondan_focus_set_homeworld_fragmentation = yes
+			dhrondan_focus_set_predictive_lag = yes
+			dhrondan_focus_set_offworld_isolation = yes
+			set_country_flag = dhrondan_alien_infantry_training_forbidden
+			add_political_power = constant:dhrondan_focus_reward.political_power_small
+		}
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_count_the_landing_states
+		icon = GFX_goal_DHR_count_the_landing_states
+		x = 13
+		y = 1
+		cost = @dhr_cost_emergency
+		prerequisite = { focus = DHR_beneath_an_alien_sky }
+		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = {
+			set_country_flag = dhrondan_landing_states_counted
+			add_command_power = constant:dhrondan_focus_reward.command_power_small
+		}
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_secure_the_scattered_enclaves
+		icon = GFX_goal_DHR_secure_the_scattered_enclaves
+		x = 27
+		y = 1
+		cost = @dhr_cost_emergency
+		prerequisite = { focus = DHR_beneath_an_alien_sky }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = {
+			set_country_flag = dhrondan_scattered_enclaves_secured
+			add_war_support = constant:dhrondan_focus_bonus.war_support_small
+		}
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_inventory_the_expedition_stores
+		icon = GFX_goal_DHR_inventory_the_expedition_stores
+		x = 9
+		y = 2
+		cost = @dhr_cost_short
+		prerequisite = { focus = DHR_count_the_landing_states }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			dhrondan_focus_add_civilian_complex = yes
+			set_country_flag = dhrondan_expedition_stores_audited
+		}
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_restore_the_landing_beacons
+		icon = GFX_goal_DHR_restore_the_landing_beacons
+		x = 31
+		y = 2
+		cost = @dhr_cost_short
+		prerequisite = { focus = DHR_secure_the_scattered_enclaves }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = dhrondan_landing_beacons_restored
+			add_tech_bonus = { name = DHR_restore_the_landing_beacons bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = radar_tech }
+		}
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_bind_the_enclaves
+		icon = GFX_goal_DHR_bind_the_enclaves
+		x = 15
+		y = 3
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_inventory_the_expedition_stores }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			dhrondan_focus_set_homeworld_cohesion = yes
+			add_stability = constant:dhrondan_focus_bonus.stability_small
+		}
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_reopen_the_orbital_channel
+		icon = GFX_goal_DHR_reopen_the_orbital_channel
+		x = 25
+		y = 3
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_restore_the_landing_beacons }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_AIR_XP }
+		completion_reward = {
+			dhrondan_focus_enable_landing_network = yes
+			dhrondan_focus_add_orbital_support = yes
+			custom_effect_tooltip = DHR_paid_landing_network_effect
+		}
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_convene_the_two_world_throne
+		icon = GFX_goal_DHR_convene_the_two_world_throne
+		x = 20
+		y = 4
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_bind_the_enclaves }
+		prerequisite = { focus = DHR_reopen_the_orbital_channel }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = {
+			set_country_flag = dhrondan_political_convention_complete
+			add_political_power = constant:dhrondan_focus_reward.political_power_medium
+		}
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Imperial Continuity under Emperor Vael IX (8)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_vael_ix_takes_the_throne
+		icon = GFX_goal_DHR_vael_ix_takes_the_throne
+		x = 14
+		y = 5
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_convene_the_two_world_throne }
+		mutually_exclusive = { focus = DHR_sera_qel_presents_the_calculus focus = DHR_ilyr_ren_opens_the_chamber }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_POLITICAL_CHARACTER }
+		completion_reward = { dhrondan_focus_set_imperial_route = yes add_war_support = constant:dhrondan_focus_bonus.war_support_small }
+		ai_will_do = {
+			base = @dhr_ai_preferred
+			modifier = { factor = @dhr_ai_route_factor has_war = yes }
+			modifier = { factor = @dhr_ai_route_factor war_support > @dhr_ai_world_threshold }
+		}
+	}
+
+	focus = {
+		id = DHR_restore_the_ninth_diadem
+		icon = GFX_goal_DHR_restore_the_ninth_diadem
+		x = 12
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_vael_ix_takes_the_throne }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = { add_stability = constant:dhrondan_focus_bonus.stability_small set_country_flag = dhrondan_ninth_diadem_restored }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_bind_the_landing_lords
+		icon = GFX_goal_DHR_bind_the_landing_lords
+		x = 16
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_vael_ix_takes_the_throne }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium set_country_flag = dhrondan_landing_lords_bound }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_codify_imperial_service
+		icon = GFX_goal_DHR_codify_imperial_service
+		x = 12
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_restore_the_ninth_diadem }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_POLITICAL }
+		completion_reward = { army_experience = constant:dhrondan_focus_reward.army_experience_small set_country_flag = dhrondan_imperial_service_codified }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_raise_the_palace_guard
+		icon = GFX_goal_DHR_raise_the_palace_guard
+		x = 16
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_bind_the_landing_lords }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+		completion_reward = { dhrondan_focus_expand_laser_production = yes add_command_power = constant:dhrondan_focus_reward.command_power_medium }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_proclaim_the_right_of_return
+		icon = GFX_goal_DHR_proclaim_the_right_of_return
+		x = 12
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_codify_imperial_service }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = { dhrondan_focus_mark_origin_host_reclamation = yes add_war_support = constant:dhrondan_focus_bonus.war_support_small custom_effect_tooltip = DHR_reclamation_declaration_effect }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_crown_the_enclave_empire
+		icon = GFX_goal_DHR_crown_the_enclave_empire
+		x = 16
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_raise_the_palace_guard }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium set_country_flag = dhrondan_enclave_empire_crowned }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_the_unbroken_imperial_line
+		icon = GFX_goal_DHR_the_unbroken_imperial_line
+		x = 14
+		y = 9
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_proclaim_the_right_of_return }
+		prerequisite = { focus = DHR_crown_the_enclave_empire }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = { dhrondan_focus_set_imperial_mandate = yes set_country_flag = dhrondan_imperial_route_complete }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Predictive Synod under First Calculant Sera Qel (8)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_sera_qel_presents_the_calculus
+		icon = GFX_goal_DHR_sera_qel_presents_the_calculus
+		x = 20
+		y = 5
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_convene_the_two_world_throne }
+		mutually_exclusive = { focus = DHR_vael_ix_takes_the_throne focus = DHR_ilyr_ren_opens_the_chamber }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		completion_reward = { dhrondan_focus_set_synod_route = yes add_political_power = constant:dhrondan_focus_reward.political_power_small }
+		ai_will_do = {
+			base = @dhr_ai_preferred
+			modifier = { factor = @dhr_ai_route_factor has_war = no }
+			modifier = { factor = @dhr_ai_route_factor stability > @dhr_ai_world_threshold }
+		}
+	}
+
+	focus = {
+		id = DHR_audit_every_command_node
+		icon = GFX_goal_DHR_audit_every_command_node
+		x = 18
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_sera_qel_presents_the_calculus }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_RESEARCH }
+		completion_reward = { add_command_power = constant:dhrondan_focus_reward.command_power_small set_country_flag = dhrondan_command_nodes_audited }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_elevate_the_first_calculants
+		icon = GFX_goal_DHR_elevate_the_first_calculants
+		x = 22
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_sera_qel_presents_the_calculus }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL_CHARACTER FOCUS_FILTER_RESEARCH }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium set_country_flag = dhrondan_first_calculants_elevated }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_publish_the_survival_equations
+		icon = GFX_goal_DHR_publish_the_survival_equations
+		x = 18
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_audit_every_command_node }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
+		completion_reward = { add_stability = constant:dhrondan_focus_bonus.stability_small add_tech_bonus = { name = DHR_publish_the_survival_equations bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = computing_tech } }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_assign_merit_by_projection
+		icon = GFX_goal_DHR_assign_merit_by_projection
+		x = 22
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_elevate_the_first_calculants }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_civilian_complex = yes set_country_flag = dhrondan_merit_projection_active }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_replace_decree_with_prediction
+		icon = GFX_goal_DHR_replace_decree_with_prediction
+		x = 18
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_publish_the_survival_equations }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		completion_reward = { add_command_power = constant:dhrondan_focus_reward.command_power_medium set_country_flag = dhrondan_decree_replaced_by_prediction }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_enthrone_the_synod
+		icon = GFX_goal_DHR_enthrone_the_synod
+		x = 22
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_assign_merit_by_projection }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium add_stability = constant:dhrondan_focus_bonus.stability_small }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_the_government_of_certainties
+		icon = GFX_goal_DHR_the_government_of_certainties
+		x = 20
+		y = 9
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_replace_decree_with_prediction }
+		prerequisite = { focus = DHR_enthrone_the_synod }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_set_synod_calculus = yes set_country_flag = dhrondan_synod_route_complete }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Two-World Covenant under Speaker Ilyr Ren (8)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_ilyr_ren_opens_the_chamber
+		icon = GFX_goal_DHR_ilyr_ren_opens_the_chamber
+		x = 26
+		y = 5
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_convene_the_two_world_throne }
+		mutually_exclusive = { focus = DHR_vael_ix_takes_the_throne focus = DHR_sera_qel_presents_the_calculus }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_POLITICAL_CHARACTER }
+		completion_reward = { dhrondan_focus_set_covenant_route = yes add_stability = constant:dhrondan_focus_bonus.stability_small }
+		ai_will_do = {
+			base = @dhr_ai_preferred
+			modifier = { factor = @dhr_ai_route_factor has_war = no }
+			modifier = { factor = @dhr_ai_route_factor stability < @dhr_ai_world_threshold }
+		}
+	}
+
+	focus = {
+		id = DHR_seat_the_human_delegates
+		icon = GFX_goal_DHR_seat_the_human_delegates
+		x = 24
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_ilyr_ren_opens_the_chamber }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		completion_reward = { dhrondan_focus_add_diplomatic_credit = yes set_country_flag = dhrondan_human_delegates_seated }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_write_the_dual_citizenship_code
+		icon = GFX_goal_DHR_write_the_dual_citizenship_code
+		x = 28
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_ilyr_ren_opens_the_chamber }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium set_country_flag = dhrondan_dual_citizenship_code_written }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_elect_the_landing_councils
+		icon = GFX_goal_DHR_elect_the_landing_councils
+		x = 24
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_seat_the_human_delegates }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = { add_stability = constant:dhrondan_focus_bonus.stability_small set_country_flag = dhrondan_landing_councils_elected }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_guarantee_the_right_to_depart
+		icon = GFX_goal_DHR_guarantee_the_right_to_depart
+		x = 28
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_write_the_dual_citizenship_code }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_small set_country_flag = dhrondan_right_to_depart_guaranteed }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_submit_the_military_to_debate
+		icon = GFX_goal_DHR_submit_the_military_to_debate
+		x = 24
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_elect_the_landing_councils }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		completion_reward = { army_experience = constant:dhrondan_focus_reward.army_experience_small add_command_power = constant:dhrondan_focus_reward.command_power_small }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_ratify_the_two_world_covenant
+		icon = GFX_goal_DHR_ratify_the_two_world_covenant
+		x = 28
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_guarantee_the_right_to_depart }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		completion_reward = { dhrondan_focus_add_diplomatic_credit = yes set_country_flag = dhrondan_two_world_covenant_ratified }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_the_chamber_of_two_skies
+		icon = GFX_goal_DHR_the_chamber_of_two_skies
+		x = 26
+		y = 9
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_submit_the_military_to_debate }
+		prerequisite = { focus = DHR_ratify_the_two_world_covenant }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		completion_reward = { dhrondan_focus_set_covenant_compact = yes set_country_flag = dhrondan_covenant_route_complete }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Laboratory economy and material substitution (10)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_relight_the_field_laboratories
+		icon = GFX_goal_DHR_relight_the_field_laboratories
+		x = 4
+		y = 5
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_inventory_the_expedition_stores }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_open_laboratory_program = yes add_tech_bonus = { name = DHR_relight_the_field_laboratories bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = electronics } }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_recover_the_laser_forges
+		icon = GFX_goal_DHR_recover_the_laser_forges
+		x = 2
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_relight_the_field_laboratories }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		completion_reward = { dhrondan_focus_expand_laser_production = yes set_country_flag = dhrondan_laser_forges_recovered }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_convert_terrestrial_workshops
+		icon = GFX_goal_DHR_convert_terrestrial_workshops
+		x = 6
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_relight_the_field_laboratories }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_civilian_complex = yes set_country_flag = dhrondan_terrestrial_workshops_converted }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_crystal_growth_chambers
+		icon = GFX_goal_DHR_crystal_growth_chambers
+		x = 2
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_recover_the_laser_forges }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = { add_tech_bonus = { name = DHR_crystal_growth_chambers bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = electronics } set_country_flag = dhrondan_crystal_growth_chambers_active }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_the_twenty_element_substitution
+		icon = GFX_goal_DHR_the_twenty_element_substitution
+		x = 6
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_convert_terrestrial_workshops }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = { add_tech_bonus = { name = DHR_the_twenty_element_substitution bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = industry } set_country_flag = dhrondan_twenty_element_substitution_mastered }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_standardize_alien_components
+		icon = GFX_goal_DHR_standardize_alien_components
+		x = 4
+		y = 8
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_crystal_growth_chambers }
+		prerequisite = { focus = DHR_the_twenty_element_substitution }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		completion_reward = { dhrondan_focus_expand_laser_production = yes set_country_flag = dhrondan_alien_components_standardized }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_feed_the_landing_reserve
+		icon = GFX_goal_DHR_feed_the_landing_reserve
+		x = 2
+		y = 9
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_standardize_alien_components }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		completion_reward = { dhrondan_focus_prepare_landing_cohort = yes set_country_flag = dhrondan_landing_reserve_supply_priority custom_effect_tooltip = DHR_paid_landing_reserve_effect }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_the_exoplanetary_materials_board
+		icon = GFX_goal_DHR_the_exoplanetary_materials_board
+		x = 6
+		y = 9
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_standardize_alien_components }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium set_country_flag = dhrondan_exoplanetary_materials_board_active }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_join_the_scattered_laboratories
+		icon = GFX_goal_DHR_join_the_scattered_laboratories
+		x = 4
+		y = 10
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_feed_the_landing_reserve }
+		prerequisite = { focus = DHR_the_exoplanetary_materials_board }
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = { add_tech_bonus = { name = DHR_join_the_scattered_laboratories bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = computing_tech } set_country_flag = dhrondan_scattered_laboratories_joined }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_a_two_world_research_complex
+		icon = GFX_goal_DHR_a_two_world_research_complex
+		x = 4
+		y = 11
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_join_the_scattered_laboratories }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_lab_capacity = yes set_country_flag = dhrondan_laboratory_route_complete }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Army and predictive warfare (12)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_restore_the_predictive_staff
+		icon = GFX_goal_DHR_restore_the_predictive_staff
+		x = 9
+		y = 5
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_bind_the_enclaves }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+		completion_reward = { dhrondan_focus_add_predictive_readiness = yes set_country_flag = dhrondan_predictive_staff_restored }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_map_the_probability_front
+		icon = GFX_goal_DHR_map_the_probability_front
+		x = 7
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_restore_the_predictive_staff }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = { add_tech_bonus = { name = DHR_map_the_probability_front bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = land_doctrine } army_experience = constant:dhrondan_focus_reward.army_experience_small }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_encode_the_enemy_reaction
+		icon = GFX_goal_DHR_encode_the_enemy_reaction
+		x = 11
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_restore_the_predictive_staff }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = { add_tech_bonus = { name = DHR_encode_the_enemy_reaction bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = encryption_tech } add_command_power = constant:dhrondan_focus_reward.command_power_small }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_train_human_signal_teams
+		icon = GFX_goal_DHR_train_human_signal_teams
+		x = 7
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_map_the_probability_front }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		completion_reward = { army_experience = constant:dhrondan_focus_reward.army_experience_medium set_country_flag = dhrondan_human_signal_teams_trained }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_rebuild_the_expeditionary_cadres
+		icon = GFX_goal_DHR_rebuild_the_expeditionary_cadres
+		x = 11
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_encode_the_enemy_reaction }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		completion_reward = { army_experience = constant:dhrondan_focus_reward.army_experience_medium set_country_flag = dhrondan_expeditionary_cadres_rebuilt }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_fire_control_by_forecast
+		icon = GFX_goal_DHR_fire_control_by_forecast
+		x = 9
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_train_human_signal_teams }
+		prerequisite = { focus = DHR_rebuild_the_expeditionary_cadres }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = { dhrondan_focus_set_predictive_sight = yes add_tech_bonus = { name = DHR_fire_control_by_forecast bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = infantry_weapons } }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_supply_before_the_order
+		icon = GFX_goal_DHR_supply_before_the_order
+		x = 7
+		y = 9
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_fire_control_by_forecast }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_ground_logistics = yes set_country_flag = dhrondan_supply_forecast_active }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_the_thousand_branch_wargame
+		icon = GFX_goal_DHR_the_thousand_branch_wargame
+		x = 11
+		y = 9
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_fire_control_by_forecast }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = { army_experience = constant:dhrondan_focus_reward.army_experience_medium add_command_power = constant:dhrondan_focus_reward.command_power_medium }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_delegate_to_the_field_calculants
+		icon = GFX_goal_DHR_delegate_to_the_field_calculants
+		x = 7
+		y = 10
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_supply_before_the_order }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+		completion_reward = { add_command_power = constant:dhrondan_focus_reward.command_power_medium set_country_flag = dhrondan_field_calculants_delegated }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_command_without_surprise
+		icon = GFX_goal_DHR_command_without_surprise
+		x = 11
+		y = 10
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_the_thousand_branch_wargame }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = { add_tech_bonus = { name = DHR_command_without_surprise bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = land_doctrine } set_country_flag = dhrondan_command_without_surprise }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_the_foreseen_counterstroke
+		icon = GFX_goal_DHR_the_foreseen_counterstroke
+		x = 9
+		y = 11
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_delegate_to_the_field_calculants }
+		prerequisite = { focus = DHR_command_without_surprise }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = { army_experience = constant:dhrondan_focus_reward.army_experience_medium add_war_support = constant:dhrondan_focus_bonus.war_support_small }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_perfect_predictive_warfare
+		icon = GFX_goal_DHR_perfect_predictive_warfare
+		x = 9
+		y = 12
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_the_foreseen_counterstroke }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_temp_variable = { chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.alien_predictive_warfare_weaponization }
+			chaosx_grant_custom_technology_upgrade = yes
+			dhrondan_focus_set_predictive_command = yes
+			set_country_flag = dhrondan_predictive_warfare_perfected
+		}
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Orbital logistics, air, and naval support (8)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_reassemble_the_orbital_office
+		icon = GFX_goal_DHR_reassemble_the_orbital_office
+		x = 32
+		y = 5
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_reopen_the_orbital_channel }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_NAVY_XP }
+		completion_reward = { dhrondan_focus_add_orbital_support = yes set_country_flag = dhrondan_orbital_office_reassembled }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_chart_terrestrial_air_corridors
+		icon = GFX_goal_DHR_chart_terrestrial_air_corridors
+		x = 30
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_reassemble_the_orbital_office }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_air_relay = yes set_country_flag = dhrondan_terrestrial_air_corridors_charted }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_adapt_the_gravity_fighters
+		icon = GFX_goal_DHR_adapt_the_gravity_fighters
+		x = 34
+		y = 6
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_reassemble_the_orbital_office }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = { air_experience = constant:dhrondan_focus_reward.air_experience_small add_tech_bonus = { name = DHR_adapt_the_gravity_fighters bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = air_equipment } }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_salvage_the_shuttle_docks
+		icon = GFX_goal_DHR_salvage_the_shuttle_docks
+		x = 30
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_chart_terrestrial_air_corridors }
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_orbital_dockyard = yes set_country_flag = dhrondan_shuttle_docks_salvaged }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_link_airfields_to_the_relay
+		icon = GFX_goal_DHR_link_airfields_to_the_relay
+		x = 34
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_adapt_the_gravity_fighters }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_set_offworld_relay = yes dhrondan_focus_add_ground_logistics = yes }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_form_the_exile_flotilla
+		icon = GFX_goal_DHR_form_the_exile_flotilla
+		x = 30
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_salvage_the_shuttle_docks }
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = { navy_experience = constant:dhrondan_focus_reward.navy_experience_small add_tech_bonus = { name = DHR_form_the_exile_flotilla bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = naval_equipment } }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_guard_the_descent_windows
+		icon = GFX_goal_DHR_guard_the_descent_windows
+		x = 34
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_link_airfields_to_the_relay }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			air_experience = constant:dhrondan_focus_reward.air_experience_small
+			add_war_support = constant:dhrondan_focus_bonus.war_support_small
+			set_country_flag = dhrondan_descent_windows_guarded
+		}
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_make_near_space_ours
+		icon = GFX_goal_DHR_make_near_space_ours
+		x = 32
+		y = 9
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_form_the_exile_flotilla }
+		prerequisite = { focus = DHR_guard_the_descent_windows }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_NAVY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = { dhrondan_focus_add_orbital_support = yes set_country_flag = dhrondan_near_space_secured }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Diplomacy and intelligence (8)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_open_the_translation_bureaus
+		icon = GFX_goal_DHR_open_the_translation_bureaus
+		x = 38
+		y = 5
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_restore_the_landing_beacons }
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_RESEARCH }
+		completion_reward = { dhrondan_focus_add_diplomatic_credit = yes set_country_flag = dhrondan_translation_bureaus_open }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_listen_to_the_human_airwaves
+		icon = GFX_goal_DHR_listen_to_the_human_airwaves
+		x = 36
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_open_the_translation_bureaus }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = { add_tech_bonus = { name = DHR_listen_to_the_human_airwaves bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = decryption_tech } set_country_flag = dhrondan_human_airwaves_monitored }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_trade_in_impossible_materials
+		icon = GFX_goal_DHR_trade_in_impossible_materials
+		x = 40
+		y = 6
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_open_the_translation_bureaus }
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_civilian_complex = yes set_country_flag = dhrondan_impossible_materials_trade_open }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_exchange_maps_for_access
+		icon = GFX_goal_DHR_exchange_maps_for_access
+		x = 36
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_listen_to_the_human_airwaves }
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_POLITICAL }
+		completion_reward = { dhrondan_focus_add_diplomatic_credit = yes set_country_flag = dhrondan_access_map_exchange_ready }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_seed_the_enclave_network
+		icon = GFX_goal_DHR_seed_the_enclave_network
+		x = 40
+		y = 7
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_trade_in_impossible_materials }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = { add_command_power = constant:dhrondan_focus_reward.command_power_small set_country_flag = dhrondan_enclave_intelligence_network_active }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_recruit_two_world_operatives
+		icon = GFX_goal_DHR_recruit_two_world_operatives
+		x = 36
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_exchange_maps_for_access }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL_CHARACTER }
+		completion_reward = { add_tech_bonus = { name = DHR_recruit_two_world_operatives bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = encryption_tech } set_country_flag = dhrondan_two_world_operatives_available }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_choose_our_terrestrial_partners
+		icon = GFX_goal_DHR_choose_our_terrestrial_partners
+		x = 40
+		y = 8
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_seed_the_enclave_network }
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_POLITICAL }
+		completion_reward = { dhrondan_focus_add_diplomatic_credit = yes set_country_flag = dhrondan_terrestrial_partner_selection_open }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_the_embassy_beyond_the_stars
+		icon = GFX_goal_DHR_the_embassy_beyond_the_stars
+		x = 38
+		y = 9
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_recruit_two_world_operatives }
+		prerequisite = { focus = DHR_choose_our_terrestrial_partners }
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = { add_stability = constant:dhrondan_focus_bonus.stability_small set_country_flag = dhrondan_extraterrestrial_embassy_established }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Expansion and a two-world order (12)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_define_the_two_worlds_question
+		icon = GFX_goal_DHR_define_the_two_worlds_question
+		x = 20
+		y = 11
+		cost = @dhr_cost_standard
+		prerequisite = { focus = DHR_the_unbroken_imperial_line focus = DHR_the_government_of_certainties focus = DHR_the_chamber_of_two_skies }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		completion_reward = { dhrondan_focus_open_world_order = yes set_country_flag = dhrondan_two_worlds_question_defined custom_effect_tooltip = DHR_world_order_contract_effect }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_restore_the_imperial_reaches
+		icon = GFX_goal_DHR_restore_the_imperial_reaches
+		x = 14
+		y = 12
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_define_the_two_worlds_question }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = { add_war_support = constant:dhrondan_focus_bonus.war_support_small set_country_flag = dhrondan_imperial_reaches_claimed }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_demand_the_origin_host
+		icon = GFX_goal_DHR_demand_the_origin_host
+		x = 14
+		y = 13
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_restore_the_imperial_reaches }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		completion_reward = { dhrondan_focus_mark_origin_host_reclamation = yes add_political_power = constant:dhrondan_focus_reward.political_power_medium custom_effect_tooltip = DHR_reclamation_declaration_effect }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_the_subject_world_protocol
+		icon = GFX_goal_DHR_the_subject_world_protocol
+		x = 14
+		y = 14
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_demand_the_origin_host }
+		available = { dhrondan_focus_is_imperial = yes }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = { set_country_flag = dhrondan_subject_world_protocol_ready add_command_power = constant:dhrondan_focus_reward.command_power_medium }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_calculate_the_reclamation_zones
+		icon = GFX_goal_DHR_calculate_the_reclamation_zones
+		x = 20
+		y = 12
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_define_the_two_worlds_question }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_RESEARCH }
+		completion_reward = { dhrondan_focus_mark_origin_host_reclamation = yes add_tech_bonus = { name = DHR_calculate_the_reclamation_zones bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = computing_tech } custom_effect_tooltip = DHR_reclamation_declaration_effect }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_subordinate_borders_to_need
+		icon = GFX_goal_DHR_subordinate_borders_to_need
+		x = 20
+		y = 13
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_calculate_the_reclamation_zones }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INDUSTRY }
+		completion_reward = { dhrondan_focus_add_ground_logistics = yes set_country_flag = dhrondan_borders_subordinate_to_need }
+		ai_will_do = { base = @dhr_ai_standard }
+	}
+
+	focus = {
+		id = DHR_administer_the_optimal_order
+		icon = GFX_goal_DHR_administer_the_optimal_order
+		x = 20
+		y = 14
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_subordinate_borders_to_need }
+		available = { dhrondan_focus_is_synod = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium set_country_flag = dhrondan_optimal_order_administration_ready }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_invite_the_enclave_congress
+		icon = GFX_goal_DHR_invite_the_enclave_congress
+		x = 26
+		y = 12
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_define_the_two_worlds_question }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		completion_reward = { dhrondan_focus_add_diplomatic_credit = yes set_country_flag = dhrondan_enclave_congress_invited }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_negotiate_the_origin_settlement
+		icon = GFX_goal_DHR_negotiate_the_origin_settlement
+		x = 26
+		y = 13
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_invite_the_enclave_congress }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE }
+		completion_reward = { dhrondan_focus_mark_origin_host_reclamation = yes add_stability = constant:dhrondan_focus_bonus.stability_small custom_effect_tooltip = DHR_reclamation_declaration_effect }
+		ai_will_do = { base = @dhr_ai_preferred }
+	}
+
+	focus = {
+		id = DHR_federate_the_two_worlds
+		icon = GFX_goal_DHR_federate_the_two_worlds
+		x = 26
+		y = 14
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_negotiate_the_origin_settlement }
+		available = { dhrondan_focus_is_covenant = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		completion_reward = { add_political_power = constant:dhrondan_focus_reward.political_power_medium set_country_flag = dhrondan_two_world_federation_ready }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_begin_postwar_integration
+		icon = GFX_goal_DHR_begin_postwar_integration
+		x = 20
+		y = 16
+		cost = @dhr_cost_long
+		prerequisite = { focus = DHR_the_subject_world_protocol focus = DHR_administer_the_optimal_order focus = DHR_federate_the_two_worlds }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_STABILITY }
+		completion_reward = { dhrondan_focus_mark_postwar_integration = yes add_stability = constant:dhrondan_focus_bonus.stability_small custom_effect_tooltip = DHR_integration_program_effect }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_a_place_in_the_world_order
+		icon = GFX_goal_DHR_a_place_in_the_world_order
+		x = 20
+		y = 17
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_begin_postwar_integration }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = { dhrondan_focus_open_world_order = yes set_country_flag = dhrondan_world_order_route_complete }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Enclave crisis and the late game (6)
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHR_the_enclaves_refuse_the_ledger
+		icon = GFX_goal_DHR_the_enclaves_refuse_the_ledger
+		x = 20
+		y = 18
+		cost = @dhr_cost_crisis
+		prerequisite = { focus = DHR_a_place_in_the_world_order }
+		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_STABILITY }
+		completion_reward = { dhrondan_focus_mark_enclave_crisis = yes add_political_power = constant:dhrondan_focus_reward.political_power_small custom_effect_tooltip = DHR_enclave_crisis_begins_effect }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_offer_a_shared_horizon
+		icon = GFX_goal_DHR_offer_a_shared_horizon
+		x = 18
+		y = 19
+		cost = @dhr_cost_crisis
+		prerequisite = { focus = DHR_the_enclaves_refuse_the_ledger }
+		mutually_exclusive = { focus = DHR_break_the_separatist_ciphers }
+		available = { dhrondan_focus_is_in_crisis = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_INTERNATIONAL_TRADE }
+		completion_reward = { add_stability = constant:dhrondan_focus_bonus.stability_small set_country_flag = dhrondan_enclave_reconciliation_chosen }
+		ai_will_do = {
+			base = @dhr_ai_standard
+			modifier = { factor = @dhr_ai_route_factor dhrondan_focus_is_covenant = yes }
+		}
+	}
+
+	focus = {
+		id = DHR_break_the_separatist_ciphers
+		icon = GFX_goal_DHR_break_the_separatist_ciphers
+		x = 22
+		y = 19
+		cost = @dhr_cost_crisis
+		prerequisite = { focus = DHR_the_enclaves_refuse_the_ledger }
+		mutually_exclusive = { focus = DHR_offer_a_shared_horizon }
+		available = { dhrondan_focus_is_in_crisis = yes }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_INTERNAL_AFFAIRS }
+		completion_reward = { add_command_power = constant:dhrondan_focus_reward.command_power_medium add_tech_bonus = { name = DHR_break_the_separatist_ciphers bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = decryption_tech } }
+		ai_will_do = {
+			base = @dhr_ai_standard
+			modifier = { factor = @dhr_ai_route_factor dhrondan_focus_is_imperial = yes }
+			modifier = { factor = @dhr_ai_route_factor dhrondan_focus_is_synod = yes }
+		}
+	}
+
+	focus = {
+		id = DHR_resolve_the_enclave_crisis
+		icon = GFX_goal_DHR_resolve_the_enclave_crisis
+		x = 20
+		y = 20
+		cost = @dhr_cost_crisis
+		prerequisite = { focus = DHR_offer_a_shared_horizon focus = DHR_break_the_separatist_ciphers }
+		search_filters = { FOCUS_FILTER_INTERNAL_AFFAIRS FOCUS_FILTER_STABILITY }
+		completion_reward = { dhrondan_focus_clear_enclave_crisis = yes add_stability = constant:dhrondan_focus_bonus.stability_small custom_effect_tooltip = DHR_enclave_crisis_resolved_effect }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_reopen_the_homeworld_corridor
+		icon = GFX_goal_DHR_reopen_the_homeworld_corridor
+		x = 20
+		y = 21
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_resolve_the_enclave_crisis }
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE FOCUS_FILTER_AIR_XP FOCUS_FILTER_NAVY_XP }
+		completion_reward = { dhrondan_focus_set_offworld_corridor = yes set_country_flag = dhrondan_homeworld_corridor_reopened }
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+
+	focus = {
+		id = DHR_the_century_beyond_exile
+		icon = GFX_goal_DHR_the_century_beyond_exile
+		x = 20
+		y = 22
+		cost = @dhr_cost_major
+		prerequisite = { focus = DHR_reopen_the_homeworld_corridor }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			dhrondan_focus_award_achievement_hook = yes
+			set_country_flag = dhrondan_focus_tree_complete
+			add_political_power = constant:dhrondan_focus_reward.political_power_medium
+			add_war_support = constant:dhrondan_focus_bonus.war_support_small
+		}
+		ai_will_do = { base = @dhr_ai_urgent }
+	}
+}

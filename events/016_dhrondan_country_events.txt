@@ -1,0 +1,134 @@
+add_namespace = chaosx.nr16
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 EMPIRE OF D'RHONDA COUNTRY EVENTS (.48-.52)
+# ============================================================================
+# The formation headline is presentation-only. The diplomatic events resolve
+# player- or AI-started targeted decisions and never poll the world.
+# ============================================================================
+
+news_event = {
+	id = chaosx.nr16.48
+	title = chaosx.nr16.48.t
+	desc = chaosx.nr16.48.d
+	picture = GFX_news_event_016_dhrondan_sovereignty
+	is_triggered_only = yes
+	major = yes
+	option = { name = chaosx.nr16.48.a }
+}
+
+country_event = {
+	id = chaosx.nr16.49
+	title = chaosx.nr16.49.t
+	desc = chaosx.nr16.49.d
+	picture = GFX_report_event_016_dhrondan_diplomatic_compact
+	is_triggered_only = yes
+	trigger = {
+		dhrondan_compact_response_is_valid = yes
+		event_target:dhrondan_diplomatic_actor = {
+			NOT = { has_country_flag = dhrondan_diplomatic_offer_delivered }
+		}
+	}
+	immediate = {
+		event_target:dhrondan_diplomatic_actor = { set_country_flag = dhrondan_diplomatic_offer_delivered }
+	}
+
+	option = {
+		name = chaosx.nr16.49.a
+		trigger = { dhrondan_compact_response_is_valid = yes }
+		ai_chance = {
+			base = constant:dhrondan_event_ai.accept_base
+			modifier = {
+				factor = constant:dhrondan_event_ai.friendly_factor
+				has_opinion = {
+					target = event_target:dhrondan_diplomatic_actor
+					value > constant:dhrondan_event_ai.positive_opinion_threshold
+				}
+			}
+			modifier = { factor = constant:dhrondan_event_ai.covenant_factor has_government = democratic }
+		}
+		diplomatic_relation = { country = event_target:dhrondan_diplomatic_actor relation = non_aggression_pact active = yes }
+		add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_two_world_compact }
+		set_country_flag = dhrondan_two_world_compact_partner
+		event_target:dhrondan_diplomatic_actor = {
+			add_opinion_modifier = { target = ROOT modifier = dhrondan_two_world_compact }
+			set_country_flag = dhrondan_diplomatic_compact_concluded
+			add_stability = constant:dhrondan_decision_reward.stability_small
+			country_event = { id = chaosx.nr16.50 }
+			dhrondan_clear_diplomatic_offer = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.49.b
+		trigger = { dhrondan_compact_response_is_valid = yes }
+		ai_chance = {
+			base = constant:dhrondan_event_ai.refuse_base
+			modifier = {
+				factor = constant:dhrondan_event_ai.hostile_factor
+				has_opinion = {
+					target = event_target:dhrondan_diplomatic_actor
+					value < constant:dhrondan_event_ai.negative_opinion_threshold
+				}
+			}
+		}
+		add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_compact_refused }
+		event_target:dhrondan_diplomatic_actor = {
+			country_event = { id = chaosx.nr16.51 }
+			dhrondan_clear_diplomatic_offer = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.49.c
+		trigger = { NOT = { dhrondan_compact_response_is_valid = yes } }
+		if = {
+			limit = {
+				has_event_target = dhrondan_diplomatic_actor
+				event_target:dhrondan_diplomatic_actor = { exists = yes }
+			}
+			event_target:dhrondan_diplomatic_actor = { dhrondan_clear_diplomatic_offer = yes }
+		}
+		else = { clear_global_event_target = dhrondan_diplomatic_offer_target }
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.50
+	title = chaosx.nr16.50.t
+	desc = chaosx.nr16.50.d
+	picture = GFX_report_event_016_dhrondan_diplomatic_compact
+	is_triggered_only = yes
+	option = { name = chaosx.nr16.50.a }
+}
+
+country_event = {
+	id = chaosx.nr16.51
+	title = chaosx.nr16.51.t
+	desc = chaosx.nr16.51.d
+	picture = GFX_report_event_016_dhrondan_diplomatic_compact
+	is_triggered_only = yes
+	option = { name = chaosx.nr16.51.a }
+}
+
+# Safety monitor for a compact event invalidated before or after delivery. A
+# valid delivered popup keeps its exclusive receipt while it awaits a response;
+# every invalid state clears the actor receipts and persistent target together.
+country_event = {
+	id = chaosx.nr16.52
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { has_country_flag = dhrondan_diplomatic_offer_active }
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = dhrondan_diplomatic_offer_delivered
+				dhrondan_is_covenant_regime = yes
+				has_event_target = dhrondan_diplomatic_offer_target
+				event_target:dhrondan_diplomatic_offer_target = { dhrondan_is_valid_compact_partner = yes }
+			}
+			country_event = { id = chaosx.nr16.52 days = 1 }
+		}
+		else = { dhrondan_clear_diplomatic_offer = yes }
+	}
+}
