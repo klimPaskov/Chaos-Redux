@@ -1,0 +1,329 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION FOREIGN RELIEF TRIGGERS
+# ============================================================================
+# These predicates are intentionally read-only and fail closed. The donor pool
+# is the sparse global array famine_migration_relief_registered_donor_states;
+# no trigger in this file discovers arbitrary countries or performs a world
+# scan. Route facts supplied by owner wiring are required in addition to the
+# engine-visible endpoint facts for sea and air relief.
+# ============================================================================
+
+# COUNTRY scope. The decision or owner callback must preserve the actor as
+# ROOT while the selected state is FROM/THIS.
+famine_migration_relief_actor_is_valid = {
+	hidden_trigger = {
+		scope_exists = yes
+		famine_migration_country_is_valid = yes
+	}
+}
+
+# STATE scope. Registration may retain an initialized zero-stock state so a
+# later owner callback can refresh its candidacy; it never creates stock.
+famine_migration_relief_donor_registration_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		is_owned_and_controlled_by = OWNER
+		has_state_flag = famine_migration_food_reserve_initialized
+		has_variable = famine_migration_food_reserve_amount
+		has_variable = famine_migration_food_reserve_capacity
+		check_variable = {
+			var = famine_migration_food_reserve_capacity
+			value = constant:famine_migration_relief_threshold.minimum_reserve_capacity
+			compare = greater_than
+		}
+		check_variable = {
+			var = famine_migration_relief_registration_proven
+			value = constant:famine_migration_relief_runtime.zero
+			compare = greater_than
+		}
+	}
+}
+
+# STATE scope. This is the state-side row validity used by both selection and
+# delivery. A row with absent stock remains registered but has zero weight.
+famine_migration_relief_donor_state_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		has_state_flag = famine_migration_relief_donor_registered
+		has_state_flag = famine_migration_food_reserve_initialized
+		has_variable = famine_migration_food_reserve_amount
+		has_variable = famine_migration_food_reserve_capacity
+		check_variable = {
+			var = famine_migration_food_reserve_amount
+			value = constant:famine_migration_relief_threshold.donor_reserve_floor
+			compare = greater_than
+		}
+		check_variable = {
+			var = famine_migration_food_reserve_capacity
+			value = constant:famine_migration_relief_threshold.minimum_reserve_capacity
+			compare = greater_than
+		}
+		OWNER = { famine_migration_relief_actor_is_valid = yes }
+		is_owned_and_controlled_by = OWNER
+	}
+}
+
+# STATE scope after the selection aliases have been saved. This gate validates
+# the receiving reserve without initializing it or fabricating capacity.
+famine_migration_relief_recipient_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		has_state_flag = famine_migration_food_security_active
+		has_state_flag = famine_migration_food_reserve_initialized
+		has_variable = famine_migration_food_reserve_amount
+		has_variable = famine_migration_food_reserve_capacity
+		check_variable = {
+			var = famine_migration_food_reserve_capacity
+			value = constant:famine_migration_relief_threshold.minimum_reserve_capacity
+			compare = greater_than
+		}
+		check_variable = {
+			var = famine_migration_food_reserve_capacity
+			value = famine_migration_food_reserve_amount
+			compare = greater_than
+		}
+	}
+}
+
+# STATE scope. A route mode is always provided by the owner action; there is
+# no generic donor mode and no implicit fallback.
+famine_migration_relief_route_mode_is_valid = {
+	hidden_trigger = {
+		has_variable = famine_migration_relief_route_mode
+		OR = {
+			check_variable = {
+				var = famine_migration_relief_route_mode
+				value = constant:famine_migration_relief_route_mode.land
+				compare = equals
+			}
+			check_variable = {
+				var = famine_migration_relief_route_mode
+				value = constant:famine_migration_relief_route_mode.sea
+				compare = equals
+			}
+			check_variable = {
+				var = famine_migration_relief_route_mode
+				value = constant:famine_migration_relief_route_mode.air
+				compare = equals
+			}
+		}
+	}
+}
+
+# STATE scope for a registered donor row. Selection saves the recipient and
+# actor under the same aliases used by delivery, so this route proof is
+# rechecked at both contract creation and delivery.
+famine_migration_relief_donor_route_is_valid = {
+	hidden_trigger = {
+		famine_migration_relief_donor_state_is_valid = yes
+		has_event_target = famine_migration_relief_selection_recipient
+		has_event_target = famine_migration_relief_selection_actor
+		event_target:famine_migration_relief_selection_recipient = {
+		famine_migration_relief_recipient_is_valid = yes
+		famine_migration_relief_route_mode_is_valid = yes
+		is_owned_and_controlled_by = event_target:famine_migration_relief_selection_actor
+		infrastructure > constant:famine_migration_relief_threshold.minimum_infrastructure
+	}
+	OWNER = {
+		NOT = { tag = event_target:famine_migration_relief_selection_actor }
+	}
+	OR = {
+		AND = {
+			OWNER = { NOT = { has_war_with = event_target:famine_migration_relief_selection_actor } }
+			OR = {
+				OWNER = {
+					has_opinion = {
+						target = event_target:famine_migration_relief_selection_actor
+						value > constant:famine_migration_relief_threshold.minimum_opinion
+					}
+				}
+				OWNER = { is_ally_with = event_target:famine_migration_relief_selection_actor }
+				OWNER = { is_in_faction_with = event_target:famine_migration_relief_selection_actor }
+				OWNER = { is_subject_of = event_target:famine_migration_relief_selection_actor }
+				OWNER = { has_military_access_to = event_target:famine_migration_relief_selection_actor }
+				OWNER = { gives_military_access_to = event_target:famine_migration_relief_selection_actor }
+				OWNER = { has_guaranteed = event_target:famine_migration_relief_selection_actor }
+				OWNER = { is_guaranteed_by = event_target:famine_migration_relief_selection_actor }
+				AND = {
+					event_target:famine_migration_relief_selection_recipient = {
+						has_state_flag = famine_migration_persecution_active
+					}
+					OWNER = { has_country_flag = famine_migration_relief_humanitarian_policy_active }
+				}
+			}
+		}
+		AND = {
+			OWNER = { has_war_with = event_target:famine_migration_relief_selection_actor }
+			has_state_flag = famine_migration_relief_war_corridor_proven
+			has_variable = famine_migration_relief_war_corridor_recipient
+			var:famine_migration_relief_war_corridor_recipient = {
+				state = event_target:famine_migration_relief_selection_recipient
+			}
+			has_variable = famine_migration_relief_war_corridor_actor
+			var:famine_migration_relief_war_corridor_actor = {
+				tag = event_target:famine_migration_relief_selection_actor
+			}
+			has_variable = famine_migration_relief_war_corridor_mode
+			check_variable = {
+				var = famine_migration_relief_war_corridor_mode
+				value = event_target:famine_migration_relief_selection_recipient.famine_migration_relief_route_mode
+				compare = equals
+			}
+		}
+	}
+	OR = {
+		AND = {
+			event_target:famine_migration_relief_selection_recipient = {
+				check_variable = {
+					var = famine_migration_relief_route_mode
+					value = constant:famine_migration_relief_route_mode.land
+					compare = equals
+				}
+			}
+			is_neighbor_of = event_target:famine_migration_relief_selection_recipient
+			check_variable = {
+				var = famine_migration_relief_land_route_proven
+				value = constant:famine_migration_relief_runtime.zero
+				compare = greater_than
+			}
+		}
+		AND = {
+			event_target:famine_migration_relief_selection_recipient = {
+				check_variable = {
+					var = famine_migration_relief_route_mode
+					value = constant:famine_migration_relief_route_mode.sea
+					compare = equals
+				}
+				naval_base > 0
+				non_damaged_building_level = { building = naval_base level = 1 }
+				check_variable = {
+					var = famine_migration_relief_recipient_sea_endpoint_proven
+					value = constant:famine_migration_relief_runtime.zero
+					compare = greater_than
+				}
+			}
+			naval_base > 0
+			non_damaged_building_level = { building = naval_base level = 1 }
+		check_variable = {
+				var = famine_migration_relief_sea_endpoint_proven
+				value = constant:famine_migration_relief_runtime.zero
+				compare = greater_than
+			}
+			check_variable = {
+				var = famine_migration_relief_sea_route_proven
+				value = constant:famine_migration_relief_runtime.zero
+				compare = greater_than
+			}
+		}
+		AND = {
+			event_target:famine_migration_relief_selection_recipient = {
+				check_variable = {
+					var = famine_migration_relief_route_mode
+					value = constant:famine_migration_relief_route_mode.air
+					compare = equals
+				}
+				air_base > 0
+				check_variable = {
+					var = famine_migration_relief_recipient_air_endpoint_proven
+					value = constant:famine_migration_relief_runtime.zero
+					compare = greater_than
+				}
+			}
+			air_base > 0
+			check_variable = {
+				var = famine_migration_relief_air_endpoint_proven
+				value = constant:famine_migration_relief_runtime.zero
+				compare = greater_than
+			}
+			check_variable = {
+				var = famine_migration_relief_air_route_proven
+				value = constant:famine_migration_relief_runtime.zero
+				compare = greater_than
+			}
+		}
+	}
+}
+}
+
+# End of famine_migration_relief_donor_route_is_valid.
+
+# STATE scope. This is the complete candidate gate used in both probability
+# passes. Invalid registered rows never reach the weight effect and therefore
+# contribute exactly zero.
+famine_migration_relief_donor_candidate_is_valid = {
+	hidden_trigger = {
+		famine_migration_relief_donor_route_is_valid = yes
+		event_target:famine_migration_relief_selection_recipient = {
+			check_variable = {
+				var = famine_migration_relief_requested_amount
+				value = constant:famine_migration_relief_threshold.minimum_grant
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = famine_migration_food_reserve_capacity
+				value = famine_migration_food_reserve_amount
+				compare = greater_than
+			}
+		}
+		check_variable = {
+			var = famine_migration_food_reserve_amount
+			value = constant:famine_migration_relief_threshold.donor_reserve_floor
+			compare = greater_than
+		}
+	}
+}
+
+# STATE scope. The contract remains state-local and can only be delivered
+# while its persisted pointers, amount, and timed active flag still exist.
+famine_migration_relief_contract_is_valid = {
+	hidden_trigger = {
+		famine_migration_state_is_valid = yes
+		has_state_flag = famine_migration_relief_contract_active
+		has_variable = famine_migration_relief_donor_state
+		has_variable = famine_migration_relief_donor_country
+		has_variable = famine_migration_relief_actor
+		has_variable = famine_migration_relief_route_mode
+		has_variable = famine_migration_relief_contract_amount
+		famine_migration_relief_route_mode_is_valid = yes
+		check_variable = {
+			var = famine_migration_relief_contract_amount
+			value = constant:famine_migration_relief_threshold.minimum_grant
+			compare = greater_than_or_equals
+		}
+		var:famine_migration_relief_donor_state = {
+			famine_migration_relief_donor_state_is_valid = yes
+			OWNER = {
+				tag = var:PREV.famine_migration_relief_donor_country
+			}
+		}
+		var:famine_migration_relief_donor_country = {
+			famine_migration_relief_actor_is_valid = yes
+		}
+	}
+}
+
+# STATE scope after delivery aliases are saved. This rechecks exact source,
+# actor, recipient, and route identity before the shared reserve transfer.
+famine_migration_relief_delivery_is_valid = {
+	hidden_trigger = {
+		famine_migration_relief_contract_is_valid = yes
+		has_event_target = famine_migration_relief_selection_recipient
+		has_event_target = famine_migration_relief_selection_actor
+		has_event_target = famine_migration_relief_delivery_donor_state
+		has_event_target = famine_migration_relief_delivery_donor_country
+		event_target:famine_migration_relief_selection_recipient = {
+		state = PREV
+		is_owned_and_controlled_by = event_target:famine_migration_relief_selection_actor
+	}
+	var:famine_migration_relief_actor = {
+		tag = event_target:famine_migration_relief_selection_actor
+	}
+	var:famine_migration_relief_donor_state = {
+		state = event_target:famine_migration_relief_delivery_donor_state
+	}
+	event_target:famine_migration_relief_delivery_donor_state = {
+		OWNER = { tag = event_target:famine_migration_relief_delivery_donor_country }
+		famine_migration_relief_donor_route_is_valid = yes
+	}
+	}
+}
