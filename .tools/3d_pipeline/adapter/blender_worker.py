@@ -7,6 +7,7 @@ request file and emits one JSON result line for the adapter to return.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -143,6 +144,16 @@ def import_candidate(source: Path) -> List[bpy.types.Object]:
         bpy.ops.import_scene.gltf(filepath=str(source))
     elif suffix == ".fbx":
         bpy.ops.import_scene.fbx(filepath=str(source))
+    elif suffix == ".blend":
+        before_actions = set(bpy.data.actions)
+        with bpy.data.libraries.load(str(source), link=False) as (data_from, data_to):
+            data_to.objects = [name for name in data_from.objects if name]
+            data_to.actions = [name for name in data_from.actions if name]
+        for obj in data_to.objects:
+            if obj is not None:
+                bpy.context.scene.collection.objects.link(obj)
+        if not [action for action in bpy.data.actions if action not in before_actions]:
+            raise RuntimeError(f"Blender appended no actions from provider Blend source {source}")
     else:
         raise ValueError(f"Unsupported provider source format: {source.suffix}")
     imported = [obj for obj in bpy.data.objects if obj not in before]
@@ -150,6 +161,31 @@ def import_candidate(source: Path) -> List[bpy.types.Object]:
         imported = list(bpy.context.selected_objects)
     if not imported:
         raise RuntimeError(f"Blender imported no objects from {source}")
+    return imported
+
+
+def import_geometry_candidate(source: Path) -> List[bpy.types.Object]:
+    """Import a bounded geometry source, including an audited local Blend checkpoint.
+
+    Provider animation/model inputs remain limited to FBX and glTF through
+    ``import_candidate``.  A dual-source geometry handoff may additionally use
+    a job-root-local ``.blend`` checkpoint so an already audited runtime mesh
+    can receive weights from a separately licensed source rig without being
+    round-tripped through an untracked interchange export.
+    """
+
+    if source.suffix.lower() != ".blend":
+        return import_candidate(source)
+
+    before = set(bpy.data.objects)
+    with bpy.data.libraries.load(str(source), link=False) as (data_from, data_to):
+        data_to.objects = [name for name in data_from.objects if name]
+    for obj in data_to.objects:
+        if obj is not None:
+            bpy.context.scene.collection.objects.link(obj)
+    imported = [obj for obj in bpy.data.objects if obj not in before]
+    if not imported:
+        raise RuntimeError(f"Blender appended no objects from geometry checkpoint {source}")
     return imported
 
 
@@ -279,18 +315,33 @@ def duplicate_hierarchy(
 
 
 def bind_geometry_to_existing_rig(
-    source_mesh: bpy.types.Object,
+    source_meshes: List[bpy.types.Object],
     target_mesh: bpy.types.Object,
     target_armature: bpy.types.Object,
+    weight_mode: str = "four_nearest",
 ) -> Dict[str, Any]:
     """Transfer rest-pose weights from the provider rig mesh to a closed mesh candidate."""
 
-    source_minimum, source_maximum = world_bounds([source_mesh])
+    if weight_mode not in {"four_nearest", "automatic_bone_heat", "bone_distance"}:
+        raise ValueError(
+            "geometry_weight_mode must be four_nearest, automatic_bone_heat, or bone_distance."
+        )
+
+    if not source_meshes:
+        raise RuntimeError("Dual-source rig transfer requires at least one source rig mesh.")
+    source_minimum, source_maximum = world_bounds(source_meshes)
     target_minimum, target_maximum = world_bounds([target_mesh])
     source_height = source_maximum.z - source_minimum.z
     target_height = target_maximum.z - target_minimum.z
     if source_height <= 0 or target_height <= 0:
         raise RuntimeError("Dual-source rig transfer requires positive source and target heights.")
+
+    target_world = target_mesh.matrix_world.copy()
+    target_mesh.parent = None
+    target_mesh.matrix_world = target_world
+    for modifier in list(target_mesh.modifiers):
+        if modifier.type == "ARMATURE":
+            target_mesh.modifiers.remove(modifier)
 
     target_mesh.scale *= source_height / target_height
     bpy.context.view_layer.update()
@@ -302,37 +353,68 @@ def bind_geometry_to_existing_rig(
 
     for group in list(target_mesh.vertex_groups):
         target_mesh.vertex_groups.remove(group)
-    target_groups = {
-        group.name: target_mesh.vertex_groups.new(name=group.name)
-        for group in source_mesh.vertex_groups
-    }
-    if not target_groups:
-        raise RuntimeError("Dual-source rig transfer found no provider vertex groups.")
-
-    tree = KDTree(len(source_mesh.data.vertices))
-    for vertex in source_mesh.data.vertices:
-        tree.insert(source_mesh.matrix_world @ vertex.co, vertex.index)
-    tree.balance()
-    source_groups = list(source_mesh.vertex_groups)
     transferred_vertices = 0
-    for vertex in target_mesh.data.vertices:
-        nearest = tree.find_n(target_mesh.matrix_world @ vertex.co, 4)
-        accumulated: Dict[str, float] = {}
-        for _, source_index, distance in nearest:
-            influence = 1.0 / max(distance, 1e-6)
-            for source_group in source_groups:
-                try:
-                    weight = source_group.weight(source_index)
-                except RuntimeError:
-                    continue
-                if weight > 0:
-                    accumulated[source_group.name] = accumulated.get(source_group.name, 0.0) + weight * influence
-        total = sum(accumulated.values())
-        if total <= 1e-8:
-            continue
-        for name, weight in accumulated.items():
-            target_groups[name].add([vertex.index], weight / total, "REPLACE")
-        transferred_vertices += 1
+    if weight_mode == "four_nearest":
+        source_group_names = sorted({group.name for mesh in source_meshes for group in mesh.vertex_groups})
+        target_groups = {name: target_mesh.vertex_groups.new(name=name) for name in source_group_names}
+        if not target_groups:
+            raise RuntimeError("Dual-source rig transfer found no provider vertex groups.")
+        source_vertices = [
+            (mesh, vertex)
+            for mesh in source_meshes
+            for vertex in mesh.data.vertices
+        ]
+        tree = KDTree(len(source_vertices))
+        for source_index, (mesh, vertex) in enumerate(source_vertices):
+            tree.insert(mesh.matrix_world @ vertex.co, source_index)
+        tree.balance()
+        for vertex in target_mesh.data.vertices:
+            nearest = tree.find_n(target_mesh.matrix_world @ vertex.co, 4)
+            accumulated: Dict[str, float] = {}
+            for _, source_index, distance in nearest:
+                influence = 1.0 / max(distance, 1e-6)
+                source_mesh, source_vertex = source_vertices[source_index]
+                for source_group in source_mesh.vertex_groups:
+                    try:
+                        weight = source_group.weight(source_vertex.index)
+                    except RuntimeError:
+                        continue
+                    if weight > 0:
+                        accumulated[source_group.name] = accumulated.get(source_group.name, 0.0) + weight * influence
+            total = sum(accumulated.values())
+            if total <= 1e-8:
+                continue
+            for name, weight in accumulated.items():
+                target_groups[name].add([vertex.index], weight / total, "REPLACE")
+            transferred_vertices += 1
+    elif weight_mode == "bone_distance":
+        deform_bones = [bone for bone in target_armature.data.bones if bone.use_deform]
+        if not deform_bones:
+            raise RuntimeError("Provider armature exposes no deform bones for distance weighting.")
+        target_groups = {
+            bone.name: target_mesh.vertex_groups.new(name=bone.name)
+            for bone in deform_bones
+        }
+        bone_segments = []
+        for bone in deform_bones:
+            head = target_armature.matrix_world @ bone.head_local
+            tail = target_armature.matrix_world @ bone.tail_local
+            segment = tail - head
+            length_squared = max(float(segment.length_squared), 1e-12)
+            bone_segments.append((bone.name, head, segment, length_squared))
+        for vertex in target_mesh.data.vertices:
+            position = target_mesh.matrix_world @ vertex.co
+            distances = []
+            for bone_name, head, segment, length_squared in bone_segments:
+                projection = max(0.0, min(1.0, float((position - head).dot(segment)) / length_squared))
+                closest = head + segment * projection
+                distances.append((float((position - closest).length), bone_name))
+            nearest = sorted(distances, key=lambda item: (item[0], item[1]))[:4]
+            weighted = [(bone_name, 1.0 / max(distance * distance, 1e-8)) for distance, bone_name in nearest]
+            total = sum(weight for _, weight in weighted)
+            for bone_name, weight in weighted:
+                target_groups[bone_name].add([vertex.index], weight / total, "REPLACE")
+            transferred_vertices += 1
 
     mesh_world_scale = target_mesh.matrix_world.to_scale()
     rig_world_scale = target_armature.matrix_world.to_scale()
@@ -352,18 +434,57 @@ def bind_geometry_to_existing_rig(
     target_mesh.scale = rig_world_scale
     bpy.context.view_layer.update()
     world_matrix = target_mesh.matrix_world.copy()
-    target_mesh.parent = target_armature
-    target_mesh.parent_type = "OBJECT"
-    target_mesh.matrix_world = world_matrix
-    modifier = target_mesh.modifiers.new("CHAOSX_RIG_TRANSFER", type="ARMATURE")
-    modifier.object = target_armature
+    if weight_mode == "automatic_bone_heat":
+        bpy.ops.object.select_all(action="DESELECT")
+        target_mesh.select_set(True)
+        target_armature.select_set(True)
+        bpy.context.view_layer.objects.active = target_armature
+        bpy.ops.object.parent_set(type="ARMATURE_AUTO")
+        target_mesh.matrix_world = world_matrix
+        for vertex in target_mesh.data.vertices:
+            influences = sorted(
+                ((item.group, float(item.weight)) for item in vertex.groups if item.weight > 0.0),
+                key=lambda item: item[1],
+                reverse=True,
+            )[:4]
+            keep = {group_index for group_index, _ in influences}
+            total = sum(weight for _, weight in influences)
+            for group in target_mesh.vertex_groups:
+                if group.index not in keep:
+                    group.remove([vertex.index])
+            if total > 0.0:
+                for group_index, weight in influences:
+                    target_mesh.vertex_groups[group_index].add([vertex.index], weight / total, "REPLACE")
+                transferred_vertices += 1
+        modifier = next(
+            (item for item in target_mesh.modifiers if item.type == "ARMATURE" and item.object is target_armature),
+            None,
+        )
+        if modifier is None or transferred_vertices != len(target_mesh.data.vertices):
+            raise RuntimeError(
+                "Automatic bone-heat binding did not produce a complete armature binding for every target vertex."
+            )
+    else:
+        target_mesh.parent = target_armature
+        target_mesh.parent_type = "OBJECT"
+        target_mesh.matrix_world = world_matrix
+        modifier = target_mesh.modifiers.new("CHAOSX_RIG_TRANSFER", type="ARMATURE")
+        modifier.object = target_armature
     modifier.use_deform_preserve_volume = True
     return {
-        "method": "four-nearest-provider-vertex inverse-distance weight transfer",
-        "source_mesh": source_mesh.name,
+        "method": (
+            "Blender automatic bone-heat weights clamped and normalized to four influences"
+            if weight_mode == "automatic_bone_heat"
+            else (
+                "four-nearest provider deform-bone segment inverse-square distance weights"
+                if weight_mode == "bone_distance"
+                else "four-nearest-provider-vertex inverse-distance weight transfer"
+            )
+        ),
+        "source_meshes": sorted(mesh.name for mesh in source_meshes),
         "target_mesh": target_mesh.name,
         "armature": target_armature.name,
-        "source_vertices": len(source_mesh.data.vertices),
+        "source_vertices": sum(len(mesh.data.vertices) for mesh in source_meshes),
         "target_vertices": len(target_mesh.data.vertices),
         "transferred_vertices": transferred_vertices,
         "alignment_scale": source_height / target_height,
@@ -1636,19 +1757,31 @@ def weight_metrics() -> List[Dict[str, Any]]:
     return records
 
 
-def sanitize_working_weights() -> Dict[str, Any]:
+def sanitize_working_weights(*, preserve_skeleton_metadata: bool = False) -> Dict[str, Any]:
     """Keep PDX-compatible skinning influences without altering provider geometry."""
 
     records: List[Dict[str, Any]] = []
     for obj in mesh_objects():
-        armature_modifier = next(
-            (
-                modifier
-                for modifier in obj.modifiers
-                if modifier.type == "ARMATURE" and modifier.object is not None
-            ),
-            None,
-        )
+        armature_modifiers = [
+            modifier
+            for modifier in obj.modifiers
+            if modifier.type == "ARMATURE" and modifier.object is not None
+        ]
+        named_transfer_modifiers = [
+            modifier for modifier in armature_modifiers
+            if modifier.name == "CHAOSX_RIG_TRANSFER"
+        ]
+        if len(named_transfer_modifiers) == 1:
+            armature_modifier = named_transfer_modifiers[0]
+        elif len(armature_modifiers) == 1:
+            armature_modifier = armature_modifiers[0]
+        elif armature_modifiers:
+            raise RuntimeError(
+                f"Weight sanitization requires one explicit working armature modifier on {obj.name}; "
+                f"found {[modifier.name for modifier in armature_modifiers]}."
+            )
+        else:
+            armature_modifier = None
         if armature_modifier is None:
             continue
         armature = armature_modifier.object
@@ -1706,6 +1839,27 @@ def sanitize_working_weights() -> Dict[str, Any]:
                 group.add([vertex.index], weight / total, "REPLACE")
             normalized_vertices += 1
 
+        weighted_bone_names = {
+            obj.vertex_groups[assignment.group].name
+            for vertex in obj.data.vertices
+            for assignment in vertex.groups
+            if assignment.weight > 0.0
+            and obj.vertex_groups[assignment.group].name in bone_names
+        }
+        required_export_bones = set(weighted_bone_names)
+        for bone_name in list(weighted_bone_names):
+            bone = armature.data.bones.get(bone_name)
+            while bone is not None:
+                required_export_bones.add(bone.name)
+                bone = bone.parent
+        unignored_export_bones = []
+        if not preserve_skeleton_metadata:
+            for bone_name in sorted(required_export_bones):
+                bone = armature.data.bones.get(bone_name)
+                if bone is not None and bone.get("pdxIgnoreJoint"):
+                    bone["pdxIgnoreJoint"] = False
+                    unignored_export_bones.append(bone_name)
+
         records.append(
             {
                 "object": obj.name,
@@ -1716,10 +1870,18 @@ def sanitize_working_weights() -> Dict[str, Any]:
                 "removed_influences": removed_influences,
                 "normalized_vertices": normalized_vertices,
                 "zero_weight_vertices_repaired": zero_weight_repaired,
+                "weighted_bones": sorted(weighted_bone_names),
+                "required_export_bones": sorted(required_export_bones),
+                "unignored_export_bones": unignored_export_bones,
             }
         )
     return {
         "policy": "keep_four_strongest_bone_influences_and_renormalize",
+        "skeleton_metadata_policy": (
+            "preserve_checkpoint_skeleton_metadata"
+            if preserve_skeleton_metadata
+            else "unignore_required_export_bones"
+        ),
         "objects": records,
         "weights_after": weight_metrics(),
     }
@@ -1937,7 +2099,7 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     geometry_transfer = None
     if payload.get("geometry_source_rel"):
         geometry_source = within(job, str(payload["geometry_source_rel"]))
-        imported_geometry = import_candidate(geometry_source)
+        imported_geometry = import_geometry_candidate(geometry_source)
         imported_rig = imported
         imported = imported_geometry + imported_rig
         geometry_candidates = [
@@ -1948,10 +2110,37 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
             obj for obj in imported_rig
             if obj.type == "MESH" and obj.name not in excluded_names
         ]
-        armature_candidates = [obj for obj in imported_rig if obj.type == "ARMATURE"]
-        if len(geometry_candidates) != 1 or len(rig_mesh_candidates) != 1 or len(armature_candidates) != 1:
+        requested_source_mesh_names = {
+            str(name) for name in payload.get("source_mesh_names", [])
+        }
+        if requested_source_mesh_names:
+            rig_mesh_candidates = [
+                obj for obj in rig_mesh_candidates if obj.name in requested_source_mesh_names
+            ]
+            observed_source_mesh_names = {obj.name for obj in rig_mesh_candidates}
+            if observed_source_mesh_names != requested_source_mesh_names:
+                raise RuntimeError(
+                    "Dual-source rig preparation did not find every explicitly named source mesh: "
+                    + json.dumps(
+                        {
+                            "requested": sorted(requested_source_mesh_names),
+                            "observed": sorted(observed_source_mesh_names),
+                        },
+                        sort_keys=True,
+                    )
+                )
+        armature_candidates = [
+            obj for obj in imported_rig
+            if obj.type == "ARMATURE" and obj.name not in excluded_names
+        ]
+        requested_source_armature = str(payload.get("source_armature_name") or "")
+        if requested_source_armature:
+            armature_candidates = [
+                obj for obj in armature_candidates if obj.name == requested_source_armature
+            ]
+        if len(geometry_candidates) != 1 or not rig_mesh_candidates or len(armature_candidates) != 1:
             raise RuntimeError(
-                "Dual-source humanoid preparation requires one geometry mesh, one rig mesh, and one armature."
+                "Dual-source rig preparation requires one geometry mesh, one or more explicitly selected rig meshes, and one source armature."
             )
         working_source = [geometry_candidates[0], armature_candidates[0]]
         for obj in imported:
@@ -1964,9 +2153,10 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         target_mesh = working_by_source[geometry_candidates[0].name]
         target_armature = working_by_source[armature_candidates[0].name]
         geometry_transfer = bind_geometry_to_existing_rig(
-            rig_mesh_candidates[0],
+            rig_mesh_candidates,
             target_mesh,
             target_armature,
+            str(payload.get("geometry_weight_mode") or "four_nearest"),
         )
     else:
         for obj in imported:
@@ -1997,13 +2187,46 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         runtime_entity_scale,
         str(payload.get("runtime_footprint_policy", "reject")),
     )
-    triangulation = triangulate_and_normals()
+    preserve_geometry_topology = bool(payload.get("preserve_geometry_topology", False))
+    if preserve_geometry_topology and (
+        payload.get("repair_before_reduction", False)
+        or int(payload.get("target_triangles", 0)) > 0
+    ):
+        raise ValueError(
+            "Preserved geometry topology cannot be combined with repair or decimation."
+        )
+    triangulation = (
+        {
+            "applied": False,
+            "policy": "preserve_audited_geometry_topology",
+            "triangulated_objects": [],
+        }
+        if preserve_geometry_topology
+        else triangulate_and_normals()
+    )
     weld_distance = float(payload.get("topology_weld_distance", 1e-5))
     pre_reduction_topology_repair = None
     if payload.get("repair_before_reduction", False):
         pre_reduction_topology_repair = repair_open_surface_boundaries(weld_distance)
-    reduction = controlled_decimate(int(payload.get("target_triangles", 0)))
-    topology_repair = repair_open_surface_boundaries(weld_distance)
+    reduction = (
+        {
+            "applied": False,
+            "policy": "preserve_audited_geometry_topology",
+            "target_triangles": 0,
+        }
+        if preserve_geometry_topology
+        else controlled_decimate(int(payload.get("target_triangles", 0)))
+    )
+    topology_repair = (
+        {
+            "applied": False,
+            "policy": "preserve_audited_geometry_topology",
+            "method": "skipped for audited geometry handoff",
+            "objects": [],
+        }
+        if preserve_geometry_topology
+        else repair_open_surface_boundaries(weld_distance)
+    )
     if pre_reduction_topology_repair is not None:
         topology_repair = {
             "applied": bool(
@@ -2194,25 +2417,80 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     preview_paths = []
+    action_name = str(req["payload"].get("action_name") or "")
+    inspected_target_armature = None
+    inspected_action_sha256 = None
+    muted_nla_tracks: List[str] = []
+    if action_name:
+        rigs = armatures()
+        requested_target_armature = str(req["payload"].get("target_armature_name") or "")
+        if requested_target_armature:
+            matching_rigs = [
+                rig for rig in armatures(working_only=False)
+                if rig.name == requested_target_armature
+            ]
+            if len(matching_rigs) != 1:
+                raise RuntimeError(
+                    f"Action inspection requires one exact target armature named {requested_target_armature}."
+                )
+            inspected_target_armature = matching_rigs[0]
+            inspected_target_armature["chaosx_working"] = True
+            promoted_meshes = []
+            for obj in mesh_objects(working_only=False):
+                if obj.parent is inspected_target_armature or any(
+                    modifier.type == "ARMATURE" and modifier.object is inspected_target_armature
+                    for modifier in obj.modifiers
+                ):
+                    obj["chaosx_working"] = True
+                    obj.hide_render = False
+                    promoted_meshes.append(obj.name)
+            if not promoted_meshes:
+                raise RuntimeError(
+                    f"Action inspection found no direct mesh consumers for {requested_target_armature}."
+                )
+            rigs = [inspected_target_armature]
+        action = bpy.data.actions.get(action_name)
+        if len(rigs) != 1 or action is None:
+            raise RuntimeError(f"Action inspection selection failed for {action_name}.")
+        rigs[0].animation_data_create()
+        for track in rigs[0].animation_data.nla_tracks:
+            track.mute = True
+            muted_nla_tracks.append(track.name)
+        rigs[0].animation_data.action = action
+        action_records = []
+        for fcurve, slot in action_fcurves(action):
+            action_records.append(
+                {
+                    "slot": getattr(slot, "identifier", None),
+                    "data_path": fcurve.data_path,
+                    "array_index": int(fcurve.array_index),
+                    "keyframes": [
+                        [
+                            float(point.co.x),
+                            float(point.co.y),
+                            str(point.interpolation),
+                        ]
+                        for point in fcurve.keyframe_points
+                    ],
+                }
+            )
+        inspected_action_sha256 = hashlib.sha256(
+            json.dumps(action_records, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest().upper()
+        requested_frame = int(req["payload"].get("preview_frame", -1))
+        if requested_frame < 0:
+            start, end = action.frame_range
+            requested_frame = int(round((start + end) * 0.5))
+        bpy.context.scene.frame_set(requested_frame)
+        bpy.context.view_layer.update()
     if req["payload"].get("render_previews"):
-        action_name = str(req["payload"].get("action_name") or "")
-        if action_name:
-            rigs = armatures()
-            action = bpy.data.actions.get(action_name)
-            if len(rigs) != 1 or action is None:
-                raise RuntimeError(f"Preview action selection failed for {action_name}.")
-            rigs[0].animation_data_create()
-            rigs[0].animation_data.action = action
-            requested_frame = int(req["payload"].get("preview_frame", -1))
-            if requested_frame < 0:
-                start, end = action.frame_range
-                requested_frame = int(round((start + end) * 0.5))
-            bpy.context.scene.frame_set(requested_frame)
-            bpy.context.view_layer.update()
         runtime_stem = safe_name(str(req["payload"].get("runtime_stem") or blend.stem))
         preview_paths = render_previews(job, runtime_stem, req["payload"].get("preview_view_names") or None)
     return {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "inspected_target_armature": inspected_target_armature.name if inspected_target_armature else None,
+        "inspected_action_sha256": inspected_action_sha256,
+        "muted_nla_tracks": muted_nla_tracks,
         "objects": [
             {
                 "name": obj.name,
@@ -2236,6 +2514,16 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
         "evaluated_actions": evaluated_action_metrics(),
         "weights": weight_metrics(),
         "materials": materials,
+        "pose_bones": [
+            {
+                "armature": rig.name,
+                "bone": bone.name,
+                "head": list(rig.matrix_world @ bone.head),
+                "tail": list(rig.matrix_world @ bone.tail),
+            }
+            for rig in armatures()
+            for bone in rig.pose.bones
+        ],
         "previews": preview_paths,
     }
 
@@ -2686,6 +2974,27 @@ def select_armature_and_action(action_name: str) -> Tuple[bpy.types.Object, bpy.
     return rig, action, int(math.floor(start)), int(math.ceil(end))
 
 
+def scale_aware_retarget_location_scale(
+    data_length_ratio: float,
+    source_world_scale: Vector,
+    target_world_scale: Vector,
+) -> float:
+    """Convert a rest-bone data ratio to the corresponding uniform world-length ratio."""
+
+    for label, scale in (
+        ("source", source_world_scale),
+        ("target", target_world_scale),
+    ):
+        if min(scale) <= 0.0 or max(scale) - min(scale) > 1e-5:
+            raise ValueError(
+                f"Animation transfer requires a positive uniform {label} armature world scale: "
+                + json.dumps(list(scale))
+            )
+    source_uniform_world_scale = float(sum(source_world_scale) / 3.0)
+    target_uniform_world_scale = float(sum(target_world_scale) / 3.0)
+    return data_length_ratio * target_uniform_world_scale / source_uniform_world_scale
+
+
 def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     """Transfer one provider skeletal action onto the approved working rig.
 
@@ -2701,19 +3010,105 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     blend = within(job, payload["blend_rel"])
     source = within(job, payload["source_rel"])
+    provenance_path = within(job, payload["provenance_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
-    action_name = str(payload.get("action_name") or "chaos_assault_battalion_action")
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+", action_name):
-        raise ValueError("Imported runtime action names must use stable alphanumeric, dot, dash, or underscore identifiers.")
+    source_action_name = explicit_action_name(payload.get("source_action_name"), "source_action_name")
+    target_armature_name = explicit_safe_name(payload.get("target_armature_name"), "target_armature_name")
+    action_name = explicit_action_name(payload.get("target_action_name"), "target_action_name")
+    source_kind = str(payload.get("source_kind") or "")
+    if source_kind not in {"meshy_animate", "professional_source"}:
+        raise ValueError("source_kind must be meshy_animate or professional_source.")
+    source_reference_id = explicit_reference_id(payload.get("source_reference_id"), "source_reference_id")
+    expected_source_sha256 = str(payload.get("source_sha256") or "").upper()
+    if not re.fullmatch(r"[0-9A-F]{64}", expected_source_sha256):
+        raise ValueError("source_sha256 must be an explicit 64-character SHA-256 digest.")
+    actual_source_sha256 = file_sha256(source)
+    if actual_source_sha256 != expected_source_sha256:
+        raise RuntimeError(
+            "Animation source checksum did not match the verified provenance receipt: "
+            f"expected {expected_source_sha256}, observed {actual_source_sha256}."
+        )
+    try:
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f"Animation provenance receipt is not valid JSON: {provenance_path.name}") from exc
+    required_provenance = {
+        "verification_status": "verified",
+        "source_kind": source_kind,
+        "source_reference_id": source_reference_id,
+        "source_action_name": source_action_name,
+        "source_sha256": expected_source_sha256,
+    }
+    mismatched_provenance = {
+        key: {"expected": value, "observed": provenance.get(key)}
+        for key, value in required_provenance.items()
+        if provenance.get(key) != value
+    }
+    if mismatched_provenance:
+        raise ValueError(
+            "Animation provenance receipt does not verify the requested source action: "
+            + json.dumps(mismatched_provenance, sort_keys=True)
+        )
 
     bpy.ops.wm.open_mainfile(filepath=str(blend))
+    audited_target_promotion = {
+        "requested": bool(payload.get("promote_audited_target", False)),
+        "applied": False,
+        "target_armature": None,
+        "promoted_meshes": [],
+        "policy": "working objects only",
+    }
     target_rigs = armatures()
-    if len(target_rigs) != 1:
+    if not target_rigs and audited_target_promotion["requested"]:
+        all_target_rigs = armatures(working_only=False)
+        matching_audited_rigs = [rig for rig in all_target_rigs if rig.name == target_armature_name]
+        if len(all_target_rigs) != 1 or len(matching_audited_rigs) != 1:
+            raise RuntimeError(
+                "Audited-target promotion requires exactly one scene armature with the explicit target name; "
+                + json.dumps(
+                    {
+                        "requested_target_armature": target_armature_name,
+                        "available_armatures": sorted(rig.name for rig in all_target_rigs),
+                    },
+                    sort_keys=True,
+                )
+            )
+        promoted_rig = matching_audited_rigs[0]
+        promoted_meshes = []
+        for obj in mesh_objects(working_only=False):
+            consumes_target = obj.parent is promoted_rig or any(
+                modifier.type == "ARMATURE" and modifier.object is promoted_rig
+                for modifier in obj.modifiers
+            )
+            if consumes_target:
+                obj["chaosx_working"] = True
+                promoted_meshes.append(obj.name)
+        if not promoted_meshes:
+            raise RuntimeError(
+                "Audited-target promotion found no mesh parented or armature-modified to the requested rig."
+            )
+        promoted_rig["chaosx_working"] = True
+        audited_target_promotion = {
+            "requested": True,
+            "applied": True,
+            "target_armature": promoted_rig.name,
+            "promoted_meshes": sorted(promoted_meshes),
+            "policy": "promoted only the uniquely named audited armature and its direct mesh consumers",
+        }
+        target_rigs = [promoted_rig]
+    matching_target_rigs = [rig for rig in target_rigs if rig.name == target_armature_name]
+    if len(target_rigs) != 1 or len(matching_target_rigs) != 1:
         raise RuntimeError(
-            "Animation transfer requires exactly one calibrated working armature; "
-            f"found {len(target_rigs)}."
+            "Animation transfer requires exactly one calibrated working armature with the explicit target name; "
+            + json.dumps(
+                {
+                    "requested_target_armature": target_armature_name,
+                    "available_armatures": sorted(rig.name for rig in target_rigs),
+                },
+                sort_keys=True,
+            )
         )
-    target_rig = target_rigs[0]
+    target_rig = matching_target_rigs[0]
     before_objects = set(bpy.data.objects)
     before_actions = set(bpy.data.actions)
     imported = import_candidate(source)
@@ -2725,19 +3120,29 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         )
     source_rig = imported_rigs[0]
     source_armature_name = source_rig.name
-    source_action = source_rig.animation_data.action if source_rig.animation_data else None
+    source_actions = [action for action in bpy.data.actions if action not in before_actions]
+    source_action = next((action for action in source_actions if action.name == source_action_name), None)
+    if source_action is None and source_rig.animation_data:
+        active_source_action = source_rig.animation_data.action
+        if active_source_action is not None and active_source_action.name == source_action_name:
+            source_action = active_source_action
     if source_action is None:
-        source_actions = [action for action in bpy.data.actions if action not in before_actions]
-        if len(source_actions) == 1:
-            source_action = source_actions[0]
-    if source_action is None:
-        raise RuntimeError(f"Provider animation import exposed no action: {source}")
+        raise RuntimeError(
+            "Verified animation source did not expose the explicitly named source action: "
+            + json.dumps(
+                {
+                    "requested_source_action": source_action_name,
+                    "available_source_actions": sorted(action.name for action in source_actions),
+                },
+                sort_keys=True,
+            )
+        )
     source_action_name = source_action.name
 
     source_curves = list(action_fcurves(source_action))
     if not source_curves:
         raise RuntimeError(f"Provider animation action contains no F-curves: {source_action.name}")
-    bone_names = sorted(
+    source_bone_names = sorted(
         {
             match.group(1)
             for fcurve, _ in source_curves
@@ -2746,16 +3151,147 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         }
     )
     target_bone_names = {bone.name for bone in target_rig.data.bones}
-    missing_bones = sorted(set(bone_names) - target_bone_names)
-    if len(bone_names) < 6:
+    raw_bone_chains = payload.get("bone_chains") or {}
+    if not isinstance(raw_bone_chains, dict):
+        raise ValueError("bone_chains must map target bone names to ordered source bone-name lists.")
+    bone_chains: Dict[str, List[str]] = {}
+    for raw_target, raw_sources in raw_bone_chains.items():
+        target_name = explicit_safe_name(raw_target, "bone_chains target")
+        if not isinstance(raw_sources, list) or not raw_sources:
+            raise ValueError(f"bone_chains[{target_name!r}] must be a non-empty list.")
+        source_names = [
+            explicit_safe_name(source_name, f"bone_chains[{target_name!r}] source")
+            for source_name in raw_sources
+        ]
+        bone_chains[target_name] = source_names
+    if not bone_chains:
+        missing_bones = sorted(set(source_bone_names) - target_bone_names)
+        if missing_bones:
+            raise RuntimeError(
+                "Provider animation bone channels do not match the calibrated rig: "
+                + json.dumps({"missing_bones": missing_bones, "source_action": source_action.name}, sort_keys=True)
+            )
+        bone_chains = {name: [name] for name in source_bone_names}
+    missing_target_bones = sorted(set(bone_chains) - target_bone_names)
+    missing_source_bones = sorted(
+        {
+            source_name
+            for source_names in bone_chains.values()
+            for source_name in source_names
+            if source_name not in source_bone_names or source_rig.data.bones.get(source_name) is None
+        }
+    )
+    if len(bone_chains) < 6:
         raise RuntimeError(
-            f"Provider animation action is not a usable skeletal action: only {len(bone_names)} driven bones."
+            f"Provider animation action is not a usable skeletal action: only {len(bone_chains)} mapped target bones."
         )
-    if missing_bones:
+    if missing_target_bones or missing_source_bones:
         raise RuntimeError(
-            "Provider animation bone channels do not match the calibrated rig: "
-            + json.dumps({"missing_bones": missing_bones, "source_action": source_action.name}, sort_keys=True)
+            "Provider animation bone chains do not match the source and calibrated target rigs: "
+            + json.dumps(
+                {
+                    "missing_source_bones": missing_source_bones,
+                    "missing_target_bones": missing_target_bones,
+                    "source_action": source_action.name,
+                },
+                sort_keys=True,
+            )
         )
+
+    source_rig.animation_data_create()
+    source_rig.animation_data.action = source_action
+    source_start, source_end = source_action.frame_range
+    frame_start = int(math.floor(float(source_start)))
+    frame_end = int(math.ceil(float(source_end)))
+    if frame_end <= frame_start:
+        raise RuntimeError(f"Provider animation action has no usable frame span: {source_action.name}")
+    source_lengths = {
+        target_name: max(
+            sum(float(source_rig.data.bones[name].length) for name in source_names),
+            1e-8,
+        )
+        for target_name, source_names in bone_chains.items()
+    }
+    length_ratios = sorted(
+        float(target_rig.data.bones[target_name].length) / source_lengths[target_name]
+        for target_name in bone_chains
+    )
+    data_length_ratio = length_ratios[len(length_ratios) // 2]
+    source_world_scale = source_rig.matrix_world.to_scale()
+    target_world_scale = target_rig.matrix_world.to_scale()
+    try:
+        location_scale = scale_aware_retarget_location_scale(
+            data_length_ratio,
+            source_world_scale,
+            target_world_scale,
+        )
+    except ValueError as exc:
+        raise RuntimeError(
+            f"{exc} Source armature: {source_rig.name}; target armature: {target_rig.name}."
+        ) from exc
+    source_pose_cache: Dict[int, Dict[str, Tuple[Vector, Quaternion]]] = {}
+    target_bones_by_depth = sorted(
+        bone_chains,
+        key=lambda name: len(target_rig.data.bones[name].parent_recursive),
+    )
+    for frame in range(frame_start, frame_end + 1):
+        bpy.context.scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        source_deltas: Dict[str, Tuple[Vector, Quaternion]] = {}
+        for target_name, source_names in bone_chains.items():
+            first_pose_bone = source_rig.pose.bones[source_names[0]]
+            last_pose_bone = source_rig.pose.bones[source_names[-1]]
+            first_rest_bone = source_rig.data.bones[source_names[0]]
+            last_rest_bone = source_rig.data.bones[source_names[-1]]
+            pose_parent_matrix = (
+                first_pose_bone.parent.matrix.copy()
+                if first_pose_bone.parent is not None
+                else Matrix.Identity(4)
+            )
+            rest_parent_matrix = (
+                first_rest_bone.parent.matrix_local.copy()
+                if first_rest_bone.parent is not None
+                else Matrix.Identity(4)
+            )
+            animated_chain = pose_parent_matrix.inverted_safe() @ last_pose_bone.matrix
+            rest_chain = rest_parent_matrix.inverted_safe() @ last_rest_bone.matrix_local
+            delta = rest_chain.inverted_safe() @ animated_chain
+            location, _, _ = delta.decompose()
+            source_world_rotation = (
+                last_pose_bone.matrix.to_quaternion().normalized()
+                @ last_rest_bone.matrix_local.to_quaternion().normalized().inverted()
+            ).normalized()
+            source_deltas[target_name] = (location.copy(), source_world_rotation)
+
+        frame_pose: Dict[str, Tuple[Vector, Quaternion]] = {}
+        desired_target_world_rotations: Dict[str, Quaternion] = {}
+        for target_name in target_bones_by_depth:
+            target_rest_bone = target_rig.data.bones[target_name]
+            target_rest_world_rotation = target_rest_bone.matrix_local.to_quaternion().normalized()
+            source_location, source_rotation = source_deltas[target_name]
+            desired_world_rotation = (source_rotation @ target_rest_world_rotation).normalized()
+            target_parent = target_rest_bone.parent
+            if target_parent is None:
+                parent_rest_world_rotation = Quaternion()
+                parent_desired_world_rotation = Quaternion()
+            else:
+                parent_rest_world_rotation = target_parent.matrix_local.to_quaternion().normalized()
+                parent_desired_world_rotation = desired_target_world_rotations.get(
+                    target_parent.name,
+                    parent_rest_world_rotation,
+                )
+            target_rest_local_rotation = (
+                parent_rest_world_rotation.inverted() @ target_rest_world_rotation
+            ).normalized()
+            desired_local_rotation = (
+                parent_desired_world_rotation.inverted() @ desired_world_rotation
+            ).normalized()
+            target_basis_rotation = (
+                target_rest_local_rotation.inverted() @ desired_local_rotation
+            ).normalized()
+            desired_target_world_rotations[target_name] = desired_world_rotation
+            frame_pose[target_name] = (source_location, target_basis_rotation)
+        source_pose_cache[frame] = frame_pose
 
     existing = bpy.data.actions.get(action_name)
     if existing is not None:
@@ -2763,23 +3299,120 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
             if obj.animation_data and obj.animation_data.action == existing:
                 obj.animation_data.action = None
         bpy.data.actions.remove(existing)
-    transferred = source_action.copy()
-    transferred.name = action_name
+    transferred = bpy.data.actions.new(action_name)
     transferred.use_fake_user = True
+    transferred["chaosx_animation_source_kind"] = source_kind
+    transferred["chaosx_animation_source_reference_id"] = source_reference_id
+    transferred["chaosx_animation_source_sha256"] = actual_source_sha256
+    transferred["chaosx_animation_source_action"] = source_action_name
+    transferred["chaosx_animation_provenance_rel"] = str(provenance_path.relative_to(job)).replace("\\", "/")
+    transferred["chaosx_animation_processing_policy"] = "verified_source_transfer_only"
     target_rig.animation_data_create()
     target_rig.animation_data.action = transferred
     bpy.context.view_layer.objects.active = target_rig
     target_rig.select_set(True)
+    target_root = next((bone for bone in target_rig.data.bones if bone.parent is None), None)
+    target_root_name = target_root.name if target_root is not None and target_root.name in bone_chains else ""
+    source_root_location = (
+        source_pose_cache[frame_start][target_root_name][0]
+        if target_root_name
+        else Vector()
+    )
+    for frame in range(frame_start, frame_end + 1):
+        bpy.context.scene.frame_set(frame)
+        for target_name in bone_chains:
+            target_bone = target_rig.pose.bones[target_name]
+            source_location, source_rotation = source_pose_cache[frame][target_name]
+            target_bone.rotation_mode = "QUATERNION"
+            if target_name == target_root_name:
+                root_delta = source_location - source_root_location
+                target_bone.location = Vector((0.0, 0.0, root_delta.z * location_scale))
+            else:
+                target_bone.location = Vector((0.0, 0.0, 0.0))
+            target_bone.rotation_quaternion = source_rotation
+            target_bone.scale = (1.0, 1.0, 1.0)
+            target_bone.keyframe_insert(data_path="location", frame=frame, group=target_name)
+            target_bone.keyframe_insert(data_path="rotation_quaternion", frame=frame, group=target_name)
+        bpy.context.view_layer.update()
 
     scale_cleanup = sanitize_action_scale_channels()
-    root_cleanup = sanitize_root_translation_channels()
-    start, end = transferred.frame_range
-    frame_start = int(math.floor(float(start)))
-    frame_end = int(math.ceil(float(end)))
-    if frame_end <= frame_start:
-        raise RuntimeError(f"Provider animation action has no usable frame span: {transferred.name}")
+    root_cleanup = {
+        "action": transferred.name,
+        "policy": "provider armature-space motion reconstructed hierarchy-first through target rest and animated parent bases; target-root X/Y motion removed and Z retained; rest-bone data ratio is converted to a source-to-target world-length ratio",
+        "data_length_ratio": data_length_ratio,
+        "source_armature_world_scale": list(source_world_scale),
+        "target_armature_world_scale": list(target_world_scale),
+        "location_scale": location_scale,
+        "target_root": target_root_name or None,
+        "source_root_location": list(source_root_location),
+    }
     bpy.context.scene.frame_start = frame_start
     bpy.context.scene.frame_end = frame_end
+    sample_frames = sorted(
+        {
+            frame_start,
+            int(round(frame_start + (frame_end - frame_start) * 0.25)),
+            int(round(frame_start + (frame_end - frame_start) * 0.50)),
+            int(round(frame_start + (frame_end - frame_start) * 0.75)),
+            frame_end,
+        }
+    )
+    sampled_bones = sorted(bone_chains)
+    source_reference = source_pose_cache[frame_start]
+    motion_crosscheck = []
+    source_motion_peak = 0.0
+    target_motion_peak = 0.0
+    for frame in sample_frames:
+        bpy.context.scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        source_motion = 0.0
+        target_motion = 0.0
+        bones_report = []
+        for bone_name in sampled_bones:
+            source_location, source_rotation = source_pose_cache[frame][bone_name]
+            source_base_location, source_base_rotation = source_reference[bone_name]
+            target_location, target_rotation, _ = target_rig.pose.bones[bone_name].matrix_basis.decompose()
+            target_rig.animation_data.action = transferred
+            bpy.context.view_layer.update()
+            target_base_location = Vector((0.0, 0.0, 0.0))
+            target_base_rotation = source_base_rotation
+            source_delta = float((source_location - source_base_location).length) + float(
+                source_rotation.rotation_difference(source_base_rotation).angle
+            )
+            target_delta = float((target_location - target_base_location).length) + float(
+                target_rotation.rotation_difference(target_base_rotation).angle
+            )
+            source_motion += source_delta
+            target_motion += target_delta
+            bones_report.append(
+                {
+                    "bone": bone_name,
+                    "source_delta_from_start": source_delta,
+                    "target_delta_from_start": target_delta,
+                }
+            )
+        source_motion_peak = max(source_motion_peak, source_motion)
+        target_motion_peak = max(target_motion_peak, target_motion)
+        motion_crosscheck.append(
+            {
+                "frame": frame,
+                "source_motion_total": source_motion,
+                "target_motion_total": target_motion,
+                "bones": bones_report,
+            }
+        )
+    if source_motion_peak > 1e-4 and target_motion_peak < max(1e-4, source_motion_peak * 0.10):
+        raise RuntimeError(
+            "Provider action has source motion but the transferred target action remained static: "
+            + json.dumps(
+                {
+                    "source_motion_peak": source_motion_peak,
+                    "target_motion_peak": target_motion_peak,
+                    "samples": motion_crosscheck,
+                },
+                sort_keys=True,
+            )
+        )
     bpy.context.scene.frame_set(frame_start)
     bpy.context.view_layer.update()
 
@@ -2802,8 +3435,11 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "source": str(source.relative_to(job)).replace("\\", "/"),
+        "source_sha256": actual_source_sha256,
+        "provenance": str(provenance_path.relative_to(job)).replace("\\", "/"),
         "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
         "target_armature": target_rig.name,
+        "audited_target_promotion": audited_target_promotion,
         "source_armature": source_armature_name,
         "source_action": source_action_name,
         "action": transferred.name,
@@ -2811,12 +3447,35 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "frame_end": frame_end,
         "fps": bpy.context.scene.render.fps,
         "source_fcurves": len(source_curves),
-        "driven_bones": bone_names,
+        "source_driven_bones": source_bone_names,
+        "target_driven_bones": sorted(bone_chains),
+        "bone_chains": bone_chains,
         "imported_objects_removed": imported_object_names,
         "provider_actions_removed": removed_provider_actions,
         "scale_cleanup": scale_cleanup,
         "root_cleanup": root_cleanup,
-        "policy": "provider_skeletal_action_transferred_to_single_calibrated_working_rig",
+        "data_length_ratio": data_length_ratio,
+        "source_armature_world_scale": list(source_world_scale),
+        "target_armature_world_scale": list(target_world_scale),
+        "location_scale": location_scale,
+        "source_target_motion_crosscheck": {
+            "sample_frames": sample_frames,
+            "source_motion_peak": source_motion_peak,
+            "target_motion_peak": target_motion_peak,
+            "samples": motion_crosscheck,
+            "status": "pass",
+        },
+        "policy": "provider_skeletal_action_retargeted_by_explicit_bone_chains_and_hierarchy_aware_target_rest_bases",
+        "action_provenance": action_provenance(transferred),
+        "retention_evidence": {
+            "source_motion_peak": source_motion_peak,
+            "target_motion_peak": target_motion_peak,
+            "source_driven_bones": source_bone_names,
+            "target_driven_bones": sorted(bone_chains),
+            "target_action_fcurves": len(list(action_fcurves(transferred))),
+            "manual_or_procedural_replacement_authored": False,
+            "provider_source_objects_removed_after_transfer": imported_object_names,
+        },
         "new_provider_call": False,
         "warnings": [],
     }
@@ -2826,6 +3485,67 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
+def explicit_safe_name(value: Any, field: str) -> str:
+    """Require a caller-supplied Blender identifier without sanitizing it."""
+
+    name = str(value or "")
+    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.-]{0,127}", name):
+        raise ValueError(
+            f"{field} must be an explicit safe Blender identifier containing only "
+            "letters, digits, underscores, periods, or hyphens."
+        )
+    return name
+
+
+def explicit_action_name(value: Any, field: str) -> str:
+    """Require an exact stable Blender action identifier, including layered action separators."""
+
+    name = str(value or "")
+    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.|:-]{0,191}", name):
+        raise ValueError(
+            f"{field} must be an explicit action identifier containing only letters, digits, "
+            "underscores, periods, vertical bars, colons, or hyphens."
+        )
+    return name
+
+
+def explicit_reference_id(value: Any, field: str) -> str:
+    """Require an auditable provider task id or professional-source receipt id."""
+
+    identifier = str(value or "")
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:-]{0,191}", identifier):
+        raise ValueError(f"{field} must be a stable provider task or approved source receipt identifier.")
+    return identifier
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest().upper()
+
+
+def action_provenance(action: bpy.types.Action) -> Dict[str, str]:
+    """Read and validate the immutable verified-source lineage retained on an action."""
+
+    fields = {
+        "source_kind": str(action.get("chaosx_animation_source_kind", "")),
+        "source_reference_id": str(action.get("chaosx_animation_source_reference_id", "")),
+        "source_sha256": str(action.get("chaosx_animation_source_sha256", "")).upper(),
+        "source_action_name": str(action.get("chaosx_animation_source_action", "")),
+        "provenance_rel": str(action.get("chaosx_animation_provenance_rel", "")),
+        "processing_policy": str(action.get("chaosx_animation_processing_policy", "")),
+    }
+    if fields["source_kind"] not in {"meshy_animate", "professional_source"}:
+        raise RuntimeError(f"Action {action.name} is not marked as a verified provider/professional source action.")
+    if not re.fullmatch(r"[0-9A-F]{64}", fields["source_sha256"]):
+        raise RuntimeError(f"Action {action.name} has no retained verified source checksum.")
+    if not fields["source_reference_id"] or not fields["source_action_name"] or not fields["provenance_rel"]:
+        raise RuntimeError(f"Action {action.name} has incomplete retained source provenance.")
+    return fields
+
+
 def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     """Retiming an existing action changes sample time, not skeletal motion."""
 
@@ -2833,19 +3553,28 @@ def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
-    action_name = str(payload.get("action_name") or "")
+    target_armature_name = explicit_safe_name(payload.get("target_armature_name"), "target_armature_name")
+    action_name = explicit_action_name(payload.get("action_name"), "action_name")
     source_fps = float(payload.get("source_fps") or 0.0)
     target_fps = float(payload.get("target_fps") or 0.0)
     if source_fps <= 0.0 or target_fps <= 0.0:
         raise ValueError("Animation retiming requires positive source and target FPS values.")
-    if not action_name:
-        raise ValueError("Animation retiming requires an action name.")
 
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     rigs = armatures()
-    if len(rigs) != 1:
-        raise RuntimeError(f"Animation retiming requires exactly one working armature, found {len(rigs)}.")
-    rig = rigs[0]
+    matching_rigs = [rig for rig in rigs if rig.name == target_armature_name]
+    if len(rigs) != 1 or len(matching_rigs) != 1:
+        raise RuntimeError(
+            "Animation retiming requires exactly one explicitly named working armature: "
+            + json.dumps(
+                {
+                    "requested_target_armature": target_armature_name,
+                    "available_armatures": sorted(rig.name for rig in rigs),
+                },
+                sort_keys=True,
+            )
+        )
+    rig = matching_rigs[0]
     action = bpy.data.actions.get(action_name)
     if action is None:
         action = next(
@@ -2858,9 +3587,11 @@ def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         )
     if action is None:
         raise RuntimeError(f"Requested action was not found: {action_name}")
+    provenance = action_provenance(action)
 
     old_start = float(action.frame_range[0])
     old_end = float(action.frame_range[1])
+    fcurve_count_before = len(list(action_fcurves(action)))
     frame_ratio = target_fps / source_fps
     moved_keyframes = 0
     moved_handles = 0
@@ -2889,6 +3620,7 @@ def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "target_armature": rig.name,
         "action": action.name,
         "source_fps": source_fps,
         "target_fps": target_fps,
@@ -2901,6 +3633,14 @@ def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "moved_handles": moved_handles,
         "fps": scene.render.fps,
         "policy": "existing_provider_action_time_rescaled_to_required_runtime_fps",
+        "action_provenance": provenance,
+        "retention_evidence": {
+            "fcurve_count_before": fcurve_count_before,
+            "fcurve_count_after": len(list(action_fcurves(action))),
+            "keyframe_values_changed": False,
+            "keyframe_times_rescaled": True,
+            "manual_or_procedural_replacement_authored": False,
+        },
         "body_motion_replaced": False,
         "new_model_created": False,
         "new_rig_created": False,
@@ -3989,6 +4729,30 @@ def segment_creature_components(req: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def calibrate_creature_scale(req: Dict[str, Any]) -> Dict[str, Any]:
     """Scale the complete creature around its ground centre so the rider is infantry-sized."""
 
@@ -4974,14 +5738,31 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
-    action_name = str(payload.get("action_name") or "")
-    root_bone_name = str(payload.get("root_bone") or "Hips")
+    target_armature_name = explicit_safe_name(payload.get("target_armature_name"), "target_armature_name")
+    action_name = explicit_action_name(payload.get("action_name"), "action_name")
+    root_bone_name = explicit_safe_name(payload.get("root_bone"), "root_bone")
+    grounding_policy = str(payload.get("grounding_policy") or "")
+    if grounding_policy != "per_frame_root_contact_zero_clearance":
+        raise ValueError(
+            "grounding_policy must be per_frame_root_contact_zero_clearance; "
+            "the adapter does not author or synthesize replacement body motion."
+        )
 
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     rigs = armatures()
-    if len(rigs) != 1:
-        raise RuntimeError(f"Grounding correction requires exactly one working armature, found {len(rigs)}.")
-    rig = rigs[0]
+    matching_rigs = [rig for rig in rigs if rig.name == target_armature_name]
+    if len(rigs) != 1 or len(matching_rigs) != 1:
+        raise RuntimeError(
+            "Grounding correction requires exactly one explicitly named working armature: "
+            + json.dumps(
+                {
+                    "requested_target_armature": target_armature_name,
+                    "available_armatures": sorted(rig.name for rig in rigs),
+                },
+                sort_keys=True,
+            )
+        )
+    rig = matching_rigs[0]
     rig.animation_data_create()
     action = bpy.data.actions.get(action_name)
     if action is None:
@@ -4995,6 +5776,8 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
         )
     if action is None:
         raise RuntimeError(f"Requested action was not found: {action_name}")
+    provenance = action_provenance(action)
+    fcurve_count_before = len(list(action_fcurves(action)))
     rig.animation_data.action = action
     root = rig.pose.bones.get(root_bone_name)
     if root is None:
@@ -5096,6 +5879,7 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
         "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
         "action": action.name,
         "root_bone": root_bone_name,
+        "target_armature": rig.name,
         "root_location_axis_index": correction_axis,
         "root_location_axis_world_z_responses": axis_responses,
         "frame_start": start,
@@ -5112,11 +5896,20 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
             "maximum": max(after_values),
         },
         "action_preservation": {
+            "grounding_policy": grounding_policy,
             "policy": "existing_action_root_z_only",
             "body_motion_replaced": False,
             "new_model_created": False,
             "new_rig_created": False,
             "new_provider_call": False,
+        },
+        "action_provenance": provenance,
+        "retention_evidence": {
+            "fcurve_count_before": fcurve_count_before,
+            "fcurve_count_after": len(list(action_fcurves(action))),
+            "only_root_location_channel_corrected": True,
+            "body_motion_keys_retained": True,
+            "manual_or_procedural_replacement_authored": False,
         },
         "frames": frame_records,
         "status": "pass" if max(after_values) <= 0.001 and min(after_values) >= -0.001 else "fail",
@@ -5201,6 +5994,7 @@ def offset_action_root(req: Dict[str, Any]) -> Dict[str, Any]:
     report = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "target_armature": rig.name,
         "action": action.name,
         "root_bone": root_bone_name,
         "axis_index": axis_index,
@@ -5383,19 +6177,31 @@ def sanitize_runtime_candidate(req: Dict[str, Any]) -> Dict[str, Any]:
         allow_missing=True,
     )
     bpy.ops.wm.open_mainfile(filepath=str(blend))
+    weight_only = bool(payload.get("weight_only", False))
+    if weight_only and payload.get("target_height_m") is not None:
+        raise ValueError("weight_only cleanup cannot be combined with target_height_m normalization.")
     geometry_normalization = (
         normalize_geometry(float(payload["target_height_m"]))
         if payload.get("target_height_m") is not None
         else {"policy": "preserve_checkpoint_geometry"}
     )
     weights_before = weight_metrics()
-    weights = sanitize_working_weights()
-    materials = sanitize_working_materials()
+    weights = sanitize_working_weights(preserve_skeleton_metadata=weight_only)
+    materials = (
+        {
+            "applied": False,
+            "policy": "preserve_checkpoint_materials",
+            "objects": [],
+        }
+        if weight_only
+        else sanitize_working_materials()
+    )
     output.parent.mkdir(parents=True, exist_ok=True)
     save_blend(output)
     report = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "checkpoint": str(output.relative_to(job)).replace("\\", "/"),
+        "weight_only": weight_only,
         "geometry_normalization": geometry_normalization,
         "weights_before": weights_before,
         "weights": weights,

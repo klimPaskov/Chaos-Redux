@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Literal, Optional
 
 from lib.mcp_stdio import MCPRouteError, call_stdio
 from meshy_client import require_meshy_key
@@ -80,6 +80,10 @@ class BlenderAdapterClient:
         vanilla_reference: Optional[Dict[str, Any]] = None,
         texture_source_rels: Optional[Dict[str, str]] = None,
         geometry_source_rel: Optional[str] = None,
+        geometry_weight_mode: str = "four_nearest",
+        source_armature_name: str = "",
+        source_mesh_names: Optional[list[str]] = None,
+        preserve_geometry_topology: bool = False,
         repair_before_reduction: bool = False,
         topology_weld_distance: float = 1e-5,
         max_runtime_footprint_m: Optional[float] = None,
@@ -99,6 +103,10 @@ class BlenderAdapterClient:
                 "vanilla_reference": vanilla_reference or {},
                 "texture_source_rels": texture_source_rels or {},
                 "geometry_source_rel": geometry_source_rel or "",
+                "geometry_weight_mode": geometry_weight_mode,
+                "source_armature_name": source_armature_name,
+                "source_mesh_names": source_mesh_names or [],
+                "preserve_geometry_topology": preserve_geometry_topology,
                 "repair_before_reduction": repair_before_reduction,
                 "topology_weld_distance": topology_weld_distance,
                 "max_runtime_footprint_m": max_runtime_footprint_m,
@@ -194,6 +202,7 @@ class BlenderAdapterClient:
         checkpoint_rel: str,
         action_names: Optional[Dict[str, str]] = None,
         fps: int = 24,
+        fused_weapon_grip: bool = False,
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_author_humanoid_actions",
@@ -203,8 +212,12 @@ class BlenderAdapterClient:
                 "checkpoint_rel": checkpoint_rel,
                 "action_names": action_names or {},
                 "fps": fps,
+                "fused_weapon_grip": fused_weapon_grip,
             },
         )
+
+
+
 
     def bake_static_mesh_transforms(
         self,
@@ -251,8 +264,16 @@ class BlenderAdapterClient:
         job_id: str,
         blend_rel: str,
         source_rel: str,
+        provenance_rel: str,
         checkpoint_rel: str,
-        action_name: str,
+        source_action_name: str,
+        target_armature_name: str,
+        target_action_name: str,
+        source_kind: Literal["meshy_animate", "professional_source"],
+        source_reference_id: str,
+        source_sha256: str,
+        bone_chains: Optional[Dict[str, list[str]]] = None,
+        promote_audited_target: bool = False,
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_import_animation_action",
@@ -260,8 +281,39 @@ class BlenderAdapterClient:
                 "job_id": job_id,
                 "blend_rel": blend_rel,
                 "source_rel": source_rel,
+                "provenance_rel": provenance_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "source_action_name": source_action_name,
+                "target_armature_name": target_armature_name,
+                "target_action_name": target_action_name,
+                "source_kind": source_kind,
+                "source_reference_id": source_reference_id,
+                "source_sha256": source_sha256,
+                "bone_chains": bone_chains or {},
+                "promote_audited_target": promote_audited_target,
+            },
+        )
+
+    def retime_animation_action(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        action_name: str,
+        target_armature_name: str,
+        source_fps: float,
+        target_fps: float,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_retime_animation_action",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
                 "checkpoint_rel": checkpoint_rel,
                 "action_name": action_name,
+                "target_armature_name": target_armature_name,
+                "source_fps": source_fps,
+                "target_fps": target_fps,
             },
         )
 
@@ -371,6 +423,8 @@ class BlenderAdapterClient:
         blend_rel: str,
         checkpoint_rel: str,
         action_name: str,
+        target_armature_name: str,
+        grounding_policy: Literal["per_frame_root_contact_zero_clearance"],
         root_bone: str = "Hips",
     ) -> Dict[str, Any]:
         return self.call(
@@ -380,7 +434,28 @@ class BlenderAdapterClient:
                 "blend_rel": blend_rel,
                 "checkpoint_rel": checkpoint_rel,
                 "action_name": action_name,
+                "target_armature_name": target_armature_name,
+                "grounding_policy": grounding_policy,
                 "root_bone": root_bone,
+            },
+        )
+
+    def sanitize_runtime_candidate(
+        self,
+        job_id: str,
+        blend_rel: str,
+        output_blend_rel: str = "blender/checkpoints/07_runtime_candidate_sanitized.blend",
+        target_height_m: Optional[float] = None,
+        weight_only: bool = False,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_sanitize_runtime_candidate",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "output_blend_rel": output_blend_rel,
+                "target_height_m": target_height_m,
+                "weight_only": weight_only,
             },
         )
 
@@ -408,6 +483,7 @@ class BlenderAdapterClient:
         render_previews: bool = False,
         runtime_stem: str = "",
         action_name: str = "",
+        target_armature_name: str = "",
         preview_frame: int = -1,
         preview_view_names: Optional[list[str]] = None,
     ) -> Dict[str, Any]:
@@ -419,6 +495,7 @@ class BlenderAdapterClient:
                 "render_previews": render_previews,
                 "runtime_stem": runtime_stem,
                 "action_name": action_name,
+                "target_armature_name": target_armature_name,
                 "preview_frame": preview_frame,
                 "preview_view_names": preview_view_names or [],
             },
