@@ -80,6 +80,14 @@ After stale scratch deletion, `git count-objects -vH` reported 16 garbage files 
 
 `git lfs fsck --objects` completed with `Git LFS fsck OK` after the verified cache prune.
 
+## Follow-up stale object-temp cleanup — 2026-08-24
+
+A current `git fsck --connectivity-only --no-dangling` pass identified 17 unreachable `tmp_obj_*` files under `.git/objects`. Eleven had last-write times from August 8–9, were older than the same 14-day cutoff, and resolved inside the verified `.git/objects` root.
+
+The follow-up removed those 11 exact read-only object-temp files, totaling 3,320,286 bytes. It did not use recursive deletion and did not touch the six newer object-temp files, `.git/lfs/tmp`, reflogs, locks, indexes, refs, or reachable objects.
+
+After the follow-up, `git count-objects -vH` reported 243,103 in-pack objects across four packs, 20.84 GiB packed, six garbage files, and 6.59 MiB of retained recent garbage. `git fsck --connectivity-only --no-dangling` completed successfully, and no object-temp file older than 14 days remained.
+
 ## Deferred storage migration
 
 No history rewrite or large manual repack was performed.

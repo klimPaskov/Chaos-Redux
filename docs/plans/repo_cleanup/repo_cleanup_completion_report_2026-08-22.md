@@ -317,17 +317,17 @@ README management under `f1a1d56d3` covered the 74 README files present in that 
 
 ## .git/storage cleanup
 
-The exact stale-file cleanup removed 132 files totaling 441,427,439 bytes: 117 old `.git/objects/*/tmp_obj_*` files totaling 388,297,048 bytes and 15 allowlisted top-level scratch files totaling 53,130,391 bytes.
+The original stale-file cleanup and the 2026-08-24 follow-up removed 143 files totaling 444,747,725 bytes: 128 old `.git/objects/*/tmp_obj_*` files totaling 391,617,334 bytes and 15 allowlisted top-level scratch files totaling 53,130,391 bytes.
 
 The cleanup did not use a recursive broad deletion and did not rewrite history.
 
 Git LFS remote-verifying prune deleted 31,791 cached files reported as approximately 21 GB and retained 15,113 LFS files totaling 3,800,310,194 bytes afterward.
 
-Sixteen recent object-temp files totaling 8.82 MiB, reflogs/logs, and the recent `.git/lfs/tmp` contents were deliberately retained.
+Six current object-temp files totaling 6.59 MiB, reflogs/logs, and `.git/lfs/tmp` contents were deliberately retained. No object-temp file older than 14 days remains.
 
 The multi-pack index and commit graph were refreshed, `git gc --auto` was run, reachable 20.83 GiB pack history was retained, and history rewrite/large repack was deferred.
 
-Current object inventory reports 241,391 in-pack objects across four packs, 20.83 GiB packed, 16 garbage files, and 8.82 MiB of retained garbage; connectivity and Git LFS fsck checks are clean.
+Current object inventory reports 243,103 in-pack objects across four packs, 20.84 GiB packed, six garbage files, and 6.59 MiB of retained recent garbage; the follow-up connectivity check is clean and the earlier Git LFS fsck remains recorded.
 
 ## GUI boundary
 
