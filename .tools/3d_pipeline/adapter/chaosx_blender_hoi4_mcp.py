@@ -793,6 +793,28 @@ def chaosx_blender_hoi4_import_bvh_animation_action(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_prepare_export_coordinate_checkpoint(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    action_name: str,
+    target_armature_name: str,
+) -> Dict[str, Any]:
+    """Checkpoint one accepted action in the existing PDX export coordinate system."""
+
+    return _run(
+        job_id,
+        "prepare_export_coordinate_checkpoint",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_name": action_name,
+            "target_armature_name": target_armature_name,
+        },
+    )
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_offset_action_root(
     job_id: str,
     blend_rel: str,

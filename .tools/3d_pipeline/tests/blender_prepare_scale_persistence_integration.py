@@ -178,13 +178,37 @@ def main() -> None:
             if action.name.endswith("_WORKING")
         )
 
+        working_action = rig.animation_data.action
+        assert working_action is not None
+        working_action["chaosx_animation_source_kind"] = "professional_source"
+        working_action["chaosx_animation_source_reference_id"] = "synthetic-export-coordinate-proof"
+        working_action["chaosx_animation_source_sha256"] = "A" * 64
+        working_action["chaosx_animation_source_action"] = "ProviderScaleAction"
+        working_action["chaosx_animation_provenance_rel"] = "provider/provenance.json"
+        blender_worker.save_blend(job / "blender" / "checkpoints" / "05_pre_export.blend")
+        coordinate_checkpoint = blender_worker.prepare_export_coordinate_checkpoint(
+            {
+                "job_root": str(job),
+                "payload": {
+                    "blend_rel": "blender/checkpoints/05_pre_export.blend",
+                    "checkpoint_rel": "blender/checkpoints/06_export_coordinates.blend",
+                    "action_name": working_action.name,
+                    "target_armature_name": rig.name,
+                },
+            }
+        )
+        assert coordinate_checkpoint["body_motion_authored"] is False
+        assert coordinate_checkpoint["drift_guard_before_save"]["status"] == "pass"
+        assert coordinate_checkpoint["drift_guard_after_reopen"]["status"] == "pass"
+        assert coordinate_checkpoint["action_provenance"]["source_sha256"] == "A" * 64
+
         mesh_output = job / "export" / "mesh" / "synthetic.mesh"
         export = blender_worker.export_mesh(
             {
                 "job_root": str(job),
                 "io_pdx_root": io_pdx_root,
                 "payload": {
-                    "blend_rel": "blender/checkpoints/05_pre_export.blend",
+                    "blend_rel": "blender/checkpoints/06_export_coordinates.blend",
                     "output_rel": "export/mesh/synthetic.mesh",
                     "split_verts": False,
                 },

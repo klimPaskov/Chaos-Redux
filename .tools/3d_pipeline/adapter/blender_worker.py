@@ -34,6 +34,15 @@ CREATURE_GROUND_CONTACT_TOLERANCE_M = 0.01
 CREATURE_GROUND_CONTACT_CLEARANCE_M = 0.001
 
 
+def shortest_quaternion_angle(left: Quaternion, right: Quaternion) -> float:
+    """Return the shortest rotation angle while treating q and -q as equivalent."""
+
+    left_normalized = left.normalized()
+    right_normalized = right.normalized()
+    dot = abs(float(left_normalized.dot(right_normalized)))
+    return 2.0 * math.acos(max(-1.0, min(1.0, dot)))
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--request", default=os.environ.get("CHAOSX_WORKER_REQUEST"))
@@ -619,6 +628,287 @@ def prepare_pdx_export_transforms() -> Dict[str, Any]:
             for obj in mesh_objects()
         },
     }
+
+
+def _export_checkpoint_action_snapshot(action: bpy.types.Action) -> List[Dict[str, Any]]:
+    """Capture every keyed value and handle used by the export-coordinate drift guard."""
+
+    records = []
+    for fcurve, _ in action_fcurves(action):
+        records.append(
+            {
+                "data_path": fcurve.data_path,
+                "array_index": int(fcurve.array_index),
+                "keys": [
+                    {
+                        "co": [float(value) for value in key.co],
+                        "handle_left": [float(value) for value in key.handle_left],
+                        "handle_right": [float(value) for value in key.handle_right],
+                        "interpolation": key.interpolation,
+                    }
+                    for key in fcurve.keyframe_points
+                ],
+            }
+        )
+    return sorted(records, key=lambda item: (item["data_path"], item["array_index"]))
+
+
+def _export_checkpoint_material_snapshot() -> Dict[str, Any]:
+    """Capture working material and image bindings without modifying them."""
+
+    return {
+        obj.name: [
+            {
+                "material": material.name if material is not None else None,
+                "images": sorted(
+                    [
+                        {
+                            "name": node.image.name,
+                            "filepath": bpy.path.abspath(node.image.filepath),
+                        }
+                        for node in material.node_tree.nodes
+                        if material is not None
+                        and material.use_nodes
+                        and material.node_tree is not None
+                        and node.type == "TEX_IMAGE"
+                        and node.image is not None
+                    ],
+                    key=lambda item: (item["name"], item["filepath"]),
+                )
+                if material is not None
+                else [],
+            }
+            for material in obj.data.materials
+        ]
+        for obj in mesh_objects()
+    }
+
+
+def _export_checkpoint_protected_snapshot() -> Dict[str, Any]:
+    """Prove that protected source/reference objects remain unchanged."""
+
+    return {
+        obj.name: {
+            "type": obj.type,
+            "data": obj.data.name if obj.data is not None else None,
+            "transform": object_transform_record(obj),
+        }
+        for obj in bpy.context.scene.objects
+        if not obj.get("chaosx_working", False)
+    }
+
+
+def _validate_export_coordinate_drift(
+    *,
+    geometry_before: Dict[str, Any],
+    bounds_before: Dict[str, Any],
+    mesh_matrices_before: Dict[str, List[List[float]]],
+    materials_before: Dict[str, Any],
+    protected_before: Dict[str, Any],
+    bones_before: Dict[str, Dict[str, Any]],
+    action_before: List[Dict[str, Any]],
+    action_after: List[Dict[str, Any]],
+    source_scale: float,
+    tolerance: float = 1e-5,
+) -> Dict[str, Any]:
+    """Reject any change outside the existing PDX coordinate conversion."""
+
+    geometry_after = geometry_metrics()
+    topology_keys = (
+        "objects", "vertices", "polygons", "triangles", "loose_boundary_edges",
+        "non_manifold_edges", "degenerate_faces", "zero_length_normals", "uv_layers",
+    )
+    topology_drift = {
+        key: {"before": geometry_before[key], "after": geometry_after[key]}
+        for key in topology_keys
+        if geometry_before[key] != geometry_after[key]
+    }
+    bounds_after = bounds_record(mesh_objects())
+    bounds_delta = max(
+        abs(float(after) - float(before))
+        for key in ("minimum", "maximum", "dimensions")
+        for before, after in zip(bounds_before[key], bounds_after[key])
+    )
+    mesh_matrix_delta = max(
+        (
+            abs(float(after) - float(before))
+            for obj in mesh_objects()
+            for before_row, after_row in zip(mesh_matrices_before[obj.name], obj.matrix_world)
+            for before, after in zip(before_row, after_row)
+        ),
+        default=0.0,
+    )
+    materials_after = _export_checkpoint_material_snapshot()
+    protected_after = _export_checkpoint_protected_snapshot()
+
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError("Export-coordinate checkpoint lost its unique working armature.")
+    rig = rigs[0]
+    bones_after = {
+        bone.name: {
+            "parent": bone.parent.name if bone.parent else None,
+            "head": [float(value) for value in bone.head_local],
+            "tail": [float(value) for value in bone.tail_local],
+        }
+        for bone in rig.data.bones
+    }
+    bone_failures = []
+    if set(bones_before) != set(bones_after):
+        bone_failures.append("bone-name set changed")
+    for name, before in bones_before.items():
+        after = bones_after.get(name)
+        if after is None:
+            continue
+        if before["parent"] != after["parent"]:
+            bone_failures.append(f"{name}: parent changed")
+        expected = [float(value) * source_scale for value in (*before["head"], *before["tail"])]
+        observed = [float(value) for value in (*after["head"], *after["tail"])]
+        if max(abs(left - right) for left, right in zip(expected, observed)) > tolerance:
+            bone_failures.append(f"{name}: rest coordinates drifted outside scale conversion")
+
+    action_failures = []
+    if len(action_before) != len(action_after):
+        action_failures.append("F-curve count changed")
+    for before, after in zip(action_before, action_after):
+        if (before["data_path"], before["array_index"]) != (after["data_path"], after["array_index"]):
+            action_failures.append("F-curve identity/order changed")
+            continue
+        if len(before["keys"]) != len(after["keys"]):
+            action_failures.append(f"{before['data_path']}[{before['array_index']}]: key count changed")
+            continue
+        location_curve = "pose.bones[" in before["data_path"] and ".location" in before["data_path"]
+        factor = source_scale if location_curve else 1.0
+        for index, (left, right) in enumerate(zip(before["keys"], after["keys"])):
+            if left["interpolation"] != right["interpolation"]:
+                action_failures.append(f"{before['data_path']}[{before['array_index']}]: interpolation changed")
+                break
+            expected = [
+                left["co"][0], left["co"][1] * factor,
+                left["handle_left"][0], left["handle_left"][1] * factor,
+                left["handle_right"][0], left["handle_right"][1] * factor,
+            ]
+            observed = [*right["co"], *right["handle_left"], *right["handle_right"]]
+            if max(abs(float(a) - float(b)) for a, b in zip(expected, observed)) > tolerance:
+                action_failures.append(
+                    f"{before['data_path']}[{before['array_index']}]: key {index} drifted"
+                )
+                break
+
+    failures = []
+    if topology_drift:
+        failures.append("topology/UV drift")
+    if bounds_delta > tolerance:
+        failures.append(f"working bounds drift {bounds_delta}")
+    if mesh_matrix_delta > tolerance:
+        failures.append(f"working mesh matrix drift {mesh_matrix_delta}")
+    if materials_before != materials_after:
+        failures.append("material/image binding drift")
+    if protected_before != protected_after:
+        failures.append("protected source/reference drift")
+    failures.extend(bone_failures)
+    failures.extend(action_failures)
+    if failures:
+        raise RuntimeError("Export-coordinate checkpoint drift validation failed: " + "; ".join(failures))
+    return {
+        "status": "pass",
+        "tolerance": tolerance,
+        "topology_drift": topology_drift,
+        "bounds_delta": bounds_delta,
+        "mesh_matrix_delta": mesh_matrix_delta,
+        "materials_preserved": True,
+        "protected_sources_preserved": True,
+        "bones_preserved_under_uniform_coordinate_conversion": len(bones_after),
+        "action_fcurves_preserved_under_location_coordinate_conversion": len(action_after),
+        "geometry_after": geometry_after,
+        "bounds_after": bounds_after,
+    }
+
+
+def prepare_export_coordinate_checkpoint(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Save an accepted action in the exact coordinate system used by PDX export."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    requested_action = explicit_action_name(payload.get("action_name"), "action_name")
+    requested_armature = explicit_safe_name(payload.get("target_armature_name"), "target_armature_name")
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    rig, action, frame_start, frame_end = select_armature_and_action(requested_action)
+    if rig.name != requested_armature:
+        raise RuntimeError(
+            f"Export-coordinate checkpoint requires target armature {requested_armature}, found {rig.name}."
+        )
+    action_source = action_provenance(action)
+    geometry_before = geometry_metrics()
+    bounds_before = bounds_record(mesh_objects())
+    mesh_matrices_before = {
+        obj.name: [[float(value) for value in row] for row in obj.matrix_world]
+        for obj in mesh_objects()
+    }
+    materials_before = _export_checkpoint_material_snapshot()
+    protected_before = _export_checkpoint_protected_snapshot()
+    bones_before = {
+        bone.name: {
+            "parent": bone.parent.name if bone.parent else None,
+            "head": [float(value) for value in bone.head_local],
+            "tail": [float(value) for value in bone.tail_local],
+        }
+        for bone in rig.data.bones
+    }
+    action_before = _export_checkpoint_action_snapshot(action)
+    conversion = prepare_pdx_export_transforms()
+    action_after = _export_checkpoint_action_snapshot(action)
+    drift = _validate_export_coordinate_drift(
+        geometry_before=geometry_before,
+        bounds_before=bounds_before,
+        mesh_matrices_before=mesh_matrices_before,
+        materials_before=materials_before,
+        protected_before=protected_before,
+        bones_before=bones_before,
+        action_before=action_before,
+        action_after=action_after,
+        source_scale=float(conversion["armature_data_scale_factor"]),
+    )
+    save_blend(checkpoint)
+    bpy.ops.wm.open_mainfile(filepath=str(checkpoint))
+    reopened_rig, reopened_action, reopened_start, reopened_end = select_armature_and_action(requested_action)
+    if reopened_rig.name != requested_armature or (reopened_start, reopened_end) != (frame_start, frame_end):
+        raise RuntimeError("Export-coordinate checkpoint changed target armature or action frame range after reopen.")
+    reopened_drift = _validate_export_coordinate_drift(
+        geometry_before=geometry_before,
+        bounds_before=bounds_before,
+        mesh_matrices_before=mesh_matrices_before,
+        materials_before=materials_before,
+        protected_before=protected_before,
+        bones_before=bones_before,
+        action_before=action_before,
+        action_after=_export_checkpoint_action_snapshot(reopened_action),
+        source_scale=float(conversion["armature_data_scale_factor"]),
+    )
+    if action_provenance(reopened_action) != action_source:
+        raise RuntimeError("Export-coordinate checkpoint changed verified action provenance after reopen.")
+    result = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "action": reopened_action.name,
+        "action_provenance": action_source,
+        "target_armature": reopened_rig.name,
+        "frame_start": reopened_start,
+        "frame_end": reopened_end,
+        "fps": bpy.context.scene.render.fps,
+        "conversion": conversion,
+        "drift_guard_before_save": drift,
+        "drift_guard_after_reopen": reopened_drift,
+        "policy": "existing_pdx_export_coordinate_conversion_checkpoint_only",
+        "body_motion_authored": False,
+        "warnings": [],
+    }
+    report = job / "blender" / "reports" / f"export_coordinate_checkpoint_{safe_name(reopened_action.name)}.json"
+    report.parent.mkdir(parents=True, exist_ok=True)
+    report.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return result
 
 
 def ensure_material_nodes(material: bpy.types.Material) -> None:
@@ -3586,11 +3876,11 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
             bpy.context.view_layer.update()
             target_base_location = Vector((0.0, 0.0, 0.0))
             target_base_rotation = source_base_rotation
-            source_delta = float((source_location - source_base_location).length) + float(
-                source_rotation.rotation_difference(source_base_rotation).angle
+            source_delta = float((source_location - source_base_location).length) + shortest_quaternion_angle(
+                source_rotation, source_base_rotation
             )
-            target_delta = float((target_location - target_base_location).length) + float(
-                target_rotation.rotation_difference(target_base_rotation).angle
+            target_delta = float((target_location - target_base_location).length) + shortest_quaternion_angle(
+                target_rotation, target_base_rotation
             )
             source_motion += source_delta
             target_motion += target_delta
@@ -6855,7 +7145,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches"}:
+    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -6879,6 +7169,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return import_bvh_animation_action(req)
     if operation == "retime_animation_action":
         return retime_animation_action(req)
+    if operation == "prepare_export_coordinate_checkpoint":
+        return prepare_export_coordinate_checkpoint(req)
     if operation == "author_humanoid_rig":
         return author_humanoid_rig(req)
     if operation == "author_humanoid_actions":

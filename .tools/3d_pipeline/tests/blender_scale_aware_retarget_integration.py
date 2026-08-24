@@ -115,6 +115,13 @@ def make_target(path: Path) -> None:
 
 
 def main() -> None:
+    probe = blender_worker.Quaternion((1.0, 0.0, 0.0, 0.0))
+    equivalent_negative_probe = blender_worker.Quaternion((-1.0, 0.0, 0.0, 0.0))
+    assert math.isclose(
+        blender_worker.shortest_quaternion_angle(probe, equivalent_negative_probe),
+        0.0,
+        abs_tol=1e-8,
+    )
     with tempfile.TemporaryDirectory(prefix="chaosx_scale_retarget_") as temporary:
         job = Path(temporary)
         (job / "blender" / "reports").mkdir(parents=True)
