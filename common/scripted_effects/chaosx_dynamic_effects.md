@@ -1,6 +1,6 @@
 # chaosx_dynamic_effects
 
-This registry documents the public, generally reusable effects defined in `common/scripted_effects/chaosx_dynamic_effects.txt`.
+This registry documents public, generally reusable effects and links cross-subsystem APIs that shared consumers need to discover. Effects without an explicit owner line are defined in `common/scripted_effects/chaosx_dynamic_effects.txt`; each indexed subsystem section names its authoritative declaration file.
 
 An effect belongs here when its contract is useful across events or systems, even if it currently has only one caller. Event-framework orchestration and subsystem-private helpers belong in their owning scripted-effect files and system documentation.
 
@@ -16,6 +16,8 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [Stockpile debit helpers](#stockpile-debit-helpers)
+- [Event 006 Iberian compact ledger helpers](#event-006-iberian-compact-ledger-helpers)
+- [Event 016 reusable custom technology grants](#event-016-reusable-custom-technology-grants)
 - [Shared clone equipment and infantry helpers](#shared-clone-equipment-and-infantry-helpers)
 - [Shared alien-infantry contact and landing API](#shared-alien-infantry-contact-and-landing-api)
 - [Mengele Directorate Event 016 prototype bridge](#mengele-directorate-event-016-prototype-bridge)
@@ -364,6 +366,8 @@ remove_fuel_from_stockpile = yes
 
 ## Event 006 Iberian compact ledger helpers
 
+Definitions: `common/scripted_effects/006_independence_wave_iberian_package_effects.txt`.
+
 Purpose: apply one bounded ledger transaction for the registered NAV or GLC carrier while refreshing its lifecycle idea.
 
 Scope: country.
@@ -387,6 +391,8 @@ independence_wave_change_nav_compact_values = yes
 ```
 
 ## Event 016 reusable custom technology grants
+
+Definitions: `common/scripted_effects/016_brilliant_scientist_custom_technology_api_effects.txt`.
 
 Purpose: award only the eighteen Event 016 custom technologies to another event's country without creating Kruger ownership, Directorate state, project history, facilities, free formations, equipment stockpiles, vanilla technologies, or Event 016 log history.
 
@@ -416,6 +422,8 @@ chaosx_grant_custom_operational_technology = yes
 ```
 
 ## Shared clone equipment and infantry helpers
+
+Definitions: `common/scripted_effects/clone_system_effects.txt`.
 
 Purpose: grant provider-neutral clone manufacture and recruitment, select one provider refinement, create the reusable editable 20-width template, and derive reserve manpower from the physical clone-equipment stockpile.
 
@@ -465,6 +473,8 @@ alien_infantry_spawn_landing_cohort = yes
 ```
 
 ## Mengele Directorate Event 016 prototype bridge
+
+Definitions: `common/scripted_effects/016_mengele_project_bridge_effects.txt`.
 
 Purpose: expose the nine non-cloning Event 016 native prototype projects to the Mengele Directorate without making it an Event 016 host or creating Event 016 project-ledger state.
 
@@ -570,6 +580,8 @@ infantry_spawn_derivative_resolve_opening_local_asset_shortfall = yes
 ```
 
 ## Event 006 AI reserve and ledger trigger contract
+
+Definitions: `common/scripted_triggers/006_independence_wave_karelia_crimea_package_triggers.txt`.
 
 Purpose: provide reusable, package-scoped predicates for Event 006 decision AI. The contract keeps a released country from spending project resources before its foundation is settled, prefers the lower regional ledger, and suppresses a project when its post-spend reserve floor would not be preserved.
 

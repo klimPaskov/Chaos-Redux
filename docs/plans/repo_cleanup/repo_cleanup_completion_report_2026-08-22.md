@@ -149,6 +149,8 @@ The repeatable-event recovery comments now name the configured recovery rate and
 
 Documentation links in the bounded Event 006 evidence were corrected to current paths, and retired helper references now carry explicit historical/supersession wording.
 
+The shared dynamic-helper index now distinguishes helpers declared in `chaosx_dynamic_effects.txt` from cross-subsystem APIs and names the authoritative Event 006, Event 016, clone-system, Mengele-bridge, Event 019, and famine declaration owners.
+
 ## Code moved
 
 None.
