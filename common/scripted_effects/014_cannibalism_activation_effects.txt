@@ -1,0 +1,101 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 IRREGULAR SUBUNIT ACTIVATION EFFECTS
+# ============================================================================
+# Package-owned bridge effects for the nine inactive Event 014 line subunits.
+# Each caller owns the existing Event 014 package, focus, or transition gate;
+# these effects only grant the hidden technology that makes the matching
+# subunit valid for its already-paid and locked-template spawn transaction.
+# ============================================================================
+
+cannibalism_unlock_event014_warlord_package_subunits = {
+	set_technology = {
+		cannibalism_scavenger_warband_tech = 1
+		cannibalism_feast_guard_tech = 1
+		popup = no
+	}
+	if = {
+		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.island_host } }
+		set_technology = { cannibalism_island_reavers_tech = 1 popup = no }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.siege_commune } }
+		set_technology = { cannibalism_siege_eaters_tech = 1 popup = no }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } }
+		set_technology = { cannibalism_march_predation_column_tech = 1 popup = no }
+	}
+}
+
+cannibalism_unlock_event014_warlord_feast_cohort = {
+	set_technology = { cannibalism_feast_cohort_tech = 1 popup = no }
+}
+
+cannibalism_unlock_event014_warlord_bone_guard = {
+	set_technology = {
+		cannibalism_bone_guard_tech = 1
+		cannibalism_bone_riders_tech = 1
+		popup = no
+	}
+}
+
+cannibalism_unlock_event014_warlord_origin_specialist = {
+	if = {
+		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.island_host } }
+		set_technology = { cannibalism_island_reavers_tech = 1 popup = no }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.siege_commune } }
+		set_technology = { cannibalism_siege_eaters_tech = 1 popup = no }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } }
+		set_technology = { cannibalism_march_predation_column_tech = 1 popup = no }
+	}
+}
+
+cannibalism_unlock_event014_warlord_network_cadre = {
+	set_technology = { cannibalism_network_cadre_tech = 1 popup = no }
+}
+
+cannibalism_unlock_event014_inherited_warlord_subunits = {
+	set_technology = {
+		cannibalism_scavenger_warband_tech = 1
+		cannibalism_network_cadre_tech = 1
+		popup = no
+	}
+}
+
+cannibalism_unlock_event014_unified_origin_specialists = {
+	if = {
+		limit = { has_country_flag = cannibalism_unified_origin_island_knowledge }
+		set_technology = { cannibalism_island_reavers_tech = 1 popup = no }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_unified_origin_siege_knowledge }
+		set_technology = { cannibalism_siege_eaters_tech = 1 popup = no }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_unified_origin_march_knowledge }
+		set_technology = { cannibalism_march_predation_column_tech = 1 popup = no }
+	}
+}
+
+cannibalism_unlock_event014_unified_legion = {
+	set_technology = { cannibalism_feast_cohort_tech = 1 popup = no }
+}
+
+cannibalism_unlock_event014_unified_bone_guard = {
+	set_technology = {
+		cannibalism_bone_guard_tech = 1
+		cannibalism_bone_riders_tech = 1
+		popup = no
+	}
+}
+
+cannibalism_unlock_event014_wendigo_cannibal_subunits = {
+	cannibalism_unlock_event014_inherited_warlord_subunits = yes
+	cannibalism_unlock_event014_unified_legion = yes
+	cannibalism_unlock_event014_unified_origin_specialists = yes
+	cannibalism_unlock_event014_unified_bone_guard = yes
+}
