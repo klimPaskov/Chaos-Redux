@@ -20,6 +20,8 @@ The workflow still records the source URL or page, title, creator or publisher, 
 
 Explicit `NoAI`, no-derivatives, or equivalent incompatible restrictions remain disqualifying. A license label or user authorization does not override those stated restrictions. Ambiguous or incompatible terms and material changes to the accepted unit identity still require review.
 
+The selected source must fit the event's declared period and unit brief. Unless an accepted brief or spec explicitly requires the exception, modern electronics, digital devices, advanced optics, obvious modern plastics, contemporary tactical gear, science-fiction machinery, and other technology or styling outside the 1936-1945-era world are rejected. Intended fantasy, supernatural, creature, and alternate-history identity remains eligible, but ImageGen cleanup may not periodize or redesign an ineligible source.
+
 ## Validation
 
 `python C:/Users/klimp/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/chaos-redux-3d-model-pipeline` returned `Skill is valid!`.
