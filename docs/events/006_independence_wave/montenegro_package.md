@@ -19,13 +19,13 @@ The Event 006 roster checkpoint `chaosx.nr6.350` attaches `MNT_independence_wave
 | Surface | File | Runtime identifiers |
 | --- | --- | --- |
 | Tuning | `common/script_constants/006_independence_wave_montenegro_constants.txt` | `independence_wave_montenegro_politics`, `independence_wave_montenegro_pressure`, `independence_wave_montenegro_ai` |
-| Ideas | `common/ideas/006_independence_wave_montenegro_ideas.txt` | `mnt_divided_mountain_authority`, `mnt_mountain_state_compact`, four route ideas |
+| Ideas | `common/ideas/006_independence_wave_ideas_registry.txt` | `mnt_divided_mountain_authority`, `mnt_mountain_state_compact`, four route ideas |
 | Package effects | `common/scripted_effects/006_independence_wave_montenegro_package_effects.txt` | IW-030 setup, final validation, cleanup, route and ledger effects |
 | Package triggers | `common/scripted_triggers/006_independence_wave_montenegro_package_triggers.txt` | identity, roster, route, force, and completion proofs |
 | Decisions | `common/decisions/006_independence_wave_montenegro_decisions.txt` | timed founding mission plus ten costed projects |
 | AI | `common/ai_strategy/006_independence_wave_montenegro.txt` | mountain survival, host restraint, settled frontier, emergency guard |
 | Roster | `history/countries/MNT - Montenegro.txt` (vanilla), `events/006_independence_wave.txt` | vanilla MNT history recruits `MNT_kristo_popovic`, `MNT_blazo_jovanovic`, and `MNT_blazo_dukanovic`. IW-030 checkpoint `chaosx.nr6.350` attaches `MNT_independence_wave_mitar_martinovic` once, and Event 006 uses Martinovic instead of Dukanovic |
-| Portraits | `common/characters/006_independence_wave_montenegro_characters.txt`, `interface/006_independence_wave_iw030_montenegro_portraits.gfx` | Martinović character plus dedicated Popović, Jovanović, and Martinović large portrait sprites |
+| Portraits | `common/characters/006_independence_wave_characters_registry.txt`, `interface/006_independence_wave_iw030_montenegro_portraits.gfx` | Martinović character plus dedicated Popović, Jovanović, and Martinović large portrait sprites |
 | Localisation | `localisation/english/006_independence_wave_montenegro_l_english.yml`, `localisation/english/006_independence_wave_montenegro_portraits_l_english.yml` | party, idea, decision, tooltip, and Martinović character wording |
 
 The central dispatcher owns the IW-030 setup, final validation, and cleanup calls. Montenegro is an admitted FORM-09 Balkan Federation member at state 105. It can answer a frozen invitation through the shared full-integration or autonomous-membership decisions, but it is not a federation carrier and does not invent a separate formable identity. The shared full-framework focus hooks call all five MNT package helpers from the normal tree. MNT receives no additive overlay branch. The shared focus geometry is clean under the current normal-spacing receipt and is not a package gate.

@@ -11,10 +11,10 @@ The package preserves the vanilla MAC country definition, history, capital, core
 | Package effects and setup/cleanup | `common/scripted_effects/006_independence_wave_macedonia_package_effects.txt` |
 | Package triggers and exact state/host proof | `common/scripted_triggers/006_independence_wave_macedonia_package_triggers.txt` |
 | Visible tuning | `common/script_constants/006_independence_wave_macedonia_constants.txt` |
-| Ideas and lifecycle | `common/ideas/006_independence_wave_macedonia_ideas.txt` |
+| Ideas and lifecycle | `common/ideas/006_independence_wave_ideas_registry.txt` |
 | Costed decisions and founding mission | `common/decisions/006_independence_wave_macedonia_decisions.txt` |
 | AI strategy | `common/ai_strategy/006_independence_wave_macedonia.txt` |
-| Sourced leader/commander consumer | `common/characters/006_independence_wave_macedonia_characters.txt` |
+| Sourced leader/commander consumer | `common/characters/006_independence_wave_characters_registry.txt` |
 | Portrait sprite wiring | `interface/006_independence_wave_macedonia_portraits.gfx` |
 | Localisation | `localisation/english/006_independence_wave_macedonia_l_english.yml` |
 

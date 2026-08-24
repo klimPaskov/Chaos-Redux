@@ -46,7 +46,7 @@ No new leader, advisor, portrait, flag, cosmetic tag, or asset runtime reference
 
 ## Local source surfaces
 
-The package-local source files are `common/script_constants/006_independence_wave_altai_constants.txt`, `common/scripted_triggers/006_independence_wave_altai_package_triggers.txt`, `common/scripted_effects/006_independence_wave_altai_package_effects.txt`, `common/ideas/006_independence_wave_altai_ideas.txt`, `common/ai_strategy/006_independence_wave_altai.txt`, `common/decisions/006_independence_wave_altai_decisions.txt`, `common/decisions/categories/006_independence_wave_altai_categories.txt`, and `localisation/english/006_independence_wave_altai_l_english.yml`.
+The package-local source files are `common/script_constants/006_independence_wave_altai_constants.txt`, `common/scripted_triggers/006_independence_wave_altai_package_triggers.txt`, `common/scripted_effects/006_independence_wave_altai_package_effects.txt`, `common/ideas/006_independence_wave_ideas_registry.txt`, `common/ai_strategy/006_independence_wave_altai.txt`, `common/decisions/006_independence_wave_altai_decisions.txt`, `common/decisions/categories/006_independence_wave_altai_categories.txt`, and `localisation/english/006_independence_wave_altai_l_english.yml`.
 
 The five allowed shared-focus callback additions are in `common/national_focus/006_independence_wave_focus.txt`.
 

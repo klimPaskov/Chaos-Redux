@@ -26,7 +26,7 @@ Setup normalizes each carrier's authored starting popularity and democratic prov
 - `common/scripted_triggers/006_independence_wave_iberian_package_triggers.txt` owns carrier identity, anchor, lifecycle, force, route, and completion proofs.
 - `common/scripted_effects/006_independence_wave_iberian_package_effects.txt` owns setup, ledger transactions, routes, dynamic force handoff, final validation, and cleanup.
 - `common/decisions/006_independence_wave_iberian_decisions.txt` owns the two paid project categories and their founding missions.
-- `common/ideas/006_independence_wave_iberian_ideas.txt` owns the mutually exclusive carrier lifecycles and route ideas.
+- `common/ideas/006_independence_wave_ideas_registry.txt` owns the mutually exclusive carrier lifecycles and route ideas.
 - `common/ai_strategy/006_independence_wave_iberian.txt` owns survival, host-restraint, settled-economy, and emergency command weights.
 - `localisation/english/006_independence_wave_iberian_l_english.yml` owns all player-facing names, descriptions, tooltips, and idea text.
 - `common/countries/cosmetic.txt` and `gfx/flags/{,medium,small}/NAV_INDEPENDENCE_WAVE_*.tga` own the four generated route-specific NAV identities; their alternate-history provenance and QA are recorded in `docs/assets/006_independence_wave/iw013_nav_flags_2026_08_13/`.

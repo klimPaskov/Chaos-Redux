@@ -53,7 +53,7 @@ The migration path is intentionally narrow: callers that currently inspect pre-c
 
 ## Institutional characters and route roles
 
-`common/characters/006_independence_wave_iw043_iw058_characters.txt` defines four all-male institutional characters for each package. They have only a stable large civilian portrait consumer and no country-leader, advisor, officer, commander role, or recruitment at load. Standalone CHU and ASY history roster files are forbidden because they would override the vanilla carrier histories. The exact package setup effect recruits the selected institutional record immediately before it attaches the country-leader role.
+`common/characters/006_independence_wave_characters_registry.txt` defines four all-male institutional characters for each package. They have only a stable large civilian portrait consumer and no country-leader, advisor, officer, commander role, or recruitment at load. Standalone CHU and ASY history roster files are forbidden because they would override the vanilla carrier histories. The exact package setup effect recruits the selected institutional record immediately before it attaches the country-leader role.
 
 | Package state | Character | Dynamic ideology | Trait | Party name key |
 |---|---|---|---|---|
@@ -72,7 +72,7 @@ The emergency traits improve compact defense while imposing a civil-authority co
 
 ## Three-slot idea lifecycles
 
-`common/ideas/006_independence_wave_iw043_iw058_ideas.txt` defines the complete national-spirit vocabulary. Every idea has the exact package trigger in `allowed`. Setup and route effects must use `swap_ideas` within the same slot and remove all package ideas during cleanup.
+`common/ideas/006_independence_wave_ideas_registry.txt` defines the complete national-spirit vocabulary. Every idea has the exact package trigger in `allowed`. Setup and route effects must use `swap_ideas` within the same slot and remove all package ideas during cleanup.
 
 ### IW-043
 

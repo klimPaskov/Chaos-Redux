@@ -48,7 +48,7 @@ The source archive is `docs/assets/portraits/006_independence_wave/`, with origi
 
 ## Source files and handoff
 
-Package-local source lives in `common/script_constants/006_independence_wave_sakha_constants.txt`, `common/scripted_triggers/006_independence_wave_sakha_package_triggers.txt`, `common/scripted_effects/006_independence_wave_sakha_package_effects.txt`, `common/ideas/006_independence_wave_sakha_ideas.txt`, `common/ai_strategy/006_independence_wave_sakha.txt`, `common/decisions/006_independence_wave_sakha_decisions.txt`, and `localisation/english/006_independence_wave_sakha_l_english.yml`.
+Package-local source lives in `common/script_constants/006_independence_wave_sakha_constants.txt`, `common/scripted_triggers/006_independence_wave_sakha_package_triggers.txt`, `common/scripted_effects/006_independence_wave_sakha_package_effects.txt`, `common/ideas/006_independence_wave_ideas_registry.txt`, `common/ai_strategy/006_independence_wave_sakha.txt`, `common/decisions/006_independence_wave_sakha_decisions.txt`, and `localisation/english/006_independence_wave_sakha_l_english.yml`.
 
 The implementation and MCP receipts are recorded in `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw051_sakha_package_core_2026_08_15.md`.
 
