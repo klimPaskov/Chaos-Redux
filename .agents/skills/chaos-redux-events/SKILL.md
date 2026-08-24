@@ -628,12 +628,13 @@ Rules:
 
 ### Event catalog status contract
 
-- Use exactly these status labels: `Playable`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
+- Use exactly these status labels: `Playable`, `Partially Available`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
 - `Playable` requires explicit approval and must never be inferred or assigned by default.
+- `Partially Available` means the catalog row has a usable implemented surface but still has material unavailable, blocked, or incomplete content; it is not equivalent to `Playable`.
 - Events 1–20 awaiting validation use `Needs Testing` unless the user explicitly approves another status.
 - A post-20 catalog ID with an actual root definition in the mod (`id = chaosx.nr<ID>.1`) is `To Be Reworked`, including hidden, bridge, or placeholder roots; do not infer availability from category-array membership alone.
 - A post-20 catalog ID without an actual `chaosx.nr<ID>.1` root definition is `Unavailable`.
-- Keep workbook validation lists and the `Legend` sheet synchronized with these labels.
+- Treat the workbook `Legend` sheet as the source for status, Type, Member Severity, evolution-column, and World-End colors. Keep dropdown ranges, conditional-formatting rules, static fills, and exported values synchronized with the Legend.
 - These status rules classify catalog entries only and must not silently change runtime registration or enablement.
 
 ### Extra rules to follow

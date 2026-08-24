@@ -16,9 +16,11 @@ The workbook remains the catalog authority for event, cluster, and scenario rows
 - `Evo I` through `Evo V` store the complete player-facing description for each implemented evolution stage. Evolution titles remain separate in the in-game Event Details selectors and must not replace these descriptions.
 - When an event exposes more than five distinct evolution-detail rows, preserve every complete overflow entry in `Evo V` with its title as a separator until an explicit workbook-schema migration is approved. Do not add a column or discard the extra description during routine alignment work.
 - `World-End Scenario` stores the complete player-facing description for every public terminal branch owned by the event. When one event owns several branches, the cell may retain each scenario title as a separator, but every title must be followed by its full description.
-- The only valid status labels are `Playable`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
+- The only valid status labels are `Playable`, `Partially Available`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
 - `Playable` requires explicit approval and is never assigned as a default.
+- `Partially Available` records a usable catalog row with material unavailable, blocked, or incomplete content; it is not a playable approval.
 - Events 1 through 20 use `Needs Testing` until their current implementation has been approved as playable.
-- Registered events above Event 20 use `To Be Reworked` until their replacement implementation is approved.
-- Event IDs absent from the runtime registration arrays use `Unavailable`, even when obsolete event files or old documentation still exist.
+- Events above Event 20 with an actual `chaosx.nr<ID>.1` root definition use `To Be Reworked` until their replacement implementation is approved.
+- Event IDs without an actual `chaosx.nr<ID>.1` root definition use `Unavailable`.
+- The `Legend` sheet is the source for valid dropdown values and the fill colors assigned to Type, Status, Member Severity, evolution, and World-End cells. Data validation, conditional formatting, and populated-cell fills must remain synchronized with it.
 - Catalog status does not change runtime registration or default enablement.

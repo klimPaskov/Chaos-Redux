@@ -219,7 +219,7 @@ The workbook was reopened with its existing five sheets, dimensions, tables, val
 
 Current player-facing Event Details text was aligned for Events 001, 002, 007, 009, 010, 012, and 019. In addition, 77 Events 1–20 evolution cells and 12 public world-end entries now contain complete descriptions matching their in-game description keys rather than title-only text. Event 3's stale fifth evolution cell was cleared, and Event 5's additional `Fringe Breakaways` catalog row remains combined with Evo V because the approved workbook layout has no Evo VI column.
 
-The workbook status validation now exposes exactly four values: `Playable`, `To Be Reworked`, `Unavailable`, and `Needs Testing`. No row is marked `Playable`; Events 1–20 are `Needs Testing`, post-20 IDs with an actual `chaosx.nr<ID>.1` root definition are `To Be Reworked`, and IDs without that root definition are `Unavailable`. A final root-definition scan corrected IDs 46, 99, and 100 from `Unavailable` to `To Be Reworked`. The resulting counts are 20 `Needs Testing`, 81 `To Be Reworked`, 65 `Unavailable`, and zero `Playable`.
+The workbook status validation now exposes exactly five values: `Playable`, `Partially Available`, `To Be Reworked`, `Unavailable`, and `Needs Testing`. No Event row is marked `Playable`; Events 1–20 are `Needs Testing`, post-20 IDs with an actual `chaosx.nr<ID>.1` root definition are `To Be Reworked`, and IDs without that root definition are `Unavailable`. A final root-definition scan corrected IDs 46, 99, and 100 from `Unavailable` to `To Be Reworked`. Event counts remain 20 `Needs Testing`, 81 `To Be Reworked`, 65 `Unavailable`, and zero `Playable`; the current Cluster sheet contains eight `Partially Available` and five `Unavailable` rows, while all eleven Scenario rows are `Needs Testing`.
 
 ## Skills used or updated
 
@@ -243,7 +243,7 @@ The Event 003 post-change partial lint reported zero blocking diagnostics in its
 
 Localisation and spreadsheet checks confirmed the changed keys, BOM/alignment requirements, workbook/export row agreement, and Event Details wording alignment.
 
-The catalog synchronization resolved all 178 mapped evolution/world-end title and body keys, found no duplicate mapped body keys, and confirmed that each mapped key is consumed by its selector. Workbook validation confirmed the four exact status options, the 20/81/65/0 status distribution, exact agreement with all 101 root event definitions, blank-ID row emptiness, and 166 exported Event rows.
+The catalog synchronization resolved all 178 mapped evolution/world-end title and body keys, found no duplicate mapped body keys, and confirmed that each mapped key is consumed by its selector. Workbook validation confirmed the five exact status options, the Event-sheet 20/81/65/0 distribution, exact agreement with all 101 root event definitions, blank-ID row emptiness, 166 exported Event rows, and exact Legend agreement for status, Type, Member Severity, evolution, and World-End values and fills.
 
 Read-only source-reference rescans covered stale Event Details keys, old triggerable-scenario keys, removed helper names, and the corrected cannibalism path.
 
