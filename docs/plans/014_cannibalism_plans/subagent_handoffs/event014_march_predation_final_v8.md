@@ -6,7 +6,7 @@ The v8 reference refinement is rejected and no paid Meshy work was performed aga
 
 The technically clean transparent input at SHA-256 `3A0F19C7329FD433C538F6D1BCE3A97C5CDE72EBEF52B3D5270AA151E41C740A` retained too much of the conventional and culturally anchored fantasy-archer identity. Parent review specifically rejected the weak skull/bone headgear and trophy silhouette and the culturally legible markings and jewelry.
 
-Internet source research was reopened under the stricter requirement for an already monstrous or cannibal fictional archer with bow/quiver, paint, and strong bone kit. Three candidates were archived and evaluated, but none meets every requirement without a recorded gap. The source decision therefore remains `needs_parent_source_decision`; ImageGen and Meshy are paused.
+Internet source research was reopened under the stricter requirement for an already monstrous or cannibal fictional human archer with bow/quiver, paint, and strong bone kit. The first shortlist failed that standard: the parent explicitly rejected the goblin candidate as the wrong species and identity. Continued research found Bestiarum Games' *Fleshmad Hunters | Man Eaters*, an official culturally neutral grimdark tabletop line that explicitly describes human cannibal archers using great bows to mark the best cuts of flesh. Hunter 1 clears the human, cannibal, bow/quiver, skull/bone gear, and cultural-neutrality gates, but its official source is a gray resin presentation with red rim lighting rather than a fully painted color illustration. ImageGen and Meshy remain paused pending parent approval of that source and of faithful material colorization within the cleanup-only boundary.
 
 ## Source and refinement lineage
 
@@ -26,9 +26,13 @@ Internet source research was reopened under the stricter requirement for an alre
 
 The full candidate record, URLs, terms checks, hashes, and fit gaps are in `refs/source/recovery_v8/source_shortlist.json`.
 
-1. `goblin_archer_bone_armor.jpg`, SHA-256 `505E9B7A2A8A0834A1422ACDCA96420194416D7A105B7C07187B133C6F8643DA`, is a modern Unity game asset by Dmitriy Poskrebyshev. It is the closest culturally unanchored candidate: a gaunt fictional goblin with skeletal bow, dense bone armor, full-body visibility, and paint-like facial markings. It lacks skull headgear and is not explicitly named cannibal.
-2. `behance_cannibal_tribe_archer.jpg`, SHA-256 `002DCCD27B16AD5F20E8A533219CD121E415B71F3D979675587BEBC9A4FA5A7A`, is *Cannibal tribe* by Vladislav Stain. It has explicit cannibal identity, paint, bow/arrows, and a skull trophy, but is rejected by the worker because its human styling remains too culturally anchored.
-3. `orcquest_archer_secondary.jpg`, SHA-256 `57F64ABFA75122E0327B7F2CDFBCD8AE0B4A5B2A6B590C7BFAD97225E096CC01`, is OrcQuest promotional art attributed to Daniel Zrom / Maze Games. It is fictional and carries paint, bow/quiver, and skull trophies, but reads as a conventional fantasy hero, is not explicitly cannibal, lacks skull headgear, and the archived byte is only a secondary copy.
+1. `bestiarum_fleshmad_hunter_1.jpg`, SHA-256 `9E0028B6458CFD4876D347A44EEBD0FB4B533DDF71F10ABA6B73E42D3F0F668F`, is the recommended source. Bestiarum Games explicitly identifies the Fleshmad Hunters as Man Eater cannibals who use great bows to mark the best cuts of flesh. Hunter 1 is human, full-body, feral, and culturally neutral, with a bone-spike crown, skull breast trophy, bone and feather kit, bone greatbow, barbed shaft, and back quiver. The unresolved gap is its gray resin presentation rather than a fully painted color source.
+2. `bestiarum_fleshmad_hunter_4.jpg`, SHA-256 `779D77B631E8B0F51EAF4B4911DE193285EF0F0ACE5BA3093C4A0894976C367D`, is the skull-mask alternate. It has a full skull mask, drawn bone greatbow, quiver, bone necklace, and explicit Man Eater lineage, but the firing pose self-occludes more of the body and it has no unambiguous body-paint color.
+3. `goblin_archer_bone_armor.jpg`, SHA-256 `505E9B7A2A8A0834A1422ACDCA96420194416D7A105B7C07187B133C6F8643DA`, was rejected by the parent because a goblin is the wrong species and still misses the explicit cannibal and skull-headgear identity gate.
+4. `behance_cannibal_tribe_archer.jpg`, SHA-256 `002DCCD27B16AD5F20E8A533219CD121E415B71F3D979675587BEBC9A4FA5A7A`, is *Cannibal tribe* by Vladislav Stain. It has explicit cannibal identity, paint, bow/arrows, and a skull trophy, but is rejected because its human styling remains too culturally anchored.
+5. `orcquest_archer_secondary.jpg`, SHA-256 `57F64ABFA75122E0327B7F2CDFBCD8AE0B4A5B2A6B590C7BFAD97225E096CC01`, is OrcQuest promotional art attributed to Daniel Zrom / Maze Games. It is fictional and carries paint, bow/quiver, and skull trophies, but reads as a conventional fantasy hero, is not explicitly cannibal, lacks skull headgear, and the archived byte is only a secondary copy.
+
+The Bestiarum product and terms pages were archived under `refs/source/recovery_v8/pages/`. No explicit NoAI or no-derivatives restriction was found on the inspected pages. The source remains all rights reserved and is eligible only under the user's reference-only authorization; no purchased STL or source pixels may ship.
 
 Wendigo-derived designs were excluded despite superficially strong monster and skull traits because that route would re-anchor the unit in a living Indigenous cultural tradition.
 
@@ -65,6 +69,12 @@ No route substitution or version downgrade was used.
 - `refs/source/recovery_v8/candidates/goblin_archer_bone_armor.jpg`
 - `refs/source/recovery_v8/candidates/behance_cannibal_tribe_archer.jpg`
 - `refs/source/recovery_v8/candidates/orcquest_archer_secondary.jpg`
+- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_1.jpg`
+- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_2.jpg`
+- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_3.jpg`
+- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_4.jpg`
+- `refs/source/recovery_v8/pages/bestiarum_fleshmad_hunters.html`
+- `refs/source/recovery_v8/pages/bestiarum_terms.html`
 - `refs/briefs/imagegen_prompt_v8.md`
 - `refs/derived/source_to_refinement_comparison_v8.md`
 - `refs/derived/source_to_refinement_comparison_v8.png`
@@ -85,12 +95,12 @@ No route substitution or version downgrade was used.
 
 ## Blockers and remaining parent work
 
-- `needs_parent_source_decision`: candidate 1 is the closest safe source, but its missing skull headgear and non-explicit cannibal naming are material deviations. It must not be treated as approved without a parent decision.
-- A source that truly meets all required identity traits has not been found. ImageGen may not add the missing skull headgear or redesign the identity under the current cleanup-only instruction.
+- `needs_parent_source_and_colorization_approval`: Bestiarum Fleshmad Hunter 1 clears the human cannibal, bow/quiver, skull/bone gear, horror, and cultural-neutrality gates. The parent must decide whether the gray official render may receive faithful material colorization, isolation, base removal, native transparency, and only the previously approved small sheathed bone close weapon.
+- ImageGen may not alter the Fleshmad identity, anatomy, pose, bone crown, skull trophy, bow, quiver, silhouette, or add new cultural motifs.
 - Meshy generation, geometry review, rigging, all eight real Meshy actions, Blender scale calibration against `western_european_infantry.mesh`, PDX texture derivation, `.mesh`/`.anim` export and reimport, previews, sourced 44100 Hz sound package, and final runtime/GFX/sound handoff are not started for v8.
 - Existing counter art remains consumer-only and was not modified.
 - Parent-owned runtime wiring and live in-game validation remain untouched.
 
 ## Simplifications, omissions, and blockers
 
-No unapproved simplification was used. The package is incomplete because the exact source gate is unresolved, and downstream paid/model work is intentionally blocked rather than filled with a weaker substitute.
+No unapproved simplification was used. The package is incomplete because source/colorization approval is unresolved, and downstream paid/model work is intentionally blocked rather than filled with a weaker substitute.
