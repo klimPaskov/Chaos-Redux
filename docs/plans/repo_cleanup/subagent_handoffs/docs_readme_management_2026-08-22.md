@@ -1,5 +1,7 @@
 # Documentation README management — 2026-08-22
 
+> Current-state note (2026-08-24): This handoff records the original 74-README cleanup snapshot. A later filesystem rescan covered 95 README files, including newer active provenance packages, and found zero broken local targets. The original per-file inventory remains historical evidence rather than a claim that no READMEs were added afterward.
+
 ## Scope
 
 This pass inventoried every filesystem `README.md` under `docs/`, including ignored active asset and provenance workspaces that Git-only file enumeration omits.
