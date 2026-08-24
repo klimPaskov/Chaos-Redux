@@ -60,8 +60,8 @@ class AnimationProcessingToolTests(unittest.TestCase):
     def test_config_and_lock_match_version_and_operations(self) -> None:
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         route = json.loads((PIPELINE_ROOT / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["blender_hoi4_adapter"]
-        self.assertEqual(config["adapter_version"], "1.10.2")
-        self.assertEqual(route["version"], "1.10.2")
+        self.assertEqual(config["adapter_version"], "1.10.3")
+        self.assertEqual(route["version"], "1.10.3")
         for operation in ("import_animation_action", "retime_animation_action", "correct_action_grounding"):
             self.assertIn(operation, config["operations"])
             self.assertIn(operation, route["operations"])
