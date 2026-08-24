@@ -16,7 +16,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLISHER_GLOB = "006_independence_wave_packages_region_*_effects.txt"
+PUBLISHER_GLOB = "006_independence_wave_package_region_effects_registry.txt"
 OVERLAY_ONLY_IDS = {5, 22, 25, 35, 59, 85, 101, 102, 105, 156, 196, 197, 204}
 STATIC_20_WITNESS_IDS = {
 	1,

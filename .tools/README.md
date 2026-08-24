@@ -83,7 +83,7 @@ python -B .tools/audit_event6_form16.py
 python -B .tools/audit_event6_gui_matrix.py
 ```
 
-The validators read the consolidated Event 006 constant and support-event registries directly. They are source/static checks only; MCP event, focus, map, probability, GUI-render, and live terminal evidence remain separate acceptance boundaries.
+The validators read the consolidated Event 006 constant, regional publisher, regional trigger, and support-event registries directly. They are source/static checks only; MCP event, focus, map, probability, GUI-render, and live terminal evidence remain separate acceptance boundaries.
 
 ### 3D model pipeline
 
