@@ -128,18 +128,21 @@ Read `AGENTS.md`, `chaos-redux-subagents`, all Event 6 source specs, plans, hand
 
 Run only after final in-game localisation and docs exist.
 
-> Current routing note (2026-08-15): the older range-replacement instruction
+> Current routing note (2026-08-24): the older range-replacement instruction
 > below is a historical work item. Consult the current source-of-truth map,
 > `quality/catalog_alignment_handoff.md`, and the pre-event-surface
 > supersession handoff before touching the workbook. Re-audit the current
 > 3/4/5/7/10 ladder and ensure no player-facing pre-event crisis, pressure,
 > cost, queue, or early-request wording is reintroduced.
+> The 2026-08-22 catalog handoffs report the final Event Details key, refreshed
+> exports, and `Partially Available` status, so report no workbook change when
+> those current receipts already match the workbook.
 > This prompt does not authorize the documentation curator to edit or export
 > the workbook.
 
 ### Prompt
 
-Read the parent prompt, the spreadsheet skill, the Event 6 workbook row, and only the final Event 6 Event Details, event log, evolution, cluster, and scenario localisation needed for mirroring. Update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` in place. Replace the stale 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16 wave ranges with final in-game wording based on the active 3, 4, 5, 7, and 10 ladder, with World Collapse also at 10. Preserve workbook structure and formatting. Report changed cells and any blocked fields. Do not edit gameplay or localisation.
+Read the parent prompt, the spreadsheet skill, the Event 6 workbook row, and only the final Event 6 Event Details, event log, evolution, cluster, and scenario localisation needed for mirroring. Update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` in place only when the current workbook still differs from the accepted wording or status. If the 2026-08-22 catalog handoffs and current workbook already agree, report no change and preserve the existing exports. Replace the stale 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16 wave ranges only when they remain present, using final in-game wording based on the active 3, 4, 5, 7, and 10 ladder, with World Collapse also at 10. Preserve workbook structure and formatting. Report changed cells and any blocked fields. Do not edit gameplay or localisation.
 
 ## 15. Completion auditor
 

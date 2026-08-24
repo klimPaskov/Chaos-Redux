@@ -2,11 +2,37 @@
 
 ## Planning scope
 
-This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `24` source has a produced game-ready derivative and runtime package. The latest catalog authority is `subagent_handoffs/006_catalog_wave_ladder_update_2026_08_11.md`, which records the approved Event 006 `Events!C7` wording update and regenerated CSV mirrors; this documentation patch does not edit the workbook or exports.
+This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `24` source has a produced game-ready derivative and runtime package. The current catalog status is evidenced by `subagent_handoffs/006_event6_catalog_alignment_2026-08-22.md` and `subagent_handoffs/006_event6_catalog_reconcile_2026-08-22.md`; their process-history discrepancy is preserved while their final C7/export/status result is current. This documentation patch does not edit the workbook or exports.
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
-## Current authority override (2026-08-15 registry re-audit after IW-045 admission)
+## Current implementation correction (2026-08-24; bounded evidence)
+
+The accepted fail-closed boundary remains 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with unresolved portraits still blocking admission and no visible pre-Event 006 crisis surface.
+
+The 2026-08-24 research-table schema repair restores fixed-width parsing for the 206-row sixteen-column package table and the 111-row nine-column reservation table without promoting any package or widening admission. Its evidence is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_research_csv_schema_repair_2026-08-24.md`.
+
+Commit `b77f9fd45` repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission; its handoff is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
+
+The related dormant-carrier capital-scope repair is source-closed for AXX, BAX, and BBX through fixed numeric capital states 82, 184, and 185, with no remaining `capital_scope` in the three package files. This is static source evidence only and does not establish a live release.
+
+Commits `d50e2bf1b` and `6d8426272` document 37 byte-preserving supplied portrait mappings, while `795dc9bed` adds the package-gated source-placeholder YAK Pavel consumer; the current supplied runtime set is 38 installed files with 13 intentionally unmapped files, and no package promotion follows.
+
+As of this 2026-08-24 reconciliation, the latest portrait wiring evidence remains dated 2026-08-22, with 38 installed source-placeholder DDS consumers and 13 intentionally unmapped supplied files. No newer portrait wiring handoff or runtime portrait binary change was observed, so the current 38/13 boundary is carried forward without a new asset claim.
+
+Commit `f7d950fd6` applies the four-group cost palette tranche to its named decision and project surfaces, with zero active custom-cost keys above four normalized spendable groups. The automatic DM-01 pre-activation cost disclosure is source-applied through `subagent_handoffs/006_event6_dm01_cost_disclosure_2026_08_22.md`; package cost prose, category density, same-scenario typed probability evidence, and live tooltip observation remain open.
+
+Commit `d6abc3792` repairs the joint partial-wave expected-count witness by recomputing the expected country count from the actual Event 005 and Event 006 selected counts before optional expansion and lock. Commit `abb0a8c83` restores the Event 005-aware joint-capacity witness for nine admitted packages and brings the source to 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 attestations; these repairs remain static evidence and do not prove a joint terminal receipt.
+
+Current static checks pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, and Statehood Ledger semantic matrix audits. The current Event MCP inspect/render remains partial, focus MCP evidence retains seven Event 006 layout warnings plus fourteen unrelated vanilla diagnostics, and both Event 006 GUI surfaces retain workspace-global diagnostics; no live, balance, or whole-event completion claim follows.
+
+The 2026-08-24 static refresh additionally records the FORM-48, FORM-01/02/04, FORM-03, and IW-035 cost-localisation checks. These checks remain source/static evidence only and do not close the remaining package cost prose, category density, typed probability, tooltip, GUI, or live-event gates; the refresh is recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_static_audit_refresh_2026-08-24.md`.
+
+Super-event 23 remains blocked because the accepted London Brass Players recording lacks verified United States/worldwide redistribution permission. The 2026-08-22 v117 re-verification keeps *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as the strongest rights-complete research candidate, but it is not selected, promoted, or wired; parent/user approval, ShareAlike treatment, human audition, and the source URL caveat remain open.
+
+The current implementation handoffs are `docs/plans/006_independence_wave_plans/subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_22.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_four_group_cost_palette_tranche_2026-08-22.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_form03_cost_tooltips_2026-08-24.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw035_cost_localisation_2026-08-24.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_form05_cost_localisation_2026-08-24.md`, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_form48_cost_localisation_2026-08-24.md`, and `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_form0124_cost_localisation_2026-08-24.md`.
+
+## Historical authority baseline (2026-08-15 registry re-audit after IW-045 admission; superseded above)
 
 The current IW-045 Event 006 boundary is 32 content-attested selectable packages across 29 compatible reservation groups, with 161 unattested selectable rows out of 193 non-overlay rows and 40 runtime adapters. Eight adapter-only rows remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. The deterministic Join order places IW-040 after IW-038, IW-044 after IW-040, and IW-045 after IW-044, with all three before IW-033. The active automatic ladder is 3/4/5/7/10, with World Collapse also targeting 10. IW-038 Ruthenia, IW-040 Kuban, IW-044 Tatarstan, and IW-045 Bashkiria are admitted under their exact vanilla-carrier and actual-former-host contracts; the whole event remains **HOLD / PARTIAL**.
 

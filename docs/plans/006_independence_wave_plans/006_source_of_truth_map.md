@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-## Current authority override (2026-08-22 after release-scope, focus, and catalog reconciliation)
+## Current authority override (2026-08-24 after schema, cost-localisation, and static-audit reconciliation)
 
 The whole-event disposition remains **HOLD / PARTIAL**.
 
@@ -31,6 +31,8 @@ Commit `a2abd65d7` supersedes the partial-wave reconciliation as the current exa
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with the terminal receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and the portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
 
 The 2026-08-22 portrait-consumer tranche adds the exact gated IW-051 YAK Pavel Pevznyak consumer, bringing the installed supplied set to 38 and leaving 13 files intentionally unmapped. Its handoff is `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`; the package remains package-local and fail-closed.
+
+As of this 2026-08-24 reconciliation, the latest portrait wiring evidence remains dated 2026-08-22: the supplied runtime set is still 38 installed source-placeholder DDS consumers with 13 intentionally unmapped files. No newer portrait wiring handoff or runtime portrait binary change was observed, so this date updates the documentation snapshot only and does not promote a portrait, alter a package gate, or claim a new asset tranche. The current portrait authorities are `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_22.md` and `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`.
 
 The dormant-carrier and capital-scope repair is source-closed for the admitted AXX, BAX, and BBX anchors: fixed numeric capital states 82, 184, and 185 replace the invalid dormant `capital_scope` path, while the b77f9 baseline-law ordering repair covers AXX, BAX, BBX, AFX, and AGX. The focused scan found no `capital_scope` in the three package files; this is static source evidence only.
 

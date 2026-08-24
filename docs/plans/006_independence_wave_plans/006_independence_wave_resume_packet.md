@@ -2,7 +2,7 @@
 
 The long provenance list below preserves dated implementation history. Current routing and counts are stated in the explicit authority override that follows it; older v105/v104/v103, 27-package, and 81-master references in that list are not current status.
 
-## Current authority override (2026-08-22 after release-scope, focus, and catalog reconciliation)
+## Current authority override (2026-08-24 after schema, cost-localisation, and static-audit reconciliation)
 
 Resume from a partial implementation boundary, not from a completion claim.
 
@@ -29,6 +29,8 @@ The dormant-carrier and capital-scope repair is source-closed for AXX, BAX, and 
 Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21.md`, with terminal-receipt details in `subagent_handoffs/006_event6_terminal_receipt_tranche_2026-08-21.md` and portrait mapping in `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_21.md`.
 
 The 2026-08-22 portrait-consumer tranche adds the exact gated IW-051 YAK Pavel Pevznyak consumer, bringing the installed supplied set to 38 and leaving 13 files intentionally unmapped. Its handoff is `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`; YAK remains package-local and fail-closed.
+
+As of this 2026-08-24 reconciliation, the latest portrait wiring evidence remains dated 2026-08-22: the supplied runtime set is still 38 installed source-placeholder DDS consumers with 13 intentionally unmapped files. No newer portrait wiring handoff or runtime portrait binary change was observed, so this date updates the resume snapshot only and does not promote a portrait, alter a package gate, or claim a new asset tranche. The current portrait authorities are `subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_22.md` and `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`.
 
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the opening-division owner.
 
