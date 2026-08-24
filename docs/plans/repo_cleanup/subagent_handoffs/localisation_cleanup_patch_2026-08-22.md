@@ -58,11 +58,9 @@ Communist Insurgency still communicates local escalation and intervention. Zombi
 
 No sourced quotation was touched. These five keys contained no dynamic localisation token or formatting code that needed preservation.
 
-## Remaining catalog alignment
+## Catalog alignment follow-up
 
-The Event Details or equivalent player-facing detail fields for Events 1, 2, 7, 9, and 10 in `docs/spreadsheets/chaos_redux_events_catalog.xlsx` still mirror or summarize the prior wording and need alignment by the spreadsheet owner. The workbook is the only editable catalog source. After it is updated, `.tools/export_event_catalog_csv.py` must regenerate the export-only CSV files.
-
-No spreadsheet was edited in this bounded pass.
+Commit `eec9f7692` completed the later workbook alignment for Events 1, 2, 7, 9, and 10 and regenerated all three export-only CSV files from `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. No spreadsheet was edited in this earlier bounded localisation pass.
 
 ## Unresolved and skipped validation
 

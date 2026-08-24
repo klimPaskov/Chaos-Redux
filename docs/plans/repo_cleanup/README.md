@@ -14,6 +14,7 @@ This directory contains the source prompts, bounded cleanup records, migration p
 - [`systems_documentation_reorganization_2026-08-22.md`](systems_documentation_reorganization_2026-08-22.md) records the shared-system documentation ownership pass.
 - [`git_storage_cleanup_2026-08-22.md`](git_storage_cleanup_2026-08-22.md) records the bounded stale Git-storage cleanup.
 - [`event_003_006_bounded_cleanup_2026-08-22.md`](event_003_006_bounded_cleanup_2026-08-22.md) and [`event_013_020_bounded_cleanup_2026-08-22.md`](event_013_020_bounded_cleanup_2026-08-22.md) record bounded event-specific cleanup work.
+- [`subagent_handoffs/events_1_20_catalog_description_sync.md`](subagent_handoffs/events_1_20_catalog_description_sync.md) and [`subagent_handoffs/events_1_20_catalog_dead_localisation_cleanup.md`](subagent_handoffs/events_1_20_catalog_dead_localisation_cleanup.md) record the catalog synchronization and its dead-localisation closure.
 
 ## Preserved audits and supporting records
 
