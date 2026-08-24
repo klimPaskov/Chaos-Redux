@@ -26,7 +26,7 @@ The force mapping is p29 (`mountain_frontier`, military tradition 66) with the d
 ## Files and asset wiring
 
 - Gameplay: `common/scripted_triggers/006_independence_wave_bosnia_package_triggers.txt`, `common/scripted_effects/006_independence_wave_bosnia_package_effects.txt`, `common/decisions/006_independence_wave_bosnia_decisions.txt`, `common/ideas/006_independence_wave_ideas_registry.txt`, `common/script_constants/006_independence_wave_constants_registry.txt`, `common/characters/006_independence_wave_characters_registry.txt`, `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt`.
-- Runtime portrait consumer: `interface/006_independence_wave_iw029_bosnia_portraits.gfx`, sprite `GFX_portrait_BOS_independence_wave_mehmed_spaho`, texture `gfx/leaders/006_independence_wave/portrait_BOS_independence_wave_mehmed_spaho.dds`.
+- Runtime portrait consumer: `interface/006_independence_wave_portraits_registry.gfx`, sprite `GFX_portrait_BOS_independence_wave_mehmed_spaho`, texture `gfx/leaders/006_independence_wave/portrait_BOS_independence_wave_mehmed_spaho.dds`.
 - The ComfyUI source master is the flat parent file `docs/assets/portraits/006_independence_wave/iw029_bosnia_mehmed_spaho_source_placeholder_2026_08_06__portrait_BOS_independence_wave_mehmed_spaho_source.jpg`; its crop, provenance, and review evidence are kept in the single `docs/assets/portraits/006_independence_wave/processed/` folder. The package handoff is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw029_bosnia_portrait_source_placeholder_2026_08_06.md`.
 - Localisation: `localisation/english/006_independence_wave_bosnia_l_english.yml`.
 

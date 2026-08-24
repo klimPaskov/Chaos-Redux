@@ -290,7 +290,7 @@ The narrow runtime dispatch adapter recognizes package ID 4 for setup, final val
 
 ### Visual assets and icon wiring
 
-New portrait sprites are registered in `interface/006_independence_wave_brittany_portraits.gfx`:
+New portrait sprites are registered in `interface/006_independence_wave_portraits_registry.gfx`:
 
 - `GFX_portrait_BRI_independence_wave_civic_commission` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_civic_commission.dds`.
 - `GFX_portrait_BRI_independence_wave_coastal_commandant` uses `gfx/leaders/006_independence_wave/portrait_BRI_independence_wave_coastal_commandant.dds`.
