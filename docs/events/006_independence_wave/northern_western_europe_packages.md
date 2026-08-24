@@ -1019,7 +1019,7 @@ gate.
 - `common/ideas/006_independence_wave_ideas_registry.txt`
 - `common/scripted_triggers/006_independence_wave_saar_package_triggers.txt`
 - `common/scripted_effects/006_independence_wave_saar_package_effects.txt`
-- `common/decisions/categories/006_independence_wave_saar_categories.txt`
+- `common/decisions/categories/006_independence_wave_categories.txt`
 - `common/decisions/006_independence_wave_saar_decisions.txt`
 - `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt`
 - `localisation/english/006_independence_wave_saar_l_english.yml`
