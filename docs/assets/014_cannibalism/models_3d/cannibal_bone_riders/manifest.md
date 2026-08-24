@@ -1,6 +1,6 @@
 # `cannibal_bone_riders` model package manifest
 
-Package status: `blocked_meshy_quadruped_motion_capability`. Meshy 7 geometry, local geometry QA, previews, source provenance, all required sourced audio roles, and the existing bespoke counter audit are complete. A runtime skeletal package is not complete because the live Meshy route cannot rig or animate the nonhumanoid horse component of the mounted compound.
+Package status: `blocked_adapter_reload_pending_professional_sources_selected`. Meshy 7 geometry, local geometry QA, previews, source provenance, all required sourced audio roles, and the existing bespoke counter audit are complete. Parent-approved CC0 horse actions and conditionally approved Meshy rider-action candidates now provide a source-compliant separate horse/rider route, but no runtime skeletal package exists until the repaired structured adapter surface is reloaded and verified.
 
 The non-shipping source is Tatyana Kupriyanova / @CgSister's modern fictional *Horned Warrior on Pale Steed*, archived at `refs/source/recovery_v7/candidates/bone_tatyana_horned_steed.jpg`, SHA-256 `261B5442B11853971CA6B31265167EABA4D73E69AA7A116E78A3D3CD82F114D8`, source page `https://twoucan.com/profile/CgSister`. The page grants no public reuse license and contains no explicit NoAI/no-derivatives prohibition. The user explicitly authorized reference-only use of this exact artwork and one narrow native ImageGen adaptation.
 
@@ -19,3 +19,20 @@ Six licensed or public-domain audio sources and PCM S16LE 44100 Hz mono derivati
 The v9 live route audit verified official Meshy MCP 0.4.0, exact `meshy-7`, balance 1320, adapter 1.10.0, Blender 5.1.2, io_pdx_mesh 0.91.0, and the listening Blender bridge. Meshy's current official rigging contract supports standard humanoid bipeds and explicitly excludes nonhumanoid assets; `meshy_animate` requires a successful Meshy rig task. A separated rider could be rigged as a biped, but Meshy exposes no quadruped horse rig or animation source, so separation cannot yield compliant mounted motion. No additional paid attempt was made against a documented unsupported input family.
 
 Detailed evidence is in `evidence/final_v9_dependency_and_capability_report.md`, `evidence/action_manifest.md`, `audio/audio_manifest.md`, `job.yaml`, and `runtime/handoff.md`.
+
+## Professional-source recovery
+
+Mesh2Motion `mesh2motion-assets` commit `6bab14fa197957bf7851477cad0c372960a48824` is the approved CC0-1.0 horse motion source.
+Exact source pages, LICENSE bytes, per-action Blender sources, the consolidated 15-action GLB, and hashes are archived in `provider/external_animation/mesh2motion_horse/`.
+The selected horse clips are `Idle`, `Run`, `Rear`, `Kick`, `Head_But`, `Trot`, `Eating`, and `Death`; phase evidence and the 56-bone/weight audit are in `evidence/mesh2motion_horse_action_audit.md`.
+
+The official Meshy action library, rejected combat candidates, phase evidence, and the conditionally approved eight-action rider plan are archived under `provider/meshy_rider_action_research/` and summarized in `evidence/meshy_rider_action_research.md`.
+No new Meshy action call has been made; the planned rider tranche remains 24 credits against the latest verified balance of 587.
+
+Installed vanilla `units_cavalry.asset` proves the required architecture: a frame entity, a horse entity, and a distinct rider entity attached at `Saddle_Node`.
+The exact installed file and line-specific analysis are archived in `evidence/vanilla/units_cavalry.asset` and `evidence/vanilla_cavalry_entity_architecture.md`.
+Bone Riders will therefore preserve separate bespoke horse and rider meshes and actions; it will not merge their skeletal actions.
+
+Registration recovery commit `7e3af24ac` adds the required structured operation exposure but requires a fresh Codex/MCP process.
+The current process remains paused, and an unrelated uncommitted adapter/lock 1.10.4 state is not authoritative.
+No final rig, weights, Saddle_Node, `.mesh`, `.anim`, DDS model textures, exports, reimports, or compound synchronization previews are claimed.

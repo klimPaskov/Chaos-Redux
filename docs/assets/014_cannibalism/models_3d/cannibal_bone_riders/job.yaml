@@ -1,5 +1,5 @@
 schema_version: 1.0.0
-status: blocked_meshy_quadruped_motion_capability
+status: blocked_adapter_reload_pending_professional_sources_selected
 owner_id: 014_cannibalism
 event_id: "014"
 event_slug: cannibalism
@@ -156,14 +156,14 @@ rig_route:
     - rein_r
     - skull_helmet
 required_actions:
-  - { role: idle, runtime_name: cannibal_bone_riders_idle, fps: 24, loop: true, root_policy: in_place, source_status: blocked }
-  - { role: move, runtime_name: cannibal_bone_riders_move, fps: 24, loop: true, root_policy: in_place_canter, source_status: blocked }
-  - { role: attack, runtime_name: cannibal_bone_riders_attack, fps: 24, loop: false, root_policy: in_place, source_status: blocked }
-  - { role: defend, runtime_name: cannibal_bone_riders_defend, fps: 24, loop: true, root_policy: in_place, source_status: blocked }
-  - { role: support_attack, runtime_name: cannibal_bone_riders_support_attack, fps: 24, loop: false, root_policy: in_place, source_status: blocked }
-  - { role: retreat, runtime_name: cannibal_bone_riders_retreat, fps: 24, loop: true, root_policy: in_place, source_status: blocked }
-  - { role: training, runtime_name: cannibal_bone_riders_training, fps: 24, loop: true, root_policy: in_place, source_status: blocked }
-  - { role: death, runtime_name: cannibal_bone_riders_death, fps: 24, loop: false, root_policy: contact_corrected_collapse, source_status: blocked }
+  - { role: idle, runtime_name: cannibal_bone_riders_idle, fps: 24, loop: true, root_policy: in_place, source_status: horse_and_rider_sources_selected_processing_paused }
+  - { role: move, runtime_name: cannibal_bone_riders_move, fps: 24, loop: true, root_policy: in_place_canter, source_status: horse_and_rider_sources_selected_processing_paused }
+  - { role: attack, runtime_name: cannibal_bone_riders_attack, fps: 24, loop: false, root_policy: in_place, source_status: horse_and_rider_sources_conditionally_approved_processing_paused }
+  - { role: defend, runtime_name: cannibal_bone_riders_defend, fps: 24, loop: true, root_policy: in_place, source_status: horse_and_rider_sources_selected_processing_paused }
+  - { role: support_attack, runtime_name: cannibal_bone_riders_support_attack, fps: 24, loop: false, root_policy: in_place, source_status: horse_and_rider_sources_conditionally_approved_processing_paused }
+  - { role: retreat, runtime_name: cannibal_bone_riders_retreat, fps: 24, loop: true, root_policy: in_place, source_status: horse_and_rider_sources_selected_processing_paused }
+  - { role: training, runtime_name: cannibal_bone_riders_training, fps: 24, loop: true, root_policy: in_place, source_status: horse_and_rider_sources_provisional_processing_paused }
+  - { role: death, runtime_name: cannibal_bone_riders_death, fps: 24, loop: false, root_policy: contact_corrected_collapse, source_status: horse_and_rider_sources_selected_processing_paused }
 sound_design:
   status: complete_six_sourced_files_cover_all_required_roles
   required_roles:
@@ -218,4 +218,13 @@ dependency_lock: .tools/3d_pipeline/config/dependencies.lock.json
 schema_lock: .tools/3d_pipeline/config/meshy_tool_schema.lock.json
 adapter_config: .tools/3d_pipeline/config/blender_hoi4_adapter.json
 blocker: >-
-  Meshy 7 generation and provider remesh succeeded, but the remeshed 90k mounted horse+rider failed Meshy rig pose estimation with HTTP 422. Live official Meshy documentation and the locked schema confirm that meshy_rig supports standard humanoid bipeds and explicitly excludes nonhumanoid assets, while meshy_animate requires a successfully completed Meshy rig task. Separating the rider can only create a humanoid rider rig; there is no Meshy quadruped horse rig or animation route to supply independent substantive horse motion. Because the accepted design requires a living animated horse and rider and Meshy-only required motion, no compliant mounted recovery exists in the current provider surface. Local Blender-authored replacement motion, a static horse, transform-only motion, semantic aliases, and silent vanilla horse animation reuse are forbidden, so no final armature, weights, .mesh, .anim, export, or reimport is claimed.
+  Meshy 7 generation and provider remesh succeeded, but the remeshed 90k mounted horse+rider failed Meshy rig pose estimation with HTTP 422. Parent-approved CC0 Mesh2Motion horse actions and conditionally approved Meshy humanoid rider actions now provide a compliant source route using separate vanilla-style horse and Saddle_Node-attached rider entities. Processing remains blocked because the current MCP process does not expose the lock-declared segmentation, sourced-action retarget, calibration, grounding, and weight-sanitize operations. Registration recovery commit 7e3af24ac requires a fresh Codex/MCP process, and an unrelated uncommitted adapter/lock 1.10.4 state is not authoritative. No final armature, weights, .mesh, .anim, export, or reimport is claimed until the reloaded route passes dependency and capability gates.
+recovery_route:
+  architecture: separate_frame_horse_and_saddle_attached_rider
+  vanilla_precedent: evidence/vanilla_cavalry_entity_architecture.md
+  horse_source: provider/external_animation/mesh2motion_horse/provenance.json
+  rider_source_plan: evidence/meshy_rider_action_research.md
+  adapter_registration_commit: 7e3af24ac
+  adapter_reload_required: true
+  action_spend_paused: true
+  planned_rider_animation_credits: 24

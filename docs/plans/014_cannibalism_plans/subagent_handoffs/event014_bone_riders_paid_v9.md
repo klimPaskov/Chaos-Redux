@@ -2,6 +2,32 @@
 
 Status: incomplete and blocked at a verified Meshy quadruped/mounted-motion capability boundary. The independent sourced-audio package is complete.
 
+## Approved professional-source recovery addendum — 2026-08-24
+
+The parent approved the Mesh2Motion `mesh2motion-assets` horse library at commit `6bab14fa197957bf7851477cad0c372960a48824` as the professional quadruped source under CC0-1.0.
+The exact GitHub source trees, LICENSE bytes, Blender source files, consolidated GLB, action inventory, and SHA-256 hashes are archived under `provider/external_animation/mesh2motion_horse/`.
+The source audit is `evidence/mesh2motion_horse_action_audit.md`.
+
+The self-contained GLB exposes one 56-bone horse rig and 15 genuine multi-frame actions.
+Eight distinct horse mappings passed visual phase review: `Idle`, `Run`, `Rear`, `Kick`, `Head_But`, `Trot`, `Eating`, and `Death` for idle, move, attack, defend, support_attack, retreat, training, and death respectively.
+These are approved sources, not yet transferred runtime actions.
+
+The official Meshy animation library was exhaustively searched and archived under `provider/meshy_rider_action_research/`.
+No explicit sling, stone, lasso, whip, discus, mounted, horseback, or seated-projectile preset exists.
+The conditionally approved eight-action rider plan is documented in `evidence/meshy_rider_action_research.md`.
+Its combat pair is action 280 `Female_Crouch_Pick_Throw_Forward` for attack and action 393 `baseball_pitching` for support_attack, both upper-body-only retargets that are acceptable only if the bespoke sling and pouch remain visible and the mounted previews read as two distinct sling-stone volleys with load, release, follow-through, and recovery.
+No rider action spend has occurred; the planned tranche is 24 credits and the latest verified balance is 587.
+
+Installed vanilla `gfx/entities/units_cavalry.asset` proves that HOI4 cavalry uses a separate frame, horse, and saddle-attached rider architecture.
+The exact installed file is archived at `evidence/vanilla/units_cavalry.asset`, SHA-256 `5AC30F2E98F29A95A56675AE19E51C3C4FAD7B2F1B6453F6AA0C7D6415696AE6`, and the line-specific implementation consequence is recorded in `evidence/vanilla_cavalry_entity_architecture.md`.
+Bone Riders should therefore export separate bespoke horse and rider meshes/actions and attach the rider at an audited horse `Saddle_Node`; parent-owned runtime wiring will use a custom frame entity to propagate all eight states.
+
+Processing is paused at the adapter route gate.
+The live process exposed adapter 1.10.3 health but omitted required structured segmentation, sourced retarget, calibration, grounding, and weight-sanitize tools.
+Registration recovery commit `7e3af24ac` requires a fresh Codex/MCP process before those operations become callable.
+An unrelated uncommitted adapter/lock 1.10.4 state is not authoritative and was not created or modified by this worker.
+No shell Blender workaround, authored substitute motion, merged compound action, or runtime fallback was used.
+
 ## Outcome
 
 The accepted Meshy 7 geometry remains visually approved and unchanged: one living pale horse, one painted skull-masked living rider, skull/rib/long-bone barding, loaded sling and stone pouch. Generation task `01a03404-f74d-7d5b-876d-5f426afe11f6` consumed 30 credits; remesh task `01a03418-57e3-7399-bf55-2d769bedabee` consumed 5. Total consumed credits remain 35.
