@@ -46,8 +46,8 @@ class BvhAnimationImportTests(unittest.TestCase):
     def test_registration_lock_and_allowlist(self) -> None:
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         route = json.loads((PIPELINE_ROOT / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["blender_hoi4_adapter"]
-        self.assertEqual(config["adapter_version"], "1.10.9")
-        self.assertEqual(route["version"], "1.10.9")
+        self.assertEqual(config["adapter_version"], "1.10.12")
+        self.assertEqual(route["version"], "1.10.12")
         self.assertIn("import_bvh_animation_action", config["operations"])
         self.assertIn("import_bvh_animation_action", route["operations"])
         codex_config = (REPO_ROOT / ".codex" / "config.toml").read_text(encoding="utf-8")

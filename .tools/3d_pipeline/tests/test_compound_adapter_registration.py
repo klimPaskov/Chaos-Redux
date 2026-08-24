@@ -30,6 +30,7 @@ REGISTERED_TOOLS = {
         "source_kind",
         "source_reference_id",
         "source_sha256",
+        "source_armature_name",
         "bone_chains",
         "promote_audited_target",
     },
@@ -73,13 +74,7 @@ REGISTERED_TOOLS = {
         "target_armature_name",
         "grounding_policy",
         "root_bone",
-    },
-    "chaosx_blender_hoi4_prepare_export_coordinate_checkpoint": {
-        "job_id",
-        "blend_rel",
-        "checkpoint_rel",
-        "action_name",
-        "target_armature_name",
+        "excluded_contact_bones",
     },
     "chaosx_blender_hoi4_sanitize_runtime_candidate": {
         "job_id",
@@ -87,6 +82,7 @@ REGISTERED_TOOLS = {
         "output_blend_rel",
         "target_height_m",
         "weight_only",
+        "max_influences_per_vertex",
     },
 }
 
