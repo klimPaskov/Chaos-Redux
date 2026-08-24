@@ -1,12 +1,32 @@
 # ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE ON ACTION REGISTRY
+# ============================================================================
+# Source-layout consolidation for Event 006 carrier and overlay callbacks.
+# Original callback identifiers, effects, comments, and source order are
+# preserved. Files with duplicate callback keys remain separate.
+# ============================================================================
+on_actions = {
+# SOURCE: 006_independence_wave_iw005_flanders_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-005 FLANDERS OVERLAY ON ACTION
+# ============================================================================
+# The exact BEL hook avoids a global country iteration. It observes the
+# vanilla BEL_flanders route state and owns the overlay suspend/resume cycle.
+# ============================================================================
+	on_daily_BEL = {
+		effect = {
+			independence_wave_iw005_refresh_flanders_overlay = yes
+		}
+	}
+
+# SOURCE: 006_independence_wave_iw022_dalmatia_on_actions.txt
+# ============================================================================
 # CHAOS REDUX - EVENT 006 IW-022 DALMATIA DYNAMIC-CARRIER HOOKS
 # ============================================================================
 # Dynamic countries occupy D01-D50 at runtime (the research matrix labels the
 # observed first carrier AVX). Each narrow hook calls the exact Dalmatia and
 # Vojvodina identity checks; no global daily/weekly/monthly iteration is used.
 # ============================================================================
-
-on_actions = {
 	on_daily_D01 = { effect = { independence_wave_iw022_dalmatia_refresh_overlay = yes independence_wave_iw025_vojvodina_refresh_overlay = yes } }
 	on_daily_D02 = { effect = { independence_wave_iw022_dalmatia_refresh_overlay = yes independence_wave_iw025_vojvodina_refresh_overlay = yes } }
 	on_daily_D03 = { effect = { independence_wave_iw022_dalmatia_refresh_overlay = yes independence_wave_iw025_vojvodina_refresh_overlay = yes } }
@@ -57,4 +77,116 @@ on_actions = {
 	on_daily_D48 = { effect = { independence_wave_iw022_dalmatia_refresh_overlay = yes independence_wave_iw025_vojvodina_refresh_overlay = yes } }
 	on_daily_D49 = { effect = { independence_wave_iw022_dalmatia_refresh_overlay = yes independence_wave_iw025_vojvodina_refresh_overlay = yes } }
 	on_daily_D50 = { effect = { independence_wave_iw022_dalmatia_refresh_overlay = yes independence_wave_iw025_vojvodina_refresh_overlay = yes } }
+
+# SOURCE: 006_independence_wave_iw035_livonia_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-035 LIVONIA LIVING-COUNTRY HOOK
+# ============================================================================
+# The vanilla route keeps the LIT tag and changes only its cosmetic identity,
+# so a narrow on_daily_LIT hook is safer than dynamic D01-D50 carrier hooks.
+# ============================================================================
+	on_daily_LIT = { effect = { independence_wave_iw035_livonia_refresh_overlay = yes } }
+
+# SOURCE: 006_independence_wave_iw059_mesopotamia_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-059 MESOPOTAMIA FORMABLE HOOKS
+# ============================================================================
+# The vanilla formable retains one of its original country tags. These narrow
+# hooks cover every vanilla-allowed carrier without introducing a world loop.
+# ============================================================================
+	on_daily_KUR = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+	on_daily_IRQ = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+	on_daily_SYR = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+	on_daily_PAL = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+	on_daily_EGY = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+	on_daily_KUW = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+	on_daily_LEB = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+	on_daily_ASY = { effect = { independence_wave_iw059_mesopotamia_refresh_overlay = yes } }
+
+# SOURCE: 006_independence_wave_iw085_cyrenaica_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-085 CYRENAICA HOOK
+# ============================================================================
+# LBA is an existing vanilla carrier. The exact daily hook is limited to the
+# Italian-autonomy identity and never creates an independent Cyrenaica tag.
+# ============================================================================
+	on_daily_LBA = { effect = { independence_wave_iw085_cyrenaica_refresh_overlay = yes } }
+
+# SOURCE: 006_independence_wave_iw101_iw102_iw105_cog_overlays_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 COG COSMETIC OVERLAY HOOK
+# ============================================================================
+# COG's three vanilla cosmetic routes are mutually exclusive. One carrier hook
+# calls all three identity-gated refresh effects, avoiding duplicate on_daily_COG
+# definitions and preserving the existing Congo tree.
+# ============================================================================
+	on_daily_COG = {
+		effect = {
+			independence_wave_iw101_kongo_refresh_overlay = yes
+			independence_wave_iw102_kuba_refresh_overlay = yes
+			independence_wave_iw105_loango_refresh_overlay = yes
+		}
+	}
+
+# SOURCE: 006_independence_wave_iw156_iw196_iw197_iw204_overlays_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FINAL VANILLA ROUTE OVERLAY CARRIER HOOKS
+# ============================================================================
+# Each hook is defined once per carrier tag and calls identity-gated refresh
+# effects. The carrier trees, history, and vanilla tags remain authoritative.
+# ============================================================================
+	on_daily_TNE = {
+		effect = {
+			independence_wave_iw156_moluccan_refresh_overlay = yes
+		}
+	}
+
+	on_daily_HAI = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+	on_daily_DOM = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+	on_daily_PUE = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+	on_daily_CUB = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+	on_daily_JAM = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+	on_daily_BAH = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+	on_daily_GDL = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+	on_daily_BAS = {
+		effect = {
+			independence_wave_iw196_antilles_refresh_overlay = yes
+		}
+	}
+
+	on_daily_CHL = {
+		effect = {
+			independence_wave_iw197_mapuche_refresh_overlay = yes
+			independence_wave_iw204_restoration_refresh_overlay = yes
+		}
+	}
+
 }

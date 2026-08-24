@@ -1,0 +1,328 @@
+﻿# ============================================================================
+# CHAOS REDUX - EVENT 006 SCRIPTED LOCALISATION REGISTRY
+# ============================================================================
+# Consolidates small Event 006-owned selectors without changing their names,
+# branch order, scopes, localisation keys, or fallback behavior.
+# ============================================================================
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 PRE-WAVE CRISIS SCRIPTED LOCALISATION
+# ============================================================================
+# The crisis history row stores a compact cause code. Keep the cause resolver
+# in an Event 006-owned file so the shared events-log localisation surface can
+# evolve independently of the crisis package.
+# ============================================================================
+
+defined_text = {
+	name = GetIndependenceWaveCrisisHistoryCause
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_history.occupation compare = equals } }
+		localization_key = independence_wave.history.crisis.cause.occupation
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_history.stability compare = equals } }
+		localization_key = independence_wave.history.crisis.cause.stability
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_history.combined compare = equals } }
+		localization_key = independence_wave.history.crisis.cause.combined
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_history.requester_lost compare = equals } }
+		localization_key = independence_wave.history.crisis.cause.requester_lost
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = independence_wave.history.crisis.cause.unknown
+	}
+}
+
+defined_text = {
+	name = GetIndependenceWaveCrisisResolution
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.queued compare = equals } }
+		localization_key = independence_wave.history.crisis.outcome.queued
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.blocked compare = equals } }
+		localization_key = independence_wave.history.crisis.outcome.blocked
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.cancelled compare = equals } }
+		localization_key = independence_wave.history.crisis.outcome.cancelled
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.committed compare = equals } }
+		localization_key = independence_wave.history.crisis.outcome.committed
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.requester_lost compare = equals } }
+		localization_key = independence_wave.history.crisis.outcome.requester_lost
+	}
+	text = {
+		trigger = { check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.unknown compare = equals } }
+		localization_key = independence_wave.history.crisis.outcome.unknown
+	}
+}
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 DM-01 COST DISCLOSURE LOCALISATION
+# ============================================================================
+# DM-01 is opened automatically after its material commitment is reserved.
+# These scripted-localisation branches expose the exact force-tier bundle and
+# the conditional transport burden without duplicating payment logic.
+# ============================================================================
+
+defined_text = {
+	name = GetIndependenceWaveProvisionalCapitalCostText
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			capital_scope = { supply_node > 0 }
+		}
+		localization_key = independence_wave_cost_provisional_capital_fragile_supplied
+	}
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			NOT = { capital_scope = { supply_node > 0 } }
+		}
+		localization_key = independence_wave_cost_provisional_capital_fragile_isolated
+	}
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals }
+			capital_scope = { supply_node > 0 }
+		}
+		localization_key = independence_wave_cost_provisional_capital_viable_supplied
+	}
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals }
+			NOT = { capital_scope = { supply_node > 0 } }
+		}
+		localization_key = independence_wave_cost_provisional_capital_viable_isolated
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = equals }
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.high_chaos compare = equals }
+			}
+			capital_scope = { supply_node > 0 }
+		}
+		localization_key = independence_wave_cost_provisional_capital_major_supplied
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = equals }
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.high_chaos compare = equals }
+			}
+			NOT = { capital_scope = { supply_node > 0 } }
+		}
+		localization_key = independence_wave_cost_provisional_capital_major_isolated
+	}
+	text = {
+		trigger = {
+			NOT = { has_variable = independence_wave_force_level }
+			capital_scope = { supply_node > 0 }
+		}
+		localization_key = independence_wave_cost_provisional_capital_viable_supplied
+	}
+	text = {
+		trigger = { NOT = { capital_scope = { supply_node > 0 } } }
+		localization_key = independence_wave_cost_provisional_capital_viable_isolated
+	}
+	text = { localization_key = independence_wave_cost_provisional_capital_viable_supplied }
+}
+
+defined_text = {
+	name = GetIndependenceWaveProvisionalCapitalCostBlockedText
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			capital_scope = { supply_node > 0 }
+		}
+		localization_key = independence_wave_cost_provisional_capital_fragile_supplied_blocked
+	}
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			NOT = { capital_scope = { supply_node > 0 } }
+		}
+		localization_key = independence_wave_cost_provisional_capital_fragile_isolated_blocked
+	}
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals }
+			capital_scope = { supply_node > 0 }
+		}
+		localization_key = independence_wave_cost_provisional_capital_viable_supplied_blocked
+	}
+	text = {
+		trigger = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals }
+			NOT = { capital_scope = { supply_node > 0 } }
+		}
+		localization_key = independence_wave_cost_provisional_capital_viable_isolated_blocked
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = equals }
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.high_chaos compare = equals }
+			}
+			capital_scope = { supply_node > 0 }
+		}
+		localization_key = independence_wave_cost_provisional_capital_major_supplied_blocked
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = equals }
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.high_chaos compare = equals }
+			}
+			NOT = { capital_scope = { supply_node > 0 } }
+		}
+		localization_key = independence_wave_cost_provisional_capital_major_isolated_blocked
+	}
+	text = { localization_key = independence_wave_cost_provisional_capital_viable_supplied_blocked }
+}
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 LEAGUE EXPULSION SCRIPTED LOCALISATION
+# ============================================================================
+# The DM-60 target description resolves the recorded factual ground from the
+# accused country's persistent enum. No generic membership or client status is
+# treated as evidence.
+# ============================================================================
+
+defined_text = {
+	name = GetIndependenceWaveExpulsionGroundName
+	text = {
+		trigger = { check_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.patron_client } }
+		localization_key = independence_wave_expulsion_ground_patron_client
+	}
+	text = {
+		trigger = { check_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.annexed_member } }
+		localization_key = independence_wave_expulsion_ground_annexed_member
+	}
+	text = {
+		trigger = { check_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.arbitration_refusal } }
+		localization_key = independence_wave_expulsion_ground_arbitration_refusal
+	}
+	text = {
+		trigger = { check_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.rescue_abandonment } }
+		localization_key = independence_wave_expulsion_ground_rescue_abandonment
+	}
+	text = {
+		trigger = { check_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.repeated_charter_violation } }
+		localization_key = independence_wave_expulsion_ground_repeated_charter_violation
+	}
+	text = {
+		trigger = { check_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.sponsored_coup } }
+		localization_key = independence_wave_expulsion_ground_sponsored_coup
+	}
+	text = {
+		trigger = { check_variable = { independence_wave_expulsion_ground = constant:independence_wave_expulsion_ground.unauthorized_war } }
+		localization_key = independence_wave_expulsion_ground_unauthorized_war
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = independence_wave_expulsion_ground_unknown
+	}
+}
+
+# The former-host pointer is a per-package country variable. Decision category
+# descriptions are evaluated for every country browsing the decisions list, so
+# the direct variable promotion must stay behind an existence guard and fall
+# back to a neutral noun when the reader has no package origin.
+defined_text = {
+	name = GetIndependenceWaveFormerHostNameDef
+	text = {
+		trigger = { has_variable = independence_wave_former_host }
+		localization_key = independence_wave_former_host_name_resolved_def
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = independence_wave_former_host_name_fallback_def
+	}
+}
+
+defined_text = {
+	name = GetIndependenceWaveFormerHostNameDefCap
+	text = {
+		trigger = { has_variable = independence_wave_former_host }
+		localization_key = independence_wave_former_host_name_resolved_def_cap
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = independence_wave_former_host_name_fallback_def_cap
+	}
+}
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RIVAL BLOC SCRIPTED LOCALISATION
+# ============================================================================
+
+defined_text = {
+	name = GetIndependenceWaveRivalBlocRoute
+	text = {
+		trigger = { check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.grievance_caucus } }
+		localization_key = independence_wave_rival_bloc_route_grievance
+	}
+	text = {
+		trigger = { check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.counterleague } }
+		localization_key = independence_wave_rival_bloc_route_counterleague
+	}
+	text = {
+		trigger = { check_variable = { global.independence_wave_rival_bloc_route = constant:independence_wave_rival_bloc_route.patron_balanced } }
+		localization_key = independence_wave_rival_bloc_route_patron_balanced
+	}
+	text = { localization_key = independence_wave_rival_bloc_route_unknown }
+}
+
+defined_text = {
+	name = GetIndependenceWaveRivalBlocEventDetails
+	text = {
+		trigger = {
+			has_global_flag = independence_wave_rival_bloc_active
+			has_event_target = independence_wave_rival_bloc_leader_target
+		}
+		localization_key = independence_wave_rival_bloc_event_details_active
+	}
+	text = {
+		trigger = { has_global_flag = independence_wave_rival_bloc_active }
+		localization_key = independence_wave_rival_bloc_event_details_active_without_leader
+	}
+	text = { localization_key = independence_wave_rival_bloc_event_details_inactive }
+}
+
+defined_text = {
+	name = GetIndependenceWaveRivalBlocEventDetailsMember
+	text = {
+		trigger = {
+			has_global_flag = independence_wave_rival_bloc_active
+			independence_wave_rival_bloc_member_arrays_are_aligned = yes
+			check_variable = { global.independence_wave_rival_bloc_member_country_entries^num > 0 }
+			check_variable = {
+				var = independence_wave_rival_bloc_event_detail_member_index
+				value = global.independence_wave_rival_bloc_member_country_entries^num
+				compare = less_than
+			}
+		}
+		localization_key = independence_wave_rival_bloc_event_details_selected_member
+	}
+	text = {
+		trigger = {
+			has_global_flag = independence_wave_rival_bloc_active
+			independence_wave_rival_bloc_member_arrays_are_aligned = yes
+			check_variable = { global.independence_wave_rival_bloc_member_country_entries^num > 0 }
+		}
+		localization_key = independence_wave_rival_bloc_event_details_first_member
+	}
+	text = { localization_key = independence_wave_rival_bloc_event_details_no_member }
+}
+
+
