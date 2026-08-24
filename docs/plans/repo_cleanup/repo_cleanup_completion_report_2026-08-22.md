@@ -121,6 +121,8 @@ The current source scans found no live gameplay or meta-effect consumers for the
 
 Removed the shared `modify_value_based_on_chaos_tier` effect and its matching API documentation after exact scans found no runtime, dynamic-name, scripted-localisation, GUI, GFX, documentation, or spreadsheet consumer.
 
+Deleted the 28-key `005_soviet_collapse_custom_splinter_focus_expansion_l_english.yml` duplicate after confirming every key exists in the canonical Event 5 localisation file. The canonical file supplies the current wording and was not edited by cleanup.
+
 Two inert tag-switch bookkeeping blocks were removed from [`common/on_actions/chaosx_on_actions_system.txt`](../../../common/on_actions/chaosx_on_actions_system.txt), and the Event 013 selector branches were added to [`common/scripted_localisation/chaosx_scripted_localisation_settings.txt`](../../../common/scripted_localisation/chaosx_scripted_localisation_settings.txt).
 
 No new helper or trigger was created.
@@ -405,7 +407,7 @@ Recommended parent decisions are whether to schedule the shared migration phases
 
 ## Exact tracked path ledger
 
-The cleanup owns 78 tracked paths when this completion report is included.
+The cleanup owns 81 tracked paths when this completion report is included.
 
 Gameplay and script paths:
 
@@ -413,6 +415,7 @@ Gameplay and script paths:
 - `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt`
 - `common/on_actions/chaosx_on_actions_system.txt`
 - `common/scripted_effects/003_holy_realm_effects.txt`
+- `common/scripted_effects/014_cannibalism_effects.txt`
 - `common/scripted_effects/020_black_plague_rat_effects.txt`
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `common/scripted_effects/chaosx_dynamic_effects.md`
@@ -425,6 +428,7 @@ Gameplay and script paths:
 
 Localisation paths:
 
+- `localisation/english/005_soviet_collapse_custom_splinter_focus_expansion_l_english.yml` (deleted)
 - `localisation/english/001_communism_spread_l_english.yml`
 - `localisation/english/002_zombie_outbreak_l_english.yml`
 - `localisation/english/006_independence_wave_evolution_incidents_l_english.yml`
@@ -485,6 +489,7 @@ Documentation paths:
 - `docs/plans/repo_cleanup/subagent_handoffs/localisation_cleanup_baseline_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/localisation_cleanup_patch_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/repo_map_2026-08-22.md`
+- `docs/plans/repo_cleanup/subagent_handoffs/remaining_safe_cleanup_2026-08-24.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/shared_helper_architecture_baseline_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/spreadsheet_cleanup_alignment_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/spreadsheet_cleanup_alignment_followup_2026-08-22.md`
