@@ -1,6 +1,6 @@
 # Chaos Redux Event 020 shared oversized rat unit entity.
-# The single entity is used by every rat subtype and intentionally has no sound
-# events until the separately licensed sound handoff is accepted and wired.
+# The single entity is used by every rat subtype. Licensed action and ambient
+# cues are registered in sound/020_black_plague_rat_units_sound.asset.
 
 entity = {
 	name = "black_plague_rat_entity"
@@ -14,6 +14,9 @@ entity = {
 		animation_speed = 1.0
 		looping = no
 		next_state = "idle"
+		event = { sound = { soundeffect = "black_plague_rat_attack_sfx" } }
+		event = { time = 0.55 sound = { soundeffect = "black_plague_rat_bite_sfx" } }
+		event = { time = 0.62 sound = { soundeffect = "black_plague_rat_impact_sfx" } }
 	}
 	state = {
 		name = "defend"
@@ -22,6 +25,8 @@ entity = {
 		animation_speed = 1.0
 		looping = no
 		next_state = "idle"
+		event = { sound = { soundeffect = "black_plague_rat_attack_sfx" } }
+		event = { time = 0.55 sound = { soundeffect = "black_plague_rat_bite_sfx" } }
 	}
 	state = {
 		name = "support_attack"
@@ -30,6 +35,8 @@ entity = {
 		animation_speed = 1.0
 		looping = no
 		next_state = "idle"
+		event = { sound = { soundeffect = "black_plague_rat_attack_sfx" } }
+		event = { time = 0.55 sound = { soundeffect = "black_plague_rat_bite_sfx" } }
 	}
 	state = {
 		name = "move"
@@ -37,6 +44,7 @@ entity = {
 		animation_blend_time = 1.0
 		animation_speed = 1.0
 		looping = yes
+		event = { sound = { soundeffect = "black_plague_rat_move_sfx" } }
 	}
 	state = {
 		name = "retreat"
@@ -44,6 +52,8 @@ entity = {
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
+		event = { sound = { soundeffect = "black_plague_rat_move_sfx" } }
+		event = { sound = { soundeffect = "black_plague_rat_retreat_sfx" } }
 	}
 	state = {
 		name = "death"
@@ -51,6 +61,8 @@ entity = {
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = no
+		event = { sound = { soundeffect = "black_plague_rat_death_sfx" } }
+		event = { time = 0.65 sound = { soundeffect = "black_plague_rat_impact_sfx" } }
 	}
 	state = {
 		name = "idle"
@@ -58,8 +70,9 @@ entity = {
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
+		event = { sound = { soundeffect = "black_plague_rat_idle_sfx" } }
 	}
-	state = { name = "training" animation = "idle" animation_blend_time = 0.3 animation_speed = 1.0 looping = yes }
+	state = { name = "training" animation = "idle" animation_blend_time = 0.3 animation_speed = 1.0 looping = yes event = { sound = { soundeffect = "black_plague_rat_training_sfx" } } }
 
 	# The prepared rat mesh is 7.3518247604 source units high. This single entity
 	# scale produces the requested 9.9249627827 runtime height, about 1.6875x
