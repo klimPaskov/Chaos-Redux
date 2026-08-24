@@ -16,6 +16,7 @@ This directory contains the source prompts, bounded cleanup records, migration p
 - [`event_003_006_bounded_cleanup_2026-08-22.md`](event_003_006_bounded_cleanup_2026-08-22.md) and [`event_013_020_bounded_cleanup_2026-08-22.md`](event_013_020_bounded_cleanup_2026-08-22.md) record bounded event-specific cleanup work.
 - [`subagent_handoffs/events_1_20_catalog_description_sync.md`](subagent_handoffs/events_1_20_catalog_description_sync.md) and [`subagent_handoffs/events_1_20_catalog_dead_localisation_cleanup.md`](subagent_handoffs/events_1_20_catalog_dead_localisation_cleanup.md) record the catalog synchronization and its dead-localisation closure.
 - [`subagent_handoffs/remaining_safe_cleanup_2026-08-24.md`](subagent_handoffs/remaining_safe_cleanup_2026-08-24.md) records the final reference-proven duplicate localisation and stale-comment cleanup.
+- [`subagent_handoffs/docs_assets_cleanup_inventory_2026-08-22.md`](subagent_handoffs/docs_assets_cleanup_inventory_2026-08-22.md) records the package-by-package asset-retention evidence and its 2026-08-24 current-state refresh.
 
 ## Preserved audits and supporting records
 

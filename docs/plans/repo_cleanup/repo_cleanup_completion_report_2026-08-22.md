@@ -197,7 +197,7 @@ Historical handoffs and audit observations were retained and marked superseded i
 
 The Event 003 overview now describes current Fallout ownership and treats Final Silence as retained cause memory/compatibility rather than a current independent public world-end route.
 
-The world-threat documentation now points to `014_cannibalism_effects.txt`; remaining historical/source-comment mentions of the former path are recorded as residual uncertainty rather than silently rewritten.
+The world-threat documentation now points to `014_cannibalism_effects.txt`. A later exact repository scan found no remaining reference to the retired `014_cannibalism_logic_effects` filename after the isolated Event 014 source comment was corrected.
 
 Two Event 016/018 implementation-jargon strings were rewritten in player-facing language.
 
@@ -305,11 +305,11 @@ The worktree contains substantial unrelated concurrent changes, including Event 
 
 ## Docs/assets cleanup
 
-The docs/assets inventory counted 3,939 tracked docs/assets paths, zero non-ignored untracked paths, and 16,774 ignored untracked paths at inventory time, with 2,544 modified tracked paths attributable to the concurrent worktree state.
+The original docs/assets inventory counted 3,939 tracked paths, zero non-ignored untracked paths, and 16,774 ignored paths, with 2,544 modified tracked paths. The 2026-08-24 refresh found 23 physical top-level workspaces before empty-directory cleanup, 28,427 files, 56,979,143,899 bytes, 4,090 tracked paths, 2,568 modified tracked paths, and 24,341 ignored paths. The three additional active workspaces are Event 014, Event 019, and the famine-and-migration system.
 
 No top-level docs/assets deletion was approved because remaining workspaces are active, blocked, recent, unresolved, or provenance-bearing.
 
-The four empty `docs/assets/chaos_warfare_system_audit/` subdirectories were already content-absent and were left alone.
+The four empty `docs/assets/chaos_warfare_system_audit/` subdirectories and their empty parent were removed after exact path containment and zero-file checks. No asset, manifest, handoff, Git path, or recoverable content was deleted.
 
 Contradictory optimistic and blocked package manifests were retained as provenance rather than merged or deleted.
 
@@ -389,7 +389,7 @@ The principal contradiction was historical Event 003/020 documentation describin
 
 The Event 003 Final Silence documentation was reconciled to current Fallout ownership while retaining compatibility/cause-memory context.
 
-The world-threat documentation path is corrected, but older historical documents and a source comment still contain the former cannibalism filename and remain an explicit residual-reference risk.
+The world-threat documentation path and the isolated Event 014 source comment are corrected. An exact current-repository scan found no remaining reference to the retired cannibalism filename.
 
 Event 006 package manifests and handoffs contain both optimistic and blocked dispositions; the contradiction is preserved because it reflects provenance and unresolved admission gates, not a safe deletion candidate.
 
