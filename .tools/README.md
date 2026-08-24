@@ -61,6 +61,30 @@ This is the sole supported formable-state tool in `.tools`. It rebuilds the shar
 
 The former geometry, registry, and consumer compilers are retained under `archive/` as reviewed-build provenance. They are not normal maintenance commands and must be restored and reviewed deliberately before a map revision or new consumer is compiled.
 
+### Event 006 static validators
+
+The maintained Event 006 validators protect the current source contracts without launching Hearts of Iron IV or claiming live execution:
+
+- `audit_event6_allocator.py` checks the anchor-first allocator, package publishers, admission/attestation boundary, reservation groups, exact automatic ladder, SCN-008 ranking, joint ordering, dormant-anchor safety, and retired pre-event surface.
+- `audit_event6_country_api.py` checks the broad country API against Event 006, Soviet Collapse, and Africa carrier projections.
+- `audit_event6_flags.py` checks normal, medium, and small flag families for every registered Event 006 tag. Pass `--strict` to fail on an incomplete family.
+- `audit_event6_scenario_matrix.py` checks all 32 SCN-008 cells and eight edge-case receipts against the scenario source witnesses.
+- `audit_event6_form16.py` checks the admitted ARM/GEO/AZR FORM-16 contract, exact anchors, consent/refusal, mutation, rollback, and cleanup gates.
+- `audit_event6_gui_matrix.py` checks the Statehood Ledger semantic source matrix and its static/animated sibling registrations. It does not claim a runtime GUI render.
+
+Run the bounded source checks from the mod root with `python -B`:
+
+```powershell
+python -B .tools/audit_event6_allocator.py
+python -B .tools/audit_event6_country_api.py
+python -B .tools/audit_event6_flags.py --strict
+python -B .tools/audit_event6_scenario_matrix.py
+python -B .tools/audit_event6_form16.py
+python -B .tools/audit_event6_gui_matrix.py
+```
+
+The validators read the consolidated Event 006 constant and support-event registries directly. They are source/static checks only; MCP event, focus, map, probability, GUI-render, and live terminal evidence remain separate acceptance boundaries.
+
 ### 3D model pipeline
 
 The `3d_pipeline/` package contains the shared Meshy, Blender, `io_pdx_mesh`, material, verification, and wrapper infrastructure. Its detailed contract and commands are in `3d_pipeline/README.md`.

@@ -56,6 +56,8 @@ Six Event 006 layout warnings and fourteen unrelated vanilla continuous-focus ic
 
 The focus overlay audit remains route-coverage evidence for 318 definitions, resolved Event 006 icons, and resolved Event 006 localisation, while its pre-repair graph receipt is superseded for current connector counts.
 
+The 2026-08-24 validator-restoration tranche repairs the maintained Event 006 source checks under `.tools/` after the archived copies were found to resolve the repository root incorrectly and to reference pre-consolidation registries. The six bounded validators now pass against the current source; their commands, exact outputs, and static-only boundary are recorded in `subagent_handoffs/006_event6_validator_restoration_2026-08-24.md`. This restores reproducible source evidence without changing admission, counts, GUI runtime claims, or balance targets.
+
 The 2026-08-22 decision and mission audit leaves the surface **PARTIAL / HOLD**.
 
 Its bounded audit and GUI receipts are in `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-22.md`.
