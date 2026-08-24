@@ -64,7 +64,7 @@ Commit `a2abd65d7` supersedes that partial-wave reconciliation as the current ex
 
 The custom probability-auditor route was unavailable, direct MCP discovery was incomplete, and no same-scenario probability comparison or quantitative balance claim is recorded.
 
-Current static checks pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, and Statehood Ledger semantic matrix audits; these checks do not prove live execution, GUI acceptance, or balance. Event and focus MCP evidence remains partial or warning-bearing, and both Event 006 GUI surfaces retain workspace-global diagnostics.
+Current static checks pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, Statehood Ledger semantic matrix, and the 2026-08-24 FORM-48 and FORM-01/02/04 cost-localisation checks; these checks do not prove live execution, GUI acceptance, tooltip observation, or balance. Exact commands and source/static limitations are recorded in `subagent_handoffs/006_event6_static_audit_refresh_2026-08-24.md`. Event and focus MCP evidence remains partial or warning-bearing, and both Event 006 GUI surfaces retain workspace-global diagnostics.
 
 The 2026-08-22 catalog handoffs agree that `Events!C7` matches `chaosx.events_log.window.event_details.independence_wave`, all three export snapshots refreshed successfully, Event 006 remains `Partially Available`, SCN-008 remains `Unavailable`, and the mixed Liberations cluster remains `Partially Available`.
 
