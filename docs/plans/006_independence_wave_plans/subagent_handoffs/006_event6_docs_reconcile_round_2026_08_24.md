@@ -1,5 +1,7 @@
 # Event 006 documentation reconciliation handoff — 2026-08-24
 
+> Superseded for current focus and validator status by `006_event6_focus_economy_lane_repair_2026-08-24.md` and `006_event6_validator_restoration_2026-08-24.md`: this earlier reconciliation remains historical documentation evidence, while the current ledger records six authored warnings and restored maintained validators.
+
 Date: 2026-08-24.
 
 Owner: `/root/event6_docs_reconcile_round`.
