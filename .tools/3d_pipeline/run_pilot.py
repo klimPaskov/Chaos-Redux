@@ -1458,6 +1458,8 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         vanilla_reference=vanilla_reference,
         texture_source_rels=texture_sources,
         geometry_source_rel=spec.get("geometry_source_rel"),
+        geometry_object_name=spec.get("geometry_object_name", ""),
+        dual_source_base_rig=bool(spec.get("dual_source_base_rig", False)),
         repair_before_reduction=True,
         topology_weld_distance=0.0,
     )
@@ -1522,6 +1524,8 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         vanilla_reference=vanilla_reference,
         texture_source_rels=texture_sources,
         geometry_source_rel=spec.get("geometry_source_rel"),
+        geometry_object_name=spec.get("geometry_object_name", ""),
+        dual_source_base_rig=bool(spec.get("dual_source_base_rig", False)),
         repair_before_reduction=True,
         topology_weld_distance=0.0,
     )
@@ -1617,6 +1621,8 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
             vanilla_reference=vanilla_reference,
             texture_source_rels=texture_sources,
             geometry_source_rel=spec.get("geometry_source_rel"),
+            geometry_object_name=spec.get("geometry_object_name", ""),
+            dual_source_base_rig=bool(spec.get("dual_source_base_rig", False)),
             repair_before_reduction=True,
             topology_weld_distance=0.0,
         )
@@ -1851,6 +1857,8 @@ def continue_humanoid_shared(
         slug,
         source_rel=shared_rig_rel,
         geometry_source_rel=generation_rel,
+        geometry_object_name=spec.get("geometry_object_name", ""),
+        dual_source_base_rig=bool(spec.get("dual_source_base_rig", False)),
         asset_kind="humanoid",
         target_height_m=spec.get("blender_target_height_m", spec["target_height_m"]),
         runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
