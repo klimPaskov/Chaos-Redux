@@ -9,6 +9,80 @@
 
 add_namespace = chaosx.nr6
 
+# SOURCE: 006_independence_wave_join.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 JOIN-WAVE REPORTS
+# ============================================================================
+
+@INDEPENDENCE_WAVE_JOIN_REPORT_TIMEOUT_DAYS = 20
+
+country_event = {
+	id = chaosx.nr6.36
+	title = chaosx.nr6.36.t
+	desc = chaosx.nr6.36.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	timeout_days = @INDEPENDENCE_WAVE_JOIN_REPORT_TIMEOUT_DAYS
+	trigger = {
+		has_country_flag = independence_wave_join_offer_pending
+		is_independence_wave_join_current_plan = yes
+	}
+	option = {
+		name = chaosx.nr6.36.b
+		custom_effect_tooltip = chaosx.nr6.36.b.tt
+		country_event = { id = chaosx.nr6.38 }
+	}
+	option = { name = chaosx.nr6.36.a country_event = { id = chaosx.nr6.37 } }
+}
+
+country_event = {
+	id = chaosx.nr6.37
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_join_offer_pending }
+	immediate = { independence_wave_join_accept_and_execute = yes }
+}
+
+country_event = {
+	id = chaosx.nr6.38
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_join_offer_pending }
+	immediate = { independence_wave_join_decline_and_cooldown = yes }
+}
+
+country_event = {
+	id = chaosx.nr6.39
+	title = chaosx.nr6.39.t
+	desc = chaosx.nr6.39.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	trigger = { has_global_flag = independence_wave_join_failure_receipt }
+	option = { name = chaosx.nr6.39.a clr_global_flag = independence_wave_join_failure_receipt }
+}
+
+# Scoped retry for a qualified source that arrived while the shared Event 005/006
+# coordinator was busy. The pending country flag is a single-flight queue key;
+# the event reschedules only after rechecking current eligibility, threshold,
+# and coordinator occupancy.
+country_event = {
+	id = chaosx.nr6.40
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_join_retry_pending }
+	immediate = {
+		clr_country_flag = independence_wave_join_retry_pending
+		independence_wave_join_update_peak_baseline = yes
+		if = {
+			limit = {
+				is_independence_wave_join_source_eligible = yes
+				is_independence_wave_join_reduction_threshold_met = yes
+			}
+			independence_wave_join_offer_if_eligible = yes
+		}
+	}
+}
+
 # --- 006_independence_wave_evolution_incidents.txt ---
 
 @CR_SC_INDEPENDENCE_WAVE_EVOLUTION_INCIDENT_AI_CHARTER_SETTLEMENT = 55
