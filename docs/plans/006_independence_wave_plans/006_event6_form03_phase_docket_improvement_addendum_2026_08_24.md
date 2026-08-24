@@ -2,9 +2,11 @@
 
 Date: 2026-08-24
 
-Status: **QUEUED / CONDITIONAL ON COMPLETE STATIC VISIBILITY RECEIPT / NOT PACKAGE ADMISSION AUTHORITY**
+Status: **CLOSED / CONDITIONAL PATCH REJECTED AS UNNECESSARY AFTER PHASE-0 RECEIPT / NOT PACKAGE ADMISSION AUTHORITY**
 
 Mode: plan only. This addendum does not edit gameplay and does not claim implementation completion.
+
+Phase 0 receipt: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_form03_phase0_visibility_receipt_2026-08-24.md` records all 299 action/scenario cells, a maximum of three simultaneous startable primary actions, and three active continuity rows. The conditional visibility/activation patch is therefore unnecessary and is closed without gameplay edits.
 
 ## Decision
 
@@ -186,14 +188,14 @@ This addendum introduces no focus, GUI, map, event, technology, doctrine, countr
 - Existing FORM03 icons must be reused. No new sprite, portrait, flag, report image, news image, or animation is approved.
 - No asset subagent, portrait creator, generated art worker, icon artist, frame-animation worker, super-event text researcher, or super-event audio researcher is required.
 
-## Acceptance criteria
+## Acceptance criteria and closure evidence
 
-Phase 0 is complete only when:
+Phase 0 is complete. The receipt proves:
 
-1. All 23 current FORM03 child actions appear exactly once in the receipt.
+1. All 23 current FORM03 child actions appear exactly once across 13 scenarios.
 2. Every named scenario declares a complete actor state and records not visible, unavailable, startable, or active for every action.
 3. Carrier and sovereign-associate scopes are evaluated separately.
-4. The receipt identifies the maximum simultaneous startable-primary-action count and separately lists continuity rows.
+4. The receipt identifies three as the maximum simultaneous startable-primary-action count and separately lists three continuity rows.
 5. The exact 32-package and 161-unattested-row authority remains unchanged.
 
 A conditional gameplay patch is accepted only when:
@@ -210,8 +212,8 @@ A conditional gameplay patch is accepted only when:
 
 | Item | Disposition | Rationale |
 | --- | --- | --- |
-| Complete FORM03 static visibility receipt | Queue now | It directly closes an accepted clutter-control evidence gap on the largest dense admitted category. |
-| FORM03 phase-aware visibility predicates | Queue conditionally | Implement only if the complete receipt proves more than six simultaneous startable primary actions. |
+| Complete FORM03 static visibility receipt | Complete | The 299-cell receipt closes the accepted clutter-control evidence gap on the largest dense admitted category. |
+| FORM03 phase-aware visibility predicates | Rejected as unnecessary | The receipt finds at most three simultaneous startable primary actions, so no source patch is justified. |
 | New package or adapter admission | Reject | It would weaken evidence gates and alter the fixed 32-package boundary. |
 | IW-058 density patch | Reject | IW-058 remains adapter-only and fail closed, so it is not part of the playable admitted surface. |
 | New decision categories, tabs, or warehouse panels | Reject | They move clutter without resolving phase relevance and introduce unsupported UI breadth. |
@@ -224,7 +226,7 @@ A conditional gameplay patch is accepted only when:
 
 ## Promotion rule
 
-Keep this file under `docs/plans/006_independence_wave_plans/` while the static receipt is missing or the probability comparison is incomplete.
+Keep this file under `docs/plans/006_independence_wave_plans/` as the closed audit record and retain its receipt handoff.
 
 If the receipt shows no threshold violation, mark this addendum rejected as unnecessary and retain the receipt as completion evidence. Do not promote the mechanic text into the accepted specs.
 
@@ -232,7 +234,7 @@ If a conditional patch is implemented and validated, fold only the final FORM03 
 
 ## Parent handoff
 
-Design problem: FORM03 is the largest structurally dense category on the admitted Event 006 surface, but current evidence does not prove that its 23 child actions resolve to the accepted readable phase docket.
+Design problem: FORM03 is the largest structurally dense category on the admitted Event 006 surface, so its 23 child actions required a complete receipt proving that the accepted readable phase docket was already enforced.
 
 Proposed expansion: one audit-first, conditional phase-visibility tranche using existing FORM03 state. No new mechanic, content row, route, cost, outcome, or weight is invented.
 
@@ -240,7 +242,7 @@ Research basis: the accepted Event 006 institutional research, the FORM03 langua
 
 Implementation surfaces if proven necessary: `common/decisions/006_independence_wave_form03_decisions.txt`, `common/scripted_triggers/006_independence_wave_form03_triggers.txt`, FORM03 localisation, FORM03 system documentation, and the decision receipt.
 
-Open questions: the exact maximum simultaneous startable action count is unresolved until the 13 complete scenarios are evaluated. The fresh probability inventory is source-complete at 23 candidates but scenario-incomplete and reports `poolComplete = false`.
+Closure evidence: the 13 complete scenarios resolve the maximum simultaneous startable action count to three, with three active continuity rows and no visibility patch. The fresh probability inventory remains source-complete at 23 candidates but reports `poolComplete = false`; no quantitative balance claim is made and no gameplay edit is warranted by this addendum.
 
 Prior unresolved addenda: Komi admission, KUB and TAT AI evidence, and FER identity work remain separately queued or evidence-blocked. This addendum neither repeats nor resolves them.
 
