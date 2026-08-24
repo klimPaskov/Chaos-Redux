@@ -6,6 +6,7 @@ import json
 import os
 import queue
 import subprocess
+import sys
 import threading
 import time
 import unittest
@@ -18,6 +19,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 WRAPPER_CMD = REPO_ROOT / ".tools" / "3d_pipeline" / "wrappers" / "run_meshy_mcp.cmd"
 WRAPPER_PS1 = REPO_ROOT / ".tools" / "3d_pipeline" / "wrappers" / "run_meshy_mcp.ps1"
 LOCK_PATH = REPO_ROOT / ".tools" / "3d_pipeline" / "config" / "dependencies.lock.json"
+VERIFY_ENVIRONMENT = REPO_ROOT / ".tools" / "3d_pipeline" / "verify_environment.py"
+ENVIRONMENT_REPORT = REPO_ROOT / ".tools" / "3d_pipeline" / "reports" / "environment_report.json"
 
 
 def _meshy_entry() -> Path:
@@ -257,6 +260,55 @@ class MeshyWrapperLifecycleTests(unittest.TestCase):
 			self.assertEqual(set(), _wait_absent(owned))
 		finally:
 			probe.emergency_cleanup()
+
+	def test_full_verifier_uses_only_its_call_owned_job_receipts(self) -> None:
+		original_report = ENVIRONMENT_REPORT.read_bytes() if ENVIRONMENT_REPORT.exists() else None
+		probe = Probe.launch()
+		try:
+			self._assert_schema(probe.request_schema())
+			unrelated_owned = probe.capture_owned_tree()
+			completed = subprocess.run(
+				[sys.executable, str(VERIFY_ENVIRONMENT), "--probe-meshy"],
+				cwd=REPO_ROOT,
+				env=os.environ.copy(),
+				text=True,
+				encoding="utf-8",
+				errors="replace",
+				stdout=subprocess.PIPE,
+				stderr=subprocess.PIPE,
+				timeout=360,
+				check=False,
+				creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+			)
+			self.assertTrue(
+				ENVIRONMENT_REPORT.exists(),
+				f"Verifier produced no report (exit={completed.returncode}): {completed.stderr[-2000:]}",
+			)
+			report = json.loads(ENVIRONMENT_REPORT.read_text(encoding="utf-8"))
+			cleanup = report.get("checks", {}).get("meshy_mcp_process_cleanup", {})
+			self.assertTrue(cleanup.get("ok"), cleanup)
+			receipts = cleanup.get("detail", {}).get("receipts", {})
+			self.assertEqual({"tools_list", "balance"}, set(receipts))
+			for receipt in receipts.values():
+				self.assertEqual("windows_job_object", receipt.get("ownership"))
+				self.assertEqual([], receipt.get("surviving_process_ids"))
+				self.assertNotIn(receipt.get("root_pid"), unrelated_owned)
+			meshy_findings = [
+				finding
+				for finding in report.get("findings", [])
+				if str(finding.get("check", "")).startswith("meshy_mcp")
+			]
+			self.assertEqual([], meshy_findings)
+			self.assertTrue(unrelated_owned <= set(_windows_processes()))
+			self.assertEqual(0, probe.close_stdin_and_wait())
+			self.assertEqual(set(), _wait_absent(unrelated_owned))
+		finally:
+			probe.emergency_cleanup()
+			if original_report is None:
+				if ENVIRONMENT_REPORT.exists():
+					ENVIRONMENT_REPORT.unlink()
+			else:
+				ENVIRONMENT_REPORT.write_bytes(original_report)
 
 
 if __name__ == "__main__":
