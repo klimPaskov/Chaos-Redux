@@ -1,0 +1,200 @@
+{
+  "schema_version": "e014_probability_contracts_v1",
+  "contract_id": "e014_selectors",
+  "classification": "deterministic_and_weighted_surface_manifest",
+  "source_rule": "The source object is authoritative. Contract rows expose eligibility, score inputs, precedence, tie breaks, outputs, and side effects for an analyzer; they do not rewrite source logic.",
+  "source_refs": [
+    {
+      "path": "common/scripted_effects/014_cannibalism_effects.txt",
+      "sha256": "469becf19e11468238f4b19e03583e0f8ec4cd44b76a82c869f03390fb6843d5",
+      "ranges": ["1112-1497", "4520-4644", "11894-12042", "18385-18601"]
+    },
+    {
+      "path": "common/scripted_triggers/014_cannibalism_triggers.txt",
+      "sha256": "7590020dfa1b49b1765584463b979021b50eeb186aef3ba9450b9bd1e273f25e",
+      "ranges": ["1815-1966", "2781-3144", "3612-3650", "5273-5370"]
+    },
+    {
+      "path": "common/script_constants/014_cannibalism_constants.txt",
+      "sha256": "9aca3cd6b767e6bcb249f1dfc73826eb87d18561865fbc715407cce46e8a6ad",
+      "ranges": ["cannibalism_host_threshold", "cannibalism_host_weight", "cannibalism_state_weight", "cannibalism_warlord_creation", "cannibalism_unification", "cannibalism_wendigo_merge", "cannibalism_wendigo_anchor"]
+    }
+  ],
+  "mcp_contract": {
+    "required_first_call": "hoi4.probability_inspect",
+    "adapter": "custom_weighted_pool",
+    "status": "source_adapter_incomplete",
+    "source_inspect_code": "PROBABILITY_SOURCE_INSPECTED",
+    "pool_complete": false,
+    "candidate_count": 0,
+    "required_inputs": 0,
+    "unresolved": 0,
+    "artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f7113f1b2aeb4c5e416d97f989fabed2142635f729244733f8e5da5644bb5c9d/a678dd5aa1c2bcfb5be56ea0becf5f2b5471fb39d30627635c017a0591eb18c5/probability-inspect-a2195480e458.json",
+    "unsupported_source_constructs": ["every_country", "every_state", "for_each_scope_loop", "find_highest_in_array", "event_target scope persistence", "scripted trigger evaluation", "dynamic effect side effects"],
+    "interpretation": "Rows below are source-linked deterministic/score contracts. They are not claimed as MCP-evaluated candidate probabilities."
+  },
+  "constant_table": {
+    "host_score": {"base": "cannibalism_host_weight.base", "min": "cannibalism_host_weight.minimum", "max": "cannibalism_host_weight.maximum", "thresholds": "cannibalism_host_threshold.*"},
+    "state_score": {"base": "cannibalism_state_weight.base", "min": "cannibalism_state_weight.minimum", "max": "cannibalism_state_weight.maximum", "thresholds": "cannibalism_state_threshold.*"},
+    "warlord_origin": {"population_divisor_k": "cannibalism_warlord_creation.candidate_population_divisor_k", "population_cap": "cannibalism_warlord_creation.candidate_population_cap", "origin_bonus": {"island": 12, "siege": 10, "march": 8}},
+    "unification_host": {"base": 10, "human_bonus": 1000, "state_factor": 5, "division_factor": 2, "population_factor_per_million": 4, "network_route_factor": 8, "tie_break": "lower country id"},
+    "wendigo_merge_host": {"base": 10, "human_bonus": 10000, "state_factor": 6, "division_factor": 10, "population_factor_per_million": 5, "tie_break": "lower country id"},
+    "wendigo_anchor": {"base": 10, "capital_bonus": 10000, "population_divisor_k": 100, "coastal_bonus": 20, "naval_base_bonus": 25, "supply_node_bonus": 30, "rail_bonus": 15, "minimum_population_k": 500}
+  },
+  "selectors": [
+    {
+      "id": "country_first_host",
+      "classification": "score_race",
+      "scope": "country ROOT with global country enumeration",
+      "source": {"effect": "cannibalism_select_first_host", "score_effect": "cannibalism_score_current_host", "lines": "014_cannibalism_effects.txt:1112-1366"},
+      "eligibility": {"trigger": "cannibalism_can_be_origin", "candidate_pool": "every_country limit=cannibalism_can_be_origin", "source_trigger": "014_cannibalism_triggers.txt:2805-3050"},
+      "score": {"base": "cannibalism_host_weight.base", "components": ["human/player", "war duration tiers", "stability tiers", "war support", "casualty ratio tiers", "manpower ratio tiers", "isolated theater", "damaged supply", "remote army", "convoy pressure", "external hunger", "occupied state count", "large army", "Chaos tier"], "clamp": "cannibalism_host_weight.minimum..maximum", "output": "cannibalism_current_host_score"},
+      "selection_rule": "find_highest_in_array",
+      "tie_break": "first matching candidate in the source country-array order",
+      "outputs": ["event_target:cannibalism_first_host"],
+      "side_effects": ["clear temporary country and score arrays after selection", "no global target persists"],
+      "probability_claim": "none"
+    },
+    {
+      "id": "highest_risk_state",
+      "classification": "score_race",
+      "scope": "state ROOT under the selected host country",
+      "source": {"effect": "cannibalism_select_highest_risk_state", "score_effect": "cannibalism_score_current_state", "lines": "014_cannibalism_effects.txt:1367-1497"},
+      "eligibility": {"trigger": "cannibalism_state_is_valid_origin", "candidate_pool": "every controlled state with no active cell", "source_trigger": "014_cannibalism_triggers.txt:2781-2804"},
+      "score": {"base": "cannibalism_state_weight.base", "components": ["army presence", "island", "remote from capital", "infrastructure", "damaged port", "port", "supply node", "occupied", "prison/camp", "population density", "capital penalty"], "clamp": "cannibalism_state_weight.minimum..maximum", "output": "cannibalism_current_state_score"},
+      "selection_rule": "find_highest_in_array",
+      "tie_break": "first matching candidate in source state-array order",
+      "outputs": ["event_target:cannibalism_selected_state", "event_target:cannibalism_state_host"],
+      "side_effects": ["clear temporary state and score arrays after selection"],
+      "probability_claim": "none"
+    },
+    {
+      "id": "warlord_origin_state",
+      "classification": "score_race",
+      "scope": "state in global.cannibalism_node_states",
+      "source": {"effect": "cannibalism_select_warlord_candidate_state", "lines": "014_cannibalism_effects.txt:4520-4564"},
+      "eligibility": {"trigger": "cannibalism_state_can_emerge_as_warlord", "candidate_pool": "global.cannibalism_node_states", "source_trigger": "014_cannibalism_triggers.txt:3121-3144"},
+      "score": {"components": ["node strength", "population_k divided by cannibalism_warlord_creation.candidate_population_divisor_k", "population cap", "origin branch bonus"], "origin_bonus": {"island": 12, "siege": 10, "march": 8}, "output": "cannibalism_warlord_candidate_score"},
+      "selection_rule": "strict greater-than replacement while iterating array",
+      "tie_break": "first eligible node in global.cannibalism_node_states order",
+      "outputs": ["event_target:cannibalism_warlord_origin_state"],
+      "side_effects": ["prepare_warlord_creation_context persists former owner/controller targets", "region and identity are selected after origin state"],
+      "probability_claim": "none"
+    },
+    {
+      "id": "warlord_origin_branch",
+      "classification": "deterministic_selector",
+      "scope": "selected warlord origin state",
+      "source": {"effect": "cannibalism_prepare_warlord_creation_context", "lines": "014_cannibalism_effects.txt:4565-4644"},
+      "eligibility": {"island": "cannibalism_state_can_form_island_host", "siege": "cannibalism_state_can_form_siege_commune", "march": "cannibalism_state_can_form_march_host"},
+      "precedence": ["island", "siege", "march"],
+      "tie_break": "first true branch in the stated precedence; no random roll",
+      "outputs": ["cannibalism_warlord_origin", "cannibalism_warlord_origin_state", "cannibalism_warlord_former_owner", "cannibalism_warlord_former_controller"],
+      "side_effects": ["sets starting units, experience, and frenzy from population/Chaos bands", "clamps starting units"],
+      "probability_claim": "none"
+    },
+    {
+      "id": "warlord_region",
+      "classification": "deterministic_selector",
+      "scope": "selected warlord origin state",
+      "source": {"effect": "cannibalism_prepare_warlord_creation_context", "lines": "014_cannibalism_effects.txt:4565-4644"},
+      "precedence": ["middle_east", "europe", "asia", "africa", "north_america", "south_america", "australia_or_oceania"],
+      "selection_rule": "first matching region branch",
+      "tie_break": "source else_if order",
+      "outputs": ["cannibalism_warlord_region"],
+      "probability_claim": "none",
+      "downstream_random_surface": "regional name helper supplies four equal-weight names for the selected region."
+    },
+    {
+      "id": "unification_host",
+      "classification": "score_race",
+      "scope": "country actor registry",
+      "source": {"effect": "cannibalism_select_unification_host", "score_effect": "cannibalism_calculate_current_unification_host_score", "candidate_effect": "cannibalism_consider_current_unification_host_candidate", "lines": "014_cannibalism_effects.txt:11894-12042"},
+      "eligibility": {"trigger": "cannibalism_is_viable_unification_host", "passes": ["human viable actors first", "AI viable actors only if no human candidate"], "source_trigger": "014_cannibalism_triggers.txt:3612-3650"},
+      "score": {"components": ["base", "human bonus", "controlled states", "divisions", "controlled population", "larder", "alignment", "inbound/outbound spread", "coastal/naval base", "capital supply/naval/rail", "leverage flag", "manipulation flag", "isolation penalty"], "clamp": "cannibalism_unification.minimum..maximum", "output": "cannibalism_current_unification_host_score"},
+      "selection_rule": "greater score wins; equal score compares country id",
+      "tie_break": "lower country id",
+      "outputs": ["global event_target:cannibalism_unification_host", "global variable:cannibalism_unification_host_generation"],
+      "side_effects": ["clears previous global host target and generation before each selection", "global target requires lifecycle cleanup on retirement"],
+      "probability_claim": "none"
+    },
+    {
+      "id": "wendigo_merge_host",
+      "classification": "score_race",
+      "scope": "country actor registry",
+      "source": {"effect": "cannibalism_select_wendigo_merge_host", "score_effect": "cannibalism_calculate_current_wendigo_merge_host_score", "candidate_effect": "cannibalism_consider_current_wendigo_merge_host_candidate", "lines": "014_cannibalism_effects.txt:18385-18467"},
+      "eligibility": {"trigger": "cannibalism_is_valid_wendigo_merge_host", "passes": ["human valid hosts first", "AI valid hosts only if no human candidate"], "source_trigger": "014_cannibalism_triggers.txt:5273-5370"},
+      "score": {"components": ["base", "human bonus", "divisions", "controlled states", "controlled population"], "clamp": "cannibalism_wendigo_merge.minimum..maximum", "output": "cannibalism_current_wendigo_merge_host_score"},
+      "selection_rule": "greater score wins; equal score compares country id",
+      "tie_break": "lower country id",
+      "outputs": ["global event_target:cannibalism_wendigo_merge_host"],
+      "side_effects": ["clears previous global merge target before selection", "target generation is read by transformation mission identity checks"],
+      "probability_claim": "none"
+    },
+    {
+      "id": "wendigo_initial_anchor",
+      "classification": "score_race",
+      "scope": "state controlled by selected Wendigo merge host",
+      "source": {"effect": "cannibalism_select_next_initial_wendigo_anchor", "score_effect": "cannibalism_calculate_current_wendigo_anchor_score", "register_effect": "cannibalism_register_current_wendigo_anchor", "lines": "014_cannibalism_effects.txt:18473-18601"},
+      "eligibility": {"candidate_pool": "controlled states of event_target:cannibalism_wendigo_merge_host", "conditions": ["not already an anchor", "not cooldown/recovery", "population >= 500K", "valid owner/controller identity"], "source_trigger": "Wendigo anchor eligibility in 014_cannibalism_effects.txt:18476-18529"},
+      "score": {"components": ["base", "capital", "population_k divided by 100", "coastal", "naval base", "supply node", "rail"], "output": "cannibalism_wendigo_anchor_score"},
+      "selection_rule": "strict greater-than replacement while iterating controlled-state array",
+      "tie_break": "first candidate in source controlled-state order",
+      "outputs": ["event_target:cannibalism_wendigo_selected_anchor", "global.cannibalism_transformation_anchor_states"],
+      "caps": {"initial_target": 3, "maximum_live_anchors": 6},
+      "side_effects": ["register consumes exact 250K population", "sets anchor strength and state flags", "repeats until three initial anchors or no candidate"],
+      "probability_claim": "none"
+    }
+  ],
+  "random_surfaces": [
+    {
+      "id": "capture_cooperation",
+      "classification": "true_probability",
+      "source": {"path": "events/014_cannibalism.txt", "lines": "682-683,770-778", "surface": "chaosx.nr14.80 option d random_list"},
+      "pool": [{"id": "cooperate", "weight": 85}, {"id": "escape", "weight": 15}],
+      "conditional_probability": {"cooperate": "17/20", "escape": "3/20"},
+      "gates": "Only after chaosx.nr14.80 option d executes its random_list.",
+      "not_claimed": "No probability of reaching event 80 or selecting option d."
+    },
+    {
+      "id": "regional_warlord_name",
+      "classification": "true_probability",
+      "source": {"effect": "cannibalism_assign_current_warlord_name_index", "lines": "014_cannibalism_effects.txt:4648-4709"},
+      "pool": "Four equal-weight names for each deterministic region branch.",
+      "conditional_probability": "1/4 per name conditional on region branch and helper invocation",
+      "not_claimed": "No region frequency or campaign name frequency."
+    },
+    {
+      "id": "warlord_personality",
+      "classification": "true_probability",
+      "source": {"effect": "cannibalism_assign_current_warlord_personality", "lines": "014_cannibalism_effects.txt:4711-4718"},
+      "pool": ["hoarder", "feast_captain", "charismatic_initiator", "suspicious_tyrant", "network_disciple", "defiant_mouth"],
+      "weights": [1, 1, 1, 1, 1, 1],
+      "conditional_probability": "1/6 per personality conditional on helper invocation",
+      "not_claimed": "No probability of a warlord being created or of a personality helper call."
+    },
+    {
+      "id": "capture_option_30",
+      "classification": "score",
+      "source": {"path": "events/014_cannibalism.txt", "lines": "212-239", "surface": "chaosx.nr14.30 ai_chance"},
+      "scores": {"remain": "constant:cannibalism_event_ai.warlord_emergence_remain", "switch": "constant:cannibalism_event_ai.warlord_emergence_switch"},
+      "interpretation": "AI willingness score among options whose triggers are live; not a direct random roll."
+    },
+    {
+      "id": "capture_option_81",
+      "classification": "score",
+      "source": {"path": "events/014_cannibalism.txt", "lines": "802-864", "surface": "chaosx.nr14.81 ai_chance"},
+      "conditional_scores": {
+        "fascist_or_unified": [60, 30, 25, 30],
+        "democratic": [150, 30, 10, 30]
+      },
+      "interpretation": "Conditional AI score rows after source gates. The MCP prior audit normalized the complete rows to 12/29, 6/29, 5/29, 6/29 and 15/22, 3/22, 1/22, 3/22 respectively; these are conditional score normalizations, not campaign frequencies."
+    }
+  ],
+  "migration_contract": {
+    "source_change": false,
+    "consumer_change": "Analyzer or future auditor reads rows by id and uses eligibility/score/tie_break fields.",
+    "preserve": ["all weights", "all thresholds", "all route gates", "all event target names", "all array ordering", "all cleanup side effects"],
+    "do_not_do": ["replace find_highest_in_array with random selection", "normalize score races as probabilities", "invent country/state pools", "add helper calls solely for analyzer visibility"]
+  }
+}

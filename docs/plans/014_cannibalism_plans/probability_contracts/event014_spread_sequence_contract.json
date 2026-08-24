@@ -1,0 +1,114 @@
+{
+  "schema_version": "e014_probability_contracts_v1",
+  "contract_id": "e014_spread_sequence",
+  "classification": "source_linked_queue_and_cadence_manifest",
+  "source_refs": [
+    {"path": "common/scripted_effects/014_cannibalism_effects.txt", "sha256": "469becf19e11468238f4b19e03583e0f8ec4cd44b76a82c869f03390fb6843d5", "ranges": ["9675-9810", "10049-10121", "10469-10621", "11118-11277"]},
+    {"path": "common/scripted_triggers/014_cannibalism_triggers.txt", "sha256": "7590020dfa1b49b1765584463b979021b50eeb186aef3ba9450b9bd1e273f25e", "ranges": ["1815-1975", "2683-2760"]},
+    {"path": "common/on_actions/014_cannibalism_on_actions.txt", "sha256": "3c107d32a9aea742e2818cd314a4da40fcbc14122d1bd8ec47b4b32720bc972b", "ranges": ["46-218"]},
+    {"path": "common/script_constants/014_cannibalism_constants.txt", "sha256": "9aca3cd6b767e6bcb249f1dfc73826eb87d18561865fbc715407cce46e8a6ad", "ranges": ["cannibalism_spread", "cannibalism_spread_status", "cannibalism_spread_route", "cannibalism_timing"]},
+    {"path": "events/014_cannibalism.txt", "sha256": "0377739ac3d8ba119520dfc3803e44c61bfcd9a730a184da447bdf7b1a5a8737", "ranges": ["chaosx.nr14.60", "chaosx.nr14.61", "chaosx.nr14.62"]}
+  ],
+  "route_contracts": [
+    {"route": "retreat", "route_value": 1, "delay_days": 24, "strength": 34, "node_stage": "source-selected route; no authored weight", "producer": "automatic border pulse", "source": "014_cannibalism_effects.txt:10541+", "classification": "deterministic_route_dispatch"},
+    {"route": "prisoner_transfer", "route_value": 2, "delay_days": 32, "strength": 45, "node_stage": "action-specific", "producer": "prisoner transfer action", "source": "014_cannibalism_effects.txt:9675+", "classification": "deterministic_route_dispatch"},
+    {"route": "convoy", "route_value": 3, "delay_days": 38, "strength": 40, "node_stage": "action-specific", "producer": "naval invasion/convoy route", "source": "014_cannibalism_effects.txt:9675+; common/on_actions/014_cannibalism_on_actions.txt:203-206", "classification": "deterministic_route_dispatch"},
+    {"route": "volunteer_return", "route_value": 4, "delay_days": 28, "strength": 32, "node_stage": "action-specific", "producer": "volunteer recall route", "source": "014_cannibalism_effects.txt:9675+; common/on_actions/014_cannibalism_on_actions.txt:207-218", "classification": "deterministic_route_dispatch"},
+    {"route": "occupation_turnover", "route_value": 5, "delay_days": 20, "strength": 48, "node_type": "occupation", "node_stage": "hunting", "producer": "state-control change", "source": "common/on_actions/014_cannibalism_on_actions.txt:191-201", "classification": "deterministic_route_dispatch"},
+    {"route": "deliberate_seed", "route_value": 6, "delay_days": 30, "strength": 55, "node_stage": "hunting", "producer": "deliberate seed action", "source": "014_cannibalism_effects.txt:9675+", "classification": "deterministic_route_dispatch"},
+    {"route": "conquest", "route_value": 7, "delay_days": 14, "strength": 60, "node_type": "occupation", "node_stage": "hunting", "producer": "state-control/conquest route", "source": "014_cannibalism_effects.txt:9675+; common/on_actions/014_cannibalism_on_actions.txt:191-201", "classification": "deterministic_route_dispatch"},
+    {"route": "survivor", "route_value": 8, "delay_days": 35, "strength": 28, "node_stage": "suspected", "producer": "local-victory survivor route", "source": "014_cannibalism_effects.txt:9675+", "classification": "deterministic_route_dispatch"}
+  ],
+  "route_parameter_normalizer": {
+    "effect": "cannibalism_set_spread_parameters_from_route",
+    "source": "common/scripted_effects/014_cannibalism_effects.txt:9675-9747",
+    "inputs": ["temp:cannibalism_spread_route"],
+    "outputs": ["temp:cannibalism_spread_delay_days", "temp:cannibalism_spread_strength", "temp:cannibalism_spread_node_type", "temp:cannibalism_spread_node_stage"],
+    "side_effects": "none outside temporary variables",
+    "default": "route none is invalid for enqueue and does not create a row"
+  },
+  "queue_schema": {
+    "storage": "nine aligned global arrays",
+    "arrays": ["global.cannibalism_spread_queue_id_entries", "global.cannibalism_spread_queue_source_country_entries", "global.cannibalism_spread_queue_source_state_entries", "global.cannibalism_spread_queue_target_country_entries", "global.cannibalism_spread_queue_target_state_entries", "global.cannibalism_spread_queue_route_entries", "global.cannibalism_spread_queue_source_generation_entries", "global.cannibalism_spread_queue_due_date_entries", "global.cannibalism_spread_queue_status_entries"],
+    "row_identity": ["positive queue id", "source country/state", "target country/state", "source actor generation", "route", "due date", "status"],
+    "status_values": {"queued": 1, "in_transit": 2, "arrived": 3, "contained": 4, "invalidated": 5},
+    "invariant_effect": "cannibalism_validate_spread_queue",
+    "invariant_source": "common/scripted_effects/014_cannibalism_effects.txt:9748-10047",
+    "invariant_fail_behavior": "Leave malformed ledger untouched and set durable global flag cannibalism_spread_queue_invariant_failure."
+  },
+  "enqueue_contract": {
+    "effect": "cannibalism_enqueue_spread_entry",
+    "source": "common/scripted_effects/014_cannibalism_effects.txt:10049-10121",
+    "scope": "country with saved source/target country and state event targets",
+    "preconditions": ["route parameters valid", "queue validation valid", "target state available", "cannibalism_spread_context_is_valid"],
+    "due_date": "global.date + cannibalism_spread_delay_days",
+    "initial_status": "in_transit",
+    "writes": ["all nine aligned arrays", "source outbound count and foreign_seeding flag", "target inbound count and route_warning flag", "target state inbound id/route/source country/source generation", "global pending count"],
+    "event_entry": "fires chaosx.nr14.60 on target country after row creation",
+    "selection_classification": "deterministic_route_dispatch; no route probability is declared"
+  },
+  "pulse_and_cadence_contract": {
+    "pulse_effect": "cannibalism_run_pulse_on_valid_anchor",
+    "pulse_source": "common/scripted_effects/014_cannibalism_effects.txt:3163-3217",
+    "schedule_effect": "cannibalism_schedule_next_pulse",
+    "schedule_source": "common/scripted_effects/014_cannibalism_effects.txt:1733-1788",
+    "cadence_bands": {"first_pulse_days": 7, "baseline_days": 14, "ritual_days": 10, "network_or_convergence_days": 7},
+    "queue_processing": "process_spread_queue is called from the targeted pulse, before queue compaction and counter rebuild.",
+    "automatic_route_cooldown_days": 45,
+    "foreign_seed_reenable_days": 90,
+    "probability_interpretation": "Cadence is deterministic scheduled timing. It is not an event MTTH and is not a campaign frequency."
+  },
+  "resolution_contract": {
+    "process_effect": "cannibalism_process_spread_queue",
+    "source": "common/scripted_effects/014_cannibalism_effects.txt:10469-10499",
+    "eligibility": ["queue validation remains valid", "status is live", "due date <= global.date"],
+    "scope_persistence": "load_spread_entry_context resolves event targets from array rows and checks actor generation before arrival",
+    "arrival_events": ["chaosx.nr14.60 warning/route presentation", "chaosx.nr14.61 external/new actor resolution", "chaosx.nr14.62 already-active resolution"],
+    "terminal_statuses": ["arrived", "contained", "invalidated"]
+  },
+  "cleanup_and_recovery_contract": {
+    "compaction_effect": "cannibalism_compact_spread_queue",
+    "compaction_source": "common/scripted_effects/014_cannibalism_effects.txt:10499-10539",
+    "removes": ["arrived", "contained", "invalidated"],
+    "preserves": ["queued", "in_transit"],
+    "country_invalidation": {"effect": "cannibalism_invalidate_spread_entries_for_current_country_lifecycle", "source": "014_cannibalism_effects.txt:11118-11165", "hook_sources": "common/on_actions/014_cannibalism_on_actions.txt:46-190", "behavior": "mark matching live rows invalidated, rebuild pending ledgers, compact later"},
+    "state_invalidation": {"effect": "cannibalism_invalidate_spread_entries_for_current_state_lifecycle", "source": "014_cannibalism_effects.txt:11168-11216", "hook_source": "common/on_actions/014_cannibalism_on_actions.txt:191-201", "behavior": "mark rows matching exact source or target state invalidated and reconcile target cache"},
+    "state_reconciliation": {"effect": "cannibalism_reconcile_current_state_spread_lifecycle", "behavior": "clear inbound/screening/warning flags and variables when no authoritative live row remains"},
+    "country_reconciliation": {"effect": "cannibalism_reconcile_current_country_spread_lifecycle", "behavior": "clear country inbound/outbound flags and counters when no live rows remain"},
+    "generation_guard": "Source actor generation is persisted per row and compared on load; stale generation cannot resolve as a live arrival.",
+    "global_cleanup": ["rebuild pending ledgers", "clear target state cache when row identity no longer matches", "clear warning instance on target invalidation", "compact terminal rows after iteration"]
+  },
+  "sequence_manifest": {
+    "id": "e014_spread_queue_contract_probe",
+    "selection": {"mode": "categorical_weighted", "cadence": "daily"},
+    "candidates": [{"id": "live_queue_row", "weight": 1}],
+    "transitions": [],
+    "scenario_set": {"id": "e014_spread_queue_contract_probe_scenarios", "scenarios": [{"id": "baseline", "state": {"source_contract": "event014_spread_sequence_contract", "queue_status": "in_transit", "route_delay_source": "constant:cannibalism_spread.*", "generation_guard": true}}]},
+    "horizon_days": 1,
+    "samples": 100,
+    "seed": 14014,
+    "outputs": ["json", "sequence", "unresolved"],
+    "adapter_contract": "custom_weighted_pool",
+    "probe_result": {
+      "status": "ok",
+      "code": "PROBABILITY_ANALYZED",
+      "analysis_status": "complete",
+      "analysis_id": "probability-959793529f480f0842ef5cd5",
+      "source_revision": "ed391ce84cbf7cbe73df82d7212a4fe7995e7f9e077717f0f92d46306a282855",
+      "source_hash": "62c5a67dd4490a4699d85d1508543e29d5f21f9a68e35e11fbd1f14c6057de0a",
+      "candidates": 1,
+      "unresolved": 0,
+      "diagnostics": 0,
+      "artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/86df5076a6cb23b9ae20e9c945fcd230f1d0492c51bd69e3d14060b86f151f2a/3bcf87893dde2bad849c7eebcd9717bfeb0dc693443014eee7d9e215b3a0ce36/probability-959793529f480f0842ef5cd5.json",
+      "sequence_svg_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/087b0325aaa04d9778f092a41f5f827bbd5e5f59e455e5c822f395e472e4dfbd/6e20d65560f5aa333e3b49352073599cf394d3ee8b8d4deda04128aac38bbdbe/probability-probability-959793529f480f0842ef5cd5-sequence.svg"
+    },
+    "interpretation": "This exact MCP result proves only that a complete one-candidate manifest can be analyzed. The source-linked queue facts above remain declarative because the adapter does not execute Clausewitz effects, event targets, route producers, or transition actions.",
+    "transition_blocker": "A prior two-candidate test with transitions using when=route_id and actions=[] returned SEQUENCE_TRANSITION_UNRESOLVED. The installed schema accepted the manifest shape but could not resolve source-like transition identities; no source lifecycle result is claimed."
+  },
+  "contract_migration": {
+    "source_change": false,
+    "consumer": "Read route_contracts, queue_schema, pulse_and_cadence_contract, resolution_contract, and cleanup_and_recovery_contract before any future sequence call.",
+    "required_future_inputs": ["explicit candidate identities", "adapter-supported transition syntax", "scenario state for valid target/source scopes", "declared cooldown/recovery/cap/reset/terminal actions"],
+    "forbidden_shortcuts": ["equal-weight route probabilities", "invented campaign frequencies", "source-only claim of sequence completion", "removing generation or lifecycle cleanup guards"]
+  }
+}

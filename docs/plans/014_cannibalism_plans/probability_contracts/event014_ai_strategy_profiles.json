@@ -1,0 +1,85 @@
+{
+  "schema_version": "e014_probability_contracts_v1",
+  "contract_id": "e014_ai_strategy_profiles",
+  "classification": "fixed_ai_strategy_intensity_manifest",
+  "source": {
+    "path": "common/ai_strategy/014_cannibalism_warlords.txt",
+    "sha256": "44113b630915d1ea6ff6783ae0627503be4c6a5952371b8f94c9e315c5c9fed3",
+    "ranges": "1-74"
+  },
+  "mcp_contract": {
+    "required_first_call": "hoi4.probability_inspect",
+    "adapter": "ai_strategy_factor",
+    "status": "no_weighted_surfaces",
+    "code": "PROBABILITY_SOURCE_DISCOVERED",
+    "artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/0f9b360bd13cf61f9ac0fdd41f53b0d1352df14146a09f19f664e35d7385f158/627558277a60af17dbafc95a9223c4458d2ae65e8ac127f9f677dd998db93cec/probability-inspect-02bd4b54a3b6.json",
+    "interpretation": "The profiles are source strategy intensities selected by deterministic enable flags. The adapter found no weighted strategy surface to normalize."
+  },
+  "shared_contract": {
+    "allowed": "always = yes",
+    "abort_when_not_enabled": true,
+    "enable_base": "is_cannibalism_warlord_country = yes",
+    "profile_selection": "Origin flags select island, siege, or march profile in addition to the common profile.",
+    "source_constants": "File-scoped @CR_SC_CANNIBALISM_AI_STRATEGY_* values mirror common/script_constants/014_cannibalism_constants.txt because these AI fields reject script-constant tokens.",
+    "probability_claim": "none"
+  },
+  "profiles": [
+    {
+      "id": "cannibalism_warlord_common_profile",
+      "scope": "warlord country",
+      "enable": ["is_cannibalism_warlord_country = yes"],
+      "intensities": [
+        {"type": "build_army", "value": 220},
+        {"type": "equipment_production_factor", "id": "infantry", "value": 180},
+        {"type": "equipment_production_factor", "id": "support", "value": 160},
+        {"type": "template_prio", "id": "infantry", "value": 220},
+        {"type": "role_ratio", "id": "infantry", "value": 180}
+      ],
+      "constants": ["CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_BUILD_ARMY", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_BUILD_INFANTRY", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_SUPPLY"],
+      "classification": "fixed_intensity"
+    },
+    {
+      "id": "cannibalism_warlord_island_profile",
+      "scope": "warlord country with cannibalism_origin_island_host",
+      "enable": ["is_cannibalism_warlord_country = yes", "has_country_flag = cannibalism_origin_island_host"],
+      "intensities": [
+        {"type": "unit_ratio", "id": "convoy", "value": 35},
+        {"type": "equipment_production_min_factories", "id": "convoy", "value": 1},
+        {"type": "unit_ratio", "id": "screen_ship", "value": 20},
+        {"type": "build_building", "id": "naval_base", "value": 120}
+      ],
+      "constants": ["CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_ISLAND_CONVOY_RATIO", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_ISLAND_CONVOY_FACTORIES", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_ISLAND_SCREEN_RATIO", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_ISLAND_NAVAL_BASE"],
+      "classification": "fixed_intensity"
+    },
+    {
+      "id": "cannibalism_warlord_siege_profile",
+      "scope": "warlord country with cannibalism_origin_siege_commune",
+      "enable": ["is_cannibalism_warlord_country = yes", "has_country_flag = cannibalism_origin_siege_commune"],
+      "intensities": [
+        {"type": "equipment_production_factor", "id": "artillery", "value": 190},
+        {"type": "build_building", "id": "bunker", "value": 170},
+        {"type": "build_building", "id": "arms_factory", "value": 120}
+      ],
+      "constants": ["CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_SIEGE_ARTILLERY", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_SIEGE_BUNKER", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_SIEGE_ARMS_FACTORY"],
+      "classification": "fixed_intensity"
+    },
+    {
+      "id": "cannibalism_warlord_march_profile",
+      "scope": "warlord country with cannibalism_origin_march_host",
+      "enable": ["is_cannibalism_warlord_country = yes", "has_country_flag = cannibalism_origin_march_host"],
+      "intensities": [
+        {"type": "equipment_production_factor", "id": "motorized", "value": 190},
+        {"type": "build_building", "id": "infrastructure", "value": 160},
+        {"type": "spare_unit_factor", "value": 130}
+      ],
+      "constants": ["CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_MARCH_MOTORIZED", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_MARCH_INFRASTRUCTURE", "CR_SC_CANNIBALISM_AI_STRATEGY_WARLORD_MARCH_SPARE_UNITS"],
+      "classification": "fixed_intensity"
+    }
+  ],
+  "migration_contract": {
+    "source_change": false,
+    "analyzer_input": "Treat each row as an enabled fixed factor set; evaluate only if a future adapter can supply the country and origin-flag state.",
+    "do_not_normalize": ["strategy intensities to percentages", "profile selection to campaign frequencies", "abort_when_not_enabled to a random transition"],
+    "preserve": ["common profile always applies to valid warlords", "origin profile enable flags", "self-removing abort behavior", "all literal intensity values"]
+  }
+}
