@@ -40,7 +40,9 @@ All edited English localisation files retain their UTF-8 BOM. The shared GUI lay
 
 The 28-key duplicate file `005_soviet_collapse_custom_splinter_focus_expansion_l_english.yml` remains because its canonical consolidated localisation file has active concurrent edits. It may be deleted only after those edits stabilize and the duplicate-key comparison is repeated.
 
-The unused dynamic effects `modify_value_based_on_chaos_tier` and `damage_buildings_in_random_states` remain because their matching helper documentation has active concurrent edits. Their definitions and documentation must be removed together in a later ownership-stable tranche.
+The unused dynamic effect `modify_value_based_on_chaos_tier` and its matching helper documentation were removed after exact runtime, meta, scripted-localisation, GUI, GFX, documentation, and spreadsheet scans found no consumer.
+
+`damage_buildings_in_random_states` remains because the accepted Event 11 improvement addendum names it as a future sabotage implementation pattern. That plan reference makes it an uncertain future hook even though it has no current runtime caller.
 
 ## Validation boundary
 
