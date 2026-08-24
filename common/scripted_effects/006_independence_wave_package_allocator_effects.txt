@@ -6,8 +6,9 @@
 # - Selects regions by their summed viable package weight, then selects one
 #   package inside that region, preserving a single global weighted draw.
 # - Keeps rerolling rejected candidates without reducing the accepted wave
-#   count. If the exact count cannot be frozen, the contribution fails and no
-#   ownership mutation is permitted.
+#   count. Joint plans fail closed if the exact count cannot be frozen; a
+#   standalone Event 006 plan may commit a non-empty aligned selection after
+#   the admitted pool is exhausted.
 # - Assumes the shared release coordinator is in its allocation phase and the
 #   Event 006 participant flag is present.
 # ============================================================================
@@ -112,6 +113,34 @@ independence_wave_allocate_automatic_packages = {
 					compare = equals
 				}
 			}
+			if = {
+				limit = { independence_wave_plan_metadata_arrays_are_aligned = yes }
+				set_global_flag = independence_wave_plan_contribution_ready
+			}
+			else = {
+				set_global_flag = independence_wave_plan_exact_count_failed
+				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = global.liberation_plan_mode
+					value = constant:liberation_plan_mode.automatic
+				}
+				has_global_flag = independence_wave_plan_pool_exhausted
+				check_variable = {
+					var = global.independence_wave_plan_selected_count
+					value = constant:independence_wave_planner.no_candidates
+					compare = greater_than
+				}
+			}
+			# A standalone Event 006 invocation is allowed to resolve the admitted
+			# candidates that were frozen before the remaining pool ran dry. Joint
+			# plans retain exact-count fail-closed behavior. An empty pool still
+			# fails closed.
+			set_variable = { global.independence_wave_plan_target_count = global.independence_wave_plan_selected_count }
+			set_variable = { global.liberation_plan_expected_country_count = global.independence_wave_plan_selected_count }
 			if = {
 				limit = { independence_wave_plan_metadata_arrays_are_aligned = yes }
 				set_global_flag = independence_wave_plan_contribution_ready

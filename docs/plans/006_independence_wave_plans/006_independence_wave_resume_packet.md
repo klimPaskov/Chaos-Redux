@@ -62,7 +62,7 @@ Commit `abb0a8c83` closes the Event 005-aware joint-capacity parity gap for the 
 
 Commit `d6abc3792` repairs the joint partial-wave expected-count witness by recomputing `global.liberation_plan_expected_country_count` from the actual Event 005 and Event 006 selected counts before optional expansion and lock. The stale joint-count rejection is source-resolved, while joint execution and terminal receipts remain unproven; evidence is `subagent_handoffs/006_joint_partial_wave_expected_count_repair_2026_08_20.md`.
 
-Commit `a2abd65d7` supersedes that partial-wave reconciliation as the current exact-count contract: an undersized automatic pool preserves the nominal `3/4/5/7/10` target and fails closed with `insufficient_pool`; neither the standalone allocator nor the coupled Event 005/006 path rewrites target or shared expected counts from `selected_count`. Evidence is `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md`.
+Commit `a2abd65d7` remains the exact-count contract for joint Event 005/006 allocation. The user-directed standalone exception is source-applied in `subagent_handoffs/006_event6_manual_partial_wave_fix_2026-08-24.md`: after pool exhaustion, a non-empty aligned standalone Event 006 selection may rewrite target and shared expected count to the frozen selected count; an empty standalone pool and every joint short pool still fail closed with `insufficient_pool`. The exact-ladder evidence remains `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md`.
 
 The custom probability-auditor route was unavailable, direct MCP discovery was incomplete, and no same-scenario probability comparison or quantitative balance claim is recorded.
 
@@ -95,7 +95,7 @@ The latest Event MCP evidence remains partial, and the post-release-scope refres
 
 The current whole-event receipt is `subagent_handoffs/006_event006_completion_audit_followup_2026-08-22.md`, and the timeout limitation is recorded in `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
 
-The current exact-count override is `a2abd65d7` and `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md`: undersized automatic pools preserve the nominal `3/4/5/7/10` target and fail closed with `insufficient_pool`; no package-level probability or balance closure follows from the outer allocator evidence.
+The current exact-count override is `a2abd65d7` and `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md` for joint plans: undersized joint pools preserve the nominal `3/4/5/7/10` target and fail closed with `insufficient_pool`. Standalone Event 006 additionally has the bounded non-empty aligned exception recorded in `subagent_handoffs/006_event6_manual_partial_wave_fix_2026-08-24.md`; no package-level probability or balance closure follows from the outer allocator evidence.
 
 The current weighted-logic handoff is `subagent_handoffs/006_event6_probability_audit_2026-08-22.md`; package-level readiness remains incomplete, and the exact-ladder fail-closed override is source-applied. No package-level probability or balance closure is recorded.
 

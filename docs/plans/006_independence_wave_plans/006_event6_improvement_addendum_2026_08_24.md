@@ -29,8 +29,8 @@ While this addendum remains queued:
 - IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM remain adapter-only and fail closed.
 - The automatic ladder remains exactly `3/4/5/7/10`.
 - World Collapse remains exactly `10`.
-- An undersized pool preserves its nominal target and fails with `insufficient_pool`.
-- No selected-count rewrite, partial-count fallback, weaker band, generic country, nearby anchor, substitute identity, or broad regional admission is allowed.
+- Joint Event 005 + Event 006 plans preserve their nominal target and fail with `insufficient_pool` when short. A standalone manual Event 006 invocation may resolve a non-empty aligned frozen selection at its actual selected count; empty or misaligned selections still fail closed.
+- No selected-count rewrite is allowed for joint plans; no weaker band, generic country, nearby anchor, substitute identity, or broad regional admission is allowed. The bounded standalone exception is documented in `subagent_handoffs/006_event6_manual_partial_wave_fix_2026-08-24.md`.
 - Nothing player-visible may appear before Event 006 fires.
 - `chaosx.nr6.1` remains the hidden entry, `chaosx.nr6.2` remains the committed-only public report, and `chaosx.nr6.3` remains a hidden cleanup compatibility endpoint.
 - Event 005 Soviet Collapse origin, country, focus, character, reservation, and host-protection state remains separate from Event 006.
@@ -158,13 +158,13 @@ The parent should classify one manual invocation into exactly one of these outco
 | Outcome | Required interpretation |
 | --- | --- |
 | Target count is below the active ladder minimum before selection | Tuning or entry-state defect. Do not add packages. |
-| Target is valid and selected count is lower | Candidate eligibility, collision, host-remnant, origin, or capacity failure. Preserve `insufficient_pool` and identify the exact rejected witness. |
+| Target is valid and selected count is lower | Joint plans preserve `insufficient_pool`; standalone manual runs may proceed only through the new non-empty aligned exception, with the exact rejected witness recorded. |
 | Selected count reaches target but instantiation or transfer does not | Execution scope or release mutation defect. Do not change admission lists. |
 | Transfer succeeds but preparation, activation, validation, or initialization count falls short | Package dispatch, final-validation, capital, force, roster, or registry defect in the current admitted set. |
 | Mutation fails and rollback succeeds | Keep the no-country result fail closed, fix the exact upstream failure, and rerun the same fixture. |
 | Mutation fails and rollback fails | Treat as the highest-priority transaction blocker. Do not widen admission. |
 | Receipt says committed and `chaosx.nr6.2` does not appear | Presentation or actor receipt defect, not a country-admission gap. |
-| Receipt says `insufficient_pool` | Correct fail-closed behavior unless the same fixture proves at least the nominal number of compatible admitted packages should be eligible. |
+| Receipt says `insufficient_pool` | Correct fail-closed behavior for empty standalone pools and all short joint plans; a non-empty aligned standalone selection is the explicit manual exception. |
 
 ### Required acceptance fixtures
 
@@ -397,7 +397,7 @@ The plan remains incomplete if the manual no-country symptom survives, if a term
 - Any unresolved identity, symbol, map, probability, or manual-transaction gate leaves IW-050 absent from central admission.
 - A central list mismatch blocks the patch. Do not ship adapter-only or Join-only Komi wiring.
 - A setup or final-validation failure must enter the existing rollback path and clear every Komi-owned mission, decision, idea, ledger, route, roster, AI, durable-sovereignty, and corridor receipt.
-- A short pool remains `insufficient_pool`. It does not select fewer countries.
+- A short joint pool remains `insufficient_pool`; it does not select fewer countries. A short standalone pool may select only the already-frozen non-empty aligned rows under the user-directed exception.
 - A living `KOM`, Event 005 Komi origin, state-397 collision, protected-host failure, or `RG-397` collision makes IW-050 ineligible.
 - No generic portrait, institutional placeholder without evidence, broad regional flag, nearby state, or alternate carrier is a recovery path.
 - If post-change MCP inspection remains unavailable, central admission remains unresolved even when static source checks pass.
@@ -415,7 +415,7 @@ The plan remains incomplete if the manual no-country symptom survives, if a term
 - No custom technology or doctrine.
 - No new 3D unit, unit sound, or counter.
 - No neutral 1936 flag invented from modern or Soviet institutional motifs.
-- No partial-wave fallback to make the manual symptom appear successful.
+- No unbounded partial-wave fallback or admission widening is allowed; the only exception is the bounded standalone branch documented in `subagent_handoffs/006_event6_manual_partial_wave_fix_2026-08-24.md`.
 
 ## Documentation and promotion
 
