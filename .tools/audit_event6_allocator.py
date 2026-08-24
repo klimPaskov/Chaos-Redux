@@ -614,7 +614,7 @@ def main() -> int:
 			errors,
 		)
 		reservation_effects = read("common/scripted_effects/chaosx_liberation_release_effects.txt")
-		reservation_triggers = read("common/scripted_triggers/006_independence_wave_packages_region_01_triggers.txt")
+		reservation_triggers = read("common/scripted_triggers/006_independence_wave_package_region_triggers_registry.txt")
 		capacity_triggers = read("common/scripted_triggers/006_independence_wave_triggers.txt")
 		require(
 			"independence_wave_reservation_group_id.rg_rhine_saar" in reservation_effects
