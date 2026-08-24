@@ -49,7 +49,7 @@ The primary evidence bundles are [`events_001_010_cleanup_audit_2026-08-22.md`](
 | 015 Utopia Manifesto | The implementation documentation is current for the bounded audit, but the broader manifest/assets workspace is absent; no unrelated asset or gameplay change was made. |
 | 016 Brilliant Scientist | The core package is accepted but the whole event remains partial; two implementation-jargon localisation strings were rewritten as player-facing text, and reserved helper/package disposition remains open. |
 | 017 Random Faction | Static evidence is positive, but the catalog still says `Needs Testing`, which is a live-validation boundary; historical helper observations now carry explicit supersession notes. |
-| 018 Resources Found | Static implementation evidence is positive, but probability and 3D visual proof remain open; one tooltip was rewritten in player-facing language and the catalog status/legend discrepancy remains unresolved. |
+| 018 Resources Found | Static implementation evidence is positive, but probability and 3D visual proof remain open; one tooltip was rewritten in player-facing language and the catalog remains `Needs Testing`. |
 | 019 Infantry Spawn | The bounded static audit is final and the catalog detail is aligned; provider odds and the broader asset workspace remain unresolved, so no balance or provider redesign was made. |
 | 020 Black Plague | The bounded cleanup removed dead evolution effects, eligibility triggers, and response-target wrappers; the active scheduler and current evolution owners remain. The wider event is partial because probability comparison, 3D evidence, and asset provenance remain open. |
 
@@ -103,9 +103,9 @@ The physical `.git` and Git LFS cleanup is documented in [`git_storage_cleanup_2
 
 ### Spreadsheet
 
-The editable workbook [`docs/spreadsheets/chaos_redux_events_catalog.xlsx`](../../spreadsheets/chaos_redux_events_catalog.xlsx) and generated export [`docs/spreadsheets/chaos_redux_events_catalog.csv`](../../spreadsheets/chaos_redux_events_catalog.csv) were aligned for Event Details rows 001, 002, 007, 009, 010, 012, and 019.
+The first bounded spreadsheet tranche aligned Event Details rows 001, 002, 007, 009, 010, 012, and 019. Event 016 required no prose correction because the existing D’Rhondan detail already matched the current wording.
 
-No spreadsheet change was made for Event 016 because the existing D’Rhondan detail already matched the current wording, and no evolution, world-end, cluster, scenario, or status field was changed by cleanup.
+The later catalog tranche expanded that work across Events 1–20: it synchronized 77 evolution descriptions and 12 public world-end descriptions, corrected the Event 3 and Event 5 workbook mismatches without changing the schema, aligned the five-value status legend, and regenerated all three export-only CSV files. The complete current catalog result is recorded under [Spreadsheet/catalog alignment](#spreadsheetcatalog-alignment).
 
 ## Helpers and triggers changed
 
@@ -225,7 +225,7 @@ The workbook status validation now exposes exactly five values: `Playable`, `Par
 
 The [`chaos-redux-subagents` skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) was read and applied for ownership, evidence, audit, and handoff boundaries.
 
-The `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-mtth`, and `xlsx` skills were used for their respective event/log/catalog, decision, super-event, focus, asset/provenance, timing, and workbook rules. The event skill's catalog status contract was updated to preserve the four-value status vocabulary and prevent events from defaulting to `Playable`.
+The `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-mtth`, and `xlsx` skills were used for their respective event/log/catalog, decision, super-event, focus, asset/provenance, timing, and workbook rules. The event skill's catalog status contract was updated to preserve the five-value status vocabulary and prevent events from defaulting to `Playable`.
 
 The official `skill-creator` instructions were consulted to assess whether the cleanup revealed a reusable skill gap; no new skill or non-trivial skill update was justified.
 
@@ -393,7 +393,7 @@ The world-threat documentation path and the isolated Event 014 source comment ar
 
 Event 006 package manifests and handoffs contain both optimistic and blocked dispositions; the contradiction is preserved because it reflects provenance and unresolved admission gates, not a safe deletion candidate.
 
-Event 017 has positive static evidence but a `Needs Testing` catalog status, and Event 018 has positive static evidence but open probability/3D proof and a status/legend discrepancy; neither was silently promoted.
+Events 017 and 018 have positive static evidence but remain `Needs Testing`; Event 018 still has open probability and 3D proof, so neither was silently promoted.
 
 The Event 002 base package is current while specialised model packages remain blocked; no package-wide completion claim is made.
 
