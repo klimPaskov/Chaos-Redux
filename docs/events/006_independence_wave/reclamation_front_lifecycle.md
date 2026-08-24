@@ -55,5 +55,5 @@ The mission title, description, cost text, category, and icon are registered in 
 - `common/decisions/006_independence_wave_decisions.txt`
 - `common/scripted_triggers/006_independence_wave_decision_triggers.txt`
 - `common/scripted_effects/006_independence_wave_decision_effects.txt`
-- `common/script_constants/006_independence_wave_decision_constants.txt`
+- `common/script_constants/006_independence_wave_constants_registry.txt`
 - `localisation/english/006_independence_wave_decisions_l_english.yml`

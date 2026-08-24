@@ -37,7 +37,7 @@ Member rows are parallel and generation-checked:
 
 ## Constants and tuning
 
-`common/script_constants/006_independence_wave_rival_bloc_constants.txt` owns the shared tuning tables:
+`common/script_constants/006_independence_wave_constants_registry.txt` owns the shared tuning tables:
 
 - `independence_wave_rival_bloc`: value bounds, opening values, gates, and per-action consequences.
 - `independence_wave_rival_bloc_route`: grievance caucus, counter-league, and patron-balanced routes.

@@ -61,7 +61,7 @@ The 55 disabled selectable rows are appended after bound-package failures with r
 
 ## Files
 
-- `common/script_constants/006_independence_wave_scenario_constants.txt`
+- `common/script_constants/006_independence_wave_constants_registry.txt`
 - `common/scripted_effects/006_independence_wave_scenario_effects.txt`
 - `common/scripted_triggers/006_independence_wave_scenario_triggers.txt`
 - `common/scripted_localisation/006_independence_wave_scenario_scripted_localisation.txt`

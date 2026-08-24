@@ -86,7 +86,7 @@ The static advisor records are recruited by hidden setup event `chaosx.nr6.10` i
 
 ### Founding pressures and lifecycle ideas
 
-All tuning lives in `common/script_constants/006_independence_wave_scotland_wales_constants.txt`.
+All tuning lives in `common/script_constants/006_independence_wave_constants_registry.txt`.
 
 Scotland exposes `independence_wave_sco_shipping_authority`, starting at 35 and stabilizing at 65. Below the threshold it carries `sco_divided_coastal_command`; at or above the threshold it carries `sco_north_atlantic_state_service`.
 
@@ -603,7 +603,7 @@ Each package recruits three fictional specialist offices without custom Event 00
 - Rhineland: Municipal Customs Administrator, Rail and Public Works Liaison, and River Defense Planner.
 - Bavaria: District Finance Administrator, Estates' Constitutional Liaison, and Alpine Supply Inspector.
 
-Their substantial traits affect customs and consumer burdens, rail and infrastructure construction, river defense and planning, district finance, constitutional stability, or alpine logistics. Hiring costs and route-aware AI weights are centralized in `common/script_constants/006_independence_wave_nwe_advisor_constants.txt`. The advisors are visible only for their exact active Event 006 package, use no custom portrait sprites, and never overwrite either tag's vanilla advisor content.
+Their substantial traits affect customs and consumer burdens, rail and infrastructure construction, river defense and planning, district finance, constitutional stability, or alpine logistics. Hiring costs and route-aware AI weights are centralized in `common/script_constants/006_independence_wave_constants_registry.txt`. The advisors are visible only for their exact active Event 006 package, use no custom portrait sprites, and never overwrite either tag's vanilla advisor content.
 
 Hidden setup event `chaosx.nr6.10` recruits these static records within the frozen release chain. The package adapter will not publish success unless the exact three-advisor roster is present, and no scripted effect or on action contains `recruit_character`.
 
@@ -1014,14 +1014,14 @@ gate.
 
 ### Implementation files
 
-- `common/script_constants/006_independence_wave_saar_constants.txt`
+- `common/script_constants/006_independence_wave_constants_registry.txt`
 - `common/characters/006_independence_wave_characters_registry.txt`
 - `common/ideas/006_independence_wave_ideas_registry.txt`
 - `common/scripted_triggers/006_independence_wave_saar_package_triggers.txt`
 - `common/scripted_effects/006_independence_wave_saar_package_effects.txt`
 - `common/decisions/categories/006_independence_wave_saar_categories.txt`
 - `common/decisions/006_independence_wave_saar_decisions.txt`
-- `common/ai_strategy/006_independence_wave_saar.txt`
+- `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt`
 - `localisation/english/006_independence_wave_saar_l_english.yml`
 - `history/countries/AJX - Event 006 Country Shell.txt`
 - shared route, focus, dispatch, scripted-localisation, and portrait registries

@@ -78,7 +78,7 @@ Canonical global flags:
 
 The tuning sources are:
 
-- `common/script_constants/006_independence_wave_evolution_constants.txt`
+- `common/script_constants/006_independence_wave_constants_registry.txt`
 - `common/mtth/006_independence_wave_evolution_mtth.txt`
 
 The effects and triggers are:

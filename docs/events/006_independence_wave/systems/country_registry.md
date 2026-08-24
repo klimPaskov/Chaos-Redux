@@ -17,7 +17,7 @@ Tag reuse, intentional sharing, overlays, and collision decisions live in [`006_
   carriers. The 193 tagged rows resolve to 191 unique tags.
 - The static country-group category is
   `independence_wave_country_groups` in
-  `common/script_constants/006_independence_wave_country_registry_constants.txt`.
+  `common/script_constants/006_independence_wave_constants_registry.txt`.
   It exposes `all_resolved_carrier_tags`, `event6_owned_new_tags`,
   `registered_reuse_tags`, 14 region arrays, and the Africa overlap arrays.
 

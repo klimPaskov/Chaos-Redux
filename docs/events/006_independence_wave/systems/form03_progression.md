@@ -26,7 +26,7 @@ The stored phase moves through provisional, drafting, ratification, complete,
 compromise, or rupture. The stored language model is parallel federal services,
 territorial administration with federal appeal, or one working register with
 protected local services. All thresholds and deltas live in
-`common/script_constants/006_independence_wave_form03_constants.txt`.
+`common/script_constants/006_independence_wave_constants_registry.txt`.
 
 ## Step-by-step play
 

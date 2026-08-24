@@ -186,7 +186,7 @@ issues a scripted declaration. A ratified FORM-05 carrier prioritizes convoys,
 dockyards, coastal defense, and continued league restraint.
 
 All values live under `independence_wave_mediterranean_ai` in
-`common/script_constants/006_independence_wave_mediterranean_constants.txt`.
+`common/script_constants/006_independence_wave_constants_registry.txt`.
 
 ## Flag and portrait contract
 

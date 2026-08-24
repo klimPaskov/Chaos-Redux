@@ -8,7 +8,7 @@ The 2026-08-03 source-only tranche archives exact crops and deterministic `156x2
 
 ## Scripted architecture contract
 
-The package-level reusable logic lives in `common/scripted_triggers/006_independence_wave_iw043_iw058_package_triggers.txt` and `common/scripted_effects/006_independence_wave_iw043_iw058_package_effects.txt`. The shared tuning source is `common/script_constants/006_independence_wave_iw043_iw058_constants.txt`; no package helper introduces a file-scoped magic duration, strength floor, organization floor, or conversion value.
+The package-level reusable logic lives in `common/scripted_triggers/006_independence_wave_iw043_iw058_package_triggers.txt` and `common/scripted_effects/006_independence_wave_iw043_iw058_package_effects.txt`. The shared tuning source is `common/script_constants/006_independence_wave_constants_registry.txt`; no package helper introduces a file-scoped magic duration, strength floor, organization floor, or conversion value.
 
 ## Focus-framework integration
 
@@ -68,7 +68,7 @@ The migration path is intentionally narrow: callers that currently inspect pre-c
 
 The setup and route adapter must first call `recruit_character`, then call `add_country_leader_role` on the matching character, set `promote_leader = yes`, supply the ideology and trait from this table, and use the character's `_desc` localisation key. It must do so only after `is_independence_wave_iw043_country` or `is_independence_wave_iw058_country` succeeds. A carrier's vanilla leader is never selected or removed through `original_tag` alone.
 
-The emergency traits improve compact defense while imposing a civil-authority cost. Civilian traits support administration, stability, supply, infrastructure, or constitutional resilience. Every numeric value comes from the package categories in `common/script_constants/006_independence_wave_iw043_iw058_constants.txt`.
+The emergency traits improve compact defense while imposing a civil-authority cost. Civilian traits support administration, stability, supply, infrastructure, or constitutional resilience. Every numeric value comes from the package categories in `common/script_constants/006_independence_wave_constants_registry.txt`.
 
 ## Three-slot idea lifecycles
 
@@ -96,7 +96,7 @@ The Concordat text keeps church jurisdictions distinct and never promotes one ch
 
 ## AI behavior
 
-`common/ai_strategy/006_independence_wave_iw043_iw058_ai_strategy.txt` contains origin-bounded profiles. Static `allowed` blocks restrict loading to registered CHU or ASY carriers. Every continuous `enable` block then requires the exact package trigger and setup receipt. Route profiles require the exact route flag, crisis profiles require the tracked severe-crisis trigger, and recovery profiles activate when the package reserve is unsafe.
+`common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` contains origin-bounded profiles. Static `allowed` blocks restrict loading to registered CHU or ASY carriers. Every continuous `enable` block then requires the exact package trigger and setup receipt. Route profiles require the exact route flag, crisis profiles require the tracked severe-crisis trigger, and recovery profiles activate when the package reserve is unsafe.
 
 The AI behavior has four layers:
 
