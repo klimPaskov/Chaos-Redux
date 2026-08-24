@@ -61,7 +61,7 @@ No Events 21+ event-specific implementation was inspected or changed as a cleanu
 
 Only shared references that could affect the Events 1–20 boundary were eligible for mention, including registration/catalog/settings/localisation/helper references; no Event 21+ gameplay, GUI, focus, country, asset, or balance claim is made.
 
-The only cleanup-owned Events 21+ reference edit is the shared [`docs/specs/README.md`](../../specs/README.md) navigation table, which preserves existing design-package discoverability while explicitly withholding current implementation-status claims.
+Cleanup-owned Events 21+ edits are limited to shared catalog and navigation infrastructure: the authoritative workbook and exported Events CSV classify the 81 post-20 IDs with an actual `chaosx.nr<ID>.1` root as `To Be Reworked` and the 65 unregistered IDs as `Unavailable`; the event skill records that root-definition status contract; and the shared [`docs/specs/README.md`](../../specs/README.md) navigation table preserves design-package discoverability while explicitly withholding current implementation-status claims. These edits changed catalog metadata and workflow guidance only, not Event 21+ gameplay, registration, enablement, GUI, assets, or balance.
 
 ## Files changed grouped by gameplay/localisation/docs/assets/storage/spreadsheet
 
