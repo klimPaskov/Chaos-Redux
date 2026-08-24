@@ -1381,6 +1381,47 @@ def evaluated_world_bounds(objects: Iterable[bpy.types.Object]) -> Tuple[Vector,
     return minimum, maximum
 
 
+def evaluated_contact_bounds(
+    objects: Iterable[bpy.types.Object],
+    excluded_bones: Iterable[str],
+) -> Tuple[Vector, Vector]:
+    """Measure evaluated bounds while ignoring vertices dominated by excluded bones."""
+
+    excluded = {str(name) for name in excluded_bones}
+    if not excluded:
+        return evaluated_world_bounds(objects)
+    corners: List[Vector] = []
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    for obj in objects:
+        if obj.type != "MESH":
+            continue
+        evaluated = obj.evaluated_get(depsgraph)
+        mesh = evaluated.to_mesh()
+        try:
+            if len(mesh.vertices) != len(obj.data.vertices):
+                raise RuntimeError(
+                    f"Contact-filtered grounding requires topology-preserving deformation on {obj.name}."
+                )
+            group_names = {group.index: group.name for group in obj.vertex_groups}
+            for source_vertex, evaluated_vertex in zip(obj.data.vertices, mesh.vertices):
+                weighted_groups = [
+                    (float(assignment.weight), group_names.get(assignment.group, ""))
+                    for assignment in source_vertex.groups
+                    if assignment.weight > 0.0
+                ]
+                dominant_bone = max(weighted_groups, default=(0.0, ""))[1]
+                if dominant_bone in excluded:
+                    continue
+                corners.append(evaluated.matrix_world @ evaluated_vertex.co)
+        finally:
+            evaluated.to_mesh_clear()
+    if not corners:
+        raise RuntimeError("Contact-filtered grounding excluded every working mesh vertex.")
+    minimum = Vector((min(item.x for item in corners), min(item.y for item in corners), min(item.z for item in corners)))
+    maximum = Vector((max(item.x for item in corners), max(item.y for item in corners), max(item.z for item in corners)))
+    return minimum, maximum
+
+
 def root_objects(objects: List[bpy.types.Object]) -> List[bpy.types.Object]:
     object_set = set(objects)
     return [obj for obj in objects if obj.parent not in object_set]
@@ -2188,8 +2229,15 @@ def weight_metrics() -> List[Dict[str, Any]]:
     return records
 
 
-def sanitize_working_weights(*, preserve_skeleton_metadata: bool = False) -> Dict[str, Any]:
+def sanitize_working_weights(
+    *,
+    preserve_skeleton_metadata: bool = False,
+    max_influences_per_vertex: int = 4,
+) -> Dict[str, Any]:
     """Keep PDX-compatible skinning influences without altering provider geometry."""
+
+    if max_influences_per_vertex not in {1, 2, 3, 4}:
+        raise ValueError("max_influences_per_vertex must be an integer from 1 through 4.")
 
     records: List[Dict[str, Any]] = []
     for obj in mesh_objects():
@@ -2227,7 +2275,7 @@ def sanitize_working_weights(*, preserve_skeleton_metadata: bool = False) -> Dic
         if root_group is None:
             root_group = obj.vertex_groups.new(name=root_bone.name)
 
-        over_four_before = 0
+        over_cap_before = 0
         zero_before = 0
         removed_influences = 0
         normalized_vertices = 0
@@ -2245,9 +2293,9 @@ def sanitize_working_weights(*, preserve_skeleton_metadata: bool = False) -> Dic
                 if weight > 0.0:
                     assignments.append((group, weight))
 
-            if len(assignments) > 4:
-                over_four_before += 1
-                kept = sorted(assignments, key=lambda item: (-item[1], item[0].name))[:4]
+            if len(assignments) > max_influences_per_vertex:
+                over_cap_before += 1
+                kept = sorted(assignments, key=lambda item: (-item[1], item[0].name))[:max_influences_per_vertex]
                 kept_names = {group.name for group, _ in kept}
                 removed = [
                     (group, weight)
@@ -2296,7 +2344,8 @@ def sanitize_working_weights(*, preserve_skeleton_metadata: bool = False) -> Dic
                 "object": obj.name,
                 "armature": armature.name,
                 "root_bone": root_bone.name,
-                "vertices_over_four_before": over_four_before,
+                "vertices_over_four_before": over_cap_before if max_influences_per_vertex == 4 else 0,
+                "vertices_over_cap_before": over_cap_before,
                 "zero_weight_vertices_before": zero_before,
                 "removed_influences": removed_influences,
                 "normalized_vertices": normalized_vertices,
@@ -2307,7 +2356,12 @@ def sanitize_working_weights(*, preserve_skeleton_metadata: bool = False) -> Dic
             }
         )
     return {
-        "policy": "keep_four_strongest_bone_influences_and_renormalize",
+        "policy": (
+            "keep_four_strongest_bone_influences_and_renormalize"
+            if max_influences_per_vertex == 4
+            else "keep_bounded_strongest_bone_influences_and_renormalize"
+        ),
+        "max_influences_per_vertex": max_influences_per_vertex,
         "skeleton_metadata_policy": (
             "preserve_checkpoint_skeleton_metadata"
             if preserve_skeleton_metadata
@@ -3502,6 +3556,11 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     provenance_path = within(job, payload["provenance_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     source_action_name = explicit_action_name(payload.get("source_action_name"), "source_action_name")
+    requested_source_armature = (
+        explicit_safe_name(payload.get("source_armature_name"), "source_armature_name")
+        if payload.get("source_armature_name")
+        else ""
+    )
     target_armature_name = explicit_safe_name(payload.get("target_armature_name"), "target_armature_name")
     action_name = explicit_action_name(payload.get("target_action_name"), "target_action_name")
     source_kind = str(payload.get("source_kind") or "")
@@ -3602,12 +3661,27 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     before_actions = set(bpy.data.actions)
     imported = import_candidate(source)
     imported_rigs = [obj for obj in imported if obj.type == "ARMATURE"]
-    if len(imported_rigs) != 1:
+    if requested_source_armature:
+        matching_source_rigs = [rig for rig in imported_rigs if rig.name == requested_source_armature]
+        if len(matching_source_rigs) != 1:
+            raise RuntimeError(
+                "Provider animation import did not expose the explicitly named source armature: "
+                + json.dumps(
+                    {
+                        "requested_source_armature": requested_source_armature,
+                        "available_source_armatures": sorted(rig.name for rig in imported_rigs),
+                    },
+                    sort_keys=True,
+                )
+            )
+        source_rig = matching_source_rigs[0]
+    elif len(imported_rigs) == 1:
+        source_rig = imported_rigs[0]
+    else:
         raise RuntimeError(
-            "Provider animation import must expose exactly one source armature; "
+            "Provider animation import must expose exactly one source armature when source_armature_name is omitted; "
             f"found {len(imported_rigs)} from {source.name}."
         )
-    source_rig = imported_rigs[0]
     source_armature_name = source_rig.name
     source_actions = [action for action in bpy.data.actions if action not in before_actions]
     source_action = next((action for action in source_actions if action.name == source_action_name), None)
@@ -4004,10 +4078,10 @@ def explicit_action_name(value: Any, field: str) -> str:
     """Require an exact stable Blender action identifier, including layered action separators."""
 
     name = str(value or "")
-    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.|:-]{0,191}", name):
+    if name != name.strip() or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.|: -]{0,191}", name):
         raise ValueError(
             f"{field} must be an explicit action identifier containing only letters, digits, "
-            "underscores, periods, vertical bars, colons, or hyphens."
+            "spaces, underscores, periods, vertical bars, colons, or hyphens."
         )
     return name
 
@@ -6633,6 +6707,12 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     target_armature_name = explicit_safe_name(payload.get("target_armature_name"), "target_armature_name")
     action_name = explicit_action_name(payload.get("action_name"), "action_name")
     root_bone_name = explicit_safe_name(payload.get("root_bone"), "root_bone")
+    excluded_contact_bones = sorted(
+        {
+            explicit_safe_name(value, "excluded_contact_bones")
+            for value in payload.get("excluded_contact_bones", [])
+        }
+    )
     grounding_policy = str(payload.get("grounding_policy") or "")
     if grounding_policy != "per_frame_root_contact_zero_clearance":
         raise ValueError(
@@ -6674,6 +6754,12 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     root = rig.pose.bones.get(root_bone_name)
     if root is None:
         raise RuntimeError(f"Grounding correction root bone was not found: {root_bone_name}")
+    unknown_contact_exclusions = sorted(set(excluded_contact_bones) - {bone.name for bone in rig.data.bones})
+    if unknown_contact_exclusions:
+        raise RuntimeError(
+            "Grounding correction received unknown excluded contact bones: "
+            + json.dumps(unknown_contact_exclusions)
+        )
     meshes = mesh_objects()
     if not meshes:
         raise RuntimeError("Grounding correction found no working mesh objects.")
@@ -6691,13 +6777,13 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     # channel at every integer frame so no sparse-key overshoot is introduced.
     scene.frame_set(start)
     bpy.context.view_layer.update()
-    baseline_minimum, _ = evaluated_world_bounds(meshes)
+    baseline_minimum, _ = evaluated_contact_bounds(meshes, excluded_contact_bones)
     axis_responses = []
     for axis_index in range(3):
         original_axis_value = float(root.location[axis_index])
         root.location[axis_index] = original_axis_value + 1.0
         bpy.context.view_layer.update()
-        test_minimum, _ = evaluated_world_bounds(meshes)
+        test_minimum, _ = evaluated_contact_bounds(meshes, excluded_contact_bones)
         root.location[axis_index] = original_axis_value
         bpy.context.view_layer.update()
         axis_responses.append(float(test_minimum.z - baseline_minimum.z))
@@ -6738,18 +6824,18 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
     for frame in range(start, end + 1):
         scene.frame_set(frame)
         bpy.context.view_layer.update()
-        before_minimum, _ = evaluated_world_bounds(meshes)
+        before_minimum, _ = evaluated_contact_bounds(meshes, excluded_contact_bones)
         original_value = float(root.location[correction_axis])
         test_step = 1.0
         write_root_z(frame, original_value + test_step)
-        test_minimum, _ = evaluated_world_bounds(meshes)
+        test_minimum, _ = evaluated_contact_bounds(meshes, excluded_contact_bones)
         write_root_z(frame, original_value)
         derivative = float(test_minimum.z - before_minimum.z) / test_step
         if abs(derivative) <= 1e-8:
             raise RuntimeError(f"Grounding correction found no usable root-Z response at frame {frame}.")
         correction = -float(before_minimum.z) / derivative
         write_root_z(frame, original_value + correction)
-        after_minimum, _ = evaluated_world_bounds(meshes)
+        after_minimum, _ = evaluated_contact_bounds(meshes, excluded_contact_bones)
         before_values.append(float(before_minimum.z))
         after_values.append(float(after_minimum.z))
         max_correction = max(max_correction, abs(correction))
@@ -6772,6 +6858,8 @@ def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
         "action": action.name,
         "root_bone": root_bone_name,
         "target_armature": rig.name,
+        "excluded_contact_bones": excluded_contact_bones,
+        "contact_selection_policy": "exclude_vertices_dominated_by_named_bones",
         "root_location_axis_index": correction_axis,
         "root_location_axis_world_z_responses": axis_responses,
         "frame_start": start,
@@ -7078,7 +7166,11 @@ def sanitize_runtime_candidate(req: Dict[str, Any]) -> Dict[str, Any]:
         else {"policy": "preserve_checkpoint_geometry"}
     )
     weights_before = weight_metrics()
-    weights = sanitize_working_weights(preserve_skeleton_metadata=weight_only)
+    max_influences_per_vertex = int(payload.get("max_influences_per_vertex", 4))
+    weights = sanitize_working_weights(
+        preserve_skeleton_metadata=weight_only,
+        max_influences_per_vertex=max_influences_per_vertex,
+    )
     materials = (
         {
             "applied": False,
@@ -7094,6 +7186,7 @@ def sanitize_runtime_candidate(req: Dict[str, Any]) -> Dict[str, Any]:
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "checkpoint": str(output.relative_to(job)).replace("\\", "/"),
         "weight_only": weight_only,
+        "max_influences_per_vertex": max_influences_per_vertex,
         "geometry_normalization": geometry_normalization,
         "weights_before": weights_before,
         "weights": weights,

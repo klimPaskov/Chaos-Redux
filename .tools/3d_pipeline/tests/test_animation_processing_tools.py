@@ -23,7 +23,7 @@ TOOLS = {
         "job_id", "blend_rel", "source_rel", "provenance_rel", "checkpoint_rel",
         "source_action_name", "target_armature_name", "target_action_name",
         "source_kind", "source_reference_id", "source_sha256", "bone_chains",
-        "promote_audited_target",
+        "promote_audited_target", "source_armature_name",
     },
     "chaosx_blender_hoi4_retime_animation_action": {
         "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
@@ -31,7 +31,7 @@ TOOLS = {
     },
     "chaosx_blender_hoi4_correct_action_grounding": {
         "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
-        "grounding_policy", "root_bone",
+        "grounding_policy", "root_bone", "excluded_contact_bones",
     },
     "chaosx_blender_hoi4_prepare_export_coordinate_checkpoint": {
         "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
@@ -69,8 +69,8 @@ class AnimationProcessingToolTests(unittest.TestCase):
     def test_config_and_lock_match_version_and_operations(self) -> None:
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         route = json.loads((PIPELINE_ROOT / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["blender_hoi4_adapter"]
-        self.assertEqual(config["adapter_version"], "1.10.9")
-        self.assertEqual(route["version"], "1.10.9")
+        self.assertEqual(config["adapter_version"], "1.10.12")
+        self.assertEqual(route["version"], "1.10.12")
         for operation in ("import_animation_action", "retime_animation_action", "correct_action_grounding", "prepare_export_coordinate_checkpoint"):
             self.assertIn(operation, config["operations"])
             self.assertIn(operation, route["operations"])
@@ -82,19 +82,23 @@ class AnimationProcessingToolTests(unittest.TestCase):
         client.import_animation_action(
             "unit", "target.blend", "source.glb", "provenance.json", "imported.blend",
             "SourceAction", "Armature", "runtime_action", "meshy_animate", "task-123", "A" * 64,
+            source_armature_name="ProviderRig",
         )
         client.retime_animation_action("unit", "imported.blend", "retimed.blend", "runtime_action", "Armature", 30.0, 24.0)
         client.correct_action_grounding(
             "unit", "retimed.blend", "grounded.blend", "runtime_action", "Armature",
             "per_frame_root_contact_zero_clearance",
+            excluded_contact_bones=["Tail1", "Tail2"],
         )
         client.prepare_export_coordinate_checkpoint(
             "unit", "grounded.blend", "export_coordinates.blend", "runtime_action", "Armature",
         )
         self.assertEqual([name for name, _ in calls], list(TOOLS))
         self.assertEqual(calls[0][1]["provenance_rel"], "provenance.json")
+        self.assertEqual(calls[0][1]["source_armature_name"], "ProviderRig")
         self.assertEqual(calls[1][1]["target_fps"], 24.0)
         self.assertEqual(calls[2][1]["grounding_policy"], "per_frame_root_contact_zero_clearance")
+        self.assertEqual(calls[2][1]["excluded_contact_bones"], ["Tail1", "Tail2"])
         self.assertEqual(calls[3][1]["checkpoint_rel"], "export_coordinates.blend")
 
     def test_export_coordinate_checkpoint_is_drift_guarded(self) -> None:

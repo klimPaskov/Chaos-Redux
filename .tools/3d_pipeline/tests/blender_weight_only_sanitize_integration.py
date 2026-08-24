@@ -183,6 +183,7 @@ def main() -> None:
                     "output_blend_rel": "output.blend",
                     "target_height_m": None,
                     "weight_only": True,
+                    "max_influences_per_vertex": 2,
                 },
             }
         )
@@ -200,7 +201,7 @@ def main() -> None:
         body = bpy.data.objects["GuardBody"]
         for vertex in body.data.vertices:
             weights = [assignment.weight for assignment in vertex.groups if assignment.weight > 0.0]
-            assert len(weights) == 4
+            assert len(weights) == 2
             assert math.isclose(sum(weights), 1.0, rel_tol=0.0, abs_tol=1e-6)
         assert all(bool(bone["pdxIgnoreJoint"]) for bone in bpy.data.objects["GuardRig"].data.bones)
         preserved_material = bpy.data.materials["ProviderMaterial"]
@@ -210,6 +211,7 @@ def main() -> None:
         assert math.isclose(preserved_principled.inputs["Alpha"].default_value, 0.41, abs_tol=1e-6)
         assert preserved_material.node_tree.nodes["ProviderDiffuseImage"].image.name == "ProviderDiffuse"
         assert bpy.data.objects["GuardWeapon"].parent_bone == "Bone4"
+        assert report["max_influences_per_vertex"] == 2
         print(json.dumps({"status": "pass", "protected_surfaces_preserved": True}, sort_keys=True))
 
 

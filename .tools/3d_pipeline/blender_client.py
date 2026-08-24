@@ -278,6 +278,7 @@ class BlenderAdapterClient:
         source_sha256: str,
         bone_chains: Optional[Dict[str, list[str]]] = None,
         promote_audited_target: bool = False,
+        source_armature_name: str = "",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_import_animation_action",
@@ -288,6 +289,7 @@ class BlenderAdapterClient:
                 "provenance_rel": provenance_rel,
                 "checkpoint_rel": checkpoint_rel,
                 "source_action_name": source_action_name,
+                "source_armature_name": source_armature_name,
                 "target_armature_name": target_armature_name,
                 "target_action_name": target_action_name,
                 "source_kind": source_kind,
@@ -430,6 +432,7 @@ class BlenderAdapterClient:
         target_armature_name: str,
         grounding_policy: Literal["per_frame_root_contact_zero_clearance"],
         root_bone: str = "Hips",
+        excluded_contact_bones: Optional[list[str]] = None,
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_correct_action_grounding",
@@ -441,6 +444,7 @@ class BlenderAdapterClient:
                 "target_armature_name": target_armature_name,
                 "grounding_policy": grounding_policy,
                 "root_bone": root_bone,
+                "excluded_contact_bones": excluded_contact_bones or [],
             },
         )
 
@@ -517,6 +521,7 @@ class BlenderAdapterClient:
         output_blend_rel: str = "blender/checkpoints/07_runtime_candidate_sanitized.blend",
         target_height_m: Optional[float] = None,
         weight_only: bool = False,
+        max_influences_per_vertex: int = 4,
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_sanitize_runtime_candidate",
@@ -526,6 +531,7 @@ class BlenderAdapterClient:
                 "output_blend_rel": output_blend_rel,
                 "target_height_m": target_height_m,
                 "weight_only": weight_only,
+                "max_influences_per_vertex": max_influences_per_vertex,
             },
         )
 

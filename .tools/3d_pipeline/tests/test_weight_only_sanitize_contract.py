@@ -35,10 +35,11 @@ class WeightOnlySanitizeContractTests(unittest.TestCase):
         schema = live[TOOL]["inputSchema"]
         self.assertEqual(
             set(schema["properties"]),
-            {"job_id", "blend_rel", "output_blend_rel", "target_height_m", "weight_only"},
+            {"job_id", "blend_rel", "output_blend_rel", "target_height_m", "weight_only", "max_influences_per_vertex"},
         )
         self.assertEqual(schema["properties"]["weight_only"]["type"], "boolean")
         self.assertFalse(schema["properties"]["weight_only"]["default"])
+        self.assertEqual(schema["properties"]["max_influences_per_vertex"]["default"], 4)
         self.assertNotIn("weight_only", schema["required"])
         self.assertFalse({"python", "code", "shell", "url", "absolute_path"} & set(schema["properties"]))
 
@@ -57,6 +58,7 @@ class WeightOnlySanitizeContractTests(unittest.TestCase):
             "blender/checkpoints/rigged.blend",
             "blender/checkpoints/weights_only.blend",
             weight_only=True,
+            max_influences_per_vertex=2,
         )
         self.assertEqual(result, {"status": "pass"})
         self.assertEqual(captured["tool"], TOOL)
@@ -68,6 +70,7 @@ class WeightOnlySanitizeContractTests(unittest.TestCase):
                 "output_blend_rel": "blender/checkpoints/weights_only.blend",
                 "target_height_m": None,
                 "weight_only": True,
+                "max_influences_per_vertex": 2,
             },
         )
 
@@ -81,6 +84,7 @@ class WeightOnlySanitizeContractTests(unittest.TestCase):
         function_source = ast.unparse(function)
         self.assertIn("payload.get('weight_only', False)", function_source)
         self.assertIn("preserve_skeleton_metadata=weight_only", function_source)
+        self.assertIn("max_influences_per_vertex=max_influences_per_vertex", function_source)
         self.assertIn("'policy': 'preserve_checkpoint_materials'", function_source)
         self.assertIn("else sanitize_working_materials()", function_source)
         self.assertIn("weight_only cleanup cannot be combined with target_height_m", function_source)
