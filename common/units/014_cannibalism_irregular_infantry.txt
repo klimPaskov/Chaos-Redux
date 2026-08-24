@@ -1,0 +1,778 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 FICTIONAL CANNIBAL IRREGULAR INFANTRY AND CAVALRY
+# ============================================================================
+# Overview:
+# - Defines nine inactive Event 014 line sub-units, including one horse-mounted
+#   cavalry family that remains infantry equipment-bound.
+# - Each family has a distinct sprite token as an active map-model consumer
+#   contract for the parent entity and model wiring.
+# - All families share the explicit cannibal irregular-infantry category while
+#   retaining ordinary infantry equipment and support compatibility.
+# - The deliberately extreme attack and speed profile is balanced by low
+#   organisation, low strength, weak defence, and high supply pressure.
+#
+# Runtime ownership:
+# - These definitions are inactive in ordinary recruitment and are raised only
+#   through the locked Event 014 template contract.
+# - `common/on_actions/014_cannibalism_on_actions.txt` registers the same nine
+#   definitions with the bounded CXT test-country extension.
+# - The sprite tokens are consumer contracts for the parent model/entity work;
+#   this file intentionally does not create any mesh, animation, asset, GFX,
+#   counter, or sound file.
+#
+# Speed reference:
+# - Infantry equipment has a vanilla maximum speed of 4.
+# - Cavalry has a vanilla maximum speed of 6.4 through its 0.6 modifier.
+# - Every infantry-equipped family below exceeds 6.4 after its speed modifier.
+# - March Predation Column uses the retained motorized transport gate and is
+#   therefore the fastest family by design.
+# ============================================================================
+
+@CANNIBAL_IRREGULAR_AI_PRIORITY = 120000
+@CANNIBAL_IRREGULAR_ARMOR = 0
+@CANNIBAL_IRREGULAR_HARDNESS = 0
+@CANNIBAL_IRREGULAR_AIR_ATTACK = 0
+
+# Scavenger Warband tuning.
+@SCAVENGER_PRIORITY = 6700
+@SCAVENGER_COMBAT_WIDTH = 2
+@SCAVENGER_MAX_STRENGTH = 13
+@SCAVENGER_MAX_ORGANISATION = 22
+@SCAVENGER_MORALE = 0.14
+@SCAVENGER_SPEED = 0.85
+@SCAVENGER_RELIABILITY = 0.60
+@SCAVENGER_MANPOWER = 900
+@SCAVENGER_TRAINING_TIME = 30
+@SCAVENGER_SUPPRESSION = 1.00
+@SCAVENGER_WEIGHT = 0.45
+@SCAVENGER_SUPPLY = 0.065
+@SCAVENGER_SOFT_ATTACK = 8
+@SCAVENGER_HARD_ATTACK = 2
+@SCAVENGER_DEFENSE = -4
+@SCAVENGER_BREAKTHROUGH = 10
+@SCAVENGER_AP_ATTACK = 1
+@SCAVENGER_ENTRENCHMENT = 0
+@SCAVENGER_INITIATIVE = 1.10
+@SCAVENGER_INFANTRY_EQUIPMENT = 100
+@SCAVENGER_FOREST_ATTACK = 0.20
+@SCAVENGER_FOREST_MOVEMENT = 0.15
+@SCAVENGER_JUNGLE_ATTACK = 0.25
+@SCAVENGER_JUNGLE_MOVEMENT = 0.10
+@SCAVENGER_MARSH_ATTACK = 0.15
+@SCAVENGER_MARSH_MOVEMENT = 0.10
+@SCAVENGER_DESERT_ATTACK = 0.15
+@SCAVENGER_DESERT_MOVEMENT = 0.15
+@SCAVENGER_URBAN_ATTACK = 0.10
+
+# Feast Guard tuning.
+@FEAST_GUARD_PRIORITY = 6701
+@FEAST_GUARD_COMBAT_WIDTH = 2
+@FEAST_GUARD_MAX_STRENGTH = 12
+@FEAST_GUARD_MAX_ORGANISATION = 20
+@FEAST_GUARD_MORALE = 0.16
+@FEAST_GUARD_SPEED = 0.80
+@FEAST_GUARD_RELIABILITY = 0.68
+@FEAST_GUARD_MANPOWER = 850
+@FEAST_GUARD_TRAINING_TIME = 40
+@FEAST_GUARD_SUPPRESSION = 1.00
+@FEAST_GUARD_WEIGHT = 0.50
+@FEAST_GUARD_SUPPLY = 0.070
+@FEAST_GUARD_SOFT_ATTACK = 9
+@FEAST_GUARD_HARD_ATTACK = 2
+@FEAST_GUARD_DEFENSE = -2
+@FEAST_GUARD_BREAKTHROUGH = 8
+@FEAST_GUARD_AP_ATTACK = 1
+@FEAST_GUARD_ENTRENCHMENT = 5
+@FEAST_GUARD_INITIATIVE = 0.95
+@FEAST_GUARD_INFANTRY_EQUIPMENT = 100
+@FEAST_GUARD_FORT_ATTACK = 0.10
+@FEAST_GUARD_FORT_DEFENCE = 0.35
+@FEAST_GUARD_URBAN_ATTACK = 0.10
+@FEAST_GUARD_URBAN_DEFENCE = 0.25
+@FEAST_GUARD_HILLS_DEFENCE = 0.20
+@FEAST_GUARD_FOREST_DEFENCE = 0.10
+
+# Feast Cohort tuning.
+@FEAST_COHORT_PRIORITY = 6702
+@FEAST_COHORT_COMBAT_WIDTH = 2
+@FEAST_COHORT_MAX_STRENGTH = 14
+@FEAST_COHORT_MAX_ORGANISATION = 26
+@FEAST_COHORT_MORALE = 0.17
+@FEAST_COHORT_SPEED = 0.95
+@FEAST_COHORT_RELIABILITY = 0.62
+@FEAST_COHORT_MANPOWER = 1000
+@FEAST_COHORT_TRAINING_TIME = 45
+@FEAST_COHORT_SUPPRESSION = 1.00
+@FEAST_COHORT_WEIGHT = 0.50
+@FEAST_COHORT_SUPPLY = 0.075
+@FEAST_COHORT_SOFT_ATTACK = 12
+@FEAST_COHORT_HARD_ATTACK = 2
+@FEAST_COHORT_DEFENSE = -3
+@FEAST_COHORT_BREAKTHROUGH = 14
+@FEAST_COHORT_AP_ATTACK = 1
+@FEAST_COHORT_ENTRENCHMENT = 2
+@FEAST_COHORT_INITIATIVE = 1.05
+@FEAST_COHORT_INFANTRY_EQUIPMENT = 100
+@FEAST_COHORT_PLAINS_ATTACK = 0.30
+@FEAST_COHORT_PLAINS_MOVEMENT = 0.10
+@FEAST_COHORT_FOREST_ATTACK = 0.20
+@FEAST_COHORT_FOREST_MOVEMENT = 0.05
+@FEAST_COHORT_URBAN_ATTACK = 0.20
+@FEAST_COHORT_RIVER_ATTACK = 0.10
+@FEAST_COHORT_HILLS_ATTACK = 0.10
+
+# Bone Guard tuning.
+@BONE_GUARD_PRIORITY = 6703
+@BONE_GUARD_COMBAT_WIDTH = 2
+@BONE_GUARD_MAX_STRENGTH = 10
+@BONE_GUARD_MAX_ORGANISATION = 18
+@BONE_GUARD_MORALE = 0.11
+@BONE_GUARD_SPEED = 1.05
+@BONE_GUARD_RELIABILITY = 0.55
+@BONE_GUARD_MANPOWER = 700
+@BONE_GUARD_TRAINING_TIME = 60
+@BONE_GUARD_SUPPRESSION = 0.90
+@BONE_GUARD_WEIGHT = 0.55
+@BONE_GUARD_SUPPLY = 0.085
+@BONE_GUARD_SOFT_ATTACK = 15
+@BONE_GUARD_HARD_ATTACK = 3
+@BONE_GUARD_DEFENSE = -6
+@BONE_GUARD_BREAKTHROUGH = 20
+@BONE_GUARD_AP_ATTACK = 2
+@BONE_GUARD_ENTRENCHMENT = 1
+@BONE_GUARD_INITIATIVE = 1.15
+@BONE_GUARD_INFANTRY_EQUIPMENT = 100
+@BONE_GUARD_FORT_ATTACK = 0.40
+@BONE_GUARD_URBAN_ATTACK = 0.35
+@BONE_GUARD_HILLS_ATTACK = 0.20
+@BONE_GUARD_MOUNTAIN_ATTACK = 0.15
+
+# Bone Riders tuning.
+@BONE_RIDERS_PRIORITY = 6708
+@BONE_RIDERS_COMBAT_WIDTH = 2
+@BONE_RIDERS_MAX_STRENGTH = 10
+@BONE_RIDERS_MAX_ORGANISATION = 16
+@BONE_RIDERS_MORALE = 0.12
+@BONE_RIDERS_SPEED = 1.60
+@BONE_RIDERS_RELIABILITY = 0.55
+@BONE_RIDERS_MANPOWER = 800
+@BONE_RIDERS_TRAINING_TIME = 65
+@BONE_RIDERS_SUPPRESSION = 1.60
+@BONE_RIDERS_WEIGHT = 0.60
+@BONE_RIDERS_SUPPLY = 0.080
+@BONE_RIDERS_SOFT_ATTACK = 13
+@BONE_RIDERS_HARD_ATTACK = 3
+@BONE_RIDERS_DEFENSE = -6
+@BONE_RIDERS_BREAKTHROUGH = 19
+@BONE_RIDERS_AP_ATTACK = 2
+@BONE_RIDERS_ENTRENCHMENT = 0
+@BONE_RIDERS_INITIATIVE = 1.30
+@BONE_RIDERS_INFANTRY_EQUIPMENT = 140
+@BONE_RIDERS_PLAINS_ATTACK = 0.35
+@BONE_RIDERS_PLAINS_MOVEMENT = 0.20
+@BONE_RIDERS_DESERT_ATTACK = 0.20
+@BONE_RIDERS_DESERT_MOVEMENT = 0.15
+@BONE_RIDERS_HILLS_ATTACK = 0.10
+@BONE_RIDERS_HILLS_MOVEMENT = 0.05
+@BONE_RIDERS_FOREST_ATTACK = -0.10
+@BONE_RIDERS_FOREST_MOVEMENT = -0.05
+@BONE_RIDERS_JUNGLE_ATTACK = -0.15
+@BONE_RIDERS_JUNGLE_MOVEMENT = -0.10
+@BONE_RIDERS_MARSH_ATTACK = -0.20
+@BONE_RIDERS_MARSH_MOVEMENT = -0.15
+@BONE_RIDERS_URBAN_ATTACK = -0.10
+@BONE_RIDERS_AMPHIBIOUS_ATTACK = -0.50
+
+# Island Reavers tuning.
+@ISLAND_REAVERS_PRIORITY = 6704
+@ISLAND_REAVERS_COMBAT_WIDTH = 2
+@ISLAND_REAVERS_MAX_STRENGTH = 12
+@ISLAND_REAVERS_MAX_ORGANISATION = 24
+@ISLAND_REAVERS_MORALE = 0.18
+@ISLAND_REAVERS_SPEED = 0.90
+@ISLAND_REAVERS_RELIABILITY = 0.60
+@ISLAND_REAVERS_MANPOWER = 900
+@ISLAND_REAVERS_TRAINING_TIME = 50
+@ISLAND_REAVERS_SUPPRESSION = 1.00
+@ISLAND_REAVERS_WEIGHT = 0.50
+@ISLAND_REAVERS_SUPPLY = 0.070
+@ISLAND_REAVERS_SOFT_ATTACK = 11
+@ISLAND_REAVERS_HARD_ATTACK = 2
+@ISLAND_REAVERS_DEFENSE = -4
+@ISLAND_REAVERS_BREAKTHROUGH = 14
+@ISLAND_REAVERS_AP_ATTACK = 1
+@ISLAND_REAVERS_ENTRENCHMENT = 0
+@ISLAND_REAVERS_INITIATIVE = 1.10
+@ISLAND_REAVERS_INFANTRY_EQUIPMENT = 150
+@ISLAND_REAVERS_MARSH_ATTACK = 0.45
+@ISLAND_REAVERS_MARSH_MOVEMENT = 0.15
+@ISLAND_REAVERS_RIVER_ATTACK = 0.40
+@ISLAND_REAVERS_RIVER_MOVEMENT = 0.10
+@ISLAND_REAVERS_AMPHIBIOUS_ATTACK = 0.60
+@ISLAND_REAVERS_AMPHIBIOUS_MOVEMENT = 0.20
+@ISLAND_REAVERS_JUNGLE_ATTACK = 0.25
+@ISLAND_REAVERS_JUNGLE_MOVEMENT = 0.10
+
+# Siege Eaters tuning.
+@SIEGE_EATERS_PRIORITY = 6705
+@SIEGE_EATERS_COMBAT_WIDTH = 2
+@SIEGE_EATERS_MAX_STRENGTH = 11
+@SIEGE_EATERS_MAX_ORGANISATION = 21
+@SIEGE_EATERS_MORALE = 0.13
+@SIEGE_EATERS_SPEED = 0.88
+@SIEGE_EATERS_RELIABILITY = 0.57
+@SIEGE_EATERS_MANPOWER = 900
+@SIEGE_EATERS_TRAINING_TIME = 45
+@SIEGE_EATERS_SUPPRESSION = 0.95
+@SIEGE_EATERS_WEIGHT = 0.55
+@SIEGE_EATERS_SUPPLY = 0.080
+@SIEGE_EATERS_SOFT_ATTACK = 13
+@SIEGE_EATERS_HARD_ATTACK = 3
+@SIEGE_EATERS_DEFENSE = -5
+@SIEGE_EATERS_BREAKTHROUGH = 16
+@SIEGE_EATERS_AP_ATTACK = 2
+@SIEGE_EATERS_ENTRENCHMENT = 1
+@SIEGE_EATERS_INITIATIVE = 1.05
+@SIEGE_EATERS_INFANTRY_EQUIPMENT = 100
+@SIEGE_EATERS_FORT_ATTACK = 0.55
+@SIEGE_EATERS_URBAN_ATTACK = 0.45
+@SIEGE_EATERS_HILLS_ATTACK = 0.20
+@SIEGE_EATERS_RIVER_ATTACK = 0.10
+@SIEGE_EATERS_FOREST_ATTACK = 0.10
+
+# March Predation Column tuning.
+@MARCH_PREDATION_PRIORITY = 6706
+@MARCH_PREDATION_COMBAT_WIDTH = 2
+@MARCH_PREDATION_MAX_STRENGTH = 10
+@MARCH_PREDATION_MAX_ORGANISATION = 14
+@MARCH_PREDATION_MORALE = 0.10
+@MARCH_PREDATION_SPEED = 1.20
+@MARCH_PREDATION_RELIABILITY = 0.55
+@MARCH_PREDATION_MANPOWER = 800
+@MARCH_PREDATION_TRAINING_TIME = 35
+@MARCH_PREDATION_SUPPRESSION = 1.20
+@MARCH_PREDATION_WEIGHT = 0.60
+@MARCH_PREDATION_SUPPLY = 0.095
+@MARCH_PREDATION_SOFT_ATTACK = 12
+@MARCH_PREDATION_HARD_ATTACK = 3
+@MARCH_PREDATION_DEFENSE = -7
+@MARCH_PREDATION_BREAKTHROUGH = 18
+@MARCH_PREDATION_AP_ATTACK = 1
+@MARCH_PREDATION_ENTRENCHMENT = 0
+@MARCH_PREDATION_INITIATIVE = 1.25
+@MARCH_PREDATION_INFANTRY_EQUIPMENT = 100
+@MARCH_PREDATION_MOTORIZED_EQUIPMENT = 35
+@MARCH_PREDATION_PLAINS_ATTACK = 0.25
+@MARCH_PREDATION_PLAINS_MOVEMENT = 0.30
+@MARCH_PREDATION_DESERT_ATTACK = 0.20
+@MARCH_PREDATION_DESERT_MOVEMENT = 0.25
+@MARCH_PREDATION_HILLS_MOVEMENT = 0.15
+@MARCH_PREDATION_FOREST_ATTACK = 0.10
+@MARCH_PREDATION_FOREST_MOVEMENT = 0.05
+@MARCH_PREDATION_JUNGLE_MOVEMENT = 0.05
+@MARCH_PREDATION_MARSH_MOVEMENT = 0.05
+@MARCH_PREDATION_URBAN_ATTACK = 0.10
+@MARCH_PREDATION_RIVER_MOVEMENT = 0.05
+@MARCH_PREDATION_AMPHIBIOUS_ATTACK = -0.15
+
+# Network Cadre tuning.
+@NETWORK_CADRE_PRIORITY = 6707
+@NETWORK_CADRE_COMBAT_WIDTH = 1
+@NETWORK_CADRE_MAX_STRENGTH = 8
+@NETWORK_CADRE_MAX_ORGANISATION = 12
+@NETWORK_CADRE_MORALE = 0.10
+@NETWORK_CADRE_SPEED = 1.00
+@NETWORK_CADRE_RELIABILITY = 0.70
+@NETWORK_CADRE_MANPOWER = 500
+@NETWORK_CADRE_TRAINING_TIME = 25
+@NETWORK_CADRE_SUPPRESSION = 0.75
+@NETWORK_CADRE_WEIGHT = 0.40
+@NETWORK_CADRE_SUPPLY = 0.055
+@NETWORK_CADRE_SOFT_ATTACK = 7
+@NETWORK_CADRE_HARD_ATTACK = 1
+@NETWORK_CADRE_DEFENSE = -8
+@NETWORK_CADRE_BREAKTHROUGH = 9
+@NETWORK_CADRE_AP_ATTACK = 1
+@NETWORK_CADRE_ENTRENCHMENT = 2
+@NETWORK_CADRE_INITIATIVE = 1.20
+@NETWORK_CADRE_INFANTRY_EQUIPMENT = 100
+@NETWORK_CADRE_FOREST_ATTACK = 0.15
+@NETWORK_CADRE_FOREST_MOVEMENT = 0.15
+@NETWORK_CADRE_JUNGLE_ATTACK = 0.15
+@NETWORK_CADRE_JUNGLE_MOVEMENT = 0.15
+@NETWORK_CADRE_URBAN_ATTACK = 0.15
+@NETWORK_CADRE_HILLS_MOVEMENT = 0.10
+@NETWORK_CADRE_MARSH_MOVEMENT = 0.05
+@NETWORK_CADRE_DESERT_MOVEMENT = -0.10
+
+sub_units = {
+	cannibal_scavenger_warband = {
+		abbreviation = "SCW"
+		sprite = cannibal_scavenger_warband
+		map_icon_category = infantry
+		priority = @SCAVENGER_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @SCAVENGER_COMBAT_WIDTH
+		max_strength = @SCAVENGER_MAX_STRENGTH
+		max_organisation = @SCAVENGER_MAX_ORGANISATION
+		default_morale = @SCAVENGER_MORALE
+		maximum_speed = @SCAVENGER_SPEED
+		reliability = @SCAVENGER_RELIABILITY
+		manpower = @SCAVENGER_MANPOWER
+		training_time = @SCAVENGER_TRAINING_TIME
+		suppression = @SCAVENGER_SUPPRESSION
+		weight = @SCAVENGER_WEIGHT
+		supply_consumption = @SCAVENGER_SUPPLY
+
+		soft_attack = @SCAVENGER_SOFT_ATTACK
+		hard_attack = @SCAVENGER_HARD_ATTACK
+		defense = @SCAVENGER_DEFENSE
+		breakthrough = @SCAVENGER_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @SCAVENGER_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @SCAVENGER_ENTRENCHMENT
+		initiative = @SCAVENGER_INITIATIVE
+
+		need = { infantry_equipment = @SCAVENGER_INFANTRY_EQUIPMENT }
+
+		forest = { attack = @SCAVENGER_FOREST_ATTACK movement = @SCAVENGER_FOREST_MOVEMENT }
+		jungle = { attack = @SCAVENGER_JUNGLE_ATTACK movement = @SCAVENGER_JUNGLE_MOVEMENT }
+		marsh = { attack = @SCAVENGER_MARSH_ATTACK movement = @SCAVENGER_MARSH_MOVEMENT }
+		desert = { attack = @SCAVENGER_DESERT_ATTACK movement = @SCAVENGER_DESERT_MOVEMENT }
+		urban = { attack = @SCAVENGER_URBAN_ATTACK }
+	}
+
+	cannibal_feast_guard = {
+		abbreviation = "FGD"
+		sprite = cannibal_feast_guard
+		map_icon_category = infantry
+		priority = @FEAST_GUARD_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @FEAST_GUARD_COMBAT_WIDTH
+		max_strength = @FEAST_GUARD_MAX_STRENGTH
+		max_organisation = @FEAST_GUARD_MAX_ORGANISATION
+		default_morale = @FEAST_GUARD_MORALE
+		maximum_speed = @FEAST_GUARD_SPEED
+		reliability = @FEAST_GUARD_RELIABILITY
+		manpower = @FEAST_GUARD_MANPOWER
+		training_time = @FEAST_GUARD_TRAINING_TIME
+		suppression = @FEAST_GUARD_SUPPRESSION
+		weight = @FEAST_GUARD_WEIGHT
+		supply_consumption = @FEAST_GUARD_SUPPLY
+
+		soft_attack = @FEAST_GUARD_SOFT_ATTACK
+		hard_attack = @FEAST_GUARD_HARD_ATTACK
+		defense = @FEAST_GUARD_DEFENSE
+		breakthrough = @FEAST_GUARD_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @FEAST_GUARD_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @FEAST_GUARD_ENTRENCHMENT
+		initiative = @FEAST_GUARD_INITIATIVE
+
+		need = { infantry_equipment = @FEAST_GUARD_INFANTRY_EQUIPMENT }
+
+		fort = { attack = @FEAST_GUARD_FORT_ATTACK defence = @FEAST_GUARD_FORT_DEFENCE }
+		urban = { attack = @FEAST_GUARD_URBAN_ATTACK defence = @FEAST_GUARD_URBAN_DEFENCE }
+		hills = { defence = @FEAST_GUARD_HILLS_DEFENCE }
+		forest = { defence = @FEAST_GUARD_FOREST_DEFENCE }
+	}
+
+	cannibal_feast_cohort = {
+		abbreviation = "FCH"
+		sprite = cannibal_feast_cohort
+		map_icon_category = infantry
+		priority = @FEAST_COHORT_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @FEAST_COHORT_COMBAT_WIDTH
+		max_strength = @FEAST_COHORT_MAX_STRENGTH
+		max_organisation = @FEAST_COHORT_MAX_ORGANISATION
+		default_morale = @FEAST_COHORT_MORALE
+		maximum_speed = @FEAST_COHORT_SPEED
+		reliability = @FEAST_COHORT_RELIABILITY
+		manpower = @FEAST_COHORT_MANPOWER
+		training_time = @FEAST_COHORT_TRAINING_TIME
+		suppression = @FEAST_COHORT_SUPPRESSION
+		weight = @FEAST_COHORT_WEIGHT
+		supply_consumption = @FEAST_COHORT_SUPPLY
+
+		soft_attack = @FEAST_COHORT_SOFT_ATTACK
+		hard_attack = @FEAST_COHORT_HARD_ATTACK
+		defense = @FEAST_COHORT_DEFENSE
+		breakthrough = @FEAST_COHORT_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @FEAST_COHORT_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @FEAST_COHORT_ENTRENCHMENT
+		initiative = @FEAST_COHORT_INITIATIVE
+
+		need = { infantry_equipment = @FEAST_COHORT_INFANTRY_EQUIPMENT }
+
+		plains = { attack = @FEAST_COHORT_PLAINS_ATTACK movement = @FEAST_COHORT_PLAINS_MOVEMENT }
+		forest = { attack = @FEAST_COHORT_FOREST_ATTACK movement = @FEAST_COHORT_FOREST_MOVEMENT }
+		urban = { attack = @FEAST_COHORT_URBAN_ATTACK }
+		river = { attack = @FEAST_COHORT_RIVER_ATTACK }
+		hills = { attack = @FEAST_COHORT_HILLS_ATTACK }
+	}
+
+	cannibal_bone_guard = {
+		abbreviation = "BGR"
+		sprite = cannibal_bone_guard
+		map_icon_category = infantry
+		priority = @BONE_GUARD_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @BONE_GUARD_COMBAT_WIDTH
+		max_strength = @BONE_GUARD_MAX_STRENGTH
+		max_organisation = @BONE_GUARD_MAX_ORGANISATION
+		default_morale = @BONE_GUARD_MORALE
+		maximum_speed = @BONE_GUARD_SPEED
+		reliability = @BONE_GUARD_RELIABILITY
+		manpower = @BONE_GUARD_MANPOWER
+		training_time = @BONE_GUARD_TRAINING_TIME
+		suppression = @BONE_GUARD_SUPPRESSION
+		weight = @BONE_GUARD_WEIGHT
+		supply_consumption = @BONE_GUARD_SUPPLY
+
+		soft_attack = @BONE_GUARD_SOFT_ATTACK
+		hard_attack = @BONE_GUARD_HARD_ATTACK
+		defense = @BONE_GUARD_DEFENSE
+		breakthrough = @BONE_GUARD_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @BONE_GUARD_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @BONE_GUARD_ENTRENCHMENT
+		initiative = @BONE_GUARD_INITIATIVE
+
+		need = { infantry_equipment = @BONE_GUARD_INFANTRY_EQUIPMENT }
+
+		fort = { attack = @BONE_GUARD_FORT_ATTACK }
+		urban = { attack = @BONE_GUARD_URBAN_ATTACK }
+		hills = { attack = @BONE_GUARD_HILLS_ATTACK }
+		mountain = { attack = @BONE_GUARD_MOUNTAIN_ATTACK }
+	}
+
+	cannibal_bone_riders = {
+		abbreviation = "BRD"
+		sprite = cannibal_bone_riders
+		map_icon_category = other
+		priority = @BONE_RIDERS_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+		cavalry = yes
+
+		# Horse-mounted movement uses infantry equipment as the vanilla cavalry
+		# precedent does, while the mobile group keeps the unit AI-usable.
+		type = { infantry }
+		group = mobile
+		categories = {
+			category_front_line
+			category_cavalry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @BONE_RIDERS_COMBAT_WIDTH
+		max_strength = @BONE_RIDERS_MAX_STRENGTH
+		max_organisation = @BONE_RIDERS_MAX_ORGANISATION
+		default_morale = @BONE_RIDERS_MORALE
+		maximum_speed = @BONE_RIDERS_SPEED
+		reliability = @BONE_RIDERS_RELIABILITY
+		manpower = @BONE_RIDERS_MANPOWER
+		training_time = @BONE_RIDERS_TRAINING_TIME
+		suppression = @BONE_RIDERS_SUPPRESSION
+		weight = @BONE_RIDERS_WEIGHT
+		supply_consumption = @BONE_RIDERS_SUPPLY
+
+		soft_attack = @BONE_RIDERS_SOFT_ATTACK
+		hard_attack = @BONE_RIDERS_HARD_ATTACK
+		defense = @BONE_RIDERS_DEFENSE
+		breakthrough = @BONE_RIDERS_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @BONE_RIDERS_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @BONE_RIDERS_ENTRENCHMENT
+		initiative = @BONE_RIDERS_INITIATIVE
+
+		need = { infantry_equipment = @BONE_RIDERS_INFANTRY_EQUIPMENT }
+
+		plains = { attack = @BONE_RIDERS_PLAINS_ATTACK movement = @BONE_RIDERS_PLAINS_MOVEMENT }
+		desert = { attack = @BONE_RIDERS_DESERT_ATTACK movement = @BONE_RIDERS_DESERT_MOVEMENT }
+		hills = { attack = @BONE_RIDERS_HILLS_ATTACK movement = @BONE_RIDERS_HILLS_MOVEMENT }
+		forest = { attack = @BONE_RIDERS_FOREST_ATTACK movement = @BONE_RIDERS_FOREST_MOVEMENT }
+		jungle = { attack = @BONE_RIDERS_JUNGLE_ATTACK movement = @BONE_RIDERS_JUNGLE_MOVEMENT }
+		marsh = { attack = @BONE_RIDERS_MARSH_ATTACK movement = @BONE_RIDERS_MARSH_MOVEMENT }
+		urban = { attack = @BONE_RIDERS_URBAN_ATTACK }
+		amphibious = { attack = @BONE_RIDERS_AMPHIBIOUS_ATTACK }
+	}
+
+	cannibal_island_reavers = {
+		abbreviation = "IRV"
+		sprite = cannibal_island_reavers
+		map_icon_category = infantry
+		special_forces = yes
+		marines = yes
+		can_exfiltrate_from_coast = yes
+		priority = @ISLAND_REAVERS_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_special_forces
+			category_marines
+			category_special_forces_leg_infantry
+			category_marines_and_amphibious
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @ISLAND_REAVERS_COMBAT_WIDTH
+		max_strength = @ISLAND_REAVERS_MAX_STRENGTH
+		max_organisation = @ISLAND_REAVERS_MAX_ORGANISATION
+		default_morale = @ISLAND_REAVERS_MORALE
+		maximum_speed = @ISLAND_REAVERS_SPEED
+		reliability = @ISLAND_REAVERS_RELIABILITY
+		manpower = @ISLAND_REAVERS_MANPOWER
+		training_time = @ISLAND_REAVERS_TRAINING_TIME
+		suppression = @ISLAND_REAVERS_SUPPRESSION
+		weight = @ISLAND_REAVERS_WEIGHT
+		supply_consumption = @ISLAND_REAVERS_SUPPLY
+
+		soft_attack = @ISLAND_REAVERS_SOFT_ATTACK
+		hard_attack = @ISLAND_REAVERS_HARD_ATTACK
+		defense = @ISLAND_REAVERS_DEFENSE
+		breakthrough = @ISLAND_REAVERS_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @ISLAND_REAVERS_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @ISLAND_REAVERS_ENTRENCHMENT
+		initiative = @ISLAND_REAVERS_INITIATIVE
+
+		need = { infantry_equipment = @ISLAND_REAVERS_INFANTRY_EQUIPMENT }
+
+		marsh = { attack = @ISLAND_REAVERS_MARSH_ATTACK movement = @ISLAND_REAVERS_MARSH_MOVEMENT }
+		river = { attack = @ISLAND_REAVERS_RIVER_ATTACK movement = @ISLAND_REAVERS_RIVER_MOVEMENT }
+		amphibious = { attack = @ISLAND_REAVERS_AMPHIBIOUS_ATTACK movement = @ISLAND_REAVERS_AMPHIBIOUS_MOVEMENT }
+		jungle = { attack = @ISLAND_REAVERS_JUNGLE_ATTACK movement = @ISLAND_REAVERS_JUNGLE_MOVEMENT }
+	}
+
+	cannibal_siege_eaters = {
+		abbreviation = "SEG"
+		sprite = cannibal_siege_eaters
+		map_icon_category = infantry
+		priority = @SIEGE_EATERS_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @SIEGE_EATERS_COMBAT_WIDTH
+		max_strength = @SIEGE_EATERS_MAX_STRENGTH
+		max_organisation = @SIEGE_EATERS_MAX_ORGANISATION
+		default_morale = @SIEGE_EATERS_MORALE
+		maximum_speed = @SIEGE_EATERS_SPEED
+		reliability = @SIEGE_EATERS_RELIABILITY
+		manpower = @SIEGE_EATERS_MANPOWER
+		training_time = @SIEGE_EATERS_TRAINING_TIME
+		suppression = @SIEGE_EATERS_SUPPRESSION
+		weight = @SIEGE_EATERS_WEIGHT
+		supply_consumption = @SIEGE_EATERS_SUPPLY
+
+		soft_attack = @SIEGE_EATERS_SOFT_ATTACK
+		hard_attack = @SIEGE_EATERS_HARD_ATTACK
+		defense = @SIEGE_EATERS_DEFENSE
+		breakthrough = @SIEGE_EATERS_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @SIEGE_EATERS_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @SIEGE_EATERS_ENTRENCHMENT
+		initiative = @SIEGE_EATERS_INITIATIVE
+
+		need = { infantry_equipment = @SIEGE_EATERS_INFANTRY_EQUIPMENT }
+
+		fort = { attack = @SIEGE_EATERS_FORT_ATTACK }
+		urban = { attack = @SIEGE_EATERS_URBAN_ATTACK }
+		hills = { attack = @SIEGE_EATERS_HILLS_ATTACK }
+		river = { attack = @SIEGE_EATERS_RIVER_ATTACK }
+		forest = { attack = @SIEGE_EATERS_FOREST_ATTACK }
+	}
+
+	cannibal_march_predation_column = {
+		abbreviation = "MPC"
+		sprite = cannibal_march_predation_column
+		map_icon_category = infantry
+		priority = @MARCH_PREDATION_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		# This remains an infantry-like custom category. The retained motorized
+		# transport gate keeps March formations tied to the existing truck cost.
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @MARCH_PREDATION_COMBAT_WIDTH
+		max_strength = @MARCH_PREDATION_MAX_STRENGTH
+		max_organisation = @MARCH_PREDATION_MAX_ORGANISATION
+		default_morale = @MARCH_PREDATION_MORALE
+		maximum_speed = @MARCH_PREDATION_SPEED
+		transport = motorized_equipment
+		reliability = @MARCH_PREDATION_RELIABILITY
+		manpower = @MARCH_PREDATION_MANPOWER
+		training_time = @MARCH_PREDATION_TRAINING_TIME
+		suppression = @MARCH_PREDATION_SUPPRESSION
+		weight = @MARCH_PREDATION_WEIGHT
+		supply_consumption = @MARCH_PREDATION_SUPPLY
+
+		soft_attack = @MARCH_PREDATION_SOFT_ATTACK
+		hard_attack = @MARCH_PREDATION_HARD_ATTACK
+		defense = @MARCH_PREDATION_DEFENSE
+		breakthrough = @MARCH_PREDATION_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @MARCH_PREDATION_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @MARCH_PREDATION_ENTRENCHMENT
+		initiative = @MARCH_PREDATION_INITIATIVE
+
+		need = {
+			infantry_equipment = @MARCH_PREDATION_INFANTRY_EQUIPMENT
+			motorized_equipment = @MARCH_PREDATION_MOTORIZED_EQUIPMENT
+		}
+
+		plains = { attack = @MARCH_PREDATION_PLAINS_ATTACK movement = @MARCH_PREDATION_PLAINS_MOVEMENT }
+		desert = { attack = @MARCH_PREDATION_DESERT_ATTACK movement = @MARCH_PREDATION_DESERT_MOVEMENT }
+		hills = { movement = @MARCH_PREDATION_HILLS_MOVEMENT }
+		forest = { attack = @MARCH_PREDATION_FOREST_ATTACK movement = @MARCH_PREDATION_FOREST_MOVEMENT }
+		jungle = { movement = @MARCH_PREDATION_JUNGLE_MOVEMENT }
+		marsh = { movement = @MARCH_PREDATION_MARSH_MOVEMENT }
+		urban = { attack = @MARCH_PREDATION_URBAN_ATTACK }
+		river = { movement = @MARCH_PREDATION_RIVER_MOVEMENT }
+		amphibious = { attack = @MARCH_PREDATION_AMPHIBIOUS_ATTACK }
+	}
+
+	cannibal_network_cadre = {
+		abbreviation = "NCD"
+		sprite = cannibal_network_cadre
+		map_icon_category = infantry
+		priority = @NETWORK_CADRE_PRIORITY
+		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
+		active = no
+
+		type = { infantry }
+		group = infantry
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_cannibal_irregular_infantry
+		}
+
+		combat_width = @NETWORK_CADRE_COMBAT_WIDTH
+		max_strength = @NETWORK_CADRE_MAX_STRENGTH
+		max_organisation = @NETWORK_CADRE_MAX_ORGANISATION
+		default_morale = @NETWORK_CADRE_MORALE
+		maximum_speed = @NETWORK_CADRE_SPEED
+		reliability = @NETWORK_CADRE_RELIABILITY
+		manpower = @NETWORK_CADRE_MANPOWER
+		training_time = @NETWORK_CADRE_TRAINING_TIME
+		suppression = @NETWORK_CADRE_SUPPRESSION
+		weight = @NETWORK_CADRE_WEIGHT
+		supply_consumption = @NETWORK_CADRE_SUPPLY
+
+		soft_attack = @NETWORK_CADRE_SOFT_ATTACK
+		hard_attack = @NETWORK_CADRE_HARD_ATTACK
+		defense = @NETWORK_CADRE_DEFENSE
+		breakthrough = @NETWORK_CADRE_BREAKTHROUGH
+		armor_value = @CANNIBAL_IRREGULAR_ARMOR
+		ap_attack = @NETWORK_CADRE_AP_ATTACK
+		hardness = @CANNIBAL_IRREGULAR_HARDNESS
+		air_attack = @CANNIBAL_IRREGULAR_AIR_ATTACK
+		entrenchment = @NETWORK_CADRE_ENTRENCHMENT
+		initiative = @NETWORK_CADRE_INITIATIVE
+
+		need = { infantry_equipment = @NETWORK_CADRE_INFANTRY_EQUIPMENT }
+
+		forest = { attack = @NETWORK_CADRE_FOREST_ATTACK movement = @NETWORK_CADRE_FOREST_MOVEMENT }
+		jungle = { attack = @NETWORK_CADRE_JUNGLE_ATTACK movement = @NETWORK_CADRE_JUNGLE_MOVEMENT }
+		urban = { attack = @NETWORK_CADRE_URBAN_ATTACK }
+		hills = { movement = @NETWORK_CADRE_HILLS_MOVEMENT }
+		marsh = { movement = @NETWORK_CADRE_MARSH_MOVEMENT }
+		desert = { movement = @NETWORK_CADRE_DESERT_MOVEMENT }
+	}
+}
