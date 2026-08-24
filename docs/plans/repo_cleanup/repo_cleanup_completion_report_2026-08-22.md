@@ -119,6 +119,8 @@ Removed definition-only Event 020 country-target wrappers from [`common/scripted
 
 The current source scans found no live gameplay or meta-effect consumers for these removed names; remaining matches are historical handoffs and supersession notes, except for similarly named live capacity/state triggers that were not removed.
 
+Removed the shared `modify_value_based_on_chaos_tier` effect and its matching API documentation after exact scans found no runtime, dynamic-name, scripted-localisation, GUI, GFX, documentation, or spreadsheet consumer.
+
 Two inert tag-switch bookkeeping blocks were removed from [`common/on_actions/chaosx_on_actions_system.txt`](../../../common/on_actions/chaosx_on_actions_system.txt), and the Event 013 selector branches were added to [`common/scripted_localisation/chaosx_scripted_localisation_settings.txt`](../../../common/scripted_localisation/chaosx_scripted_localisation_settings.txt).
 
 No new helper or trigger was created.
@@ -181,7 +183,7 @@ The post-catalog closure removed superseded Event 1, Event 2, and Event 11 evolu
 
 Compatibility callbacks, archived docs/assets, provider adapters, active scheduler/evolution owners, and current Black Plague capacity/state triggers were retained because their runtime or provenance role remains live or cannot be disproved by static references.
 
-The reserved `clear_special_chaos_country_civilian_effects` hook was retained for its documented future cleanup contract. `modify_value_based_on_chaos_tier` and `damage_buildings_in_random_states` have no verified runtime consumers, but their required documentation update overlaps active concurrent edits in `chaosx_dynamic_effects.md`; their definitions and docs remain together until that ownership collision clears.
+The reserved `clear_special_chaos_country_civilian_effects` hook was retained for its documented future cleanup contract. `damage_buildings_in_random_states` has no verified runtime caller but remains because the accepted Event 11 improvement addendum names it as a future sabotage implementation pattern.
 
 Meta-effect provider families were retained because their dynamically constructed names are not safely discoverable by ordinary literal-reference scans.
 
@@ -401,7 +403,7 @@ Recommended parent decisions are whether to schedule the shared migration phases
 
 ## Exact tracked path ledger
 
-The cleanup owns 76 tracked paths when this completion report is included.
+The cleanup owns 78 tracked paths when this completion report is included.
 
 Gameplay and script paths:
 
@@ -411,6 +413,8 @@ Gameplay and script paths:
 - `common/scripted_effects/003_holy_realm_effects.txt`
 - `common/scripted_effects/020_black_plague_rat_effects.txt`
 - `common/scripted_effects/chaosx_logic_effects.txt`
+- `common/scripted_effects/chaosx_dynamic_effects.md`
+- `common/scripted_effects/chaosx_dynamic_effects.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
 - `common/scripted_triggers/020_black_plague_rat_triggers.txt`
@@ -500,6 +504,6 @@ Physical `.git` scratch and LFS cache deletions are not tracked paths; their exa
 
 The dated cleanup commits and the post-catalog localisation closure implement the accepted bounded improvements, documentation navigation, catalog alignment, storage cleanup, and safe dead-code removals described above.
 
-An unconditional current-repository completion claim is not made. Later concurrent Event 006, Event 014, Event 016, Event 019, Event 020, famine-system, asset, and documentation edits overlap audited surfaces; current MCP event, focus, GUI, and probability reruns timed out or remained incomplete. The two verified-unused dynamic helpers also remain paired with their concurrently edited documentation until ownership is stable.
+An unconditional current-repository completion claim is not made. Later concurrent Event 006, Event 014, Event 016, Event 019, Event 020, famine-system, asset, and documentation edits overlap audited surfaces; current MCP event, focus, GUI, and probability reruns timed out or remained incomplete.
 
 Broad or design-changing migrations remain explicitly planned and deferred. This report is the durable handoff for cleanup-owned work and its current blockers, not proof that later concurrent work has completed every repository-wide validation gate.

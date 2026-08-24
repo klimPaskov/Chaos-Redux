@@ -6,7 +6,6 @@ An effect belongs here when its contract is useful across events or systems, eve
 
 ## Table of contents
 
-- [modify_value_based_on_chaos_tier](#modify_value_based_on_chaos_tier)
 - [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
 - [get_random_sea_region](#get_random_sea_region)
@@ -29,28 +28,6 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [Exact civilian transfer contract](#exact-civilian-transfer-contract)
 - [Border, reception, return, and cohort contracts](#border-reception-return-and-cohort-contracts)
 - [Famine and migration cleanup](#famine-and-migration-cleanup)
-
-## modify_value_based_on_chaos_tier
-
-Purpose: derive a temporary value by adding a chaos-tier-scaled increment to a supplied base.
-
-Scope: any scope.
-
-Inputs: `base_value` and `add_value` temporary variables.
-
-Output: `modified_value` temporary variable.
-
-Defaults: chaos tier `0` adds nothing, tiers `1` through `3` add one through three copies of `add_value`, and tiers above `3` add four copies.
-
-Side effects: the effect multiplies the temporary `add_value` input in place.
-
-Example:
-
-```txt
-set_temp_variable = { base_value = 10 }
-set_temp_variable = { add_value = 2 }
-modify_value_based_on_chaos_tier = yes
-```
 
 ## calculate_economy_scaled_factory_grant
 
