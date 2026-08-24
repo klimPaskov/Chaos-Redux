@@ -95,6 +95,8 @@ All new or edited prose in this round is one sentence per physical line, and tab
 
 Existing historical documents contain hard-wrap candidates and at-time long lines, but no broad historical reflow was applied because the parent requested current-facing reconciliation while preserving dated evidence.
 
+The affected historical surfaces are `006_event6_focus_audit_round_2026-08-24.md`, `006_event6_completion_audit_round_2026_08_24.md`, `006_event6_docs_reconcile_round_2026_08_24.md`, `006_current_completion_audit_post_registry_consolidations_2026-08-24.md`, and the older quality/spec documents below their explicitly historical headings.
+
 ## Validation performed
 
 The restored validators were run from the repository root with `python -B`: allocator, country API, strict flags, SCN-008 scenario matrix, FORM-16, and GUI semantic matrix all passed their named source/static checks.
@@ -125,6 +127,8 @@ No live game, terminal transaction, tooltip, save/load, weighted-balance, asset-
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_current_completion_audit_post_registry_consolidations_2026-08-24.md`
 - `docs/plans/006_independence_wave_plans/documentation_cleanup_handoff_2026-08-24_round2.md`
 
+The two completion-audit handoffs were existing untracked historical files; their superseded notices remain in the working tree for the parent to stage with the surrounding audit packet.
+
 No gameplay, localisation, GUI, GFX, asset, binary, workbook, or export file was changed.
 
 ## Recommended parent decisions
@@ -133,3 +137,9 @@ No gameplay, localisation, GUI, GFX, asset, binary, workbook, or export file was
 - Use `006_event6_validator_restoration_2026-08-24.md` and `006_event6_focus_economy_lane_repair_2026-08-24.md` as current named evidence, not the superseded same-day audits.
 - Obtain the missing same-scenario probability comparison, bounded Event/GUI/map artifacts, and a user-owned standalone terminal receipt before any whole-event completion or balance claim.
 - Preserve the catalog process-history discrepancy and do not edit the workbook or exports in this documentation-only round.
+
+## Proposed actions if patching is not accepted
+
+Patching was accepted for this round, so no fallback documentation patch is required.
+
+If the parent declines the current-authority edits, retain the historical files and use the unmodified source map and resume packet as the fallback routing authority, while treating the post-economy six-warning and restored-validator handoffs as separate current evidence.
