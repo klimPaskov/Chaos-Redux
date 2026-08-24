@@ -20,6 +20,8 @@ The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger
 
 The 2026-08-22 retired-crisis neutralization replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
 
+The 2026-08-24 small-file consolidation preserves the Event 006 category and dormant compatibility definitions in three compact registries, removes 68 former tiny parser files, reduces the file count by 66, and saves 44,235 committed source bytes. Its handoff is `subagent_handoffs/006_event6_small_file_consolidation_2026-08-24.md`; on-action and package-owned gameplay files remain separate where duplicate callback keys or ownership boundaries make concatenation unsafe.
+
 The 2026-08-21 parent tranche supplies synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors, a corrected dormant-shell guard, and its then-current 37 byte-preserving supplied portrait installs; that 37/14 count is historical and is superseded by the 2026-08-22 consumer tranche below.
 
 Commit `b77f9fd45` additionally repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission or changing the 32/161 boundary; its bounded runtime handoff is `subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
