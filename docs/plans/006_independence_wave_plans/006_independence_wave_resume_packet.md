@@ -40,6 +40,8 @@ The second 2026-08-24 source-layout pass folds the three same-namespace regional
 
 The FORM-03 phase-docket addendum is closed by `subagent_handoffs/006_event6_form03_phase0_visibility_receipt_2026-08-24.md`, which records all 299 cells, a maximum of three simultaneous startable primary actions, and three active continuity rows. No visibility or activation gameplay patch is warranted, and this receipt does not widen the package-admission boundary.
 
+The IW-031 Kosovo crosswalk remains intentionally split between the candidate registry's public-baseline caveat and the installed-map authority at `KOS`/state `802`. The maintained country API audit now asserts the exact `802`/`Kosovo`/`802-Kosovo.txt` binding and reports `IW-031-crosswalk=pass`; no admission or gameplay gate changes. Handoff: `subagent_handoffs/006_iw031_kosovo_current_boundary_crosswalk_audit_2026-08-24.md`.
+
 The 2026-08-24 transport-cost patch (`52a6e94ca`, `subagent_handoffs/006_event6_decision_transport_cost_patch_handoff_2026-08-24.md`) makes the shared convoy-or-train cost disclosures branch-accurate with the consumed resource, amount, and matching icon across 35 shared call sites. Package-local duplicate cost strings remain separate, and the whole-event boundary is unchanged.
 
 The 2026-08-24 manual no-country diagnostic (`67d5a777e`, `subagent_handoffs/006_event6_manual_no_country_execution_diagnostic_2026-08-24.md`) confirms that the hidden root can fail closed before mutation when the candidate pool is empty; no generic fallback was added. A live terminal receipt is still required to distinguish an empty pool from a later rollback or finalization failure.

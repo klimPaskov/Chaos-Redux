@@ -2,7 +2,7 @@
 
 Date: 2026-08-24.
 
-Status: **AUDIT-ONLY / NO ADMISSION CHANGE**.
+Status: **CROSSWALK ASSERTION IMPLEMENTED / NO ADMISSION CHANGE**.
 
 This handoff audits the current Event 006 country/package boundary for IW-031 Kosovo (`KOS`). It does not promote a package, widen the 32-package boundary, invent identity or territory, write the map, or change gameplay files.
 
@@ -14,7 +14,7 @@ The candidate row is `docs/specs/006_independence_wave_specs/matrices/006_candid
 
 The package runtime already agrees with the installed binding. Vanilla `history/countries/KOS - Kosovo.txt` sets `capital = 802`, vanilla `common/country_tags/00_countries.txt:275` maps `KOS` to `countries/Kosovo.txt`, and `common/scripted_triggers/006_independence_wave_kosovo_package_triggers.txt:47-78,118-177` checks state 802 for ownership, control, capital, and setup. The package effects identify the same contract at `common/scripted_effects/006_independence_wave_kosovo_package_effects.txt:2-4,263-315`.
 
-Safe next work is therefore a narrow documentation/validator reconciliation, not a gameplay patch: make the crosswalk explicitly assert `IW-031 -> KOS -> current-map state 802` while retaining the public-baseline caveat. Do not blindly put `802` into the public-baseline column unless the matrix owner changes that column's meaning. A safer implementation is either an explicit current-map cross-reference in the binding authority or a validator assertion that an empty candidate baseline is valid only when the installed binding supplies `802` and `new_current_state_binding`.
+The safe reconciliation is now implemented in `.tools/audit_event6_country_api.py`: it asserts `IW-031 -> KOS -> current-map state 802`, the exact `Kosovo` binding, `new_current_state_binding`, and `802-Kosovo.txt` while preserving the candidate matrix's public-baseline caveat. The candidate CSV remains unchanged; `802` is not mislabelled as a public-763-state baseline anchor.
 
 This reconciliation must not alter `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`, the 32-ID attestation OR-list, normal/scenario preflight, or any package effect. It does not justify adding an unattested package or changing reservation capacity.
 
@@ -77,12 +77,12 @@ The current maintained validators were run read-only from the repository root:
 - `python -B .tools/audit_event6_form16.py` — PASS: ARM/GEO/AZR exact anchors 230/231/229, consent/refusal, identity/territory/integration/generation gates, rollback, cleanup, and readiness witnesses.
 - `python -B .tools/audit_event6_gui_matrix.py` — PASS: five Statehood Ledger tabs, recognition/dependency/league/formable frame groups, generation cleanup, and four static/animated sprite pairs. This is a semantic source matrix, not runtime render/click/save-load proof.
 
-These validators do not test the candidate-registry-to-current-map crosswalk. The next safe validation after a parent-approved documentation/validator reconciliation is to rerun all six commands and then retry a narrow `hoi4.map_inspect` for state 802 when the MCP transport is available. No map rewrite or live HOI4 run is authorized by this handoff.
+The country API validator now tests the candidate-registry-to-current-map crosswalk and reports `IW-031-crosswalk=pass`. The remaining safe validation is to rerun all six maintained commands and retry a narrow `hoi4.map_inspect` for state 802 when the MCP transport is available. No map rewrite or live HOI4 run is authorized by this handoff.
 
 ## Uncertainty, omissions, and remaining risks
 
 - The KOS package gameplay surface is source-complete under the existing accepted contract; the current finding is a metadata crosswalk gap, not a missing runtime adapter or country implementation.
-- The candidate registry's blank anchor is intentional under its public-763-state wording, so changing that cell to `802` requires matrix-owner confirmation. The safer first action is an explicit crosswalk assertion or note tied to the current installed-map binding.
+- The candidate registry's blank anchor remains intentional under its public-763-state wording; the validator now ties it to the exact current-map binding without changing the matrix semantics.
 - Current map ownership, controller, province, supply, railway, port, resource, building, and adjacency evidence is not freshly closed because the MCP inspect/render calls timed out.
 - Current focus, event, technology, and probability MCP routes are not freshly closed because the installed MCP transport closed. The named `chaosx_ai_probability_auditor` route is unavailable, and no probability comparison is claimed.
 - Grounded portraits remain source placeholders under the accepted workflow, with final user-supplied HOI4-style replacement and rights review remaining separate gates.
@@ -90,12 +90,14 @@ These validators do not test the candidate-registry-to-current-map crosswalk. Th
 
 ## Files changed by this audit
 
-Only this handoff was added:
+This handoff and the country API validator were changed:
 
 `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw031_kosovo_current_boundary_crosswalk_audit_2026-08-24.md`
 
-No gameplay, localisation, country, history, map, focus, decision, idea, AI, portrait, flag, dispatch, loader, reservation, registry, or validator file was changed. No commit or staging was performed.
+`.tools/audit_event6_country_api.py`
+
+No gameplay, localisation, country, history, map, focus, decision, idea, AI, portrait, flag, dispatch, loader, reservation, or admission registry file was changed by this reconciliation. The previous handoff commit was `fd5ffc3ec`; this follow-up is intentionally kept as a separate parent-owned validator tranche because all agents share this branch.
 
 ## Parent action
 
-Keep IW-031 admitted as `KOS`/state `802` and keep all other admission gates unchanged. If the parent wants one bounded implementation next, assign a docs/validator owner to reconcile the candidate row's public-baseline caveat with the installed-map binding's exact current anchor. After that owner change, rerun the six maintained validators and obtain a fresh MCP map inspect/render before making any package-boundary or live-runtime claim.
+Keep IW-031 admitted as `KOS`/state `802` and keep all other admission gates unchanged. The parent-owned validator assertion is complete; rerun the six maintained validators and obtain a fresh MCP map inspect/render before making any package-boundary or live-runtime claim.
