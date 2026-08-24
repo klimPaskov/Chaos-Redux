@@ -94,6 +94,8 @@ The final-state receipts are `subagent_handoffs/006_event6_catalog_alignment_202
 
 The two catalog handoffs differ only on process history, with one recording a C7 replacement and the other recording an already-matching cell; preserve that provenance discrepancy for parent review without changing the reconciled final state.
 
+The IW-031 Kosovo crosswalk preserves two coordinate authorities: the candidate registry's blank `baseline_anchor_state_ids` is intentional because its prose describes the public 763-state baseline, while the installed-map binding is the current runtime authority at `KOS`/state `802` with compact state `802`, host `YUG`, and `802-Kosovo.txt`. Runtime history and package triggers already use state 802. Do not fill the public-baseline cell unless the matrix owner changes that column's meaning; use the installed binding for current-map admission checks.
+
 The current event MCP evidence remains partial: the latest recorded `chaosx.nr6.1` inspect and state render are source-linked partial artifacts, while the post-release-scope refresh timed out and `hoi4.event_compare` remains blocked by missing cached prior revisions.
 
 The current whole-event receipt is `subagent_handoffs/006_event006_completion_audit_followup_2026-08-22.md`, and the timeout limitation is recorded in `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
