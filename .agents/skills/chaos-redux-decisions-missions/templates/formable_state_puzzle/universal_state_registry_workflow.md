@@ -10,17 +10,17 @@ The canonical active-map geometry source is `docs/formables/state_registry/gener
 
 The source registry is immutable build input for consumers. Do not hand-edit it, copy its state geometry into a second owner manifest, stretch an old mask, or redraw a state in an asset editor.
 
-The registry builder is `.tools/build_formable_state_registry.py`. It validates the source against the active map roots, checks provenance and state-ID coverage, and writes the portable registry index plus generated universal live-trigger wrappers.
+The shipped portable registry index and universal live-trigger wrappers are reviewed build artifacts derived from that source. The former registry builder is retained at `.tools/archive/build_formable_state_registry.py` for provenance, but it is not a supported routine command.
 
 The consumer contract is `docs/formables/state_registry/consumer_spec.schema.json` and `docs/formables/state_registry/consumer_spec.template.json`. The schema defines the finite candidate `state_ids`, optional `state_groups`, projection, qualification and visibility policies, helper overrides, and owner output paths. The companion `category_attachment_audit.md` records how the manifest's category ID is attached to each owning decision category.
 
-The consumer compiler is `.tools/build_formable_state_puzzle_consumer.py`. It reads the canonical registry and consumer spec, projects exact row runs, writes unresolved and qualifying PNG/DDS pairs and previews, records the geometry artifact, and emits a runtime-compatible manifest with per-state helper hooks. A full conversion emits `status: "complete"`; `--no-dds` deliberately emits `status: "assets_pending"` so runtime discovery cannot ingest missing DDS paths.
+The shipped consumer manifests, projected PNG/DDS pairs, previews, and helper hooks are reviewed build artifacts. The former compiler is retained at `.tools/archive/build_formable_state_puzzle_consumer.py` for provenance, but it is not a supported routine command. A map revision or new consumer requires a deliberate restoration and fresh review of the archived geometry/registry/consumer toolchain, or an approved replacement, before any generated artifacts are changed.
 
 The runtime generator is `.tools/generate_formable_state_puzzle_runtime.mjs`. It discovers every `manifest.json` directly below `docs/formables/state_puzzles/*/` whose `status` is `complete`, validates each manifest and runtime DDS pair, rejects duplicate category or formable identifiers after runtime normalisation (including `a-b` versus `a_b`), and emits the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation surfaces. It has no hardcoded category allow-list.
 
 Runtime textures are converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. Preserve the processed PNG, final DDS, dimensions, hashes, and decoded round-trip evidence with the owning consumer package.
 
-## Required build order
+## Supported maintenance order
 
 ### 1. Resolve the active map and provenance
 
@@ -28,17 +28,7 @@ Treat the base HOI4 installation followed by ordered mod overlays as the active 
 
 Use `--replace-state-history` when the last mod root replaces the complete `history/states` tree. Do not infer the launcher stack, search arbitrary roots, or silently merge an incomplete replacement.
 
-Run a provenance check before producing consumer assets:
-
-```powershell
-python .tools/build_formable_state_registry.py `
-  --game-root "C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV" `
-  --mod-root "C:\path\to\overlay_a" `
-  --mod-root "C:\path\to\overlay_b" `
-  --check
-```
-
-The builder must fail closed on a provinces or definition hash mismatch, state-history hash or bundle mismatch, state-ID set or count mismatch, state-history declarations that reference a province missing from either `definition.csv` or `provinces.bmp`, map dimension or horizontal-wrap mismatch, invalid row runs, or a canonical registry-content hash mismatch. State-history parsing strips Clausewitz comments safely and accepts either conventional `<id>-<name>.txt`/`<id>.txt` names or arbitrary filenames with one declared numeric `id`; duplicate or ambiguous IDs fail closed. `--skip-provenance` is source-only lint and is never distribution evidence.
+Before changing consumer assets, compare the reviewed source provenance with the active map roots and stop on any provinces or definition hash mismatch, state-history hash or bundle mismatch, state-ID set/count difference, map dimension or horizontal-wrap difference, invalid row runs, or canonical registry-content mismatch. The archived builder documents the prior fail-closed checks, but running it from the archive is not accepted as current evidence without restoring and reviewing the whole producer chain.
 
 If a map-changing mod adds, removes, splits, renumbers, or replaces states, regenerate the geometry source against the same ordered combined roots before rebuilding the index, triggers, consumers, and assets. Never ship a registry or consumer compiled from one map revision with another map's bitmap, definition file, or state history.
 
@@ -56,16 +46,11 @@ The consumer may choose projection canvas, padding, scale, and output paths, but
 
 Before compiling, enumerate every decision category in the formable family and set the owner's attachment scope in the category audit. Under a strict family policy, the audit must list every shared and phase-specific category that exposes formation or integration decisions. The generated manifest and the audit are a joint input to review. Do not compile one category and assume that similarly named categories inherit its GUI.
 
-### 3. Compile exact geometry and status assets
+### 3. Review exact geometry and status assets
 
-Run the compiler from the mod root after the registry provenance check:
+For existing consumers, review the checked-in manifest, projection, PNG/DDS pairs, preview, helper hooks, and recorded registry hash as one artifact set. Do not regenerate part of that set independently.
 
-```powershell
-python .tools/build_formable_state_puzzle_consumer.py `
-  --spec "docs\formables\state_registry\consumer_spec.json"
-```
-
-Use `--dry-run` to validate the spec and projection without writing files. Use `--no-dds` only for a deliberately staged asset pass; it writes `status: "assets_pending"`, which the runtime generator skips. A consumer cannot be promoted until every runtime DDS exists and has round-trip evidence. Non-dry builds require spec `status: "complete"`.
+For a new consumer or changed map, restore and review the archived producer/compiler chain as a bounded migration, or approve a replacement toolchain. Its first pass must be read-only, and a consumer cannot be promoted until every runtime DDS exists and has round-trip evidence. Do not invoke archived scripts as normal repository tooling.
 
 The compiler validates the registry content hash and every candidate ID, computes one union-based projection frame with explicit horizontal-wrap handling, and writes one unresolved and one qualifying asset per candidate. It also records `qualification_helper`, optional `visibility_helper`, `canvas_position`, `runtime_dds`, `runtime_png`, and the registry hash in the manifest.
 

@@ -6,9 +6,9 @@ This checklist records evidence for a copied owner implementation. It does not c
 
 - [ ] For a registry-backed consumer, the only geometry source is `docs/formables/state_registry/generated/state_geometry_registry.json`; no owner file duplicates its row runs or masks.
 - [ ] `consumer_spec.schema.json` validates the owner spec copied from `consumer_spec.template.json`, explicit helper ids match `^[A-Za-z_][A-Za-z0-9_]*$`, and `status: "complete"` is withheld until all asset and evidence gates pass; a `--no-dds` manifest remains `assets_pending`.
-- [ ] `.tools/build_formable_state_registry.py --check` was run against the base game root plus ordered overlay roots, with `--replace-state-history` when the final overlay replaces the complete state-history tree.
-- [ ] The builder passed with no provenance mismatch and fails closed when any map bitmap/definition hash, state-history hash or bundle, state-ID set/count, map dimension, horizontal-wrap, row-run, or canonical registry-content check differs.
-- [ ] `.tools/build_formable_state_puzzle_consumer.py` compiled the finite candidate set from the canonical registry, and every candidate ID is present in the registry before output generation.
+- [ ] Existing consumers use the reviewed checked-in registry, manifest, projection, and asset set without invoking archived producer/compiler scripts as routine tooling.
+- [ ] Active-map provenance matches the reviewed artifacts; any map bitmap/definition hash, state-history hash or bundle, state-ID set/count, map dimension, horizontal-wrap, row-run, or canonical registry-content difference blocks reuse.
+- [ ] A new consumer or map revision has a separately approved migration that restores and reviews the archived producer/compiler chain, or provides an approved replacement, before any generated artifact is written.
 - [ ] Candidate supersets use `required: false` and an explicit live `visibility_helper` for optional relevance; no event can introduce a state ID outside the compiled set at runtime.
 - [ ] `.tools/generate_formable_state_puzzle_runtime.mjs` discovers all `status: "complete"` manifests, rejects duplicate normalised category/formable IDs (including punctuation/underscore collisions), and emits no hand-authored or allow-listed state nodes.
 - [ ] Geometry discovery accepts conventional or arbitrary state-history filenames only when one un-commented numeric `id` is unambiguous; every referenced province exists in both `definition.csv` and `provinces.bmp`.

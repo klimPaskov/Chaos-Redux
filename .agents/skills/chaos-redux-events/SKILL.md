@@ -90,8 +90,7 @@ new tag. Use the `chaosx_country_*` collection that matches the region or
 origin, then record the consuming event's own provenance and package identity
 before loading content. Do not create a duplicate tag for an Event 006 or
 Soviet Collapse carrier, and do not treat event-text mentions as tag
-collisions. Run `.tools/audit_chaosx_country_tags.py` after changing a
-protected carrier or its references.
+collisions. After changing a protected carrier or its references, perform a fresh repository-wide collision scan against vanilla, installed Workshop mods, and sibling local mods. The legacy country-tag auditors under `.tools/archive/` are provenance only and are not current acceptance tools.
 
 Do not reduce major spec effects to tiny decorative modifiers. Important effects must change incentives, unlock content, move visible mechanic values, alter army or economy behavior, create a real tradeoff, or connect to later outcomes.
 

@@ -52,7 +52,7 @@ Record the formable decision ID, owning country/route, category ID, category fam
 
 ### 2. Build or select the registry-backed consumer
 
-For a migrated owner, run the ordered-root provenance check and consumer workflow in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). The canonical registry is `docs/formables/state_registry/generated/state_geometry_registry.json`; use `consumer_spec.schema.json` and `consumer_spec.template.json` to declare the finite candidate set, projection, helper policy, and output paths, then run `.tools/build_formable_state_puzzle_consumer.py`. Do not duplicate row runs, state masks, or runtime GUI nodes in an owner manifest.
+For a migrated owner, follow the reviewed-artifact and runtime workflow in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). The canonical registry is `docs/formables/state_registry/generated/state_geometry_registry.json`; use `consumer_spec.schema.json` and `consumer_spec.template.json` to document the finite candidate set, projection, helper policy, and output paths. The former consumer compiler is archived under `.tools/archive/` as provenance and is not a supported routine command. Do not duplicate row runs, state masks, or runtime GUI nodes in an owner manifest.
 
 The legacy `state_manifest.example.json` remains useful only for an owner package that has not migrated to the universal registry contract. A map revision or map-changing mod still requires rebuilding the registry, every consumer, and every state-piece asset from the active combined roots.
 

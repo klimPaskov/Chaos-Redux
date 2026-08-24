@@ -280,7 +280,7 @@ The registry migration requires an explicit decision on whether row identity, ca
 
 ### Required audits and semantic tests
 
-Run `.tools/audit_chaosx_country_tags.py`, `.tools/audit_event6_allocator.py`, `.tools/audit_event6_country_api.py`, `.tools/audit_event6_flags.py`, and `.tools/audit_event6_scenario_matrix.py` against the approved source snapshot after any implementation tranche.
+After any implementation tranche, perform fresh source-backed country-tag, allocator, country API, flag-family, and scenario-matrix reviews against the approved source snapshot. The retired audit scripts under `.tools/archive/` are provenance only and require a current-source review before any reuse.
 
 Compare the 206-row registry and the 191 unique resolved-carrier set exactly before and after the candidate change, including the 89 registered-reuse, 137 bound, 55 unbound, and 1 shared counts recorded by the constants.
 

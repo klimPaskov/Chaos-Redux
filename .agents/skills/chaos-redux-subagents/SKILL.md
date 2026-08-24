@@ -36,7 +36,7 @@ The goal is to keep subagents narrow, reproducible, and grounded in explicit inp
 
 ## Available project subagents
 
-Identifiers below are the canonical snake_case Codex names. The Qoder runtime uses the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`); the full mapping lives in `.qoder/agents/README.md`, and definitions are regenerated from the Codex TOMLs via `python .tools/sync_qoder_agents.py`.
+Identifiers below are the canonical snake_case Codex names. The Qoder runtime uses the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`); the full mapping lives in `.qoder/agents/README.md`, and definitions are regenerated from the Codex TOMLs via `python .tools/sync/sync_qoder_agents.py`.
 
 Use `chaosx_repo_explorer` only for read-only repo exploration when touched-file mapping, pattern search, vanilla reference mapping, missing-file recovery, dependency mapping, or edit-order planning is actually unclear. It is not a default preflight agent.
 
