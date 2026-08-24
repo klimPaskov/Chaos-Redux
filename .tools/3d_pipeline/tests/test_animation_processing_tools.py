@@ -66,8 +66,8 @@ class AnimationProcessingToolTests(unittest.TestCase):
     def test_config_and_lock_match_version_and_operations(self) -> None:
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         route = json.loads((PIPELINE_ROOT / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["blender_hoi4_adapter"]
-        self.assertEqual(config["adapter_version"], "1.10.7")
-        self.assertEqual(route["version"], "1.10.7")
+        self.assertEqual(config["adapter_version"], "1.10.8")
+        self.assertEqual(route["version"], "1.10.8")
         for operation in ("import_animation_action", "retime_animation_action", "correct_action_grounding"):
             self.assertIn(operation, config["operations"])
             self.assertIn(operation, route["operations"])
@@ -131,7 +131,7 @@ class AnimationProcessingToolTests(unittest.TestCase):
         self.assertIn("pose_bone.matrix_basis = Matrix.Identity(4)", source)
         self.assertIn('"working_actions": []', source)
         self.assertIn("base_weight_sanitization = sanitize_working_weights()", source)
-        self.assertIn("stabilize_dual_source_base_normalization(pre_export, target_height)", source)
+        self.assertIn("stabilize_saved_normalization(pre_export, target_height)", source)
         self.assertIn('obj["chaosx_working"] = False', source)
 
     def test_normalization_convergence_accepts_and_corrects(self) -> None:

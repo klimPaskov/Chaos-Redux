@@ -151,7 +151,7 @@ def main() -> None:
         assert math.isclose(result["geometry"]["dimensions"][2], TARGET_HEIGHT, abs_tol=2e-4)
         persistence = result["normalization_persistence"]
         assert math.isclose(persistence["persisted_height_m"], TARGET_HEIGHT, abs_tol=2e-4)
-        assert persistence["policy"] == "save_reopen_and_remeasure_working_world_bounds"
+        assert persistence["policy"] == "save_reopen_monotonic_convergence_and_strict_reverify"
         assert persistence["armatures"]
         scale_cleanup = result["rig_and_actions"]["scale_sanitization"]
         assert scale_cleanup["remaining_scale_fcurves"] == 0
