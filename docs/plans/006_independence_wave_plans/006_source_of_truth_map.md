@@ -38,6 +38,8 @@ The dormant-carrier and capital-scope repair is source-closed for the admitted A
 
 The 2026-08-24 small-file consolidation keeps all Event 006 category, dormant compatibility effect, and dormant compatibility trigger identifiers in three compact registries, removes 68 former tiny parser files, and reduces the file count by 66 while saving 44,235 committed source bytes. Its handoff is `subagent_handoffs/006_event6_small_file_consolidation_2026-08-24.md`. On-action files and package-owned gameplay files remain separate where duplicate engine callback keys or ownership boundaries make concatenation unsafe.
 
+The follow-on 2026-08-24 definition-registry consolidation moves 413 ideas, 68 characters, and 23 country-leader traits into three additional registries without changing executable identifiers or values. It removes 69 former definition files, reduces the file count by another 66, and saves 34,775 committed source bytes; together the two passes remove 132 files and save 79,010 committed source bytes. Its handoff is `subagent_handoffs/006_event6_definition_registry_consolidation_2026-08-24.md`. Package decisions, effects, focus trees, localisation, country shells, and on-action files remain separate where ownership or engine callback composition makes concatenation unsafe.
+
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the owner of opening divisions.
 
 The source handoff is `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.

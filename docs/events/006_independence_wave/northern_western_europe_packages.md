@@ -972,7 +972,7 @@ and bunker priority without assuming a fixed host tag.
 | Friedrich von Rabenau | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds` | stable `GFX_portrait_AJX_karl_becker` in the same `.gfx` file |
 | Municipal Neutral Commission focus | `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds` | base and shine in `interface/006_independence_wave.gfx`; base consumed by `independence_wave_ajx_appoint_neutral_commission_focus` |
 
-The character sprites are consumed by `common/characters/006_independence_wave_saar_characters.txt`.
+The character sprites are consumed by `common/characters/006_independence_wave_characters_registry.txt`.
 Event 006 defines no Saar commander miniature, advisor card, dossier, or `_small` portrait.
 Both Simons's civic portrait and Rabenau's commander portrait have passed the archival-source, exact-crop, ImageGen identity-preservation, HOI4-style, independent-audit, and DDS-equality gates.
 Saar has exact `iw_010` compile-time content attestation after its fresh country-package audit. This admits the package to live preflight without claiming that any particular host, anchor, reservation, Event 5, chaos-band, force, or synchronized transaction will pass.
@@ -1015,8 +1015,8 @@ gate.
 ### Implementation files
 
 - `common/script_constants/006_independence_wave_saar_constants.txt`
-- `common/characters/006_independence_wave_saar_characters.txt`
-- `common/ideas/006_independence_wave_saar_ideas.txt`
+- `common/characters/006_independence_wave_characters_registry.txt`
+- `common/ideas/006_independence_wave_ideas_registry.txt`
 - `common/scripted_triggers/006_independence_wave_saar_package_triggers.txt`
 - `common/scripted_effects/006_independence_wave_saar_package_effects.txt`
 - `common/decisions/categories/006_independence_wave_saar_categories.txt`

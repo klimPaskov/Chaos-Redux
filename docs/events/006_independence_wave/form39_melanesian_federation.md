@@ -23,7 +23,7 @@ The accepted flag package is ImageGen-generated flat design evidence under `docs
 - `common/scripted_triggers/006_independence_wave_form39_triggers.txt` owns exact carrier/member eligibility, frozen three-row ledger checks, research gates, MFX identity proofs, AI consent, autonomous-member state, and material project cost checks.
 - `common/scripted_effects/006_independence_wave_form39_effects.txt` owns readiness attestation, MFX identity dispatch, autonomous relations, anchor-only integration, ledger initialization, project effects, dissolution, rollback, and generation-safe cleanup.
 - `common/decisions/categories/006_independence_wave_form39_categories.txt` and `common/decisions/006_independence_wave_form39_decisions.txt` expose human founding replies and four post-formation actions. Projects use command power, stability, strategic reserves, administration/diplomacy/security, manpower, experience, and equipment costs; political power is never used as a storage mechanic. Timed projects cancel and clear their active flags when the carrier or bound member compact invalidates, and the plebiscite command-power gate matches its single strategic command-power spend.
-- `common/ideas/006_independence_wave_form39_ideas.txt` supplies visible carrier and autonomous-member lifecycle ideas using the existing league-membership sprite.
+- `common/ideas/006_independence_wave_ideas_registry.txt` supplies visible carrier and autonomous-member lifecycle ideas using the existing league-membership sprite.
 - `common/countries/006_independence_wave_formable_cosmetics.txt` records MFX map colours; the MFX flag files are staged in the engine-facing flag folders by the asset handoff.
 
 ## Dynamic ledgers

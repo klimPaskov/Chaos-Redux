@@ -25,9 +25,9 @@ The five route outcomes install mutually exclusive lifecycle ideas and governmen
 | Effects | `common/scripted_effects/006_independence_wave_banat_package_effects.txt` |
 | Dispatch | `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`; `common/scripted_effects/006_independence_wave_package_dispatch_effects.txt` |
 | Decisions and mission | `common/decisions/006_independence_wave_banat_decisions.txt` |
-| Ideas | `common/ideas/006_independence_wave_banat_ideas.txt` |
+| Ideas | `common/ideas/006_independence_wave_ideas_registry.txt` |
 | AI | `common/ai_strategy/006_independence_wave_banat.txt` |
-| Character | `common/characters/006_independence_wave_banat_characters.txt` |
+| Character | `common/characters/006_independence_wave_characters_registry.txt` |
 | Localisation | `localisation/english/006_independence_wave_banat_l_english.yml` |
 | Dormant history shell | `history/countries/AXX - Banat.txt` |
 

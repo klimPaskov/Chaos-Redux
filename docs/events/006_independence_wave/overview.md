@@ -433,7 +433,8 @@ Implementation and cleanup details are in `docs/events/006_independence_wave/sys
 ## Implementation surfaces
 
 - Shared transaction: `common/scripted_effects/chaosx_liberation_release_effects.txt` and matching triggers/constants.
-- Country mechanics: `common/scripted_effects/006_independence_wave_effects.txt`, matching triggers/constants, and `common/ideas/006_independence_wave_ideas.txt`.
+- Country mechanics: `common/scripted_effects/006_independence_wave_effects.txt`, matching triggers/constants, and `common/ideas/006_independence_wave_ideas_registry.txt`.
+- Character surfaces: `common/characters/006_independence_wave_characters_registry.txt` and `common/country_leader/006_independence_wave_leader_traits_registry.txt` preserve the Event 006 roster and trait definitions in consolidated registries.
 - Package allocation and execution: `common/scripted_effects/006_independence_wave_package_*`, `006_independence_wave_package_dispatch_effects.txt`, and `006_independence_wave_execution_effects.txt`.
 - Event delivery, evolutions, Event Details, logs, scenario, focus, decisions, AI, formables, achievements, localisation, super-events, and asset registration are recorded here as their plan-scoped commits land.
 

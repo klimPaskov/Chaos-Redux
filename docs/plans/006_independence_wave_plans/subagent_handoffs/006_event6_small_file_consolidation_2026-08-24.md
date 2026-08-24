@@ -24,7 +24,7 @@ The retired `006_independence_wave_vanilla_formable_compatibility_triggers.txt` 
 
 Event 006 on-action files remain separate because several of them define the same engine callback keys, and concatenating those blocks without an explicit effect-composition audit could replace or reorder callbacks.
 
-Package decisions, package effects, focus trees, localisation, characters, ideas, and constants remain separate because their file boundaries carry package ownership and audit scope.
+Package decisions, package effects, focus trees, and localisation remain separate because their file boundaries carry package ownership and audit scope. A follow-on definition-registry pass is recorded in `subagent_handoffs/006_event6_definition_registry_consolidation_2026-08-24.md`; it merges only the Event 006 ideas, characters, and country-leader-trait containers after preserving their unique identifiers and identical file-scoped constants.
 
 ## Size and file-count result
 
