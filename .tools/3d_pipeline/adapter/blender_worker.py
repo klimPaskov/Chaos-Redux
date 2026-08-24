@@ -2975,11 +2975,10 @@ def select_armature_and_action(action_name: str) -> Tuple[bpy.types.Object, bpy.
 
 
 def scale_aware_retarget_location_scale(
-    data_length_ratio: float,
     source_world_scale: Vector,
     target_world_scale: Vector,
 ) -> float:
-    """Convert a rest-bone data ratio to the corresponding uniform world-length ratio."""
+    """Convert source pose-basis translation units to target pose-basis units."""
 
     for label, scale in (
         ("source", source_world_scale),
@@ -2992,7 +2991,7 @@ def scale_aware_retarget_location_scale(
             )
     source_uniform_world_scale = float(sum(source_world_scale) / 3.0)
     target_uniform_world_scale = float(sum(target_world_scale) / 3.0)
-    return data_length_ratio * target_uniform_world_scale / source_uniform_world_scale
+    return source_uniform_world_scale / target_uniform_world_scale
 
 
 def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
@@ -3221,7 +3220,6 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     target_world_scale = target_rig.matrix_world.to_scale()
     try:
         location_scale = scale_aware_retarget_location_scale(
-            data_length_ratio,
             source_world_scale,
             target_world_scale,
         )
@@ -3318,6 +3316,14 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         if target_root_name
         else Vector()
     )
+    source_root_z_delta_peak = (
+        max(
+            abs(float(source_pose_cache[frame][target_root_name][0].z - source_root_location.z))
+            for frame in range(frame_start, frame_end + 1)
+        )
+        if target_root_name
+        else 0.0
+    )
     for frame in range(frame_start, frame_end + 1):
         bpy.context.scene.frame_set(frame)
         for target_name in bone_chains:
@@ -3338,13 +3344,17 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     scale_cleanup = sanitize_action_scale_channels()
     root_cleanup = {
         "action": transferred.name,
-        "policy": "provider armature-space motion reconstructed hierarchy-first through target rest and animated parent bases; target-root X/Y motion removed and Z retained; rest-bone data ratio is converted to a source-to-target world-length ratio",
+        "policy": "provider armature-space motion reconstructed hierarchy-first through target rest and animated parent bases; target-root X/Y motion removed and Z retained; source pose-basis translation is converted to target pose-basis units by source-world-scale divided by target-world-scale",
+        "location_coordinate_space": "pose_bone_matrix_basis_translation",
+        "location_scale_formula": "source_armature_uniform_world_scale / target_armature_uniform_world_scale",
+        "rest_data_length_ratio_applied_to_location": False,
         "data_length_ratio": data_length_ratio,
         "source_armature_world_scale": list(source_world_scale),
         "target_armature_world_scale": list(target_world_scale),
         "location_scale": location_scale,
         "target_root": target_root_name or None,
         "source_root_location": list(source_root_location),
+        "source_root_z_delta_peak": source_root_z_delta_peak,
     }
     bpy.context.scene.frame_start = frame_start
     bpy.context.scene.frame_end = frame_end
@@ -3454,6 +3464,9 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "provider_actions_removed": removed_provider_actions,
         "scale_cleanup": scale_cleanup,
         "root_cleanup": root_cleanup,
+        "location_coordinate_space": "pose_bone_matrix_basis_translation",
+        "location_scale_formula": "source_armature_uniform_world_scale / target_armature_uniform_world_scale",
+        "rest_data_length_ratio_applied_to_location": False,
         "data_length_ratio": data_length_ratio,
         "source_armature_world_scale": list(source_world_scale),
         "target_armature_world_scale": list(target_world_scale),

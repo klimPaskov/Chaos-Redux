@@ -35,7 +35,7 @@ class ScaleAwareRetargetTests(unittest.TestCase):
             if line.startswith("{") and '"status"' in line
         )
         self.assertEqual(proof["status"], "pass")
-        self.assertAlmostEqual(proof["location_scale"], 1.0, places=6)
+        self.assertAlmostEqual(proof["location_scale"], 0.367256, places=5)
         self.assertIn('"status": "pass"', result.stdout)
 
 
