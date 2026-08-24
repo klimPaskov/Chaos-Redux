@@ -1,0 +1,161 @@
+{
+  "schema_version": "e014_probability_contracts_v1",
+  "contract_kind": "read_only_probability_and_selection_contract_index",
+  "package": {
+    "event_id": "014",
+    "event_root": "chaosx.nr14.1",
+    "slug": "cannibalism",
+    "source_of_truth": "Clausewitz source plus explicitly marked adapter manifests"
+  },
+  "purpose": "Expose Event 014 deterministic selectors, true random surfaces, MTTH score declarations, mission adapters, AI strategy intensities, and spread queue lifecycle facts to analyzer tooling without changing gameplay.",
+  "classification_legend": {
+    "true_probability": "A source random_list or normalized weighted branch. A probability claim is conditional on the listed gate and pool.",
+    "score": "A raw ai_chance, ai_will_do, MTTH target score, or strategy intensity. It is not a normalized campaign frequency.",
+    "deterministic_selector": "A source loop, precedence chain, find_highest_in_array, or lower-id tie break. No probability is implied.",
+    "sequence_contract": "A declared lifecycle for queue/cooldown/cleanup analysis. The adapter must not infer effects or source transitions."
+  },
+  "workspace": {
+    "workspace_id": "mod_chaos_redux_ea3b2d67c2c0",
+    "game_version": "Operation Postern 1.19.2.0 (d245)",
+    "local_snapshot_date": "2026-08-24"
+  },
+  "source_snapshot": [
+    {
+      "path": "events/014_cannibalism.txt",
+      "sha256": "0377739ac3d8ba119520dfc3803e44c61bfcd9a730a184da447bdf7b1a5a8737",
+      "symbols": ["chaosx.nr14.30", "chaosx.nr14.80", "chaosx.nr14.81"]
+    },
+    {
+      "path": "common/scripted_effects/014_cannibalism_effects.txt",
+      "sha256": "469becf19e11468238f4b19e03583e0f8ec4cd44b76a82c869f03390fb6843d5",
+      "symbols": ["cannibalism_select_first_host", "cannibalism_select_highest_risk_state", "cannibalism_select_unification_host", "cannibalism_select_wendigo_merge_host", "cannibalism_process_spread_queue"]
+    },
+    {
+      "path": "common/scripted_triggers/014_cannibalism_triggers.txt",
+      "sha256": "7590020dfa1b49b1765584463b979021b50eeb186aef3ba9450b9bd1e273f25e",
+      "symbols": ["cannibalism_can_be_origin", "cannibalism_spread_context_is_valid", "cannibalism_is_viable_unification_host", "cannibalism_is_valid_wendigo_merge_host"]
+    },
+    {
+      "path": "common/mtth/014_cannibalism_mtth.txt",
+      "sha256": "9c43b60c5d15e3eb6e5ac4c975b713302197b32cc3739b7a2ac3857e5512e84c",
+      "symbols": ["cannibalism_evolution_i_days", "cannibalism_evolution_ii_days", "cannibalism_evolution_iii_days", "cannibalism_unified_target_decision_weight", "cannibalism_wendigo_target_decision_weight"]
+    },
+    {
+      "path": "common/decisions/014_cannibalism_decisions.txt",
+      "sha256": "5d33dd1ce78dcc5bae9e089181cf93d60f13afe9f52ad5920e89efdd5a9cfc65",
+      "symbols": ["cannibalism_restore_supply_corridor_mission", "cannibalism_wendigo_terminal_hunt_mission", "cannibalism_unified_collapse_enemy_front", "cannibalism_wendigo_launch_terminal_hunt"]
+    },
+    {
+      "path": "common/ai_strategy/014_cannibalism_warlords.txt",
+      "sha256": "44113b630915d1ea6ff6783ae0627503be4c6a5952371b8f94c9e315c5c9fed3",
+      "symbols": ["cannibalism_warlord_common_profile", "cannibalism_warlord_island_profile", "cannibalism_warlord_siege_profile", "cannibalism_warlord_march_profile"]
+    },
+    {
+      "path": "common/script_constants/014_cannibalism_constants.txt",
+      "sha256": "9aca3cd6b767e6bcb249f1dfc73826eb87d18561865fbc715407cce46e8a6ad",
+      "symbols": ["cannibalism_host_threshold", "cannibalism_host_weight", "cannibalism_state_weight", "cannibalism_spread", "cannibalism_timing", "cannibalism_target_score", "cannibalism_ai_strategy"]
+    },
+    {
+      "path": "common/on_actions/014_cannibalism_on_actions.txt",
+      "sha256": "3c107d32a9aea742e2818cd314a4da40fcbc14122d1bd8ec47b4b32720bc972b",
+      "symbols": ["on_capitulation", "on_annex", "on_state_control_changed", "on_naval_invasion", "on_recall_volunteers"]
+    }
+  ],
+  "contracts": [
+    {
+      "id": "e014_selectors",
+      "file": "event014_selector_contracts.json",
+      "classification": ["deterministic_selector", "score", "true_probability"],
+      "coverage": ["country host", "state risk", "warlord origin", "origin and region precedence", "convergence host", "Wendigo merge host", "Wendigo anchor", "event random surfaces"],
+      "mcp": {
+        "first_required_call": "hoi4.probability_inspect",
+        "adapter": "custom_weighted_pool",
+        "status": "source_adapter_incomplete",
+        "code": "PROBABILITY_SOURCE_INSPECTED",
+        "pool_complete": false,
+        "candidates": 0,
+        "required_inputs": 0,
+        "unresolved": 0,
+        "artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f7113f1b2aeb4c5e416d97f989fabed2142635f729244733f8e5da5644bb5c9d/a678dd5aa1c2bcfb5be56ea0becf5f2b5471fb39d30627635c017a0591eb18c5/probability-inspect-a2195480e458.json"
+      }
+    },
+    {
+      "id": "e014_spread_sequence",
+      "file": "event014_spread_sequence_contract.json",
+      "classification": ["deterministic_selector", "sequence_contract"],
+      "coverage": ["route dispatch", "queue cadence", "generation identity", "arrival", "containment", "invalidation", "compaction", "cleanup"],
+      "mcp": {
+        "first_required_call": "hoi4.probability_inspect",
+        "source_inspect_status": "source_adapter_incomplete",
+        "sequence_probe_status": "complete_manifest_probe",
+        "sequence_probe_analysis_id": "probability-959793529f480f0842ef5cd5",
+        "sequence_probe_artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/86df5076a6cb23b9ae20e9c945fcd230f1d0492c51bd69e3d14060b86f151f2a/3bcf87893dde2bad849c7eebcd9717bfeb0dc693443014eee7d9e215b3a0ce36/probability-959793529f480f0842ef5cd5.json",
+        "sequence_probe_source_revision": "ed391ce84cbf7cbe73df82d7212a4fe7995e7f9e077717f0f92d46306a282855",
+        "sequence_probe_source_hash": "62c5a67dd4490a4699d85d1508543e29d5f21f9a68e35e11fbd1f14c6057de0a",
+        "sequence_probe_result": "analysisStatus=complete; candidates=1; unresolved=0; diagnostics=0; samples=100",
+        "sequence_probe_limit": "Synthetic one-candidate manifest only; no source effect is executed and no campaign cadence or frequency is claimed."
+      }
+    },
+    {
+      "id": "e014_mtth_mission",
+      "file": "event014_mtth_mission_contracts.json",
+      "classification": ["score", "sequence_contract"],
+      "coverage": ["evolution I/II/III timing declarations", "unified target scores", "Wendigo target scores", "14 mission adapters"],
+      "mcp": {
+        "mtth_source_status": "discovered_no_weighted_surfaces",
+        "mtth_code": "PROBABILITY_SOURCE_DISCOVERED",
+        "mtth_artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ed92883c79b0b9849d1052ad073589de9e5a1e81ece26b6e413fa7669967cc90/7273d43ba19227cf546aa9c01b9805f99fdd437d6f629813faaced0e388d155d/probability-inspect-a1950692f970.json",
+        "decision_source_status": "source_adapter_incomplete",
+        "decision_candidates": 95,
+        "decision_required_inputs": 32,
+        "decision_artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/cc29dd5799af8e3871aba086353b4ade20c10bfc172915352d11cbcda03e5652/574b534bf02f4fb134835d619bc1ed51ecdc81fca8621e562f18e3f2d59220bb/probability-inspect-f0e56bfe94bb.json",
+        "mission_adapter_status": "requested mission_ai_will_do empty; adapter suggested decision_ai_will_do",
+        "mission_adapter_artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/884a3936fe58851b7ab983f77c53881241b88f735487f38058ff7a839457e63b/938f2a706ad596ecf778eb3508c9c253def1e0df6ae32f0ea46c942874fac6ed/probability-inspect-f0e56bfe94bb.json"
+      }
+    },
+    {
+      "id": "e014_ai_strategy_profiles",
+      "file": "event014_ai_strategy_profiles.json",
+      "classification": ["score"],
+      "coverage": ["common", "island", "siege", "march"],
+      "mcp": {
+        "adapter": "ai_strategy_factor",
+        "status": "no_weighted_surfaces",
+        "code": "PROBABILITY_SOURCE_DISCOVERED",
+        "artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/0f9b360bd13cf61f9ac0fdd41f53b0d1352df14146a09f19f664e35d7385f158/627558277a60af17dbafc95a9223c4458d2ae65e8ac127f9f677dd998db93cec/probability-inspect-02bd4b54a3b6.json"
+      }
+    }
+  ],
+  "true_probability_receipts": [
+    {
+      "id": "e014_capture_cooperation",
+      "classification": "true_probability",
+      "source": "events/014_cannibalism.txt:682-683,770-778",
+      "conditional_pool": ["cooperate=85", "escape=15"],
+      "conditional_result": "cooperate=17/20; escape=3/20",
+      "caveat": "Only the random_list inside chaosx.nr14.80 option d is covered; this is not the probability of reaching the event or choosing option d."
+    },
+    {
+      "id": "e014_regional_name",
+      "classification": "true_probability",
+      "source": "common/scripted_effects/014_cannibalism_effects.txt:4648-4709",
+      "conditional_pool": "Each selected region has four equal-weight name branches.",
+      "conditional_result": "1/4 per name within the selected region.",
+      "caveat": "The regional branch itself is deterministic precedence, not a weighted draw."
+    },
+    {
+      "id": "e014_personality",
+      "classification": "true_probability",
+      "source": "common/scripted_effects/014_cannibalism_effects.txt:4711-4718",
+      "conditional_pool": "Six equal-weight personality branches.",
+      "conditional_result": "1/6 per personality after the helper is called.",
+      "caveat": "No campaign frequency is inferred for helper invocation."
+    }
+  ],
+  "non_claims": [
+    "No deterministic selector is reported as a probability.",
+    "No ai_chance, ai_will_do, MTTH score, or strategy intensity is converted into a campaign frequency.",
+    "No source-linked probability_sequence result is claimed because the MCP custom-pool adapter cannot execute Clausewitz every_scope loops, event targets, or effects.",
+    "No gameplay, balance, cost, threshold, route gate, timer, or player-behavior source was changed."
+  ]
+}
