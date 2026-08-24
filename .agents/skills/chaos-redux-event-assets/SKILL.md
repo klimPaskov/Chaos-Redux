@@ -658,7 +658,11 @@ Route 3D model production to `chaos-redux-3d-model-pipeline` and `chaosx_3d_mode
 
 Before any provider or paid work, the 3D route must verify a nonblank `MESHY_API_KEY`, the selected pinned Meshy 7 MCP route with the exact `meshy-7` image-to-3D identifier, the narrow Blender HOI4 adapter, the installed Blender version, and the checksum-locked `io_pdx_mesh` setup.
 
-When a ready reference is absent, the route creates exactly one clean `meshy_input.png` for the asset. Never create or send side-profile sheets, turnaround boards, collages, or multi-view boards to Meshy. Contact sheets and Blender renders are QA evidence only.
+The 3D route must apply a source-first gate before provider work: search actual Internet-sourced modern designed artwork such as game concept, character or unit, production or promotional, tabletop or miniature, fantasy or horror, or professional design-sheet art. Licensed modern designed artwork is an allowed visual reference. A copyrighted source may proceed only in `reference_only_user_authorized` mode with explicit user authorization for that actual artwork. Reject unclear provenance or terms unless that authorization applies and no explicit restriction forbids the workflow; reject explicit `NoAI`, no-derivatives, or other terms incompatible with generative reference use. A license label alone does not override stated terms.
+
+Where terms permit, archive the original source bytes as non-shipping provenance evidence. Record the source URL/page, title, creator or publisher, stated license/terms, retrieval date, source checksum, explicit authorization, native ImageGen prompt, source-to-refinement comparison, refined checksum, and parent approval. Use native ImageGen to create a substantially original, model-ready refinement informed by the selected concept traits; it may clarify or complete model readability and adapt pose, composition, silhouette, background, or other production-facing presentation while preserving the explicitly selected traits and intended unit identity. The refinement need not be pixel-faithful. Never redistribute source pixels as runtime art, and keep any archived source out of shipped folders.
+
+Meshy receives exactly one approved `refs/original/meshy_input.png` refinement from one eligible source. Never create or send side-profile sheets, turnaround boards, collages, or multi-view boards to Meshy. Contact sheets, source images, comparison sheets, and Blender renders are QA evidence only. A source-free from-scratch reference is a separate explicit fallback after documented search failure; without that approval, mark the reference `needs_user_review` or `blocked`.
 
 Every 3D asset brief must identify the asset profile, deterministic job root, provider task lineage, reference checksum, named vanilla mesh and entity precedent, source geometry height, entity scale, effective runtime height, axes, origin, contact plane, required actions, root-motion policy, PDX material channels, texture dimensions, `.mesh` and `.anim` outputs, reimport proof, runtime hashes, and live consumer.
 
@@ -668,7 +672,7 @@ Provider source files are immutable evidence. Working geometry must be repaired 
 
 For animated units, every required action must retain primary motion from verified Meshy `meshy_animate` or another explicitly user-approved professional animation source. Blender may import, retarget, clean, correct contacts or roots, normalize scale, bake, check root policy, deformation, FPS, frame range, and loop behavior, then export and reimport the approved source as a real `.anim` file; it may not author manual, simple procedural, transform-only, static-pose, semantic-alias, or whole-rig replacement motion. A static image or still mesh is not an acceptable substitute for a requested skeletal action, and missing roles are blocked pending an approved source.
 
-For armed Meshy-only units, the single approved source image must already depict the character bearing its weapon. Meshy 7 must generate the weapon as part of that character, Meshy must rig the resulting weapon-bearing character, and verified `meshy_animate` must supply and validate the library action. Blender may inspect, calibrate, validate, convert, export, and reimport that provider result, but may not isolate, attach, parent, constrain, weight, create a weapon bone, or author replacement firearm motion. If the provider loses the weapon or the required trigger-hand, foregrip/secondary-hand, or shoulder/stock contact, reject it and continue automatically through Meshy recovery or block when the provider cannot produce a passing result. Do not require a T-pose image for normal armed character generation.
+For armed Meshy-only units, the single approved refined input must depict the complete weapon-bearing character in a natural, readable production pose. The source artwork may be refined to clarify or complete weapon readability before this approval, while preserving the intended unit identity. Meshy 7 must generate the weapon as part of that character, Meshy must rig the resulting weapon-bearing character, and verified `meshy_animate` must supply and validate the library action. Blender may inspect, calibrate, validate, convert, export, and reimport that provider result, but may not isolate, attach, parent, constrain, weight, create a weapon bone, or author replacement firearm motion. If the provider loses the weapon or the required trigger-hand, foregrip/secondary-hand, or shoulder/stock contact, reject it and continue automatically through Meshy recovery or block when the provider cannot produce a passing result. Do not require a T-pose image for normal armed character generation.
 
 For every firing runtime state, the 3D handoff must identify the exact discharge frame/time and verified muzzle or weapon locator/node, plus the matching particle/beam/muzzle effect, light where the weapon calls for one, and licensed sourced `soundeffect`. Attack, defend, support_attack, and any other firing state are independent consumers; a silent or particleless firing state is incomplete, and an unrelated vanilla weapon family must not be silently reused. The 3D worker supplies the action → discharge frame/time → locator/node → particle/light → soundeffect → source/license/checksum → runtime entity consumer → evidence/status crosswalk; the parent owns final entity, particle, sound-definition, and runtime wiring. Non-firing armed actions do not require particles or gunshot audio merely because the unit is armed.
 
@@ -1010,16 +1014,41 @@ Read the matching canonical catalog entries and inspect the owning `.gfx`, `.gui
 
 Achievement icons should be compact and readable at 64x64.
 
-Generate the completed achievement icon first with `$imagegen`.
+Treat each existing achievement triplet as three authoritative state layers and compose the supplied workflow backgrounds underneath those layers.
 
-Then create:
+- `assets/vanilla_reference/icons/achievements/achievement_template.png` is the user-provided completed-state background.
+- `assets/vanilla_reference/icons/achievements/achievement_template_grey.png` is the user-provided grey and not-eligible background.
+- `assets/vanilla_reference/icons/achievements/overlay.png` is the existing red not-eligible overlay and must remain unchanged.
 
-- grey variant (simply black and white)
-- not-eligible variant by copying the grey variant and compositing `icons/achievements/overlay.png` on top
+These three files are workflow inputs, not Vanilla references, and are excluded from the achievement contact sheet and coverage count. Record their source and SHA-256 in the asset handoff when a package uses them.
 
-The variants may be created after the completed icon exists.
+Every migration source must provide a complete `<achievement_id>.{png,dds}`, `<achievement_id>_grey.{png,dds}`, and `<achievement_id>_not_eligible.{png,dds}` triplet, and every decoded state layer must be exactly 64x64. The processor must preserve each supplied state layer at its native 64x64 canvas and exact position without resizing, cropping, alpha-trimming, grayscale conversion, recoloring, redrawing, filtering, or other preprocessing.
 
-Do not create not-eligible achievement icons by red-tinting, filtering, darkening, recoloring, or manually redrawing the grey icon. If the overlay file is missing or cannot be applied cleanly, stop and report the asset as blocked instead of substituting another treatment.
+Build the exact three-state contract:
+
+1. Completed: `achievement_template.png` as the bottom layer with the supplied completed state unchanged as the top layer.
+2. Grey: `achievement_template_grey.png` as the bottom layer with the supplied `_grey` state unchanged as the top layer.
+3. Not eligible: `achievement_template_grey.png` as the bottom layer with the supplied `_not_eligible` state unchanged as the top layer.
+
+Normal alpha compositing is the only pixel interaction between a template and a state layer. An opaque custom background in a supplied state may completely hide the new bottom layer and is accepted. The existing `overlay.png` remains available as the unchanged red overlay for future source-triplet creation, but migration never derives a not-eligible state from grey plus overlay and never replaces a supplied not-eligible layer.
+
+Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` for the reusable triplet-preservation and DDS handoff. Directory mode collects complete base, `_grey`, and `_not_eligible` triplets and never derives missing states. Use `--input <source_triplet_directory>` for a bulk pass, add `--achievement-id <achievement_id>` to select one triplet, or provide all three explicit paths with `--completed`, `--grey`, and `--not-eligible`. A single source file is not a valid preservation input.
+
+DDS sources use the strict canonical BGRA parser first, then a Pillow DDS fallback with `ImageFile.LOAD_TRUNCATED_IMAGES = True` enabled only while decoding compressed, mipped, noncanonical, or truncated current inputs; this fallback never weakens the strict final-output validator. PNG and DDS state layers are still required to decode to exactly 64x64.
+
+Run it from the mod root with an explicit separate output directory:
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py `
+    --input <source_triplet_directory> `
+    --achievement-id <achievement_id> `
+    --output-dir <staging_or_runtime_gfx_achievements> `
+    --write-png
+```
+
+For an explicit one-triplet pass, provide `--completed <completed.png|completed.dds> --grey <grey.png|grey.dds> --not-eligible <not_eligible.png|not_eligible.dds> --achievement-id <achievement_id> --output-dir <separate_output_directory>`. Use `--dry-run` to decode and validate complete source triplets without writing, or `--audit --input <source_triplet_directory> --output-dir <output_directory>` to recompute and validate existing triplets. The processor writes optional review PNGs below `output-dir/review/` and final DDS files directly below `output-dir`.
+
+Keep source triplets separate from processed outputs. The processor fails closed when any state is missing, when a state is not exactly 64x64, when a source triplet still exposes the unchanged outer template border, or when an output already exists without `--force`. `--in-place --force` is required when intentionally replacing outputs beside the source triplet, and generated output triplets must not be fed back as source layers unless that replacement is explicitly intended. Pass `--allow-templated-sources` only for an intentional reprocessing exception.
 
 Target size:
 
@@ -1039,7 +1068,7 @@ gfx/achievements/<achievement_id>_not_eligible.dds
 
 When renaming or adding achievement ids, update `common/achievements/`, `localisation/english/chaosx_achievements_l_english.yml`, `interface/chaosx_achievements.gfx`, the three DDS variants in `gfx/achievements/`, and any docs or manifests that list the final DDS paths. If the achievement registry owns a single `unique_id`, keep it as one root-level registry file and group event-owned achievements by event section inside the file instead of splitting it into per-event achievement files.
 
-Inspect `icons/achievements/` before generating or processing achievement icons. The reference set includes a completed, grey, and not-eligible triplet, keep all three states aligned to the exact achievement id.
+Inspect the Vanilla triplets in `icons/achievements/` for scale and state readability, then use the mandatory skill-owned workflow inputs above for every Chaos Redux achievement. Keep all three states aligned to the exact achievement id.
 
 ## 20. Flags
 
@@ -1346,6 +1375,8 @@ If a processing script is retained as provenance, rerun it after correcting its 
 
 If conversion fails, stop and report the error. Do not invent another conversion route unless the user approves it.
 
+For achievement triplets, the processor may read current runtime DDS sources through its Pillow fallback when strict canonical parsing rejects compressed, mipped, noncanonical, or truncated source files, with `ImageFile.LOAD_TRUNCATED_IMAGES = True` enabled only during that source decode. It must still write and audit every state as a strict one-level 64x64 legacy BGRA DDS whose pixels equal the proper supplied background alpha-composited beneath the exact decoded source state layer. Review PNGs are optional, but every runtime triplet requires all three 64x64 legacy BGRA DDS files.
+
 After conversion, confirm that:
 
 - the DDS exists
@@ -1480,7 +1511,7 @@ Before finishing, confirm:
 20. No final asset remains only in a temporary folder.
 21. Every icon family in section 5.2 was treated as its own asset type, and no UI surface was satisfied by resizing, cropping, recoloring, padding, relabeling, or lightly editing an icon made for another surface.
 22. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, has no transform-only final motion, and proves its animation family's purpose and direction or state semantics rather than only its frame count.
-23. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
+23. Every uncompressed one-level BGRA DDS, including every achievement triplet, passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24; each achievement also proves completed equals the completed template beneath the exact decoded completed layer, while grey and not-eligible equal the grey template beneath their exact decoded supplied state layers.
 24. Every grounded character portrait passes section 21 with an unchanged original, co-located lossless pre-resize crop, JSON equality/model evidence, `156x210` candidate, provenance `.txt` contract, independent identity/framing/provenance review, and correct DDS/runtime evidence. `source_placeholder` is valid when explicitly selected; `replacement_pending` is honest only after an explicit styled-final request remains outstanding, while `styled_final` requires validated provider output and independent review. Commander textures are full `156x210`, never fabricated `50x67` sources. An illustration cannot serve as the identity master, and a crop without exact decoded-pixel equality evidence fails this checklist.
 25. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 26. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package, one pipeline was not resized or relabeled to substitute for another. A 3D package also proves the one-image Meshy input rule, provider lineage, vanilla scale calibration, PDX material mapping, topology repair, required skeletal actions, `.mesh`/`.anim` reimport, hash-aware runtime synchronization, parent-owned wiring, and a live consumer.
