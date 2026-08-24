@@ -1,6 +1,24 @@
 # Event 006: Independence Wave
 
-## Current package authority (2026-08-14 IW-045 admission)
+## Current authority override (2026-08-24 after schema, cost-localisation, and static-audit reconciliation)
+
+Event 006 remains **HOLD / PARTIAL**. The current operational boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows; IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM remain adapter-only and fail-closed. The automatic ladder remains `3/4/5/7/10`, World Collapse also targets `10`, and nothing is visible before Event 006 fires.
+
+The supplied portrait status is 38 installed source-placeholder DDS files with exact existing Event 006 consumers and 13 explicitly unmapped files. The earlier 37-installed/14-unmapped count is historical traceability only; no unmapped file is relabelled, copied, or promoted, and the package remains fail-closed. The current portrait authorities are `../../plans/006_independence_wave_plans/subagent_handoffs/006_portrait_wiring_supplied_runtime_2026_08_22.md` and `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`.
+
+As of this 2026-08-24 reconciliation, the latest portrait wiring evidence remains dated 2026-08-22: the supplied runtime set is still 38 installed source-placeholder DDS consumers with 13 intentionally unmapped files. No newer portrait wiring handoff or runtime portrait binary change was observed, so this date updates the documentation snapshot only and does not promote a portrait, alter a package gate, or claim a new asset tranche.
+
+Commit `b77f9fd45` repairs dormant-carrier initialization and baseline-law ordering for AXX, BAX, BBX, AFX, and AGX, and the related capital-scope repair is source-closed for AXX/BAX/BBX through fixed numeric anchors 82, 184, and 185. Commit `d6abc3792` recomputes the joint partial-wave expected country count from the actual Event 005 and Event 006 selected counts before optional expansion and lock, while `abb0a8c83` brings the Event 005-aware witness to 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 attestations. These are static source repairs; joint and live terminal receipts remain unproven.
+
+Current static audits pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, and Statehood Ledger semantic matrix checks. The latest focus evidence is 184 focuses, 195 connectors, zero crossings, and zero node intersections, with seven Event 006 layout warnings and fourteen unrelated vanilla continuous-focus diagnostics, so focus acceptance remains **HOLD**. Event and probability MCP evidence is source-linked but partial, and the Statehood Ledger/formable GUI inspections retain workspace-global diagnostics rather than clean family-isolated acceptance.
+
+The 2026-08-24 research-table schema repair and static cost-localisation refresh are source/static evidence only; they preserve the 32/29/40/161 boundary and do not establish live event execution, tooltip observation, GUI acceptance, or balance. Their evidence is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_research_csv_schema_repair_2026-08-24.md` and `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_static_audit_refresh_2026-08-24.md`.
+
+Super-event 23 remains blocked because the accepted London Brass Players recording lacks verified United States/worldwide redistribution permission. The 2026-08-22 v117 re-verification keeps *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as the strongest rights-complete research candidate, but it is not selected, promoted, or wired; parent/user approval, ShareAlike treatment, human audition, and the source URL caveat remain open, so audio ID 23, wrappers, and firing remain absent. Super-event 24 remains source-wired with partial reachability.
+
+The source-of-truth map and resume packet under `../../plans/006_independence_wave_plans/` are the current operational ledger; the dated package authority below is retained for traceability and is superseded where it conflicts with this override.
+
+## Historical package authority (2026-08-14 IW-045 admission; superseded above)
 
 The IW-045 Bashkiria admission supersedes the earlier adapter-only wording in this overview; all earlier package arithmetic remains historical traceability unless explicitly labeled as current after this heading.
 

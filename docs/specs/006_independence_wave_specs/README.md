@@ -20,6 +20,12 @@ The added research layer contains a 206-row resolution matrix, state reservation
 
 The dated implementation bridge is recorded in `../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. The matching restart point is `../../plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`. These plan documents do not replace the seven accepted specification parts. They bind the accepted package identities and dispositions to the current installed-map binding snapshot and record unresolved production gates. For current identity and tag questions, use the candidate registry, current binding CSV, and tag collision/reuse audit listed below; do not use historical reservation handoffs as a replacement.
 
+## Current reconciliation snapshot (2026-08-24)
+
+The seven specification parts remain the accepted design authority, while the source-of-truth map and resume packet carry the current implementation ledger. Event 006 remains **HOLD / PARTIAL** at 32 content-attested packages, 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows. The current portrait boundary is 38 installed source-placeholder consumers and 13 intentionally unmapped supplied files; the latest wiring evidence is dated 2026-08-22, and no newer portrait handoff or runtime binary change was observed. The 2026-08-24 schema repair and static cost-localisation refresh are source/static evidence only, with remaining admission, probability, live-event, GUI, focus, and super-event rights gates preserved in the plan ledger.
+
+Use `../../plans/006_independence_wave_plans/006_source_of_truth_map.md` and `../../plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` before reopening older plans or handoffs.
+
 The 2026-08-09 current-additions promotion is folded into Part 2, Part 6, and Part 7: the grouped state-puzzle workflow covers fourteen runtime-authored families, seventeen attached decision categories, 50 candidate-state rows, and 100 DDS pieces, while FORM-07, FORM-08, and FORM-48 remain explicit readiness-controlled fail-closed surfaces. Join the Independence Wave uses the scoped retry and first-loss observation contract owned by the current source patch and handoff; older working-plan wording remains historical evidence.
 
 ## Package map
