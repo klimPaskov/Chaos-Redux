@@ -16,7 +16,7 @@ The imported `common/national_focus/006_independence_wave*.txt` sources define t
 
 `common/scripted_effects/006_independence_wave_package_dispatch_effects.txt` applies the common finalization barrier. If a package adapter reports success without either contract, its final validation is changed to failure and the frozen release cannot commit. This keeps the generic tree universal without overwriting a living meaningful carrier tree.
 
-The same assignment surface sets `independence_wave_generic_ai_profile` for every accepted full-framework or reviewed additive carrier, and generation cleanup clears it. The identity-neutral baseline profiles in `common/ai_strategy/006_independence_wave_generic.txt` read the public capacity, instability, recognition, host, and security values; package-specific AI remains additive. A release cannot pass final validation with the focus contract but without this baseline profile.
+The same assignment surface sets `independence_wave_generic_ai_profile` for every accepted full-framework or reviewed additive carrier, and generation cleanup clears it. The identity-neutral baseline profiles in `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` read the public capacity, instability, recognition, host, and security values; package-specific AI remains additive. A release cannot pass final validation with the focus contract but without this baseline profile.
 
 ## Shared lanes
 

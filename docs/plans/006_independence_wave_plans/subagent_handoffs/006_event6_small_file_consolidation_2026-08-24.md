@@ -10,6 +10,10 @@ The 11 dormant compatibility effect files are now one compact parser surface at 
 
 The 11 matching dormant compatibility trigger files are now one compact parser surface at `common/scripted_triggers/006_independence_wave_compatibility_triggers.txt`.
 
+The 38 package-local AI strategy files are now one source-marked parser surface at `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt`.
+
+The 65 package-local script-constant files are now one source-marked parser surface at `common/script_constants/006_independence_wave_constants_registry.txt`.
+
 Each merged section retains a source filename marker and its original filename order, and every executable definition keeps its original identifier.
 
 ## Preservation checks
@@ -22,6 +26,8 @@ The merged compatibility trigger registry contains 53 unique top-level scripted 
 
 The retired `006_independence_wave_vanilla_formable_compatibility_triggers.txt` file remains separate because it is a distinct vanilla-formable compatibility surface rather than one of the 11 dormant IW package adapters.
 
+The country-shell files remain separate because the country-file basename is the engine identity boundary. On-action files remain separate because several files define the same engine callback keys, and decisions, package effects, focus trees, and scripted localisation retain their ownership and block-composition boundaries.
+
 Event 006 on-action files remain separate because several of them define the same engine callback keys, and concatenating those blocks without an explicit effect-composition audit could replace or reorder callbacks.
 
 Package decisions, package effects, focus trees, and localisation remain separate because their file boundaries carry package ownership and audit scope. A follow-on definition-registry pass is recorded in `subagent_handoffs/006_event6_definition_registry_consolidation_2026-08-24.md`; it merges only the Event 006 ideas, characters, and country-leader-trait containers after preserving their unique identifiers and identical file-scoped constants.
@@ -30,7 +36,7 @@ Package decisions, package effects, focus trees, and localisation remain separat
 
 The consolidation removes 68 old small parser files and leaves three compact registries in their place, for a net reduction of 66 files.
 
-Compared with the committed source snapshot, the three merged registries reduce the source bytes by 44,235 bytes after repeated banner prose is removed while the executable definitions remain intact.
+Compared with the committed source snapshot, the first three merged registries reduce the source bytes by 44,235 bytes after repeated banner prose is removed while the executable definitions remain intact. The follow-on definition pass reduced another 34,775 bytes across ideas, characters, and leader traits. This AI and constant pass removes 103 additional source files and saves 33,879 bytes after retaining compact source markers.
 
 ## Validation boundary
 

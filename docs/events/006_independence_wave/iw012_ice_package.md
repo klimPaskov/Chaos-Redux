@@ -17,7 +17,7 @@ The package dispatches through `common/scripted_effects/006_independence_wave_ic
 
 ## Visible mechanics
 
-The package owns five central values: Port Authority, Civic Cohesion, Coastwatch Readiness, Shipping Security, and Compact Support. Their values are initialized centrally in `common/script_constants/006_independence_wave_ice_constants.txt`, clamped to the shared 0–100 range, displayed through the package decisions and ideas, and changed by projects, the host charter, league/network actions, route commitment, and mission failure.
+The package owns five central values: Port Authority, Civic Cohesion, Coastwatch Readiness, Shipping Security, and Compact Support. Their values are initialized centrally in `common/script_constants/006_independence_wave_constants_registry.txt`, clamped to the shared 0–100 range, displayed through the package decisions and ideas, and changed by projects, the host charter, league/network actions, route commitment, and mission failure.
 
 The timed `Hold the Harbour Together` mission is a real survival deadline. It cancels successfully when the island stabilizes and fails when the capital loses control, the former host disappears, or the timer expires. The shared DM-01 capital mission remains available with a fragile-tier two-division guard, while the harbour crisis counts as an active founding mission so generic founding projects cannot overlap it. Six concrete-cost projects then serialize one at a time:
 
@@ -32,7 +32,7 @@ The host project writes all eight bilateral ledger dimensions through the shared
 
 ## Forces and AI
 
-IW-012 uses the existing p12 `coastal_maritime` dynamic force profile, p12 military tradition, navy inheritance, and its researched reinforcement pathways. Force materialization is performed only after the vanilla roster and reservation anchors pass, so the package never runs a free-unit loop. `common/ai_strategy/006_independence_wave_ice.txt` adds coastwatch, convoy, harbour, host-charter, and compact priorities while leaving vanilla ICE AI plans in place. Host-charter and compact diplomacy are added through `independence_wave_ice_apply_host_ai` with the frozen `independence_wave_setup_former_host` target rather than a Denmark literal; cleanup reverses the same target-specific weights before the Event 006 context is discarded.
+IW-012 uses the existing p12 `coastal_maritime` dynamic force profile, p12 military tradition, navy inheritance, and its researched reinforcement pathways. Force materialization is performed only after the vanilla roster and reservation anchors pass, so the package never runs a free-unit loop. `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` adds coastwatch, convoy, harbour, host-charter, and compact priorities while leaving vanilla ICE AI plans in place. Host-charter and compact diplomacy are added through `independence_wave_ice_apply_host_ai` with the frozen `independence_wave_setup_former_host` target rather than a Denmark literal; cleanup reverses the same target-specific weights before the Event 006 context is discarded.
 
 ## Formable and focus integration
 

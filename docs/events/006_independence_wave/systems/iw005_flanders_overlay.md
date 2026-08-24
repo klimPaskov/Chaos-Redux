@@ -59,7 +59,7 @@ The category exposes two values from 0 to 100:
 | Civic-Industrial Coordination | Agreement among municipalities, factories, rail administration, and civilian warrants | 30 | 55 |
 | Scheldt Security | Depot custody, corridor defence, officer screening, and territorial command readiness | 25 | 55 |
 
-Every gain, loss, threshold, cost, timeout, modifier, and AI weight is centralized in `common/script_constants/006_independence_wave_iw005_flanders_constants.txt`. The localisation reads those constants directly.
+Every gain, loss, threshold, cost, timeout, modifier, and AI weight is centralized in `common/script_constants/006_independence_wave_constants_registry.txt`. The localisation reads those constants directly.
 
 ## Playable progression
 
@@ -113,7 +113,7 @@ The Flemish participant remains a Belgian sovereign delegation. FORM-03 may reco
 
 ## Files
 
-- `common/script_constants/006_independence_wave_iw005_flanders_constants.txt`
+- `common/script_constants/006_independence_wave_constants_registry.txt`
 - `common/scripted_triggers/006_independence_wave_iw005_flanders_triggers.txt`
 - `common/scripted_effects/006_independence_wave_iw005_flanders_effects.txt`
 - `common/on_actions/006_independence_wave_iw005_flanders_on_actions.txt`

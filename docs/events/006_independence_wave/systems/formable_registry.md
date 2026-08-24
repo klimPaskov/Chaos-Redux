@@ -18,7 +18,7 @@ The design authority remains docs/specs/006_independence_wave_specs/specs/006_in
 
 ## Registry profile
 
-common/script_constants/006_independence_wave_formable_constants.txt assigns FORM-01 through FORM-48 stable numeric family IDs and stores one profile row for every CSV entry.
+common/script_constants/006_independence_wave_constants_registry.txt assigns FORM-01 through FORM-48 stable numeric family IDs and stores one profile row for every CSV entry.
 
 Each row contains:
 

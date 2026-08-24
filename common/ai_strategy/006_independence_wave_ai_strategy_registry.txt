@@ -1,0 +1,3604 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 AI STRATEGY REGISTRY
+# ============================================================================
+# Former Event 006 definition files are kept as source-marked sections.
+# Identifiers, values, gates, and runtime ownership are unchanged.
+# ============================================================================
+
+# [source: 006_independence_wave_altai.txt]
+@CR_SC_IW_ALT_ARMY = 96
+@CR_SC_IW_ALT_PRODUCTION = 44
+@CR_SC_IW_ALT_SUPPORT = 52
+@CR_SC_IW_ALT_ARTILLERY = 22
+@CR_SC_IW_ALT_INFRASTRUCTURE = 82
+@CR_SC_IW_ALT_DEFENSE = 92
+@CR_SC_IW_ALT_EMERGENCY = 124
+@CR_SC_IW_ALT_FOUNDING_RESTRAINT = -280
+@CR_SC_IW_ALT_SETTLED_RESTRAINT = -450
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-053 ALTAI AI
+# ============================================================================
+# ALT prioritizes mountain defense, Oyrot access, and guarded former-host
+# separation. Route choice remains owned by the shared focus framework and the
+# package-local decision lane.
+# ============================================================================
+
+independence_wave_altai_mountain_survival = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_iw_053_setup_complete
+		has_country_flag = independence_wave_altai_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_ALT_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_ALT_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_ALT_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_ALT_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_ALT_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_ALT_DEFENSE }
+}
+
+independence_wave_altai_host_restraint = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_iw_053_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_altai_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_ALT_FOUNDING_RESTRAINT }
+}
+
+independence_wave_altai_settled_frontier = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_altai_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_ALT_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_ALT_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_ALT_INFRASTRUCTURE }
+}
+
+independence_wave_altai_emergency_mountain_guard = {
+	allowed = { original_tag = ALT has_independence_wave_altai_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_altai_package = yes
+		has_country_flag = independence_wave_altai_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_ALT_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_ALT_DEFENSE }
+}
+
+# [source: 006_independence_wave_banat.txt]
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARMY_PRIORITY = 92
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARTILLERY_PRIORITY = 20
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_DEFENSE_PRIORITY = 86
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_EMERGENCY_ARMY_PRIORITY = 118
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_FOUNDING_RESTRAINT = -235
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_INFRASTRUCTURE_PRIORITY = 68
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_PRODUCTION_PRIORITY = 36
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SETTLED_RESTRAINT = -430
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SUPPORT_PRIORITY = 48
+@CR_SC_INDEPENDENCE_WAVE_BANAT_AI_TRADITIONAL_ARMY_PRIORITY = 108
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-024 BANAT AI
+# ============================================================================
+# Additive strategy layers for the AXX carrier. The vanilla baseline remains
+# active; these strategies protect the Banat anchor, screen the former host,
+# and prefer the mountain-frontier force profile before expansion.
+# ============================================================================
+
+independence_wave_axx_banat_survival = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_iw_024_setup_complete
+		has_country_flag = independence_wave_axx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_axx_host_restraint = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_iw_024_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_axx_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_axx_settled_banat = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_axx_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_axx_emergency_commission = {
+	allowed = { original_tag = AXX }
+	enable = {
+		is_independence_wave_axx_package = yes
+		has_country_flag = independence_wave_axx_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BANAT_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_bashkiria.txt]
+@CR_SC_IW_BSK_ARMY = 90
+@CR_SC_IW_BSK_PRODUCTION = 42
+@CR_SC_IW_BSK_SUPPORT = 48
+@CR_SC_IW_BSK_ARTILLERY = 24
+@CR_SC_IW_BSK_INFRASTRUCTURE = 78
+@CR_SC_IW_BSK_DEFENSE = 86
+@CR_SC_IW_BSK_EMERGENCY = 120
+@CR_SC_IW_BSK_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_BSK_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-045 BASHKIRIA AI
+# ============================================================================
+# AI prioritizes frontier security, oilfield infrastructure, and a restrained
+# former-host relationship until the compact is settled. Route choice remains
+# owned by the shared focus framework and the BSK decision package.
+# ============================================================================
+
+independence_wave_bsk_frontier_survival = {
+	allowed = { original_tag = BSK }
+	enable = {
+		is_independence_wave_bashkiria_package = yes
+		has_country_flag = independence_wave_iw_045_setup_complete
+		has_country_flag = independence_wave_bsk_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BSK_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_BSK_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_BSK_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_BSK_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_BSK_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_BSK_DEFENSE }
+}
+
+independence_wave_bsk_host_restraint = {
+	allowed = { original_tag = BSK }
+	enable = {
+		is_independence_wave_bashkiria_package = yes
+		has_country_flag = independence_wave_iw_045_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bsk_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_BSK_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bsk_settled_frontier = {
+	allowed = { original_tag = BSK }
+	enable = {
+		is_independence_wave_bashkiria_package = yes
+		has_country_flag = independence_wave_bsk_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BSK_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_BSK_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_BSK_INFRASTRUCTURE }
+}
+
+independence_wave_bsk_emergency_frontier_guard = {
+	allowed = { original_tag = BSK }
+	enable = {
+		is_independence_wave_bashkiria_package = yes
+		has_country_flag = independence_wave_bsk_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BSK_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_BSK_DEFENSE }
+}
+
+# [source: 006_independence_wave_bosnia.txt]
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARMY_PRIORITY = 94
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARTILLERY_PRIORITY = 22
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_DEFENSE_PRIORITY = 90
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_EMERGENCY_ARMY_PRIORITY = 122
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_FOUNDING_RESTRAINT = -245
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_INFRASTRUCTURE_PRIORITY = 72
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_PRODUCTION_PRIORITY = 38
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SETTLED_RESTRAINT = -440
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SUPPORT_PRIORITY = 52
+@CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_TRADITIONAL_ARMY_PRIORITY = 112
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-029 BOSNIA AI
+# ============================================================================
+# The vanilla BOS baseline remains active. These additive strategies protect
+# the Sarajevo/104 anchor, vet the Yugoslav former-host relationship, and use
+# the mountain-frontier force profile before a settled expansion route.
+# ============================================================================
+
+independence_wave_bos_sarajevo_survival = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_iw_029_setup_complete
+		has_country_flag = independence_wave_bos_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bos_host_restraint = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_iw_029_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bos_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bos_settled_drina = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_bos_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_bos_emergency_command = {
+	allowed = { original_tag = BOS }
+	enable = {
+		is_independence_wave_bos_package = yes
+		has_country_flag = independence_wave_bos_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BOSNIA_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_brittany.txt]
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_ARMY_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_ARTILLERY_PRIORITY = 25
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_CONVOY_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DEFENSE_PRIORITY = 55
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DOCKYARD_PRIORITY = 40
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_EMERGENCY_ARMY_PRIORITY = 100
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_FOUNDING_RESTRAINT = -250
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_INFANTRY_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_INFRASTRUCTURE_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_SETTLED_RESTRAINT = -400
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_SUPPORT_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_TRAIN_PRIORITY = 20
+# ============================================================================
+# CHAOS REDUX - EVENT 006 BRITTANY AI STRATEGIES
+# ============================================================================
+# IW-004 protects the state-14 ports, coastal supply, and bilingual settlement.
+# All route profiles retain founding restraint and start no scripted wars.
+# ============================================================================
+
+independence_wave_bri_maritime_survival = {
+	allowed = { original_tag = BRI }
+	enable = { is_independence_wave_bri_package = yes has_country_flag = independence_wave_iw_004_setup_complete has_country_flag = independence_wave_bri_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_bri_founding_restraint = {
+	allowed = { original_tag = BRI }
+	enable = { is_independence_wave_bri_package = yes has_country_flag = independence_wave_iw_004_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bri_host_threat = {
+	allowed = { original_tag = BRI }
+	enable = { is_independence_wave_bri_package = yes has_country_flag = independence_wave_iw_004_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DEFENSE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bri_civic_maritime_policy = {
+	allowed = { original_tag = BRI }
+	enable = {
+		is_independence_wave_bri_package = yes
+		has_country_flag = independence_wave_iw_004_setup_complete
+		OR = { has_independence_wave_constitutional_route = yes has_independence_wave_traditional_route = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_bri_labor_policy = {
+	allowed = { original_tag = BRI }
+	enable = { is_independence_wave_bri_package = yes has_country_flag = independence_wave_iw_004_setup_complete has_independence_wave_popular_council_route = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_TRAIN_PRIORITY }
+}
+
+independence_wave_bri_emergency_policy = {
+	allowed = { original_tag = BRI }
+	enable = { is_independence_wave_bri_package = yes has_country_flag = independence_wave_iw_004_setup_complete has_independence_wave_emergency_military_route = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_FOUNDING_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bri_patron_policy = {
+	allowed = { original_tag = BRI }
+	enable = { is_independence_wave_bri_package = yes has_country_flag = independence_wave_iw_004_setup_complete has_independence_wave_patron_client_route = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_DOCKYARD_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_BRITTANY_AI_CONVOY_PRIORITY }
+}
+
+# [source: 006_independence_wave_buryatia.txt]
+@CR_SC_IW_BYA_ARMY = 90
+@CR_SC_IW_BYA_PRODUCTION = 42
+@CR_SC_IW_BYA_SUPPORT = 48
+@CR_SC_IW_BYA_ARTILLERY = 24
+@CR_SC_IW_BYA_INFRASTRUCTURE = 78
+@CR_SC_IW_BYA_DEFENSE = 86
+@CR_SC_IW_BYA_EMERGENCY = 120
+@CR_SC_IW_BYA_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_BYA_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-052 BURYATIA AI
+# ============================================================================
+# AI prioritizes frontier security, baikal infrastructure, and a restrained
+# former-host relationship until the compact is settled. Route choice remains
+# owned by the shared focus framework and the BYA decision package.
+# ============================================================================
+
+independence_wave_bya_frontier_survival = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_iw_052_setup_complete
+		has_country_flag = independence_wave_bya_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BYA_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_BYA_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_BYA_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_BYA_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_BYA_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_BYA_DEFENSE }
+}
+independence_wave_bya_host_restraint = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_iw_052_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bya_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_BYA_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bya_settled_frontier = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_bya_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BYA_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_BYA_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_BYA_INFRASTRUCTURE }
+}
+
+independence_wave_bya_emergency_frontier_guard = {
+	allowed = { original_tag = BYA has_independence_wave_bya_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_buryatia_package = yes
+		has_country_flag = independence_wave_bya_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_BYA_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_BYA_DEFENSE }
+}
+
+# [source: 006_independence_wave_catalonia.txt]
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_ARMY_PRIORITY = 90
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_ARTILLERY_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_DEFENSE_PRIORITY = 80
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_EMERGENCY_ARMY_PRIORITY = 120
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_FOUNDING_RESTRAINT = -240
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_INDUSTRIAL_EXPANSION_PRIORITY = 95
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_INFRASTRUCTURE_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_PRODUCTION_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_SETTLED_RESTRAINT = -460
+@CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_SUPPORT_PRIORITY = 55
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-014 CATALONIA AI
+# ============================================================================
+# Additive strategy layers for vanilla CAT. The carrier keeps vanilla history
+# and AI; these layers respond to the package's industrial/assembly ledgers,
+# host settlement, and chosen route government.
+# ============================================================================
+
+independence_wave_cat_industrial_survival = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_iw_014_setup_complete
+		has_country_flag = independence_wave_cat_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_cat_host_restraint = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_iw_014_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_cat_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_cat_settled_industry = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_cat_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_INDUSTRIAL_EXPANSION_PRIORITY }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_INDUSTRIAL_EXPANSION_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_cat_emergency_command = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_cat_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_CATALONIA_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_epirus.txt]
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARMY_PRIORITY = 108
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARTILLERY_PRIORITY = 22
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_DEFENSE_PRIORITY = 110
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_EMERGENCY_ARMY_PRIORITY = 132
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_FOUNDING_RESTRAINT = -240
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_INFRASTRUCTURE_PRIORITY = 64
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_PRODUCTION_PRIORITY = 28
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SETTLED_RESTRAINT = -420
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SUPPORT_PRIORITY = 46
+@CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_TRADITIONAL_ARMY_PRIORITY = 116
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-028 EPIRUS AI
+# ============================================================================
+# Additive strategy layers for the BBX carrier. The vanilla baseline remains
+# active; these strategies protect the Epirus anchor, screen the former host,
+# and prefer the mountain-frontier force profile before expansion.
+# ============================================================================
+
+independence_wave_bbx_epirus_survival = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_iw_028_setup_complete
+		has_country_flag = independence_wave_bbx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bbx_host_restraint = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_iw_028_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bbx_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bbx_settled_epirus = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_bbx_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_bbx_emergency_commission = {
+	allowed = { original_tag = BBX }
+	enable = {
+		is_independence_wave_bbx_package = yes
+		has_country_flag = independence_wave_bbx_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_EPIRUS_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_far_eastern.txt]
+@CR_SC_IW_FER_ARMY = 86
+@CR_SC_IW_FER_PRODUCTION = 48
+@CR_SC_IW_FER_SUPPORT = 56
+@CR_SC_IW_FER_ARTILLERY = 30
+@CR_SC_IW_FER_INFRASTRUCTURE = 82
+@CR_SC_IW_FER_DEFENSE = 70
+@CR_SC_IW_FER_EMERGENCY = 122
+@CR_SC_IW_FER_FOUNDING_RESTRAINT = -270
+@CR_SC_IW_FER_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-057 FAR EASTERN REPUBLIC AI
+# ============================================================================
+# FER protects the single Far Eastern Republic anchor, invests in rail/depot continuity,
+# and avoids opportunistic wars until the former-host ledger and compact are
+# settled. Route decisions remain package-local decision/focus ownership.
+# ============================================================================
+
+independence_wave_fer_railway_port_survival = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_iw_057_setup_complete
+		has_country_flag = independence_wave_fer_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_FER_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_FER_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_FER_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_FER_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_FER_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_FER_DEFENSE }
+}
+
+independence_wave_fer_host_restraint = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_iw_057_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_fer_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_FER_FOUNDING_RESTRAINT }
+}
+
+independence_wave_fer_settled_compact = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_fer_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_FER_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_FER_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_FER_INFRASTRUCTURE }
+}
+
+independence_wave_fer_coastal_emergency_guard = {
+	allowed = { original_tag = FER has_country_flag = independence_wave_iw_057_identity_rights_cleared }
+	enable = {
+		is_independence_wave_fer_package = yes
+		has_country_flag = independence_wave_fer_coastal_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_FER_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_FER_DEFENSE }
+}
+
+# [source: 006_independence_wave_form08.txt]
+@CR_SC_INDEPENDENCE_WAVE_FORM08_ARMY_PRIORITY = 96
+@CR_SC_INDEPENDENCE_WAVE_FORM08_RAIL_PRIORITY = 74
+@CR_SC_INDEPENDENCE_WAVE_FORM08_DEFENSE_PRIORITY = 84
+@CR_SC_INDEPENDENCE_WAVE_FORM08_FOUNDING_RESTRAINT = -280
+@CR_SC_INDEPENDENCE_WAVE_FORM08_SETTLED_RESTRAINT = -420
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-08 DANUBIAN CONFEDERATION AI
+# ============================================================================
+# The vanilla carrier AI remains active. These additive strategies prioritize
+# the corridor, protect the capital anchor, and avoid wars while the charter
+# projects are unresolved.
+# ============================================================================
+
+independence_wave_form08_corridor_survival = {
+	allowed = { has_cosmetic_tag = HUN_EMPIRE }
+	enable = {
+		is_independence_wave_form08_postformation_carrier = yes
+		NOT = { has_country_flag = independence_wave_form08_transport_project_complete }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_FORM08_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_FORM08_RAIL_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_FORM08_DEFENSE_PRIORITY }
+}
+
+independence_wave_form08_charter_restraint = {
+	allowed = { has_cosmetic_tag = HUN_EMPIRE }
+	enable = {
+		is_independence_wave_form08_postformation_carrier = yes
+		OR = {
+			NOT = { has_country_flag = independence_wave_form08_congress_project_complete }
+			NOT = { has_country_flag = independence_wave_form08_arbitration_project_complete }
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_FORM08_FOUNDING_RESTRAINT }
+}
+
+independence_wave_form08_settled_confederation = {
+	allowed = { has_cosmetic_tag = HUN_EMPIRE }
+	enable = {
+		is_independence_wave_form08_postformation_carrier = yes
+		has_country_flag = independence_wave_form08_congress_project_complete
+		has_country_flag = independence_wave_form08_arbitration_project_complete
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_FORM08_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_FORM08_SETTLED_RESTRAINT }
+}
+
+# [source: 006_independence_wave_generic.txt]
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_ARMY = 50
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_ARTILLERY = 30
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_INDUSTRY = 45
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_INFANTRY = 50
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_INFRASTRUCTURE = 35
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_SUPPORT = 35
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_WAR_RESTRAINT = -45
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_ARMY = 45
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_ARTILLERY = 25
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_INDUSTRY = 35
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_INFANTRY = 45
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_INFRASTRUCTURE = 30
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_SUPPORT = 30
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_WAR_RESTRAINT = -140
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_ARMY = 35
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_ARTILLERY = 15
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_DEFENSE = 35
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_INFANTRY = 35
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_INFRASTRUCTURE = 30
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_SUPPORT = 20
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_TRAIN = 10
+@CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_WAR_RESTRAINT = -240
+# ============================================================================
+# CHAOS REDUX - EVENT 006 GENERIC RELEASE AI
+# ============================================================================
+# These additive profiles apply to every active Event 006 country that owns
+# the shared generic tree or a reviewed additive carrier. They use the public
+# Event 006 values rather than a country-specific identity, so an Africa,
+# Fallout, crisis, or other caller can reuse a registered tag without needing
+# another AI package. Package-specific strategy files remain additive.
+# ============================================================================
+
+independence_wave_generic_survival_profile = {
+	enable = {
+		is_independence_wave_active_country = yes
+		OR = {
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_additive_focus_overlay
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		OR = {
+			has_independence_wave_severe_instability = yes
+			NOT = { has_independence_wave_functioning_capacity = yes }
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_SUPPORT }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_ARTILLERY }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_TRAIN }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_DEFENSE }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_SURVIVAL_WAR_RESTRAINT }
+}
+
+independence_wave_generic_recovery_profile = {
+	enable = {
+		is_independence_wave_active_country = yes
+		OR = {
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_additive_focus_overlay
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_independence_wave_functioning_capacity = yes
+		has_independence_wave_de_facto_recognition = yes
+		OR = {
+			has_independence_wave_severe_instability = yes
+			has_independence_wave_living_former_host = yes
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_SUPPORT }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_ARTILLERY }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_INDUSTRY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_INFRASTRUCTURE }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_RECOVERY_WAR_RESTRAINT }
+}
+
+independence_wave_generic_consolidation_profile = {
+	enable = {
+		is_independence_wave_active_country = yes
+		OR = {
+			has_country_flag = independence_wave_full_focus_framework
+			has_country_flag = independence_wave_additive_focus_overlay
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_independence_wave_functioning_capacity = yes
+		has_independence_wave_de_facto_recognition = yes
+		has_independence_wave_prepared_security = yes
+		NOT = { has_independence_wave_severe_instability = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_SUPPORT }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_ARTILLERY }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_INDUSTRY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_INFRASTRUCTURE }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_WAR_RESTRAINT }
+}
+
+# [source: 006_independence_wave_iberian.txt]
+@CR_SC_IW_NAV_AI_ARMY_PRIORITY = 92
+@CR_SC_IW_NAV_AI_PRODUCTION_PRIORITY = 74
+@CR_SC_IW_NAV_AI_SUPPORT_PRIORITY = 52
+@CR_SC_IW_NAV_AI_DEFENSE_PRIORITY = 86
+@CR_SC_IW_NAV_AI_INDUSTRY_PRIORITY = 98
+@CR_SC_IW_IW_NAV_AI_EMERGENCY_PRIORITY = 120
+@CR_SC_IW_GLC_AI_ARMY_PRIORITY = 82
+@CR_SC_IW_GLC_AI_PRODUCTION_PRIORITY = 68
+@CR_SC_IW_GLC_AI_SUPPORT_PRIORITY = 64
+@CR_SC_IW_GLC_AI_DEFENSE_PRIORITY = 78
+@CR_SC_IW_GLC_AI_INDUSTRY_PRIORITY = 84
+@CR_SC_IW_GLC_AI_EMERGENCY_PRIORITY = 112
+@CR_SC_IW_IBERIAN_FOUNDING_RESTRAINT = -240
+@CR_SC_IW_IBERIAN_SETTLED_RESTRAINT = -460
+
+independence_wave_nav_mountain_survival = {
+	allowed = { original_tag = NAV }
+	enable = { is_independence_wave_nav_package = yes has_country_flag = independence_wave_iw_013_setup_complete has_country_flag = independence_wave_nav_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_NAV_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_NAV_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_NAV_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_NAV_AI_DEFENSE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_NAV_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_nav_host_restraint = {
+	allowed = { original_tag = NAV }
+	enable = { is_independence_wave_nav_package = yes has_country_flag = independence_wave_iw_013_setup_complete has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_nav_host_ledgers_settled } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_IBERIAN_FOUNDING_RESTRAINT }
+}
+
+independence_wave_nav_settled_industry = {
+	allowed = { original_tag = NAV }
+	enable = { is_independence_wave_nav_package = yes has_country_flag = independence_wave_nav_compact_stabilized }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_NAV_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_IW_NAV_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_IBERIAN_SETTLED_RESTRAINT }
+}
+
+independence_wave_nav_emergency_command = {
+	allowed = { original_tag = NAV }
+	enable = { is_independence_wave_nav_package = yes has_country_flag = independence_wave_nav_emergency_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_IW_NAV_AI_EMERGENCY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_NAV_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_glc_territorial_survival = {
+	allowed = { original_tag = GLC }
+	enable = { is_independence_wave_glc_package = yes has_country_flag = independence_wave_iw_015_setup_complete has_country_flag = independence_wave_glc_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_GLC_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_GLC_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_GLC_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_GLC_AI_DEFENSE_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_IW_GLC_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_glc_host_restraint = {
+	allowed = { original_tag = GLC }
+	enable = { is_independence_wave_glc_package = yes has_country_flag = independence_wave_iw_015_setup_complete has_independence_wave_living_former_host = yes NOT = { has_country_flag = independence_wave_glc_host_ledgers_settled } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_IBERIAN_FOUNDING_RESTRAINT }
+}
+
+independence_wave_glc_settled_port = {
+	allowed = { original_tag = GLC }
+	enable = { is_independence_wave_glc_package = yes has_country_flag = independence_wave_glc_compact_stabilized }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_GLC_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_IW_GLC_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_IW_GLC_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_IBERIAN_SETTLED_RESTRAINT }
+}
+
+independence_wave_glc_emergency_command = {
+	allowed = { original_tag = GLC }
+	enable = { is_independence_wave_glc_package = yes has_country_flag = independence_wave_glc_emergency_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_GLC_AI_EMERGENCY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_IW_GLC_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_ice.txt]
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_ARMY = 60
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COASTAL_DEFENSE = 35
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_CONVOY = 50
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_DOCKYARD = 45
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_INFANTRY = 50
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_NAVAL_BASE = 55
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_SUPPORT = 35
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-012 ICELAND AI
+# ============================================================================
+# Additive AI priorities for the registered ICE carrier. Vanilla Iceland AI
+# plans remain active; these plans only bias Event 006's coastwatch, convoy,
+# harbour, host-charter, and North Atlantic Compact choices after setup.
+# ============================================================================
+
+independence_wave_ice_coastal_survival = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		has_country_flag = independence_wave_ice_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_SUPPORT }
+	ai_strategy = { type = build_building id = naval_base value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_NAVAL_BASE }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_DOCKYARD }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COASTAL_DEFENSE }
+}
+
+independence_wave_ice_shipping_registers = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		NOT = { has_country_flag = independence_wave_ice_shipping_registers_reconciled }
+	}
+	abort_when_not_enabled = yes
+	# Convoy demand is represented by the documented equipment category. The
+	# former-host diplomacy is attached by the setup effect with the frozen
+	# event target, because the host is not always Denmark on a later release.
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_CONVOY }
+}
+
+independence_wave_ice_host_charter = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		has_independence_wave_living_former_host = yes
+	}
+	abort_when_not_enabled = yes
+}
+
+independence_wave_ice_compact = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		has_country_flag = independence_wave_formable_family_registered
+	}
+	abort_when_not_enabled = yes
+}
+
+# [source: 006_independence_wave_iw043_iw058_ai_strategy.txt]
+@CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_DOMINANT = 70
+@CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH = 60
+@CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_LOW = 10
+@CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_MEDIUM = 20
+@CR_SC_INDEPENDENCE_WAVE_IW043_AI_RECOVERY_RESTRAINT = 200
+@CR_SC_INDEPENDENCE_WAVE_IW043_AI_RESTRAINT = 100
+@CR_SC_INDEPENDENCE_WAVE_IW043_AI_TRAIN_MIN_FACTORIES = 1
+@CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_DOMINANT = 70
+@CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH = 60
+@CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_LOW = 10
+@CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM = 20
+@CR_SC_INDEPENDENCE_WAVE_IW058_AI_RECOVERY_RESTRAINT = 200
+@CR_SC_INDEPENDENCE_WAVE_IW058_AI_RESTRAINT = 100
+@CR_SC_INDEPENDENCE_WAVE_IW058_AI_TRAIN_MIN_FACTORIES = 1
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-043 AND IW-058 AI STRATEGIES
+# ============================================================================
+# Exact package triggers, setup receipts, route flags, reserve triggers, and
+# tracked-crisis triggers bound every profile. The strategies reinforce compact
+# defensive play and civilian normalization without scanning or targeting the
+# wider world. Decision ai_will_do blocks own route and settlement choice odds.
+# ============================================================================
+
+independence_wave_iw043_foundation = {
+	allowed = { original_tag = CHU }
+	enable = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_iw043_setup_complete
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_LOW }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_TRAIN_MIN_FACTORIES }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_MEDIUM }
+}
+
+independence_wave_iw043_reserve_recovery = {
+	allowed = { original_tag = CHU }
+	enable = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_iw043_setup_complete
+		NOT = { independence_wave_iw043_safe_action_reserve = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_TRAIN_MIN_FACTORIES }
+}
+
+independence_wave_iw043_tracked_crisis = {
+	allowed = { original_tag = CHU }
+	enable = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_iw043_setup_complete
+		independence_wave_iw043_severe_tracked_crisis = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw043_federal_route = {
+	allowed = { original_tag = CHU }
+	enable = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_iw043_setup_complete
+		has_country_flag = independence_wave_iw043_route_federal
+		independence_wave_iw043_safe_action_reserve = yes
+		NOT = { independence_wave_iw043_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_TRAIN_MIN_FACTORIES }
+}
+
+independence_wave_iw043_restoration_route = {
+	allowed = { original_tag = CHU }
+	enable = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_iw043_setup_complete
+		has_country_flag = independence_wave_iw043_route_restoration
+		independence_wave_iw043_safe_action_reserve = yes
+		NOT = { independence_wave_iw043_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_MEDIUM }
+}
+
+independence_wave_iw043_emergency_route = {
+	allowed = { original_tag = CHU }
+	enable = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_iw043_setup_complete
+		has_country_flag = independence_wave_iw043_route_emergency_guard
+		independence_wave_iw043_severe_tracked_crisis = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw043_civilian_normalization = {
+	allowed = { original_tag = CHU }
+	enable = {
+		is_independence_wave_iw043_country = yes
+		has_country_flag = independence_wave_iw043_setup_complete
+		independence_wave_iw043_civilian_normalization_complete = yes
+		NOT = { independence_wave_iw043_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW043_AI_TRAIN_MIN_FACTORIES }
+}
+
+independence_wave_iw058_foundation = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_LOW }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_LOW }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM }
+}
+
+independence_wave_iw058_reserve_recovery = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		NOT = { independence_wave_iw058_safe_action_reserve = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw058_tracked_crisis = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		independence_wave_iw058_severe_tracked_crisis = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw058_church_compact_route = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		has_country_flag = independence_wave_iw058_route_church_compact
+		independence_wave_iw058_safe_action_reserve = yes
+		NOT = { independence_wave_iw058_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM }
+}
+
+independence_wave_iw058_civic_assembly_route = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		has_country_flag = independence_wave_iw058_route_civic_assembly
+		independence_wave_iw058_safe_action_reserve = yes
+		NOT = { independence_wave_iw058_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_TRAIN_MIN_FACTORIES }
+}
+
+independence_wave_iw058_guardianship_route = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		has_country_flag = independence_wave_iw058_route_levies_guardianship
+		independence_wave_iw058_severe_tracked_crisis = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw058_civilian_normalization = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		independence_wave_iw058_civilian_normalization_complete = yes
+		NOT = { independence_wave_iw058_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM }
+}
+
+independence_wave_iw058_federal_settlement = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		has_country_flag = iw058_mesopotamian_settlement_mode_federation
+		OR = {
+			has_country_flag = independence_wave_iw058_route_church_compact
+			has_country_flag = independence_wave_iw058_route_civic_assembly
+		}
+		NOT = { has_country_flag = independence_wave_iw058_route_mesopotamian_autonomy }
+		independence_wave_iw058_safe_action_reserve = yes
+		NOT = { independence_wave_iw058_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_TRAIN_MIN_FACTORIES }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw058_sovereign_autonomy = {
+	allowed = { original_tag = ASY }
+	enable = {
+		is_independence_wave_iw058_country = yes
+		has_country_flag = independence_wave_iw058_setup_complete
+		has_country_flag = iw058_mesopotamian_settlement_mode_sovereign_autonomy
+		has_country_flag = independence_wave_iw058_route_mesopotamian_autonomy
+		independence_wave_iw058_safe_action_reserve = yes
+		NOT = { independence_wave_iw058_severe_tracked_crisis = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_IW058_AI_PRIORITY_HIGH }
+}
+
+# [source: 006_independence_wave_iw093_iw098_ai_strategy.txt]
+@CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_DOMINANT = 100
+@CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH = 60
+@CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_MEDIUM = 40
+@CR_SC_INDEPENDENCE_WAVE_IW093_AI_RECOVERY_RESTRAINT = 75
+@CR_SC_INDEPENDENCE_WAVE_IW093_AI_RESTRAINT = 100
+@CR_SC_INDEPENDENCE_WAVE_IW093_AI_TRAIN_MIN_FACTORIES = 1
+@CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_DOMINANT = 100
+@CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH = 60
+@CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_MEDIUM = 40
+@CR_SC_INDEPENDENCE_WAVE_IW098_AI_RECOVERY_RESTRAINT = 75
+@CR_SC_INDEPENDENCE_WAVE_IW098_AI_RESTRAINT = 100
+@CR_SC_INDEPENDENCE_WAVE_IW098_AI_TRAIN_MIN_FACTORIES = 1
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-093 / IW-098 AI STRATEGIES
+# ============================================================================
+# Exact Event 006 package profiles for Asante and Sokoto. Package decisions
+# own route-choice odds; these profiles shape production, construction, and
+# strategic restraint after the audited package setup has committed.
+# ============================================================================
+
+independence_wave_iw093_foundation = {
+	allowed = { original_tag = DOX }
+	enable = { is_independence_wave_iw093_country = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw093_host_crisis = {
+	allowed = { original_tag = DOX }
+	enable = {
+		is_independence_wave_iw093_country = yes
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw093_royal_confederacy = {
+	allowed = { original_tag = DOX }
+	enable = {
+		is_independence_wave_iw093_country = yes
+		has_country_flag = independence_wave_iw093_route_royal_confederacy
+		NOT = { has_independence_wave_severe_host_threat = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw093_constitutional_cabinet = {
+	allowed = { original_tag = DOX }
+	enable = {
+		is_independence_wave_iw093_country = yes
+		has_country_flag = independence_wave_iw093_route_constitutional_cabinet
+		NOT = { has_independence_wave_severe_host_threat = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_TRAIN_MIN_FACTORIES }
+}
+
+independence_wave_iw093_veterans_emergency = {
+	allowed = { original_tag = DOX }
+	enable = {
+		is_independence_wave_iw093_country = yes
+		has_country_flag = independence_wave_iw093_route_veterans_emergency
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW093_AI_PRIORITY_DOMINANT }
+}
+
+independence_wave_iw098_foundation = {
+	allowed = { original_tag = SOK }
+	enable = { is_independence_wave_iw098_country = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_MEDIUM }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw098_host_crisis = {
+	allowed = { original_tag = SOK }
+	enable = {
+		is_independence_wave_iw098_country = yes
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw098_sultanic_federal = {
+	allowed = { original_tag = SOK }
+	enable = {
+		is_independence_wave_iw098_country = yes
+		has_country_flag = independence_wave_iw098_route_sultanic_federal
+		NOT = { has_independence_wave_severe_host_threat = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH }
+}
+
+independence_wave_iw098_northern_constitution = {
+	allowed = { original_tag = SOK }
+	enable = {
+		is_independence_wave_iw098_country = yes
+		has_country_flag = independence_wave_iw098_route_northern_constitution
+		NOT = { has_independence_wave_severe_host_threat = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH }
+	ai_strategy = { type = equipment_production_min_factories id = train value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_TRAIN_MIN_FACTORIES }
+}
+
+independence_wave_iw098_frontier_command = {
+	allowed = { original_tag = SOK }
+	enable = {
+		is_independence_wave_iw098_country = yes
+		has_country_flag = independence_wave_iw098_route_frontier_command
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_RECOVERY_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_DOMINANT }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_HIGH }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_IW098_AI_PRIORITY_DOMINANT }
+}
+
+# [source: 006_independence_wave_karelia_crimea.txt]
+@CR_SC_INDEPENDENCE_WAVE_KC_ARMY = 95
+@CR_SC_INDEPENDENCE_WAVE_KC_PRODUCTION = 45
+@CR_SC_INDEPENDENCE_WAVE_KC_SUPPORT = 50
+@CR_SC_INDEPENDENCE_WAVE_KC_INFRASTRUCTURE = 70
+@CR_SC_INDEPENDENCE_WAVE_KC_DEFENSE = 90
+@CR_SC_INDEPENDENCE_WAVE_KC_MARITIME = 65
+@CR_SC_INDEPENDENCE_WAVE_KC_FOUNDING_RESTRAINT = -240
+@CR_SC_INDEPENDENCE_WAVE_KC_SETTLED_RESTRAINT = -420
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 KARELIA / CRIMEAN TATAR STATE AI
+# ============================================================================
+# AI layers prioritize the lower package ledger, then reserve material for the
+# founding mission, route selection, and host/network obligations.
+# ============================================================================
+
+independence_wave_kar_forest_survival = {
+	allowed = { original_tag = KAR }
+	enable = {
+		is_independence_wave_kar_package = yes
+		has_country_flag = independence_wave_iw_033_setup_complete
+		has_country_flag = independence_wave_kar_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_KC_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_KC_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_KC_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_KC_DEFENSE }
+}
+
+independence_wave_kar_host_restraint = {
+	allowed = { original_tag = KAR }
+	enable = {
+		is_independence_wave_kar_package = yes
+		has_country_flag = independence_wave_iw_033_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kc_host_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_FOUNDING_RESTRAINT }
+}
+
+independence_wave_kar_settled_frontier = {
+	allowed = { original_tag = KAR }
+	enable = { is_independence_wave_kar_package = yes has_country_flag = independence_wave_kar_ledgers_stabilized }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_SETTLED_RESTRAINT }
+}
+
+independence_wave_cri_peninsula_survival = {
+	allowed = { original_tag = CRI }
+	enable = {
+		is_independence_wave_cri_package = yes
+		has_country_flag = independence_wave_iw_041_setup_complete
+		has_country_flag = independence_wave_cri_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_KC_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_KC_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_KC_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_KC_DEFENSE }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_KC_MARITIME }
+}
+
+independence_wave_cri_host_restraint = {
+	allowed = { original_tag = CRI }
+	enable = {
+		is_independence_wave_cri_package = yes
+		has_country_flag = independence_wave_iw_041_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kc_host_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_FOUNDING_RESTRAINT }
+}
+
+independence_wave_cri_settled_black_sea = {
+	allowed = { original_tag = CRI }
+	enable = { is_independence_wave_cri_package = yes has_country_flag = independence_wave_cri_ledgers_stabilized }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_KC_ARMY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_KC_MARITIME }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_KC_SETTLED_RESTRAINT }
+}
+
+# [source: 006_independence_wave_khakassia.txt]
+@CR_SC_IW_KHA_ARMY = 90
+@CR_SC_IW_KHA_PRODUCTION = 42
+@CR_SC_IW_KHA_SUPPORT = 48
+@CR_SC_IW_KHA_ARTILLERY = 24
+@CR_SC_IW_KHA_INFRASTRUCTURE = 78
+@CR_SC_IW_KHA_DEFENSE = 86
+@CR_SC_IW_KHA_EMERGENCY = 120
+@CR_SC_IW_KHA_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_KHA_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-054 KHAKASSIA AI
+# ============================================================================
+# AI prioritizes frontier security, Minusinsk infrastructure, and a restrained
+# former-host relationship until the compact is settled. Route choice remains
+# owned by the shared focus framework and the KHA decision package.
+# ============================================================================
+
+independence_wave_kha_frontier_survival = {
+	allowed = { original_tag = KHA has_independence_wave_kha_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_khakassia_package = yes
+		has_country_flag = independence_wave_iw_054_setup_complete
+		has_country_flag = independence_wave_kha_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KHA_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_KHA_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_KHA_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_KHA_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KHA_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KHA_DEFENSE }
+}
+independence_wave_kha_host_restraint = {
+	allowed = { original_tag = KHA has_independence_wave_kha_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_khakassia_package = yes
+		has_country_flag = independence_wave_iw_054_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kha_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KHA_FOUNDING_RESTRAINT }
+}
+
+independence_wave_kha_settled_frontier = {
+	allowed = { original_tag = KHA has_independence_wave_kha_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_khakassia_package = yes
+		has_country_flag = independence_wave_kha_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KHA_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KHA_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KHA_INFRASTRUCTURE }
+}
+
+independence_wave_kha_emergency_frontier_guard = {
+	allowed = { original_tag = KHA has_independence_wave_kha_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_khakassia_package = yes
+		has_country_flag = independence_wave_kha_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KHA_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KHA_DEFENSE }
+}
+
+# [source: 006_independence_wave_komi.txt]
+@CR_SC_IW_KOM_ARMY = 86
+@CR_SC_IW_KOM_PRODUCTION = 38
+@CR_SC_IW_KOM_SUPPORT = 52
+@CR_SC_IW_KOM_ARTILLERY = 20
+@CR_SC_IW_KOM_INFRASTRUCTURE = 82
+@CR_SC_IW_KOM_DEFENSE = 92
+@CR_SC_IW_KOM_EMERGENCY = 116
+@CR_SC_IW_KOM_FOUNDING_RESTRAINT = -250
+@CR_SC_IW_KOM_SETTLED_RESTRAINT = -420
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-050 KOMI AI
+# ============================================================================
+# The profile values rail access, taiga infrastructure and forest defence.
+# Route choice remains owned by the shared focus framework and Komi decisions.
+# ============================================================================
+
+independence_wave_komi_taiga_survival = {
+	allowed = { original_tag = KOM }
+	enable = {
+		is_independence_wave_komi_package = yes
+		has_country_flag = independence_wave_iw_050_setup_complete
+		has_country_flag = independence_wave_komi_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOM_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_KOM_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_KOM_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_KOM_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KOM_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KOM_DEFENSE }
+}
+
+independence_wave_komi_host_restraint = {
+	allowed = { original_tag = KOM }
+	enable = {
+		is_independence_wave_komi_package = yes
+		has_country_flag = independence_wave_iw_050_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_komi_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KOM_FOUNDING_RESTRAINT }
+}
+
+independence_wave_komi_settled_northern_republic = {
+	allowed = { original_tag = KOM }
+	enable = {
+		is_independence_wave_komi_package = yes
+		has_country_flag = independence_wave_komi_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOM_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KOM_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KOM_INFRASTRUCTURE }
+}
+
+independence_wave_komi_emergency_taiga_command = {
+	allowed = { original_tag = KOM }
+	enable = {
+		is_independence_wave_komi_package = yes
+		has_country_flag = independence_wave_komi_taiga_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOM_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KOM_DEFENSE }
+}
+
+# [source: 006_independence_wave_kosovo.txt]
+@CR_SC_IW_KOS_ARMY = 80
+@CR_SC_IW_KOS_PRODUCTION = 38
+@CR_SC_IW_KOS_SUPPORT = 48
+@CR_SC_IW_KOS_ARTILLERY = 20
+@CR_SC_IW_KOS_INFRASTRUCTURE = 72
+@CR_SC_IW_KOS_DEFENSE = 68
+@CR_SC_IW_KOS_EMERGENCY = 112
+@CR_SC_IW_KOS_FOUNDING_RESTRAINT = -240
+@CR_SC_IW_KOS_SETTLED_RESTRAINT = -400
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-031 KOSOVO AI
+# ============================================================================
+
+independence_wave_kos_municipal_survival = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_iw_031_setup_complete
+		has_country_flag = independence_wave_kos_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOS_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_KOS_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_KOS_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_KOS_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KOS_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KOS_DEFENSE }
+}
+
+independence_wave_kos_host_restraint = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_iw_031_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kos_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KOS_FOUNDING_RESTRAINT }
+}
+
+independence_wave_kos_settled_compact = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_kos_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOS_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KOS_SETTLED_RESTRAINT }
+}
+
+independence_wave_kos_emergency_guard = {
+	allowed = { original_tag = KOS }
+	enable = {
+		is_independence_wave_kos_package = yes
+		has_country_flag = independence_wave_kos_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KOS_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KOS_DEFENSE }
+}
+
+# [source: 006_independence_wave_kuban.txt]
+@CR_SC_IW_KUB_ARMY = 86
+@CR_SC_IW_KUB_PRODUCTION = 40
+@CR_SC_IW_KUB_SUPPORT = 50
+@CR_SC_IW_KUB_ARTILLERY = 24
+@CR_SC_IW_KUB_INFRASTRUCTURE = 70
+@CR_SC_IW_KUB_DEFENSE = 82
+@CR_SC_IW_KUB_EMERGENCY = 118
+@CR_SC_IW_KUB_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_KUB_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-040 KUBAN COSSACK HOST AI
+# ============================================================================
+# The package keeps a mounted survival lane, former-host restraint, settled
+# regional participation, and an emergency-defense lane. Route choice itself is
+# owned by the shared focus framework and package decisions.
+# ============================================================================
+
+independence_wave_kub_mounted_survival = {
+	allowed = { original_tag = KUB }
+	enable = {
+		is_independence_wave_kub_package = yes
+		has_country_flag = independence_wave_iw_040_setup_complete
+		has_country_flag = independence_wave_kub_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KUB_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_KUB_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_KUB_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_KUB_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KUB_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KUB_DEFENSE }
+}
+
+independence_wave_kub_host_restraint = {
+	allowed = { original_tag = KUB }
+	enable = {
+		is_independence_wave_kub_package = yes
+		has_country_flag = independence_wave_iw_040_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kub_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KUB_FOUNDING_RESTRAINT }
+}
+
+independence_wave_kub_settled_compact = {
+	allowed = { original_tag = KUB }
+	enable = {
+		is_independence_wave_kub_package = yes
+		has_country_flag = independence_wave_kub_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KUB_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KUB_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KUB_INFRASTRUCTURE }
+}
+
+independence_wave_kub_emergency_guard = {
+	allowed = { original_tag = KUB }
+	enable = {
+		is_independence_wave_kub_package = yes
+		has_country_flag = independence_wave_kub_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KUB_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KUB_DEFENSE }
+}
+
+# [source: 006_independence_wave_kurdistan.txt]
+@CR_SC_IW_KUR_ARMY = 94
+@CR_SC_IW_KUR_PRODUCTION = 44
+@CR_SC_IW_KUR_SUPPORT = 54
+@CR_SC_IW_KUR_ARTILLERY = 30
+@CR_SC_IW_KUR_INFRASTRUCTURE = 82
+@CR_SC_IW_KUR_DEFENSE = 92
+@CR_SC_IW_KUR_EMERGENCY = 128
+@CR_SC_IW_KUR_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_KUR_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-060 KURDISTAN AI
+# ============================================================================
+# AI prioritizes mountain security, Kurdish infrastructure, and a restrained
+# former-host relationship until the compact is settled. Route choice remains
+# owned by the shared focus framework and the KUR decision package.
+# ============================================================================
+
+independence_wave_kur_frontier_survival = {
+	allowed = { original_tag = KUR has_independence_wave_kur_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_kurdistan_package = yes
+		has_country_flag = independence_wave_iw_060_setup_complete
+		has_country_flag = independence_wave_kur_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KUR_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_KUR_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_KUR_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_KUR_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KUR_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KUR_DEFENSE }
+}
+independence_wave_kur_host_restraint = {
+	allowed = { original_tag = KUR has_independence_wave_kur_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_kurdistan_package = yes
+		has_country_flag = independence_wave_iw_060_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_kur_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KUR_FOUNDING_RESTRAINT }
+}
+independence_wave_kur_settled_frontier = {
+	allowed = { original_tag = KUR has_independence_wave_kur_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_kurdistan_package = yes
+		has_country_flag = independence_wave_kur_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KUR_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_KUR_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_KUR_INFRASTRUCTURE }
+}
+
+independence_wave_kur_emergency_frontier_guard = {
+	allowed = { original_tag = KUR has_independence_wave_kur_identity_rights_clearance = yes }
+	enable = {
+		is_independence_wave_kurdistan_package = yes
+		has_country_flag = independence_wave_kur_military_command_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_KUR_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_KUR_DEFENSE }
+}
+
+\n
+
+# [source: 006_independence_wave_macedonia.txt]
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_ARMY_PRIORITY = 92
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_ARTILLERY_PRIORITY = 20
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_DEFENSE_PRIORITY = 86
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_EMERGENCY_ARMY_PRIORITY = 118
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_FOUNDING_RESTRAINT = -235
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_INFRASTRUCTURE_PRIORITY = 68
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_PRODUCTION_PRIORITY = 36
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_SETTLED_RESTRAINT = -430
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_SUPPORT_PRIORITY = 48
+@CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_TRADITIONAL_ARMY_PRIORITY = 108
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-026 MACEDONIA AI
+# ============================================================================
+# Additive strategy layers for the MAC carrier. The vanilla baseline remains
+# active; these strategies protect the Vardar anchor, screen the former host,
+# and prefer the mountain-frontier force profile before expansion.
+# ============================================================================
+
+independence_wave_mac_vardar_survival = {
+	allowed = { original_tag = MAC }
+	enable = {
+		is_independence_wave_mac_package = yes
+		has_country_flag = independence_wave_iw_026_setup_complete
+		has_country_flag = independence_wave_mac_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_mac_host_restraint = {
+	allowed = { original_tag = MAC }
+	enable = {
+		is_independence_wave_mac_package = yes
+		has_country_flag = independence_wave_iw_026_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_mac_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_mac_settled_vardar = {
+	allowed = { original_tag = MAC }
+	enable = {
+		is_independence_wave_mac_package = yes
+		has_country_flag = independence_wave_mac_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_mac_emergency_commission = {
+	allowed = { original_tag = MAC }
+	enable = {
+		is_independence_wave_mac_package = yes
+		has_country_flag = independence_wave_mac_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_MACEDONIA_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_mari.txt]
+@CR_SC_IW_MEL_ARMY = 74
+@CR_SC_IW_MEL_PRODUCTION = 34
+@CR_SC_IW_MEL_SUPPORT = 52
+@CR_SC_IW_MEL_ARTILLERY = 18
+@CR_SC_IW_MEL_INFRASTRUCTURE = 66
+@CR_SC_IW_MEL_DEFENSE = 78
+@CR_SC_IW_MEL_EMERGENCY = 108
+@CR_SC_IW_MEL_FOUNDING_RESTRAINT = -245
+@CR_SC_IW_MEL_SETTLED_RESTRAINT = -405
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-047 MARI EL AI
+# ============================================================================
+# MEL protects the single Mari El anchor, invests in rail/depot continuity,
+# and avoids opportunistic wars until the former-host ledger and compact are
+# settled. Route decisions remain package-local decision/focus ownership.
+# ============================================================================
+
+independence_wave_mel_forest_survival = {
+	allowed = { original_tag = MEL }
+	enable = {
+		is_independence_wave_mari_package = yes
+		has_country_flag = independence_wave_iw_047_setup_complete
+		has_country_flag = independence_wave_mel_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_MEL_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_MEL_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_MEL_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_MEL_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_MEL_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_MEL_DEFENSE }
+}
+
+independence_wave_mel_host_restraint = {
+	allowed = { original_tag = MEL }
+	enable = {
+		is_independence_wave_mari_package = yes
+		has_country_flag = independence_wave_iw_047_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_mel_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_MEL_FOUNDING_RESTRAINT }
+}
+
+independence_wave_mel_settled_compact = {
+	allowed = { original_tag = MEL }
+	enable = {
+		is_independence_wave_mari_package = yes
+		has_country_flag = independence_wave_mel_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_MEL_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_MEL_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_MEL_INFRASTRUCTURE }
+}
+
+independence_wave_mel_emergency_guard = {
+	allowed = { original_tag = MEL }
+	enable = {
+		is_independence_wave_mari_package = yes
+		has_country_flag = independence_wave_mel_forest_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_MEL_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_MEL_DEFENSE }
+}
+
+# [source: 006_independence_wave_mediterranean.txt]
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARMY_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARTILLERY_PRIORITY = 25
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_COASTAL_DEFENSE_PRIORITY = 90
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_CONVOY_PRIORITY = 60
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DEFENSE_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY = 100
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_FOUNDING_RESTRAINT = -240
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INDUSTRY_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFANTRY_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFRASTRUCTURE_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_LEAGUE_RESTRAINT = -180
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_RESTORATION_RESTRAINT = -25
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SETTLED_RESTRAINT = -90
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SUPPORT_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_TRADITIONAL_RESTRAINT = -70
+@CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_TRAIN_PRIORITY = 25
+# ============================================================================
+# CHAOS REDUX - EVENT 006 MEDITERRANEAN ISLAND AI STRATEGIES
+# ============================================================================
+# Origin-locked profiles keep Corsica, Sardinia, and Sicily focused on island
+# survival, port supply, host-threat response, and negotiated FORM-05 action.
+# No profile creates a war, bypasses a charter vote, or grants free forces.
+# ============================================================================
+
+independence_wave_cor_island_survival = {
+	allowed = { original_tag = COR }
+	enable = {
+		is_independence_wave_cor_package = yes
+		has_country_flag = independence_wave_iw_017_setup_complete
+		has_country_flag = independence_wave_cor_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_cor_founding_restraint = {
+	allowed = { original_tag = COR }
+	enable = {
+		is_independence_wave_cor_package = yes
+		has_country_flag = independence_wave_iw_017_setup_complete
+		NOT = { has_independence_wave_severe_host_threat = yes }
+		NOT = { is_independence_wave_regional_power = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_cor_host_threat = {
+	allowed = { original_tag = COR }
+	enable = {
+		is_independence_wave_cor_package = yes
+		has_country_flag = independence_wave_iw_017_setup_complete
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_COASTAL_DEFENSE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_cor_civic_maritime_policy = {
+	allowed = { original_tag = COR }
+	enable = {
+		is_independence_wave_cor_package = yes
+		has_country_flag = independence_wave_iw_017_setup_complete
+		OR = {
+			has_country_flag = independence_wave_cor_constitutional_government
+			has_country_flag = independence_wave_cor_traditional_government
+			has_country_flag = independence_wave_cor_patron_government
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_CONVOY_PRIORITY }
+}
+
+independence_wave_cor_island_guard = {
+	allowed = { original_tag = COR }
+	enable = {
+		is_independence_wave_cor_package = yes
+		has_country_flag = independence_wave_iw_017_setup_complete
+		has_country_flag = independence_wave_cor_guard_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_COASTAL_DEFENSE_PRIORITY }
+}
+
+independence_wave_arx_island_survival = {
+	allowed = { original_tag = ARX }
+	enable = {
+		is_independence_wave_arx_package = yes
+		has_country_flag = independence_wave_iw_018_setup_complete
+		has_country_flag = independence_wave_arx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_arx_founding_restraint = {
+	allowed = { original_tag = ARX }
+	enable = {
+		is_independence_wave_arx_package = yes
+		has_country_flag = independence_wave_iw_018_setup_complete
+		NOT = { has_independence_wave_severe_host_threat = yes }
+		NOT = { is_independence_wave_regional_power = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_arx_host_threat = {
+	allowed = { original_tag = ARX }
+	enable = {
+		is_independence_wave_arx_package = yes
+		has_country_flag = independence_wave_iw_018_setup_complete
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_COASTAL_DEFENSE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_arx_civic_maritime_policy = {
+	allowed = { original_tag = ARX }
+	enable = {
+		is_independence_wave_arx_package = yes
+		has_country_flag = independence_wave_iw_018_setup_complete
+		OR = {
+			has_country_flag = independence_wave_arx_constitutional_government
+			has_country_flag = independence_wave_arx_labor_government
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_arx_crown_or_guard = {
+	allowed = { original_tag = ARX }
+	enable = {
+		is_independence_wave_arx_package = yes
+		has_country_flag = independence_wave_iw_018_setup_complete
+		OR = {
+			has_country_flag = independence_wave_arx_traditional_government
+			has_country_flag = independence_wave_arx_military_government
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_TRADITIONAL_RESTRAINT }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARTILLERY_PRIORITY }
+}
+
+independence_wave_asx_island_survival = {
+	allowed = { original_tag = ASX }
+	enable = {
+		is_independence_wave_asx_package = yes
+		has_country_flag = independence_wave_iw_019_setup_complete
+		has_country_flag = independence_wave_asx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_asx_founding_restraint = {
+	allowed = { original_tag = ASX }
+	enable = {
+		is_independence_wave_asx_package = yes
+		has_country_flag = independence_wave_iw_019_setup_complete
+		NOT = { has_independence_wave_severe_host_threat = yes }
+		NOT = { is_independence_wave_regional_power = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_asx_host_threat = {
+	allowed = { original_tag = ASX }
+	enable = {
+		is_independence_wave_asx_package = yes
+		has_country_flag = independence_wave_iw_019_setup_complete
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_COASTAL_DEFENSE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_asx_civic_maritime_policy = {
+	allowed = { original_tag = ASX }
+	enable = {
+		is_independence_wave_asx_package = yes
+		has_country_flag = independence_wave_iw_019_setup_complete
+		OR = {
+			has_country_flag = independence_wave_asx_constitutional_government
+			has_country_flag = independence_wave_asx_labor_government
+			has_country_flag = independence_wave_asx_patron_government
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_asx_straits_command = {
+	allowed = { original_tag = ASX }
+	enable = {
+		is_independence_wave_asx_package = yes
+		has_country_flag = independence_wave_iw_019_setup_complete
+		has_country_flag = independence_wave_asx_military_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_COASTAL_DEFENSE_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_ARTILLERY_PRIORITY }
+}
+
+independence_wave_asx_two_sicilies_dossier = {
+	allowed = { original_tag = ASX }
+	enable = {
+		is_independence_wave_asx_package = yes
+		has_country_flag = independence_wave_iw_019_setup_complete
+		has_country_flag = independence_wave_asx_two_sicilies_dossier_ready
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_RESTORATION_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_EMERGENCY_ARMY_PRIORITY }
+}
+
+independence_wave_form05_island_union_policy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = independence_wave_origin_event6
+		has_country_flag = independence_wave_form05_post_formation_active
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_LEAGUE_RESTRAINT }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_DOCKYARD_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_MEDITERRANEAN_AI_COASTAL_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_montenegro.txt]
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_ARMY_PRIORITY = 85
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_ARTILLERY_PRIORITY = 25
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_DEFENSE_PRIORITY = 75
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_EMERGENCY_ARMY_PRIORITY = 115
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_FOUNDING_RESTRAINT = -220
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_INFRASTRUCTURE_PRIORITY = 60
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_PRODUCTION_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_SETTLED_RESTRAINT = -420
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_SUPPORT_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_TRADITIONAL_ARMY_PRIORITY = 105
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-030 MONTENEGRO AI
+# ============================================================================
+# Additive strategy layers for the vanilla MNT carrier. The vanilla history
+# and generic AI remain intact. These priorities respond to the package's
+# founding crisis, mountain-force profile, host pressure, and route choice.
+# ============================================================================
+
+independence_wave_mnt_mountain_survival = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_iw_030_setup_complete
+		has_country_flag = independence_wave_mnt_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_mnt_host_restraint = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_iw_030_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_mnt_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_mnt_settled_frontier = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_mnt_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_mnt_emergency_guard = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_mnt_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_MONTENEGRO_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_pacific.txt]
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_AIR_BASE_PRIORITY = 30
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_ARMY_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_ARTILLERY_PRIORITY = 25
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_COASTAL_DEFENSE_PRIORITY = 90
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_CONVOY_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_DOCKYARD_PRIORITY = 60
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_EMERGENCY_ARMY_PRIORITY = 105
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_ARMY_PRIORITY = 78
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_COASTAL_DEFENSE_PRIORITY = 100
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_CONVOY_PRIORITY = 80
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_DOCKYARD_PRIORITY = 75
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_FOUNDING_RESTRAINT = -260
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_FUEL_PRIORITY = 65
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_INFANTRY_PRIORITY = 55
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_INFRASTRUCTURE_PRIORITY = 65
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_SUPPORT_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FOUNDING_RESTRAINT = -240
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INDUSTRY_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFANTRY_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFRASTRUCTURE_PRIORITY = 55
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_SUPPORT_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_TRAIN_PRIORITY = 25
+# ============================================================================
+# CHAOS REDUX - EVENT 006 PACIFIC COUNTRY PACKAGE AI STRATEGIES
+# ============================================================================
+# Origin-locked survival, maritime logistics, restraint, and host-threat
+# profiles for IW-184 California, IW-173 Hawaii, IW-177 Fiji, and IW-179
+# Micronesia.
+# FORM-48 pursuit remains separately severe-collapse-gated by its registry.
+# ============================================================================
+
+independence_wave_hbx_pacific_industrial_survival = {
+	allowed = { original_tag = HBX }
+	enable = { is_independence_wave_hbx_package = yes has_country_flag = independence_wave_iw_184_setup_complete has_country_flag = independence_wave_hbx_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INDUSTRY_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_hbx_founding_restraint = {
+	allowed = { original_tag = HBX }
+	enable = { is_independence_wave_hbx_package = yes has_country_flag = independence_wave_iw_184_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_hbx_host_threat = {
+	allowed = { original_tag = HBX }
+	enable = { is_independence_wave_hbx_package = yes has_country_flag = independence_wave_iw_184_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_COASTAL_DEFENSE_PRIORITY }
+}
+
+independence_wave_haw_island_shipping_survival = {
+	allowed = { original_tag = HAW }
+	enable = { is_independence_wave_haw_package = yes has_country_flag = independence_wave_iw_173_setup_complete has_country_flag = independence_wave_haw_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_DOCKYARD_PRIORITY }
+	ai_strategy = { type = build_building id = air_base value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_AIR_BASE_PRIORITY }
+}
+
+independence_wave_haw_founding_restraint = {
+	allowed = { original_tag = HAW }
+	enable = { is_independence_wave_haw_package = yes has_country_flag = independence_wave_iw_173_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_haw_host_threat = {
+	allowed = { original_tag = HAW }
+	enable = { is_independence_wave_haw_package = yes has_country_flag = independence_wave_iw_173_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_COASTAL_DEFENSE_PRIORITY }
+}
+
+independence_wave_fsm_inter_island_survival = {
+	allowed = { original_tag = FSM }
+	enable = { is_independence_wave_fsm_package = yes has_country_flag = independence_wave_iw_179_setup_complete has_country_flag = independence_wave_fsm_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_DOCKYARD_PRIORITY }
+}
+
+independence_wave_fsm_founding_restraint = {
+	allowed = { original_tag = FSM }
+	enable = { is_independence_wave_fsm_package = yes has_country_flag = independence_wave_iw_179_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_fsm_host_threat = {
+	allowed = { original_tag = FSM }
+	enable = { is_independence_wave_fsm_package = yes has_country_flag = independence_wave_iw_179_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_COASTAL_DEFENSE_PRIORITY }
+}
+
+independence_wave_fij_coastal_congress_survival = {
+	allowed = { original_tag = FIJ }
+	enable = { is_independence_wave_fij_package = yes has_country_flag = independence_wave_iw_177_setup_complete has_country_flag = independence_wave_fij_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = fuel_silo value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_FUEL_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_DOCKYARD_PRIORITY }
+}
+
+independence_wave_fij_founding_restraint = {
+	allowed = { original_tag = FIJ }
+	enable = { is_independence_wave_fij_package = yes has_country_flag = independence_wave_iw_177_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_FOUNDING_RESTRAINT }
+}
+
+independence_wave_fij_host_threat = {
+	allowed = { original_tag = FIJ }
+	enable = { is_independence_wave_fij_package = yes has_country_flag = independence_wave_iw_177_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_PACIFIC_AI_FIJ_COASTAL_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_rhineland_bavaria.txt]
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_ARMY_PRIORITY = 65
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_ARTILLERY_PRIORITY = 25
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_DEFENSE_PRIORITY = 80
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_EMERGENCY_ARMY_PRIORITY = 105
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_FOUNDING_RESTRAINT = -200
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_INFRASTRUCTURE_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_PRODUCTION_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_RADICAL_ARMY_PRIORITY = 120
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SETTLED_RESTRAINT = -110
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SUPPORT_PRIORITY = 40
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_TRADITIONAL_RESTRAINT = -70
+@CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_TRAIN_PRIORITY = 30
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RHINELAND AND BAVARIA AI STRATEGIES
+# ============================================================================
+# Origin-locked macro profiles support the package decision AI: both countries
+# defend their transport corridors, restrain early wars, react to their former
+# host, and shift production under emergency governments or high-chaos actions.
+# ============================================================================
+
+independence_wave_rhi_corridor_survival = {
+	allowed = { original_tag = RHI }
+	enable = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_iw_008_setup_complete has_country_flag = independence_wave_rhi_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_PRODUCTION_PRIORITY }
+}
+
+independence_wave_rhi_founding_restraint = {
+	allowed = { original_tag = RHI }
+	enable = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_iw_008_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_rhi_host_threat = {
+	allowed = { original_tag = RHI }
+	enable = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_iw_008_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_rhi_civic_corridor_policy = {
+	allowed = { original_tag = RHI }
+	enable = {
+		is_independence_wave_rhi_package = yes
+		has_country_flag = independence_wave_iw_008_setup_complete
+		OR = { has_country_flag = independence_wave_rhi_constitutional_government has_country_flag = independence_wave_rhi_labor_government has_country_flag = independence_wave_rhi_patron_government }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_PRODUCTION_PRIORITY }
+}
+
+independence_wave_rhi_corridor_command = {
+	allowed = { original_tag = RHI }
+	enable = {
+		is_independence_wave_rhi_package = yes
+		has_country_flag = independence_wave_iw_008_setup_complete
+		has_country_flag = independence_wave_rhi_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SUPPORT_PRIORITY }
+}
+
+independence_wave_rhi_high_chaos_command = {
+	allowed = { original_tag = RHI }
+	enable = { is_independence_wave_rhi_package = yes has_country_flag = independence_wave_iw_008_setup_complete has_country_flag = independence_wave_rhi_high_chaos_corridor_seized }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_RADICAL_ARMY_PRIORITY }
+}
+
+independence_wave_bay_mountain_survival = {
+	allowed = { original_tag = BAY }
+	enable = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_iw_009_setup_complete has_country_flag = independence_wave_bay_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bay_founding_restraint = {
+	allowed = { original_tag = BAY }
+	enable = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_iw_009_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bay_host_threat = {
+	allowed = { original_tag = BAY }
+	enable = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_iw_009_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bay_civic_state_policy = {
+	allowed = { original_tag = BAY }
+	enable = {
+		is_independence_wave_bay_package = yes
+		has_country_flag = independence_wave_iw_009_setup_complete
+		OR = { has_country_flag = independence_wave_bay_constitutional_government has_country_flag = independence_wave_bay_labor_government }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_PRODUCTION_PRIORITY }
+}
+
+independence_wave_bay_restoration_court = {
+	allowed = { original_tag = BAY }
+	enable = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_iw_009_setup_complete has_country_flag = independence_wave_bay_traditional_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_TRADITIONAL_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_ARMY_PRIORITY }
+}
+
+independence_wave_bay_mountain_guardians = {
+	allowed = { original_tag = BAY }
+	enable = {
+		is_independence_wave_bay_package = yes
+		has_country_flag = independence_wave_iw_009_setup_complete
+		has_country_flag = independence_wave_bay_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_SUPPORT_PRIORITY }
+}
+
+independence_wave_bay_high_chaos_command = {
+	allowed = { original_tag = BAY }
+	enable = { is_independence_wave_bay_package = yes has_country_flag = independence_wave_iw_009_setup_complete has_country_flag = independence_wave_bay_high_chaos_protectorates }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RHINE_BAVARIA_AI_RADICAL_ARMY_PRIORITY }
+}
+
+# [source: 006_independence_wave_rival_bloc.txt]
+@CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_ARMY_PRIORITY = 0.55
+@CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_CONVOY_PRIORITY = 0.30
+@CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_DEFENSE_PRIORITY = 0.50
+@CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_INFANTRY_PRIORITY = 0.65
+@CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_SUPPORT_PRIORITY = 0.45
+@CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_TRAIN_PRIORITY = 0.35
+@CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_WAR_RESTRAINT = 0.75
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RIVAL BLOC AI PROFILE
+# ============================================================================
+# Production priorities support the paid decision actions without forcing a
+# country into a generic faction or a world-iterating AI pulse.
+# ============================================================================
+
+independence_wave_rival_bloc_leader_profile = {
+	abort_when_not_enabled = yes
+	enable = {
+		is_independence_wave_rival_bloc_leader = yes
+	}
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_WAR_RESTRAINT }
+}
+
+independence_wave_rival_bloc_member_profile = {
+	abort_when_not_enabled = yes
+	enable = {
+		is_independence_wave_rival_bloc_member = yes
+	}
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_INFANTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_DEFENSE_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_RIVAL_BLOC_AI_WAR_RESTRAINT }
+}
+
+# [source: 006_independence_wave_ruthenia.txt]
+@CR_SC_IW_RUT_ARMY = 86
+@CR_SC_IW_RUT_PRODUCTION = 40
+@CR_SC_IW_RUT_SUPPORT = 50
+@CR_SC_IW_RUT_ARTILLERY = 24
+@CR_SC_IW_RUT_INFRASTRUCTURE = 70
+@CR_SC_IW_RUT_DEFENSE = 82
+@CR_SC_IW_RUT_EMERGENCY = 118
+@CR_SC_IW_RUT_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_RUT_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-038 RUTHENIA AI
+# ============================================================================
+# The package keeps a mountain survival lane, former-host restraint, settled
+# regional participation, and an emergency-defense lane. Route choice itself is
+# owned by the shared focus framework and package decisions.
+# ============================================================================
+
+independence_wave_rut_mountain_survival = {
+	allowed = { original_tag = RUT }
+	enable = {
+		is_independence_wave_rut_package = yes
+		has_country_flag = independence_wave_iw_038_setup_complete
+		has_country_flag = independence_wave_rut_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_RUT_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_RUT_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_RUT_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_RUT_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_RUT_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_RUT_DEFENSE }
+}
+
+independence_wave_rut_host_restraint = {
+	allowed = { original_tag = RUT }
+	enable = {
+		is_independence_wave_rut_package = yes
+		has_country_flag = independence_wave_iw_038_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_rut_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_RUT_FOUNDING_RESTRAINT }
+}
+
+independence_wave_rut_settled_compact = {
+	allowed = { original_tag = RUT }
+	enable = {
+		is_independence_wave_rut_package = yes
+		has_country_flag = independence_wave_rut_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_RUT_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_RUT_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_RUT_INFRASTRUCTURE }
+}
+
+independence_wave_rut_emergency_guard = {
+	allowed = { original_tag = RUT }
+	enable = {
+		is_independence_wave_rut_package = yes
+		has_country_flag = independence_wave_rut_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_RUT_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_RUT_DEFENSE }
+}
+
+# [source: 006_independence_wave_saar.txt]
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_ARMY_PRIORITY = 75
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_ARTILLERY_PRIORITY = 25
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_DEFENSE_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_EMERGENCY_ARMY_PRIORITY = 100
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_FOUNDING_RESTRAINT = -200
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_INFRASTRUCTURE_PRIORITY = 40
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_PRODUCTION_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_SETTLED_RESTRAINT = -400
+@CR_SC_INDEPENDENCE_WAVE_SAAR_AI_SUPPORT_PRIORITY = 30
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SAAR AI STRATEGIES
+# ============================================================================
+# IW-010 prioritizes the one-state industrial base, engineering support, and
+# founding restraint. Threat reactions read the dynamic former-host ledger;
+# no German or French origin is assumed.
+# ============================================================================
+
+independence_wave_ajx_industrial_survival = {
+	allowed = { original_tag = AJX }
+	enable = {
+		is_independence_wave_ajx_package = yes
+		has_country_flag = independence_wave_iw_010_setup_complete
+		has_country_flag = independence_wave_ajx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_INFRASTRUCTURE_PRIORITY }
+}
+
+independence_wave_ajx_founding_restraint = {
+	allowed = { original_tag = AJX }
+	enable = {
+		is_independence_wave_ajx_package = yes
+		has_country_flag = independence_wave_iw_010_setup_complete
+		NOT = { has_independence_wave_severe_host_threat = yes }
+		NOT = { is_independence_wave_regional_power = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_ajx_host_threat = {
+	allowed = { original_tag = AJX }
+	enable = {
+		is_independence_wave_ajx_package = yes
+		has_country_flag = independence_wave_iw_010_setup_complete
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_ajx_civic_industrial_policy = {
+	allowed = { original_tag = AJX }
+	enable = {
+		is_independence_wave_ajx_package = yes
+		has_country_flag = independence_wave_iw_010_setup_complete
+		OR = {
+			has_independence_wave_constitutional_route = yes
+			has_independence_wave_popular_council_route = yes
+			has_independence_wave_ajx_neutral_commission_route = yes
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_INFRASTRUCTURE_PRIORITY }
+}
+
+independence_wave_ajx_patron_industrial_policy = {
+	allowed = { original_tag = AJX }
+	enable = {
+		is_independence_wave_ajx_package = yes
+		has_country_flag = independence_wave_iw_010_setup_complete
+		has_independence_wave_patron_client_route = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_SAAR_AI_PRODUCTION_PRIORITY }
+}
+
+# [source: 006_independence_wave_sakha.txt]
+@CR_SC_IW_YAK_ARMY = 90
+@CR_SC_IW_YAK_PRODUCTION = 44
+@CR_SC_IW_YAK_SUPPORT = 52
+@CR_SC_IW_YAK_ARTILLERY = 20
+@CR_SC_IW_YAK_INFRASTRUCTURE = 86
+@CR_SC_IW_YAK_DEFENSE = 88
+@CR_SC_IW_YAK_EMERGENCY = 124
+@CR_SC_IW_YAK_FOUNDING_RESTRAINT = -280
+@CR_SC_IW_YAK_SETTLED_RESTRAINT = -450
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-051 SAKHA AI
+# ============================================================================
+# The AI favors cold-weather infantry, river-guard security, and Yakutsk
+# infrastructure. Host restraint remains active until the former-host ledger
+# is settled. The profile is dormant until the package's strict setup proof.
+
+independence_wave_yak_arctic_survival = {
+	allowed = { original_tag = YAK }
+	enable = {
+		is_independence_wave_sakha_package = yes
+		has_country_flag = independence_wave_iw_051_setup_complete
+		has_country_flag = independence_wave_yak_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_YAK_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_YAK_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_YAK_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_YAK_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_YAK_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_YAK_DEFENSE }
+}
+
+independence_wave_yak_host_restraint = {
+	allowed = { original_tag = YAK }
+	enable = {
+		is_independence_wave_sakha_package = yes
+		has_country_flag = independence_wave_iw_051_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_yak_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_YAK_FOUNDING_RESTRAINT }
+}
+
+independence_wave_yak_settled_compact = {
+	allowed = { original_tag = YAK }
+	enable = {
+		is_independence_wave_sakha_package = yes
+		has_country_flag = independence_wave_yak_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_YAK_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_YAK_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_YAK_INFRASTRUCTURE }
+}
+
+independence_wave_yak_emergency_guard = {
+	allowed = { original_tag = YAK }
+	enable = {
+		is_independence_wave_sakha_package = yes
+		has_country_flag = independence_wave_yak_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_YAK_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_YAK_DEFENSE }
+}
+
+# [source: 006_independence_wave_scotland_wales.txt]
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_ARMY_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_ARTILLERY_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_INDUSTRY_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_INFRASTRUCTURE_PRIORITY = 65
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_RESTRAINT = -140
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONVOY_PRIORITY = 60
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_DEFENSE_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARMY_PRIORITY = 85
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARTILLERY_PRIORITY = 60
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_DEFENSE_PRIORITY = 80
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_RESTRAINT = -30
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_FOUNDING_RESTRAINT = -200
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_INFRASTRUCTURE_PRIORITY = 55
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_INDUSTRY_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_RESTRAINT = -115
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_SUPPORT_PRIORITY = 65
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_TRAIN_PRIORITY = 60
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_PRODUCTION_PRIORITY = 55
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_SHIPYARD_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_SUPPORT_PRIORITY = 50
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_CONVOY_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_DEFENSE_PRIORITY = 65
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_RESTRAINT = -80
+@CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRAIN_PRIORITY = 45
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SCOTLAND AND WALES AI STRATEGIES
+# ============================================================================
+# Origin-locked profiles support package decisions: Scotland protects its
+# ports and shipping, Wales protects rail and mountain corridors, both avoid
+# premature wars and react materially to a severe former-host threat.
+# ============================================================================
+
+independence_wave_sco_maritime_survival = {
+	allowed = { original_tag = SCO }
+	enable = { is_independence_wave_sco_package = yes has_country_flag = independence_wave_iw_001_setup_complete has_country_flag = independence_wave_sco_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_SHIPYARD_PRIORITY }
+}
+
+independence_wave_sco_founding_restraint = {
+	allowed = { original_tag = SCO }
+	enable = { is_independence_wave_sco_package = yes has_country_flag = independence_wave_iw_001_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_sco_host_threat = {
+	allowed = { original_tag = SCO }
+	enable = { is_independence_wave_sco_package = yes has_country_flag = independence_wave_iw_001_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_sco_constitutional_state_policy = {
+	allowed = { original_tag = SCO }
+	enable = {
+		is_independence_wave_sco_package = yes
+		has_country_flag = independence_wave_iw_001_setup_complete
+		has_country_flag = independence_wave_sco_constitutional_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_INDUSTRY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_INFRASTRUCTURE_PRIORITY }
+}
+
+independence_wave_sco_labor_state_policy = {
+	allowed = { original_tag = SCO }
+	enable = { is_independence_wave_sco_package = yes has_country_flag = independence_wave_iw_001_setup_complete has_country_flag = independence_wave_sco_labor_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_INDUSTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_SUPPORT_PRIORITY }
+}
+
+independence_wave_sco_traditional_state_policy = {
+	allowed = { original_tag = SCO }
+	enable = { is_independence_wave_sco_package = yes has_country_flag = independence_wave_iw_001_setup_complete has_country_flag = independence_wave_sco_traditional_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_RESTRAINT }
+	ai_strategy = { type = build_building id = dockyard value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_SHIPYARD_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_DEFENSE_PRIORITY }
+}
+
+independence_wave_sco_emergency_state_policy = {
+	allowed = { original_tag = SCO }
+	enable = { is_independence_wave_sco_package = yes has_country_flag = independence_wave_iw_001_setup_complete has_country_flag = independence_wave_sco_emergency_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARTILLERY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_DEFENSE_PRIORITY }
+}
+
+independence_wave_wls_mountain_survival = {
+	allowed = { original_tag = WLS }
+	enable = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_iw_002_setup_complete has_country_flag = independence_wave_wls_ai_profile }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_wls_founding_restraint = {
+	allowed = { original_tag = WLS }
+	enable = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_iw_002_setup_complete NOT = { has_independence_wave_severe_host_threat = yes } NOT = { is_independence_wave_regional_power = yes } }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_wls_host_threat = {
+	allowed = { original_tag = WLS }
+	enable = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_iw_002_setup_complete has_independence_wave_severe_host_threat = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_wls_constitutional_state_policy = {
+	allowed = { original_tag = WLS }
+	enable = {
+		is_independence_wave_wls_package = yes
+		has_country_flag = independence_wave_iw_002_setup_complete
+		has_country_flag = independence_wave_wls_constitutional_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_CONSTITUTIONAL_INDUSTRY_PRIORITY }
+}
+
+independence_wave_wls_labor_state_policy = {
+	allowed = { original_tag = WLS }
+	enable = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_iw_002_setup_complete has_country_flag = independence_wave_wls_labor_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_INDUSTRY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_LABOR_TRAIN_PRIORITY }
+}
+
+independence_wave_wls_traditional_state_policy = {
+	allowed = { original_tag = WLS }
+	enable = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_iw_002_setup_complete has_country_flag = independence_wave_wls_traditional_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_RESTRAINT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_TRADITIONAL_DEFENSE_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_PRODUCTION_PRIORITY }
+}
+
+independence_wave_wls_emergency_state_policy = {
+	allowed = { original_tag = WLS }
+	enable = { is_independence_wave_wls_package = yes has_country_flag = independence_wave_iw_002_setup_complete has_country_flag = independence_wave_wls_emergency_government }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_RESTRAINT }
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_ARTILLERY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_SCOTLAND_WALES_AI_EMERGENCY_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_tatarstan.txt]
+@CR_SC_IW_TAT_ARMY = 82
+@CR_SC_IW_TAT_PRODUCTION = 44
+@CR_SC_IW_TAT_SUPPORT = 58
+@CR_SC_IW_TAT_ARTILLERY = 26
+@CR_SC_IW_TAT_INFRASTRUCTURE = 62
+@CR_SC_IW_TAT_DEFENSE = 76
+@CR_SC_IW_TAT_EMERGENCY = 112
+@CR_SC_IW_TAT_FOUNDING_RESTRAINT = -250
+@CR_SC_IW_TAT_SETTLED_RESTRAINT = -420
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-044 TATARSTAN AI
+# ============================================================================
+# The package keeps a river survival lane, former-host restraint, settled
+# regional participation, and an emergency-defense lane. Route choice itself is
+# owned by the shared focus framework and package decisions.
+# ============================================================================
+
+independence_wave_tat_river_survival = {
+	allowed = { original_tag = TAT }
+	enable = {
+		is_independence_wave_tat_package = yes
+		has_country_flag = independence_wave_iw_044_setup_complete
+		has_country_flag = independence_wave_tat_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_TAT_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_TAT_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_TAT_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_TAT_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_TAT_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_TAT_DEFENSE }
+}
+
+independence_wave_tat_host_restraint = {
+	allowed = { original_tag = TAT }
+	enable = {
+		is_independence_wave_tat_package = yes
+		has_country_flag = independence_wave_iw_044_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_tat_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_TAT_FOUNDING_RESTRAINT }
+}
+
+independence_wave_tat_settled_compact = {
+	allowed = { original_tag = TAT }
+	enable = {
+		is_independence_wave_tat_package = yes
+		has_country_flag = independence_wave_tat_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_TAT_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_TAT_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_TAT_INFRASTRUCTURE }
+}
+
+independence_wave_tat_emergency_guard = {
+	allowed = { original_tag = TAT }
+	enable = {
+		is_independence_wave_tat_package = yes
+		has_country_flag = independence_wave_tat_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_TAT_EMERGENCY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_TAT_DEFENSE }
+}
+
+# [source: 006_independence_wave_thrace.txt]
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_ARMY_PRIORITY = 104
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_ARTILLERY_PRIORITY = 26
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_DEFENSE_PRIORITY = 94
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_EMERGENCY_ARMY_PRIORITY = 124
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_FOUNDING_RESTRAINT = -220
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_INFRASTRUCTURE_PRIORITY = 72
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_PRODUCTION_PRIORITY = 30
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_SETTLED_RESTRAINT = -390
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_SUPPORT_PRIORITY = 44
+@CR_SC_INDEPENDENCE_WAVE_THRACE_AI_TRADITIONAL_ARMY_PRIORITY = 112
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-027 THRACE AI
+# ============================================================================
+# Additive strategy layers for the BAX carrier. The vanilla baseline remains
+# active; these strategies protect the Thrace anchor, screen the former host,
+# and prefer the corridor-frontier force profile before expansion.
+# ============================================================================
+
+independence_wave_bax_thrace_survival = {
+	allowed = { original_tag = BAX }
+	enable = {
+		is_independence_wave_bax_package = yes
+		has_country_flag = independence_wave_iw_027_setup_complete
+		has_country_flag = independence_wave_bax_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_bax_host_restraint = {
+	allowed = { original_tag = BAX }
+	enable = {
+		is_independence_wave_bax_package = yes
+		has_country_flag = independence_wave_iw_027_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_bax_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_bax_settled_thrace = {
+	allowed = { original_tag = BAX }
+	enable = {
+		is_independence_wave_bax_package = yes
+		has_country_flag = independence_wave_bax_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_bax_emergency_commission = {
+	allowed = { original_tag = BAX }
+	enable = {
+		is_independence_wave_bax_package = yes
+		has_country_flag = independence_wave_bax_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_THRACE_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_transcaucasus.txt]
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_ARMY = 82
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFANTRY = 60
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_SUPPORT = 42
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_ARTILLERY = 26
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFRASTRUCTURE = 58
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_DEFENSE = 72
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_RESTRAINT = -210
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_INDUSTRY = 64
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SETTLED_ARMY = 96
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SETTLED_RESTRAINT = -150
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_FORM16_ARMY = 110
+@CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_FORM16_INDUSTRY = 80
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-070/IW-071/IW-072 AND FORM-16 AI
+# ============================================================================
+# These strategies are additive to the vanilla ARM/GEO/AZR profiles. They
+# keep each carrier alive, prioritize the researched regional force profile,
+# and delay opportunistic wars until the founding and arbitration receipts are
+# complete. FORM-16 receives a separate federal consolidation posture.
+# ============================================================================
+
+independence_wave_transcaucasus_frontier_survival = {
+	allowed = {
+		OR = { original_tag = ARM original_tag = GEO original_tag = AZR }
+	}
+	enable = {
+		OR = {
+			is_independence_wave_iw070_country = yes
+			is_independence_wave_iw071_country = yes
+			is_independence_wave_iw072_country = yes
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		NOT = { has_country_flag = independence_wave_formable_active }
+		OR = {
+			has_independence_wave_severe_instability = yes
+			NOT = { has_independence_wave_functioning_capacity = yes }
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_SUPPORT }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_ARTILLERY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_DEFENSE }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_RESTRAINT }
+}
+
+# A functioning carrier that has not yet earned de-facto recognition still
+# needs an explicit founding posture. Keep it separate from reconstruction so
+# the AI does not fall back to the vanilla profile while the first settlement
+# receipt is pending.
+independence_wave_transcaucasus_foundation = {
+	allowed = {
+		OR = { original_tag = ARM original_tag = GEO original_tag = AZR }
+	}
+	enable = {
+		OR = {
+			is_independence_wave_iw070_country = yes
+			is_independence_wave_iw071_country = yes
+			is_independence_wave_iw072_country = yes
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_independence_wave_functioning_capacity = yes
+		NOT = { has_independence_wave_de_facto_recognition = yes }
+		NOT = { has_independence_wave_severe_instability = yes }
+		NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+		NOT = { has_country_flag = independence_wave_formable_active }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFRASTRUCTURE }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_RESTRAINT }
+}
+
+independence_wave_transcaucasus_reconstruction = {
+	allowed = {
+		OR = { original_tag = ARM original_tag = GEO original_tag = AZR }
+	}
+	enable = {
+		OR = {
+			is_independence_wave_iw070_country = yes
+			is_independence_wave_iw071_country = yes
+			is_independence_wave_iw072_country = yes
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_independence_wave_functioning_capacity = yes
+		has_independence_wave_de_facto_recognition = yes
+		NOT = { has_independence_wave_severe_instability = yes }
+		NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+		NOT = { has_country_flag = independence_wave_formable_active }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_SUPPORT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_INDUSTRY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFRASTRUCTURE }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_RESTRAINT }
+}
+
+independence_wave_transcaucasus_settled_frontier = {
+	allowed = {
+		OR = { original_tag = ARM original_tag = GEO original_tag = AZR }
+	}
+	enable = {
+		OR = {
+			is_independence_wave_iw070_country = yes
+			is_independence_wave_iw071_country = yes
+			is_independence_wave_iw072_country = yes
+		}
+		has_country_flag = independence_wave_generic_ai_profile
+		has_country_flag = independence_wave_founding_settlement_complete
+		has_independence_wave_prepared_security = yes
+		NOT = { has_independence_wave_severe_instability = yes }
+		NOT = { has_country_flag = independence_wave_formable_active }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SETTLED_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_SUPPORT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_INDUSTRY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SETTLED_RESTRAINT }
+}
+
+independence_wave_form16_federal_consolidation = {
+	allowed = {
+		OR = { original_tag = ARM original_tag = GEO original_tag = AZR }
+	}
+	enable = {
+		has_country_flag = independence_wave_formable_active
+		has_country_flag = independence_wave_form16_postformation_initialized
+		check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
+		has_independence_wave_form16_ai_gate = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_FORM16_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SURVIVAL_SUPPORT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_FORM16_INDUSTRY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_INDUSTRY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSCAUCASUS_SETTLED_RESTRAINT }
+}
+
+# [source: 006_independence_wave_transylvania.txt]
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARMY_PRIORITY = 88
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARTILLERY_PRIORITY = 24
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_DEFENSE_PRIORITY = 82
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_EMERGENCY_ARMY_PRIORITY = 112
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_FOUNDING_RESTRAINT = -230
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_INFRASTRUCTURE_PRIORITY = 66
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_PRODUCTION_PRIORITY = 38
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SETTLED_RESTRAINT = -430
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SUPPORT_PRIORITY = 46
+@CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_TRADITIONAL_ARMY_PRIORITY = 104
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-023 TRANSYLVANIA AI
+# ============================================================================
+# The vanilla TRA AI remains active. These additive strategies make the
+# Event 006 package protect its mountain anchor, settle its host ledger, and
+# prefer the researched frontier force profile.
+# ============================================================================
+
+independence_wave_tra_frontier_survival = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_iw_023_setup_complete
+		has_country_flag = independence_wave_tra_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_INFRASTRUCTURE_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_tra_host_restraint = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_iw_023_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_tra_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_tra_settled_frontier = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_tra_settlement_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_TRADITIONAL_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_SETTLED_RESTRAINT }
+}
+
+independence_wave_tra_emergency_commission = {
+	allowed = { original_tag = TRA }
+	enable = {
+		is_independence_wave_tra_package = yes
+		has_country_flag = independence_wave_tra_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_TRANSYLVANIA_AI_DEFENSE_PRIORITY }
+}
+
+# [source: 006_independence_wave_udm.txt]
+@CR_SC_IW_UDM_ARMY = 84
+@CR_SC_IW_UDM_PRODUCTION = 60
+@CR_SC_IW_UDM_SUPPORT = 55
+@CR_SC_IW_UDM_ARTILLERY = 30
+@CR_SC_IW_UDM_INFRASTRUCTURE = 78
+@CR_SC_IW_UDM_WORKSHOPS = 72
+@CR_SC_IW_UDM_DEFENSE = 82
+@CR_SC_IW_UDM_EMERGENCY = 116
+@CR_SC_IW_UDM_FOUNDING_RESTRAINT = -260
+@CR_SC_IW_UDM_SETTLED_RESTRAINT = -430
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-048 UDMURTIA AI
+# ============================================================================
+# UDM protects Izhevsk and its forest rail/depot belt, keeps workshop output
+# available for industrial guards, and avoids a former-host escalation until
+# the visible ledgers and compact are settled. Route selection stays with the
+# shared focus framework and the package-local decision workers.
+# ============================================================================
+
+independence_wave_udm_industrial_survival = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_iw_048_setup_complete
+		has_country_flag = independence_wave_udm_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_UDM_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW_UDM_PRODUCTION }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW_UDM_ARTILLERY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW_UDM_SUPPORT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_UDM_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_IW_UDM_WORKSHOPS }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_UDM_DEFENSE }
+}
+
+independence_wave_udm_host_restraint = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_iw_048_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_udm_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_UDM_FOUNDING_RESTRAINT }
+}
+
+independence_wave_udm_settled_compact = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_udm_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_UDM_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW_UDM_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_UDM_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_IW_UDM_WORKSHOPS }
+}
+
+independence_wave_udm_emergency_guard = {
+	allowed = { original_tag = UDM }
+	enable = {
+		is_independence_wave_udm_package = yes
+		has_country_flag = independence_wave_udm_industrial_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW_UDM_EMERGENCY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW_UDM_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW_UDM_DEFENSE }
+}
+
+# [source: 006_independence_wave_wallonia_frisia.txt]
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_ARMY_PRIORITY = 60
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_ARTILLERY_PRIORITY = 20
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_COASTAL_DEFENSE_PRIORITY = 90
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_CONVOY_PRIORITY = 30
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_DEFENSE_PRIORITY = 75
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_EMERGENCY_ARMY_PRIORITY = 100
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_FOUNDING_RESTRAINT = -140
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_PRODUCTION_PRIORITY = 45
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_SETTLED_RESTRAINT = -45
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_SUPPORT_PRIORITY = 35
+@CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_TRAIN_PRIORITY = 30
+# ============================================================================
+# CHAOS REDUX - EVENT 006 WALLONIA AND FRISIA AI STRATEGIES
+# ============================================================================
+# Origin-locked profiles favor survival, infrastructure, package equipment,
+# and founding restraint. Threat overlays react to the dynamic former-host
+# ledger rather than assuming Belgium or the Netherlands still exists.
+# ============================================================================
+
+independence_wave_afx_industrial_survival = {
+	allowed = { original_tag = AFX }
+	enable = {
+		is_independence_wave_afx_package = yes
+		has_country_flag = independence_wave_iw_006_setup_complete
+		has_country_flag = independence_wave_afx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_ARTILLERY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = build_building id = arms_factory value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_afx_founding_restraint = {
+	allowed = { original_tag = AFX }
+	enable = {
+		is_independence_wave_afx_package = yes
+		has_country_flag = independence_wave_iw_006_setup_complete
+		NOT = { has_independence_wave_severe_host_threat = yes }
+		NOT = { is_independence_wave_regional_power = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_afx_host_threat = {
+	allowed = { original_tag = AFX }
+	enable = {
+		is_independence_wave_afx_package = yes
+		has_country_flag = independence_wave_iw_006_setup_complete
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_afx_emergency_command = {
+	allowed = { original_tag = AFX }
+	enable = {
+		is_independence_wave_afx_package = yes
+		has_country_flag = independence_wave_iw_006_setup_complete
+		has_independence_wave_emergency_military_route = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_SUPPORT_PRIORITY }
+}
+
+independence_wave_afx_civic_industrial_policy = {
+	allowed = { original_tag = AFX }
+	enable = {
+		is_independence_wave_afx_package = yes
+		has_country_flag = independence_wave_iw_006_setup_complete
+		OR = {
+			has_independence_wave_constitutional_route = yes
+			has_independence_wave_popular_council_route = yes
+			has_independence_wave_patron_client_route = yes
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_PRODUCTION_PRIORITY }
+}
+
+independence_wave_agx_coastal_survival = {
+	allowed = { original_tag = AGX }
+	enable = {
+		is_independence_wave_agx_package = yes
+		has_country_flag = independence_wave_iw_007_setup_complete
+		has_country_flag = independence_wave_agx_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_ARMY_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_PRODUCTION_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_SUPPORT_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = train value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_TRAIN_PRIORITY }
+	ai_strategy = { type = equipment_production_factor id = convoy value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_CONVOY_PRIORITY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_COASTAL_DEFENSE_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_DEFENSE_PRIORITY }
+}
+
+independence_wave_agx_founding_restraint = {
+	allowed = { original_tag = AGX }
+	enable = {
+		is_independence_wave_agx_package = yes
+		has_country_flag = independence_wave_iw_007_setup_complete
+		NOT = { has_independence_wave_severe_host_threat = yes }
+		NOT = { is_independence_wave_regional_power = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_FOUNDING_RESTRAINT }
+}
+
+independence_wave_agx_host_threat = {
+	allowed = { original_tag = AGX }
+	enable = {
+		is_independence_wave_agx_package = yes
+		has_country_flag = independence_wave_iw_007_setup_complete
+		has_independence_wave_severe_host_threat = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_EMERGENCY_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = coastal_bunker value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_COASTAL_DEFENSE_PRIORITY }
+}
+
+independence_wave_agx_civic_coastal_policy = {
+	allowed = { original_tag = AGX }
+	enable = {
+		is_independence_wave_agx_package = yes
+		has_country_flag = independence_wave_iw_007_setup_complete
+		OR = {
+			has_independence_wave_constitutional_route = yes
+			has_independence_wave_popular_council_route = yes
+			has_independence_wave_patron_client_route = yes
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = industrial_complex value = @CR_SC_INDEPENDENCE_WAVE_NWE_PACKAGE_AI_PRODUCTION_PRIORITY }
+}

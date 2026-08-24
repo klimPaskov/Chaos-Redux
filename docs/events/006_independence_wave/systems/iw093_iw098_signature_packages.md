@@ -64,7 +64,7 @@ IW-098 owns four clamped values:
 
 All starting values, bounds, gains, route thresholds, costs, durations, idea
 modifiers, and AI weights are centralized in
-`common/script_constants/006_independence_wave_iw093_iw098_constants.txt`.
+`common/script_constants/006_independence_wave_constants_registry.txt`.
 Focus and decision effects call the package clamp helpers after every change.
 
 ## Focus and route contract
