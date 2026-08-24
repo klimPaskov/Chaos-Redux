@@ -42,6 +42,11 @@ The reusable achievement not-eligible overlay is stored beside these examples
 at `icons/achievements/overlay.png`, but is a workflow input and is excluded
 from the contact sheet and inventory count.
 
+The achievement workflow also owns two user-provided background inputs: `icons/achievements/achievement_template.png` (completed state, SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`) and `icons/achievements/achievement_template_grey.png` (grey and not-eligible states, SHA-256 `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`).
+Their authoritative source files were `C:/Users/klimp/Downloads/achievement_template.png` and `C:/Users/klimp/Downloads/achievement_template_grey.png`; the repository copies are byte-for-byte exact.
+They are not Vanilla references, are excluded from the achievement count and contact sheet, and must be used by `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`.
+The existing `overlay.png` remains the unchanged red not-eligible overlay and is excluded from the count and contact sheet for the same reason.
+
 The `icons/decision_categories/pictures/` family is a separate review shelf for larger decision-category pictures.
 It currently contains exactly 13 user-provided vanilla reference PNGs, each lossless RGBA at the native `114x101` reference canvas.
 These are not the small decision-category icons in `icons/decision_categories/` and are not a universal runtime-size prescription.
