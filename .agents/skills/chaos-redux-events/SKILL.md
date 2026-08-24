@@ -626,6 +626,16 @@ Rules:
 - keep evolution and world-end columns aligned with the real chain structure
 - do not put baseline progression stages into evolution columns unless they are actual mutation tracks
 
+### Event catalog status contract
+
+- Use exactly these status labels: `Playable`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
+- `Playable` requires explicit approval and must never be inferred or assigned by default.
+- Registered events without explicit approval default to `To Be Reworked`; implemented Events 1-20 awaiting validation may use `Needs Testing`.
+- Every Event 21+ that remains registered in `initialize_event_categories` is `To Be Reworked` unless explicitly approved in the future.
+- Every catalog event ID absent from the three runtime registration arrays is `Unavailable`, even if an obsolete event file still exists.
+- Keep workbook validation lists and the `Legend` sheet synchronized with these labels.
+- These status rules classify catalog entries only and must not silently change runtime registration or enablement.
+
 ### Extra rules to follow
 
 Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.

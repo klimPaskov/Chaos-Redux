@@ -52,6 +52,8 @@ The zombie outbreak event has authored gameplay text in the event-details window
 
 Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text. The shared type selector maps the Death and Secret Alliance evolution constants to their dedicated labels rather than the generic `Evolution` fallback.
 
+The workbook `Evo I` through `Evo V` fields mirror the complete description bodies shown by the evolution detail popup. Titles remain in the title selector and must not be copied into a description field as a substitute for prose.
+
 ## Events tab sorting and filtering
 Events tab supports:
 - Filter: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`
