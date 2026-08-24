@@ -76,7 +76,7 @@ Natural terminal paths retain their existing scenario-specific helpers and world
 - Event Details and scenario-details layouts: `interface/chaosx_events_log_popup.gui`
 - Dynamic titles, owners, statuses, and details: `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - Player-facing English text: `localisation/english/chaosx_gui_l_english.yml`
-- Public catalog wording: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
+- Public catalog wording: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Each workbook entry retains the complete scenario description. A title may separate multiple branches in one event row, but it never replaces the description body.
 
 ## Icons and UI assets
 
