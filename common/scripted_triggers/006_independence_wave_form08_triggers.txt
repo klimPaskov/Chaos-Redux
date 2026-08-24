@@ -121,20 +121,27 @@ is_independence_wave_form08_postformation_carrier = {
 	has_cosmetic_tag = HUN_EMPIRE
 }
 
-can_pay_independence_wave_form08_congress_cost = {
+can_pay_independence_wave_form08_administration_strategic_cost = {
 	is_independence_wave_form08_postformation_carrier = yes
-	can_pay_independence_wave_strategic_cost = yes
-	can_pay_independence_wave_administration_standard_cost = yes
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
+	has_stability > constant:independence_wave_decision_cost.stability_standard
+	command_power > constant:independence_wave_decision_cost.form08_administration_strategic_command_power_gate
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+	OR = {
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+	}
+}
+
+can_pay_independence_wave_form08_congress_cost = {
+	can_pay_independence_wave_form08_administration_strategic_cost = yes
 }
 
 can_pay_independence_wave_form08_arbitration_cost = {
 	is_independence_wave_form08_postformation_carrier = yes
-	can_pay_independence_wave_strategic_cost = yes
 	can_pay_independence_wave_security_standard_cost = yes
 }
 
 can_pay_independence_wave_form08_transport_cost = {
-	is_independence_wave_form08_postformation_carrier = yes
-	can_pay_independence_wave_strategic_cost = yes
-	can_pay_independence_wave_administration_standard_cost = yes
+	can_pay_independence_wave_form08_administration_strategic_cost = yes
 }
