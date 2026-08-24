@@ -1,0 +1,41 @@
+# Famine and migration corridor contract helpers
+
+This package owns an exact, non-event humanitarian-corridor contract. The origin state persists the origin, adjacent front state, requester, counterpart controller, cohort, operation, deadlines, route-proof bundle, and transaction outputs in normal variables. Regular event targets are used only during one exact transfer chain. The helpers add no event ID, event pool, GUI, or mapmode; the package continues to use the two existing famine/migration mapmodes.
+
+## Files and identifiers
+
+- `common/script_constants/famine_migration_corridor_constants.txt` defines `famine_migration_corridor_status`, `famine_migration_corridor_operation`, `famine_migration_corridor_relation`, `famine_migration_corridor_reason`, `famine_migration_corridor_result`, `famine_migration_corridor_timing`, and `famine_migration_corridor_runtime`.
+- `common/scripted_triggers/famine_migration_corridor_triggers.txt` defines `famine_migration_corridor_origin_is_valid`, `famine_migration_corridor_front_candidate_is_valid`, `famine_migration_corridor_counterpart_is_valid`, `famine_migration_corridor_front_state_is_valid`, `famine_migration_corridor_route_geometry_is_valid`, `famine_migration_corridor_offer_request_is_valid`, `famine_migration_corridor_acceptance_is_valid`, `famine_migration_corridor_offer_is_valid`, `famine_migration_corridor_operation_is_valid`, `famine_migration_corridor_mission_is_valid`, `famine_migration_corridor_route_binding_is_valid`, `famine_migration_corridor_attack_receipt_is_valid`, `famine_migration_corridor_country_pulse_is_valid`, and `famine_migration_corridor_cleanup_needed`.
+- `common/scripted_effects/famine_migration_corridor_effects.txt` defines proof-copy/preparation, offer submission, acceptance/rejection, route binding, exact evacuation/relief adapters, mission arm/finalize/expiry, attack disqualification, cleanup, and sparse pulse helpers. Public response aliases are `famine_migration_corridor_accept_offer` and `famine_migration_corridor_reject_offer`.
+
+## Lifecycle
+
+`famine_migration_prepare_corridor_contract` saves the selected `FROM` state as `famine_migration_corridor_origin`, persists `origin_state_id` and `requester_country_id`, and counts only valid adjacent states. An explicit `famine_migration_corridor_front_state_request` is still validated by the same candidate predicate. Zero candidates, multiple candidates, invalid counterpart IDs, or missing route proof set a terminal reason and clean up without changing population or reserves.
+
+`famine_migration_submit_corridor_offer` writes the response deadline and mirrors one pending offer on the exact counterpart country. The requester receives only a sparse mirror/pulse marker. `famine_migration_corridor_accept_offer` and `famine_migration_corridor_reject_offer` change contract state and clear mirrors; neither mutates population, reserves, or cohorts.
+
+`famine_migration_corridor_bind_route_destination` saves the persisted front as the regular `famine_migration_route_destination` and `famine_migration_food_reserve_destination` for the current chain. It sets generic destination proof only on the bound front while `famine_migration_corridor_destination_binding_active` is present. `famine_migration_execute_corridor_evacuation` calls `famine_migration_transfer_civilians_exact` once, then reuses `famine_migration_bind_cohort_destination` and reception delta logic. `famine_migration_execute_corridor_relief` calls `famine_migration_transfer_food_reserves` once. Their record helpers persist exact debit, deaths, survivor credit, source debit, and destination credit only after the existing endpoint reports a valid result.
+
+The corridor mission is armed only when the requester has a free existing mission slot. `famine_migration_corridor_finalize` requires the exact mission flag, route, operation, and transaction proof and leaves outcome/achievement effects to the mission owner. `famine_migration_corridor_expire` and `famine_migration_mark_corridor_attack_disqualified` are terminal, non-rollback paths. `famine_migration_corridor_cleanup` is idempotent, clears both country mirrors and legacy mission subject fields, releases/recounts the requester mission slot through existing flags, and never reverses a committed transfer or clears an aligned cohort row.
+
+## Required call-site wiring owned by the parent
+
+The parent must wire `fm_negotiate_corridor` in `common/decisions/famine_migration_decisions.txt` to submit route-proof request variables, call `famine_migration_prepare_corridor_contract`, then `famine_migration_submit_corridor_offer`, and remove immediate humanitarian-policy/quarter-relief mutation. It must add the ordinary counterpart response decisions `fm_accept_corridor_offer` and `fm_reject_corridor_offer` with the same offer trigger and AI surface, and route accepted branches of `fm_famine_evacuation`, `fm_evacuate_vulnerable`, and `fm_evacuate_workers` through `famine_migration_execute_corridor_evacuation` rather than weighted destination selection. Any relief branch must supply a proven donor and `famine_migration_corridor_relief_amount_request` before `famine_migration_execute_corridor_relief`.
+
+The parent must replace generic `any_neighbor_state` mission activation/availability/cancellation checks for `fm_mission_hold_humanitarian_corridor` with the exact origin/front validators and call finalize/expire. The parent should add sparse calls from `common/on_actions/chaosx_famine_migration_on_actions.txt` and the existing registered country/state hooks only for stored IDs; no `on_daily`, `on_weekly`, `on_monthly`, global periodic scan, event target registry, event, GUI, or third mapmode belongs here.
+
+Attack disqualification remains blocked on an engine/source ownership boundary: the current source has state-control and country war/peace hooks but no authoritative battle/front/strategic-bombing/nuclear callback that supplies exact origin, front, attacker, date, reason, and receipt proof. The owner of that callback must set `famine_migration_corridor_attack_receipt_proven`, `famine_migration_corridor_attack_attacker_country_id`, and the attack reason before calling `famine_migration_mark_corridor_attack_disqualified`. Generic `has_war_with`, peace, or control loss must not be treated as an attack receipt.
+
+The engine still needs runtime validation for counterpart ordinary-decision visibility from a country-only pending mirror and for save/reload `var:<database_id>` state/country scope resolution. These are recorded blockers, not source fallbacks.
+
+## Probability and MCP evidence
+
+No weighted helper or AI factor was added in this tranche, so no new probability surface was audited. If the parent adds accept/reject AI weights, it must run `hoi4.probability_inspect` first and the `chaosx_ai_probability_auditor` baseline/compare workflow for `prob_corridor_acceptance` and the named scenarios in the architecture handoff.
+
+Read-only MCP evidence used for this helper boundary:
+
+- Decision lint: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d4d07833c1b269b47049aa9871a1a73bfc5ed2515d4727b531c263c4c6791933/18cfc541a40928807c83e481f5ea81797180a9748d5782d07c54a23297e4c221/event-lint-2ff7afa1197e.json` (`EVENT_INSPECTED_PARTIAL`; deferred helper projections explain the partial result).
+- Fresh helper-file lint: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b5b92527ff31d4733b93f622db8c38a022790728065322ce280046d3b1d952e2/467fe718d9a3e0a9a3598201d8e939afd1793392533d6c9eb380de9d9543a120/event-lint-2ff7afa1197e.json` (`EVENT_INSPECTED_PARTIAL`; no blocking diagnostics, workspace-wide helper/lifecycle projection deferred).
+- Relevant map inspection: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e9f85bd2d3ac500120678a26f41ddd47c02cef8119f0bb057a9e8ff131faeb9e/31a8fa3f3d59e0871e4027ca23c6ad0d0916070b754285a4bf57bce8c5e8dff3/map-inspect.76240d67ca053497.json` (`MAP_INSPECTED`; adjacency/state membership passed, while unrelated existing building/port locator diagnostics kept the overall validation flag false).
+
+The offline wiki, vanilla documentation, existing Chaos Redux famine/migration helpers, exact transfer/reserve contracts, and vanilla adjacency/variable-scope precedents were consulted before writing these package-owned files.
