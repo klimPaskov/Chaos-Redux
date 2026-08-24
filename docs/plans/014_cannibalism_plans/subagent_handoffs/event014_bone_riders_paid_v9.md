@@ -1,6 +1,16 @@
 # Event 014 Bone Riders paid v9 handoff
 
-Status: incomplete and blocked at a verified Meshy quadruped/mounted-motion capability boundary. The independent sourced-audio package is complete.
+Status: incomplete and blocked because the callable Blender HOI4 MCP process remains adapter 1.10.3 while the repository-authoritative lock is 1.10.7. The approved professional horse source, conditional Meshy rider source plan, sourced-audio package, and counter package are preserved.
+
+## Adapter 1.10.7 resume audit — 2026-08-24
+
+Repository recovery is authoritative at adapter 1.10.7 commit `a3e0a1497b6926b025070267eb9c75bd00b77c93`, with registration commit `7e3af24ac4af87b12cd49c782d89f998d7fab915`. The current dependency lock resolves 1.10.7 and the environment verifier returns zero findings.
+
+The live MCP process did not reload. Health request `fe776868337d4ce1ae9e98a07ad62228` reports adapter 1.10.3, and the callable registry still exposes only 11 legacy tools. It omits `segment_creature_components`, `calibrate_creature_scale`, `import_animation_action`, `retime_animation_action`, `correct_action_grounding`, and `sanitize_runtime_candidate`; its `prepare_candidate` schema also lacks the 1.10.7 compound-preparation surface.
+
+This is the exact current blocker. The installed vanilla frame/horse/`Saddle_Node` rider architecture can preserve independent actions without merging them, but the stale live registry cannot segment the bespoke geometry or transfer and validate the approved professional horse and rider sources into separate exportable children. Local authored motion, static substitution, aliasing, and merged compound actions remain forbidden. No Meshy animation call was made, so this resume tranche consumed zero credits; total historical spend remains 35 and the planned 24-credit rider tranche remains paused.
+
+Evidence is `docs/assets/014_cannibalism/models_3d/cannibal_bone_riders/evidence/adapter_1_10_7_reload_gate_2026-08-24.md`. Restart or reload Codex MCP, require live health 1.10.7 plus the full registered operation surface, then rerun the dependency gate before spending.
 
 ## Approved professional-source recovery addendum — 2026-08-24
 

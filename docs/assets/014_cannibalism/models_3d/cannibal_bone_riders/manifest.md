@@ -36,3 +36,9 @@ Bone Riders will therefore preserve separate bespoke horse and rider meshes and 
 Registration recovery commit `7e3af24ac` adds the required structured operation exposure but requires a fresh Codex/MCP process.
 The current process remains paused, and an unrelated uncommitted adapter/lock 1.10.4 state is not authoritative.
 No final rig, weights, Saddle_Node, `.mesh`, `.anim`, DDS model textures, exports, reimports, or compound synchronization previews are claimed.
+
+## Adapter 1.10.7 reload audit
+
+Repository adapter recovery is complete at commit `a3e0a1497b6926b025070267eb9c75bd00b77c93`, registration commit `7e3af24ac4af87b12cd49c782d89f998d7fab915`, and locked adapter version 1.10.7. The environment verifier reports zero findings. However, live health request `fe776868337d4ce1ae9e98a07ad62228` reports adapter 1.10.3 and the current callable registry contains only the 11 legacy operations. It does not expose independent creature segmentation/calibration, approved sourced-action import/retime, grounding, or weight-only sanitization.
+
+The vanilla three-entity architecture remains technically valid and avoids a forbidden merged compound action, but this process cannot prepare and validate the separate horse and rider children. No rider action credits were spent. Exact evidence and the required reload condition are in `evidence/adapter_1_10_7_reload_gate_2026-08-24.md`.

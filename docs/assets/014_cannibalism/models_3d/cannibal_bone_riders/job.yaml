@@ -1,5 +1,5 @@
 schema_version: 1.0.0
-status: blocked_adapter_reload_pending_professional_sources_selected
+status: blocked_live_adapter_process_stale_1_10_3_reload_required
 owner_id: 014_cannibalism
 event_id: "014"
 event_slug: cannibalism
@@ -218,13 +218,17 @@ dependency_lock: .tools/3d_pipeline/config/dependencies.lock.json
 schema_lock: .tools/3d_pipeline/config/meshy_tool_schema.lock.json
 adapter_config: .tools/3d_pipeline/config/blender_hoi4_adapter.json
 blocker: >-
-  Meshy 7 generation and provider remesh succeeded, but the remeshed 90k mounted horse+rider failed Meshy rig pose estimation with HTTP 422. Parent-approved CC0 Mesh2Motion horse actions and conditionally approved Meshy humanoid rider actions now provide a compliant source route using separate vanilla-style horse and Saddle_Node-attached rider entities. Processing remains blocked because the current MCP process does not expose the lock-declared segmentation, sourced-action retarget, calibration, grounding, and weight-sanitize operations. Registration recovery commit 7e3af24ac requires a fresh Codex/MCP process, and an unrelated uncommitted adapter/lock 1.10.4 state is not authoritative. No final armature, weights, .mesh, .anim, export, or reimport is claimed until the reloaded route passes dependency and capability gates.
+  Meshy 7 generation and provider remesh succeeded, but the remeshed 90k mounted horse+rider failed Meshy rig pose estimation with HTTP 422. Parent-approved CC0 Mesh2Motion horse actions and conditionally approved Meshy humanoid rider actions provide a compliant source route using separate vanilla-style horse and Saddle_Node-attached rider entities. Repository locks and the environment verifier resolve adapter 1.10.7 at commit a3e0a1497b6926b025070267eb9c75bd00b77c93 with zero findings, but the callable MCP health response fe776868337d4ce1ae9e98a07ad62228 reports adapter 1.10.3 and the live registry exposes only 11 legacy tools. It omits segment_creature_components, calibrate_creature_scale, import_animation_action, retime_animation_action, correct_action_grounding, and sanitize_runtime_candidate, so neither independent source-action transfer nor audited three-entity export can proceed safely. A fresh Codex/MCP process reload is required. No rider animation credits were spent and no final armature, weights, .mesh, .anim, export, reimport, or synchronization preview is claimed.
 recovery_route:
   architecture: separate_frame_horse_and_saddle_attached_rider
   vanilla_precedent: evidence/vanilla_cavalry_entity_architecture.md
   horse_source: provider/external_animation/mesh2motion_horse/provenance.json
   rider_source_plan: evidence/meshy_rider_action_research.md
   adapter_registration_commit: 7e3af24ac
+  adapter_1_10_7_commit: a3e0a1497b6926b025070267eb9c75bd00b77c93
+  locked_adapter_version: 1.10.7
+  live_adapter_version: 1.10.3
+  live_health_request_id: fe776868337d4ce1ae9e98a07ad62228
   adapter_reload_required: true
   action_spend_paused: true
   planned_rider_animation_credits: 24
