@@ -14,3 +14,5 @@ All eight roles are blocked at the shared provider-rig gate. No `.anim` file exi
 | death | 24 | no | contact-corrected collapse | articulated horse+rider impact, collapse, and settling | blocked |
 
 Meshy 7 generation task `01a03404-f74d-7d5b-876d-5f426afe11f6` and remesh task `01a03418-57e3-7399-bf55-2d769bedabee` succeeded. The rig recovery failed with HTTP 422 pose-estimation failure, so there is no valid `rig_task_id` accepted by `meshy_animate`.
+
+The v9 live audit confirmed this is a provider capability blocker, not merely a bad retry. Meshy's official [Rigging API](https://docs.meshy.ai/en/api/rigging) says programmatic rigging is for standard humanoid bipeds and is unsuitable for nonhumanoid assets. Its official [Animation API](https://docs.meshy.ai/en/api/animation) requires the ID of a successfully completed Meshy rig task. A separated rider can satisfy only the humanoid half; the living horse has no Meshy quadruped rig/action source. No further paid call was made because it could not supply compliant mounted motion.

@@ -1,5 +1,5 @@
 schema_version: 1.0.0
-status: blocked_provider_compound_rig
+status: blocked_meshy_quadruped_motion_capability
 owner_id: 014_cannibalism
 event_id: "014"
 event_slug: cannibalism
@@ -8,7 +8,7 @@ asset_slug: cannibal_bone_riders
 profile: nonhumanoid_creature
 compound_profile: articulated_horse_and_rider
 job_root: docs/assets/014_cannibalism/models_3d/cannibal_bone_riders
-handoff_path: docs/plans/014_cannibalism_plans/subagent_handoffs/event014_bone_riders_final_v8.md
+handoff_path: docs/plans/014_cannibalism_plans/subagent_handoffs/event014_bone_riders_paid_v9.md
 runtime_consumer: cannibal_bone_riders
 runtime_entity_scale: 0.45
 source_mode: reference_only_user_authorized
@@ -97,7 +97,7 @@ scale_crosswalk:
 rig_route:
   family: horse_rider_compound_v1
   adapter_operation: chaosx_blender_hoi4_author_creature_rig_skeleton_preparation_only
-  status: blocked_meshy_compound_pose_estimation_failed
+  status: blocked_live_meshy_schema_has_no_nonhumanoid_rig_or_animation_route
   bone_count: 55
   bones:
     - root
@@ -165,7 +165,7 @@ required_actions:
   - { role: training, runtime_name: cannibal_bone_riders_training, fps: 24, loop: true, root_policy: in_place, source_status: blocked }
   - { role: death, runtime_name: cannibal_bone_riders_death, fps: 24, loop: false, root_policy: contact_corrected_collapse, source_status: blocked }
 sound_design:
-  status: partial_five_sourced_roles_one_role_blocked
+  status: complete_six_sourced_files_cover_all_required_roles
   required_roles:
     - selection
     - horse_movement
@@ -181,20 +181,22 @@ sound_design:
     - https://commons.wikimedia.org/wiki/File:Whip-sound.ogg
     - https://commons.wikimedia.org/wiki/File:Human_whistling.ogg
     - https://commons.wikimedia.org/wiki/File:Wilhelm_Scream.ogg
+    - https://commons.wikimedia.org/wiki/File:Grinding_and_tapping_ro.ogg
   original_files:
     - audio/sources/original/horse_neigh.ogg
     - audio/sources/original/horse_hoof_movement.ogg
     - audio/sources/original/sling_release.ogg
     - audio/sources/original/rider_whistle.ogg
     - audio/sources/original/rider_death.ogg
+    - audio/sources/original/stone_impact_taps.ogg
   derived_files:
     - audio/derived/horse_neigh.wav
     - audio/derived/horse_hoof_movement.wav
     - audio/derived/sling_release.wav
     - audio/derived/rider_whistle.wav
     - audio/derived/rider_death.wav
-  blocker: >-
-    No defensible sourced stone-impact recording was selected in the bounded search, so the impact role remains blocked. All five derived candidates are mechanical PCM S16LE 44100 Hz mono conversions.
+    - audio/derived/stone_impact.wav
+  blocker: null
 counter_package:
   status: existing_bespoke_package_reaudited_pass
   parent_reported_existing: true
@@ -216,4 +218,4 @@ dependency_lock: .tools/3d_pipeline/config/dependencies.lock.json
 schema_lock: .tools/3d_pipeline/config/meshy_tool_schema.lock.json
 adapter_config: .tools/3d_pipeline/config/blender_hoi4_adapter.json
 blocker: >-
-  Meshy 7 generation and provider remesh succeeded, but the remeshed 90k mounted horse+rider failed Meshy rig pose estimation with HTTP 422. The initial rig request was rejected prebilling because the original provider mesh exceeded the face limit; the authorized provider remesh then succeeded for 5 credits and the second rig attempt failed prebilling. Without a coherent provider rig, meshy_animate cannot supply the eight required mounted actions. Local Blender-authored replacement motion is forbidden, so no final armature, weights, .mesh, .anim, export, or reimport is claimed.
+  Meshy 7 generation and provider remesh succeeded, but the remeshed 90k mounted horse+rider failed Meshy rig pose estimation with HTTP 422. Live official Meshy documentation and the locked schema confirm that meshy_rig supports standard humanoid bipeds and explicitly excludes nonhumanoid assets, while meshy_animate requires a successfully completed Meshy rig task. Separating the rider can only create a humanoid rider rig; there is no Meshy quadruped horse rig or animation route to supply independent substantive horse motion. Because the accepted design requires a living animated horse and rider and Meshy-only required motion, no compliant mounted recovery exists in the current provider surface. Local Blender-authored replacement motion, a static horse, transform-only motion, semantic aliases, and silent vanilla horse animation reuse are forbidden, so no final armature, weights, .mesh, .anim, export, or reimport is claimed.

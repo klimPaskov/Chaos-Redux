@@ -1,6 +1,6 @@
 # `cannibal_bone_riders` model package manifest
 
-Package status: `blocked_provider_compound_rig`. Meshy 7 geometry, local geometry QA, previews, source provenance, five sourced audio roles, and the existing bespoke counter audit are complete. A runtime skeletal package is not complete because Meshy cannot rig the compound dynamic horse+rider.
+Package status: `blocked_meshy_quadruped_motion_capability`. Meshy 7 geometry, local geometry QA, previews, source provenance, all required sourced audio roles, and the existing bespoke counter audit are complete. A runtime skeletal package is not complete because the live Meshy route cannot rig or animate the nonhumanoid horse component of the mounted compound.
 
 The non-shipping source is Tatyana Kupriyanova / @CgSister's modern fictional *Horned Warrior on Pale Steed*, archived at `refs/source/recovery_v7/candidates/bone_tatyana_horned_steed.jpg`, SHA-256 `261B5442B11853971CA6B31265167EABA4D73E69AA7A116E78A3D3CD82F114D8`, source page `https://twoucan.com/profile/CgSister`. The page grants no public reuse license and contains no explicit NoAI/no-derivatives prohibition. The user explicitly authorized reference-only use of this exact artwork and one narrow native ImageGen adaptation.
 
@@ -14,6 +14,8 @@ Installed precedents are `cavalry_horse.mesh`, `cavalry_frame.mesh`, `infantry.g
 
 The initial rig request was rejected before billing because Meshy saw the original 1.99M-face task. Provider remesh task `01a03418-57e3-7399-bf55-2d769bedabee` succeeded at 90,000 triangles for 5 credits. Remesh hashes are GLB `D105CAC2E1D1CC0C37D420FB6E54776D0F15B68126015A3AB734F8900497C348` and FBX `90ED7511BEAC37D76A1032B2E673D27F80A224061C701F4B9B183C25EF95B743`. The second rig attempt failed prebilling with HTTP 422 pose-estimation failure. Total consumed credits are 35. All eight required roles are blocked. No local replacement motion was authored, and no `.mesh`, `.anim`, DDS model texture, export, or reimport is claimed.
 
-Five licensed audio sources and PCM S16LE 44100 Hz mono derivatives exist under `audio/`; stone impact remains blocked. The bespoke counter package was reaudited: large 152x42, small 60x12, and texticon 60x12 all pass exact decoded roundtrip. Parent-owned runtime/entity/GFX/sound wiring and live in-game validation remain pending.
+Six licensed or public-domain audio sources and PCM S16LE 44100 Hz mono derivatives exist under `audio/`, including a public-domain stone-impact one-shot derived from stones tapped together. The bespoke counter package was reaudited: large 152x42, small 60x12, and texticon 60x12 all pass exact decoded roundtrip. Parent-owned runtime/entity/GFX/sound wiring and live in-game validation remain pending.
 
-Detailed evidence is in `evidence/final_v8_dependency_and_provider_report.md`, `evidence/action_manifest.md`, `audio/audio_manifest.md`, `job.yaml`, and `runtime/handoff.md`.
+The v9 live route audit verified official Meshy MCP 0.4.0, exact `meshy-7`, balance 1320, adapter 1.10.0, Blender 5.1.2, io_pdx_mesh 0.91.0, and the listening Blender bridge. Meshy's current official rigging contract supports standard humanoid bipeds and explicitly excludes nonhumanoid assets; `meshy_animate` requires a successful Meshy rig task. A separated rider could be rigged as a biped, but Meshy exposes no quadruped horse rig or animation source, so separation cannot yield compliant mounted motion. No additional paid attempt was made against a documented unsupported input family.
+
+Detailed evidence is in `evidence/final_v9_dependency_and_capability_report.md`, `evidence/action_manifest.md`, `audio/audio_manifest.md`, `job.yaml`, and `runtime/handoff.md`.
