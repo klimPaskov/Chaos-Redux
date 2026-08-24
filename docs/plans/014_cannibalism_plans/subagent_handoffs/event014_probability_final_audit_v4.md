@@ -354,9 +354,11 @@ Wendigo focus HTML: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifac
 
 The MTTH source is `common/mtth/014_cannibalism_mtth.txt`.
 
-The entries are `cannibalism_evolution_i_days`, `cannibalism_evolution_ii_days`, `cannibalism_evolution_iii_days`, `cannibalism_unified_target_decision_weight`, and `cannibalism_wendigo_target_decision_weight`.
+The entries are `cannibalism_evolution_i_days`, `cannibalism_evolution_ii_days`, `cannibalism_unified_target_decision_weight`, and `cannibalism_wendigo_target_decision_weight`.
 
-The evolution entries include exploitation, severe hunger, critical cell strength, foreign spread, open emergency, high integrity, containment due date, Warlord count, network reach, consumed population, connected routes, and Chaos-tier modifiers.
+The Evolution I and II entries include exploitation, severe hunger or cohesion, critical cell or network reach, foreign spread, open emergency, high integrity, local victory due date, Warlord count, and Chaos-tier modifiers.
+
+Evolution III reveal timing is controlled by `cannibalism_try_schedule_evolution_iii`, which uses convergence entry gates, warning timing, and hard readiness minimums rather than an MTTH entry.
 
 The two target-decision entries use invalid-target factors plus population, supply, cells, prison, port, stability, rail/naval, coalition, enemy, adjacency, contamination, distant-route, overextension, cold-front, post-lock population, and post-lock capital factors.
 

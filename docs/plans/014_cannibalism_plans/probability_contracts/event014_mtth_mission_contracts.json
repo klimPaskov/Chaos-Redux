@@ -3,7 +3,7 @@
   "contract_id": "e014_mtth_mission",
   "classification": "mtth_scores_and_mission_as_decision_adapter_manifest",
   "source_refs": [
-    {"path": "common/mtth/014_cannibalism_mtth.txt", "sha256": "9c43b60c5d15e3eb6e5ac4c975b713302197b32cc3739b7a2ac3857e5512e84c", "ranges": ["10-74", "77-126", "127-187", "188-225", "2961+"]},
+    {"path": "common/mtth/014_cannibalism_mtth.txt", "sha256": "701323ab8384ae283f33cf4b3b7f8629de2c6d02e097a183152ec057b3b6798d", "ranges": ["10-74", "77-126", "127-186", "2961+"]},
     {"path": "common/decisions/014_cannibalism_decisions.txt", "sha256": "5d33dd1ce78dcc5bae9e089181cf93d60f13afe9f52ad5920e89efdd5a9cfc65", "ranges": ["272-337", "495-580", "934-1030", "1090-1339", "1425-1992", "2639-2726"]},
     {"path": "common/scripted_effects/014_cannibalism_effects.txt", "sha256": "469becf19e11468238f4b19e03583e0f8ec4cd44b76a82c869f03390fb6843d5", "ranges": ["830-875", "5874-6010", "7619-8354", "13068-13986", "14325-14467", "6409-6561"]}
   ],
@@ -22,8 +22,8 @@
     "mission_artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/884a3936fe58851b7ab983f77c53881241b88f735487f38058ff7a839457e63b/938f2a706ad596ecf778eb3508c9c253def1e0df6ae32f0ea46c942874fac6ed/probability-inspect-f0e56bfe94bb.json",
     "mtth_source_status": "PROBABILITY_SOURCE_DISCOVERED",
     "mtth_discovery_reason": "no_weighted_surfaces",
-    "mtth_artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ed92883c79b0b9849d1052ad073589de9e5a1e81ece26b6e413fa7669967cc90/7273d43ba19227cf546aa9c01b9805f99fdd437d6f629813faaced0e388d155d/probability-inspect-a1950692f970.json",
-    "interpretation": "MTTH rows and mission adapters are source-linked score/timing contracts. No exact campaign frequency is claimed."
+    "mtth_artifact_uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/03ea4b660ec049a35013107cd3b6775f67d41bf66036808815a2ccab376c20d5/a9bcd81b6be5411cb7eb55713bc42bdb9a15809732fa062e50d0346a0d73df6b/probability-inspect-d7a550b09a98.json",
+    "interpretation": "Evolution I/II MTTH rows and mission adapters are source-linked score/timing contracts. Evolution III reveal timing is a deterministic convergence scheduler contract, not an MTTH surface. No exact campaign frequency is claimed."
   },
   "timing_constants": {
     "evolution_mtth": {"base_days": 90, "minimum_days": 21, "maximum_days": 240, "severe_factor": 0.7, "critical_factor": 0.5, "exploitation_factor": 0.55, "foreign_spread_factor": 0.7, "warlord_factor": 0.6, "clean_response_factor": 1.45, "high_integrity_factor": 1.35, "contained_factor": 1.8, "high_chaos_factor": 0.75, "final_chaos_factor": 0.55},
@@ -44,23 +44,12 @@
     {
       "id": "evolution_ii",
       "mtth": "cannibalism_evolution_ii_days",
-      "source": "common/mtth/014_cannibalism_mtth.txt:127-187",
+      "source": "common/mtth/014_cannibalism_mtth.txt:127-186",
       "scope": "country candidate during Evolution II qualification",
       "base": "constant:cannibalism_evolution_mtth.base_days",
       "modifiers_in_source_order": ["severe cult cohesion x severe_factor", "infected-country threshold x foreign_spread_factor", "warlord count > 0 x warlord_factor", "severe network reach x critical_factor", "open emergency flag x clean_response_factor", "high command integrity x high_integrity_factor", "Chaos tier 3 x high_chaos_factor", "final Chaos x final_chaos_factor"],
       "runtime_contract": "Uses the same persisted due-date/clamp/invalidation contract as Evolution I.",
       "classification": "timing_score_not_campaign_probability"
-    },
-    {
-      "id": "evolution_iii_declared",
-      "mtth": "cannibalism_evolution_iii_days",
-      "source": "common/mtth/014_cannibalism_mtth.txt:188-225",
-      "scope": "global convergence declaration",
-      "base": "constant:cannibalism_evolution_mtth.base_days",
-      "modifiers_in_source_order": ["network reach threshold x severe_factor", "warlord threshold x warlord_factor", "consumed population threshold x critical_factor", "connected route threshold x foreign_spread_factor", "final Chaos x final_chaos_factor"],
-      "scheduler_status": "declared_not_called_by_scheduler",
-      "actual_scheduler": "cannibalism_try_schedule_evolution_iii uses convergence gates, warning due date, and hard timing constants rather than mtth:cannibalism_evolution_iii_days.",
-      "classification": "declared_timing_score_not_runtime_probability"
     }
   ],
   "target_score_contracts": [
