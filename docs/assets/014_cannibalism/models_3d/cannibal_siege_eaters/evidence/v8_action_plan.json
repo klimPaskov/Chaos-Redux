@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "asset_id": "cannibal_siege_eaters",
+  "status": "planned_pending_v8_generation_and_rig",
+  "fps": 24,
+  "skeleton_policy": "The accepted Meshy rig is the sole v8 skeletal base. Every final action retains substantive motion from the named meshy_animate action or the rig-included walking source. Blender may only retarget, clean, contact-correct, normalize, bake, synchronize, export, and reimport.",
+  "root_policy": "in_place except contact-corrected death collapse; keyed location scaling is applied deliberately exactly once during retarget if source units differ",
+  "actions": [
+    {"role": "idle", "runtime_name": "cannibal_siege_eaters_idle", "provider_action_id": 335, "provider_action_name": "Axe_Breathe_and_Look_Around", "loop": true, "required_evidence": "breathing and alert head/torso motion with stable two-hand mace grip"},
+    {"role": "move", "runtime_name": "cannibal_siege_eaters_move", "provider_action_id": "rig_included_walking", "provider_action_name": "walking", "loop": true, "required_evidence": "multi-step gait, alternating feet, ground contacts, in-place correction"},
+    {"role": "attack", "runtime_name": "cannibal_siege_eaters_attack", "provider_action_id": 237, "provider_action_name": "Charged_Axe_Chop", "loop": false, "required_evidence": "two-handed windup, downswing, impact phase, recoil and recovery"},
+    {"role": "defend", "runtime_name": "cannibal_siege_eaters_defend", "provider_action_id": 334, "provider_action_name": "Lower_Weapon_Look_Raise", "loop": false, "required_evidence": "weapon lowered into guarded observation and returned without grip break"},
+    {"role": "support_attack", "runtime_name": "cannibal_siege_eaters_support_attack", "provider_action_id": 241, "provider_action_name": "Weapon_Combo_2", "loop": false, "required_evidence": "distinct multi-strike support sequence with recovery"},
+    {"role": "retreat", "runtime_name": "cannibal_siege_eaters_retreat", "provider_action_id": 615, "provider_action_name": "Cautious_Crouch_Walk_Backward_inplace", "loop": true, "required_evidence": "backward stepping cycle, crouched defensive posture, stable contacts"},
+    {"role": "training", "runtime_name": "cannibal_siege_eaters_training", "provider_action_id": 598, "provider_action_name": "kettlebell_swing_1", "loop": false, "required_evidence": "repeated weighted two-hand swing with exertion phase and recovery"},
+    {"role": "death", "runtime_name": "cannibal_siege_eaters_death", "provider_action_id": 187, "provider_action_name": "Knock_Down", "loop": false, "required_evidence": "impact reaction, articulated collapse, ground contact and terminal settling"}
+  ],
+  "forbidden": [
+    "locally authored replacement motion",
+    "author_humanoid_actions as a final action source",
+    "static pose aliases",
+    "semantic reuse of one action for another",
+    "whole-rig transform-only motion",
+    "weapon grip repair that replaces substantive provider motion"
+  ],
+  "sound_sync": {
+    "selection": "unit selection or acknowledgement trigger; not action-frame-bound",
+    "movement": "move foot-contact phases after provider frame inspection",
+    "idle_vocal": "idle alert/breath peak after provider frame inspection",
+    "maul_swing": "attack downswing begins after provider frame inspection",
+    "heavy_impact": "attack contact frame after provider frame inspection",
+    "training": "training exertion apex after provider frame inspection",
+    "death": "death collapse onset or ground impact after provider frame inspection"
+  },
+  "blocker": "No v8 generation task exists because the approved meshy-7 request returned HTTP 402 at balance 25."
+}
