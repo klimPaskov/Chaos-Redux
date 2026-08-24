@@ -444,6 +444,53 @@ class BlenderAdapterClient:
             },
         )
 
+    def import_bvh_animation_action(
+        self,
+        job_id: str,
+        blend_rel: str,
+        source_rel: str,
+        provenance_rel: str,
+        checkpoint_rel: str,
+        source_action_name: str,
+        target_armature_name: str,
+        target_action_name: str,
+        semantic_role: str,
+        source_reference_id: str,
+        source_sha256: str,
+        source_fps: float,
+        target_fps: float,
+        bone_chains: Dict[str, list[str]],
+        root_motion_policy: Literal["in_place_xy_preserve_z"],
+        global_scale: float = 1.0,
+        axis_forward: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "-Z",
+        axis_up: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "Y",
+        promote_audited_target: bool = False,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_import_bvh_animation_action",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "source_rel": source_rel,
+                "provenance_rel": provenance_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "source_action_name": source_action_name,
+                "target_armature_name": target_armature_name,
+                "target_action_name": target_action_name,
+                "semantic_role": semantic_role,
+                "source_reference_id": source_reference_id,
+                "source_sha256": source_sha256,
+                "source_fps": source_fps,
+                "target_fps": target_fps,
+                "bone_chains": bone_chains,
+                "root_motion_policy": root_motion_policy,
+                "global_scale": global_scale,
+                "axis_forward": axis_forward,
+                "axis_up": axis_up,
+                "promote_audited_target": promote_audited_target,
+            },
+        )
+
     def sanitize_runtime_candidate(
         self,
         job_id: str,

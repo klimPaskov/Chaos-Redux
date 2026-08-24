@@ -1157,11 +1157,11 @@ def verify_saved_normalization(checkpoint: Path, target_height: float) -> Dict[s
     }
 
 
-def stabilize_dual_source_base_normalization(
+def stabilize_saved_normalization(
     checkpoint: Path,
     target_height: float,
 ) -> Dict[str, Any]:
-    """Strictly renormalize a rest-only base after its first dependency-graph reload."""
+    """Strictly renormalize a prepared candidate after dependency-graph reload."""
 
     corrections = []
     previous_delta = None
@@ -1189,7 +1189,7 @@ def stabilize_dual_source_base_normalization(
         corrections.append(record)
         if step["status"] == "accepted":
             return {
-                "policy": "dual_source_base_reopen_monotonic_convergence_and_strict_reverify",
+                "policy": "save_reopen_monotonic_convergence_and_strict_reverify",
                 "checkpoint": str(checkpoint),
                 "target_height_m": target_height,
                 "persisted_height_m": persisted_height,
@@ -2478,11 +2478,7 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     pre_export = job / "blender" / "checkpoints" / "05_pre_export.blend"
     previews = render_previews(job, runtime_stem) if payload.get("render_previews", True) else []
     save_blend(pre_export)
-    normalization_persistence = (
-        stabilize_dual_source_base_normalization(pre_export, target_height)
-        if dual_source_base_rig is not None
-        else verify_saved_normalization(pre_export, target_height)
-    )
+    normalization_persistence = stabilize_saved_normalization(pre_export, target_height)
     normalization_persistence["checkpoint"] = str(pre_export.relative_to(job)).replace("\\", "/")
     geometry = normalization_persistence["geometry"]
 
@@ -3761,6 +3757,395 @@ def action_provenance(action: bpy.types.Action) -> Dict[str, str]:
     if not fields["source_reference_id"] or not fields["source_action_name"] or not fields["provenance_rel"]:
         raise RuntimeError(f"Action {action.name} has incomplete retained source provenance.")
     return fields
+
+
+def explicit_bvh_action_name(value: Any, field: str) -> str:
+    """Allow a numeric archival motion id while retaining a bounded Blender name."""
+
+    name = str(value or "")
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", name):
+        raise ValueError(
+            f"{field} must be an explicit BVH action identifier containing only letters, "
+            "digits, underscores, periods, or hyphens."
+        )
+    return name
+
+
+def inspect_bvh_header(source: Path) -> Dict[str, Any]:
+    """Read only the bounded BVH hierarchy/header needed for an import receipt."""
+
+    if source.suffix.casefold() != ".bvh":
+        raise ValueError("Native BVH import requires a .bvh source file.")
+    if source.stat().st_size <= 0 or source.stat().st_size > 256 * 1024 * 1024:
+        raise ValueError("BVH source must be non-empty and no larger than 256 MiB.")
+    joints: List[str] = []
+    frames = None
+    frame_time = None
+    with source.open("r", encoding="utf-8-sig", errors="strict") as handle:
+        for line_number, raw_line in enumerate(handle, start=1):
+            if line_number > 20000:
+                raise ValueError("BVH hierarchy/header exceeded the bounded 20,000-line scan.")
+            line = raw_line.strip()
+            match = re.match(r"^(?:ROOT|JOINT)\s+([^\s{}]+)$", line)
+            if match:
+                joints.append(explicit_safe_name(match.group(1), "BVH joint name"))
+            frames_match = re.match(r"^Frames:\s*(\d+)\s*$", line, re.IGNORECASE)
+            if frames_match:
+                frames = int(frames_match.group(1))
+            time_match = re.match(
+                r"^Frame\s+Time:\s*([0-9]+(?:\.[0-9]+)?(?:[Ee][+-]?\d+)?)\s*$",
+                line,
+                re.IGNORECASE,
+            )
+            if time_match:
+                frame_time = float(time_match.group(1))
+                break
+    if len(joints) < 6 or len(set(joints)) != len(joints):
+        raise ValueError("BVH source must expose at least six uniquely named skeletal joints.")
+    if frames is None or frames < 2 or frame_time is None or frame_time <= 0.0:
+        raise ValueError("BVH source must declare at least two frames and a positive Frame Time.")
+    source_fps = 1.0 / frame_time
+    if not math.isfinite(source_fps) or source_fps <= 0.0:
+        raise ValueError("BVH source frame rate is not finite and positive.")
+    return {
+        "joints": joints,
+        "joint_count": len(joints),
+        "frames": frames,
+        "frame_time_seconds": frame_time,
+        "source_fps": source_fps,
+    }
+
+
+def action_curve_signature(action: bpy.types.Action) -> str:
+    """Hash exact curve/key identity for save-reopen verification."""
+
+    records = []
+    for fcurve, _ in sorted(
+        action_fcurves(action),
+        key=lambda item: (item[0].data_path, item[0].array_index),
+    ):
+        records.append(
+            {
+                "data_path": fcurve.data_path,
+                "array_index": fcurve.array_index,
+                "keys": [
+                    [float(point.co.x), float(point.co.y), point.interpolation]
+                    for point in fcurve.keyframe_points
+                ],
+            }
+        )
+    return hashlib.sha256(
+        json.dumps(records, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest().upper()
+
+
+def import_bvh_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Native-import and retarget one receipt-verified professional BVH action."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    source = within(job, payload["source_rel"])
+    provenance_path = within(job, payload["provenance_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    source_action_name = explicit_bvh_action_name(
+        payload.get("source_action_name"), "source_action_name"
+    )
+    if source.stem != source_action_name:
+        raise ValueError(
+            "source_action_name must exactly match the verified BVH filename stem."
+        )
+    target_armature_name = explicit_safe_name(
+        payload.get("target_armature_name"), "target_armature_name"
+    )
+    target_action_name = explicit_action_name(
+        payload.get("target_action_name"), "target_action_name"
+    )
+    semantic_role = explicit_safe_name(payload.get("semantic_role"), "semantic_role")
+    normalized_role = semantic_role.casefold().replace("-", "_").replace(".", "_")
+    normalized_target = target_action_name.casefold().replace("-", "_").replace(".", "_")
+    if normalized_role not in normalized_target:
+        raise ValueError("target_action_name must contain the explicit semantic_role identity.")
+    source_reference_id = explicit_reference_id(
+        payload.get("source_reference_id"), "source_reference_id"
+    )
+    expected_source_sha256 = str(payload.get("source_sha256") or "").upper()
+    if not re.fullmatch(r"[0-9A-F]{64}", expected_source_sha256):
+        raise ValueError("source_sha256 must be an explicit 64-character SHA-256 digest.")
+    actual_source_sha256 = file_sha256(source)
+    if actual_source_sha256 != expected_source_sha256:
+        raise RuntimeError(
+            "BVH source checksum did not match the verified provenance receipt: "
+            f"expected {expected_source_sha256}, observed {actual_source_sha256}."
+        )
+    source_fps = float(payload.get("source_fps") or 0.0)
+    target_fps = float(payload.get("target_fps") or 0.0)
+    if not math.isfinite(source_fps) or not math.isfinite(target_fps) or source_fps <= 0.0 or target_fps <= 0.0:
+        raise ValueError("BVH import requires finite positive source_fps and target_fps.")
+    if target_fps > 240.0:
+        raise ValueError("BVH target_fps must not exceed 240.")
+    root_motion_policy = str(payload.get("root_motion_policy") or "")
+    if root_motion_policy != "in_place_xy_preserve_z":
+        raise ValueError("root_motion_policy must be in_place_xy_preserve_z.")
+    global_scale = float(payload.get("global_scale", 1.0))
+    if not math.isfinite(global_scale) or not 0.0001 <= global_scale <= 1000000.0:
+        raise ValueError("global_scale must be finite and between 0.0001 and 1000000.")
+    axis_forward = str(payload.get("axis_forward") or "-Z")
+    axis_up = str(payload.get("axis_up") or "Y")
+    axes = {"X", "Y", "Z", "-X", "-Y", "-Z"}
+    if axis_forward not in axes or axis_up not in axes or axis_forward.lstrip("-") == axis_up.lstrip("-"):
+        raise ValueError("BVH forward/up axes must be distinct signed X, Y, or Z axes.")
+    raw_bone_chains = payload.get("bone_chains")
+    if not isinstance(raw_bone_chains, dict) or not raw_bone_chains:
+        raise ValueError("bone_chains is required for fail-closed BVH retargeting.")
+
+    header = inspect_bvh_header(source)
+    fps_tolerance = max(0.01, source_fps * 0.001)
+    if abs(float(header["source_fps"]) - source_fps) > fps_tolerance:
+        raise ValueError(
+            "Declared BVH source_fps does not match Frame Time: "
+            f"declared={source_fps}, observed={header['source_fps']}."
+        )
+    try:
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise ValueError("BVH provenance receipt is not valid JSON.") from exc
+    required_provenance = {
+        "verification_status": "verified",
+        "source_kind": "professional_source",
+        "source_format": "bvh",
+        "source_reference_id": source_reference_id,
+        "source_action_name": source_action_name,
+        "source_sha256": expected_source_sha256,
+        "source_fps": source_fps,
+    }
+    mismatches = {
+        key: {"expected": value, "observed": provenance.get(key)}
+        for key, value in required_provenance.items()
+        if provenance.get(key) != value
+    }
+    if mismatches:
+        raise ValueError(
+            "BVH provenance receipt does not verify the requested source action: "
+            + json.dumps(mismatches, sort_keys=True)
+        )
+
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    matching_targets = [rig for rig in armatures() if rig.name == target_armature_name]
+    if len(armatures()) != 1 or len(matching_targets) != 1:
+        raise RuntimeError("BVH retarget requires exactly one explicitly named working target armature.")
+    if bpy.data.actions.get(target_action_name) is not None:
+        raise RuntimeError("BVH target action already exists; action aliases or replacement are forbidden.")
+
+    clear_scene()
+    for action in list(bpy.data.actions):
+        bpy.data.actions.remove(action)
+    import io_anim_bvh  # type: ignore
+    from io_anim_bvh import import_bvh as native_import_bvh  # type: ignore
+
+    try:
+        io_anim_bvh.register()
+    except ValueError:
+        pass
+    scene = bpy.context.scene
+    scene.render.fps = max(1, int(round(target_fps)))
+    scene.render.fps_base = scene.render.fps / target_fps
+    before_objects = set(bpy.data.objects)
+    before_actions = set(bpy.data.actions)
+    native_result = bpy.ops.import_anim.bvh(
+        filepath=str(source),
+        target="ARMATURE",
+        global_scale=global_scale,
+        frame_start=1,
+        use_fps_scale=True,
+        update_scene_fps=False,
+        update_scene_duration=True,
+        use_cyclic=False,
+        rotate_mode="QUATERNION",
+        axis_forward=axis_forward,
+        axis_up=axis_up,
+    )
+    if "FINISHED" not in native_result:
+        raise RuntimeError(f"Blender native BVH import failed: {sorted(native_result)}")
+    imported_rigs = [obj for obj in bpy.data.objects if obj not in before_objects and obj.type == "ARMATURE"]
+    imported_actions = [action for action in bpy.data.actions if action not in before_actions]
+    if len(imported_rigs) != 1 or len(imported_actions) != 1:
+        raise RuntimeError(
+            "Native BVH import must produce exactly one armature and one action: "
+            + json.dumps(
+                {"armatures": [rig.name for rig in imported_rigs], "actions": [action.name for action in imported_actions]},
+                sort_keys=True,
+            )
+        )
+    source_rig = imported_rigs[0]
+    source_action = imported_actions[0]
+    native_action_name = source_action.name
+    derived_action_name = f"BVH_{source_action_name}"
+    source_action.name = derived_action_name
+    source_action.use_fake_user = True
+    source_rig.animation_data_create()
+    source_rig.animation_data.action = source_action
+    derived_rel = f"blender/source/bvh_{safe_name(target_action_name)}_{actual_source_sha256[:12]}.blend"
+    derived = within(job, derived_rel, allow_missing=True)
+    save_blend(derived)
+    derived_sha256 = file_sha256(derived)
+    derived_receipt_rel = f"blender/reports/bvh_{safe_name(target_action_name)}_derived_receipt.json"
+    derived_receipt = within(job, derived_receipt_rel, allow_missing=True)
+    derived_receipt.parent.mkdir(parents=True, exist_ok=True)
+    derived_receipt.write_text(
+        json.dumps(
+            {
+                "verification_status": "verified",
+                "source_kind": "professional_source",
+                "source_reference_id": f"{source_reference_id}.native_bvh",
+                "source_action_name": derived_action_name,
+                "source_sha256": derived_sha256,
+                "derived_from_bvh_rel": str(source.relative_to(job)).replace("\\", "/"),
+                "derived_from_bvh_sha256": actual_source_sha256,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    transfer = import_animation_action(
+        {
+            "job_root": str(job),
+            "payload": {
+                "blend_rel": str(blend.relative_to(job)).replace("\\", "/"),
+                "source_rel": derived_rel,
+                "provenance_rel": derived_receipt_rel,
+                "checkpoint_rel": str(checkpoint.relative_to(job)).replace("\\", "/"),
+                "source_action_name": derived_action_name,
+                "target_armature_name": target_armature_name,
+                "target_action_name": target_action_name,
+                "source_kind": "professional_source",
+                "source_reference_id": f"{source_reference_id}.native_bvh",
+                "source_sha256": derived_sha256,
+                "bone_chains": raw_bone_chains,
+                "promote_audited_target": bool(payload.get("promote_audited_target", False)),
+            },
+        }
+    )
+
+    bpy.ops.wm.open_mainfile(filepath=str(checkpoint))
+    target_action = bpy.data.actions.get(target_action_name)
+    target_rig = bpy.data.objects.get(target_armature_name)
+    if target_action is None or target_rig is None or target_rig.type != "ARMATURE":
+        raise RuntimeError("BVH retarget checkpoint lost the exact target armature or action identity.")
+    target_action["chaosx_animation_source_kind"] = "professional_source"
+    target_action["chaosx_animation_source_reference_id"] = source_reference_id
+    target_action["chaosx_animation_source_sha256"] = actual_source_sha256
+    target_action["chaosx_animation_source_action"] = source_action_name
+    target_action["chaosx_animation_provenance_rel"] = str(provenance_path.relative_to(job)).replace("\\", "/")
+    target_action["chaosx_animation_processing_policy"] = "native_bvh_import_hierarchy_retarget_source_motion_only"
+    target_action["chaosx_animation_source_format"] = "bvh"
+    target_action["chaosx_animation_semantic_role"] = semantic_role
+    target_action["chaosx_animation_source_fps"] = source_fps
+    target_action["chaosx_animation_target_fps"] = target_fps
+    target_action["chaosx_animation_root_motion_policy"] = root_motion_policy
+    target_action["chaosx_animation_derived_blend_sha256"] = derived_sha256
+    target_rig.animation_data_create()
+    target_rig.animation_data.action = target_action
+    curves = list(action_fcurves(target_action))
+    scale_curves = [curve.data_path for curve, _ in curves if curve.data_path.endswith(".scale")]
+    driven_bones = sorted(
+        {
+            match.group(1)
+            for curve, _ in curves
+            for match in [re.search(r'pose\.bones\["([^"]+)"\]', curve.data_path)]
+            if match is not None
+        }
+    )
+    articulated_bones = set()
+    for curve, _ in curves:
+        if "rotation" not in curve.data_path or not curve.keyframe_points:
+            continue
+        values = [float(point.co.y) for point in curve.keyframe_points]
+        if max(values) - min(values) > 1e-4:
+            match = re.search(r'pose\.bones\["([^"]+)"\]', curve.data_path)
+            if match:
+                articulated_bones.add(match.group(1))
+    if scale_curves or len(driven_bones) < 6 or len(articulated_bones) < 4:
+        raise RuntimeError(
+            "BVH semantic/curve audit rejected a static, scale-bearing, or insufficiently articulated action: "
+            + json.dumps(
+                {"scale_curves": scale_curves, "driven_bones": driven_bones, "articulated_bones": sorted(articulated_bones)},
+                sort_keys=True,
+            )
+        )
+    root_name = next((bone.name for bone in target_rig.data.bones if bone.parent is None), None)
+    root_xy_peak = 0.0
+    if root_name:
+        root_path = f'pose.bones["{root_name}"].location'
+        for curve, _ in curves:
+            if curve.data_path == root_path and curve.array_index in {0, 1}:
+                root_xy_peak = max(root_xy_peak, *(abs(float(point.co.y)) for point in curve.keyframe_points))
+    if root_xy_peak > 1e-5:
+        raise RuntimeError("BVH in-place root-motion audit retained X/Y displacement.")
+    signature_before = action_curve_signature(target_action)
+    target_action.use_fake_user = True
+    save_blend(checkpoint)
+    bpy.ops.wm.open_mainfile(filepath=str(checkpoint))
+    reopened_action = bpy.data.actions.get(target_action_name)
+    reopened_rig = bpy.data.objects.get(target_armature_name)
+    if reopened_action is None or reopened_rig is None:
+        raise RuntimeError("BVH target action or armature did not survive checkpoint reopen.")
+    signature_after = action_curve_signature(reopened_action)
+    if signature_after != signature_before:
+        raise RuntimeError("BVH target action curves changed across checkpoint save/reopen.")
+    reopened_provenance = action_provenance(reopened_action)
+    result = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "source": str(source.relative_to(job)).replace("\\", "/"),
+        "source_sha256": actual_source_sha256,
+        "provenance": str(provenance_path.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "source_action": source_action_name,
+        "native_imported_action_name": native_action_name,
+        "derived_action_name": derived_action_name,
+        "target_action": target_action_name,
+        "target_armature": target_armature_name,
+        "semantic_role": semantic_role,
+        "source_fps_declared": source_fps,
+        "source_fps_observed": header["source_fps"],
+        "target_fps": target_fps,
+        "retime_policy": "Blender native BVH use_fps_scale into explicit target scene FPS",
+        "root_motion_policy": root_motion_policy,
+        "root_xy_peak_after": root_xy_peak,
+        "bone_chains": raw_bone_chains,
+        "bvh_header": header,
+        "native_importer": {
+            "module": "io_anim_bvh",
+            "module_path": str(Path(io_anim_bvh.__file__).resolve()),
+            "module_sha256": file_sha256(Path(io_anim_bvh.__file__).resolve()),
+            "implementation_path": str(Path(native_import_bvh.__file__).resolve()),
+            "implementation_sha256": file_sha256(Path(native_import_bvh.__file__).resolve()),
+            "native_operator": "bpy.ops.import_anim.bvh",
+            "axis_forward": axis_forward,
+            "axis_up": axis_up,
+            "global_scale": global_scale,
+        },
+        "derived_source": {"blend": derived_rel, "sha256": derived_sha256, "receipt": derived_receipt_rel},
+        "transfer": transfer,
+        "curve_audit": {
+            "fcurves": len(curves),
+            "driven_bones": driven_bones,
+            "articulated_bones": sorted(articulated_bones),
+            "scale_curves": [],
+            "signature_before_save": signature_before,
+            "signature_after_reopen": signature_after,
+        },
+        "action_provenance": reopened_provenance,
+        "save_reopen_status": "pass",
+        "manual_or_procedural_replacement_authored": False,
+        "status": "pass",
+    }
+    report_path = job / "blender" / "reports" / f"import_bvh_{safe_name(target_action_name)}.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return result
 
 
 def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
@@ -6490,6 +6875,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return export_animation(req, pdx)
     if operation == "import_animation_action":
         return import_animation_action(req)
+    if operation == "import_bvh_animation_action":
+        return import_bvh_animation_action(req)
     if operation == "retime_animation_action":
         return retime_animation_action(req)
     if operation == "author_humanoid_rig":

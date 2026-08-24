@@ -86,7 +86,7 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="chaosx_dual_source_base_") as temporary:
         checkpoint = Path(temporary) / "dual_source_base.blend"
         blender_worker.save_blend(checkpoint)
-        proof = blender_worker.stabilize_dual_source_base_normalization(checkpoint, TARGET_HEIGHT)
+        proof = blender_worker.stabilize_saved_normalization(checkpoint, TARGET_HEIGHT)
         assert math.isclose(proof["persisted_height_m"], TARGET_HEIGHT, abs_tol=proof["tolerance_m"])
         bpy.ops.wm.open_mainfile(filepath=str(checkpoint))
         reopened_rig = bpy.data.objects["CompoundRig"]
