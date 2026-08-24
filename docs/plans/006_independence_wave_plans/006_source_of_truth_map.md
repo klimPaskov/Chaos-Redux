@@ -42,6 +42,8 @@ The follow-on 2026-08-24 definition-registry consolidation moves 413 ideas, 68 c
 
 The follow-on on-action and scripted-localisation consolidation keeps the callback and selector identifiers unchanged while reducing seven unique-callback on-action files to `common/on_actions/006_independence_wave_on_actions_registry.txt` and four small scripted-localisation files to `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt`. The achievement, evolution, and Join on-action files remain separate because they share engine callback keys; focus, GUI, scenario, formable, and package-local scripted localisation remains separate by ownership. Static comparisons found 72/72 on-action callbacks and 10/10 merged scripted-localisation names with no missing or duplicate identifiers. The source-only handoffs are `subagent_handoffs/006_event6_on_actions_merge_2026-08-24.md` and `subagent_handoffs/006_event6_scripted_loc_merge_2026-08-24.md`; MCP runtime traces timed out, so no live parser or callback claim is made.
 
+The same 2026-08-24 source-layout pass folds retired crisis compatibility stubs and the narrow CHU/ASY vanilla-formable guards into the existing compatibility trigger/effect registries. Their identifiers and fail-closed or inert behavior are unchanged; the three tiny standalone files are removed. Package-local triggers/effects, evolution/join surfaces, and other ownership-sensitive files remain separate.
+
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the owner of opening divisions.
 
 The source handoff is `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
