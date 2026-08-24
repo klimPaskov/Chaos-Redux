@@ -1,0 +1,134 @@
+schema_version: 1.0.0
+job_id: cannibal_feast_guard
+owner_id: 014_cannibalism
+event_id: "014"
+event_slug: cannibalism
+asset_id: chaosx.event014.cannibal_feast_guard
+asset_slug: cannibal_feast_guard
+profile: humanoid_unit
+status: package_complete_parent_runtime_wiring_pending
+job_root: docs/assets/014_cannibalism/models_3d/cannibal_feast_guard
+handoff_path: docs/plans/014_cannibalism_plans/subagent_handoffs/event014_cannibal_feast_guard_3d_handoff.md
+runtime_consumer: common/units/014_cannibalism_irregular_infantry.txt#cannibal_feast_guard
+proposed_entity: cannibal_feast_guard_entity
+proposed_runtime_root: gfx/models/units/014_cannibalism/cannibal_feast_guard/
+source_mode: user_supplied_modern_art_faithful_enhancement
+source_status: approved_faithful_enhancement_input
+source_path: refs/source/untouched.png
+reference_path: refs/original/meshy_input.png
+reference_manifest: refs/original/input_manifest.json
+reference_sha256: C67AF852A27E1379590BD84C5175C378D449AE226F895A2D326B45099040D8C9
+reference_dimensions: [1068, 1473]
+reference_alpha: genuine_rgba_verified_white_black_qa
+reference_approval: approved_for_meshy_input
+provider_input_count: 1
+geometry_intent: >-
+  One stocky human feast guard faithful to the user-authorized artwork: horned perforated metal helmet, asymmetric heavy right-side plate armour, bare blood-marked torso, skull-trophy belt, dark butcher apron, wrapped boots, and one oversized broad cleaver in each hand. Preserve the exact dual-cleaver silhouette, complete limbs, hands, feet, and readable rear geometry.
+required_components:
+  - one_complete_stocky_human_body
+  - horned_perforated_metal_helmet
+  - asymmetric_right_side_plate_armour
+  - butcher_apron
+  - two_oversized_broad_cleavers
+  - skull_trophy_belt
+  - blood_marked_bare_torso
+forbidden_additions:
+  - living_indigenous_clothing_or_body_paint_patterns
+  - sacred_or_culture_specific_motifs
+  - antlers_or_wendigo_anatomy
+  - modern_tactical_equipment
+  - extra_limbs_or_people
+  - terrain_base_or_background
+  - text_logo_or_collage
+  - missing_floating_or_melded_weapon_or_shield
+  - static_transform_only_or_aliased_final_actions
+provider_plan:
+  route: .tools/3d_pipeline/wrappers/run_meshy_mcp.cmd
+  package: "@meshy-ai/meshy-mcp-server@0.4.0"
+  ai_model: meshy-7
+  pose_mode: t-pose
+  topology: triangle
+  target_polycount: 30000
+  target_formats: [glb, fbx]
+  enable_pbr: true
+  should_texture: true
+  should_remesh: true
+  remove_lighting: true
+  origin_at: bottom
+  multi_view_thumbnails: false
+  selected_task_id: 01a0334e-9b15-7d8f-9613-35480823152c
+  selected_geometry: provider/downloads/tpose_recovery_remesh_01a03355.glb
+  selected_geometry_sha256: 77C5FB2A24DE95FECACAA7879B07380D5D64219EF2106CBB2419D44EEE11B694
+  status: accepted_remeshed_rigged_animated_exported_reimported
+vanilla_calibration:
+  mesh: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh
+  object: polySurface106
+  source_height: 7.351824797689915
+  entity: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/units_infantry.asset#infantry_rifle_entity
+  entity_scale: 0.8
+  effective_runtime_height: 5.881459838151932
+  forward_axis: -Y
+  up_axis: +Z
+  collision_excluded: true
+  scale_policy: normalize_exported_source_geometry_to_vanilla_source_height_and_apply_entity_scale_exactly_once
+blender_plan:
+  adapter_id: chaosx_blender_hoi4
+  adapter_version_from_lock: 1.10.0
+  target_height: 7.351824797689915
+  runtime_entity_scale: 0.8
+  target_triangles: 30000
+  texture_max_dimension: 1024
+  shader: PdxMeshAdvanced
+  required_material_channels: [diff, spec, n]
+  root_policy: root_bone_at_ground_origin
+  provider_source_protected: true
+required_actions:
+  - { role: idle, runtime_name: cannibal_feast_guard_idle, provider_action_id: 89, provider_action_name: Combat_Stance, fps: 24, loop: true, root_policy: in_place, source_route: meshy_animate_then_blender_retarget_cleanup }
+  - { role: move, runtime_name: cannibal_feast_guard_move, provider_action_id: 689, provider_action_name: Walk_Fight_Forward_inplace, fps: 24, loop: true, root_policy: in_place, source_route: meshy_animate_then_blender_retarget_cleanup }
+  - { role: attack, runtime_name: cannibal_feast_guard_attack, provider_action_id: 241, provider_action_name: Weapon_Combo_2, fps: 24, loop: false, root_policy: in_place_ground_corrected, source_route: meshy_animate_then_blender_retarget_cleanup, acceptance: dual_cleaver_combo_and_recovery }
+  - { role: defend, runtime_name: cannibal_feast_guard_defend, provider_action_id: 138, provider_action_name: Block1, fps: 24, loop: false, root_policy: in_place, source_route: meshy_animate_then_blender_retarget_cleanup }
+  - { role: support_attack, runtime_name: cannibal_feast_guard_support_attack, provider_action_id: 237, provider_action_name: Charged_Axe_Chop, fps: 24, loop: false, root_policy: in_place, source_route: meshy_animate_then_blender_retarget_cleanup }
+  - { role: retreat, runtime_name: cannibal_feast_guard_retreat, provider_action_id: 688, provider_action_name: Walk_Fight_Back_inplace, fps: 24, loop: true, root_policy: in_place, source_route: meshy_animate_then_blender_retarget_cleanup }
+  - { role: training, runtime_name: cannibal_feast_guard_training, provider_action_id: 87, provider_action_name: Boxing_Practice, fps: 24, loop: true, root_policy: in_place_ground_corrected, source_route: meshy_animate_then_blender_retarget_cleanup }
+  - { role: death, runtime_name: cannibal_feast_guard_death, provider_action_id: 184, provider_action_name: Shot_and_Fall_Forward, fps: 24, loop: false, root_policy: contact_corrected_collapse, source_route: meshy_animate_then_blender_retarget_cleanup }
+animation_library: https://docs.meshy.ai/en/api/animation-library
+sound_design:
+  required_roles: [selection_acknowledgement, movement, idle, cleaver_attack, shield_weapon_impact, death]
+  selected_originals_root: evidence/audio_sources/originals_selected
+  derived_root: audio/derived
+  receipt: evidence/audio_sources/ffprobe_and_hash_receipt.json
+  final_format: pcm_s16le_44100_hz_mono
+  selection_binding: country_original_tag_voice_template_not_per_subunit
+counter_package:
+  status: externally_complete_parent_live_review_pending
+  handoff: docs/plans/014_cannibalism_plans/subagent_handoffs/event014_cannibal_counter_art_handoff.md
+  installed_definition: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx
+  installed_large_reference: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_large/unit_infantry_icon.dds
+  installed_onmap_reference: C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds
+  large_token: GFX_unit_cannibal_feast_guard_icon_medium
+  onmap_token: GFX_unit_cannibal_feast_guard_icon_medium_white
+  texticon_token: GFX_unit_cannibal_feast_guard_icon_small
+baseline_planned_paid_operations:
+  fresh_source_generation_pending_credits: 0
+  generation_consumed_credits: 90
+  rejected_rig_consumed_credits: 10
+  rejected_conversion_consumed_credits: 0
+  remesh_consumed_credits: 5
+  selected_rig_consumed_credits: 5
+  eight_distinct_animation_roles_consumed_credits: 24
+  total_consumed_credits: 134
+  conversion_if_required_pending_credits: 0
+  authorization: completed_under_user_authorized_recovery_spend
+dependency_lock: .tools/3d_pipeline/config/dependencies.lock.json
+schema_lock: .tools/3d_pipeline/config/meshy_tool_schema.lock.json
+adapter_config: .tools/3d_pipeline/config/blender_hoi4_adapter.json
+forbidden_simplifications:
+  - no_meshy_model_other_than_meshy_7
+  - no_multi_image_provider_input
+  - no_missing_cleaver_or_identity_change
+  - no_local_final_motion_authoring
+  - no_action_aliases_or_semantic_reuse
+  - no_static_or_transform_only_actions
+  - no_raw_roughness_as_pdx_specular
+  - no_runtime_reference_into_docs_assets
+  - no_generated_synthesized_placeholder_or_unlicensed_audio
