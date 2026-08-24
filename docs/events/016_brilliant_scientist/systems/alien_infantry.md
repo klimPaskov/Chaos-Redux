@@ -36,7 +36,7 @@ Both tactics are inactive until the predictive-warfare technology unlocks them, 
 
 ## Visual, model, and sound contract
 
-The source declarations use stable final paths while binary production remains owned by the dedicated asset and 3D packages.
+The source declarations use stable final paths. Static binary art is installed, while the skeletal model remains owned by the dedicated 3D package.
 
 - Large counter: `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds`, registered as `GFX_group_alien_infantry_icon` and `GFX_unit_alien_infantry_icon_medium` in `interface/alien_infantry_system.gfx`.
 - Map counter: `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`, registered as `GFX_unit_alien_infantry_icon_medium_white`.
@@ -45,7 +45,10 @@ The source declarations use stable final paths while binary production remains o
 - Predictive-warfare technology icon: `gfx/interface/technologies/016_brilliant_scientist/tech_016_brilliant_scientist_alien_predictive_warfare.dds`, registered as `GFX_brilliant_scientist_alien_predictive_warfare_tech_medium`.
 - Tactic icons: `gfx/interface/landcombat/tactics/tactic_alien_predictive_vector_assault.dds` and `gfx/interface/landcombat/tactics/tactic_alien_probability_screen.dds`, registered under matching `GFX_` names.
 - KRG laser-batch decision icon: `gfx/interface/decisions/016_brilliant_scientist/decisions/decision_alien_laser_batch.dds`, registered as `GFX_decision_brilliant_scientist_krg_alien_laser_batch` in `interface/016_brilliant_scientist_kruger_state_decisions.gfx`.
-- Model, material, actions, entity, synchronized sourced audio, and acceptance evidence remain in the `alien_infantry_entity` 3D-package handoff and are not substituted by this database tranche.
+- Sourced laser-fire, movement, idle, and death WAV files and their sound definitions are installed under `sound/shared_alien_system/alien_infantry/` and `sound/alien_infantry_sound.asset`.
+- Reusable `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` definitions are installed under `gfx/particles/alien_infantry/` and `gfx/entities/`.
+- These audio, particle, and light definitions remain intentionally unbound because no Meshy firearm action passed the deformation gate and therefore no stable muzzle node or discharge timestamp exists.
+- Model, material, seven skeletal actions, entity registration, PDX export/reimport evidence, exact synchronization, and acceptance evidence remain in the `alien_infantry_entity` 3D-package handoff and are not substituted by this database tranche.
 
 ## Future extensions
 

@@ -18,7 +18,7 @@ The historical v2 geometry lineage was accepted only for neutral geometry review
 - Meshy 7 image-to-3D task `01a03404-752c-7d05-be14-b204c817f9dd`, succeeded, 30 credits.
 - Historical GLB SHA-256 `DD96097BFAB051A59D08E918B0EF741E4BA400FB0784225B073CA96614BFC050` and FBX SHA-256 `69514019CED0D60EDAB6C6C70F96D79DED994E6E5CCB0D234CFD6D6CDEBBD6AA`.
 - Historical PBR map hashes: base color `13C75C37A732A2FDCC3E8C970F6C60917636754CB9F5D275198A4E096DA229ED`; metallic `5096AF6F13E54FA3DD4D68C6608823F93C99F83296C6BAC97C44DB7ABC7AC920`; normal `3F5101F06915E5A58B0C718BB6A970EDEFC353C36FCD04305FFF3FD38037FF85`; roughness `28F5F5A2519787CDB390E60F2113698FB46C96B142BB8AFB088C1CC158C1098D`.
-- Total package spend in this run: 76 credits.
+- Spend through the initial and historical v2 lineages was 76 credits. This is not the package-wide total because later V3 through V7 recovery calls are recorded separately in `history.jsonl` and the compact rejection records; the shared account was also used concurrently, so balance deltas are not treated as an authoritative package total.
 
 ## Accepted v2 geometry gate
 
@@ -38,7 +38,8 @@ Reserved runtime identifiers remain `alien_infantry_entity`, `alien_infantry_mes
 
 - Dependency lock SHA-256 `01CAE764172374943B0718048B136C029E3CEBDBFCFA737C24AFC75DF7EA08EF`; Meshy schema lock SHA-256 `E45FE80F3B8AC49A365EA2D4221E82E969AE55279639F817BB6FA75407D1C233`; adapter config SHA-256 `24F865F90077104493EA092C015E140B8519780B400B4AD2CFF748EA7AF91875`.
 - Official Meshy MCP 0.4.0 with repository compatibility `meshy-7-v4` and explicit live `meshy-7`; Blender 5.1.2; adapter 1.10.3; io_pdx_mesh 0.91.0 with locked archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`.
-- The existing CC0 audio package remains under `evidence/audio/` with its detailed source/checksum handoff at `runtime/sound_handoff.md`; exact animation synchronization is blocked until valid actions exist.
+- The CC0 source/provenance package remains under `evidence/audio/`, and the derived PCM WAV files plus sound definitions are installed under `sound/shared_alien_system/alien_infantry/`, `sound/alien_infantry_sound.asset`, and the four package registrations in `sound/chaosx_sound.asset`. Exact entity-event synchronization is blocked until valid actions exist.
+- Reusable muzzle particle and light definitions are installed as `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash`; they remain intentionally unbound because no stable muzzle node or discharge timestamp exists.
 - Existing counters remain outside this job at `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`, registered by `interface/alien_infantry_system.gfx`. They were inspected/reconciled but not recreated or overwritten.
 
 ## Authoritative recovery closure: V6–V7

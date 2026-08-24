@@ -12,9 +12,9 @@
 | Support attack | `support_attack` -> `alien_infantry_support_attack` | Not purchased after attack gate failed | Blocked: independent firing evidence and synchronization absent |
 | Retreat | `retreat` -> `alien_infantry_retreat` | Not purchased after firearm gate failed | Blocked: Meshy firearm-animation capability |
 | Death | `death` -> `alien_infantry_death` | Not purchased after firearm gate failed | Blocked: collapse/impact/settling evidence absent |
-| Laser, movement, idle, death sounds | entity-state sounds | `evidence/audio/provenance/audio_sources.json`; `runtime/sound_handoff.md` | Sources/derivatives complete; exact action synchronization blocked |
+| Laser, movement, idle, death sounds | entity-state sounds | `evidence/audio/provenance/audio_sources.json`; `sound/alien_infantry_sound.asset`; `sound/shared_alien_system/alien_infantry/`; `runtime/sound_handoff.md` | Sources, derivatives, sound definitions, and shared category registration complete; entity-event synchronization intentionally unbound |
 | Large and on-map counters | Event 016 counter consumers | `runtime/counter_handoff.md` | Existing bespoke package reconciled; parent/user live review remains |
-| Packed PDX textures | `alien_infantry_mesh` material | Provider PBR maps retained | Blocked pending final rig/action lineage and processing |
+| Packed PDX textures | `alien_infantry_mesh` material | Historical provider map hashes are recorded in `manifest.md`; rejected provider binaries were deleted during compact cleanup | Blocked pending a final accepted Meshy rig/action lineage and fresh processing |
 | PDX `.mesh` and seven `.anim` files | model/animation definitions | No accepted firing lineage | Blocked; no exports or actual-byte reimports |
 | Runtime registration and live validation | `alien_infantry_entity` | Parent-owned consumer | Not performed |
 
