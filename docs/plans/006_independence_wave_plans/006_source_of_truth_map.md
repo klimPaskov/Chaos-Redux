@@ -88,7 +88,7 @@ The 2026-08-22 four-group cost palette tranche is source-applied for DM-51, DM-5
 
 The custom probability-auditor route was unavailable. The 2026-08-24 read-only probability audit records exact fixture outputs and current adapter limitations, but direct MCP discovery remains incomplete and no same-scenario probability comparison or quantitative balance claim is recorded.
 
-The 2026-08-22 catalog handoffs agree on the final state: `Events!C7` matches `chaosx.events_log.window.event_details.independence_wave`, all three export snapshots were refreshed successfully, Event 006 remains `Partially Available`, SCN-008 remains `Unavailable`, and the mixed Liberations cluster remains `Partially Available`.
+The catalog authority currently records `Events!C7` matching `chaosx.events_log.window.event_details.independence_wave`, with all three export snapshots refreshed successfully. The workbook/export status is Event 006 `Needs Testing`, SCN-008 `Needs Testing`, and the mixed Liberations cluster `Partially Available`; the whole-event implementation disposition remains **HOLD / PARTIAL**.
 
 The final-state receipts are `subagent_handoffs/006_event6_catalog_alignment_2026-08-22.md` and `subagent_handoffs/006_event6_catalog_reconcile_2026-08-22.md`.
 
