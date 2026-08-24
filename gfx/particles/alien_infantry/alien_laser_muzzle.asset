@@ -1,0 +1,90 @@
+# Short cyan energy discharge used by the reusable alien infantry rifle.
+
+particle = {
+	name = "alien_laser_muzzle_file"
+
+	subsystem = {
+		name = "energy_core"
+		max_amount = 6
+		sort = "depth"
+		emitter_type = "point"
+		local_space = yes
+		billboard = yes
+		texture = {
+			file = "gfx/particles/glow.dds"
+			x = 1
+			y = 1
+			shader = "ParticleAdditive"
+		}
+		color = {
+			x = 80
+			y = 255
+			z = 235
+			alpha = 220,fade_alpha
+		}
+		position = { x = 0 y = 0 z = 0 }
+		duration = 0.06
+		velocity_pitch = { 0 0 }
+		velocity_yaw = { 0 0 }
+		velocity = { 16 18 }
+		life = 0.18
+		emission = 70
+		size = 5,shrink
+		particle_yaw = 0
+		particle_pitch = 25
+		rotation = { 0 180 }
+	}
+
+	subsystem = {
+		name = "energy_sparks"
+		max_amount = 12
+		emitter_type = "point"
+		local_space = yes
+		billboard = yes
+		texture = {
+			file = "gfx/particles/fire03_des.dds"
+			x = 1
+			y = 1
+			shader = "ParticleAdditive"
+		}
+		color = {
+			x = 110
+			y = 255
+			z = 240
+			alpha = 180,fade_alpha
+		}
+		position = { x = 0 y = 0 z = 0 }
+		duration = 0.08
+		velocity_pitch = { 0 18 }
+		velocity_yaw = { 0 18 }
+		velocity = { 4 1 }
+		life = { 0.24 0.1 }
+		emission = 80
+		size = { 0.16 0.08 }
+		rotation = { 0 180 }
+	}
+
+	animation = {
+		name = "fade_alpha"
+		start = 0
+		duration = 1
+		repeat = no
+		minValue = 0
+		maxValue = 1
+		curve = { 0 0.1 0.15 1 0.7 1 1 0 }
+		op = "MUL"
+		time = "life"
+	}
+
+	animation = {
+		name = "shrink"
+		start = 0
+		duration = 1
+		repeat = no
+		minValue = 0
+		maxValue = 1
+		curve = { 0 0.85 1 0.12 }
+		op = "MUL"
+		time = "life"
+	}
+}
