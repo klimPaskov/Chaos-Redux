@@ -1044,6 +1044,12 @@ def root_objects(objects: List[bpy.types.Object]) -> List[bpy.types.Object]:
     return [obj for obj in objects if obj.parent not in object_set]
 
 
+def is_humanoid_asset_kind(asset_kind: str) -> bool:
+    """Recognize both legacy and repository job-profile humanoid identifiers."""
+
+    return asset_kind in {"humanoid", "humanoid_unit"}
+
+
 def normalize_geometry(target_height: float) -> Dict[str, Any]:
     objects = [obj for obj in bpy.context.scene.objects if obj.get("chaosx_working", False)]
     meshes = mesh_objects()
@@ -1065,6 +1071,37 @@ def normalize_geometry(target_height: float) -> Dict[str, Any]:
         "bounds_min": list(world_bounds(meshes)[0]),
         "bounds_max": list(world_bounds(meshes)[1]),
         "ground_contact_z": world_bounds(meshes)[0].z,
+    }
+
+
+def verify_saved_normalization(checkpoint: Path, target_height: float) -> Dict[str, Any]:
+    """Reopen a checkpoint and fail if its measured height differs from its report."""
+
+    bpy.ops.wm.open_mainfile(filepath=str(checkpoint))
+    persisted_geometry = geometry_metrics()
+    persisted_height = float(persisted_geometry["dimensions"][2])
+    tolerance = max(1e-5, abs(target_height) * 1e-5)
+    height_delta = persisted_height - target_height
+    if abs(height_delta) > tolerance:
+        raise RuntimeError(
+            "Saved normalization checkpoint does not preserve the requested mesh height: "
+            f"target={target_height}, persisted={persisted_height}, delta={height_delta}."
+        )
+    return {
+        "policy": "save_reopen_and_remeasure_working_world_bounds",
+        "checkpoint": str(checkpoint),
+        "target_height_m": target_height,
+        "persisted_height_m": persisted_height,
+        "height_delta_m": height_delta,
+        "tolerance_m": tolerance,
+        "geometry": persisted_geometry,
+        "armatures": [
+            {
+                "name": rig.name,
+                "world_scale": list(rig.matrix_world.to_scale()),
+            }
+            for rig in armatures()
+        ],
     }
 
 
@@ -2177,6 +2214,16 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     imported_checkpoint = job / "blender" / "checkpoints" / "00_imported_candidate.blend"
     save_blend(imported_checkpoint)
 
+    asset_kind = str(payload["asset_kind"])
+    humanoid_asset = is_humanoid_asset_kind(asset_kind)
+    # Provider FBX files commonly key the armature object's 0.01 import scale.
+    # Remove those scale curves before normalization so a later dependency-graph
+    # evaluation cannot restore the provider scale after the report is measured.
+    scale_sanitization = (
+        sanitize_action_scale_channels()
+        if humanoid_asset
+        else {"policy": "not_applicable", "actions": [], "remaining_scale_fcurves": 0}
+    )
     target_height = float(payload["target_height_m"])
     runtime_entity_scale = float(payload.get("runtime_entity_scale", 1.0))
     if runtime_entity_scale <= 0.0:
@@ -2254,29 +2301,24 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     materials = tag_pdx_materials(pdx)
     texture_bindings = bind_texture_sources(job, payload)
     materials["texture_bindings"] = texture_bindings
-    if payload["asset_kind"] in {"humanoid", "creature"} and payload.get("texture_source_rels") and not image_nodes():
+    if (humanoid_asset or asset_kind == "creature") and payload.get("texture_source_rels") and not image_nodes():
         raise RuntimeError(
             "Humanoid preparation produced no image-backed material. Refusing to export a black unit."
         )
     material_checkpoint = job / "blender" / "checkpoints" / "02_materials_approved.blend"
     save_blend(material_checkpoint)
 
-    scale_sanitization = (
-        sanitize_action_scale_channels()
-        if payload["asset_kind"] == "humanoid"
-        else {"policy": "not_applicable", "actions": [], "remaining_scale_fcurves": 0}
-    )
     actions = action_metrics()
     actions["scale_sanitization"] = scale_sanitization
     actions["root_translation_sanitization"] = (
         sanitize_root_translation_channels()
-        if payload["asset_kind"] == "humanoid"
+        if humanoid_asset
         else {"policy": "not_applicable", "actions": []}
     )
-    if payload["asset_kind"] == "humanoid" and scale_sanitization["remaining_scale_fcurves"]:
+    if humanoid_asset and scale_sanitization["remaining_scale_fcurves"]:
         raise RuntimeError("Humanoid action export still contains scale channels after sanitization.")
     rig_checkpoint = None
-    if payload["asset_kind"] == "humanoid":
+    if humanoid_asset:
         rig_checkpoint = job / "blender" / "checkpoints" / "03_rig_approved.blend"
         save_blend(rig_checkpoint)
         action_checkpoint = job / "blender" / "checkpoints" / "04_actions_approved.blend"
@@ -2284,6 +2326,9 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     pre_export = job / "blender" / "checkpoints" / "05_pre_export.blend"
     previews = render_previews(job, runtime_stem) if payload.get("render_previews", True) else []
     save_blend(pre_export)
+    normalization_persistence = verify_saved_normalization(pre_export, target_height)
+    normalization_persistence["checkpoint"] = str(pre_export.relative_to(job)).replace("\\", "/")
+    geometry = normalization_persistence["geometry"]
 
     report = {
         "asset_kind": payload["asset_kind"],
@@ -2301,6 +2346,7 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "geometry_transfer": geometry_transfer,
         "imported_geometry": imported_metrics,
         "normalization": normalize,
+        "normalization_persistence": normalization_persistence,
         "runtime_footprint": footprint,
         "runtime_calibration": {
             "mesh_target_height_m": target_height,
