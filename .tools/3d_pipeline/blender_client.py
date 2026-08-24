@@ -491,6 +491,25 @@ class BlenderAdapterClient:
             },
         )
 
+    def prepare_export_coordinate_checkpoint(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        action_name: str,
+        target_armature_name: str,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_prepare_export_coordinate_checkpoint",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "action_name": action_name,
+                "target_armature_name": target_armature_name,
+            },
+        )
+
     def sanitize_runtime_candidate(
         self,
         job_id: str,

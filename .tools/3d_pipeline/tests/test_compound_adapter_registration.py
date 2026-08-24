@@ -74,6 +74,13 @@ REGISTERED_TOOLS = {
         "grounding_policy",
         "root_bone",
     },
+    "chaosx_blender_hoi4_prepare_export_coordinate_checkpoint": {
+        "job_id",
+        "blend_rel",
+        "checkpoint_rel",
+        "action_name",
+        "target_armature_name",
+    },
     "chaosx_blender_hoi4_sanitize_runtime_candidate": {
         "job_id",
         "blend_rel",

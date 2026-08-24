@@ -33,6 +33,9 @@ TOOLS = {
         "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
         "grounding_policy", "root_bone",
     },
+    "chaosx_blender_hoi4_prepare_export_coordinate_checkpoint": {
+        "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
+    },
 }
 
 
@@ -66,9 +69,9 @@ class AnimationProcessingToolTests(unittest.TestCase):
     def test_config_and_lock_match_version_and_operations(self) -> None:
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         route = json.loads((PIPELINE_ROOT / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["blender_hoi4_adapter"]
-        self.assertEqual(config["adapter_version"], "1.10.8")
-        self.assertEqual(route["version"], "1.10.8")
-        for operation in ("import_animation_action", "retime_animation_action", "correct_action_grounding"):
+        self.assertEqual(config["adapter_version"], "1.10.9")
+        self.assertEqual(route["version"], "1.10.9")
+        for operation in ("import_animation_action", "retime_animation_action", "correct_action_grounding", "prepare_export_coordinate_checkpoint"):
             self.assertIn(operation, config["operations"])
             self.assertIn(operation, route["operations"])
 
@@ -85,10 +88,22 @@ class AnimationProcessingToolTests(unittest.TestCase):
             "unit", "retimed.blend", "grounded.blend", "runtime_action", "Armature",
             "per_frame_root_contact_zero_clearance",
         )
+        client.prepare_export_coordinate_checkpoint(
+            "unit", "grounded.blend", "export_coordinates.blend", "runtime_action", "Armature",
+        )
         self.assertEqual([name for name, _ in calls], list(TOOLS))
         self.assertEqual(calls[0][1]["provenance_rel"], "provenance.json")
         self.assertEqual(calls[1][1]["target_fps"], 24.0)
         self.assertEqual(calls[2][1]["grounding_policy"], "per_frame_root_contact_zero_clearance")
+        self.assertEqual(calls[3][1]["checkpoint_rel"], "export_coordinates.blend")
+
+    def test_export_coordinate_checkpoint_is_drift_guarded(self) -> None:
+        source = (PIPELINE_ROOT / "adapter" / "blender_worker.py").read_text(encoding="utf-8")
+        self.assertIn("existing_pdx_export_coordinate_conversion_checkpoint_only", source)
+        self.assertIn("Export-coordinate checkpoint drift validation failed", source)
+        self.assertIn("protected source/reference drift", source)
+        self.assertIn("material/image binding drift", source)
+        self.assertIn("action_provenance(reopened_action) != action_source", source)
 
     def test_prepare_candidate_forwards_topology_preservation(self) -> None:
         client = BlenderAdapterClient.__new__(BlenderAdapterClient)
