@@ -36,7 +36,7 @@ Komi project readiness and every project cancellation path now fail closed when 
 
 The former-host ledger project also cancels when the tracked former host becomes unsettled, so its diplomatic settlement cannot complete after the host relationship has entered a war or loss state.
 
-The former-host ledger and Northern Ural corridor projects use the package-specific strategic cost label and reserve one Komi civilian factory through their decision modifier; the visible tooltip now shows the same stability, war-support, command-power, and factory burden.
+The former-host ledger and Northern Ural corridor projects use the package-specific strategic cost label and reserve one Komi civilian factory through their decision modifier; the visible tooltip now shows the same stability, command-power, convoy-or-train, and factory burden.
 
 This hardening remains package-local. It does not add Komi to central attestation, normal or scenario preflight, deterministic Join, or the Event 006 workbook.
 
