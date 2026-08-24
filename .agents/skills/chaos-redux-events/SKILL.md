@@ -630,9 +630,9 @@ Rules:
 
 - Use exactly these status labels: `Playable`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
 - `Playable` requires explicit approval and must never be inferred or assigned by default.
-- Registered events without explicit approval default to `To Be Reworked`; implemented Events 1-20 awaiting validation may use `Needs Testing`.
-- Every Event 21+ that remains registered in `initialize_event_categories` is `To Be Reworked` unless explicitly approved in the future.
-- Every catalog event ID absent from the three runtime registration arrays is `Unavailable`, even if an obsolete event file still exists.
+- Events 1–20 awaiting validation use `Needs Testing` unless the user explicitly approves another status.
+- A post-20 catalog ID with an actual root definition in the mod (`id = chaosx.nr<ID>.1`) is `To Be Reworked`, including hidden, bridge, or placeholder roots; do not infer availability from category-array membership alone.
+- A post-20 catalog ID without an actual `chaosx.nr<ID>.1` root definition is `Unavailable`.
 - Keep workbook validation lists and the `Legend` sheet synchronized with these labels.
 - These status rules classify catalog entries only and must not silently change runtime registration or enablement.
 
