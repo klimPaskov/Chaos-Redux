@@ -2,7 +2,7 @@
 
 Date: 2026-08-24
 
-The focused source audit was rerun after the FORM-48, shared FORM-01/02/04, and FORM-03 cost-localisation tranches.
+The focused source audit was rerun after the FORM-48, shared FORM-01/02/04, FORM-03, and IW-035 cost-localisation tranches.
 
 Commands:
 
@@ -11,7 +11,7 @@ Commands:
 - `python -B .tools/audit_event6_flags.py --strict`
 - `python -B .tools/audit_event6_scenario_matrix.py`
 - `python -B .tools/audit_event6_form16.py`
-- A targeted UTF-8 BOM/NUL/key/duplicate/literal-cost scan over `localisation/english/006_independence_wave_pacific_l_english.yml`, `localisation/english/006_independence_wave_form01_02_04_l_english.yml`, and `localisation/english/006_independence_wave_form03_l_english.yml`.
+- A targeted UTF-8 BOM/NUL/key/duplicate/literal-cost scan over `localisation/english/006_independence_wave_pacific_l_english.yml`, `localisation/english/006_independence_wave_form01_02_04_l_english.yml`, `localisation/english/006_independence_wave_form03_l_english.yml`, and `localisation/english/006_independence_wave_iw035_livonia_l_english.yml`.
 
 Results:
 
@@ -20,6 +20,6 @@ Results:
 - Strict flag audit: PASS, 102 registered families and 102 complete families.
 - Scenario matrix: PASS, all 32 SCN-008 cells and eight edge cases.
 - FORM-16 contract: PASS, ARM/GEO/AZR member-state, consent/refusal, mutation, rollback, and readiness checks.
-- Localisation scan: PASS, BOM present, zero NUL bytes, no missing or duplicate keys, zero targeted literal padded cost lines, and all ten FORM-03 custom-cost tooltips aliasing their compact base keys.
+- Localisation scan: PASS, BOM present, zero NUL bytes, no missing or duplicate keys, zero targeted literal padded cost lines, all ten FORM-03 custom-cost tooltips aliasing their compact base keys, and all five IW-035 cost tooltips aliasing compact base keys.
 
 This handoff records source/static evidence only. It does not prove live event execution, in-game tooltip rendering, GUI acceptance, weighted balance, or terminal transaction receipts.
