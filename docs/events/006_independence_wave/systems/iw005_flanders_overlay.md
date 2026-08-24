@@ -35,7 +35,7 @@ The vanilla Belgium focus tree remains the country's meaningful focus surface. T
 
 ## Activation, suspension, and return
 
-`common/on_actions/006_independence_wave_iw005_flanders_on_actions.txt` adds only `on_daily_BEL`. It does not iterate through all countries.
+`common/on_actions/006_independence_wave_on_actions_registry.txt` adds only `on_daily_BEL` for this overlay. It does not iterate through all countries.
 
 The daily hook applies this lifecycle:
 
@@ -116,8 +116,8 @@ The Flemish participant remains a Belgian sovereign delegation. FORM-03 may reco
 - `common/script_constants/006_independence_wave_constants_registry.txt`
 - `common/scripted_triggers/006_independence_wave_minor_overlay_triggers_registry.txt` (source section: IW-005 Flanders)
 - `common/scripted_effects/006_independence_wave_minor_overlay_effects_registry.txt` (source section: IW-005 Flanders)
-- `common/on_actions/006_independence_wave_iw005_flanders_on_actions.txt`
-- `common/decisions/categories/006_independence_wave_iw005_flanders_categories.txt`
+- `common/on_actions/006_independence_wave_on_actions_registry.txt`
+- `common/decisions/categories/006_independence_wave_categories.txt`
 - `common/decisions/006_independence_wave_minor_overlay_decisions_registry.txt` (source section: IW-005 Flanders)
 - `common/ideas/006_independence_wave_ideas_registry.txt`
 - `common/scripted_localisation/006_independence_wave_iw005_flanders_scripted_localisation.txt`
