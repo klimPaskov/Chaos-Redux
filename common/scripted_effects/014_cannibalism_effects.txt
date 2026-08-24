@@ -5178,6 +5178,7 @@ cannibalism_setup_current_warlord_country = {
 				cannibalism_warlord_survival_burdens
 			}
 			cannibalism_apply_current_warlord_origin_package = yes
+			cannibalism_unlock_event014_warlord_package_subunits = yes
 			cannibalism_create_current_warlord_templates = yes
 			country_lock_all_division_template = yes
 			event_target:cannibalism_warlord_origin_state = { save_event_target_as = cannibalism_consumption_target_state }
@@ -12105,6 +12106,7 @@ cannibalism_apply_inherited_host_identity_to_cbl = {
 
 	if = { limit = { check_variable = { cannibalism_inherited_origin_island > 0 } } set_country_flag = cannibalism_unified_origin_island_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_siege > 0 } } set_country_flag = cannibalism_unified_origin_siege_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
+	cannibalism_unlock_event014_unified_origin_specialists = yes
 	if = { limit = { check_variable = { cannibalism_inherited_origin_march > 0 } } set_country_flag = cannibalism_unified_origin_march_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
 	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
@@ -12138,6 +12140,7 @@ cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = {
 # one valid state's population through the canonical Deaths transaction.
 cannibalism_open_inherited_warlord_recruitment = {
 	set_country_flag = cannibalism_inherited_warlord_recruitment_open
+	cannibalism_unlock_event014_inherited_warlord_subunits = yes
 	set_country_flag = cannibalism_warlord_basic_recruitment_open
 	set_country_flag = cannibalism_warlord_network_cadre_open
 	if = {
@@ -15824,6 +15827,7 @@ cannibalism_unified_focus_integrate_the_warbands = {
 	set_country_flag = cannibalism_unified_template_conversion_missions_open
 }
 
+	cannibalism_unlock_event014_unified_origin_specialists = yes
 cannibalism_unified_focus_map_the_origin_templates = {
 	set_country_flag = cannibalism_unified_origin_template_mapping_open
 	set_country_flag = cannibalism_unified_origin_specialist_recruitment_open
@@ -15834,6 +15838,7 @@ cannibalism_unified_focus_standardize_captured_calibers = {
 	set_country_flag = cannibalism_unified_captured_equipment_conversion_open
 	cannibalism_unified_focus_add_capital_military_workshop = yes
 }
+	cannibalism_unlock_event014_unified_legion = yes
 
 cannibalism_unified_focus_raise_the_cannibal_legions = {
 	set_country_flag = cannibalism_unified_cannibal_legion_recruitment_open
@@ -15848,6 +15853,7 @@ cannibalism_unified_focus_legion_reinforcement_tables = {
 cannibalism_unified_focus_legions_of_the_continents = {
 	set_country_flag = cannibalism_unified_legion_theaters_open
 	set_country_flag = cannibalism_unified_legion_cap_upgraded
+	cannibalism_unlock_event014_unified_bone_guard = yes
 }
 
 cannibalism_unified_focus_bone_guard_command = {
@@ -17231,6 +17237,7 @@ cannibalism_warlord_focus_seize_the_knives = {
 cannibalism_warlord_focus_break_the_captains = {
 	set_country_flag = cannibalism_warlord_personal_guard_doctrine_open
 	add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_decision.frenzy_gain }
+	cannibalism_unlock_event014_warlord_bone_guard = yes
 	cannibalism_warlord_focus_refresh_meters = yes
 }
 
@@ -17378,12 +17385,15 @@ cannibalism_warlord_focus_discipline_the_warbands = {
 	cannibalism_warlord_focus_refresh_meters = yes
 }
 
+	cannibalism_unlock_event014_warlord_feast_cohort = yes
 cannibalism_warlord_focus_captains_as_officers = {
 	set_country_flag = cannibalism_warlord_lieutenant_assignments_open
 	set_country_flag = cannibalism_warlord_officer_training_open
+	cannibalism_unlock_event014_warlord_origin_specialist = yes
 }
 
 cannibalism_warlord_focus_form_the_feast_cohorts = {
+	cannibalism_unlock_event014_warlord_bone_guard = yes
 	set_country_flag = cannibalism_warlord_feast_cohort_open
 }
 
@@ -17531,6 +17541,7 @@ cannibalism_warlord_focus_seize_prisons_and_depots = {
 cannibalism_warlord_focus_open_the_predatory_corridors = {
 	set_country_flag = cannibalism_warlord_predatory_corridors_open
 	set_country_flag = cannibalism_warlord_mobile_larder_open
+	cannibalism_unlock_event014_warlord_network_cadre = yes
 	cannibalism_warlord_focus_add_capital_infrastructure = yes
 }
 
@@ -17563,6 +17574,7 @@ cannibalism_warlord_focus_read_the_common_signs = {
 	set_country_flag = cannibalism_warlord_network_routes_open
 }
 
+	cannibalism_unlock_event014_warlord_network_cadre = yes
 cannibalism_warlord_focus_accept_the_common_symbols = {
 	set_country_flag = cannibalism_network_route_alignment
 	set_variable = { cannibalism_network_route = constant:cannibalism_network_route.alignment }
@@ -18426,6 +18438,7 @@ cannibalism_create_initial_wendigo_anchors = {
 	if = {
 		limit = { has_event_target = cannibalism_wendigo_merge_host }
 		event_target:cannibalism_wendigo_merge_host = { cannibalism_rebuild_wendigo_anchor_runtime = yes }
+	cannibalism_unlock_event014_wendigo_cannibal_subunits = yes
 	}
 }
 
