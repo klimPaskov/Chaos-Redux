@@ -2,43 +2,55 @@
 
 ## Outcome
 
-The v8 reference refinement is rejected and no paid Meshy work was performed against it.
+The reference stage is blocked and no Meshy work was performed.
 
-The technically clean transparent input at SHA-256 `3A0F19C7329FD433C538F6D1BCE3A97C5CDE72EBEF52B3D5270AA151E41C740A` retained too much of the conventional and culturally anchored fantasy-archer identity. Parent review specifically rejected the weak skull/bone headgear and trophy silhouette and the culturally legible markings and jewelry.
+The visually approved Bestiarum Games *Fleshmad Hunters | Man Eaters — Hunter 1* source is legally ineligible for ImageGen cleanup. The Network Cadre audit found that the archived Bestiarum Terms and Conditions, updated 2025-03-26, section 6 explicitly prohibit unauthorized reproduction, distribution, modification, or commercial use of content including promotional materials. Reference-only user authorization cannot override that explicit restriction.
 
-Internet source research was reopened under the stricter requirement for an already monstrous or cannibal fictional human archer with bow/quiver, paint, and strong bone kit. The first shortlist failed that standard: the parent explicitly rejected the goblin candidate as the wrong species and identity. Continued research found Bestiarum Games' *Fleshmad Hunters | Man Eaters*, an official culturally neutral grimdark tabletop line that explicitly describes human cannibal archers using great bows to mark the best cuts of flesh. Hunter 1 clears the human, cannibal, bow/quiver, skull/bone gear, and cultural-neutrality gates, but its official source is a gray resin presentation with red rim lighting rather than a fully painted color illustration. ImageGen and Meshy remain paused pending parent approval of that source and of faithful material colorization within the cleanup-only boundary.
+The source at SHA-256 `9E0028B6458CFD4876D347A44EEBD0FB4B533DDF71F10ABA6B73E42D3F0F668F` and cleanup at SHA-256 `74253F5B89DB675D39F94AF7007358116FB21F30BAA0CF85572580FAC5308D10` are rejected non-shipping evidence. `refs/original/meshy_input.png` must not be sent to Meshy.
 
-## Source and refinement lineage
+## Exact terms reconciliation
 
-- Rejected source: `refs/source/recovery_v7/candidates/conan_fashion_contest_painted_archer.png`
-- Rejected source SHA-256: `8AEB254BA8D7BF61F35439D037E84EC4FB205610C10FE458ABADE9D7E76BAED6`
-- Source mode: `reference_only_user_authorized`; no explicit NoAI or no-derivatives restriction was found in the archived v7 source evidence.
-- Native ImageGen moderation request ID: `b49a8842-024f-482d-bbd9-bae5ecea4561`
-- Parent-approved moderation recovery: a minimal distressed hide/leather chest wrap covering the nipples, without armor or modern clothing.
-- Native transparency failed twice by returning a baked checkerboard. The retained fallback used rembg 2.0.61 followed by boundary-only neutral-white cleanup.
-- Rejected refined path: `refs/original/meshy_input.png`
-- Rejected refined SHA-256: `3A0F19C7329FD433C538F6D1BCE3A97C5CDE72EBEF52B3D5270AA151E41C740A`
-- Comparison image: `refs/derived/source_to_refinement_comparison_v8.png`
-- Comparison SHA-256: `B5343605993175091236EDCA8C4BF76FBB07C0720FA72F60D2D5333CC658BCF3`
-- Parent approval: rejected on 2026-08-24; exact reason and provider-stop instruction are recorded in `history.jsonl` and `refs/original/input_manifest.json`.
+- Archived terms: `refs/source/recovery_v8/pages/bestiarum_terms.html`
+- Archived terms SHA-256: `DBD0D6E0EF582E82807A152C28F94633742026FF3ABBCCAA7EF57503C0134885`
+- Relevant heading: `6. Intellectual Property`
+- Relevant archived statement: unauthorized modification of Bestiarum content, expressly including promotional materials, is strictly prohibited.
+- Decision: explicit incompatible restriction; reject despite prior visual approval and user reference-only authorization.
+- Provenance record: `refs/source/provenance_bestiarum_v8.json`
+- Rejected input record: `refs/original/input_manifest.json`
 
-## Replacement source research
+## Rejected refinement evidence
 
-The full candidate record, URLs, terms checks, hashes, and fit gaps are in `refs/source/recovery_v8/source_shortlist.json`.
+- Source page: `https://bestiarumgames.com/products/flesh-hunters-man-eaters-bestiarum-miniatures-d-d-wargaming-dnd`
+- Title: *Fleshmad Hunters | Man Eaters — Hunter 1*
+- Creator/publisher: Bestiarum Games / Bestiarum Studio LLC
+- Source path: `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_1.jpg`
+- Source SHA-256: `9E0028B6458CFD4876D347A44EEBD0FB4B533DDF71F10ABA6B73E42D3F0F668F`
+- Rejected refinement path: `refs/original/meshy_input.png`
+- Rejected refinement SHA-256: `74253F5B89DB675D39F94AF7007358116FB21F30BAA0CF85572580FAC5308D10`
+- Source/final comparison: `refs/derived/bestiarum_source_to_final_comparison_v8.png`
+- Alpha QA: `refs/derived/meshy_input_alpha_black_v8.png`, `refs/derived/meshy_input_alpha_white_v8.png`, and `refs/derived/meshy_input_alpha_checker_v8.png`
+- Technical alpha result: 1254×1254 RGBA; alpha range 0–255; 1,271,898 transparent, 290,736 opaque, and 9,882 partial pixels; visible bounds `[144, 14, 965, 1152]`.
+- Visual result before the terms rejection: faithful human Man Eater identity, greatbow/arrow/quiver, skull breast trophy, bone crown, irregular paint, culturally neutral materials, full limbs, and clean alpha.
 
-1. `bestiarum_fleshmad_hunter_1.jpg`, SHA-256 `9E0028B6458CFD4876D347A44EEBD0FB4B533DDF71F10ABA6B73E42D3F0F668F`, is the recommended source. Bestiarum Games explicitly identifies the Fleshmad Hunters as Man Eater cannibals who use great bows to mark the best cuts of flesh. Hunter 1 is human, full-body, feral, and culturally neutral, with a bone-spike crown, skull breast trophy, bone and feather kit, bone greatbow, barbed shaft, and back quiver. The unresolved gap is its gray resin presentation rather than a fully painted color source.
-2. `bestiarum_fleshmad_hunter_4.jpg`, SHA-256 `779D77B631E8B0F51EAF4B4911DE193285EF0F0ACE5BA3093C4A0894976C367D`, is the skull-mask alternate. It has a full skull mask, drawn bone greatbow, quiver, bone necklace, and explicit Man Eater lineage, but the firing pose self-occludes more of the body and it has no unambiguous body-paint color.
-3. `goblin_archer_bone_armor.jpg`, SHA-256 `505E9B7A2A8A0834A1422ACDCA96420194416D7A105B7C07187B133C6F8643DA`, was rejected by the parent because a goblin is the wrong species and still misses the explicit cannibal and skull-headgear identity gate.
-4. `behance_cannibal_tribe_archer.jpg`, SHA-256 `002DCCD27B16AD5F20E8A533219CD121E415B71F3D979675587BEBC9A4FA5A7A`, is *Cannibal tribe* by Vladislav Stain. It has explicit cannibal identity, paint, bow/arrows, and a skull trophy, but is rejected because its human styling remains too culturally anchored.
-5. `orcquest_archer_secondary.jpg`, SHA-256 `57F64ABFA75122E0327B7F2CDFBCD8AE0B4A5B2A6B590C7BFAD97225E096CC01`, is OrcQuest promotional art attributed to Daniel Zrom / Maze Games. It is fictional and carries paint, bow/quiver, and skull trophies, but reads as a conventional fantasy hero, is not explicitly cannibal, lacks skull headgear, and the archived byte is only a secondary copy.
+Native ImageGen transparency failed twice: the first output baked a checkerboard and the targeted retry returned an opaque studio backdrop. The retained rejected evidence used rembg 2.0.61 with post-processing, boundary-only neutral-checker cleanup, and a narrow antialias. No source pixels or derivative pixels ship.
 
-The Bestiarum product and terms pages were archived under `refs/source/recovery_v8/pages/`. No explicit NoAI or no-derivatives restriction was found on the inspected pages. The source remains all rights reserved and is eligible only under the user's reference-only authorization; no purchased STL or source pixels may ship.
+## Continued source recovery
 
-Wendigo-derived designs were excluded despite superficially strong monster and skull traits because that route would re-anchor the unit in a living Indigenous cultural tradition.
+No replacement clears both the visual and rights gates.
 
-## Dependency and route verification
+1. Eldritch Foundry's *Cannibal Tribe Archer*, sold by Hot Goblin and described in its Japanese catalog as a bone-mask tracker, is visually promising and explicitly cannibal. It is rejected because Hot Goblin Terms section 5 prohibits unauthorized reproduction, alteration, and other secondary use of product photographs and content.
+2. The *Bone Tomahawk* troglodyte archer film still is a modern fictional human cannibal with a bow and body paint. It is rejected because it lacks a visible quiver and the required skull/bone headgear and trophy silhouette.
+3. Sketchfab's *Cult Fanatic (Enemy Archer)* has a skull mask, bone-crafted bow, muscular human anatomy, and a quiver. It is rejected because the source does not identify the figure as a cannibal; ImageGen may not invent that identity.
+4. Bestiarum Hunter 4 is rejected under the same section 6 terms restriction as Hunter 1.
+5. The prior Conan and goblin candidates remain rejected for cultural anchoring and wrong species/identity respectively.
 
-The repository-owned verification gate passed before provider work:
+The parent-directed Far Cry Primal lead was audited next. The Udam are an explicit fictional cannibal faction, Prima's guide names an `Udam Elite Archer`, and elite Udam use protective masks or helmets and bone armor. March was assigned the heavier elite roaming design, while Network Cadre retains the ordinary lean archer design. Ubisoft's current Terms of Use at `https://www.ubisoft.com/legal/documents/termsofuse/en-US` explicitly prohibit using Ubisoft Services or Content as input in prompts for artificial-intelligence tools or for model training/fine-tuning. This is a direct NoAI-equivalent restriction, so no official, press, wiki, or gameplay screenshot was downloaded or promoted. The design split is recorded only to prevent future duplication if an independently licensed depiction becomes available.
+
+The source shortlist and decisions are recorded in `refs/source/recovery_v8/source_shortlist.json` and `refs/source/recovery_v8/source_shortlist.md`.
+
+## Dependency verification
+
+The repository-owned preflight previously passed:
 
 - Official Meshy MCP package: `@meshy-ai/meshy-mcp-server` 0.4.0
 - Meshy SDK: 1.29.0
@@ -46,61 +58,28 @@ The repository-owned verification gate passed before provider work:
 - Repository Blender HOI4 adapter: `chaosx_blender_hoi4` 1.10.0
 - Blender: 5.1.2, build `ec6e62d40fa9`
 - `io_pdx_mesh`: 0.91.0, checksum beginning `A683DF`
-- Blender adapter socket: `127.0.0.1:9876` listening after the clean verification pass
-- `.tools/3d_pipeline/verify_environment.py --probe-meshy`: final pass returned no findings
+- Blender adapter socket: `127.0.0.1:9876`
+- `.tools/3d_pipeline/verify_environment.py --probe-meshy`: passed with no findings
 
-No route substitution or version downgrade was used.
+No route substitution or downgrade was used.
 
 ## Paid operations and costs
 
-- ImageGen calls: one moderation-blocked edit, one successful moderation-recovery edit, and one transparency/framing repair.
-- Meshy paid calls after the v8 rejection: 0
-- Meshy credits estimated after the v8 rejection: 0
-- Meshy credits consumed after the v8 rejection: 0
-- Provider task IDs created for this rejected v8 input: none
+- Meshy paid calls: 0
+- Meshy credits estimated: 0
+- Meshy credits consumed: 0
+- Meshy provider task IDs: none
+- No paid call was made through the older MCP session.
+- Far Cry Primal source downloads: 0; ImageGen calls: 0
 
-## Files created or changed
+## Remaining work and blockers
 
-- `refs/original/meshy_input.png` — rejected provider input retained as non-shipping evidence
-- `refs/original/input_manifest.json` — updated with parent rejection and provider-stop state
-- `refs/source/provenance_v8.json`
-- `refs/source/recovery_v8/source_shortlist.json`
-- `refs/source/recovery_v8/source_shortlist.md`
-- `refs/source/recovery_v8/candidates/goblin_archer_bone_armor.jpg`
-- `refs/source/recovery_v8/candidates/behance_cannibal_tribe_archer.jpg`
-- `refs/source/recovery_v8/candidates/orcquest_archer_secondary.jpg`
-- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_1.jpg`
-- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_2.jpg`
-- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_3.jpg`
-- `refs/source/recovery_v8/candidates/bestiarum_fleshmad_hunter_4.jpg`
-- `refs/source/recovery_v8/pages/bestiarum_fleshmad_hunters.html`
-- `refs/source/recovery_v8/pages/bestiarum_terms.html`
-- `refs/briefs/imagegen_prompt_v8.md`
-- `refs/derived/source_to_refinement_comparison_v8.md`
-- `refs/derived/source_to_refinement_comparison_v8.png`
-- `refs/derived/meshy_input_superseded_pre_v8.png`
-- `refs/derived/imagegen_checker_failed_native_alpha_v8.png`
-- `refs/derived/rembg_no_matting_candidate_v8.png`
-- `refs/derived/rembg_postprocessed_candidate_v8.png`
-- `evidence/process_checker_alpha_v8.py`
-- `history.jsonl`
-- this handoff
-
-## Meaningful validation
-
-- The rejected reference was confirmed as 1122×1402 RGBA with genuine binary alpha, no partial-alpha pixels, and visible bounds `[79, 113, 1075, 1269]`.
-- All three replacement candidates were visually inspected at original resolution rather than assessed from search text alone.
-- Candidate source pages and direct image URLs were recorded before downloading.
-- The rejected input manifest, source shortlist JSON, and appended history records parse successfully.
-
-## Blockers and remaining parent work
-
-- `needs_parent_source_and_colorization_approval`: Bestiarum Fleshmad Hunter 1 clears the human cannibal, bow/quiver, skull/bone gear, horror, and cultural-neutrality gates. The parent must decide whether the gray official render may receive faithful material colorization, isolation, base removal, native transparency, and only the previously approved small sheathed bone close weapon.
-- ImageGen may not alter the Fleshmad identity, anatomy, pose, bone crown, skull trophy, bow, quiver, silhouette, or add new cultural motifs.
-- Meshy generation, geometry review, rigging, all eight real Meshy actions, Blender scale calibration against `western_european_infantry.mesh`, PDX texture derivation, `.mesh`/`.anim` export and reimport, previews, sourced 44100 Hz sound package, and final runtime/GFX/sound handoff are not started for v8.
-- Existing counter art remains consumer-only and was not modified.
+- `blocked_no_eligible_source`: a modern fictional human cannibal archer must already show bow, quiver, conspicuous body or face paint, strong skull/bone headgear and trophy kit, and a culturally neutral horror identity, with no explicit NoAI, no-derivatives, no-modification, or equivalent restriction.
+- ImageGen and Meshy must remain paused until the parent approves an eligible exact source and its checksum.
+- Meshy generation, geometry review, eight real skeletal actions, Blender calibration against `western_european_infantry.mesh`, PDX material conversion, `.mesh`/`.anim` export/reimport, previews, sourced 44100 Hz audio roles, and runtime/GFX/sound handoff are not started.
+- Existing bespoke counter art remains consumer-only and was not modified.
 - Parent-owned runtime wiring and live in-game validation remain untouched.
 
 ## Simplifications, omissions, and blockers
 
-No unapproved simplification was used. The package is incomplete because source/colorization approval is unresolved, and downstream paid/model work is intentionally blocked rather than filled with a weaker substitute.
+No fallback or weaker substitute was promoted. The package is incomplete because no eligible source currently clears both the exact visual identity gate and the explicit rights gate.
