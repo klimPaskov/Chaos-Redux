@@ -10,7 +10,7 @@ This is not a claim that every event, country package, focus tree, asset package
 
 Events 21+ event-specific implementations remain out of scope; only shared registration, catalog, settings, scenario, localisation, and helper references were inspected or mentioned where needed to verify the bounded Events 1–20 cleanup.
 
-The cleanup-owned evidence is the following commit set: `b638e743a`, `29abd27ea`, `72ae50791`, `9de7d2293`, `1ade302fb`, `3ba28a960`, `4c3c8f1db`, `393135c5c`, `da05faa36`, `7a5754cd1`, `b6f61028f`, `886f50d80`, `fd0089b06`, `9954f2e32`, `949594883`, `adcbbc25a`, `5b5302cae`, `49dad024c`, `e77ae8965`, and `f1a1d56d3`.
+The cleanup-owned evidence is the following commit set: `b638e743a`, `29abd27ea`, `72ae50791`, `9de7d2293`, `1ade302fb`, `3ba28a960`, `4c3c8f1db`, `393135c5c`, `da05faa36`, `7a5754cd1`, `b6f61028f`, `886f50d80`, `fd0089b06`, `9954f2e32`, `949594883`, `adcbbc25a`, `5b5302cae`, `49dad024c`, `e77ae8965`, `f1a1d56d3`, `eec9f7692`, `e3eb929f3`, `2f529cc54`, `775099cbf`, `15de66457`, `0587e680c`, and `5e907da0a`. Only the storage-report portion of mixed commit `15de66457` belongs to this cleanup ledger; unrelated Event 014 edits in that commit are excluded.
 
 The additional cleanup documentation commits `49dad024c` and `e77ae8965` are included: historical Event 017 and Event 020 helper observations now carry explicit supersession notes, and the bounded Event 013–020 report distinguishes preserved historical evidence from current ownership.
 
@@ -407,7 +407,7 @@ Recommended parent decisions are whether to schedule the shared migration phases
 
 ## Exact tracked path ledger
 
-The cleanup owns 81 tracked paths when this completion report is included.
+The cleanup owns 82 tracked paths when this completion report and the cleanup-plan README are included. This count excludes unrelated paths that happened to share a mixed commit.
 
 Gameplay and script paths:
 
@@ -474,6 +474,7 @@ Documentation paths:
 - `docs/plans/repo_cleanup/event_013_020_bounded_cleanup_2026-08-22.md`
 - `docs/plans/repo_cleanup/git_storage_cleanup_2026-08-22.md`
 - `docs/plans/repo_cleanup/interface_audit_2026-07-22.md`
+- `docs/plans/repo_cleanup/README.md`
 - `docs/plans/repo_cleanup/repo_cleanup_completion_report_2026-08-22.md`
 - `docs/plans/repo_cleanup/shared_system_migration_plan_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/ai_probability_baseline_2026-08-22.md`
