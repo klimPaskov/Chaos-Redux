@@ -1,0 +1,744 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE AND MIGRATION CORRIDOR CONTRACT EFFECTS
+# ============================================================================
+# Package-owned lifecycle and transaction adapters for an exact humanitarian
+# corridor. The effects persist origin/front/counterpart database IDs, bind a
+# single adjacent route, and reuse the existing exact civilian and reserve
+# transfer helpers. They do not create events, register an event pool, add a
+# GUI, add a mapmode, or scan the world. Attack receipts and owner call sites
+# remain explicit inputs.
+# ============================================================================
+
+# STATE scope. Copy caller-owned route evidence into durable contract fields.
+# A missing request is represented as zero and is intentionally rejected by
+# famine_migration_corridor_route_geometry_is_valid.
+famine_migration_corridor_copy_request_proofs = {
+	set_variable = { famine_migration_corridor_route_geometry_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_route_border_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_route_transport_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_route_safety_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_route_actor_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_route_ceasefire_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_route_food_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_route_reception_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_food_proof = constant:famine_migration_corridor_runtime.zero }
+	set_variable = { famine_migration_corridor_reception_proof = constant:famine_migration_corridor_runtime.zero }
+	if = { limit = { has_variable = famine_migration_corridor_route_geometry_proof_request } set_variable = { famine_migration_corridor_route_geometry_proof = famine_migration_corridor_route_geometry_proof_request } }
+	if = { limit = { has_variable = famine_migration_corridor_route_border_proof_request } set_variable = { famine_migration_corridor_route_border_proof = famine_migration_corridor_route_border_proof_request } }
+	if = { limit = { has_variable = famine_migration_corridor_route_transport_proof_request } set_variable = { famine_migration_corridor_route_transport_proof = famine_migration_corridor_route_transport_proof_request } }
+	if = { limit = { has_variable = famine_migration_corridor_route_safety_proof_request } set_variable = { famine_migration_corridor_route_safety_proof = famine_migration_corridor_route_safety_proof_request } }
+	if = { limit = { has_variable = famine_migration_corridor_route_actor_proof_request } set_variable = { famine_migration_corridor_route_actor_proof = famine_migration_corridor_route_actor_proof_request } }
+	if = { limit = { has_variable = famine_migration_corridor_route_ceasefire_proof_request } set_variable = { famine_migration_corridor_route_ceasefire_proof = famine_migration_corridor_route_ceasefire_proof_request } }
+	if = { limit = { has_variable = famine_migration_corridor_route_food_proof_request } set_variable = { famine_migration_corridor_route_food_proof = famine_migration_corridor_route_food_proof_request } }
+	if = { limit = { has_variable = famine_migration_corridor_route_reception_proof_request } set_variable = { famine_migration_corridor_route_reception_proof = famine_migration_corridor_route_reception_proof_request } }
+	set_variable = { famine_migration_corridor_food_proof = famine_migration_corridor_route_food_proof }
+	set_variable = { famine_migration_corridor_reception_proof = famine_migration_corridor_route_reception_proof }
+	if = {
+		limit = { has_variable = famine_migration_corridor_route_generation_request }
+		set_variable = { famine_migration_corridor_route_generation = famine_migration_corridor_route_generation_request }
+	}
+	else = { set_variable = { famine_migration_corridor_route_generation = global.date } }
+	set_variable = { famine_migration_corridor_route_proof_generation = famine_migration_corridor_route_generation }
+}
+
+# STATE scope. Prepare one exact contract from the state-target decision. A
+# caller may submit a front-state ID, but the ID still passes the same unique
+# adjacency/controller predicate. Without an explicit ID the bounded neighbour
+# loop must find exactly one candidate; zero or multiple candidates fail closed.
+famine_migration_prepare_corridor_contract = {
+	set_temp_variable = { famine_migration_corridor_request_result = constant:famine_migration_corridor_result.invalid }
+	set_temp_variable = { famine_migration_corridor_request_reason = constant:famine_migration_corridor_reason.invalid_origin }
+	if = {
+		limit = { famine_migration_corridor_origin_is_valid = yes }
+		save_event_target_as = famine_migration_corridor_origin
+		set_state_flag = famine_migration_corridor_contract_active
+		set_state_flag = famine_migration_corridor_preparation_pending
+		set_variable = { famine_migration_corridor_origin_state_id = THIS.id }
+		set_variable = { famine_migration_corridor_requester_country_id = ROOT.id }
+		set_variable = { famine_migration_corridor_origin_controller_country_id = CONTROLLER.id }
+		set_variable = { famine_migration_corridor_origin_owner_country_id = OWNER.id }
+		set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.prepared }
+		if = {
+			limit = { has_variable = famine_migration_corridor_operation_request }
+			set_variable = { famine_migration_corridor_operation = famine_migration_corridor_operation_request }
+		}
+		else = { set_variable = { famine_migration_corridor_operation = constant:famine_migration_corridor_operation.evacuation } }
+		if = {
+			limit = { has_variable = famine_migration_corridor_relation_request }
+			set_variable = { famine_migration_corridor_relation = famine_migration_corridor_relation_request }
+		}
+		else = { set_variable = { famine_migration_corridor_relation = constant:famine_migration_corridor_relation.enemy_front } }
+		if = {
+			limit = { has_variable = famine_migration_corridor_cohort_id_request }
+			set_variable = { famine_migration_corridor_cohort_id = famine_migration_corridor_cohort_id_request }
+		}
+		else = { set_variable = { famine_migration_corridor_cohort_id = famine_migration_current_cohort_id } }
+		if = {
+			limit = { has_variable = famine_migration_corridor_transfer_people_request }
+			set_variable = { famine_migration_corridor_transfer_people = famine_migration_corridor_transfer_people_request }
+		}
+		else = {
+			if = {
+				limit = { has_variable = famine_migration_trapped_population }
+				set_variable = { famine_migration_corridor_transfer_people = famine_migration_trapped_population }
+			}
+		}
+		if = {
+			limit = { has_variable = famine_migration_corridor_relief_amount_request }
+			set_variable = { famine_migration_corridor_relief_amount = famine_migration_corridor_relief_amount_request }
+		}
+		else = { set_variable = { famine_migration_corridor_relief_amount = constant:famine_migration_food_reserve.zero } }
+		clear_variable = famine_migration_corridor_counterpart_country_id
+		clear_variable = famine_migration_corridor_front_state_id
+		clear_variable = famine_migration_corridor_offer_deadline
+		clear_variable = famine_migration_corridor_operation_deadline
+		clear_variable = famine_migration_corridor_mission_deadline
+		clear_variable = famine_migration_corridor_evacuation_proven
+		clear_variable = famine_migration_corridor_relief_proven
+		clear_variable = famine_migration_corridor_attack_receipt_proven
+		clear_variable = famine_migration_corridor_attack_attacker_country_id
+		clear_variable = famine_migration_corridor_route_binding_active
+		clear_variable = famine_migration_corridor_mission_armed
+		clr_state_flag = famine_migration_corridor_offer_pending
+		clr_state_flag = famine_migration_corridor_response_accepted
+		clr_state_flag = famine_migration_corridor_operation_pending
+		clr_state_flag = famine_migration_corridor_mission_armed
+		clr_state_flag = famine_migration_corridor_attack_received
+		famine_migration_corridor_copy_request_proofs = yes
+		set_variable = { famine_migration_corridor_candidate_count = constant:famine_migration_corridor_runtime.zero }
+		clear_variable = famine_migration_corridor_candidate_front_state_id
+		clear_variable = famine_migration_corridor_candidate_country_id
+		if = {
+			limit = {
+				has_variable = famine_migration_corridor_front_state_request
+				var:famine_migration_corridor_front_state_request = { famine_migration_corridor_front_candidate_is_valid = yes }
+			}
+			var:famine_migration_corridor_front_state_request = {
+				save_event_target_as = famine_migration_corridor_candidate_front
+				CONTROLLER = { save_event_target_as = famine_migration_corridor_candidate_controller }
+			}
+			set_variable = { famine_migration_corridor_candidate_count = constant:famine_migration_corridor_runtime.one }
+		set_variable = { famine_migration_corridor_candidate_front_state_id = event_target:famine_migration_corridor_candidate_front.id }
+		set_variable = { famine_migration_corridor_candidate_country_id = event_target:famine_migration_corridor_candidate_controller.id }
+		}
+		else = {
+			every_neighbor_state = {
+				limit = { famine_migration_corridor_front_candidate_is_valid = yes }
+				save_event_target_as = famine_migration_corridor_candidate_front
+				CONTROLLER = { save_event_target_as = famine_migration_corridor_candidate_controller }
+				event_target:famine_migration_corridor_origin = {
+					if = {
+						limit = { check_variable = { var = famine_migration_corridor_candidate_count value = constant:famine_migration_corridor_runtime.zero compare = equals } }
+						set_variable = { famine_migration_corridor_candidate_front_state_id = event_target:famine_migration_corridor_candidate_front.id }
+						set_variable = { famine_migration_corridor_candidate_country_id = event_target:famine_migration_corridor_candidate_controller.id }
+					}
+					add_to_variable = { famine_migration_corridor_candidate_count = constant:famine_migration_corridor_runtime.candidate_increment }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = famine_migration_corridor_candidate_count value = constant:famine_migration_corridor_runtime.one compare = equals } }
+			set_variable = { famine_migration_corridor_front_state_id = famine_migration_corridor_candidate_front_state_id }
+			set_variable = { famine_migration_corridor_counterpart_country_id = famine_migration_corridor_candidate_country_id }
+			set_variable = { famine_migration_corridor_origin_controller_id = famine_migration_corridor_origin_controller_country_id }
+			set_variable = { famine_migration_corridor_front_controller_id = event_target:famine_migration_corridor_candidate_controller.id }
+			if = {
+				limit = { famine_migration_corridor_route_geometry_is_valid = yes }
+				clr_state_flag = famine_migration_corridor_preparation_pending
+				set_temp_variable = { famine_migration_corridor_request_result = constant:famine_migration_corridor_result.valid }
+				set_temp_variable = { famine_migration_corridor_request_reason = constant:famine_migration_corridor_reason.unknown }
+				famine_migration_register_active_displacement_state = yes
+			}
+			else = {
+				set_state_flag = famine_migration_corridor_route_invalid
+				set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.missing_route_proof }
+				set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.missing_route_proof }
+				set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.invalidated }
+				set_temp_variable = { famine_migration_corridor_request_reason = constant:famine_migration_corridor_reason.missing_route_proof }
+				famine_migration_corridor_cleanup = yes
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = famine_migration_corridor_candidate_count value = constant:famine_migration_corridor_runtime.one compare = greater_than } }
+			set_state_flag = famine_migration_corridor_selection_ambiguous
+			set_state_flag = famine_migration_corridor_route_invalid
+			set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.ambiguous_front }
+			set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.ambiguous_front }
+			set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.invalidated }
+			set_temp_variable = { famine_migration_corridor_request_result = constant:famine_migration_corridor_result.ambiguous }
+			set_temp_variable = { famine_migration_corridor_request_reason = constant:famine_migration_corridor_reason.ambiguous_front }
+			famine_migration_corridor_cleanup = yes
+		}
+		else = {
+			set_state_flag = famine_migration_corridor_route_invalid
+			set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.no_front }
+			set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.no_front }
+			set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.invalidated }
+			set_temp_variable = { famine_migration_corridor_request_result = constant:famine_migration_corridor_result.no_front }
+			set_temp_variable = { famine_migration_corridor_request_reason = constant:famine_migration_corridor_reason.no_front }
+			famine_migration_corridor_cleanup = yes
+		}
+	}
+	else = {
+		set_temp_variable = { famine_migration_corridor_request_result = constant:famine_migration_corridor_result.invalid }
+		set_temp_variable = { famine_migration_corridor_request_reason = constant:famine_migration_corridor_reason.invalid_origin }
+	}
+	clear_variable = famine_migration_corridor_candidate_count
+	clear_variable = famine_migration_corridor_candidate_front_state_id
+	clear_variable = famine_migration_corridor_candidate_country_id
+	clear_variable = famine_migration_corridor_front_state_request
+	clear_variable = famine_migration_corridor_relation_request
+	clear_variable = famine_migration_corridor_operation_request
+	clear_variable = famine_migration_corridor_cohort_id_request
+	clear_variable = famine_migration_corridor_transfer_people_request
+	clear_variable = famine_migration_corridor_relief_amount_request
+	clear_variable = famine_migration_corridor_route_geometry_proof_request
+	clear_variable = famine_migration_corridor_route_border_proof_request
+	clear_variable = famine_migration_corridor_route_transport_proof_request
+	clear_variable = famine_migration_corridor_route_safety_proof_request
+	clear_variable = famine_migration_corridor_route_actor_proof_request
+	clear_variable = famine_migration_corridor_route_ceasefire_proof_request
+	clear_variable = famine_migration_corridor_route_food_proof_request
+	clear_variable = famine_migration_corridor_route_reception_proof_request
+	clear_variable = famine_migration_corridor_route_generation_request
+}
+
+# STATE scope. Submit a pending offer to the exact stored counterpart. The
+# counterpart's country mirror is the only response surface; no event is fired.
+famine_migration_submit_corridor_offer = {
+	set_temp_variable = { famine_migration_corridor_offer_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { famine_migration_corridor_offer_request_is_valid = yes }
+		if = {
+			limit = { var:famine_migration_corridor_counterpart_country_id = { has_country_flag = famine_migration_corridor_offer_pending } }
+			set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.duplicate_offer }
+			set_temp_variable = { famine_migration_corridor_offer_result = constant:famine_migration_corridor_result.duplicate }
+		}
+		else = {
+			save_event_target_as = famine_migration_corridor_origin
+			set_variable = { famine_migration_corridor_offer_deadline = global.date }
+			add_to_variable = { famine_migration_corridor_offer_deadline = constant:famine_migration_corridor_timing.offer_response_days }
+			set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.offer_pending }
+			set_state_flag = famine_migration_corridor_offer_pending
+			var:famine_migration_corridor_counterpart_country_id = {
+				set_country_flag = famine_migration_corridor_offer_pending
+				set_variable = { famine_migration_corridor_offer_origin_state_id = event_target:famine_migration_corridor_origin.id }
+				set_variable = { famine_migration_corridor_offer_front_state_id = event_target:famine_migration_corridor_origin.famine_migration_corridor_front_state_id }
+				set_variable = { famine_migration_corridor_offer_requester_country_id = event_target:famine_migration_corridor_origin.famine_migration_corridor_requester_country_id }
+				set_variable = { famine_migration_corridor_offer_deadline = event_target:famine_migration_corridor_origin.famine_migration_corridor_offer_deadline }
+				set_variable = { famine_migration_corridor_offer_operation = event_target:famine_migration_corridor_origin.famine_migration_corridor_operation }
+				set_variable = { famine_migration_corridor_offer_cohort_id = event_target:famine_migration_corridor_origin.famine_migration_corridor_cohort_id }
+				famine_migration_register_active_displacement_country = yes
+			}
+			var:famine_migration_corridor_requester_country_id = {
+				set_country_flag = famine_migration_corridor_request_pending
+				set_variable = { famine_migration_corridor_origin_state_id = event_target:famine_migration_corridor_origin.id }
+				set_variable = { famine_migration_corridor_counterpart_country_id = event_target:famine_migration_corridor_origin.famine_migration_corridor_counterpart_country_id }
+				set_variable = { famine_migration_corridor_front_state_id = event_target:famine_migration_corridor_origin.famine_migration_corridor_front_state_id }
+				set_variable = { famine_migration_corridor_country_pulse_due = global.date }
+				add_to_variable = { famine_migration_corridor_country_pulse_due = constant:famine_migration_corridor_timing.pulse_cooldown_days }
+				set_country_flag = famine_migration_corridor_country_pulse_pending
+				famine_migration_register_active_displacement_country = yes
+			}
+			set_temp_variable = { famine_migration_corridor_offer_result = constant:famine_migration_corridor_result.valid }
+		}
+	}
+}
+
+# COUNTRY scope. The counterpart's acceptance is a real state transition only;
+# population, reserve, and cohort transactions remain separate exact calls.
+famine_migration_accept_corridor_offer = {
+	set_temp_variable = { famine_migration_corridor_response_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { famine_migration_corridor_offer_is_valid = yes }
+		var:famine_migration_corridor_offer_origin_state_id = {
+			if = {
+				limit = { famine_migration_corridor_acceptance_is_valid = yes }
+				set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.accepted }
+				clr_state_flag = famine_migration_corridor_offer_pending
+				set_state_flag = famine_migration_corridor_response_accepted
+				set_state_flag = famine_migration_corridor_accepted
+				set_state_flag = famine_migration_corridor_operation_pending
+				set_variable = { famine_migration_corridor_operation_deadline = global.date }
+				add_to_variable = { famine_migration_corridor_operation_deadline = constant:famine_migration_corridor_timing.mission_hold_days }
+				clear_variable = famine_migration_corridor_offer_deadline
+				var:famine_migration_corridor_requester_country_id = {
+					set_country_flag = famine_migration_corridor_response_accepted
+					clr_country_flag = famine_migration_corridor_request_pending
+					set_variable = { famine_migration_corridor_country_pulse_due = global.date }
+					add_to_variable = { famine_migration_corridor_country_pulse_due = constant:famine_migration_corridor_timing.pulse_cooldown_days }
+					set_country_flag = famine_migration_corridor_country_pulse_pending
+				}
+				ROOT = { set_temp_variable = { famine_migration_corridor_response_result = constant:famine_migration_corridor_result.valid } }
+			}
+		}
+		clr_country_flag = famine_migration_corridor_offer_pending
+		set_country_flag = famine_migration_corridor_response_accepted
+		clear_variable = famine_migration_corridor_offer_origin_state_id
+		clear_variable = famine_migration_corridor_offer_front_state_id
+		clear_variable = famine_migration_corridor_offer_requester_country_id
+		clear_variable = famine_migration_corridor_offer_deadline
+		clear_variable = famine_migration_corridor_offer_operation
+		clear_variable = famine_migration_corridor_offer_cohort_id
+	}
+}
+
+# COUNTRY scope. Rejection changes only the contract state and clears every
+# mirror; it never debits trapped people or reserves.
+famine_migration_reject_corridor_offer = {
+	set_temp_variable = { famine_migration_corridor_response_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { famine_migration_corridor_offer_is_valid = yes }
+		var:famine_migration_corridor_offer_origin_state_id = {
+			set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.rejected }
+			set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.rejected }
+			set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.rejected }
+			famine_migration_corridor_cleanup = yes
+		}
+		set_temp_variable = { famine_migration_corridor_response_result = constant:famine_migration_corridor_result.valid }
+	}
+	clr_country_flag = famine_migration_corridor_offer_pending
+	clr_country_flag = famine_migration_corridor_request_pending
+	clr_country_flag = famine_migration_corridor_country_pulse_pending
+	clear_variable = famine_migration_corridor_offer_origin_state_id
+	clear_variable = famine_migration_corridor_offer_front_state_id
+	clear_variable = famine_migration_corridor_offer_requester_country_id
+	clear_variable = famine_migration_corridor_offer_deadline
+	clear_variable = famine_migration_corridor_offer_operation
+	clear_variable = famine_migration_corridor_offer_cohort_id
+}
+
+# STATE scope. Bind the persisted front state to the existing exact route
+# destination target. Generic destination proof is written only while the
+# corridor binding flag is present, so ordinary route consumers cannot inherit
+# it after cleanup. Reserve transfers may use the same destination target.
+famine_migration_corridor_bind_route_destination = {
+	set_temp_variable = { famine_migration_corridor_route_binding_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { famine_migration_corridor_route_binding_is_valid = yes }
+		save_event_target_as = famine_migration_corridor_origin
+		var:famine_migration_corridor_front_state_id = {
+			save_event_target_as = famine_migration_route_destination
+			save_event_target_as = famine_migration_food_reserve_destination
+			set_variable = { famine_migration_destination_food_safe_proven = event_target:famine_migration_corridor_origin.famine_migration_corridor_route_food_proof }
+			set_variable = { famine_migration_destination_reception_proven = event_target:famine_migration_corridor_origin.famine_migration_corridor_route_reception_proof }
+			set_state_flag = famine_migration_corridor_destination_binding_active
+		}
+		set_variable = { famine_migration_corridor_route_binding_active = constant:famine_migration_corridor_runtime.one }
+		set_state_flag = famine_migration_corridor_operation_pending
+		if = {
+			limit = { has_variable = famine_migration_corridor_transfer_people }
+			set_temp_variable = { famine_migration_transfer_people = famine_migration_corridor_transfer_people }
+		}
+		set_temp_variable = { famine_migration_transfer_request_proven = constant:famine_migration_corridor_runtime.one }
+		set_temp_variable = { famine_migration_route_border_proven = famine_migration_corridor_route_border_proof }
+		set_temp_variable = { famine_migration_route_transport_proven = famine_migration_corridor_route_transport_proof }
+		set_temp_variable = { famine_migration_route_safety_proven = famine_migration_corridor_route_safety_proof }
+		set_temp_variable = { famine_migration_route_actor_proven = famine_migration_corridor_route_actor_proof }
+		set_temp_variable = { famine_migration_corridor_route_binding_result = constant:famine_migration_corridor_result.valid }
+	}
+}
+
+# STATE scope. Remove only generic destination proof owned by this exact
+# contract. The regular route target expires with the effect chain and is not
+# promoted to a global target.
+famine_migration_corridor_clear_route_binding = {
+	if = {
+		limit = { has_variable = famine_migration_corridor_front_state_id }
+		var:famine_migration_corridor_front_state_id = {
+			if = {
+				limit = { has_state_flag = famine_migration_corridor_destination_binding_active }
+				clear_variable = famine_migration_destination_food_safe_proven
+				clear_variable = famine_migration_destination_reception_proven
+				clr_state_flag = famine_migration_corridor_destination_binding_active
+			}
+		}
+	}
+	clear_variable = famine_migration_corridor_route_binding_active
+	clear_variable = famine_migration_corridor_route_binding_result
+}
+
+# STATE scope. Arm the existing country mission slot only after an exact
+# corridor transaction has proved a positive survivor/relief result. The old
+# mission identifiers are retained so current mission UI can consume the
+# subject, while the corridor contract keeps the exact counterpart identity.
+famine_migration_corridor_arm_mission = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = famine_migration_corridor_mission_armed }
+			has_variable = famine_migration_corridor_cohort_id
+			var:famine_migration_corridor_requester_country_id = {
+				NOT = { has_country_flag = famine_migration_mission_corridor_active }
+				famine_migration_country_has_free_mission_slot = yes
+			}
+		}
+		set_state_flag = famine_migration_corridor_mission_armed
+		set_state_flag = famine_migration_corridor_mission_active
+		set_state_flag = famine_migration_mission_corridor_subject
+		set_variable = { famine_migration_mission_corridor_cohort_id = famine_migration_corridor_cohort_id }
+		if = {
+			limit = { NOT = { has_variable = famine_migration_corridor_mission_deadline } }
+			set_variable = { famine_migration_corridor_mission_deadline = global.date }
+			add_to_variable = { famine_migration_corridor_mission_deadline = constant:famine_migration_corridor_timing.mission_hold_days }
+		}
+		set_state_flag = famine_migration_mission_corridor_success_proven
+		set_state_flag = famine_migration_corridor_evacuation_proven
+		set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.mission_active }
+		var:famine_migration_corridor_requester_country_id = {
+			famine_migration_claim_mission_slot = yes
+			set_country_flag = famine_migration_mission_corridor_active
+		}
+	}
+}
+
+# STATE scope after famine_migration_transfer_civilians_exact. The exact
+# helper already debits origin population and credits survivors; this adapter
+# records its output and adjusts only the trapped-population ledger, never a
+# second population meter.
+famine_migration_corridor_record_evacuation = {
+	set_temp_variable = { famine_migration_corridor_transaction_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = {
+			famine_migration_corridor_route_binding_is_valid = yes
+			check_variable = { var = famine_migration_corridor_operation value = constant:famine_migration_corridor_operation.evacuation compare = equals }
+			check_variable = { var = famine_migration_transfer_result value = constant:famine_migration_route_result.valid compare = equals }
+			check_variable = { var = famine_migration_transfer_actual_origin_debit > constant:famine_migration_population.zero }
+		}
+		set_variable = { famine_migration_corridor_evacuation_proven = constant:famine_migration_corridor_runtime.one }
+		set_variable = { famine_migration_corridor_transaction_proven = constant:famine_migration_corridor_runtime.one }
+		set_variable = { famine_migration_corridor_evacuation_actual_debit = famine_migration_transfer_actual_origin_debit }
+		set_variable = { famine_migration_corridor_evacuation_route_deaths = famine_migration_transfer_route_deaths }
+		set_variable = { famine_migration_corridor_evacuation_survivor_credit = famine_migration_transfer_survivor_credit }
+		if = {
+			limit = { has_variable = famine_migration_trapped_population }
+			subtract_from_variable = { famine_migration_trapped_population = famine_migration_transfer_actual_origin_debit }
+			clamp_variable = { var = famine_migration_trapped_population min = constant:famine_migration_population.zero }
+		}
+		if = {
+			limit = { has_variable = famine_migration_state_trapped_population }
+			subtract_from_variable = { famine_migration_state_trapped_population = famine_migration_transfer_actual_origin_debit }
+			clamp_variable = { var = famine_migration_state_trapped_population min = constant:famine_migration_population.zero }
+		}
+		if = {
+			limit = { NOT = { check_variable = { var = famine_migration_trapped_population > constant:famine_migration_population.zero } } }
+			clr_state_flag = famine_migration_population_trapped
+		}
+		set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.operation_pending }
+		set_variable = { famine_migration_corridor_mission_deadline = global.date }
+		add_to_variable = { famine_migration_corridor_mission_deadline = constant:famine_migration_corridor_timing.mission_hold_days }
+		famine_migration_corridor_arm_mission = yes
+		set_temp_variable = { famine_migration_corridor_transaction_result = constant:famine_migration_corridor_result.valid }
+	}
+}
+
+# STATE scope after famine_migration_transfer_food_reserves. The reserve helper
+# owns the debit/credit and its temporary outputs are copied into durable
+# corridor evidence without another stock mutation.
+famine_migration_corridor_record_relief = {
+	set_temp_variable = { famine_migration_corridor_transaction_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = {
+			famine_migration_corridor_route_binding_is_valid = yes
+			check_variable = { var = famine_migration_corridor_operation value = constant:famine_migration_corridor_operation.relief compare = equals }
+			check_variable = { var = famine_migration_food_reserve_transfer_result value = constant:famine_migration_route_result.valid compare = equals }
+			check_variable = { var = famine_migration_food_reserve_transfer_source_debit_output > constant:famine_migration_food_reserve.zero }
+			check_variable = { var = famine_migration_food_reserve_transfer_destination_credit_output > constant:famine_migration_food_reserve.zero }
+		}
+		set_variable = { famine_migration_corridor_relief_proven = constant:famine_migration_corridor_runtime.one }
+		set_state_flag = famine_migration_corridor_relief_proven
+		set_variable = { famine_migration_corridor_transaction_proven = constant:famine_migration_corridor_runtime.one }
+		set_variable = { famine_migration_corridor_relief_source_debit = famine_migration_food_reserve_transfer_source_debit_output }
+		set_variable = { famine_migration_corridor_relief_destination_credit = famine_migration_food_reserve_transfer_destination_credit_output }
+		set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.operation_pending }
+		set_variable = { famine_migration_corridor_mission_deadline = global.date }
+		add_to_variable = { famine_migration_corridor_mission_deadline = constant:famine_migration_corridor_timing.mission_hold_days }
+		famine_migration_corridor_arm_mission = yes
+		set_temp_variable = { famine_migration_corridor_transaction_result = constant:famine_migration_corridor_result.valid }
+	}
+}
+
+# STATE scope. Public evacuation transaction adapter. It binds the persisted
+# front, calls the existing exact transfer once, then binds the same cohort at
+# the actual destination and records only the returned debit/credit evidence.
+famine_migration_execute_corridor_evacuation = {
+	set_temp_variable = { famine_migration_corridor_transaction_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = {
+			famine_migration_corridor_operation_is_valid = yes
+			check_variable = { var = famine_migration_corridor_operation value = constant:famine_migration_corridor_operation.evacuation compare = equals }
+		}
+		famine_migration_corridor_bind_route_destination = yes
+		if = {
+			limit = { check_variable = { var = famine_migration_corridor_route_binding_result value = constant:famine_migration_corridor_result.valid compare = equals } }
+			if = { limit = { NOT = { has_variable = famine_migration_transfer_route_deaths_requested } } set_temp_variable = { famine_migration_transfer_route_deaths_requested = constant:famine_migration_population.zero } }
+			set_temp_variable = { famine_migration_transfer_log_deaths = constant:famine_migration_corridor_runtime.one }
+			famine_migration_transfer_civilians_exact = yes
+			if = {
+				limit = {
+					check_variable = { var = famine_migration_transfer_result value = constant:famine_migration_route_result.valid compare = equals }
+					check_variable = { var = famine_migration_transfer_survivor_credit > constant:famine_migration_population.zero }
+				}
+				event_target:famine_migration_route_destination = {
+					set_temp_variable = { famine_migration_cohort_id_request = event_target:famine_migration_corridor_origin.famine_migration_corridor_cohort_id }
+					set_temp_variable = { famine_migration_cohort_destination_food_safe_proven = event_target:famine_migration_corridor_origin.famine_migration_corridor_route_food_proof }
+					set_temp_variable = { famine_migration_cohort_destination_reception_proven = event_target:famine_migration_corridor_origin.famine_migration_corridor_route_reception_proof }
+					famine_migration_bind_cohort_destination = yes
+					set_temp_variable = { famine_migration_reception_delta_request_proven = constant:famine_migration_corridor_runtime.one }
+					set_temp_variable = { famine_migration_reception_delta_amount = famine_migration_transfer_survivor_credit }
+					set_temp_variable = { famine_migration_reception_delta_mode = constant:famine_migration_reception_delta.credit }
+					famine_migration_apply_reception_delta = yes
+				}
+				famine_migration_corridor_record_evacuation = yes
+			}
+		}
+		if = { limit = { check_variable = { var = famine_migration_corridor_transaction_result value = constant:famine_migration_corridor_result.valid compare = equals } } set_temp_variable = { famine_migration_corridor_transaction_result = constant:famine_migration_corridor_result.valid } }
+	}
+}
+
+# STATE scope. Public relief transaction adapter. The parent supplies a proven
+# reserve amount; the existing reserve transfer remains the only stock mutation.
+famine_migration_execute_corridor_relief = {
+	set_temp_variable = { famine_migration_corridor_transaction_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = {
+			famine_migration_corridor_operation_is_valid = yes
+			check_variable = { var = famine_migration_corridor_operation value = constant:famine_migration_corridor_operation.relief compare = equals }
+			has_variable = famine_migration_corridor_relief_amount
+			check_variable = { var = famine_migration_corridor_relief_amount > constant:famine_migration_food_reserve.zero }
+		}
+		famine_migration_corridor_bind_route_destination = yes
+		if = {
+			limit = { check_variable = { var = famine_migration_corridor_route_binding_result value = constant:famine_migration_corridor_result.valid compare = equals } }
+			set_temp_variable = { famine_migration_food_reserve_transfer_request_proven = constant:famine_migration_corridor_runtime.one }
+			set_temp_variable = { famine_migration_food_reserve_transfer_amount = famine_migration_corridor_relief_amount }
+			set_temp_variable = { famine_migration_food_reserve_transfer_route_proven = famine_migration_corridor_route_food_proof }
+			set_temp_variable = { famine_migration_food_reserve_transfer_actor_proven = famine_migration_corridor_route_actor_proof }
+			famine_migration_transfer_food_reserves = yes
+			famine_migration_corridor_record_relief = yes
+		}
+	}
+}
+
+# Stable public aliases used by owner decisions and missions. The explicit
+# names mirror the architecture handoff while the shorter names above remain
+# useful for internal tests and future scripted-GUI-free adapters.
+famine_migration_corridor_accept_offer = {
+	famine_migration_accept_corridor_offer = yes
+}
+
+famine_migration_corridor_reject_offer = {
+	famine_migration_reject_corridor_offer = yes
+}
+
+# STATE scope. The mission owner calls this when its existing mission surface
+# proves completion. No stability, war-support, achievement, or population
+# effect is duplicated here; those remain in the owner decision/mission.
+famine_migration_corridor_finalize = {
+	set_temp_variable = { famine_migration_corridor_finalize_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { famine_migration_corridor_mission_is_valid = yes }
+		set_variable = { famine_migration_corridor_last_terminal_status = constant:famine_migration_corridor_status.completed }
+		set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.completed }
+		set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.completed }
+		set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.completed }
+		famine_migration_corridor_cleanup = yes
+		set_temp_variable = { famine_migration_corridor_finalize_result = constant:famine_migration_corridor_result.valid }
+	}
+}
+
+# STATE scope. Expiry is terminal and never rolls back an already committed
+# civilian/reserve transaction. The response deadline and mission deadline are
+# distinguished so audit tools can identify where the contract ended.
+famine_migration_corridor_expire = {
+	set_temp_variable = { famine_migration_corridor_expire_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { has_state_flag = famine_migration_corridor_contract_active }
+		set_variable = { famine_migration_corridor_last_terminal_status = constant:famine_migration_corridor_status.expired }
+		set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.mission_deadline }
+		set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.mission_deadline }
+		if = {
+			limit = { check_variable = { var = famine_migration_corridor_status value = constant:famine_migration_corridor_status.offer_pending compare = equals } }
+			set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.response_deadline }
+			set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.response_deadline }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = famine_migration_corridor_route_safety_proof value = constant:famine_migration_corridor_runtime.zero compare = equals }
+					check_variable = { var = famine_migration_corridor_route_ceasefire_proof value = constant:famine_migration_corridor_runtime.zero compare = equals }
+				}
+			}
+			set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.route_unsafe }
+			set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.route_unsafe }
+		}
+		set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.expired }
+		famine_migration_corridor_cleanup = yes
+		set_temp_variable = { famine_migration_corridor_expire_result = constant:famine_migration_corridor_result.expired }
+	}
+}
+
+# STATE scope. Attack/control owners submit the exact receipt and attacker ID.
+# This helper owns terminal disqualification and cleanup, not detection.
+famine_migration_mark_corridor_attack_disqualified = {
+	set_temp_variable = { famine_migration_corridor_attack_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { famine_migration_corridor_attack_receipt_is_valid = yes }
+		set_variable = { famine_migration_corridor_attack_received_date = global.date }
+		set_variable = { famine_migration_corridor_attack_date = global.date }
+		set_variable = { famine_migration_corridor_last_attack_attacker_country_id = famine_migration_corridor_attack_attacker_country_id }
+		set_variable = { famine_migration_corridor_attack_reason = constant:famine_migration_corridor_reason.attack }
+		set_variable = { famine_migration_corridor_last_terminal_status = constant:famine_migration_corridor_status.disqualified }
+		set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.attack }
+		set_variable = { famine_migration_corridor_cleanup_reason = constant:famine_migration_corridor_reason.attack }
+		set_variable = { famine_migration_corridor_status = constant:famine_migration_corridor_status.disqualified }
+		set_state_flag = famine_migration_corridor_attack_received
+		set_state_flag = famine_migration_corridor_attack_disqualified
+		famine_migration_corridor_cleanup = yes
+		set_temp_variable = { famine_migration_corridor_attack_result = constant:famine_migration_corridor_result.disqualified }
+	}
+}
+
+# STATE scope. Idempotent terminal cleanup. Last status/reason, transaction
+# amounts, and attacker evidence remain for audits; active IDs, response
+# mirrors, mission slots, and generic route proof do not.
+famine_migration_corridor_cleanup = {
+	if = {
+		limit = { has_variable = famine_migration_corridor_status }
+		set_variable = { famine_migration_corridor_last_terminal_status = famine_migration_corridor_status }
+	}
+	if = {
+		limit = { has_variable = famine_migration_corridor_front_state_id }
+		famine_migration_corridor_clear_route_binding = yes
+	}
+		set_state_flag = famine_migration_corridor_cleanup_pending
+	if = {
+		limit = { has_variable = famine_migration_corridor_counterpart_country_id }
+		var:famine_migration_corridor_counterpart_country_id = {
+			clr_country_flag = famine_migration_corridor_offer_pending
+			clr_country_flag = famine_migration_corridor_offer_accepted
+			clr_country_flag = famine_migration_corridor_country_pulse_pending
+			clr_country_flag = famine_migration_corridor_request_pending
+			clear_variable = famine_migration_corridor_offer_origin_state_id
+			clear_variable = famine_migration_corridor_offer_front_state_id
+			clear_variable = famine_migration_corridor_offer_requester_country_id
+			clear_variable = famine_migration_corridor_offer_deadline
+			clear_variable = famine_migration_corridor_offer_operation
+			clear_variable = famine_migration_corridor_offer_cohort_id
+			clear_variable = famine_migration_corridor_origin_state_id
+			clear_variable = famine_migration_corridor_counterpart_country_id
+			clear_variable = famine_migration_corridor_front_state_id
+			clear_variable = famine_migration_corridor_country_pulse_due
+		}
+	}
+	if = {
+		limit = { has_variable = famine_migration_corridor_requester_country_id }
+		var:famine_migration_corridor_requester_country_id = {
+			clr_country_flag = famine_migration_corridor_request_pending
+			clr_country_flag = famine_migration_corridor_response_accepted
+			clr_country_flag = famine_migration_corridor_country_pulse_pending
+			clear_variable = famine_migration_corridor_origin_state_id
+			clear_variable = famine_migration_corridor_counterpart_country_id
+			clear_variable = famine_migration_corridor_front_state_id
+			clear_variable = famine_migration_corridor_country_pulse_due
+			famine_migration_recount_active_mission_slots = yes
+		}
+	}
+	clr_state_flag = famine_migration_corridor_contract_active
+	clr_state_flag = famine_migration_corridor_preparation_pending
+	clr_state_flag = famine_migration_corridor_offer_pending
+	clr_state_flag = famine_migration_corridor_response_accepted
+	clr_state_flag = famine_migration_corridor_operation_pending
+	clr_state_flag = famine_migration_corridor_mission_armed
+	clr_state_flag = famine_migration_corridor_attack_received
+	clr_state_flag = famine_migration_corridor_route_invalid
+	clr_state_flag = famine_migration_corridor_accepted
+	clr_state_flag = famine_migration_corridor_mission_active
+	clr_state_flag = famine_migration_corridor_evacuation_proven
+	clr_state_flag = famine_migration_corridor_relief_proven
+	clr_state_flag = famine_migration_corridor_attack_disqualified
+	clr_state_flag = famine_migration_corridor_selection_ambiguous
+	clr_state_flag = famine_migration_mission_corridor_subject
+	clr_state_flag = famine_migration_mission_corridor_success_proven
+	clear_variable = famine_migration_mission_corridor_cohort_id
+	clear_variable = famine_migration_corridor_origin_state_id
+	clear_variable = famine_migration_corridor_origin_controller_country_id
+	clear_variable = famine_migration_corridor_origin_owner_country_id
+	clear_variable = famine_migration_corridor_origin_controller_id
+	clear_variable = famine_migration_corridor_front_controller_id
+	clear_variable = famine_migration_corridor_requester_country_id
+	clear_variable = famine_migration_corridor_counterpart_country_id
+	clear_variable = famine_migration_corridor_front_state_id
+	clear_variable = famine_migration_corridor_offer_deadline
+	clear_variable = famine_migration_corridor_operation_deadline
+	clear_variable = famine_migration_corridor_mission_deadline
+	clear_variable = famine_migration_corridor_route_geometry_proof
+	clear_variable = famine_migration_corridor_route_border_proof
+	clear_variable = famine_migration_corridor_route_transport_proof
+	clear_variable = famine_migration_corridor_route_safety_proof
+	clear_variable = famine_migration_corridor_route_actor_proof
+	clear_variable = famine_migration_corridor_route_ceasefire_proof
+	clear_variable = famine_migration_corridor_route_food_proof
+	clear_variable = famine_migration_corridor_route_reception_proof
+	clear_variable = famine_migration_corridor_food_proof
+	clear_variable = famine_migration_corridor_reception_proof
+	clear_variable = famine_migration_corridor_route_generation
+	clear_variable = famine_migration_corridor_route_proof_generation
+	clear_variable = famine_migration_corridor_operation
+	clear_variable = famine_migration_corridor_relation
+	clear_variable = famine_migration_corridor_cohort_id
+	clear_variable = famine_migration_corridor_transfer_people
+	clear_variable = famine_migration_corridor_transaction_proven
+	clear_variable = famine_migration_corridor_evacuation_proven
+	clear_variable = famine_migration_corridor_relief_proven
+	clear_variable = famine_migration_corridor_evacuation_actual_debit
+	clear_variable = famine_migration_corridor_evacuation_route_deaths
+	clear_variable = famine_migration_corridor_evacuation_survivor_credit
+	clear_variable = famine_migration_corridor_relief_source_debit
+	clear_variable = famine_migration_corridor_relief_destination_credit
+	clear_variable = famine_migration_corridor_relief_amount
+	clear_variable = famine_migration_corridor_attack_receipt_proven
+	clear_variable = famine_migration_corridor_attack_attacker_country_id
+	clear_variable = famine_migration_corridor_attack_received_date
+	clear_variable = famine_migration_corridor_mission_armed
+	clear_variable = famine_migration_corridor_candidate_count
+	clear_variable = famine_migration_corridor_candidate_front_state_id
+	clear_variable = famine_migration_corridor_candidate_country_id
+	clear_variable = famine_migration_corridor_route_binding_active
+	clear_variable = famine_migration_corridor_status
+	clr_state_flag = famine_migration_corridor_cleanup_pending
+}
+
+# COUNTRY scope. Sparse country pulse checks one mirrored origin only. A stale
+# offer expires through the normal lifecycle; a changed front/controller also
+# expires through the same path. No any_owned_state/any_country scan occurs.
+famine_migration_corridor_sparse_country_pulse = {
+	set_temp_variable = { famine_migration_corridor_pulse_result = constant:famine_migration_corridor_result.invalid }
+	if = {
+		limit = { famine_migration_corridor_country_pulse_is_valid = yes }
+		clear_variable = famine_migration_corridor_country_pulse_due
+		clr_country_flag = famine_migration_corridor_country_pulse_pending
+	set_variable = { famine_migration_corridor_country_pulse_last_date = global.date }
+		if = {
+			limit = { has_variable = famine_migration_corridor_offer_origin_state_id }
+			var:famine_migration_corridor_offer_origin_state_id = {
+				if = {
+					limit = { NOT = { famine_migration_corridor_acceptance_is_valid = yes } }
+					set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.response_deadline }
+					famine_migration_corridor_expire = yes
+				}
+				else = { ROOT = { set_temp_variable = { famine_migration_corridor_pulse_result = constant:famine_migration_corridor_result.valid } } }
+			}
+		}
+		else_if = {
+			limit = { has_variable = famine_migration_corridor_origin_state_id }
+			var:famine_migration_corridor_origin_state_id = {
+				if = {
+					limit = { NOT = { famine_migration_corridor_front_state_is_valid = yes } }
+					set_variable = { famine_migration_corridor_last_cleanup_reason = constant:famine_migration_corridor_reason.control_change }
+					famine_migration_corridor_expire = yes
+				}
+				else = { ROOT = { set_temp_variable = { famine_migration_corridor_pulse_result = constant:famine_migration_corridor_result.valid } } }
+			}
+		}
+	}
+}
