@@ -1092,7 +1092,7 @@ If the user does not provide a ready reference image, plan exactly one clean Mes
 
 Meshy 7 is the generation model. The plan must forbid silent downgrade and require the exact live model identifier in provider evidence.
 
-Normal planned generation, remesh/retexture, rigging, conversion, and required animation credit use is pre-authorized and must not trigger a confirmation prompt. Require confirmation only before additional paid recovery caused by a failed or rejected provider operation, otherwise the worker must not ask for credit confirmation.
+Normal planned generation, remesh/retexture, rigging, conversion, required animation credit use, and failure-driven paid recovery are pre-authorized and require no additional confirmation while the live balance, verified Meshy 7 route, and provider capability permit them. The plan must still require a live balance and cost preflight before every paid tranche, an explicit bounded recovery rationale with an attempt-scoped retry record, no duplicate unchanged task retries, preservation of rejected tasks and provider provenance, visual QA for every candidate, and fail-closed stops on insufficient credits, provider refusal, unavailable capability, or route or schema mismatch. Do not silently downgrade or use an unapproved fallback.
 
 Never plan a side-profile sheet, turnaround board, collage, or multi-view board as a Meshy input. Blender QA views and contact sheets are review evidence only and must never be sent to Meshy.
 
@@ -1108,7 +1108,7 @@ The model package must plan provider lineage, Blender source and normalized/repa
 
 The asset prompt must distinguish provider source files from final runtime copies. It must require a final hash-aware synchronization step so an older mapped texture, mesh, entity, or animation cannot overwrite the approved runtime candidate.
 
-Route production to `chaosx_3d_model_pipeline` with `fork_context=false` and give it the exact job root, reference status, asset profile, vanilla references, scale relationship, action list, custom-unit sound roles, counter consumers/tokens and inspected vanilla paths, dependency lock, baseline planned paid operations, extra-recovery credit limits, and handoff path. Require Meshy 7 and the no-routine-confirmation credit policy.
+Route production to `chaosx_3d_model_pipeline` with `fork_context=false` and give it the exact job root, reference status, asset profile, vanilla references, scale relationship, action list, custom-unit sound roles, counter consumers/tokens and inspected vanilla paths, dependency lock, baseline planned paid operations, live balance and cost preflight, bounded recovery rationale and stop conditions, attempt-scoped retry and provenance requirements, visual-QA evidence requirements, and handoff path. Require Meshy 7 and the no-additional-confirmation policy while balance and provider capability permit the work.
 
 The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, live runtime validation, and in-game evidence.
 
