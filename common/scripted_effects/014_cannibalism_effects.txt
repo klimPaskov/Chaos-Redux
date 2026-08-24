@@ -16441,7 +16441,14 @@ cannibalism_execute_warlord_recruitment_transaction = {
 				cannibalism_record_current_warlord_recruitment = yes
 			}
 			if = {
-				limit = { has_country_flag = cannibalism_warlord_workshop_conversion_open }
+				limit = {
+					has_country_flag = cannibalism_warlord_workshop_conversion_open
+					NOT = {
+						check_variable = {
+							cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.emergency_reinforcement
+						}
+					}
+				}
 				set_temp_variable = { cannibalism_warlord_recovered_infantry = constant:cannibalism_warlord_contract.workshop_recovery_infantry }
 				add_equipment_to_stockpile = { type = infantry_equipment amount = cannibalism_warlord_recovered_infantry }
 			}
