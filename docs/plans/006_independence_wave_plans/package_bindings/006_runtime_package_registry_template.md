@@ -50,10 +50,6 @@ The seven economic archetypes are assigned by reading the row's opening archetyp
 
 ## Current implementation slices
 
-- Region 01: `common/scripted_triggers/006_independence_wave_packages_region_01_triggers.txt` and `common/scripted_effects/006_independence_wave_packages_region_01_effects.txt`
-- Region 02: `common/scripted_triggers/006_independence_wave_packages_region_02_triggers.txt` and `common/scripted_effects/006_independence_wave_packages_region_02_effects.txt`
-- Region 03: `common/scripted_triggers/006_independence_wave_packages_region_03_triggers.txt` and `common/scripted_effects/006_independence_wave_packages_region_03_effects.txt`
-- Region 04: `common/scripted_triggers/006_independence_wave_packages_region_04_triggers.txt` and `common/scripted_effects/006_independence_wave_packages_region_04_effects.txt`
-- Region 05: `common/scripted_triggers/006_independence_wave_packages_region_05_triggers.txt` and `common/scripted_effects/006_independence_wave_packages_region_05_effects.txt`
+The fourteen regional planner-trigger sources are consolidated in `common/scripted_triggers/006_independence_wave_package_region_triggers_registry.txt`, and the fourteen regional publisher/reservation sources are consolidated in `common/scripted_effects/006_independence_wave_package_region_effects_registry.txt`. The registries retain region markers and package-owned identifiers while preserving the bounded implementation and review boundary.
 
-Remaining regions must use separate numbered files so bounded implementation and review do not overlap.
+Package-owned effects, triggers, decisions, focus overlays, and other ownership-sensitive surfaces remain in their dedicated files or registries; selector presence and publisher retention do not promote a package into the central content-attested set.

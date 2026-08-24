@@ -1,6 +1,6 @@
 # Research acceptance checklist
 
-Current collision-gate continuation (2026-08-06): the accepted state-354 and state-441 cross-group conflicts are source-closed without changing reservation groups. `common/scripted_triggers/006_independence_wave_packages_region_06_triggers.txt` guards IW-067/IW-068 with the Trabzon mutex, and `common/scripted_triggers/006_independence_wave_packages_region_12_triggers.txt` guards IW-139/IW-149 with the Kashmir/Himalayan mutex. The remaining research gates below are unchanged.
+Current collision-gate continuation (2026-08-06; registry path reconciled 2026-08-24): the accepted state-354 and state-441 cross-group conflicts are source-closed without changing reservation groups. The consolidated `common/scripted_triggers/006_independence_wave_package_region_triggers_registry.txt` retains the IW-067/IW-068 Trabzon mutex and the IW-139/IW-149 Kashmir/Himalayan mutex. The former per-region files remain historical source-layout references only, and the remaining research gates below are unchanged.
 
 Audit date: 2026-07-10
 

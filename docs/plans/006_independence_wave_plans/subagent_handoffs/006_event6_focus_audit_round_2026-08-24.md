@@ -1,5 +1,7 @@
 # Event 006 focus audit round — 2026-08-24
 
+> Superseded for the current authored-warning count by `006_event6_focus_economy_lane_repair_2026-08-24.md`: this audit preserves the pre-spacing seven-warning receipt, while the post-change focus inspect/render records six warnings and remains **HOLD**.
+
 ## Scope and disposition
 
 This is a source and HOI4-MCP audit of the shared `independence_wave_focus_tree` against the Event 006 focus-tree architecture, source map, and current graph receipts.
