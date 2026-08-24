@@ -36,6 +36,8 @@ As of this 2026-08-24 reconciliation, the latest portrait wiring evidence remain
 
 The dormant-carrier and capital-scope repair is source-closed for the admitted AXX, BAX, and BBX anchors: fixed numeric capital states 82, 184, and 185 replace the invalid dormant `capital_scope` path, while the b77f9 baseline-law ordering repair covers AXX, BAX, BBX, AFX, and AGX. The focused scan found no `capital_scope` in the three package files; this is static source evidence only.
 
+The 2026-08-24 small-file consolidation keeps all Event 006 category, dormant compatibility effect, and dormant compatibility trigger identifiers in three compact registries, removes 68 former tiny parser files, and reduces the file count by 66 while saving 44,235 committed source bytes. Its handoff is `subagent_handoffs/006_event6_small_file_consolidation_2026-08-24.md`. On-action files and package-owned gameplay files remain separate where duplicate engine callback keys or ownership boundaries make concatenation unsafe.
+
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the owner of opening divisions.
 
 The source handoff is `subagent_handoffs/006_event006_release_scope_fix_2026-08-22.md`.
