@@ -28,6 +28,12 @@ The follow-on on-action and scripted-localisation pass consolidates seven unique
 
 The same 2026-08-24 source-layout pass folds retired crisis compatibility stubs and the narrow CHU/ASY vanilla-formable guards into the existing compatibility trigger/effect registries. Their identifiers and fail-closed or inert behavior are unchanged; the three tiny standalone files are removed. This does not widen package admission or merge package-owned gameplay surfaces.
 
+The 2026-08-24 transport-cost patch (`52a6e94ca`, `subagent_handoffs/006_event6_decision_transport_cost_patch_handoff_2026-08-24.md`) makes the shared convoy-or-train cost disclosures branch-accurate with the consumed resource, amount, and matching icon across 35 shared call sites. Package-local duplicate cost strings remain separate, and the whole-event boundary is unchanged.
+
+The 2026-08-24 manual no-country diagnostic (`67d5a777e`, `subagent_handoffs/006_event6_manual_no_country_execution_diagnostic_2026-08-24.md`) confirms that the hidden root can fail closed before mutation when the candidate pool is empty; no generic fallback was added. A live terminal receipt is still required to distinguish an empty pool from a later rollback or finalization failure.
+
+IW-050 Komi remains package-local and fail-closed. Its current admission audit is `subagent_handoffs/006_iw050_komi_admission_audit_current_2026_08_24.md`; commit `4cba7904d` only corrected the package documentation's strategic cost wording and does not promote the package.
+
 The 2026-08-21 parent tranche supplies synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors, a corrected dormant-shell guard, and its then-current 37 byte-preserving supplied portrait installs; that 37/14 count is historical and is superseded by the 2026-08-22 consumer tranche below.
 
 Commit `b77f9fd45` additionally repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission or changing the 32/161 boundary; its bounded runtime handoff is `subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
