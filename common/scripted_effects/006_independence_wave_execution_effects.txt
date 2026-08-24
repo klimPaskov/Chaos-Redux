@@ -49,6 +49,43 @@ independence_wave_clear_standalone_terminal_receipt = {
 	clear_variable = global.independence_wave_terminal_receipt_chaos_band
 }
 
+# The shared coordinator clears the Event 006 contribution before the
+# standalone terminal receipt is written on cancellation and successful
+# compensating rollback. Preserve the contribution fields in a short-lived
+# global staging area so the diagnostic receipt can still distinguish an
+# empty pool from a selected plan that was later cancelled or rolled back.
+independence_wave_clear_standalone_terminal_receipt_stage = {
+	clear_variable = global.independence_wave_terminal_receipt_stage_selected_count
+	clear_variable = global.independence_wave_terminal_receipt_stage_attempt_count
+	clear_variable = global.independence_wave_terminal_receipt_stage_sponsorship_count
+	clear_variable = global.independence_wave_terminal_receipt_stage_chaos_band
+	clr_global_flag = independence_wave_terminal_receipt_stage_optional_expansion_failed
+}
+
+independence_wave_stage_standalone_terminal_receipt = {
+	independence_wave_clear_standalone_terminal_receipt_stage = yes
+	if = {
+		limit = { has_variable = global.independence_wave_plan_selected_count }
+		set_variable = { global.independence_wave_terminal_receipt_stage_selected_count = global.independence_wave_plan_selected_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_attempt_count }
+		set_variable = { global.independence_wave_terminal_receipt_stage_attempt_count = global.independence_wave_plan_attempt_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_sponsorship_count }
+		set_variable = { global.independence_wave_terminal_receipt_stage_sponsorship_count = global.independence_wave_plan_sponsorship_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_plan_chaos_band }
+		set_variable = { global.independence_wave_terminal_receipt_stage_chaos_band = global.independence_wave_plan_chaos_band }
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_plan_optional_expansion_failed }
+		set_global_flag = independence_wave_terminal_receipt_stage_optional_expansion_failed
+	}
+}
+
 # Snapshot the standalone transaction before a later coordinator reset can
 # clear the plan id, phase, failure fields, arrays, or execution counters. This
 # is diagnostic state only. It never feeds allocation, release, UI, decisions,
@@ -116,16 +153,32 @@ independence_wave_snapshot_standalone_terminal_receipt = {
 		set_variable = { global.independence_wave_terminal_receipt_selected_count = global.independence_wave_plan_selected_count }
 	}
 	if = {
+		limit = { has_variable = global.independence_wave_terminal_receipt_stage_selected_count }
+		set_variable = { global.independence_wave_terminal_receipt_selected_count = global.independence_wave_terminal_receipt_stage_selected_count }
+	}
+	if = {
 		limit = { has_variable = global.independence_wave_plan_attempt_count }
 		set_variable = { global.independence_wave_terminal_receipt_attempt_count = global.independence_wave_plan_attempt_count }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_terminal_receipt_stage_attempt_count }
+		set_variable = { global.independence_wave_terminal_receipt_attempt_count = global.independence_wave_terminal_receipt_stage_attempt_count }
 	}
 	if = {
 		limit = { has_variable = global.independence_wave_plan_sponsorship_count }
 		set_variable = { global.independence_wave_terminal_receipt_sponsorship_count = global.independence_wave_plan_sponsorship_count }
 	}
 	if = {
+		limit = { has_variable = global.independence_wave_terminal_receipt_stage_sponsorship_count }
+		set_variable = { global.independence_wave_terminal_receipt_sponsorship_count = global.independence_wave_terminal_receipt_stage_sponsorship_count }
+	}
+	if = {
 		limit = { has_variable = global.independence_wave_plan_chaos_band }
 		set_variable = { global.independence_wave_terminal_receipt_chaos_band = global.independence_wave_plan_chaos_band }
+	}
+	if = {
+		limit = { has_variable = global.independence_wave_terminal_receipt_stage_chaos_band }
+		set_variable = { global.independence_wave_terminal_receipt_chaos_band = global.independence_wave_terminal_receipt_stage_chaos_band }
 	}
 	if = {
 		limit = { has_variable = independence_wave_execution_expected_state_count }
@@ -195,7 +248,12 @@ independence_wave_snapshot_standalone_terminal_receipt = {
 		limit = { has_global_flag = independence_wave_plan_optional_expansion_failed }
 		set_global_flag = independence_wave_terminal_receipt_optional_expansion_failed
 	}
+	if = {
+		limit = { has_global_flag = independence_wave_terminal_receipt_stage_optional_expansion_failed }
+		set_global_flag = independence_wave_terminal_receipt_optional_expansion_failed
+	}
 	set_global_flag = independence_wave_terminal_receipt_ready
+	independence_wave_clear_standalone_terminal_receipt_stage = yes
 }
 
 independence_wave_validate_execution_metadata = {
@@ -902,10 +960,16 @@ independence_wave_prepare_and_execute_standalone_incident = {
 	clr_global_flag = independence_wave_standalone_incident_failed_after_mutation
 	clr_global_flag = independence_wave_standalone_incident_failed_during_finalization
 	clr_global_flag = independence_wave_standalone_incident_rolled_back_after_mutation
+	independence_wave_clear_standalone_terminal_receipt_stage = yes
+	clear_variable = global.independence_wave_execution_last_failure
 	independence_wave_clear_standalone_terminal_receipt = yes
 	set_temp_variable = { independence_wave_standalone_plan_begun = constant:independence_wave_planner.no_candidates }
 
 	independence_wave_reset_stale_standalone_plan = yes
+	# A stale-plan recovery may itself complete a rollback and populate the
+	# receipt staging area. That prior transaction must never contaminate the
+	# receipt for the new standalone attempt below.
+	independence_wave_clear_standalone_terminal_receipt_stage = yes
 	independence_wave_capture_wave_tuning = yes
 	set_temp_variable = { liberation_call_mode = constant:liberation_plan_mode.automatic }
 	set_temp_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.independence_wave }
@@ -969,6 +1033,7 @@ independence_wave_prepare_and_execute_standalone_incident = {
 		liberation_release_restore_host_capitals_before_execution = yes
 		if = {
 			limit = { NOT = { has_global_flag = liberation_release_capital_restore_failed } }
+			independence_wave_stage_standalone_terminal_receipt = yes
 			independence_wave_clear_plan_contribution = yes
 			clr_global_flag = independence_wave_plan_contribution_ready
 			clr_global_flag = independence_wave_plan_exact_count_failed
