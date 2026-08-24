@@ -2,22 +2,20 @@
 
 | Requirement | Proposed runtime consumer | Evidence | Status |
 |---|---|---|---|
-| Reusable generic alien identity | `alien_infantry_entity` | `refs/original/meshy_input.png`; `refs/original/input_manifest.json` | Source approved; provider candidate rejected |
-| Bald green head, large black eyes, harness, boots | `alien_infantry_mesh` | Seven candidate previews and contact sheet | Present in candidate, but not exportable while candidate is rejected |
-| Readable retro-futurist laser rifle | `alien_infantry_mesh` | `validation/generation_rejection.json` | Blocked: component completely absent |
-| Vanilla-calibrated scale | `alien_infantry_entity`, scale `0.8` | `blender/reports/alien_infantry_candidate_prepare.json` | Calibration passed; final model remains pending |
-| Idle | entity state `idle` -> `alien_infantry_idle` | No accepted action | Blocked |
-| Move | entity state `move` -> `alien_infantry_move` | No accepted action | Blocked |
-| Laser attack | entity state `attack` -> `alien_infantry_laser_attack` | No accepted rifle/action | Blocked |
-| Defend | entity state `defend` -> `alien_infantry_defend` | No accepted action | Blocked |
-| Support attack | entity state `support_attack` -> `alien_infantry_support_attack` | No accepted rifle/action | Blocked |
-| Retreat | entity state `retreat` -> `alien_infantry_retreat` | No accepted action | Blocked |
-| Death | entity state `death` -> `alien_infantry_death` | No accepted action | Blocked |
-| Laser, movement, idle, death sound | entity-state sound events | `evidence/audio/provenance/audio_sources.json` | Sources and PCM candidates complete; exact frames and definitions blocked |
-| Selection/acknowledgement voice | country/original-tag `TAG_infantry_*` | `runtime/sound_handoff.md` | Intentionally blocked to protect ordinary infantry voices |
-| Large division counter | `GFX_unit_alien_infantry_icon_medium` | `runtime/counter_handoff.md` | Icon-artist production pending |
-| Small on-map counter | `GFX_unit_alien_infantry_icon_medium_white` | `runtime/counter_handoff.md` | Icon-artist production pending |
-| PDX mesh and animation exports | model/animation definitions | No accepted source | Blocked; no files emitted |
-| Runtime registration and live validation | subunit sprite `alien_infantry` -> `alien_infantry_entity` | Unit owner confirmed exact token | Parent/user owned; not performed |
+| Reusable alien identity and integrated ray gun | `alien_infantry_entity` / `alien_infantry_mesh` | V7 generation `01a03499-135b-7a19-b5f3-eef4fc9d1515`; `blender/previews/alien_infantry_recovery_v7_*.png` | Neutral geometry accepted as diagnostic evidence only |
+| Vanilla-calibrated scale | entity scale `0.8` exactly once | V7 Blender prepare reports; source height `7.3518247604`, effective runtime height `5.8814598083` | Passed neutral geometry gate |
+| Rigid gun and coherent two-hand contact | all skeletal states | V7 actions 690, 104, and 232 full-phase previews | Failed: catastrophic animated arm/torso/rifle deformation |
+| Idle | `idle` -> `alien_infantry_idle` | Not purchased after firearm gate failed | Blocked: Meshy firearm-animation capability |
+| Move | `move` -> `alien_infantry_move` | Not purchased after firearm gate failed | Blocked: Meshy firearm-animation capability |
+| Laser attack | `attack` -> `alien_infantry_laser_attack` | V7 action 690/104/232 rejection evidence | Blocked: no accepted aim/discharge/recoil/recovery, stable muzzle node/time, beam/light/audio sync |
+| Defend | `defend` -> `alien_infantry_defend` | Not purchased after firearm gate failed | Blocked: Meshy firearm-animation capability |
+| Support attack | `support_attack` -> `alien_infantry_support_attack` | Not purchased after attack gate failed | Blocked: independent firing evidence and synchronization absent |
+| Retreat | `retreat` -> `alien_infantry_retreat` | Not purchased after firearm gate failed | Blocked: Meshy firearm-animation capability |
+| Death | `death` -> `alien_infantry_death` | Not purchased after firearm gate failed | Blocked: collapse/impact/settling evidence absent |
+| Laser, movement, idle, death sounds | entity-state sounds | `evidence/audio/provenance/audio_sources.json`; `runtime/sound_handoff.md` | Sources/derivatives complete; exact action synchronization blocked |
+| Large and on-map counters | Event 016 counter consumers | `runtime/counter_handoff.md` | Existing bespoke package reconciled; parent/user live review remains |
+| Packed PDX textures | `alien_infantry_mesh` material | Provider PBR maps retained | Blocked pending final rig/action lineage and processing |
+| PDX `.mesh` and seven `.anim` files | model/animation definitions | No accepted firing lineage | Blocked; no exports or actual-byte reimports |
+| Runtime registration and live validation | `alien_infantry_entity` | Parent-owned consumer | Not performed |
 
-No requested action has been substituted with a static asset or a weaker semantic action.
+No semantic action is substituted or aliased. No manual weapon attachment, manual motion, partial paid tranche, or fallback is accepted.

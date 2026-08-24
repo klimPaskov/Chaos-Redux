@@ -1,84 +1,52 @@
 # Alien infantry 3D package manifest
 
-Status: `needs_user_review`; the first Meshy 7 candidate is rejected and no recovery call has been launched.
+Status: **blocked — V7 neutral geometry/rig passed, but three distinct official Meshy firearm actions failed catastrophically**.
 
-## Identity and consumer
+## Authoritative source and input
 
-- Event: 016 Brilliant Scientist.
-- Asset: `alien_infantry`.
-- Exact reusable entity: `alien_infantry_entity`.
-- Owning subunit sprite token: `alien_infantry`.
-- Required identity: generic bald green alien, large black eyes, field harness, grounded boots, and one readable retro-futurist laser rifle, with no DHR, D'Rhondan, Kruger, country, ideology, event, organization, provider, text, or watermark marks.
-
-## Dependency and route evidence
-
-- Dependency lock: `.tools/3d_pipeline/config/dependencies.lock.json`, schema `1.0.0`.
-- Meshy route: official `@meshy-ai/meshy-mcp-server` `0.4.0`, git `d8c77d1cb897e345eb41d38b510b8391b1664346`, compatibility revision `meshy-7-v4`, exact generation model `meshy-7`.
-- Meshy tools verified before spend: `meshy_check_balance`, `meshy_image_to_3d`, `meshy_get_task_status`, `meshy_download_model`, `meshy_remesh`, `meshy_rig`, `meshy_convert`, and `meshy_animate`.
-- Blender: `5.1.2`, build `ec6e62d40fa9`.
-- Repository adapter: `chaosx_blender_hoi4` `1.5.0`; health request `103f7c71c86645bc84e1d2efc279ca53`; candidate-prepare request `24b292a4a93948deb8ac38c74d85e108`.
-- `io_pdx_mesh`: `0.91.0`; locked archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`.
-- Environment verification: `.tools/3d_pipeline/verify_environment.py` completed with zero findings before provider spend.
-- Job override: `alien_infantry` resolves to `docs/assets/016_brilliant_scientist/models_3d/alien_infantry`.
-
-## Source lineage
-
-- Immutable ImageGen original: `refs/evidence/imagegen_original_opaque.png`, SHA-256 `360E3679836041B28BABBAEA21D758CB29E84090942C364803208B2978DC61FE`.
-- Two native-alpha edit attempts were preserved and rejected because both remained opaque RGB; their checksums are in `refs/original/input_manifest.json`.
-- The repository-permitted `rembg` fallback added alpha without editing the soldier's RGB content.
-- Exactly one Meshy input was used: `refs/original/meshy_input.png`, 1024x1536 RGBA, SHA-256 `E71F874C68B5E995206B6BD083498642E434C6A89BA64899A3DF13789ADE6CD2`.
-- Alpha spans 0-253 with foreground bounds `[195, 9, 923, 1515]`. Maximum alpha 253 is the deterministic rembg probabilistic soft matte, not a colour or geometry edit.
-- A faint green/grey antialias fringe around parts of the head and rifle was recorded before submission. Seven-view provider QA found no obvious halo-derived shell or floating backdrop slab.
+- Sole immutable user source: `refs/source/user_supplied_alien_reference.png`, SHA-256 `17FEF636D5ADA350D92B1F432B58459B135F038BEB97CFEDA201CCF314BF984F`.
+- Sole exact-one Meshy input: `refs/original/meshy_input.png`, 1024x1536, SHA-256 `AB15C53A9BF317F5BD0BBD8E9A881F85E4F9EDFE4B5A38FFE4472BBDD33D604B`.
+- Authorization: the user supplied the source and explicitly requested the faithful ImageGen preparation used as the Meshy input.
+- Meshy received exactly that one image. No multi-view, auxiliary image, A-pose, or T-pose input was used.
 
 ## Provider lineage and spend
 
-- Before the paid call, the job contained no provider task ID, paid receipt, download, or credit record; no pre-existing paid Meshy task was available to retrieve.
-- Generation task: `01a02497-1fb9-7a1b-bec6-ec388d54a016`, exact model `meshy-7`, successful at 100%.
-- Planned and consumed attributable generation spend: 30 credits.
-- The wider live-balance delta was 60 credits while other agents were active; only the provider task's own 30-credit receipt is attributed here.
-- GLB: `provider/downloads/generation_model.glb`, SHA-256 `E22474E3697FEF917E98AF9A3FD6B544A66E10B5C4A45A5FF4967546638A527A`.
-- FBX: `provider/downloads/generation_model.fbx`, SHA-256 `B16734164A6A208B0B89349BED24339B0D97DC7092E53B81B19BC676B82171D6`.
-- Provider PBR maps and their checksums are preserved in the download manifests. No remesh, rig, animation, conversion, retexture, or paid recovery credits were consumed.
+The rejected first lineage is represented only by `provider/rejections/generation_user_supplied_v1.md`. It consumed 46 credits: generation 30, remesh 5, rig 5, action 98 3, and action 690 3. The neutral rig retained the ray gun, but two independent firing actions catastrophically stretched the arms/body and destroyed the gun silhouette, so the complete lineage was rejected and its large artifacts were deleted.
 
-## Candidate decision
+The historical v2 geometry lineage was accepted only for neutral geometry review and was later rejected with the rest of the package because no valid firearm animation could be produced:
 
-- Rejected: the returned T-pose is entirely unarmed and omits the locked laser-rifle component.
-- Source density was 1,995,264 triangles; the protected working duplicate was reduced to 29,999 triangles.
-- Working topology has 20,163 loose boundary edges, 356 boundary components, and 48 branched boundary components; it has zero non-manifold edges and zero degenerate faces.
-- Contact sheet: `blender/previews/alien_infantry_candidate_contact_sheet.jpg`, SHA-256 `C7B1DCC89C298DFAAE21A9880268853320C3C706454C83047FA436A5CB30DD05`.
-- Detailed rejection record: `validation/generation_rejection.json`.
-- Files named `01_geometry_approved.blend` through `05_pre_export.blend` are automatic adapter checkpoints only. They do not constitute acceptance, rig approval, action approval, or export approval for this rejected candidate.
+- Meshy 7 image-to-3D task `01a03404-752c-7d05-be14-b204c817f9dd`, succeeded, 30 credits.
+- Historical GLB SHA-256 `DD96097BFAB051A59D08E918B0EF741E4BA400FB0784225B073CA96614BFC050` and FBX SHA-256 `69514019CED0D60EDAB6C6C70F96D79DED994E6E5CCB0D234CFD6D6CDEBBD6AA`.
+- Historical PBR map hashes: base color `13C75C37A732A2FDCC3E8C970F6C60917636754CB9F5D275198A4E096DA229ED`; metallic `5096AF6F13E54FA3DD4D68C6608823F93C99F83296C6BAC97C44DB7ABC7AC920`; normal `3F5101F06915E5A58B0C718BB6A970EDEFC353C36FCD04305FFF3FD38037FF85`; roughness `28F5F5A2519787CDB390E60F2113698FB46C96B142BB8AFB088C1CC158C1098D`.
+- Total package spend in this run: 76 credits.
 
-## Vanilla calibration
+## Accepted v2 geometry gate
 
-- Mesh: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh`.
-- Entity: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/units_infantry.asset#infantry_rifle_entity`.
-- Axes: forward `-Y`, up `+Z`.
-- Measured vanilla source height: `7.351824797689915`.
-- Candidate source height: `7.3537750244140625`.
-- Entity scale, applied once: `0.8`.
-- Candidate effective runtime height: `5.8830200195312505`; delta from calibrated vanilla runtime height: `0.0015605927312503098`.
-- Scale gate passed, but it does not override the component rejection.
+Adapter request `d422c421fcfa4b8386555049ef515feb` prepared and rendered the v2 source. The front, left, rear, right, three-quarter, top, and underside previews are under `blender/previews/alien_infantry_user_v2_*.png`. The alien identity, supplied retro ray gun, continuous muzzle, two-hand low-ready contact, grounded boots, and absence of an overhead/floating weapon mass passed visual review.
 
-## Downstream status
+The protected provider source contains 1,629,142 triangles. The working QA candidate is exactly 30,000 triangles / 14,986 vertices, triangular, with zero loose boundary edges, zero non-manifold edges, zero degenerate faces, and no negative-scale objects. It uses `PdxMeshAdvanced` bindings to the immutable provider maps. This is geometry evidence only, not a final weighted/exportable model.
 
-- Geometry acceptance: blocked by missing rifle.
-- Runtime material and DDS processing: not performed on rejected geometry.
-- Rig and weight audit: not performed.
-- Required actions `idle`, `move`, `laser_attack`, `defend`, `support_attack`, `retreat`, and `death`: all blocked pending accepted rifle-bearing geometry.
-- PDX `.mesh` and `.anim` export: not performed.
-- PDX reimport proof: not performed.
-- Runtime entity, model, animation, and sound definitions: not written for a rejected model.
-- In-game/live-consumer validation: parent/user owned and not claimed.
+Vanilla calibration used `blender/reference/western_european_infantry.mesh`, SHA-256 `F00FBADFDACDD1046F7119E62E2C47D644EA7A92D0F686B71D230BC843AEF8BA`: mesh height 7.3518242835, entity scale 0.8, effective runtime height 5.8814594268, forward -Y, up +Z. The v2 QA mesh measured 7.3527107239 high after reduction, for effective runtime height 5.8821685791 and delta +0.0007091523.
 
-## Sound and counter packages
+## Historical v2 continuation state (superseded by V7 closure below)
 
-- Four CC0 sourced audio candidates and mechanical PCM derivatives exist for laser fire, movement, idle, and death. Provenance, URLs, creators, licenses, transformations, hashes, and deferred synchronization points are in `evidence/audio/provenance/audio_sources.json` and `runtime/sound_handoff.md`.
-- Per-subunit selection and acknowledgement voices are explicitly blocked because installed consumers are country/original-tag-wide `TAG_infantry_*`; replacing them would also replace ordinary infantry voices.
-- The bespoke large and on-map counters are complete, installed, and registered through `interface/alien_infantry_system.gfx`. Exact consumers, two-frame dimensions, alpha behavior, sampled vanilla greens, processed sources, DDS round trips, and contact-sheet evidence are recorded in `docs/assets/016_brilliant_scientist/dhrondan_icon_package/manifest.md`. Live display acceptance remains user-owned.
+The locked live route was rechecked read-only at `2026-08-24T14:15:09Z`. The account balance is 1,410 credits. The minimum remaining mandatory provider route costs 31 credits: remesh 5, rig 5, and seven distinct Meshy actions at 3 each. The route is fundable with retry margin. No paid call was made during this recheck, so no v2 remesh, rig, animation, weight approval, action sampling, firing discharge/node synchronization, death-collapse proof, packed DDS output, `.mesh`, `.anim`, export, or actual-byte reimport proof exists yet.
 
-## Recovery gate
+Reserved runtime identifiers remain `alien_infantry_entity`, `alien_infantry_mesh`, `alien_infantry_idle`, `alien_infantry_move`, `alien_infantry_laser_attack`, `alien_infantry_defend`, `alien_infantry_support_attack`, `alien_infantry_retreat`, and `alien_infantry_death`. Parent owns final entity, particle, light, audio, and gameplay wiring. No in-game completion is claimed.
 
-The bounded recovery proposal is one additional Meshy 7 image-to-3D generation from a rifle-silhouette-preserving alpha cleanup, estimated at 30 extra credits. Because it is failure-driven paid recovery, authorization is pending. No recovery, rig, animation, or export operation may start until the user confirms it.
+## Dependencies and companion packages
 
-Read-only recovery recheck on 2026-08-22 confirmed that task `01a02497-1fb9-7a1b-bec6-ec388d54a016` remains technically successful with 30 credits consumed. The live balance was 626 credits. The provider offers no verified zero-credit correction route for restoring the omitted rifle, so the package remains blocked without launching another paid operation or adopting an explicitly approved manual-modeling fallback.
+- Dependency lock SHA-256 `01CAE764172374943B0718048B136C029E3CEBDBFCFA737C24AFC75DF7EA08EF`; Meshy schema lock SHA-256 `E45FE80F3B8AC49A365EA2D4221E82E969AE55279639F817BB6FA75407D1C233`; adapter config SHA-256 `24F865F90077104493EA092C015E140B8519780B400B4AD2CFF748EA7AF91875`.
+- Official Meshy MCP 0.4.0 with repository compatibility `meshy-7-v4` and explicit live `meshy-7`; Blender 5.1.2; adapter 1.10.3; io_pdx_mesh 0.91.0 with locked archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`.
+- The existing CC0 audio package remains under `evidence/audio/` with its detailed source/checksum handoff at `runtime/sound_handoff.md`; exact animation synchronization is blocked until valid actions exist.
+- Existing counters remain outside this job at `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`, registered by `interface/alien_infantry_system.gfx`. They were inspected/reconciled but not recreated or overwritten.
+
+## Authoritative recovery closure: V6–V7
+
+The earlier v2 continuation text above is superseded by the completed automatic recovery audit. V6 and V7 were generated from the same immutable exact-one input. V6 passed generation/remesh/neutral-rig review but failed action 690 with catastrophic upper-body and integrated-rifle deformation. V7 likewise passed geometry/remesh/neutral-rig review, then failed action 690 and two materially distinct official-library alternatives: action 104 `Side_Shot` and action 232 `Cowboy_Quick_Draw_Shooting`.
+
+The authoritative V7 lineage is generation `01a03499-135b-7a19-b5f3-eef4fc9d1515`, remesh `01a0349e-d89f-76b4-baca-da8a190aafe5`, and rig `01a034a4-700b-7a32-b9a8-ed95969a139a`. The firearm tasks are action 690 `01a034a6-9666-79b9-8929-cc3598191272`, action 104 `01a034ab-1c04-7c5a-ab0d-00687510cedf`, and action 232 `01a034b5-7230-7789-831b-e2ad3faae058`. Exact hashes, credits, and phase frames are recorded in `provider/rejections/generation_recovery_v7_firearm_capability.md`.
+
+No remaining semantic actions, packed runtime textures, `.mesh`, or `.anim` files were produced after the firing gate failed. No discharge frame/time or muzzle node can be accepted from a deformed clip. The package is blocked on current Meshy firearm-animation capability, not on balance; the final observed shared balance was 433 credits.
+
+After compact task, hash, rejection, report, and representative frame evidence was retained, failed provider downloads, transient provider request/response/credit receipts, and Blender source/checkpoint files were removed from this event workspace. The cleanup reclaimed 2,537,107,276 bytes and left the compact package at approximately 42.2 MiB. No deleted artifact was an accepted runtime candidate.

@@ -1,17 +1,27 @@
-# Alien infantry counter handoff
+# Alien infantry counter reconciliation
 
-Status: `needs_user_review` and pending `chaosx_icon_artist` production.
+Status: final counter files exist and are registered; parent visual/runtime review remains parent-owned. The 3D worker did not recreate or overwrite them.
 
-The owning subunit is `alien_infantry`, its sprite token is `alien_infantry`, and its model consumer is `alien_infantry_entity`.
+## Consumers and installed files
 
-Required counter consumers are `GFX_unit_alien_infantry_icon_medium` using `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds` and `GFX_unit_alien_infantry_icon_medium_white` using `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`.
+- Owning subunit and sprite token: `alien_infantry`.
+- Model consumer: `alien_infantry_entity`.
+- `GFX_group_alien_infantry_icon` and `GFX_unit_alien_infantry_icon_medium` resolve through `interface/alien_infantry_system.gfx` to `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds`.
+- Large DDS: 152x42, two 76x42 frames, 25,664 bytes, SHA-256 `5F982AF84059CB980828E5CBE63489AABB13F04A2AABFBC81B9B01038193FC6A`.
+- `GFX_unit_alien_infantry_icon_medium_white` resolves through the same GFX file to `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`.
+- On-map DDS: 60x12, two 30x12 frames, 3,008 bytes, SHA-256 `775980A00D618DCC675BFD12192F53C11ACAD7380D36B008A69FAA432CBDC07B`.
 
-The installed vanilla definitions are `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx:46` and `:199`. Their source DDS files are `gfx/interface/counters/divisions_large/unit_infantry_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`.
+## Vanilla and skill-local reconciliation
 
-The large strip is 152x42 with two 76x42 frames. The map strip is 60x12 with two 30x12 frames. Both use real alpha, `noOfFrames = 2`, left-to-right normal/state frame order, dark borders, a pale selected/inverted state, compact military silhouette, and no opaque canvas. The large green family is anchored by RGB 73,106,73 and nearby shaded greens such as 74,107,74; the artist must sample the decoded reference rather than use an arbitrary green.
+- Installed definition: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx`, SHA-256 `0D7B62CAF328B3C296EC27AB85318F3CC78CC760B02923538BF5240815963335`; infantry entries at lines 46 and 199 use `noOfFrames = 2`.
+- Installed DDS references: `gfx/interface/counters/divisions_large/unit_infantry_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_infantry_icon.dds`.
+- Matching skill-local families: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/`, including their contact sheets and decoded infantry references.
+- Required large-counter behavior: transparent 152x42 strip, normal muted vanilla-green silhouette in the left frame and separate sparse pale schematic state in the right frame.
+- Required map-counter behavior: transparent 60x12 strip with two 30x12 states and the same restrained silhouette/state language.
+- Recorded palette anchor: RGB 73,106,73 with nearby shaded greens such as 74,107,74, sampled from the decoded installed reference rather than chosen arbitrarily.
 
-Matching skill-local families are `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/counters_large/` and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/units/land/map_counters/`, including their contact sheets and decoded `unit_infantry_icon.png` / `onmap_infantry.png` precedents.
+## Package evidence
 
-The icon-artist package must return original ImageGen source PNGs with native transparency, prompts, processed two-frame alpha PNGs, final DDS strips, decoded round-trip evidence, native-size comparison/contact sheets, manifest entries, and `gfx_handoff.md`. The silhouette should combine an unmistakable large-eyed alien head with a simple laser-rifle bar while staying readable at 30x12. Reused vanilla art, renamed counters, primitive local drawing, arbitrary green, or an opaque background is forbidden.
+The producing package is `docs/assets/016_brilliant_scientist/dhrondan_icon_package/`. Its `manifest.md` records both consumers as complete, `package_records/dds_validation.json` records decoded DDS size/alpha/header evidence, and `contact_sheet/dhrondan_icon_package_contact_sheet.png` is the comparison sheet. The package records native ImageGen transparency with no background-removal fallback.
 
-Parent-owned `.gfx` registration and runtime validation remain pending. No counter output was created by the 3D worker.
+Parent-owned status: the GFX registration already exists. Live counter display and final visual acceptance remain parent/user-owned and are not claimed by this model package.
