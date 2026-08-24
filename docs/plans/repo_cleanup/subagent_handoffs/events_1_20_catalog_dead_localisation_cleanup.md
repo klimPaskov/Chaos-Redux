@@ -38,7 +38,7 @@ All edited English localisation files retain their UTF-8 BOM. The shared GUI lay
 
 ## Retained candidates
 
-The 28-key duplicate file `005_soviet_collapse_custom_splinter_focus_expansion_l_english.yml` remains because its canonical consolidated localisation file has active concurrent edits. It may be deleted only after those edits stabilize and the duplicate-key comparison is repeated.
+The 28-key duplicate file `005_soviet_collapse_custom_splinter_focus_expansion_l_english.yml` was retained during this tranche because its canonical consolidated localisation file had active concurrent edits. The later [`remaining_safe_cleanup_2026-08-24.md`](remaining_safe_cleanup_2026-08-24.md) follow-up repeated the comparison and removed the duplicate after all 28 replacement keys were proven.
 
 The unused dynamic effect `modify_value_based_on_chaos_tier` and its matching helper documentation were removed after exact runtime, meta, scripted-localisation, GUI, GFX, documentation, and spreadsheet scans found no consumer.
 
