@@ -12,6 +12,8 @@ The eight adapter-only IDs remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CH
 
 The active automatic ladder remains `3/4/5/7/10`, with World Collapse also targeting `10`, and the deterministic Join order remains the 32-ID order recorded in the historical authority block below.
 
+The accepted research tables now parse as fixed-width CSV records after the 2026-08-24 schema repair. The package table has 206 sixteen-column rows and the reservation table has 111 nine-column rows. This corrects research-data alignment only and does not promote any package or widen admission. Evidence is `subagent_handoffs/006_event6_research_csv_schema_repair_2026-08-24.md`.
+
 Preserve the user correction exactly: nothing is visible before Event 006 fires.
 
 The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger-only `chaosx.nr6.3` cleanup must not expose a pre-event pressure category, mission, cost, queue, history row, or request.
