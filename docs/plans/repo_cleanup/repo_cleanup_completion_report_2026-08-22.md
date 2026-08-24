@@ -175,11 +175,13 @@ The unconsumed Event 003 Final Silence triggerable-scenario localisation keys we
 
 The stale Event 011 unavailable Event Details key and the obsolete shared CBRN action Event Details key were removed from active localisation where current consumer scans supported removal.
 
+The post-catalog closure removed superseded Event 1, Event 2, and Event 11 evolution-body wrappers and their private scripted-localisation methods, plus unused generic, locked, unrecorded, and Event 20 prefire body keys. Exact source, dynamic-localisation, GUI, GFX, documentation, and spreadsheet reference scans found no remaining live consumers.
+
 ## Dead code kept with reasons and dynamic-reference uncertainty
 
 Compatibility callbacks, archived docs/assets, provider adapters, active scheduler/evolution owners, and current Black Plague capacity/state triggers were retained because their runtime or provenance role remains live or cannot be disproved by static references.
 
-The shared helper baseline flags `clear_special_chaos_country_civilian_effects`, `modify_value_based_on_chaos_tier`, and `damage_buildings_in_random_states` as dead-looking or orphaned but dynamically uncertain; they were not removed.
+The reserved `clear_special_chaos_country_civilian_effects` hook was retained for its documented future cleanup contract. `modify_value_based_on_chaos_tier` and `damage_buildings_in_random_states` have no verified runtime consumers, but their required documentation update overlaps active concurrent edits in `chaosx_dynamic_effects.md`; their definitions and docs remain together until that ownership collision clears.
 
 Meta-effect provider families were retained because their dynamically constructed names are not safely discoverable by ordinary literal-reference scans.
 
@@ -195,6 +197,8 @@ Two Event 016/018 implementation-jargon strings were rewritten in player-facing 
 
 Shared Event Details prose was corrected for communism, zombie outbreak, fury, white peace, and death, and the Event 011 unavailable key was removed.
 
+Events 1–20 evolution descriptions and all public world-end descriptions were synchronized between the in-game Event Details selectors and the workbook. Mechanics-heavy, generic locked, and unrecorded placeholder bodies were replaced on the catalog description path while dynamic titles and gameplay logic were preserved.
+
 The CBRN deaths display now uses integer formatting, the Fallout clean-certificate detail key was added, and unconsumed Event 003 Final Silence scenario strings were removed.
 
 The localisation handoff records the focused read-only Event Details GUI inspection and its truncated global diagnostics; it does not claim a layout render passed.
@@ -203,17 +207,19 @@ The localisation handoff records the focused read-only Event Details GUI inspect
 
 The workbook is the authority and the CSV is export-only.
 
-The exporter `python .tools/export_event_catalog_csv.py` completed after the workbook updates and produced 183 Event rows with 14 columns, 14 Cluster rows with 7 columns, and 12 Scenario rows with 6 columns.
+The exporter `python .tools/export_event_catalog_csv.py` completed after the workbook updates and produced 166 Event data rows with 14 columns, 14 Cluster rows with 7 columns, and 12 Scenario rows with 6 columns. Blank formatted rows below Event 166 remain empty and are not exported.
 
 The workbook was reopened with its existing five sheets, dimensions, tables, validation, formatting, and formulas preserved, and the exported rows matched the workbook.
 
-Only current player-facing Event Details text was aligned for Events 001, 002, 007, 009, 010, 012, and 019; no balance, status, evolution, world-end, cluster, or scenario claim was silently changed.
+Current player-facing Event Details text was aligned for Events 001, 002, 007, 009, 010, 012, and 019. In addition, 77 Events 1–20 evolution cells and 12 public world-end entries now contain complete descriptions matching their in-game description keys rather than title-only text. Event 3's stale fifth evolution cell was cleared, and Event 5's additional `Fringe Breakaways` catalog row remains combined with Evo V because the approved workbook layout has no Evo VI column.
+
+The workbook status validation now exposes exactly four values: `Playable`, `To Be Reworked`, `Unavailable`, and `Needs Testing`. No row is marked `Playable`; Events 1–20 are `Needs Testing`, registered post-20 event IDs are `To Be Reworked`, and IDs without a registered mod event are `Unavailable`. The resulting counts are 20 `Needs Testing`, 78 `To Be Reworked`, 68 `Unavailable`, and zero `Playable`.
 
 ## Skills used or updated
 
 The [`chaos-redux-subagents` skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) was read and applied for ownership, evidence, audit, and handoff boundaries.
 
-The `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-mtth`, and `xlsx` skills were used for their respective event/log/catalog, decision, super-event, focus, asset/provenance, timing, and workbook rules.
+The `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-mtth`, and `xlsx` skills were used for their respective event/log/catalog, decision, super-event, focus, asset/provenance, timing, and workbook rules. The event skill's catalog status contract was updated to preserve the four-value status vocabulary and prevent events from defaulting to `Playable`.
 
 The official `skill-creator` instructions were consulted to assess whether the cleanup revealed a reusable skill gap; no new skill or non-trivial skill update was justified.
 
@@ -221,7 +227,7 @@ The required offline Paradox wiki core pages and relevant vanilla documentation 
 
 The cleanup evidence was reconciled from the event, decision/mission, focus, country, localisation, spreadsheet, asset, super-event, MTTH, improvement-loop, and storage handoffs produced through their respective project workflows.
 
-No skill was created or updated, and no central MCP skill or wrapper was created.
+No skill was created, and no central MCP skill or wrapper was created.
 
 ## Meaningful validation performed
 
@@ -230,6 +236,8 @@ Current source rescans found no live gameplay or meta-effect consumers for the r
 The Event 003 post-change partial lint reported zero blocking diagnostics in its retained artifact, and the Event 013 GUI inspection covered functional selectors without a layout rewrite.
 
 Localisation and spreadsheet checks confirmed the changed keys, BOM/alignment requirements, workbook/export row agreement, and Event Details wording alignment.
+
+The catalog synchronization resolved all 178 mapped evolution/world-end title and body keys, found no duplicate mapped body keys, and confirmed that each mapped key is consumed by its selector. Workbook validation confirmed the four exact status options, the 20/78/68/0 status distribution, blank-ID row emptiness, and 166 exported Event rows.
 
 Read-only source-reference rescans covered stale Event Details keys, old triggerable-scenario keys, removed helper names, and the corrected cannibalism path.
 
@@ -244,6 +252,8 @@ No live game testing was performed; live game testing belongs to the user.
 Event 013 settings and last-event selectors now display Event 013 correctly.
 
 Shared Event Details and catalog premise text now describes the current player-facing event situations for the corrected event set.
+
+Evolution and public world-end detail panels now show stable in-world descriptions that match the spreadsheet catalog instead of effect lists, generic lock text, or title-only spreadsheet entries. Event titles, dynamic title states, gameplay effects, balance, and GUI layout are unchanged.
 
 The Event 001 confirmation buttons use the standard shared confirmation localisation.
 
@@ -299,7 +309,7 @@ Contradictory optimistic and blocked package manifests were retained as provenan
 
 The four Event 005 runtime DDS copies were the only cleanup-owned asset deletions, and their archive manifest remains durable.
 
-README management is complete under `f1a1d56d3`: the filesystem inventory covers 74 README files, the durable navigation roots are indexed, and the post-change local-target scan reports zero broken links.
+README management under `f1a1d56d3` covered the 74 README files present in that snapshot. A current filesystem rescan covers 95 README files, including later active provenance packages, and reports zero broken local targets.
 
 ## .git/storage cleanup
 
@@ -335,7 +345,7 @@ The safe tranche intentionally omitted broad migrations, source abstractions, dy
 
 Mandatory MCP routes were attempted for the supported in-scope surfaces; where routes timed out, were partial, or returned incomplete pools, static review was not treated as equivalent proof and risky candidates were deferred.
 
-Repository-wide README management is complete for the safe documentation boundary: 74 filesystem README files were inventoried, durable navigation roots were reconciled, ignored active provenance READMEs were included in validation, and all local README targets resolve.
+Repository-wide README management is current for the safe documentation boundary: the original 74-file inventory was reconciled, and a later 95-file filesystem rescan includes ignored active provenance READMEs and reports that all local README targets resolve.
 
 The known accidental mid-sentence hard wrapping in the historical [`interface_audit_2026-07-22.md`](interface_audit_2026-07-22.md) was normalised without changing its findings.
 
@@ -360,11 +370,12 @@ The current source-of-truth map and historical contradiction handling are record
 | Country-package baseline | Read-only audit; no safe country deletion or source change. |
 | Localisation baseline and patch | Implemented and reconciled with active consumers. |
 | Spreadsheet alignment and follow-up | Implemented through workbook edits and exporter output. |
+| Events 1–20 catalog descriptions and status policy | Implemented through in-game selector/localisation synchronization, workbook updates, skill guidance, and regenerated exports. |
 | Docs/assets inventory | Approved retention; no top-level deletion. |
 | Git-storage cleanup report | Physical cleanup implemented and verified; history rewrite deferred. |
 | Event 017 repo explorer report | Historical evidence retained with supersession notice from `49dad024c`. |
 | Event 020 rat-system audit | Historical helper observations retained with supersession notice from `49dad024c`. |
-| README management handoff | Implemented in `f1a1d56d3`; 74 README files inventoried, three durable indexes created, stale navigation corrected, and zero broken local targets remain. |
+| README management handoff | Implemented in `f1a1d56d3`; 74 README files were inventoried at that revision, three durable indexes were created, and a current 95-file rescan reports zero broken local targets. |
 
 ## Contradictions, duplicate documents, and stale instructions
 
@@ -390,14 +401,17 @@ Recommended parent decisions are whether to schedule the shared migration phases
 
 ## Exact tracked path ledger
 
-The cleanup owns 61 tracked paths when this completion report is included.
+The cleanup owns 76 tracked paths when this completion report is included.
 
 Gameplay and script paths:
 
+- `.agents/skills/chaos-redux-events/SKILL.md`
+- `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt`
 - `common/on_actions/chaosx_on_actions_system.txt`
 - `common/scripted_effects/003_holy_realm_effects.txt`
 - `common/scripted_effects/020_black_plague_rat_effects.txt`
 - `common/scripted_effects/chaosx_logic_effects.txt`
+- `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
 - `common/scripted_triggers/020_black_plague_rat_triggers.txt`
 - `common/scripted_triggers/020_black_plague_response_triggers.txt`
@@ -405,17 +419,25 @@ Gameplay and script paths:
 
 Localisation paths:
 
+- `localisation/english/001_communism_spread_l_english.yml`
+- `localisation/english/002_zombie_outbreak_l_english.yml`
 - `localisation/english/006_independence_wave_evolution_incidents_l_english.yml`
+- `localisation/english/011_secret_alliance_l_english.yml`
+- `localisation/english/015_utopia_manifesto_evolutions_l_english.yml`
 - `localisation/english/016_brilliant_scientist_foreign_l_english.yml`
+- `localisation/english/018_resources_found_system_l_english.yml`
 - `localisation/english/018_resources_found_decisions_l_english.yml`
+- `localisation/english/020_black_plague_evolutions_l_english.yml`
 - `localisation/english/chaosx_gui_l_english.yml`
 - `localisation/english/condemnation_sanctions_l_english.yml`
 - `localisation/english/fallout_consolidated_l_english.yml`
 
 Spreadsheet paths:
 
+- `docs/spreadsheets/chaos_redux_clusters_catalog.csv`
 - `docs/spreadsheets/chaos_redux_events_catalog.csv`
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
+- `docs/spreadsheets/chaos_redux_scenarios_catalog.csv`
 
 Deleted runtime asset paths:
 
@@ -451,6 +473,8 @@ Documentation paths:
 - `docs/plans/repo_cleanup/subagent_handoffs/docs_readme_management_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/events_001_010_cleanup_audit_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/events_011_020_cleanup_audit_2026-08-22.md`
+- `docs/plans/repo_cleanup/subagent_handoffs/events_1_20_catalog_description_sync.md`
+- `docs/plans/repo_cleanup/subagent_handoffs/events_1_20_catalog_dead_localisation_cleanup.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/focus_cleanup_baseline_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/localisation_cleanup_baseline_2026-08-22.md`
 - `docs/plans/repo_cleanup/subagent_handoffs/localisation_cleanup_patch_2026-08-22.md`
@@ -465,15 +489,17 @@ Documentation paths:
 - `docs/spreadsheets/README.md`
 - `docs/super_events/README.md`
 - `docs/systems/README.md`
+- `docs/systems/event_system/events_log_evolutions_and_clusters.md`
+- `docs/systems/event_system/events_log_world_end_scenarios.md`
 - `docs/systems/world_threat_mechanic.md`
 - `docs/testing/README.md`
 
 Physical `.git` scratch and LFS cache deletions are not tracked paths; their exact categories, counts, and safety boundary are recorded in the Git-storage section and report.
 
-## Completion claim
+## Current completion status
 
-The repository cleanup master prompt is complete to its fullest safe extent for shared systems and Event 1–20 surfaces: bounded improvements are implemented, documentation and README navigation are reconciled, uncertain dynamic code is retained with reasons, and broad or design-changing migrations are explicitly planned and deferred.
+The dated cleanup commits and the post-catalog localisation closure implement the accepted bounded improvements, documentation navigation, catalog alignment, storage cleanup, and safe dead-code removals described above.
 
-The repository does not have completion of all deferred design migrations or all event/package validation, and this report deliberately preserves those boundaries.
+An unconditional current-repository completion claim is not made. Later concurrent Event 006, Event 014, Event 016, Event 019, Event 020, famine-system, asset, and documentation edits overlap audited surfaces; current MCP event, focus, GUI, and probability reruns timed out or remained incomplete. The two verified-unused dynamic helpers also remain paired with their concurrently edited documentation until ownership is stable.
 
-This report is the durable completion handoff for the cleanup-owned commits and their documented boundaries.
+Broad or design-changing migrations remain explicitly planned and deferred. This report is the durable handoff for cleanup-owned work and its current blockers, not proof that later concurrent work has completed every repository-wide validation gate.

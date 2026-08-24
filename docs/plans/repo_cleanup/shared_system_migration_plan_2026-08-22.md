@@ -44,7 +44,7 @@ This plan does not launch Hearts of Iron IV or claim live consumer validation; l
 
 ## Evidence reviewed
 
-Repository instructions and scope were read from `AGENTS.md` and `docs/plans/repo_cleanup/chaosx_repo_cleanup_master_prompt.md`.
+Repository instructions and scope were read from `AGENTS.md` and `docs/plans/repo_cleanup/chaos_redux_repo_cleanup_master_prompt.md`.
 
 The required repo skills were read from `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-subagents/SKILL.md`, and `.agents/skills/chaos-redux-decisions-missions/SKILL.md` because the scope includes the shared Event Log scripted GUI bindings.
 

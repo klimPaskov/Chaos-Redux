@@ -2,7 +2,7 @@
 
 ## Outcome
 
-Events 1–20 evolution descriptions and all public world-end descriptions now resolve to complete, stable prose. Existing good prose was preserved. Dynamic mechanics-heavy bodies for Events 1, 2, and 11 were replaced only in the Event Details description selector. Locked or unrecorded generic body placeholders for Events 15, 18, and 20 no longer override canonical stage descriptions. No title selector, gameplay behavior, GUI layout, workbook, CSV, asset, or Event 21+ event-specific file changed.
+Events 1–20 evolution descriptions and all public world-end descriptions now resolve to complete, stable prose. Existing good prose was preserved. Dynamic mechanics-heavy bodies for Events 1, 2, and 11 were replaced only in the Event Details description selector. Locked or unrecorded generic body placeholders for Events 15, 18, and 20 no longer override canonical stage descriptions. The localisation tranche changed no title selector, gameplay behavior, GUI layout, workbook, CSV, asset, or Event 21+ event-specific file. The following workbook tranche synchronized the catalog content and regenerated all three CSV exports in the same cleanup commit.
 
 ## Evolution crosswalk
 
@@ -147,4 +147,4 @@ Focused validation checks every mapped title and body key, duplicate final body 
 
 ## Unresolved wording decisions
 
-None. Both structural catalog mismatches were resolved without changing the workbook or GUI layout.
+None. Both structural catalog mismatches were resolved through workbook content edits without changing the workbook schema or any GUI layout.
