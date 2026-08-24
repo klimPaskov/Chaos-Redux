@@ -22,6 +22,8 @@ Explicit `NoAI`, no-derivatives, or equivalent incompatible restrictions remain 
 
 The selected source must fit the event's declared period and unit brief. Unless an accepted brief or spec explicitly requires the exception, modern electronics, digital devices, advanced optics, obvious modern plastics, contemporary tactical gear, science-fiction machinery, and other technology or styling outside the 1936-1945-era world are rejected. Intended fantasy, supernatural, creature, and alternate-history identity remains eligible, but ImageGen cleanup may not periodize or redesign an ineligible source.
 
+Final Meshy inputs must be fully colored. Black-and-white, grayscale, desaturated monochrome, clay-render, and untextured references require a dedicated faithful native ImageGen colorization or must be replaced with a complete color source. Colorization preserves exact design, pose, anatomy, equipment, proportions, material boundaries, framing, lighting, and value structure while applying a parent-approved period-, role-, species-, and material-appropriate palette; any redraw or simplification is rejected.
+
 ## Validation
 
 `python C:/Users/klimp/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/chaos-redux-3d-model-pipeline` returned `Skill is valid!`.
