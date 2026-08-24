@@ -51,11 +51,11 @@ def make_rig(name: str, bone_length: float, world_scale: float) -> bpy.types.Obj
 
 def make_source(path: Path) -> tuple[str, str]:
     reset_scene()
-    rig = make_rig("SourceRig", 1.0, 1.0)
+    rig = make_rig("SourceRig", 1.0, 0.01)
     action = bpy.data.actions.new("VerifiedSource")
     rig.animation_data_create()
     rig.animation_data.action = action
-    for frame, root_z, chest_angle in ((1, 0.0, 0.0), (8, 0.2, 0.35), (16, 0.0, 0.0)):
+    for frame, root_z, chest_angle in ((1, 0.0, 0.0), (8, 140.0, 0.35), (16, 0.0, 0.0)):
         for bone_name in BONES:
             bone = rig.pose.bones[bone_name]
             bone.rotation_mode = "QUATERNION"
@@ -65,14 +65,29 @@ def make_source(path: Path) -> tuple[str, str]:
         root = rig.pose.bones["Root"]
         root.location = (0.0, 0.0, root_z)
         root.keyframe_insert("location", frame=frame, group="Root")
-    bpy.ops.wm.save_as_mainfile(filepath=str(path))
+    bpy.ops.object.select_all(action="DESELECT")
+    rig.select_set(True)
+    bpy.context.view_layer.objects.active = rig
+    bpy.ops.export_scene.fbx(
+        filepath=str(path),
+        use_selection=True,
+        object_types={"ARMATURE"},
+        apply_unit_scale=False,
+        apply_scale_options="FBX_SCALE_NONE",
+        add_leaf_bones=False,
+        bake_anim=True,
+        bake_anim_use_all_actions=False,
+        bake_anim_use_nla_strips=False,
+        bake_anim_force_startend_keying=True,
+        bake_anim_simplify_factor=0.0,
+    )
     digest = hashlib.sha256(path.read_bytes()).hexdigest().upper()
-    return action.name, digest
+    return "SourceRig|Scene", digest
 
 
 def make_target(path: Path) -> None:
     reset_scene()
-    rig = make_rig("TargetRig", 100.0, 0.01)
+    rig = make_rig("TargetRig", 100.0, 0.02722898125)
     rig["chaosx_working"] = True
     mesh = bpy.data.meshes.new("TargetMeshData")
     mesh.from_pydata(
@@ -103,7 +118,7 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="chaosx_scale_retarget_") as temporary:
         job = Path(temporary)
         (job / "blender" / "reports").mkdir(parents=True)
-        source = job / "source.blend"
+        source = job / "source.fbx"
         target = job / "target.blend"
         output = job / "output.blend"
         provenance = job / "provenance.json"
@@ -142,43 +157,102 @@ def main() -> None:
         )
         assert math.isclose(result["data_length_ratio"], 100.0, abs_tol=1e-4)
         assert all(
-            math.isclose(component, 1.0, abs_tol=1e-8)
+            math.isclose(component, 0.01, abs_tol=1e-8)
             for component in result["source_armature_world_scale"]
         )
-        assert math.isclose(result["location_scale"], 1.0, abs_tol=1e-4)
-        assert math.isclose(
-            blender_worker.scale_aware_retarget_location_scale(
-                100.0,
-                blender_worker.Vector((0.5, 0.5, 0.5)),
-                blender_worker.Vector((0.01, 0.01, 0.01)),
-            ),
-            2.0,
-            abs_tol=1e-6,
-        )
+        assert math.isclose(result["location_scale"], 0.3672563849, abs_tol=1e-6)
+        assert result["rest_data_length_ratio_applied_to_location"] is False
+        assert result["location_coordinate_space"] == "pose_bone_matrix_basis_translation"
         assert all(
-            math.isclose(component, 0.01, abs_tol=1e-8)
+            math.isclose(component, 0.02722898125, abs_tol=1e-8)
             for component in result["target_armature_world_scale"]
         )
-        assert result["source_target_motion_crosscheck"]["target_motion_peak"] < 2.0
+        assert result["source_target_motion_crosscheck"]["target_motion_peak"] < 52.0
         bpy.ops.wm.open_mainfile(filepath=str(output))
         rig = bpy.data.objects["TargetRig"]
         action = bpy.data.actions["Retargeted"]
         rig.animation_data.action = action
         root_peak = 0.0
         bounds = []
-        for frame in (1, 8, 16):
+        for frame in range(result["frame_start"], result["frame_end"] + 1):
             bpy.context.scene.frame_set(frame)
             bpy.context.view_layer.update()
             root_peak = max(root_peak, abs(float(rig.pose.bones["Root"].location.z)))
             bounds.append(blender_worker.world_bounds([bpy.data.objects["TargetMesh"]]))
-        assert root_peak <= 0.21
-        assert max(float(maximum.z - minimum.z) for minimum, maximum in bounds) < 6.0
+        assert root_peak <= 51.42
+        assert max(float(maximum.z - minimum.z) for minimum, maximum in bounds) < 15.0
+        source_world_peak = (
+            result["root_cleanup"]["source_root_z_delta_peak"]
+            * result["source_armature_world_scale"][2]
+        )
+        target_world_peak = root_peak * result["target_armature_world_scale"][2]
+        assert math.isclose(source_world_peak, target_world_peak, abs_tol=1e-5), (
+            source_world_peak,
+            target_world_peak,
+            root_peak,
+            result["root_cleanup"],
+        )
         accessory = bpy.data.objects["Accessory"]
         assert accessory.parent is rig
         assert accessory.parent_type == "BONE"
         assert accessory.parent_bone == "Accessory"
         assert bool(accessory["chaosx_bone_parented_accessory"])
         assert len(rig.data.bones["Accessory"].parent_recursive) == 5
+
+        before_export_bounds = blender_worker.world_bounds([bpy.data.objects["TargetMesh"]])
+        export_transforms = blender_worker.prepare_pdx_export_transforms()
+        assert math.isclose(
+            export_transforms["armature_data_scale_factor"],
+            result["target_armature_world_scale"][2],
+            abs_tol=1e-8,
+        )
+        assert all(math.isclose(component, 1.0, abs_tol=1e-8) for component in rig.matrix_world.to_scale())
+        baked_root_peak = 0.0
+        for frame in range(result["frame_start"], result["frame_end"] + 1):
+            bpy.context.scene.frame_set(frame)
+            bpy.context.view_layer.update()
+            baked_root_peak = max(baked_root_peak, abs(float(rig.pose.bones["Root"].location.z)))
+        assert math.isclose(baked_root_peak, target_world_peak, abs_tol=1e-5)
+        after_export_bounds = blender_worker.world_bounds([bpy.data.objects["TargetMesh"]])
+        for before, after in zip(before_export_bounds, after_export_bounds):
+            assert all(math.isclose(a, b, abs_tol=1e-5) for a, b in zip(before, after))
+        assert accessory.parent is rig
+        assert accessory.parent_bone == "Accessory"
+
+        source_parent = bpy.data.objects.new("SourceScaleParent", None)
+        target_parent = bpy.data.objects.new("TargetScaleParent", None)
+        bpy.context.scene.collection.objects.link(source_parent)
+        bpy.context.scene.collection.objects.link(target_parent)
+        source_parent.scale = (0.5, 0.5, 0.5)
+        target_parent.scale = (0.5, 0.5, 0.5)
+        source_probe = make_rig("SourceScaleProbe", 1.0, 0.02)
+        target_probe = make_rig("TargetScaleProbe", 100.0, 0.0544579625)
+        source_probe.parent = source_parent
+        target_probe.parent = target_parent
+        source_probe.matrix_parent_inverse = blender_worker.Matrix.Identity(4)
+        target_probe.matrix_parent_inverse = blender_worker.Matrix.Identity(4)
+        bpy.context.view_layer.update()
+        source_scale = source_probe.matrix_world.to_scale()
+        target_scale = target_probe.matrix_world.to_scale()
+        assert math.isclose(source_scale.x, 0.01, abs_tol=1e-8)
+        assert math.isclose(target_scale.x, 0.02722898125, abs_tol=1e-8)
+        assert math.isclose(
+            target_probe.data.bones["Root"].length / source_probe.data.bones["Root"].length,
+            100.0,
+            abs_tol=1e-6,
+        )
+        real_matrix_factor = blender_worker.scale_aware_retarget_location_scale(
+            source_scale,
+            target_scale,
+        )
+        assert math.isclose(real_matrix_factor, 0.3672563849, abs_tol=1e-6)
+        source_basis_delta = 0.2
+        target_basis_delta = source_basis_delta * real_matrix_factor
+        assert math.isclose(
+            source_basis_delta * source_scale.x,
+            target_basis_delta * target_scale.x,
+            abs_tol=1e-8,
+        )
         print(json.dumps({"status": "pass", "location_scale": round(result["location_scale"], 6)}, sort_keys=True))
 
 
