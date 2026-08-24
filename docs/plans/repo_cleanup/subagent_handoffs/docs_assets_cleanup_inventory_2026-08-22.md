@@ -2,7 +2,7 @@
 
 ## Scope and method
 
-This is a read-only inventory of every top-level directory currently present under `docs/assets/`.
+This began as a read-only inventory of every top-level directory present under `docs/assets/` on 2026-08-22. The current-state refresh below supersedes its directory count and Git-state totals while preserving the package-by-package evidence from that snapshot.
 
 I read `AGENTS.md` and the complete `.agents/skills/chaos-redux-event-assets/SKILL.md` before inspecting the workspaces.
 
@@ -13,6 +13,24 @@ The separate `docs/assets/portraits/` tree is a durable grounded-portrait archiv
 Events 21+ were not audited as standalone content; they were considered only when a shared runtime or archive reference was necessary to classify a workspace.
 
 No asset, gameplay, localisation, workbook, GUI, GFX, sound, or interface file was changed.
+
+## Current-state refresh — 2026-08-24
+
+The refreshed physical tree contained 23 top-level directories, 28,427 files, and 56,979,143,899 bytes before empty-directory cleanup. Git reported 4,090 tracked paths, 2,568 modified tracked paths, and 24,341 ignored paths under `docs/assets/`; the very large ignored count remains evidence that normal `git status` is not a safe deletion inventory.
+
+Three active workspaces were not present in the original table:
+
+- `docs/assets/014_cannibalism/` contained 3,489 files and 8,409,639,013 bytes, with files modified on 2026-08-24. Its root manifest remains `needs_user_review`, and its model evidence includes provider, source, runtime-review, and blocked-package states. It is `retain_active_recent`.
+- `docs/assets/019_infantry_spawn/` contained 1,434 ignored files and 577,198,292 bytes. Its manifest classifies former GUI rows as archival provenance but explicitly does not close the current provider-extension or whole-event documentation gate. Because the event package remains active and the workspace contains the durable evidence needed to disposition those rows, it is `retain_blocked_or_uncertain`; no partial evidence deletion was approved.
+- `docs/assets/famine_and_migration_system/` contained 188 files and 99,222,937 bytes. Its asset rows are substantially produced, but parent consumer wiring, probability/MCP proof, runtime review, and system completion remain open. It is `retain_active_recent`.
+
+The refreshed runtime-facing search across `common/`, `events/`, `interface/`, `gfx/`, `localisation/`, `sound/`, `music/`, and `history/` found no executable path into `docs/assets/`. The only matches were source-evidence comments in `sound/012_africa_strange_forces_sound.asset` and `interface/012_africa_animations.gfx`.
+
+No complete event or shared-system workspace satisfied the skill requirement that all accepted runtime assets, provenance, licensing, crosswalks, review results, handoff facts, and unresolved dispositions be promoted before deletion. Recent modification time alone was never used as approval, and ignored status was never treated as deadness.
+
+`docs/assets/chaos_warfare_system_audit/` contained only four empty subdirectories, zero files, zero bytes, zero Git paths, and no runtime references. After resolving the absolute path inside `docs/assets/` and verifying the zero-file condition, the four empty leaves and their empty parent were removed non-recursively. This removed no asset or recoverable content and reduced the current top-level directory count from 23 to 22.
+
+The current filesystem still contains 95 `README.md` files under `docs/`. A refreshed local-link resolution pass found zero missing local targets. No central `docs/assets/README.md` was added because the package manifests and permanent plan/spec/event documents own status; a central asset index would duplicate volatile acceptance state.
 
 ## Verdict
 
