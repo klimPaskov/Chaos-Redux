@@ -100,9 +100,12 @@ audits every accepted scenario and explicitly promotes the attestation.
 FORM-03 has a dedicated static package under
 `docs/assets/006_independence_wave/low_countries_form03_progression/`: six
 national-focus icons, six charter-lifecycle idea icons, six decision-family
-icons, and one charter-convention report scene. The focus, idea, and decision
-sprites are registered in `interface/006_independence_wave_form03.gfx`. The
-report sprite `GFX_report_event_006_form03_charter_convention` is registered in
+icons, one charter-convention report scene, and one inline League Reserve
+ledger texticon. The focus, idea, decision, and ledger sprites are registered in
+`interface/006_independence_wave_form03.gfx`. The technical-mission cost uses
+`£GFX_independence_wave_form03_league_reserve_texticon` for the pooled reserve
+charge, while its tooltip names the commitment in plain language. The report
+sprite `GFX_report_event_006_form03_charter_convention` is registered in
 `interface/006_independence_wave_event_pictures.gfx` and is used by
 `chaosx.nr6.300` through `chaosx.nr6.308`. Source images, processed PNGs,
 runtime DDS copies, prompts, checksums, review sheets, and the detailed report
