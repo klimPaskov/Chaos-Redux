@@ -1,6 +1,6 @@
 # Event 014 Flag Asset Frozen Ledger
 
-> **Corrected production contract (2026-07-15).** The thirteen families, five compositions, and three sizes below remain the runtime contract, but every design is a flat, front-facing vexillological graphic generated specifically for the refresh. Warlord families are origin-agnostic. Current source and provenance evidence lives in `docs/assets/014_cannibalism/flags_refresh/` and the top-level Event 014 asset manifest.
+> **Corrected production contract (2026-07-15).** The thirteen families, five compositions, and three sizes below remain the runtime contract, but every design is a flat, front-facing vexillological graphic generated specifically for the refresh. Warlord families are origin-agnostic. The immutable source and provenance package is stored at `docs/assets/014_cannibalism/flags_refresh/` in Git revision `894037493`; the compact current worktree retains the byte-identical runtime TGAs and this ledger.
 
 ## Runtime contract
 
@@ -42,12 +42,12 @@ Ideology-specific files are mandatory because a cosmetic fallback does not overr
 | Family | Distinct fictional motif |
 |---|---|
 | `CBA` | tooth-ring and crossed cleavers in hard geometric bands |
-| `AHX` | split jaw and hooked knife in a bold saltire or chevron field |
+| `CBB` | split jaw and hooked knife in a bold saltire or chevron field |
 | `CBC` | cracked bowl and three fangs in high-contrast heraldic geometry |
-| `AIX` | black sunburst, butcher hook, and angular bone-white divisions |
+| `CBD` | black sunburst, butcher hook, and angular bone-white divisions |
 | `CBE` | wagon wheel and cleaver reduced to severe flat silhouettes |
 | `CBF` | rail spike, horse jaw, and broken line rendered as simple heraldry |
-| `AMX` | crescent bite, butcher block, and triangular color divisions |
+| `CBG` | crescent bite, butcher block, and triangular color divisions |
 | `CBH` | crossed cleavers, tooth crown, and asymmetric flat bands |
 | `CBL` | one empty command table joined to several blood-red routes; no leader portrait |
 | `CBL_CENTRAL_COMMAND` | one blade and one chain binding every route into a rigid vertical command |

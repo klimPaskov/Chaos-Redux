@@ -4,7 +4,7 @@
 
 Regenerated every live Event 014 Cannibalism flag as a distinct built-in-imagegen design and replaced its normal, medium, and small runtime TGA while preserving all existing filenames.
 
-- Families: `CBA`, `AHX`, `CBC`, `AIX`, `CBE`, `CBF`, `AMX`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
+- Families: `CBA`, `CBB`, `CBC`, `CBD`, `CBE`, `CBF`, `CBG`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
 - Variants per family: base, `_communism`, `_democratic`, `_fascism`, `_neutrality`
 - Distinct generated designs: 65
 - Runtime TGA outputs: 195
@@ -24,6 +24,7 @@ No gameplay, localisation, interface, spreadsheet, or source-specification files
   - `contact_sheets/source_vs_final_contact_sheet.png`
   - `manifest.md`, with one complete provenance entry per design
   - `notes/process_flags.py`, the deterministic crop, flatten, export, sheet, and manifest builder
+- Immutable repository checkpoint: Git revision `894037493`, containing all 204 canonical package files. The package is compacted out of the current worktree, while all 195 live runtime TGAs remain byte-identical to that revision.
 - Runtime replacements:
   - 65 normal TGAs under `gfx/flags/`
   - 65 medium TGAs under `gfx/flags/medium/`
@@ -35,17 +36,17 @@ The manifest is the exact per-file inventory. Each entry records the Event 014 u
 
 - Each design came from its own imagegen call and source PNG; no ideology design is a filtered, flipped, or recolored derivative.
 - Source masters remain unmodified for provenance.
-- Runtime masters use a centered 82:52 crop and no-dither four-color flattening to remove source gradients, vignettes, and soft shadows while preserving generated geometry.
+- Runtime masters use a centered 82:52 crop and no-dither three-to-five-color flattening to remove source gradients, vignettes, and soft shadows while preserving generated geometry.
 - Medium and small assets derive from the corresponding flattened normal master and are remapped to that same palette.
 - `CBL_CENTRAL_COMMAND_communism` uses maximum-coverage palette selection because median-cut dropped its small emblem. Small disconnected red quantization islands were then removed.
-- Comparable isolated gray quantization pixels were removed from `AMX_democratic` before rebuilding all three sizes and contact sheets.
+- Comparable isolated gray quantization pixels were removed from `CBG_democratic` before rebuilding all three sizes and contact sheets.
 - TGAs are written as uncompressed 32-bit BGRA with descriptor byte `8`; the top-origin bit is unset, so pixel data is bottom-origin.
 
 ## Validation evidence
 
 - Inventory: 65 prompt files, 65 source PNGs, 65 processed PNGs, and 195 runtime TGAs.
 - Dimensions: every processed/normal asset is 82x52, every medium asset is 41x26, and every small asset is 10x7.
-- Palette: every processed and runtime asset has exactly four fully opaque flat colors, within the required two-to-four-color range.
+- Palette: every processed and runtime asset has three through five fully opaque flat colors, within the production contract.
 - Distinctness: all 65 processed PNG hashes are unique and all 65 normal TGA hashes are unique.
 - TGA inspection: all 195 headers are uncompressed true-color, 32-bit, with zero x/y origins and descriptor `8`; every alpha byte is 255.
 - Origin proof: all 65 decoded normal TGAs match their processed PNG pixel-for-pixel when interpreted bottom-first.

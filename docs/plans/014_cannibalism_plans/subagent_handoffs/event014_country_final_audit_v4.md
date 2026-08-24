@@ -14,7 +14,7 @@ Disposition: the country and transformation source package is substantially wire
 - Unified Hannibal and Wendigo host selection is human-first, deterministic on ties, and contains player-control preservation checks; reveal flags are set before the identity transform so downstream setup is gated consistently.
 - The Wendigo package preserves the original ZZZ identity ledger, origin specialist/legion/bone-guard/elephantry flags and caps, recruitment state, pack templates, anchor state registry, countdown route, and terminal lock form in source logic.
 - The focus package is loaded by source ID and has MCP-validated warlord, unified, and Wendigo trees with no blocking diagnostics. The unified tree has 18 layout warnings that are non-blocking but should be reviewed before a visual polish pass.
-- The runtime flag matrix is complete at 13 families x 5 ideology variants x 3 sizes = 195 TGA files, but current ImageGen provenance cannot be established from the repository and stale handoff names conflict with the active tag set.
+- The runtime flag matrix is complete at 13 families x 5 ideology variants x 3 sizes = 195 TGA files. Git revision `894037493` preserves the complete 204-file ImageGen source package for the current CBA-CBH tag set, and all 195 installed runtime TGAs are byte-identical to that provenance checkpoint.
 - Warlord portrait wiring deliberately uses 16 retained warlord DDS files behind the complete CBA-CBH regional/default sprite-token set in `interface/014_cannibalism.gfx`; the aliases are intentional and all referenced files exist.
 - No active source text exposes Hannibal before reveal through an ancient-general, Carthaginian, Punic, or disclaimer string. The histories recruit `CBL_hannibal` and `ZZZ_hannibal_wendigo` as roleless characters before promotion; this is an intentional hidden-character pattern in source comments but retains a low engine-semantic visibility risk requiring live validation.
 - Quantitative AI/probability validation is incomplete because the required `chaosx_ai_probability_auditor` route is not callable and the generic probability adapter discovered no weighted surfaces for the AI source. No AI weight was changed.
@@ -36,7 +36,7 @@ Disposition: the country and transformation source package is substantially wire
 | Decisions and missions | Source/localisation pass | `common/decisions/014_cannibalism_decisions.txt` and `common/decisions/categories/014_cannibalism_categories.txt`; 140 decision IDs found with localisation coverage. |
 | Ideas and national spirits | Source/localisation pass | `common/ideas/014_cannibalism_ideas.txt`; 37 direct `cannibalism_*` ideas checked for localisation, with broader icon set present. |
 | Advisors and high command | Design warning | No dedicated Event 014 advisor/high-command/theorist definitions in `common/characters/014_cannibalism_characters.txt`; current source uses internal roleless characters and command ideas. |
-| Flags | Runtime matrix pass; provenance blocked | 13 families, five variants, three sizes; 195 files and unique per-size hashes. ImageGen/source-master evidence is absent or stale. |
+| Flags | Pass | 13 families, five variants, three sizes; 195 files and unique per-size hashes. Git revision `894037493` contains 65 separate built-in ImageGen records, source masters, prompts, processing evidence, and validation for the current stems; the installed TGAs match it byte-for-byte. |
 | Portraits | Pass with deliberate aliases | The 64 CBA-CBH warlord regional/default sprite tokens intentionally reuse the retained 16 warlord DDS files; the two mandated `hannibal.dds` and `hannibal_wendigo.dds` files are present. |
 | Units and equipment | Source pass with activation risk | Nine custom irregular subunits and four vanilla equipment tokens are defined/registered; all custom units are `active = no` and templates are locked, so live recruitment/activation remains an engine-semantic risk. |
 | Technology | Partial | Setup inherits donor technology and explicitly grants vanilla `elephantry`; no custom Event 014 technology tree exists. Required Technology Tree Viewer is unavailable. |
@@ -89,7 +89,7 @@ The runtime flag inventory is:
 
 The flag audit found 65 files in each of `gfx/flags`, `gfx/flags/medium`, and `gfx/flags/small`, with 65 unique SHA-256 hashes within each size. Representative files are uncompressed 32-bit alpha TGAs at 82x52, 41x26, and 10x7. Parent visual review of root-size CBA-CBH and CBL family designs found no immediate flat-vexillological rejection.
 
-Flag provenance is not verifiable. `docs/assets/014_cannibalism/flags_refresh` is absent, and `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_flag_imagegen_regeneration_2026-07-15.md` claims 65 ImageGen builds but names obsolete roots including AHX, AIX, and AMX. The older regional-duplicate portrait lists are superseded by the explicit user deletion set described below; they are not a current portrait blocker. Runtime uniqueness is evidence of installed files, not provenance.
+Flag provenance is repository-verifiable. The bulky `docs/assets/014_cannibalism/flags_refresh` source package was compacted out of the current worktree, but Git revision `894037493` preserves all 204 package files. Its `generation_evidence.json` contains 65 separate `built-in-imagegen` records for CBA-CBH, CBL, the three CBL cosmetics, and `ZZZ_CANNIBALISM_HANNIBAL`; its manifest, prompts, source PNGs, processed PNGs, contact sheets, and validation remain inspectable at that revision. A direct Git byte comparison reports zero differences across the 195 current runtime TGAs. The corrected handoffs use only the active CBA-CBH roots. The older regional-duplicate portrait lists are superseded by the explicit user deletion set described below; they are not a current portrait blocker.
 
 No dedicated Event 014 advisors, high-command members, or theorists were found. This may be intentional because the design uses internal roleless characters and command ideas, but it remains a design confirmation item rather than a safe local patch.
 
@@ -155,7 +155,7 @@ The dedicated GUI route was attempted for `cannibalism_network_window` and the f
 
 ## Flag, portrait, and pre-reveal conclusions
 
-The 195-file flag matrix is installed and dimension/format/hash-unique per size. The unresolved item is provenance and source-master evidence, not a missing runtime flag file. No Meshy provider task or live `@meshy-ai/meshy-mcp-server` process is owned or used by this country audit.
+The 195-file flag matrix is installed and dimension/format/hash-unique per size. Repository-backed ImageGen provenance and source-master evidence are preserved at Git revision `894037493`, and every installed runtime flag matches that checkpoint. No Meshy provider task or live `@meshy-ai/meshy-mcp-server` process is owned or used by this country audit.
 
 The portrait matrix is intentionally consolidated: 64 CBA-CBH regional/default sprite tokens resolve to 16 retained warlord DDS files, and the mandated Hannibal/Wendigo DDS files are present. The 40 retired regional duplicates listed in the user attachment are absent by request, and all interface texture paths resolve.
 
@@ -178,11 +178,10 @@ Changed files: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_coun
 
 Changed tags, states, leaders, parties, focus IDs, localisation keys, formables, AI values, and assets: none.
 
-Before/after gameplay and asset behavior: unchanged. No safe small patch was applied because the remaining gaps concern flag provenance or unavailable engine evidence, while the source tag, slot, origin, transfer, reveal, cleanup, focus, localisation, player-control, and deliberate portrait-alias paths are already wired.
+Before/after gameplay and asset behavior: unchanged. No gameplay patch was required because the source tag, slot, origin, transfer, reveal, cleanup, focus, localisation, player-control, flag, and deliberate portrait-alias paths are already wired.
 
 ## Blockers, risks, and follow-up ownership
 
-- P1 provenance blocker: reconcile or supersede the stale flag handoff that names AHX/AIX/AMX and restore current CBA-CBH ImageGen/source-master evidence under the active flag asset ledger. The regional-duplicate portrait deletion set is explicit and complete, so it is not a blocker.
 - P1 evidence blocker: run the required `chaosx_ai_probability_auditor` and named scenario comparison once the route is available; do not tune the four AI profiles from source-only weights.
 - P1 evidence blocker: obtain a working GUI scenario and render route for the frontline-hunger windows.
 - P1 evidence blocker: install/expose the Technology Tree Viewer or record that limitation in the parent release packet; validate custom-unit activation/recruitment in a live consumer pass.

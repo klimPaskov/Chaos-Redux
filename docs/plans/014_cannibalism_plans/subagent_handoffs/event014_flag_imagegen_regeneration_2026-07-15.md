@@ -14,7 +14,7 @@ All 65 live Event 014 fictional flag designs were regenerated successfully. Ever
 
 The exact design inventory is the cross-product of these 13 roots and five suffixes:
 
-- Roots: `CBA`, `AHX`, `CBC`, `AIX`, `CBE`, `CBF`, `AMX`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
+- Roots: `CBA`, `CBB`, `CBC`, `CBD`, `CBE`, `CBF`, `CBG`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
 - Suffixes: no suffix, `_communism`, `_democratic`, `_fascism`, `_neutrality`
 
 `ZZZ_weaponized_wendigo` was deliberately excluded, does not appear in the prompt/evidence inventories, and has no scoped working-tree change.
@@ -42,6 +42,8 @@ Package metadata and review artifacts changed at these exact paths:
 - `docs/assets/014_cannibalism/flags_refresh/contact_sheets/final_runtime_flags_contact_sheet.png`
 - `docs/assets/014_cannibalism/flags_refresh/contact_sheets/source_vs_final_contact_sheet.png`
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_flag_imagegen_regeneration_2026-07-15.md`
+
+The compact current worktree deliberately omits the bulky source package. Git revision `894037493` is the immutable repository-backed provenance checkpoint for all 204 package files under `docs/assets/014_cannibalism/flags_refresh/`. Its `generation_evidence.json` records 65 separate `built-in-imagegen` calls for the current CBA-CBH, CBL, cosmetic CBL, and Wendigo stems. A byte comparison against that revision finds zero differences across the 195 installed Event 014 runtime TGAs, so the current live flags are exactly the outputs documented by that checkpoint.
 
 No gameplay, `.gfx` configuration, GUI, localisation, script, country-history, focus, decision, event, or spreadsheet file was edited.
 
