@@ -1,5 +1,10 @@
 $ErrorActionPreference = "Stop"
 
+$userScopedMeshyApiKey = [Environment]::GetEnvironmentVariable("MESHY_API_KEY", "User")
+if (-not [string]::IsNullOrWhiteSpace($userScopedMeshyApiKey)) {
+	$env:MESHY_API_KEY = $userScopedMeshyApiKey
+}
+
 if ([string]::IsNullOrWhiteSpace($env:MESHY_API_KEY)) {
 	throw "MESHY_API_KEY is missing. Stop before starting Meshy."
 }
