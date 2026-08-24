@@ -18,10 +18,15 @@ import traceback
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
+ADAPTER_ROOT = Path(__file__).resolve().parent
+if str(ADAPTER_ROOT) not in sys.path:
+    sys.path.insert(0, str(ADAPTER_ROOT))
+
 import bpy
 import bmesh
 from mathutils import Matrix, Quaternion, Vector
 from mathutils.kdtree import KDTree
+from normalization_convergence import evaluate_convergence_step
 
 
 PREVIEW_LIGHT_REFERENCE_HEIGHT = 7.3518242835
@@ -495,6 +500,53 @@ def bind_geometry_to_existing_rig(
         "armature_world_scale": list(rig_world_scale),
         "mesh_data_scale_ratio": export_scale_ratio,
         "mesh_world_scale_after_bake": list(target_mesh.matrix_world.to_scale()),
+    }
+
+
+def prepare_dual_source_base_rig(target_armature: bpy.types.Object) -> Dict[str, Any]:
+    """Reset only the working rig to an action-free rest base before normalization."""
+
+    if target_armature.type != "ARMATURE" or not target_armature.get("chaosx_working", False):
+        raise RuntimeError("Dual-source base-rig mode requires the explicit working armature.")
+    detached_action = None
+    detached_nla_tracks = 0
+    if target_armature.animation_data is not None:
+        active = target_armature.animation_data.action
+        detached_action = active.name if active is not None else None
+        detached_nla_tracks = len(target_armature.animation_data.nla_tracks)
+        target_armature.animation_data_clear()
+    for pose_bone in target_armature.pose.bones:
+        pose_bone.matrix_basis = Matrix.Identity(4)
+    target_armature.data.pose_position = "REST"
+    bpy.context.scene.frame_set(0)
+    bpy.context.view_layer.update()
+    target_armature.data.pose_position = "POSE"
+    bpy.context.view_layer.update()
+    removed_unused_working_actions = []
+    for action in list(bpy.data.actions):
+        if action.users == 0 and "WORKING" in action.name:
+            removed_unused_working_actions.append(action.name)
+            bpy.data.actions.remove(action)
+    remaining_working_actions = []
+    if target_armature.animation_data is not None:
+        if target_armature.animation_data.action is not None:
+            remaining_working_actions.append(target_armature.animation_data.action.name)
+        remaining_working_actions.extend(track.name for track in target_armature.animation_data.nla_tracks)
+    if remaining_working_actions:
+        raise RuntimeError(
+            "Dual-source base-rig mode retained working animation data: "
+            + json.dumps(sorted(remaining_working_actions))
+        )
+    return {
+        "policy": "working_armature_action_clear_and_identity_rest_pose",
+        "detached_working_action": detached_action,
+        "detached_working_nla_tracks": detached_nla_tracks,
+        "removed_unused_working_actions": sorted(removed_unused_working_actions),
+        "working_actions": [],
+        "pose_bones_reset": len(target_armature.pose.bones),
+        "provider_source_actions_preserved": sorted(
+            action.name for action in bpy.data.actions if "WORKING" not in action.name
+        ),
     }
 
 
@@ -1103,6 +1155,58 @@ def verify_saved_normalization(checkpoint: Path, target_height: float) -> Dict[s
             for rig in armatures()
         ],
     }
+
+
+def stabilize_dual_source_base_normalization(
+    checkpoint: Path,
+    target_height: float,
+) -> Dict[str, Any]:
+    """Strictly renormalize a rest-only base after its first dependency-graph reload."""
+
+    corrections = []
+    previous_delta = None
+    max_corrections = 8
+    for corrections_applied in range(max_corrections + 1):
+        bpy.ops.wm.open_mainfile(filepath=str(checkpoint))
+        persisted_geometry = geometry_metrics()
+        persisted_height = float(persisted_geometry["dimensions"][2])
+        tolerance = max(1e-5, abs(target_height) * 1e-5)
+        step = evaluate_convergence_step(
+            target=target_height,
+            persisted=persisted_height,
+            tolerance=tolerance,
+            previous_delta=previous_delta,
+            corrections_applied=corrections_applied,
+            max_corrections=max_corrections,
+        )
+        record = {
+            "pass": corrections_applied,
+            "target_height_m": target_height,
+            "persisted_height_m": persisted_height,
+            "height_delta_m": step["delta"],
+            "correction_factor": step["correction_factor"],
+        }
+        corrections.append(record)
+        if step["status"] == "accepted":
+            return {
+                "policy": "dual_source_base_reopen_monotonic_convergence_and_strict_reverify",
+                "checkpoint": str(checkpoint),
+                "target_height_m": target_height,
+                "persisted_height_m": persisted_height,
+                "height_delta_m": step["delta"],
+                "tolerance_m": tolerance,
+                "geometry": persisted_geometry,
+                "armatures": [
+                    {"name": rig.name, "world_scale": list(rig.matrix_world.to_scale())}
+                    for rig in armatures()
+                ],
+                "dependency_graph_corrections": corrections,
+            }
+        correction = normalize_geometry(target_height)
+        record["normalization"] = correction
+        save_blend(checkpoint)
+        previous_delta = float(step["delta"])
+    raise RuntimeError("Normalization convergence exhausted its correction cap.")
 
 
 def constrain_runtime_footprint(
@@ -2126,6 +2230,10 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     source = within(job, payload["source_rel"])
     runtime_stem = safe_name(payload["runtime_stem"])
+    if payload.get("dual_source_base_rig", False) and not payload.get("geometry_source_rel"):
+        raise ValueError("dual_source_base_rig requires geometry_source_rel.")
+    if payload.get("geometry_object_name") and not payload.get("geometry_source_rel"):
+        raise ValueError("geometry_object_name requires geometry_source_rel.")
     clear_scene()
     source_collection = new_collection("PROVIDER_SOURCE")
     working_collection = new_collection("WORKING")
@@ -2134,15 +2242,45 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     excluded_names = {str(name) for name in payload.get("excluded_provider_objects", [])}
     geometry_source = None
     geometry_transfer = None
+    dual_source_base_rig = None
+    base_weight_sanitization = None
     if payload.get("geometry_source_rel"):
         geometry_source = within(job, str(payload["geometry_source_rel"]))
         imported_geometry = import_geometry_candidate(geometry_source)
         imported_rig = imported
         imported = imported_geometry + imported_rig
+        requested_geometry_object = explicit_safe_name(
+            payload.get("geometry_object_name"),
+            "geometry_object_name",
+        )
         geometry_candidates = [
             obj for obj in imported_geometry
-            if obj.type == "MESH" and obj.name not in excluded_names
+            if (
+                obj.type == "MESH"
+                and obj.name == requested_geometry_object
+                and obj.name not in excluded_names
+            )
         ]
+        if len(geometry_candidates) != 1:
+            raise RuntimeError(
+                "Dual-source rig preparation requires exactly one explicitly selected geometry MESH: "
+                + json.dumps(
+                    {
+                        "requested": requested_geometry_object,
+                        "observed": sorted(
+                            obj.name
+                            for obj in imported_geometry
+                            if obj.type == "MESH" and obj.name == requested_geometry_object
+                        ),
+                    },
+                    sort_keys=True,
+                )
+            )
+        selected_geometry = geometry_candidates[0]
+        if selected_geometry.library is not None or selected_geometry.data.library is not None:
+            raise RuntimeError(
+                "Dual-source geometry_object_name must select a local, fully appended MESH object."
+            )
         rig_mesh_candidates = [
             obj for obj in imported_rig
             if obj.type == "MESH" and obj.name not in excluded_names
@@ -2175,13 +2313,14 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
             armature_candidates = [
                 obj for obj in armature_candidates if obj.name == requested_source_armature
             ]
-        if len(geometry_candidates) != 1 or not rig_mesh_candidates or len(armature_candidates) != 1:
+        if not rig_mesh_candidates or len(armature_candidates) != 1:
             raise RuntimeError(
                 "Dual-source rig preparation requires one geometry mesh, one or more explicitly selected rig meshes, and one source armature."
             )
         working_source = [geometry_candidates[0], armature_candidates[0]]
         for obj in imported:
             move_to_collection(obj, source_collection)
+            obj["chaosx_working"] = False
         working = duplicate_hierarchy(working_source, source_collection, working_collection)
         working_by_source = {
             str(obj.get("chaosx_source_object")): obj
@@ -2195,6 +2334,9 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
             target_armature,
             str(payload.get("geometry_weight_mode") or "four_nearest"),
         )
+        if payload.get("dual_source_base_rig", False):
+            dual_source_base_rig = prepare_dual_source_base_rig(target_armature)
+            base_weight_sanitization = sanitize_working_weights()
     else:
         for obj in imported:
             move_to_collection(obj, source_collection)
@@ -2220,7 +2362,13 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     # Remove those scale curves before normalization so a later dependency-graph
     # evaluation cannot restore the provider scale after the report is measured.
     scale_sanitization = (
-        sanitize_action_scale_channels()
+        {
+            "policy": "dual_source_base_rig_has_no_working_actions",
+            "actions": [],
+            "remaining_scale_fcurves": 0,
+        }
+        if dual_source_base_rig is not None
+        else sanitize_action_scale_channels()
         if humanoid_asset
         else {"policy": "not_applicable", "actions": [], "remaining_scale_fcurves": 0}
     )
@@ -2309,6 +2457,10 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     save_blend(material_checkpoint)
 
     actions = action_metrics()
+    if dual_source_base_rig is not None:
+        actions["actions"] = []
+        actions["base_rig"] = dual_source_base_rig
+        actions["base_weight_sanitization"] = base_weight_sanitization
     actions["scale_sanitization"] = scale_sanitization
     actions["root_translation_sanitization"] = (
         sanitize_root_translation_channels()
@@ -2326,7 +2478,11 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     pre_export = job / "blender" / "checkpoints" / "05_pre_export.blend"
     previews = render_previews(job, runtime_stem) if payload.get("render_previews", True) else []
     save_blend(pre_export)
-    normalization_persistence = verify_saved_normalization(pre_export, target_height)
+    normalization_persistence = (
+        stabilize_dual_source_base_normalization(pre_export, target_height)
+        if dual_source_base_rig is not None
+        else verify_saved_normalization(pre_export, target_height)
+    )
     normalization_persistence["checkpoint"] = str(pre_export.relative_to(job)).replace("\\", "/")
     geometry = normalization_persistence["geometry"]
 
@@ -2344,6 +2500,8 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "working_source_objects": len(working_source),
         "working_objects": len(working),
         "geometry_transfer": geometry_transfer,
+        "dual_source_base_rig": dual_source_base_rig,
+        "base_weight_sanitization": base_weight_sanitization,
         "imported_geometry": imported_metrics,
         "normalization": normalize,
         "normalization_persistence": normalization_persistence,
