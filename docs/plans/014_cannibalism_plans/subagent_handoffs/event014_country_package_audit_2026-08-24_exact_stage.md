@@ -4,7 +4,7 @@ Audit date: 2026-08-24.
 
 Exact stage: source audit of the CBA-CBH reusable warlord slots, CBL unified host, existing ZZZ Wendigo discovery and preservation path, and their country, history, state, leader, portrait, flag, party, idea, advisor, unit, technology, AI, territory, claims, cores, recruitment, and player-control surfaces.
 
-Disposition: one P1 country-package defect is proven, two P2 design risks remain, and several required HOI4 MCP evidence routes are blocked or unavailable. No gameplay or asset file was changed because concurrent work is present. This handoff is the only file changed by this audit tranche.
+Disposition: the previously proven P1 country-package defect is patched in source, two P2 design risks remain, and several required HOI4 MCP evidence routes are blocked or unavailable. Runtime engine confirmation remains pending. No portrait, localisation, flag, icon, focus, decision, unit, technology, AI, GUI, or unrelated country file was changed.
 
 ## Executive findings
 
@@ -13,7 +13,7 @@ Disposition: one P1 country-package defect is proven, two P2 design risks remain
 - Eight-slot allocation and cleanup are explicitly implemented for CBA-CBH, including reusable release helpers.
 - The source package wires nine custom irregular subunits and the existing vanilla `elephantry` unit through setup, templates, activation technology, inherited recruitment, unified recruitment, Wendigo inheritance, localisation, icons, and CXT registration.
 - Unified host and Wendigo source logic preserves donor identity and player control through human-first host selection and guarded transfer paths, but required map and runtime evidence could not be completed.
-- Hannibal secrecy is not satisfied in the current source. Both CBL and Wendigo histories use `recruit_character` before their public reveal role is created. This is an engine-semantic P1 blocker, not only a comment or naming concern.
+- The P1 Hannibal secrecy defect is source-remediated. Both static history attachments were removed, guarded recruitment now occurs immediately before the matching public reveal role, and both public reveal triggers no longer require pre-attached characters.
 - No Event 014 advisor, high-command, theorist, or political-advisor character surface was found. The package currently uses country-leader roles and command ideas, which is a P2 design warning unless that substitution is explicit in the specification.
 - The regional name mapping covers seven supported identities with four names each. The Oceania pool is internally consistent but entirely Anglo-settler in presentation, so its regional identity needs design confirmation.
 
@@ -33,36 +33,36 @@ The country-creation wiki page defines `recruit_character = TAG_character_name` 
 | --- | --- | --- |
 | Tag registration | Pass | `common/country_tags/014_cannibalism_countries.txt:8-16` registers exactly CBA, CBB, CBC, CBD, CBE, CBF, CBG, CBH, and CBL. |
 | Country definitions | Source pass | `common/countries/Cannibal Warlord Slot CBA.txt` through `CBH.txt` and `common/countries/Cannibal Unified Host CBL.txt` provide the matching definitions and colours. |
-| Country histories | P1 defect | Dormant CBA-CBH histories are coherent, but `history/countries/CBL - Cannibal Unified Host.txt:15` and `history/countries/ZZZ - Zombie Outbreak.txt:18` attach Hannibal before reveal. |
+| Country histories | Source pass after remediation; engine unresolved | Dormant CBA-CBH histories remain coherent. Static CBL and Wendigo Hannibal attachments were removed from `history/countries/CBL - Cannibal Unified Host.txt` and `history/countries/ZZZ - Zombie Outbreak.txt`. |
 | Origins | Pass | `common/scripted_triggers/014_cannibalism_triggers.txt:3050-3107` contains only Island Host, Siege Commune, and March Host formation triggers. |
 | Prison Host exclusion | Source pass | No live `prison_host`, `Prison Host`, or equivalent Event 014 identifier was found under `common`, `history`, `events`, `interface`, or `localisation`; old references are documentation history only. |
 | Reusable slots | Pass | `common/scripted_triggers/014_cannibalism_triggers.txt:3599-3609` checks all eight availability flags, and `common/scripted_effects/014_cannibalism_effects.txt:5396-5479` defines all eight allocation helpers. |
 | Regional identity | Pass with P2 warning | `common/scripted_localisation/014_cannibalism_scripted_localisation.txt:313-372` and `:4645-4706` map seven regions and three origins to names and parties. The Oceania names at `localisation/english/014_cannibalism_l_english.yml:477-504` are all Anglo-settler names. |
 | States, capitals, cores, and claims | Source pass; MCP unresolved | Dynamic creation transfers the origin plus up to two valid neighbours, cores transferred states, and sets the origin capital in `common/scripted_effects/014_cannibalism_effects.txt:5334-5375`. Rollback removes cores and clears references around `:5280-5300`. |
-| Unified host | Source pass with P1 Hannibal defect | CBL setup and role creation are in `common/scripted_effects/014_cannibalism_effects.txt:12400-12458`; the public event is `events/014_cannibalism.txt:436-452` with ID `chaosx.nr14.70`. |
-| Wendigo discovery, preservation, and unification | Source pass with P1 Hannibal defect | `common/scripted_effects/014_cannibalism_effects.txt:18659-18705` preserves the ZZZ host and creates the Wendigo role, while the merge path begins around `:18800`. The public event is `events/014_cannibalism.txt:555-574` with ID `chaosx.nr14.72`. |
+| Unified host | Source pass after remediation; engine unresolved | CBL setup and role creation are in `common/scripted_effects/014_cannibalism_effects.txt:cannibalism_create_unified_country_from_selected_host`; the public event is `events/014_cannibalism.txt:chaosx.nr14.70`. |
+| Wendigo discovery, preservation, and unification | Source pass after remediation; engine unresolved | `common/scripted_effects/014_cannibalism_effects.txt:cannibalism_prepare_wendigo_merge_identity` preserves the ZZZ host and creates the Wendigo role. The public event is `events/014_cannibalism.txt:chaosx.nr14.72`. |
 | Player control safety | Source pass; MCP unresolved | Human-first host selection and no-human-displacement guards are in `common/scripted_effects/014_cannibalism_effects.txt:11993-12034` and `:12409-12470`; Wendigo donor and host guards are around `:18800-18870`. |
 | Politics and parties | Source pass | Dormant histories use neutrality with elections disabled. Runtime setup creates the ritual-predation identity and origin party names through `common/scripted_effects/014_cannibalism_effects.txt` and `common/scripted_localisation/014_cannibalism_scripted_localisation.txt:346-372`. |
-| Leaders and portraits | P1 secrecy defect | Dynamic warlord leaders have male-presenting regional names and no female metadata. CBL and Wendigo static character records exist in `common/characters/014_cannibalism_characters.txt`, but their histories recruit them before reveal. |
+| Leaders and portraits | Source pass after remediation; engine unresolved | Dynamic warlord leaders have male-presenting regional names and no female metadata. CBL and Wendigo static character records remain in `common/characters/014_cannibalism_characters.txt`, but their histories no longer recruit them before reveal. |
 | Advisors and high command | P2 design warning | No Event 014 advisor, high-command, theorist, or political-advisor character definitions were found in `common/characters/014_cannibalism_characters.txt` or the Event 014 leader surface. Current command ideas and leader traits are not equivalent advisor slots unless the specification says so. |
 | Flags | Source pass | CBA-CBH each have base and four ideology variants in all three sizes. CBL has base and four ideology variants plus the CBL_CENTRAL_COMMAND, CBL_HOST_CONFEDERATION, and CBL_RITUAL_STATE cosmetic families in all three sizes. |
 | Focus trees | Source pass; MCP unresolved | `common/national_focus/014_cannibalism_focus.txt` contains 108 unified, 68 warlord, and 28 Wendigo focus blocks. Runtime loading occurs around `common/scripted_effects/014_cannibalism_effects.txt:5229`, `:12442`, and `:19164`. |
 | Decisions, missions, and ideas | Source/localisation pass | `common/decisions/014_cannibalism_decisions.txt`, `common/decisions/categories/014_cannibalism_categories.txt`, and `common/ideas/014_cannibalism_ideas.txt` are wired to the Event 014 route and localisation. |
 | Units and equipment | Source pass; technology viewer unavailable | Nine custom subunits are defined, activated by matching hidden bridge technologies, and granted by package, origin, inherited, unified, and Wendigo effects. Vanilla `elephantry` is included in templates and setup. |
 | AI | Source pass; probability evidence blocked | `common/ai_strategy/014_cannibalism_warlords.txt` contains common and Island, Siege, and March profiles with self-removing guards. Required probability-auditor evidence was unavailable. |
-| Recruitment and cleanup | Source pass except Hannibal secrecy | Warlord allocation, release, state transfer, actor generation, and template cleanup are explicit in `common/scripted_effects/014_cannibalism_effects.txt:5687-5724` and related helpers. |
+| Recruitment and cleanup | Source pass after remediation; engine unresolved | Warlord allocation, release, state transfer, actor generation, template cleanup, and guarded reveal recruitment are explicit in `common/scripted_effects/014_cannibalism_effects.txt`. |
 
 ## Critical findings and proposed fixes
 
-### P1 CR-014-HANNIBAL-PRE-REVEAL-ATTACHMENT
+### P1 CR-014-HANNIBAL-PRE-REVEAL-ATTACHMENT (remediated in this tranche)
 
-`history/countries/CBL - Cannibal Unified Host.txt:15` contains `recruit_character = CBL_hannibal` in the country history. `history/countries/ZZZ - Zombie Outbreak.txt:18` contains `recruit_character = ZZZ_hannibal_wendigo` in the starting history.
+Before this patch, `history/countries/CBL - Cannibal Unified Host.txt:15` contained `recruit_character = CBL_hannibal`, and `history/countries/ZZZ - Zombie Outbreak.txt:18` contained `recruit_character = ZZZ_hannibal_wendigo` in starting history.
 
 The corresponding characters have portraits in `common/characters/014_cannibalism_characters.txt`, so this is a real country-character attachment rather than an inert localisation token. The comments in both histories call the characters roleless and invisible, but the required wiki and vanilla documentation define `recruit_character` as attaching the character to the country and do not establish a hidden internal-only exception.
 
-CBL public role creation occurs later at `common/scripted_effects/014_cannibalism_effects.txt:12451-12458` for `CBL_hannibal`. Wendigo role creation occurs at `:18697-18705` for `ZZZ_hannibal_wendigo`. The reveal events require `has_character` at `events/014_cannibalism.txt:443` and `:562`, so simply deleting the history recruitment without changing reveal ordering would create a second failure.
+CBL public role creation is in `common/scripted_effects/014_cannibalism_effects.txt:cannibalism_create_unified_country_from_selected_host` and Wendigo role creation is in `cannibalism_prepare_wendigo_merge_identity`. Before this patch, the public reveal events also required `has_character` at `events/014_cannibalism.txt:443` and `:562`, which would have created a second failure after removing the history attachments.
 
-Proposed fix: remove both static history recruitments and add a guarded `recruit_character` in the same reveal transaction immediately before the corresponding `add_country_leader_role`, or replace the event trigger with a reveal-state guard that does not require a pre-reveal character attachment. The fix must prove that the character is absent from the country before reveal and present only in the reveal transaction. Do not rely on the current roleless comment as secrecy proof.
+Applied fix: both static history recruitments and their stale roleless comments were removed. A guarded `recruit_character = CBL_hannibal` now runs inside the CBL reveal transaction immediately before `add_country_leader_role = { character = CBL_hannibal }`. A guarded `recruit_character = ZZZ_hannibal_wendigo` now runs inside the Wendigo reveal transaction immediately before `add_country_leader_role = { character = ZZZ_hannibal_wendigo }`. The `chaosx.nr14.70` and `chaosx.nr14.72` triggers now use their country and reveal-state predicates without requiring pre-attached Hannibal characters. This preserves public event IDs, text, pictures, options, and localisation while making the character absent before reveal and attached only during the reveal transaction.
 
 ### P2 CR-014-ADVISOR-SURFACE
 
@@ -131,14 +131,26 @@ No protected DDS file, flag, portrait, icon, or other asset was changed.
 
 ## Handoff priorities and simplifications
 
-1. Fix the two static Hannibal recruitments before any release claim. Preserve the reveal event ordering by recruiting immediately before role promotion or by changing the reveal trigger contract.
+1. Re-run the narrow Event 014 engine inspection and live reveal validation when the MCP workspace is available. The source-level Hannibal secrecy defect is fixed, but runtime confirmation remains required.
 2. Decide whether Event 014 requires advisor and high-command slots. If yes, create a bounded identity-specific package. If no, record the command-idea substitution in the design source of truth.
 3. Confirm the intended cultural scope of the Oceania name pool before the next identity or portrait pass.
 4. Re-run the required focus, event, GUI, map, technology, and probability MCP routes when their workspace registration and tool availability are restored. Do not treat source-only evidence as replacing those routes.
 
-No gameplay, map, localisation, portrait, flag, unit, technology, AI, or other asset simplification was implemented in this audit. The only unresolved omissions are the documented MCP evidence blockers and the source defects and design warnings listed above.
+No gameplay, map, localisation, portrait, flag, unit, technology, AI, or other asset simplification was implemented in this audit. The only unresolved omissions are the documented MCP evidence blockers and the two P2 design warnings listed above.
+
+## Patch validation
+
+- `rg` confirms no `recruit_character = CBL_hannibal` remains in the CBL history and no `recruit_character = ZZZ_hannibal_wendigo` remains in the ZZZ history. The only new occurrences are the two guarded reveal-transaction calls in `common/scripted_effects/014_cannibalism_effects.txt`.
+- The CBL guard is immediately followed by `add_country_leader_role` for `CBL_hannibal` inside `cannibalism_create_unified_country_from_selected_host`. The Wendigo guard is immediately followed by `add_country_leader_role` for `ZZZ_hannibal_wendigo` inside `cannibalism_prepare_wendigo_merge_identity`.
+- `events/014_cannibalism.txt` retains the `chaosx.nr14.70` and `chaosx.nr14.72` IDs, text, pictures, options, and localisation keys. Only the two pre-attachment `has_character` predicates were removed.
+- The protected Hannibal DDS hashes listed above were rechecked after the patch and remain unchanged.
+- Narrow post-patch `hoi4.event_inspect` and `hoi4.event_render` calls for `chaosx.nr14.70` returned the exact blocker `WORKSPACE_NOT_REGISTERED` for workspace `event014_country_audit_20260824`. Source ordering is proven, but engine rendering and runtime character-roster evidence remain unresolved.
 
 ## Changed files
 
-- Added `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_country_package_audit_2026-08-24_exact_stage.md`.
-- No other file was intentionally changed by this audit.
+- Updated `history/countries/CBL - Cannibal Unified Host.txt`.
+- Updated `history/countries/ZZZ - Zombie Outbreak.txt`.
+- Updated `common/scripted_effects/014_cannibalism_effects.txt` only at the CBL and Wendigo reveal transactions.
+- Updated `events/014_cannibalism.txt` only at the `chaosx.nr14.70` and `chaosx.nr14.72` trigger predicates.
+- Updated `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_country_package_audit_2026-08-24_exact_stage.md`.
+- No portraits, localisation, flags, icons, focus trees, decisions, units, technologies, AI files, adapter files, model files, or unrelated country content were changed.
