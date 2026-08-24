@@ -64,7 +64,7 @@ Commit `d6abc3792` repairs the joint partial-wave expected-count witness by reco
 
 Commit `a2abd65d7` remains the exact-count contract for joint Event 005/006 allocation. The user-directed standalone exception is source-applied in `subagent_handoffs/006_event6_manual_partial_wave_fix_2026-08-24.md`: after pool exhaustion, a non-empty aligned standalone Event 006 selection may rewrite target and shared expected count to the frozen selected count; an empty standalone pool and every joint short pool still fail closed with `insufficient_pool`. The exact-ladder evidence remains `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md`.
 
-The custom probability-auditor route was unavailable, direct MCP discovery was incomplete, and no same-scenario probability comparison or quantitative balance claim is recorded.
+The custom probability-auditor route was unavailable. The 2026-08-24 read-only probability audit records exact fixture outputs and current adapter limitations, but direct MCP discovery remains incomplete and no same-scenario probability comparison or quantitative balance claim is recorded.
 
 Current static checks pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, Statehood Ledger semantic matrix, and the 2026-08-24 FORM-48, FORM-01/02/04, FORM-03, and IW-035 cost-localisation checks; these checks do not prove live execution, GUI acceptance, tooltip observation, or balance. Exact commands and source/static limitations are recorded in `subagent_handoffs/006_event6_static_audit_refresh_2026-08-24.md`. Event and focus MCP evidence remains partial or warning-bearing, and both Event 006 GUI surfaces retain workspace-global diagnostics.
 
@@ -79,7 +79,7 @@ Super-event 23 remains blocked on the accepted London Brass Players recording be
 ### Immediate continuation order
 
 1. Preserve the 32/29/40/161 boundary and complete package admission only through independent identity, map, rights, roster, force, probability, host, collision, and cleanup evidence.
-2. Obtain the named-scenario probability audit and same-scenario compare across event, decision, mission, focus, host, league, patron, and allocator surfaces before weighted-logic changes.
+2. Use `subagent_handoffs/006_event6_probability_audit_round_2026_08_24.md` as the current read-only probability baseline, then obtain the still-missing named-scenario same-scenario compare across event, decision, mission, focus, host, league, patron, and allocator surfaces before weighted-logic changes.
 3. Verify the DM-01 dynamic pre-activation disclosure in the live tooltip, reconcile remaining package cost prose and uncosted surfaces, and review high-density decision categories without reintroducing multi-charge cost bundles.
 4. Re-run focus inspect/render after any parent-owned source change and resolve the remaining authored layout warnings; focus lint/validate routes remain unavailable.
 5. Continue the bounded Statehood Ledger/formable GUI tranche with clean family-isolated layout, hierarchy, resolution, click-region, overflow, rewrite/compare, and runtime evidence.
@@ -97,7 +97,7 @@ The current whole-event receipt is `subagent_handoffs/006_event006_completion_au
 
 The current exact-count override is `a2abd65d7` and `subagent_handoffs/006_event6_exact_ladder_fail_closed_2026_08_22.md` for joint plans: undersized joint pools preserve the nominal `3/4/5/7/10` target and fail closed with `insufficient_pool`. Standalone Event 006 additionally has the bounded non-empty aligned exception recorded in `subagent_handoffs/006_event6_manual_partial_wave_fix_2026-08-24.md`; no package-level probability or balance closure follows from the outer allocator evidence.
 
-The current weighted-logic handoff is `subagent_handoffs/006_event6_probability_audit_2026-08-22.md`; package-level readiness remains incomplete, and the exact-ladder fail-closed override is source-applied. No package-level probability or balance closure is recorded.
+The current weighted-logic handoffs are `subagent_handoffs/006_event6_probability_audit_2026-08-22.md` and `subagent_handoffs/006_event6_probability_audit_round_2026_08_24.md`; package-level readiness remains incomplete, and the exact-ladder fail-closed override is source-applied. No package-level probability or balance closure is recorded.
 
 The documentation refresh used the required read-only MCP routes as evidence only. Focus inspect/render succeeded with source-linked artifacts `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/82134a911b47667107aea044403f10988a84cb2750256a9878bdc785efee02bb/d7c47fb733e6ae01ea91be8b32c888ea8f235ad4ffbdc5e9921188f014ff556a/focus-inspect.1b9d867a468a8e6e.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fab904c1192ff8397e2534bcea48635166ca17ad076a405c8167ecc4eee5f79d/66d845c20b28e6a96957b8d19d187d9f53eb5333dffae664610e7425094da81c/independence_wave_focus_tree.focus.svg`; status GUI inspect/render succeeded, formable GUI render succeeded, formable GUI inspect returned `ARTIFACT_STORAGE_LIMIT`, Event inspect returned `INTERNAL_ERROR` after a valid selector, and map inspect timed out after 180 seconds. These results refresh evidence and limitations only, and do not convert partial artifacts into runtime acceptance.
 
