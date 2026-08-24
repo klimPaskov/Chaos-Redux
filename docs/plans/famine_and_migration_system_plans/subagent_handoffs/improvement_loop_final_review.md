@@ -1,0 +1,141 @@
+# Famine and Migration Improvement Loop Final Review Handoff
+
+Date: 2026-08-24.
+
+## Recommendation
+
+Close broad improvement-loop expansion. The shared famine and migration system is already mechanically, historically, visually, and narratively deep enough. Another event, mechanic family, GUI, mapmode, country package, or asset tranche would add bloat.
+
+Do not mark implementation complete yet. A bounded set of owner tasks and several exact external evidence blockers remain.
+
+## Design problem reviewed
+
+The review tested whether the implemented system still contained shallow, duplicated, generic, disconnected, or low-impact content after the relief, destination, corridor, mission, cohort-history, adapter, achievement, mapmode, report, asset, localisation, documentation, and workbook tranches.
+
+The current design is connected and sufficiently broad. The remaining implementation problems are concentrated rather than systemic: the controlled-medical-reception achievement still lacks exact cohort-origin exposure identity; all ten decision transfer lanes need role-correct zero-ledger reconciliation; the core food-stage owner never submits the live-survivor flight pressure needed to reach the implemented spontaneous movement owner; food retirement currently reaches destructive migration cleanup without proving ledger/cohort/mission/corridor obligations are gone; single state/country cohort caches can become ambiguous or stale and do not prove that a later physical debit comes from the aligned row's current host; the published reception capacity remains a stale civilian-factory request rather than the accepted dynamic effective-capacity owner; departure/reception policy and close/reopen trapped accounting need separate exact owners; persecution, capacity exhaustion, recent-bombing safety, and railway route damage still include dead or unbound proof tokens; the six Condemnation wrappers need exact owner dimensions; and permanent documentation still carries superseded defect descriptions, the old Food Security presentation hierarchy, and the old three-mission count.
+
+## Disposition summary
+
+### Already implemented
+
+- Dynamic eight-component food security, stage hysteresis, exposure, reserve ledger, population-scaled famine mortality, recovery, and sparse state registry.
+- Exact movement conservation, separate route deaths, aligned cohort identity, destination selection/bind/rebind, reception, integration, resettlement, voluntary/forced return, visit-cycle history, and cleanup. The bounded spontaneous owner now converts live flight pressure into one exact measured transfer through an explicit origin-owner actor target, records cohorts only after positive survivor credit, and records only a missing trapped-population delta when no route exists.
+- The spontaneous owner's one unconditional terminal cleanup clears both selector-owned destination food/reception proofs through the exact route target on current-chain success, failure, no-selection, invalid-destination, trapped-route, and retry exits without changing transfer, AI, pressure, or reception accounting. Old-save targetless residues remain assigned to sparse reconciliation below.
+- Reachable exact donor/recipient relief contracts with live endpoint, stock/headroom, legality, blockade, and action-logistics proof; contract creation precedes cost; measured donor debit equals recipient credit. Invitation/imports remain land-only, convoy/airlift have no local or generic fallback, and arbitrary path geometry is claimed only as an engine limitation below.
+- Exact origin/front/counterpart humanitarian corridor offer, acceptance/rejection, evacuation/relief execution, mission lifecycle, native nuclear/naval/paradrop attack receipts, exact Event 018/019/011 border-war receipts, exact biological/chemical/operative release receipts, and idempotent cleanup. The generation-bound normal-variable evacuation receipt is set only after valid exact debit and positive survivor credit, blocks all three lane/helper replays, survives mission continuation and save/reload, and clears only on terminal cleanup or full contract replacement.
+- The 26 binding decision-matrix primary actions, both accepted auxiliary counterpart corridor responses, and six mission families, with the maximum-three active-mission contract.
+- Sparse decision-phase ownership and subject/role gating keep normal primary lanes at three to five and every accepted edge case at six or fewer; resolution exposes one to four durable outcomes, while a pending corridor offer exposes only accept/reject and suppresses all primary rows. The corrected phase refresh is gated by the existing eight-array/count alignment predicate rather than the legacy ambiguity cache, and every valid positive live row can match once through persisted owner or authoritative current-host `OWNER`, including a foreign host, without domestic double counting. Twenty-one timed primary actions remain non-canceling through that temporary response priority; the two response timers retain cancellation. Broader action-local selection and physical-host mutation safety remain open below.
+- A legal compact decision-category report header consuming all seven report scenes without an event ID or random pool.
+- Exactly two dedicated mapmodes, `famine_state_map_mode` and `migration_state_map_mode`, with final button assets and accepted tooltip coverage. No third mapmode exists.
+- Fifteen reachable historical profiles, eight achievement IDs/localisation families/art triplets, final category/state/decision/mapmode/Deaths/report assets, and Event 149 retirement. The eleven Soviet anchors and Ireland state 113 now receive durable profile-specific memory proof through sparse registration/backfill, while accepted owner/controller and positive live food-pressure gates remain necessary; the full profile census is clean. The accepted achievement identity closures are recorded below; only the separate controlled-medical cohort-origin exposure chain remains open, and no ninth achievement or new asset family is needed.
+- Authoritative active adapters for Air/fallout, camps/Gulag/forced labor/genocide death aftermath, chemical aftermath, Black Plague, Event 13, and nuclear strikes. The six Condemnation wrappers carry fixed cause context but remain partial until their exact source dimensions close below.
+- The bounded catastrophic-famine opposition pool is wired at the exact extraction-responsibility stage transition. Invalid and absent ideologies remain zero, proven resistance/autonomy can compete, the unproven project-movement slot remains zero, and no candidate fails closed; current selection balance remains under the probability blocker.
+- Exact protected custody is wired through the existing generic detention and construction/resource labor-assignment owners, including a narrow exact-cohort branch for otherwise bespoke country packages. They carry one unambiguous ID, whole current live amount, host, actor, and concrete state site through the real mutation before the strict internment/forced-labor receipt.
+- The existing German camp-prison owner performs one dynamic, conserved exact forced transfer to its concrete destination, retaining measured survivor credit as the live row and removing failed or zero-survivor staging without a death proxy or duplicate producer. Because destination state 88 is also in the prisoner-source set, both decisions and their caller reject it as an origin and the shared transfer retains a distinct-state guard. The replay guard precedes the valid-positive branch; only a new positive-survivor transaction credits the measured amount once through canonical destination state/country reception and sparse registration, then invokes one exact-actor deportation condemnation without another population mutation.
+- The occupation-profile resolver now covers every current vanilla and Chaos Redux occupation-law token from material mechanics, resets temporary proof per call, and explicitly maps the hidden empty compatibility token to none. Exact occupation-law transition attribution remains externally blocked because no callback supplies actor, state, and exact affected amount together.
+- The expanded-labor camp-mortality owner now selects proximate `forced_labor` before its single existing state loss/Deaths record; every other camp profile retains its reason and no loss is duplicated. Occupation-repression mortality remains externally blocked.
+- The achievement owner now binds Gate to one corridor generation and aligned qualifying/protected/resolved cohort sets, Blockade to one state/generation, Roads Home to one cohort/generation, Place at the Table to actual integrated destination states, Grain Stayed Home to one real extraction-suspension state/generation, and Country Did Not Empty to a write-once starting-core baseline plus simultaneous severe war/displacement and threatened-person evidence. Guarded writers, monotonic generations, exact terminal snapshots, same-state/later-cohort invalidation, and non-mutating achievement helpers were source-reviewed. The controlled-medical exposure chain remains open below, and engine save/reload behavior is not claimed.
+
+### Binding owner implementation now
+
+- Establish canonical exact `famine_migration_persecution_active` lifecycle proof from qualifying current camp, forced-labor, genocide, or occupation owners. Do not infer it from ideology, government, pressure, war, or a site/quota alone; destination, return, relief, and border consumers must share the one fact.
+- Derive reception-capacity exhaustion from the live canonical country load/capacity owner and refresh or clear it after every credit, debit, integration, resettlement, return, cleanup, or capacity change. Do not preserve the dead flag as a second ledger.
+- Keep the relief patch's removal of the unowned humanitarian-policy flag, but make relief/corridor willingness consume the reception-side `humanitarian_open` contract created by the internal policy split below. Exact-corridor proof remains a separate override; ideology never equals permission; one derived Border Policy remains player-facing.
+- Require exact persisted cohort-origin outbreak exposure before controlled medical reception opens an achievement observation attempt, then keep the same cohort, host, and attempt bound through breach or durable success. The action itself, current host infection, unrelated outbreak, and ambiguous/stale IDs must not fabricate exposure.
+- Replace destination/return use of the dead bombing flag with one centralized state-scoped `days_since_last_strategic_bombing` threshold. This proves only recent danger in the exact state; it must expire naturally and must not identify an attacker, create bombing pressure/exodus, disqualify a corridor, condemn a country, or infer losses.
+- Reconcile all ten successful exact-transfer decision lanes against their role-correct flight, trapped, state/country reception, cohort, and sparse-registry projections. Exact zero is terminal through supported syntax; unregister only the exhausted role, retain partial residuals, and add no second transfer.
+- Consume `famine_migration_war_reassessment_pending` and `famine_migration_peace_reassessment_pending` once through the existing registered-country runtime and only its already registered island/displacement/cohort/reception/return subjects. Clear idempotently; remove the redundant write-only `famine_migration_control_change_pending` and `famine_migration_nuclear_reassessment_pending` markers because their callbacks already perform the exact work immediately, unless a documented existing follow-up truthfully consumes them. Do not invent deferred work, a front, amount, attacker, generic route safety, or newly safe return.
+- Split the current internal Border Policy owner into independent departure and reception contracts while preserving one concise player-facing supporting value. Route every existing decision/selector/AI/relief consumer to the correct side; add one exact per-cohort closure-generation/outstanding-trapped receipt so repeated close is inert and reopen/movement/cleanup reconciles the remaining amount once.
+- Produce and clear the canonical `famine_migration_route_damaged` projection through sparse registered-state refresh from authoritative positive `damaged_building_level@rail_way`. Align the repair decision and its cost/success with the same proof while preserving existing mission, destination, blockade, and mapmode consumers; do not generalize it into `route_unsafe` or scan the world.
+- Forward only exact already-logged route deaths from valid forced-return and violent-pushback transfers into Condemnation; current zero-death deportation remains zero and survivors/debit are never death scaling. Bind deliberate starvation to persisted actor/state/extraction generation before later mortality attribution; require a verified offer/withheld amount for relief obstruction; require action generation plus exact suppression/mortality for concealment. Any targeted-cohort or famine-repeat scaling needs a documented fail-closed core API extension and must not hijack weapon-repeat state or wrapper-only variables.
+- Retire old-save orphan `famine_migration_destination_food_safe_proven` and `famine_migration_destination_reception_proven` only through centralized sparse registered-state reconciliation when no live exact selection/route transaction owns them. Keep current-chain target cleanup authoritative, add no world scan, and mutate no population, pressure, reception, AI, route, or achievement ledger.
+- Replace destructive food-only retirement with one guarded registry contract: food retirement clears food state only; migration scheduler retirement requires zero state/country ledgers and no live cohort, mission, corridor, host, reception, return, or selection obligation; invalidation preserves positive rows. Cohort deletion requires exact terminal/zero/settled proof, durable outcome totals survive unregister, schema initialization preserves aligned arrays and monotonic IDs, alignment mismatch fails closed for repair, and all ten decision lanes plus spontaneous/forced/corridor owners feed the same reconciler without a world scan.
+- Replace single-pointer mutation authority with one action-local exact-row selector over the aligned registry. Explicit stale, duplicate, dead, wrong-owner, wrong-host, or misaligned IDs fail closed without fallback; equal semantic candidates remain action-locally ambiguous; the country phase enters its row scan from aligned-ledger validity rather than the legacy ambiguity gate; physical `FROM` must equal the persisted live host inside the exact transfer owner; corridor/mission contracts retain one exact ID; and every bind, transfer, rebind, terminal cleanup, or invalidation reconciles the touched old/new host states and persisted-owner country without a world scan or second registry.
+- Replace the three stale civilian-factory capacity requests with one sparse candidate-state/country effective-capacity owner. Keep exact load accounting unchanged; derive one valid current people capacity from authoritative food, explicit migration shelter, infrastructure, documented transport availability, medical, administration, safe-state/population, exact load, war, outbreak, and contamination inputs; publish zero/invalid when required adapters are absent; drive exhaustion and every capacity consumer from the same revision; retain only one player-facing Reception Capacity value and add no world scan.
+- Connect each committed acute/famine/catastrophic stage to one crisis/stage-generation live-survivor flight request derived from current post-loss population, protected floor, severity/exposure, and reconciled outstanding reservations under central constants. Accepted amounts enter both flight ledgers; stage upgrades add only residual; every successful exact transfer reconciles both by actual debit; recovery cannot rearm while obligations remain; no death, damage, intensity, population, Deaths, cohort, destination, or reception transaction occurs in the stage hook.
+- Make aligned cohort history reject prior destinations before ordinary distribution/transit movement. Use the same exact unvisited-row predicate in UI, AI, both weighted-pool passes, and final preflight; a repeat returns invalid and is not appended; explicit persisted-origin return and terminal/generation-owned outcomes remain exceptions; mission rearm needs a new exact cohort/destination generation.
+- Move distribution/transit rebind, arrival, mission, achievement, and positive reward effects under one complete exact-success branch: current destination and row/host, conserved transfer, positive survivors, valid reception delta, fresh proofs, successful rebind, and successful first-visit append. Selector zero or any failed/ambiguous/stale intermediate result yields no positive stability or downstream effect.
+- Reconcile `docs/systems/famine_and_migration_system.md`, `source_of_truth_map.md`, `completion_report.md`, `handoff_dispositions.md`, and current audit references after the final source and audit revision settles.
+
+### Optional future extensions
+
+- Owner-specific historical narrative variants only after a future concrete owner creates a materially different choice.
+- New exact attack adapters only when a future engine or project owner exposes exact attacker and target state.
+- New relief modes only when they own genuinely different stock, route, risk, and delivery contracts.
+- End-of-game statistics that do not alter current achievement predicates.
+
+### Rejected duplication or simplification
+
+- Any famine-system event ID, Event 149 replacement, event pool, or pacing weight.
+- A combined or third mapmode.
+- A full shared scripted GUI, dashboard, or fake route-arrow layer.
+- A second food stockpile, famine score, migration total, cohort registry, or reception ledger.
+- Fixed population totals, percentages, site flags, quotas, pressure, or inferred history used instead of exact transfer/death/reserve/custody receipts.
+- Periodic whole-world scans.
+- Additional custody decisions, historical profiles, reports, achievements, focus trees, country packages, formables, super-events, portraits, 3D models, units, or asset families as a substitute for closing current defects.
+
+### Externally or owner-source blocked
+
+- Ordinary land-combat callbacks lack exact attacked state plus attacker country.
+- Vanilla strategic-bombing aftermath lacks the responsible bomber country.
+- Occupation-law transition, state-specific war/front aftermath, newly safe generic return after peace, strategic bombing, Events 5/6/15/21/33/50/95, and their liberation/war/peace/generic scenario dispatchers lack the exact state/cohort, actor, cause, amount, route, and replay facts needed for safe calls. Event 14's exact deaths remain cannibalism/prisoner-feeding-owned rather than an ordinary famine input. The country-level war/peace hooks are truthful sparse scaffolding, but consuming them does not create the missing state facts; explicit voluntary return remains the exact peace-adjacent owner. Event 28 is already covered by `on_nuke_drop` and must not be double-wired.
+- Events 118, 120, and 131 have no source and must not be fabricated.
+- Generic bombing-exodus activation still lacks exact causal amount/actor proof. State bombing recency may gate destination/return danger, but must not create migration pressure, population movement, condemnation, or `prob_bombing_exodus` evidence by itself.
+- The generic `famine_migration_route_unsafe` state proof has no authoritative route lifecycle owner. Corridor-specific endpoint/safety proof remains valid only for its exact transaction; war, terrain, control, non-adjacency, and transport scarcity are not universal substitutes.
+- Occupation-repression mortality has no authoritative owner supplying one exact state, actor, amount, and proximate loss transaction. A current occupation law/profile or resistance value must not invent a Deaths entry.
+- Vanilla does not expose arbitrary distant sea-zone or air-path geometry to script. The implemented relief actions truthfully own endpoint, stock/headroom, legality/blockade, action-logistics, and exact delivery contracts; do not convert this engine boundary into a generic route flag, silent land fallback, or fake map arrow.
+- Exact generic reception route-throughput/convoy-capacity is unavailable; the existing normalized famine transport component may be used only as a parent-approved, explicitly bounded transport-availability input and never as exact throughput or route geometry. Migration shelter has no current adapter/writer, and the CBRN medical meter's initialization/reservation semantics need owner confirmation; dynamic capacity remains zero/invalid rather than falling back while those required inputs are absent.
+- Direct hazard owners currently expose deaths, damage/intensity, or incomplete actor/replay facts rather than a separate live survivor/fear amount. Camp/Air/Plague/Event13/chemical/biological/nuclear/bombing/occupation/war/event wrappers remain food-only or unavailable for flight until an exact owner supplies that separate contract; forced transfer and return owners must not double-book pressure.
+- Final current-revision probability proof is blocked: one inspected snapshot found 28 score surfaces, but its aggregate predates current physical hashes; destination/relief/corridor/shared and narrowed opposition custom-pool routes returned zero candidates or incomplete pools, with seven unresolved opposition references; custody inspection found fourteen candidates but compare evaluated current source on both sides and retained 241 unresolved references; the broader refresh timed out; and all twenty named scenarios lack current evaluate/compare evidence. Complete manifests and typed target, `FROM`, donor, route, state, capacity, stock, policy, exposure, cooldown, and terminal fixtures are still required. The current airlift factor is positive rather than inverted; only its effect remains unresolved.
+- Dynamic scripted-mapmode colors, tooltip branches, and click regions cannot be proven by the installed renderer; the retained map render proves the underlying state/transport substrate only.
+- This planner's fresh MCP map retry returned `Transport closed`.
+
+## Research and historical basis
+
+The review used all eight specification parts, the decision, historical-profile, integration, probability, asset, input/output, and death-ownership matrices, the achievement/asset/coding/decision/goal prompts, the improvement closure, execution/routing documents, prepared improvement prompt, bibliography, current source, assets, permanent documentation, plans, handoffs, audit reports, and workbook exports.
+
+The accepted historical profiles already connect player mechanics to blockade, siege, occupation and colonial extraction, requisition, damaged infrastructure, convoy/port isolation, public-health pressure, evacuation, reception, return, camps, forced labor, and nuclear winter. The formerly missing exact living-cohort custody and camp-prison movement transactions are implemented; no additional profile or flavor event is needed.
+
+Required offline wiki pages and current vanilla documentation/precedents were reviewed for variables/arrays, scopes, triggers, effects, modifiers, localisation, on-actions, events, decisions, ideas, AI, map modes, scripted GUI, script constants, and callback scope. No web Paradox wiki was used.
+
+## MCP evidence and limitations
+
+- Retained map evidence in `mapmode_corridor_relief_localisation_patch.md`: `MAP_INSPECTED` revision `f7a979d1f74467613b77975b15c311c6e48190a94cd51385cd9abd391807b44b` and linked `map-inspect.f7a979d1f7446761.json`; `MAP_RENDERED` linked `map-state.png`. These prove selected map data and the substrate, not scripted mapmode states.
+- Retained report-header evidence in `owner_callback_census.md`: linked `gui-inspect.c159fc5d62130b30.json` and `famine_migration_report_header_window-full.svg` for 1920x1080 and 1280x720 scenarios.
+- The final `chaosx_ai_probability_auditor` route completed only an inspected-snapshot score census. The current refresh timed out, custom pools were incomplete, and all twenty scenarios remained unresolved; this planner makes no numeric weight, normalized probability, timing, or ranking claim.
+- No famine-system event inspection was used because the system is not an event. Owner-event evidence remains bounded to those owners.
+- No focus, technology, or doctrine surface was included. The installed package has no Technology Tree Viewer, so no technology evidence is claimed.
+- A fresh planner map inspection retry failed with `Transport closed`; source inspection was not treated as replacement MCP proof.
+
+## Files written
+
+- `docs/plans/famine_and_migration_system_plans/improvement_review_addendum.md`
+- `docs/plans/famine_and_migration_system_plans/subagent_handoffs/improvement_loop_final_review.md`
+
+No gameplay, localisation, asset, workbook, or specification source was edited by this planner.
+
+## Implementation surfaces affected by the recommendation
+
+- Permanent system documentation, source-of-truth map, final completion report, handoff dispositions, and final audit references.
+- Existing achievement owner for exact manufactured-crisis nonce and cohort-set evidence.
+- Existing persecution owner seam, reception load/capacity owner, canonical Border Policy consumers, exact cohort-origin medical-reception achievement owner, and state-scoped recent-bombing danger predicate.
+- Existing ten-lane decision transfer owner, committed-stage live-flight request and shared flight-ledger reconciliation, exact action-local cohort selector and physical-host guard, aligned visit-history preflight and complete-success movement reward owner, guarded state/country/cohort registry reconciliation and schema migration, centralized sparse dynamic reception-capacity owner and adapter seams, sparse railway-damage projection/repair route, six Condemnation owner callsites, old-save selector-proof retirement, and sparse war/peace reassessment owner.
+- Final decision, localisation, achievement/completion, and probability audit outputs.
+
+## Open questions
+
+1. Can the final probability tool represent the typed target and `FROM` scopes required by the twenty named scenarios on the final source revision? If not, the audit remains externally blocked.
+2. Will the parent accept the existing normalized famine transport component as a clearly labeled bounded reception-availability input, without claiming exact route throughput? Until that design boundary is approved, FM-B13 remains unresolved.
+3. Which authoritative owner will write the migration-shelter people/validity adapter and confirm the existing CBRN medical meter's initialization and reservation semantics? Dynamic reception capacity must remain zero/invalid until those inputs are real.
+
+## Previous addendum status and promotion
+
+The 2026-08-22 improvement addendum is superseded by the final addendum written in this review. Its relief, corridor, report-carrier, cohort-history, native attack, Event 149, and mapmode breadth findings are closed or reclassified. No separate prior expansion addendum remains unresolved.
+
+Keep the final addendum in `docs/plans` until the bounded defects and final audits close. If accepted, promote only any missing durable action-phase/density and exact owner-receipt wording into the relevant spec parts and matrices. Reconcile final implementation facts into permanent system documentation; do not promote optional or rejected ideas.
+
+## Completion boundary
+
+The current core-reconciliation, decision-owner, and exact-two-mapmode owner patches are still in progress and were not audited by this planner after they began. The parent should source-freeze those changes, respawn or follow up this improvement review for post-change dispositions, finish every remaining bounded owner task, rerun final decision/localisation/achievement/completion/probability audits on that one revision, reconcile documentation, and then mark the goal complete only if no binding defect or unresolved accepted blocker remains.
+
+No broad expansion is recommended. No simplification was approved.
