@@ -3,7 +3,7 @@
   "owner": "014_cannibalism",
   "slug": "cannibal_siege_eaters",
   "profile": "humanoid_unit",
-  "status": "blocked_insufficient_meshy_credits",
+  "status": "blocked_required_meshy_route_process_cleanup_verification",
   "runtime_consumer": "common/units/014_cannibalism_irregular_infantry.txt#cannibal_siege_eaters -> cannibal_siege_eaters_entity",
   "runtime_wiring": "parent_owned_not_performed",
   "reference": {
@@ -44,6 +44,19 @@
     "latest_shortfall": 36,
     "balance_recheck_evidence": "provider/credits/v8_002_balance_recheck.json"
   },
+  "meshy_v9_preflight": {
+    "live_balance": 1410,
+    "estimated_complete_provider_tranche": 56,
+    "balance_sufficient": true,
+    "paid_calls": 0,
+    "consumed_credits": 0,
+    "route_status": "blocked_process_cleanup_gate",
+    "first_probe": "passed_with_zero_findings",
+    "second_probe": "failed_new_wrapper_and_node_survived",
+    "third_probe": "failed_new_wrapper_and_node_survived",
+    "cleanup": "only the exact probe-owned process ids were terminated; no shared or unrelated process was touched",
+    "evidence": "evidence/v9_dependency_route_audit.json"
+  },
   "vanilla_calibration": {
     "mesh": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh",
     "object": "polySurface106",
@@ -79,10 +92,11 @@
     "tokens": ["GFX_unit_cannibal_siege_eaters_icon_medium", "GFX_unit_cannibal_siege_eaters_icon_medium_white", "GFX_unit_cannibal_siege_eaters_icon_small"]
   },
   "blockers": [
-    "Approved Meshy 7 generation returned HTTP 402 at a live balance of 25 before task creation; a later shared-account recheck was 20.",
-    "No v8 geometry, rig, provider action sources, Blender checkpoint, PDX mesh, eight PDX animations, DDS material set, previews, or export/reimport evidence exists.",
+    "The v9 balance recovered to 1410, but two fresh locked-route probes each left their own Meshy wrapper and Node child alive after JSON-RPC completion.",
+    "The mandatory zero-newly-surviving-process dependency gate blocks every paid Meshy call until the shared route cleanup is repaired and verified.",
+    "No v9 geometry, rig, provider action sources, Blender checkpoint, PDX mesh, eight PDX animations, DDS material set, previews, or export/reimport evidence exists.",
     "Exact audio-to-animation frame synchronization cannot be set before genuine provider actions exist.",
     "Runtime and GFX/sound wiring remain parent-owned."
   ],
-  "handoff": "docs/plans/014_cannibalism_plans/subagent_handoffs/event014_siege_eaters_final_v8.md"
+  "handoff": "docs/plans/014_cannibalism_plans/subagent_handoffs/event014_siege_eaters_paid_v9.md"
 }
