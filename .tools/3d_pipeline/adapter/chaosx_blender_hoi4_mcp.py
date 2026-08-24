@@ -13,7 +13,7 @@ import subprocess
 import sys
 import uuid
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, Iterable, Literal, Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -298,6 +298,10 @@ def chaosx_blender_hoi4_prepare_candidate(
     vanilla_reference: Dict[str, Any] | None = None,
     texture_source_rels: Dict[str, str] | None = None,
     geometry_source_rel: str = "",
+    geometry_weight_mode: str = "four_nearest",
+    source_armature_name: str = "",
+    source_mesh_names: list[str] | None = None,
+    preserve_geometry_topology: bool = False,
     repair_before_reduction: bool = False,
     topology_weld_distance: float = 1e-5,
     max_runtime_footprint_m: float | None = None,
@@ -319,6 +323,10 @@ def chaosx_blender_hoi4_prepare_candidate(
             "vanilla_reference": vanilla_reference or {},
             "texture_source_rels": texture_source_rels or {},
             "geometry_source_rel": geometry_source_rel,
+            "geometry_weight_mode": geometry_weight_mode,
+            "source_armature_name": source_armature_name,
+            "source_mesh_names": source_mesh_names or [],
+            "preserve_geometry_topology": preserve_geometry_topology,
             "repair_before_reduction": repair_before_reduction,
             "topology_weld_distance": topology_weld_distance,
             "max_runtime_footprint_m": max_runtime_footprint_m,
@@ -334,6 +342,7 @@ def chaosx_blender_hoi4_inspect_scene(
     render_previews: bool = False,
     runtime_stem: str = "",
     action_name: str = "",
+    target_armature_name: str = "",
     preview_frame: int = -1,
     preview_view_names: list[str] | None = None,
 ) -> Dict[str, Any]:
@@ -347,6 +356,7 @@ def chaosx_blender_hoi4_inspect_scene(
             "render_previews": render_previews,
             "runtime_stem": runtime_stem,
             "action_name": action_name,
+            "target_armature_name": target_armature_name,
             "preview_frame": preview_frame,
             "preview_view_names": preview_view_names or [],
         },
@@ -461,10 +471,18 @@ def chaosx_blender_hoi4_import_animation_action(
     job_id: str,
     blend_rel: str,
     source_rel: str,
+    provenance_rel: str,
     checkpoint_rel: str,
-    action_name: str,
+    source_action_name: str,
+    target_armature_name: str,
+    target_action_name: str,
+    source_kind: Literal["meshy_animate", "professional_source"],
+    source_reference_id: str,
+    source_sha256: str,
+    bone_chains: Dict[str, list[str]] | None = None,
+    promote_audited_target: bool = False,
 ) -> Dict[str, Any]:
-    """Transfer one real provider skeletal action onto the approved rig."""
+    """Transfer one receipt-verified provider/professional skeletal action; never author replacement motion."""
 
     return _run(
         job_id,
@@ -472,8 +490,16 @@ def chaosx_blender_hoi4_import_animation_action(
         {
             "blend_rel": blend_rel,
             "source_rel": source_rel,
+            "provenance_rel": provenance_rel,
             "checkpoint_rel": checkpoint_rel,
-            "action_name": action_name,
+            "source_action_name": source_action_name,
+            "target_armature_name": target_armature_name,
+            "target_action_name": target_action_name,
+            "source_kind": source_kind,
+            "source_reference_id": source_reference_id,
+            "source_sha256": source_sha256,
+            "bone_chains": bone_chains or {},
+            "promote_audited_target": promote_audited_target,
         },
     )
 
@@ -484,10 +510,11 @@ def chaosx_blender_hoi4_retime_animation_action(
     blend_rel: str,
     checkpoint_rel: str,
     action_name: str,
+    target_armature_name: str,
     source_fps: float,
     target_fps: float,
 ) -> Dict[str, Any]:
-    """Retiming one existing skeletal action between explicit frame rates."""
+    """Retime one verified-source action without changing or replacing its skeletal motion."""
 
     return _run(
         job_id,
@@ -496,6 +523,7 @@ def chaosx_blender_hoi4_retime_animation_action(
             "blend_rel": blend_rel,
             "checkpoint_rel": checkpoint_rel,
             "action_name": action_name,
+            "target_armature_name": target_armature_name,
             "source_fps": source_fps,
             "target_fps": target_fps,
         },
@@ -549,8 +577,9 @@ def chaosx_blender_hoi4_author_humanoid_actions(
     checkpoint_rel: str,
     action_names: Dict[str, str] | None = None,
     fps: int = 24,
+    fused_weapon_grip: bool = False,
 ) -> Dict[str, Any]:
-    """Author the required idle, move, attack, and death skeletal actions."""
+    """Author humanoid actions, optionally preserving a fused two-hand weapon grip."""
 
     return _run(
         job_id,
@@ -560,8 +589,15 @@ def chaosx_blender_hoi4_author_humanoid_actions(
             "checkpoint_rel": checkpoint_rel,
             "action_names": action_names or {},
             "fps": fps,
+            "fused_weapon_grip": fused_weapon_grip,
         },
     )
+
+
+
+
+
+
 
 
 @mcp.tool()
@@ -682,9 +718,11 @@ def chaosx_blender_hoi4_correct_action_grounding(
     blend_rel: str,
     checkpoint_rel: str,
     action_name: str,
+    target_armature_name: str,
+    grounding_policy: Literal["per_frame_root_contact_zero_clearance"],
     root_bone: str = "Hips",
 ) -> Dict[str, Any]:
-    """Correct per-frame ground contact on one existing skeletal action."""
+    """Apply bounded root/contact correction to a verified-source action; never replace body motion."""
 
     return _run(
         job_id,
@@ -693,6 +731,8 @@ def chaosx_blender_hoi4_correct_action_grounding(
             "blend_rel": blend_rel,
             "checkpoint_rel": checkpoint_rel,
             "action_name": action_name,
+            "target_armature_name": target_armature_name,
+            "grounding_policy": grounding_policy,
             "root_bone": root_bone,
         },
     )
@@ -732,8 +772,9 @@ def chaosx_blender_hoi4_sanitize_runtime_candidate(
     blend_rel: str,
     output_blend_rel: str = "blender/checkpoints/07_runtime_candidate_sanitized.blend",
     target_height_m: Optional[float] = None,
+    weight_only: bool = False,
 ) -> Dict[str, Any]:
-    """Create a reviewable runtime checkpoint with bounded skin and material cleanup."""
+    """Create a runtime checkpoint; weight_only preserves geometry, rig, weapons, and materials."""
 
     return _run(
         job_id,
@@ -742,6 +783,7 @@ def chaosx_blender_hoi4_sanitize_runtime_candidate(
             "blend_rel": blend_rel,
             "output_blend_rel": output_blend_rel,
             "target_height_m": target_height_m,
+            "weight_only": weight_only,
         },
     )
 
