@@ -40,6 +40,8 @@ The 2026-08-24 transport-cost patch (`52a6e94ca`, `subagent_handoffs/006_event6_
 
 The 2026-08-24 manual no-country diagnostic (`67d5a777e`, `subagent_handoffs/006_event6_manual_no_country_execution_diagnostic_2026-08-24.md`) confirms that the hidden root can fail closed before mutation when the candidate pool is empty; no generic fallback was added. A live terminal receipt is still required to distinguish an empty pool from a later rollback or finalization failure.
 
+The 2026-08-24 terminal-receipt lifecycle repair stages selected, attempt, sponsorship, chaos-band, and optional-expansion-failure values before cancellation or verified rollback cleanup, clears stale standalone execution failures before a new transaction, and clears recovery staging before the next attempt. Its source handoff is `subagent_handoffs/006_event6_terminal_receipt_lifecycle_repair_2026-08-24.md`. This closes the demonstrated source-ordering defects, but a live standalone receipt remains unclaimed.
+
 IW-050 Komi remains package-local and fail-closed. Its current admission audit is `subagent_handoffs/006_iw050_komi_admission_audit_current_2026_08_24.md`; commit `4cba7904d` only corrected the package documentation's strategic cost wording and does not promote the package.
 
 The 2026-08-21 parent tranche supplies synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors, a corrected dormant-shell guard, and its then-current 37 byte-preserving supplied portrait installs; that 37/14 count is historical and is superseded by the 2026-08-22 consumer tranche below.

@@ -56,6 +56,8 @@ The 2026-08-24 transport-cost patch (`52a6e94ca`, `subagent_handoffs/006_event6_
 
 The 2026-08-24 manual no-country diagnostic (`67d5a777e`, `subagent_handoffs/006_event6_manual_no_country_execution_diagnostic_2026-08-24.md`) confirms that the hidden root can fail closed before mutation when the candidate pool is empty; no generic fallback was added. A live terminal receipt is still required to distinguish an empty pool from a later rollback or finalization failure.
 
+The 2026-08-24 terminal-receipt lifecycle repair (`subagent_handoffs/006_event6_terminal_receipt_lifecycle_repair_2026-08-24.md`) preserves selected-plan contribution fields across cancellation and verified rollback cleanup, clears stale standalone execution failures before a new transaction, and isolates stale-plan recovery staging. It is source evidence only; a live standalone release receipt remains unclaimed.
+
 IW-050 Komi remains package-local and fail-closed. Its current admission audit is `subagent_handoffs/006_iw050_komi_admission_audit_current_2026_08_24.md`; commit `4cba7904d` only corrected the package documentation's strategic cost wording and does not promote the package.
 
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the owner of opening divisions.

@@ -1820,6 +1820,10 @@ liberation_release_finish_verified_plan_rollback = {
 		limit = { liberation_release_rollback_matches_frozen_ledger = yes }
 		if = {
 			limit = { has_global_flag = liberation_release_plan_includes_event6 }
+			if = {
+				limit = { NOT = { has_global_flag = liberation_release_plan_includes_event5 } }
+				independence_wave_stage_standalone_terminal_receipt = yes
+			}
 			independence_wave_clear_plan_contribution = yes
 		}
 		if = {
