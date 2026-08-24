@@ -87,6 +87,7 @@ The effects and triggers are:
 - `common/scripted_effects/006_independence_wave_evolution_incident_effects.txt`
 - `common/scripted_triggers/006_independence_wave_evolution_triggers.txt`
 - `common/on_actions/006_independence_wave_evolution_on_actions.txt`
+- `events/006_independence_wave_support_events.txt`
 
 Replicable Independence also exposes `global.independence_wave_replicable_opening_confidence`, initialized at 50 and clamped to 0–100. Lifecycle failures are recorded once per origin generation from government collapse, recognition blockade, command or border failure, congress discredit, and open-sovereignty escalation. Annexation, puppetry, and capitulation are recorded at their transaction boundaries. The allocator applies the low-confidence penalty or high-confidence bonus before candidate weighting, so earlier survival directly changes later wave composition. The League Congress category displays the live value.
 
