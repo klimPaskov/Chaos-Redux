@@ -80,6 +80,7 @@ $constantsPath = Join-Path $packageRoot "dist\constants.js"
 $constantsTypesPath = Join-Path $packageRoot "dist\constants.d.ts"
 $generationToolPath = Join-Path $packageRoot "dist\tools\generation.js"
 $generationSchemaPath = Join-Path $packageRoot "dist\schemas\generation.js"
+$compatibilityPatchPath = Join-Path $PSScriptRoot "patch_meshy_mcp.mjs"
 $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 
 $constantsText = [System.IO.File]::ReadAllText($constantsPath, $utf8NoBom)
@@ -139,6 +140,21 @@ Get-ChildItem -LiteralPath (Join-Path $packageRoot "dist") -Recurse -Filter "*.j
 	$runtimeText = [regex]::Replace($runtimeText, '(?i)meshy-\d+', 'meshy-7')
 	$runtimeText = [regex]::Replace($runtimeText, 'Meshy \d+', 'Meshy 7')
 	[System.IO.File]::WriteAllText($_.FullName, $runtimeText, $utf8NoBom)
+}
+
+$compatibilityHashesJson = & $nodeExe $compatibilityPatchPath $packageRoot $repoRoot
+if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($compatibilityHashesJson)) {
+	throw "Failed to apply the locked Meshy MCP artifact compatibility patch."
+}
+$compatibilityHashes = $compatibilityHashesJson | ConvertFrom-Json
+$expectedCompatibilityHashes = $dependencyLock.routes.meshy_mcp.compatibility_file_sha256
+if ($null -ne $expectedCompatibilityHashes) {
+	foreach ($property in $expectedCompatibilityHashes.PSObject.Properties) {
+		$actualHash = $compatibilityHashes.PSObject.Properties[$property.Name].Value
+		if ([string]::IsNullOrWhiteSpace($actualHash) -or $actualHash -ne $property.Value.ToLowerInvariant()) {
+			throw "Meshy MCP compatibility hash mismatch for $($property.Name)."
+		}
+	}
 }
 
 if ((Get-Item -LiteralPath $generationToolPath).Length -gt 5MB) {
