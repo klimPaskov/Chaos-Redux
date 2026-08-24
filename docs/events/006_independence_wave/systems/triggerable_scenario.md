@@ -73,7 +73,7 @@ The 55 disabled selectable rows are appended after bound-package failures with r
 
 ## Visual Assets
 
-The summary uses `GFX_report_event_006_asset_001_wave_summary`, registered in `interface/006_independence_wave_event_pictures.gfx` and stored at `gfx/event_pictures/006_independence_wave/report_event_006_asset_001_wave_summary.dds`.
+The summary uses `GFX_report_event_006_asset_001_wave_summary`, registered in `interface/006_independence_wave_small_assets.gfx` and stored at `gfx/event_pictures/006_independence_wave/report_event_006_asset_001_wave_summary.dds`.
 
 The ledger uses the final Event 006 border-arbitration decision icon, `GFX_decision_independence_wave_border_arbitration`, registered in `interface/006_independence_wave.gfx` and stored at `gfx/interface/decisions/006_independence_wave/decision_independence_wave_border_arbitration.dds`. It represents the reservation and rejected-border record rather than a gameplay reward.
 

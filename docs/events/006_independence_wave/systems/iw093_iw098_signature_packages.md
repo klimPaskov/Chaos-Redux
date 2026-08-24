@@ -221,7 +221,7 @@ and a clean flat ImageGen reconstruction; waving fabric, scenes, gradients,
 and painterly flag artwork are not accepted.
 
 Four military-only commander roles use full 156x210 portrait surfaces in
-`interface/006_independence_wave_iw093_iw098_portraits.gfx`. Muhammadu Dikko's
+`interface/006_independence_wave_small_assets.gfx`. Muhammadu Dikko's
 Sokoto role now uses an attributed TNA archival portrait. The two Asante roles
 and Bello Rabah remain blocked because their fictional grounded identities and
 generated images cannot satisfy visual readiness. Each requires a sourced

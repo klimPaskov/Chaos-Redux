@@ -396,7 +396,7 @@ Event 006 full framework active.
 
 No custom Event 006 adviser icons/assets/sprites/portrait blocks are created by
 this lane. Three stable male large-portrait consumers are registered
-in `interface/006_independence_wave_pacific_portraits.gfx` for the separate
+in `interface/006_independence_wave_small_assets.gfx` for the separate
 portrait-asset lane:
 
 - `GFX_portrait_HBX_independence_wave_civic_convention` ->
@@ -433,7 +433,7 @@ adviser DDS, placeholder, or fallback art.
 The single FORM-48-specific consumer is
 `independence_wave_hbx_prepare_pacific_maritime_congress`, which uses the
 parent-owned `GFX_independence_wave_formable_form_48` sprite registered in
-`interface/006_independence_wave_form48.gfx`. The country package does not edit
+`interface/006_independence_wave_small_assets.gfx`. The country package does not edit
 or duplicate that sprite registration.
 
 The post-formation surface requires no additional artwork or `.gfx` edit. Its

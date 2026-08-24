@@ -106,7 +106,7 @@ ledger texticon. The focus, idea, decision, and ledger sprites are registered in
 `£GFX_independence_wave_form03_league_reserve_texticon` for the pooled reserve
 charge, while its tooltip names the commitment in plain language. The report
 sprite `GFX_report_event_006_form03_charter_convention` is registered in
-`interface/006_independence_wave_event_pictures.gfx` and is used by
+`interface/006_independence_wave_small_assets.gfx` and is used by
 `chaosx.nr6.300` through `chaosx.nr6.308`. Source images, processed PNGs,
 runtime DDS copies, prompts, checksums, review sheets, and the detailed report
 submanifest are retained with the package. No animation is specified for this

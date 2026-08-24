@@ -148,7 +148,7 @@ male people connected to the package and route,
 or by sourced archival material for the actual historical institution. No
 advisor, officer-card, or BAY/RHI asset is accepted as a substitute.
 
-The six shared stage-icon families are registered in `interface/006_independence_wave_iw043_iw058_idea_icons.gfx` under `gfx/interface/ideas/006_independence_wave/volga_assyria/`:
+The six shared stage-icon families are registered in `interface/006_independence_wave_small_assets.gfx` under `gfx/interface/ideas/006_independence_wave/volga_assyria/`:
 
 - `GFX_idea_independence_wave_iw043_congress`
 - `GFX_idea_independence_wave_iw043_river_economy`

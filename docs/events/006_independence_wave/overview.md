@@ -398,7 +398,7 @@ Runtime sprites are registered in `interface/006_independence_wave.gfx` and regi
 - `independence_wave_league_membership`;
 - `independence_wave_founding_identity`.
 
-Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_event_pictures.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
+Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_small_assets.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
 
 The next shelf paragraph is retained historical wording from the 81-master snapshot; the current archive-layout override appears immediately above and below.
 
