@@ -365,10 +365,7 @@ The dated artifacts remain source-linked baselines. They are not a substitute fo
 ### After the atomic central edit
 
 - Assert one exact IW-050 occurrence in adapter, attestation, normal preflight, scenario preflight, setup dispatch, final-validation dispatch, cleanup dispatch, synchronized readiness, synchronized capacity try, synchronized capacity caller, and deterministic Join.
-- Run `python -B .tools/audit_event6_allocator.py`.
-- Run `python -B .tools/audit_event6_country_api.py`.
-- Run `python -B .tools/audit_event6_flags.py --strict`.
-- Run `python -B .tools/audit_event6_scenario_matrix.py`.
+- Perform fresh source-backed reviews of allocator invariants, country API coverage, flag families, and the scenario matrix. The retired Event 006 scripts under `.tools/archive/` are provenance only and require a current-source review before any reuse.
 - Run any package-specific force, roster, lifecycle, decision, and cleanup checks named by the implementation owner.
 - Rerun `hoi4.event_inspect` and `hoi4.event_render` for `chaosx.nr6.1`, `.2`, `.3`, and `.350`.
 - Rerun `hoi4.focus_inspect` and `hoi4.focus_render` for `independence_wave_focus_tree`. Source topology should remain unchanged because this plan adds no node.

@@ -93,7 +93,7 @@ The inherited static category picture remains the selected layer when the catego
 
 Each live category owns a manifest and review projection under `docs/formables/state_puzzles/<manifest_owner_id>/`; the manifest records the exact category and formation ids.
 
-The all-state source registry, schemas, consumer template, and workflow live under `docs/formables/state_registry/`. `.tools/generate_formable_state_geometry_registry.py` rebuilds exact active-map row runs, `.tools/build_formable_state_registry.py` validates provenance and emits the universal live triggers/index, and `.tools/build_formable_state_puzzle_consumer.py` compiles one bounded consumer into projected assets and a runtime-compatible manifest. `.tools/generate_formable_state_puzzle_runtime.mjs` discovers every complete consumer manifest rather than using a hardcoded category allow-list.
+The all-state source registry, schemas, consumer template, and workflow live under `docs/formables/state_registry/`. The checked-in geometry, universal live triggers/index, consumer manifests, and projected assets are reviewed build artifacts. Their former Python producer/compiler chain is retained under `.tools/archive/` for provenance and deliberate future recovery, but it is not supported routine tooling. `.tools/generate_formable_state_puzzle_runtime.mjs` is the sole active formable tool and discovers every complete consumer manifest rather than using a hardcoded category allow-list.
 
 Runtime state-piece textures live under `gfx/interface/formables/state_puzzles/<manifest_owner_id>/states/`.
 
