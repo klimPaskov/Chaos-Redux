@@ -32,7 +32,7 @@ Model inputs must start from actual Internet-sourced or user-supplied modern art
 6. Four super-event image/audio packages remain source-documented, with audio wiring closed in `event014_super_event_audio_wiring_audit_2026-08-25.md`; image and live consumer review remain part of the parent boundary.
 7. Counter registry and DDS presence is documented, but live consumer review remains open.
 8. Fresh Event 014 MCP inspection and overview rendering are partial because the large workspace deferred full validation; zero blocking diagnostics in that partial result is not full runtime proof.
-9. The shared `chaos-redux-3d-model-pipeline` skill maintenance note still contains older from-scratch wording; the parent must decide whether to update that shared skill outside this Event 014 documentation patch.
+9. The shared `chaos-redux-3d-model-pipeline` skill now contains the current modern-designed-artwork source-first and faithful-cleanup gate. Its source-specific 2026-08-22 handoff is historical evidence; the live skill text is authoritative and still requires explicit approval before any source-free fallback.
 
 ## Recommended continuation order
 
