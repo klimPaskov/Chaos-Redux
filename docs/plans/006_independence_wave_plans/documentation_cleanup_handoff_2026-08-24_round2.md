@@ -8,6 +8,8 @@ Parent: `/root`.
 
 Status: documentation reconciliation complete; Event 006 remains **HOLD / PARTIAL** and this handoff makes no gameplay, localisation, asset, GUI, spreadsheet, or completion claim.
 
+> Superseded for focus-layout status by the 2026-08-25 reconciliation: the six-warning references below are dated 2026-08-24 round-2 evidence, while current authority is 184 focuses, 195 connectors, zero crossings, zero node intersections, `longConnectorCount = 2`, and five authored Event 006 warnings after the economy-lane and military-cohort reflows. Preserve this handoff as historical provenance.
+
 ## Scope and source-of-truth map
 
 The seven accepted specification parts under `docs/specs/006_independence_wave_specs/` remain the design authority.
@@ -24,7 +26,7 @@ IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 F
 
 The automatic ladder remains `3/4/5/7/10`, with World Collapse at `10`, and no player-visible surface is authorized before Event 006 fires.
 
-The current focus receipt is 184 focuses, 195 connectors, zero crossings, zero node intersections, and six authored Event 006 layout warnings alongside fourteen unrelated vanilla continuous-focus diagnostics.
+At the 2026-08-24 round-2 snapshot, the focus receipt was 184 focuses, 195 connectors, zero crossings, zero node intersections, and six authored Event 006 layout warnings alongside fourteen unrelated vanilla continuous-focus diagnostics; this snapshot is superseded by the five-warning 2026-08-25 authority above.
 
 The current portrait boundary remains 38 installed supplied source-placeholder DDS consumers and 13 intentionally unmapped supplied files, with the latest wiring evidence dated 2026-08-22.
 
@@ -53,7 +55,7 @@ The catalog handoffs remain final-state aligned: Event Details and `Events!C7` a
 
 | Contradiction | Resolution |
 | --- | --- |
-| Four current-facing docs reported seven authored focus warnings after the economy-lane repair. | `package_manifest.md`, `simplifications_omissions_and_blockers.md`, `spec_acceptance_checklist.md`, and `docs/events/006_independence_wave/overview.md` now report six; the queued IW-050 addendum and current source map also point to the six-warning post-change receipt. |
+| Four current-facing docs reported seven authored focus warnings after the economy-lane repair. | At the 2026-08-24 round-2 snapshot, `package_manifest.md`, `simplifications_omissions_and_blockers.md`, `spec_acceptance_checklist.md`, and `docs/events/006_independence_wave/overview.md` were reconciled to six; the queued IW-050 addendum and source map references remain dated provenance, superseded for current status by the five-warning military-cohort receipt. |
 | The current research checklist pointed at removed region-06 and region-12 trigger files. | Its current collision-gate paragraph now points to `006_independence_wave_package_region_triggers_registry.txt` and keeps the former paths as historical source-layout references only. |
 | The runtime package registry template listed removed per-region trigger/effect files as current implementation slices. | Its current slices now point to the consolidated trigger/effect registries and explicitly preserve package-owned files as separate ownership surfaces. |
 | Several same-day handoffs described the pre-repair seven-warning focus state or the pre-restoration archived validators as current. | Superseded notices were added at the top of the focus audit, completion audit, earlier docs reconciliation, and post-registry completion audit without rewriting their historical bodies. |
@@ -64,7 +66,7 @@ The catalog handoffs remain final-state aligned: Event Details and `Events!C7` a
 - The eight adapter-only rows remain fail-closed and must not be promoted from source presence or registry membership.
 - The probability route did not return a fresh artifact in the bounded current call, and the required same-scenario comparison and quantitative balance evidence remain unavailable.
 - Fresh bounded Event, GUI, and map calls did not return artifacts; previous partial/global-diagnostic evidence remains usable only within its documented limits.
-- Focus acceptance remains **HOLD** with six authored warnings, fourteen unrelated vanilla diagnostics, and unavailable focus lint/validate routes.
+- At the 2026-08-24 round-2 snapshot, focus acceptance remained **HOLD** with six authored warnings, fourteen unrelated vanilla diagnostics, and unavailable focus lint/validate routes; current status is five authored warnings under the 2026-08-25 authority.
 - GUI family-isolated acceptance, tooltip observation, live transaction, save/load, and terminal-receipt evidence remain open.
 - Thirteen supplied portrait files remain intentionally unmapped, and grounded source placeholders remain pending user-supplied HOI4-style finals.
 - Super-event 23 remains blocked on exact-recording redistribution rights, selection, audition, and parent-owned audio wiring.
@@ -142,4 +144,4 @@ No gameplay, localisation, GUI, GFX, asset, binary, workbook, or export file was
 
 Patching was accepted for this round, so no fallback documentation patch is required.
 
-If the parent declines the current-authority edits, retain the historical files and use the unmodified source map and resume packet as the fallback routing authority, while treating the post-economy six-warning and restored-validator handoffs as separate current evidence.
+If the parent declines the current-authority edits, retain the historical files and use the unmodified source map and resume packet as the fallback routing authority, while treating the post-economy six-warning and restored-validator handoffs as dated evidence rather than current focus status.
