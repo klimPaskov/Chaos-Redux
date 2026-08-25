@@ -54,7 +54,11 @@ dhrondan_capture_revolt_inputs = {
 	}
 	while = {
 		limit = {
-			check_variable = { dhrondan_revolt_arrivals_remaining > constant:dhrondan_value.one }
+			check_variable = {
+				var = dhrondan_revolt_arrivals_remaining
+				value = constant:dhrondan_initial_force.arrivals_per_cohort
+				compare = greater_than_or_equals
+			}
 			check_variable = { dhrondan_revolt_arrival_cohorts < constant:dhrondan_initial_force.maximum_cohorts }
 		}
 		subtract_from_temp_variable = { dhrondan_revolt_arrivals_remaining = constant:dhrondan_initial_force.arrivals_per_cohort }
