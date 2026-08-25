@@ -1,0 +1,147 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORMABLE DECISION REGISTRY
+# ============================================================================
+# This registry owns the post-formation project decisions for the Danubian
+# Confederation (FORM-08) and Balkan Federation (FORM-09). The two categories
+# remain independent; they share a parser file only to keep the small,
+# same-domain decision surfaces together.
+# ============================================================================
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-08 DANUBIAN CONFEDERATION DECISIONS
+# ============================================================================
+# The carrier funds three one-time, material-costed charter projects. Each
+# project changes the public federal values and cannot be repeated for free.
+# ============================================================================
+
+independence_wave_form08_danube_category = {
+	independence_wave_form08_convene_river_congress = {
+		name = independence_wave_form08_convene_river_congress
+		desc = independence_wave_form08_convene_river_congress_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_form08_postformation_carrier = yes
+			NOT = { has_country_flag = independence_wave_form08_congress_project_complete }
+		}
+		available = {
+			can_pay_independence_wave_form08_congress_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_form08_congress_cost = yes }
+		custom_cost_text = independence_wave_form08_congress_cost
+		days_remove = constant:independence_wave_form08_duration.congress_days
+		complete_effect = { independence_wave_form08_pay_congress_cost = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form08_convene_river_congress_tt
+			independence_wave_form08_complete_congress_project = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form08_postformation_carrier = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_form08_arbitrate_minorities = {
+		name = independence_wave_form08_arbitrate_minorities
+		desc = independence_wave_form08_arbitrate_minorities_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_form08_postformation_carrier = yes
+			NOT = { has_country_flag = independence_wave_form08_arbitration_project_complete }
+		}
+		available = {
+			can_pay_independence_wave_form08_arbitration_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_form08_arbitration_cost = yes }
+		custom_cost_text = independence_wave_form08_arbitration_cost
+		days_remove = constant:independence_wave_form08_duration.arbitration_days
+		complete_effect = { independence_wave_form08_pay_arbitration_cost = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form08_arbitrate_minorities_tt
+			independence_wave_form08_complete_arbitration_project = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form08_postformation_carrier = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_form08_standardize_rail_authority = {
+		name = independence_wave_form08_standardize_rail_authority
+		desc = independence_wave_form08_standardize_rail_authority_desc
+		icon = GFX_decision_independence_wave_network_aid
+		visible = {
+			is_independence_wave_form08_postformation_carrier = yes
+			NOT = { has_country_flag = independence_wave_form08_transport_project_complete }
+		}
+		available = {
+			can_pay_independence_wave_form08_transport_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_form08_transport_cost = yes }
+		custom_cost_text = independence_wave_form08_transport_cost
+		days_remove = constant:independence_wave_form08_duration.transport_days
+		complete_effect = { independence_wave_form08_pay_transport_cost = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form08_standardize_rail_authority_tt
+			independence_wave_form08_complete_transport_project = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form08_postformation_carrier = yes } }
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+}
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-09 BALKAN FEDERATION DECISIONS
+# ============================================================================
+# One paid project closes the exact-anchor border settlement after formation.
+# It grants no territory, claims, cores, or units beyond the frozen founding
+# transaction and cannot become a repeatable reward loop.
+# ============================================================================
+
+independence_wave_form09_balkan_category = {
+	independence_wave_form09_ratify_border_board = {
+		name = independence_wave_form09_ratify_border_board
+		desc = independence_wave_form09_ratify_border_board_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_form09_postformation_carrier = yes
+			has_country_flag = independence_wave_form09_border_arbitration_open
+			NOT = { has_country_flag = independence_wave_form09_border_arbitration_complete }
+		}
+		available = {
+			has_war = no
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form09_ratify_border_board_effect_tt
+			set_country_flag = independence_wave_form09_border_arbitration_complete
+			clr_country_flag = independence_wave_form09_border_arbitration_open
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_form09_postformation_carrier = yes }
+				has_war = yes
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = independence_wave_form09_ratify_border_board_cancel_effect_tt
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+}
