@@ -36,7 +36,7 @@ Both tactics are inactive until the predictive-warfare technology unlocks them, 
 
 ## Visual, model, and sound contract
 
-The source declarations use stable final paths. Static binary art is installed, while the skeletal model remains owned by the dedicated 3D package.
+The source declarations use stable final paths. Static binary art is installed, and the dedicated 3D package now contains the accepted Meshy R2 rig plus actual-byte-reimported Quaternius actions for idle, movement, and laser attack.
 
 - Large counter: `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds`, registered as `GFX_group_alien_infantry_icon` and `GFX_unit_alien_infantry_icon_medium` in `interface/alien_infantry_system.gfx`.
 - Map counter: `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`, registered as `GFX_unit_alien_infantry_icon_medium_white`.
@@ -45,10 +45,11 @@ The source declarations use stable final paths. Static binary art is installed, 
 - Predictive-warfare technology icon: `gfx/interface/technologies/016_brilliant_scientist/tech_016_brilliant_scientist_alien_predictive_warfare.dds`, registered as `GFX_brilliant_scientist_alien_predictive_warfare_tech_medium`.
 - Tactic icons: `gfx/interface/landcombat/tactics/tactic_alien_predictive_vector_assault.dds` and `gfx/interface/landcombat/tactics/tactic_alien_probability_screen.dds`, registered under matching `GFX_` names.
 - KRG laser-batch decision icon: `gfx/interface/decisions/016_brilliant_scientist/decisions/decision_alien_laser_batch.dds`, registered as `GFX_decision_brilliant_scientist_krg_alien_laser_batch` in `interface/016_brilliant_scientist_kruger_state_decisions.gfx`.
+- The free firearm source is Quaternius Universal Animation Library Standard, CC0 1.0 Universal. Its official pack page is https://quaternius.com/packs/universalanimationlibrary.html. The package's `Pistol_Shoot` clip supplies the promoted laser-attack action; the transfer preserves the integrated pistol and has a verified discharge candidate at frame 6 / 0.1667 seconds.
 - Sourced laser-fire, movement, idle, and death WAV files and their sound definitions are installed under `sound/shared_alien_system/alien_infantry/` and `sound/alien_infantry_sound.asset`.
 - Reusable `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` definitions are installed under `gfx/particles/alien_infantry/` and `gfx/entities/`.
-- These audio, particle, and light definitions remain intentionally unbound because no Meshy firearm action passed the deformation gate and therefore no stable muzzle node or discharge timestamp exists.
-- Model, material, seven skeletal actions, entity registration, PDX export/reimport evidence, exact synchronization, and acceptance evidence remain in the `alien_infantry_entity` 3D-package handoff and are not substituted by this database tranche.
+- The laser-attack action passes hand-contact and actual-byte reimport checks, but the locked adapter exposes no supported muzzle locator and the Meshy rig has no muzzle bone. Therefore the particle, light, and firing-sound definitions remain intentionally unbound. A discharge timestamp alone is evidence, not a runtime socket.
+- Defend, support-attack, retreat, and death still require distinct substantive actions; no semantic alias or transform-only substitute is accepted. Runtime entity/action registration waits for those roles and a verified muzzle locator. The exact evidence and blockers are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_firearm_meshy_rig_and_free_animation_2026-08-25.md`.
 
 ## Future extensions
 
