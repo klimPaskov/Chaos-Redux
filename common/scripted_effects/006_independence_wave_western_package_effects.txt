@@ -1,0 +1,1354 @@
+# Consolidated Event 006 Western and North Atlantic package effect registry.
+# Source blocks retain package-local identifiers and behavior.
+# SOURCE: common/scripted_effects/006_independence_wave_brittany_package_effects.txt
+@bri_command_skill = 3
+@bri_command_attack = 2
+@bri_command_defense = 4
+@bri_command_planning = 3
+@bri_command_logistics = 3
+
+# ---------------------------------------------------------------------------
+# Lifecycle and visible-value transactions
+# ---------------------------------------------------------------------------
+
+independence_wave_remove_bri_package_ideas = {
+	remove_ideas = {
+		bri_divided_ports_and_language_state
+		bri_bilingual_maritime_compact
+		bri_federalist_civic_charter
+		bri_dock_rail_fisheries_councils
+		bri_regionalist_cultural_compact
+		bri_joint_coastal_command
+		bri_protected_ports_mandate
+	}
+}
+
+independence_wave_remove_bri_route_ideas = {
+	remove_ideas = {
+		bri_federalist_civic_charter
+		bri_dock_rail_fisheries_councils
+		bri_regionalist_cultural_compact
+		bri_joint_coastal_command
+		bri_protected_ports_mandate
+	}
+}
+
+independence_wave_refresh_bri_compact_lifecycle = {
+	if = {
+		limit = { is_independence_wave_bri_package = yes }
+		remove_ideas = { bri_divided_ports_and_language_state bri_bilingual_maritime_compact }
+		if = {
+			limit = { has_stable_independence_wave_bri_compact = yes }
+			add_ideas = bri_bilingual_maritime_compact
+			set_country_flag = independence_wave_bri_compact_stabilized
+		}
+		else = {
+			add_ideas = bri_divided_ports_and_language_state
+			clr_country_flag = independence_wave_bri_compact_stabilized
+		}
+	}
+}
+
+# Inputs: temporary `independence_wave_bri_language_delta` and
+# `independence_wave_bri_command_delta`.
+independence_wave_change_bri_compact_values = {
+	if = {
+		limit = { is_independence_wave_bri_package = yes }
+		add_to_variable = { independence_wave_bri_language_compact = independence_wave_bri_language_delta }
+		add_to_variable = { independence_wave_bri_coastal_command = independence_wave_bri_command_delta }
+		clamp_variable = {
+			var = independence_wave_bri_language_compact
+			min = constant:independence_wave_brittany_pressure.minimum
+			max = constant:independence_wave_brittany_pressure.maximum
+		}
+		clamp_variable = {
+			var = independence_wave_bri_coastal_command
+			min = constant:independence_wave_brittany_pressure.minimum
+			max = constant:independence_wave_brittany_pressure.maximum
+		}
+		independence_wave_refresh_bri_compact_lifecycle = yes
+	}
+}
+
+independence_wave_bri_apply_administrative_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_bri_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_bri_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_bri_apply_major_settlement = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_bri_apply_project_failure = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_bri_apply_former_host_settlement = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+independence_wave_bri_reward_network_project = {
+	independence_wave_bri_apply_major_settlement = yes
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+	independence_wave_change_network_standing = yes
+}
+
+# ---------------------------------------------------------------------------
+# Guarded human roster and portrait hooks
+# ---------------------------------------------------------------------------
+
+independence_wave_prepare_bri_roster_and_portraits = {
+	if = {
+		limit = { NOT = { has_character = BRI_independence_wave_civic_delegate } }
+		generate_character = {
+			token_base = BRI_independence_wave_civic_delegate
+			name = BRI_independence_wave_civic_delegate
+			gender = male
+			country_leader = { ideology = oligarchism traits = { } expire = "1965.1.1.1" id = -1 }
+		}
+	}
+	if = {
+		limit = { has_character = BRI_independence_wave_civic_delegate }
+		BRI_independence_wave_civic_delegate = {
+			set_portraits = { civilian = { large = GFX_portrait_BRI_independence_wave_civic_commission } }
+		}
+	}
+	if = {
+		limit = { NOT = { has_character = BRI_independence_wave_coastal_commandant } }
+		generate_character = {
+			token_base = BRI_independence_wave_coastal_commandant
+			name = BRI_independence_wave_coastal_commandant
+			gender = male
+			country_leader = { ideology = despotism traits = { } expire = "1965.1.1.1" id = -1 }
+			corps_commander = {
+				skill = @bri_command_skill
+				attack_skill = @bri_command_attack
+				defense_skill = @bri_command_defense
+				planning_skill = @bri_command_planning
+				logistics_skill = @bri_command_logistics
+			}
+		}
+	}
+	if = {
+		limit = { has_character = BRI_independence_wave_coastal_commandant }
+		BRI_independence_wave_coastal_commandant = {
+			set_portraits = {
+				civilian = { large = GFX_portrait_BRI_independence_wave_coastal_commandant }
+				army = {
+					large = GFX_portrait_BRI_independence_wave_coastal_commandant
+				}
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Politics and route governments
+# ---------------------------------------------------------------------------
+
+independence_wave_ensure_bri_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_initialize_bri_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = yes }
+	set_popularities = {
+		democratic = constant:independence_wave_brittany_politics.start_democratic
+		communism = constant:independence_wave_brittany_politics.start_communism
+		neutrality = constant:independence_wave_brittany_politics.start_neutrality
+		fascism = constant:independence_wave_brittany_politics.start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = BRI_independence_wave_democratic_party_long name = BRI_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = BRI_independence_wave_communism_party_long name = BRI_independence_wave_communism_party }
+	set_party_name = { ideology = neutrality long_name = BRI_independence_wave_neutrality_party_long name = BRI_independence_wave_neutrality_party }
+	set_party_name = { ideology = fascism long_name = BRI_independence_wave_fascism_party_long name = BRI_independence_wave_fascism_party }
+	set_country_flag = independence_wave_bri_provisional_authority
+}
+
+independence_wave_install_bri_constitutional_government = {
+	if = {
+		limit = { is_independence_wave_bri_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_bri_route_government = yes } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_brittany_politics.constitutional_democratic
+			communism = constant:independence_wave_brittany_politics.constitutional_communism
+			neutrality = constant:independence_wave_brittany_politics.constitutional_neutrality
+			fascism = constant:independence_wave_brittany_politics.constitutional_fascism
+		}
+		set_party_name = { ideology = democratic long_name = BRI_independence_wave_constitutional_party_long name = BRI_independence_wave_constitutional_party }
+		independence_wave_remove_bri_route_ideas = yes
+		add_ideas = bri_federalist_civic_charter
+		set_country_flag = independence_wave_bri_constitutional_government
+	}
+}
+
+independence_wave_install_bri_labor_government = {
+	if = {
+		limit = { is_independence_wave_bri_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_bri_route_government = yes } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+		set_popularities = {
+			democratic = constant:independence_wave_brittany_politics.labor_democratic
+			communism = constant:independence_wave_brittany_politics.labor_communism
+			neutrality = constant:independence_wave_brittany_politics.labor_neutrality
+			fascism = constant:independence_wave_brittany_politics.labor_fascism
+		}
+		set_party_name = { ideology = communism long_name = BRI_independence_wave_labor_party_long name = BRI_independence_wave_labor_party }
+		independence_wave_remove_bri_route_ideas = yes
+		add_ideas = bri_dock_rail_fisheries_councils
+		set_country_flag = independence_wave_bri_labor_government
+	}
+}
+
+independence_wave_install_bri_traditional_government = {
+	if = {
+		limit = { is_independence_wave_bri_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_bri_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_brittany_politics.traditional_democratic
+			communism = constant:independence_wave_brittany_politics.traditional_communism
+			neutrality = constant:independence_wave_brittany_politics.traditional_neutrality
+			fascism = constant:independence_wave_brittany_politics.traditional_fascism
+		}
+		set_party_name = { ideology = neutrality long_name = BRI_independence_wave_traditional_party_long name = BRI_independence_wave_traditional_party }
+		promote_character = { character = BRI_independence_wave_civic_delegate ideology = oligarchism }
+		independence_wave_remove_bri_route_ideas = yes
+		add_ideas = bri_regionalist_cultural_compact
+		set_country_flag = independence_wave_bri_traditional_government
+	}
+}
+
+independence_wave_install_bri_emergency_government = {
+	if = {
+		limit = { is_independence_wave_bri_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_bri_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		set_popularities = {
+			democratic = constant:independence_wave_brittany_politics.emergency_democratic
+			communism = constant:independence_wave_brittany_politics.emergency_communism
+			neutrality = constant:independence_wave_brittany_politics.emergency_neutrality
+			fascism = constant:independence_wave_brittany_politics.emergency_fascism
+		}
+		set_party_name = { ideology = neutrality long_name = BRI_independence_wave_emergency_party_long name = BRI_independence_wave_emergency_party }
+		promote_character = { character = BRI_independence_wave_coastal_commandant ideology = despotism }
+		independence_wave_remove_bri_route_ideas = yes
+		add_ideas = bri_joint_coastal_command
+		set_country_flag = independence_wave_bri_emergency_government
+	}
+}
+
+independence_wave_install_bri_patron_government = {
+	if = {
+		limit = { is_independence_wave_bri_package = yes has_independence_wave_patron_client_route = yes NOT = { has_independence_wave_bri_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		set_popularities = {
+			democratic = constant:independence_wave_brittany_politics.patron_democratic
+			communism = constant:independence_wave_brittany_politics.patron_communism
+			neutrality = constant:independence_wave_brittany_politics.patron_neutrality
+			fascism = constant:independence_wave_brittany_politics.patron_fascism
+		}
+		set_party_name = { ideology = neutrality long_name = BRI_independence_wave_patron_party_long name = BRI_independence_wave_patron_party }
+		promote_character = { character = BRI_independence_wave_civic_delegate ideology = oligarchism }
+		independence_wave_remove_bri_route_ideas = yes
+		add_ideas = bri_protected_ports_mandate
+		set_country_flag = independence_wave_bri_patron_government
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Package focus rewards
+# ---------------------------------------------------------------------------
+
+independence_wave_bri_focus_charter_ports_fisheries = {
+	set_temp_variable = { independence_wave_bri_language_delta = constant:independence_wave_brittany_pressure.minor_gain }
+	set_temp_variable = { independence_wave_bri_command_delta = constant:independence_wave_brittany_pressure.major_gain }
+	independence_wave_change_bri_compact_values = yes
+	independence_wave_focus_reward_administration = yes
+	set_country_flag = independence_wave_bri_ports_fisheries_chartered
+}
+
+independence_wave_bri_focus_establish_breton_gallo_services = {
+	set_temp_variable = { independence_wave_bri_language_delta = constant:independence_wave_brittany_pressure.decisive_gain }
+	set_temp_variable = { independence_wave_bri_command_delta = constant:independence_wave_brittany_pressure.minor_gain }
+	independence_wave_change_bri_compact_values = yes
+	independence_wave_focus_reward_public_settlement = yes
+	set_country_flag = independence_wave_bri_bilingual_services_established
+}
+
+independence_wave_bri_focus_integrate_sailors_guards = {
+	set_temp_variable = { independence_wave_bri_language_delta = constant:independence_wave_brittany_pressure.minor_gain }
+	set_temp_variable = { independence_wave_bri_command_delta = constant:independence_wave_brittany_pressure.decisive_gain }
+	independence_wave_change_bri_compact_values = yes
+	independence_wave_focus_reward_security_reform = yes
+	set_country_flag = independence_wave_bri_sailors_guards_integrated
+}
+
+independence_wave_bri_focus_settle_french_accounts = {
+	set_temp_variable = { independence_wave_bri_language_delta = constant:independence_wave_brittany_pressure.standard_gain }
+	set_temp_variable = { independence_wave_bri_command_delta = constant:independence_wave_brittany_pressure.standard_gain }
+	independence_wave_change_bri_compact_values = yes
+	independence_wave_bri_apply_former_host_settlement = yes
+	independence_wave_focus_reward_public_settlement = yes
+	set_country_flag = independence_wave_bri_french_accounts_focus_complete
+}
+
+independence_wave_bri_focus_convene_celtic_delegation = {
+	set_country_flag = independence_wave_bri_celtic_delegation_ready
+	set_country_flag = independence_wave_unlock_formable_discovery
+	independence_wave_focus_reward_network_cooperation = yes
+	independence_wave_focus_reward_ambition = yes
+}
+
+# ---------------------------------------------------------------------------
+# Exact setup, validation, and cleanup adapters
+# ---------------------------------------------------------------------------
+
+independence_wave_setup_iw_004_brittany = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_004_setup_complete
+	if = {
+		limit = { can_initialize_independence_wave_iw_004_package = yes }
+		independence_wave_prepare_bri_roster_and_portraits = yes
+		independence_wave_ensure_bri_baseline_laws = yes
+		independence_wave_initialize_bri_politics = yes
+		if = {
+			limit = { has_independence_wave_bri_command_roster = yes has_independence_wave_bri_advisor_roster = yes }
+			set_country_flag = independence_wave_command_roster_ready
+		}
+		set_variable = { independence_wave_bri_language_compact = constant:independence_wave_brittany_pressure.language_start }
+		set_variable = { independence_wave_bri_coastal_command = constant:independence_wave_brittany_pressure.command_start }
+		independence_wave_refresh_bri_compact_lifecycle = yes
+		set_country_flag = independence_wave_iw_004_lifecycle_initialized
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.celtic_cooperation_state }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		set_country_flag = independence_wave_bri_form01_candidate
+		set_country_flag = independence_wave_breton_celtic_congress_ambition
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_bri_command_roster = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_bri_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_iw_004_package_setup = yes }
+			set_country_flag = independence_wave_iw_004_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_dispatch_brittany_package_setup = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_004 } }
+		independence_wave_setup_iw_004_brittany = yes
+	}
+}
+
+independence_wave_validate_iw_004_brittany = {
+	if = {
+		limit = { has_complete_independence_wave_iw_004_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_dispatch_brittany_package_final_validation = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_004 } }
+		independence_wave_validate_iw_004_brittany = yes
+	}
+}
+
+independence_wave_cleanup_iw_004_brittany = {
+	if = {
+		limit = { original_tag = BRI check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_004 } }
+		remove_mission = independence_wave_bri_hold_breton_settlement_together
+		remove_decision = independence_wave_bri_charter_breton_gallo_services
+		remove_decision = independence_wave_bri_reopen_ports_fisheries_board
+		remove_decision = independence_wave_bri_integrate_sailors_territorial_guards
+		remove_decision = independence_wave_bri_settle_french_asset_ledgers
+		remove_decision = independence_wave_bri_prioritize_inherited_flotilla
+		remove_decision = independence_wave_bri_hold_inland_mobile_reserve
+		remove_decision = independence_wave_bri_ratify_federalist_compact
+		remove_decision = independence_wave_bri_charter_dock_rail_fisheries_councils
+		remove_decision = independence_wave_bri_entrust_regionalist_union
+		remove_decision = independence_wave_bri_establish_joint_coastal_command
+		remove_decision = independence_wave_bri_accept_protected_ports_mandate
+		remove_decision = independence_wave_bri_codify_durable_independence
+		remove_decision = independence_wave_bri_open_celtic_port_corridor
+		remove_decision = independence_wave_bri_convene_celtic_delegation
+		independence_wave_remove_bri_package_ideas = yes
+		clear_variable = independence_wave_bri_language_compact
+		clear_variable = independence_wave_bri_coastal_command
+		clr_country_flag = independence_wave_iw_004_setup_complete
+		clr_country_flag = independence_wave_iw_004_lifecycle_initialized
+		clr_country_flag = independence_wave_bri_ai_profile
+		clr_country_flag = independence_wave_bri_provisional_authority
+		clr_country_flag = independence_wave_bri_compact_stabilized
+		clr_country_flag = independence_wave_bri_compact_crisis_resolved
+		clr_country_flag = independence_wave_bri_compact_crisis_failed
+		clr_country_flag = independence_wave_bri_bilingual_services_chartered
+		clr_country_flag = independence_wave_bri_ports_fisheries_reopened
+		clr_country_flag = independence_wave_bri_sailors_guards_integrated
+		clr_country_flag = independence_wave_bri_french_asset_ledgers_settled
+		clr_country_flag = independence_wave_bri_inherited_flotilla_prioritized
+		clr_country_flag = independence_wave_bri_inland_mobile_reserve_held
+		clr_country_flag = independence_wave_bri_constitutional_government
+		clr_country_flag = independence_wave_bri_labor_government
+		clr_country_flag = independence_wave_bri_traditional_government
+		clr_country_flag = independence_wave_bri_emergency_government
+		clr_country_flag = independence_wave_bri_patron_government
+		clr_country_flag = independence_wave_bri_durable_independence
+		clr_country_flag = independence_wave_bri_celtic_port_corridor_open
+		clr_country_flag = independence_wave_bri_celtic_congress_complete
+		clr_country_flag = independence_wave_bri_ports_fisheries_chartered
+		clr_country_flag = independence_wave_bri_bilingual_services_established
+		clr_country_flag = independence_wave_bri_french_accounts_focus_complete
+		clr_country_flag = independence_wave_bri_celtic_delegation_ready
+		clr_country_flag = independence_wave_bri_form01_candidate
+		clr_country_flag = independence_wave_breton_celtic_congress_ambition
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+	}
+}
+
+independence_wave_dispatch_brittany_package_cleanup = {
+	independence_wave_cleanup_iw_004_brittany = yes
+}
+
+
+# SOURCE: common/scripted_effects/006_independence_wave_catalonia_package_effects.txt
+independence_wave_remove_cat_package_ideas = {
+	remove_ideas = {
+		cat_contested_assembly
+		cat_industrial_compact
+		cat_constitutional_charter
+		cat_workers_board
+		cat_municipal_covenant
+		cat_security_command
+		cat_patron_trade_mission
+	}
+}
+
+independence_wave_refresh_cat_compact_lifecycle = {
+	if = {
+		limit = { is_independence_wave_cat_package = yes }
+		remove_ideas = { cat_contested_assembly cat_industrial_compact }
+		if = {
+			limit = { has_stable_independence_wave_cat_compact = yes }
+			add_ideas = cat_industrial_compact
+			set_country_flag = independence_wave_cat_compact_stabilized
+		}
+		else = {
+			add_ideas = cat_contested_assembly
+			clr_country_flag = independence_wave_cat_compact_stabilized
+		}
+	}
+}
+
+# Inputs: temporary `independence_wave_cat_industrial_delta` and
+# `independence_wave_cat_assembly_delta`.
+independence_wave_change_cat_compact_values = {
+	if = {
+		limit = { is_independence_wave_cat_package = yes }
+		add_to_variable = { independence_wave_cat_industrial_cohesion = independence_wave_cat_industrial_delta }
+		add_to_variable = { independence_wave_cat_assembly_legitimacy = independence_wave_cat_assembly_delta }
+		clamp_variable = {
+			var = independence_wave_cat_industrial_cohesion
+			min = constant:independence_wave_catalonia_pressure.minimum
+			max = constant:independence_wave_catalonia_pressure.maximum
+		}
+		clamp_variable = {
+			var = independence_wave_cat_assembly_legitimacy
+			min = constant:independence_wave_catalonia_pressure.minimum
+			max = constant:independence_wave_catalonia_pressure.maximum
+		}
+		independence_wave_refresh_cat_compact_lifecycle = yes
+	}
+}
+
+independence_wave_cat_apply_administrative_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_cat_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_cat_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_cat_apply_major_settlement = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_cat_apply_project_failure = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+	independence_wave_decision_apply_country_deltas = yes
+	set_temp_variable = { independence_wave_cat_industrial_delta = constant:independence_wave_catalonia_pressure.standard_loss }
+	set_temp_variable = { independence_wave_cat_assembly_delta = constant:independence_wave_catalonia_pressure.minor_loss }
+	independence_wave_change_cat_compact_values = yes
+}
+
+independence_wave_cat_apply_former_host_settlement = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+independence_wave_cat_reward_network_project = {
+	independence_wave_cat_apply_major_settlement = yes
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+	independence_wave_change_network_standing = yes
+	set_temp_variable = { independence_wave_league_cohesion_delta = constant:independence_wave_value.minor_gain }
+	set_temp_variable = { independence_wave_league_common_cause_delta = constant:independence_wave_value.minor_gain }
+	set_temp_variable = { independence_wave_league_patron_capture_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_league_shared_reserve_delta = constant:independence_wave_value.minor_gain }
+	set_temp_variable = { independence_wave_league_member_confidence_delta = constant:independence_wave_value.minor_gain }
+	independence_wave_change_league_values = yes
+}
+
+# ---------------------------------------------------------------------------
+# Politics and route governments
+# ---------------------------------------------------------------------------
+
+independence_wave_ensure_cat_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_initialize_cat_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_catalonia_politics.start_democratic
+		communism = constant:independence_wave_catalonia_politics.start_communism
+		neutrality = constant:independence_wave_catalonia_politics.start_neutrality
+		fascism = constant:independence_wave_catalonia_politics.start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = CAT_independence_wave_civic_assembly_long name = CAT_independence_wave_civic_assembly }
+	set_party_name = { ideology = communism long_name = CAT_independence_wave_workers_union_long name = CAT_independence_wave_workers_union }
+	set_party_name = { ideology = neutrality long_name = CAT_independence_wave_municipal_covenant_long name = CAT_independence_wave_municipal_covenant }
+	set_party_name = { ideology = fascism long_name = CAT_independence_wave_emergency_directorate_long name = CAT_independence_wave_emergency_directorate }
+	set_country_flag = independence_wave_cat_provisional_authority
+}
+
+independence_wave_install_cat_constitutional_government = {
+	if = {
+		limit = { is_independence_wave_cat_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_cat_route_government = yes } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_catalonia_politics.constitutional_democratic
+			communism = constant:independence_wave_catalonia_politics.constitutional_communism
+			neutrality = constant:independence_wave_catalonia_politics.constitutional_neutrality
+			fascism = constant:independence_wave_catalonia_politics.constitutional_fascism
+		}
+		set_party_name = { ideology = democratic long_name = CAT_independence_wave_constitutional_charter_long name = CAT_independence_wave_constitutional_charter }
+		promote_character = { character = CAT_lluis_companys ideology = liberalism }
+		independence_wave_remove_cat_package_ideas = yes
+		add_ideas = cat_constitutional_charter
+		set_country_flag = independence_wave_cat_constitutional_government
+	}
+}
+
+independence_wave_install_cat_workers_government = {
+	if = {
+		limit = { is_independence_wave_cat_package = yes has_independence_wave_popular_council_route = yes NOT = { has_independence_wave_cat_route_government = yes } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+		set_popularities = {
+			democratic = constant:independence_wave_catalonia_politics.popular_democratic
+			communism = constant:independence_wave_catalonia_politics.popular_communism
+			neutrality = constant:independence_wave_catalonia_politics.popular_neutrality
+			fascism = constant:independence_wave_catalonia_politics.popular_fascism
+		}
+		set_party_name = { ideology = communism long_name = CAT_independence_wave_workers_charter_long name = CAT_independence_wave_workers_charter }
+		promote_character = { character = CAT_lluis_companys ideology = socialism }
+		independence_wave_remove_cat_package_ideas = yes
+		add_ideas = cat_workers_board
+		set_country_flag = independence_wave_cat_workers_government
+	}
+}
+
+independence_wave_install_cat_municipal_government = {
+	if = {
+		limit = { is_independence_wave_cat_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_cat_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_catalonia_politics.traditional_democratic
+			communism = constant:independence_wave_catalonia_politics.traditional_communism
+			neutrality = constant:independence_wave_catalonia_politics.traditional_neutrality
+			fascism = constant:independence_wave_catalonia_politics.traditional_fascism
+		}
+		set_party_name = { ideology = neutrality long_name = CAT_independence_wave_municipal_covenant_long name = CAT_independence_wave_municipal_covenant }
+		promote_character = { character = CAT_lluis_companys ideology = oligarchism }
+		independence_wave_remove_cat_package_ideas = yes
+		add_ideas = cat_municipal_covenant
+		set_country_flag = independence_wave_cat_municipal_government
+	}
+}
+
+independence_wave_install_cat_emergency_government = {
+	if = {
+		limit = { is_independence_wave_cat_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_cat_route_government = yes } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		set_popularities = {
+			democratic = constant:independence_wave_catalonia_politics.emergency_democratic
+			communism = constant:independence_wave_catalonia_politics.emergency_communism
+			neutrality = constant:independence_wave_catalonia_politics.emergency_neutrality
+			fascism = constant:independence_wave_catalonia_politics.emergency_fascism
+		}
+		set_party_name = { ideology = neutrality long_name = CAT_independence_wave_emergency_directorate_long name = CAT_independence_wave_emergency_directorate }
+		promote_character = { character = CAT_lluis_companys ideology = despotism }
+		independence_wave_remove_cat_package_ideas = yes
+		add_ideas = cat_security_command
+		set_country_flag = independence_wave_cat_emergency_government
+	}
+}
+
+independence_wave_install_cat_patron_government = {
+	if = {
+		limit = { is_independence_wave_cat_package = yes has_independence_wave_patron_client_route = yes NOT = { has_independence_wave_cat_route_government = yes } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_catalonia_politics.patron_democratic
+			communism = constant:independence_wave_catalonia_politics.patron_communism
+			neutrality = constant:independence_wave_catalonia_politics.patron_neutrality
+			fascism = constant:independence_wave_catalonia_politics.patron_fascism
+		}
+		set_party_name = { ideology = democratic long_name = CAT_independence_wave_protected_charter_long name = CAT_independence_wave_protected_charter }
+		promote_character = { character = CAT_lluis_companys ideology = liberalism }
+		independence_wave_remove_cat_package_ideas = yes
+		add_ideas = cat_patron_trade_mission
+		set_country_flag = independence_wave_cat_patron_government
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Focus and decision-facing helpers
+# ---------------------------------------------------------------------------
+
+independence_wave_cat_focus_secure_port = {
+	set_temp_variable = { independence_wave_cat_industrial_delta = constant:independence_wave_catalonia_pressure.standard_gain }
+	set_temp_variable = { independence_wave_cat_assembly_delta = constant:independence_wave_catalonia_pressure.minor_gain }
+	independence_wave_change_cat_compact_values = yes
+	independence_wave_focus_reward_administration = yes
+	set_country_flag = independence_wave_cat_port_secured
+}
+
+independence_wave_cat_focus_integrate_workers = {
+	set_temp_variable = { independence_wave_cat_industrial_delta = constant:independence_wave_catalonia_pressure.major_gain }
+	set_temp_variable = { independence_wave_cat_assembly_delta = constant:independence_wave_catalonia_pressure.minor_gain }
+	independence_wave_change_cat_compact_values = yes
+	independence_wave_focus_reward_security_reform = yes
+	set_country_flag = independence_wave_cat_factory_guards_integrated
+}
+
+independence_wave_cat_focus_reconcile_assembly = {
+	set_temp_variable = { independence_wave_cat_industrial_delta = constant:independence_wave_catalonia_pressure.minor_gain }
+	set_temp_variable = { independence_wave_cat_assembly_delta = constant:independence_wave_catalonia_pressure.major_gain }
+	independence_wave_change_cat_compact_values = yes
+	independence_wave_focus_reward_public_settlement = yes
+	set_country_flag = independence_wave_cat_assembly_reconciled
+}
+
+independence_wave_cat_focus_settle_host = {
+	set_temp_variable = { independence_wave_cat_industrial_delta = constant:independence_wave_catalonia_pressure.minor_gain }
+	set_temp_variable = { independence_wave_cat_assembly_delta = constant:independence_wave_catalonia_pressure.standard_gain }
+	independence_wave_change_cat_compact_values = yes
+	independence_wave_cat_apply_former_host_settlement = yes
+	independence_wave_focus_progress_host_negotiations = yes
+	set_country_flag = independence_wave_cat_host_ledgers_settled
+}
+
+independence_wave_cat_focus_open_mediterranean_network = {
+	set_country_flag = independence_wave_cat_mediterranean_corridor_open
+	if = {
+		limit = { has_independence_wave_formable_commit_readiness = yes }
+		set_country_flag = independence_wave_unlock_formable_discovery
+	}
+	independence_wave_focus_reward_network_cooperation = yes
+	independence_wave_focus_reward_ambition = yes
+}
+
+independence_wave_cat_focus_ratify_sovereignty = {
+	set_country_flag = independence_wave_cat_durable_sovereignty
+	independence_wave_cat_apply_major_settlement = yes
+	independence_wave_focus_reward_durable_state = yes
+}
+
+# ---------------------------------------------------------------------------
+# Exact setup, validation, and cleanup adapters
+# ---------------------------------------------------------------------------
+
+independence_wave_setup_iw_014_catalonia = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_014_setup_complete
+	if = {
+		limit = { can_initialize_independence_wave_iw_014_package = yes }
+		independence_wave_ensure_cat_baseline_laws = yes
+		independence_wave_initialize_cat_politics = yes
+		if = { limit = { has_independence_wave_cat_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
+		set_variable = { independence_wave_cat_industrial_cohesion = constant:independence_wave_catalonia_pressure.industrial_start }
+		set_variable = { independence_wave_cat_assembly_legitimacy = constant:independence_wave_catalonia_pressure.assembly_start }
+		independence_wave_refresh_cat_compact_lifecycle = yes
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.municipal_commission_vs_industrial_security }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.iberian_federation }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		independence_wave_focus_allow_league_route = yes
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_cat_command_roster = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_cat_ai_profile
+		set_country_flag = independence_wave_iw_014_lifecycle_initialized
+		if = {
+			limit = { has_prepared_independence_wave_iw_014_package_setup = yes }
+			set_country_flag = independence_wave_iw_014_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_dispatch_catalonia_package_setup = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_014 } }
+		independence_wave_setup_iw_014_catalonia = yes
+	}
+}
+
+independence_wave_validate_iw_014_catalonia = {
+	if = {
+		limit = { has_complete_independence_wave_iw_014_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_dispatch_catalonia_package_final_validation = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_014 } }
+		independence_wave_validate_iw_014_catalonia = yes
+	}
+}
+
+independence_wave_cleanup_iw_014_catalonia = {
+	if = {
+		limit = { original_tag = CAT check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_014 } }
+		remove_mission = independence_wave_cat_hold_industrial_compact_together
+		remove_decision = independence_wave_cat_reopen_barcelona_depots
+		remove_decision = independence_wave_cat_integrate_factory_guards
+		remove_decision = independence_wave_cat_reconcile_assembly_and_union
+		remove_decision = independence_wave_cat_settle_former_host_ledgers
+		remove_decision = independence_wave_cat_ratify_constitutional_charter
+		remove_decision = independence_wave_cat_convene_workers_board
+		remove_decision = independence_wave_cat_confirm_municipal_covenant
+		remove_decision = independence_wave_cat_establish_pyrenean_command
+		remove_decision = independence_wave_cat_accept_protected_customs_mandate
+		remove_decision = independence_wave_cat_codify_durable_sovereignty
+		remove_decision = independence_wave_cat_open_mediterranean_network
+		independence_wave_remove_cat_package_ideas = yes
+		clear_variable = independence_wave_cat_industrial_cohesion
+		clear_variable = independence_wave_cat_assembly_legitimacy
+		clr_country_flag = independence_wave_iw_014_setup_complete
+		clr_country_flag = independence_wave_iw_014_lifecycle_initialized
+		clr_country_flag = independence_wave_cat_ai_profile
+		clr_country_flag = independence_wave_cat_provisional_authority
+		clr_country_flag = independence_wave_cat_compact_stabilized
+		clr_country_flag = independence_wave_cat_compact_crisis_resolved
+		clr_country_flag = independence_wave_cat_compact_crisis_failed
+		clr_country_flag = independence_wave_cat_port_secured
+		clr_country_flag = independence_wave_cat_factory_guards_integrated
+		clr_country_flag = independence_wave_cat_assembly_reconciled
+		clr_country_flag = independence_wave_cat_host_ledgers_settled
+		clr_country_flag = independence_wave_cat_constitutional_government
+		clr_country_flag = independence_wave_cat_workers_government
+		clr_country_flag = independence_wave_cat_municipal_government
+		clr_country_flag = independence_wave_cat_emergency_government
+		clr_country_flag = independence_wave_cat_patron_government
+		clr_country_flag = independence_wave_cat_durable_sovereignty
+		clr_country_flag = independence_wave_cat_mediterranean_corridor_open
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clear_variable = independence_wave_formable_family
+		clear_variable = independence_wave_formable_profile_family
+		clear_variable = independence_wave_formable_readiness_family
+		clr_country_flag = independence_wave_formable_family_registered
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_formable_profile_loaded
+	}
+}
+
+independence_wave_dispatch_catalonia_package_cleanup = {
+	independence_wave_cleanup_iw_014_catalonia = yes
+}
+
+
+# SOURCE: common/scripted_effects/006_independence_wave_ice_package_effects.txt
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY = 40
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY_CLEANUP = -40
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS = 30
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS_CLEANUP = -30
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY = 35
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY_CLEANUP = -35
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE = 25
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE_CLEANUP = -25
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION = 20
+@CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION_CLEANUP = -20
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-012 ICELAND PACKAGE EFFECTS
+# ============================================================================
+# Additive registered-tag adapter for the Icelandic emergency republic. It
+# preserves vanilla Iceland's history, flag, cosmetic identity, focus tree, and
+# sourced character roster while attaching Event 006's visible ledgers, force
+# mapping, host charter, league route, and North Atlantic Compact readiness.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IW-012 value and idea lifecycle
+# ---------------------------------------------------------------------------
+
+independence_wave_remove_ice_package_ideas = {
+	remove_ideas = {
+		ice_exposed_north_atlantic_charter
+		ice_north_atlantic_service_compact
+		ice_municipal_shipping_council
+		ice_coastwatch_emergency_command
+		ice_north_atlantic_patron_mandate
+	}
+}
+
+independence_wave_refresh_ice_lifecycle = {
+	if = {
+		limit = { is_independence_wave_ice_package = yes }
+		remove_ideas = { ice_exposed_north_atlantic_charter ice_north_atlantic_service_compact }
+		if = {
+			limit = { has_stable_independence_wave_ice_state = yes }
+			add_ideas = ice_north_atlantic_service_compact
+			set_country_flag = independence_wave_ice_state_stabilized
+		}
+		else = {
+			add_ideas = ice_exposed_north_atlantic_charter
+			clr_country_flag = independence_wave_ice_state_stabilized
+		}
+	}
+}
+
+# Inputs: temporary `independence_wave_ice_*_delta` values.
+independence_wave_change_ice_values = {
+	if = {
+		limit = { is_independence_wave_ice_package = yes }
+		add_to_variable = { independence_wave_ice_port_authority = independence_wave_ice_port_authority_delta }
+		add_to_variable = { independence_wave_ice_civic_cohesion = independence_wave_ice_civic_cohesion_delta }
+		add_to_variable = { independence_wave_ice_coastwatch_readiness = independence_wave_ice_coastwatch_delta }
+		add_to_variable = { independence_wave_ice_shipping_security = independence_wave_ice_shipping_delta }
+		add_to_variable = { independence_wave_ice_compact_support = independence_wave_ice_compact_delta }
+		clamp_variable = { var = independence_wave_ice_port_authority min = constant:independence_wave_ice_value.minimum max = constant:independence_wave_ice_value.maximum }
+		clamp_variable = { var = independence_wave_ice_civic_cohesion min = constant:independence_wave_ice_value.minimum max = constant:independence_wave_ice_value.maximum }
+		clamp_variable = { var = independence_wave_ice_coastwatch_readiness min = constant:independence_wave_ice_value.minimum max = constant:independence_wave_ice_value.maximum }
+		clamp_variable = { var = independence_wave_ice_shipping_security min = constant:independence_wave_ice_value.minimum max = constant:independence_wave_ice_value.maximum }
+		clamp_variable = { var = independence_wave_ice_compact_support min = constant:independence_wave_ice_value.minimum max = constant:independence_wave_ice_value.maximum }
+		independence_wave_refresh_ice_lifecycle = yes
+		independence_wave_refresh_country_state = yes
+	}
+}
+
+independence_wave_ice_apply_project_failure = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	set_temp_variable = { independence_wave_ice_port_authority_delta = constant:independence_wave_ice_value.minor_loss }
+	set_temp_variable = { independence_wave_ice_civic_cohesion_delta = constant:independence_wave_ice_value.minor_loss }
+	set_temp_variable = { independence_wave_ice_coastwatch_delta = constant:independence_wave_ice_value.minor_loss }
+	set_temp_variable = { independence_wave_ice_shipping_delta = constant:independence_wave_ice_value.minor_loss }
+	set_temp_variable = { independence_wave_ice_compact_delta = constant:independence_wave_ice_value.minor_loss }
+	independence_wave_change_ice_values = yes
+}
+
+independence_wave_ice_apply_administration_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_ice_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_ice_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_ice_apply_host_settlement = {
+	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_minor }
+	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+	independence_wave_decision_apply_host_deltas = yes
+	set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.recognized_separation }
+	independence_wave_set_host_outcome = yes
+}
+
+independence_wave_ice_apply_compact_progress = {
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
+	independence_wave_change_network_standing = yes
+	set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_minor }
+	set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_standard }
+	set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_decision_effect.league_minor }
+	set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_standard }
+	independence_wave_decision_apply_league_deltas = yes
+	set_country_flag = independence_wave_ice_compact_delegation_ready
+}
+
+independence_wave_ice_remove_route_ideas = {
+	remove_ideas = {
+		ice_municipal_shipping_council
+		ice_coastwatch_emergency_command
+		ice_north_atlantic_patron_mandate
+	}
+}
+
+# Called by the shared government-route lock after the route variable and lock
+# flag are written. This keeps the vanilla ICE roster while making each Event
+# 006 route visibly change the emergency republic's government and route idea.
+independence_wave_ice_apply_government_route_politics = {
+	if = {
+		limit = { is_independence_wave_ice_package = yes has_country_flag = independence_wave_government_route_locked }
+		independence_wave_ice_remove_route_ideas = yes
+		if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.constitutional_republic } }
+			set_politics = { ruling_party = democratic elections_allowed = yes }
+			set_popularities = {
+				democratic = constant:independence_wave_ice_route_politics.constitutional_democratic
+				communism = constant:independence_wave_ice_route_politics.constitutional_communism
+				neutrality = constant:independence_wave_ice_route_politics.constitutional_neutrality
+				fascism = constant:independence_wave_ice_route_politics.constitutional_fascism
+			}
+			add_ideas = ice_municipal_shipping_council
+			promote_character = { character = ICE_sveinn_bjornsson ideology = centrism }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.traditional_restoration } }
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			set_popularities = {
+				democratic = constant:independence_wave_ice_route_politics.traditional_democratic
+				communism = constant:independence_wave_ice_route_politics.traditional_communism
+				neutrality = constant:independence_wave_ice_route_politics.traditional_neutrality
+				fascism = constant:independence_wave_ice_route_politics.traditional_fascism
+			}
+			add_ideas = ice_north_atlantic_service_compact
+			promote_character = { character = ICE_sveinn_bjornsson ideology = despotism }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.emergency_military } }
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			set_popularities = {
+				democratic = constant:independence_wave_ice_route_politics.emergency_democratic
+				communism = constant:independence_wave_ice_route_politics.emergency_communism
+				neutrality = constant:independence_wave_ice_route_politics.emergency_neutrality
+				fascism = constant:independence_wave_ice_route_politics.emergency_fascism
+			}
+			add_ideas = ice_coastwatch_emergency_command
+			promote_character = { character = ICE_bjorn_sveinsson_bjornsson ideology = despotism }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.patron_client } }
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			set_popularities = {
+				democratic = constant:independence_wave_ice_route_politics.patron_democratic
+				communism = constant:independence_wave_ice_route_politics.patron_communism
+				neutrality = constant:independence_wave_ice_route_politics.patron_neutrality
+				fascism = constant:independence_wave_ice_route_politics.patron_fascism
+			}
+			add_ideas = ice_north_atlantic_patron_mandate
+			set_country_flag = independence_wave_ice_patron_mandate_active
+			promote_character = { character = ICE_sveinn_bjornsson ideology = oligarchism }
+		}
+	}
+}
+
+independence_wave_dispatch_iw_012_ice_government_route_politics = {
+	independence_wave_ice_apply_government_route_politics = yes
+}
+
+# The four route focuses below are the additive-tree consumers for ICE. They
+# lock the same shared government-route enum used by the wider Event 006
+# framework, then pay an ICE-specific ledger consequence so a route choice is
+# visible in both politics and the North Atlantic statehood values.
+independence_wave_ice_focus_lock_constitutional_route = {
+	if = {
+		limit = { can_lock_independence_wave_ice_constitutional_route = yes }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.constitutional_republic }
+		independence_wave_select_government_route = yes
+		set_temp_variable = { independence_wave_ice_port_authority_delta = constant:independence_wave_ice_value.minor_gain }
+		set_temp_variable = { independence_wave_ice_civic_cohesion_delta = constant:independence_wave_ice_value.standard_gain }
+		set_temp_variable = { independence_wave_ice_coastwatch_delta = constant:independence_wave_ice_value.minimum }
+		set_temp_variable = { independence_wave_ice_shipping_delta = constant:independence_wave_ice_value.minor_gain }
+		set_temp_variable = { independence_wave_ice_compact_delta = constant:independence_wave_ice_value.minimum }
+		independence_wave_change_ice_values = yes
+		independence_wave_ice_apply_administration_progress = yes
+	}
+}
+
+independence_wave_ice_focus_lock_traditional_route = {
+	if = {
+		limit = { can_lock_independence_wave_ice_traditional_route = yes }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.traditional_restoration }
+		independence_wave_select_government_route = yes
+		set_temp_variable = { independence_wave_ice_port_authority_delta = constant:independence_wave_ice_value.standard_gain }
+		set_temp_variable = { independence_wave_ice_civic_cohesion_delta = constant:independence_wave_ice_value.minor_gain }
+		set_temp_variable = { independence_wave_ice_coastwatch_delta = constant:independence_wave_ice_value.minimum }
+		set_temp_variable = { independence_wave_ice_shipping_delta = constant:independence_wave_ice_value.minor_gain }
+		set_temp_variable = { independence_wave_ice_compact_delta = constant:independence_wave_ice_value.minimum }
+		independence_wave_change_ice_values = yes
+		independence_wave_ice_apply_administration_progress = yes
+	}
+}
+
+independence_wave_ice_focus_lock_emergency_military_route = {
+	if = {
+		limit = { can_lock_independence_wave_ice_emergency_military_route = yes }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.emergency_military }
+		independence_wave_select_government_route = yes
+		set_temp_variable = { independence_wave_ice_port_authority_delta = constant:independence_wave_ice_value.minor_gain }
+		set_temp_variable = { independence_wave_ice_civic_cohesion_delta = constant:independence_wave_ice_value.minor_loss }
+		set_temp_variable = { independence_wave_ice_coastwatch_delta = constant:independence_wave_ice_value.standard_gain }
+		set_temp_variable = { independence_wave_ice_shipping_delta = constant:independence_wave_ice_value.standard_gain }
+		set_temp_variable = { independence_wave_ice_compact_delta = constant:independence_wave_ice_value.minimum }
+		independence_wave_change_ice_values = yes
+		independence_wave_ice_apply_security_progress = yes
+	}
+}
+
+independence_wave_ice_focus_lock_patron_client_route = {
+	if = {
+		limit = { can_lock_independence_wave_ice_patron_client_route = yes }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.patron_client }
+		independence_wave_select_government_route = yes
+		set_temp_variable = { independence_wave_ice_port_authority_delta = constant:independence_wave_ice_value.minor_gain }
+		set_temp_variable = { independence_wave_ice_civic_cohesion_delta = constant:independence_wave_ice_value.minimum }
+		set_temp_variable = { independence_wave_ice_coastwatch_delta = constant:independence_wave_ice_value.minimum }
+		set_temp_variable = { independence_wave_ice_shipping_delta = constant:independence_wave_ice_value.minor_gain }
+		set_temp_variable = { independence_wave_ice_compact_delta = constant:independence_wave_ice_value.standard_gain }
+		independence_wave_change_ice_values = yes
+		independence_wave_ice_apply_diplomatic_progress = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Setup and synchronized-dispatch contract
+# ---------------------------------------------------------------------------
+
+# Adds the Event 006 diplomacy bias against the frozen former-host target.
+# The target is an execution event target rather than a country literal: a
+# later ICE release can be hosted by any valid surviving country. Each channel
+# is applied once per package generation and is reversed before cleanup.
+independence_wave_ice_apply_host_ai = {
+	if = {
+		limit = {
+			is_independence_wave_ice_package = yes
+			has_country_flag = independence_wave_ice_ai_profile
+			NOT = { has_country_flag = independence_wave_ice_host_ai_applied }
+			has_event_target = independence_wave_setup_former_host
+		}
+		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE }
+		set_country_flag = independence_wave_ice_host_ai_trade_applied
+		if = {
+			limit = { has_independence_wave_living_former_host = yes }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY }
+			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION }
+			set_country_flag = independence_wave_ice_host_ai_charter_applied
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_formable_family_registered }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS }
+			set_country_flag = independence_wave_ice_compact_ai_applied
+		}
+		set_country_flag = independence_wave_ice_host_ai_applied
+	}
+}
+
+# Reverses the target-specific strategies before the regular event target is
+# discarded. A missing/dead target is harmless; the static AI plan no longer
+# contains a Denmark-specific entry that could survive the cleanup.
+independence_wave_ice_clear_host_ai = {
+	if = {
+		limit = { has_country_flag = independence_wave_ice_host_ai_trade_applied has_event_target = independence_wave_setup_former_host }
+		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_TRADE_CLEANUP }
+		if = {
+			limit = { has_country_flag = independence_wave_ice_host_ai_charter_applied }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_DIPLOMACY_CLEANUP }
+			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_WAR_PREPARATION_CLEANUP }
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_ice_compact_ai_applied }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_DIPLOMACY_CLEANUP }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = @CR_SC_INDEPENDENCE_WAVE_ICE_AI_COMPACT_RELATIONS_CLEANUP }
+		}
+	}
+	clr_country_flag = independence_wave_ice_host_ai_applied
+	clr_country_flag = independence_wave_ice_host_ai_trade_applied
+	clr_country_flag = independence_wave_ice_host_ai_charter_applied
+	clr_country_flag = independence_wave_ice_compact_ai_applied
+}
+
+independence_wave_initialize_ice_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_ice_politics.democratic
+		communism = constant:independence_wave_ice_politics.communism
+		neutrality = constant:independence_wave_ice_politics.neutrality
+		fascism = constant:independence_wave_ice_politics.fascism
+	}
+	promote_character = { character = ICE_sveinn_bjornsson ideology = centrism }
+	promote_character = { character = ICE_bjorn_sveinsson_bjornsson ideology = despotism }
+}
+
+independence_wave_setup_iw_012_ice = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_012_setup_complete
+	clr_country_flag = independence_wave_ice_host_ai_applied
+	clr_country_flag = independence_wave_ice_host_ai_trade_applied
+	clr_country_flag = independence_wave_ice_host_ai_charter_applied
+	clr_country_flag = independence_wave_ice_compact_ai_applied
+	if = {
+		limit = { can_initialize_independence_wave_iw_012_package = yes }
+		independence_wave_initialize_ice_politics = yes
+		if = { limit = { has_independence_wave_ice_command_roster = yes } set_country_flag = independence_wave_command_roster_ready }
+		set_variable = { independence_wave_ice_port_authority = constant:independence_wave_ice_value.port_authority_start }
+		set_variable = { independence_wave_ice_civic_cohesion = constant:independence_wave_ice_value.civic_cohesion_start }
+		set_variable = { independence_wave_ice_coastwatch_readiness = constant:independence_wave_ice_value.coastwatch_start }
+		set_variable = { independence_wave_ice_shipping_security = constant:independence_wave_ice_value.shipping_security_start }
+		set_variable = { independence_wave_ice_compact_support = constant:independence_wave_ice_value.compact_support_start }
+		independence_wave_refresh_ice_lifecycle = yes
+		set_country_flag = independence_wave_ice_lifecycle_initialized
+		# The exact vanilla iceland_tree snapshot imports the Event 006 shared
+		# overlay. Register that carrier before requesting additive assignment;
+		# unreviewed meaningful trees must fail closed.
+		set_country_flag = independence_wave_focus_carrier_registered
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.additive_overlay }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		clr_country_flag = independence_wave_route_popular_council_available
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_unlock_patron_client_route
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		independence_wave_focus_register_ambition_family = yes
+		set_country_flag = independence_wave_ice_north_atlantic_ambition
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.north_atlantic_compact }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_ice_command_roster = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_ice_ai_profile
+		independence_wave_ice_apply_host_ai = yes
+		if = {
+			limit = { has_prepared_independence_wave_iw_012_package_setup = yes }
+			set_country_flag = independence_wave_iw_012_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_dispatch_iw_012_ice_package_setup = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_012 } }
+		independence_wave_setup_iw_012_ice = yes
+	}
+}
+
+independence_wave_validate_iw_012_ice = {
+	if = {
+		limit = { has_complete_independence_wave_iw_012_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_dispatch_iw_012_ice_package_final_validation = {
+	if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_012 } }
+		independence_wave_validate_iw_012_ice = yes
+	}
+}
+
+independence_wave_cleanup_iw_012_ice = {
+	if = {
+		limit = { original_tag = ICE check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_012 } }
+		independence_wave_ice_clear_host_ai = yes
+		remove_mission = independence_wave_ice_hold_the_harbour
+		remove_decision = independence_wave_ice_reconcile_shipping_registers
+		remove_decision = independence_wave_ice_charter_municipal_council
+		remove_decision = independence_wave_ice_expand_coastwatch
+		remove_decision = independence_wave_ice_negotiate_north_atlantic_compact
+		remove_decision = independence_wave_ice_settle_former_host_charter
+		remove_decision = independence_wave_ice_declare_armed_neutrality
+		independence_wave_remove_ice_package_ideas = yes
+		clr_country_flag = independence_wave_iw_012_setup_complete
+		clr_country_flag = independence_wave_ice_lifecycle_initialized
+		clr_country_flag = independence_wave_ice_ai_profile
+		clr_country_flag = independence_wave_ice_state_stabilized
+		clr_country_flag = independence_wave_ice_compact_delegation_ready
+		clr_country_flag = independence_wave_ice_shipping_registers_reconciled
+		clr_country_flag = independence_wave_ice_municipal_charter_complete
+		clr_country_flag = independence_wave_ice_coastwatch_expanded
+		clr_country_flag = independence_wave_ice_former_host_charter_settled
+		clr_country_flag = independence_wave_ice_armed_neutrality_declared
+		clr_country_flag = independence_wave_ice_patron_mandate_active
+		clr_country_flag = independence_wave_ice_harbour_crisis_resolved
+		clr_country_flag = independence_wave_ice_harbour_crisis_failed
+		clr_country_flag = independence_wave_ice_north_atlantic_ambition
+		clear_variable = independence_wave_ice_port_authority
+		clear_variable = independence_wave_ice_civic_cohesion
+		clear_variable = independence_wave_ice_coastwatch_readiness
+		clear_variable = independence_wave_ice_shipping_security
+		clear_variable = independence_wave_ice_compact_support
+	}
+}
+
+independence_wave_dispatch_iw_012_ice_package_cleanup = {
+	independence_wave_cleanup_iw_012_ice = yes
+}
+
+
