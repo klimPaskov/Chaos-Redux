@@ -4,6 +4,10 @@ Date: 2026-08-26
 
 Status: Narrow addendum required, broad expansion remains closed
 
+> Current disposition after commit `d77afae7e` (`fix: preserve alien landing registry ownership`): the severity-one registry ownership finding documented below is resolved at source by explicit owner and state event targets.
+> The registry analysis remains historical design rationale and acceptance guidance; do not repeat the registry patch.
+> The Portal beachhead lifecycle remains queued, and the model/runtime and MCP limits remain open.
+
 Owner: Parent Event 016 implementation agent
 
 Planner mode: Read-only gameplay and asset audit with documentation-only output
@@ -120,7 +124,7 @@ The existing successful-commit helper remains the single registry writer.
 
 ### Parent resolution required now
 
-The parent must patch the registry ownership before treating the Alien Infantry API or DHR revolt transfer as accepted.
+The parent must verify the owner-target registry implementation before treating the Alien Infantry API or DHR revolt transfer as dynamically accepted.
 
 The parent must update `common/scripted_effects/chaosx_dynamic_effects.md` in the same gameplay change so it describes a caller-owned country array rather than a global array.
 
@@ -326,7 +330,7 @@ The active Portal breach is dynamic province control rather than a static map re
 
 ## What the parent must resolve now
 
-1. Replace the global Alien Infantry landing registry with caller-owned country-scoped registry behavior and rerun the cross-country acceptance matrix.
+1. Rerun the cross-country acceptance matrix against the owner-target country-scoped registry implementation in `d77afae7e`.
 
 2. Decide and promote the Portal transient lifecycle contract before implementing cleanup, or explicitly queue it under a named future containment owner.
 
@@ -369,14 +373,14 @@ Do not weaken any model or animation acceptance gate to close the documentation 
 
 ## Promotion and closure rule
 
-This file remains in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/` until the parent dispositions both ownership findings.
+This file remains in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/` until the parent records the registry verification and dispositions the Portal lifecycle finding.
 
 If the registry design is accepted, promote its caller-owned array contract and cross-country scenarios into the Alien Infantry and DHR binding spec and acceptance document.
 
 If the Portal lifecycle is accepted, promote it into the binding Portal Raider event, raid, and decision or mission specifications, then document the public cleanup helper in the permanent Portal Raider API documentation.
 
-After implementation, rerun the event, focus, map, decision, country, localisation, completion, and probability audits that touch the changed identifiers.
+After registry verification and any Portal implementation, rerun the event, focus, map, decision, country, localisation, completion, and probability audits that touch the changed identifiers.
 
-The parent may restore the earlier broad closure only when the severity-one registry defect is fixed, the Portal lifecycle is implemented or explicitly queued with an owner and reason, the model/runtime gate remains honestly dispositioned, and no newly accepted addendum remains unresolved.
+The parent may restore the earlier broad closure only when the owner-target registry has dynamic acceptance evidence, the Portal lifecycle is implemented or explicitly queued with an owner and reason, the model/runtime gate remains honestly dispositioned, and no newly accepted addendum remains unresolved.
 
 No gameplay, asset, spreadsheet, or skill file was edited by this planning pass.
