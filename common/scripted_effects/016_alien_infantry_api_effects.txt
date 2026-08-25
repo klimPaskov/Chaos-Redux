@@ -294,9 +294,10 @@ alien_infantry_apply_landing_cooldown = {
 	}
 }
 
-# COUNTRY scope. Adds a successful state to the sparse global state-scope
-# registry used by D'Rhondan revolt transfer. State flags remain authoritative;
-# the registry only removes the need for a later world-wide state scan.
+# COUNTRY scope. Adds a successful state to the caller-owned sparse state-scope
+# registry used by that country's downstream consumers. State flags remain
+# historical evidence; the country-scoped registry preserves provider ownership
+# without a global cross-consumer ledger or a later world-wide state scan.
 alien_infantry_register_landing_state = {
 	if = {
 		limit = { has_variable = dhrondan_landing_state_id }
@@ -305,13 +306,13 @@ alien_infantry_register_landing_state = {
 				limit = {
 					NOT = {
 						is_in_array = {
-							array = global.alien_infantry_landing_state_registry
+							array = alien_infantry_landing_state_registry
 							value = THIS
 						}
 					}
 				}
 				add_to_array = {
-					array = global.alien_infantry_landing_state_registry
+					array = alien_infantry_landing_state_registry
 					value = THIS
 				}
 			}

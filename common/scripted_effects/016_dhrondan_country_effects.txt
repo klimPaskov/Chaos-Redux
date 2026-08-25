@@ -27,32 +27,33 @@ dhrondan_capture_revolt_inputs = {
 		set_temp_variable = { dhrondan_revolt_arrivals_remaining = dhrondan_arrival_count }
 	}
 	for_each_scope_loop = {
-		array = global.alien_infantry_landing_state_registry
+		array = alien_infantry_landing_state_registry
 		if = {
 			limit = { dhrondan_state_is_landing_site = yes }
 			ROOT = { add_to_temp_variable = { dhrondan_revolt_marked_states = constant:dhrondan_value.one } }
-		}
-	}
-	every_owned_state = {
-		limit = { dhrondan_state_is_landing_site = yes }
-		if = {
-			limit = {
-				is_controlled_by = event_target:dhrondan_revolt_host
-				impassable = no
-				NOT = { has_event_target = dhrondan_revolt_capital }
+			if = {
+				limit = {
+					is_controlled_by = event_target:dhrondan_revolt_host
+					impassable = no
+					NOT = { has_event_target = dhrondan_revolt_capital }
+				}
+				save_event_target_as = dhrondan_revolt_capital
 			}
-			save_event_target_as = dhrondan_revolt_capital
 		}
 	}
 	if = {
 		limit = { NOT = { has_event_target = dhrondan_revolt_capital } }
-		every_owned_state = {
-			limit = {
-				dhrondan_state_is_landing_site = yes
-				impassable = no
-				NOT = { has_event_target = dhrondan_revolt_capital }
+		for_each_scope_loop = {
+			array = alien_infantry_landing_state_registry
+			if = {
+				limit = {
+					dhrondan_state_is_landing_site = yes
+					is_owned_by = event_target:dhrondan_revolt_host
+					impassable = no
+					NOT = { has_event_target = dhrondan_revolt_capital }
+				}
+				save_event_target_as = dhrondan_revolt_capital
 			}
-			save_event_target_as = dhrondan_revolt_capital
 		}
 	}
 	while = {
@@ -103,18 +104,20 @@ dhrondan_release_and_transfer_landing_states = {
 		limit = { check_variable = { dhrondan_revolt_released_tag = constant:dhrondan_value.one } }
 		event_target:dhrondan_revolt_capital = { add_core_of = event_target:dhrondan_revolt_host }
 	}
-	every_owned_state = {
-		limit = { dhrondan_state_is_landing_site = yes }
-		dhrondan_transfer_current_landing_state = yes
-	}
 	for_each_scope_loop = {
-		array = global.alien_infantry_landing_state_registry
+		array = alien_infantry_landing_state_registry
 		if = {
 			limit = {
 				dhrondan_state_is_landing_site = yes
-				NOT = { is_owned_by = DHR }
 			}
-			add_claim_by = DHR
+			if = {
+				limit = { is_owned_by = event_target:dhrondan_revolt_host }
+				dhrondan_transfer_current_landing_state = yes
+			}
+			else_if = {
+				limit = { NOT = { is_owned_by = DHR } }
+				add_claim_by = DHR
+			}
 		}
 	}
 	if = {
