@@ -22,7 +22,7 @@ Status date: 2026-08-25 parent runtime-wiring amendment to the 2026-07-15 frozen
 
 ## 2026-08-25 downstream amendment
 
-The nine gameplay consumers and CXT registration are definition-level current. The nine counter triplets are represented by 27 DDS files and matching registry consumers, with live consumer review still parent-owned. Five families now have parent-installed model, eight-action, entity/GFX, material-map, and seven-role runtime sound packages: Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, and March Predation Column. Bone Riders remains blocked by the unsupported compound horse/rider action route, Island Reavers is blocked before accepted v8 generation by Meshy HTTP 402, Scavenger Warband remains at user-review status, and Network Cadre has no accepted provider-sourced action lease. The four remaining families are intentionally not wired as complete runtime models. The five installed runtime sound packages contain 35 converted 44.1 kHz WAV files. Four super-event audio source/conversion packages exist, but sound definitions, catalog/settings-aware dispatch, and final super-event wiring remain parent-owned.
+The nine gameplay consumers and CXT registration are definition-level current. The nine counter triplets are represented by 27 DDS files and matching registry consumers, with live consumer review still parent-owned. Five families now have parent-installed model, eight-action, entity/GFX, material-map, and seven-role runtime sound packages: Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, and March Predation Column. Bone Riders remains blocked by the unsupported compound horse/rider action route, Island Reavers is blocked before accepted v8 generation by Meshy HTTP 402, Scavenger Warband remains at user-review status, and Network Cadre has no accepted provider-sourced action lease. The four remaining families are intentionally not wired as complete runtime models. The five installed runtime sound packages contain 35 converted 44.1 kHz WAV files. The four super-event audio packages are now registered with unique base sounds, six settings-scaled wrappers per id, catalog rows, and guarded settings-aware dispatch; the wiring audit is `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_super_event_audio_wiring_audit_2026-08-25.md`.
 
 The 2026-07-15 P0/P1/P2/P3 closure statements remain valid only for their then-frozen scope. They are not completion evidence for this 2026-08-25 downstream model, counter, audio, and parent-review amendment.
 
@@ -39,7 +39,7 @@ The 2026-07-15 P0/P1/P2/P3 closure statements remain valid only for their then-f
 
 ## Completion disposition
 
-- The frozen 2026-07-15 mechanics and presentation scope had no unresolved P0/P1/P2/P3 finding, but the current 2026-08-25 amendment remains partial and blocked on four downstream custom-unit model/action packages, final super-event sound wiring, and parent review.
+- The frozen 2026-07-15 mechanics and presentation scope had no unresolved P0/P1/P2/P3 finding, but the current 2026-08-25 amendment remains partial and blocked on four downstream custom-unit model/action packages and parent review.
 - The pre-lock target package deliberately assigns one first score band per valid target and does not attempt unsupported removal or re-banding. Post-lock targeting is a separate one-time package. This is resolved intentional design, not an open audit finding.
 - In-game runtime behavior has not been claimed or documented as tested by this reconciliation. The recorded control-flow walkthroughs are definition-level evidence.
 
