@@ -474,9 +474,28 @@ Large events should usually include at least one special mechanic. A special mec
 
 A special mechanic should define its important values clearly. Examples include legitimacy, authority, influence, cohesion, obedience, corruption, foreign penetration, military readiness, industrial capacity, public panic, faction unity, sponsor pressure, religious authority, revolutionary zeal, or regional control.
 
+#### Public-facing mechanic value budget
+
+A main mechanic should ask the player to actively track as few persistent custom values as possible. Complexity belongs in the simulation, not in the player's memory.
+
+Use this budget:
+
+- One or two public-facing values are preferred for most mechanics.
+- Three public-facing values are acceptable when each one changes a distinct player decision.
+- Four public-facing values are the absolute hard maximum for one mechanic. Use four only when all four have distinct causes, consequences, thresholds, and player responses.
+- More than four public-facing values that the player must actively monitor or remember are forbidden.
+
+The cap applies to the mechanic as a whole, not to one screen. Count every persistent event-specific meter, score, pressure, influence value, readiness value, legitimacy value, corruption value, cohesion value, or similar state that the player is expected to monitor or remember. A value still counts if it is placed in a different decision category, scripted GUI tab, focus inlay, national spirit tooltip, Event Details panel, popup, or secondary window. Do not split a five-value system across several surfaces to evade the budget.
+
+Hidden internal simulation values are not subject to the four-value cap. Use additional internal variables, weights, memories, regional scores, timers, subcomponents, and derived calculations when they make the system more reactive, immersive, or believable. They should normally feed a public value, qualitative state, threshold, event condition, AI behavior, or other consequence instead of becoming extra player counters.
+
+If a public total is built from many hidden inputs, show the total and only the supporting values that the player can meaningfully manage as separate long-term states. A hidden contributor can be explained through a short causal tooltip, icon, trend, or status label without exposing its raw number. Once a contributor becomes a persistent number that the player is expected to monitor, it counts toward the four-value ceiling.
+
+A fourth public-facing value needs a clear reason to exist. If it overlaps another value, can be inferred from another value, or does not change a distinct player response, merge it, summarize it, or keep it hidden. A custom scripted GUI is not justification for exposing more values.
+
 Mechanic values must be dynamic. They should move through focuses, decisions, missions, events, wars, state control, foreign influence, AI actions, and prior outcomes. Do not design a mechanic where values only drift passively or change through a few flat scripted effects.
 
-Every important mechanic value should have a consistent colour identity in localisation. If several values contribute to a total, each contributing value should use its own colour consistently across tooltips, scripted localisation, decision text, event text, and UI summaries. If a mechanic has a total value made from components, the tooltip should show a readable breakdown with named and coloured components.
+Every public-facing mechanic value should have a consistent colour identity in localisation. Hidden internal values do not need public colour identities. If several hidden values contribute to a public total, do not expose a full numeric component ledger by default. Show only the material, actionable contributors that still fit within the public-facing value budget, and summarize the rest qualitatively.
 
 If a mechanic has values such as legitimacy, authority, influence, cohesion, obedience, power, or readiness, then focuses, decisions, and missions should interact with those values directly. A focus tree should not sit beside the mechanic without changing it. A decision system should not sit beside the mechanic without changing it.
 
@@ -499,7 +518,7 @@ For every special mechanic, the completion report should list mechanic values, w
 
 ### Mechanic presentation, faction outcomes, validity, and tuning
 
-Every special mechanic should define where the player sees it: decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, focus tooltip, national spirit tooltip, or another clear presentation surface. Important mechanic values should not exist only as hidden variables.
+Every special mechanic should define where the player sees its public state: decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, focus tooltip, national spirit tooltip, or another clear presentation surface. The player-facing state must fit within the public-facing mechanic value budget. Hidden internal values may remain entirely internal when the player does not need to track them directly. Do not create extra UI surfaces only to expose more counters.
 
 When a special mechanic uses a scripted GUI, consider visual presentation beyond static text. Useful designs can include progress bars, meter fill variants, state icons, status frames, warning frames, selected or locked variants, animated frames, or frame-by-frame visual changes that make the mechanic feel alive. The visual layer should make the mechanic easier to understand.
 
@@ -717,6 +736,143 @@ Each evolution should define:
 - how it interacts with chaos tier without being only a chaos-tier lock
 - how it can be contained, spread, or escalate
 
+## 3.8.1 Chaos generation and feedback standard
+
+Chaos is a measure of global instability, abnormality, and breakdown. It is not a moral score. A beneficial but impossible incident can raise Chaos because the world has become stranger and less predictable, while successful containment can lower Chaos because a destabilizing force has actually been pushed back.
+
+Events must be active sources of Chaos, not only consumers of the current Chaos tier. The intended campaign loop is that higher Chaos makes events more severe and strange, then successful strange movements, concrete consequences produced by evolved behavior, failed containment, special Chaos countries, and other abnormal outcomes can push the Chaos Meter higher again. This feedback loop should be strong enough to matter without letting one repeatable action farm the campaign from calm conditions to World Collapse.
+
+A genuinely strange, anomalous, violent, reality-breaking, extremist, supernatural, or system-disrupting event should normally create at least one positive Chaos source when its first meaningful manifestation occurs. Do not add Chaos merely because the random-event picker selected an event. The incident itself must have changed the world in a destabilizing or abnormal way.
+
+Ordinary beneficial development should not raise Chaos just because it makes a country stronger. A factory program, normal military reform, ordinary election victory, or routine research success is not a Chaos source unless the event gives that success a wider destabilizing, anomalous, or threatening meaning.
+
+### Required Chaos impact map
+
+Every event that can materially destabilize the campaign must include a Chaos impact map in its specification. The coding agent should never have to invent the event's Chaos feedback during implementation.
+
+Use a table or equivalent structured section with at least these fields:
+
+| Milestone or outcome | Why global Chaos changes | Direction | Starting magnitude or band | Dynamic factors | Repeat guard | Shared-source overlap | Reversal or containment counterpart |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+
+Map the event from first manifestation through later success, spread, evolution-enabled consequences, containment, defeat, and aftermath. A large event may need many rows. A small event may need only a few.
+
+If a genuinely strange or destabilizing event has no positive Chaos source, the spec must explain why. Do not omit Chaos simply because the event already uses Chaos as an evolution gate.
+
+### Chaos source families to inspect
+
+Actively look for Chaos sources in these event outcomes when they fit the event:
+
+- first public or material manifestation of a strange incident
+- an event-created movement reaching a meaningful support, organization, territorial, or institutional threshold. Peaceful success can still raise Chaos when it proves that the event-created movement has become a real new political or social force
+- a movement winning a revolt, coup, election crisis, government struggle, or other route that materially expands the event's power or destabilizes the country or world
+- creation, release, transformation, or public recognition of a special Chaos country
+- a special Chaos country gaining meaningful territory, population, industry, subjects, allies, faction members, strategic capitals, or regional reach
+- an abnormal actor defeating a major enemy, containment coalition, anti-event league, or other force that was holding it back
+- a dangerous focus-route, decision-route, project, doctrine, technology, unit family, weapon, supernatural power, or special capability becoming operational
+- spread into a new state group, strategic region, country, sea route, continent, or other meaningful geographic layer
+- failed containment, missed crisis objectives, broken quarantine, collapsed negotiations, radicalization, mutiny, mass defection, or another event-specific failure
+- a concrete consequence caused or intensified by an evolution, such as a new outbreak, spawned actor, territorial breakthrough, government transformation, destructive incident, capability actually entering use, or another material escalation
+- a normal country adopting, sponsoring, weaponizing, legitimizing, or exporting an event-created abnormal system
+- a new event-created faction, league, cult, military order, machine network, plague realm, supernatural authority, or other power structure reaching a meaningful milestone
+- an event-to-event interaction or cluster combination creating a new level of instability beyond the ordinary effects of its member events
+- a super-event-level reveal, irreversible transformation, or global escalation milestone
+- progress toward an event-owned terminal state when that progress represents a real new loss of world order rather than a hidden bookkeeping threshold
+
+Do not treat this list as a requirement to add every source to every event. Use the sources that represent real changes in the event's power, reach, or abnormality.
+
+Evolution status is never itself a real change for Chaos accounting. Eligibility, MTTH completion, stage activation, evolution logging, unlocking a branch, or incrementing an evolution variable must have zero direct Chaos effect unless the same operation also causes a separate concrete outcome.
+
+### Special Chaos country power growth
+
+When an event creates or manages a country that counts as a special Chaos actor, its growth should feed the Chaos Meter through meaningful milestones. Do not let a supernatural, extremist, plague, death-state, machine, cannibal, anomalous, or other event-created Chaos country become a continental power while the meter reacts only to its initial creation.
+
+Useful power milestones include:
+
+- creation or transformation into the Chaos identity
+- first durable territorial gain
+- capture of an important capital, refuge, holy site, laboratory, industrial center, or event-specific strategic objective
+- control of a meaningful territorial, population, industrial, or military band
+- first subject, protectorate, faction partner, converted government, or foreign client
+- first expansion into another region or continent
+- defeat of a major opponent or organized containment bloc
+- completion of a route that unlocks a much stronger army, special unit family, weapon, power, technology, or recruitment system
+- transition from a local actor into a regional, continental, or global threat
+
+Use thresholds and one-shot milestones. Do not award Chaos for every factory built, every division spawned, every daily population change, or every single state tick when several changes are part of one continuous expansion.
+
+### Source sizing and scaling
+
+Use the existing shared Chaos sources as calibration. Event-specific additions should normally use several readable milestones instead of one huge opening jump. Suggested starting bands are:
+
+| Event-specific change | Starting Chaos band | Typical use |
+| --- | ---: | --- |
+| Local strange manifestation | `+2` | First meaningful appearance, small abnormal incident, first durable local success |
+| Regional escalation | `+3` to `+5` | Movement breakthrough, new Chaos polity, failed containment, spread into another region |
+| National or systemic power gain | `+10` to `+15` | Government capture, major Chaos-country growth, dangerous capability entering use, major consequence produced by evolved behavior |
+| Major international or global escalation | `+20` to `+50` | Cross-continental spread, major-power collapse into the event, global reveal, near-terminal breakthrough |
+
+These are planning anchors, not universal constants. Scale with the event's footprint, severity, actor strength, geographic reach, rarity, and existing generic Chaos consequences. Keep authored values easy to tune and use dynamic factors when the same milestone can occur at very different scales.
+
+Current Chaos can influence an event-specific gain when it genuinely changes the severity of the outcome, but do not strongly multiply every gain by the current Chaos value. The event system already accelerates and evolves at higher Chaos, so aggressive direct multiplication can create an uncontrolled feedback spiral.
+
+Do not use a giant event-specific Chaos grant merely to force the meter over `1000`. World-end readiness should emerge from accumulated campaign consequences and the owning terminal route's real prerequisites.
+
+### Shared-source overlap and abnormal significance
+
+The shared Chaos Meter already reacts to wars, annexations, puppeting, faction changes, ideology changes, nuclear use, world tension, military buildup, deaths, air contamination, and other global systems. Event planning must account for those existing sources.
+
+Do not duplicate the same fact twice. If an event kills civilians and the Deaths system already converts those deaths into Chaos, do not add another event-specific gain whose only reason is the same deaths. If contamination already raises Chaos, do not repeat the contamination value as a separate event bonus.
+
+An event-specific premium is valid when the same action has additional abnormal significance that the generic source does not measure. For example, annexation already has a generic Chaos effect. A supernatural Chaos country taking its first major capital can also receive a separate event-specific milestone because the abnormal actor itself has crossed a new power threshold. Those are two different causes and should be documented as such in the Chaos impact map.
+
+Cluster incidents should follow the same rule. Member events keep their distinct Chaos sources, while a separate cluster-level Chaos source should exist only when the combined incident creates an additional destabilizing condition that the members do not already represent.
+
+### Repetition, cooldowns, and anti-farming
+
+Repeatable sources need explicit protection against farming. Use one or more of these patterns:
+
+- one-time milestone flags
+- first-time-per-region or first-time-per-continent rewards
+- power-band thresholds
+- cooldowns
+- diminishing returns for repeated ordinary incidents
+- stronger rewards only when a repeated event reaches a genuinely new severity or footprint
+- caps on one event family's direct contribution over a short period
+
+A repeatable event can still keep raising Chaos when each firing creates a real new crisis. Repetition alone should not be enough.
+
+Do not require recurring whole-world scans merely to discover that a Chaos actor became stronger. Prefer event-owned actions, state-control changes, focus or decision completions, evolution-owned incidents that actually change the world, war outcomes, and bounded milestone checks that already occur when the relevant state changes.
+
+### Evolutions and triggerable scenarios
+
+Reaching, unlocking, activating, logging, or advancing an evolution must not add Chaos by itself. Evolution state only changes what the event is capable of doing. Chaos changes when an evolution causes a concrete world consequence, such as spread, conquest, a spawned actor, government capture, a destructive incident, failed containment, or a dangerous capability actually being used or becoming materially present. Attach the Chaos source to that consequence and guard it there.
+
+If an evolution activates and only unlocks future focuses, decisions, AI behavior, incidents, or capabilities, Chaos remains unchanged until one of those unlocked paths produces a mapped destabilizing outcome. If the evolution activation event itself simultaneously causes a real world change, attribute Chaos to that real change, not to the abstract evolution stage.
+
+A pre-fire evolved opening receives no extra Chaos merely for starting at a higher evolution stage. Its stronger opening can generate Chaos through the concrete incidents and outcomes that actually occur during that opening.
+
+Triggerable scenarios already create instant Chaos from their setup controls. The spec should define how scenario type and intensity affect that initial amount when relevant. After setup, the resulting event actors and mechanics should continue to use the same normal Chaos impact map as automatic play. Manual launch must not suppress later movement victories, Chaos-country power milestones, evolution-enabled consequences, or containment reversals.
+
+### Containment, defeat, and Chaos reduction
+
+Events can lower Chaos when the player or AI materially reverses an event-created source of instability. Useful negative sources include:
+
+- destroying or dissolving a special Chaos country
+- defeating an event-created movement after it had established real power
+- curing, sealing, banishing, dismantling, or permanently containing an abnormal system
+- retaking a major event-specific objective from a Chaos actor
+- breaking an event-created faction, cult, network, or weapon program that had become a major source of instability
+- completing a durable peace or restoration outcome that actually reverses the event's destabilizing state
+
+Do not automatically refund every point previously added. Deaths, destruction, contamination, political fragmentation, and other lasting consequences may remain. A containment reduction should represent the instability that has genuinely been removed.
+
+### Handoff and completion requirements
+
+The coding-agent prompt must require implementation of the complete Chaos impact map, including positive sources, negative sources, dynamic scaling, repeat guards, shared-source overlap, evolution-enabled consequence sources, and special Chaos-country power milestones.
+
+The goal prompt must treat Chaos-source coverage as a pass or fail requirement for destabilizing events. A completed event should be able to show where its Chaos comes from across the full lifecycle, not only at the opening popup.
+
 ## 3.9 Dynamic mechanics standard
 
 Everything that acts like pressure, cooldown, progress, chance, support, duration, cost, tempo, AI willingness, spawn strength, aid amount, stage movement, or recognition should be dynamic by default.
@@ -746,7 +902,7 @@ Dynamic factors can include:
 
 Do not say only that a cooldown is 30 days or a pressure increase is 5. Say what makes it shorter, longer, stronger, weaker, safer, or more dangerous.
 
-Dynamic behavior should still be readable. Define cause and effect clearly so the player can learn the pattern through events and decisions.
+Dynamic behavior should still be readable. Define cause and effect clearly so the player can learn the pattern through events and decisions. Dynamic does not mean public-facing. Internal calculations can track many values when useful, while the public layer should summarize them into one or two values when possible, three when needed, and never more than four persistent values the player must actively track for the mechanic.
 
 
 ## 3.10 Cost and sacrifice design standard
@@ -1198,11 +1354,13 @@ For important events, think through edge cases, country differences, country pac
 
 ## 5. Chaos Redux system awareness
 
-Consider links to existing Chaos Redux systems when they strengthen the event.
+Chaos Meter feedback is a core event contract for strange or destabilizing events. Use the Chaos generation and feedback standard above to map how the event raises and lowers Chaos across manifestation, success, spread, concrete consequences produced by evolved behavior, special-country growth, containment, and defeat. Do not treat the Chaos Meter as an optional connection when the event materially destabilizes the world.
+
+Consider links to other existing Chaos Redux systems when they strengthen the event.
 
 Possible links include:
 
-- Chaos Meter
+- evolutions
 - evolutions
 - super-events
 - world-end scenarios
@@ -1876,7 +2034,9 @@ The prompt must tell the coding agent to:
 
 - implement the event according to the spec
 - implement all mapped decisions, variants, evolutions, focus trees, custom tags, country packages, achievements, assets, and super-events included in the spec
+- implement the complete Chaos impact map, including first manifestation, movement success, special Chaos-country power milestones, spread, concrete consequences produced by evolved behavior, failed containment, reversal sources, dynamic scaling, repeat guards, and shared-source overlap without double counting generic Chaos systems
 - implement the mapped cost and sacrifice model, avoiding boring political power or command power only decisions when the spec calls for XP, equipment, manpower, stability, war support, fuel, supply, units, local support, foreign access, or other concrete costs
+- preserve the public-facing mechanic value budget from the spec, preferring one or two persistent visible values, using three when the mechanic genuinely needs them, and never exposing more than four persistent values that the player must actively track across the entire mechanic. Keep supporting simulation values hidden when the player does not need to manage them directly
 - implement focus trees according to the path design, with coherent non-linear branches, route locks, side paths, convergence nodes, hidden routes, focus filter tags or search categories, varied reward types, proper icons, final localisation written from the spec direction, AI behavior, event integration, and no filler shortcuts
 - implement any planned focus inlay window through `chaos-redux-focus-trees`, reserve its space in the tree layout, and keep it clear of focuses and tree controls
 - create the final exact focus layout and connections cleanly in implementation while preserving the spec's path logic
@@ -1919,6 +2079,7 @@ A good goal prompt should include:
 - the achievement prompt file path
 - the required skills or docs to follow
 - the top design non-negotiables
+- the requirement to implement every mapped Chaos source and reversal, including special Chaos-country growth and anti-farming guards, and to prove that generic Chaos sources are not double counted
 - the requirement to create all required static and animated assets, static fallbacks, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
 - the requirement to research and source final super-event titles, button text, quotes, cultural remarks, and audio through the proper super-event workflow when super-events exist
 - the requirement to spawn `chaosx_improvement_loop_planner` near completion and resolve its addendum or closure handoff before claiming completion
@@ -1957,6 +2118,7 @@ The final response should include:
 - the authoritative workbook row or export-only CSV snapshot used when applicable
 - repo context inspected
 - event cluster role defined when relevant
+- Chaos impact map defined for strange or destabilizing events, including manifestation, movement success, special Chaos-country power milestones, spread, evolution-enabled consequences, failed containment, reversals, repeat guards, and shared-source overlap
 - assets defined when needed, including country identity assets
 - a presentation-choice pass for important decision categories, custom UI, formables, route reveals, high-chaos states, and major leader transformations
 - static or animated category picture needs mapped where a picture is clearer than a full GUI
@@ -1979,6 +2141,7 @@ The final response should include:
 - clear focus-tree path maps, non-linear architecture, anchor focuses, mutual exclusions, convergence, hidden routes, crisis branches, late-game paths, filters, reward diversity, and idea lifecycle audits when relevant
 - decisions, rare variants, evolutions, achievements, route identities, leader changes, flags, and unit-generation systems mapped when they exist
 - varied costs, risks, requirements, and sacrifices instead of default political power or command power purchases
+- a public-facing value budget for every main special mechanic, with one or two values preferred, three acceptable when needed, four as the hard maximum, and hidden internal values separated from player-facing state
 - uncertainties and blockers stated clearly
 - strong enough effects for the intended role
 - `chaosx_improvement_loop_planner` spawned near completion, with its addendum resolved or closure handoff recorded
@@ -2036,9 +2199,13 @@ Reject the draft if it has any of these problems:
 - industry routes without geographic grounding where relevant
 - major routes without route-specific AI behavior or localisation tone
 - large events without a special mechanic or clear reason for not needing one
-- special mechanics without clearly named values
+- special mechanics without clearly named public-facing values
+- main mechanics that expose more than four persistent public-facing values the player must actively monitor or remember
+- mechanics that use four public-facing values when one, two, or three could preserve the same meaningful choices more clearly
+- value-heavy mechanics that split counters across tabs, tooltips, categories, focus inlays, Event Details, popups, or secondary windows to evade the mechanic-wide value budget
+- hidden calculation components exposed as separate persistent counters when a public total, qualitative state, icon, trend, or concise cause summary would communicate the same information
 - mechanic values without dynamic focus, decision, mission, event, war, state-control, foreign-influence, or AI hooks
-- important mechanic values without consistent colour identity or readable breakdowns
+- public-facing mechanic values without consistent visual identity or clear cause, consequence, threshold, and player response
 - focus trees or decision systems disconnected from the mechanic values they should affect
 - event-created factions without goals, rules, membership logic, shared decisions, AI behavior, rewards, or success and failure states
 - special mechanics without a defined player-facing presentation surface
@@ -2071,6 +2238,14 @@ Reject the draft if it has any of these problems:
 - focus tree sections without an architecture map or path plan showing route locks, optional branches, convergence points, hidden routes, crisis branches, and late-game branches where relevant
 - branches where every focus simply follows the previous one without a strong story reason
 - expansion trees that are only linear claim ladders instead of ideology, trauma, patron, military, economic, or chaos-driven ambitions
+- strange or destabilizing events with no direct Chaos source at first meaningful manifestation and no documented reason for the omission
+- event-created movements that can become nationally or internationally powerful without any mapped Chaos gain at meaningful success thresholds
+- special Chaos countries that can gain major territory, industry, population, subjects, strategic objectives, special capabilities, or regional reach without event-owned Chaos milestones
+- concrete consequences produced by dangerous evolutions, failed containment, cross-border spread, or major event interactions that materially worsen the crisis but never feed the Chaos Meter
+- repeated event Chaos sources with no threshold, cooldown, diminishing-return, first-area, or other anti-farming guard
+- Chaos granted for evolution eligibility, activation, logging, stage advancement, or branch unlock when no concrete destabilizing consequence has occurred
+- event-specific Chaos gains that simply duplicate shared war, annexation, deaths, contamination, nuclear, world-tension, or other generic Chaos sources without a distinct abnormal-significance reason
+- containment or defeat routes that remove a major event-created source of instability but never consider a proportional Chaos reduction
 - evolutions that are really just ordinary stages
 - evolution specs that do not define whether each evolution enters through active-event evolution, pre-fire evolved opening, or both
 - active-event evolutions that do not state what changes immediately for existing active actors
