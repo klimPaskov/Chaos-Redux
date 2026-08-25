@@ -233,6 +233,12 @@ alien_infantry_begin_landing_reservation = {
 		set_variable = { alien_infantry_landing_reservation_days = constant:alien_infantry_landing.reservation_days }
 		activate_mission = alien_infantry_landing_mission
 	}
+	else = {
+		# A state-targeted decision can be invalidated between availability and
+		# completion. Do not leave a failed selection or orphaned duration behind.
+		clear_variable = alien_infantry_landing_reservation_days
+		clear_variable = dhrondan_landing_state_id
+	}
 }
 
 # COUNTRY scope. Refunds exactly one pending reserve and clears only landing
@@ -300,7 +306,10 @@ alien_infantry_spawn_landing_cohort = {
 		limit = { alien_infantry_has_contact = yes }
 		alien_infantry_ensure_landing_template = yes
 	}
-	set_temp_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.zero }
+	# This caller result crosses scripted-effect boundaries for D'Rhondan's
+	# bounded bootstrap loop, so keep it as a country variable and reset it on
+	# every call rather than relying on a nested temporary variable.
+	set_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.zero }
 	set_temp_variable = { alien_infantry_landing_direct_debit = constant:alien_infantry_landing.zero }
 	set_temp_variable = { alien_infantry_landing_initial_force_mode = constant:alien_infantry_landing.zero }
 	if = {
@@ -433,7 +442,7 @@ alien_infantry_spawn_landing_cohort = {
 					set_state_flag = dhrondan_landing_history_recorded
 				}
 			}
-			set_temp_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one }
+			set_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one }
 			if = {
 				limit = { has_country_flag = alien_infantry_event19_deferred_mode }
 				set_country_flag = alien_infantry_event19_deferred_debit_committed
@@ -509,7 +518,6 @@ alien_infantry_commit_event19_landing = {
 		limit = {
 			has_country_flag = alien_infantry_event19_deferred_mode
 			has_country_flag = alien_infantry_event19_deferred_debit_committed
-			check_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one compare = equals }
 			has_variable = dhrondan_landing_state_id
 		}
 		var:dhrondan_landing_state_id = {
