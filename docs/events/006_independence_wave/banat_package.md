@@ -28,7 +28,7 @@ The five route outcomes install mutually exclusive lifecycle ideas and governmen
 | Ideas | `common/ideas/006_independence_wave_ideas_registry.txt` |
 | AI | `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` |
 | Character | `common/characters/006_independence_wave_characters_registry.txt` |
-| Localisation | `localisation/english/006_independence_wave_banat_l_english.yml` |
+| Localisation | `localisation/english/006_independence_wave_balkan_l_english.yml` (Banat section) |
 | Dormant history shell | `history/countries/AXX - Banat.txt` |
 
 ## Admission and validation
