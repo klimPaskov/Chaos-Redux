@@ -1,6 +1,6 @@
 # Package Status
 
-Status date: 2026-08-22 amendment to the 2026-07-15 frozen closure
+Status date: 2026-08-25 parent runtime-wiring amendment to the 2026-07-15 frozen closure
 
 ## Implemented source-of-truth scope
 
