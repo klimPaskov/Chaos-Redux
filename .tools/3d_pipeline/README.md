@@ -53,7 +53,7 @@ Use only names and arguments returned by the verified live route.
 
 Lock the official `@meshy-ai/meshy-mcp-server` and its transitive `@modelcontextprotocol/sdk` by exact version, package integrity, and git head in `config/dependencies.lock.json`. Keep a versioned compatibility runtime keyed by those versions, verify both `dist/esm/server/index.js` and `dist/esm/server/streamableHttp.js`, and serialize install and patch work with a named interprocess mutex. Apply the patch once per runtime file and record matching patched-file checksums or sizes across the consecutive probes to prove idempotence.
 
-After install and patch, run two consecutive `tools/list` probes and one concurrent probe pair through `wrappers/run_meshy_mcp.cmd`; every response must expose `meshy_image_to_3d` with `meshy-7`, then run a live `meshy_check_balance` probe through the same route. Enumerate only processes matching the exact wrapper or provider entrypoint and require zero matches before any paid call. On Windows, attach each stdio wrapper to a kill-on-close Job Object or equivalent process-tree owner because descendants can outlive JSON-RPC completion; any remaining exact-route process fails the health gate.
+After install and patch, run two consecutive `tools/list` probes and one concurrent probe pair through `wrappers/run_meshy_mcp.cmd`; every response must expose `meshy_image_to_3d` with `meshy-7`, then run a live `meshy_check_balance` probe through the same route. Snapshot process IDs matching the exact wrapper or provider entrypoint before each probe and require zero newly surviving IDs after it; processes belonging to another concurrent task are not leaks and must not be terminated. On Windows, attach each stdio wrapper to a kill-on-close Job Object or equivalent process-tree owner because descendants can outlive JSON-RPC completion; only descendants started by the current probe that remain alive after cleanup fail the health gate.
 
 The existing unattended Meshy route is `wrappers/run_meshy_mcp.cmd`, and the existing unattended Blender route is `wrappers/run_blender_hoi4_adapter.cmd`, which exposes structured job-root-bounded `chaosx_blender_hoi4_*` operations and no arbitrary Blender Python, shell, URL, or unrestricted absolute write path.
 
@@ -145,6 +145,26 @@ Clean, retarget, and bake humanoid animation candidates, normalize armature tran
 
 Never substitute a static still for a requested skeletal action.
 
+### Skeletal animation source gate
+
+For every skeletal 3D unit or entity package, primary motion for every required runtime action must come from a verified `meshy_animate` operation or another explicitly user-approved professional animation source. Manually keyed or simple procedural Blender actions, whole-rig rotations or translations, transform-only motion, static-pose aliases, and semantic reuse of one action for another role are forbidden as final animation.
+
+For animation production, Blender is limited to importing, retargeting, non-destructive cleanup, contact or root correction, scale normalization, baking, sound-event synchronization, validation, and PDX export or reimport. Cleanup must preserve substantive source motion and may not become a manual replacement. Attack or fire actions must visibly aim, discharge, recoil, and recover where required; death actions must visibly articulate collapse, impact, and settling. Require role-appropriate multi-frame evidence and block missing roles until an approved source exists.
+
+External FBX action selection preserves the exact receipt-verified source identifier and accepts ordinary balanced parenthetical qualifiers such as `KayKit Animated Character|Shoot(2h)Bow`; destination action names remain separately constrained to safe runtime identifiers. Native BVH preflight accepts finite positive leading-decimal frame times such as `Frame Time: .0083333` and continues to reject malformed, non-finite, zero, and negative values.
+
+### Armed humanoid recovery route
+
+When a humanoid has detached or loose components, run `chaosx_blender_hoi4_review_humanoid_components` with `render_group = true` through the repository-owned adapter and require a grouped visual review of explicit component ids against the dim whole-body reference. Bounds-only selection is invalid, and the review reads the source checkpoint without mutating it; its previews and report stay inside the job root.
+
+After parent review, run `chaosx_blender_hoi4_isolate_humanoid_weapon` with only the approved ids. It joins only those components, uses deterministic principal-axis alignment to shoulder the original recovered weapon, marks the dedicated `weapon` bone, and must be visually aligned with both hands and the shoulder before rigging or export. The armed rig uses a T-pose 24-bone body plus one weapon bone, excludes the weapon from body bounds and body weights, and binds it rigidly to that bone.
+
+Every declared armed role, including `idle`, `move`, `laser_attack`, `defend`, `support_attack`, `retreat`, `training`, and `death` when required by the job, must use its own Meshy or explicitly approved professional source action. The adapter may only import, retarget, clean, correct contact or root placement, validate, and export that source; it may not author final armed motion. These operations are job-root-bounded and accept no arbitrary Python, shell, URL, or unrestricted path input.
+
+If the accepted Meshy 7 result is a single fused character mesh with a correct two-hand grip, retain the accepted provider rig and do not cut the fused hands or weapon merely to create a separate weapon object. Process only approved source actions through import, retarget, cleanup, contact correction, validation, and export; never create final motion by keying a shared root, translating the held assembly, or rotating the whole rig. Require per-frame hand-spacing, stock-proxy distance, weapon-axis proxy drift, visible trigger-hand/foregrip/shoulder-stock contact, genuine role motion, and an articulated death source. Reject provider walk/run actions that swing or detach the weapon and block any missing role until an approved source exists.
+
+Death validation measures the evaluated silhouette rather than requiring every frame to decrease monotonically. Require a substantial final centre drop while bounding any preparatory rise and terminal settling; record the exact peak-rise, final-drop, and rebound metrics and pair them with start/mid/end visual evidence from the approved articulated source. Do not add a whole-rig transform or accept an upright or rebounding final pose.
+
 ### Credit-aware humanoid family batches
 
 When several custom units use the same verified standard humanoid skeleton, a job family may declare `shared_humanoid_batch`, `shared_humanoid_rig_owner`, and `shared_humanoid_role` in its job manifest. Run:
@@ -153,7 +173,7 @@ When several custom units use the same verified standard humanoid skeleton, a jo
 python .tools/3d_pipeline/run_pilot.py --specialized-zombie-batch <configured_batch_id>
 ~~~
 
-The batch creates one distinct Meshy image-to-3D geometry candidate per unit, pays for the owner rig and provider idle/attack/death actions once, copies those immutable provider artifacts with checksums, and binds every recipient's own geometry to that shared standard skeleton through the locked dual-source Blender operation. Every recipient exports its own `.mesh`, idle/move/attack/death `.anim` files, textures, and reimport proofs. Sharing a skeleton/action source never permits reused geometry, a static-only package, or skipped action validation. Creature jobs in the batch continue through their dedicated Blender rig/action route.
+The batch creates one distinct Meshy image-to-3D geometry candidate per unit, pays for the owner rig and role-specific provider actions once, copies those immutable provider artifacts with checksums, and binds every recipient's own geometry to that shared standard skeleton through the locked dual-source Blender operation. Every recipient exports its own `.mesh`, role-specific `.anim` files, textures, and reimport proofs. Sharing a skeleton or approved source action never permits reused geometry, action-role aliasing, a static-only package, or skipped action validation. Creature jobs in the batch continue through their dedicated source-action processing route.
 
 The specialized zombie manifests use the verified textured Meshy 7 estimate of 30 credits for image-to-3D, 5 for a required over-300,000-triangle remesh when the source exceeds the rig limit, 5 for rigging, and 3 per provider animation. The shared seven-unit route therefore preflights every unit's geometry plus the owner's conditional rig/remesh/action stages; planned paid work is still checked against the live balance before calls, every paid task writes a before/after balance reconciliation, and the provider's actual `consumed_credits` value supersedes the estimate for later runs.
 
@@ -163,13 +183,13 @@ Export `.mesh` and `.anim` only with the locked `io_pdx_mesh` setup, then reimpo
 
 Creature jobs must declare a numeric, measured scale crosswalk against the installed vanilla runtime reference and a dedicated `creature_rig_family` before the pilot runner will check balance, call Meshy, or export anything.
 
-Winged or digitigrade bipeds use the `winged_biped` route, which creates separate wing-root, wing-mid, wing-tip, arm, hand, leg, foot, spine, neck, head, pelvis, and root bones with spatial semantic weights and authored idle, move, attack, and death actions.
+Winged or digitigrade bipeds use the `winged_biped` route, which creates separate wing-root, wing-mid, wing-tip, arm, hand, leg, foot, spine, neck, head, pelvis, and root bones with spatial semantic weights and processes approved idle, move, attack, and death source actions.
 
 Do not route winged, digitigrade, or quadrupedal silhouettes through `humanoid_unit`; a pending or non-numeric creature crosswalk is a hard preflight blocker rather than a value to coerce or infer.
 
 The creature continuation stages loose components, writes a custom-rig checkpoint, preserves the complete action set across checkpoints, exports the mesh and four skeletal animations, and reimports each animation against the exported mesh before the parent can wire a runtime entity.
 
-Ground each authored action by measuring from the uncorrected pose at every frame and keying an absolute armature-object translation. Root-bone-only offsets are not sufficient when the creature mesh is parented to the armature object, and any action that fails the ground-contact gate must stop the continuation before export.
+Ground each approved source action by measuring from the uncorrected pose at every frame and applying only the allowed contact or root correction. Root-bone-only offsets are not sufficient when the creature mesh is parented to the armature object, and any action that fails the ground-contact gate must stop the continuation before export.
 
 ## Custom-unit sound-design handoff
 
