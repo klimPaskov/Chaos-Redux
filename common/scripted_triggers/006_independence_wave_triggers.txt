@@ -13,6 +13,139 @@ is_independence_wave_active_country = {
 	NOT = { has_country_flag = independence_wave_origin_ended }
 }
 
+# ============================================================================
+# SOURCE: 006_independence_wave_evolution_triggers.txt
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE EVOLUTION TRIGGERS
+# ============================================================================
+# Canonical global evolution state, aligned-registry readiness, and completion
+# predicates. These triggers never scan countries and never mutate state.
+# ============================================================================
+
+has_independence_wave_replicable_independence_evolution = {
+	has_global_flag = independence_wave_evolution_replicable_independence_active
+}
+
+has_independence_wave_dormant_nations_evolution = {
+	has_global_flag = independence_wave_evolution_dormant_nations_active
+}
+
+has_independence_wave_armed_birth_evolution = {
+	has_global_flag = independence_wave_evolution_armed_birth_active
+}
+
+has_independence_wave_sovereign_congress_evolution = {
+	has_global_flag = independence_wave_evolution_sovereign_congress_active
+}
+
+has_independence_wave_open_sovereignty_evolution = {
+	has_global_flag = independence_wave_evolution_open_sovereignty_active
+}
+
+independence_wave_evolution_registry_is_ready = {
+	independence_wave_active_country_arrays_are_aligned = yes
+}
+
+independence_wave_all_evolutions_are_active = {
+	has_independence_wave_replicable_independence_evolution = yes
+	has_independence_wave_dormant_nations_evolution = yes
+	has_independence_wave_armed_birth_evolution = yes
+	has_independence_wave_sovereign_congress_evolution = yes
+	has_independence_wave_open_sovereignty_evolution = yes
+}
+
+# ============================================================================
+# SOURCE: 006_independence_wave_force_triggers.txt
+# CHAOS REDUX - EVENT 006 DYNAMIC STARTING FORCE TRIGGERS
+# ============================================================================
+# Validation and profile classifiers for the generation-locked opening force
+# package. These triggers never create units or mutate the release plan.
+# ============================================================================
+
+has_valid_independence_wave_force_profile = {
+	check_variable = {
+		var = independence_wave_force_profile
+		value = constant:independence_wave_force_profile.territorial_defense
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_force_profile
+		value = constant:independence_wave_force_profile.foreign_volunteers
+		compare = less_than_or_equals
+	}
+}
+
+has_valid_independence_wave_military_tradition = {
+	check_variable = {
+		var = independence_wave_military_tradition
+		value = constant:independence_wave_value.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_military_tradition
+		value = constant:independence_wave_value.maximum
+		compare = less_than_or_equals
+	}
+}
+
+has_independence_wave_mobile_force_profile = {
+	OR = {
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.desert_nomadic }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers }
+	}
+}
+
+has_independence_wave_artillery_force_profile = {
+	OR = {
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.industrial_security }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers }
+	}
+}
+
+has_independence_wave_coastal_force_profile = {
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime }
+}
+
+has_independence_wave_force_package_for_current_generation = {
+	has_variable = independence_wave_force_package_generation_id
+	check_variable = {
+		var = independence_wave_force_package_generation_id
+		value = independence_wave_generation_id
+		compare = equals
+	}
+}
+
+has_independence_wave_reinforcement_program = {
+	has_variable = independence_wave_reinforcement_pathway_count
+	check_variable = {
+		var = independence_wave_reinforcement_pathway_count
+		value = constant:independence_wave_force_research.minimum_reinforcement_pathways
+		compare = greater_than_or_equals
+	}
+}
+
+can_apply_independence_wave_force_package = {
+	is_independence_wave_active_country = yes
+	has_valid_independence_wave_force_profile = yes
+	has_valid_independence_wave_military_tradition = yes
+	has_independence_wave_reinforcement_program = yes
+	has_country_flag = independence_wave_command_roster_ready
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_origin_chaos_band
+	has_event_target = independence_wave_setup_former_host
+	has_event_target = independence_wave_setup_anchor_state
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = PREV }
+	}
+	event_target:independence_wave_setup_anchor_state = {
+		is_owned_and_controlled_by = PREV
+	}
+	NOT = { has_independence_wave_force_package_for_current_generation = yes }
+}
+
 has_independence_wave_disputed_legitimacy = {
 	check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_legitimacy_band.provisional compare = less_than }
 }
