@@ -387,7 +387,7 @@ Current portrait archive override (2026-08-14): `docs/assets/portraits/006_indep
 
 ## Asset wiring
 
-Runtime sprites are registered in `interface/006_independence_wave.gfx` and regional portrait files such as `interface/006_independence_wave_region_01_portraits.gfx`. The idea pictures used by the mechanics foundation are:
+Runtime sprites are registered in `interface/006_independence_wave.gfx` and the consolidated portrait registry `interface/006_independence_wave_portraits_registry.gfx`. The idea pictures used by the mechanics foundation are:
 
 - `independence_wave_improvised_government`;
 - `independence_wave_unrecognized_state`;
