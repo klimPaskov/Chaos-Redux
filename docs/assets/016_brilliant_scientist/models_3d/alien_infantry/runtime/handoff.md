@@ -96,3 +96,7 @@ Defend and death probes remain rejected; support attack and retreat have no inde
 Quaternius Universal Animation Library 2 Standard is verified CC0 and redistributable, but its free Standard tier contains no firearm action, death/collapse action, armed retreat, or pistol-compatible defensive action. It also contains no firearm object or muzzle locator. Adapter request `8450b7c3d19a4f298e69c220bda462e9` records the exact 42-action inventory; the source and checksums are recorded in `evidence/professional_animation/quaternius_universal_animation_library_2_standard/audit.md`.
 
 No additional action was retargeted or exported. The authoritative runtime state is unchanged: idle, move, and laser attack have actual-byte reimport evidence; laser attack still cannot be bound to muzzle particle/light/audio without a stable locator; defend, support attack, retreat, and death remain blocked. No Meshy credits were spent, and no gameplay, entity, GFX, or sound-definition wiring was edited.
+
+## Local evidence compaction
+
+The historical Quaternius/KayKit export and reimport paths described above are retained as provenance only. Their ignored candidate binaries, old preview frames, reproducible Blender preparation checkpoints, and per-action source blends were removed after the V10 review; the current V10 source-role FBXs, rejection records, hashes, and runtime handoff remain. No runtime entity or asset consumer points to the removed evidence paths.

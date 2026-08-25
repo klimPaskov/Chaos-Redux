@@ -1,6 +1,6 @@
 # Alien infantry 3D package manifest
 
-Status: **blocked — pose-correct V8 geometry and Meshy R2 neutral rig passed; the parent-approved Quaternius CC0 `Pistol_Shoot`, idle, and walk actions now export and actual-byte reimport, but runtime promotion still waits for a verified muzzle/discharge sync, particles/audio, the remaining semantic actions, and parent entity wiring**.
+Status: **blocked — the current Meshy V10 lineage has a firearm-bearing 24-bone rig and five accepted genuine source roles, but no compliant firearm action, support attack, or muzzle locator; no runtime entity is wired**. Earlier V8/Quaternius exports and reimports remain historical evidence only.
 
 ## Authoritative source and input
 
@@ -147,3 +147,7 @@ Rokoko did not yield a clearer redistributable open package in the search, while
 Quaternius Universal Animation Library 2 Standard was retrieved from the creator's official page and creator-uploaded OpenGameArt distribution as a second CC0 candidate. The archive SHA-256 is `EC0E40D6D78FE9AAAD59E322F40865A8675C22F0745E291622E54520391A9217`, embedded license SHA-256 is `F9B1DE4E8FEFF135555AC1C7D2EEC65035A05FD74E4D632A3F826AC985C3F22C`, and Unity FBX SHA-256 is `D4A2DD67BB12BF0C01891BC59EE697E04DB679D26883D30BD937C2F3FB6FEC90`.
 
 Locked-adapter request `8450b7c3d19a4f298e69c220bda462e9` inspected all 42 substantive clips. The free Standard tier has melee, shield, traversal, work, idle, and zombie actions, but no firearm aim/fire/reload, terminal collapse/death, armed retreat, or pistol-compatible defend action. It has no firearm object or stable muzzle locator. No clip was retargeted or exported, no Meshy credits were spent, and no runtime file was changed. Exact inventory and source evidence are in `evidence/professional_animation/quaternius_universal_animation_library_2_standard/audit.md`.
+
+## 2026-08-26 evidence compaction after V10 review
+
+The parent removed superseded V7/V8 preview frames and provider downloads, reproducible Blender preparation checkpoints and `.blend1` backups, per-action/source review blends, and the rejected candidate export directory. These ignored binaries were not runtime dependencies; hashes, rejection records, adapter logs, current V10 source-role FBXs, and the retained V10 base/remesh/rig sources remain available. The historical export and checkpoint paths in earlier sections are preserved as provenance and are not present locally after compaction.
