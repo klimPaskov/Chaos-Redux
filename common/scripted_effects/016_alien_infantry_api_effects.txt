@@ -301,19 +301,27 @@ alien_infantry_apply_landing_cooldown = {
 alien_infantry_register_landing_state = {
 	if = {
 		limit = { has_variable = dhrondan_landing_state_id }
+		# Entering var:dhrondan_landing_state_id changes THIS to the selected
+		# STATE. Save both scopes explicitly before mutating the registry so a
+		# nested provider callback cannot accidentally write a state-local or
+		# global array. The owner target is the COUNTRY that invoked this helper.
+		save_event_target_as = alien_infantry_landing_registry_owner
 		var:dhrondan_landing_state_id = {
+			save_event_target_as = alien_infantry_landing_registry_state
+		}
+		event_target:alien_infantry_landing_registry_owner = {
 			if = {
 				limit = {
 					NOT = {
 						is_in_array = {
 							array = alien_infantry_landing_state_registry
-							value = THIS
+							value = event_target:alien_infantry_landing_registry_state
 						}
 					}
 				}
 				add_to_array = {
 					array = alien_infantry_landing_state_registry
-					value = THIS
+					value = event_target:alien_infantry_landing_registry_state
 				}
 			}
 		}
