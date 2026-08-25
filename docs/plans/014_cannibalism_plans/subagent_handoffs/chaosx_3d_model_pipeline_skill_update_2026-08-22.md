@@ -6,9 +6,9 @@ Parent amendment: this handoff’s source rule is superseded for Event 014 by th
 
 Updated `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md` with the reusable modern-artwork source-first policy requested for Chaos Redux model references.
 
-The source gate now requires a unit-specific modern visual artwork search before from-scratch generation, prefers official or explicitly reusable sources, excludes archival, museum, historical, antiquities, archaeological, and documentary material as model-reference sources, and records `reference_only` for copyrighted visual research that cannot be passed directly to generation.
+The initial source gate recorded a unit-specific modern visual artwork search before any source-free fallback, preferred official or explicitly reusable sources, excluded archival, museum, historical, antiquities, archaeological, and documentary material as model-reference sources, and recorded `reference_only` for copyrighted visual research that could not be passed directly to generation. Later committed skill revisions supersede this historical wording with the stricter faithful-cleanup contract documented below.
 
-The ImageGen gate now requires a substantially original single-subject model sheet informed only by broad silhouette, pose, material/function cues, and unit role, with direct copying of distinctive protected designs, logos, symbols, exact costumes, and proprietary details prohibited. The existing exact-one approved Meshy 7 input rule, native transparency checks, provenance/checksum evidence, manifest fields, and parent/user approval gate for from-scratch fallback remain aligned.
+The initial ImageGen gate required a substantially original single-subject model sheet informed only by broad silhouette, pose, material/function cues, and unit role, with direct copying of distinctive protected designs, logos, symbols, exact costumes, and proprietary details prohibited. That adaptation route is superseded; the live skill now requires faithful cleanup of one approved artwork and retains source-free generation only as an explicitly approved post-search fallback.
 
 ## Files changed
 
