@@ -106,3 +106,7 @@ The sustainment callback is an explicit no-op (`:744-749`); management exposes s
 3. Make provider-508 cleanup reconcile stale state even when the receipt is already zero.
 4. Add the public API helper reference documentation.
 5. Re-run Event 019 MCP inspection/render and the probability auditor when those routes are available.
+
+## Post-hardening MCP recheck
+
+After the API hardening commit, a focused read-only `hoi4.event_inspect` state-flow query for `chaosx.nr16.47` returned `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics. The authoritative artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9615670971b6b02597130541b19f73cd9943e705bde9d735340e441fb6dd4091/3662a730e22bd755fa9457005f0562c968f16c2d6712b56dd90a906ab4bf93e2/event-state_flow-cf24a2714b30.json`. The analysis remained partial because the workspace-wide helper projection and lifecycle passes were deferred; this is engine evidence for the focused path, not complete Event 016 acceptance.
