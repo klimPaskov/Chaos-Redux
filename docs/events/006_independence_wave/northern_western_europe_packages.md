@@ -1017,8 +1017,8 @@ gate.
 - `common/script_constants/006_independence_wave_constants_registry.txt`
 - `common/characters/006_independence_wave_characters_registry.txt`
 - `common/ideas/006_independence_wave_ideas_registry.txt`
-- `common/scripted_triggers/006_independence_wave_saar_package_triggers.txt`
-- `common/scripted_effects/006_independence_wave_saar_package_effects.txt`
+- `common/scripted_triggers/006_independence_wave_rhineland_bavaria_saar_package_triggers.txt` (Rhineland, Bavaria, and Saar source blocks)
+- `common/scripted_effects/006_independence_wave_rhineland_bavaria_saar_package_effects.txt` (Rhineland, Bavaria, and Saar source blocks)
 - `common/decisions/categories/006_independence_wave_categories.txt`
 - `common/decisions/006_independence_wave_saar_decisions.txt`
 - `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt`
