@@ -105,7 +105,7 @@ This ledger is the current documentation map for Event 014 and is limited to doc
 
 ## Recommended parent decisions
 
-- Decide whether to apply the faithful-enhancement source gate to the shared `chaos-redux-3d-model-pipeline` skill text, because its 2026-08-22 maintenance handoff still describes the older from-scratch fallback even though Event 014 documentation now rejects that route.
+- The live `chaos-redux-3d-model-pipeline` skill already carries the modern-designed-artwork source-first and faithful-cleanup gate. Keep the 2026-08-22 maintenance handoff as historical evidence, but do not treat its older adaptation wording as the current rule.
 - Approve or reject actual sourced/user-supplied inputs for the four remaining model families, keeping the no-redesign rule and exact weapon/anatomy requirements explicit.
 - Provide or approve a supported Bone Riders compound action route, or keep that family queued and blocked.
 - Decide the runtime sound-definition and country-level voice mapping location for the remaining family packages and whether Bone Riders receives a separate playback package.
