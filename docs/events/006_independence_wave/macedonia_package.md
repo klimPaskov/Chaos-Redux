@@ -12,7 +12,7 @@ The package preserves the vanilla MAC country definition, history, capital, core
 | Package triggers and exact state/host proof | `common/scripted_triggers/006_independence_wave_balkan_package_triggers.txt` (Macedonia source block) |
 | Visible tuning | `common/script_constants/006_independence_wave_constants_registry.txt` |
 | Ideas and lifecycle | `common/ideas/006_independence_wave_ideas_registry.txt` |
-| Costed decisions and founding mission | `common/decisions/006_independence_wave_macedonia_decisions.txt` |
+| Costed decisions and founding mission | `common/decisions/006_independence_wave_balkan_decisions.txt` (Macedonia source block) |
 | AI strategy | `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` |
 | Sourced leader/commander consumer | `common/characters/006_independence_wave_characters_registry.txt` |
 | Portrait sprite wiring | `interface/006_independence_wave_portraits_registry.gfx` |
