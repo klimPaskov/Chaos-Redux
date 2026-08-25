@@ -24,7 +24,7 @@ The five route outcomes install mutually exclusive lifecycle ideas and governmen
 | Triggers | `common/scripted_triggers/006_independence_wave_balkan_package_triggers.txt` (Banat source block) |
 | Effects | `common/scripted_effects/006_independence_wave_balkan_package_effects.txt` (Banat source block) |
 | Dispatch | `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`; `common/scripted_effects/006_independence_wave_effects.txt` |
-| Decisions and mission | `common/decisions/006_independence_wave_banat_decisions.txt` |
+| Decisions and mission | `common/decisions/006_independence_wave_balkan_decisions.txt` (Banat source block) |
 | Ideas | `common/ideas/006_independence_wave_ideas_registry.txt` |
 | AI | `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` |
 | Character | `common/characters/006_independence_wave_characters_registry.txt` |
