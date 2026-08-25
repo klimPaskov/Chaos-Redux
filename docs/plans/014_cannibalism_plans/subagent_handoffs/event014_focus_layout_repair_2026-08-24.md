@@ -77,3 +77,7 @@ Final decoded-icon raster evidence completed for all three trees:
 - Wendigo PNG: `f64cacab6386fd3f87a87209b3d5e16cc86955604b83cff34b99b64d1d2c654e`, 2768×1396.
 
 The accepted patch therefore contains twenty-eight unified coordinate-only changes. The four pre-existing Wendigo y-coordinate changes remain outside this repair's staged ownership.
+
+## Superseded Wendigo coordinate note
+
+The historical ownership statement above predates the parent continuation pass. The current source now deliberately owns the four Wendigo terminal-column coordinates: `ZZZ_wendigo_begin_the_countdown` y 7, `ZZZ_wendigo_designate_the_last_hunt` y 8, `ZZZ_wendigo_hunt_every_remaining_capital` y 9, and `ZZZ_wendigo_the_world_beneath_winter` y 10. The parent rechecked the final tree with MCP raster and inspect evidence; the current continuation handoff records the result and supersedes the earlier “pre-existing” disposition.
