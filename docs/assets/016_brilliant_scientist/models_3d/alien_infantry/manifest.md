@@ -1,11 +1,12 @@
 # Alien infantry 3D package manifest
 
-Status: **blocked — V7 neutral geometry/rig passed, but three distinct official Meshy firearm actions failed catastrophically**.
+Status: **blocked — pose-correct V8 geometry and neutral FBX rig passed, but three distinct official Meshy actions failed the required firing sequence**.
 
 ## Authoritative source and input
 
 - Sole immutable user source: `refs/source/user_supplied_alien_reference.png`, SHA-256 `17FEF636D5ADA350D92B1F432B58459B135F038BEB97CFEDA201CCF314BF984F`.
-- Sole exact-one Meshy input: `refs/original/meshy_input.png`, 1024x1536, SHA-256 `AB15C53A9BF317F5BD0BBD8E9A881F85E4F9EDFE4B5A38FFE4472BBDD33D604B`.
+- Sole current exact-one Meshy input: `refs/original/meshy_input.png`, 1254x1254, SHA-256 `E024BF5B536FB289744268D16389D17F2E2A09F15B211882F437FCF500CFE8AA`.
+- Rejected historical two-handed input: `refs/derived/rejected_two_handed_meshy_input.png`, 1024x1536, SHA-256 `AB15C53A9BF317F5BD0BBD8E9A881F85E4F9EDFE4B5A38FFE4472BBDD33D604B`; never submitted during V8.
 - Authorization: the user supplied the source and explicitly requested the faithful ImageGen preparation used as the Meshy input.
 - Meshy received exactly that one image. No multi-view, auxiliary image, A-pose, or T-pose input was used.
 
@@ -51,3 +52,18 @@ The authoritative V7 lineage is generation `01a03499-135b-7a19-b5f3-eef4fc9d1515
 No remaining semantic actions, packed runtime textures, `.mesh`, or `.anim` files were produced after the firing gate failed. No discharge frame/time or muzzle node can be accepted from a deformed clip. The package is blocked on current Meshy firearm-animation capability, not on balance; the final observed shared balance was 433 credits.
 
 After compact task, hash, rejection, report, and representative frame evidence was retained, failed provider downloads, transient provider request/response/credit receipts, and Blender source/checkpoint files were removed from this event workspace. The cleanup reclaimed 2,537,107,276 bytes and left the compact package at approximately 42.2 MiB. No deleted artifact was an accepted runtime candidate.
+
+## Superseding pose-correct V8 closure
+
+The user explicitly superseded the historical two-handed direction. V8 used only the 1254x1254 input hash above and preserved the original one-handed identity: upright retro pistol in the right trigger hand, free left arm, readable muzzle, complete anatomy, and grounded boots.
+
+- Meshy 7 generation `01a037ff-1e09-7757-aa2c-ee123fc7c2e2`, 30 credits; GLB `19DC95E967D5C4ED3E7DAC875740FDD277BBE78DCDD235E6DC93697E06FEB65E`; FBX `7DDCD369A94C9A30916AB60A55405D1FC321DCC16835E58A7377A80E7D58AF0D`.
+- Remesh `01a03804-cf34-7873-a71f-a6b3360619e2`, 5 credits; GLB `DC8413BC151CD7E86D7CA910BD5BFCCD9DB6AD952525DFEBAA246927A248D7E9`; FBX `0C9561AF4C84F07378A7BAAA7AE0916283120A5A3E6ABD104F3CACEF639CF301`. Multi-angle retention passed at 101,598 triangles.
+- Rig R1 `01a03809-f1e2-77e6-968c-49de78148e81`, 5 credits, exposed a giant GLB icosphere import artifact and was rejected without local repair.
+- Rig R2 `01a0380c-df10-7a2c-ab1e-c28d2248b616`, 5 credits. Its FBX SHA-256 `398E796CF47539FAF7EE4D1AE4C860B73EEA69D4B90C59FF5A0425DADCC54124` passed neutral review as one skinned mesh, 24 bones, and zero zero-weight vertices. The corresponding GLB is diagnostic only because it reproduces the icosphere artifact.
+
+The mandatory firing audit rejected action 232 `Cowboy_Quick_Draw_Shooting` task `01a0380f-e102-799d-b23c-a1ea9b2a614d`, action 104 `Side_Shot` task `01a03814-bf31-79e3-9ba2-cf509381878c`, and action 690 `Walk_Forward_While_Shooting_inplace` task `01a03817-1453-7e17-9d5a-92618c4d9450`. Actions 232 and 104 contain no credible aim/discharge/recoil/recovery sequence; action 690 is a continuous two-handed low-ready walk without a distinct discharge/recoil/recovery and violates the selected one-handed identity. Exact ranges, hashes, and representative phase frames are recorded in `provider/rejections/generation_pose_correct_v8_firearm_capability.md`.
+
+V8 consumed 54 credits and ended at live balance 237. The blocker is official Meshy firearm-action capability, not balance. No remaining semantic actions were purchased, and no packed runtime textures, `.mesh`, `.anim`, discharge timestamp, muzzle node, export, or actual-byte reimport exists. No fallback or local replacement motion was used.
+
+Parent cleanup retained the accepted-neutral recovery set and compact audit evidence while deleting redundant or rejected V8 binaries, disposable action/source blends, and shared adapter checkpoints. It reclaimed 657,362,751 bytes and left the job workspace at 264,424,877 bytes. Retained recovery binaries are `provider/downloads/generation_pose_correct_v8.glb`, `provider/downloads/remesh_pose_correct_v8.glb`, and `provider/downloads/rig_pose_correct_v8_r2.fbx`; none is a runtime candidate.

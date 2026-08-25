@@ -1,12 +1,12 @@
 # Alien infantry 3D model production handoff
 
-Status: **blocked — V7 neutral model/rig passed, but all three audited official Meshy firearm actions catastrophically deformed the integrated rifle topology**. No `.mesh`, `.anim`, export/reimport proof, firing crosswalk, or runtime wiring is claimed.
+Status: **blocked — pose-correct V8 geometry and neutral FBX rig passed, but all three audited official Meshy firearm actions failed the mandatory firing sequence**. No `.mesh`, `.anim`, export/reimport proof, firing crosswalk, or runtime wiring is claimed.
 
 ## Source and exact-one input
 
 - User-supplied immutable source: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/refs/source/user_supplied_alien_reference.png`, SHA-256 `17FEF636D5ADA350D92B1F432B58459B135F038BEB97CFEDA201CCF314BF984F`.
-- User-requested ImageGen preparation and sole Meshy input: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/refs/original/meshy_input.png`, 1024x1536, SHA-256 `AB15C53A9BF317F5BD0BBD8E9A881F85E4F9EDFE4B5A38FFE4472BBDD33D604B`.
-- The input contains the same classic bald olive-green alien, glossy black eyes, charcoal retro uniform and boots, and the supplied retro ray gun in a two-hand low-ready grip. Meshy received exactly this one image. No multi-view, auxiliary input, A-pose, or T-pose was used.
+- User-requested ImageGen preparation and sole current Meshy input: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/refs/original/meshy_input.png`, 1254x1254, SHA-256 `E024BF5B536FB289744268D16389D17F2E2A09F15B211882F437FCF500CFE8AA`.
+- The input contains the classic bald olive-green alien, glossy black eyes, charcoal retro uniform and boots, and one retro laser pistol upright in the right hand near the head while the left arm hangs free. Meshy received exactly this one image. The former two-handed input is archived only as rejected evidence at `refs/derived/rejected_two_handed_meshy_input.png`, SHA-256 `AB15C53A9BF317F5BD0BBD8E9A881F85E4F9EDFE4B5A38FFE4472BBDD33D604B`, and was not submitted during V8.
 
 ## Dependencies and calibration
 
@@ -150,3 +150,35 @@ No final `.mesh`, `.anim`, packed <=1024 DDS textures, export hashes, actual-byt
 Parent decision is required before any broader route can resume: wait for a Meshy firearm-animation capability change, or obtain explicit user approval for a professional authored firearm-animation source compatible with the existing restrictions. No simplification, Blender repair, alias, or manual/procedural motion fallback was used.
 
 Heavy failed-provider cleanup is complete. After resolved-path verification confined every target to the Event 016 alien workspace, failed provider downloads, transient provider request/response/credit directories, and Blender source/checkpoint directories were deleted. The cleanup reclaimed 2,537,107,276 bytes and retained compact rejection records, task IDs, hashes, reports, and representative preview frames. No accepted runtime candidate was deleted because no lineage passed the mandatory firearm gate.
+
+## Superseding pose-correct V8 result
+
+The V8 lineage is authoritative for the user-corrected pose. Bootstrap passed the two consecutive and one concurrent Meshy schema probes, explicit `meshy-7` exposure, dependency/schema locks, Blender bridge reachability, and process-leak gate. The verified stack was official Meshy MCP 0.4.0, Blender 5.1.2, adapter 1.10.14, and io_pdx_mesh 0.91.0. Initial live balance was 291.
+
+- Generation `01a037ff-1e09-7757-aa2c-ee123fc7c2e2`, 30 credits. GLB SHA-256 `19DC95E967D5C4ED3E7DAC875740FDD277BBE78DCDD235E6DC93697E06FEB65E`; FBX SHA-256 `7DDCD369A94C9A30916AB60A55405D1FC321DCC16835E58A7377A80E7D58AF0D`. Multi-angle geometry passed the complete alien, upright right-hand pistol, trigger grip, stable muzzle, free left arm, grounded boots, and no extraneous parts.
+- Remesh `01a03804-cf34-7873-a71f-a6b3360619e2`, 5 credits. GLB `DC8413BC151CD7E86D7CA910BD5BFCCD9DB6AD952525DFEBAA246927A248D7E9`; FBX `0C9561AF4C84F07378A7BAAA7AE0916283120A5A3E6ABD104F3CACEF639CF301`. Retention passed at 101,598 triangles / 86,201 vertices, below the 300,000-face rig ceiling.
+- Rig R1 `01a03809-f1e2-77e6-968c-49de78148e81`, 5 credits, was rejected because its GLB exposed a giant icosphere artifact. No local deletion or repair was used.
+- Rig R2 `01a0380c-df10-7a2c-ab1e-c28d2248b616`, 5 credits. The provider FBX SHA-256 `398E796CF47539FAF7EE4D1AE4C860B73EEA69D4B90C59FF5A0425DADCC54124` passed neutral review as one 100,924-triangle / 50,510-vertex skinned mesh, 24 bones, zero zero-weight vertices, no degenerate faces, and intact pistol/right-hand contact. The GLB SHA-256 `49F4F8C178D1B7DF1E1ED1E48850626EB17F961964FE8F6F4EA35F15702135F4` remains rejected diagnostic evidence because it reproduces the icosphere artifact.
+
+Calibration used the installed `western_european_infantry.mesh` source height 7.3518242835 and `infantry_rifle_entity` scale 0.8 exactly once, yielding effective runtime height 5.8814594268 with forward -Y and up +Z.
+
+| Official firearm action | Task / cost | Range | Full-phase verdict |
+|---|---|---:|---|
+| 232 `Cowboy_Quick_Draw_Shooting` | `01a0380f-e102-799d-b23c-a1ea9b2a614d`, 3 | 1-220 at 30 FPS | Lowers and manipulates the pistol, including left-hand contact, but never shows credible aim/discharge/recoil/recovery. FBX `5AFEA59C090CD9D6D0C8C9BAC9C94A4FC3F65D184B3ADAE5FDB58C5193166292`. |
+| 104 `Side_Shot` | `01a03814-bf31-79e3-9ba2-cf509381878c`, 3 | 1-121 at 30 FPS | Kneeling lateral flourish with no visible discharge/recoil/recovery. FBX `8B312212A1E92B069881C6E446641266B8CF4DB9A81841C694301602C5071068`. |
+| 690 `Walk_Forward_While_Shooting_inplace` | `01a03817-1453-7e17-9d5a-92618c4d9450`, 3 | 1-99 at 30 FPS | Continuous two-handed low-ready walk; violates the one-handed identity and has no distinct discharge/recoil/recovery. FBX `D0DEFBE0B68422BC2FECE8BEA4986CA92D8B9F657E6DBBB816BAEAD0D2F4E065`. |
+
+V8 consumed 54 credits and ended at balance 237. The blocker is official Meshy firearm-action capability, not funding. Per the mandatory gate, the other semantic actions were not purchased. There is no accepted attack or support-attack source, exact discharge frame/time, stable muzzle node, particle/light/audio crosswalk, articulated death, packed <=1024 DDS set, `.mesh`, seven `.anim` files, export hash, or actual-byte reimport evidence.
+
+Existing sourced audio and bespoke counters were reconciled and not overwritten. Parent-owned `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain intentionally unbound. No fallback, semantic alias, Blender weapon manipulation, weight repair, local animation, or whole-rig motion was used. The compact authoritative blocker is `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/provider/rejections/generation_pose_correct_v8_firearm_capability.md`.
+
+Parent cleanup resolved every deletion target inside the deterministic job root and reclaimed 657,362,751 bytes. It removed redundant generation/remesh FBX copies, rejected R1 rig binaries, the rejected R2 GLB, all three rejected action GLB/FBX pairs, their disposable Blender sources, and shared adapter checkpoints. The retained accepted-neutral recovery set is generation GLB, remesh GLB, R2 FBX, remesh and R2-FBX Blender sources, compact task/hash records, reports, and representative phase previews. No accepted runtime candidate existed or was deleted.
+
+## V8 files produced or updated
+
+- Authoritative records: `job.yaml`, `history.jsonl`, `manifest.md`, `refs/original/input_manifest.json`, `runtime/handoff.md`, `runtime/crosswalk.md`, `runtime/sound_handoff.md`, this parent handoff, `provider/rejections/generation_pose_correct_v8_firearm_capability.md`, and `provider/responses/pose_correct_v8_lineage_summary.json`.
+- Provider receipts: `provider/requests/generation_pose_correct_v8.json` and `provider/responses/generation_pose_correct_v8_submitted.json`.
+- Protected accepted-neutral sources retained after parent cleanup: `provider/downloads/generation_pose_correct_v8.glb`, `provider/downloads/remesh_pose_correct_v8.glb`, `provider/downloads/rig_pose_correct_v8_r2.fbx`, the matching texture directories, `blender/source/alien_infantry_pose_correct_v8_remesh_provider_source.blend`, and `blender/source/alien_infantry_pose_correct_v8_rig_r2_fbx_provider_source.blend`. The R2 FBX is selected only for neutral diagnostic evidence; no runtime candidate was accepted.
+- Rejected R1 and action binaries were deleted after their task IDs, hashes, reports, and representative full-phase previews were retained.
+- Blender evidence retained: prepare reports with the matching stems, multi-angle V8 generation/remesh/rig previews, `firearm_gate_232_frame_*`, `firearm_gate_104_frame_*`, `firearm_gate_690_frame_*`, and matching adapter logs. Shared adapter checkpoints were deleted because no action or export passed acceptance.
+- Required bootstrap evidence refreshed `.tools/3d_pipeline/reports/environment_report.json`. No tooling source, gameplay, localisation, GFX, GUI, asset/entity, sound-definition, spreadsheet, or 3D-skill file was edited.

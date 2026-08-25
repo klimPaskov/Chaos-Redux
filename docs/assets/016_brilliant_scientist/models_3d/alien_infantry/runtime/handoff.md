@@ -1,6 +1,6 @@
 # Alien infantry runtime handoff
 
-Status: **blocked — accepted-neutral V7 rig fails all audited Meshy firearm actions**.
+Status: **blocked — pose-correct V8 neutral FBX rig passed, but all audited official Meshy firearm actions fail the firing sequence**.
 
 ## Runtime selection state
 
@@ -41,3 +41,11 @@ Do not resume the stale v2 instructions above. The automatic route advanced thro
 The alternate-action audit deliberately tested reduced-locomotion and quick-draw/fire/recovery motion, so action 690's locomotion is not the sole cause. V3–V7 now reproduce the same failure class across independent generations, rigs, and firearm clips. The provider capability blocker is documented at `provider/rejections/generation_recovery_v7_firearm_capability.md`.
 
 No valid firing action exists, so `alien_infantry_laser_attack` and `alien_infantry_support_attack` cannot be bound; exact discharge frames/times, muzzle node, `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` synchronization remain intentionally unset. The other five semantic actions were not purchased after the mandatory firing gate failed. Under the current Meshy-only instruction, recovery must wait for a provider capability change or a newly viable Meshy lineage; Blender repair or replacement animation remains forbidden.
+
+## Superseding pose-correct V8 runtime state
+
+Do not revive V1-V7 or the rejected two-handed input. The current accepted-neutral diagnostic lineage is generation `01a037ff-1e09-7757-aa2c-ee123fc7c2e2`, remesh `01a03804-cf34-7873-a71f-a6b3360619e2`, and R2 rig `01a0380c-df10-7a2c-ab1e-c28d2248b616` via provider FBX SHA-256 `398E796CF47539FAF7EE4D1AE4C860B73EEA69D4B90C59FF5A0425DADCC54124`. It preserves the right-hand upright pistol and free left arm, but remains non-runtime diagnostic evidence because the firing gate failed.
+
+Action 232 `Cowboy_Quick_Draw_Shooting` has no credible firing sequence; action 104 `Side_Shot` has no visible discharge/recoil/recovery; action 690 `Walk_Forward_While_Shooting_inplace` imposes a two-handed low-ready walk and still has no distinct discharge/recoil/recovery. Therefore both firing consumers remain unbound. There is no verified discharge frame/time or stable muzzle locator for `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, or `alien_infantry_laser_fire`.
+
+The other five roles were not purchased after the mandatory firing gate failed. No `.mesh`, seven `.anim` files, packed DDS set, export hashes, or actual-byte reimport proof exists. Parent wiring must remain unchanged. Resume only after a Meshy firearm-action capability change; no Blender repair, weapon manipulation, semantic alias, or locally authored replacement motion is permitted.
