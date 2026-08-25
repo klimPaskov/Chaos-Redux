@@ -8,6 +8,16 @@ Parent: `/root`.
 
 Status: read-only audit complete; no gameplay, AI, GUI, GFX, asset, or localisation source was changed. This handoff is the only new file from this audit.
 
+## Supersession note (2026-08-25)
+
+The two concrete source findings in this dated audit are closed by later owner patches and should not be re-applied.
+
+Commit `7b9da6c9f` removes the unrelated train icon from the eight FORM-48 convoy-only base and blocked localisation strings, matching the current convoy-only trigger and payment branches.
+
+Commit `9f2ba4de5` adds the standard two-civilian-factory reservation to `independence_wave_form39_open_regional_civil_service`, matching its existing strategic-capacity trigger and cost disclosure.
+
+The remaining GUI, typed probability, visible-action, category-density, and whole-event admission notes below remain evidence gaps or broader HOLD/PARTIAL items; this supersession note does not claim runtime validation.
+
 ## Scope and authority
 
 The audit covered the current Event 006 decision categories, decision and mission lifecycle, triggers, costs, dynamic localisation, AI weights, route locks, cleanup, exploit risk, and recent cost-localisation handoffs.
