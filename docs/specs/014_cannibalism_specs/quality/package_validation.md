@@ -1,6 +1,6 @@
 # Package Validation
 
-Status date: 2026-07-15
+Status date: 2026-08-22 amendment to the 2026-07-15 frozen closure
 
 ## Structural and gameplay-definition evidence
 
@@ -31,7 +31,11 @@ Status date: 2026-07-15
 - Event 014 texture references across exactly three GFX files, one dedicated registry plus `chaosx_pictures.gfx` and `chaosx_super_events.gfx`: 812 total references, 598 unique existing paths, and 598 unique hashes.
 - Super-event audio IDs 49, 50, 52, and 53 have unique 44.1 kHz WAV files and a rights/source record. ID 51 is not used by Event 014.
 - The runtime audio inventory is eight files: four WAV.
-- No custom subunit or equipment identifiers were added. Existing battalion and equipment surfaces remain in use, so no bespoke unit-counter or equipment art is required. This is a verified scope disposition, not a fallback.
+- Nine inactive custom irregular-infantry/cavalry subunits now have stable sprite-token consumers, locked Event 014 template mappings, localisation, and additive CXT registration. `cannibal_bone_riders` is horse-mounted and consumes real infantry equipment. The locked Scavenged Elephant Column uses installed vanilla `elephantry` with its real infantry- and artillery-equipment need. No equipment archetype was added. The 27 counter DDS/registry consumers are present. Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, and March Predation Column also have parent-installed mesh, eight-action, entity/GFX, material-map, and seven-role 44.1 kHz runtime sound packages.
+
+## Current downstream amendment
+
+The current evidence records nine gameplay consumers, 27 counter DDS files with matching registry consumers, five parent-installed model/action/entity/audio packages, and four remaining model families with explicit blockers: Bone Riders has no supported compound horse/rider action route, Island Reavers is stopped by Meshy HTTP 402 before accepted v8 generation, Scavenger Warband needs the remaining user-review/source gate, and Network Cadre has no accepted provider-sourced action lease. The five installed packages contain 35 converted 44.1 kHz WAV files. Four super-event audio source/conversion packages are present, but final sound definitions, catalog/settings-aware dispatch, and super-event wiring remain parent-owned. The 2026-07-15 closure audit is historical evidence for the frozen scope and does not close these downstream items.
 
 ## Secrecy evidence
 
@@ -43,9 +47,9 @@ Status date: 2026-07-15
 
 ## Audit limitations
 
-The evidence above is definition-level, filesystem, source-manifest, and audit evidence. This documentation reconciliation did not launch an in-game runtime session and does not claim runtime scenario testing. The current 2026-07-15 country-package, decision/mission, focus-tree, asset, and documentation evidence reports P0/P1/P2/P3 all zero. The authoritative workbook and update helper record `Events!M15` and `Scenarios!F10` as `Fully Functional`. `event014_final_completion_audit_2026-07-13.md` is preserved only as a historical pre-origin-removal checkpoint.
+The evidence above is definition-level, filesystem, source-manifest, and audit evidence. This documentation reconciliation did not launch an in-game runtime session and does not claim runtime scenario testing. The current 2026-07-15 country-package, decision/mission, focus-tree, asset, and documentation evidence reports P0/P1/P2/P3 all zero for its frozen scope. The authoritative workbook and update helper record `Events!N15` and `Scenarios!F10` as `Fully Functional`; this documentation audit does not alter or re-audit the workbook. `event014_final_completion_audit_2026-07-13.md` is preserved only as a historical pre-origin-removal checkpoint.
 
-The post-remediation asset recheck found 18 exact not-eligible overlay composites with zero pixel mismatches, 54 package/live achievement triplet files with zero mismatches, 65 separate built-in ImageGen flag masters with 195 unique runtime TGAs, 14 semantic animation packages with 142 source and 142 processed frames and zero contract gaps, and zero stale claims in the reconciled asset manifests.
+The post-remediation asset recheck found 18 exact not-eligible overlay composites with zero pixel mismatches, 54 package/live achievement triplet files with zero mismatches, 65 separate built-in ImageGen flag masters with 195 unique runtime TGAs, and 14 semantic animation packages with 142 source and 142 processed frames. The later unit/model amendment supersedes the old “zero stale claims” statement for custom-unit model, counter, source, and audio handoffs.
 
 ## Resolved first-band strategy design
 
