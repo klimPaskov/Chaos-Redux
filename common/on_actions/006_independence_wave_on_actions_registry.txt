@@ -6,6 +6,103 @@
 # preserved. Files with duplicate callback keys remain separate.
 # ============================================================================
 on_actions = {
+# SOURCE: 006_independence_wave_join_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 JOIN-WAVE SCOPED CALLBACKS
+# ============================================================================
+# ROOT is the new controller, FROM is the old controller, and FROM.FROM is the
+# changed state on on_state_control_changed. Every callback touches only those
+# countries and never performs an all-country daily/weekly/monthly scan.
+# ============================================================================
+	on_war_relation_added = {
+		effect = {
+			ROOT = { independence_wave_join_observe_war_entry = yes }
+			FROM = { independence_wave_join_observe_war_entry = yes }
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			# Controller changes do not prove that ownership changed. Re-evaluate
+			# both affected country scopes without manufacturing an owned-state loss.
+			# War entry remains the exact pre-loss baseline producer.
+			FROM = { independence_wave_join_offer_if_eligible = yes }
+			FROM.FROM = { owner = { independence_wave_join_offer_if_eligible = yes } }
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			ROOT = { independence_wave_join_offer_if_eligible = yes }
+			FROM = { independence_wave_join_offer_if_eligible = yes }
+		}
+	}
+
+	on_capitulation_immediate = {
+		effect = {
+			ROOT = { independence_wave_join_offer_if_eligible = yes }
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			ROOT = { independence_wave_join_offer_if_eligible = yes }
+			FROM = { independence_wave_join_offer_if_eligible = yes }
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			ROOT = { independence_wave_join_offer_if_eligible = yes }
+			FROM = { independence_wave_join_offer_if_eligible = yes }
+		}
+	}
+
+# SOURCE: 006_independence_wave_evolution_on_actions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 EVOLUTION FEEDBACK ON ACTIONS
+# ============================================================================
+# Narrow transaction-boundary hooks. No recurring country or world iteration is
+# used. ROOT is the new subject in on_puppet, ROOT is the capitulated country in
+# on_capitulation, and FROM is the annexed country in on_annex.
+# ============================================================================
+	on_annex = {
+		effect = {
+			if = {
+				limit = { FROM = { is_independence_wave_active_country = yes } }
+				FROM = {
+					set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_origin_annexed }
+					set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.origin_annexed }
+					independence_wave_record_origin_loss_feedback = yes
+					set_temp_variable = { independence_wave_cleanup_reason = constant:independence_wave_origin_end_reason.annexed }
+					independence_wave_end_active_origin = yes
+				}
+			}
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			if = {
+				limit = { is_independence_wave_active_country = yes }
+				set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_origin_puppeted }
+				set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.origin_puppeted }
+				independence_wave_record_origin_loss_feedback = yes
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = { is_independence_wave_active_country = yes }
+				set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_origin_capitulated }
+				set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.origin_capitulated }
+				independence_wave_record_origin_loss_feedback = yes
+			}
+		}
+	}
+
 # SOURCE: 006_independence_wave_iw005_flanders_on_actions.txt
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-005 FLANDERS OVERLAY ON ACTION
