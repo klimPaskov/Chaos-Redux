@@ -19,4 +19,4 @@ This is a source-layout consolidation only. It does not promote IW-060, alter IW
 
 ## Validation
 
-The pre-merge bodies were read from `git show HEAD:<source>` snapshots. A focused receipt confirms executable-body parity, 23 unique decisions, two category roots, preserved constants, and balanced braces. The maintained Event 006 allocator, scenario matrix, and country-API validators remain the required post-merge checks.
+The pre-merge bodies were read from the parent commit snapshots `git show HEAD^:<source>` before the old parser paths were removed. A focused receipt confirms executable-body parity, 23 unique decisions, two category roots, preserved constants, and balanced braces. The maintained Event 006 allocator, scenario matrix, and country-API validators remain the required post-merge checks.
