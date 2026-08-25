@@ -300,7 +300,7 @@ def chaosx_blender_hoi4_prepare_candidate(
     geometry_source_rel: str = "",
     geometry_object_name: str = "",
     dual_source_base_rig: bool = False,
-    geometry_weight_mode: str = "four_nearest",
+    geometry_weight_mode: Literal["four_nearest", "nearest_face_interpolated", "automatic_bone_heat", "bone_distance"] = "four_nearest",
     source_armature_name: str = "",
     source_mesh_names: list[str] | None = None,
     preserve_geometry_topology: bool = False,
@@ -487,7 +487,11 @@ def chaosx_blender_hoi4_import_animation_action(
     promote_audited_target: bool = False,
     source_armature_name: str = "",
 ) -> Dict[str, Any]:
-    """Transfer one receipt-verified provider/professional skeletal action; never author replacement motion."""
+    """Transfer one receipt-verified provider/professional skeletal action by its exact source id.
+
+    Source ids may include balanced parenthetical qualifiers used by ordinary FBX action names.
+    The destination action remains a separately validated safe runtime identifier.
+    """
 
     return _run(
         job_id,

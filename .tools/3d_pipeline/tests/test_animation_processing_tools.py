@@ -56,6 +56,10 @@ class AnimationProcessingToolTests(unittest.TestCase):
             self.assertFalse({"python", "code", "shell", "url", "absolute_path"} & set(schema["properties"]))
         import_schema = live["chaosx_blender_hoi4_import_animation_action"]["inputSchema"]
         self.assertEqual(import_schema["properties"]["source_kind"]["enum"], ["meshy_animate", "professional_source"])
+        self.assertIn(
+            "balanced parenthetical qualifiers",
+            live["chaosx_blender_hoi4_import_animation_action"]["description"],
+        )
         grounding_schema = live["chaosx_blender_hoi4_correct_action_grounding"]["inputSchema"]
         self.assertEqual(
             grounding_schema["properties"]["grounding_policy"]["const"],
@@ -64,13 +68,17 @@ class AnimationProcessingToolTests(unittest.TestCase):
         prepare_properties = live["chaosx_blender_hoi4_prepare_candidate"]["inputSchema"]["properties"]
         self.assertIn("geometry_object_name", prepare_properties)
         self.assertIn("dual_source_base_rig", prepare_properties)
+        self.assertEqual(
+            prepare_properties["geometry_weight_mode"]["enum"],
+            ["four_nearest", "nearest_face_interpolated", "automatic_bone_heat", "bone_distance"],
+        )
         self.assertNotIn("geometry_object_names", prepare_properties)
 
     def test_config_and_lock_match_version_and_operations(self) -> None:
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         route = json.loads((PIPELINE_ROOT / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["blender_hoi4_adapter"]
-        self.assertEqual(config["adapter_version"], "1.10.12")
-        self.assertEqual(route["version"], "1.10.12")
+        self.assertEqual(config["adapter_version"], "1.10.14")
+        self.assertEqual(route["version"], "1.10.14")
         for operation in ("import_animation_action", "retime_animation_action", "correct_action_grounding", "prepare_export_coordinate_checkpoint"):
             self.assertIn(operation, config["operations"])
             self.assertIn(operation, route["operations"])
@@ -81,7 +89,7 @@ class AnimationProcessingToolTests(unittest.TestCase):
         client.call = lambda tool, arguments: calls.append((tool, arguments)) or {"status": "pass"}  # type: ignore[method-assign]
         client.import_animation_action(
             "unit", "target.blend", "source.glb", "provenance.json", "imported.blend",
-            "SourceAction", "Armature", "runtime_action", "meshy_animate", "task-123", "A" * 64,
+            "KayKit Animated Character|Shoot(2h)Bow", "Armature", "runtime_action", "meshy_animate", "task-123", "A" * 64,
             source_armature_name="ProviderRig",
         )
         client.retime_animation_action("unit", "imported.blend", "retimed.blend", "runtime_action", "Armature", 30.0, 24.0)
@@ -95,6 +103,7 @@ class AnimationProcessingToolTests(unittest.TestCase):
         )
         self.assertEqual([name for name, _ in calls], list(TOOLS))
         self.assertEqual(calls[0][1]["provenance_rel"], "provenance.json")
+        self.assertEqual(calls[0][1]["source_action_name"], "KayKit Animated Character|Shoot(2h)Bow")
         self.assertEqual(calls[0][1]["source_armature_name"], "ProviderRig")
         self.assertEqual(calls[1][1]["target_fps"], 24.0)
         self.assertEqual(calls[2][1]["grounding_policy"], "per_frame_root_contact_zero_clearance")
@@ -203,6 +212,24 @@ class AnimationProcessingToolTests(unittest.TestCase):
         output = completed.stdout + completed.stderr
         self.assertEqual(completed.returncode, 0, output)
         self.assertIn('"status": "pass"', output)
+
+    def test_nearest_face_weight_transfer_is_complete_normalized_and_audited(self) -> None:
+        config = json.loads(
+            (PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8")
+        )
+        integration = PIPELINE_ROOT / "tests" / "blender_nearest_face_weight_transfer_integration.py"
+        completed = subprocess.run(
+            [config["blender_executable"], "--background", "--factory-startup", "--python", str(integration)],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=180,
+            check=False,
+        )
+        output = completed.stdout + completed.stderr
+        self.assertEqual(completed.returncode, 0, output)
+        self.assertIn('"status": "pass"', output)
+        self.assertIn('"failed_vertices": 0', output)
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import sys
 import tempfile
 from pathlib import Path
@@ -18,6 +19,8 @@ import blender_worker  # noqa: E402
 
 
 BONES = ("Root", "Spine", "Chest", "Neck", "Head", "Arm")
+SOURCE_FRAME_TIME_TOKEN = ".0083333"
+SOURCE_FPS = 1.0 / float(SOURCE_FRAME_TIME_TOKEN)
 
 
 def reset_scene() -> None:
@@ -49,7 +52,7 @@ def make_target(path: Path) -> None:
     bpy.ops.wm.save_as_mainfile(filepath=str(path), check_existing=False)
 
 
-def write_bvh(path: Path) -> None:
+def write_bvh(path: Path, frame_time_token: str = SOURCE_FRAME_TIME_TOKEN) -> None:
     lines = ["HIERARCHY", "ROOT Root", "{", "\tOFFSET 0 0 0", "\tCHANNELS 6 Xposition Yposition Zposition Zrotation Xrotation Yrotation"]
     indent = 1
     for name in BONES[1:]:
@@ -58,7 +61,7 @@ def write_bvh(path: Path) -> None:
     lines.extend(["\t" * indent + "End Site", "\t" * indent + "{", "\t" * (indent + 1) + "OFFSET 0 1 0", "\t" * indent + "}"])
     for depth in range(indent - 1, -1, -1):
         lines.append("\t" * depth + "}")
-    lines.extend(["MOTION", "Frames: 3", "Frame Time: 0.0333333333333333"])
+    lines.extend(["MOTION", "Frames: 3", f"Frame Time: {frame_time_token}"])
     frames = []
     for frame in range(3):
         values = [0.0, 0.0, 0.0, 4.0 * frame, 2.0 * frame, 0.0]
@@ -77,6 +80,18 @@ def main() -> None:
         checkpoint = job / "output.blend"
         make_target(target)
         write_bvh(source)
+        header = blender_worker.inspect_bvh_header(source)
+        assert math.isclose(header["frame_time_seconds"], 0.0083333, abs_tol=1e-12)
+        assert math.isclose(header["source_fps"], SOURCE_FPS, abs_tol=1e-9)
+        for invalid_token in ("0", "-0.0083333", "nan", "inf", "1e999", ".", ".e3", "0.01junk"):
+            invalid_source = job / f"invalid_{len(invalid_token)}_{abs(hash(invalid_token))}.bvh"
+            write_bvh(invalid_source, invalid_token)
+            try:
+                blender_worker.inspect_bvh_header(invalid_source)
+            except ValueError:
+                pass
+            else:
+                raise AssertionError(f"Invalid BVH Frame Time token was accepted: {invalid_token!r}")
         digest = hashlib.sha256(source.read_bytes()).hexdigest().upper()
         provenance_path.write_text(
             json.dumps(
@@ -87,7 +102,7 @@ def main() -> None:
                     "source_reference_id": "cmu-79-86-synthetic-test",
                     "source_action_name": "79_86",
                     "source_sha256": digest,
-                    "source_fps": 30.0,
+                    "source_fps": SOURCE_FPS,
                 },
                 indent=2,
                 sort_keys=True,
@@ -109,7 +124,7 @@ def main() -> None:
                     "semantic_role": "move",
                     "source_reference_id": "cmu-79-86-synthetic-test",
                     "source_sha256": digest,
-                    "source_fps": 30.0,
+                    "source_fps": SOURCE_FPS,
                     "target_fps": 24.0,
                     "bone_chains": {name: [name] for name in BONES},
                     "root_motion_policy": "in_place_xy_preserve_z",

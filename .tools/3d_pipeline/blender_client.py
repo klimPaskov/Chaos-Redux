@@ -82,7 +82,12 @@ class BlenderAdapterClient:
         geometry_source_rel: Optional[str] = None,
         geometry_object_name: str = "",
         dual_source_base_rig: bool = False,
-        geometry_weight_mode: str = "four_nearest",
+        geometry_weight_mode: Literal[
+            "four_nearest",
+            "nearest_face_interpolated",
+            "automatic_bone_heat",
+            "bone_distance",
+        ] = "four_nearest",
         source_armature_name: str = "",
         source_mesh_names: Optional[list[str]] = None,
         preserve_geometry_topology: bool = False,

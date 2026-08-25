@@ -115,6 +115,32 @@ def make_target(path: Path) -> None:
 
 
 def main() -> None:
+    assert blender_worker.explicit_action_name(
+        "Armature|death|Baked frames", "source_action_name"
+    ) == "Armature|death|Baked frames"
+    exact_external_action = "KayKit Animated Character|Shoot(2h)Bow"
+    assert blender_worker.explicit_source_action_name(
+        exact_external_action, "source_action_name"
+    ) == exact_external_action
+    for rejected_source_action in (
+        "KayKit Animated Character|Shoot(2hBow",
+        "KayKit Animated Character|Shoot2h)Bow",
+        "KayKit Animated Character|Shoot(2h)Bow;Remove-Item",
+        "KayKit Animated Character|Shoot(2h)Bow/../../escape",
+        "KayKit Animated Character|Shoot(2h)Bow\ncommand",
+    ):
+        try:
+            blender_worker.explicit_source_action_name(rejected_source_action, "source_action_name")
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"Unsafe source action identifier was accepted: {rejected_source_action!r}")
+    try:
+        blender_worker.explicit_action_name(exact_external_action, "target_action_name")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("Destination action validation unexpectedly accepted parentheses.")
     probe = blender_worker.Quaternion((1.0, 0.0, 0.0, 0.0))
     equivalent_negative_probe = blender_worker.Quaternion((-1.0, 0.0, 0.0, 0.0))
     assert math.isclose(

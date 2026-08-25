@@ -25,6 +25,7 @@ if str(ADAPTER_ROOT) not in sys.path:
 import bpy
 import bmesh
 from mathutils import Matrix, Quaternion, Vector
+from mathutils.bvhtree import BVHTree
 from mathutils.kdtree import KDTree
 from normalization_convergence import evaluate_convergence_step
 
@@ -336,9 +337,15 @@ def bind_geometry_to_existing_rig(
 ) -> Dict[str, Any]:
     """Transfer rest-pose weights from the provider rig mesh to a closed mesh candidate."""
 
-    if weight_mode not in {"four_nearest", "automatic_bone_heat", "bone_distance"}:
+    if weight_mode not in {
+        "four_nearest",
+        "nearest_face_interpolated",
+        "automatic_bone_heat",
+        "bone_distance",
+    }:
         raise ValueError(
-            "geometry_weight_mode must be four_nearest, automatic_bone_heat, or bone_distance."
+            "geometry_weight_mode must be four_nearest, nearest_face_interpolated, "
+            "automatic_bone_heat, or bone_distance."
         )
 
     if not source_meshes:
@@ -368,39 +375,143 @@ def bind_geometry_to_existing_rig(
     for group in list(target_mesh.vertex_groups):
         target_mesh.vertex_groups.remove(group)
     transferred_vertices = 0
-    if weight_mode == "four_nearest":
+    nearest_face_audit: Optional[Dict[str, Any]] = None
+    if weight_mode in {"four_nearest", "nearest_face_interpolated"}:
         source_group_names = sorted({group.name for mesh in source_meshes for group in mesh.vertex_groups})
         target_groups = {name: target_mesh.vertex_groups.new(name=name) for name in source_group_names}
         if not target_groups:
             raise RuntimeError("Dual-source rig transfer found no provider vertex groups.")
-        source_vertices = [
-            (mesh, vertex)
-            for mesh in source_meshes
-            for vertex in mesh.data.vertices
-        ]
-        tree = KDTree(len(source_vertices))
-        for source_index, (mesh, vertex) in enumerate(source_vertices):
-            tree.insert(mesh.matrix_world @ vertex.co, source_index)
-        tree.balance()
-        for vertex in target_mesh.data.vertices:
-            nearest = tree.find_n(target_mesh.matrix_world @ vertex.co, 4)
-            accumulated: Dict[str, float] = {}
-            for _, source_index, distance in nearest:
-                influence = 1.0 / max(distance, 1e-6)
-                source_mesh, source_vertex = source_vertices[source_index]
-                for source_group in source_mesh.vertex_groups:
-                    try:
-                        weight = source_group.weight(source_vertex.index)
-                    except RuntimeError:
-                        continue
-                    if weight > 0:
-                        accumulated[source_group.name] = accumulated.get(source_group.name, 0.0) + weight * influence
-            total = sum(accumulated.values())
-            if total <= 1e-8:
-                continue
-            for name, weight in accumulated.items():
-                target_groups[name].add([vertex.index], weight / total, "REPLACE")
-            transferred_vertices += 1
+        source_vertices = [(mesh, vertex) for mesh in source_meshes for vertex in mesh.data.vertices]
+        if weight_mode == "four_nearest":
+            tree = KDTree(len(source_vertices))
+            for source_index, (mesh, vertex) in enumerate(source_vertices):
+                tree.insert(mesh.matrix_world @ vertex.co, source_index)
+            tree.balance()
+            for vertex in target_mesh.data.vertices:
+                nearest = tree.find_n(target_mesh.matrix_world @ vertex.co, 4)
+                accumulated: Dict[str, float] = {}
+                for _, source_index, distance in nearest:
+                    influence = 1.0 / max(distance, 1e-6)
+                    source_mesh, source_vertex = source_vertices[source_index]
+                    for source_group in source_mesh.vertex_groups:
+                        try:
+                            weight = source_group.weight(source_vertex.index)
+                        except RuntimeError:
+                            continue
+                        if weight > 0:
+                            accumulated[source_group.name] = accumulated.get(source_group.name, 0.0) + weight * influence
+                total = sum(accumulated.values())
+                if total <= 1e-8:
+                    continue
+                for name, weight in accumulated.items():
+                    target_groups[name].add([vertex.index], weight / total, "REPLACE")
+                transferred_vertices += 1
+        else:
+            world_coordinates: List[Vector] = []
+            source_vertex_refs: List[tuple[bpy.types.Object, int]] = []
+            source_triangles: List[tuple[int, int, int]] = []
+            for mesh in source_meshes:
+                vertex_offset = len(world_coordinates)
+                world_coordinates.extend(mesh.matrix_world @ vertex.co for vertex in mesh.data.vertices)
+                source_vertex_refs.extend((mesh, vertex.index) for vertex in mesh.data.vertices)
+                for polygon in mesh.data.polygons:
+                    polygon_vertices = list(polygon.vertices)
+                    for triangle_index in range(1, len(polygon_vertices) - 1):
+                        source_triangles.append(
+                            (
+                                vertex_offset + polygon_vertices[0],
+                                vertex_offset + polygon_vertices[triangle_index],
+                                vertex_offset + polygon_vertices[triangle_index + 1],
+                            )
+                        )
+            if not source_triangles:
+                raise RuntimeError("Nearest-face weight transfer found no provider triangles.")
+            tree = BVHTree.FromPolygons(world_coordinates, source_triangles, all_triangles=True)
+            if tree is None:
+                raise RuntimeError("Nearest-face weight transfer could not construct the provider triangle BVH.")
+            projection_distances: List[float] = []
+            barycentric_tolerance = 1e-5
+            for vertex in target_mesh.data.vertices:
+                nearest = tree.find_nearest(target_mesh.matrix_world @ vertex.co)
+                if nearest is None or nearest[0] is None or nearest[2] is None or nearest[3] is None:
+                    raise RuntimeError(
+                        f"Nearest-face weight transfer found no provider surface for target vertex {vertex.index}."
+                    )
+                closest, _, triangle_index, projection_distance = nearest
+                triangle = source_triangles[triangle_index]
+                point_a, point_b, point_c = (world_coordinates[index] for index in triangle)
+                edge_ab = point_b - point_a
+                edge_ac = point_c - point_a
+                point_offset = closest - point_a
+                dot_ab_ab = edge_ab.dot(edge_ab)
+                dot_ab_ac = edge_ab.dot(edge_ac)
+                dot_ac_ac = edge_ac.dot(edge_ac)
+                dot_offset_ab = point_offset.dot(edge_ab)
+                dot_offset_ac = point_offset.dot(edge_ac)
+                denominator = dot_ab_ab * dot_ac_ac - dot_ab_ac * dot_ab_ac
+                if abs(denominator) <= 1e-12:
+                    raise RuntimeError(
+                        f"Nearest-face weight transfer encountered degenerate provider triangle {triangle_index}."
+                    )
+                weight_b = (dot_ac_ac * dot_offset_ab - dot_ab_ac * dot_offset_ac) / denominator
+                weight_c = (dot_ab_ab * dot_offset_ac - dot_ab_ac * dot_offset_ab) / denominator
+                weight_a = 1.0 - weight_b - weight_c
+                raw_barycentric = tuple(float(value) for value in (weight_a, weight_b, weight_c))
+                if any(
+                    not math.isfinite(value)
+                    or value < -barycentric_tolerance
+                    or value > 1.0 + barycentric_tolerance
+                    for value in raw_barycentric
+                ):
+                    raise RuntimeError(
+                        "Nearest-face weight transfer produced invalid barycentric coordinates: "
+                        + json.dumps(
+                            {
+                                "target_vertex": vertex.index,
+                                "source_triangle": int(triangle_index),
+                                "barycentric": list(raw_barycentric),
+                            },
+                            sort_keys=True,
+                        )
+                    )
+                clamped = [max(0.0, min(1.0, value)) for value in raw_barycentric]
+                clamped_total = sum(clamped)
+                if clamped_total <= 1e-8:
+                    raise RuntimeError(
+                        f"Nearest-face weight transfer produced zero barycentric mass for target vertex {vertex.index}."
+                    )
+                barycentric = tuple(value / clamped_total for value in clamped)
+                accumulated: Dict[str, float] = {}
+                for source_index, vertex_weight in zip(triangle, barycentric):
+                    source_mesh, source_vertex_index = source_vertex_refs[source_index]
+                    for source_group in source_mesh.vertex_groups:
+                        try:
+                            weight = source_group.weight(source_vertex_index)
+                        except RuntimeError:
+                            continue
+                        if weight > 0:
+                            accumulated[source_group.name] = accumulated.get(source_group.name, 0.0) + weight * vertex_weight
+                total = sum(accumulated.values())
+                if total <= 1e-8:
+                    raise RuntimeError(
+                        f"Nearest-face weight transfer found zero provider weight for target vertex {vertex.index}."
+                    )
+                for name, weight in accumulated.items():
+                    target_groups[name].add([vertex.index], weight / total, "REPLACE")
+                projection_distances.append(float(projection_distance))
+                transferred_vertices += 1
+            if transferred_vertices != len(target_mesh.data.vertices):
+                raise RuntimeError(
+                    "Nearest-face weight transfer did not bind every target vertex: "
+                    f"{transferred_vertices}/{len(target_mesh.data.vertices)}."
+                )
+            nearest_face_audit = {
+                "source_triangles": len(source_triangles),
+                "projection_distance_max": max(projection_distances),
+                "projection_distance_mean": sum(projection_distances) / len(projection_distances),
+                "barycentric_tolerance": barycentric_tolerance,
+                "failed_vertices": 0,
+            }
     elif weight_mode == "bone_distance":
         deform_bones = [bone for bone in target_armature.data.bones if bone.use_deform]
         if not deform_bones:
@@ -492,7 +603,11 @@ def bind_geometry_to_existing_rig(
             else (
                 "four-nearest provider deform-bone segment inverse-square distance weights"
                 if weight_mode == "bone_distance"
-                else "four-nearest-provider-vertex inverse-distance weight transfer"
+                else (
+                    "nearest provider triangle barycentric-interpolated weight transfer"
+                    if weight_mode == "nearest_face_interpolated"
+                    else "four-nearest-provider-vertex inverse-distance weight transfer"
+                )
             )
         ),
         "source_meshes": sorted(mesh.name for mesh in source_meshes),
@@ -509,6 +624,7 @@ def bind_geometry_to_existing_rig(
         "armature_world_scale": list(rig_world_scale),
         "mesh_data_scale_ratio": export_scale_ratio,
         "mesh_world_scale_after_bake": list(target_mesh.matrix_world.to_scale()),
+        "nearest_face_audit": nearest_face_audit,
     }
 
 
@@ -2196,7 +2312,10 @@ def weight_metrics() -> List[Dict[str, Any]]:
                 group_name = group_names.get(assignment.group)
                 if group_name is None:
                     continue
-                weights.append(float(assignment.weight))
+                weight = float(assignment.weight)
+                if weight <= 0.0:
+                    continue
+                weights.append(weight)
                 if bone_names and group_name not in bone_names:
                     has_non_bone_group = True
             influence_count = len(weights)
@@ -2292,6 +2411,9 @@ def sanitize_working_weights(
                 weight = max(0.0, float(assignment.weight))
                 if weight > 0.0:
                     assignments.append((group, weight))
+                else:
+                    group.remove([vertex.index])
+                    removed_influences += 1
 
             if len(assignments) > max_influences_per_vertex:
                 over_cap_before += 1
@@ -3555,7 +3677,7 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     source = within(job, payload["source_rel"])
     provenance_path = within(job, payload["provenance_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
-    source_action_name = explicit_action_name(payload.get("source_action_name"), "source_action_name")
+    source_action_name = explicit_source_action_name(payload.get("source_action_name"), "source_action_name")
     requested_source_armature = (
         explicit_safe_name(payload.get("source_armature_name"), "source_armature_name")
         if payload.get("source_armature_name")
@@ -4135,6 +4257,28 @@ def explicit_bvh_action_name(value: Any, field: str) -> str:
     return name
 
 
+def explicit_source_action_name(value: Any, field: str) -> str:
+    """Require an exact source action id while allowing balanced parenthetical qualifiers."""
+
+    name = str(value or "")
+    if name != name.strip() or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.|: ()-]{0,191}", name):
+        raise ValueError(
+            f"{field} must be an explicit source action identifier containing only letters, digits, "
+            "spaces, underscores, periods, vertical bars, colons, hyphens, or balanced parentheses."
+        )
+    parenthesis_depth = 0
+    for character in name:
+        if character == "(":
+            parenthesis_depth += 1
+        elif character == ")":
+            parenthesis_depth -= 1
+            if parenthesis_depth < 0:
+                break
+    if parenthesis_depth != 0:
+        raise ValueError(f"{field} must contain balanced parentheses.")
+    return name
+
+
 def inspect_bvh_header(source: Path) -> Dict[str, Any]:
     """Read only the bounded BVH hierarchy/header needed for an import receipt."""
 
@@ -4157,7 +4301,7 @@ def inspect_bvh_header(source: Path) -> Dict[str, Any]:
             if frames_match:
                 frames = int(frames_match.group(1))
             time_match = re.match(
-                r"^Frame\s+Time:\s*([0-9]+(?:\.[0-9]+)?(?:[Ee][+-]?\d+)?)\s*$",
+                r"^Frame\s+Time:\s*((?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)(?:[Ee][+-]?\d+)?)\s*$",
                 line,
                 re.IGNORECASE,
             )
@@ -4166,7 +4310,7 @@ def inspect_bvh_header(source: Path) -> Dict[str, Any]:
                 break
     if len(joints) < 6 or len(set(joints)) != len(joints):
         raise ValueError("BVH source must expose at least six uniquely named skeletal joints.")
-    if frames is None or frames < 2 or frame_time is None or frame_time <= 0.0:
+    if frames is None or frames < 2 or frame_time is None or not math.isfinite(frame_time) or frame_time <= 0.0:
         raise ValueError("BVH source must declare at least two frames and a positive Frame Time.")
     source_fps = 1.0 / frame_time
     if not math.isfinite(source_fps) or source_fps <= 0.0:
