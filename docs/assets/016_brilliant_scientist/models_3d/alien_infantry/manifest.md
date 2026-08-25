@@ -125,6 +125,17 @@ The approved `Crouch_Idle_Loop` defend probe was rejected because it produces an
 
 The firing export is still not ready for runtime binding. The verified adapter schema exposes no supported muzzle-locator authoring or derivation operation, and creating one through unrestricted Blender or manual weapon parenting is forbidden. Frame 6 / 0.1667 seconds remains the exact discharge phase, but the particle, light, and sound identifiers remain unbound. Defend, support attack, retreat, and death remain blocked; support attack is not aliased to `Pistol_Shoot`.
 
+## Final free-package search closure
+
+The Meshy R2 rig remains valid and was preserved; no re-rig was justified. Its provider task is `01a0380c-df10-7a2c-ab1e-c28d2248b616`, and `provider/downloads/rig_pose_correct_v8_r2.fbx` retains SHA-256 `398E796CF47539FAF7EE4D1AE4C860B73EEA69D4B90C59FF5A0425DADCC54124`.
+
+An additional Unlicense candidate, [ZenXChaos ThirdPersonShooter-AnimationSets](https://github.com/ZenXChaos/ThirdPersonShooter-AnimationSets), was archived and rights-verified at commit `f19adc2ece4cab0f89c9236223abb97d4d2badea`. It advertises revolver aim-shoot, backward aiming movement, crouch states, and multiple deaths. The archive SHA-256 is `8FA46E350F2B913CFC6A85A923DA358A8BFC7EABA5E177AA96885B7D68923D58`; its bundled Unlicense SHA-256 is `88D9B4EB60579C191EC391CA04C16130572D7EEDC4A86DAA58BF28C6E14C9BCD`.
+
+The locked adapter rejected its `RevolverAimShoot.fbx` before scene creation because the source is FBX version 6000 and Blender 5.1.2 requires 7100 or newer. Adapter request `c328aa3a6afd45548ebebc6313596a23` is the exact evidence. Meshy conversion task `01a03958-ecee-79e3-af7c-4e39af57b978` was started as pre-authorized recovery, consumed 1 credit, and remained at 1% when the parent stopped the unsupported conversion route; no output was downloaded or used. ZenXChaos is evidence-only.
+
+Rokoko did not yield a clearer redistributable open package in the search, while MoCap Online remained license-restricted and failed contact in the prior audit. Quaternius Universal Animation Library Standard is therefore the selected qualifying genuinely free package: CC0 rights verified, genuine firearm recoil/recovery verified, three actions exported and reimported, and all unresolved roles explicitly blocked rather than aliased or fabricated.
+
+
 ## 2026-08-25 additional free-package follow-up
 
 Quaternius Universal Animation Library 2 Standard was retrieved from the creator's official page and creator-uploaded OpenGameArt distribution as a second CC0 candidate. The archive SHA-256 is `EC0E40D6D78FE9AAAD59E322F40865A8675C22F0745E291622E54520391A9217`, embedded license SHA-256 is `F9B1DE4E8FEFF135555AC1C7D2EEC65035A05FD74E4D632A3F826AC985C3F22C`, and Unity FBX SHA-256 is `D4A2DD67BB12BF0C01891BC59EE697E04DB679D26883D30BD937C2F3FB6FEC90`.

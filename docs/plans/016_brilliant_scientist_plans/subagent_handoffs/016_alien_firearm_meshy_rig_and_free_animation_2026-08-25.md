@@ -158,7 +158,7 @@ No simplification was accepted and no runtime completion is claimed.
 
 The parent confirmed that the user's earlier “i approve everything” statement and explicit request for a free gun-firing package constitute approval of Quaternius Universal Animation Library Standard CC0 as the professional source. This resolves the source-approval blocker recorded earlier in this handoff. It does not waive any contact, semantic, muzzle, export, or runtime gate.
 
-The locked environment was reverified before continuation. `.tools/3d_pipeline/reports/environment_report.json` has SHA-256 `E18165AE5D4465B6164561C8FD59F1CC609FC661B3DE7752EF0681CBBB0B9412` and zero findings. No additional Meshy credits were consumed; balance remains 10.
+The locked environment was reverified before continuation. The final `.tools/3d_pipeline/reports/environment_report.json` has SHA-256 `629C12DFA51EDFBF7B5E7ADC96047015D6B7FB026BF108C3764A99927C66074B` and zero findings. The approved Quaternius promotion itself consumed no Meshy credits; the later stopped ZenXChaos conversion audit consumed one credit as recorded below.
 
 ### Promoted and exported actions
 
@@ -221,3 +221,25 @@ No gameplay, entity, `.asset`, GFX, particle, or sound-definition file was edite
 4. After every remaining action passes and actual-byte reimports, the parent may perform entity/action-state/particle/light/sound wiring and the user may validate the live consumer.
 
 The package remains incomplete and no runtime completion is claimed.
+
+## Final source-search continuation
+
+The current Meshy R2 rig was re-opened and preserved. Task `01a0380c-df10-7a2c-ab1e-c28d2248b616` and FBX SHA-256 `398E796CF47539FAF7EE4D1AE4C860B73EEA69D4B90C59FF5A0425DADCC54124` remain the accepted 24-bone, zero-zero-weight neutral lineage. Re-rigging would add cost and skeleton churn without fixing the source-animation or muzzle-locator blockers, so no re-rig was performed.
+
+Internet research checked additional CC0/public-domain firearm packages and found one stronger semantic catalog: [ZenXChaos ThirdPersonShooter-AnimationSets](https://github.com/ZenXChaos/ThirdPersonShooter-AnimationSets), commit `f19adc2ece4cab0f89c9236223abb97d4d2badea`, licensed under The Unlicense. It contains actual FBX files for revolver aim-shoot, backward aiming movement, crouch states, and several distinct deaths.
+
+- Archive: `evidence/professional_animation/zenxchaos_third_person_shooter_animation_sets/ThirdPersonShooter-AnimationSets-master.zip`, SHA-256 `8FA46E350F2B913CFC6A85A923DA358A8BFC7EABA5E177AA96885B7D68923D58`, 32,913,124 bytes.
+- Bundled license SHA-256: `88D9B4EB60579C191EC391CA04C16130572D7EEDC4A86DAA58BF28C6E14C9BCD`.
+- `RevolverAimShoot.fbx` SHA-256: `7AB6503410E5EB4AA1722F8BFDD7F365AA4EACFFC56451E81860D227252AD5C8`.
+- `RevolverAimWalkBackTurnAround.fbx` SHA-256: `6EACB1B5D9120E36368191D3E6CD3AE225619F8A46A82A709CA337E00C2AC591`.
+- `DieShootIdle.fbx` SHA-256: `03A90DB9811D2BBB74246BF7E4E71E91EEC18B0EEB16C8F044C469008DDBA960`.
+- Provenance: `evidence/professional_animation/zenxchaos_third_person_shooter_candidate_provenance.json`.
+- Audit: `evidence/professional_animation/zenxchaos_third_person_shooter_animation_sets/audit.md`.
+
+The package is technically unusable in the locked route. Adapter request `c328aa3a6afd45548ebebc6313596a23` failed with `FBX version 6000 unsupported, must be 7100 or later` before a Blender scene or action could be inspected. A pre-authorized Meshy conversion recovery task, `01a03958-ecee-79e3-af7c-4e39af57b978`, consumed 1 credit and remained at 1% `IN_PROGRESS`; the parent then directed this unsupported conversion route to stop. No converted bytes were downloaded, retargeted, promoted, or exported.
+
+Rokoko did not provide a verified redistributable open package during this search. MoCap Online remains rejected because its license restricts redistribution/AI use and its prior retarget lost pistol contact. KayKit remains CC0 but rejected for pistol/hand contact. Quaternius Universal Animation Library Standard remains the selected qualifying free package and the three Quaternius `.anim` exports listed above remain the only accepted action assets.
+
+The final observed shared Meshy balance was 109 credits; because other tasks share the account, the balance increase from the earlier observation is external and is not attributed to this tranche. This continuation records only the single 1-credit conversion task as its consumed spend.
+
+Remaining blockers are unchanged and exact: no supported muzzle locator; no acceptable defend; no independent support-attack fire action; no semantically valid retreat; no death retaining weapon contact. Particle, light, audio, entity, GFX, and gameplay wiring remain untouched.
