@@ -20,7 +20,7 @@ The English localisation defines complete name, definite-name, and adjective mat
 
 ## Localisation
 
-`localisation/english/006_independence_wave_mari_l_english.yml` contains the package party names, four planned cosmetic identity matrices, all seven idea pairs, the category and ledger display, the founding mission, ten canonical projects, effect tooltips, and current helper-facing names. It uses dynamic constants for the compact thresholds, duration, and package-specific ledger changes.
+The Mari section of `localisation/english/006_independence_wave_bashkiria_mari_l_english.yml` contains the package party names, four planned cosmetic identity matrices, all seven idea pairs, the category and ledger display, the founding mission, ten canonical projects, effect tooltips, and current helper-facing names. It uses dynamic constants for the compact thresholds, duration, and package-specific ledger changes.
 
 ## Admission boundary
 
