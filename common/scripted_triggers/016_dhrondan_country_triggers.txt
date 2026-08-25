@@ -113,11 +113,36 @@ dhrondan_is_valid_compact_partner = {
 	NOT = { has_country_flag = dhrondan_two_world_compact_partner }
 }
 
+# COUNTRY scope on DHR. These are the explicit consumers for the focus-owned
+# world-order contract. The decision surfaces still retain their route and
+# state legality checks below, so the marker only makes the promised unlock
+# boundary authoritative instead of relying on descendant focus order alone.
+dhrondan_world_order_decisions_are_unlocked = {
+	dhrondan_country_is_active = yes
+	has_country_flag = dhrondan_world_order_decisions_unlocked
+	has_country_flag = dhrondan_two_worlds_question_defined
+}
+
+# COUNTRY scope on DHR. Reclamation is the only current consumer that needs the
+# claim-specific half of the world-order contract.
+dhrondan_world_order_claim_contract_is_ready = {
+	dhrondan_world_order_decisions_are_unlocked = yes
+	has_country_flag = dhrondan_world_order_claim_contract_ready
+}
+
+# COUNTRY scope on DHR. The crisis decision is downstream of the completed
+# shared world-order route, not merely the first unlock marker.
+dhrondan_world_order_route_is_complete = {
+	dhrondan_world_order_decisions_are_unlocked = yes
+	has_country_flag = dhrondan_world_order_route_complete
+}
+
 # COUNTRY scope on DHR during a running reclamation state decision. The state
 # target remains FROM, so both territorial and diplomatic legality are checked
 # again at completion rather than only when the decision starts.
 dhrondan_reclamation_decision_can_complete = {
 	dhrondan_country_is_active = yes
+	dhrondan_world_order_claim_contract_is_ready = yes
 	has_country_flag = dhrondan_reclamation_declared
 	FROM = {
 		dhrondan_state_can_be_reclaimed = yes
