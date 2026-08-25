@@ -120,7 +120,7 @@ The Flemish participant remains a Belgian sovereign delegation. FORM-03 may reco
 - `common/decisions/categories/006_independence_wave_categories.txt`
 - `common/decisions/006_independence_wave_minor_overlay_decisions_registry.txt` (source section: IW-005 Flanders)
 - `common/ideas/006_independence_wave_ideas_registry.txt`
-- `common/scripted_localisation/006_independence_wave_iw005_flanders_scripted_localisation.txt`
+- `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt` (SOURCE marker: `common/scripted_localisation/006_independence_wave_iw005_flanders_scripted_localisation.txt`)
 - `localisation/english/006_independence_wave_iw005_flanders_l_english.yml`
 
 ## Visual assets
