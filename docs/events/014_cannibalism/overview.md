@@ -82,7 +82,9 @@ The post-reveal tree uses three focus cadences: short focuses cost 3 focus units
 
 The command profile shapes absorption, governors, rival purges, continental commands, and their timetable. The Larder profile shapes storage, captured workshops, the feeding capital, all four population-consumption doctrines, exhausted-frontier abandonment, mission pacing, and battlefield receipts. Army, navy, and air profiles shape paid recruitment, operational reserves, rout and convoy receipts, enemy-front collapse, silent anchorages, and temporary combat modifiers. Cells, expansion, and counterwar shape target pools, lockouts, foreign disruption, terror ultimata, border incidents, postwar integration, coalition-command attacks, and hostility conversion.
 
-Population-backed actions continue to use the exact Deaths transaction. Cannibal Legions, Bone Guards, and independently selectable Island Reavers, Siege Eaters, and March Predation Columns are created with zero starting manpower and zero starting equipment. Their exact population loss becomes manpower only after the Deaths resolver confirms the complete transaction, while their Larder and stockpile gates remain real costs. Each learned origin has its own recruitment decision, knowledge gate, raised counter, and cap.
+Population-backed actions continue to use the exact Deaths transaction. Scavenger Warbands, Feast Guards, Feast Cohorts, Bone Guards, Bone Riders, Island Reavers, Siege Eaters, March Predation Columns, and Network Cadres are created with zero starting manpower and zero starting equipment. Their exact population loss becomes manpower only after the Deaths resolver confirms the complete transaction, while their Larder and stockpile gates remain real costs. Each learned origin has its own recruitment decision, knowledge gate, raised counter, and cap.
+
+The nine formation families are real inactive infantry-like sub-units in `common/units/014_cannibalism_irregular_infantry.txt`. They share `category_cannibal_irregular_infantry`, retain ordinary infantry-group compatibility, and expose distinct sprite tokens as active map-model consumer contracts. Their locked Event 014 templates contain a plurality of the matching sub-unit, so ordinary infantry, marine, cavalry, or motorized sprites cannot take precedence. Bone Riders are the horse-mounted mobile shock route, Feast Guard favors forts and cities, Feast Cohort favors open-ground assaults, Bone Guard and Siege Eaters specialize in forts and urban breaches, Island Reavers retain marine and amphibious behavior, March Predation Column retains the motorized truck gate and is fastest, and Network Cadre is a small seeding formation. The separate locked Scavenged Elephant Column uses the installed vanilla `elephantry` technology and sub-unit, with no new elephant model consumer.
 
 Three harvest ledgers prevent repeatable receipt fabrication:
 
@@ -178,7 +180,21 @@ The four super-event images are action scenes rather than posed tableaux. The re
 
 The final closure asset pass adds 21 distinct preregistered surfaces: 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt icons, the receipt-backed Pack icon, and the inherited winter-cell icon. The full runtime asset tree contains 56 unique regional warlord portraits, 204 focus icons, 18 achievement triplets, four super-event images, two real-frame leader portrait sheets, and 195 unique runtime flags derived from 65 separate built-in ImageGen masters. The current portrait and flag refresh preserves the registered runtime paths while replacing their image content and provenance packages.
 
-Event 014 adds no custom subunit or equipment identifiers. Its scripted formations retain existing battalion and equipment surfaces, so no bespoke unit counter, subunit icon, or equipment art is required. This is a verified scope disposition, not a fallback.
+Event 014 defines nine custom sub-unit and sprite-token consumers while adding no equipment archetype. The unit families remain inactive outside the locked template-creation contract and reuse ordinary infantry, support, artillery, and motorized equipment. The locked Scavenged Elephant Column consumes vanilla `elephantry` after Event 014 countries receive its installed technology; it does not create an elephant sub-unit or model. The 27 counter DDS files and registry consumers are present in the asset package. Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, and March Predation Column now have parent-installed mesh, eight action exports, material maps, entity/GFX bindings, and seven-role 44.1 kHz sound packages with source-checked handoffs. Bone Riders, Island Reavers, Scavenger Warband, and Network Cadre remain outside the installed runtime set until their documented geometry, action, or provider gates are resolved; no live in-game consumer validation is claimed for any package.
+
+| Formation | Sub-unit and sprite token | Effective speed | Consumer behavior |
+| --- | --- | ---: | --- |
+| Scavenger Warband | `cannibal_scavenger_warband` | 7.4 | Fast baseline raider, strongest in forest, jungle, marsh, and desert |
+| Feast Guard | `cannibal_feast_guard` | 7.2 | Defensive command cadre with fort, urban, hill, and forest defence |
+| Feast Cohort | `cannibal_feast_cohort` | 7.8 | Organised assault with plains, forest, urban, river, and hill attack |
+| Bone Guard | `cannibal_bone_guard` | 8.2 | Elite shock guard for fort, urban, hill, and mountain attacks |
+| Bone Riders | `cannibal_bone_riders` | 10.4 | Horse-mounted mobile shock formation; low-org pursuit with real infantry-equipment need |
+| Island Reavers | `cannibal_island_reavers` | 7.6 | Marine-capable coastal host with river, marsh, jungle, and amphibious bonuses |
+| Siege Eaters | `cannibal_siege_eaters` | 7.52 | Urban and fort breacher with supporting artillery retained in template |
+| March Predation Column | `cannibal_march_predation_column` | 26.4 | Fastest truck-borne pursuit host with the existing motorized equipment gate |
+| Network Cadre | `cannibal_network_cadre` | 8.0 | Small mobile seeding and courier formation with low strength and organisation |
+
+Effective speed uses the installed equipment base speed multiplied by one plus the sub-unit `maximum_speed` modifier. Bone Riders therefore use infantry equipment at `4 × (1 + 1.6) = 10.4` km/h, while March Predation Column remains fastest through its vanilla 12 km/h motorized transport gate and `2.2` maximum-speed modifier at `12 × (1 + 1.2) = 26.4` km/h.
 
 ## Principal implementation files
 
@@ -187,6 +203,7 @@ Event 014 adds no custom subunit or equipment identifiers. Its scripted formatio
 - Player actions: `common/decisions/014_cannibalism_decisions.txt` and `common/decisions/categories/014_cannibalism_categories.txt`.
 - Country packages: `common/country_tags/014_cannibalism_countries.txt`, `common/characters/014_cannibalism_characters.txt`, Event 014 ideas, leader traits, dynamic modifiers, dormant history, flags, and name lists.
 - Focus trees: all three tree roots live in `common/national_focus/014_cannibalism_focus.txt`.
+- Unit gameplay and model consumers: `common/units/014_cannibalism_irregular_infantry.txt`, `common/unit_tags/chaosx_categories.txt`, `common/on_actions/014_cannibalism_on_actions.txt`, and `common/scripted_effects/014_cannibalism_effects.txt`.
 - UI and localisation: `common/scripted_guis/014_cannibalism_scripted_gui.txt`, `interface/014_cannibalism_frontline_hunger.gui`, `interface/014_cannibalism.gfx`, and `localisation/english/014_cannibalism_l_english.yml`.
 - Central tuning: `common/script_constants/014_cannibalism_constants.txt` and `common/mtth/014_cannibalism_mtth.txt`.
 
