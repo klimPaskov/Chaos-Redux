@@ -33,7 +33,7 @@ The parent path audit found zero missing mesh, animation, material-map, entity, 
 ## Remaining blockers
 
 - `cannibal_bone_riders`: no accepted compound horse/rider Meshy-to-validated skeletal package; a reused humanoid or transform-only fallback would violate the model pipeline and is not wired.
-- `cannibal_island_reavers`: the approved v8 Meshy 7 generation request returned HTTP 402 before task creation; no accepted v8 geometry exists.
+- `cannibal_island_reavers`: the approved v8 Meshy 7 request returned HTTP 402 before task creation; a later provider candidate task `01a034bb-7129-716b-bc17-177ca0eb9a1a` returned `SUCCEEDED`, but it has no accepted v8 rig/action/reimport package and remains outside runtime wiring.
 - `cannibal_scavenger_warband`: the available geometry has a weapon-contact defect and remains explicitly at parent user-review status; no final action-safe package is wired.
 - `cannibal_network_cadre`: accepted geometry and maps exist, but the provider animation lease is unavailable and no provider-sourced action exports or reimports exist.
 

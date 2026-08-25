@@ -31,4 +31,4 @@ FFprobe on 2026-08-25 reported `pcm_s16le`, `44100 Hz`, two channels, and these 
 
 ## Remaining boundary
 
-No audio-definition or super-event dispatch patch is required by this audit. Remaining Event 014 blockers are the documented Bone Riders compound horse/rider route, Island Reavers Meshy HTTP 402, Scavenger Warband user-review/action/audio gate, Network Cadre provider-action gate, and user-owned live runtime validation. Meshy balance was `10` credits on this continuation, below the paid generation/action work required to close those packages.
+No audio-definition or super-event dispatch patch is required by this audit. Remaining Event 014 blockers are the documented Bone Riders compound horse/rider route, Island Reavers' missing accepted v8 rig/action package after a later geometry candidate (the earlier Meshy HTTP 402 recovery record is superseded evidence), Scavenger Warband user-review/action/audio gate, Network Cadre provider-action gate, and user-owned live runtime validation. Meshy balance was `10` credits on this continuation, below the paid generation/action work required to close those packages.
