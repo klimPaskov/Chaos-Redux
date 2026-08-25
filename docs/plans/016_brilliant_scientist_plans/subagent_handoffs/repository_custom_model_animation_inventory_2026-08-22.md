@@ -235,4 +235,3 @@ No package may be marked complete merely because a `.anim` file reimports or bec
 ## Recommended next action
 
 Treat `autonomous_robot` as the only currently accepted installed animated package. Route P0 missing custom sprites first so they cannot silently fall back to generic or vanilla visuals, then process the P1 local/unverifiable installed packages in parallel by job root. Keep the parent-owned entity/GFX wiring frozen until each provider action package has dedicated role IDs, actual `.anim` files, reimport proofs, and source/runtime hashes.
-
