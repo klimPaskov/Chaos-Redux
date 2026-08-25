@@ -522,3 +522,90 @@ country_event = {
 
 	option = { name = chaosx.nr6.308.a custom_effect_tooltip = chaosx.nr6.308.a.tt }
 }
+
+# SOURCE: events/006_independence_wave_scenario.txt (consolidated 2026-08-25)
+add_namespace = chaosx.triggerable_scenarios
+
+# Hidden SCN-008 launch barrier. The confirmation window validates first, then
+# this delayed event revalidates immediately before the global transaction.
+country_event = {
+	id = chaosx.triggerable_scenarios.8
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { independence_wave_scenario_can_execute_queued = yes }
+			set_variable = { global.independence_wave_scenario_last_type = independence_wave_scenario_queued_type }
+			set_variable = { global.independence_wave_scenario_last_intensity = independence_wave_scenario_queued_intensity }
+			set_variable = { global.independence_wave_scenario_last_belligerence_rule = independence_wave_scenario_queued_belligerence_rule }
+			clr_country_flag = independence_wave_scenario_launch_queued
+			set_global_flag = independence_wave_scenario_launch_active
+			independence_wave_trigger_scenario = yes
+			clr_global_flag = independence_wave_scenario_launch_active
+		}
+		else = {
+			set_global_flag = independence_wave_scenario_failed
+			clr_global_flag = independence_wave_scenario_committed
+			if = {
+				limit = {
+					has_country_flag = independence_wave_scenario_launch_queued
+					independence_wave_scenario_queued_selection_is_valid = yes
+				}
+				set_variable = { global.independence_wave_scenario_last_type = independence_wave_scenario_queued_type }
+				set_variable = { global.independence_wave_scenario_last_intensity = independence_wave_scenario_queued_intensity }
+				set_variable = { global.independence_wave_scenario_last_belligerence_rule = independence_wave_scenario_queued_belligerence_rule }
+			}
+			else = {
+				independence_wave_scenario_initialize_settings = yes
+				set_variable = { global.independence_wave_scenario_last_type = triggerable_scenarios_independence_wave_type }
+				set_variable = { global.independence_wave_scenario_last_intensity = triggerable_scenarios_intensity }
+				set_variable = { global.independence_wave_scenario_last_belligerence_rule = triggerable_scenarios_independence_wave_belligerence_rule }
+			}
+			clr_country_flag = independence_wave_scenario_launch_queued
+			independence_wave_scenario_reset_summary = yes
+			independence_wave_scenario_set_intensity_tuning = yes
+			set_variable = { global.independence_wave_scenario_territory_level = independence_wave_wave_territory_level }
+			set_variable = { global.independence_wave_scenario_force_level = independence_wave_wave_force_level }
+			set_variable = { global.independence_wave_scenario_last_failure = constant:liberation_plan_reject_reason.stale_plan }
+			country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
+		}
+	}
+}
+
+# Frozen player-facing SCN-008 result. Detailed candidate rows remain in the
+# scenario ledger and are inspected through the Event 006 scenario decisions.
+country_event = {
+	id = chaosx.triggerable_scenarios.80
+	title = chaosx.triggerable_scenarios.80.t
+	desc = chaosx.triggerable_scenarios.80.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.triggerable_scenarios.80.a
+		trigger = {
+			OR = {
+				has_global_flag = independence_wave_scenario_committed
+				check_variable = {
+					var = global.independence_wave_scenario_blocked_package_ids^num
+					value = constant:independence_wave_scenario_registry.no_packages
+					compare = greater_than
+				}
+			}
+		}
+		set_variable = { global.independence_wave_scenario_last_summary_date = global.date }
+		set_variable = { independence_wave_scenario_ledger_index = constant:independence_wave_scenario_registry.first_array_index }
+		set_variable = { independence_wave_scenario_ledger_display_index = constant:independence_wave_scenario_registry.one }
+		set_country_flag = independence_wave_scenario_ledger_visible
+	}
+
+	option = {
+		name = chaosx.triggerable_scenarios.80.b
+		trigger = {
+			NOT = { has_global_flag = independence_wave_scenario_committed }
+			check_variable = { global.independence_wave_scenario_blocked_package_ids^num = constant:independence_wave_scenario_registry.no_packages }
+		}
+		set_variable = { global.independence_wave_scenario_last_summary_date = global.date }
+	}
+}

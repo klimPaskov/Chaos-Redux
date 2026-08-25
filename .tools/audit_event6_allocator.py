@@ -538,7 +538,7 @@ def main() -> int:
 		"runtime preflight no longer requires both adapter and content-attestation gates",
 		errors,
 	)
-	dispatch_effects = read("common/scripted_effects/006_independence_wave_package_dispatch_effects.txt")
+	dispatch_effects = read("common/scripted_effects/006_independence_wave_effects.txt")
 	phase_families: dict[str, set[str]] = {}
 	for call, phase in re.findall(
 		r"(?m)^\t(independence_wave_dispatch_.+_package_(setup|final_validation|cleanup))\s*=\s*yes$",
