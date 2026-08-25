@@ -16,7 +16,7 @@ The package preserves the vanilla MAC country definition, history, capital, core
 | AI strategy | `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` |
 | Sourced leader/commander consumer | `common/characters/006_independence_wave_characters_registry.txt` |
 | Portrait sprite wiring | `interface/006_independence_wave_portraits_registry.gfx` |
-| Localisation | `localisation/english/006_independence_wave_macedonia_l_english.yml` |
+| Localisation | `localisation/english/006_independence_wave_balkan_l_english.yml` (Macedonia section) |
 
 The shared `independence_wave_focus_tree` is assigned as a full framework. Survival, government, economy, military, host, regional, league, and formable lanes therefore update MAC's shared country, host, network, league, and ambition values. Five route governments are available: Municipal Charter, Mountain Workers' Council, Village Autonomy Compact, Mountain Defence Commission, and Patron Rail Compact.
 
