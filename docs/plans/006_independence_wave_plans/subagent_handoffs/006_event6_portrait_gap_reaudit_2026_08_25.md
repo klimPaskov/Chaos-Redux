@@ -62,11 +62,11 @@ Installed vanilla confirms exact character/GFX precedents for `YAK_anatoly_pepel
 
 ## Runtime, archive, and replacement state
 
-No `.gfx`, `common/characters`, scripted effect, runtime DDS, source archive, manifest, or package-admission file was changed by this audit. The existing 38 installed source-placeholder consumers remain unchanged, and all thirteen rows remain unmapped supplied candidates with their prior `research_only`, `source_placeholder_candidate_hold`, `source_only_needs_user_review`, or adapter-only state. No row is promoted to `replacement_pending`, and no user-supplied HOI4-style styled final was validated or installed.
+No `.gfx`, `common/characters`, scripted effect, runtime portrait consumer, or package-admission file was changed by this audit. The existing 38 installed source-placeholder consumers remain unchanged, and all thirteen rows remain unmapped supplied candidates with their prior `research_only`, `source_placeholder_candidate_hold`, `source_only_needs_user_review`, or adapter-only state. No row is promoted to `replacement_pending`, and no user-supplied HOI4-style styled final was validated or installed.
 
 The existing ACX stable DDS is readiness evidence only; it is not a newly wired consumer. The existing FIJ institutional DDS and all other runtime DDS files were left untouched. No generic, generated, repainted, alternate-person, or fallback portrait was created or substituted.
 
-The durable archive was not modified. A concurrent worktree observation is that `docs/assets/portraits/006_independence_wave/jose_antonio_aguirre/` currently exists alongside `processed/`, while the current source authority requires the flat archive parent to contain originals plus only the `processed/` child. This audit did not move or delete that directory or any other concurrent worktree content; parent reconciliation is still required.
+Parent reconciliation after this audit restored the requested flat archive contract. The duplicate NAV original and crop were removed because byte-identical originals already remain directly in `docs/assets/portraits/006_independence_wave/`; the generated 156x210 PNG, evidence DDS, and 4× round-trip PNG were moved into `docs/assets/portraits/006_independence_wave/processed/`; and the agent-created `jose_antonio_aguirre/` child, its evidence-only files, and duplicate source files were removed. The parent now has only the original-source files plus the single `processed/` child. No runtime portrait consumer or package gate changed.
 
 ## Checks performed and intentionally skipped
 
