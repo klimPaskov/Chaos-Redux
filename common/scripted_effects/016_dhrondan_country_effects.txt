@@ -26,9 +26,12 @@ dhrondan_capture_revolt_inputs = {
 		limit = { has_variable = dhrondan_arrival_count }
 		set_temp_variable = { dhrondan_revolt_arrivals_remaining = dhrondan_arrival_count }
 	}
-	every_state = {
-		limit = { dhrondan_state_is_landing_site = yes }
-		add_to_temp_variable = { dhrondan_revolt_marked_states = constant:dhrondan_value.one }
+	for_each_scope_loop = {
+		array = global.alien_infantry_landing_state_registry
+		if = {
+			limit = { dhrondan_state_is_landing_site = yes }
+			ROOT = { add_to_temp_variable = { dhrondan_revolt_marked_states = constant:dhrondan_value.one } }
+		}
 	}
 	every_owned_state = {
 		limit = { dhrondan_state_is_landing_site = yes }
@@ -104,12 +107,15 @@ dhrondan_release_and_transfer_landing_states = {
 		limit = { dhrondan_state_is_landing_site = yes }
 		dhrondan_transfer_current_landing_state = yes
 	}
-	every_state = {
-		limit = {
-			dhrondan_state_is_landing_site = yes
-			NOT = { is_owned_by = DHR }
+	for_each_scope_loop = {
+		array = global.alien_infantry_landing_state_registry
+		if = {
+			limit = {
+				dhrondan_state_is_landing_site = yes
+				NOT = { is_owned_by = DHR }
+			}
+			add_claim_by = DHR
 		}
-		add_claim_by = DHR
 	}
 	if = {
 		limit = { check_variable = { dhrondan_revolt_released_tag = constant:dhrondan_value.one } }
