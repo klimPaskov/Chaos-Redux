@@ -1,5 +1,7 @@
 # Event 006 focus coordinate trials — 2026-08-25
 
+> Superseded for current focus-layout authority by commit `314642488` and `subagent_handoffs/006_event6_focus_geometry_closure_current_2026-08-25.md`. This handoff preserves rejected-trial and five-warning baseline evidence; current geometry is 184 focuses, 195 connectors, zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout diagnostics.
+
 ## Scope
 
 This is a read-only MCP follow-up to the accepted Event 006 focus source. It tested two narrow coordinate candidates against the current focus graph. The accepted source is unchanged; no focus rewrite was requested or applied.

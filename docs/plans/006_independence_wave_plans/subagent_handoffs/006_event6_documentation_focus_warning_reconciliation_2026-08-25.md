@@ -6,6 +6,8 @@ Owner: `/root/event6_warning_count_docs`.
 
 Parent: `/root`.
 
+> Superseded for current focus-layout authority by commit `314642488` and `subagent_handoffs/006_event6_focus_geometry_closure_current_2026-08-25.md`. The five-warning and `longConnectorCount = 2` snapshot below is dated historical evidence; current authority is 184 focuses, 195 connectors, zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout diagnostics, with only the unrelated vanilla `continuous_restrict_freedom_desc` localisation reference reported. Preserve this handoff for provenance; whole-event status remains **HOLD / PARTIAL**.
+
 Status: documentation-only reconciliation complete; Event 006 remains **HOLD / PARTIAL**, and no gameplay, localisation, asset, GUI, spreadsheet, or completion claim is made.
 
 ## Scope and source-of-truth map

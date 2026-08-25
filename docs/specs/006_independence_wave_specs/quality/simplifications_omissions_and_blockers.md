@@ -6,7 +6,7 @@ This package is the accepted source specification; implementation status is reco
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
-## Current implementation correction (2026-08-24; bounded evidence)
+## Current implementation correction (2026-08-25; bounded evidence)
 
 The accepted fail-closed boundary remains 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with unresolved portraits still blocking admission and no visible pre-Event 006 crisis surface.
 
@@ -24,7 +24,7 @@ Commit `f7d950fd6` applies the four-group cost palette tranche to its named deci
 
 Commit `d6abc3792` repairs the joint partial-wave expected-count witness by recomputing the expected country count from the actual Event 005 and Event 006 selected counts before optional expansion and lock. Commit `abb0a8c83` restores the Event 005-aware joint-capacity witness for nine admitted packages and brings the source to 32 readiness wrappers, 32 capacity tries, and 32 caller entries matching the 32 attestations; these repairs remain static evidence and do not prove a joint terminal receipt.
 
-Current static checks pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, and Statehood Ledger semantic matrix audits. The 2026-08-25 coordinate-only focus closure preserves 184 focuses and 195 connectors while the latest MCP evidence reports zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout diagnostics; the only remaining focus diagnostic is the unrelated vanilla `continuous_restrict_freedom_desc` localisation reference. The current Event MCP inspect/render remains partial, both Event 006 GUI surfaces retain workspace-global diagnostics, and no live, balance, or whole-event completion claim follows.
+Current static checks pass the allocator, country API, strict flag-family, SCN-008 scenario matrix, FORM-16 contract, and Statehood Ledger semantic matrix audits. Commit `314642488` applies the 2026-08-25 coordinate-only focus closure, preserving 184 focuses and 195 connectors while the latest MCP evidence reports zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout diagnostics; the only remaining focus diagnostic is the unrelated vanilla `continuous_restrict_freedom_desc` localisation reference. The current Event MCP inspect/render remains partial, both Event 006 GUI surfaces retain workspace-global diagnostics, and no live, balance, or whole-event completion claim follows.
 
 The 2026-08-24 static refresh additionally records the FORM-48, FORM-01/02/04, FORM-03, and IW-035 cost-localisation checks. These checks remain source/static evidence only and do not close the remaining package cost prose, category density, typed probability, tooltip, GUI, or live-event gates; the refresh is recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_static_audit_refresh_2026-08-24.md`.
 

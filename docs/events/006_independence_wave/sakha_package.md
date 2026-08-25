@@ -34,13 +34,13 @@ The package preserves the vanilla YAK history, characters, base flag family, and
 
 Pavel Pevznyak has a source-backed 1936 Yakutsk role and public-domain portrait evidence, while Anatoly Pepelyayev is not role/date-valid for the 1936 opening.
 
-The package therefore requires the parent-owned `independence_wave_iw_051_identity_rights_cleared` flag before roster setup can proceed and creates no portrait or base-flag override. The route ladders are alternate-history generated syntheses, not an attested universal 1936 flag; prompt text was not co-located with the supplied masters and remains a review note.
+The package therefore requires the parent-owned `independence_wave_iw_051_identity_rights_cleared` flag before roster setup can proceed. Commit `795dc9bed` adds a package-gated source-placeholder portrait consumer for `YAK_pavel_pevznyak` using `GFX_portrait_YAK_independence_wave_pavel_pevznyak` and `gfx/leaders/006_independence_wave/portrait_YAK_independence_wave_pavel_pevznyak.dds`; setup retry and cleanup restore the vanilla portrait token, and no base-flag override or central admission follows. The route ladders are alternate-history generated syntheses, not an attested universal 1936 flag; prompt text was not co-located with the supplied masters and remains a review note.
 
 The source archive is `docs/assets/portraits/006_independence_wave/`, with originals directly in the parent and processed evidence only in its single `processed/` child; no 156x210 archive files are retained.
 
 ## Admission blockers
 
-- The state-574 map allocation still reports a collision that must be resolved before runtime admission.
+- The existing state-574/Yakutsk anchor and optional 644/876/877 extensions pass bounded map inspection; the earlier collision came from a new-state allocation probe requesting already-used state 574 and is not evidence of an existing-anchor defect.
 - The period Sakha flag lead remains rights and released-origin gated, while the generated route ladders are explicitly needs-user-review; neither is a neutral 1936 identity admission.
 - Portrait clearance is package-owned only after the parent reviews the Pevznyak source and rejects the role-invalid Pepelyayev route.
 - The probability adapter reports no weighted surfaces and no quantitative AI or mission balance claim is available.
