@@ -99,3 +99,28 @@ Candidate status remains **retargeted/exported but not runtime accepted**. The a
 - `export/mesh/alien_infantry_runtime_30k.mesh` is 2,957,433 bytes and uses one stream under the 65,535 vertex limit. `export/anim/alien_infantry_runtime_30k_laser_attack.anim`, `..._laser_aim.anim`, and `..._laser_reload.anim` are 30 FPS exports with frames 1–33, 1–33, and 1–36 respectively.
 - `blender/checkpoints/reimport_alien_infantry_runtime_30k_textured.blend` is the actual-byte reimport proof. The adapter recovered a 24-bone `io_pdx_rig`, the mesh, and `io_pdx_rigAction`; texture companions were found with no warnings. Preview frames 1, 9, 17, 25, and 33 are under `blender/previews/reimport_alien_infantry_runtime_30k_textured_*`.
 - This evidence clears material, export, and reimport gates only. It does not establish the exact discharge frame, muzzle locator, particle/light/audio timing, all seven required semantic actions, final `.asset` entity wiring, counters, or in-game acceptance.
+
+## V9 Meshy recovery and Quaternius CC0 candidate audit
+
+The locked environment reverified on 2026-08-25 with zero findings: official `@meshy-ai/meshy-mcp-server` 0.4.0, Meshy schema compatibility revision `meshy-7-v5`, exact `meshy-7`, Blender HOI4 adapter 1.10.14, Blender 5.1.2, io_pdx_mesh 0.91.0, and a listening adapter bridge at `127.0.0.1:9876`. The environment report is `.tools/3d_pipeline/reports/environment_report.json`.
+
+One materially different official Meshy firearm action was attempted on the accepted R2 rig. Action 236 `Draw_and_Shoot_Left`, task `01a038ed-330b-77ea-b344-91361978b5d5`, cost 3 credits and downloaded immediately as `provider/downloads/animation_v9_action236_draw_and_shoot_left.fbx`, SHA-256 `69F0C530574439CF122410CE13ED107DC02145B1FCE078028ED91E93D5A808E1`. Its 161-frame clip retained the pistol but failed the aim/discharge/recoil/recovery gate and is rejected. Live balance fell from 13 to 10.
+
+The Quaternius Universal Animation Library Standard was then audited as a free professional-source candidate. The archive is CC0, SHA-256 `18FF1A7215F4852B320203E8AAF02A1578B5C8EEF9027FBAEDFCEDC7B85A3AC2`; its Unreal FBX SHA-256 is `C836C5D47DE2A414818F7644632AC43AA84475DF6709F4514B9410D232800FD9`. `Rig|Rig|Pistol_Shoot` transferred without adapter warnings to a 20-frame, 30 FPS alien candidate. Motion peaks at frame 6 and recovers by frame 20, and multi-view evidence confirms the integrated pistol remains in the right hand. Exact evidence is in `evidence/professional_animation/quaternius_universal_animation_library_standard/audit.md`.
+
+The Quaternius clip is **not promoted**: explicit user approval of this professional source is still required, and no stable muzzle locator exists. The candidate discharge crosswalk is therefore only frame 6 / 0.1667 seconds after clip start; `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain unbound. No final action or runtime wiring was produced. Idle, move, defend, support attack, retreat, and death remain blocked.
+
+## Approved Quaternius promotion and actual-byte proof
+
+The user's prior broad approval and explicit request for a free firing-animation package approve Quaternius Universal Animation Library Standard CC0 as the professional source. This supersedes the approval blocker above but does not waive contact, semantic, locator, export, or runtime gates.
+
+Three source actions passed retarget and visual review, exported through io_pdx_mesh, and reimported from their actual bytes against `export/mesh/alien_infantry_runtime_30k.mesh`:
+
+- `Rig|Rig|Pistol_Shoot` -> `alien_infantry_laser_attack`, frames 1-20 at 30 FPS. Export `export/anim/alien_infantry_quaternius_laser_attack.anim`, SHA-256 `5B5260F21FAFC8827275827FF99A6D5BCAC29A02D8EAA99ED7ECEAE8D555C4AC`. Reimport proof `blender/checkpoints/reimport_reimport_alien_infantry_quaternius_laser_attack.blend`, SHA-256 `FC6EEC2317B15BD5104DBEC700A20A84CCE57BB839147B25D46225FF553C6A63`.
+- Actual-byte firing contact sheet: `blender/previews/quaternius_laser_attack_actual_byte_reimport_contact_sheet.png`, SHA-256 `305B0149BD1A4544E8A5B93A4D90F42169599764146DE08DA6797B72E4152273`.
+- `Rig|Rig|Pistol_Idle_Loop` -> `alien_infantry_idle`, frames 1-51 at 30 FPS. Export `export/anim/alien_infantry_quaternius_idle.anim`, SHA-256 `710D86BE58C74CC6BCE58A5BB9411D975BE31693B8D6530A1390A2BBE64EE09F`. Reimport proof `blender/checkpoints/reimport_reimport_alien_infantry_quaternius_idle.blend`, SHA-256 `4478C538AD813B1A66A3172B19F6A58D759EEF9043EBB645F9F2B9542D99EE12`.
+- `Rig|Rig|Walk_Loop` -> `alien_infantry_move`, frames 1-41 at 30 FPS. Export `export/anim/alien_infantry_quaternius_move.anim`, SHA-256 `79E561F831D9C40C752D38412CF0C415A1FE03C07914AFE70A52DB58F35D4E79`. Reimport proof `blender/checkpoints/reimport_reimport_alien_infantry_quaternius_move.blend`, SHA-256 `C2188F2651613931414AEE80BCDBAA93FB452000A2B481E2DB0963E0185FE4B6`.
+
+The approved `Crouch_Idle_Loop` defend probe was rejected because it produces an implausible one-leg balance. The approved `Death01` probe was rejected because the integrated pistol separates from the hand during collapse and settling. Neither was exported. Exact evidence is in `provider/rejections/quaternius_defend_death_contact_failures.md`.
+
+The firing export is still not ready for runtime binding. The verified adapter schema exposes no supported muzzle-locator authoring or derivation operation, and creating one through unrestricted Blender or manual weapon parenting is forbidden. Frame 6 / 0.1667 seconds remains the exact discharge phase, but the particle, light, and sound identifiers remain unbound. Defend, support attack, retreat, and death remain blocked; support attack is not aliased to `Pistol_Shoot`.

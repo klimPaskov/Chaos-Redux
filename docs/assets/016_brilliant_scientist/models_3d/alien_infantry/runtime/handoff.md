@@ -66,3 +66,21 @@ The user approved a free external package after the official Meshy firearm-actio
 The secondary free MoCap Online Pistol Starter pack was audited because it advertises explicit standing single-shot FBX clips. Its archive SHA-256 is `9D5A6FF26A0E70FA36625B9FF3FAB2CBFFAD7D8A4200A0CE12A225D87BCC5559`, and its Standard License is documented at `https://mocaponline.com/pages/standard-license`. Its `W1_Stand_Fire_Single` action retargeted cleanly at the curve level (frames 1–31, 30 FPS, 730 source curves to 154 target curves), but the target preview loses the integrated pistol/hand contact against the posed Meshy rest state. The license also restricts standalone redistribution, so this pack remains rejected and unwired; the CC0 KayKit package remains the preferred documented fallback candidate.
 
 This is a **candidate export, not a final runtime handoff**. The adapter material pass tagged the working Meshy mesh as `PdxMeshAdvanced`, bounded it to 29,916 triangles, exported it, staged its texture companions, and reimported the actual bytes with a 24-bone skeleton and no texture warnings. The reduction leaves 108 loose boundary edges as a documented residual risk. The firearm clip has not yet established a stable muzzle node or verified discharge frame, so `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain unbound. The other semantic actions still need source verification and retargeting. Parent-owned entity wiring must wait for those gates.
+
+## V9 result: Quaternius candidate only
+
+Official Meshy action 236 `Draw_and_Shoot_Left`, task `01a038ed-330b-77ea-b344-91361978b5d5`, was tested on the accepted R2 rig and rejected because its 161-frame motion retains the pistol but never supplies a credible pistol aim/discharge/recoil/recovery sequence. The call consumed 3 credits and left a balance of 10.
+
+The CC0 Quaternius Universal Animation Library Standard was independently verified and retargeted for evidence only. `Rig|Rig|Pistol_Shoot` transfers to `alien_infantry_quaternius_pistol_shoot_candidate`, frames 1-20 at 30 FPS, with maximum source/target motion `1.367575/1.367576` at frame 6 and recovery to the aimed pose by frame 20. The integrated pistol remains in the right hand at every reviewed phase. The exact source, license, hashes, transfer request, and contact evidence are recorded in `evidence/professional_animation/quaternius_universal_animation_library_standard/audit.md`.
+
+Do not wire or export this action yet. The user must explicitly approve Quaternius as the professional animation source, and a stable muzzle locator must be verified before frame 6 / `0.1667 s` can become the discharge binding. The remaining semantic actions are blocked and gameplay wiring remains untouched.
+
+## Superseding approved Quaternius export state
+
+The user's prior broad approval and explicit request for a free firing-animation package approve the Quaternius CC0 source. Adapter-only promotion produced three action exports and actual-byte reimport proofs:
+
+- `alien_infantry_laser_attack`: `export/anim/alien_infantry_quaternius_laser_attack.anim`, frames 1-20 at 30 FPS, SHA-256 `5B5260F21FAFC8827275827FF99A6D5BCAC29A02D8EAA99ED7ECEAE8D555C4AC`; proof `blender/checkpoints/reimport_reimport_alien_infantry_quaternius_laser_attack.blend`.
+- `alien_infantry_idle`: `export/anim/alien_infantry_quaternius_idle.anim`, frames 1-51 at 30 FPS, SHA-256 `710D86BE58C74CC6BCE58A5BB9411D975BE31693B8D6530A1390A2BBE64EE09F`; proof `blender/checkpoints/reimport_reimport_alien_infantry_quaternius_idle.blend`.
+- `alien_infantry_move`: `export/anim/alien_infantry_quaternius_move.anim`, frames 1-41 at 30 FPS, SHA-256 `79E561F831D9C40C752D38412CF0C415A1FE03C07914AFE70A52DB58F35D4E79`; proof `blender/checkpoints/reimport_reimport_alien_infantry_quaternius_move.blend`.
+
+Defend and death probes remain rejected; support attack and retreat have no independent valid source. The locked adapter has no muzzle-locator operation, so the firing export remains asset evidence rather than a bindable runtime action. Frame 6 / 0.1667 seconds is verified, but particle, light, and sound are unbound. Parent gameplay/entity/GFX/sound wiring remains untouched.

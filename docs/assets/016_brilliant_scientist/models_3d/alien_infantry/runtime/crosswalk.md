@@ -21,3 +21,26 @@
 No semantic action is substituted or aliased. No manual weapon attachment, manual motion, partial paid tranche, or fallback is accepted.
 
 V8 ended with live balance 237 after 54 credits. The other semantic actions and all exports were deliberately skipped after the mandatory firing gate failed.
+
+## V9 recovery crosswalk
+
+| Candidate | Source | Range | Contact/discharge evidence | Status |
+|---|---|---:|---|---|
+| `alien_infantry_laser_attack` | Meshy action 236 `Draw_and_Shoot_Left`, task `01a038ed-330b-77ea-b344-91361978b5d5` | 1-161 @ 30 FPS | Pistol retained, but no credible aim/discharge/recoil/recovery | Rejected; no export or binding |
+| `alien_infantry_quaternius_pistol_shoot_candidate` | Quaternius `Rig|Rig|Pistol_Shoot`, CC0 source FBX `C836C5D4...00FD9` | 1-20 @ 30 FPS | Aim at frame 1, peak recoil/candidate discharge at frame 6 (`0.1667 s`), recovery through frames 10/15, aimed return at frame 20; pistol retained throughout | Candidate contact/motion pass; needs explicit professional-source approval and stable muzzle locator; not exported |
+
+The seven requested runtime roles remain blocked. The Quaternius library also contains real idle, locomotion, pistol idle/reload, and articulated death actions, but none was promoted because professional-source approval must precede the remaining retarget tranche and `support_attack` still requires independent firing evidence. Particle, light, sound, entity, and gameplay wiring remain unchanged.
+
+## Approved-source export state
+
+| Requirement | Export/reimport evidence | Final status |
+|---|---|---|
+| Idle | `export/anim/alien_infantry_quaternius_idle.anim`, SHA-256 `710D86BE...EE09F`; actual-byte reimport request `424012b1d37d44269d95a5b69c450db2` | Asset evidence passed; parent runtime wiring pending |
+| Move | `export/anim/alien_infantry_quaternius_move.anim`, SHA-256 `79E561F8...D4E79`; actual-byte reimport request `04690c9bbd63427483f1dcddc95374eb` | Asset evidence passed; parent runtime wiring pending |
+| Laser attack | `export/anim/alien_infantry_quaternius_laser_attack.anim`, SHA-256 `5B5260F2...5C4AC`; actual-byte reimport request `cb76807b9ae840c6be44fa35f422acb8` | Action/contact/export passed; runtime binding blocked by absent stable muzzle locator |
+| Defend | `Crouch_Idle_Loop` probe and `quaternius_defend_contact_sheet.png` | Rejected: implausible one-leg balance |
+| Support attack | No independent substantive firing action in Standard package | Blocked; no alias permitted |
+| Retreat | No semantically valid retreat action in Standard package | Blocked |
+| Death | `Death01` probe and `quaternius_death_contact_sheet.png` | Rejected: pistol separates from hand during collapse |
+
+No gameplay/entity/GFX/sound definition was wired. Frame 6 / 0.1667 seconds is the verified firing phase only; particle/light/audio synchronization remains unbound until a stable muzzle locator exists.

@@ -17,3 +17,15 @@ Selection and acknowledgement are intentionally blocked at the subunit level. In
 V8 preserved the upright right-hand pistol in neutral geometry and rig evidence, but official actions 232 `Cowboy_Quick_Draw_Shooting`, 104 `Side_Shot`, and 690 `Walk_Forward_While_Shooting_inplace` all failed to supply a genuine aim/discharge/recoil/recovery sequence. Action 690 also converted the selected one-handed identity into a two-handed low-ready hold. Consequently there is still no accepted discharge frame/time or stable muzzle locator for either firing consumer.
 
 The exact crosswalk remains intentionally empty: `alien_infantry_laser_attack` and `alien_infantry_support_attack` have no accepted provider action; `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain unbound. Movement, idle, and death synchronization also remains unset because those actions were not purchased after the mandatory firing gate failed. No audio file or sound definition was recreated or overwritten during V8.
+
+## V9 candidate synchronization audit
+
+Meshy action 236 remains rejected and yields no synchronization point. The Quaternius CC0 `Pistol_Shoot` candidate supplies a genuine recoil cycle with maximum transferred motion at frame 6 of frames 1-20 at 30 FPS. If and only if the user approves Quaternius as the professional source and a stable muzzle locator is verified, the provisional discharge event would be frame 6, `0.1667 s` after clip start, shared by `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire`.
+
+That timing is not accepted runtime data yet. The candidate remains unwired because source approval and muzzle-locator gates are open. `support_attack`, movement, retreat, idle, and death audio synchronization also remain unset.
+
+## Approved Quaternius export status
+
+Quaternius source approval is resolved. `alien_infantry_quaternius_laser_attack.anim` exported and actual-byte reimported successfully, and the integrated pistol remains in the hand through aim, maximum recoil at frame 6, and recovery at frame 20. The exact discharge phase is frame 6 / 0.1667 seconds after clip start.
+
+The locator gate remains unresolved: the locked Blender HOI4 adapter exposes no operation that can create or derive a muzzle node, and manual Blender parenting/attachment is forbidden. Therefore `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain intentionally unbound despite the verified frame. Move and idle actions also reimported, but their sound event frames were not bound because parent entity wiring is out of scope. Support attack, retreat, defend, and death have no accepted actions.
