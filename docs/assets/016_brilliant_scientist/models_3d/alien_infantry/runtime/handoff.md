@@ -1,6 +1,10 @@
 # Alien infantry runtime handoff
 
-Status: **blocked — pose-correct V8 Meshy R2 rig passed; the parent-approved Quaternius CC0 idle, move, and laser-attack actions are exported and actual-byte reimported on the accepted candidate, but runtime acceptance still waits for a supported muzzle locator, effect/audio synchronization, distinct defend, support-attack, retreat, and death actions, and parent entity wiring**.
+Status: **blocked — the current Meshy V10 lineage has a firearm-bearing 24-bone rig and five accepted genuine source roles, but no compliant firearm action, support attack, or muzzle locator; no runtime entity is wired**.
+
+Current V10 evidence is documented in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_v10_runtime_handoff_2026-08-26.md`. Meshy 7 produced accepted idle, move, defend, retreat, and death source clips. Three materially different firearm presets (`4`, `104`, and `98`) failed the required aim, discharge, recoil, and recovery sequence. No distinct `support_attack` or stable muzzle locator exists.
+
+Because the firing and locator gates failed, this package has no final `.mesh`, `.anim`, packed PDX materials, entity, particle/light binding, or synchronized laser sound. No historical professional-source action, transform-only motion, inferred locator, or manual weapon attachment is promoted. The ignored V10 provider files remain available for provenance review; redundant failed binaries may be pruned only after their hashes and rejection report are preserved.
 
 ## Runtime selection state
 
