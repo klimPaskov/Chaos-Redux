@@ -1,15 +1,22 @@
-# cannibal_siege_eaters v9 runtime handoff
+# cannibal_siege_eaters runtime handoff
 
-Status: **blocked at the locked Meshy route cleanup gate; do not wire a model**.
+Status: **package complete; parent runtime wiring installed**.
 
-The parent-approved sole Meshy input remains `refs/original/meshy_input.png`, SHA-256 `1AC18B9B008CCCC70BC0AF30605CA72ADCC9030A1C233732559400C9A6744F75`. It was not changed.
+The parent-approved source-informed reference remains `refs/original/meshy_input.png`, SHA-256 `1AC18B9B008CCCC70BC0AF30605CA72ADCC9030A1C233732559400C9A6744F75`. The Meshy 7 provider mesh and genuine provider animations are retained; no transform-only replacement actions were authored.
 
-The fresh locked preflight resolved `@meshy-ai/meshy-mcp-server` 0.4.0, SDK 1.29.0, compatibility revision `meshy-7-v4`, exact model `meshy-7`, Blender 5.1.2, `chaosx_blender_hoi4` 1.10.0, and io_pdx_mesh 0.91.0. The live balance was 1,410 credits, sufficient for the estimated 56-credit generation, rig, and seven-custom-action tranche.
+The live `chaosx_blender_hoi4` 1.10.14 adapter exported the 29,999-triangle mesh and eight provider actions at 24 fps. Each action was corrected with the adapter's `per_frame_root_contact_zero_clearance` policy using root bone `Hips`, retaining body-motion keys and changing only root location channels. The grounded exports were reimported successfully with proofs and rendered previews:
 
-Paid work nevertheless stopped before task creation. Two fresh route probes each left their own `run_meshy_mcp.ps1` process and locked Meshy Node child alive after JSON-RPC completion. The exact probe-owned process IDs were cleaned without touching another task. The pipeline requires zero newly surviving route processes, so no Meshy generation, rig, animation, download, Blender mutation, PDX export, or reimport call was made. v9 consumed zero credits and has no provider task or response ID.
+- `blender/checkpoints/reimport_cannibal_siege_eaters_idle_grounded_v3.blend`
+- `blender/checkpoints/reimport_cannibal_siege_eaters_move_grounded_v3.blend`
+- `blender/checkpoints/reimport_cannibal_siege_eaters_attack_grounded_v3.blend`
+- `blender/checkpoints/reimport_cannibal_siege_eaters_defend_grounded_v3.blend`
+- `blender/checkpoints/reimport_cannibal_siege_eaters_support_attack_grounded_v3.blend`
+- `blender/checkpoints/reimport_cannibal_siege_eaters_retreat_grounded_v3.blend`
+- `blender/checkpoints/reimport_cannibal_siege_eaters_training_grounded_v3.blend`
+- `blender/checkpoints/reimport_cannibal_siege_eaters_death_grounded_v3.blend`
 
-Repair and verify the shared wrapper cleanup, including two matching consecutive `tools/list` probes, the concurrent probe pair, `meshy-7` exposure, live balance, and zero newly surviving process IDs. Then resume the pre-authorized plan: one PBR triangular 30,000-poly T-pose Meshy 7 GLB+FBX, provider rig, rig-included walking action, and distinct provider actions for idle 335, attack 237, defend 334, support_attack 241, retreat 615, training 598, and death 187.
+Ground-contact evidence is within adapter tolerance for all eight reimports. The mesh reports zero non-manifold and degenerate faces after position-weld diagnostics; 77 loose boundary edges remain across 16 open components because exported UV and normal seams are preserved.
 
-The seven licensed PCM s16le 44,100 Hz mono audio roles remain preserved under `audio/derived/` with provenance in `evidence/audio_sources/sound_design_v8.json`. Exact frame synchronization remains blocked until genuine provider actions exist. The bespoke counter remains external at `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_cannibal_counter_art_handoff.md` for tokens `GFX_unit_cannibal_siege_eaters_icon_medium`, `GFX_unit_cannibal_siege_eaters_icon_medium_white`, and `GFX_unit_cannibal_siege_eaters_icon_small`.
+Runtime files are installed under `gfx/models/units/014_cannibalism/cannibal_siege_eaters/` with unique diffuse, specular, and normal DDS maps, and under `sound/014_cannibalism/units/cannibal_siege_eaters/` with seven sourced PCM s16le 44,100 Hz mono WAV roles. `gfx/entities/014_cannibalism_units.gfx`, `gfx/entities/014_cannibalism_units.asset`, and `sound/014_cannibalism_units_sound.asset` bind the eight actions, terrain clones, and action-timed sound effects. The parent-owned unit definition already maps `cannibal_siege_eaters` to `cannibal_siege_eaters_entity`.
 
-Parent-owned runtime root remains `gfx/models/units/014_cannibalism/cannibal_siege_eaters/`. Runtime/GFX/entity/sound wiring and in-game QA were not performed.
+No live in-game consumer validation is claimed. The remaining package note is the documented open-surface boundary diagnostic; it is not silently treated as a topology pass.
