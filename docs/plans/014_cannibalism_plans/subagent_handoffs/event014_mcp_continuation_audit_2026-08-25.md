@@ -14,6 +14,10 @@ The pass also rechecked the remaining Meshy task records without spending credit
 
 The workspace scan reported 9,515 events, 14,711 options, 1,073 entries, 8,317 unresolved nodes, and 2,130 issues across the whole workspace. It retained zero blocking diagnostics and skipped no source files, but deferred helper projections because the workspace is larger than the MCP inline-analysis ceiling. This is useful root-level evidence, not complete proof of every Event 014 helper path.
 
+A downstream trace using the same root selector returned `EVENT_INSPECTED_PARTIAL` and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fd79db346b415d43553e373360ef106614e5e6e66583921a72cb8d4fba0dd834/4f146ec9d7d44bcaf33e447ce6e908fd2c145ccb26b46ea7af49011876662a62/event-trace-cf24a2714b30.json`. It retained the same revision and graph hash, no blocking diagnostics, and the same deferred helper/lifecycle limitation.
+
+A bounded `terminals` render also returned `EVENT_RENDERED_PARTIAL`, with artifacts `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8a0c2b77ce9c09a1138f0aad4fac01c04c4284833c1b28d3373de95fb91ab83d/5e90d30613aa6dd3758abacfe1da14ee4c36490d9a139dc0b50d5b38b4113e9e/event-terminals-cf24a2714b30.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/26a0c46ec50d93379f0197fb1af087a82eaa518b5d927ee0b56dfa82aa19c641/2b8adea10d1f10dc93fee1816d59f0382ecafe1f990024386c0af1c4f94ab42e/event-terminals-cf24a2714b30.png`. The renderer reported `selectedNodes = 0`, `branchRenders = 0`, and 41,267 omitted nodes, so it did not produce attributable Event 014 terminal branches. This is recorded as an adapter boundary, not as evidence that terminal branches are absent.
+
 ## Focus MCP evidence and bounded source fix
 
 The final source keeps all three roots in `common/national_focus/014_cannibalism_focus.txt` and was inspected after the bounded Wendigo terminal-column adjustment.
