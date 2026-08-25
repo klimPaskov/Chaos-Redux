@@ -36,7 +36,11 @@ Overall status: **partial asset pass; approved Quaternius idle, move, and laser-
 - Result: rejected. The pistol remains integrated, but the right hand holds it upright while the opposite arm gestures; the clip does not establish pistol aim, discharge, recoil, and recovery. It is not a firing action and was not exported.
 - Final live balance: 10 credits.
 
-## Quaternius source, rights, and hashes
+## Historical pre-approval snapshot (superseded by approved-source continuation)
+
+The following source, candidate, and blocker notes preserve the pre-approval state for audit history. The approved-source continuation below is the current status authority.
+
+### Quaternius source, rights, and hashes
 
 - Official page: https://quaternius.com/packs/universalanimationlibrary.html
 - OpenGameArt page: https://opengameart.org/comment/108833
@@ -50,7 +54,7 @@ Overall status: **partial asset pass; approved Quaternius idle, move, and laser-
 - License/source audit: `evidence/professional_animation/quaternius_universal_animation_library_standard/audit.md`.
 - Source approval: **needs user review**. The CC0 package is legally redistributable, but the project rule still requires explicit user approval before a professional-source action becomes final.
 
-## Quaternius animation identity and transfer
+### Quaternius animation identity and transfer
 
 Adapter inspection found a 65-bone universal source rig and 45 actions. Relevant actions include `Pistol_Aim_Down`, `Pistol_Aim_Neutral`, `Pistol_Aim_Up`, `Pistol_Idle_Loop`, `Pistol_Reload`, `Pistol_Shoot`, general idle/walk/jog/sprint actions, and `Death01`.
 
@@ -66,7 +70,7 @@ Adapter inspection found a 65-bone universal source rig and 45 actions. Relevant
 - Candidate checkpoint: `blender/checkpoints/alien_infantry_quaternius_pistol_shoot_export_coordinate_probe.blend`, SHA-256 `5C684AC1747CDBAB8CEFE17A1C5781137BD0F02D327A559E660A0B511D7F64BE`.
 - Coordinate/topology guard: bounds drift 0.0; 29,916 triangles; zero non-manifold edges, degenerate faces, and negative-scale objects; 154 action F-curves preserved. The pre-existing 108 loose boundary edges remain a geometry risk.
 
-## Required action status
+### Required action status
 
 | Role | Status | Evidence or blocker |
 |---|---|---|
@@ -80,7 +84,7 @@ Adapter inspection found a 65-bone universal source rig and 45 actions. Relevant
 
 No requested role was filled by a static pose, transform-only clip, manually authored motion, or semantic alias.
 
-## Muzzle, particle, light, and audio crosswalk
+### Muzzle, particle, light, and audio crosswalk
 
 The integrated pistol passes visual hand contact, but no stable muzzle locator/node is exposed or verified across the candidate frames. Therefore frame 6 is a provisional synchronization marker only.
 
@@ -90,7 +94,7 @@ The integrated pistol passes visual hand contact, but no stable muzzle locator/n
 - Support attack: no candidate discharge frame because no independent action exists.
 - Existing sourced sound package was not changed.
 
-## Files created or changed
+### Files created or changed
 
 Documentation and ledgers:
 
@@ -121,7 +125,7 @@ Provider/source evidence and checkpoints:
 
 No files were deleted. Existing accepted evidence was preserved. Disposable failed outputs were not removed because the compact action FBX, previews, and request logs are the evidence supporting rejection and no safe cleanup was necessary.
 
-## Validation and limitations
+### Validation and limitations
 
 - JSON parse of updated `job.yaml` passed and reports the V9 blocked status.
 - Adapter transfer motion guard passed with near-identical source and target motion peaks.
@@ -131,7 +135,7 @@ No files were deleted. Existing accepted evidence was preserved. Disposable fail
 - No final `.anim` export or actual-byte `.anim` reimport was performed because source approval and muzzle-locator gates remain open.
 - No in-game validation was performed; that belongs to the user/parent after final wiring.
 
-## Exact parent integration steps
+### Exact parent integration steps
 
 1. Ask the user to explicitly approve or reject Quaternius Universal Animation Library Standard as the professional animation source for this alien unit.
 2. If approved, retain `Pistol_Shoot` as a laser-attack source candidate and use only the locked adapter to retarget distinct Quaternius actions for idle, move, defend, retreat, and death. Do not reuse one semantic action for another.
@@ -140,7 +144,7 @@ No files were deleted. Existing accepted evidence was preserved. Disposable fail
 5. Only after steps 1-4 pass, promote/export the accepted actions, perform actual-byte `.anim` reimport, and bind particle, light, and sound at the verified discharge frame.
 6. Parent owns `.asset`/entity/action-state/GFX/gameplay wiring, final texture/material choice, live consumer validation, and the completion claim. Do not wire the current candidate files directly.
 
-## Blockers and needs-user-review
+### Blockers and needs-user-review
 
 - **Needs user review:** explicit approval of the Quaternius CC0 package as the professional action source.
 - **Blocked:** stable muzzle locator and orientation.
