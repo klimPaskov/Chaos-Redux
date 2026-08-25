@@ -8,6 +8,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 from openpyxl.workbook.properties import CalcProperties
+from openpyxl.worksheet.datavalidation import DataValidation
 
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -25,6 +26,7 @@ EVENT_ROW = [
 	None,
 	"The World Is the Larder\n\nLecter's host has joined scattered feeding territories and armed kitchens into one command. Roads, farms, prisons, and conquered cities are treated as parts of a single larder, with surviving states left as prey or resistance enclaves.\n\nOrganized consumption becomes a permanent world order. Every surviving government faces the same expanding host, and the network no longer has any reason to hide.\n\nNo Thaw Will Come\n\nLecter's winter host has surrendered its last human restraints to the Wendigo form. Feeding grounds spread with the cold, and conquered communities are folded into a hunger that treats thaw, harvest, and mercy as weaknesses.\n\nAn advancing winter covers the world. The Wendigo command pursues every surviving country until organized human rule is consumed or driven into isolated refuges.",
 	"Minor Fire-Once",
+	1,
 	None,
 	None,
 	"Fully Functional",
@@ -53,6 +55,36 @@ def copy_row_style(sheet, source_row: int, target_row: int, columns: int) -> Non
 	sheet.row_dimensions[target_row].height = sheet.row_dimensions[source_row].height
 
 
+def ensure_status_validation(sheet, cell_range: str) -> None:
+	formula = '"Fully Functional,New,In progress,To Be Reworked,Buggy,Needs Testing"'
+	for validation in sheet.data_validations.dataValidation:
+		if validation.type == "list" and validation.formula1 in {
+			'"Fully Functional,New,In progress,To Be Reworked,Buggy,Needs Testing"',
+			'"Implemented,New,In progress,To Be Reworked,Buggy,Needs Testing"',
+		}:
+			validation.formula1 = formula
+			validation.sqref = cell_range
+			return
+	validation = DataValidation(type="list", formula1=formula, allow_blank=True)
+	validation.add(cell_range)
+	sheet.add_data_validation(validation)
+
+
+def ensure_fully_functional_format(sheet, cell_range: str, status_column: str) -> None:
+	for conditional_range in sheet.conditional_formatting:
+		if str(conditional_range.sqref) != cell_range:
+			continue
+		for rule in sheet.conditional_formatting._cf_rules[conditional_range]:
+			if rule.type == "expression" and rule.formula and rule.formula[0] == f'${status_column}2="Fully Functional"':
+				return
+			for rule in sheet.conditional_formatting._cf_rules[conditional_range]:
+				if rule.type == "expression" and rule.formula and rule.formula[0] == f'${status_column}2="Playable"':
+					green_rule = copy(rule)
+					green_rule.formula = [f'${status_column}2="Fully Functional"']
+					sheet.conditional_formatting.add(cell_range, green_rule)
+					return
+
+
 def main() -> None:
 	workbook = load_workbook(WORKBOOK)
 	events = workbook["Events"]
@@ -62,6 +94,8 @@ def main() -> None:
 	world_end_font = copy(events["I15"].font)
 	world_end_font.sz = 9
 	events["I15"].font = world_end_font
+	ensure_status_validation(events, "N2:N1015")
+	ensure_fully_functional_format(events, "N2:N1015", "N")
 
 	scenarios = workbook["Scenarios"]
 	copy_row_style(scenarios, 9, 10, 6)
@@ -70,19 +104,8 @@ def main() -> None:
 	scenarios.row_dimensions[10].height = 400
 	scenario_last_row = max(scenarios.max_row, 10)
 	scenarios.tables["Manual_Scenarios"].ref = f"A1:F{scenario_last_row}"
-	for validation in scenarios.data_validations.dataValidation:
-		if validation.formula1 in {
-			'"Fully Functional,New,In progress,To Be Reworked,Buggy,Needs Testing"',
-			'"Implemented,New,In progress,To Be Reworked,Buggy,Needs Testing"',
-		}:
-			validation.formula1 = '"Fully Functional,New,In progress,To Be Reworked,Buggy,Needs Testing"'
-			validation.sqref = f"F2:F{scenario_last_row}"
-	conditional_ranges = {str(item.sqref) for item in scenarios.conditional_formatting}
-	if "F9:F10" not in conditional_ranges:
-		for conditional_range in list(scenarios.conditional_formatting):
-			if str(conditional_range.sqref) == "F2:F8":
-				for rule in scenarios.conditional_formatting._cf_rules[conditional_range]:
-					scenarios.conditional_formatting.add("F9:F10", copy(rule))
+	ensure_status_validation(scenarios, f"F2:F{scenario_last_row}")
+	ensure_fully_functional_format(scenarios, f"F2:F{scenario_last_row}", "F")
 
 	if workbook.calculation is None:
 		workbook.calculation = CalcProperties()
@@ -99,7 +122,7 @@ def main() -> None:
 		],
 		check=True,
 	)
-	print(f"Updated Event 014 at Events!A15:M15 and SCN-010 at Scenarios!A10:F10 in {WORKBOOK}")
+	print(f"Updated Event 014 at Events!A15:N15 and SCN-010 at Scenarios!A10:F10 in {WORKBOOK}")
 
 
 if __name__ == "__main__":
