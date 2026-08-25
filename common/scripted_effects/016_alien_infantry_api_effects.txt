@@ -491,6 +491,13 @@ alien_infantry_spawn_landing_cohort = {
 			clear_variable = dhrondan_landing_state_id
 		}
 	}
+	# Invalid non-deferred callers never enter the guarded materialization
+	# branch above. Clear their state target as well so a failed state selection
+	# cannot be reused by a later landing request.
+	if = {
+		limit = { NOT = { has_country_flag = alien_infantry_event19_deferred_mode } }
+		clear_variable = dhrondan_landing_state_id
+	}
 }
 
 # COUNTRY scope on the Event 019 generation country. Event 019 calls this only

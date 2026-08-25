@@ -52,17 +52,11 @@ brilliant_scientist_clear_project_force_runtime_package = {
 	# Event 019's provider registration grants only source receipt 3 to this
 	# runtime country. Rebuilds begin by revoking that exact source, while the
 	# shared API preserves every independent source receipt (1, 2, 4, and 5).
-	if = {
-		limit = {
-			check_variable = {
-				var = alien_infantry_contact_receipt_event019_provider_508
-				value = constant:alien_infantry_landing.zero
-				compare = greater_than
-			}
-		}
-		set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.event019_provider_508 }
-		alien_infantry_revoke_contact = yes
-	}
+	# The API revoke is source-isolated and idempotent. Always invoke it so a
+	# stale or partially initialized cleanup still reconciles provider 508,
+	# while receipts owned by Kruger, Mengele, DHR, or future events remain.
+	set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.event019_provider_508 }
+	alien_infantry_revoke_contact = yes
 	set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_value.zero }
 	set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_value.zero }
 	set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_value.zero }
