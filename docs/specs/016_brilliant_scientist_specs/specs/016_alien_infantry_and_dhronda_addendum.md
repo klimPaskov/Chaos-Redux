@@ -44,7 +44,7 @@ The DHR focus tree contains exactly 88 focuses: eight survival and landing-netwo
 
 ## Assets and acceptance
 
-The reusable model consumer is `alien_infantry_entity`. Its one Meshy input depicts a generic bald green alien with large black eyes, a field harness, and a readable retro-futurist laser rifle, without Kruger or DHR markings. The production route uses Meshy 7 exclusively, vanilla infantry scale calibration, packed PDX materials, Blender PDX export and reimport, and genuine idle, move, laser-attack, defend, support-attack, retreat, and death actions. There is no separate UFO map model.
+The reusable model consumer is `alien_infantry_entity`. Its one Meshy input depicts a generic bald green alien with large black eyes, a charcoal retro uniform, grounded boots, and one readable retro-futurist laser pistol held upright in the right hand while the left arm hangs free, without Kruger or DHR markings. The production route uses Meshy 7 exclusively, vanilla infantry scale calibration, packed PDX materials, Blender PDX export and reimport, and genuine idle, move, laser-attack, defend, support-attack, retreat, and death actions. There is no separate UFO map model.
 
 The package requires sourced laser-fire, movement, idle, and death audio; bespoke vanilla-green large and map counters; original equipment, hidden-technology, tactic, project, decision, event, achievement, focus, flag, and country-interface assets; and complete fictional DHR portrait packages. All references must be wired before acceptance.
 
