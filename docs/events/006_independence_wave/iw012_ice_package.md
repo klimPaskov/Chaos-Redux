@@ -13,7 +13,7 @@ IW-012 reuses the registered vanilla `ICE` tag when Iceland is dormant and the r
 
 ## Runtime contract
 
-The package dispatches through `common/scripted_effects/006_independence_wave_ice_package_effects.txt` and its paired trigger file. Setup proves the Event 006 origin, state 100 anchor ownership, a living former host, the vanilla `iceland_tree`, the sourced vanilla male command roster, an additive focus overlay, the North Atlantic Compact formable family, the coastal-maritime p12 force mapping, and the visible Iceland ledgers. Final validation requires the active and network registries to be aligned. Cleanup removes only generation-local Event 006 decisions, ideas, flags, and variables; vanilla ICE history, tree, characters, flag, and cosmetic identity are not removed.
+The package dispatches through the Iceland source blocks in `common/scripted_effects/006_independence_wave_western_package_effects.txt` and `common/scripted_triggers/006_independence_wave_western_package_triggers.txt`. Setup proves the Event 006 origin, state 100 anchor ownership, a living former host, the vanilla `iceland_tree`, the sourced vanilla male command roster, an additive focus overlay, the North Atlantic Compact formable family, the coastal-maritime p12 force mapping, and the visible Iceland ledgers. Final validation requires the active and network registries to be aligned. Cleanup removes only generation-local Event 006 decisions, ideas, flags, and variables; vanilla ICE history, tree, characters, flag, and cosmetic identity are not removed.
 
 ## Visible mechanics
 
