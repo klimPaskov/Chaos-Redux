@@ -3063,3 +3063,460 @@ independence_wave_end_active_origin = {
 		clr_country_flag = independence_wave_radical_bloc_qualified_actor
 	}
 }
+
+# SOURCE: common/scripted_effects/006_independence_wave_roster_effects.txt (consolidated 2026-08-25)
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE ROSTER EFFECTS
+# ============================================================================
+# Overview:
+# - Applies the synchronous Event 006 package-roster checkpoint.
+# - Preserves the compatibility behavior of chaosx.nr6.350 for older callers.
+# - Keeps approved portrait overrides character-scoped and idempotent.
+# - Does not release countries, alter package costs, or touch pre-event UI.
+# ============================================================================
+
+independence_wave_apply_roster_checkpoint = {
+	if = {
+		# TRA reuses the vanilla Iuliu Maniu roster. The checkpoint is
+		# explicit so the additive carrier does not silently treat the
+		# setup event as a no-op when no generated character is required.
+		limit = {
+			is_independence_wave_tra_package = yes
+			has_independence_wave_tra_command_roster = yes
+		}
+		set_country_flag = independence_wave_tra_vanilla_roster_checkpoint
+	}
+	if = {
+		# Event 006 uses dedicated source placeholders for the two vanilla
+		# MNT political carriers without mutating their shared vanilla
+		# portraits. Keep this override character-scoped and leave Dukanovic
+		# untouched; Martinovic owns his dedicated portraits in his character
+		# definition above.
+		limit = {
+			is_independence_wave_mnt_package = yes
+		}
+		set_portraits = {
+			character = MNT_kristo_popovic
+			civilian = {
+				large = GFX_portrait_MNT_independence_wave_kristo_popovic
+			}
+			army = {
+				large = GFX_portrait_MNT_independence_wave_kristo_popovic
+			}
+		}
+		set_portraits = {
+			character = MNT_blazo_jovanovic
+			civilian = {
+				large = GFX_portrait_MNT_independence_wave_blazo_jovanovic
+			}
+			army = {
+				large = GFX_portrait_MNT_independence_wave_blazo_jovanovic
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_independence_wave_mnt_package = yes
+			has_independence_wave_mnt_command_roster = yes
+		}
+		set_country_flag = independence_wave_mnt_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_kos_package = yes
+			has_independence_wave_kos_command_roster = yes
+		}
+		set_country_flag = independence_wave_kos_roster_checkpoint
+	}
+	if = {
+		# KUB retains its vanilla Ivanis command roster. The checkpoint is
+		# explicit so a setup retry cannot treat the vanilla-only package as
+		# an unverified empty roster.
+		limit = {
+			is_independence_wave_kub_package = yes
+			has_independence_wave_kub_command_roster = yes
+		}
+		set_country_flag = independence_wave_kub_roster_checkpoint
+	}
+	if = {
+		# TAT retains its vanilla Aleksandr Alemasov command roster. The
+		# checkpoint keeps the vanilla-only package idempotent across retries.
+		limit = {
+			is_independence_wave_tat_package = yes
+			has_independence_wave_tat_command_roster = yes
+		}
+		set_country_flag = independence_wave_tat_roster_checkpoint
+	}
+	if = {
+		# BSK retains the vanilla Yakov Bykin roster. The checkpoint is
+		# explicit so a package retry cannot treat a vanilla-only roster as
+		# an unverified empty setup.
+		limit = {
+			is_independence_wave_bashkiria_package = yes
+			has_independence_wave_bsk_command_roster = yes
+		}
+		set_country_flag = independence_wave_bsk_roster_checkpoint
+		if = {
+			limit = { NOT = { has_country_flag = independence_wave_bsk_portrait_override } }
+			set_portraits = {
+				character = BSK_yakov_bykin
+				civilian = {
+					large = GFX_portrait_BSK_independence_wave_yakov_bykin
+				}
+			}
+			set_country_flag = independence_wave_bsk_portrait_override
+		}
+	}
+	if = {
+		# The Event 006 portrait remains character-scoped so ordinary vanilla
+		# RUT keeps its installed portrait outside the Independence Wave.
+		limit = { is_independence_wave_rut_package = yes }
+		set_portraits = {
+			character = RUT_augustin_voloshyn
+			civilian = {
+				large = GFX_portrait_RUT_independence_wave_augustin_voloshyn
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_independence_wave_rut_package = yes
+			has_independence_wave_rut_command_roster = yes
+		}
+		set_country_flag = independence_wave_rut_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_mac_package = yes
+			has_independence_wave_mac_command_roster = yes
+		}
+		set_country_flag = independence_wave_mac_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_axx_package = yes
+			has_independence_wave_axx_command_roster = yes
+		}
+		set_country_flag = independence_wave_axx_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_bax_package = yes
+			has_independence_wave_bax_command_roster = yes
+		}
+		set_country_flag = independence_wave_bax_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_bbx_package = yes
+			has_independence_wave_bbx_command_roster = yes
+		}
+		set_country_flag = independence_wave_bbx_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_bos_package = yes
+			has_independence_wave_bos_command_roster = yes
+		}
+		set_country_flag = independence_wave_bos_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_nav_package = yes
+			has_independence_wave_nav_command_roster = yes
+		}
+		set_country_flag = independence_wave_nav_roster_checkpoint
+	}
+	if = {
+		limit = {
+			is_independence_wave_glc_package = yes
+			has_independence_wave_glc_command_roster = yes
+		}
+		set_country_flag = independence_wave_glc_roster_checkpoint
+	}
+}
+
+# SOURCE: common/scripted_effects/006_independence_wave_package_allocator_effects.txt (consolidated 2026-08-25)
+# ============================================================================
+# CHAOS REDUX - EVENT 006 AUTOMATIC PACKAGE ALLOCATOR
+# ============================================================================
+# Overview:
+# - Recomputes every regional package weight before every draw.
+# - Selects regions by their summed viable package weight, then selects one
+#   package inside that region, preserving a single global weighted draw.
+# - Keeps rerolling rejected candidates without reducing the accepted wave
+#   count. Joint plans fail closed if the exact count cannot be frozen; a
+#   standalone Event 006 plan may commit a non-empty aligned selection after
+#   the admitted pool is exhausted.
+# - Assumes the shared release coordinator is in its allocation phase and the
+#   Event 006 participant flag is present.
+# ============================================================================
+
+independence_wave_prepare_all_automatic_weights = {
+	set_temp_variable = { independence_wave_total_automatic_weight = constant:independence_wave_allocation_factor.zero }
+	independence_wave_prepare_region_01_automatic_weights = yes
+	independence_wave_prepare_region_02_automatic_weights = yes
+	independence_wave_prepare_region_03_automatic_weights = yes
+	independence_wave_prepare_region_04_automatic_weights = yes
+	independence_wave_prepare_region_05_automatic_weights = yes
+	independence_wave_prepare_region_06_automatic_weights = yes
+	independence_wave_prepare_region_07_automatic_weights = yes
+	independence_wave_prepare_region_08_automatic_weights = yes
+	independence_wave_prepare_region_09_automatic_weights = yes
+	independence_wave_prepare_region_10_automatic_weights = yes
+	independence_wave_prepare_region_11_automatic_weights = yes
+	independence_wave_prepare_region_12_automatic_weights = yes
+	independence_wave_prepare_region_13_automatic_weights = yes
+	independence_wave_prepare_region_14_automatic_weights = yes
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_01_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_02_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_03_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_04_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_05_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_06_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_07_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_08_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_09_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_10_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_11_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_12_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_13_total_weight }
+	add_to_temp_variable = { independence_wave_total_automatic_weight = independence_wave_region_14_total_weight }
+}
+
+independence_wave_select_one_automatic_package = {
+	independence_wave_prepare_all_automatic_weights = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_total_automatic_weight
+				value = constant:independence_wave_allocation_factor.zero
+				compare = greater_than
+			}
+		}
+		random_list = {
+			independence_wave_region_01_total_weight = { independence_wave_select_region_01_automatic_package = yes }
+			independence_wave_region_02_total_weight = { independence_wave_select_region_02_automatic_package = yes }
+			independence_wave_region_03_total_weight = { independence_wave_select_region_03_automatic_package = yes }
+			independence_wave_region_04_total_weight = { independence_wave_select_region_04_automatic_package = yes }
+			independence_wave_region_05_total_weight = { independence_wave_select_region_05_automatic_package = yes }
+			independence_wave_region_06_total_weight = { independence_wave_select_region_06_automatic_package = yes }
+			independence_wave_region_07_total_weight = { independence_wave_select_region_07_automatic_package = yes }
+			independence_wave_region_08_total_weight = { independence_wave_select_region_08_automatic_package = yes }
+			independence_wave_region_09_total_weight = { independence_wave_select_region_09_automatic_package = yes }
+			independence_wave_region_10_total_weight = { independence_wave_select_region_10_automatic_package = yes }
+			independence_wave_region_11_total_weight = { independence_wave_select_region_11_automatic_package = yes }
+			independence_wave_region_12_total_weight = { independence_wave_select_region_12_automatic_package = yes }
+			independence_wave_region_13_total_weight = { independence_wave_select_region_13_automatic_package = yes }
+			independence_wave_region_14_total_weight = { independence_wave_select_region_14_automatic_package = yes }
+		}
+	}
+	else = {
+		set_global_flag = independence_wave_plan_pool_exhausted
+	}
+}
+
+independence_wave_allocate_automatic_packages = {
+	clr_global_flag = independence_wave_plan_pool_exhausted
+	clr_global_flag = independence_wave_plan_contribution_ready
+	clr_global_flag = independence_wave_plan_exact_count_failed
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+			has_global_flag = liberation_release_plan_includes_event6
+		}
+		independence_wave_prepare_evolution_for_incident = yes
+		independence_wave_freeze_evolution_plan_state = yes
+		independence_wave_begin_plan_contribution = yes
+		while_loop_effect = {
+			limit = {
+				NOT = { has_global_flag = independence_wave_plan_pool_exhausted }
+				check_variable = {
+					var = global.independence_wave_plan_selected_count
+					value = global.independence_wave_plan_target_count
+					compare = less_than
+				}
+				check_variable = {
+					var = global.independence_wave_plan_attempt_count
+					value = constant:independence_wave_planner.maximum_attempts
+					compare = less_than
+				}
+			}
+			independence_wave_select_one_automatic_package = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.independence_wave_plan_selected_count
+					value = global.independence_wave_plan_target_count
+					compare = equals
+				}
+			}
+			if = {
+				limit = { independence_wave_plan_metadata_arrays_are_aligned = yes }
+				set_global_flag = independence_wave_plan_contribution_ready
+			}
+			else = {
+				set_global_flag = independence_wave_plan_exact_count_failed
+				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = global.liberation_plan_mode
+					value = constant:liberation_plan_mode.automatic
+				}
+				has_global_flag = independence_wave_plan_pool_exhausted
+				check_variable = {
+					var = global.independence_wave_plan_selected_count
+					value = constant:independence_wave_planner.no_candidates
+					compare = greater_than
+				}
+			}
+			# A standalone Event 006 invocation is allowed to resolve the admitted
+			# candidates that were frozen before the remaining pool ran dry. Joint
+			# plans retain exact-count fail-closed behavior. An empty pool still
+			# fails closed.
+			set_variable = { global.independence_wave_plan_target_count = global.independence_wave_plan_selected_count }
+			set_variable = { global.liberation_plan_expected_country_count = global.independence_wave_plan_selected_count }
+			if = {
+				limit = { independence_wave_plan_metadata_arrays_are_aligned = yes }
+				set_global_flag = independence_wave_plan_contribution_ready
+			}
+			else = {
+				set_global_flag = independence_wave_plan_exact_count_failed
+				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+			}
+		}
+		else = {
+			set_global_flag = independence_wave_plan_exact_count_failed
+			set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.insufficient_pool }
+		}
+	}
+	else = {
+		set_global_flag = independence_wave_plan_exact_count_failed
+		set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.stale_plan }
+	}
+}
+
+# SOURCE: common/scripted_effects/006_independence_wave_package_dispatch_effects.txt (consolidated 2026-08-25)
+# ============================================================================
+# CHAOS REDUX - EVENT 006 RUNTIME PACKAGE DISPATCH
+# ============================================================================
+# Central adapter chain joining the frozen release transaction to audited
+# regional country packages. Regional files own package setup, live validation,
+# and cleanup; this file owns the one-result dispatch contract used by every
+# Event 006 execution mode. No effect performs a world iteration.
+# ============================================================================
+
+# COUNTRY scope. Inputs are the published `independence_wave_setup_*` values
+# and setup event targets. Output is temporary
+# `independence_wave_package_setup_success`.
+independence_wave_dispatch_package_setup = {
+	set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.no_candidates }
+	independence_wave_dispatch_wallonia_frisia_package_setup = yes
+	independence_wave_dispatch_scotland_wales_package_setup = yes
+	independence_wave_dispatch_brittany_package_setup = yes
+	independence_wave_dispatch_rhineland_bavaria_package_setup = yes
+	independence_wave_dispatch_saar_package_setup = yes
+	independence_wave_dispatch_iw_012_ice_package_setup = yes
+	independence_wave_dispatch_mediterranean_package_setup = yes
+	independence_wave_dispatch_pacific_package_setup = yes
+	independence_wave_dispatch_iw043_iw058_package_setup = yes
+	independence_wave_dispatch_iw093_iw098_package_setup = yes
+	independence_wave_dispatch_montenegro_package_setup = yes
+	independence_wave_dispatch_kosovo_package_setup = yes
+	independence_wave_dispatch_iberian_package_setup = yes
+	independence_wave_dispatch_catalonia_package_setup = yes
+	independence_wave_dispatch_transylvania_package_setup = yes
+	independence_wave_dispatch_transcaucasus_package_setup = yes
+	independence_wave_dispatch_karelia_crimea_package_setup = yes
+	independence_wave_dispatch_macedonia_package_setup = yes
+	independence_wave_dispatch_banat_package_setup = yes
+	independence_wave_dispatch_thrace_package_setup = yes
+	independence_wave_dispatch_epirus_package_setup = yes
+	independence_wave_dispatch_bosnia_package_setup = yes
+	independence_wave_dispatch_ruthenia_package_setup = yes
+	independence_wave_dispatch_kuban_package_setup = yes
+	independence_wave_dispatch_tatarstan_package_setup = yes
+	independence_wave_dispatch_bashkiria_package_setup = yes
+}
+
+# COUNTRY scope. Called after shared active/network registries are live. Output
+# is temporary `independence_wave_package_final_validation_success`.
+independence_wave_dispatch_package_final_validation = {
+	set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.no_candidates }
+	independence_wave_dispatch_wallonia_frisia_package_final_validation = yes
+	independence_wave_dispatch_scotland_wales_package_final_validation = yes
+	independence_wave_dispatch_brittany_package_final_validation = yes
+	independence_wave_dispatch_rhineland_bavaria_package_final_validation = yes
+	independence_wave_dispatch_saar_package_final_validation = yes
+	independence_wave_dispatch_iw_012_ice_package_final_validation = yes
+	independence_wave_dispatch_mediterranean_package_final_validation = yes
+	independence_wave_dispatch_pacific_package_final_validation = yes
+	independence_wave_dispatch_iw043_iw058_package_final_validation = yes
+	independence_wave_dispatch_iw093_iw098_package_final_validation = yes
+	independence_wave_dispatch_montenegro_package_final_validation = yes
+	independence_wave_dispatch_kosovo_package_final_validation = yes
+	independence_wave_dispatch_iberian_package_final_validation = yes
+	independence_wave_dispatch_catalonia_package_final_validation = yes
+	independence_wave_dispatch_transylvania_package_final_validation = yes
+	independence_wave_dispatch_transcaucasus_package_final_validation = yes
+	independence_wave_dispatch_karelia_crimea_package_final_validation = yes
+	independence_wave_dispatch_macedonia_package_final_validation = yes
+	independence_wave_dispatch_banat_package_final_validation = yes
+	independence_wave_dispatch_thrace_package_final_validation = yes
+	independence_wave_dispatch_epirus_package_final_validation = yes
+	independence_wave_dispatch_bosnia_package_final_validation = yes
+	independence_wave_dispatch_ruthenia_package_final_validation = yes
+	independence_wave_dispatch_kuban_package_final_validation = yes
+	independence_wave_dispatch_tatarstan_package_final_validation = yes
+	independence_wave_dispatch_bashkiria_package_final_validation = yes
+	# Every released Event 006 country must expose the one shared generic tree
+	# or a reviewed additive carrier overlay. Package adapters own their
+	# identity-specific checks, but this common barrier prevents a future
+	# adapter from admitting a country with no usable Event 006 focus surface.
+	if = {
+		limit = { check_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected } }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_independence_wave_generic_focus_contract = yes }
+					NOT = { has_country_flag = independence_wave_generic_ai_profile }
+				}
+			}
+			set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.no_candidates }
+		}
+	}
+}
+
+# COUNTRY scope. Called before the shared reset clears package provenance.
+independence_wave_dispatch_package_cleanup = {
+	independence_wave_dispatch_wallonia_frisia_package_cleanup = yes
+	independence_wave_dispatch_scotland_wales_package_cleanup = yes
+	independence_wave_dispatch_brittany_package_cleanup = yes
+	independence_wave_dispatch_rhineland_bavaria_package_cleanup = yes
+	independence_wave_dispatch_saar_package_cleanup = yes
+	independence_wave_dispatch_iw_012_ice_package_cleanup = yes
+	independence_wave_dispatch_mediterranean_package_cleanup = yes
+	independence_wave_dispatch_pacific_package_cleanup = yes
+	independence_wave_dispatch_iw043_iw058_package_cleanup = yes
+	independence_wave_dispatch_iw093_iw098_package_cleanup = yes
+	independence_wave_dispatch_montenegro_package_cleanup = yes
+	independence_wave_dispatch_kosovo_package_cleanup = yes
+	independence_wave_dispatch_iberian_package_cleanup = yes
+	independence_wave_dispatch_catalonia_package_cleanup = yes
+	independence_wave_dispatch_transylvania_package_cleanup = yes
+	independence_wave_dispatch_transcaucasus_package_cleanup = yes
+	independence_wave_dispatch_karelia_crimea_package_cleanup = yes
+	independence_wave_dispatch_macedonia_package_cleanup = yes
+	independence_wave_dispatch_banat_package_cleanup = yes
+	independence_wave_dispatch_thrace_package_cleanup = yes
+	independence_wave_dispatch_epirus_package_cleanup = yes
+	independence_wave_dispatch_bosnia_package_cleanup = yes
+	independence_wave_dispatch_ruthenia_package_cleanup = yes
+	independence_wave_dispatch_kuban_package_cleanup = yes
+	independence_wave_dispatch_tatarstan_package_cleanup = yes
+	independence_wave_dispatch_bashkiria_package_cleanup = yes
+}

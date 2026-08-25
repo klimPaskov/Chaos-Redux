@@ -67,13 +67,13 @@ def main() -> int:
 	matrix = MATRIX.read_text(encoding="utf-8-sig")
 	edges = EDGE_MATRIX.read_text(encoding="utf-8-sig")
 	scenario = read("common/scripted_effects/006_independence_wave_scenario_effects.txt")
-	scenario_triggers = read("common/scripted_triggers/006_independence_wave_scenario_triggers.txt")
-	scenario_event = read("events/006_independence_wave_scenario.txt")
+	scenario_triggers = read("common/scripted_triggers/006_independence_wave_triggers.txt")
+	scenario_event = read("events/006_independence_wave.txt")
 	planner = read("common/scripted_effects/006_independence_wave_package_planner_effects.txt")
 	shared = read("common/scripted_effects/chaosx_liberation_release_effects.txt")
 	joint = read("common/scripted_effects/005_006_liberations_collision_effects.txt")
 	dispatch = read("common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt")
-	decisions = read("common/decisions/006_independence_wave_scenario_decisions.txt")
+	decisions = read("common/decisions/006_independence_wave_decisions.txt")
 	try:
 		scenario_summary = extract_script_block(scenario, "independence_wave_scenario_freeze_summary")
 	except ValueError as exc:

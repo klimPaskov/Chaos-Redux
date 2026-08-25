@@ -883,6 +883,217 @@ is_independence_wave_liberations_capacity_host_clear_of_event5 = {
 	}
 }
 
+# SOURCE: common/scripted_triggers/006_independence_wave_join_triggers.txt (consolidated 2026-08-25)
+# ============================================================================
+# CHAOS REDUX - EVENT 006 JOIN-WAVE TRIGGERS
+# ============================================================================
+# These predicates are intentionally country-scoped.  The join offer is
+# dispatched only by narrow state/peace/capitulation/release callbacks; no
+# periodic world scan is required.
+# ============================================================================
+
+is_independence_wave_join_source_identity_eligible = {
+	exists = yes
+	is_subject = no
+	has_war = no
+	NOT = { is_independence_wave_active_origin_country = yes }
+	NOT = { is_independence_wave_registry_event6_owned_tag = yes }
+	NOT = { is_soviet_collapse_active_origin_country = yes }
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	check_variable = {
+		var = num_owned_states
+		value = constant:liberation_release_limit.minimum
+		compare = greater_than
+	}
+}
+
+is_independence_wave_join_source_eligible = {
+	is_independence_wave_join_source_identity_eligible = yes
+	NOT = { has_country_flag = independence_wave_join_offer_pending }
+	NOT = { has_country_flag = independence_wave_join_cooldown }
+	NOT = { has_country_flag = independence_wave_join_operation_active }
+}
+
+is_independence_wave_join_coordinator_busy = {
+	OR = {
+		has_global_flag = liberation_release_plan_valid
+		is_liberation_release_plan_active = yes
+	}
+}
+
+is_independence_wave_join_reduction_threshold_met = {
+	has_variable = independence_wave_join_peak_owned_state_count
+	check_variable = {
+		var = independence_wave_join_owned_state_count
+		value = constant:liberation_release_limit.minimum
+		compare = greater_than
+	}
+	check_variable = {
+		var = independence_wave_join_state_loss_count
+		value = constant:independence_wave_join.minimum_states_lost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_join_owned_state_count_scaled
+		value = independence_wave_join_peak_owned_state_count_scaled
+		compare = less_than_or_equals
+	}
+}
+
+is_independence_wave_join_plan_ledger_owned = {
+	has_variable = independence_wave_join_plan_id
+	has_variable = global.liberation_plan_id
+	check_variable = {
+		var = global.liberation_plan_id
+		value = independence_wave_join_plan_id
+		compare = equals
+	}
+	check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+	var:global.liberation_plan_source_country = { tag = ROOT }
+}
+
+is_independence_wave_join_plan_global_cleanup_owned = {
+	is_independence_wave_join_plan_ledger_owned = yes
+	OR = {
+		NOT = { has_variable = global.independence_wave_join_active_plan_id }
+		check_variable = {
+			var = global.independence_wave_join_active_plan_id
+			value = independence_wave_join_plan_id
+			compare = equals
+		}
+	}
+}
+
+is_independence_wave_join_plan_identity_owned = {
+	is_independence_wave_join_plan_ledger_owned = yes
+	has_variable = global.independence_wave_join_active_plan_id
+	has_global_flag = independence_wave_join_conversion_active
+	has_global_flag = liberation_release_plan_includes_event6
+	check_variable = {
+		var = global.independence_wave_join_active_plan_id
+		value = independence_wave_join_plan_id
+		compare = equals
+	}
+}
+
+is_independence_wave_join_current_plan = {
+	is_independence_wave_join_plan_identity_owned = yes
+	has_variable = independence_wave_join_package_id
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+	check_variable = { global.independence_wave_plan_selected_count = constant:liberation_release_limit.one }
+	has_variable = global.independence_wave_join_offer_source
+	check_variable = { var = global.independence_wave_join_offer_source value = ROOT.id compare = equals }
+	check_variable = {
+		var = global.independence_wave_plan_selected_package_ids^0
+		value = independence_wave_join_package_id
+		compare = equals
+	}
+}
+
+is_independence_wave_join_plan_context_active = {
+	has_global_flag = independence_wave_join_conversion_active
+	has_variable = global.independence_wave_join_active_plan_id
+	check_variable = {
+		var = global.liberation_plan_id
+		value = global.independence_wave_join_active_plan_id
+		compare = equals
+	}
+	check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+}
+
+# Shared release validators call this only while the explicit join flag is
+# active.  It is deliberately narrow: a zero-state host is legal only for the
+# single Event 006 join plan that proved an exact all-owned-state footprint.
+is_independence_wave_join_zero_host_conversion = {
+	has_global_flag = independence_wave_join_conversion_active
+	has_country_flag = independence_wave_join_zero_host_allowed
+}
+
+# SOURCE: common/scripted_triggers/006_independence_wave_scenario_triggers.txt (consolidated 2026-08-25)
+# ============================================================================
+# CHAOS REDUX - EVENT 006 TRIGGERABLE SCENARIO TRIGGERS
+# ============================================================================
+# Read-only launch and selector contracts for SCN-008. Manual launch bypasses
+# ordinary Event 006 pacing and route prerequisites, but never bypasses the
+# shared transaction barrier, terminal-state safety, or pending presentations.
+# ============================================================================
+
+independence_wave_scenario_type_is_valid = {
+	OR = {
+		check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.sovereign_scatter }
+		check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.common_congress }
+		check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.wars_of_separation }
+		check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.universal_belligerence }
+		check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.patron_worlds }
+		check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.great_partition }
+	}
+}
+
+independence_wave_scenario_belligerence_rule_is_valid = {
+	OR = {
+		check_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.former_hosts }
+		check_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.neighboring_releases }
+		check_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.nearby_nonleague }
+	}
+}
+
+independence_wave_scenario_intensity_is_valid = {
+	OR = {
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+	}
+}
+
+independence_wave_scenario_queued_selection_is_valid = {
+	OR = {
+		check_variable = { independence_wave_scenario_queued_type = constant:independence_wave_scenario_type.sovereign_scatter }
+		check_variable = { independence_wave_scenario_queued_type = constant:independence_wave_scenario_type.common_congress }
+		check_variable = { independence_wave_scenario_queued_type = constant:independence_wave_scenario_type.wars_of_separation }
+		check_variable = { independence_wave_scenario_queued_type = constant:independence_wave_scenario_type.universal_belligerence }
+		check_variable = { independence_wave_scenario_queued_type = constant:independence_wave_scenario_type.patron_worlds }
+		check_variable = { independence_wave_scenario_queued_type = constant:independence_wave_scenario_type.great_partition }
+	}
+	OR = {
+		check_variable = { independence_wave_scenario_queued_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.former_hosts }
+		check_variable = { independence_wave_scenario_queued_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.neighboring_releases }
+		check_variable = { independence_wave_scenario_queued_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.nearby_nonleague }
+	}
+	OR = {
+		check_variable = { independence_wave_scenario_queued_intensity = constant:triggerable_scenario_intensity.low }
+		check_variable = { independence_wave_scenario_queued_intensity = constant:triggerable_scenario_intensity.medium }
+		check_variable = { independence_wave_scenario_queued_intensity = constant:triggerable_scenario_intensity.high }
+		check_variable = { independence_wave_scenario_queued_intensity = constant:triggerable_scenario_intensity.maximum }
+	}
+}
+
+independence_wave_scenario_transaction_barrier_is_open = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = independence_wave_scenario_launch_active }
+	NOT = { has_country_flag = independence_wave_scenario_launch_queued }
+	NOT = { has_global_flag = independence_wave_joint_presentation_pending }
+	NOT = { SOV = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
+	can_liberation_release_reset_plan = yes
+}
+
+independence_wave_scenario_can_launch = {
+	independence_wave_scenario_transaction_barrier_is_open = yes
+	independence_wave_scenario_type_is_valid = yes
+	independence_wave_scenario_belligerence_rule_is_valid = yes
+	independence_wave_scenario_intensity_is_valid = yes
+}
+
+independence_wave_scenario_can_execute_queued = {
+	has_country_flag = independence_wave_scenario_launch_queued
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = independence_wave_scenario_launch_active }
+	NOT = { has_global_flag = independence_wave_joint_presentation_pending }
+	NOT = { SOV = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
+	can_liberation_release_reset_plan = yes
+	independence_wave_scenario_queued_selection_is_valid = yes
+}
+
 independence_wave_liberations_capacity_capture_band = {
 	set_temp_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_chaos_band.calm_world }
 	set_temp_variable = { independence_wave_capacity_target_count = constant:independence_wave_count.calm_world }
