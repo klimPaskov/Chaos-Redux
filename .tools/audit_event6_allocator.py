@@ -1092,9 +1092,9 @@ def main() -> int:
 	# by design, so capital_scope here produces the runtime error reported for
 	# BBX, BAX, and AXX and can suppress the package pool before allocation.
 	for relative_path, anchor_state, host_tag in (
-		("common/scripted_triggers/006_independence_wave_epirus_package_triggers.txt", "185", "GRE"),
-		("common/scripted_triggers/006_independence_wave_thrace_package_triggers.txt", "184", "GRE"),
-		("common/scripted_triggers/006_independence_wave_banat_package_triggers.txt", "82", "ROM"),
+		("common/scripted_triggers/006_independence_wave_balkan_package_triggers.txt", "185", "GRE"),
+		("common/scripted_triggers/006_independence_wave_balkan_package_triggers.txt", "184", "GRE"),
+		("common/scripted_triggers/006_independence_wave_balkan_package_triggers.txt", "82", "ROM"),
 	):
 		package_triggers = read(relative_path)
 		require(
