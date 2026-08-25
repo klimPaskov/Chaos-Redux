@@ -1,0 +1,2311 @@
+﻿# CHAOS REDUX - EVENT 006 Siberian package decision registry.
+# Package-local constants and executable decision categories are preserved
+# under source markers; no package gate or identifier is changed.
+
+# SOURCE: 006_independence_wave_altai_decisions.txt
+@CR_SC_INDEPENDENCE_WAVE_ALT_CIVILIAN_FACTORY_USE = 1
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-053 ALTAI DECISIONS
+# ============================================================================
+# Altai's mountain compact is a real timed foundation. The founding mission
+# remains active until both package ledgers are stable, the route government is
+# installed, and the state-654 Oyrot capital remains in Altai hands. Each paid
+# project serializes through the package active-project gate and consumes the
+# shared Event 006 material palette before its package helper resolves it.
+# ============================================================================
+
+independence_wave_altai_mountain_compact_category = {
+	independence_wave_altai_hold_mountain_council = {
+		name = independence_wave_altai_hold_mountain_council
+		desc = independence_wave_altai_hold_mountain_council_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_altai_package = yes
+			has_independence_wave_altai_identity_rights_clearance = yes
+			is_independence_wave_exact_package_iw_053_runtime_ready = yes
+			has_country_flag = independence_wave_iw_053_setup_complete
+			654 = { is_owned_and_controlled_by = ROOT }
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			has_variable = independence_wave_former_host
+			NOT = { has_country_flag = independence_wave_altai_compact_crisis_resolved }
+			NOT = { has_country_flag = independence_wave_altai_compact_crisis_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_altai_duration.founding_crisis
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				AND = {
+					has_stable_independence_wave_altai_compact = yes
+					has_independence_wave_altai_route_government = yes
+					654 = { is_owned_and_controlled_by = ROOT }
+					capital_scope = { state = 654 is_controlled_by = ROOT }
+				}
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+				654 = { NOT = { is_owned_and_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_altai_package = yes
+					has_stable_independence_wave_altai_compact = yes
+					has_independence_wave_altai_route_government = yes
+					654 = { is_owned_and_controlled_by = ROOT }
+					capital_scope = { state = 654 is_controlled_by = ROOT }
+				}
+				set_country_flag = independence_wave_altai_compact_crisis_resolved
+			}
+			else_if = {
+				limit = { is_independence_wave_altai_package = yes }
+				set_country_flag = independence_wave_altai_compact_crisis_failed
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_altai_project_failure_effect_tt
+			set_country_flag = independence_wave_altai_compact_crisis_failed
+			independence_wave_altai_apply_project_failure = yes
+		}
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_altai_secure_oyrot_depots = {
+		name = independence_wave_altai_secure_oyrot_depots
+		desc = independence_wave_altai_secure_oyrot_depots_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			NOT = { has_country_flag = independence_wave_altai_depots_secured }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_altai_administration_light_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_altai_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_ALT_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_depots_effect_tt
+			independence_wave_altai_focus_secure_oyrot_depots = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_altai_integrate_mountain_guards = {
+		name = independence_wave_altai_integrate_mountain_guards
+		desc = independence_wave_altai_integrate_mountain_guards_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			NOT = { has_country_flag = independence_wave_altai_guards_integrated }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_security_standard_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_security_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_guards_effect_tt
+			independence_wave_altai_focus_integrate_mountain_guards = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_altai_register_communities = {
+		name = independence_wave_altai_register_communities
+		desc = independence_wave_altai_register_communities_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			NOT = { has_country_flag = independence_wave_altai_communities_guaranteed }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_altai_administration_standard_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_altai_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_ALT_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_administration_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_communities_effect_tt
+			independence_wave_altai_focus_register_altai_communities = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_altai_settle_former_host_ledgers = {
+		name = independence_wave_altai_settle_former_host_ledgers
+		desc = independence_wave_altai_settle_former_host_ledgers_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			NOT = { has_country_flag = independence_wave_altai_host_ledgers_settled }
+			OR = {
+				has_independence_wave_living_former_host = yes
+				AND = {
+					has_country_flag = independence_wave_altai_depots_secured
+					has_independence_wave_altai_unsettled_host = yes
+				}
+			}
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+			OR = {
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				AND = {
+					has_country_flag = independence_wave_altai_depots_secured
+					has_independence_wave_altai_unsettled_host = yes
+				}
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_host_ledgers_effect_tt
+			independence_wave_altai_focus_settle_former_host_ledgers = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+				AND = {
+					NOT = { has_independence_wave_living_former_host = yes }
+					NOT = {
+						AND = {
+							has_country_flag = independence_wave_altai_depots_secured
+							has_independence_wave_altai_unsettled_host = yes
+						}
+					}
+				}
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { has_war_with = ROOT }
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_altai_project_ready = yes
+					capital_scope = { state = 654 is_controlled_by = ROOT }
+					654 = { is_owned_and_controlled_by = ROOT }
+					has_country_flag = independence_wave_altai_depots_secured
+					has_independence_wave_altai_unsettled_host = yes
+				}
+				custom_effect_tooltip = independence_wave_altai_host_loss_effect_tt
+				independence_wave_altai_focus_settle_former_host_ledgers = yes
+			}
+			else_if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				NOT = { has_independence_wave_severe_host_threat = yes }
+			}
+		}
+	}
+
+	independence_wave_altai_ratify_constitutional_autonomy = {
+		name = independence_wave_altai_ratify_constitutional_autonomy
+		desc = independence_wave_altai_ratify_constitutional_autonomy_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			has_independence_wave_constitutional_route = yes
+			NOT = { has_independence_wave_altai_route_government = yes }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_altai_administration_light_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_altai_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_ALT_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_constitutional_route_effect_tt
+			independence_wave_install_altai_constitutional_government = yes
+			independence_wave_altai_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				NOT = { has_independence_wave_constitutional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_altai_adopt_traditional_compact = {
+		name = independence_wave_altai_adopt_traditional_compact
+		desc = independence_wave_altai_adopt_traditional_compact_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			has_independence_wave_traditional_route = yes
+			NOT = { has_independence_wave_altai_route_government = yes }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_traditional_route_effect_tt
+			independence_wave_install_altai_traditional_government = yes
+			independence_wave_altai_apply_diplomatic_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				NOT = { has_independence_wave_traditional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+
+	independence_wave_altai_convene_socialist_councils = {
+		name = independence_wave_altai_convene_socialist_councils
+		desc = independence_wave_altai_convene_socialist_councils_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			has_independence_wave_popular_council_route = yes
+			NOT = { has_independence_wave_altai_route_government = yes }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_altai_administration_light_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_altai_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_ALT_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_socialist_route_effect_tt
+			independence_wave_install_altai_socialist_government = yes
+			independence_wave_altai_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				NOT = { has_independence_wave_popular_council_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_altai_establish_emergency_command = {
+		name = independence_wave_altai_establish_emergency_command
+		desc = independence_wave_altai_establish_emergency_command_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			has_independence_wave_emergency_military_route = yes
+			NOT = { has_independence_wave_altai_route_government = yes }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			can_pay_independence_wave_security_major_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_security_major = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_emergency_route_effect_tt
+			independence_wave_install_altai_emergency_government = yes
+			independence_wave_altai_apply_security_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				NOT = { has_independence_wave_emergency_military_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_altai_codify_durable_sovereignty = {
+		name = independence_wave_altai_codify_durable_sovereignty
+		desc = independence_wave_altai_codify_durable_sovereignty_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			has_independence_wave_altai_route_government = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_altai_compact_crisis_resolved
+			NOT = { has_country_flag = independence_wave_altai_durable_sovereignty }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			has_stable_independence_wave_altai_compact = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_altai_compact_crisis_resolved
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+			can_pay_independence_wave_altai_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_altai_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_ALT_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.strategic
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_strategic = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_sovereignty_effect_tt
+			set_country_flag = independence_wave_altai_durable_sovereignty
+			independence_wave_altai_apply_major_settlement = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_altai_compact_crisis_resolved }
+				NOT = { has_independence_wave_altai_route_government = yes }
+				NOT = { has_stable_independence_wave_altai_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_altai_open_frontier_network = {
+		name = independence_wave_altai_open_frontier_network
+		desc = independence_wave_altai_open_frontier_network_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_altai_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_altai_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_altai_compact = yes
+			NOT = { has_country_flag = independence_wave_altai_network_corridor_open }
+		}
+		available = {
+			is_independence_wave_altai_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_altai_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_altai_compact = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { state = 654 is_controlled_by = ROOT }
+			654 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_independence_wave_altai_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_altai_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_altai_network_effect_tt
+			independence_wave_altai_focus_open_altai_frontier_network_corridor = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_altai_package = yes }
+				has_country_flag = independence_wave_altai_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_altai_compact_crisis_resolved }
+				NOT = { has_country_flag = independence_wave_network_member }
+				NOT = { has_country_flag = independence_wave_league_route_available }
+				NOT = { has_stable_independence_wave_altai_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { has_independence_wave_force_package_for_current_generation = yes }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_altai_package = yes }
+				independence_wave_altai_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+}
+
+# SOURCE: 006_independence_wave_buryatia_decisions.txt
+@CR_SC_INDEPENDENCE_WAVE_BYA_CIVILIAN_FACTORY_USE = 1
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-052 BURYATIA DECISIONS
+# ============================================================================
+# Buryatia's frontier compact is a real timed foundation. The founding mission
+# remains active until both package ledgers are stable, the route government is
+# installed, and the state-564 Ulan-Ude capital remains in Buryatia hands. Each paid
+# project serializes through the package active-project gate and consumes the
+# shared Event 006 material palette before its package helper resolves it.
+# ============================================================================
+
+independence_wave_buryatia_frontier_compact_category = {
+	independence_wave_bya_hold_frontier_council = {
+		name = independence_wave_bya_hold_frontier_council
+		desc = independence_wave_bya_hold_frontier_council_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_bya_package = yes
+			has_country_flag = independence_wave_iw_052_setup_complete
+			NOT = { has_country_flag = independence_wave_bya_compact_crisis_resolved }
+			NOT = { has_country_flag = independence_wave_bya_compact_crisis_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_buryatia_duration.founding_crisis
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				AND = {
+					has_stable_independence_wave_bya_compact = yes
+					has_independence_wave_bya_route_government = yes
+					564 = { is_owned_and_controlled_by = ROOT }
+				}
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				564 = { NOT = { is_owned_and_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_bya_package = yes
+					has_stable_independence_wave_bya_compact = yes
+					has_independence_wave_bya_route_government = yes
+					564 = { is_owned_and_controlled_by = ROOT }
+					capital_scope = { is_controlled_by = ROOT }
+				}
+				set_country_flag = independence_wave_bya_compact_crisis_resolved
+			}
+			else_if = {
+				limit = { is_independence_wave_bya_package = yes }
+				set_country_flag = independence_wave_bya_compact_crisis_failed
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_bya_project_failure_effect_tt
+			set_country_flag = independence_wave_bya_compact_crisis_failed
+			independence_wave_bya_apply_project_failure = yes
+		}
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_bya_secure_frontier_depots = {
+		name = independence_wave_bya_secure_frontier_depots
+		desc = independence_wave_bya_secure_frontier_depots_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			NOT = { has_country_flag = independence_wave_bya_depots_secured }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_bya_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_bya_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_BYA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_depots_effect_tt
+			independence_wave_bya_focus_secure_frontier_depots = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bya_integrate_frontier_guards = {
+		name = independence_wave_bya_integrate_frontier_guards
+		desc = independence_wave_bya_integrate_frontier_guards_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			NOT = { has_country_flag = independence_wave_bya_guards_integrated }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_security_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_security_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_guards_effect_tt
+			independence_wave_bya_focus_integrate_frontier_guards = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_bya_register_buryat_communities = {
+		name = independence_wave_bya_register_buryat_communities
+		desc = independence_wave_bya_register_buryat_communities_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			NOT = { has_country_flag = independence_wave_bya_communities_guaranteed }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_bya_administration_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_bya_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_BYA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_administration_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_communities_effect_tt
+			independence_wave_bya_focus_register_buryat_communities = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bya_settle_former_host_ledgers = {
+		name = independence_wave_bya_settle_former_host_ledgers
+		desc = independence_wave_bya_settle_former_host_ledgers_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			NOT = { has_country_flag = independence_wave_bya_host_ledgers_settled }
+			OR = {
+				has_independence_wave_living_former_host = yes
+				AND = {
+					has_country_flag = independence_wave_bya_depots_secured
+					has_independence_wave_bya_unsettled_host = yes
+				}
+			}
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+			OR = {
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				AND = {
+					has_country_flag = independence_wave_bya_depots_secured
+					has_independence_wave_bya_unsettled_host = yes
+				}
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_host_ledgers_effect_tt
+			independence_wave_bya_focus_settle_former_host_ledgers = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				AND = {
+					NOT = { has_independence_wave_living_former_host = yes }
+					NOT = {
+						AND = {
+							has_country_flag = independence_wave_bya_depots_secured
+							has_independence_wave_bya_unsettled_host = yes
+						}
+					}
+				}
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { has_war_with = ROOT }
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_bya_project_ready = yes
+					capital_scope = { is_controlled_by = ROOT }
+					has_country_flag = independence_wave_bya_depots_secured
+					has_independence_wave_bya_unsettled_host = yes
+				}
+				custom_effect_tooltip = independence_wave_bya_host_loss_effect_tt
+				independence_wave_bya_focus_settle_former_host_ledgers = yes
+			}
+			else_if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				NOT = { has_independence_wave_severe_host_threat = yes }
+			}
+		}
+	}
+
+	independence_wave_bya_ratify_constitutional_autonomy = {
+		name = independence_wave_bya_ratify_constitutional_autonomy
+		desc = independence_wave_bya_ratify_constitutional_autonomy_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			has_independence_wave_constitutional_route = yes
+			NOT = { has_independence_wave_bya_route_government = yes }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_bya_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_bya_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_BYA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_constitutional_route_effect_tt
+			independence_wave_install_bya_constitutional_government = yes
+			independence_wave_bya_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				NOT = { has_independence_wave_constitutional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bya_adopt_traditional_compact = {
+		name = independence_wave_bya_adopt_traditional_compact
+		desc = independence_wave_bya_adopt_traditional_compact_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			has_independence_wave_traditional_route = yes
+			NOT = { has_independence_wave_bya_route_government = yes }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_traditional_route_effect_tt
+			independence_wave_install_bya_traditional_government = yes
+			independence_wave_bya_apply_diplomatic_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				NOT = { has_independence_wave_traditional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+
+	independence_wave_bya_convene_socialist_councils = {
+		name = independence_wave_bya_convene_socialist_councils
+		desc = independence_wave_bya_convene_socialist_councils_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			has_independence_wave_popular_council_route = yes
+			NOT = { has_independence_wave_bya_route_government = yes }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_bya_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_bya_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_BYA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_socialist_route_effect_tt
+			independence_wave_install_bya_socialist_government = yes
+			independence_wave_bya_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				NOT = { has_independence_wave_popular_council_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bya_establish_frontier_emergency_command = {
+		name = independence_wave_bya_establish_frontier_emergency_command
+		desc = independence_wave_bya_establish_frontier_emergency_command_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			has_independence_wave_emergency_military_route = yes
+			NOT = { has_independence_wave_bya_route_government = yes }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			can_pay_independence_wave_security_major_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_security_major = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_emergency_route_effect_tt
+			independence_wave_install_bya_emergency_government = yes
+			independence_wave_bya_apply_security_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				NOT = { has_independence_wave_emergency_military_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_bya_codify_durable_sovereignty = {
+		name = independence_wave_bya_codify_durable_sovereignty
+		desc = independence_wave_bya_codify_durable_sovereignty_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			has_independence_wave_bya_route_government = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_bya_compact_crisis_resolved
+			NOT = { has_country_flag = independence_wave_bya_durable_sovereignty }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			has_stable_independence_wave_bya_compact = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_bya_compact_crisis_resolved
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+			can_pay_independence_wave_bya_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_bya_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_BYA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.strategic
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_strategic = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_sovereignty_effect_tt
+			set_country_flag = independence_wave_bya_durable_sovereignty
+			independence_wave_bya_apply_major_settlement = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_bya_compact_crisis_resolved }
+				NOT = { has_independence_wave_bya_route_government = yes }
+				NOT = { has_stable_independence_wave_bya_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_bya_open_baikal_mongolia_corridor = {
+		name = independence_wave_bya_open_baikal_mongolia_corridor
+		desc = independence_wave_bya_open_baikal_mongolia_corridor_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_bya_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_bya_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_bya_compact = yes
+			NOT = { has_country_flag = independence_wave_bya_baikal_mongolia_corridor_open }
+		}
+		available = {
+			is_independence_wave_bya_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_bya_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_bya_compact = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_bya_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_bya_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_bya_network_effect_tt
+			independence_wave_bya_focus_open_baikal_mongolia_corridor = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bya_package = yes }
+				has_country_flag = independence_wave_bya_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_bya_compact_crisis_resolved }
+				NOT = { has_country_flag = independence_wave_network_member }
+				NOT = { has_country_flag = independence_wave_league_route_available }
+				NOT = { has_stable_independence_wave_bya_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_bya_package = yes }
+				independence_wave_bya_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+}
+
+# SOURCE: 006_independence_wave_khakassia_decisions.txt
+@CR_SC_INDEPENDENCE_WAVE_KHA_CIVILIAN_FACTORY_USE = 1
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-054 KHAKASSIA DECISIONS
+# ============================================================================
+# Khakassia's frontier compact is a real timed foundation. The founding mission
+# remains active until both package ledgers are stable, the route government is
+# installed, and the state-569 Minusinsk capital remains in Khakassia hands. Each paid
+# project serializes through the package active-project gate and consumes the
+# shared Event 006 material palette before its package helper resolves it.
+# ============================================================================
+
+independence_wave_khakassia_frontier_compact_category = {
+	independence_wave_kha_hold_frontier_council = {
+		name = independence_wave_kha_hold_frontier_council
+		desc = independence_wave_kha_hold_frontier_council_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_kha_package = yes
+			has_country_flag = independence_wave_iw_054_setup_complete
+			NOT = { has_country_flag = independence_wave_kha_compact_crisis_resolved }
+			NOT = { has_country_flag = independence_wave_kha_compact_crisis_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_khakassia_duration.founding_crisis
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				AND = {
+					has_stable_independence_wave_kha_compact = yes
+					has_independence_wave_kha_route_government = yes
+					569 = { is_owned_and_controlled_by = ROOT }
+				}
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				569 = { NOT = { is_owned_and_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_kha_package = yes
+					has_stable_independence_wave_kha_compact = yes
+					has_independence_wave_kha_route_government = yes
+					569 = { is_owned_and_controlled_by = ROOT }
+					capital_scope = { is_controlled_by = ROOT }
+				}
+				set_country_flag = independence_wave_kha_compact_crisis_resolved
+			}
+			else_if = {
+				limit = { is_independence_wave_kha_package = yes }
+				set_country_flag = independence_wave_kha_compact_crisis_failed
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_kha_project_failure_effect_tt
+			set_country_flag = independence_wave_kha_compact_crisis_failed
+			independence_wave_kha_apply_project_failure = yes
+		}
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_kha_secure_frontier_depots = {
+		name = independence_wave_kha_secure_frontier_depots
+		desc = independence_wave_kha_secure_frontier_depots_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			NOT = { has_country_flag = independence_wave_kha_depots_secured }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_kha_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_kha_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_KHA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_depots_effect_tt
+			independence_wave_kha_focus_secure_frontier_depots = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_kha_integrate_frontier_guards = {
+		name = independence_wave_kha_integrate_frontier_guards
+		desc = independence_wave_kha_integrate_frontier_guards_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			NOT = { has_country_flag = independence_wave_kha_guards_integrated }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_security_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_security_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_guards_effect_tt
+			independence_wave_kha_focus_integrate_frontier_guards = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_kha_register_khakass_communities = {
+		name = independence_wave_kha_register_khakass_communities
+		desc = independence_wave_kha_register_khakass_communities_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			NOT = { has_country_flag = independence_wave_kha_communities_guaranteed }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_kha_administration_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_kha_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_KHA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_administration_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_communities_effect_tt
+			independence_wave_kha_focus_register_khakass_communities = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_kha_settle_former_host_ledgers = {
+		name = independence_wave_kha_settle_former_host_ledgers
+		desc = independence_wave_kha_settle_former_host_ledgers_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			NOT = { has_country_flag = independence_wave_kha_host_ledgers_settled }
+			OR = {
+				has_independence_wave_living_former_host = yes
+				AND = {
+					has_country_flag = independence_wave_kha_depots_secured
+					has_independence_wave_kha_unsettled_host = yes
+				}
+			}
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+			OR = {
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				AND = {
+					has_country_flag = independence_wave_kha_depots_secured
+					has_independence_wave_kha_unsettled_host = yes
+				}
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_host_ledgers_effect_tt
+			independence_wave_kha_focus_settle_former_host_ledgers = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				AND = {
+					NOT = { has_independence_wave_living_former_host = yes }
+					NOT = {
+						AND = {
+							has_country_flag = independence_wave_kha_depots_secured
+							has_independence_wave_kha_unsettled_host = yes
+						}
+					}
+				}
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { has_war_with = ROOT }
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_kha_project_ready = yes
+					capital_scope = { is_controlled_by = ROOT }
+					has_country_flag = independence_wave_kha_depots_secured
+					has_independence_wave_kha_unsettled_host = yes
+				}
+				custom_effect_tooltip = independence_wave_kha_host_loss_effect_tt
+				independence_wave_kha_focus_settle_former_host_ledgers = yes
+			}
+			else_if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				NOT = { has_independence_wave_severe_host_threat = yes }
+			}
+		}
+	}
+
+	independence_wave_kha_ratify_constitutional_autonomy = {
+		name = independence_wave_kha_ratify_constitutional_autonomy
+		desc = independence_wave_kha_ratify_constitutional_autonomy_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			has_independence_wave_constitutional_route = yes
+			NOT = { has_independence_wave_kha_route_government = yes }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_kha_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_kha_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_KHA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_constitutional_route_effect_tt
+			independence_wave_install_kha_constitutional_government = yes
+			independence_wave_kha_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				NOT = { has_independence_wave_constitutional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_kha_adopt_sayan_land_compact = {
+		name = independence_wave_kha_adopt_sayan_land_compact
+		desc = independence_wave_kha_adopt_sayan_land_compact_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			has_independence_wave_traditional_route = yes
+			NOT = { has_independence_wave_kha_route_government = yes }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_traditional_route_effect_tt
+			independence_wave_install_kha_traditional_government = yes
+			independence_wave_kha_apply_diplomatic_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				NOT = { has_independence_wave_traditional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+
+	independence_wave_kha_convene_socialist_councils = {
+		name = independence_wave_kha_convene_socialist_councils
+		desc = independence_wave_kha_convene_socialist_councils_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			has_independence_wave_popular_council_route = yes
+			NOT = { has_independence_wave_kha_route_government = yes }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_kha_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_kha_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_KHA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_socialist_route_effect_tt
+			independence_wave_install_kha_socialist_government = yes
+			independence_wave_kha_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				NOT = { has_independence_wave_popular_council_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_kha_establish_frontier_emergency_command = {
+		name = independence_wave_kha_establish_frontier_emergency_command
+		desc = independence_wave_kha_establish_frontier_emergency_command_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			has_independence_wave_emergency_military_route = yes
+			NOT = { has_independence_wave_kha_route_government = yes }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			can_pay_independence_wave_security_major_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_security_major = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_emergency_route_effect_tt
+			independence_wave_install_kha_emergency_government = yes
+			independence_wave_kha_apply_security_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				NOT = { has_independence_wave_emergency_military_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_kha_codify_durable_sovereignty = {
+		name = independence_wave_kha_codify_durable_sovereignty
+		desc = independence_wave_kha_codify_durable_sovereignty_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			has_independence_wave_kha_route_government = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_kha_compact_crisis_resolved
+			NOT = { has_country_flag = independence_wave_kha_durable_sovereignty }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			has_stable_independence_wave_kha_compact = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_kha_compact_crisis_resolved
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+			can_pay_independence_wave_kha_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_kha_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_KHA_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.strategic
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_strategic = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_sovereignty_effect_tt
+			set_country_flag = independence_wave_kha_durable_sovereignty
+			independence_wave_kha_apply_major_settlement = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_kha_compact_crisis_resolved }
+				NOT = { has_independence_wave_kha_route_government = yes }
+				NOT = { has_stable_independence_wave_kha_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_kha_open_sayan_rail_corridor = {
+		name = independence_wave_kha_open_sayan_rail_corridor
+		desc = independence_wave_kha_open_sayan_rail_corridor_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_kha_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_kha_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_kha_compact = yes
+			NOT = { has_country_flag = independence_wave_kha_sayan_rail_corridor_open }
+		}
+		available = {
+			is_independence_wave_kha_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_kha_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_kha_compact = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_kha_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_kha_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_kha_network_effect_tt
+			independence_wave_kha_focus_open_sayan_rail_corridor = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_kha_package = yes }
+				has_country_flag = independence_wave_kha_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_kha_compact_crisis_resolved }
+				NOT = { has_country_flag = independence_wave_network_member }
+				NOT = { has_country_flag = independence_wave_league_route_available }
+				NOT = { has_stable_independence_wave_kha_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_kha_package = yes }
+				independence_wave_kha_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+}
+
+# SOURCE: 006_independence_wave_sakha_decisions.txt
+@CR_SC_INDEPENDENCE_WAVE_YAK_CIVILIAN_FACTORY_USE = 1
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-051 SAKHA DECISIONS
+# ============================================================================
+# Sakha's arctic compact is a real timed foundation. The founding mission
+# remains active until both package ledgers are stable, the route government is
+# installed, and the state-574 Yakutsk capital remains in Sakha hands. Each paid
+# project serializes through the package active-project gate and consumes the
+# shared Event 006 material palette before its package helper resolves it.
+# ============================================================================
+
+independence_wave_sakha_arctic_compact_category = {
+	independence_wave_yak_hold_arctic_council = {
+		name = independence_wave_yak_hold_arctic_council
+		desc = independence_wave_yak_hold_arctic_council_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = {
+			is_independence_wave_yak_package = yes
+			has_country_flag = independence_wave_iw_051_setup_complete
+			NOT = { has_country_flag = independence_wave_yak_compact_crisis_resolved }
+			NOT = { has_country_flag = independence_wave_yak_compact_crisis_failed }
+		}
+		available = { always = no }
+		days_mission_timeout = constant:independence_wave_sakha_duration.founding_crisis
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				AND = {
+					has_stable_independence_wave_yak_compact = yes
+					has_independence_wave_yak_route_government = yes
+					574 = { is_owned_and_controlled_by = ROOT }
+				}
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				574 = { NOT = { is_owned_and_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_yak_package = yes
+					has_stable_independence_wave_yak_compact = yes
+					has_independence_wave_yak_route_government = yes
+					574 = { is_owned_and_controlled_by = ROOT }
+					capital_scope = { is_controlled_by = ROOT }
+				}
+				set_country_flag = independence_wave_yak_compact_crisis_resolved
+			}
+			else_if = {
+				limit = { is_independence_wave_yak_package = yes }
+				set_country_flag = independence_wave_yak_compact_crisis_failed
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_yak_project_failure_effect_tt
+			set_country_flag = independence_wave_yak_compact_crisis_failed
+			independence_wave_yak_apply_project_failure = yes
+		}
+		is_good = no
+		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+	}
+
+	independence_wave_yak_secure_lena_depots = {
+		name = independence_wave_yak_secure_lena_depots
+		desc = independence_wave_yak_secure_lena_depots_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			NOT = { has_country_flag = independence_wave_yak_depots_secured }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_yak_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_yak_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_YAK_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_depots_effect_tt
+			independence_wave_yak_focus_secure_lena_depots = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_yak_integrate_river_guards = {
+		name = independence_wave_yak_integrate_river_guards
+		desc = independence_wave_yak_integrate_river_guards_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			NOT = { has_country_flag = independence_wave_yak_guards_integrated }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_security_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_security_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_guards_effect_tt
+			independence_wave_yak_focus_integrate_river_guards = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_yak_register_sakha_communities = {
+		name = independence_wave_yak_register_sakha_communities
+		desc = independence_wave_yak_register_sakha_communities_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			NOT = { has_country_flag = independence_wave_yak_communities_guaranteed }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_yak_administration_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_yak_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_YAK_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_administration_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_communities_effect_tt
+			independence_wave_yak_focus_register_sakha_communities = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_yak_settle_former_host_ledgers = {
+		name = independence_wave_yak_settle_former_host_ledgers
+		desc = independence_wave_yak_settle_former_host_ledgers_desc
+		icon = GFX_decision_independence_wave_former_host_negotiations
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			NOT = { has_country_flag = independence_wave_yak_host_ledgers_settled }
+			OR = {
+				has_independence_wave_living_former_host = yes
+				AND = {
+					has_country_flag = independence_wave_yak_depots_secured
+					has_independence_wave_yak_unsettled_host = yes
+				}
+			}
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+			OR = {
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+				}
+				AND = {
+					has_country_flag = independence_wave_yak_depots_secured
+					has_independence_wave_yak_unsettled_host = yes
+				}
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_host_ledgers_effect_tt
+			independence_wave_yak_focus_settle_former_host_ledgers = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				AND = {
+					NOT = { has_independence_wave_living_former_host = yes }
+					NOT = {
+						AND = {
+							has_country_flag = independence_wave_yak_depots_secured
+							has_independence_wave_yak_unsettled_host = yes
+						}
+					}
+				}
+				AND = {
+					has_independence_wave_living_former_host = yes
+					var:independence_wave_former_host = { has_war_with = ROOT }
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = {
+					is_independence_wave_yak_project_ready = yes
+					capital_scope = { is_controlled_by = ROOT }
+					has_country_flag = independence_wave_yak_depots_secured
+					has_independence_wave_yak_unsettled_host = yes
+				}
+				custom_effect_tooltip = independence_wave_yak_host_loss_effect_tt
+				independence_wave_yak_focus_settle_former_host_ledgers = yes
+			}
+			else_if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				NOT = { has_independence_wave_severe_host_threat = yes }
+			}
+		}
+	}
+
+	independence_wave_yak_ratify_constitutional_autonomy = {
+		name = independence_wave_yak_ratify_constitutional_autonomy
+		desc = independence_wave_yak_ratify_constitutional_autonomy_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			has_independence_wave_constitutional_route = yes
+			NOT = { has_independence_wave_yak_route_government = yes }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_yak_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_yak_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_YAK_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_constitutional_route_effect_tt
+			independence_wave_install_yak_constitutional_government = yes
+			independence_wave_yak_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				NOT = { has_independence_wave_constitutional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_yak_adopt_arctic_land_compact = {
+		name = independence_wave_yak_adopt_arctic_land_compact
+		desc = independence_wave_yak_adopt_arctic_land_compact_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			has_independence_wave_traditional_route = yes
+			NOT = { has_independence_wave_yak_route_government = yes }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_arctic_land_route_effect_tt
+			independence_wave_install_yak_traditional_government = yes
+			independence_wave_yak_apply_diplomatic_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				NOT = { has_independence_wave_traditional_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+
+	independence_wave_yak_convene_lena_councils = {
+		name = independence_wave_yak_convene_lena_councils
+		desc = independence_wave_yak_convene_lena_councils_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			has_independence_wave_popular_council_route = yes
+			NOT = { has_independence_wave_yak_route_government = yes }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_yak_administration_light_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_yak_administration_light_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_light
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_YAK_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_administration_light = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_socialist_route_effect_tt
+			independence_wave_install_yak_socialist_government = yes
+			independence_wave_yak_apply_administrative_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				NOT = { has_independence_wave_popular_council_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_yak_establish_river_guard_emergency_command = {
+		name = independence_wave_yak_establish_river_guard_emergency_command
+		desc = independence_wave_yak_establish_river_guard_emergency_command_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			has_independence_wave_emergency_military_route = yes
+			NOT = { has_independence_wave_yak_route_government = yes }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			can_pay_independence_wave_security_major_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_security_major = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_emergency_route_effect_tt
+			independence_wave_install_yak_emergency_government = yes
+			independence_wave_yak_apply_security_progress = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				NOT = { has_independence_wave_emergency_military_route = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
+	}
+
+	independence_wave_yak_codify_durable_sovereignty = {
+		name = independence_wave_yak_codify_durable_sovereignty
+		desc = independence_wave_yak_codify_durable_sovereignty_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			has_independence_wave_yak_route_government = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_yak_compact_crisis_resolved
+			NOT = { has_country_flag = independence_wave_yak_durable_sovereignty }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			has_stable_independence_wave_yak_compact = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_yak_compact_crisis_resolved
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+			can_pay_independence_wave_yak_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_yak_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_YAK_CIVILIAN_FACTORY_USE }
+		days_remove = constant:independence_wave_decision_duration.strategic
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_strategic = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_sovereignty_effect_tt
+			set_country_flag = independence_wave_yak_durable_sovereignty
+			independence_wave_yak_apply_major_settlement = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_yak_compact_crisis_resolved }
+				NOT = { has_independence_wave_yak_route_government = yes }
+				NOT = { has_stable_independence_wave_yak_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+
+	independence_wave_yak_open_lena_network_corridor = {
+		name = independence_wave_yak_open_lena_network_corridor
+		desc = independence_wave_yak_open_lena_network_corridor_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_yak_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_yak_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_yak_compact = yes
+			NOT = { has_country_flag = independence_wave_yak_lena_arctic_corridor_open }
+		}
+		available = {
+			is_independence_wave_yak_project_ready = yes
+			has_country_flag = independence_wave_founding_settlement_complete
+			has_country_flag = independence_wave_yak_compact_crisis_resolved
+			has_country_flag = independence_wave_network_member
+			has_country_flag = independence_wave_league_route_available
+			has_stable_independence_wave_yak_compact = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_independence_wave_yak_active_package_project = yes }
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = {
+			independence_wave_yak_begin_project = yes
+			independence_wave_decision_pay_diplomatic_standard = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_yak_network_effect_tt
+			independence_wave_yak_focus_open_lena_network_corridor = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_yak_package = yes }
+				has_country_flag = independence_wave_yak_compact_crisis_failed
+				NOT = { has_country_flag = independence_wave_founding_settlement_complete }
+				NOT = { has_country_flag = independence_wave_yak_compact_crisis_resolved }
+				NOT = { has_country_flag = independence_wave_network_member }
+				NOT = { has_country_flag = independence_wave_league_route_available }
+				NOT = { has_stable_independence_wave_yak_compact = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { is_independence_wave_yak_package = yes }
+				independence_wave_yak_apply_project_failure = yes
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_decision_ai.standard }
+	}
+}
