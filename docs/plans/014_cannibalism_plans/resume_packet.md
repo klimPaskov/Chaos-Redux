@@ -28,7 +28,7 @@ Model inputs must start from actual Internet-sourced or user-supplied modern art
 2. Bone Riders needs a supported compound horse/rider action route; the current adapter accepts standard humanoid action rigs only.
 3. Island Reavers has a later succeeded geometry candidate but no accepted v8 rig/action package; the earlier Meshy HTTP 402 recovery record remains superseded evidence. Scavenger Warband remains at user review, and Network Cadre has no accepted provider-sourced action lease.
 4. The five installed model/entity/action packages still need live consumer validation; source-side re-import and runtime file checks do not substitute for a live session.
-5. The four super-event audio registrations are closed; Bone Riders playback and the remaining family sound-definition work are not included.
+5. The four super-event audio registrations are closed. The four remaining unit families now have 26 source-derived runtime WAVs and sound definitions; Bone Riders playback, action synchronization, entity binding, and country-level voice mapping remain open.
 6. Four super-event image/audio packages remain source-documented, with audio wiring closed in `event014_super_event_audio_wiring_audit_2026-08-25.md`; image and live consumer review remain part of the parent boundary.
 7. Counter registry and DDS presence is documented, but live consumer review remains open.
 8. Fresh Event 014 MCP inspection and overview rendering are partial because the large workspace deferred full validation; zero blocking diagnostics in that partial result is not full runtime proof.
