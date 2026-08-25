@@ -196,7 +196,7 @@ No additional super-event is added for `FORM-16` in this tranche because the acc
 
 - `common/decisions/formable_nation_decisions.txt` must receive only the narrow Event 006 compatibility guard for `form_transcaucasian_republic`.
 
-- `localisation/english/006_independence_wave_formable_registry_l_english.yml` and `common/scripted_localisation/006_independence_wave_formable_registry_scripted_localisation.txt` must expose exact `FORM-16` readiness, blocked, failure, and completion states.
+- `localisation/english/006_independence_wave_formable_registry_l_english.yml` and `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt` must expose exact `FORM-16` readiness, blocked, failure, and completion states.
 
 - `docs/plans/006_independence_wave_plans/006_force_package_mapping.csv` must be rechecked but should not change unless implementation evidence disproves the accepted rows.
 

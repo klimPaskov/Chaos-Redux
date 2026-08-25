@@ -497,7 +497,7 @@ Expand `independence_wave_form03_low_countries_category` with:
 - `visible_when_empty = yes` while progression is active
 - a category description showing both numeric values, their bands, the charter phase, and unresolved member status
 
-Create `common/scripted_localisation/006_independence_wave_form03_scripted_localisation.txt` with:
+Add the FORM-03 selectors to `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt` with:
 
 - `GetIndependenceWaveForm03AccommodationBand`
 - `GetIndependenceWaveForm03IntegrationBand`
@@ -564,7 +564,7 @@ No new animated asset is specified. If a later accepted design adds animation, i
 | `common/ideas/006_independence_wave_form03_ideas.txt` | Six mutually exclusive lifecycle ideas |
 | `common/dynamic_modifiers/006_independence_wave_form03_state_modifiers.txt` | Three bounded state modifiers |
 | `events/006_independence_wave.txt` | Event block `.300` through `.308` |
-| `common/scripted_localisation/006_independence_wave_form03_scripted_localisation.txt` | Value, phase, model, member, and outcome text selectors |
+| `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt` | Value, phase, model, member, and outcome text selectors |
 | `localisation/english/006_independence_wave_form03_l_english.yml` | Final player-facing localisation, UTF-8 BOM |
 | `interface/006_independence_wave_form03.gfx` | New focus, idea, and decision sprites |
 | `interface/006_independence_wave_event_pictures.gfx` | FORM-03 report sprite |
