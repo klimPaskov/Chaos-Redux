@@ -19,11 +19,10 @@ All 26 copied runtime files were hash-compared against their immutable `audio/de
 
 ## Definition and consumer boundary
 
-The shared Event 014 sound asset now contains unique source IDs and `soundeffect` wrappers for all four package sets. The definitions are source-ready, but the following remain intentionally open:
+The shared Event 014 sound asset now contains unique source IDs and `soundeffect` wrappers for all four package sets. `sound/014_cannibalism_voices.asset` registers the exact country-level selection consumer for CBA, CBB, CBC, CBD, CBE, CBF, CBG, CBH, and CBL as `<TAG>_infantry_idle`, using the approved cannibal selection source. The definitions are source-ready, but the following remain intentionally open:
 
 - Meshy-sourced skeletal actions, action-specific frame synchronization, and PDX export/reimport for all four blocked model packages.
 - Entity/action runtime binding and live map playback review.
-- Country-level `<TAG>_infantry_idle` voice binding for CBA-CBH and CBL. HOI4 resolves that selection surface by country or original tag rather than by subunit, so it cannot honestly be claimed as a per-subunit binding while the package's model/action consumer is unresolved.
+- Per-subunit selection routing is not possible on this HOI4 surface. The country-level idle bindings intentionally cover every infantry division under CBA-CBH and CBL; action-specific frame synchronization and live playback remain pending the accepted model/action consumers.
 
 The five previously installed model packages retain their existing definitions and 35 runtime WAVs. This pass expands the source-definition layer to all nine custom unit families without treating audio presence as model completion.
-
