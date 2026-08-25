@@ -294,6 +294,31 @@ alien_infantry_apply_landing_cooldown = {
 	}
 }
 
+# COUNTRY scope. Adds a successful state to the sparse global state-scope
+# registry used by D'Rhondan revolt transfer. State flags remain authoritative;
+# the registry only removes the need for a later world-wide state scan.
+alien_infantry_register_landing_state = {
+	if = {
+		limit = { has_variable = dhrondan_landing_state_id }
+		var:dhrondan_landing_state_id = {
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = global.alien_infantry_landing_state_registry
+							value = THIS
+						}
+					}
+				}
+				add_to_array = {
+					array = global.alien_infantry_landing_state_registry
+					value = THIS
+				}
+			}
+		}
+	}
+}
+
 # COUNTRY scope. Spawns exactly one fully equipped locked cohort at the saved
 # state. Direct callers pay the fixed reserve immediately; the pending decision
 # path has already removed that reserve and therefore does not debit twice.
@@ -441,6 +466,7 @@ alien_infantry_spawn_landing_cohort = {
 					set_state_flag = dhrondan_landing_state
 					set_state_flag = dhrondan_landing_history_recorded
 				}
+				alien_infantry_register_landing_state = yes
 			}
 			set_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.one }
 			if = {
@@ -524,6 +550,7 @@ alien_infantry_commit_event19_landing = {
 			set_state_flag = dhrondan_landing_state
 			set_state_flag = dhrondan_landing_history_recorded
 		}
+		alien_infantry_register_landing_state = yes
 		add_to_variable = { dhrondan_arrival_count = constant:alien_infantry_landing.arrival_gain }
 		add_to_variable = { dhrondan_alien_presence = constant:alien_infantry_landing.presence_gain }
 		add_to_variable = { dhrondan_pact_strain = constant:alien_infantry_landing.strain_gain }

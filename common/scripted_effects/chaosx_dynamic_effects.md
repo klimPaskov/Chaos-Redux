@@ -455,9 +455,11 @@ Definitions: public effects are implemented in `common/scripted_effects/016_alie
 
 Scope: country for `alien_infantry_grant_contact`, `alien_infantry_revoke_contact`, `alien_infantry_can_call_landing`, `alien_infantry_spawn_landing_cohort`, and `alien_infantry_reconcile_country`. `alien_infantry_landing_state_is_valid` is a state-scope reader with the calling country as `ROOT`.
 
+The internal `alien_infantry_register_landing_state` effect is country-scoped and is called only after a successful ordinary landing or Event 019 deferred commit. It owns the sparse global state-scope registry consumed by D’Rhondan revolt transfer; no other package may maintain a parallel landing-state array.
+
 Inputs: grant and revoke read temporary `alien_infantry_contact_source_id` from `constant:alien_infantry_contact_source.*`. A landing caller stores its selected state ID in country variable `dhrondan_landing_state_id`. Direct spawn callers must have the exact laser stockpile and a valid selected state; the ordinary decision path debits the fixed reserve before its seven-day mission begins.
 
-Outputs: contact reconciliation grants the hidden operational alien-infantry technology, creates and relocks the ten-battalion `D’Rhondan Landing Cohort`, and exposes laser production while at least one receipt remains. A successful spawn creates exactly one fully equipped cohort, marks the state, and records the persistent landing counters. `alien_infantry_landing_spawn_succeeded` is a temporary one-or-zero result for callers that need transaction evidence.
+Outputs: contact reconciliation grants the hidden operational alien-infantry technology, creates and relocks the ten-battalion `D’Rhondan Landing Cohort`, and exposes laser production while at least one receipt remains. A successful spawn creates exactly one fully equipped cohort, marks the state, inserts the state scope into the sparse global `alien_infantry_landing_state_registry`, and records the persistent landing counters. `alien_infantry_landing_spawn_succeeded` is a country-scoped one-or-zero result reset at the start of each spawn call, so bounded callers may read it after a nested scripted effect returns.
 
 Defaults: unknown receipt IDs are safe no-ops. Revoking one receipt never removes another provider’s entitlement. A missing, invalid, uncontrolled, or impassable state prevents direct materialization. The ordinary pending path refunds exactly one 2,000-weapon reservation when contact or state control is lost.
 
