@@ -112,7 +112,7 @@ The five-node merge trunk converges the preserved Pack and Larder-ledger nodes t
 - cannibal legacy
 - transformation countdown
 
-`ZZZ_wendigo_begin_the_countdown` has five explicit AND prerequisites. It requires both countdown preparation nodes and all three non-countdown branch capstones. The three terminal focuses form a final linear branch beneath it.
+`ZZZ_wendigo_begin_the_countdown` retains the explicit `ZZZ_wendigo_stabilize_the_anchor_chain` prerequisite and its `available` gate requires the other four completed preparations: `ZZZ_wendigo_accelerate_the_transformation`, `ZZZ_wendigo_raise_the_winter_network`, `ZZZ_wendigo_army_of_the_frozen_larder`, and `ZZZ_wendigo_all_inheritances_intact`. This preserves the five-focus AND gate while keeping the visible convergence column compact. The countdown and three terminal focuses occupy consecutive rows so the visible chain has one-row connectors without changing the gameplay gate.
 
 No mutual exclusions were added. Acceleration and stabilization are both deliberate capabilities of the existing decision system, so the countdown convergence requires both preparation focuses.
 

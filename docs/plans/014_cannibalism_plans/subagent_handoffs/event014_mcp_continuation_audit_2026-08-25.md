@@ -1,0 +1,55 @@
+# Event 014 MCP continuation audit
+
+Audit date: 2026-08-25.
+
+## Scope
+
+This continuation pass used the installed HOI4 MCP against only Event 014 surfaces that can be attributed to the package: the Event 014 event root, the three Event 014 national-focus trees, the Event 014 technology/sub-unit surface, and the five direct Event 014 scripted-GUI windows. It did not inspect or edit the shared event log, shared Event Details framework, settings UI, unrelated scripted GUIs, or other event packages.
+
+The pass also rechecked the remaining Meshy task records without spending credits. No provider task was promoted and no model fallback was fabricated.
+
+## Event MCP evidence
+
+`hoi4.event_inspect` lint for `chaosx.nr14.1` returned `EVENT_INSPECTED_PARTIAL` with revision `cf24a2714b309f2f8ffbee3502ecebced0e905ed52bbd92c8e3fd9d2cd476ad4`, graph hash `a3d0aa19ed4e7a228a55b45ad27d10197bdbcc8e8e432d7828a0427403596457`, and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/79d4ca45241df8750f9343726ae9fc8e1d639b234a83f334c7e2b7f6903ca253/861206de46b0d48ad7003b3e3fa33a8a41f2084b5067f023831b41bcb17b8511/event-lint-cf24a2714b30.json`.
+
+The workspace scan reported 9,515 events, 14,711 options, 1,073 entries, 8,317 unresolved nodes, and 2,130 issues across the whole workspace. It retained zero blocking diagnostics and skipped no source files, but deferred helper projections because the workspace is larger than the MCP inline-analysis ceiling. This is useful root-level evidence, not complete proof of every Event 014 helper path.
+
+## Focus MCP evidence and bounded source fix
+
+The final source keeps all three roots in `common/national_focus/014_cannibalism_focus.txt` and was inspected after the bounded Wendigo terminal-column adjustment.
+
+| Tree | Focuses | Connectors | Crossings | Node intersections | Long connectors | Event 014 diagnostics | MCP artifact |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `cannibalism_unified_focus_tree` | 108 | 103 | 0 | 0 | 0 | 0 | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/69109cbf7fe26b3b1d2dd9c5c0ed63a460ea6a491482351abdc1063152dab1a5/b6295e79613f51106774c93bc466fa57a14e500d7f4383f9b2844c7e709ed2d0/focus-inspect.c155b3cf8590717f.json` |
+| `cannibalism_warlord_focus_tree` | 68 | 79 | 0 | 0 | 0 | 0 | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7852ef1cdc8bd6d3e9e4b96c03626d0c6cab0e96c017088e4314f8cea85d430a/2a906126a6fd801c2721bf3e658cb9ab6133bdb56ea2aef2f0b54194d9387d11/focus-inspect.c155b3cf8590717f.json` |
+| `cannibalism_wendigo_focus_tree` | 28 | 28 | 0 | 0 | 0 | 0 | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b706548e594b772c302b205446a240061fbda351f560db93c738eafb17fefe84/e88eb5e5159b56dd52c3a94f3b8dcfc5e61a7f83cd0c84fb40a9d5bc85d218df/focus-inspect.c155b3cf8590717f.json` |
+
+The Wendigo tree previously drew a three-row direct connector into `ZZZ_wendigo_begin_the_countdown`. The source now places the visible terminal column at y 7–10 (`begin_the_countdown`, `designate_the_last_hunt`, `hunt_every_remaining_capital`, `the_world_beneath_winter`). The gameplay gate remains unchanged: the `available` block still requires acceleration, stabilization, winter-network, frozen-larder, and inheritance completion. The final inspect reports maximum vertical span 1, zero crossings, zero node intersections, zero long connectors, zero same-row spacing violations, and `diagnosticCount = 0` for all three trees.
+
+The accepted final raster artifacts are:
+
+- Unified PNG: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7de28d8e356296f3cdf59ed0493a484414ee3cd638d9e3edb55fc08293a17e69/3ac336ca35cf1b492cdc7cb99cd63211c2d4af4d05f170e66599287140f20a52/cannibalism_unified_focus_tree.focus.png`, 3,792 × 2,212.
+- Warlord PNG: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e36d35590764bc329967bb4ac4ec5886bc24e7f39088002fd1ccfc54a27a7ad3/ff2fe4c21a5986f1184b036be354bf3894b75efe50a15c837ffcabe673ac1c3e/cannibalism_warlord_focus_tree.focus.png`, 1,872 × 2,068.
+- Wendigo PNG: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/aed780aa5d38ee70a95fea59068bc8c267452e693ac2b7075d5a0dacb717e0d2/9d7d58fd52184ee694b4d5ceedf730c7da03a38fd6c0e95d6896d4e187e571d2/cannibalism_wendigo_focus_tree.focus.png`, 1,680 × 988.
+
+All three raster calls returned `FOCUS_RASTERIZED` with the only remaining warning being the unrelated vanilla `continuous_restrict_freedom_desc` localisation reference.
+
+An earlier compact `hoi4.focus_rewrite` experiment was rejected and reverted because it expanded the tree, introduced crossings, and created long connectors. No focus sidecar remains and the final source hash matches the bounded coordinate patch described above.
+
+## Technology and sub-unit MCP evidence
+
+`hoi4.tech_inspect` lint was run for `cannibal_bone_riders` and vanilla `elephantry`. The large-workspace adapter returned one shared partial artifact, `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a465e0b0eeebcb1d893ef01bc1c98bd43d8082757b9e05a04d4aff40e917c72b/4aff61af0dfb5f0060b42c03e406196fb69e21739504647fb3c5b76e12cbc692/technology-lint-493119fa53d0.json`, with 672 technologies, 18 folders, 457 edges, 850 unlocks, 19,806 references, and four unresolved nodes. The adapter deferred helper projections at the workspace ceiling and provided no blocking result. Source review remains authoritative for Event 014's hidden bridge technologies and its use of the existing vanilla `elephantry` sub-unit.
+
+## Direct GUI MCP evidence
+
+The fresh direct inspect for `cannibalism_early_header_window` in scenario `event014_early` returned 17 owned elements and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6b941e30a52590df6e40a0146249c91cb2dda52f9b46dddf4a5aedd2f9d2f0ab/746ebf3b52dbaf84c8ac0c62f09434c3e666f1d691d4ca8cf2251b4cb84f2047/gui-inspect.186e6bd25a629bc9.json`.
+
+The GUI adapter retained 1,999 diagnostics and dropped 1,654 at its global ceiling. The retained set was dominated by 1,648 unrelated index-symbol collisions and unattributed global scripted-context, overlap, clipping, text, and animation-fallback findings. Because the response omitted reliable Event 014 element attribution, no source rewrite was justified. The existing five-window GUI handoff remains authoritative: the direct GUI matrix is still partial evidence, not a visual acceptance claim.
+
+## Meshy/provider boundary
+
+The same continuation rechecked the four open model families without spending credits. The balance remains 10 credits. Scavenger and Island have succeeded provider geometry candidates but no accepted rig/action/reimport package; Network has no queryable action lease; Bone Riders has no accepted compound horse/rider route. The required eight substantive actions alone exceed the balance, so no static, transform-only, aliased, Blender-authored, or generic fallback was promoted.
+
+## Disposition
+
+The focus coordinate patch is accepted and source-owned. The event, focus, technology, GUI, and provider evidence above is recorded, but Event 014 remains incomplete until the four model/action packages pass the Meshy-to-PDX acceptance gate, the direct GUI matrix becomes attributable across supported resolutions and states, the deferred large-workspace analyses are narrowed or resolved, and live consumer validation is supplied by the user.
