@@ -8,7 +8,7 @@ Parent: `/root`.
 
 Status: documentation reconciliation complete; Event 006 remains **HOLD / PARTIAL** and this handoff makes no gameplay, localisation, asset, GUI, spreadsheet, or completion claim.
 
-> Superseded for focus-layout status by the 2026-08-25 reconciliation: the six-warning references below are dated 2026-08-24 round-2 evidence, while current authority is 184 focuses, 195 connectors, zero crossings, zero node intersections, `longConnectorCount = 2`, and five authored Event 006 warnings after the economy-lane and military-cohort reflows. Preserve this handoff as historical provenance.
+> Superseded for focus-layout status by commit `314642488` and the 2026-08-25 reconciliation: the six-warning references below are dated 2026-08-24 round-2 evidence, while current authority is 184 focuses, 195 connectors, zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout diagnostics; only the unrelated vanilla `continuous_restrict_freedom_desc` localisation reference remains reported. Preserve this handoff as historical provenance.
 
 ## Scope and source-of-truth map
 
@@ -26,7 +26,7 @@ IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 F
 
 The automatic ladder remains `3/4/5/7/10`, with World Collapse at `10`, and no player-visible surface is authorized before Event 006 fires.
 
-At the 2026-08-24 round-2 snapshot, the focus receipt was 184 focuses, 195 connectors, zero crossings, zero node intersections, and six authored Event 006 layout warnings alongside fourteen unrelated vanilla continuous-focus diagnostics; this snapshot is superseded by the five-warning 2026-08-25 authority above.
+At the 2026-08-24 round-2 snapshot, the focus receipt was 184 focuses, 195 connectors, zero crossings, zero node intersections, and six authored Event 006 layout warnings alongside fourteen unrelated vanilla continuous-focus diagnostics; this dated snapshot is superseded by the zero-diagnostic 2026-08-25 authority in the notice above.
 
 The current portrait boundary remains 38 installed supplied source-placeholder DDS consumers and 13 intentionally unmapped supplied files, with the latest wiring evidence dated 2026-08-22.
 

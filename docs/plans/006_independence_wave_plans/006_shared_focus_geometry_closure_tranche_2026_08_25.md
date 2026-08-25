@@ -4,7 +4,9 @@ Date: 2026-08-25
 
 ## Disposition
 
-**READY FOR PARENT IMPLEMENTATION AS ONE COORDINATES-ONLY CLOSURE TRANCHE.**
+**IMPLEMENTED / PROMOTED TO CURRENT GEOMETRY EVIDENCE BY COMMIT `314642488`.**
+
+The plan-time implementation handoff and acceptance details below are retained as dated provenance; do not route this plan as pending work or repeat the geometry closure.
 
 This is an implementation handoff for an accepted shared-tree mechanic, not another expansion addendum. The queued IW-050 admission addendum remains evidence-blocked and is not superseded, widened, or repeated here. The completed FORM-03 visibility addendum remains closed.
 
@@ -14,7 +16,7 @@ The tranche has no fallback. It either reaches the coordinate, topology, source-
 
 The accepted Event 006 focus architecture requires seven recognizable lane families, short clean connectors, visually clear capstones, and a broad readable shared tree. The latest completion reaudit identified the shared focus geometry as the safest bounded completion surface because it could close five authored layout diagnostics without touching package admission, eligibility, rewards, AI, decisions, events, or maps.
 
-A concurrent parent-owned coordinate trial is visible in the current working copy. Fresh mandatory MCP evidence shows that this trial has already removed the five audited detour and long-connector warnings, reduced the long-connector count to zero, and preserved zero crossings and zero node intersections. It also introduced two new same-row spacing warnings. The remaining work is therefore a precise closure of that trial, not a new route redesign.
+At plan time, a concurrent parent-owned coordinate trial was visible in the working copy. Fresh mandatory MCP evidence then showed that this trial had removed the five audited detour and long-connector warnings, reduced the long-connector count to zero, and preserved zero crossings and zero node intersections, while introducing two same-row spacing warnings. Commit `314642488` subsequently closed those spacing warnings without a route redesign.
 
 ## Accepted design and research connections
 
@@ -145,7 +147,7 @@ Post-acceptance documentation reconciliation:
 
 ## Open questions and unresolved authority
 
-There is no open design question inside this tranche. The only unresolved acceptance item is the post-edit MCP and visual receipt.
+There is no open design question or unresolved acceptance item inside this tranche. The post-edit MCP and visual receipt are recorded in `subagent_handoffs/006_event6_focus_geometry_closure_current_2026-08-25.md`; raster output remains blocked by the documented render ceiling.
 
 The overall Event 006 authority remains `HOLD / PARTIAL`. This focus closure does not resolve unattested packages, IW-050 admission evidence, probability fixtures, GUI workspace diagnostics, map evidence, portrait and symbol provenance, super-event rights, or any other blocker recorded by the source-of-truth map and completion reaudit.
 
@@ -155,5 +157,4 @@ The overall Event 006 authority remains `HOLD / PARTIAL`. This focus closure doe
 
 ## Promotion recommendation
 
-Keep this dated implementation handoff in `docs/plans/006_independence_wave_plans/`. Do not promote its coordinates, revisions, hashes, or artifact URIs into `docs/specs/`. The accepted Part 4 focus architecture already requires the intended broad, readable, lane-separated result. Promote nothing unless a later implementation changes route logic, which this tranche explicitly forbids.
-
+Keep this dated implemented handoff in `docs/plans/006_independence_wave_plans/` as provenance. Do not promote its coordinates, revisions, hashes, or artifact URIs into `docs/specs/`; current geometry authority is the source-linked closure handoff and commit `314642488`. The accepted Part 4 focus architecture already requires the intended broad, readable, lane-separated result, and no route logic is promoted by this coordinates-only tranche.

@@ -63,11 +63,11 @@ The 55 disabled selectable rows are appended after bound-package failures with r
 
 - `common/script_constants/006_independence_wave_constants_registry.txt`
 - `common/scripted_effects/006_independence_wave_scenario_effects.txt`
-- `common/scripted_triggers/006_independence_wave_scenario_triggers.txt`
+- `common/scripted_triggers/006_independence_wave_triggers.txt` (SCN-008 selector and transaction predicates are in the shared trigger registry)
 - `common/scripted_localisation/006_independence_wave_scenario_scripted_localisation.txt`
 - `common/decisions/categories/006_independence_wave_categories.txt`
-- `common/decisions/006_independence_wave_scenario_decisions.txt`
-- `events/006_independence_wave_scenario.txt`
+- `common/decisions/006_independence_wave_decisions.txt` (SCN-008 ledger controls are in the shared decision registry)
+- `events/006_independence_wave.txt` (SCN-008 launch barrier and summary events are in the shared Event 006 event registry)
 - `localisation/english/006_independence_wave_scenario_l_english.yml`
 - the shared `chaosx_triggerable_scenarios_*` registry, selector, launch, and localisation files
 

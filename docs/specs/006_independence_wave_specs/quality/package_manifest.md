@@ -6,7 +6,7 @@ Architecture aligned: 2026-07-15
 
 ## Current architecture
 
-## Current authority override (2026-08-24 after schema, cost-localisation, and static-audit reconciliation)
+## Current authority override (2026-08-25 after focus-geometry closure, schema, cost-localisation, and static-audit reconciliation)
 
 The whole-event disposition remains **HOLD / PARTIAL**. Current routing authority is 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows; the eight adapter-only IDs remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. The automatic ladder remains `3/4/5/7/10`, with World Collapse at `10`, and nothing is visible before Event 006 fires.
 
@@ -28,7 +28,7 @@ IW-045 Bashkiria admission supersedes the earlier IW-044 paragraph below for cur
 
 The current registry gap map is `../../../plans/006_independence_wave_plans/subagent_handoffs/006_current_registry_gap_map_2026_08_15.md`. It is a fail-closed research disposition and does not widen the package-count authority.
 
-This historical section's shared-focus receipt is 184 focuses and 196 connectors with zero crossings, zero node intersections, and two long connectors; it is superseded for current graph and warning counts by the current authority above, which records 184 focuses, 195 connectors, zero crossings, zero node intersections, `longConnectorCount = 2`, and five authored Event 006 layout warnings after the economy and military-cohort reflows. The IW-044 completion handoff's 184-focus/210-connector/8-crossing/16-long-connector render is an older pre-cleanup artifact, not the current focus authority.
+This historical section's shared-focus receipt is 184 focuses and 196 connectors with zero crossings, zero node intersections, and two long connectors; it is superseded for current graph and warning counts by commit `314642488` and the current authority above, which record 184 focuses, 195 connectors, zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout diagnostics. The unrelated vanilla `continuous_restrict_freedom_desc` localisation reference remains a separate scope note. The IW-044 completion handoff's 184-focus/210-connector/8-crossing/16-long-connector render is an older pre-cleanup artifact, not the current focus authority.
 
 IW-050 Komi remains package-local and fail-closed after the lifecycle, cost, and tooltip repair committed as `b8aa313a8` and the administration-standard cost/localisation repair committed as `8b1aaeaae`; the read-only re-audit disposition is recorded by `d84816ecc` and clarified by `3ad93a39d`, and Komi remains absent from central adapter, attestation, normal or SCN-008 preflight, and deterministic Join surfaces. The current package-local receipts are `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw050_komi_lifecycle_cost_tooltip_repair_2026_08_14.md`, `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw050_komi_cost_localisation_repair_2026_08_14.md`, and `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw050_komi_admin_standard_cost_localisation_reaudit_2026_08_14.md`.
 
