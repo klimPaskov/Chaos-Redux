@@ -2,7 +2,9 @@
 # CHAOS REDUX - TEST COUNTRY UNIT ROSTER
 # ============================================================================
 # Overview:
-# - Unlocks every Chaos Redux land sub-unit and creates one recruitable template for each.
+# - Unlocks the reviewed static Chaos Redux land sub-unit baseline and creates one
+#   recruitable template for each; package-owned non-recruitable units register
+#   through the dynamic extension bus instead.
 # - Spawns three fully equipped and fully manned divisions from every test template.
 # - Supports opt-in registration of future frontline and support sub-units.
 # ============================================================================
@@ -10,7 +12,6 @@
 @CXT_TEST_UNIT_COUNT = 3
 
 chaosx_test_country_create_unit_roster = {
-	unlock_subunit = alien_infantry
 	unlock_subunit = armored_demonic_zombies
 	unlock_subunit = armored_necrotic_zombies
 	unlock_subunit = armored_undead_zombies
@@ -98,24 +99,6 @@ chaosx_test_country_create_unit_roster = {
 	unlock_subunit = undead_zombies
 	unlock_subunit = wendigo_zombies
 	unlock_subunit = zombies
-
-	division_template = {
-		name = "CXT Test - Alien Infantry"
-		is_locked = no
-		force_allow_recruiting = yes
-		priority = 2
-		regiments = {
-			alien_infantry = { x = 0 y = 0 }
-		}
-	}
-	capital_scope = {
-		create_unit = {
-			division = "name = \"CXT Test - Alien Infantry\" division_template = \"CXT Test - Alien Infantry\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-			owner = PREV
-			count = @CXT_TEST_UNIT_COUNT
-			allow_spawning_on_enemy_provs = yes
-		}
-	}
 
 	division_template = {
 		name = "CXT Test - Armored Demonic Zombies"

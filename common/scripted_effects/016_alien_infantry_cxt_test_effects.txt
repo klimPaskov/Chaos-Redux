@@ -1,0 +1,78 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 CXT TEST REGISTRATION
+# ============================================================================
+# Overview:
+# - Registers the reusable Alien Infantry unit, laser equipment, and D'Rhondan
+#   envoy project with the shared CXT extension bus.
+# - Keeps Alien Infantry out of the normal CXT designer roster while still
+#   giving the harness one locked, scripted landing cohort for validation.
+# - The carrier and setup effect are idempotent so startup and tag-scoped daily
+#   repair can safely converge on the same registration.
+# ============================================================================
+
+alien_infantry_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event016_alien_infantry
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event016_alien_infantry_apply = {
+	if = {
+		limit = { NOT = { has_global_flag = alien_infantry_cxt_content_registered } }
+		set_temp_variable = {
+			var = chaosx_test_country_registration_special_project
+			value = token:sp_dhrondan_envoy_craft
+		}
+		chaosx_test_country_register_special_project = yes
+		set_temp_variable = {
+			var = chaosx_test_country_registration_equipment
+			value = token:alien_laser_weapon_equipment_1
+		}
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = {
+			var = chaosx_test_country_registration_frontline_subunit
+			value = token:alien_infantry
+		}
+		chaosx_test_country_register_frontline_subunit = yes
+		set_global_flag = alien_infantry_cxt_content_registered
+	}
+
+	# The public API creates alien formations only from a valid landing source.
+	# CXT receives one locked scripted cohort solely to exercise the unit,
+	# equipment, counter, and Event 019 provider surfaces without exposing the
+	# battalion to normal training or the division designer.
+	if = {
+		limit = {
+			NOT = {
+				is_in_array = {
+					array = global.chaosx_test_country_processed_frontline_subunits
+					value = token:alien_infantry
+				}
+			}
+		}
+		unlock_subunit = alien_infantry
+		division_template = {
+			name = "CXT Test - Alien Landing Cohort"
+			is_locked = yes
+			force_allow_recruiting = no
+			priority = 0
+			regiments = {
+				alien_infantry = { x = 0 y = 0 }
+			}
+		}
+		capital_scope = {
+			create_unit = {
+				division = "name = \"CXT Test - Alien Landing Cohort\" division_template = \"CXT Test - Alien Landing Cohort\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+				owner = PREV
+				count = @CXT_TEST_UNIT_COUNT
+				allow_spawning_on_enemy_provs = yes
+			}
+		}
+		add_to_array = {
+			array = global.chaosx_test_country_processed_frontline_subunits
+			value = token:alien_infantry
+		}
+	}
+}

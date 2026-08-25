@@ -1,0 +1,30 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 CXT REGISTRATION HOOKS
+# ============================================================================
+# The startup scope gives a fresh console harness immediate coverage. The
+# tag-scoped daily fallback repairs existing saves without iterating the world.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				alien_infantry_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				alien_infantry_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}
