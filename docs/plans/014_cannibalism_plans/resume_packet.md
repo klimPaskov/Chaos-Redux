@@ -16,7 +16,7 @@ Model inputs must start from actual Internet-sourced or user-supplied modern art
 
 - The Event 014 specs, event overview, unit/model source-direction plan, package-status and asset-inventory rows now distinguish frozen design scope from downstream implementation queues and the five parent-installed runtime model packages.
 - Counter documentation now records nine family triplets and 27 DDS/registry consumers as present, while retaining parent-owned live consumer review.
-- Audio documentation now records five installed runtime packages with 35 converted 44.1 kHz WAV files. The four super-event tracks have complete source, sound-definition, settings-wrapper, catalog, and dispatch evidence; Bone Riders playback and the remaining family sound-definition work remain separate open work.
+- Audio documentation now records five installed runtime packages with 35 converted 44.1 kHz WAV files and four blocked families with 26 source-derived runtime WAVs, sound definitions, and CBA-CBH/CBL country-level infantry idle bindings. The four super-event tracks have complete source, sound-definition, settings-wrapper, catalog, and dispatch evidence; Bone Riders playback, action synchronization, entity binding, and live validation remain separate open work.
 - Feast Guard manifests and handoffs now use the user-supplied source path and C67 hash; the old generated `6ACD...` input is superseded evidence.
 - Generated or substantially redesigned model descendants, old adaptation briefs, and old provider tranches are marked rejected or superseded rather than presented as eligible inputs.
 - Historical Prison Host, fourth-origin, and Lockhouse material carries superseded notices; current documents describe three origins only.
