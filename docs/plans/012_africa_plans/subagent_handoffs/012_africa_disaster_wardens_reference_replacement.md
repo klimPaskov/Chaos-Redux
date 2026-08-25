@@ -18,7 +18,7 @@ One bounded Meshy 7 generation followed approval, using the exact active hash, a
 
 The downloaded GLB SHA-256 is `1B73A95B382F8B9F780778BCA9FE4528976DC37FDCDFABBC2C3CC7F0BE525945` and the downloaded FBX SHA-256 is `652D99A6220907295F86ED1657ECAE906103EA0C95E76FE4281184A18FC59A38`; the firearm gate passed.
 
-No further generation spend followed that bounded attempt. The first rig request is recorded in the redo handoff as task `01a038be-66f7-79aa-bd55-f9bd97eadc60`, terminal `FAILED` at 90% with `unexpected_error`, no download, and final `consumed_credits=0` after the transient 5-credit estimate/lock was refunded. One and only one failure-driven retry, task `01a038d2-b191-7f51-baa0-dd00a1d41daf`, remains 90% `IN_PROGRESS` after its bounded timeout with no download or terminal credit result; the current observed balance is 8 with a provisional 5-credit reservation. No custom animation or local rig/action fallback was attempted.
+No further generation spend followed that bounded attempt. The first rig request is recorded in the redo handoff as task `01a038be-66f7-79aa-bd55-f9bd97eadc60`, terminal `FAILED` at 90% with `unexpected_error`, no download, and final `consumed_credits=0` after the transient 5-credit estimate/lock was refunded. One and only one failure-driven retry, task `01a038d2-b191-7f51-baa0-dd00a1d41daf`, also reached terminal `FAILED` at 90% with `unexpected_error`, no download, and `consumed_credits=0` after refund; the current observed balance is 13. No custom animation or local rig/action fallback was attempted.
 
 All remaining rig, action, export, reimport, runtime, and in-game work remains blocked in `012_africa_disaster_wardens_meshy7_redo.md`; old-reference provider artifacts remain rejected and quarantined.
 
