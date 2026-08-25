@@ -130,7 +130,7 @@ The cosmetic localisation consumers are:
 
 The opening Middle Volga and Assyrian portrait sprites resolve to the sourced Sultan-Galiev and Shabo treatments. Galimzhan has an independently audited source-locked repaint candidate in the research package but no runtime DDS or `.gfx` promotion; the other five stable sprite registrations still resolve to earlier generated textures, which are invalid provenance records awaiting replacement and do not grant base runtime content attestation. Focus and national-spirit textures remain valid. The exact setup transaction can write its package-local FORM-12/13/18 adapter and achievement-writer receipts only after package execution is re-admitted. No advisor sprite or advisor texture is registered.
 
-The eight large institutional portraits are registered in `interface/006_independence_wave_iw043_iw058_portraits.gfx` and resolve under `gfx/leaders/006_independence_wave/` with these sprite IDs:
+The eight large institutional portraits are registered in `interface/006_independence_wave_portraits_registry.gfx` and resolve under `gfx/leaders/006_independence_wave/` with these sprite IDs:
 
 - `GFX_portrait_CHU_independence_wave_middle_volga_congress`
 - `GFX_portrait_CHU_independence_wave_federal_presidium`

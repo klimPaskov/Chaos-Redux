@@ -151,7 +151,7 @@ The package reuses these already registered Event 006 interface sprites:
 - decisions: `GFX_decision_independence_wave_government_actions`, `GFX_decision_independence_wave_depot_border_actions`, `GFX_decision_independence_wave_former_host_negotiations`, `GFX_decision_independence_wave_army_integration_actions`, and `GFX_decision_independence_wave_formable_proclamation`;
 - focuses: `GFX_goal_independence_wave_founding_administration`, `GFX_goal_independence_wave_infrastructure_authority`, `GFX_goal_independence_wave_recognition_diplomacy`, `GFX_goal_independence_wave_constitutional_state`, `GFX_goal_independence_wave_army_integration`, and `GFX_goal_independence_wave_league_congress`.
 
-The unique package portraits are registered in `interface/006_independence_wave_region_01_portraits.gfx` and installed under `gfx/leaders/006_independence_wave/`. The gameplay advisor offices deliberately carry no custom Event 006 portrait sprites. The authoritative user-directed HOI4 leader production package records source portraits, processed PNGs, DDS decodes, reference review sheets, hashes, and manifests under `docs/assets/006_independence_wave/`.
+The unique package portraits are registered in `interface/006_independence_wave_portraits_registry.gfx` and installed under `gfx/leaders/006_independence_wave/`. The gameplay advisor offices deliberately carry no custom Event 006 portrait sprites. The authoritative user-directed HOI4 leader production package records source portraits, processed PNGs, DDS decodes, reference review sheets, hashes, and manifests under `docs/assets/006_independence_wave/`.
 
 | Country | Real male identity | Runtime portrait | Source status |
 | --- | --- | --- | --- |
@@ -779,7 +779,7 @@ The historical-character portraits are registered in `interface/006_independence
 
 The package effects reference those stable sprite names directly through `set_portraits`.
 
-The additional package portrait sprites are registered in `interface/006_independence_wave_region_01_portraits.gfx`:
+The additional package portrait sprites are registered in `interface/006_independence_wave_portraits_registry.gfx`:
 
 - `GFX_portrait_RHI_independence_wave_provisional_directorate`
 - `GFX_portrait_RHI_independence_wave_river_commandant`
@@ -968,7 +968,7 @@ and bunker priority without assuming a fixed host tag.
 | National flag | `gfx/flags/AJX.tga` | HOI4 flag path discovery |
 | Medium flag | `gfx/flags/medium/AJX.tga` | HOI4 flag path discovery |
 | Small flag | `gfx/flags/small/AJX.tga` | HOI4 flag path discovery |
-| Walter Simons | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | stable `GFX_portrait_AJX_friedrich_hoffmann` in `interface/006_independence_wave_region_01_portraits.gfx` |
+| Walter Simons | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | stable `GFX_portrait_AJX_friedrich_hoffmann` in `interface/006_independence_wave_portraits_registry.gfx` |
 | Friedrich von Rabenau | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds` | stable `GFX_portrait_AJX_karl_becker` in the same `.gfx` file |
 | Municipal Neutral Commission focus | `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds` | base and shine in `interface/006_independence_wave.gfx`; base consumed by `independence_wave_ajx_appoint_neutral_commission_focus` |
 
