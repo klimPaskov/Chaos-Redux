@@ -1,6 +1,6 @@
 # Event 006 source-of-truth map
 
-## Current authority override (2026-08-24 after schema, cost-localisation, and static-audit reconciliation)
+## Current authority override (2026-08-25 after schema, cost-localisation, and static-audit reconciliation)
 
 The whole-event disposition remains **HOLD / PARTIAL**.
 
@@ -53,6 +53,10 @@ The minor-overlay consolidation folds the six small IW-005/IW-022/IW-025/IW-035/
 The follow-on small-surface pass folds the Join report/retry events (`chaosx.nr6.36` through `.40`) into `events/006_independence_wave_support_events.txt` and folds twelve small package portrait sprite files into `interface/006_independence_wave_portraits_registry.gfx`. Event IDs, sprite names, texture paths, and source-placeholder boundaries are unchanged; larger package-owned portrait registries remain separate. Its source-only handoff is `subagent_handoffs/006_event6_small_surface_registry_merge_2026-08-24.md`.
 
 The portrait-registry continuation folds the remaining IW-043/IW-058, Mediterranean, and Northern/Western Europe portrait registries into `interface/006_independence_wave_portraits_registry.gfx`. It preserves all 31 sprite identifiers and texture paths while removing three parser files; non-portrait package-owned GFX registries remain separate. Its source-only handoff is `subagent_handoffs/006_event6_remaining_portrait_registry_merge_2026-08-25.md`.
+
+The 2026-08-25 Join-localisation merge (`738c05e3c`) folds twelve shared Join keys into `localisation/english/006_independence_wave_l_english.yml` without changing keys, wording, event reachability, callbacks, or package admission. Its source-only handoff is `subagent_handoffs/006_event6_join_localisation_merge_2026-08-25.md`.
+
+The 2026-08-25 IW-093/IW-098 localisation merge (`607ec4c0f`) folds the 38 country-core, idea, and category keys into `localisation/english/006_independence_wave_iw093_iw098_country_core_l_english.yml` without changing executable identifiers or the adapter-only fail-closed boundary. Its source-only handoff is `subagent_handoffs/006_event6_iw093_iw098_localisation_merge_2026-08-25.md`.
 
 The second 2026-08-24 source-layout pass folds the three remaining same-namespace regional/formable event files (`chaosx.nr6.18` through `.27` and `chaosx.nr6.320` through `.341`) into `events/006_independence_wave_support_events.txt`, and folds seven small sprite registries into `interface/006_independence_wave_small_assets.gfx`. It preserves 37 event IDs, 31 sprite names, 31 texture paths, and all package ownership markers. The SCN-008 triggerable-scenario file, large package-owned event files, and larger package-owned GFX registries remain separate. Its source-only handoff is `subagent_handoffs/006_event6_support_and_small_asset_registry_merge_2026-08-24.md`.
 
