@@ -3965,6 +3965,136 @@ cannibalism_unified_global_campaign_category_is_visible = {
 	}
 }
 
+# A Unified operation may keep advancing an already active family, but a new
+# player-started family may only claim one of the two available mission slots.
+# These four flags are deliberately the only inputs here; compact and
+# counterplay missions use separate runtime flags and are not throttled.
+cannibalism_unified_player_mission_slots_available = {
+	OR = {
+		AND = {
+			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_counterwar_mission_active }
+		}
+		AND = {
+			has_country_flag = cannibalism_unified_command_mission_active
+			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_counterwar_mission_active }
+		}
+		AND = {
+			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
+			has_country_flag = cannibalism_unified_larder_mission_active
+			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_counterwar_mission_active }
+		}
+		AND = {
+			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
+			has_country_flag = cannibalism_unified_war_machine_mission_active
+			NOT = { has_country_flag = cannibalism_unified_counterwar_mission_active }
+		}
+		AND = {
+			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			has_country_flag = cannibalism_unified_counterwar_mission_active
+		}
+	}
+}
+
+cannibalism_unified_command_operation_slot_available = {
+	OR = {
+		has_country_flag = cannibalism_unified_command_mission_active
+		cannibalism_unified_player_mission_slots_available = yes
+	}
+}
+
+cannibalism_unified_larder_operation_slot_available = {
+	OR = {
+		has_country_flag = cannibalism_unified_larder_mission_active
+		cannibalism_unified_player_mission_slots_available = yes
+	}
+}
+
+cannibalism_unified_war_machine_operation_slot_available = {
+	OR = {
+		has_country_flag = cannibalism_unified_war_machine_mission_active
+		cannibalism_unified_player_mission_slots_available = yes
+	}
+}
+
+cannibalism_unified_counterwar_operation_slot_available = {
+	OR = {
+		has_country_flag = cannibalism_unified_counterwar_mission_active
+		cannibalism_unified_player_mission_slots_available = yes
+	}
+}
+
+cannibalism_unified_larder_rapid_route_is_current = {
+	has_country_flag = cannibalism_unified_larder_method_rapid
+	NOT = { OR = {
+		has_country_flag = cannibalism_unified_larder_method_managed
+		has_country_flag = cannibalism_unified_larder_method_mobile
+		has_country_flag = cannibalism_unified_larder_method_battlefield
+	} }
+}
+
+cannibalism_unified_larder_managed_route_is_current = {
+	has_country_flag = cannibalism_unified_larder_method_managed
+	NOT = { OR = {
+		has_country_flag = cannibalism_unified_larder_method_mobile
+		has_country_flag = cannibalism_unified_larder_method_battlefield
+	} }
+}
+
+cannibalism_unified_larder_mobile_route_is_current = {
+	has_country_flag = cannibalism_unified_larder_method_mobile
+	NOT = { has_country_flag = cannibalism_unified_larder_method_battlefield }
+}
+
+cannibalism_unified_larder_battlefield_route_is_current = {
+	has_country_flag = cannibalism_unified_larder_method_battlefield
+}
+
+cannibalism_unified_war_machine_foundation_phase_is_open = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	NOT = { OR = {
+		has_country_flag = cannibalism_unified_origin_specialist_recruitment_open
+		has_country_flag = cannibalism_unified_cannibal_legion_recruitment_open
+		has_country_flag = cannibalism_unified_bone_guard_recruitment_open
+	} }
+}
+
+cannibalism_unified_war_machine_recruitment_phase_is_open = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	NOT = { has_country_flag = cannibalism_unified_joint_army_operations_open }
+}
+
+cannibalism_unified_war_machine_operations_phase_is_open = {
+	cannibalism_unified_war_machine_category_is_visible = yes
+	has_country_flag = cannibalism_unified_joint_army_operations_open
+}
+
+cannibalism_unified_global_campaign_cell_phase_is_open = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_cell_category_open
+	NOT = { has_country_flag = cannibalism_unified_campaign_category_open }
+	NOT = { has_country_flag = cannibalism_unified_counterwar_category_open }
+}
+
+cannibalism_unified_global_campaign_campaign_phase_is_open = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_campaign_category_open
+	NOT = { has_country_flag = cannibalism_unified_counterwar_category_open }
+}
+
+cannibalism_unified_global_campaign_counterwar_phase_is_open = {
+	cannibalism_unified_global_campaign_category_is_visible = yes
+	has_country_flag = cannibalism_unified_counterwar_category_open
+}
+
 cannibalism_unified_terminal_decisions_are_open = {
 	exists = yes
 	tag = CBL
@@ -4609,6 +4739,34 @@ cannibalism_warlord_command_is_open = {
 	NOT = { has_global_flag = cannibalism_cleanup_complete }
 }
 
+# Warlord command actions are phased around the Evolution II hand-off. The
+# baseline keeps the six survival/recruitment actions together; network and
+# endgame flags then select one compact operational cluster at a time.
+cannibalism_warlord_command_baseline_phase_is_open = {
+	cannibalism_warlord_command_is_open = yes
+	NOT = { has_global_flag = cannibalism_evolution_ii_active }
+}
+
+cannibalism_warlord_command_network_phase_is_open = {
+	cannibalism_warlord_command_is_open = yes
+	has_global_flag = cannibalism_evolution_ii_active
+	NOT = { OR = {
+		has_country_flag = cannibalism_warlord_relocation_open
+		has_country_flag = cannibalism_warlord_alignment_endgame_open
+		has_country_flag = cannibalism_warlord_synchronized_attack_open
+	} }
+}
+
+cannibalism_warlord_command_endgame_phase_is_open = {
+	cannibalism_warlord_command_is_open = yes
+	has_global_flag = cannibalism_evolution_ii_active
+	OR = {
+		has_country_flag = cannibalism_warlord_relocation_open
+		has_country_flag = cannibalism_warlord_alignment_endgame_open
+		has_country_flag = cannibalism_warlord_synchronized_attack_open
+	}
+}
+
 cannibalism_state_is_warlord_consumption_territory = {
 	is_controlled_by = ROOT
 	OR = {
@@ -5001,6 +5159,25 @@ cannibalism_wendigo_command_is_open = {
 	NOT = { has_capitulated = yes }
 	has_event_target = cannibalism_wendigo_merge_host
 	tag = event_target:cannibalism_wendigo_merge_host
+}
+
+# Wendigo command cards are presented in three readable phases. Anchor setup
+# cards remain available through the countdown, while terminal-hunt cards take
+# over once the active hunt starts.
+cannibalism_wendigo_command_setup_phase_is_open = {
+	cannibalism_wendigo_command_is_open = yes
+	NOT = { has_country_flag = cannibalism_wendigo_countdown_active }
+}
+
+cannibalism_wendigo_command_countdown_phase_is_open = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_countdown_active
+	NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+}
+
+cannibalism_wendigo_command_terminal_phase_is_open = {
+	cannibalism_wendigo_command_is_open = yes
+	has_country_flag = cannibalism_wendigo_terminal_hunt_active
 }
 
 cannibalism_wendigo_can_pay_designate_anchor_cost = {
