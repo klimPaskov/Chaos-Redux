@@ -1,10 +1,10 @@
 # Cannibal Feast Guard runtime handoff
 
-Package status: complete; parent runtime wiring and live consumer validation pending.
+Package status: complete; parent runtime wiring installed; live consumer validation is not claimed.
 
-## Proposed runtime paths
+## Runtime paths
 
-Copy from this package into `gfx/models/units/014_cannibalism/cannibal_feast_guard/` without changing bytes:
+The parent-installed runtime package under `gfx/models/units/014_cannibalism/cannibal_feast_guard/` contains the exported mesh, all eight actions, and the 1024px DDS material maps without byte changes:
 
 - `export/mesh/cannibal_feast_guard.mesh`
 - all eight `export/anim/cannibal_feast_guard_*.anim`
@@ -26,6 +26,7 @@ Use installed `gfx/entities/units_infantry.asset#infantry_rifle_entity` as the e
 - Bind the sourced movement WAV at move/retreat footfall phases near frames 1 and 22.
 - Bind the sourced weapon swish near attack frames 28 and 56 and impact near frame 84. For support attack, use swish near frame 94 and impact near frame 140.
 - Bind the death vocal across frames 14–42. Selection/acknowledgement remains a voice consumer rather than an honest per-subunit sound.
+- Bind the CC0 training swish at frame 42 (`1.7500` seconds at 24 fps); the package-derived cue is copied from the documented Feast Cohort swish source and has its own runtime sound ID.
 - Audio provenance, licences, hashes, and transformations are in `evidence/audio_sources/ffprobe_and_hash_receipt.json`.
 
 ## Counter consumers
@@ -36,4 +37,4 @@ Register the existing bespoke counter files and tokens documented by `docs/plans
 - `GFX_unit_cannibal_feast_guard_icon_medium_white`
 - `GFX_unit_cannibal_feast_guard_icon_small`
 
-Parent owns file copies, `.asset`/entity definitions, GFX and sound definitions, action binding, live consumer inspection, and in-game validation. This package does not claim those steps.
+Parent wiring is installed in `gfx/entities/014_cannibalism_units.gfx`, `gfx/entities/014_cannibalism_units.asset`, and `sound/014_cannibalism_units_sound.asset`. Live consumer inspection and in-game validation are not claimed here.
