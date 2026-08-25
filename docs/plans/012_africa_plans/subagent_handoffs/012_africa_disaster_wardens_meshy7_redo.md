@@ -1,6 +1,6 @@
 # Event 012 Africa — Disaster Wardens Meshy 7 redo handoff
 
-Status: `blocked_provider_rig_failed_90_percent_refunded`.
+Status: `blocked_provider_rig_recovery_timeout_90_percent_provisional_reservation`.
 
 ## Current bounded Meshy 7 tranche — 2026-08-25
 
@@ -14,9 +14,11 @@ The named vanilla calibration file `refs/vanilla/asian_infantry.mesh` measures 7
 
 Rig task `01a038be-66f7-79aa-bd55-f9bd97eadc60` was first observed at 90% `IN_PROGRESS` after timeout and then reached terminal `FAILED` with `unexpected_error`, no download, and no action route. The final structured result consumed 0 credits and refunded the transient 5-credit estimate/lock; the observed live balance is 13, so the earlier timeout state and estimate remain historical evidence rather than final spend.
 
+One and only one failure-driven retry was then submitted as rig task `01a038d2-b191-7f51-baa0-dd00a1d41daf` against the accepted geometry. It remains 90% `IN_PROGRESS` after the bounded wait, has no rig or walk/run download, and has no terminal credit result; the current balance is 8 with a provisional 5-credit reservation. Provider work is stopped at this boundary, and no custom animation or local rig/action fallback was attempted.
+
 All required actions, export, reimport, and runtime promotion remain blocked because no terminal rig or approved action source exists; no `.mesh` or `.anim` runtime candidate was promoted and no in-game completion is claimed.
 
-The package's current attributed total is 180 credits, comprising the 150 credits of quarantined old lineage and the 30-credit active generation; no further generation or animation spend followed the failed rig task.
+The package's confirmed attributed total is 180 credits, comprising the 150 credits of quarantined old lineage and the 30-credit active generation. The retry's 5-credit estimate remains provisional until Meshy returns a terminal result.
 
 The 2026-08-24 sections below are historical evidence only and are superseded by this current state; their task IDs, artifacts, hashes, and rejection reasons remain quarantined and must not be promoted.
 
