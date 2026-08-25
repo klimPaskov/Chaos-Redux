@@ -26,11 +26,12 @@ def require(text: str, pattern: str, label: str) -> None:
 
 
 def main() -> int:
-    effects = read("common/scripted_effects/006_independence_wave_form16_effects.txt")
-    triggers = read("common/scripted_triggers/006_independence_wave_form16_triggers.txt")
+    effects = read("common/scripted_effects/006_independence_wave_formable_registry_effects.txt")
+    triggers = read("common/scripted_triggers/006_independence_wave_formable_registry_triggers.txt")
     events = read("events/006_independence_wave_support_events.txt")
     decisions = read("common/decisions/006_independence_wave_transcaucasus_decisions.txt")
     constants = read("common/script_constants/006_independence_wave_constants_registry.txt")
+    effects_code = re.sub(r"(?m)^\s*#.*(?:\n|$)", "", effects)
 
     # The family remains late-bound to exactly the three admitted vanilla
     # carriers and their exact Transcaucasian state anchors.
@@ -38,7 +39,7 @@ def main() -> int:
         require(triggers, rf"\b{tag}\s*=\s*\{{", f"member scope {tag}")
         require(effects, rf"\b{tag}\s*=\s*\{{", f"integration scope {tag}")
     for state in ("229", "230", "231"):
-        require(effects, rf"\b{state}\s*=\s*\{{\s*transfer_state_to\s*=\s*ROOT", f"state transfer {state}")
+        require(effects_code, rf"\b{state}\s*=\s*\{{\s*transfer_state_to\s*=\s*ROOT", f"state transfer {state}")
         require(decisions, rf"\b{state}\s*=\s*\{{\s*is_owned_and_controlled_by\s*=\s*ROOT", f"state readiness {state}")
 
     # Readiness and commit must carry identity, territory, member policy,

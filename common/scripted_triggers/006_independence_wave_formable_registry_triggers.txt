@@ -20,6 +20,776 @@ has_valid_independence_wave_formable_family_selection = {
 	}
 }
 
+# ============================================================================
+# Merged formable-family scripted triggers follow below.
+# ============================================================================
+
+# ============================================================================
+# Merged source: common/scripted_triggers/006_independence_wave_form07_triggers.txt
+# Source blocks and identifiers are preserved; this is a file-layout change only.
+# ============================================================================
+# ============================================================================
+
+@FORM07_CAT_ANCHOR = 165
+# The installed-map compact Basque anchor is País Vasco (792). Navarra (172)
+# and French Basque (806) remain optional extension objectives, not the compact
+# release/readiness anchor.
+@FORM07_NAV_ANCHOR = 792
+@FORM07_GLC_ANCHOR = 171
+# CHAOS REDUX - EVENT 006 FORM-07 IBERIAN FEDERATION TRIGGERS
+# ============================================================================
+# Overview:
+# - Binds the reserved Iberian family to the exact CAT/NAV/GLC package IDs,
+#   installed anchors, and live Event 006 member records.
+# - Keeps the founding carrier and route gates separate from identity review;
+#   a carrier can never pass the transaction without the explicit, reviewed
+#   FORM-07 X-tag and flag contract.
+# - Reuses the shared frozen invitation ledger and bounded active-country
+#   registry. No trigger performs an all-country or periodic scan.
+# ============================================================================
+
+# Country scope. This is the only member-candidate allowlist for FORM-07.
+# Package IDs and original tags are both required so a reused tag or a stale
+# package variable cannot silently enter the Iberian ledger.
+is_independence_wave_form07_member_candidate = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.iberian_federation }
+	has_country_flag = independence_wave_package_setup_complete
+	NOT = { has_country_flag = independence_wave_form07_autonomous_member }
+	OR = {
+		AND = {
+			original_tag = CAT
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_014 }
+		}
+		AND = {
+			original_tag = NAV
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_013 }
+		}
+		AND = {
+			original_tag = GLC
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_015 }
+		}
+	}
+}
+
+# Country scope. The anchor crosswalk is exact and remains ownership/control
+# authoritative. Capital movement is deliberately left to the future identity
+# adapter, because no reviewed FORM-07 X identity currently exists.
+has_independence_wave_form07_exact_member_anchor = {
+	is_independence_wave_form07_member_candidate = yes
+	OR = {
+		AND = {
+			original_tag = CAT
+			check_variable = { independence_wave_anchor_state = @FORM07_CAT_ANCHOR }
+			owns_state = @FORM07_CAT_ANCHOR
+			controls_state = @FORM07_CAT_ANCHOR
+		}
+		AND = {
+			original_tag = NAV
+			check_variable = { independence_wave_anchor_state = @FORM07_NAV_ANCHOR }
+			owns_state = @FORM07_NAV_ANCHOR
+			controls_state = @FORM07_NAV_ANCHOR
+		}
+		AND = {
+			original_tag = GLC
+			check_variable = { independence_wave_anchor_state = @FORM07_GLC_ANCHOR }
+			owns_state = @FORM07_GLC_ANCHOR
+			controls_state = @FORM07_GLC_ANCHOR
+		}
+	}
+}
+
+# Country scope. FORM-07 admits only the two researched civic routes; the
+# traditional, emergency, patron-client, and radical route families remain
+# outside this adapter.
+has_independence_wave_form07_compatible_route = {
+	OR = {
+		has_independence_wave_constitutional_route = yes
+		has_independence_wave_popular_council_route = yes
+	}
+}
+
+# Candidate-country scope with ROOT as the carrier. Route compatibility is a
+# bilateral gate for invitations and integration, not a culture or geography
+# inference.
+has_independence_wave_form07_route_compatible_with_root = {
+	has_independence_wave_form07_compatible_route = yes
+	ROOT = { has_independence_wave_form07_compatible_route = yes }
+}
+
+# Country scope. This is the exact carrier proof used by the generic founding
+# invitation and proposal validators.
+is_independence_wave_form07_registered_carrier = {
+	is_independence_wave_form07_member_candidate = yes
+	has_independence_wave_form07_exact_member_anchor = yes
+	independence_wave_formable_profile_matches_selected_family = yes
+	has_country_flag = independence_wave_formable_profile_loaded
+	is_independence_wave_regional_power = yes
+	NOT = { has_country_flag = independence_wave_formable_active }
+	has_independence_wave_form07_compatible_route = yes
+}
+
+has_independence_wave_form07_exact_carrier_anchor = {
+	is_independence_wave_form07_registered_carrier = yes
+	NOT = { has_global_flag = independence_wave_form07_identity_in_use }
+}
+
+# Country scope. The family registry mask is the source of method support;
+# this trigger narrows it to FORM-07's negotiated and revolutionary methods.
+has_independence_wave_form07_method_compatibility = {
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation }
+	OR = {
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+			has_country_flag = independence_wave_formable_supports_negotiated_method
+		}
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.revolutionary_union }
+			has_country_flag = independence_wave_formable_supports_revolutionary_method
+		}
+	}
+}
+
+# Country scope. Revolutionary union is voluntary-only; negotiated federation
+# may use voluntary membership or a unanimous compact.
+has_independence_wave_form07_consent_compatibility = {
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation }
+	OR = {
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+			OR = {
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+				check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+			}
+		}
+		AND = {
+			check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.revolutionary_union }
+			check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+		}
+	}
+}
+
+# Candidate-country scope with ROOT as the proposing carrier. The frozen
+# invitation snapshot is the only accepted consent proof for a FORM-07 member.
+has_independence_wave_form07_declared_consent = {
+	is_independence_wave_form07_member_candidate = yes
+	has_independence_wave_form07_exact_member_anchor = yes
+	has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+	check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.iberian_federation }
+}
+
+# Candidate-country scope with ROOT as the carrier. This mirrors the shared
+# Event 006 diplomatic connection contract and prevents a disconnected anchor
+# from being staged as an integrated or autonomous member.
+has_independence_wave_form07_connection_to_root = {
+	exists = yes
+	OR = {
+		tag = ROOT
+		is_neighbor_of = ROOT
+		is_in_faction_with = ROOT
+		has_non_aggression_pact_with = ROOT
+		has_military_access_to = ROOT
+		gives_military_access_to = ROOT
+		has_guaranteed = ROOT
+		is_guaranteed_by = ROOT
+	}
+	NOT = { has_war_with = ROOT }
+}
+
+# Country scope. CAT, NAV, and GLC are the reviewed installed-map corridor.
+# Requiring all three exact anchors keeps the family row fail-closed while NAV
+# and GLC package adapters remain outside central content attestation; future
+# package additions must extend this explicit corridor rather than weakening it
+# to a region scan.
+has_independence_wave_form07_corridor_proof = {
+	CAT = {
+		is_independence_wave_form07_member_candidate = yes
+		has_independence_wave_form07_exact_member_anchor = yes
+	}
+	NAV = {
+		is_independence_wave_form07_member_candidate = yes
+		has_independence_wave_form07_exact_member_anchor = yes
+	}
+	GLC = {
+		is_independence_wave_form07_member_candidate = yes
+		has_independence_wave_form07_exact_member_anchor = yes
+	}
+}
+
+# Family identity contract. These three flags are intentionally not set by
+# this tranche: no source-approved X tag or complete FORM-07 flag triplet is
+# present. The generic readiness gate therefore remains false.
+has_independence_wave_form07_identity_runtime_contract = {
+	has_country_flag = independence_wave_form07_identity_attested
+	has_country_flag = independence_wave_form07_x_tag_reserved
+	has_country_flag = independence_wave_form07_flag_package_ready
+}
+
+can_independence_wave_form07_register_readiness = {
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.iberian_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+	has_independence_wave_form07_identity_runtime_contract = yes
+}
+
+# Country scope. This is intentionally stricter than the shared readiness
+# flags: identity evidence, exact package corridor, route, method, consent,
+# and frozen ledger proof must all be present before a mutation can proceed.
+has_independence_wave_form07_runtime_readiness = {
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.iberian_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+	has_independence_wave_form07_identity_runtime_contract = yes
+	has_country_flag = independence_wave_formable_territory_adapter_ready
+	has_country_flag = independence_wave_formable_x_tag_reserved
+	has_country_flag = independence_wave_formable_flag_package_ready
+	has_country_flag = independence_wave_formable_identity_adapter_ready
+	has_country_flag = independence_wave_formable_integration_adapter_ready
+	has_country_flag = independence_wave_formable_member_policy_audited
+	has_country_flag = independence_wave_form07_readiness_attested
+	has_independence_wave_form07_exact_carrier_anchor = yes
+	has_independence_wave_form07_method_compatibility = yes
+	has_independence_wave_form07_consent_compatibility = yes
+	has_independence_wave_form07_corridor_proof = yes
+}
+
+# Country scope. This helper is the commit-specific adapter proof consumed by
+# the generic commit allowlist. It deliberately does not assert identity
+# availability itself; the runtime readiness contract above does that without
+# creating a recursion through has_independence_wave_formable_commit_readiness.
+has_independence_wave_form07_runtime_commit_proof = {
+	has_independence_wave_form07_runtime_readiness = yes
+	has_valid_independence_wave_formable_founding_proposal = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	can_independence_wave_formable_pass_congress_vote = yes
+	has_independence_wave_form07_route_compatible_with_root = yes
+}
+
+
+
+# ============================================================================
+# Merged source: common/scripted_triggers/006_independence_wave_form08_triggers.txt
+# Source blocks and identifiers are preserved; this is a file-layout change only.
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-08 DANUBIAN CONFEDERATION TRIGGERS
+# ============================================================================
+# FORM-08 is a negotiated Danube-corridor federation. The helper currently
+# admits only the researched selectable Event 006 anchors (Transylvania and
+# Banat). Vojvodina remains a vanilla HUN-origin overlay and Slavonia has no
+# unique installed-map anchor, so neither is promoted into this ledger. Every
+# member stays sovereign until an explicit consent row authorizes integration,
+# and the family remains fail-closed until its minimum three members, consents,
+# and unique anchors are present in the frozen registry ledger.
+# ============================================================================
+
+is_independence_wave_form08_eligible_member = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_form0124_autonomous_member }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.danubian_confederation }
+	has_variable = independence_wave_anchor_state
+	OR = {
+		AND = {
+			original_tag = TRA
+			check_variable = { independence_wave_anchor_state = 84 }
+			owns_state = 84
+			controls_state = 84
+			84 = { is_capital = yes }
+		}
+		AND = {
+			original_tag = AXX
+			check_variable = { independence_wave_anchor_state = 82 }
+			owns_state = 82
+			controls_state = 82
+			82 = { is_capital = yes }
+		}
+	}
+}
+
+has_independence_wave_form08_exact_carrier_anchor = {
+	is_independence_wave_form08_eligible_member = yes
+	has_independence_wave_form08_identity_clearance = yes
+}
+
+# Vanilla HUN, Habsburg, and Austria-Hungary routes can already claim the
+# HUN_EMPIRE cosmetic identity. FORM-08 must not silently reuse that identity
+# while another country is carrying it, so admission is fail-closed until the
+# installed world has no live carrier and the vanilla formation flag is clear.
+has_independence_wave_form08_identity_clearance = {
+	NOT = { has_global_flag = independence_wave_form08_hun_empire_identity_in_use }
+	NOT = { has_global_flag = form_austria_hungary_flag }
+	NOT = { any_country = { has_cosmetic_tag = HUN_EMPIRE } }
+}
+
+is_independence_wave_form08_member = {
+	is_independence_wave_form08_eligible_member = yes
+}
+
+has_independence_wave_form08_member_candidate = {
+	is_independence_wave_form08_member = yes
+	NOT = { tag = ROOT }
+}
+
+has_independence_wave_form08_diplomatic_connection_to_inviting_carrier = {
+	has_pending_independence_wave_formable_founding_invitation = yes
+	NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+	OR = {
+		is_in_faction_with = var:independence_wave_formable_inviting_carrier
+		has_non_aggression_pact_with = var:independence_wave_formable_inviting_carrier
+		has_military_access_to = var:independence_wave_formable_inviting_carrier
+		gives_military_access_to = var:independence_wave_formable_inviting_carrier
+		has_guaranteed = var:independence_wave_formable_inviting_carrier
+		is_guaranteed_by = var:independence_wave_formable_inviting_carrier
+	}
+}
+
+has_independence_wave_form08_corridor_ready = {
+	has_independence_wave_form08_exact_carrier_anchor = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	check_variable = {
+		var = independence_wave_formable_member_count
+		value = constant:independence_wave_formable_tuning.minimum_member_anchors
+		compare = greater_than_or_equals
+	}
+}
+
+has_independence_wave_form08_strict_mutation_preconditions = {
+	has_independence_wave_form08_exact_carrier_anchor = yes
+	has_independence_wave_form08_corridor_ready = yes
+	has_valid_independence_wave_formable_founding_proposal = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	has_independence_wave_formable_commit_readiness = yes
+}
+
+has_independence_wave_form08_runtime_commit_proof = {
+	has_independence_wave_form08_strict_mutation_preconditions = yes
+	check_variable = {
+		var = independence_wave_formable_member_count
+		value = constant:independence_wave_formable_registry.danubian_confederation.minimum_members
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_consent_count
+		value = constant:independence_wave_formable_registry.danubian_confederation.minimum_consents
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_anchor_count
+		value = constant:independence_wave_formable_registry.danubian_confederation.minimum_anchors
+		compare = greater_than_or_equals
+	}
+}
+
+is_independence_wave_form08_postformation_carrier = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_form08_confederation_carrier
+	has_country_flag = independence_wave_form08_post_formation_active
+	has_cosmetic_tag = HUN_EMPIRE
+}
+
+can_pay_independence_wave_form08_administration_strategic_cost = {
+	is_independence_wave_form08_postformation_carrier = yes
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
+	has_stability > constant:independence_wave_decision_cost.stability_standard
+	command_power > constant:independence_wave_decision_cost.form08_administration_strategic_command_power_gate
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+	OR = {
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+	}
+}
+
+can_pay_independence_wave_form08_congress_cost = {
+	can_pay_independence_wave_form08_administration_strategic_cost = yes
+}
+
+can_pay_independence_wave_form08_arbitration_cost = {
+	is_independence_wave_form08_postformation_carrier = yes
+	can_pay_independence_wave_security_standard_cost = yes
+}
+
+can_pay_independence_wave_form08_transport_cost = {
+	can_pay_independence_wave_form08_administration_strategic_cost = yes
+}
+
+
+
+# ============================================================================
+# Merged source: common/scripted_triggers/006_independence_wave_form09_triggers.txt
+# Source blocks and identifiers are preserved; this is a file-layout change only.
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-09 BALKAN FEDERATION TRIGGERS
+# ============================================================================
+# FORM-09 admits only active, fully prepared Event 006 Balkan package rows.
+# BBX (IW-028) and BAX (IW-027) are the only reviewed carrier identities.
+# BLX is their X-ending cosmetic federal identity. BOS (IW-029), MAC (IW-026),
+# MNT (IW-030), and KOS (IW-031) may be invited as sovereign members without
+# selecting family 9.
+# ============================================================================
+
+is_independence_wave_form09_eligible_member = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	OR = {
+		AND = {
+			is_independence_wave_bbx_package = yes
+			has_complete_independence_wave_iw_028_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bbx }
+			owns_state = constant:independence_wave_form09_anchor.bbx
+			controls_state = constant:independence_wave_form09_anchor.bbx
+			185 = { is_capital = yes }
+		}
+		AND = {
+			is_independence_wave_bax_package = yes
+			has_complete_independence_wave_iw_027_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bax }
+			owns_state = constant:independence_wave_form09_anchor.bax
+			controls_state = constant:independence_wave_form09_anchor.bax
+			184 = { is_capital = yes }
+		}
+		AND = {
+			is_independence_wave_bos_package = yes
+			has_complete_independence_wave_iw_029_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bos }
+			owns_state = constant:independence_wave_form09_anchor.bos
+			controls_state = constant:independence_wave_form09_anchor.bos
+			104 = { is_capital = yes }
+		}
+		AND = {
+			is_independence_wave_mac_package = yes
+			has_complete_independence_wave_iw_026_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.mac }
+			owns_state = constant:independence_wave_form09_anchor.mac
+			controls_state = constant:independence_wave_form09_anchor.mac
+			106 = { is_capital = yes }
+		}
+		AND = {
+			is_independence_wave_mnt_package = yes
+			has_complete_independence_wave_iw_030_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.mnt }
+			owns_state = constant:independence_wave_form09_anchor.mnt
+			controls_state = constant:independence_wave_form09_anchor.mnt
+			105 = { is_capital = yes }
+		}
+		AND = {
+			is_independence_wave_kos_package = yes
+			has_complete_independence_wave_iw_031_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			has_variable = independence_wave_anchor_state
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.kos }
+			owns_state = constant:independence_wave_form09_anchor.kos
+			controls_state = constant:independence_wave_form09_anchor.kos
+			802 = { is_capital = yes }
+		}
+	}
+}
+
+has_independence_wave_form09_member_candidate = {
+	is_independence_wave_form09_eligible_member = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+}
+
+is_independence_wave_form09_member = {
+	OR = {
+		has_independence_wave_form09_exact_carrier_anchor = yes
+		is_independence_wave_form09_eligible_member = yes
+	}
+}
+
+has_independence_wave_form09_exact_carrier_anchor = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	has_country_flag = independence_wave_formable_family_selected
+	has_variable = independence_wave_anchor_state
+	has_variable = independence_wave_formable_family
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.balkan_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
+	OR = {
+		AND = {
+			is_independence_wave_bbx_package = yes
+			has_complete_independence_wave_iw_028_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bbx }
+			owns_state = constant:independence_wave_form09_anchor.bbx
+			controls_state = constant:independence_wave_form09_anchor.bbx
+			185 = { is_capital = yes }
+		}
+		AND = {
+			is_independence_wave_bax_package = yes
+			has_complete_independence_wave_iw_027_package_setup = yes
+			has_independence_wave_force_package_for_current_generation = yes
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bax }
+			owns_state = constant:independence_wave_form09_anchor.bax
+			controls_state = constant:independence_wave_form09_anchor.bax
+			184 = { is_capital = yes }
+		}
+	}
+}
+
+has_independence_wave_form09_connection_to_inviting_carrier = {
+	has_pending_independence_wave_formable_founding_invitation = yes
+	NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+	OR = {
+		is_in_faction_with = var:independence_wave_formable_inviting_carrier
+		has_non_aggression_pact_with = var:independence_wave_formable_inviting_carrier
+		has_military_access_to = var:independence_wave_formable_inviting_carrier
+		gives_military_access_to = var:independence_wave_formable_inviting_carrier
+		has_guaranteed = var:independence_wave_formable_inviting_carrier
+		is_guaranteed_by = var:independence_wave_formable_inviting_carrier
+		check_variable = { var = independence_wave_region value = var:independence_wave_formable_inviting_carrier.independence_wave_region compare = equals }
+	}
+}
+
+should_independence_wave_form09_ai_consent_to_root = {
+	is_ai = yes
+	has_independence_wave_form09_connection_to_inviting_carrier = yes
+	is_independence_wave_recognized_or_later = yes
+	NOT = { has_independence_wave_severe_instability = yes }
+}
+
+has_independence_wave_form09_identity_clearance = {
+	has_independence_wave_form09_exact_carrier_anchor = yes
+	NOT = { has_cosmetic_tag = UBF }
+	OR = {
+		has_cosmetic_tag = BLX
+		AND = {
+			NOT = { has_global_flag = independence_wave_form09_blx_identity_in_use }
+			NOT = { any_country = { has_cosmetic_tag = BLX } }
+		}
+	}
+}
+
+has_independence_wave_form09_visible_identity = {
+	has_country_flag = independence_wave_form09_blx_identity_attested
+	has_country_flag = independence_wave_formable_flag_package_ready
+	has_country_flag = independence_wave_formable_identity_adapter_ready
+}
+
+has_independence_wave_form09_strict_mutation_preconditions = {
+	has_independence_wave_form09_identity_clearance = yes
+	has_independence_wave_form09_visible_identity = yes
+	independence_wave_formable_profile_matches_selected_family = yes
+	has_country_flag = independence_wave_formable_discovered
+	has_valid_independence_wave_formable_founding_proposal = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	has_independence_wave_formable_commit_readiness = yes
+	check_variable = {
+		var = independence_wave_formable_member_count
+		value = constant:independence_wave_formable_registry.balkan_federation.minimum_members
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_consent_count
+		value = constant:independence_wave_formable_registry.balkan_federation.minimum_consents
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_anchor_count
+		value = constant:independence_wave_formable_registry.balkan_federation.minimum_anchors
+		compare = greater_than_or_equals
+	}
+}
+
+has_independence_wave_form09_runtime_commit_proof = {
+	has_independence_wave_form09_strict_mutation_preconditions = yes
+}
+
+is_independence_wave_form09_postformation_carrier = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_form09_carrier
+	has_cosmetic_tag = BLX
+	has_variable = independence_wave_formable_family
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.balkan_federation }
+}
+
+
+
+# ============================================================================
+# Merged source: common/scripted_triggers/006_independence_wave_form16_triggers.txt
+# Source blocks and identifiers are preserved; this is a file-layout change only.
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - FORM-16 TRANSCAUCASIAN FEDERATION TRIGGERS
+# ============================================================================
+
+has_independence_wave_form16_runtime_family = {
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
+}
+
+# Candidate-country scope with ROOT as the inviting carrier. FORM-16 AI
+# consent is never inferred from regional proximity alone: the member must
+# have a controlled-border or an explicit diplomatic/access connection to the
+# carrier and must be at peace with it.
+has_independence_wave_form16_connection_to_root = {
+	exists = yes
+	NOT = { has_war_with = ROOT }
+	OR = {
+		tag = ROOT
+		is_neighbor_of = ROOT
+		is_in_faction_with = ROOT
+		has_non_aggression_pact_with = ROOT
+		has_military_access_to = ROOT
+		gives_military_access_to = ROOT
+		has_guaranteed = ROOT
+		is_guaranteed_by = ROOT
+	}
+}
+
+# Carrier-country scope. The receipt is recorded before formation and is then
+# reused after the member countries have been absorbed, when their tags are no
+# longer addressable as independent scopes.
+has_independence_wave_form16_member_connection_proof = {
+	ARM = { has_independence_wave_form16_connection_to_root = yes }
+	GEO = { has_independence_wave_form16_connection_to_root = yes }
+	AZR = { has_independence_wave_form16_connection_to_root = yes }
+}
+# Family-specific readiness, discovery, member-policy, and commit gates for
+# the late-binding Transcaucasian federation. The generic formable registry
+# supplies the congress transaction; these predicates keep the member set,
+# identity, anchors, generation, and rollback receipt exact.
+# ============================================================================
+
+is_independence_wave_form16_carrier = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.transcaucasian_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+	has_independence_wave_transcaucasus_focus_contract = yes
+	has_independence_wave_form16_all_members_live = yes
+	has_independence_wave_form16_member_peace = yes
+	has_independence_wave_form16_identity_clearance = yes
+	has_independence_wave_form16_route_compatibility = yes
+	has_independence_wave_form16_arbitration_receipt = yes
+	NOT = { has_country_flag = independence_wave_formable_active }
+	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+}
+
+has_independence_wave_form16_member_policy = {
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
+	OR = {
+		check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+		check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.league_transformation }
+	}
+	check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+	ARM = { has_independence_wave_form16_member_candidate = yes }
+	GEO = { has_independence_wave_form16_member_candidate = yes }
+	AZR = { has_independence_wave_form16_member_candidate = yes }
+}
+
+has_independence_wave_form16_discovery_gate = {
+	is_independence_wave_form16_carrier = yes
+	has_country_flag = independence_wave_unlock_formable_discovery
+	has_country_flag = independence_wave_formable_family_registered
+	has_country_flag = independence_wave_formable_profile_loaded
+	has_independence_wave_form16_member_policy = yes
+}
+
+has_independence_wave_form16_current_receipts = {
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_formable_proposal_sequence
+	has_variable = independence_wave_formable_profile_family
+	has_country_flag = independence_wave_form16_readiness_receipt
+	has_country_flag = independence_wave_formable_member_policy_audited
+	has_country_flag = independence_wave_formable_territory_adapter_ready
+	has_country_flag = independence_wave_formable_x_tag_reserved
+	has_country_flag = independence_wave_formable_flag_package_ready
+	has_country_flag = independence_wave_formable_identity_adapter_ready
+	has_country_flag = independence_wave_formable_integration_adapter_ready
+}
+
+has_independence_wave_form16_commit_readiness = {
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
+	has_country_flag = independence_wave_formable_profile_loaded
+	has_independence_wave_form16_all_members_live = yes
+	has_independence_wave_form16_member_peace = yes
+	has_independence_wave_form16_identity_clearance = yes
+	has_independence_wave_form16_route_compatibility = yes
+	has_independence_wave_form16_arbitration_receipt = yes
+	has_independence_wave_form16_member_policy = yes
+	has_independence_wave_form16_current_receipts = yes
+}
+
+has_independence_wave_form16_runtime_commit_prevalidation = {
+	independence_wave_formable_profile_matches_selected_family = yes
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.transcaucasian_federation }
+	has_independence_wave_form16_all_members_live = yes
+	has_independence_wave_form16_member_peace = yes
+	OR = {
+		has_independence_wave_form16_identity_clearance = yes
+		has_country_flag = independence_wave_form16_identity_committed
+	}
+	has_independence_wave_form16_route_compatibility = yes
+	has_independence_wave_form16_arbitration_receipt = yes
+	has_country_flag = independence_wave_formable_mutation_prevalidated
+	has_country_flag = independence_wave_formable_territory_adapter_ready
+	has_country_flag = independence_wave_formable_member_policy_audited
+	NOT = { has_country_flag = independence_wave_formable_active }
+}
+
+has_independence_wave_form16_runtime_commit_proof = {
+	has_independence_wave_form16_runtime_commit_prevalidation = yes
+	has_independence_wave_form16_commit_readiness = yes
+	has_country_flag = independence_wave_formable_transaction_ready
+	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.formation_ready }
+	can_independence_wave_formable_pass_congress_vote = yes
+}
+
+has_independence_wave_form16_ai_gate = {
+	OR = {
+		AND = {
+			is_independence_wave_form16_carrier = yes
+			has_independence_wave_form16_member_connection_proof = yes
+			has_independence_wave_form16_member_peace = yes
+			has_independence_wave_form16_route_compatibility = yes
+			has_independence_wave_form16_arbitration_receipt = yes
+		}
+		AND = {
+			has_country_flag = independence_wave_formable_active
+			has_independence_wave_form16_runtime_family = yes
+			has_country_flag = independence_wave_form16_postformation_initialized
+			has_country_flag = independence_wave_form16_ai_connection_receipt
+			check_variable = { var = independence_wave_form16_ai_connection_generation value = independence_wave_generation_id compare = equals }
+			has_independence_wave_form16_route_compatibility = yes
+			has_independence_wave_form16_arbitration_receipt = yes
+		}
+	}
+}
+
+
+
 independence_wave_formable_profile_matches_selected_family = {
 	has_valid_independence_wave_formable_family_selection = yes
 	has_country_flag = independence_wave_formable_profile_loaded
