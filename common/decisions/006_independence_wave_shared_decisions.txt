@@ -1,3 +1,245 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD = 2
+# ============================================================================
+# CHAOS REDUX - EVENT 006 EVOLUTION INCIDENT DECISIONS
+# ============================================================================
+# One paid, stage-gated incident action per accepted evolution. The timer
+# represents the delegation, procurement, or field preparation needed before
+# the player resolves the incident event. Flags are generation-scoped by the
+# Event 006 reset effect, so reused API tags can participate in later waves.
+# ============================================================================
+
+independence_wave_evolution_incident_category = {
+	independence_wave_replicable_institutions_incident = {
+		name = independence_wave_replicable_institutions_incident
+		desc = independence_wave_replicable_institutions_incident_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_active_country = yes
+			has_global_flag = independence_wave_evolution_replicable_independence_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_1 }
+			NOT = { has_country_flag = independence_wave_evolution_replicable_incident_pending }
+			NOT = { has_country_flag = independence_wave_evolution_replicable_institution_compact }
+			NOT = { has_country_flag = independence_wave_evolution_replicable_recognition_campaign }
+		}
+		available = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_decision_pay_administration_standard = yes
+			set_country_flag = independence_wave_evolution_replicable_incident_pending
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					NOT = { has_global_flag = events_log_disabled_evolution_6_21_1 }
+				}
+				country_event = { id = chaosx.nr6.360 }
+			}
+			else = { clr_country_flag = independence_wave_evolution_replicable_incident_pending }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_1
+			}
+		}
+		cancel_effect = { clr_country_flag = independence_wave_evolution_replicable_incident_pending }
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_disputed_legitimacy = yes }
+		}
+	}
+
+	independence_wave_dormant_identity_incident = {
+		name = independence_wave_dormant_identity_incident
+		desc = independence_wave_dormant_identity_incident_desc
+		icon = GFX_decision_independence_wave_recognition_actions
+		visible = {
+			is_independence_wave_active_country = yes
+			has_global_flag = independence_wave_evolution_dormant_nations_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_2 }
+			NOT = { has_country_flag = independence_wave_evolution_dormant_incident_pending }
+			NOT = { has_country_flag = independence_wave_evolution_dormant_charter_settlement }
+			NOT = { has_country_flag = independence_wave_evolution_dormant_pluralist_compact }
+		}
+		available = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = {
+			independence_wave_decision_pay_diplomatic_standard = yes
+			set_country_flag = independence_wave_evolution_dormant_incident_pending
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					NOT = { has_global_flag = events_log_disabled_evolution_6_21_2 }
+				}
+				country_event = { id = chaosx.nr6.361 }
+			}
+			else = { clr_country_flag = independence_wave_evolution_dormant_incident_pending }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_2
+			}
+		}
+		cancel_effect = { clr_country_flag = independence_wave_evolution_dormant_incident_pending }
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_formable_identity_discovered }
+		}
+	}
+
+	independence_wave_armed_border_incident = {
+		name = independence_wave_armed_border_incident
+		desc = independence_wave_armed_border_incident_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_active_country = yes
+			has_global_flag = independence_wave_evolution_armed_birth_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_3 }
+			NOT = { has_country_flag = independence_wave_evolution_armed_incident_pending }
+			NOT = { has_country_flag = independence_wave_evolution_armed_civilian_command }
+			NOT = { has_country_flag = independence_wave_evolution_armed_frontier_mobilization }
+		}
+		available = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_security_major_cost = yes }
+		custom_cost_text = independence_wave_cost_security_major
+		days_remove = constant:independence_wave_decision_duration.extended
+		complete_effect = {
+			independence_wave_decision_pay_security_major = yes
+			set_country_flag = independence_wave_evolution_armed_incident_pending
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					NOT = { has_global_flag = events_log_disabled_evolution_6_21_3 }
+				}
+				country_event = { id = chaosx.nr6.362 }
+			}
+			else = { clr_country_flag = independence_wave_evolution_armed_incident_pending }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_3
+			}
+		}
+		cancel_effect = { clr_country_flag = independence_wave_evolution_armed_incident_pending }
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_congress_charter_incident = {
+		name = independence_wave_congress_charter_incident
+		desc = independence_wave_congress_charter_incident_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_active_country = yes
+			has_global_flag = independence_wave_evolution_sovereign_congress_active
+			has_global_flag = independence_wave_shared_strategic_problem
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_4 }
+			NOT = { has_country_flag = independence_wave_evolution_congress_incident_pending }
+			NOT = { has_country_flag = independence_wave_evolution_congress_rights_charter }
+			NOT = { has_country_flag = independence_wave_evolution_congress_secretariat_compromise }
+		}
+		available = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
+		days_remove = constant:independence_wave_decision_duration.strategic
+		complete_effect = {
+			independence_wave_decision_pay_strategic = yes
+			set_country_flag = independence_wave_evolution_congress_incident_pending
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					NOT = { has_global_flag = events_log_disabled_evolution_6_21_4 }
+				}
+				country_event = { id = chaosx.nr6.363 }
+			}
+			else = { clr_country_flag = independence_wave_evolution_congress_incident_pending }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_4
+			}
+		}
+		cancel_effect = { clr_country_flag = independence_wave_evolution_congress_incident_pending }
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_league_founder }
+		}
+	}
+
+	independence_wave_open_sovereignty_incident = {
+		name = independence_wave_open_sovereignty_incident
+		desc = independence_wave_open_sovereignty_incident_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			is_independence_wave_active_country = yes
+			has_global_flag = independence_wave_evolution_open_sovereignty_active
+			NOT = { has_global_flag = events_log_disabled_evolution_6_21_5 }
+			NOT = { has_country_flag = independence_wave_evolution_open_incident_pending }
+			NOT = { has_country_flag = independence_wave_evolution_open_synchronized_claims }
+			NOT = { has_country_flag = independence_wave_evolution_open_containment_diplomacy }
+		}
+		available = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = @CR_SC_INDEPENDENCE_WAVE_DECISION_COST_CIVILIAN_FACTORY_STANDARD }
+		days_remove = constant:independence_wave_decision_duration.strategic
+		complete_effect = {
+			independence_wave_decision_pay_strategic = yes
+			set_country_flag = independence_wave_evolution_open_incident_pending
+		}
+		remove_effect = {
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					NOT = { has_global_flag = events_log_disabled_evolution_6_21_5 }
+				}
+				country_event = { id = chaosx.nr6.364 }
+			}
+			else = { clr_country_flag = independence_wave_evolution_open_incident_pending }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				has_global_flag = events_log_disabled_evolution_6_21_5
+			}
+		}
+		cancel_effect = { clr_country_flag = independence_wave_evolution_open_incident_pending }
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_open_sovereignty_host_pressure }
+		}
+	}
+}
+
+# ============================================================================
+# SOURCE: 006_independence_wave_rival_bloc_decisions.txt
+# ============================================================================
+
 # ============================================================================
 # CHAOS REDUX - EVENT 006 RIVAL BLOC DECISIONS
 # ============================================================================
