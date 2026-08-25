@@ -1,10 +1,10 @@
 # Alien infantry runtime handoff
 
-Status: **blocked — pose-correct V8 Meshy R2 rig passed; the parent-approved KayKit CC0 one-handed aim/shoot/reload actions are exported and reimported on a 30k PDX-material candidate, but runtime acceptance still waits for muzzle/effect/audio synchronization, remaining semantic actions, and parent entity wiring**.
+Status: **blocked — pose-correct V8 Meshy R2 rig passed; the parent-approved Quaternius CC0 idle, move, and laser-attack actions are exported and actual-byte reimported on the accepted candidate, but runtime acceptance still waits for a supported muzzle locator, effect/audio synchronization, distinct defend, support-attack, retreat, and death actions, and parent entity wiring**.
 
 ## Runtime selection state
 
-The selected diagnostic/runtime candidate is the Meshy 7 V8 lineage `01a037ff-1e09-7757-aa2c-ee123fc7c2e2` with its R2 rig, adapter-prepared 30k mesh, and KayKit retargeted firearm actions. It is not final gameplay acceptance because the muzzle/effect/audio and remaining semantic-action gates are still open.
+The selected diagnostic/runtime candidate is the Meshy 7 V8 lineage `01a037ff-1e09-7757-aa2c-ee123fc7c2e2` with its R2 rig, adapter-prepared 30k mesh, and Quaternius retargeted actions. It is not final gameplay acceptance because the muzzle/effect/audio and remaining semantic-action gates are still open.
 
 - Historical GLB SHA-256: `DD96097BFAB051A59D08E918B0EF741E4BA400FB0784225B073CA96614BFC050`.
 - Historical FBX SHA-256: `69514019CED0D60EDAB6C6C70F96D79DED994E6E5CCB0D234CFD6D6CDEBBD6AA`.
@@ -50,7 +50,9 @@ Action 232 `Cowboy_Quick_Draw_Shooting` has no credible firing sequence; action 
 
 The other five roles were not purchased after the mandatory Meshy firing gate failed. The accepted candidate exports the three firearm actions only; idle, move, defend, support-attack, retreat, and a genuine articulated death action still need source verification and retargeting. Parent wiring must remain unchanged. No Blender repair, weapon manipulation, semantic alias, or locally authored replacement motion is permitted.
 
-## Parent-approved professional fallback
+## Historical KayKit fallback record (superseded by approved Quaternius export state)
+
+This section preserves the earlier KayKit candidate and its rejection evidence. It does not describe the current animation source.
 
 The user approved a free external package after the official Meshy firearm-action gate failed. The fallback is limited to retargeting and export through the adapter; it does not permit Blender-authored replacement motion or manual weapon attachment.
 
@@ -67,7 +69,7 @@ The secondary free MoCap Online Pistol Starter pack was audited because it adver
 
 This is a **candidate export, not a final runtime handoff**. The adapter material pass tagged the working Meshy mesh as `PdxMeshAdvanced`, bounded it to 29,916 triangles, exported it, staged its texture companions, and reimported the actual bytes with a 24-bone skeleton and no texture warnings. The reduction leaves 108 loose boundary edges as a documented residual risk. The firearm clip has not yet established a stable muzzle node or verified discharge frame, so `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain unbound. The other semantic actions still need source verification and retargeting. Parent-owned entity wiring must wait for those gates.
 
-## V9 result: Quaternius candidate only
+## Historical V9 Quaternius candidate record (superseded by approved export state)
 
 Official Meshy action 236 `Draw_and_Shoot_Left`, task `01a038ed-330b-77ea-b344-91361978b5d5`, was tested on the accepted R2 rig and rejected because its 161-frame motion retains the pistol but never supplies a credible pistol aim/discharge/recoil/recovery sequence. The call consumed 3 credits and left a balance of 10.
 
@@ -84,3 +86,9 @@ The user's prior broad approval and explicit request for a free firing-animation
 - `alien_infantry_move`: `export/anim/alien_infantry_quaternius_move.anim`, frames 1-41 at 30 FPS, SHA-256 `79E561F831D9C40C752D38412CF0C415A1FE03C07914AFE70A52DB58F35D4E79`; proof `blender/checkpoints/reimport_reimport_alien_infantry_quaternius_move.blend`.
 
 Defend and death probes remain rejected; support attack and retreat have no independent valid source. The locked adapter has no muzzle-locator operation, so the firing export remains asset evidence rather than a bindable runtime action. Frame 6 / 0.1667 seconds is verified, but particle, light, and sound are unbound. Parent gameplay/entity/GFX/sound wiring remains untouched.
+
+## 2026-08-25 free-package follow-up closure
+
+Quaternius Universal Animation Library 2 Standard is verified CC0 and redistributable, but its free Standard tier contains no firearm action, death/collapse action, armed retreat, or pistol-compatible defensive action. It also contains no firearm object or muzzle locator. Adapter request `8450b7c3d19a4f298e69c220bda462e9` records the exact 42-action inventory; the source and checksums are recorded in `evidence/professional_animation/quaternius_universal_animation_library_2_standard/audit.md`.
+
+No additional action was retargeted or exported. The authoritative runtime state is unchanged: idle, move, and laser attack have actual-byte reimport evidence; laser attack still cannot be bound to muzzle particle/light/audio without a stable locator; defend, support attack, retreat, and death remain blocked. No Meshy credits were spent, and no gameplay, entity, GFX, or sound-definition wiring was edited.

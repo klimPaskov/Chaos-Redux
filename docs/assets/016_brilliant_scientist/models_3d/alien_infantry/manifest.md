@@ -1,6 +1,6 @@
 # Alien infantry 3D package manifest
 
-Status: **blocked — pose-correct V8 geometry and Meshy R2 neutral rig passed; the parent-approved KayKit CC0 one-handed aim/shoot/reload actions now export and reimport on a 30k PDX-material candidate, but runtime promotion still waits for a verified muzzle/discharge sync, particles/audio, the remaining semantic actions, and parent entity wiring**.
+Status: **blocked — pose-correct V8 geometry and Meshy R2 neutral rig passed; the parent-approved Quaternius CC0 `Pistol_Shoot`, idle, and walk actions now export and actual-byte reimport, but runtime promotion still waits for a verified muzzle/discharge sync, particles/audio, the remaining semantic actions, and parent entity wiring**.
 
 ## Authoritative source and input
 
@@ -39,8 +39,8 @@ Reserved runtime identifiers remain `alien_infantry_entity`, `alien_infantry_mes
 
 - Dependency lock SHA-256 `01CAE764172374943B0718048B136C029E3CEBDBFCFA737C24AFC75DF7EA08EF`; Meshy schema lock SHA-256 `E45FE80F3B8AC49A365EA2D4221E82E969AE55279639F817BB6FA75407D1C233`; adapter config SHA-256 `24F865F90077104493EA092C015E140B8519780B400B4AD2CFF748EA7AF91875`.
 - Official Meshy MCP 0.4.0 with repository compatibility `meshy-7-v4` and explicit live `meshy-7`; Blender 5.1.2; adapter 1.10.3; io_pdx_mesh 0.91.0 with locked archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`.
-- The CC0 source/provenance package remains under `evidence/audio/`, and the derived PCM WAV files plus sound definitions are installed under `sound/shared_alien_system/alien_infantry/`, `sound/alien_infantry_sound.asset`, and the four package registrations in `sound/chaosx_sound.asset`. Exact entity-event synchronization is blocked until valid actions exist.
-- Reusable muzzle particle and light definitions are installed as `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash`; they remain intentionally unbound because no stable muzzle node or discharge timestamp exists.
+- The CC0 source/provenance package remains under `evidence/audio/`, and the derived PCM WAV files plus sound definitions are installed under `sound/shared_alien_system/alien_infantry/`, `sound/alien_infantry_sound.asset`, and the four package registrations in `sound/chaosx_sound.asset`. Exact entity-event synchronization remains blocked because the accepted idle, movement, and laser-attack actions still need parent entity wiring, the firing action lacks a supported muzzle locator, and defend, support-attack, retreat, and death remain unresolved.
+- Reusable muzzle particle and light definitions are installed as `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash`; they remain intentionally unbound because no stable muzzle node exists. Frame 6 / 0.1667 seconds is an evidence-only discharge phase for the accepted Quaternius laser-attack export.
 - Existing counters remain outside this job at `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds` and `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`, registered by `interface/alien_infantry_system.gfx`. They were inspected/reconciled but not recreated or overwritten.
 
 ## Authoritative recovery closure: V6–V7
@@ -68,7 +68,7 @@ At the provider-only V8 checkpoint, 54 credits had been consumed and the live ba
 
 Parent cleanup retained the accepted-neutral recovery set and compact audit evidence while deleting redundant or rejected V8 binaries, disposable action/source blends, and shared adapter checkpoints. It reclaimed 657,362,751 bytes and left the job workspace at 264,424,877 bytes. Retained recovery binaries are `provider/downloads/generation_pose_correct_v8.glb`, `provider/downloads/remesh_pose_correct_v8.glb`, and `provider/downloads/rig_pose_correct_v8_r2.fbx`; none is a runtime candidate.
 
-## Parent-approved professional animation fallback candidate
+## Parent-approved professional animation fallback candidate (superseded by Quaternius promotion)
 
 The user approved a free external animation package after the official Meshy firearm-action gate failed across independent V6 through V8 lineages. This fallback does not replace the Meshy-created model or authorize manual weapon attachment or replacement motion.
 
@@ -91,7 +91,7 @@ The user approved a free external animation package after the official Meshy fir
 - The downloaded archive was `mocap_online_free_pistol_starter_27a.zip`, SHA-256 `9D5A6FF26A0E70FA36625B9FF3FAB2CBFFAD7D8A4200A0CE12A225D87BCC5559`. Its `W1_Stand_Fire_Single.fbx` SHA-256 is `DEA52960642BE5BF2C6C3A8C933B464F5FBD13B77274F29D399182F1BD45DEB4`.
 - `Armature.002|W1_Stand_Fire_Single|W1_Stand_Fire_Single:BaseAnimation` retargeted through the adapter to `alien_infantry_mocap_w1_fire_candidate`, frames 1–31 at 30 FPS, 730 source curves to 154 target F-curves, source motion peak 0.9846, target peak 0.8038, and no transfer warnings. The preview still loses the integrated pistol/hand contact against the posed Meshy rest state, so this action is rejected and is not wired.
 
-Candidate status remains **retargeted/exported but not runtime accepted**. The adapter material pass tagged `Material_1` as `PdxMeshAdvanced`, reduced the provider mesh from 100,924 to 29,916 triangles, exported the `.mesh`, and reimported the actual bytes with a 24-bone skeleton and no reimport warnings after texture companions were staged beside the mesh. The reduction leaves 108 loose boundary edges as a documented residual geometry risk. A stable muzzle locator and exact discharge timestamp have not been proven, the laser particle/light and sourced firing audio are therefore intentionally unbound, and the remaining idle/move/defend/support-attack/retreat/death roles are not yet verified. No manual attachment, transform-only animation, or unlicensed source was used.
+The KayKit candidate remains **retargeted/exported but superseded for the primary firing role**. The adapter material pass tagged `Material_1` as `PdxMeshAdvanced`, reduced the provider mesh from 100,924 to 29,916 triangles, exported the `.mesh`, and reimported the actual bytes with a 24-bone skeleton and no reimport warnings after texture companions were staged beside the mesh. The reduction leaves 108 loose boundary edges as a documented residual geometry risk. A stable muzzle locator and exact discharge timestamp were not proven, so the laser particle/light and sourced firing audio remained intentionally unbound. No manual attachment, transform-only animation, or unlicensed source was used.
 
 ## Superseding 30k export and reimport evidence
 
@@ -100,7 +100,7 @@ Candidate status remains **retargeted/exported but not runtime accepted**. The a
 - `blender/checkpoints/reimport_alien_infantry_runtime_30k_textured.blend` is the actual-byte reimport proof. The adapter recovered a 24-bone `io_pdx_rig`, the mesh, and `io_pdx_rigAction`; texture companions were found with no warnings. Preview frames 1, 9, 17, 25, and 33 are under `blender/previews/reimport_alien_infantry_runtime_30k_textured_*`.
 - This evidence clears material, export, and reimport gates only. It does not establish the exact discharge frame, muzzle locator, particle/light/audio timing, all seven required semantic actions, final `.asset` entity wiring, counters, or in-game acceptance.
 
-## V9 Meshy recovery and Quaternius CC0 candidate audit
+## V9 Meshy recovery and Quaternius CC0 candidate audit (historical pre-promotion record)
 
 The locked environment reverified on 2026-08-25 with zero findings: official `@meshy-ai/meshy-mcp-server` 0.4.0, Meshy schema compatibility revision `meshy-7-v5`, exact `meshy-7`, Blender HOI4 adapter 1.10.14, Blender 5.1.2, io_pdx_mesh 0.91.0, and a listening adapter bridge at `127.0.0.1:9876`. The environment report is `.tools/3d_pipeline/reports/environment_report.json`.
 
@@ -108,7 +108,7 @@ One materially different official Meshy firearm action was attempted on the acce
 
 The Quaternius Universal Animation Library Standard was then audited as a free professional-source candidate. The archive is CC0, SHA-256 `18FF1A7215F4852B320203E8AAF02A1578B5C8EEF9027FBAEDFCEDC7B85A3AC2`; its Unreal FBX SHA-256 is `C836C5D47DE2A414818F7644632AC43AA84475DF6709F4514B9410D232800FD9`. `Rig|Rig|Pistol_Shoot` transferred without adapter warnings to a 20-frame, 30 FPS alien candidate. Motion peaks at frame 6 and recovers by frame 20, and multi-view evidence confirms the integrated pistol remains in the right hand. Exact evidence is in `evidence/professional_animation/quaternius_universal_animation_library_standard/audit.md`.
 
-The Quaternius clip is **not promoted**: explicit user approval of this professional source is still required, and no stable muzzle locator exists. The candidate discharge crosswalk is therefore only frame 6 / 0.1667 seconds after clip start; `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain unbound. No final action or runtime wiring was produced. Idle, move, defend, support attack, retreat, and death remain blocked.
+At this historical checkpoint, the Quaternius clip was not yet promoted because source approval and a stable muzzle locator were unresolved. The candidate discharge crosswalk was frame 6 / 0.1667 seconds after clip start; `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remained unbound. The later approved-promotion section below records the actual exports and reimports; defend, support attack, retreat, and death remain blocked.
 
 ## Approved Quaternius promotion and actual-byte proof
 
@@ -124,3 +124,9 @@ Three source actions passed retarget and visual review, exported through io_pdx_
 The approved `Crouch_Idle_Loop` defend probe was rejected because it produces an implausible one-leg balance. The approved `Death01` probe was rejected because the integrated pistol separates from the hand during collapse and settling. Neither was exported. Exact evidence is in `provider/rejections/quaternius_defend_death_contact_failures.md`.
 
 The firing export is still not ready for runtime binding. The verified adapter schema exposes no supported muzzle-locator authoring or derivation operation, and creating one through unrestricted Blender or manual weapon parenting is forbidden. Frame 6 / 0.1667 seconds remains the exact discharge phase, but the particle, light, and sound identifiers remain unbound. Defend, support attack, retreat, and death remain blocked; support attack is not aliased to `Pistol_Shoot`.
+
+## 2026-08-25 additional free-package follow-up
+
+Quaternius Universal Animation Library 2 Standard was retrieved from the creator's official page and creator-uploaded OpenGameArt distribution as a second CC0 candidate. The archive SHA-256 is `EC0E40D6D78FE9AAAD59E322F40865A8675C22F0745E291622E54520391A9217`, embedded license SHA-256 is `F9B1DE4E8FEFF135555AC1C7D2EEC65035A05FD74E4D632A3F826AC985C3F22C`, and Unity FBX SHA-256 is `D4A2DD67BB12BF0C01891BC59EE697E04DB679D26883D30BD937C2F3FB6FEC90`.
+
+Locked-adapter request `8450b7c3d19a4f298e69c220bda462e9` inspected all 42 substantive clips. The free Standard tier has melee, shield, traversal, work, idle, and zombie actions, but no firearm aim/fire/reload, terminal collapse/death, armed retreat, or pistol-compatible defend action. It has no firearm object or stable muzzle locator. No clip was retargeted or exported, no Meshy credits were spent, and no runtime file was changed. Exact inventory and source evidence are in `evidence/professional_animation/quaternius_universal_animation_library_2_standard/audit.md`.

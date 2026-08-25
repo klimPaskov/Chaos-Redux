@@ -1,5 +1,7 @@
 # Alien infantry requirement-to-runtime crosswalk
 
+## Historical V8 baseline (superseded by approved-source export state)
+
 | Requirement | Proposed runtime consumer | Evidence | Status |
 |---|---|---|---|
 | Reusable alien identity and one integrated upright right-hand pistol | `alien_infantry_entity` / `alien_infantry_mesh` | V8 generation `01a037ff-1e09-7757-aa2c-ee123fc7c2e2`; remesh previews `blender/previews/alien_infantry_pose_correct_v8_remesh_*.png` | Neutral geometry accepted as diagnostic evidence only |
@@ -22,7 +24,7 @@ No semantic action is substituted or aliased. No manual weapon attachment, manua
 
 V8 ended with live balance 237 after 54 credits. The other semantic actions and all exports were deliberately skipped after the mandatory firing gate failed.
 
-## V9 recovery crosswalk
+## Historical V9 pre-promotion crosswalk (superseded by approved-source export state)
 
 | Candidate | Source | Range | Contact/discharge evidence | Status |
 |---|---|---:|---|---|
@@ -44,3 +46,11 @@ The seven requested runtime roles remain blocked. The Quaternius library also co
 | Death | `Death01` probe and `quaternius_death_contact_sheet.png` | Rejected: pistol separates from hand during collapse |
 
 No gameplay/entity/GFX/sound definition was wired. Frame 6 / 0.1667 seconds is the verified firing phase only; particle/light/audio synchronization remains unbound until a stable muzzle locator exists.
+
+## Additional CC0 package audit
+
+| Source package | Candidate actions inspected | Muzzle locator | Crosswalk result |
+|---|---|---|---|
+| Quaternius Universal Animation Library 2 Standard, CC0, FBX SHA-256 `D4A2DD67...FEC90` | 42 substantive clips, including shield, sword, hit, traversal, idle, work, and zombie roles; no firearm or death/collapse clip | None; no firearm object and no supported adapter locator operation | No eligible retarget. Defend, support attack, retreat, and death remain blocked; existing attack remains unbindable without a stable muzzle locator. |
+
+The follow-up did not create semantic aliases or substitute `Hit_Knockback`, `LayToIdle`, shield, sword, or zombie motion for a required firearm/unit role.
