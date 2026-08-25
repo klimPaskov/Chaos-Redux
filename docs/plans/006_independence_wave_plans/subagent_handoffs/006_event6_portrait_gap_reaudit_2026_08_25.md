@@ -66,7 +66,7 @@ No `.gfx`, `common/characters`, scripted effect, runtime portrait consumer, or p
 
 The existing ACX stable DDS is readiness evidence only; it is not a newly wired consumer. The existing FIJ institutional DDS and all other runtime DDS files were left untouched. No generic, generated, repainted, alternate-person, or fallback portrait was created or substituted.
 
-Parent reconciliation after this audit restored the requested flat archive contract. The duplicate NAV original and crop were removed because byte-identical originals already remain directly in `docs/assets/portraits/006_independence_wave/`; the generated 156x210 PNG, evidence DDS, and 4× round-trip PNG were moved into `docs/assets/portraits/006_independence_wave/processed/`; and the agent-created `jose_antonio_aguirre/` child, its evidence-only files, and duplicate source files were removed. The parent now has only the original-source files plus the single `processed/` child. No runtime portrait consumer or package gate changed.
+Parent reconciliation after this audit restored the requested flat archive contract. The duplicate NAV original and crop were removed because byte-identical originals already remain directly in `docs/assets/portraits/006_independence_wave/`; the non-156x210 4× round-trip review was moved into `docs/assets/portraits/006_independence_wave/processed/`, while the 156x210 PNG and evidence DDS were not retained in the archive; and the agent-created `jose_antonio_aguirre/` child, its evidence-only files, and duplicate source files were removed. The parent now has only the original-source files plus the single `processed/` child. No runtime portrait consumer or package gate changed.
 
 ## Checks performed and intentionally skipped
 

@@ -10,7 +10,7 @@ The source-placeholder state is preserved, and this handoff does not claim final
 
 The durable source package follows the flat archive contract: the original master and exact source crop remain directly in `docs/assets/portraits/006_independence_wave/` under their dated `iw013_nav_jose_antonio_aguirre_source_placeholder_2026_08_13__...` names, while processed evidence is in the single `docs/assets/portraits/006_independence_wave/processed/` child.
 
-The processed child retains `portrait_NAV_jose_antonio_aguirre_156x210.png`, `portrait_NAV_jose_antonio_aguirre_source_placeholder.dds`, and `portrait_NAV_jose_antonio_aguirre_source_placeholder_native_4x_roundtrip.png`. The temporary evidence-only HTML, JSON, review, and manifest files were removed from the asset tree during parent reconciliation; their source URLs, hashes, crop coordinates, rights status, and role evidence remain recorded here and in the current gap re-audit.
+The processed child retains only the non-156x210 review artifact `portrait_NAV_jose_antonio_aguirre_source_placeholder_native_4x_roundtrip.png`. The 156x210 PNG and evidence DDS are not retained in the archive. The temporary evidence-only HTML, JSON, review, and manifest files were removed from the asset tree during parent reconciliation; their source URLs, hashes, crop coordinates, rights status, and role evidence remain recorded here and in the current gap re-audit.
 
 The `docs/assets/` tree is ignored by the repository policy, so these files exist as durable workspace evidence but may require the parent to force-add them if the package is to be committed.
 
