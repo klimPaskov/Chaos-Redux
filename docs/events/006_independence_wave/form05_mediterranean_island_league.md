@@ -156,7 +156,7 @@ limited to the exact MIX carrier and its recorded autonomous members while a
 live diplomatic connection to that carrier remains.
 
 The reviewed sprites are registered in
-`interface/006_independence_wave_form05.gfx`.
+`interface/006_independence_wave_small_assets.gfx` (SOURCE marker: `interface/006_independence_wave_form05.gfx`).
 
 Decision sprites and expected texture paths:
 
