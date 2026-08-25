@@ -15,7 +15,7 @@ Status date: 2026-08-25 parent runtime-wiring amendment to the 2026-07-15 frozen
 - Scenario `SCN-010` implements five launch types.
 - Event Details contains two independent post-reveal terminal rows and persistent toggles.
 - Four action super-events use unique images and audio IDs 49, 50, 52, and 53.
-- The audio package contains eight unique 44.1 kHz runtime files: four WAV.
+- The super-event audio package contains eight unique 44.1 kHz source/runtime binaries: four preserved source recordings and four runtime WAV files. The separate unit-audio amendment now covers 61 source-derived/runtime unit WAV files across nine families, with playback gates recorded below.
 - The asset package contains 56 individually composed regional warlord portraits, 204 focus icons, 62 idea/modifier textures, 135 decision/category textures, 38 distinct unified decision icons, 18 achievement triplets, the 21-surface closure package, and two real-frame leader portrait animations. Every warlord portrait has a distinct deranged face, prop, and macabre action at final HOI4 portrait scale. The live Hannibal sprites use the exact canonical `hannibal.dds` and `hannibal_wendigo.dds` files directly, while every later animation frame is separately image-generated. All 195 flag files derive from 65 distinct built-in ImageGen source designs and retain flat flag readability.
 - The dedicated Event 014 script, GUI, and localisation loader count is consolidated from 93 to 23. The 23-file result is the practical minimum of one dedicated file per incompatible HOI4 loader schema. Per-tag country/history files, engine-required flag ladders, binaries, and shared global registries remain structurally separate and are outside this merge count.
 - Event 014 defines nine inactive custom irregular-infantry/cavalry subunits with stable sprite-token consumers and locked template mappings. It reuses ordinary infantry, support, artillery, and motorized equipment without adding an archetype. The locked Scavenged Elephant Column uses installed vanilla `elephantry` after Event 014 technology access. Five families have installed model/entity/action/material/audio runtime packages; 27 counter DDS/registry consumers are present; and the four remaining model families retain explicit per-package blockers rather than generic fallbacks.
@@ -36,6 +36,8 @@ The 2026-07-15 P0/P1/P2/P3 closure statements remain valid only for their then-f
 - Accepted improvement depth: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_improvement_loop_consolidation_reaudit_2026-07-15.md`.
 - Documentation: P0/P1/P2/P3 all zero in `docs/plans/014_cannibalism_plans/audits/event014_documentation_consolidation_reaudit_2026-07-15.md`. The older same-day audits and the 2026-07-13 final audit are retained as superseded checkpoints.
 - Catalog promotion: `Events!N15` and `Scenarios!F10` are `Fully Functional`. The current spreadsheet re-audit and update helper agree with both promoted cells.
+
+The eight-audio count in the historical localisation/asset audit refers to the frozen super-event source/runtime package only. The current 2026-08-25 downstream amendment separately records 61 source-derived/runtime unit WAV files and the remaining action, entity, synchronization, and live-playback gates.
 
 ## Completion disposition
 
