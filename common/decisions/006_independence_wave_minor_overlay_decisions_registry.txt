@@ -1,7 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 MINOR OVERLAY DECISIONS REGISTRY
 # ============================================================================
-# Consolidated source for the six small, overlay-only Event 006 packages.
+# Consolidated source for the thirteen small, overlay-only Event 006 packages,
+# including the COG and final vanilla route overlay families.
 # Package-local category keys, decision IDs, and executable blocks remain
 # unchanged. These overlays adapt living vanilla carriers and never create
 # origins or pre-event player-facing crisis surfaces.
@@ -980,5 +981,538 @@ independence_wave_iw085_cyrenaica_category = {
 		}
 		fire_only_once = yes
 		ai_will_do = { base = constant:independence_wave_iw085_cyrenaica_ai.high modifier = { factor = constant:independence_wave_iw085_cyrenaica_ai.double has_war = no } }
+	}
+}
+
+# SOURCE: 006_independence_wave_iw101_iw102_iw105_cog_overlays_decisions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 COG COSMETIC OVERLAY DECISIONS
+# ============================================================================
+# Kongo, Kuba, and Loango retain their vanilla COG cosmetic identities while
+# exposing distinct government, logistics, force, guard, and charter actions.
+# Costs are concrete and shared; no action creates free units or political power.
+# ============================================================================
+
+independence_wave_iw101_kongo_category = {
+	independence_wave_iw101_convene_kongo_regency = {
+		name = independence_wave_iw101_convene_kongo_regency
+		desc = independence_wave_iw101_convene_kongo_regency_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw101_kongo_overlay_active = yes NOT = { has_country_flag = independence_wave_iw101_kongo_cabinet_convened } }
+		available = { can_pay_independence_wave_iw_cog_cabinet_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_cabinet_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_cabinet_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw101_convene_kongo_regency_effect_tt
+			independence_wave_iw101_kongo_pay_cabinet = yes
+			independence_wave_iw101_kongo_complete_cabinet = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high }
+	}
+
+	independence_wave_iw101_secure_kongo_river_depots = {
+		name = independence_wave_iw101_secure_kongo_river_depots
+		desc = independence_wave_iw101_secure_kongo_river_depots_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw101_kongo_overlay_active = yes has_country_flag = independence_wave_iw101_kongo_cabinet_convened NOT = { has_country_flag = independence_wave_iw101_kongo_depots_secured } }
+		available = { can_pay_independence_wave_iw_cog_depot_cost = yes has_independence_wave_iw101_kongo_anchor_control = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_depot_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_depot_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw101_secure_kongo_river_depots_effect_tt
+			independence_wave_iw101_kongo_pay_depot = yes
+			independence_wave_iw101_kongo_complete_depot = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.double has_war = yes } }
+	}
+
+	independence_wave_iw101_integrate_kongo_veterans = {
+		name = independence_wave_iw101_integrate_kongo_veterans
+		desc = independence_wave_iw101_integrate_kongo_veterans_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw101_kongo_overlay_active = yes has_country_flag = independence_wave_iw101_kongo_depots_secured NOT = { has_country_flag = independence_wave_iw101_kongo_veterans_integrated } }
+		available = { can_pay_independence_wave_iw_cog_force_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_force_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_force_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw101_integrate_kongo_veterans_effect_tt
+			independence_wave_iw101_kongo_pay_force = yes
+			independence_wave_iw101_kongo_complete_force = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.standard modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.triple has_war = yes } }
+	}
+
+	independence_wave_iw101_hold_kongo_river_corridor = {
+		name = independence_wave_iw101_hold_kongo_river_corridor
+		desc = independence_wave_iw101_hold_kongo_river_corridor_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = { is_independence_wave_iw101_kongo_overlay_active = yes check_variable = { var = independence_wave_iw101_kongo_guard_hold_days value = constant:independence_wave_iw101_kongo_value.guard_required compare = greater_than_or_equals } }
+		days_mission_timeout = constant:independence_wave_iw_cog_overlay_duration.guard_mission_timeout
+		complete_effect = { custom_effect_tooltip = independence_wave_iw101_hold_kongo_river_corridor_success_effect_tt independence_wave_iw101_kongo_complete_guard = yes }
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw101_kongo_guard_running } }
+		cancel_effect = { independence_wave_iw101_kongo_handle_cancel = yes }
+		timeout_effect = { custom_effect_tooltip = independence_wave_iw101_hold_kongo_river_corridor_failure_effect_tt independence_wave_iw101_kongo_fail_guard = yes }
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.urgent }
+	}
+
+	independence_wave_iw101_establish_kongo_assembly = {
+		name = independence_wave_iw101_establish_kongo_assembly
+		desc = independence_wave_iw101_establish_kongo_assembly_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw101_kongo_overlay_active = yes has_country_flag = independence_wave_iw101_kongo_guard_completed NOT = { has_country_flag = independence_wave_iw101_kongo_assembly_compact } }
+		available = { can_choose_independence_wave_iw101_kongo_charter = yes can_pay_independence_wave_iw_cog_charter_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_charter_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_charter_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw101_establish_kongo_assembly_effect_tt
+			independence_wave_iw101_kongo_pay_charter = yes
+			independence_wave_iw101_kongo_choose_charter = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.double has_war = no } }
+	}
+}
+
+independence_wave_iw102_kuba_category = {
+	independence_wave_iw102_convene_kuba_council = {
+		name = independence_wave_iw102_convene_kuba_council
+		desc = independence_wave_iw102_convene_kuba_council_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw102_kuba_overlay_active = yes NOT = { has_country_flag = independence_wave_iw102_kuba_council_convened } }
+		available = { can_pay_independence_wave_iw_cog_cabinet_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_cabinet_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_cabinet_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw102_convene_kuba_council_effect_tt
+			independence_wave_iw102_kuba_pay_cabinet = yes
+			independence_wave_iw102_kuba_complete_cabinet = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high }
+	}
+
+	independence_wave_iw102_secure_kuba_forest_depots = {
+		name = independence_wave_iw102_secure_kuba_forest_depots
+		desc = independence_wave_iw102_secure_kuba_forest_depots_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw102_kuba_overlay_active = yes has_country_flag = independence_wave_iw102_kuba_council_convened NOT = { has_country_flag = independence_wave_iw102_kuba_depots_secured } }
+		available = { can_pay_independence_wave_iw_cog_depot_cost = yes has_independence_wave_iw102_kuba_anchor_control = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_depot_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_depot_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw102_secure_kuba_forest_depots_effect_tt
+			independence_wave_iw102_kuba_pay_depot = yes
+			independence_wave_iw102_kuba_complete_depot = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.double has_war = yes } }
+	}
+
+	independence_wave_iw102_integrate_kuba_forest_guard = {
+		name = independence_wave_iw102_integrate_kuba_forest_guard
+		desc = independence_wave_iw102_integrate_kuba_forest_guard_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw102_kuba_overlay_active = yes has_country_flag = independence_wave_iw102_kuba_depots_secured NOT = { has_country_flag = independence_wave_iw102_kuba_forest_guard_integrated } }
+		available = { can_pay_independence_wave_iw_cog_force_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_force_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_force_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw102_integrate_kuba_forest_guard_effect_tt
+			independence_wave_iw102_kuba_pay_force = yes
+			independence_wave_iw102_kuba_complete_force = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.standard modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.triple has_war = yes } }
+	}
+
+	independence_wave_iw102_hold_kuba_forest_anchor = {
+		name = independence_wave_iw102_hold_kuba_forest_anchor
+		desc = independence_wave_iw102_hold_kuba_forest_anchor_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = { is_independence_wave_iw102_kuba_overlay_active = yes check_variable = { var = independence_wave_iw102_kuba_guard_hold_days value = constant:independence_wave_iw102_kuba_value.guard_required compare = greater_than_or_equals } }
+		days_mission_timeout = constant:independence_wave_iw_cog_overlay_duration.guard_mission_timeout
+		complete_effect = { custom_effect_tooltip = independence_wave_iw102_hold_kuba_forest_anchor_success_effect_tt independence_wave_iw102_kuba_complete_guard = yes }
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw102_kuba_guard_running } }
+		cancel_effect = { independence_wave_iw102_kuba_handle_cancel = yes }
+		timeout_effect = { custom_effect_tooltip = independence_wave_iw102_hold_kuba_forest_anchor_failure_effect_tt independence_wave_iw102_kuba_fail_guard = yes }
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.urgent }
+	}
+
+	independence_wave_iw102_charter_kuba_council = {
+		name = independence_wave_iw102_charter_kuba_council
+		desc = independence_wave_iw102_charter_kuba_council_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw102_kuba_overlay_active = yes has_country_flag = independence_wave_iw102_kuba_guard_completed NOT = { has_country_flag = independence_wave_iw102_kuba_council_charter } }
+		available = { can_choose_independence_wave_iw102_kuba_charter = yes can_pay_independence_wave_iw_cog_charter_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_charter_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_charter_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw102_charter_kuba_council_effect_tt
+			independence_wave_iw102_kuba_pay_charter = yes
+			independence_wave_iw102_kuba_choose_charter = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.double has_war = no } }
+	}
+}
+
+independence_wave_iw105_loango_category = {
+	independence_wave_iw105_convene_loango_regency = {
+		name = independence_wave_iw105_convene_loango_regency
+		desc = independence_wave_iw105_convene_loango_regency_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw105_loango_overlay_active = yes NOT = { has_country_flag = independence_wave_iw105_loango_cabinet_convened } }
+		available = { can_pay_independence_wave_iw_cog_cabinet_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_cabinet_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_cabinet_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw105_convene_loango_regency_effect_tt
+			independence_wave_iw105_loango_pay_cabinet = yes
+			independence_wave_iw105_loango_complete_cabinet = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high }
+	}
+
+	independence_wave_iw105_secure_loango_port_depots = {
+		name = independence_wave_iw105_secure_loango_port_depots
+		desc = independence_wave_iw105_secure_loango_port_depots_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw105_loango_overlay_active = yes has_country_flag = independence_wave_iw105_loango_cabinet_convened NOT = { has_country_flag = independence_wave_iw105_loango_depots_secured } }
+		available = { can_pay_independence_wave_iw_cog_depot_cost = yes has_independence_wave_iw105_loango_anchor_control = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_depot_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_depot_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw105_secure_loango_port_depots_effect_tt
+			independence_wave_iw105_loango_pay_depot = yes
+			independence_wave_iw105_loango_complete_depot = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.double has_war = yes } }
+	}
+
+	independence_wave_iw105_integrate_loango_port_authority = {
+		name = independence_wave_iw105_integrate_loango_port_authority
+		desc = independence_wave_iw105_integrate_loango_port_authority_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw105_loango_overlay_active = yes has_country_flag = independence_wave_iw105_loango_depots_secured NOT = { has_country_flag = independence_wave_iw105_loango_guards_integrated } }
+		available = { can_pay_independence_wave_iw_cog_force_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_force_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_force_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw105_integrate_loango_port_authority_effect_tt
+			independence_wave_iw105_loango_pay_force = yes
+			independence_wave_iw105_loango_complete_force = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.standard modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.triple has_war = yes } }
+	}
+
+	independence_wave_iw105_hold_loango_port_guard = {
+		name = independence_wave_iw105_hold_loango_port_guard
+		desc = independence_wave_iw105_hold_loango_port_guard_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = { is_independence_wave_iw105_loango_overlay_active = yes check_variable = { var = independence_wave_iw105_loango_guard_hold_days value = constant:independence_wave_iw105_loango_value.guard_required compare = greater_than_or_equals } }
+		days_mission_timeout = constant:independence_wave_iw_cog_overlay_duration.guard_mission_timeout
+		complete_effect = { custom_effect_tooltip = independence_wave_iw105_hold_loango_port_guard_success_effect_tt independence_wave_iw105_loango_complete_guard = yes }
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw105_loango_guard_running } }
+		cancel_effect = { independence_wave_iw105_loango_handle_cancel = yes }
+		timeout_effect = { custom_effect_tooltip = independence_wave_iw105_hold_loango_port_guard_failure_effect_tt independence_wave_iw105_loango_fail_guard = yes }
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.urgent }
+	}
+
+	independence_wave_iw105_charter_loango_coastal_council = {
+		name = independence_wave_iw105_charter_loango_coastal_council
+		desc = independence_wave_iw105_charter_loango_coastal_council_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw105_loango_overlay_active = yes has_country_flag = independence_wave_iw105_loango_guard_completed NOT = { has_country_flag = independence_wave_iw105_loango_assembly_compact } }
+		available = { can_choose_independence_wave_iw105_loango_charter = yes can_pay_independence_wave_iw_cog_charter_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_cog_charter_cost = yes }
+		custom_cost_text = independence_wave_iw_cog_charter_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw105_charter_loango_coastal_council_effect_tt
+			independence_wave_iw105_loango_pay_charter = yes
+			independence_wave_iw105_loango_choose_charter = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_cog_overlay_ai.high modifier = { factor = constant:independence_wave_iw_cog_overlay_ai.double has_war = no } }
+	}
+}
+
+# SOURCE: 006_independence_wave_iw156_iw196_iw197_iw204_overlays_decisions.txt
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FINAL VANILLA ROUTE OVERLAY DECISIONS
+# ============================================================================
+# Four additive surfaces expose concrete government, logistics, force, guard,
+# and charter actions. Missions are activated by the force action and cannot
+# be selected as free checklist entries.
+# ============================================================================
+
+independence_wave_iw156_moluccan_category = {
+	independence_wave_iw156_convene_moluccan_congress = {
+		name = independence_wave_iw156_convene_moluccan_congress
+		desc = independence_wave_iw156_convene_moluccan_congress_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw156_moluccan_overlay_active = yes NOT = { has_country_flag = independence_wave_iw156_moluccan_congress_convened } }
+		available = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_text = independence_wave_iw_region_cabinet_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw156_convene_moluccan_congress_effect_tt independence_wave_iw156_moluccan_pay_cabinet = yes independence_wave_iw156_moluccan_complete_cabinet = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high }
+	}
+	independence_wave_iw156_secure_moluccan_interisland_depots = {
+		name = independence_wave_iw156_secure_moluccan_interisland_depots
+		desc = independence_wave_iw156_secure_moluccan_interisland_depots_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw156_moluccan_overlay_active = yes has_country_flag = independence_wave_iw156_moluccan_congress_convened NOT = { has_country_flag = independence_wave_iw156_moluccan_depots_secured } }
+		available = { can_pay_independence_wave_iw_region_depot_cost = yes has_independence_wave_iw156_moluccan_anchor_control = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_depot_cost = yes }
+		custom_cost_text = independence_wave_iw_region_depot_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw156_secure_moluccan_interisland_depots_effect_tt independence_wave_iw156_moluccan_pay_depot = yes independence_wave_iw156_moluccan_complete_depot = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = yes } }
+	}
+	independence_wave_iw156_integrate_moluccan_island_guard = {
+		name = independence_wave_iw156_integrate_moluccan_island_guard
+		desc = independence_wave_iw156_integrate_moluccan_island_guard_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw156_moluccan_overlay_active = yes has_country_flag = independence_wave_iw156_moluccan_depots_secured NOT = { has_country_flag = independence_wave_iw156_moluccan_island_guard_integrated } }
+		available = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_text = independence_wave_iw_region_force_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw156_integrate_moluccan_island_guard_effect_tt independence_wave_iw156_moluccan_pay_force = yes independence_wave_iw156_moluccan_complete_force = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.standard modifier = { factor = constant:independence_wave_iw_region_overlay_ai.triple has_war = yes } }
+	}
+	independence_wave_iw156_hold_moluccan_sea_lanes = {
+		name = independence_wave_iw156_hold_moluccan_sea_lanes
+		desc = independence_wave_iw156_hold_moluccan_sea_lanes_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = { is_independence_wave_iw156_moluccan_overlay_active = yes check_variable = { var = independence_wave_iw156_moluccan_guard_hold_days value = constant:independence_wave_iw156_moluccan_value.guard_required compare = greater_than_or_equals } }
+		days_mission_timeout = constant:independence_wave_iw_region_overlay_duration.guard_mission_timeout
+		complete_effect = { custom_effect_tooltip = independence_wave_iw156_hold_moluccan_sea_lanes_success_effect_tt independence_wave_iw156_moluccan_complete_guard = yes }
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw156_moluccan_guard_running } }
+		cancel_effect = { independence_wave_iw156_moluccan_handle_cancel = yes }
+		timeout_effect = { custom_effect_tooltip = independence_wave_iw156_hold_moluccan_sea_lanes_failure_effect_tt independence_wave_iw156_moluccan_fail_guard = yes }
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.urgent }
+	}
+	independence_wave_iw156_ratify_moluccan_charter = {
+		name = independence_wave_iw156_ratify_moluccan_charter
+		desc = independence_wave_iw156_ratify_moluccan_charter_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw156_moluccan_overlay_active = yes has_country_flag = independence_wave_iw156_moluccan_guard_completed NOT = { has_country_flag = independence_wave_iw156_moluccan_charter } }
+		available = { can_choose_independence_wave_iw156_moluccan_charter = yes can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_text = independence_wave_iw_region_charter_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw156_ratify_moluccan_charter_effect_tt independence_wave_iw156_moluccan_pay_charter = yes independence_wave_iw156_moluccan_choose_charter = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = no } }
+	}
+}
+
+independence_wave_iw196_antilles_category = {
+	independence_wave_iw196_convene_antilles_congress = {
+		name = independence_wave_iw196_convene_antilles_congress
+		desc = independence_wave_iw196_convene_antilles_congress_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw196_antilles_overlay_active = yes NOT = { has_country_flag = independence_wave_iw196_antilles_congress_convened } }
+		available = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_text = independence_wave_iw_region_cabinet_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw196_convene_antilles_congress_effect_tt independence_wave_iw196_antilles_pay_cabinet = yes independence_wave_iw196_antilles_complete_cabinet = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high }
+	}
+	independence_wave_iw196_secure_antilles_member_depots = {
+		name = independence_wave_iw196_secure_antilles_member_depots
+		desc = independence_wave_iw196_secure_antilles_member_depots_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw196_antilles_overlay_active = yes has_country_flag = independence_wave_iw196_antilles_congress_convened NOT = { has_country_flag = independence_wave_iw196_antilles_depots_secured } }
+		available = { can_pay_independence_wave_iw_region_depot_cost = yes has_independence_wave_iw196_antilles_anchor_control = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_depot_cost = yes }
+		custom_cost_text = independence_wave_iw_region_depot_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw196_secure_antilles_member_depots_effect_tt independence_wave_iw196_antilles_pay_depot = yes independence_wave_iw196_antilles_complete_depot = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = yes } }
+	}
+	independence_wave_iw196_integrate_antilles_maritime_guard = {
+		name = independence_wave_iw196_integrate_antilles_maritime_guard
+		desc = independence_wave_iw196_integrate_antilles_maritime_guard_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw196_antilles_overlay_active = yes has_country_flag = independence_wave_iw196_antilles_depots_secured NOT = { has_country_flag = independence_wave_iw196_antilles_maritime_guard_integrated } }
+		available = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_text = independence_wave_iw_region_force_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw196_integrate_antilles_maritime_guard_effect_tt independence_wave_iw196_antilles_pay_force = yes independence_wave_iw196_antilles_complete_force = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.standard modifier = { factor = constant:independence_wave_iw_region_overlay_ai.triple has_war = yes } }
+	}
+	independence_wave_iw196_hold_antilles_member_seas = {
+		name = independence_wave_iw196_hold_antilles_member_seas
+		desc = independence_wave_iw196_hold_antilles_member_seas_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = { is_independence_wave_iw196_antilles_overlay_active = yes check_variable = { var = independence_wave_iw196_antilles_guard_hold_days value = constant:independence_wave_iw196_antilles_value.guard_required compare = greater_than_or_equals } }
+		days_mission_timeout = constant:independence_wave_iw_region_overlay_duration.guard_mission_timeout
+		complete_effect = { custom_effect_tooltip = independence_wave_iw196_hold_antilles_member_seas_success_effect_tt independence_wave_iw196_antilles_complete_guard = yes }
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw196_antilles_guard_running } }
+		cancel_effect = { independence_wave_iw196_antilles_handle_cancel = yes }
+		timeout_effect = { custom_effect_tooltip = independence_wave_iw196_hold_antilles_member_seas_failure_effect_tt independence_wave_iw196_antilles_fail_guard = yes }
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.urgent }
+	}
+	independence_wave_iw196_ratify_antilles_charter = {
+		name = independence_wave_iw196_ratify_antilles_charter
+		desc = independence_wave_iw196_ratify_antilles_charter_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw196_antilles_overlay_active = yes has_country_flag = independence_wave_iw196_antilles_guard_completed NOT = { has_country_flag = independence_wave_iw196_antilles_charter } }
+		available = { can_choose_independence_wave_iw196_antilles_charter = yes can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_text = independence_wave_iw_region_charter_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw196_ratify_antilles_charter_effect_tt independence_wave_iw196_antilles_pay_charter = yes independence_wave_iw196_antilles_choose_charter = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = no } }
+	}
+}
+
+independence_wave_iw197_mapuche_category = {
+	independence_wave_iw197_convene_mapuche_territorial_council = {
+		name = independence_wave_iw197_convene_mapuche_territorial_council
+		desc = independence_wave_iw197_convene_mapuche_territorial_council_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw197_mapuche_overlay_active = yes NOT = { has_country_flag = independence_wave_iw197_mapuche_council_convened } }
+		available = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_text = independence_wave_iw_region_cabinet_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw197_convene_mapuche_territorial_council_effect_tt independence_wave_iw197_mapuche_pay_cabinet = yes independence_wave_iw197_mapuche_complete_cabinet = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high }
+	}
+	independence_wave_iw197_secure_araucania_depots = {
+		name = independence_wave_iw197_secure_araucania_depots
+		desc = independence_wave_iw197_secure_araucania_depots_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw197_mapuche_overlay_active = yes has_country_flag = independence_wave_iw197_mapuche_council_convened NOT = { has_country_flag = independence_wave_iw197_mapuche_depots_secured } }
+		available = { can_pay_independence_wave_iw_region_depot_cost = yes has_independence_wave_iw197_mapuche_anchor_control = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_depot_cost = yes }
+		custom_cost_text = independence_wave_iw_region_depot_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw197_secure_araucania_depots_effect_tt independence_wave_iw197_mapuche_pay_depot = yes independence_wave_iw197_mapuche_complete_depot = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = yes } }
+	}
+	independence_wave_iw197_integrate_mapuche_mountain_guard = {
+		name = independence_wave_iw197_integrate_mapuche_mountain_guard
+		desc = independence_wave_iw197_integrate_mapuche_mountain_guard_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw197_mapuche_overlay_active = yes has_country_flag = independence_wave_iw197_mapuche_depots_secured NOT = { has_country_flag = independence_wave_iw197_mapuche_mountain_guard_integrated } }
+		available = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_text = independence_wave_iw_region_force_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw197_integrate_mapuche_mountain_guard_effect_tt independence_wave_iw197_mapuche_pay_force = yes independence_wave_iw197_mapuche_complete_force = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.standard modifier = { factor = constant:independence_wave_iw_region_overlay_ai.triple has_war = yes } }
+	}
+	independence_wave_iw197_hold_araucania_anchor = {
+		name = independence_wave_iw197_hold_araucania_anchor
+		desc = independence_wave_iw197_hold_araucania_anchor_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = { is_independence_wave_iw197_mapuche_overlay_active = yes check_variable = { var = independence_wave_iw197_mapuche_guard_hold_days value = constant:independence_wave_iw197_mapuche_value.guard_required compare = greater_than_or_equals } }
+		days_mission_timeout = constant:independence_wave_iw_region_overlay_duration.guard_mission_timeout
+		complete_effect = { custom_effect_tooltip = independence_wave_iw197_hold_araucania_anchor_success_effect_tt independence_wave_iw197_mapuche_complete_guard = yes }
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw197_mapuche_guard_running } }
+		cancel_effect = { independence_wave_iw197_mapuche_handle_cancel = yes }
+		timeout_effect = { custom_effect_tooltip = independence_wave_iw197_hold_araucania_anchor_failure_effect_tt independence_wave_iw197_mapuche_fail_guard = yes }
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.urgent }
+	}
+	independence_wave_iw197_ratify_mapuche_charter = {
+		name = independence_wave_iw197_ratify_mapuche_charter
+		desc = independence_wave_iw197_ratify_mapuche_charter_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw197_mapuche_overlay_active = yes has_country_flag = independence_wave_iw197_mapuche_guard_completed NOT = { has_country_flag = independence_wave_iw197_mapuche_charter } }
+		available = { can_choose_independence_wave_iw197_mapuche_charter = yes can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_text = independence_wave_iw_region_charter_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw197_ratify_mapuche_charter_effect_tt independence_wave_iw197_mapuche_pay_charter = yes independence_wave_iw197_mapuche_choose_charter = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = no } }
+	}
+}
+
+independence_wave_iw204_restoration_category = {
+	independence_wave_iw204_convene_restoration_court = {
+		name = independence_wave_iw204_convene_restoration_court
+		desc = independence_wave_iw204_convene_restoration_court_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw204_restoration_overlay_active = yes NOT = { has_country_flag = independence_wave_iw204_restoration_court_convened } }
+		available = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_cabinet_cost = yes }
+		custom_cost_text = independence_wave_iw_region_cabinet_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw204_convene_restoration_court_effect_tt independence_wave_iw204_restoration_pay_cabinet = yes independence_wave_iw204_restoration_complete_cabinet = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high }
+	}
+	independence_wave_iw204_secure_patagonia_depots = {
+		name = independence_wave_iw204_secure_patagonia_depots
+		desc = independence_wave_iw204_secure_patagonia_depots_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw204_restoration_overlay_active = yes has_country_flag = independence_wave_iw204_restoration_court_convened NOT = { has_country_flag = independence_wave_iw204_restoration_depots_secured } }
+		available = { can_pay_independence_wave_iw_region_depot_cost = yes has_independence_wave_iw204_restoration_anchor_control = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_depot_cost = yes }
+		custom_cost_text = independence_wave_iw_region_depot_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw204_secure_patagonia_depots_effect_tt independence_wave_iw204_restoration_pay_depot = yes independence_wave_iw204_restoration_complete_depot = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = yes } }
+	}
+	independence_wave_iw204_integrate_frontier_guard = {
+		name = independence_wave_iw204_integrate_frontier_guard
+		desc = independence_wave_iw204_integrate_frontier_guard_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = { is_independence_wave_iw204_restoration_overlay_active = yes has_country_flag = independence_wave_iw204_restoration_depots_secured NOT = { has_country_flag = independence_wave_iw204_restoration_frontier_guard_integrated } }
+		available = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_force_cost = yes }
+		custom_cost_text = independence_wave_iw_region_force_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw204_integrate_frontier_guard_effect_tt independence_wave_iw204_restoration_pay_force = yes independence_wave_iw204_restoration_complete_force = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.standard modifier = { factor = constant:independence_wave_iw_region_overlay_ai.triple has_war = yes } }
+	}
+	independence_wave_iw204_hold_patagonia_frontier = {
+		name = independence_wave_iw204_hold_patagonia_frontier
+		desc = independence_wave_iw204_hold_patagonia_frontier_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = { is_independence_wave_iw204_restoration_overlay_active = yes check_variable = { var = independence_wave_iw204_restoration_guard_hold_days value = constant:independence_wave_iw204_restoration_value.guard_required compare = greater_than_or_equals } }
+		days_mission_timeout = constant:independence_wave_iw_region_overlay_duration.guard_mission_timeout
+		complete_effect = { custom_effect_tooltip = independence_wave_iw204_hold_patagonia_frontier_success_effect_tt independence_wave_iw204_restoration_complete_guard = yes }
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw204_restoration_guard_running } }
+		cancel_effect = { independence_wave_iw204_restoration_handle_cancel = yes }
+		timeout_effect = { custom_effect_tooltip = independence_wave_iw204_hold_patagonia_frontier_failure_effect_tt independence_wave_iw204_restoration_fail_guard = yes }
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.urgent }
+	}
+	independence_wave_iw204_ratify_restoration_charter = {
+		name = independence_wave_iw204_ratify_restoration_charter
+		desc = independence_wave_iw204_ratify_restoration_charter_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = { is_independence_wave_iw204_restoration_overlay_active = yes has_country_flag = independence_wave_iw204_restoration_guard_completed NOT = { has_country_flag = independence_wave_iw204_restoration_charter } }
+		available = { can_choose_independence_wave_iw204_restoration_charter = yes can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw_region_charter_cost = yes }
+		custom_cost_text = independence_wave_iw_region_charter_cost
+		complete_effect = { custom_effect_tooltip = independence_wave_iw204_ratify_restoration_charter_effect_tt independence_wave_iw204_restoration_pay_charter = yes independence_wave_iw204_restoration_choose_charter = yes }
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw_region_overlay_ai.high modifier = { factor = constant:independence_wave_iw_region_overlay_ai.double has_war = no } }
 	}
 }

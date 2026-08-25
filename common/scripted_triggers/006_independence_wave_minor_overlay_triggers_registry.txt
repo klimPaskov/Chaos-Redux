@@ -1,7 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 MINOR OVERLAY TRIGGERS REGISTRY
 # ============================================================================
-# Consolidated source for the six small, overlay-only Event 006 packages.
+# Consolidated source for the thirteen small, overlay-only Event 006 packages,
+# including the COG and final vanilla route overlay families.
 # Package-local identifiers and executable trigger bodies remain unchanged.
 # These overlays adapt living vanilla carriers and never create origins.
 # ============================================================================
@@ -683,4 +684,310 @@ can_choose_independence_wave_iw085_cyrenaica_assembly = {
 		value = constant:independence_wave_iw085_cyrenaica_value.settlement_threshold
 		compare = greater_than_or_equals
 	}
+}
+
+# SOURCE: 006_independence_wave_iw101_iw102_iw105_cog_overlays_triggers.txt
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_IW101_KONGO_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE = 0
+@CR_SC_INDEPENDENCE_WAVE_IW102_KUBA_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE = 0
+@CR_SC_INDEPENDENCE_WAVE_IW105_LOANGO_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE = 0
+# ============================================================================
+# CHAOS REDUX - EVENT 006 COG COSMETIC OVERLAY TRIGGERS
+# ============================================================================
+# Exact original-tag and vanilla cosmetic/flag identities prevent the three
+# mutually exclusive COG routes from sharing state or overwriting each other.
+# ============================================================================
+
+is_independence_wave_iw101_kongo_route_active = {
+	exists = yes
+	original_tag = COG
+	has_cosmetic_tag = COG_kingdom_of_kongo
+	has_country_flag = COG_kingdom_of_kongo_flag
+}
+
+is_independence_wave_iw101_kongo_overlay_active = {
+	is_independence_wave_iw101_kongo_route_active = yes
+	has_country_flag = independence_wave_iw101_kongo_overlay_active
+}
+
+is_independence_wave_iw102_kuba_route_active = {
+	exists = yes
+	original_tag = COG
+	has_cosmetic_tag = COG_kingdom_of_kuba
+	has_country_flag = COG_kingdom_of_kuba_flag
+}
+
+is_independence_wave_iw102_kuba_overlay_active = {
+	is_independence_wave_iw102_kuba_route_active = yes
+	has_country_flag = independence_wave_iw102_kuba_overlay_active
+}
+
+is_independence_wave_iw105_loango_route_active = {
+	exists = yes
+	original_tag = COG
+	has_cosmetic_tag = COG_kingdom_of_loango
+	has_country_flag = COG_kingdom_of_loango_flag
+}
+
+is_independence_wave_iw105_loango_overlay_active = {
+	is_independence_wave_iw105_loango_route_active = yes
+	has_country_flag = independence_wave_iw105_loango_overlay_active
+}
+
+has_independence_wave_iw101_kongo_anchor_control = {
+	owns_state = 538
+	controls_state = 538
+}
+
+has_independence_wave_iw102_kuba_anchor_control = {
+	owns_state = 538
+	controls_state = 538
+}
+
+has_independence_wave_iw105_loango_anchor_control = {
+	owns_state = 538
+	controls_state = 538
+}
+
+has_independence_wave_iw101_kongo_guard_objective = {
+	has_independence_wave_iw101_kongo_anchor_control = yes
+	divisions_in_state = { state = 538 size > @CR_SC_INDEPENDENCE_WAVE_IW101_KONGO_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE }
+}
+
+has_independence_wave_iw102_kuba_guard_objective = {
+	has_independence_wave_iw102_kuba_anchor_control = yes
+	divisions_in_state = { state = 538 size > @CR_SC_INDEPENDENCE_WAVE_IW102_KUBA_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE }
+}
+
+has_independence_wave_iw105_loango_guard_objective = {
+	has_independence_wave_iw105_loango_anchor_control = yes
+	divisions_in_state = { state = 538 size > @CR_SC_INDEPENDENCE_WAVE_IW105_LOANGO_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE }
+}
+
+can_pay_independence_wave_iw_cog_cabinet_cost = {
+	NOT = { command_power < constant:independence_wave_iw_cog_overlay_cost.cabinet_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_cog_overlay_cost.cabinet_manpower }
+	NOT = { has_equipment = { train_equipment < constant:independence_wave_iw_cog_overlay_cost.cabinet_trains } }
+}
+
+can_pay_independence_wave_iw_cog_depot_cost = {
+	NOT = { command_power < constant:independence_wave_iw_cog_overlay_cost.depot_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_cog_overlay_cost.depot_manpower }
+	NOT = { has_equipment = { train_equipment < constant:independence_wave_iw_cog_overlay_cost.depot_trains } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw_cog_overlay_cost.depot_support_equipment } }
+}
+
+can_pay_independence_wave_iw_cog_force_cost = {
+	NOT = { command_power < constant:independence_wave_iw_cog_overlay_cost.force_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_cog_overlay_cost.force_manpower }
+	NOT = { has_army_experience < constant:independence_wave_iw_cog_overlay_cost.force_army_experience }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw_cog_overlay_cost.force_infantry_equipment } }
+}
+
+can_pay_independence_wave_iw_cog_guard_cost = {
+	NOT = { command_power < constant:independence_wave_iw_cog_overlay_cost.guard_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_cog_overlay_cost.guard_manpower }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw_cog_overlay_cost.guard_infantry_equipment } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw_cog_overlay_cost.guard_support_equipment } }
+}
+
+can_pay_independence_wave_iw_cog_charter_cost = {
+	NOT = { has_manpower < constant:independence_wave_iw_cog_overlay_cost.charter_manpower }
+	NOT = { has_army_experience < constant:independence_wave_iw_cog_overlay_cost.charter_army_experience }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw_cog_overlay_cost.charter_infantry_equipment } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw_cog_overlay_cost.charter_support_equipment } }
+}
+
+can_choose_independence_wave_iw101_kongo_charter = {
+	check_variable = { var = independence_wave_iw101_kongo_river_logistics value = constant:independence_wave_iw101_kongo_value.settlement_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_iw101_kongo_veteran_integration value = constant:independence_wave_iw101_kongo_value.settlement_threshold compare = greater_than_or_equals }
+}
+
+can_choose_independence_wave_iw102_kuba_charter = {
+	check_variable = { var = independence_wave_iw102_kuba_forest_mobility value = constant:independence_wave_iw102_kuba_value.settlement_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_iw102_kuba_territorial_stewardship value = constant:independence_wave_iw102_kuba_value.settlement_threshold compare = greater_than_or_equals }
+}
+
+can_choose_independence_wave_iw105_loango_charter = {
+	check_variable = { var = independence_wave_iw105_loango_coastal_logistics value = constant:independence_wave_iw105_loango_value.settlement_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_iw105_loango_port_security value = constant:independence_wave_iw105_loango_value.settlement_threshold compare = greater_than_or_equals }
+}
+
+# SOURCE: 006_independence_wave_iw156_iw196_iw197_iw204_overlays_triggers.txt
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_IW156_MOLUCCAN_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE = 0
+@CR_SC_INDEPENDENCE_WAVE_IW196_ANTILLES_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE = 0
+@CR_SC_INDEPENDENCE_WAVE_IW197_MAPUCHE_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE = 0
+@CR_SC_INDEPENDENCE_WAVE_IW204_RESTORATION_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE = 0
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FINAL VANILLA ROUTE OVERLAY TRIGGERS
+# ============================================================================
+# Each route is identity-gated and additive. The triggers deliberately retain
+# vanilla member/ideology/cosmetic contracts and never select a new country tag.
+# ============================================================================
+
+is_independence_wave_iw156_moluccan_route_active = {
+	exists = yes
+	original_tag = TNE
+	has_government = democratic
+	is_subject = no
+	owns_state = 668
+	controls_state = 668
+}
+
+is_independence_wave_iw156_moluccan_overlay_active = {
+	is_independence_wave_iw156_moluccan_route_active = yes
+	has_country_flag = independence_wave_iw156_moluccan_overlay_active
+}
+
+is_independence_wave_iw196_antilles_route_active = {
+	exists = yes
+	OR = {
+		original_tag = HAI
+		original_tag = DOM
+		original_tag = PUE
+		original_tag = CUB
+		original_tag = JAM
+		original_tag = BAH
+		original_tag = GDL
+		original_tag = BAS
+	}
+	has_cosmetic_tag = antilles
+	has_global_flag = antilles_formed_flag
+}
+
+is_independence_wave_iw196_antilles_overlay_active = {
+	is_independence_wave_iw196_antilles_route_active = yes
+	has_country_flag = independence_wave_iw196_antilles_overlay_active
+}
+
+is_independence_wave_iw197_mapuche_route_active = {
+	exists = yes
+	original_tag = CHL
+	has_cosmetic_tag = CHL_mapuche_state
+}
+
+is_independence_wave_iw197_mapuche_overlay_active = {
+	is_independence_wave_iw197_mapuche_route_active = yes
+	has_country_flag = independence_wave_iw197_mapuche_overlay_active
+}
+
+is_independence_wave_iw204_restoration_route_active = {
+	exists = yes
+	original_tag = CHL
+	has_cosmetic_tag = kingdom_of_araucania_and_patagonia
+	has_country_flag = CHL_chile_is_a_monarchy
+}
+
+is_independence_wave_iw204_restoration_overlay_active = {
+	is_independence_wave_iw204_restoration_route_active = yes
+	has_country_flag = independence_wave_iw204_restoration_overlay_active
+}
+
+has_independence_wave_iw156_moluccan_anchor_control = {
+	owns_state = 668
+	controls_state = 668
+}
+
+has_independence_wave_iw196_antilles_anchor_control = {
+	OR = {
+		689 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		691 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		692 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		694 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+}
+
+has_independence_wave_iw197_mapuche_anchor_control = {
+	owns_state = 950
+	controls_state = 950
+}
+
+has_independence_wave_iw204_restoration_anchor_control = {
+	OR = {
+		512 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		507 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+}
+
+has_independence_wave_iw156_moluccan_guard_objective = {
+	has_independence_wave_iw156_moluccan_anchor_control = yes
+	divisions_in_state = { state = 668 size > @CR_SC_INDEPENDENCE_WAVE_IW156_MOLUCCAN_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE }
+}
+
+has_independence_wave_iw196_antilles_guard_objective = {
+	OR = {
+		689 = { is_owned_by = ROOT is_controlled_by = ROOT ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_IW196_ANTILLES_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE } } }
+		691 = { is_owned_by = ROOT is_controlled_by = ROOT ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_IW196_ANTILLES_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE } } }
+		692 = { is_owned_by = ROOT is_controlled_by = ROOT ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_IW196_ANTILLES_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE } } }
+		694 = { is_owned_by = ROOT is_controlled_by = ROOT ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_IW196_ANTILLES_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE } } }
+	}
+}
+
+has_independence_wave_iw197_mapuche_guard_objective = {
+	has_independence_wave_iw197_mapuche_anchor_control = yes
+	divisions_in_state = { state = 950 size > @CR_SC_INDEPENDENCE_WAVE_IW197_MAPUCHE_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE }
+}
+
+has_independence_wave_iw204_restoration_guard_objective = {
+	OR = {
+		512 = { is_owned_by = ROOT is_controlled_by = ROOT ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_IW204_RESTORATION_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE } } }
+		507 = { is_owned_by = ROOT is_controlled_by = ROOT ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_IW204_RESTORATION_VALUE_GUARD_DIVISION_SIZE_EXCLUSIVE } } }
+	}
+}
+
+can_pay_independence_wave_iw_region_cabinet_cost = {
+	NOT = { command_power < constant:independence_wave_iw_region_overlay_cost.cabinet_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_region_overlay_cost.cabinet_manpower }
+	NOT = { has_equipment = { train_equipment < constant:independence_wave_iw_region_overlay_cost.cabinet_trains } }
+}
+
+can_pay_independence_wave_iw_region_depot_cost = {
+	NOT = { command_power < constant:independence_wave_iw_region_overlay_cost.depot_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_region_overlay_cost.depot_manpower }
+	NOT = { has_equipment = { train_equipment < constant:independence_wave_iw_region_overlay_cost.depot_trains } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw_region_overlay_cost.depot_support_equipment } }
+}
+
+can_pay_independence_wave_iw_region_force_cost = {
+	NOT = { command_power < constant:independence_wave_iw_region_overlay_cost.force_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_region_overlay_cost.force_manpower }
+	NOT = { has_army_experience < constant:independence_wave_iw_region_overlay_cost.force_army_experience }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw_region_overlay_cost.force_infantry_equipment } }
+}
+
+can_pay_independence_wave_iw_region_guard_cost = {
+	NOT = { command_power < constant:independence_wave_iw_region_overlay_cost.guard_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw_region_overlay_cost.guard_manpower }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw_region_overlay_cost.guard_infantry_equipment } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw_region_overlay_cost.guard_support_equipment } }
+}
+
+can_pay_independence_wave_iw_region_charter_cost = {
+	NOT = { has_manpower < constant:independence_wave_iw_region_overlay_cost.charter_manpower }
+	NOT = { has_army_experience < constant:independence_wave_iw_region_overlay_cost.charter_army_experience }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw_region_overlay_cost.charter_infantry_equipment } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw_region_overlay_cost.charter_support_equipment } }
+}
+
+can_choose_independence_wave_iw156_moluccan_charter = {
+	check_variable = { var = independence_wave_iw156_moluccan_maritime_mobility value = constant:independence_wave_iw156_moluccan_value.settlement_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_iw156_moluccan_island_logistics value = constant:independence_wave_iw156_moluccan_value.settlement_threshold compare = greater_than_or_equals }
+}
+
+can_choose_independence_wave_iw196_antilles_charter = {
+	check_variable = { var = independence_wave_iw196_antilles_maritime_cohesion value = constant:independence_wave_iw196_antilles_value.settlement_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_iw196_antilles_member_consent value = constant:independence_wave_iw196_antilles_value.settlement_threshold compare = greater_than_or_equals }
+}
+
+can_choose_independence_wave_iw197_mapuche_charter = {
+	check_variable = { var = independence_wave_iw197_mapuche_mountain_mobility value = constant:independence_wave_iw197_mapuche_value.settlement_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_iw197_mapuche_territorial_representation value = constant:independence_wave_iw197_mapuche_value.settlement_threshold compare = greater_than_or_equals }
+}
+
+can_choose_independence_wave_iw204_restoration_charter = {
+	check_variable = { var = independence_wave_iw204_restoration_frontier_mobility value = constant:independence_wave_iw204_restoration_value.settlement_threshold compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_iw204_restoration_volunteer_control value = constant:independence_wave_iw204_restoration_value.settlement_threshold compare = greater_than_or_equals }
 }
