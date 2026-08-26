@@ -22,4 +22,16 @@ The render returned `GUI_RENDERED` with no blockers and produced `cannibalism_re
 
 The render response exceeded the wire budget and returned only the linked SVG, so the requested state-specific diagnostics and click-region metadata remain unavailable for attribution.
 
+## Wendigo command follow-up
+
+The exact-selector inspect targeted `cannibalism_wendigo_command_window` with scenario `event014_targeted_wendigo_normal_2026_08_26`.
+
+The call returned `GUI_INSPECTED` with status `ok`, `complete: true`, `skippedSourceCount: 0`, shared revision `e5ed163e9ee42a018130a43889b988fe48fe78d47471c5eec3dbd60129de5315`, and `inspectedElementCount: 17`.
+
+The fidelity summary was modelled 137, approximated 8, ignored 5, missing 4, unsupported 3, and unresolved 4.
+
+Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9efbefec4c9c16c95c5ac40517c16a33e9eb87ee72aeb76b2ee44d75950804f3/57f688d04bb18842f9fc08aa69c8aa86be793e872bd2b428db075892e1b9c26d/gui-inspect.e5ed163e9ee42a01.json`.
+
+The result still reports global graph and validation truncation, so its 25 overlap, alignment, spacing, text-overflow, animation fallback/provenance, unresolved dynamic, and scripted-context diagnostics cannot be attributed to this Event 014 window. No GUI rewrite is justified.
+
 The Event 014 completion audit remains `PARTIAL / NOT COMPLETION-READY` until a bounded five-window matrix exposes attributable state and resolution evidence or the adapter limitation is explicitly accepted by the parent.
