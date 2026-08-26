@@ -631,7 +631,7 @@ No package-owned OOB or direct unit spawning is present.
 
 #### Founding crisis
 
-`independence_wave_rhi_corridor_authority` begins at 25. The mission **Keep the Rhine Arteries Open** gives the country 420 days to reach 65. Bridge dispatch, factory and rail guard integration, host customs ledgers, and river crossing security supply distinct administrative, military, and diplomatic ways to reach the threshold. Cancellation after loss of the capital or timeout applies a concrete authority loss and shared legitimacy, recognition, capacity, security, and instability penalties.
+`independence_wave_rhi_corridor_authority` begins at 25. The mission **Keep the Rhine Arteries Open** gives the country 420 days to raise Corridor Authority to 65 while retaining the capital and current-generation setup receipt. Bridge dispatch, factory and rail guard integration, host customs ledgers, and river crossing security supply distinct administrative, military, and diplomatic ways to reach the threshold. Receipt or capital loss, or timeout, follows the failure path and applies concrete authority loss with shared legitimacy, recognition, capacity, security, and instability penalties. The category is hidden whenever the current setup receipt is absent, so a failed or retried setup cannot expose stale package actions.
 
 The lifecycle swaps from `rhi_divided_river_authority` to `rhi_rhine_civic_industrial_compact` once the threshold is reached.
 
@@ -658,7 +658,7 @@ The network project **Charter Network Transit** raises Independence Wave network
 
 #### Founding crisis
 
-`independence_wave_bay_civic_settlement` begins at 25 and `independence_wave_bay_mountain_security` begins at 30. The mission **Hold the Bavarian State Together** gives the country 480 days to raise both values to 60. District treasury reconciliation advances civic authority; pass organization advances security; the host ledger advances civic legitimacy; integrating mountain companies advances both.
+`independence_wave_bay_civic_settlement` begins at 25 and `independence_wave_bay_mountain_security` begins at 30. The mission **Hold the Bavarian State Together** gives the country 480 days to raise both values to 60 while retaining the capital and current-generation setup receipt. District treasury reconciliation advances civic authority; pass organization advances security; the host ledger advances civic legitimacy; integrating mountain companies advances both. Receipt or capital loss, or timeout, follows the failure path; the category is hidden whenever the current setup receipt is absent, so a failed or retried setup cannot expose stale package actions.
 
 The lifecycle swaps from `bay_disputed_state_inheritance` to `bay_estates_and_districts_settlement` only when both thresholds are satisfied.
 
