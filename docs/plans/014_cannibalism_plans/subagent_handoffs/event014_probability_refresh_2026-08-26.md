@@ -40,8 +40,18 @@ The scenario set `E014_EVENT_81_CAPTURE_OUTCOMES_CURRENT_2026_08_26` evaluated f
 
 The conditional results are exact and source-intended: fascist weights 60/30/25/30 normalize to 12/29, 6/29, 5/29, and 6/29; democratic weights 150/30/10/30 normalize to 15/22, 3/22, 1/22, and 3/22; neutrality weights 60/30/10/30 normalize to 6/13, 3/13, 1/13, and 3/13. These are conditional outcomes after the reveal and captured-Hannibal target gates, not campaign-wide route frequencies.
 
+## Current random-list identity refresh
+
+`hoi4.probability_inspect` used adapter `random_list` against `common/scripted_effects/014_cannibalism_effects.txt` and discovered 42 entries across the seven regional name pools, the six-personality pool, and three outcome pools. The source revision was `7378fff1bc4a086c1027c2fe8810e0117aaf860950140fed3177d9a69a16946c`, the source hash was `bcfa8fcbd35017d04d195b81f465da45a62469578246ff437f6ac3b8ab54a45c`, and the complete-source discovery artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/3d36481815c811a4a9c0089d6ee253725829521dd29194691d2a9528277172ca/ac4a82158d4323bbc38558cc1ec615ec203616908d89e2265b3dc1de5ef3faac/probability-inspect-bcfa8fcbd350.json`. The aggregate discovery remains `poolComplete = false` because the adapter treats the separate source blocks as one unresolved aggregate surface.
+
+The European regional name block at source line 4648 was evaluated as a complete four-candidate pool under `E014_WARLORD_REGIONAL_NAMES_CURRENT_2026_08_26`. `hoi4.probability_evaluate` returned `PROBABILITY_ANALYZED` with `analysisId = probability-70d9e4d318b9b89efc0e3618`, four candidates, zero unresolved inputs, zero diagnostics, and exact conditional probability 1/4 per candidate. The JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a112addbdcb6933444505be8893a6c63dbdc652ce1cd355073ff355139bef1b8/863a2044139da7ff22587b27982693973ea26e5823965d0a1e3177fa26345f50/probability-70d9e4d318b9b89efc0e3618.json`.
+
+The six-personality block at source line 4711 was evaluated as a complete six-candidate pool under `E014_WARLORD_PERSONALITIES_CURRENT_2026_08_26_RETRY`. `hoi4.probability_evaluate` returned `PROBABILITY_ANALYZED` with `analysisId = probability-0b60164f800cc68bea44b098`, six candidates, zero unresolved inputs, zero diagnostics, and exact conditional probability 1/6 per personality. The JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f4b87489a04fbf314495815561ce009e18591a9c6658d59b88e7bdceb20b2d94/73f7644d5ab6d826b2c3088f90b9f64eec8d0fb64691396b989c6c2a47421dd8/probability-0b60164f800cc68bea44b098.json`.
+
 ## Disposition
 
 This refresh strengthens current source-revision evidence for the opening-policy weights but does not certify normalized campaign probabilities, route dominance, or dynamic host selection.
+
+The random-list refresh strengthens two identity sub-pools, but it does not certify the aggregate seven-region selector, dynamic region assignment, or the three outcome blocks because those remain separate or variable-derived surfaces.
 
 No balance patch is justified. Any future weight or trigger change must rerun source-qualified inspection and the same named scenario evaluations, then use `hoi4.probability_compare` with identical pools and scenarios.
