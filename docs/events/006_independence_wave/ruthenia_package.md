@@ -10,7 +10,7 @@ The package exposes Civic Concord and Mountain Security as two visible values fr
 
 Both values must reach 60 for the mountain compact to become stable.
 
-The founding mission lasts 600 days and requires a selected government, both compact values at 60, and ownership and control of state 73.
+The founding mission lasts 600 days and requires a selected government, both compact values at 60, ownership and control of state 73, and the current generation setup receipt.
 
 Failure marks the compact crisis as lost and cancels active package projects through their ordinary failure effects.
 
