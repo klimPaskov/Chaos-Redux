@@ -38,7 +38,7 @@ The merge is recorded in `006_event6_character_recruitment_registry_merge_2026-0
 
 Current source inspection also confirms that `chaosx.nr6.10` is an empty trigger-only compatibility checkpoint and `chaosx.nr6.350` invokes `independence_wave_apply_roster_checkpoint`; Event 006's event file contains no `recruit_character` calls, so startup recruitment ownership remains in the merged general-history registry.
 
-This pending relocation does not change the no-pre-event invariant, the 32/29/40/161 admission boundary, or the `3/4/5/7/10` ladder.
+This completed relocation does not change the no-pre-event invariant, the 32/29/40/161 admission boundary, or the `3/4/5/7/10` ladder.
 
 The committed 2026-08-26 decision-cost localisation clarity pass is current bounded localisation evidence under `subagent_handoffs/006_event6_cost_localisation_clarity_2026-08-26.md` and commit `a4bbc030b`; it confirms no pre-event localisation leak and preserves cost mechanics, dynamic selectors, and the 32/29/40/161 boundary.
 
