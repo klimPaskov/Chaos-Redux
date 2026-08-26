@@ -1,6 +1,6 @@
 # Package Validation
 
-Status date: 2026-08-25 parent runtime-wiring amendment to the 2026-07-15 frozen closure
+Status date: 2026-08-26 approved vanilla-visual reuse amendment to the 2026-07-15 frozen closure
 
 ## Structural and gameplay-definition evidence
 
@@ -23,7 +23,7 @@ Status date: 2026-08-25 parent runtime-wiring amendment to the 2026-07-15 frozen
 - Runtime idea/modifier textures: 62 of 62.
 - Runtime decision/category textures: 135 of 135, including 38 distinct unified decision icons.
 - Live idea pictures: 37 of 37 registered. The eight repaired icons are unique 68x68 DDS files with independent image-generated sources.
-- Regional warlord portraits: 56 of 56.
+- Regional warlord portraits: 56 of 56 files are present; portrait-worker acceptance remains blocked and is not implied by this filesystem count.
 - Achievement assets: 18 triplets, 54 DDS files.
 - Closure package: 21 distinct assets with generated sources, processed finals, runtime DDS files, hashes, and contact sheets.
 - Super-event action images: four distinct 457x328 DDS files.
@@ -31,11 +31,11 @@ Status date: 2026-08-25 parent runtime-wiring amendment to the 2026-07-15 frozen
 - Event 014 texture references across exactly three GFX files, one dedicated registry plus `chaosx_pictures.gfx` and `chaosx_super_events.gfx`: 812 total references, 598 unique existing paths, and 598 unique hashes.
 - Super-event audio IDs 49, 50, 52, and 53 have unique 44.1 kHz WAV files and a rights/source record. ID 51 is not used by Event 014.
 - The frozen super-event runtime audio inventory is eight unique source/runtime files: four runtime WAVs plus four preserved source recordings. The downstream unit-audio amendment separately records 61 source-derived/runtime unit WAV files and its unresolved playback gates.
-- Nine inactive custom irregular-infantry/cavalry subunits now have stable sprite-token consumers, locked Event 014 template mappings, localisation, and additive CXT registration. `cannibal_bone_riders` is horse-mounted and consumes real infantry equipment. The locked Scavenged Elephant Column uses installed vanilla `elephantry` with its real infantry- and artillery-equipment need. No equipment archetype was added. The 27 counter DDS/registry consumers are present. Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, and March Predation Column also have parent-installed mesh, eight-action, entity/GFX, material-map, and seven-role 44.1 kHz runtime sound packages.
+- Nine inactive custom irregular-infantry/cavalry subunits now have stable sprite-token consumers, locked Event 014 template mappings, localisation, and additive CXT registration. `cannibal_bone_riders` is horse-mounted and consumes real infantry equipment. The locked Scavenged Elephant Column uses installed vanilla `elephantry` with its real infantry- and artillery-equipment need. No equipment archetype was added. The 27 counter DDS/registry consumers are present. Feast Guard, Feast Cohort, Bone Guard, Siege Eaters, March Predation Column, Island Reavers, and Scavenger Warband also have parent-installed mesh, eight-action, entity/GFX, material-map, and runtime sound packages.
 
 ## Current downstream amendment
 
-The current evidence records nine gameplay consumers, 27 counter DDS files with matching registry consumers, five parent-installed model/action/entity/audio packages, and four remaining model families with explicit blockers: Bone Riders has no supported compound horse/rider action route, Island Reavers has a later succeeded geometry candidate but no accepted v8 rig/action package (the earlier Meshy HTTP 402 recovery record remains superseded evidence), Scavenger Warband needs the remaining user-review/source gate, and Network Cadre has no accepted provider-sourced action lease. Those four packages now have 26 source-derived 44.1 kHz WAVs, unique sound definitions, and CBA-CBH/CBL country-level infantry idle voice bindings; action, entity, frame-synchronized playback, and live validation remain open. The four super-event audio packages are source-checked and fully registered with unique base sounds, settings-scaled wrappers, catalog rows, and guarded settings-aware dispatch; see `event014_super_event_audio_wiring_audit_2026-08-25.md`. The 2026-07-15 closure audit is historical evidence for the frozen scope and does not close these downstream items.
+The current evidence records nine gameplay consumers, 27 counter DDS files with matching registry consumers, and seven parent-installed bespoke model/action/entity/audio packages. Bone Riders intentionally uses vanilla `sprite = cavalry`, and Network Cadre intentionally uses vanilla `sprite = infantry`; neither requires a custom model/action/entity/provider package, and their retained 3D records are historical lineage only. Island Reavers and Scavenger Warband now have source-approved Meshy/Blender export, reimport, runtime entity/GFX, material, and audio evidence in their v11 and v2 handoffs. Parent live consumer review remains open for the seven bespoke packages and the counter/audio surfaces. The four super-event audio packages are source-checked and fully registered with unique base sounds, settings-scaled wrappers, catalog rows, and guarded settings-aware dispatch; see `event014_super_event_audio_wiring_audit_2026-08-25.md`. The 2026-07-15 closure audit is historical evidence for the frozen scope and does not close these downstream items.
 
 ## Secrecy evidence
 
@@ -47,7 +47,7 @@ The current evidence records nine gameplay consumers, 27 counter DDS files with 
 
 ## Audit limitations
 
-The evidence above is definition-level, filesystem, source-manifest, and audit evidence. This documentation reconciliation did not launch an in-game runtime session and does not claim runtime scenario testing. The current 2026-07-15 country-package, decision/mission, focus-tree, asset, and documentation evidence reports P0/P1/P2/P3 all zero for its frozen scope. The authoritative workbook and update helper record `Events!N15` and `Scenarios!F10` as `Fully Functional`; this documentation audit does not alter or re-audit the workbook. `event014_final_completion_audit_2026-07-13.md` is preserved only as a historical pre-origin-removal checkpoint.
+The evidence above is definition-level, filesystem, source-manifest, and audit evidence. This documentation reconciliation did not launch an in-game runtime session and does not claim runtime scenario testing. The current 2026-07-15 country-package, decision/mission, focus-tree, asset, and documentation evidence reports P0/P1/P2/P3 all zero for its frozen scope. A read-only 2026-08-26 workbook check records `Events!N15` and `Scenarios!F10` as `Needs Testing`; this documentation audit did not alter the workbook. `event014_final_completion_audit_2026-07-13.md` is preserved only as a historical pre-origin-removal checkpoint.
 
 The post-remediation asset recheck found 18 exact not-eligible overlay composites with zero pixel mismatches, 54 package/live achievement triplet files with zero mismatches, 65 separate built-in ImageGen flag masters with 195 unique runtime TGAs, and 14 semantic animation packages with 142 source and 142 processed frames. The later unit/model amendment supersedes the old “zero stale claims” statement for custom-unit model, counter, source, and audio handoffs.
 
