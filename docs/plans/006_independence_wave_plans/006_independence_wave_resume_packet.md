@@ -28,6 +28,22 @@ The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger
 
 The 2026-08-22 retired-crisis neutralization replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
 
+### Startup-character source-layout status (2026-08-26)
+
+The current working tree contains `history/general/006_independence_wave_character_recruitment_registry.txt` as an untracked candidate that combines the two startup files present at `HEAD`, `history/general/006_independence_wave_character_recruitment.txt` and `history/general/006_independence_wave_additional_character_recruitment.txt`; both former paths are deleted in the working tree but remain in `HEAD`.
+
+A read-only structural comparison found 108 structural lines and 55 `recruit_character` calls in the candidate and in the combined `HEAD` inputs, while the candidate intentionally contains no FER record; this is source-layout evidence only and is not a committed promotion.
+
+Until the parent promotes or rejects this candidate, cite the former paths only as dated `HEAD` provenance and cite the registry only as an uncommitted working-tree candidate; do not treat either path as a settled current source authority.
+
+Current source inspection also confirms that `chaosx.nr6.10` is an empty trigger-only compatibility checkpoint and `chaosx.nr6.350` invokes `independence_wave_apply_roster_checkpoint`; Event 006's event file contains no `recruit_character` calls, so startup recruitment ownership remains the pending source-layout decision.
+
+This pending relocation does not change the no-pre-event invariant, the 32/29/40/161 admission boundary, or the `3/4/5/7/10` ladder.
+
+The committed 2026-08-26 decision-cost localisation clarity pass is current bounded localisation evidence under `subagent_handoffs/006_event6_cost_localisation_clarity_2026-08-26.md` and commit `a4bbc030b`; it confirms no pre-event localisation leak and preserves cost mechanics, dynamic selectors, and the 32/29/40/161 boundary.
+
+The committed 2026-08-26 IW-024 Banat force-contract prose follow-up is current bounded documentation evidence under `subagent_handoffs/006_iw024_banat_force_contract_prose_followup_2026-08-26.md` and commit `2005d92c6`; it records the p24 `industrial_security` profile, mask `1095`, and five pathway contract without changing roles, admission, or runtime behavior.
+
 The 2026-08-24 small-file consolidation preserves the Event 006 category and dormant compatibility definitions in three compact registries, removes 68 former tiny parser files, reduces the file count by 66, and saves 44,235 committed source bytes. Its handoff is `subagent_handoffs/006_event6_small_file_consolidation_2026-08-24.md`; on-action and package-owned gameplay files remain separate where duplicate callback keys or ownership boundaries make concatenation unsafe.
 
 The follow-on 2026-08-24 definition-registry consolidation preserves 413 ideas, 68 characters, and 23 country-leader traits in three additional registries, removes 69 former definition files, reduces the file count by another 66, and saves 34,775 committed source bytes. Together the two source-layout passes remove 132 files and save 79,010 committed source bytes. Its handoff is `subagent_handoffs/006_event6_definition_registry_consolidation_2026-08-24.md`; package decisions, effects, focus trees, localisation, country shells, and on-action files remain separate where ownership or callback composition makes concatenation unsafe.

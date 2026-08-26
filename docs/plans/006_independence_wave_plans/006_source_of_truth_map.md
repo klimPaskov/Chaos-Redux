@@ -24,6 +24,22 @@ The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger
 
 The 2026-08-22 retired-crisis neutralization also replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
 
+### Startup-character source-layout status (2026-08-26)
+
+The current working tree contains `history/general/006_independence_wave_character_recruitment_registry.txt` as an untracked candidate that combines the two startup files present at `HEAD`, `history/general/006_independence_wave_character_recruitment.txt` and `history/general/006_independence_wave_additional_character_recruitment.txt`; both former paths are deleted in the working tree but remain in `HEAD`.
+
+A read-only structural comparison found 108 structural lines and 55 `recruit_character` calls in the candidate and in the combined `HEAD` inputs, while the candidate intentionally contains no FER record; this is source-layout evidence only and is not a committed promotion.
+
+Until the parent promotes or rejects this candidate, cite the former paths only as dated `HEAD` provenance and cite the registry only as an uncommitted working-tree candidate; do not treat either path as a settled current source authority.
+
+Current source inspection also confirms that `chaosx.nr6.10` is an empty trigger-only compatibility checkpoint and `chaosx.nr6.350` invokes `independence_wave_apply_roster_checkpoint`; Event 006's event file contains no `recruit_character` calls, so startup recruitment ownership remains the pending source-layout decision.
+
+This pending relocation does not change the no-pre-event invariant, the 32/29/40/161 admission boundary, or the `3/4/5/7/10` ladder.
+
+The committed 2026-08-26 decision-cost localisation clarity pass is current bounded localisation evidence under `subagent_handoffs/006_event6_cost_localisation_clarity_2026-08-26.md` and commit `a4bbc030b`; it confirms no pre-event localisation leak and preserves cost mechanics, dynamic selectors, and the 32/29/40/161 boundary.
+
+The committed 2026-08-26 IW-024 Banat force-contract prose follow-up is current bounded documentation evidence under `subagent_handoffs/006_iw024_banat_force_contract_prose_followup_2026-08-26.md` and commit `2005d92c6`; it records the p24 `industrial_security` profile, mask `1095`, and five pathway contract without changing roles, admission, or runtime behavior.
+
 The 2026-08-21 parent tranche remains implemented as source evidence: synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors for IW-024/IW-027/IW-028, the documented dormant-shell guard, and its then-current 37 byte-preserving supplied portrait installs with 14 intentionally unmapped files; that portrait count is historical and is superseded by the 2026-08-22 consumer tranche below.
 
 Commit `b77f9fd45` additionally repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission or changing the 32/161 boundary; its bounded runtime handoff is `subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
