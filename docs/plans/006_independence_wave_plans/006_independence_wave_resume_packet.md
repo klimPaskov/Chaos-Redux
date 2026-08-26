@@ -2,7 +2,9 @@
 
 The long provenance list below preserves dated implementation history. Current routing and counts are stated in the explicit authority override that follows it; older v105/v104/v103, 27-package, and 81-master references in that list are not current status.
 
-## Current authority override (2026-08-25 after focus-geometry closure, schema, cost-localisation, and static-audit reconciliation)
+## Current authority override (2026-08-26 after the small registry merge and prior focus-geometry, schema, cost-localisation, and static-audit reconciliation)
+
+The current path authority for the 2026-08-26 small-file merge is `interface/006_independence_wave_small_assets.gfx` for the FORM-03, Pacific, Mediterranean, IW-043/IW-058, Rhineland/Bavaria, and Wallonia/Frisia sprite blocks, and `common/decisions/006_independence_wave_balkan_decisions.txt` for the Banat, Bosnia, Epirus, Macedonia, Montenegro, Thrace, and Transylvania decision blocks. The eight removed parser paths remain dated provenance in older handoffs and source markers only, and must not be cited as current source files.
 
 Resume from a partial implementation boundary, not from a completion claim.
 
@@ -134,7 +136,7 @@ The second 2026-08-24 source-layout pass folds the three same-namespace regional
 
 The 2026-08-25 compact decision-registry continuation folds the Rhineland/Bavaria plus Saar decisions into `common/decisions/006_independence_wave_rhineland_bavaria_saar_decisions.txt` and the Bashkiria plus Mari decisions into `common/decisions/006_independence_wave_bashkiria_mari_decisions.txt`. All five category IDs and 64 decision IDs remain source-equivalent with no duplicate definitions; the four former parser files are removed. Package constants, costs, timers, triggers, effects, cancellation, cleanup, AI behavior, and admission boundaries are unchanged. Handoff: `subagent_handoffs/006_event6_compact_decision_registry_merge_2026-08-25.md`.
 
-The follow-on decision-icon pass folds the IW-043/IW-058 and IW-093/IW-098 decision GFX registries into `interface/006_independence_wave_small_assets.gfx`, preserving all 34 sprite names and texture paths while removing two parser files. Package-owned portrait, FORM-03, FORM-05, and Wallonia/Frisia GFX files remain separate. Its source-only handoff is `subagent_handoffs/006_event6_decision_icon_registry_merge_2026-08-24.md`.
+The follow-on decision-icon pass is retained as dated pre-merge evidence: it folded the IW-043/IW-058 and IW-093/IW-098 decision GFX registries into `interface/006_independence_wave_small_assets.gfx`, preserving all 34 sprite names and texture paths while removing two parser files, and recorded package-owned portrait, FORM-03, FORM-05, and Wallonia/Frisia GFX files as separate at that time. That separation statement is superseded by the 2026-08-25 FORM-05 continuation and the 2026-08-26 small-GFX continuation below; current non-portrait sprite authority is `interface/006_independence_wave_small_assets.gfx`. Its source-only handoff is `subagent_handoffs/006_event6_decision_icon_registry_merge_2026-08-24.md`.
 
 The 2026-08-26 small-GFX continuation folds the clean FORM-03, Pacific, Mediterranean, IW-043/IW-058, Rhineland/Bavaria, and Wallonia/Frisia sprite registries into `interface/006_independence_wave_small_assets.gfx`. The receiver keeps 264 unique sprite names, original texture paths, effect files, and six source markers under one `spriteTypes` wrapper. Six parser files are removed and the combined source tree saves 605 bytes. No package ownership, decision icon, focus icon, or runtime asset path changes. Handoff: `subagent_handoffs/006_event6_small_file_merge_continuation_2026-08-26.md`.
 
