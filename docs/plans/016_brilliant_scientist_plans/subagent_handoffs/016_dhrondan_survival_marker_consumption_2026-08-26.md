@@ -27,5 +27,9 @@ They never grant equipment, bypass the two-thousand-gun reservation, create form
 
 Source references are complete and the constants are scoped to their existing decision families.
 The current DHR focus MCP inspect/render evidence remains valid because the focus graph itself is unchanged.
-The weighted MCP post-patch inspect/compare is delegated to the current probability auditor with the same named landing/enclave scenarios; any unresolved typed state, receipt, equipment, or target inputs must remain explicitly recorded rather than inferred.
+The owner attempted a post-patch `hoi4.probability_inspect` for the landing decision with `adapter = mission_ai_will_do`, source `common/decisions/016_alien_infantry_landing_decisions.txt`, and the requested landing candidates.
+One refresh returned `PROBABILITY_SOURCE_INSPECTED` with source revision `59c04c5cb84b86ad4b9566726ae6a2458df3ef9f6892a65964dc50ff672071fe`, one indexed mission candidate, and one unresolved input; a subsequent discovery refresh timed out after 180 seconds.
+The owner also attempted `hoi4.probability_compare` with the same source path and a declared named scenario set.
+The first call was rejected because the scenario schema requires `state` fields and does not accept the supplied `inputs`, `variables`, or `flags` shapes; the corrected empty-state retry returned `PROBABILITY_SURFACE_EMPTY` because the adapter did not match the requested source/candidate surface.
+Therefore no before/after probability or normalized landing-target claim is made; typed receipt, equipment, state-target, and adapter coverage remain unresolved and are recorded as MCP blockers rather than inferred.
 Live in-game AI behavior remains user-owned acceptance.

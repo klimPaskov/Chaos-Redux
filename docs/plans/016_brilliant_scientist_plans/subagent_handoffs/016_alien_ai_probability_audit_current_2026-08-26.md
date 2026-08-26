@@ -4,6 +4,12 @@ Status: read-only audit handoff for `/root` on 2026-08-26.
 
 No gameplay, AI, event, focus, decision, scripted-effect, trigger, project, localisation, or runtime file was changed by this audit, and no commit was made.
 
+> Owner follow-up: a later narrow patch added DHR-only survival-marker AI factors to the landing and enclave decisions. Its post-patch evidence and exact MCP blockers are recorded in `016_dhrondan_survival_marker_consumption_2026-08-26.md`; the source fingerprints and landing traces below describe this audit's earlier snapshot.
+
+## Correction to the earlier selector finding
+
+The earlier draft of this handoff incorrectly called `max = total + 1` in the Event 019 selectors a sampling bias. The repository contract at `common/scripted_effects/018_resources_found_effects.txt:482-494` explicitly states that `set_temp_variable_to_random` treats `max` as exclusive, so `min = 1; max = total + 1` samples exactly `1..total`. The selector snippets at `common/scripted_effects/019_infantry_spawn_core_effects.txt:226-239` and `common/scripted_effects/019_infantry_spawn_scenario_effects.txt:468-481` therefore have no `total + 1` off-by-one defect. Any earlier recommendation to patch those bounds is withdrawn.
+
 ## Scope and classification
 
 This pass covers the Event 016 D'Rhondan contact route, the Event 019 Alien Infantry provider-selection surface, the CBRN random special-project pool that can select the D'Rhondan craft, rebellion-tier sampling, landing-mission AI, the contact expedition scores, the `.49` response event, and the D'Rhondan focus tree AI surfaces.
@@ -167,15 +173,13 @@ No claim of exact route, landing-target, provider, or focus click probability is
 
 ## Concrete findings and recommended fixes
 
-### 1. Event 019 provider selectors have a total-plus-one sampling bias
+### 1. Event 019 provider selector bounds are contract-correct; provider probability remains unresolved
 
-Both manual selectors calculate a positive eligible total and then set the random upper bound to total plus one before subtracting candidate weights: `common/scripted_effects/019_infantry_spawn_core_effects.txt:198-263` and `common/scripted_effects/019_infantry_spawn_scenario_effects.txt:435-518`.
+Both manual selectors calculate a positive eligible total and set the random upper bound to total plus one before subtracting candidate weights: `common/scripted_effects/019_infantry_spawn_core_effects.txt:198-263` and `common/scripted_effects/019_infantry_spawn_scenario_effects.txt:435-518`.
 
-For a proportional pool with total `W`, drawing from `1..W+1` and subtracting weights gives the final eligible candidate an extra interval; the result is not `weight_i / W`. The affected candidate is whichever eligible provider is last in registration order, not inherently provider 508. Provider 508 is registered with spawn weight 8 at `common/script_constants/016_brilliant_scientist_project_force_constants.txt:507-527`.
+The local source contract at `common/scripted_effects/018_resources_found_effects.txt:482-494` states that the random `max` is exclusive. With `min = 1` and `max = W + 1`, the selectors sample exactly `1..W`, so the subtraction loop allocates the intended proportional intervals. This is not a source defect.
 
-The `custom_weighted_pool` adapter did not discover the hand-rolled array, so an exact provider 508 probability is unresolved, but the off-by-one is a direct source defect and does not depend on a particular pool composition. Recommended owner fix: use a half-open/total-bound roll that allocates exactly `W` intervals in both selectors, then rerun the same complete provider pool through `hoi4.probability_compare`.
-
-Risk: rank and provider identity can be stable while probabilities drift, so a simple winner-only smoke test will miss this defect.
+The `custom_weighted_pool` adapter did not discover the hand-rolled array, so an exact provider 508 probability remains unresolved. Provider 508 is registered with spawn weight 8 at `common/script_constants/016_brilliant_scientist_project_force_constants.txt:507-527`; no bias or dominance claim should be made without a complete provider pool and scenario state.
 
 ### 2. Rebellion tier predicates leave an ambiguous 10+ arrival band
 
