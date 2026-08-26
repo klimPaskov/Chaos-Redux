@@ -2,9 +2,9 @@
 
 ## Status
 
-Audio research, rights verification, source preservation, conversion, runtime metadata verification, hash recording, and uniqueness review are complete for the four requested Event 014 super-events.
+Audio research, rights verification, source preservation, OGG conversion, WAV decoding, runtime metadata verification, hash recording, and uniqueness review are complete for the four requested Event 014 super-events.
 
-The final runtime candidates are Vorbis OGG files at exactly 44,100 Hz, stereo, with one distinct musical recording per role and durations from 114 to 120 seconds.
+Each role now has a preserved source recording, a final Vorbis OGG derivative, and a final game-ready signed 16-bit PCM WAV decoded mechanically from that OGG. Both runtime formats are exactly 44,100 Hz stereo, with one distinct musical recording per role and durations from 114 to 120 seconds.
 
 Sound-definition registration, settings-volume wrappers, event dispatch, and any existing WAV wiring remain parent-owned and were not edited here.
 
@@ -12,12 +12,12 @@ The machine-readable evidence receipt is [ffprobe_and_hash_receipt.json](../../.
 
 ## Final role map
 
-| Super-event role | ID | Track | Creator or composer | Performer or recording source | Final OGG | Suggested sound definition id |
-| --- | ---: | --- | --- | --- | --- | --- |
-| Hannibal Lecter reveal | `49` | `Danse macabre, Op. 40` | Camille Saint-Saëns | Philadelphia Symphony Orchestra; Leopold Stokowski | `sound/014_cannibalism/super_event_49_hannibal_reveal.ogg` | `chaosx_super_event_cannibalism_hannibal_reveal_track` |
-| Ordinary Hannibal worldwide victory/world-end | `50` | `Siegfried's Funeral March and Finale` from `Götterdämmerung` | Richard Wagner; transcriptions by Howard Bowlin and John R. Bourgeois | United States Marine Band; Col. John R. Bourgeois | `sound/014_cannibalism/super_event_50_hannibal_world_end.ogg` | `chaosx_super_event_cannibalism_hannibal_world_end_track` |
-| Eligible global defeat aftermath | `52` | `Élégie, Op. 24` | Gabriel Fauré | Hans Goldstein, cello; Eli Kalman, piano | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.ogg` | `chaosx_super_event_cannibalism_global_defeat_aftermath_track` |
-| Wendigo Hannibal worldwide victory/world-end | `53` | `Peer Gynt Suite No. 1, Op. 46 - II. The Death of Aase` | Edvard Grieg | Musopen Symphony | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.ogg` | `chaosx_super_event_cannibalism_wendigo_world_end_track` |
+| Super-event role | ID | Track | Creator or composer | Performer or recording source | Final OGG | Final WAV | Suggested sound definition id |
+| --- | ---: | --- | --- | --- | --- | --- | --- |
+| Hannibal Lecter reveal | `49` | `Danse macabre, Op. 40` | Camille Saint-Saëns | Philadelphia Symphony Orchestra; Leopold Stokowski | `sound/014_cannibalism/super_event_49_hannibal_reveal.ogg` | `sound/014_cannibalism/super_event_49_hannibal_reveal.wav` | `chaosx_super_event_cannibalism_hannibal_reveal_track` |
+| Ordinary Hannibal worldwide victory/world-end | `50` | `Siegfried's Funeral March and Finale` from `Götterdämmerung` | Richard Wagner; transcriptions by Howard Bowlin and John R. Bourgeois | United States Marine Band; Col. John R. Bourgeois | `sound/014_cannibalism/super_event_50_hannibal_world_end.ogg` | `sound/014_cannibalism/super_event_50_hannibal_world_end.wav` | `chaosx_super_event_cannibalism_hannibal_world_end_track` |
+| Eligible global defeat aftermath | `52` | `Élégie, Op. 24` | Gabriel Fauré | Hans Goldstein, cello; Eli Kalman, piano | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.ogg` | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav` | `chaosx_super_event_cannibalism_global_defeat_aftermath_track` |
+| Wendigo Hannibal worldwide victory/world-end | `53` | `Peer Gynt Suite No. 1, Op. 46 - II. The Death of Aase` | Edvard Grieg | Musopen Symphony | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.ogg` | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav` | `chaosx_super_event_cannibalism_wendigo_world_end_track` |
 
 The rejected visible slot `51` is not used because it belongs to the Holy Realm's existing super-event.
 
@@ -129,7 +129,7 @@ The rejected visible slot `51` is not used because it belongs to the Holy Realm'
 
 ## Runtime metadata evidence
 
-The receipt was generated with FFprobe `N-123778-g3b55818764-20260331` on 2026-08-26 and records source and final hashes plus stream metadata.
+The receipt was generated with FFprobe `N-123778-g3b55818764-20260331` and FFmpeg `N-123778-g3b55818764-20260331` on 2026-08-26 and records source, OGG, and WAV hashes plus stream metadata.
 
 All four runtime OGGs report `format_name=ogg`, `codec_name=vorbis`, `sample_rate=44100`, `channels=2`, and `channel_layout=stereo`.
 
@@ -142,27 +142,38 @@ All four runtime OGGs report `format_name=ogg`, `codec_name=vorbis`, `sample_rat
 
 The four archive final OGGs and four runtime sound OGGs are byte-identical mirrors, verified by SHA-256 and recorded as `archive_mirror_sha256_equal=true` in the receipt.
 
+The four final WAVs below were decoded from the accepted runtime OGGs with `-map_metadata 0:s:0 -vn -ar 44100 -ac 2 -c:a pcm_s16le` and are the files intended for the base sound definitions.
+
+| ID | Final WAV | Duration | Codec | Sample format | Sample rate | Channels | Bytes | SHA-1 | SHA-256 |
+| ---: | --- | ---: | --- | --- | ---: | ---: | ---: | --- | --- |
+| `49` | `sound/014_cannibalism/super_event_49_hannibal_reveal.wav` | `114.000000 s` | `pcm_s16le` | `s16` | `44100 Hz` | 2 | `20,109,914` | `977d786d50e95a6ffa8aee1d177432d5c5ca34be` | `9d90fd24f917290b84b967f59cc486e65952b892abe3b32d2b2e6780be43f806` |
+| `50` | `sound/014_cannibalism/super_event_50_hannibal_world_end.wav` | `120.000000 s` | `pcm_s16le` | `s16` | `44100 Hz` | 2 | `21,168,314` | `f3f63ad2ffd36410d704726200265883ee99db0d` | `60782048cbcaa203859943177b88a531d3e56786a91ea3fc9413981fc340a055` |
+| `52` | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav` | `116.001043 s` | `pcm_s16le` | `s16` | `44100 Hz` | 2 | `20,462,934` | `cb66da26dd4a78a7be96fc8d2f3fec73a6d41e0b` | `490f802b74a1d0643ad3ccd33147375ab00d274bfa7224241eb00f36ef290d7c` |
+| `53` | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav` | `118.000000 s` | `pcm_s16le` | `s16` | `44100 Hz` | 2 | `20,815,532` | `bc2394d188ed1ff2fc08a28653e5c509339e1fab` | `709a6403b512b851ff6a0cdf921237c458ba438373764e4de16d09532d3e354b` |
+
+Source-to-derived lineage is preserved as `source recording -> accepted edited OGG -> mechanically decoded PCM WAV`; the source and OGG hashes, OGG-to-WAV command, and final WAV hashes are all recorded in the receipt.
+
 ## Uniqueness and archive audit
 
-The final SHA-256 values are mutually unique.
+The four final OGG SHA-256 values and the four final WAV SHA-256 values are each mutually unique.
 
-A byte-identity scan across 63 super-event audio files and 251 audio files under `music/` and `sound/` found no external match for any of the four final OGGs.
+A byte-identity scan across 63 super-event audio files and 251 audio files under `music/` and `sound/` found no external match for any of the four final OGGs or four final WAVs.
 
 No default soundtrack, reused Event 014 cue, generated test tone, oscillator, beep, noise bed, drone, stinger, or placeholder recording is present in this package.
 
-The event-scoped audio workspace contains exactly four preserved source recordings, four final archive derivatives, and five local rights-evidence pages.
+The event-scoped audio workspace contains exactly four preserved source recordings, four final OGG archive derivatives, the FFprobe/hash receipt, and five local rights-evidence pages; the four final WAVs live in the runtime sound folder.
 
 No download archive, extraction cache, rejected candidate, or duplicate candidate remains.
 
-The two copies of each final OGG are intentional: the `docs/assets/.../final/` copy is the provenance mirror and the `sound/014_cannibalism/` copy is the runtime candidate.
+The two copies of each final OGG are intentional: the `docs/assets/.../final/` copy is the provenance mirror and the `sound/014_cannibalism/` copy is the accepted OGG runtime candidate. Each accepted OGG also has one final PCM WAV runtime derivative.
 
 ## Parent wiring handoff
 
-For each ID, the parent should register the suggested base sound definition id and point it to the final runtime OGG, add the required settings-volume wrappers, and keep `global.current_super_event_audio_id` aligned with the visible slot before calling the settings-aware playback helper.
+For each ID, the parent should register the suggested base sound definition id and point it to the final runtime WAV, add the required settings-volume wrappers, and keep `global.current_super_event_audio_id` aligned with the visible slot before calling the settings-aware playback helper.
 
 The parent should carry the ID 52 CC BY-SA 2.0 attribution, license link, change notice, and share-alike statement into the permanent attribution surface.
 
-The existing parent-owned WAV files under `sound/014_cannibalism/` were not deleted or rewritten; they remain separately verified at 44.1 kHz PCM and may be retained only if the current sound-definition implementation still consumes WAV.
+The prior WAV hashes are retained in the receipt for auditability; the four runtime WAV paths now contain the requested OGG-decoded PCM derivatives and are ready for the parent-owned WAV sound definitions.
 
 The older permanent note `docs/super_events/014_cannibalism/audio_research.md` still contains historical `docs/assets/014_cannibalism/source_audio/` paths; this completion handoff and its receipt record the current `docs/assets/014_cannibalism/audio/super_events/` package paths, so the parent should reconcile that note during final catalogue and wiring review.
 
@@ -170,6 +181,6 @@ The older permanent note `docs/super_events/014_cannibalism/audio_research.md` s
 
 No audio fallback, placeholder, reused track, uncertain source, or unlicensed candidate was used.
 
-No source, rights, hash, or runtime metadata gate is open for the four OGG candidates.
+No source, rights, hash, or runtime metadata gate is open for the four OGG candidates or their final WAV derivatives.
 
 Sound definitions, settings wrappers, event/script dispatch, canonical catalogue edits, and live in-game playback remain outside this bounded handoff and require parent integration.
