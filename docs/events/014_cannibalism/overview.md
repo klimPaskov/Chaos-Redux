@@ -58,7 +58,7 @@ All eight reusable slots are origin-agnostic. CBA through CBH can each receive a
 
 Starting divisions and equipment scale from the originating state and current event pressure. Recruitment and reinforcement consume manpower, equipment, command capacity, and Larder Stores. Event 014 does not grant free units. The 68-focus shared warlord tree includes hierarchy, Larder economy, military, expansion, infiltration, network alignment, local-victory, and three origin-overlay families. Route-aware AI chooses coherent combinations rather than mixing mutually exclusive identities.
 
-Every warlord slot has seven regional name-and-portrait variants: Europe, Asia, Africa, Middle East, North America, South America, and Oceania. All 56 portraits are independent fictional HOI4-style bust compositions. They depict bald, bloodied, visibly feral male warlords in invented rough clothing and scavenged period gear, with distinct expressions, behaviors, props, regional cues, and regional names. None uses a prison or detention setting, and none copies living ceremonial dress or an actor likeness.
+Every warlord slot has seven regional name-and-portrait variants: Europe, Asia, Africa, Middle East, North America, South America, and Oceania. All 56 current runtime files are distinct source-reference crops installed at 156x210 placeholder scale, with the final authorized HOI4-style replacements still pending in the portrait manifest. The source brief targets bald, bloodied, visibly feral male warlords in invented rough clothing and scavenged period gear, with distinct expressions, behaviors, props, regional cues, and regional names. None uses a prison or detention setting, and none copies living ceremonial dress or an actor likeness.
 
 ## Population consumption and recovery
 
