@@ -49,6 +49,8 @@ That constant is exactly 2,000.
 `DHR_feed_the_landing_reserve` sets the consumed reserve-priority flag but does not reserve equipment, create a unit, or add equipment.
 The focus tree contains no division creation, template grant, stockpile grant, equipment production line, or normal alien-infantry training path.
 Each landing remains an external API call that must consume the required exotic laser weapons.
+The other survival milestones are live decision inputs rather than history-only markers: counting landing states, auditing expedition stores, and restoring landing beacons each add a distinct DHR-only landing AI preference, while securing the scattered enclaves increases the AI priority of the existing enclave-supply decision.
+These readers are additive and do not make optional survival branches hard prerequisites for the shared landing API.
 
 ## Reward and balance model
 
