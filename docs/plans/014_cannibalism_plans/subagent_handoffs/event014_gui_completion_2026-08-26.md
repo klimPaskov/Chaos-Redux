@@ -98,6 +98,10 @@ The network inspect reports dropped totals including one `GUI_CLICK_BOUNDS_MISMA
 
 ## Fresh MCP render, state, resolution, hierarchy, click-region, and comparison requests
 
+### Targeted render retry
+
+After the matrix requests below, a single normal-state render was retried with the exact selector `cannibalism_network_window` and scenario `event014_targeted_network_normal_2026_08_26`. The adapter returned `GUI_RENDERED` with no blockers and exposed `cannibalism_network_window-full.svg` at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/40cfb5508bb2c3917099dda1c792b23e57108c299e4e0861d0e778b0ad8a2970/14ca74fc2d4120165140404d28c9511d4875641c4e0c9d3e2bf34e517a22ca68/cannibalism_network_window-full.svg`. The requested 1280x720 input was normalized by the adapter to a 1920x1080 canvas. The response was wire-truncated and retained no validation checks, so this is an attributable single-state artifact only; it does not prove the unresolved hover, disabled, long-text, click-region, multi-resolution, hierarchy, or comparison cases.
+
 For every exact selector, `hoi4.gui_render` was requested with:
 
 - states: normal, hover, selected, active, disabled, warning, completed, empty-list, full-list, minimum-value, maximum-value, long-text, and missing-localisation
