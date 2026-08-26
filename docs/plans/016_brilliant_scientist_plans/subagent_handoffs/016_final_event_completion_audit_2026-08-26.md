@@ -146,23 +146,17 @@ No balance value was changed by this audit.
 
 Required next action: with the E016-01 source correction applied, run identical named baseline and changed scenarios through `hoi4.probability_compare`, including two-provider DHR rebellion, all four evolution option sets, Directorate project/incident/recovery choices, Event 019 provider 508, DHR expedition missions, DHR focus routes, special projects, random lists, and both terminal world-end routes.
 
-### E016-06 — Medium: localisation and internal documentation are not final-clean
+### E016-06 — Medium: localisation and internal documentation
 
-Status: **patchable correctness/style/documentation gaps**.
+Status: **resolved for the identified current-source wording issues**.
 
-`chaosx.nr16.47.a.tt` in `localisation\english\016_dhrondan_contact_l_english.yml` says only “Occupied enclaves” become claims, while `dhrondan_release_and_transfer_landing_states` claims any registered state owned by neither the pact host nor DHR.
+The current source review found the three previously cited Event 016 outcome strings already free of sentence semicolons, and the three previously cited achievement tooltips already use player-facing wording rather than implementation terms. The remaining D’Rhondan sovereignty tooltip was corrected in `localisation\english\016_dhrondan_contact_l_english.yml`: host-owned marked states transfer to DHR, while third-party-owned marked states remain with their owner and become D’Rhondan claims. The Directorate sovereignty copy was also tightened in `localisation\english\016_brilliant_scientist_directorate_gui_l_english.yml` without changing its dynamic tokens.
 
-The tooltip should describe every foreign-owner branch.
+`common\scripted_effects\chaosx_dynamic_effects.md:459-463` describes the country-scoped registry and explicitly states that no global cross-provider array is used.
 
-Three Event 016 player strings still use sentence semicolons contrary to the event prose contract: `brilliant_scientist_directorate_gui_sovereignty`, `brilliant_scientist_establish_portal_calibration_network_effect_tt`, and `brilliant_scientist_prepare_high_speed_materials_trial_effect_tt`.
+The current localisation audit reports zero missing Event 016 keys, zero exact duplicate English keys, complete `100/100` KRG and `88/88` DHR focus title/description pairs, all seventeen achievement pairs, all direct scripted-localisation outputs, and all linked texture paths.
 
-Three achievement tooltips expose implementation language: “atomically” transferred, “bounded growth cycles,” and “bounded intervention.”
-
-`common\scripted_effects\chaosx_dynamic_effects.md:459-463` now describes the country-scoped registry and explicitly states that no global cross-provider array is used.
-
-The final localisation audit found zero missing Event 016 keys, zero exact duplicate English keys, complete `100/100` KRG and `88/88` DHR focus title/description pairs, all seventeen achievement pairs, all direct scripted-localisation outputs, and all linked texture paths.
-
-Required next action: patch the seven definite player-text issues and retain the corrected API paragraph as the current scope contract.
+Remaining localisation risk is live typography and MCP render evidence, not an identified unresolved key or wording defect.
 
 ### E016-07 — Medium: the event-owned Directorate GUI lacks explicit named-worker attestation
 

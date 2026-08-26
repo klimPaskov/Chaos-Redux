@@ -58,9 +58,17 @@ Every final action was imported from its exact Meshy FBX, received only per-fram
 
 - Meshy MCP 0.4.0; pinned package git head `d8c77`; SDK 1.29.0; live schema SHA-256 `F7B9FB26D676DE2033BAB72BCFAE58DB5F7699C684E91B15345BFC8425BAFE6D`.
 - Blender 5.1.2, build `ec6e62d40fa9`; Chaos Redux Blender HOI4 adapter 1.10.14; adapter live schema SHA-256 `C95235FCF880209187F559047953A35EF469A2D9F6018572F30E9BE4EFDAB5B6`; health request `221a034ed7a14b95afe1943024564ca9`.
-- io_pdx_mesh 0.91.0; locked extension ZIP SHA-256 `A683DFB12DAEF52E8E90BAB55CE4345EBF06284EA2B42CBBE24A5D0560C2F7C2`.
+- io_pdx_mesh 0.91.0; locked extension ZIP SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`.
 - Lock hashes: `dependencies.lock.json` `C27768297FB7AD5ACC9C555E7C83DC77856908E2C628BF16D9A420095C64266A`; `meshy_tool_schema.lock.json` `E45FE80F3B8AC49A365EA2D4221E82E969AE55279639F817BB6FA75407D1C233`; `blender_hoi4_adapter.json` `4BC97CA0B07580F5AA04B49E7B9FBD1C07EC88DF5C4D56CD3BA8846E630117AB`.
 - Export/reimport reports are in `validation/reimport_v13_firearm_preset_*_final.json`; visual proofs are in `blender/previews/reimport_v13_firearm_preset_*_final*`; source and proof checkpoints are in `blender/checkpoints/`.
+
+## 2026-08-26 firearm revalidation
+
+- Live status checks through the locked Meshy MCP route returned `SUCCEEDED` for the accepted generation, remesh, rig, and all seven animation task IDs above. The live balance was 12 credits; revalidation consumed 0 credits.
+- The official Meshy download operation restored the accepted generation GLB, remesh GLB, rig FBX, and seven preset-action FBX files under `provider/downloads/v13_firearm_revalidation/`; `download_manifest.json` records exact tasks, paths, byte lengths, and SHA-256 hashes.
+- Fresh locked-adapter reimport of the final `.mesh` plus each final `.anim` regenerated actual-byte reports `validation/reimport_revalidation_2026_08_26_*.json`. The adapter request IDs are `14f0da7ee55c42d6b156cf830afa3dbd`, `494d325dd20d4d649f2b40cc40fdfe26`, `557e9557048540f4bba7cd975989d21d`, `dfbb5f5300c84133ab6ce3b41af1ead9`, `2b1f46f9e6984a158342add202ba8dbc`, `d25ea42ad0a54a38bad95bc8e02940af`, and `45f84dfe4b6a4412a0a37aedaad0f6ff` in role order.
+- Reimported attack frames 1, 60, 118, 177, and 236 show rest, draw, two-hand aim/support, recoil/recovery, and return to rest with the same fused cyan-tipped firearm. Curated discharge evidence remains frame 145. Reimported death frames 1, 27, 54, 80, and 106 show reaction, backward collapse, impact, and settled supine pose with the firearm retained.
+- The accepted V13 output remains the best valid package. No regeneration, re-rigging, new animation purchase, manual weapon attachment, or Blender-authored replacement motion was justified.
 
 ## Remaining blockers and parent work
 

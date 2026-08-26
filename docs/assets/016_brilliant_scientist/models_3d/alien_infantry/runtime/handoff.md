@@ -54,3 +54,7 @@ The parent owns final review of the promoted entity, GFX, animation, sound, effe
 No live game acceptance is claimed, and no HOI4 MCP render or consumer comparison replaces that evidence. The promotion handoff records the bounded MCP timeout and the remaining live-consumer limitation.
 
 Historical V8, V10, V11, KayKit, and Quaternius records remain retained as evidence-only documents and must not trigger a new production route; the V13 manifest and promotion handoff are the current package authority.
+
+## 2026-08-26 revalidation note
+
+The locked Meshy route reconfirmed the accepted generation, remesh, rig, and all seven preset-action tasks as `SUCCEEDED`. The locked Blender adapter reimported the final `.mesh` with each final `.anim` again, and the restored provider FBX hashes match all seven action-provenance records. Firearm and death evidence still passes; the unsupported muzzle locator/effect binding, strict audio-role gaps, and parent-owned live consumer acceptance remain unchanged.
