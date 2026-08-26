@@ -1,109 +1,122 @@
-# Famine and Migration System Handoff Dispositions
+# Famine and Migration Handoff Dispositions
 
-This file records the parent review of every project-subagent handoff used to implement the shared famine and migration system.
+Status: parent reconciliation against the split famine and migration implementation on 25 August 2026.
 
-## Repository exploration
+The binding specifications remain under `docs/specs/famine_and_migration_system_specs/`. The directory name records the source package; it is not a runtime namespace and does not make famine and migration one mechanic.
 
-Source: `docs/plans/famine_and_migration_system_plans/repo_exploration.md`
+Current implementation names use `famine_*`, `migration_*`, `civilian_transfer_*`, or narrowly neutral `humanitarian_*` primitives. Any combined identifiers quoted inside an earlier handoff describe its historical source snapshot and are not current APIs.
 
-Disposition: partially accepted.
+Every historical handoff that quotes `fm_*` or `famine_migration_*` must carry an explicit superseded identifier banner in that handoff file; this ledger does not reauthorize quoted planning names as runtime identifiers.
 
-Accepted findings:
+Disposition meanings: **accepted/current** is present in current split source; **accepted with parent patch** was corrected, renamed, or completed later; **superseded** is historical evidence; **blocker evidence** records unavailable exact facts without a proxy; **audit evidence** is retained for closure checking.
 
-- Reuse `apply_exact_state_civilian_population_loss` and `apply_state_population_loss_without_recruitable_manpower_gain` from `common/scripted_effects/chaosx_dynamic_effects.txt`.
-- Use the shared event-log, cluster, scenario, achievement-registry, scoped-hook, and workbook surfaces identified in the report.
-- Treat Event 149 as absent source rather than an implemented event chain.
-- Record the Event MCP large-workspace projection limitation as a validation blocker where it recurs.
+Post-incident closure (2026-08-25): `ai_probability_final_audit.md`, `decision_mission_final_audit.md`, `documentation_curator.md`, `final_asset_audit.md`, `generated_event_art.md`, and `icon_artist.md` are explicitly retained as superseded historical snapshots where their standalone notices say so. Their old names, counts, paths, and status claims do not authorize reopening shared-runtime work; use [source_of_truth_map.md](source_of_truth_map.md) and [completion_report.md](completion_report.md) for current incomplete status and blockers.
 
-Rejected or superseded findings:
+## Complete handoff ledger
 
-- The Deaths owners are resolved as `common/script_constants/chaos_meter_constants.txt`, `common/scripted_effects/chaos_meter_effects.txt`, `common/scripted_localisation/chaosx_scripted_localisation_chaos_meter.txt`, and `localisation/english/chaosx_chaos_meter_l_english.yml`.
-- Air Cleanliness owners are resolved through `common/scripted_effects/fallout_consolidated_effects.txt` and its paired trigger/constants surfaces.
-- Condemnation owners are resolved through `common/script_constants/condemnation_sanctions_constants.txt`, `common/scripted_effects/condemnation_sanctions_effects.txt`, and `common/scripted_triggers/condemnation_sanctions_triggers.txt`.
-- Camp and genocide owners are resolved through `common/scripted_effects/camp_repression_rework_effects.txt`, `common/scripted_effects/genocide_crisis_effects.txt`, and their paired trigger and constants files.
-- `chaosx_ai_probability_auditor` is callable in this runtime. The claimed tool blocker is rejected.
-- Event 149 requires no additional design decision. The binding specification authorizes retirement and absorption, forbids a replacement event ID, and forbids an event-pacing weight.
-- Missing roots 118, 120, and 131 are catalog/integration gaps, not permission to invent event sources. Event 013 remains the current volcano/disaster owner.
-
-## Pre-change AI probability audit
-
-Source: `docs/plans/famine_and_migration_system_plans/ai_probability_baseline.md`
-
-Disposition: accepted as a historical baseline and modified for the current ledger.
-
-The audit proves that Event 149 and all shared famine/migration weighted surfaces were absent before implementation. All twenty named scenarios remain useful baseline cases, but this pre-change report is not current balance evidence. The same scenario IDs must be rerun through `hoi4.probability_compare` after a successful current inspection before balance or completion can be claimed.
-
-## Map inspection
-
-Source: HOI4 MCP artifact `map-inspect.de30e4f6849d41e0.json` for representative historical-profile states 7, 113, 195, 271, 295, 335, 671, and 935.
-
-Disposition: accepted with an unrelated map-validation blocker.
-
-The inspection resolved all eight requested state records and passed province definitions, bitmap geometry, state and strategic-region membership, adjacency, supply, and railway checks. The workspace-wide locator pass also reported pre-existing invalid floating-harbor/building positions in `map/buildings.txt`, with diagnostics truncated after 1,999 retained entries and 2,654 omitted errors. This system will not edit map geometry or claim that those unrelated locator errors are resolved.
-
-A second bounded inspection covered the remaining historical-profile anchors in states 36, 47, 119, 186, 187, 192, 193, 202, 218, 221, 227, 233, 239, 430, 431, 432, 435, 550, 583, 589, 590, 607, 772, 842, 1051, and 1066. It returned `MAP_INSPECTED`, resolved all 26 records without unknown IDs or missing province geometry, and retained artifact `map-inspect.e20e71fb0b43c19c.json` with SHA-256 `517d53dcdb11e4db9ac8722363b2e469ee333728f267e81c71075a9e20d0d635`. The same unrelated `map/buildings.txt` diagnostic ceiling recurred and remains outside this system's map-neutral scope.
-
-## Generated report art
-
-Source: `docs/plans/famine_and_migration_system_plans/subagent_handoffs/generated_event_art.md`
-
-Disposition: accepted.
-
-All seven binding report-image subjects were delivered as distinct source PNG, processed PNG, and final DDS assets. Parent review of the contact sheet confirmed readable 210×176 compositions, period-appropriate treatment, distinct incident silhouettes, and no embedded text. The handoff records successful DDS round-trip inspection and stable proposed sprite identifiers. Current source has the package `.gfx` registrations, while gameplay/report consumers remain parent-owned and report-event consumer integration is still pending.
-
-## Scripted-system architecture
-
-Source: `docs/plans/famine_and_migration_system_plans/subagent_handoffs/scripted_system_architect.md`
-
-Disposition: accepted after parent-requested corrections.
-
-The reusable constants, bounded state/country registries, fail-closed pressure and route adapters, exact transfer contract, border/reception/return helpers, and cleanup contracts are accepted. Parent review caught and returned two correctness issues before acceptance: population measurements were changed from the unavailable `state_population` link to `state_population_k` multiplied by the shared people-per-thousand constant, and blockade proof was expanded to require explicit isolation, route-or-port disruption, and convoy-or-escort shortage. The transfer now validates one resolved route before debit, measures actual origin debit and destination credit, logs route deaths without a second population debit, and exposes a conservation residual. Current source contains the bounded stage processing, scheduled jobs, decisions, Deaths reason registration, adapters, and runtime seams described by the handoff, while owner-local cross-system wiring, weighted AI evidence, and parent runtime validation remain open and are not implied complete by this handoff.
-
-## Icon and achievement-art package
-
-Source: `docs/plans/famine_and_migration_system_plans/subagent_handoffs/icon_artist.md`
-
-Disposition: accepted for all assigned surfaces, with the formerly separate Deaths-texticon follow-up now completed.
-
-Parent review accepted the category icon, nine state/reception icons, ten decision icons, and all eight achievement triplets. The four source/processed/DDS contact sheets show distinct HOI4-readable silhouettes, real transparent padding, correct grayscale states, and canonical not-eligible overlays. The original icon handoff records 44 of 44 BGRA8 one-mip DDS round trips with zero pixel mismatch, and the completed Deaths follow-up adds two 18×18 BGRA8 one-mip texticons with zero round-trip mismatch. `fm_deaths_famine` and `fm_deaths_displacement` are now registered in `interface/chaosx_texticons.gfx` and consumed by the current Deaths cause localisation. The distinct opaque 114×101 `fm_pic_displacement` category picture was outside this handoff and is routed to generated art; it is not replaced by the 52×40 category icon.
-
-The generated-art follow-up has since completed `fm_pic_displacement`. Parent visual review accepted its distinct 114×101 wartime railway reception scene, and the handoff records a byte-exact BGRA8 DDS round trip. `GFX_fm_pic_displacement` and the 44 original icon/achievement sprites are registered in the dedicated `interface/famine_and_migration_system.gfx`; the two Deaths texticons are registered in `interface/chaosx_texticons.gfx`; all seven report sprites are registered in `interface/famine_and_migration_system_event_pictures.gfx`.
-
-## Curator reconciliation of every completed handoff
-
-The table below gives one explicit current disposition for every completed famine and migration handoff available in the working tree.
-
-| Handoff | Disposition | Reconciliation |
+| Handoff | Disposition | Parent reconciliation |
 | --- | --- | --- |
-| `docs/plans/famine_and_migration_system_plans/repo_exploration.md` | modified | Accepted the owner paths, reusable loss helpers, Event 149 absence, and MCP limitation; superseded its pre-implementation claim that shared contracts still required design decisions. |
-| `docs/plans/famine_and_migration_system_plans/ai_probability_baseline.md` | modified | Accepted it as a pre-change baseline; retained its 20 unresolved scenarios and queued the required post-change inspect/compare because the current evaluation timed out. |
-| `docs/plans/famine_and_migration_system_plans/mapmode_validation.md` | modified | Accepted exact two-mapmode source and static asset evidence; retained the hardcoded GUI zero-element/render-timeout limitation and current map-inspect locator blocker. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/decision_mission_audit.md` | modified | Accepted 26 decisions, three missions, source wiring, and transaction evidence; superseded the old safe-resettlement bind risk with the current safe rebind contract and queued weighted scenario comparison. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/generated_event_art.md` | modified | Accepted the delivered seven report images and category picture; queued report registry and event-consumer ownership because source consumers are not identified. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/icon_artist.md` | modified | Accepted the original 44 icon/achievement package and the completed two-texticon Deaths follow-up; rejected the obsolete “not produced” interpretation and recorded current GFX/localisation wiring. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/localisation_auditor.md` | accepted | Accepted the complete key audit and BOM evidence; left planned report/profile consumers as queued because localisation availability does not prove a gameplay consumer. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/mapmode_icon_artist.md` | modified | Accepted the four dedicated mapmode DDS variants and current GFX registration; queued supported GUI/render evidence for the visual runtime gate. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/mapmode_repo_explorer.md` | modified | Accepted exact mapmode IDs, scopes, priority, and sparse-source findings; superseded its stale “no setters” finding with current reception/overcrowding/return projection setters. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/scripted_system_architect.md` | modified | Accepted the bounded registries, formulas, transfer conservation, profile matrix, and safe rebind implementation; Deaths ownership and current texticon/localisation wiring are documented, while owner adapters, weighted AI evidence, parent runtime, and live validation remain queued. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/skill_maintainer.md` | accepted | Accepted the reusable `chaos-redux-state-ledgers` skill and its UTF-8 validation; left explicit future owner-prompt routing as a parent decision. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/adapter_wiring_closure.md` | partially accepted | Accepted real owner callbacks for Air Cleanliness/fallout, camps, chemical aftermath, Black Plague, Event 013 disasters, nuclear strikes, and decision Condemnation. Retained exact blockers for occupation-law amount/actor proof, bombing, war/peace, named event/cluster contexts, and absent 118/120/131 sources. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/achievement_hook_closure.md` | partially accepted | Accepted the eight registrations and real blockade, conservation, manufactured-crisis, requisition, and tag-switch producers. Retained blockers for protected internment/forced labor, corridor attack, annexation history, visit-cycle history, and durable medical observation. |
-| `docs/plans/famine_and_migration_system_plans/subagent_handoffs/spreadsheet_alignment.md` | accepted | Accepted Event 149 retirement in the workbook and regenerated CSV; verified that no system event, cluster, scenario, or mapmode row was invented. |
-| Final completion audit | accepted | Accepted source-complete core mechanics and exactly two mapmodes; rejected a completion claim because adapter, achievement, report-consumer, current probability, GUI, event-evidence, and food-reserve representation gates remain open. |
+| `achievement_hook_closure.md` | Superseded by later achievement closure | Retains the original producer census. Exact gate, corridor-attempt, medical-observation, major-cohort, conservation, and tag-switch evidence was subsequently narrowed or added. |
+| `achievement_identity_generation_closure.md` | Accepted with parent patch | Generation-bound identity is retained. Current source uses split namespaces and later exact disqualifier scoping. |
+| `achievement_reachability_final_audit.md` | Audit evidence; defects patched after snapshot | Definitions/assets are accepted. Blockade, medical, corridor, floor, tag-switch, and disqualifier defects received later patches; Roads Home and Place at the Table still require final reconciliation. |
+| `adapter_split_owner_patch.md` | Accepted/current | Established separate famine, migration, and narrow neutral adapter files with no compatibility aliases. Missing exact owner facts remain fail-closed. |
+| `adapter_wiring_closure.md` | Superseded owner census | Real owner callbacks remain useful evidence, but helper names and several integrations were replaced by split adapter files and later owner maps. |
+| `ai_probability_final_audit.md` | Superseded historical snapshot; current blocker evidence in `ai_probability_current.md` | The pre-refresh audit remains historical evidence; current split inspection confirms 10 famine and 18 migration score-only candidates and the remaining typed-fixture/dynamic-pool MCP limits. |
+| `atomic_transfer_transaction_owner.md` | Accepted/current | Exact transaction, physical-lane ownership, survivor-only credit, route-death separation, and rollback remain authoritative in `civilian_transfer_*`. |
+| `camp_generic_custody_owner_patch.md` | Accepted with parent patch | Exact whole-row custody and forced-labor ownership is retained; achievement disqualifiers were later narrowed to exact cohorts and attempts. |
+| `category_asset_closure.md` | Accepted with parent visual/runtime review pending | All four separate famine/migration category consumers are reconciled in the 50-row root manifest with source, provenance, processing, and DDS round-trip evidence; parent visual/runtime review remains open. |
+| `cohort_visit_history.md` | Accepted with parent patch | Sparse aligned visit history and positive-survivor recording remain in the migration ledger. |
+| `completion_final_audit.md` | Accepted with owner patches; historical asset count superseded | Its incident-layer and migration-dormancy findings were patched. Its 58-file asset claim is superseded by the 61-declared-asset closure; exact-owner, probability, parent visual/runtime, and map evidence blockers remain. |
+| `post_incident_audit_roundup.md` | Superseded historical roundup; current facts in completion report | Its incident-layer, probability, 58/61 asset, and spreadsheet wording is historical. Current counts, deleted incident files, category closure, workbook handoff, and direct MCP blockers are recorded in the completion report and current probability evidence. |
+| `condemnation_owner_scaling_map.md` | Blocker evidence with partial implementation | Exact forced-return, violent-pushback, custody, and proven receipts are retained. Unsupported starvation, obstruction, concealment, repeat, and occupation attribution remain fail-closed. |
+| `core_reconciliation_owner_patch.md` | Accepted with split rename | Current-host validation, selector reconciliation, paired ledgers, survivor flight, capacity, native safety, and sparse lifecycle fixes were retained. |
+| `corridor_attack_owner_closure.md` | Accepted/current | Exact project border-war receipts are wired. Ordinary land combat and strategic bombing remain blocked by missing attacker-plus-state callbacks. |
+| `corridor_attack_owner_exploration.md` | Superseded exploration | Led to exact nuclear, border-war, raid, biochemical, and operative receipts; ordinary-combat/bombing blockers remain valid. |
+| `corridor_attack_owner_receipt_patch.md` | Accepted/current | Exact biological, chemical, and operative resolver receipts are retained behind the corridor contract. |
+| `corridor_contract_architecture.md` | Accepted with owner implementation | Exact route identity, offer/response, one physical evacuation, replay prevention, and terminal cleanup are implemented. |
+| `corridor_evacuation_and_requisition_owner_patch.md` | Accepted with later decision split | Successful-transfer guards and requisition ownership are retained; old GUI/probability limitations are superseded by current evidence. |
+| `corridor_hook_owner_patch.md` | Accepted/current | Scoped control, war, peace, conference, and nuclear revalidation hooks remain and do not fabricate attack proof. |
+| `corridor_route_proof_patch.md` | Accepted/current | Affirmative route proof, native rail/bombing danger facts, and fail-closed ownership checks remain authoritative. |
+| `custody_owner_transaction_exploration.md` | Superseded exploration | Its whole-row owner requirement was implemented; generic site/quota/death inference remains rejected. |
+| `decision_mission_audit.md` | Superseded by split decision audits | Original combined census is historical. Current source has separate famine and migration categories, decisions, and missions. |
+| `decision_mission_final_audit.md` | Superseded historical snapshot | Its phase, role, and mission findings drove later split category and lifecycle patches; current counts and identifiers are recorded in the split source ledger. |
+| `decision_mission_post_selector_audit.md` | Audit evidence with owner fixes applied | Scope, cost, lifecycle, density, relief, corridor, and airlift findings were routed to later owners. |
+| `decision_owner_patch.md` | Accepted with split rename | Exact host, policy separation, positive transfer receipts, mission truth, cycle preflight, capacity, and guarded rewards are retained. |
+| `destination_selection_architect.md` | Accepted/current | Safety gates precede bounded ideology; zero-total selection fails closed. |
+| `documentation_curator.md` | Superseded by post-incident documentation closure | Its source map used transitional names. Current permanent docs, source-of-truth map, completion report, and this closure handoff replace it. |
+| `event_adapter_owner_map.md` | Blocker evidence | Correctly distinguishes exact receipts from event presence and forbids cluster proxies and invented facts. |
+| `event_boundary_adapter_final_audit.md` | Audit evidence | Confirms system pulses are not events or pacing. Its incomplete seams apply only where listed in the current report. |
+| `event005_006_adapter_owner_patch.md` | Blocker evidence | Events 005/006 lack exact people-denominated state/cohort/route receipts; no political or manpower proxy is accepted. |
+| `event014_015_adapter_owner_patch.md` | Blocker evidence | Event 014 mortality stays distinct; Event 015 lacks exact famine or cohort receipts. |
+| `event021_033_adapter_owner_patch.md` | Blocker evidence | Events 021/033 lack exact state/amount/actor facts and remain API-only. |
+| `event043_050_051_095_adapter_owner_patch.md` | Blocker evidence | These roots lack complete state, actor, positive people amount, and causal receipts. Embargo/control transfer are not proof. |
+| `famine_dynamic_presentation_owner.md` | Accepted with split rename | Ten phase modifiers and receipt-driven presentation were retained in separate famine/migration files. |
+| `mechanic_separation_architecture.md` | Accepted/current design authority | Fully adopted: two cores, independent categories/jobs/registries, explicit causal seams, and no combined runtime namespace. |
+| `final_asset_audit.md` | Superseded historical snapshot | Its pre-split static-package evidence remains provenance; the current 61-declared-asset count and category closure are recorded in the current source map and completion report, with parent visual/runtime review still pending. |
+| `final_cohort_selection_architecture.md` | Accepted with owner implementation | Action-local row selection, current-host equality, ambiguity failure, reconciliation, and terminal-only deletion are implemented. |
+| `final_cycle_exploit_audit.md` | Audit evidence with owner fixes applied | Visit preflight, idempotent receipts, guarded rewards, trapped reconciliation, and cleanup were routed to later patches. |
+| `final_documentation_reconciliation.md` | Accepted/current documentation handoff | Binding specs, permanent docs, asset totals, workbook status, probability limits, and exact-owner blockers are reconciled to the event-free split design. |
+| `final_event_free_localisation_audit.md` | Superseded historical snapshot | Its event-free source audit is retained as evidence; current authorities explicitly document accounting/presentation seams only and the deliberate deletion of the incident event files and constants. |
+| `final_event_free_spreadsheet_alignment.md` | Accepted/current workbook handoff | Event 149 remains retired and unavailable with no incident-event, replacement-ID, event-pool, or pacing row; the current workbook and regenerated exports are authoritative, while Events 118, 120, and 131 remain unavailable source blockers. |
+| `final_reception_capacity_architecture.md` | Accepted with owner implementation | Live state/country capacity, invalid-state failure, sparse refresh, and exhaustion proof replace factory-only fallback. |
+| `forced_movement_owner.md` | Accepted/current | Exact deportation/camp-prison transfer uses a real owner transaction and does not invent route deaths or destinations. |
+| `generated_event_art.md` | Superseded historical snapshot | Its seven report-image evidence remains provenance; current split consumers, 61 declared assets, category closure, and parent visual/runtime review are recorded in the current source map and completion report. |
+| `hazard_channel_owner_map.md` | Accepted with core implementation | Survivor-flight requests use live survivors and a generation receipt; death amounts are not reused as migration amounts. |
+| `historical_profile_memory_reachability_owner.md` | Accepted/current | Soviet and Irish memory anchors are durably reachable through bounded registration and create no fixed deaths. |
+| `host_resolution_phase_owner.md` | Accepted/current | Phase projection follows the authoritative current host and fails closed on missing or ambiguous identity. |
+| `icon_artist.md` | Superseded historical snapshot | Its icon and Deaths-texticon evidence remains provenance; current split consumers, 61 declared assets, category closure, and parent visual/runtime review are recorded in the current source map and completion report. |
+| `improvement_loop_final_review.md` | Accepted | Broad expansion is closed. No third mapmode, shared GUI, replacement event, or extra mechanic family is approved. |
+| `localisation_auditor.md` | Superseded by split localisation audit | Prose and consumer principles remain accepted; current keys live in separate files. |
+| `localisation_final_audit.md` | Accepted with namespace update | Key coverage and wording fixes are retained in split localisation. |
+| `localisation_post_owner_audit.md` | Accepted/current audit evidence | Confirms localisation coverage and the hardcoded-mapmode render limitation. |
+| `mapmode_corridor_relief_localisation_patch.md` | Partly superseded | Corridor wording remains useful, but migration relief coloring was removed to preserve mechanic separation. |
+| `mapmode_icon_artist.md` | Accepted/current | Exactly four final DDS buttons serve the two mapmodes. |
+| `mapmode_repo_explorer.md` | Accepted with owner patch | Projection and tooltip findings were applied; migration now excludes famine-relief layers. |
+| `mission_lifecycle_repair.md` | Accepted with parent patch | Six missions have exact subjects and terminal cleanup; centralized slots cap urgent missions at three. |
+| `occupation_profile_owner.md` | Accepted/current resolver; blocker retained | All current laws resolve. Exact transition actor/state/amount ownership remains unavailable. |
+| `opposition_channel_owner.md` | Accepted/current | Seven bounded catastrophic-famine outcomes use centralized weights and no world scan. |
+| `owner_callback_census.md` | Superseded census; blocker evidence retained | Real paths were routed to later patches. Missing occupation, generic bombing/combat, and absent-event receipts remain fail-closed. |
+| `persecution_owner_patch.md` | Accepted/current | Exact camp, Gulag, extermination, and CBRN mutations project risk; ideology/site/quota/war are not substitutes. |
+| `persecution_owner_source_map.md` | Superseded exploration | Led to the exact projection; generic occupation-law persecution remains blocked. |
+| `persistent_food_reserves.md` | Accepted/current | Sparse state reserves, capacity, consumption, addition, and conservative transfer are famine-owned; no synthetic stock is asserted. |
+| `policy_consumer_closed_border_patch.md` | Accepted/current | Separate departure/reception policies and exact trapped/no-debit receipts sit behind one displayed Border Policy. |
+| `post_incident_documentation_closure.md` | Superseded by final documentation reconciliation | Its notice-only closure is retained as evidence, but its incident-layer, 58/61 asset, handoff-count, and stale probability references are superseded by this reconciliation. |
+| `post_split_adapter_closure.md` | Accepted with retained fail-closed blockers | Routes famine-generated flight through the migration owner, supplies exact hazard proof bundles, repairs the custody result name, and restores exact deportation condemnation. Camp custody and four decision-owned condemnation channels remain fail-closed without exact receipts. |
+| `post_split_decision_closure.md` | Accepted with parent follow-up; incident-layer claims superseded | Its decision visibility, mission-slot, route-damage, and condemnation findings remain useful, but its deleted incident-event option findings are historical and are not current blockers. |
+| `presentation_history_owner_patch.md` | Accepted with split rename | Exact transfer receipts drive migration phases/history while famine and migration cleanup remains separate. |
+| `presentation_integration_architecture.md` | Superseded architecture | Its producer gaps drove the later presentation patch; inferred receipts remain prohibited. |
+| `protected_cohort_adapter_architecture.md` | Accepted with owner implementation | Exact receipts are called by bounded custody owners; generic camp activity remains invalid evidence. |
+| `relief_donor_architecture.md` | Accepted/current | Donor identity, stock conservation, endpoint proof, and fail-closed sea/air rules are famine-owned. |
+| `remaining_owner_receipts.md` | Blocker evidence | Generic occupation-law, strategic-bombing, country war/peace, generic cluster/scenario, and relief-obstruction receipts remain unavailable; exact camp custody, famine mortality/concealment, forced return, and violent pushback receipts are retained. |
+| `scripted_system_architect.md` | Superseded foundational implementation | Formulas/contracts migrated into separate famine, migration, transfer, and humanitarian files. |
+| `skill_maintainer.md` | Accepted/current | The reusable state-ledger skill is installed and used. |
+| `spontaneous_movement_owner.md` | Accepted/current | One migration owner transfers, reconciles obligations, and clears only bounded selector proof. |
+| `spreadsheet_alignment.md` | Accepted with current export | Event 149 remains retired/unavailable; workbook and three CSV exports were regenerated after separation. |
+| `two_mapmode_owner_patch.md` | Accepted with separation correction | Exactly the two required mapmodes remain; migration no longer displays famine relief. |
+| `current_owner_blocker_reaudit.md` | Blocker evidence/current | Fresh source and MCP census confirms the six generic/source-recovery blockers and preserves all exact narrow owner exceptions. |
+| `current_probability_recovery.md` | Blocker evidence/current | Fresh isolated probability audit covers current decision hashes, named matrices, sweeps, and custom pools; typed fixtures, dynamic manifests, and a valid before/after pair remain unavailable. |
+| `current_completion_audit.md` | Accepted with parent patches | No P0 conservation or namespace defect; Event 149 wording, negative-event MCP evidence, and stale ledger wording were patched, while exact-owner, probability, mapmode, and live-consumer blockers remain. |
+| `current_spreadsheet_alignment.md` | Accepted/current | ID 149 is retired into the separate mechanics through explicit adapters; workbook and all three exports align with no replacement, pool, cluster, scenario, or pacing row. |
+| `current_asset_evidence_labels.md` | Accepted/current | Eight review-only contact sheets were regenerated from current split inputs and parent-reviewed; every visible label now uses `famine_*`, `migration_*`, `report_event_famine_*`, or `report_event_migration_*`, with runtime assets unchanged. |
+| `current_completion_reaudit.md` | Accepted with parent patch | Confirms the Event 149 catalog, negative-event MCP, probability-ledger, namespace, and asset-label findings are closed; its remaining Event 149 summary wording defect was patched, while exact-owner, probability, mapmode-runtime, and live-consumer blockers remain. |
+| `architecture_0826.md` | Accepted with parent patch | The audit found three undefined exact-transfer caller names and eight stale constant-category names. The parent canonicalized all affected owners and documentation to the sole transfer entry point and defined split constant categories without aliases or tuning changes. |
+| `mapmodes_0826.md` | Accepted in part; projection-gap claim rejected | The exact-two-mapmode, separate-category, source/localisation, mission, cost, and MCP-boundary findings are retained. Its claim that the reception, overcrowding, and return context flags lack setters is rejected because current setters and cleanup exist in `migration_core_effects.txt`; the runtime action-density and dynamic-render limitations remain unresolved evidence items. |
+| `owner_receipts_0826.md` | Blocker evidence/current | The fresh owner census reconfirms the six exact-source blockers and the narrow accepted CBRN, Air Winter, Event 013, custody, mortality, deportation, forced-return, and violent-pushback paths. No generic queue, relation, recency, or failed-decision fact was promoted into a receipt. |
+| `probability_0826.md` | Blocker evidence/current | The current source manifests and four named famine fixtures remain score-only and partially unresolved; migration and all three custom pools remain unevaluable under the installed adapter. No truthful before/after pair or owner balance patch exists, so comparison was correctly omitted. |
+| `completion_0826.md` | Accepted/current audit | Verifies the canonical transfer callers and projection setters, closes the superseded architecture/mapmode findings, and retains exact-owner, probability-certification, and dynamic-mapmode execution as P0 completion blockers. |
+| `migration_action_density_recovery_0826.md` | Accepted with parent patches | Proved the pre-patch closed-policy seven-row witness, accepted the close-border/transit visibility correction, and established a current six-primary-action maximum. Its pending-corridor-offer category accessibility finding was also accepted and patched by adding the exact pending-offer flag to the migration category reveal gate. |
+| `active_consumer_namespace_0826.md` | Accepted with parent patch and re-audit | Found the unapproved `civilian_response_*` cost-display namespace. The parent atomically renamed the two files, 15 selectors, 30 keys, and 81 famine/migration calls to the narrow `humanitarian_cost_*` / `GetHumanitarianCost*` contract; the auditor's follow-up found no old hits, undefined or unused selectors, missing or unused keys, text change, condition change, or BOM loss. |
+| `undefined_helper_repair_0826.md` | Accepted with parent correction | Accepted the canonical validation, registry, flight-request, reserve, corridor, and achievement helper mappings. Rejected its foreign-relief donor mapping because the safer-state action explicitly targets same-country physical neighbors; the parent restored the famine-owned deterministic adjacent highest-existing-reserve selector, removed candidate initialization, and retained no fallback. A broader completion census then found and patched four additional canonical-call mismatches omitted by the handoff. |
+| `post_separation_completion_delta_0826.md` | Accepted with later probability evidence | The final isolated completion route and its probability child close the namespace, helper, lifecycle, adapter, route-damage, evacuation-owner, and donor-surface findings. The handoff was authored by the completion auditor after its extended audit turn. Its historical-source-hash comparison blocker is superseded by the later distinct-path comparisons; exact named-scenario and dynamic-pool certification, external-owner receipts, dynamic scripted-mapmode execution, live consumer proof, and safe final commit remain open. |
+| `distinct_probability_recovery_0826.md` | Accepted/current comparison evidence | Confirms materially distinct before/current provenance for the two final decision comparisons. Famine has zero modeled score changes with 46 unresolved items; migration has the intended two corridor modifier changes across three scenarios, six rows total, with 134 unresolved items and four information diagnostics. Provenance ambiguity is closed; exact live-state, normalized, timing, ranking, and dynamic-pool certification remain blocked. |
+| `final_flat_fact_probability_0826.md` | Accepted/current bounded score evidence | Confirms final-source flat-fact coverage improvements from 23 to 15 unresolved famine rows and from 77 to 60 unresolved migration rows. A schema-valid event-target declaration still cannot bind special `FROM`; scoped and compound triggers plus destination, opposition, and relief-donor pools remain incomplete. No gameplay weight patch or numeric closure is warranted. |
+| `state_control_occupation_adapter_0826.md` | Blocker evidence/current | Confirms that the exact state/new-controller/old-controller callback and readable current occupation law still do not distinguish hostile capture from peaceful transfer or allied liberation and expose no affected-people amount or replay identity. Existing cleanup/reassessment remains unchanged; profile points and whole-state population were correctly rejected as substitute receipts. |
+| `relief_obstruction_receipt_0826.md` | Blocker evidence/current | Confirms that successful famine/corridor relief measures reserve debit and credit, while corridor rejection preserves route identity but no exact affected-people and complete condemnation receipt. Reserve units, trapped aggregates, evacuation amounts, survivors, and deaths were correctly rejected as substitute obstruction populations. |
 
-The old sections above remain as historical handoff evidence, while this table is the current documentation-curator disposition ledger.
+## Required project-subagent route blocker
 
-The current decision-file MCP lint request used `hoi4.event_inspect` with `mode = lint`, selector `kind = file` and `sourcePath = common/decisions/famine_migration_decisions.txt`, `expandHelpers = true`, `maxNodes = 800`, `maxEdges = 1600`, and workspace `chaosx_redux`; it was accepted but timed out at 180 seconds without diagnostics. The earlier malformed selector response was a `-32602` request error and is not treated as substantive evidence.
+Fresh isolated project subagents were required for exploration, architecture, pre/post probability, decisions, localisation, assets, documentation, improvement, completion, and spreadsheet routes. Most original attempts returned:
 
-No row above claims gameplay completion.
+`You've hit your usage limit. Please upgrade your plan or try again at Aug 31st, 2026 11:58 AM.`
 
-## Plan and report dispositions
-
-| Plan or report | Disposition | Current status |
-| --- | --- | --- |
-| `docs/plans/famine_and_migration_system_plans/improvement_review_addendum.md` | modified | Adapter and achievement workers have concluded, but their missing producers remain open. FM-R2 report carrier, FM-R4 current weighted evidence, and FM-R6 visual evidence remain open; FM-R5 Event 149 is resolved. The addendum still forbids a third mapmode or replacement random-event ID. |
-| `docs/plans/famine_and_migration_system_plans/ai_probability_baseline.md` | modified | Retained as pre-change absence evidence. The older post evaluation is partial and stale against final source hash `62b30cfc...`; no genuine baseline/post comparison exists. |
-| `docs/plans/famine_and_migration_system_plans/mapmode_validation.md` | modified | Retained exact-two-mapmode source and static asset evidence; GUI hardcoded-window artifact limitation remains queued for parent/runtime validation. |
-| `docs/plans/famine_and_migration_system_plans/repo_exploration.md` | modified | Retained owner paths and MCP limitations; implementation now supersedes its pre-change “contracts absent” framing. |
-
-The plan table is separate from the completed-handoff table because these files are working plans or reports rather than subagent handoffs.
+The 2026-08-26 isolated recovery routes for repository exploration, scripted-system architecture, decisions/mapmodes, and probability completed and are recorded above. The architecture defect they found was parent-patched; the owner and probability blockers remain open. Earlier provider-limit failures remain historical route evidence only. Current localisation, asset, documentation, improvement, spreadsheet, and completion evidence remains in the reviewed specialist handoffs above; none is represented as stronger evidence than it returned.
