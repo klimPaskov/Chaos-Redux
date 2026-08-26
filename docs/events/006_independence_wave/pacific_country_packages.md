@@ -115,9 +115,9 @@ IW-173: `generic_focus` may be replaced by the full Event 006 framework, while
 a meaningful non-generic tree must remain untouched. Prepared and final setup
 prove the full-framework assignment and exact current tree. Cleanup restores
 `generic_focus` only for exact HAW/IW-173 while its active tree is still
-`independence_wave_focus_tree`. Micronesia never calls `load_focus_tree`; its
-additive assignment records Event 006 provenance while leaving its owning tree
-intact.
+`independence_wave_focus_tree`. Micronesia's full-framework assignment follows
+the same `generic_focus` preflight, and its cleanup restores `generic_focus`
+while its active tree is still `independence_wave_focus_tree`.
 
 ## Country gameplay
 
@@ -388,7 +388,8 @@ Both generation reset and origin termination call package cleanup before that
 shared focus cleanup, so neither a positive route flag nor an obsolete
 exclusion marker can survive the lifecycle boundary. California restores
 `generic_focus` only when its active tree is the Event 006 full framework.
-Micronesia has no tree to restore because its owning tree is never replaced.
+Micronesia restores `generic_focus` only when its active tree is the Event 006
+full framework.
 Hawai'i likewise restores `generic_focus` only while exact IW-173 still has the
 Event 006 full framework active.
 
@@ -489,10 +490,10 @@ The package audit should cover at least:
    attestation, without either action granting FORM-48 consent.
 10. The maritime and high-chaos completion orderings both refresh the hidden
     reveal only after the exact HBX route gate is true.
-11. Cleanup removes package and FORM-48 runtime state, restores HAW's generic
-    tree only from exact IW-173's active Event 006 tree, preserves every HAW
-    political leader and keeps the shared generic framework on FSM, and retires
-    only the exact Event 006 HBX/FSM origin characters.
+11. Cleanup removes package and FORM-48 runtime state, restores the generic
+    tree only from exact IW-173's or IW-179's active Event 006 tree, preserves
+    every HAW political leader, and retires only the exact Event 006 HBX/FSM
+    origin characters.
 12. The HBX, HAW, and FSM portrait sprites resolve to the three asset-lane DDS
     files, remain male large portraits, and have no adviser or small-icon
     consumer. HAW's consumer is the admitted Samuel Wilder King role; FSM's
