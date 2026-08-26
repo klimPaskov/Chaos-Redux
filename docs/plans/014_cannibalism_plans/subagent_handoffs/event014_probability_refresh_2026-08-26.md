@@ -58,4 +58,8 @@ The random-list refresh strengthens two identity sub-pools, but it does not cert
 
 The forensic recovery evaluation is a bounded weight proof only. It does not prove the cost trigger, active-node target, missing-burial state scope, or the live callback and cleanup sequence.
 
+The missing-burial-party search block at source line 6244 was evaluated with the same four weight states under `E014_MISSING_BURIAL_SEARCH_WEIGHT_PROBES_2026_08_26`. `hoi4.probability_evaluate` returned `PROBABILITY_ANALYZED` with `analysisId = probability-e2603354182fa9c2bedb99c3`, 12 scenario candidates, zero unresolved inputs, zero diagnostics, and the same exact baseline/open/concealment/combined normalization. The JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/49a02142222b792876423937a1ecf82198b77e2eda879d7dd2496cd9925f0edf/d1b0ccb031ddd073c4df6ee83773c4f3b2c749666ba5731500eaf8dff2904862/probability-e2603354182fa9c2bedb99c3.json`.
+
+This second evaluation proves only the shared outcome-weight arithmetic. It does not prove the `cannibalism_search_state` event target, active-node ownership, payment gate, or state-scope side effects.
+
 No balance patch is justified. Any future weight or trigger change must rerun source-qualified inspection and the same named scenario evaluations, then use `hoi4.probability_compare` with identical pools and scenarios.

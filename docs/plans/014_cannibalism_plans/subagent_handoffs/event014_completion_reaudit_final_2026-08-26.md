@@ -109,6 +109,7 @@ Meaningful checks performed in this audit:
 - Routed weighted surfaces through the named probability-audit evidence. A current source-qualified opening-policy inspect/evaluate refresh is recorded in `event014_probability_refresh_2026-08-26.md`; it remains partial and does not replace the older exact conditional results or certify the unresolved dynamic surfaces.
 - Refreshed the current Event 014 random-list source and completed one four-candidate regional-name sub-pool and the six-candidate personality sub-pool with zero unresolved inputs and zero diagnostics; the aggregate selector and variable-derived outcome pools remain explicitly incomplete.
 - Evaluated the three-candidate forensic recovery outcome block across baseline, open-policy, concealment, and combined weight states with zero unresolved inputs and zero diagnostics; cost, target-state, and lifecycle semantics remain outside the adapter.
+- Evaluated the three-candidate missing-burial search outcome block across the same four weight states with zero unresolved inputs and zero diagnostics; the shared arithmetic is covered while its event-target and active-node gates remain unproven.
 
 Skipped or blocked checks:
 
