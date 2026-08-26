@@ -112,7 +112,7 @@ The focus tranche sets 165 precise persistent unlock contracts. Together with te
 - `brilliant_scientist_focus_unlock_autonomous_nest_containment`
 - `brilliant_scientist_focus_unlock_biological_quarantine`
 - `brilliant_scientist_focus_unlock_bounded_clone_production`
-- `brilliant_scientist_focus_unlock_bounded_exotic_guard_production`
+- `brilliant_scientist_focus_unlock_bounded_alien_infantry_production`
 - `brilliant_scientist_focus_unlock_bounded_future_warning_operations`
 - `brilliant_scientist_focus_unlock_bounded_paleogenetic_breeding`
 - `brilliant_scientist_focus_unlock_bounded_portal_recruitment`

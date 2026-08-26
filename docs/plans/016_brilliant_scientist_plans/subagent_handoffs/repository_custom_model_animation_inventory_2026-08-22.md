@@ -1,5 +1,7 @@
 # Repository custom model animation provenance inventory — 2026-08-22
 
+> Historical repository-wide inventory snapshot. The Alien Infantry entry is superseded for current status by the accepted V13 provider package and static runtime promotion in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this inventory for its broad provenance classifications and do not use its pre-promotion Alien Infantry row to reopen production.
+
 ## Scope and acceptance rule
 
 This is a read-only repository audit requested for the Chaos Redux custom 3D model pipeline. The only file written by this audit is this handoff. No gameplay, entity, GFX, model, animation, job, or source asset was changed, and no commit was made.

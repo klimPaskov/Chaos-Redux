@@ -1,5 +1,7 @@
 # Alien infantry professional animation fallback handoff
 
+> Superseded by the Meshy V13 package and static runtime promotion recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this file for fallback provenance only.
+
 ## Scope
 
 This handoff records the parent-approved free animation fallback for the Meshy-rigged alien infantry model. It does not claim a finished runtime entity and it does not authorize manual weapon attachment or manually authored replacement motion.

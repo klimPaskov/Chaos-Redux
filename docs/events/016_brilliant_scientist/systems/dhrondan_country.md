@@ -8,6 +8,8 @@ The country package owns tag setup, route identities, state transfer, force cons
 
 The national focus tree, reusable alien-infantry API, contact-event definitions, Event 019 migration, binary art, flags, icons, portraits, model, audio, and event catalog are separate ownership surfaces.
 
+DHR formations consume the shared `alien_infantry_entity` rather than a country-specific model. The Meshy V13 model, seven actions, static entity/GFX/animation/sound registrations, and provider evidence are reusable across Event 016, Event 019 provider 508, and D’Rhondan landings; the supported muzzle/effect locator, particle/light binding, strict selection/acknowledgement/impact/special audio roles, and live in-game acceptance remain parent-owned blockers.
+
 ## Revolt transaction
 
 Event `.47` calls `dhrondan_start_revolt = yes` in the pact-host country scope through the contact package’s one-shot bridge.
@@ -142,7 +144,7 @@ MCP state-transfer comparison evidence remains unavailable because the map route
 
 The shared alien-infantry API honors `alien_infantry_initial_force_mode = 1` only when `alien_infantry_landing_batch_mode = 1` and the calling country holds a positive D’Rhondan sovereignty receipt.
 
-The country runtime sets both temporary inputs only inside `dhrondan_deploy_initial_cohorts`, checks `alien_infantry_landing_spawn_succeeded` after each call, persists the remaining cohort count, and clears both inputs before returning.
+The country runtime sets both temporary inputs only inside `dhrondan_deploy_initial_cohorts`, checks the country-scoped `alien_infantry_landing_spawn_succeeded` result after each call, persists the remaining cohort count, and clears both inputs before returning.
 
 The narrow API branch retains target validation, exact 2,000-weapon debit, unit creation, materialization proof, failure refund, and success output.
 

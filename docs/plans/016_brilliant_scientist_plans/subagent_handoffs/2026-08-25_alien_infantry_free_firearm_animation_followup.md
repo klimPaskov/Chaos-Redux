@@ -1,5 +1,7 @@
 # Alien Infantry free firearm animation follow-up
 
+> Superseded by the Meshy V13 package and static runtime promotion recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this file for free-package rejection evidence only.
+
 Date: 2026-08-25  
 Owner: `chaosx_3d_model_pipeline`  
 Asset: reusable `alien_infantry` package  

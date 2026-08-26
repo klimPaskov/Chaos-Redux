@@ -16,6 +16,8 @@ The alien-only tactics are `tactic_alien_predictive_vector_assault` and `tactic_
 
 The source-counted public API consists of `alien_infantry_grant_contact`, `alien_infantry_revoke_contact`, `alien_infantry_can_call_landing`, `alien_infantry_spawn_landing_cohort`, and `alien_infantry_reconcile_country`. Independent numeric receipts exist for the Kruger pact, Mengele expedition, Event 019 provider 508, D’Rhondan sovereignty, and future-event consumers. Revoking one receipt cannot revoke another source.
 
+Successful landing history is owned by the country that completed the landing transaction. The API stores each selected state in that caller country's regular `alien_infantry_landing_state_registry` array after ordinary commit or Event 019 deferred-commit proof, and it never uses a shared global landing registry. D’Rhondan revolt capture and transfer iterate only the pact host's scoped registry, while receipt revocation removes future access without erasing committed landing history. Re-registering the same state for the same caller is idempotent, and separate callers or providers cannot contaminate one another's state history.
+
 Event 019 retains provider and family ID 508. Its former training and manpower callbacks are replaced by shared contact and UFO-landing calls. Event 019 cleanup revokes only its own receipt.
 
 ## D’Rhondan contact

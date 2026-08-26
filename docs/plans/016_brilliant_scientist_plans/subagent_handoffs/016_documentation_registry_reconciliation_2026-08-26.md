@@ -24,7 +24,7 @@ The source-of-truth correction is `d77afae7e` (`fix: preserve alien landing regi
 | Directorate GUI MCP evidence | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_current_mcp_audit_2026-08-26.md:27-31` and current inspect artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ac982a59753151c4e08404fce5807fb7bbae7a1b628eeb6ba8a15b00860b8cbc/126cd885185d595e3aea7f6be9679b4403aef0c8097e94faad34716dfc7c539d/gui-inspect.b4279d9e180ba8bb.json` | Current inspect returns `GUI_INSPECTED` with 22 Event 016 elements, but global graph diagnostics are truncated and a narrow current render returned `INTERNAL_ERROR` with no artifact. |
 | D’Rhondan route consumers | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_dhr_route_consumers_2026-08-26.md:45-53` | Five focus support markers remain reserved hooks without accepted consumers; no duplicate decisions were added. |
 | Portal beachhead lifecycle | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_portal_lifecycle_patch_2026-08-26.md:136-152` | Active-beachhead and extraction-marker cleanup remain queued for a named containment/spread owner. |
-| Custom-unit model gate | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_asset_workspace_cleanup_2026-08-26.md:35-39` and the current Alien Infantry model handoffs | Runtime model/entity/action/muzzle/synchronization acceptance remains blocked; cleanup did not wire or accept a model. |
+| Custom-unit model gate | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_asset_workspace_cleanup_2026-08-26.md:35-39`, `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, and the current Alien Infantry model handoffs | Alien Infantry V13 model, rig, seven actions, PDX exports, actual-byte reimport evidence, and static entity/GFX/animation/sound registrations are promoted for parent review; the supported effect point, particle/light binding, strict audio-role coverage, positional playback, and live acceptance remain blocked, and Portal Raider remains blocked at the model/entity/action gate. |
 | Asset workspace | Cleanup commit `31a66c4f4` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_asset_workspace_cleanup_2026-08-26.md:5-39` | The cleanup handoff recorded 2,014,398,979 bytes across 4,022 files, while the current working tree measures 3,723,212,401 bytes across 4,073 files; the delta is retained as concurrent workspace evidence, not treated as a cleanup revert. |
 
 ## Plan and handoff disposition
@@ -39,7 +39,8 @@ The source-of-truth correction is `d77afae7e` (`fix: preserve alien landing regi
 | Five D’Rhondan support flags | Queued with reason | Keep as reserved hooks or assign accepted consumers; do not invent duplicate decisions. |
 | Directorate GUI inspect/render | Partial and MCP-limited | Inspect is current and successful for the exact window, but global graph diagnostics and current render failure prevent GUI-fidelity closure. |
 | Event `.47` inspect/render/compare | Partial and MCP-limited | Current state-flow inspect is partial with zero blocking diagnostics; helper projection, render/compare baseline, and live transfer proof remain open. |
-| Alien Infantry and Portal Raider models | Blocked | Preserve model, action, muzzle, audio, entity, and reimport blockers; no runtime completion claim. |
+| Alien Infantry V13 model package | Accepted export and static runtime promotion; live integration blocked | Preserve the final manifest and V13 handoff as current source-of-truth evidence, while keeping supported effect-point binding, strict audio-role coverage, positional playback, and live acceptance open. |
+| Portal Raider model package | Blocked | Preserve model, action, sound, entity, and reimport blockers; no runtime completion claim. |
 | Asset workspace cleanup | Implemented as a compacting pass, workspace retained | The current larger folder measurement is evidence for parent review, not permission to delete active provenance. |
 
 ## Contradictions resolved
@@ -112,7 +113,7 @@ No binary asset or spreadsheet was opened or changed, because those surfaces are
 
 4. Treat current GUI inspect success as scoped evidence only and preserve the global-diagnostics and current-render limitations.
 
-5. Keep Alien Infantry and Portal Raider runtime model/entity/action blockers open, and retain the active asset workspace while provenance and acceptance remain incomplete.
+5. Keep Alien Infantry V13 supported effect-point, particle/light, strict audio-role, positional-playback, and live-acceptance blockers and Portal Raider model/entity/action blockers open, and retain the active asset workspace while provenance and acceptance remain incomplete.
 
 ## Remaining risks
 
@@ -126,6 +127,6 @@ Current Event and GUI MCP routes are partial or error-limited, and no accepted c
 
 Probability audit and compare coverage remain incomplete because the custom auditor route is unavailable.
 
-Alien Infantry and Portal Raider model/entity/action/audio/muzzle/runtime acceptance remains blocked.
+Alien Infantry V13 model/action export acceptance and static entity/GFX/animation/sound registration are complete, but supported effect-point binding, strict audio-role coverage, positional playback, and live acceptance remain blocked; Portal Raider model/entity/action/audio/muzzle/runtime acceptance remains blocked.
 
 This handoff does not claim whole-event completion.

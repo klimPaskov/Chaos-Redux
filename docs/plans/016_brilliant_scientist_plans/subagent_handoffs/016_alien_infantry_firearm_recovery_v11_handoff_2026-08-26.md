@@ -1,5 +1,7 @@
 # Alien Infantry firearm recovery V11 handoff
 
+> Superseded by the Meshy V13 package and static runtime promotion recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this file for V11 rejection evidence only.
+
 Date: 2026-08-26
 
 Status: **blocked — a new Meshy 7 raw model passes two-hand firearm contact, but every provider remesh breaks topology or exceeds the rig ceiling; no new rig, firing actions, or muzzle locator can be produced**.

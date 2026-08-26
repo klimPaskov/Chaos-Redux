@@ -1,5 +1,7 @@
 # Event 016 Alien Infantry firearm recovery documentation reconciliation
 
+> Superseded by the accepted Meshy V13 package and static runtime promotion recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this file for pre-promotion documentation evidence only.
+
 ## Outcome
 
 The user authorized Meshy recovery and supplied a new API credential outside the repository. Independent V3 through V7 Meshy lineages were attempted. The V7 neutral geometry, integrated rifle, two-hand hold, remesh, and neutral 24-bone rig passed inspection, but action 690 `Walk_Forward_While_Shooting_inplace`, action 104 `Side_Shot`, and action 232 `Cowboy_Quick_Draw_Shooting` each catastrophically deformed the arms, torso, and rifle. V3 through V7 reproduced the same failure class, so the current blocker is Meshy firearm-animation capability rather than missing authorization or insufficient credits.

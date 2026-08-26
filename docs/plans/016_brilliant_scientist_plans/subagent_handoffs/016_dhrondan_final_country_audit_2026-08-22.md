@@ -1,5 +1,7 @@
 # Event 016 D’Rhondan final country-package acceptance audit
 
+> Historical country-package snapshot superseded for Alien Infantry runtime status by the accepted V13 provider package and static runtime promotion recorded in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`. Retain the country audit and its dynamic/MCP/live limitations, but do not use its pre-promotion missing-entity or old recovery statements as current status.
+
 Date: 2026-08-22
 
 Scope: dormant fixed tag `DHR`, idempotent sovereignty formation, dynamic state transfer and claims, disconnected landing enclaves, existing-DHR joins, the three regime identities, the twelve-character roster, alien-infantry setup, country decisions and postwar integration, focus and AI wiring, assets, Event 016 log/details/news/achievement integration, and the required map/focus/event/technology/probability evidence.

@@ -6,6 +6,8 @@ Baseline: commit `fbd5f6703a0484733cca205e092e148ae595acd9` (`fix: isolate alien
 
 Mode: final read-only localisation audit. No gameplay, localisation, scripted-localisation, GFX, GUI, asset, model, sound, focus, decision, event, achievement, workbook, or shared-helper source was changed. This handoff is the only file created.
 
+> Current Alien Infantry correction after commit `0e724fb8a` (`Wire Meshy alien infantry firearm runtime package`): the accepted V13 provider package and promoted static entity/GFX/animation/sound registrations now exist. The remaining model-runtime blockers are the unsupported muzzle locator, unbound particle/light effects, strict audio selection/acknowledgement/impact/special-role provenance, positional/runtime wiring, and user-owned live acceptance; this localisation audit does not certify those gates.
+
 ## Scope and evidence
 
 The audit covered every file under `docs/specs/016_brilliant_scientist_specs/`, the Event 016 localisation prompt and acceptance criteria, current Event 016 and DHR event scripts, both Event 016 focus trees, decisions and missions, project and technology definitions, country and character surfaces, achievements, Event Log and Event Details selectors, Alien Infantry and Event 019 provider 508 presentation, Portal Warfare raid text, model-runtime names, linked GFX and sprite definitions, current asset/model handoffs, and prior Event 016 localisation handoffs.
@@ -20,7 +22,7 @@ The source scan found 56,463 distinct case-sensitive English localisation keys. 
 
 No missing key, exact duplicate, broken Event 016 scripted-localisation output, malformed dynamic token, wrong Event 016 namespace, or missing linked sprite texture was found.
 
-The Alien Infantry runtime package remains incomplete for non-localisation reasons. The current repository still has no accepted `alien_infantry_entity`, packed model binding, muzzle locator, or complete idle, move, attack, defend, support-attack, retreat, and death action set. The four sound roles, counters, equipment icon, particle, and light definitions exist, but they do not make the missing entity/action consumer complete. This remains the explicit model-runtime blocker from the current model handoffs and is not a missing-localisation finding.
+The Alien Infantry runtime package remains incomplete for non-localisation reasons. The accepted V13 model, seven action exports, and promoted static `alien_infantry_entity`/GFX/animation/sound registrations now exist, but no supported muzzle locator is available, the particle/light definitions remain unbound, strict audio-role provenance is incomplete, and positional/runtime plus live acceptance remain unproved. This remains a model-runtime blocker and is not a missing-localisation finding.
 
 ### P2: DHR revolt tooltip does not describe the ownership branch exactly
 
@@ -87,7 +89,7 @@ The four Alien Infantry landing keys listed above can render the existing `alien
 - The catalog alignment handoff dated 2026-08-26 matches the current base Event Details text, conditional DHR clause, four evolutions, and two world-end branches. No workbook change is required by this audit.
 - Portal Warfare localisation matches the current two native raids, seven-day preparation, 60 Teleportation Equipment reservation, 10 Command Power cost, six-battalion requirement, formation reconstruction, beachhead result, and one-or-two-installation extraction wording. Its unresolved state-marker lifecycle is a gameplay ownership gap, not a localisation mismatch because no accepted expiry or containment rule exists to describe.
 - Event 019 provider 508 names Alien Infantry and the D’Rhondan landing network without restoring Kruger ownership. Provider 509 names Portal Raiders. Their request and sustainment profiles resolve through the current owner-side registry tokens.
-- No maintained gameplay, localisation, interface, history, event documentation, achievement documentation, or Event 016 source specification contains `Exotic Guard`, `exotic_guard`, `Alien Guard`, `alien_guard`, a Kruger-specific Alien Infantry identifier, or a D’Rhondan alien-guard identifier.
+- No maintained gameplay, localisation, interface, history, event documentation, achievement documentation, or Event 016 source specification contains a retired guard name, a Kruger-specific Alien Infantry identifier, or a D’Rhondan-specific unit identifier.
 
 ### File encoding concerns
 
@@ -110,7 +112,7 @@ All six super-event quotations remain verbatim against `docs/super_events/016_br
 
 Fifteen linked Event 016, DHR, Alien Infantry, and Portal GFX files contain 808 texture references. Every referenced texture path exists. Alien Infantry has the three counter sprites and the equipment sprite in `interface/alien_infantry_system.gfx`. Portal Raider has the three counter sprites in `interface/portal_raider_system.gfx`. The linked DHR report/news art, portraits, focus icons, decision/category icons, flags, project icon, technology icons, and tactic icons retain registered source locations.
 
-No localisation alias or fallback was added for the incomplete Alien Infantry entity. The model handoffs still block final entity wiring on the missing muzzle locator and defend, support-attack, retreat, and death roles. Portal Raider's counter presentation is wired, while its rejected or unwired 3D runtime package remains outside any localisation completion claim.
+No localisation alias or fallback was added for the incomplete Alien Infantry runtime. Its promoted static entity and seven action registrations do not close the missing muzzle locator, effect binding, strict audio-role, positional/runtime, or live-acceptance gates. Portal Raider's counter presentation is wired, while its rejected or unwired 3D runtime package remains outside any localisation completion claim.
 
 ## MCP evidence and limitations
 
@@ -128,7 +130,7 @@ A fresh GUI inspection attempt for the Directorate window and an unfiltered GUI 
 - Rechecked 100 KRG and 88 DHR focus title/description pairs, 346 explicit Event 016 event references, 17 achievement name/description pairs and tooltips, 157 direct scripted-localisation outputs, and 180 scoped scripted-localisation calls.
 - Compared the country-scoped registry implementation, DHR transfer and claim branches, Event `.47` tooltip, API documentation, and post-commit handoffs. This exposed the one tooltip ownership-wording defect and one stale API-documentation sentence.
 - Checked 808 linked texture references across 15 GFX files with zero missing texture paths.
-- Checked the maintained source for retired Exotic Guard and Kruger-specific Alien Infantry identifiers with zero matches.
+- Checked the maintained source for retired guard names and Kruger-specific Alien Infantry identifiers with zero matches.
 - Compared all six super-event quotes with their recorded source-research selections and preserved them unchanged.
 
 ## Skipped meaningful validation and why
@@ -137,7 +139,7 @@ A fresh GUI inspection attempt for the Directorate window and an unfiltered GUI 
 - Standard decision/category, native raid, achievement, event-popup, and ordinary tooltip overflow cannot be rendered by an applicable installed MCP route.
 - Fresh GUI inspection did not return an artifact before termination, so no current Directorate long-text or missing-localisation render is claimed.
 - No fresh technology compare was required because `fbd5f6703` changed no technology source. The available technology evidence remains partial.
-- No entity reimport or animation-role validation was attempted because this is a localisation audit and the current model handoffs already mark the Alien Infantry runtime package incomplete.
+- No new entity reimport or animation-role validation was attempted because this is a localisation audit; the V13 manifest and promotion handoff provide provider/export evidence, while runtime locator/effect/audio and live acceptance remain outside this audit.
 
 ## Changed files and keys
 

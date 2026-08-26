@@ -1,5 +1,7 @@
 # Event 016 D'Rhonda country-package audit
 
+> Historical country-package snapshot. The separate Alien Infantry package is now represented by the accepted V13 provider evidence and promoted static runtime registrations; its supported locator/effect, strict-audio, and live-acceptance gates remain open. Use the current Alien Infantry runtime handoff and promotion handoff for that shared package; retain this audit for D’Rhondan country evidence and limitations.
+
 Date: 2026-08-25.
 
 Owner: `/root/dhr_country_audit`.
@@ -166,4 +168,3 @@ No gameplay files were changed. No tags, state IDs, leaders, parties, focus IDs,
 - `dhrondan_focus_add_orbital_dockyard` can do nothing for an inland DHR because it searches a random coastal state; this is a low-severity design risk retained without an unambiguous balance patch.
 
 No broad identity redesign, new focus route, new formable suite, major setup expansion, map edit, or unapproved asset fallback was made.
-

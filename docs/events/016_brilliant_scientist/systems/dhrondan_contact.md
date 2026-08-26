@@ -4,6 +4,8 @@
 
 This system connects the Event 016 and Mengele scientific routes to the source-counted alien-infantry API, then tracks the pact-host state needed by the Empire of D’Rhonda revolt package. Events `chaosx.nr16.40` through `.47` are ordinary follow-up reports. They do not add an Event 016 evolution or cluster.
 
+The contact chain consumes the shared provider-neutral `alien_infantry` package and does not create a D’Rhondan-specific model duplicate. The current Meshy V13 model, static entity/GFX/animation/sound registrations, and provider evidence are recorded in the alien-infantry runtime handoff; the missing supported muzzle/effect locator, unbound particle/light definitions, strict selection/acknowledgement/impact/special audio roles, and live in-game acceptance remain separate parent-owned runtime gates.
+
 ## Envoy craft
 
 `sp_dhrondan_envoy_craft` is an air-specialization project with breakthrough cost 5, very-long prototype time, insane complexity, and resource costs of 5 aluminium, 5 tungsten, 5 chromium, and 5 rubber. It becomes visible only through an active Kruger host, KRG sovereignty, an eligible Mengele directorate, or the dedicated `dhrondan_envoy_craft_future_event_access` receipt. Every route still requires one of the accepted five-domain operational mappings before construction. `alien_infantry_contact_receipt_future` is separate and authorizes only the shared contact, equipment, and landing API. It does not expose the craft.
@@ -55,7 +57,7 @@ On rebellion, `chaosx.nr16.47` calls `dhrondan_start_revolt = yes` in the pact-h
 - Pact: `dhrondan_pact_established`
 - Event 016 route receipts: `dhrondan_kruger_contact_receipt`, `dhrondan_mengele_contact_receipt`
 - Canonical Kruger one-time receipts: `dhrondan_kruger_authorization_reward_received`, `dhrondan_kruger_return_reward_received`, `dhrondan_kruger_pact_completed`
-- Public API receipts: `alien_infantry_contact_receipt_kruger_pact`, `alien_infantry_contact_receipt_mengele_expedition`
+- Public API receipts: `alien_infantry_contact_receipt_kruger_pact`, `alien_infantry_contact_receipt_mengele_expedition`, `alien_infantry_contact_receipt_event019_provider_508`, `alien_infantry_contact_receipt_dhrondan_sovereignty`, and `alien_infantry_contact_receipt_future`; the latter three belong to Event 019, DHR sovereignty, and future consumers rather than this contact chain.
 - Landing states: `dhrondan_landing_state`, `dhrondan_landing_history_recorded`
 - Pact-host values: `dhrondan_arrival_count`, `dhrondan_alien_presence`, `dhrondan_pact_strain`
 - Rebellion state: `dhrondan_rebellion_triggered`, `dhrondan_rebellion_bridge_called`

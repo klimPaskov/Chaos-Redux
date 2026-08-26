@@ -1,5 +1,7 @@
 # Event 016 alien infantry Meshy V10 runtime handoff
 
+> Superseded by the Meshy V13 package and static runtime promotion recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this file for V10 rejection evidence only.
+
 ## Outcome
 
 The requested complete reusable `alien_infantry_entity` package is **blocked**, not complete. Meshy 7 produced a faithful firearm-bearing model, a stable humanoid rig, and genuine accepted source clips for idle, move, defend, retreat, and death. Meshy did not produce a compliant `laser_attack` or `support_attack`, and the 24-bone rig has no verified muzzle locator. No fake action, semantic alias, manual/procedural Blender motion, inferred locator, or partial entity completion claim was made.

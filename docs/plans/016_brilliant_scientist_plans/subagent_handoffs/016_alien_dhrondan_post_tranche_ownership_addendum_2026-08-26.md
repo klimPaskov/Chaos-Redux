@@ -268,23 +268,23 @@ This cleanup is safely queued after the severity-one registry fix.
 
 The parent should prefer removal unless another package already has an accepted consumer contract.
 
-## Hard blocker: Alien Infantry runtime acceptance remains incomplete
+## Hard blocker: Alien Infantry effect, audio, and live acceptance remain incomplete
 
-`docs/assets/016_brilliant_scientist/models_3d/alien_infantry/job.yaml:218` records `partial_quaternius_idle_move_attack_exported_reimported_runtime_blocked`.
+The current V13 manifest at `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and promotion handoff at `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md` supersede the historical `job.yaml` status.
 
-Idle, move, and laser attack have exported and actual-byte reimported evidence.
+All seven V13 actions have exported and actual-byte reimported evidence, and their static entity/GFX/animation registrations are promoted by commit `0e724fb8a`.
 
-Laser attack is not runtime wired because no supported stable muzzle locator is available.
+The entity has static laser, movement, idle, and death sound references, but no supported stable muzzle/effect locator is available for positional particle/light/audio binding.
 
-Defend and death candidates were rejected, while support attack and retreat remain blocked.
+Selection/acknowledgement audio remains blocked by tag-wide vanilla consumers, and no accepted sourced impact or special-action candidate exists.
 
-The required distinct seven-action package, particle, light, audio synchronization, entity wiring, and runtime acceptance therefore remain incomplete.
+The required distinct seven-action package and static entity wiring are present, while particle/light binding, strict audio-role coverage, positional playback, and live runtime acceptance remain incomplete.
 
 This is not a design gap and must remain with the 3D pipeline owner.
 
 No fallback, semantic action alias, transform-only animation, unsupported locator, or incomplete entity package is accepted by this addendum.
 
-The parent must keep gameplay runtime acceptance blocked until the model package meets its existing gates.
+The parent must keep live runtime acceptance blocked until the supported effect point, strict audio roles, and user-owned live validation meet their existing gates.
 
 ## AI and probability evidence disposition
 
@@ -336,7 +336,7 @@ The active Portal breach is dynamic province control rather than a static map re
 
 3. Keep the four Portal raid and extraction history markers permanent and document that policy instead of clearing them with the active breach.
 
-4. Keep Alien Infantry model and runtime acceptance blocked until all existing action, muzzle, synchronization, entity, and reimport gates pass.
+4. Keep Alien Infantry live acceptance blocked until the supported effect point, strict audio-role coverage, positional playback, and user-owned live validation gates pass; the V13 action, export/reimport, and static registration gates are already evidenced.
 
 5. Rerun the required probability audit after any weight-bearing implementation and compare the same named scenarios before accepting changed tuning.
 
@@ -352,7 +352,7 @@ The active Portal breach is dynamic province control rather than a static map re
 
 ### Blocked
 
-- Alien Infantry complete runtime acceptance is blocked by missing required actions, a supported muzzle locator, synchronization, and final entity wiring.
+- Alien Infantry complete runtime acceptance is blocked by the unsupported muzzle/effect locator, unbound particle/light definitions, strict selection/acknowledgement/impact/special audio roles, positional playback proof, and live validation.
 - Fresh post-change probability acceptance is blocked until the owner applies any registry or Portal lifecycle patch and the probability adapter completes.
 - Dynamic map acceptance is blocked by the read-only adapter's inability to execute the revolt transaction and must not be replaced by static-state inference.
 - Automatic Portal war-end cleanup is unresolved until the parent verifies a bounded engine-supported relation hook.

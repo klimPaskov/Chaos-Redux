@@ -2,6 +2,8 @@
 
 Date: 2026-08-26
 
+> Current-status correction: this earlier aggregate cleanup snapshot is retained as historical evidence. The later V13-specific compaction recorded in `016_alien_infantry_docs_reconcile_current_2026-08-26.md` removed a further 2,100 ignored alien-infantry artifacts (3.166 GiB) and retained the accepted V13 exports, seven reimport checkpoints, previews, manifests, and provenance. Use that later handoff and the V13 manifest for the current workspace size and runtime status.
+
 ## Outcome
 
 The disposable bulk in `docs/assets/016_brilliant_scientist/` was compacted without deleting the workspace. Before cleanup the folder was approximately 3.15 GB across 4,248 files. After cleanup it is 2,014,398,979 bytes across 4,022 files (approximately 1.876 GB), freeing roughly 1.13 GB of local storage.
@@ -26,7 +28,7 @@ All removed files were ignored/untracked workspace artifacts. The pre-existing t
 
 ## Scope and remaining blocker
 
-The event-assets workflow requires retaining this temporary workspace while Event 016 is incomplete or blocked; deleting the whole folder would discard source and provenance needed for the remaining review. The Alien Infantry runtime gate is still open: a stable Meshy-compatible muzzle locator and verified firing/effect/audio synchronization are missing, and distinct defend, support-attack, retreat, and genuine death actions plus parent entity wiring are not accepted. This cleanup does not claim model or in-game completion.
+The event-assets workflow requires retaining this temporary workspace while Event 016 is incomplete or blocked; deleting the whole folder would discard source and provenance needed for the remaining review. The Alien Infantry runtime gate is still open because a supported Meshy/Blender-authored muzzle locator, particle/light binding, strict audio-role coverage, positional playback proof, and live acceptance are missing, while the V13 seven-action package and static entity/GFX/animation/sound registrations are promoted. This cleanup does not claim model or in-game completion.
 
 The cleanup was performed in the working tree. Because the deleted binaries were ignored, Git records the cleanup through this handoff and manifest note rather than as individual deletion entries.
 

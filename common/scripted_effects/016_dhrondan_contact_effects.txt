@@ -190,9 +190,6 @@ dhrondan_ai_try_authorize_expedition = {
 				dhrondan_mengele_expedition_is_available = yes
 			}
 		}
-		set_temp_variable = { dhrondan_expedition_political_power_debit = constant:dhrondan_contact.expedition_political_power_cost }
-		multiply_temp_variable = { dhrondan_expedition_political_power_debit = constant:brilliant_scientist_directorate_value.negative_one }
-		add_political_power = dhrondan_expedition_political_power_debit
 		if = {
 			limit = { dhrondan_kruger_expedition_is_available = yes }
 			dhrondan_begin_kruger_expedition = yes
@@ -200,6 +197,16 @@ dhrondan_ai_try_authorize_expedition = {
 		else_if = {
 			limit = { dhrondan_mengele_expedition_is_available = yes }
 			dhrondan_begin_mengele_expedition = yes
+		}
+		# The route is revalidated by the begin helper immediately before it
+		# mutates the character/program state. Charge the AI only after that
+		# transaction opened its mission, so a concurrent invalidation cannot
+		# consume political power without granting an expedition.
+		if = {
+			limit = { has_country_flag = dhrondan_expedition_in_progress }
+			set_temp_variable = { dhrondan_expedition_political_power_debit = constant:dhrondan_contact.expedition_political_power_cost }
+			multiply_temp_variable = { dhrondan_expedition_political_power_debit = constant:brilliant_scientist_directorate_value.negative_one }
+			add_political_power = dhrondan_expedition_political_power_debit
 		}
 	}
 }

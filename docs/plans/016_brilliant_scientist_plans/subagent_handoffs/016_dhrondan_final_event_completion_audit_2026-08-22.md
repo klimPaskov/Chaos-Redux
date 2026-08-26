@@ -1,5 +1,7 @@
 # Event 016 Alien Infantry and Empire of D’Rhonda final event-completion audit
 
+> Historical completion snapshot superseded for Alien Infantry runtime status by the accepted V13 provider package and static runtime promotion recorded in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`. Keep the event/API/DHR evidence and limitations, but do not use its pre-promotion three-action or missing-package statements as current status.
+
 Date: 2026-08-22
 
 Owner: `chaosx_event_completion_auditor`

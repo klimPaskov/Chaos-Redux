@@ -1,5 +1,7 @@
 # Event 016 Alien Infantry and D’Rhonda Improvement-Loop Closure Handoff
 
+> Historical planning snapshot superseded for Alien Infantry runtime status by `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`. Retain the design-closure findings below as evidence, but do not treat its pre-V13 recovery blocker or action-count claims as current production status.
+
 ## Recommendation
 
 Stop broad expansion. The accepted alien-infantry API, D’Rhondan contact chain, country package, 88-focus tree, decisions, lifecycle ideas, cross-event provider migration, and asset plan already provide a connected playable system. Another mechanic, route, formable, GUI, super-event, or country layer would add maintenance burden without closing a material design gap. This handoff records closure of the design-improvement loop only and makes no implementation-completion claim.

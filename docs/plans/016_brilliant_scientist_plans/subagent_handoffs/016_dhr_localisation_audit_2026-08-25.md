@@ -1,5 +1,7 @@
 # Event 016 Alien Infantry and D’Rhonda Localisation Audit
 
+> Historical localisation snapshot superseded for Alien Infantry runtime status by the accepted V13 provider package and static runtime promotion recorded in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`. Retain the localisation findings, but do not use its pre-promotion absent-entity statement as current status.
+
 Date: 2026-08-25
 
 ## Scope and authority
@@ -62,7 +64,7 @@ Fixed the only current naming drift: shared unit, equipment, and tactic-technolo
 
 Event 019 provider 508 still refers to the D’Rhondan landing network by design. Its player-facing text describes contact and paid arrivals rather than a Kruger-owned unit family.
 
-No `exotic_guard`, `Exotic Guard`, `alien_guard`, `kruger_alien`, Kruger-specific Alien Infantry, or D’Rhondan alien-guard identifier remains in the inspected gameplay, localisation, interface, sound, or maintained Event 016 and Event 019 documentation surfaces.
+No retired guard name, Kruger-specific Alien Infantry identifier, or D’Rhondan-specific unit identifier remains in the inspected gameplay, localisation, interface, sound, or maintained Event 016 and Event 019 documentation surfaces.
 
 The exported Event 016 catalog detail repeats the current premise-only D’Rhondan Event Details clause. No catalog mismatch was found, so the workbook was not edited.
 
@@ -131,7 +133,7 @@ The installed HOI4 MCP exposes no standard decision or decision-category inspect
 - Checked 237 DHR/Alien Infantry sprite texture references across the linked GFX files: zero missing texture paths.
 - Confirmed 12 flag files and 12 character portrait textures.
 - Confirmed the scoped localisation files retain UTF-8 BOM encoding and the patched values preserve all dynamic tokens and formatting codes.
-- Confirmed the maintained source tree contains none of the retired Exotic Guard or Kruger-specific Alien Infantry identifiers listed above.
+- Confirmed the maintained source tree contains none of the retired guard names or Kruger-specific Alien Infantry identifiers listed above.
 
 ## Skipped meaningful validation
 

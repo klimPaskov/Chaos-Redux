@@ -4,6 +4,8 @@
 
 This handoff promotes the accepted Meshy V13 firearm-bearing alien infantry export into the runtime `gfx` tree. The mesh contains the retro laser firearm as part of the provider-authored skinned body, so no local weapon attachment, parenting, weighting, or replacement motion was authored.
 
+The package is routed through `chaosx_3d_model_pipeline`. Provider evidence, static runtime registration, and live consumer acceptance remain separate gates, and this promotion handoff does not claim live in-game acceptance.
+
 ## Provider and actions
 
 - Meshy V13 source export: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/`.
