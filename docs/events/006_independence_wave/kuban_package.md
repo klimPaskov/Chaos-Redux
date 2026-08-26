@@ -6,7 +6,7 @@ IW-040 is an admitted Event 006 package for vanilla KUB and state 234. It preser
 
 The package defines two visible country-scoped ledgers, Civic Concord (`independence_wave_kub_rada_cohesion`) and Mounted Readiness (`independence_wave_kub_mounted_readiness`), clamped from 0 to 100. Both must reach the stable threshold before the 600-day founding mission can resolve successfully.
 
-The mission requires a selected government, stable ledgers, and ownership and control of state 234 throughout the 600-day window. Loss of state 234 or loss of the current capital control cancels the mission immediately; failure applies the package failure deltas and cancels active projects through their ordinary cancellation effects.
+The mission requires a selected government, stable ledgers, and ownership and control of state 234 throughout the 600-day window. Loss of state 234, loss of the current capital control, or loss of the generation setup receipt cancels the mission immediately; failure applies the package failure deltas and cancels active projects through their ordinary cancellation effects.
 
 ## Projects and governments
 
