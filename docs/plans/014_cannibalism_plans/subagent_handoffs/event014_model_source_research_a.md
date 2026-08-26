@@ -4,7 +4,7 @@ Date: 2026-08-22.
 
 Owner: `chaosx_asset_source_researcher` scope, modern sourced visual-reference research only.
 
-Status: the first-pass trio below is superseded by the 2026-08-22 visual-strength redo documented at `docs/assets/014_cannibalism/models_3d/sourced_reference_manifest_group_a_redo_2026-08-22.md`. The redo returns three modern-art candidates per job and marks all shortlisted material `reference_only`; parent approval of the text-only adaptation boundary remains required. No ImageGen or Meshy call was made, and no gameplay, runtime, entity, GFX, event, localisation, processed, or DDS asset was edited or created.
+Status: the first-pass trio below is superseded by the 2026-08-22 visual-strength redo documented at `docs/assets/014_cannibalism/models_3d/sourced_reference_manifest_group_a_redo_2026-08-22.md`. The redo returns three modern-art candidates per job and marks all shortlisted material `reference_only`; the prior text-only adaptation direction is superseded by the parent’s faithful-enhancement gate. No ImageGen or Meshy call was made, and no gameplay, runtime, entity, GFX, event, localisation, processed, or DDS asset was edited or created.
 
 ## Selected modern references
 

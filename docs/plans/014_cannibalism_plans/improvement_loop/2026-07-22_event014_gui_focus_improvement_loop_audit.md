@@ -4,6 +4,8 @@ Date: 2026-07-22
 
 Status: plan-only audit. No gameplay or interface files were edited.
 
+Amendment: the current Event 014 GUI contract has no animation toggle or player animation preference. The animation-toggle statements retained in the historical audit below are superseded; frame and static packages remain asset-level implementation facts only.
+
 ## Scope and references
 
 This pass is limited to the direct Event 014 presentation contract:
@@ -39,11 +41,7 @@ variables. The relevant vanilla contracts are:
 
 The live package has five direct windows: early containment, the Evolution II
 network view, Warlord command, revealed unified command, and Wendigo command.
-The network view is the only large stateful window. It uses country-owned
-variables and arrays, a dirty variable, dynamic list entries, tab selection,
-sorting, refresh, close, animation toggles, and selected country or state
-cards. The other four windows expose live meters, stage or mission summaries,
-warning frames, portraits or seals, and animation toggles.
+The network view is the only large stateful window. It uses country-owned variables and arrays, a dirty variable, dynamic list entries, tab selection, sorting, refresh, close, and selected country or state cards; the current contract exposes no animation toggle. The other four windows expose live meters, stage or mission summaries, warning frames, portraits, or seals.
 
 All 16 authored GUI buttons have matching click handlers. Every handler is a
 view or presentation action. No handler pays population, Larder, command
@@ -55,10 +53,7 @@ cost and cleanup contracts as the player.
 The five GUI blocks are explicitly human-facing with `is_ai = no` and
 `ai_enabled = { always = no }`. This is intentional. The GUI does not own an
 action economy. Adding AI clicks would duplicate the already audited decision
-AI and create two cost or cleanup paths for every operation. The scripted GUI
-file contains no event-target scope. Animated and static siblings are gated by
-the animation preference, and the network window updates through its dirty
-variable instead of an unconditional large-window refresh.
+AI and create two cost or cleanup paths for every operation. The scripted GUI file contains no event-target scope. Animated and static siblings remain package-level assets, and the current contract exposes no player animation preference; the network window updates through its dirty variable instead of an unconditional large-window refresh.
 
 The existing visual audit records five bounded windows, 54 registered Event
 014 GUI sprites, 24 animated sheets with static fallbacks, 16 handler pairs,

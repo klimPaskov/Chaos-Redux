@@ -1,6 +1,8 @@
 # Event 014 model source research C — modern artwork revision
 
-Status: three modern visual references are archived and selected for parent review. The selections are modern game art, game concept art, and professional fantasy character art as required by the latest user correction. The downloaded originals, source-page records, manifests, processed PNG previews, DDS evidence copies, rejected alternatives, and ImageGen adaptation briefs are separate from the superseded archival set.
+Historical supersession notice: this research record is retained for source provenance only. The 2026-08-26 decision assigns Network Cadre vanilla `sprite = infantry` and Bone Riders vanilla `sprite = cavalry`, so their former source-review rows are not current custom-model work queues.
+
+Status at handoff: three modern visual references are archived and selected for parent review. The selections are modern game art, game concept art, and professional fantasy character art as required by the latest user correction. The downloaded originals, source-page records, manifests, processed PNG previews, DDS evidence copies, rejected alternatives, and historical adaptation briefs are separate from the superseded archival set. The parent’s current gate permits only faithful enhancement of an approved actual source, not redesign or generated-from-scratch input.
 
 This package covers only `cannibal_march_predation_column`, `cannibal_network_cadre`, and `cannibal_bone_riders`. It does not create or approve final model geometry, does not run ImageGen or Meshy, and does not edit gameplay, runtime, entity, unit, `.gfx`, `.asset`, event, localisation, or existing production manifest files.
 
@@ -35,7 +37,7 @@ The selected PNG previews are native-resolution RGBA conversions with no crop, r
 
 ## Adaptation boundary and safety
 
-All three selected works are reference direction only. ImageGen must create substantially original model-sheet artwork and must not copy distinctive faces, logos, costumes, exact poses, source-specific props, or recognizable game or artist character designs.
+All three selected works are reference direction only and no provider input is approved. The prior substantially-original ImageGen instruction is superseded; an approved source must retain its identity and may receive faithful enhancement only.
 
 March's selected artwork is intentionally stronger on aggressive action and paired-axe readability than the rejected OGA turnaround, but its heavy armor conflicts with the requested lightly equipped runner; that conflict is explicitly resolved in the adaptation brief.
 

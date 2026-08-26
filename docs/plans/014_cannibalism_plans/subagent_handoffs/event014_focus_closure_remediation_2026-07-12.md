@@ -1,5 +1,7 @@
 # Event 014 Focus-Closure Remediation Handoff
 
+> **Historical implementation handoff.** Any fourth-origin, Prison Host, or Lockhouse-origin references retained below are superseded by the 2026-07-15 three-origin correction. Current origins are Island Host, Siege Commune, and March Host.
+
 Date: 2026-07-12
 
 Owner: `event014_focus_closure_planner`

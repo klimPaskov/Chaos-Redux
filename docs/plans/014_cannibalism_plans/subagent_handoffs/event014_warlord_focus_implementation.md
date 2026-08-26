@@ -4,6 +4,8 @@
 > this early handoff describe an intermediate draft. Current route counts and
 > package status are defined by the consolidated Event 014 focus audit.
 
+> The former Prison Host and Lockhouse-origin sections below are historical draft content and are superseded by the current three-origin contract. Prison and detention remain ordinary mechanics, not a fourth origin.
+
 ## Scope and files
 
 This bounded patch implements the shared local warlord focus tree and its reward effects. It changes only:
@@ -287,7 +289,7 @@ Every focus has campaign-aware AI. Major choice weights read:
 - current war state
 - controlled coastal states with a naval base for naval and Mobile Larder choices
 
-Invalid origin and Evolution II branches receive the existing zero factor. Personal Tyranny favors suspicious and hoarding leaders. Feast Council favors Prison Hosts, Feast Captains, and multi-state countries. Pack Confederacy favors March Hosts, Defiant Mouths, and high Frenzy. The three network routes favor Network Disciple, leverage-seeking, and defiant profiles respectively.
+Invalid origin and Evolution II branches receive the existing zero factor. Personal Tyranny favors suspicious and hoarding leaders. Feast Council favors prison or detention objectives, Feast Captains, and multi-state countries. Pack Confederacy favors March Hosts, Defiant Mouths, and high Frenzy. The three network routes favor Network Disciple, leverage-seeking, and defiant profiles respectively.
 
 ## Validation evidence
 

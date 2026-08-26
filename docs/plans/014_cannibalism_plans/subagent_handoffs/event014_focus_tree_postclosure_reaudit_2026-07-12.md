@@ -4,6 +4,8 @@
 > the consolidated Event 014 focus audit and package status. Refer to those
 > current authorities for counts, assets, and completion state.
 
+> The former fourth-origin and Lockhouse references in this historical snapshot are superseded by the three-origin correction. Prison and detention remain ordinary mechanics, not a Prison Host route.
+
 Date: 2026-07-13
 Requested audit-series date: 2026-07-12
 Mode: independent read-only gameplay, AI, localisation, and asset audit

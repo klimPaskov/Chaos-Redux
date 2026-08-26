@@ -1,5 +1,7 @@
 # Event 014 Siege Eaters 3D final v8 handoff
 
+> Historical blocked handoff. Superseded by the accepted installed Siege Eaters runtime receipt; retain this file for provider failure evidence only.
+
 Status: `blocked` after parent visual approval because the locked Meshy 7 request returned HTTP 402 at insufficient balance.
 
 ## Approved reference

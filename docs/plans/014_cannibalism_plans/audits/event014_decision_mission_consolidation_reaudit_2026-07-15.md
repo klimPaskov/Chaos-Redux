@@ -190,7 +190,7 @@ The interface contains 16 Event 014 buttons and the scripted GUI defines exactly
 - missing callback: 0;
 - orphan callback: 0.
 
-The callbacks only toggle animation, open or close the network view, refresh or sort view data, change tabs, or select a displayed row. They do not pay resources, consume population, recruit units, seed cells, fire convergence, or advance a terminal route. Gameplay actions remain decisions with independent AI paths.
+The callbacks open or close the network view, refresh or sort view data, change tabs, or select a displayed row. They do not pay resources, consume population, recruit units, seed cells, fire convergence, or advance a terminal route. Gameplay actions remain decisions with independent AI paths, and the current Event 014 GUI contract exposes no animation toggle.
 
 All five scripted GUI roots use `is_ai = no`. The early, network, and warlord surfaces require the pre-reveal state. The revealed command surface requires `cannibalism_reveal_complete` and the unified-country identity. The Wendigo surface requires `cannibalism_reveal_complete`, the pre-lock Wendigo state, and the transformed-country identity. No scripted GUI block uses an event target.
 

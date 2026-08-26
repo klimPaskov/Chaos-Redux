@@ -1,6 +1,8 @@
 # Event 014 Bone Riders paid v9 handoff
 
-Status: incomplete and blocked because the callable Blender HOI4 MCP process remains adapter 1.10.3 while the repository-authoritative lock is 1.10.7. The approved professional horse source, conditional Meshy rider source plan, sourced-audio package, and counter package are preserved.
+Historical supersession notice: this paid v9 recovery record is retained for provider, adapter, cost, and provenance evidence only. The 2026-08-26 approved visual-reuse decision assigns Bone Riders vanilla `sprite = cavalry`, removes the custom model/action/provider requirement, and makes the former adapter blocker non-current.
+
+Historical status: incomplete and blocked because the callable Blender HOI4 MCP process remained adapter 1.10.3 while the repository-authoritative lock was 1.10.7. The approved professional horse source, conditional Meshy rider source plan, sourced-audio package, and counter package are preserved as historical evidence.
 
 ## Adapter 1.10.7 resume audit — 2026-08-24
 
@@ -30,7 +32,7 @@ No rider action spend has occurred; the planned tranche is 24 credits and the la
 
 Installed vanilla `gfx/entities/units_cavalry.asset` proves that HOI4 cavalry uses a separate frame, horse, and saddle-attached rider architecture.
 The exact installed file is archived at `evidence/vanilla/units_cavalry.asset`, SHA-256 `5AC30F2E98F29A95A56675AE19E51C3C4FAD7B2F1B6453F6AA0C7D6415696AE6`, and the line-specific implementation consequence is recorded in `evidence/vanilla_cavalry_entity_architecture.md`.
-Bone Riders should therefore export separate bespoke horse and rider meshes/actions and attach the rider at an audited horse `Saddle_Node`; parent-owned runtime wiring will use a custom frame entity to propagate all eight states.
+The former v9 recovery plan would have exported separate bespoke horse and rider meshes/actions and attached the rider at an audited horse `Saddle_Node`; that plan is superseded by the approved vanilla `sprite = cavalry` decision and must not be resumed without a new parent scope decision.
 
 Processing is paused at the adapter route gate.
 The live process exposed adapter 1.10.3 health but omitted required structured segmentation, sourced retarget, calibration, grounding, and weight-sanitize tools.

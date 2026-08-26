@@ -2,11 +2,13 @@
 
 Audit date: 2026-08-25.
 
+Historical supersession notice: this continuation predates the 2026-08-26 approved vanilla-visual reuse decision. Its Bone Riders and Network Cadre custom-model blockers are retained as historical provider evidence only; Bone Riders now uses vanilla `sprite = cavalry`, Network Cadre uses vanilla `sprite = infantry`, and no custom model/action/provider gate remains for either consumer.
+
 ## Scope
 
 This continuation pass used the installed HOI4 MCP against only Event 014 surfaces that can be attributed to the package: the Event 014 event root, the three Event 014 national-focus trees, the Event 014 technology/sub-unit surface, and the five direct Event 014 scripted-GUI windows. It did not inspect or edit the shared event log, shared Event Details framework, settings UI, unrelated scripted GUIs, or other event packages.
 
-The pass also rechecked the remaining Meshy task records without spending credits. No provider task was promoted and no model fallback was fabricated.
+The initial read-only Meshy recheck was followed by a bounded, pre-authorized Island Reavers v11 recovery tranche after the provider balance replenished. The Island package now has separate provider remesh, rig, action, Blender export/reimport, and engine-wiring evidence; no model fallback was fabricated.
 
 ## Event MCP evidence
 
@@ -52,8 +54,19 @@ The GUI adapter retained 1,999 diagnostics and dropped 1,654 at its global ceili
 
 ## Meshy/provider boundary
 
-The same continuation rechecked the four open model families without spending credits. The balance remains 10 credits. Scavenger and Island have succeeded provider geometry candidates but no accepted rig/action/reimport package; Network has no queryable action lease; Bone Riders has no accepted compound horse/rider route. The required eight substantive actions alone exceed the balance, so no static, transform-only, aliased, Blender-authored, or generic fallback was promoted.
+The historical read-only recheck recorded a 10-credit balance and four open model families. The later Island v11 tranche used the replenished balance and accepted the remesh `01a03967-eaff-72d3-a8a9-2ec3efa29a15`, rig `01a0396c-09fc-7026-b5b3-1210dbfa2f1c`, eight Meshy action tasks, eight role-specific export-coordinate checkpoints, eight PDX exports, eight reimport proofs, and parent runtime wiring. Scavenger v2 now has its own source-approved Meshy 7 geometry, provider action provenance, eight PDX exports, eight reimport proofs, and parent runtime wiring in `event014_scavenger_warband_v2_runtime_handoff.md`. Network’s absent action lease and Bone Riders’ absent compound route are historical findings superseded by the approved vanilla sprites. No static, transform-only, aliased, Blender-authored, or generic fallback was promoted as a bespoke model.
 
 ## Disposition
 
-The focus coordinate patch is accepted and source-owned. The event, focus, technology, GUI, and provider evidence above is recorded, but Event 014 remains incomplete until the four model/action packages pass the Meshy-to-PDX acceptance gate, the direct GUI matrix becomes attributable across supported resolutions and states, the deferred large-workspace analyses are narrowed or resolved, and live consumer validation is supplied by the user.
+The focus coordinate patch is accepted and source-owned. The event, focus, technology, GUI, and provider evidence above is recorded, but Event 014 remains incomplete while the direct GUI matrix remains partial, deferred large-workspace analyses remain unresolved, and parent live consumer validation is outstanding. The two former model/action packages are not current gates because their gameplay consumers use approved vanilla sprites.
+
+## Later 2026-08-25 continuation supersession
+
+The following receipts supersede only the earlier same-day MCP values where they cover the same surface; the historical artifacts above remain evidence for their original run and are not deleted.
+
+- A fresh `hoi4.event_inspect` for `chaosx.nr14.1` returned `EVENT_INSPECTED_PARTIAL` at revision `f588a2607444400ec9fa9d102943fc0e10dc4482ebca9935232a4df2966f59d` with zero selected blocking diagnostics. The large-workspace result deferred helper projections and is not full lifecycle proof. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/639f87ef1443400f555beedeace6f403bbcaeb6dd0744780524a9e97262dab2d/66d0e673d7ffa777cb0871473697fd7623db6a75e627dd1ce0598908225f17ec/event-lint-f588a2607444.json`.
+- Fresh focus inspection returned zero crossing, intersection, long-connector, and Event 014 blocking diagnostics for unified (108 focuses/103 connectors), warlord (68/79), and Wendigo (28/28) trees. The matching unified focus render succeeded; the later national-tree raster request returned `INTERNAL_ERROR`, so no new raster pass is claimed from that request.
+- Direct GUI inspection resolved the network window’s 27 owned elements, but global diagnostics were dominated by unrelated Event 003/Event 005 collisions, visible-overlap reports, and truncation. The bounded inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/0aa68b2da6c3dd81d9f465b5356cb40176eee0986b6ef88bddc4e552cac67a98/9de8e5ff366f4e49b85877f64bd9c243b4d48df85e871e9dcc0acb81a80ca116/gui-inspect.4644732d483a21c3.json`; a post-change render succeeded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/40cfb5508bb2c3917099dda1c792b23e57108c299e4e0861d0e778b0ad8a2970/e8dd9e6e12ff30d3fbdb15db1d21ec54eb3ea7cca8f6977c6d5a7175aa305638/cannibalism_network_window-full.svg`. No source GUI rewrite is justified by unattributed global diagnostics.
+- Direct probability discovery/inspection was run before any weighted conclusion. Event options in `events/014_cannibalism.txt` returned 40 candidates, an incomplete pool, 15 required inputs, and one unresolved input (artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/62aea1f8f19aa9abf2b54fd34bf79cb0aa04bcba4a5438d039821fa44adcbec2/afc5c275c5f4dce38f79f0e7b9fb78471cac2c07de300d0e3ba5c1ea87e331ef/probability-inspect-43741ef93efa.json`). Decision AI returned 95 candidates, incomplete pool, and 32 required inputs (artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/332fd7afe04bd8417b65a8c535f309b951d76c5880de054c7245ce3984bc9ac3/93d4c19d154a5a8f51fc80961780197072165947b3681a748c4c1d26f46d8276/probability-inspect-eabd8038505f.json`). Focus AI returned 204 candidates, incomplete pool, and 15 required inputs (artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8e4bc16cdb5d14eddf34ca33d6e7460c0dd05d3142d4b657314966636f3f18c9/3933f8083eecf024b86d02a685ab46505f47057998e040ba3dd89505f4342ff6/probability-inspect-54cd8e05f959.json`). The AI-strategy file discovered no weighted surfaces. These are adapter capability/baseline receipts only; the required named auditor and same-scenario compare remain outstanding.
+
+The current disposition is therefore partial, not complete: seven bespoke model/action/entity/audio packages are installed, Bone Riders and Network Cadre use approved vanilla `cavalry` and `infantry` sprites, catalog cells are `Needs Testing`, GUI and large-workspace evidence remain bounded, and no live in-game validation is claimed.

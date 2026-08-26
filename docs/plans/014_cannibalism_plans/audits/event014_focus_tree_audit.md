@@ -5,6 +5,8 @@
 > incomplete counts or missing-asset findings for current status; use the
 > consolidated Event 014 focus audit and package status instead.
 
+> Its former fourth-origin, Prison Host, and Lockhouse references are historical evidence only. Current Event 014 origins are Island Host, Siege Commune, and March Host.
+
 Date: 2026-07-11  
 Mode: read-only audit; no gameplay, localisation, interface, or asset files were edited  
 Status: **incomplete — no completion claim**
