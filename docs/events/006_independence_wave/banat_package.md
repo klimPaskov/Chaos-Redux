@@ -1,6 +1,6 @@
 # Event 006 IW-024 — Banat package
 
-IW-024 uses the registered `AXX` carrier and the installed-map Banat anchor at state `82`. The package belongs to the Balkans and Danube region, uses the `mountain_or_frontier` archetype, and loads force mapping profile `p24` / `industrial_security` with the industrial-security military tradition. The former host is Romania (`ROM`), and the allocator must reserve a protected ROM-owned remnant before the synchronized release can commit.
+IW-024 uses the registered `AXX` carrier and the installed-map Banat anchor at state `82`. The package belongs to the Balkans and Danube region, uses the `mountain_or_frontier` archetype, and loads force mapping profile `p24` / `industrial_security` with reinforcement mask `1095` covering integrate militias, recruit regional guards, secure depots, mobilize factory or railway guards, and complete capital and border defense missions. The former host is Romania (`ROM`), and the allocator must reserve a protected ROM-owned remnant before the synchronized release can commit.
 
 ## Identity and assets
 
@@ -10,7 +10,7 @@ AXX uses the flat ImageGen flag ladder at `gfx/flags/AXX.tga`, `gfx/flags/medium
 
 ## Playable contract
 
-Setup loads the full shared Event 006 generic focus tree with the constitutional, popular-council, traditional, emergency-military, patron-client, host, league, regional ambition, signature, and Danubian formable lanes. The package adds five reinforcement pathways: integrate militias, recruit regional guards, secure depots, field factory/rail guards, and establish capital-border defence. No bespoke country tree or advisor icon family is created.
+Setup loads the full shared Event 006 generic focus tree with the constitutional, popular-council, traditional, emergency-military, patron-client, host, league, regional ambition, signature, and Danubian formable lanes. The package adds five reinforcement pathways: integrate militias, recruit regional guards, secure depots, mobilize factory or railway guards, and complete capital and border defense missions. No bespoke country tree or advisor icon family is created.
 
 Banat begins with two visible package ledgers: civic mandate and mountain defence readiness. Focuses, the founding mission, and eleven paid decisions change these values and the shared country, host, network, league, patron, and ambition values. The projects consume administration, security, diplomatic, strategic, factory, equipment, manpower, and time resources; a failure reduces the ledgers and applies the shared bounded crisis consequences rather than granting free political-power stores or unit loops.
 
