@@ -49,7 +49,7 @@ All four selections are structured performances by identified musicians. None is
 - **Canonical source and rights page:** [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:PhiladelphiaSymphonyOrchestra-DanseMacabre.ogg)
 - **Upstream archive:** [Internet Archive](https://archive.org/details/PhiladelphiaSymphonyOrchestra-DanseMacabre)
 - **Direct preserved media:** <https://upload.wikimedia.org/wikipedia/commons/7/76/PhiladelphiaSymphonyOrchestra-DanseMacabre.ogg>
-- **Preserved source:** `docs/assets/014_cannibalism/source_audio/hannibal_reveal_danse_macabre_stokowski_1925_source.ogg`
+- **Preserved source:** `docs/assets/014_cannibalism/audio/super_events/sources/danse_macabre_stokowski_1925_source.ogg`
 
 ### Rights verification
 
@@ -81,7 +81,7 @@ The opening gives the reveal ritual form, predatory intelligence, and a discipli
 - **Recording date and place:** 8-11 December 1981, Lisner Auditorium, Washington, D.C.
 - **Canonical source and rights page:** [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Siegfrieds_funeral_march_and_finale.ogg)
 - **Direct preserved media:** <https://upload.wikimedia.org/wikipedia/commons/7/7d/Siegfrieds_funeral_march_and_finale.ogg>
-- **Preserved source:** `docs/assets/014_cannibalism/source_audio/hannibal_world_end_siegfried_funeral_march_us_marine_band_source.ogg`
+- **Preserved source:** `docs/assets/014_cannibalism/audio/super_events/sources/siegfrieds_funeral_march_us_marine_band_source.ogg`
 
 ### Rights verification
 
@@ -113,7 +113,7 @@ The funeral march supplies military weight, mass procession, and terminal finali
 - **Upstream catalogue:** [Musopen](https://musopen.org/music/777-peer-gynt-suite-no-1-op-46/)
 - **Preservation collection:** [Internet Archive, Musopen Collection as FLAC](https://archive.org/details/MusopenCollectionAsFlac)
 - **Direct preserved media:** <https://upload.wikimedia.org/wikipedia/commons/3/35/Grieg_-_Peer_Gynt_Suite_No._1%2C_Op._46_-_II._The_Death_of_Aase_%28Musopen_Symphony%29.flac>
-- **Preserved source:** `docs/assets/014_cannibalism/source_audio/wendigo_world_end_death_of_aase_musopen_symphony_source.flac`
+- **Preserved source:** `docs/assets/014_cannibalism/audio/super_events/sources/death_of_aase_musopen_symphony_source.flac`
 
 ### Rights verification
 
@@ -145,7 +145,7 @@ The string lament is cold, sparse, and funeral in character. It makes the Wendig
 - **Canonical source and rights page:** [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Faure_-_Elegie.ogg)
 - **CC BY-SA 2.0 license:** <https://creativecommons.org/licenses/by-sa/2.0/>
 - **Direct preserved media:** <https://upload.wikimedia.org/wikipedia/commons/e/ef/Faure_-_Elegie.ogg>
-- **Preserved source:** `docs/assets/014_cannibalism/source_audio/global_defeat_aftermath_faure_elegie_goldstein_kalman_source.ogg`
+- **Preserved source:** `docs/assets/014_cannibalism/audio/super_events/sources/faure_elegie_goldstein_kalman_source.ogg`
 
 ### Rights verification
 
@@ -180,22 +180,22 @@ All runtime WAV files decode with FFmpeg and report two channels at exactly 44,1
 
 | Source path | Bytes | SHA-1 | SHA-256 |
 | --- | ---: | --- | --- |
-| `docs/assets/014_cannibalism/source_audio/hannibal_reveal_danse_macabre_stokowski_1925_source.ogg` | `3,712,742` | `66aaedc1e25a0bfbbcc010397145f528d9184b1a` | `5da52fa63c374fa3744886548aa74786128cdd4760b976194b22f22f30c69820` |
-| `docs/assets/014_cannibalism/source_audio/hannibal_world_end_siegfried_funeral_march_us_marine_band_source.ogg` | `11,969,470` | `934030f52a701bc1098926caefb4da1512d6ab72` | `68124de4da401be0e07b2e2d637347e1a981b5cafa6ead74b5cd43f6becc6e41` |
-| `docs/assets/014_cannibalism/source_audio/wendigo_world_end_death_of_aase_musopen_symphony_source.flac` | `43,766,391` | `b7abad25034bc4dce173af0feea99c12b4e9d419` | `5010b1911dd02d63731c21cb6ecd7914a7cdb17acf844a6418264716ce562335` |
-| `docs/assets/014_cannibalism/source_audio/global_defeat_aftermath_faure_elegie_goldstein_kalman_source.ogg` | `10,821,110` | `6d57244d2133c2968ab96508441ed08a134f240e` | `f4256bdccdc7d7ac0e547f571c6e8137b8de8cbdd604bada417a7cb89ab5ccc0` |
+| `docs/assets/014_cannibalism/audio/super_events/sources/danse_macabre_stokowski_1925_source.ogg` | `3,712,742` | `66aaedc1e25a0bfbbcc010397145f528d9184b1a` | `5da52fa63c374fa3744886548aa74786128cdd4760b976194b22f22f30c69820` |
+| `docs/assets/014_cannibalism/audio/super_events/sources/siegfrieds_funeral_march_us_marine_band_source.ogg` | `11,969,470` | `934030f52a701bc1098926caefb4da1512d6ab72` | `68124de4da401be0e07b2e2d637347e1a981b5cafa6ead74b5cd43f6becc6e41` |
+| `docs/assets/014_cannibalism/audio/super_events/sources/death_of_aase_musopen_symphony_source.flac` | `43,766,391` | `b7abad25034bc4dce173af0feea99c12b4e9d419` | `5010b1911dd02d63731c21cb6ecd7914a7cdb17acf844a6418264716ce562335` |
+| `docs/assets/014_cannibalism/audio/super_events/sources/faure_elegie_goldstein_kalman_source.ogg` | `10,821,110` | `6d57244d2133c2968ab96508441ed08a134f240e` | `f4256bdccdc7d7ac0e547f571c6e8137b8de8cbdd604bada417a7cb89ab5ccc0` |
 
 ### Preserved rights evidence
 
-The four cited Wikimedia Commons rights pages and the CC BY-SA 2.0 legal code were saved on 2026-07-15 under `docs/assets/014_cannibalism/source_audio/evidence/`. These snapshots supplement the canonical live links above; the source recordings also remain verified by the published hashes recorded in the preceding table.
+The four cited Wikimedia Commons rights pages and the CC BY-SA 2.0 legal code were saved on 2026-07-15 under `docs/assets/014_cannibalism/audio/super_events/evidence/`. These snapshots supplement the canonical live links above; the source recordings also remain verified by the published hashes recorded in the preceding table.
 
 | Evidence path | Bytes | SHA-256 |
 | --- | ---: | --- |
-| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_danse_macabre_rights.html` | `84,712` | `b929234bae7997b88350d8987ccfa4648dd6dc5aa62257ab2f5a5cb9fe2ad9ef` |
-| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_siegfried_funeral_march_rights.html` | `98,950` | `da5df2d69367250b9231942ad9ee4ba53da5c82892709a21d7135fd0b0164bc5` |
-| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_death_of_aase_rights.html` | `109,871` | `35dfbe8442d3c70fe1220cabeb84fbb9b189294f15f0ca55ab27ce89cf6c770e` |
-| `docs/assets/014_cannibalism/source_audio/evidence/wikimedia_faure_elegie_rights.html` | `81,859` | `c0430c0296e7d92be2bb038d5c77ac01353c2edc9b127c2c2d6f5f45919937db` |
-| `docs/assets/014_cannibalism/source_audio/evidence/cc_by_sa_2_0_legalcode.html` | `37,479` | `63ad02be63620f298b54a9381535f75fd85c84f9ef5711471ecc09b2c3f43dd3` |
+| `docs/assets/014_cannibalism/audio/super_events/evidence/wikimedia_danse_macabre_rights.html` | `84,712` | `b929234bae7997b88350d8987ccfa4648dd6dc5aa62257ab2f5a5cb9fe2ad9ef` |
+| `docs/assets/014_cannibalism/audio/super_events/evidence/wikimedia_siegfried_funeral_march_rights.html` | `98,950` | `da5df2d69367250b9231942ad9ee4ba53da5c82892709a21d7135fd0b0164bc5` |
+| `docs/assets/014_cannibalism/audio/super_events/evidence/wikimedia_death_of_aase_rights.html` | `109,871` | `35dfbe8442d3c70fe1220cabeb84fbb9b189294f15f0ca55ab27ce89cf6c770e` |
+| `docs/assets/014_cannibalism/audio/super_events/evidence/wikimedia_faure_elegie_rights.html` | `81,859` | `c0430c0296e7d92be2bb038d5c77ac01353c2edc9b127c2c2d6f5f45919937db` |
+| `docs/assets/014_cannibalism/audio/super_events/evidence/cc_by_sa_2_0_deed.html` | `37,479` | `63ad02be63620f298b54a9381535f75fd85c84f9ef5711471ecc09b2c3f43dd3` |
 
 ### Final derivative hashes
 

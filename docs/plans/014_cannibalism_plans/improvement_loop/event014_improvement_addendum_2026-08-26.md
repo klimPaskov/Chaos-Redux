@@ -1,6 +1,6 @@
 # Event 014 Improvement Addendum, 2026-08-26
 
-Status: plan-only accept-or-reject handoff with one narrow design-spec disposition.
+Status: accepted and promoted on 2026-08-26; documentation-only disposition, with no gameplay change.
 
 Broad expansion remains closed.
 
@@ -16,11 +16,9 @@ The implemented Warlord and unified Bone Guard action is a fixed three-stage eli
 
 All three outcomes count against the shared Bone Guard raised counter and cap.
 
-Current source and player-facing localisation explain that sequence, but the accepted source specs still summarize the action only as `recruit Bone Guard` and do not state the shared-cap consequence.
+Current source, player-facing localisation, and the promoted source specs now state that sequence and its shared-cap consequence.
 
-The recommended disposition is **ACCEPT AND PROMOTE** the existing compact sequence as the intended progression contract without changing gameplay.
-
-If the parent rejects that recommendation, Event 014 should remain incomplete until a separately scoped replacement is accepted because splitting the three outcomes would change decision density, costs, AI, caps, triggers, localisation, and validation rather than merely clarify documentation.
+The parent accepts and promotes the existing compact sequence as the intended progression contract without changing gameplay. No replacement implementation plan is required.
 
 No Event 014 custom 3D work should be reopened.
 
@@ -105,7 +103,7 @@ No rewrite tool was used.
 
 | ID | Surface | Disposition recommendation | Implementation owner | Exact implementation IDs and files | Completion effect |
 | --- | --- | --- | --- | --- | --- |
-| `E014-IL-U1` | Bone Guard elite-contract ordering and shared cap | **ACCEPT AND PROMOTE** the current fixed sequence. Do not split it by default. | Parent Event 014 formation and decision owner for acceptance. Documentation curator for spec promotion after acceptance. | `cannibalism_raise_bone_guard`, `cannibalism_unified_raise_bone_guard`, `cannibalism_execute_warlord_recruitment_transaction`, `cannibalism_unified_execute_recruitment`, `cannibalism_warlord_bone_riders_open`, `cannibalism_warlord_elephantry_open`, `cannibalism_unified_bone_riders_open`, `cannibalism_unified_elephantry_open`, `cannibalism_bone_guard_raised`, `cannibalism_unified_bone_guards_raised`, and `cannibalism_unit_cap.bone_guard_base` or `.bone_guard_upgraded` in the decision, effect, trigger, and constant files listed above. | If accepted, no gameplay change is required. Promote the contract into spec parts 4, 6, and 12. If rejected, queue a new bounded implementation plan and do not claim completion. |
+| `E014-IL-U1` | Bone Guard elite-contract ordering and shared cap | **ACCEPTED AND PROMOTED** with no gameplay change. | Parent Event 014 formation and decision owner; documentation promotion completed in this pass. | `cannibalism_raise_bone_guard`, `cannibalism_unified_raise_bone_guard`, `cannibalism_execute_warlord_recruitment_transaction`, `cannibalism_unified_execute_recruitment`, `cannibalism_warlord_bone_riders_open`, `cannibalism_warlord_elephantry_open`, `cannibalism_unified_bone_riders_open`, `cannibalism_unified_elephantry_open`, `cannibalism_bone_guard_raised`, `cannibalism_unified_bone_guards_raised`, and `cannibalism_unit_cap.bone_guard_base` or `.bone_guard_upgraded` in the decision, effect, trigger, and constant files listed above. | The fixed sequence, shared-cap consequence, shared logistics gate, and failure or cleanup guarantees are explicit in spec parts 4, 6, and 12. |
 | `E014-IL-C1` | Additional unit-specific counterplay actions | **REJECT** broad expansion. | Parent decision owner only if a later audit proves a specific exploit. | Existing containment and counterwar IDs include `cannibalism_blockade_island_host`, `cannibalism_land_against_island_host`, `cannibalism_rescue_island_host_survivors`, `cannibalism_break_ritual_economy`, `cannibalism_liberate_feeding_state`, `cannibalism_break_network_mission`, `cannibalism_stop_unification_mission`, `cannibalism_stop_transformation_mission`, `cannibalism_identify_transformation_anchor`, `cannibalism_break_wendigo_recruitment_site`, and `cannibalism_break_wendigo_terminal_hunt`. | No new decision, mission, modifier, or GUI row should be added. Preserve current action-density limits. |
 | `E014-IL-X1` | Additional cross-event mechanics | **REJECT** broad expansion and retain current bounded integrations. | Parent Event 014 owner and Event 019 registry owner for final evidence only. | Deaths transaction helpers, Event 10 wasteland exclusion, Event 2 Wendigo merge, Chaos Meter milestones, and Event 019 provider `523` through `cannibalism_register_event19_provider` and `chaos_unit_family_provider_523_event19_*`. | No new event coupling should be accepted. Provider normalization and lifecycle proof remain evidence blockers rather than design invitations. |
 | `E014-IL-A1` | AI rebalance or new unit AI layer | **QUEUE EVIDENCE ONLY** and reject a speculative patch. | `chaosx_ai_probability_auditor` for read-only evidence. Parent AI owner only if a defect is proven. | `common/ai_strategy/014_cannibalism_warlords.txt`, `common/mtth/014_cannibalism_mtth.txt`, decision `ai_will_do`, focus `ai_will_do`, Event 019 provider weight `chaos_unit_family_event14_cannibal_irregulars.spawn_weight`, and provider `523` eligibility callbacks. | No weight changes are authorized. Any later patch requires the same named scenarios and a mandatory probability compare. |
@@ -132,11 +130,7 @@ This accepted contract preserves a compact six-action Warlord baseline and six-a
 
 It also turns the apparently generic Bone Guard action into visible progression instead of adding two more decisions that would exceed the accepted action-density budget.
 
-If the parent rejects any of points 2 through 7, `E014-IL-U1` must be marked rejected and replaced by a new scoped plan before implementation.
-
-That replacement would need to define whether the outcomes become separate decisions, one state-aware selector, mutually exclusive route choices, or separate cap and cost pools.
-
-This addendum does not choose among those rejected-contract replacements because doing so would be a broader redesign.
+Points 2 through 7 were accepted as the current contract and are now explicit in the promoted specs. No separate decision split, selector, route choice, or cap pool was added.
 
 ## Unit identity and progression finding
 
@@ -200,7 +194,7 @@ The spawned formations begin empty, so the held reserve is not a free equipment 
 
 Another resource or per-unit upkeep meter would duplicate Larder, supply, equipment, and cap pressure.
 
-The recommendation is to reject a new resource system and promote the shared-gate interpretation with `E014-IL-U1`.
+The accepted disposition rejects a new resource system and promotes the shared-gate interpretation with `E014-IL-U1`.
 
 ## Route-specific-choice finding
 
@@ -260,13 +254,11 @@ These are evidence scenarios, not new mechanic proposals:
 
 ## Promotion and closure rule
 
-This file should remain under `docs/plans/014_cannibalism_plans/improvement_loop/` until the parent explicitly accepts or rejects `E014-IL-U1`.
-
-If accepted, promote the fixed sequence, shared-cap consequence, shared logistics gate, and failure or cleanup guarantees into spec parts 4, 6, and 12, then mark this addendum implemented and promoted without changing gameplay.
+The fixed sequence, shared-cap consequence, shared logistics gate, and failure or cleanup guarantees are promoted into spec parts 4, 6, and 12. This addendum is implemented and promoted without changing gameplay.
 
 If rejected, keep this addendum as the rejection record and create one new bounded replacement plan before touching decision, trigger, constant, AI, localisation, or action-density surfaces.
 
-After `E014-IL-U1` is disposed and the queued MCP, probability, lifecycle, live-consumer, and parent-review gates are resolved, another broad improvement-loop pass should not be run.
+With `E014-IL-U1` disposed, queued MCP, probability, lifecycle, live-consumer, and parent-review gates remain evidence work only. Another broad improvement-loop pass should not be run.
 
 The parent should finish final validation and mark the Event 014 goal complete only if no audit blocker, unaccepted replacement plan, or unresolved accepted addendum remains.
 
@@ -274,7 +266,7 @@ The parent should finish final validation and mark the Event 014 goal complete o
 
 Design problem: the current fixed Bone Guard elite-contract progression is implemented and localized but not fully promoted into the accepted source specs, especially the fact that its base cap of two is consumed by Bone Riders and the Scavenged Elephant Column before ordinary Bone Guards become available.
 
-Proposed disposition: **ACCEPT AND PROMOTE `E014-IL-U1`**, reject all broad expansions in `E014-IL-C1`, `E014-IL-X1`, `E014-IL-R1`, and `E014-IL-RT1`, and queue evidence-only closure work in `E014-IL-A1` and `E014-IL-L1`.
+Recorded disposition: **ACCEPT AND PROMOTE `E014-IL-U1`**, reject all broad expansions in `E014-IL-C1`, `E014-IL-X1`, `E014-IL-R1`, and `E014-IL-RT1`, and queue evidence-only closure work in `E014-IL-A1` and `E014-IL-L1`.
 
 Research basis: current Event 014 source, accepted specs, current handoffs and ledgers, offline wiki guidance, installed vanilla documentation, vanilla cavalry and `elephantry` precedents, current read-only MCP evidence, and the required probability-auditor route.
 
@@ -286,8 +278,8 @@ Implementation surfaces affected if the recommendation is accepted: documentatio
 
 Implementation surfaces affected if the recommendation is rejected: decisions, triggers, constants, effects, AI, localisation, action-density matrices, and validation, all under a separate accepted plan.
 
-Open questions: parent acceptance or rejection of `E014-IL-U1`, current probability-auditor evidence, fresh event or focus render availability, Event 019 provider normalization and lifecycle evidence, and parent-owned live consumer review.
+Open questions: current probability-auditor evidence, fresh event or focus render availability, Event 019 provider normalization and lifecycle evidence, and parent-owned live consumer review.
 
 Prior addendum status: no accepted prior addendum remains unresolved, and the three old optional ideas remain explicitly queued and nonblocking.
 
-Plan promotion status: keep in `docs/plans` until `E014-IL-U1` is accepted, then promote its contract into `docs/specs` and close this plan.
+Plan promotion status: `E014-IL-U1` is accepted, promoted into `docs/specs`, and closed as a documentation-only change. The file remains as the durable improvement-loop decision record.

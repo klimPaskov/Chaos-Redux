@@ -78,6 +78,10 @@
 - Reinforcement requires Larder, population, equipment, territory, or objectives.
 - Warlords can become commanders, governors, lieutenants, servants, rivals, or purge targets.
 - Pre-unification countries use shared special-chaos-country classification.
+- The paid Bone Guard contract fields Bone Riders first, the Scavenged Elephant Column second, and ordinary Bone Guards thereafter.
+- Bone Riders and the elephant column consume the base shared Bone Guard cap of two before a cap upgrade permits ordinary Bone Guards.
+- Every contract outcome uses the shared Larder, exact Deaths-backed population, equipment, state-control, and commander-capacity gate, with no free unit grant and no duplicate population consumption.
+- Failed or partial transactions preserve sequence flags and counters, while rollback and reusable-slot release clear sequence state, locked templates, and Event 014 activation technologies without removing vanilla `elephantry`.
 
 ## Local warlord focus tree
 
