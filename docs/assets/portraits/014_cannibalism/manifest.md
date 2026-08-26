@@ -11,6 +11,20 @@ scope: `gfx/leaders/014_cannibalism`, `interface/014_cannibalism.gfx`, and durab
 
 Rights status for every row is `copyrighted_reference_only_user_authorized`: no permissive redistribution license or public-domain basis is asserted. The archived originals and crops document reference provenance only; final art rights remain a blocker.
 
+## Replacement and legal-source gate (2026-08-26 audit)
+
+The 56 installed candidates are verified Internet-sourced modern fictional game or concept-art references, not generated-from-scratch images. Each source has a direct image URL, an archived source page, an untouched original hash, a reviewed crop, and a unique 156x210 PNG/DDS pair. The source-reference gate therefore passes for all 56 rows.
+
+The final-redistribution gate is `BLOCKED` for all 56 rows. No source page or direct image URL grants a permissive redistribution license or public-domain status, and the archived HATE page explicitly credits the artwork to Adrian Smith/CMON while the Creative Uncut indexes identify Blizzard Entertainment or FromSoftware/Bandai Namco and their credited artists. These references may remain in the user-authorized source-placeholder branch, but they cannot be relabeled as legally cleared finals.
+
+| Source IDs | Exact source family | Exact blocker for every mapped slot |
+|---|---|---|
+| H01-H16 | CMON HATE concept artwork hosted by Alkony | `copyrighted_reference_only_user_authorized`; the page credits CMON/CoolMiniOrNot and Adrian Smith and asserts no permissive redistribution license or public-domain basis. |
+| D01-D22 | Blizzard Entertainment Diablo III artwork indexed by Creative Uncut | `copyrighted_reference_only_user_authorized`; the gallery identifies Blizzard Entertainment and credited artists but asserts no permissive redistribution license or public-domain basis. |
+| E01-E18 | FromSoftware/Bandai Namco Elden Ring artwork indexed by Creative Uncut | `copyrighted_reference_only_user_authorized`; the gallery identifies the game publishers and credited artists but asserts no permissive redistribution license or public-domain basis. |
+
+The coverage matrix below and the per-package contracts map each exact slot and region to one of these blocked source IDs. No generic CC, archival, photo-real, AI-generated, or other substitute was introduced to hide the 56-row blocker.
+
 ## Source registry
 
 The archived page HTML is retained in the package evidence tree for the Creative Uncut sources and in the earlier HATE recovery archive for the HATE sources. Direct image URLs identify the exact bytes recorded by each package's `*_original.*` file.
