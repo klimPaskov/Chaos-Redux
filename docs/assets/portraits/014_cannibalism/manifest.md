@@ -223,6 +223,8 @@ The review rejected prison imagery, archival photography, modern photographic po
 
 ## Protected Hannibal evidence
 
+The exact user-supplied static-file receipt is recorded in `docs/assets/portraits/014_cannibalism/hannibal_static_receipt.md`. It establishes the canonical paths, observed 156x210 DDS format, hashes, and runtime bindings without asserting an external source licence or visual acceptance.
+
 | File | Size bytes | SHA-256 before/after | Status |
 | gfx/leaders/014_cannibalism/hannibal.dds | 174608 | 5c48c9a5b503c3185dcb38ee1aabc403d7668094079b78a20010323930d10b88 | byte-for-byte unchanged; no public pre-reveal identity added |
 | gfx/leaders/014_cannibalism/hannibal_wendigo.dds | 174608 | 26d7566f7b93d17c4d7fde5b262ab8b6e4b04fba0b862315404d6a33abe34717 | byte-for-byte unchanged |
