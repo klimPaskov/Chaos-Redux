@@ -26,13 +26,13 @@ The 2026-08-22 retired-crisis neutralization also replaces every legacy crisis e
 
 ### Startup-character source-layout status (2026-08-26)
 
-The current working tree contains `history/general/006_independence_wave_character_recruitment_registry.txt` as an untracked candidate that combines the two startup files present at `HEAD`, `history/general/006_independence_wave_character_recruitment.txt` and `history/general/006_independence_wave_additional_character_recruitment.txt`; both former paths are deleted in the working tree but remain in `HEAD`.
+The current source uses `history/general/006_independence_wave_character_recruitment_registry.txt`, which combines the two former startup files `history/general/006_independence_wave_character_recruitment.txt` and `history/general/006_independence_wave_additional_character_recruitment.txt` without changing their 25 guarded country blocks or 54 recruitment calls.
 
-A read-only structural comparison found 108 structural lines and 55 `recruit_character` calls in the candidate and in the combined `HEAD` inputs, while the candidate intentionally contains no FER record; this is source-layout evidence only and is not a committed promotion.
+A structural parity comparison found 25 guarded country blocks and 54 `recruit_character` calls in both the merged registry and the two former inputs; the registry intentionally contains no FER record because IW-057 remains rights-gated.
 
-Until the parent promotes or rejects this candidate, cite the former paths only as dated `HEAD` provenance and cite the registry only as an uncommitted working-tree candidate; do not treat either path as a settled current source authority.
+The merge is recorded in `006_event6_character_recruitment_registry_merge_2026-08-26.md`; cite the former paths only as historical provenance and the registry as the settled current source authority.
 
-Current source inspection also confirms that `chaosx.nr6.10` is an empty trigger-only compatibility checkpoint and `chaosx.nr6.350` invokes `independence_wave_apply_roster_checkpoint`; Event 006's event file contains no `recruit_character` calls, so startup recruitment ownership remains the pending source-layout decision.
+Current source inspection also confirms that `chaosx.nr6.10` is an empty trigger-only compatibility checkpoint and `chaosx.nr6.350` invokes `independence_wave_apply_roster_checkpoint`; Event 006's event file contains no `recruit_character` calls, so startup recruitment ownership remains in the merged general-history registry.
 
 This pending relocation does not change the no-pre-event invariant, the 32/29/40/161 admission boundary, or the `3/4/5/7/10` ladder.
 
