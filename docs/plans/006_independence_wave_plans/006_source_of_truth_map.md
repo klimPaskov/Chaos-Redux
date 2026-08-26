@@ -14,7 +14,7 @@ The active automatic ladder remains `3/4/5/7/10`, with World Collapse also targe
 
 The accepted research tables now parse as fixed-width CSV records after the 2026-08-24 schema repair. The package table has 206 sixteen-column rows and the reservation table has 111 nine-column rows. This corrects research-data alignment only and does not promote any package or widen admission. Evidence is `subagent_handoffs/006_event6_research_csv_schema_repair_2026-08-24.md`.
 
-The 2026-08-26 documentation authority cleanup reconciles stale crisis-queue, package-status, `.350`, dormant-shell, joint-count, and parent-follow-up wording without changing admission or design; its focused handoff is `subagent_handoffs/006_event6_docs_authority_cleanup_2026-08-26.md`.
+The 2026-08-26 documentation authority cleanup reconciles stale crisis-queue, package-status, `.350`, dormant-shell, joint-count, and parent-follow-up wording without changing admission or design; its focused handoff is `subagent_handoffs/006_event6_docs_authority_cleanup_2026_08_26.md`.
 
 Preserve the user correction as an invariant: nothing is visible before Event 006 fires.
 

@@ -6,7 +6,11 @@ Date: 2026-08-15
 
 This handoff records the focused current-worktree tranche in `events/006_independence_wave.txt` and `localisation/english/006_independence_wave_l_english.yml`. It does not widen central adapter admission, content attestation, reservation groups, scenario preflight, or Join order.
 
-## Source changes
+## Current supersession notice (2026-08-26)
+
+This 2026-08-15 handoff is retained as dated relocation evidence. Its `.350` recruitment wording is superseded by the current startup-history ownership: additive character consumers are supplied before the checkpoint, and `chaosx.nr6.350` validates pre-defined rosters and publishes checkpoint receipts only.
+
+## Source changes (2026-08-15 snapshot; recruitment wording superseded)
 
 - Hidden `chaosx.nr6.350` now publishes explicit idempotent roster receipts for KOS, KUB, TAT, RUT, and BSK package setup. KOS and RUT attach their approved additive characters behind package and `has_character` guards. KUB and TAT retain their vanilla rosters. BSK retains vanilla Yakov Bykin and applies the Event 006 portrait override only inside the package branch.
 - `chaosx.nr6.311` is a triggered country event for the existing DM-01 failure flag. Its relocation option selects an already owned and controlled non-capital state, moves the capital with `set_capital = { state = PREV remember_old_capital = no }`, records completion, clears the pending relocation flag, and refreshes country state. The dispersed-office option records completion without changing the capital.

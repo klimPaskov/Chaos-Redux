@@ -14,11 +14,13 @@ Expansion disposition: **STOP broad expansion; implement only the Universal Bell
 
 Resolution: **IMPLEMENTED** in `common/scripted_effects/006_independence_wave_scenario_effects.txt` and documented in `subagent_handoffs/006_scn008_former_host_target_uniqueness_2026_08_01.md`. Universal Former Hosts now enables the bounded distinct-target policy; Wars of Separation remains per-release. Allocator, tag-surface, source-syntax, and focused event-lint checks passed after the repair.
 
+Current authority note (2026-08-26): The pre-wave crisis wording below is retained as plan history only; the accepted current surface has no player-facing pre-event category, mission, cost, queue, history row, or request, and the legacy crisis helpers are inert compatibility stubs.
+
 ## Executive disposition
 
-The Event 006 core does not need another allocator, registry, evolution, ledger, crisis, decision family, GUI layer, country package, focus route, formable, or super-event concept before the country-content phase.
+The Event 006 core does not need another allocator, registry, evolution, ledger, retired-crisis compatibility layer, decision family, GUI layer, country package, focus route, formable, or super-event concept before the country-content phase.
 
-The synchronized allocator, crisis queue, Event 005 collision boundary, reusable `chaosx_country_*` registry projections, five evolution incident families, four scenario intensities, and country/former-host/Network/League/patron ledgers are connected deeply enough to remain closed at source except for one concrete SCN-008 post-commit type-application defect.
+The synchronized allocator, retired pre-wave crisis compatibility layer, Event 005 collision boundary, reusable `chaosx_country_*` registry projections, five evolution incident families, four scenario intensities, and country/former-host/Network/League/patron ledgers are connected deeply enough to remain closed at source except for one concrete SCN-008 post-commit type-application defect.
 
 The current scenario contract says that Universal Belligerence opens at most one war per released country and reserves a target only once per launch.
 
@@ -38,7 +40,7 @@ It is one missing connection between the accepted Universal Belligerence rule an
 
 This audit covers only the source-wired core tranche named by the parent:
 
-- allocator, pre-wave crisis, and collision-safe release reservation;
+- allocator, retired pre-wave crisis compatibility, and collision-safe release reservation;
 - reusable `chaosx_country_*` registry API;
 - the five evolution incident branches and their lifecycle feedback;
 - SCN-008 intensity and type application;
@@ -90,7 +92,7 @@ No unresolved prior addendum is being repeated.
 
 | Prior core plan or handoff | Current disposition | v67 action |
 | --- | --- | --- |
-| Core loop closure v35 | Source-closed under the current acceptance authority | Do not reopen allocator, crisis, or collision architecture. |
+| Core loop closure v35 | Source-closed under the current acceptance authority | Do not reopen allocator, retired-crisis compatibility, or collision architecture. |
 | Dynamic systems closure v35 | Source-closed for country, host, patron, Network, League, and rival-pressure ledgers | Do not add another value family or mirror ledger. |
 | Registry API closure v35 | Source-closed for active-scope `chaosx_country_*` projections and fail-closed dormant reservations | Do not turn collections into dormant reservation authority. |
 | Evolution feedback core loop | Source-implemented and retained as the opening-confidence/lifecycle authority | Do not duplicate feedback variables or on-action hooks. |
@@ -105,7 +107,7 @@ The v67 document was the only open improvement-loop addendum for this bounded co
 | Core family | Status | Source evidence and identifiers | Disposition |
 | --- | --- | --- | --- |
 | Automatic allocator and synchronized release transaction | **PASS** | `independence_wave_capture_wave_tuning`, `independence_wave_begin_plan_contribution`, `independence_wave_begin_package_reservation`, `independence_wave_reserve_candidate_anchor`, `independence_wave_finish_package_reservation`, `independence_wave_allocate_automatic_packages`, `independence_wave_validate_execution_metadata`, `independence_wave_execute_standalone_frozen_plan` | Preserve the exact ladder, all-anchors-before-optional-territory order, live revalidation, rollback boundary, and fail-closed exact-count behavior. |
-| Pre-wave crisis and Event 005 collision-safe reservation | **PASS** | `can_independence_wave_open_crisis`, `independence_wave_queue_crisis_release`, `independence_wave_resolve_pre_wave_crisis`, `independence_wave_recover_crisis_requester_loss`, `chaosx.nr6.3`, `liberations_joint_prepare_and_execute_incident`, Event 005-first joint reservation order | Preserve the bounded retry queue, requester-loss receipt, host/cause/resolution history, protected remnant, and joint transaction. |
+| Retired pre-wave crisis compatibility and Event 005 collision-safe reservation | **PASS at source** | Legacy crisis helper identifiers, `chaosx.nr6.3`, `liberations_joint_prepare_and_execute_incident`, and Event 005-first joint reservation order | Preserve inert compatibility stubs and the no-pre-event category, mission, cost, queue, history-row, and request boundary; retain the collision-safe joint transaction. |
 | Reusable `chaosx_country_*` registry API | **PASS** | `chaosx_country_all`, `chaosx_country_independence_wave`, bound/unbound/owned/registered projections, overlay projections, regional projections, `is_independence_wave_registry_*`, origin record/clear effects | Keep active collections as instantiated-country views and use exact package ID plus anchor/reservation proof for dormant rows and shared carriers such as `CHU` and `BIA`. |
 | Five evolution incidents and cross-generation feedback | **PASS** | Decisions in `independence_wave_evolution_incident_category`, events `chaosx.nr6.360` through `.364`, ten resolution effects, generation/origin cleanup, opening-confidence allocator modifiers, DM-22 frontier reserve consumer | Keep one paid, generation-scoped incident per active stage and retain all two-option ledger tradeoffs. Do not bulk-expand incident content before the country phase. |
 | Four intensities and eight player-facing scenario modes | **PARTIAL** | Intensity tuning and all six numeric families are wired; Neighboring Releases and Nearby Nonleague States reserve targets; Universal Former Hosts calls the non-unique ordinary host-war loop | Implement the one bounded unique-former-host policy below. No new scenario type, intensity, GUI page, or registry row is needed. |
@@ -201,7 +203,7 @@ If implementation changes a player-facing result sentence, update the existing s
 
 ## Implementation order
 
-1. Preserve the current passing allocator, collision, crisis, registry, evolution, and ledger source state as the control baseline.
+1. Preserve the current passing allocator, collision, retired-crisis compatibility, registry, evolution, and ledger source state as the control baseline.
 2. Add the Universal-only target-uniqueness policy around `independence_wave_scenario_start_host_war` without changing the ordinary Wars of Separation caller.
 3. Reuse the existing target flag, target array, failed-declaration rollback, and start/end cleanup contract.
 4. Re-run the source-level allocator audit to prove candidate counts, exact ladder, intensity mapping, type mapping, and Event 005-first ordering are unchanged.

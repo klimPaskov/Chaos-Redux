@@ -1,5 +1,11 @@
 # IW-038 Ruthenia implementation plan
 
+## Current disposition (2026-08-26)
+
+IW-038 is implemented and centrally content-attested/admitted under the current Event 006 authority, with the whole event still **HOLD / PARTIAL** and live execution evidence remaining separate.
+
+The zero-allocation statement in the historical acceptance gate below is superseded and must not be used to withdraw IW-038 from the current attestation or deterministic Join set.
+
 ## Scope
 
 IW-038 reuses the registered vanilla `RUT` country and the fixed state 73 Carpathian Ruthenia anchor.
@@ -140,7 +146,7 @@ Content attestation is added only after all of the following are true:
 9. normal allocation, SCN-008, and Join Wave exact-preflight branches agree
 10. package, focus, decision, localisation, probability, asset, map, documentation, and completion audits pass
 
-Until then, IW-038 remains a registry row with zero allocation weight.
+The zero-allocation condition in the historical acceptance gate is superseded by the current IW-038 admission; retain the package's exact setup, host, force, identity, asset, AI, decision, focus, cleanup, and final-validation gates without widening the central boundary.
 
 ## Expected files
 

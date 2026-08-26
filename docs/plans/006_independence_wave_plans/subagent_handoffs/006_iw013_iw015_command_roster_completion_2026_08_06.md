@@ -2,6 +2,10 @@
 
 Date: `2026-08-06`.
 
+## Current supersession notice (2026-08-26)
+
+This handoff preserves the 2026-08-06 roster-contract snapshot, but its claim that `chaosx.nr6.350` recruits the NAV and GLC commanders is superseded by the current source. Startup history owns the additive character consumers, while `.350` validates the pre-defined package rosters and writes the checkpoint flags; retain the roster and fail-closed gate evidence without using the old recruitment wording for current routing.
+
 ## Changed files
 
 - `common/characters/006_independence_wave_iberian_commanders.txt`
@@ -11,7 +15,7 @@ Date: `2026-08-06`.
 - `localisation/english/006_independence_wave_iberian_l_english.yml`
 - `docs/events/006_independence_wave/iberian_registered_packages.md`
 
-## Contract
+## Contract (2026-08-06 snapshot; recruitment wording superseded)
 
 The NAV and GLC carriers keep their vanilla history, flags, ruling leader names, and meaningful trees. The hidden synchronous roster event now recruits one additive corps commander per package: `NAV_independence_wave_jose_antonio_aguirre` using the archived `GFX_portrait_NAV_jose_antonio_aguirre` source placeholder, and `GLC_independence_wave_alfonso_daniel_castelao` using `GFX_portrait_GLC_alfonso_daniel_castelao`. Both are all-male sourced historical identities and define only an army portrait plus corps-command role; no advisor or dossier icon is introduced.
 

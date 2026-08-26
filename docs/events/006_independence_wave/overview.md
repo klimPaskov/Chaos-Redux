@@ -1,6 +1,6 @@
 # Event 006: Independence Wave
 
-## Current authority override (2026-08-25 after focus-geometry closure, schema, cost-localisation, and static-audit reconciliation)
+## Current authority override (2026-08-26 after focus-geometry closure, schema, cost-localisation, static-audit, and documentation reconciliation)
 
 Event 006 remains **HOLD / PARTIAL**. The current operational boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows; IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM remain adapter-only and fail-closed. The automatic ladder remains `3/4/5/7/10`, World Collapse also targets `10`, and nothing is visible before Event 006 fires.
 
@@ -17,6 +17,8 @@ The 2026-08-24 research-table schema repair and static cost-localisation refresh
 Super-event 23 remains blocked because the accepted London Brass Players recording lacks verified United States/worldwide redistribution permission. The 2026-08-22 v117 re-verification keeps *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as the strongest rights-complete research candidate, but it is not selected, promoted, or wired; parent/user approval, ShareAlike treatment, human audition, and the source URL caveat remain open, so audio ID 23, wrappers, and firing remain absent. Super-event 24 remains source-wired with partial reachability.
 
 The source-of-truth map and resume packet under `../../plans/006_independence_wave_plans/` are the current operational ledger; the dated package authority below is retained for traceability and is superseded where it conflicts with this override.
+
+The 2026-08-26 documentation authority cleanup reconciles stale package-status, `.350`, dormant-shell, joint-count, and parent-follow-up wording without changing admission or design; its focused handoff is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_docs_authority_cleanup_2026_08_26.md`.
 
 ## Historical package authority (2026-08-14 IW-045 admission; superseded above)
 
@@ -101,7 +103,7 @@ The current FORM-16 closure receipt confirms the admitted ARM/GEO/AZR carrier an
 
 The earlier MNT former-host repair narrowed the local ledger fallback after depots reopen when the former host is absent or hostile. The completed IW-030 package retains its capital, cost, one-project, and readiness gates and is admitted through the normal conditional allocation preflight. The current FORM-16 carrier-refresh repair fans readiness refresh across the exact ARM/GEO/AZR candidates after every arbitration completion without loosening member, peace, identity, route, or arbitration predicates. See `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw030_mnt_host_ledger_fallback_repair_2026_08_06.md`, `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw030_montenegro_admission_current_2026_08_09.md`, and `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw006_form16_carrier_refresh_repair_2026_08_06.md`.
 
-The current Iberian source tranche also closes the NAV/GLC command-roster gap at source: the shared synchronous checkpoint recruits one sourced male corps-command consumer per carrier, and the force loader is gated on that active army role as well as the vanilla ruling leader. Generation cleanup clears the shared command-roster readiness bit so a failed retry cannot inherit a prior package generation. This is a package-completeness repair only; IW-013 and IW-015 remain fail-closed outside central attestation pending their independent identity, flag, rights, package, and weighted-evidence gates. See `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw013_iw015_command_roster_completion_2026_08_06.md`.
+The current Iberian source tranche also closes the NAV/GLC command-roster gap at source: the shared synchronous checkpoint validates the pre-defined package rosters and writes the NAV/GLC roster checkpoint flags, while additive character consumers are owned by startup history; the checkpoint does not recruit either commander. The force loader remains gated on the active corps-command role as well as the vanilla ruling leader, and generation cleanup clears the shared command-roster readiness bit so a failed retry cannot inherit a prior package generation. This is a package-completeness repair only; IW-013 and IW-015 remain fail-closed outside central attestation pending their independent identity, flag, rights, package, and weighted-evidence gates. See `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw013_iw015_command_roster_completion_2026_08_06.md`.
 
 ## Historical package-admission override (2026-08-06; superseded by the continuation above)
 
