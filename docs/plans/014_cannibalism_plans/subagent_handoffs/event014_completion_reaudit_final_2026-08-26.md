@@ -16,7 +16,7 @@ The audited worktree was live and shared. Representative current SHA-256 values 
 
 **PARTIAL / NOT COMPLETION-READY.**
 
-Post-audit documentation resolution: the parent accepted and promoted `E014-IL-U1` into spec parts 4, 6, and 12, and the canonical audio note now points at `docs/assets/014_cannibalism/audio/super_events/{sources,evidence,final}/`. The remaining blockers below are still current evidence gates; the two documentation findings are retained as the audit's original observations.
+Post-audit documentation resolution: the parent accepted and promoted `E014-IL-U1` into spec parts 4, 6, and 12, the canonical audio note now points at `docs/assets/014_cannibalism/audio/super_events/{sources,evidence,final}/`, and the current asset/status summaries now identify the 56 regional portraits as sourced reference placeholders rather than finished HOI4 finals. The remaining blockers below are still current evidence gates; the original documentation findings are retained as audit history.
 
 The gameplay definition is broad and substantially implemented: the Minor Fire-Once registration, 19-event local chain, three evolutions, reveal transactions, three origins, eight reusable Warlord tags, CBL unification, original-ZZZ Wendigo route, 204 focuses, 18 achievements, SCN-010, decisions and missions, Event Details rows, localisation, super-event images, and super-event audio wiring are all present in source.
 
