@@ -78,6 +78,18 @@ No accepted Part 4 route family is absent from the current architecture. The sin
 - The MCP root inventory reports 184 materialized root focus nodes; source inventory across the root and shared modules is 184 direct `focus` definitions plus 43 root shared definitions, 48 IW043/IW058 shared definitions, and 43 IW093/IW098 shared definitions, for 318 unique focus/shared-focus definitions.
 - No new route, formable chain, or package admission was invented or added.
 
+## IW-095 package-local disposition
+
+IW-095 Dahomey is needed as a future package-local first-footprint implementation, but it is not a safe local focus patch in this audit.
+
+- The queued first-footprint addendum names IW-095 as the first implementation handoff and requires package-local identity, setup, mission, serialized projects, settlements, network/formable connection, assets, AI, cleanup, and audits before central admission.
+- Current registry plumbing only publishes `iw_095`: `can_plan_independence_wave_package_iw_095` is in `common/scripted_triggers/006_independence_wave_package_region_triggers_registry.txt:736-743`, and the loader is in `common/scripted_effects/006_independence_wave_package_region_effects_registry.txt:1549-1562`.
+- The generic DAH candidate gate still requires `independence_wave_package_content_ready`, but no DAH package source sets that flag; this correctly keeps the row fail-closed.
+- The current focus callback lists contain no `DAH`, `iw095`, or `independence_wave_iw095_focus_*` call, and the current dispatch surfaces contain no IW-095 runtime adapter or content attestation. Adding one callback to the shared tree would therefore expose an incomplete package and bypass the accepted admission boundary.
+- The dedicated package audit records the absent callback, package docket, assets, AI, origin-safe adapter, and central admission proof in [006_iw095_package_audit_2026-08-26.md](006_iw095_package_audit_2026-08-26.md).
+
+The parent should keep IW-095 unadmitted, implement its package-local surfaces under the queued addendum, and only then add the central adapter/attestation and shared-focus callbacks in one reviewed admission tranche.
+
 ## Icon coverage
 
 | Surface | Coverage | Result |
