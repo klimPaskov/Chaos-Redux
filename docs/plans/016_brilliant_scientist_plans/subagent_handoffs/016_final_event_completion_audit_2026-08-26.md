@@ -35,7 +35,7 @@ The required probability pass was routed to `chaosx_ai_probability_auditor` as `
 | Minor fire-once opening | Partial: static source aligned, current engine evidence blocked | `common\scripted_effects\chaosx_logic_effects.txt:243` registers `constant:brilliant_scientist_event.id` in `global.fire_once_events`; `events\016_brilliant_scientist.txt:14-318` owns the `.1` dispatcher and `.2`/`.3` recipient reports. The dispatcher also guards `brilliant_scientist_event_resolved`. Fresh Event Inspector and renderer calls timed out, so duplicate-host, transfer, and once-only behavior is not certified dynamically. |
 | Fixed Warren Kruger identity | Partial: static identity and transfer contract present | `history\general\016_brilliant_scientist_character_recruitment.txt:13` recruits the single `KRG_warren_kruger` token into dormant KRG history. `common\characters\016_brilliant_scientist_characters.txt` defines that identity; `common\scripted_effects\016_brilliant_scientist_effects.txt:2687-2723` transfers its nationality rather than recruiting a replacement, and `:2810-2847` installs the theorist/scientist roles. Current transfer and formation runtime scenarios remain unproved. |
 | Four evolutions and no cluster | Finished in static source and catalog; engine presentation unproved | `events\016_brilliant_scientist_evolutions.txt:12-321` defines exactly `.21`, `.22`, `.23`, and `.24`; `.90` at `:323` is a hidden scheduler, not a fifth evolution. `docs\spreadsheets\chaos_redux_events_catalog.xlsx`, `Events!D17:G17`, contains the four evolutions, `H17` is blank, and no Event 016 row exists in `Clusters`. |
-| Directorate and project system | Partial | The Directorate decision/category, fifteen project families, shared effects, incident/recovery paths, and project-derived force adapters are statically present. The dedicated event-owned `kruger_directorate_container` has historical inspect/render/state/resolution/click-region evidence, but no handoff in the Event 016 plan or spec trees explicitly attests that `chaosx_event_ui_worker` owned the implementation. Fresh current GUI inspect/render calls also timed out. |
+| Directorate and project system | Partial | The Directorate decision/category, fifteen project families, shared effects, incident/recovery paths, and project-derived force adapters are statically present. The dedicated event-owned `kruger_directorate_container` now has the required named-worker attestation, exact-window MCP inspect/render evidence, and state/resolution/click-region matrix. Offline glyph substitution, primary-frame approximation for multi-state controls, truncated workspace diagnostics, and live presentation remain unresolved. |
 | Alien Infantry public API | Partial; owner-target registry correction present | The five public surfaces exist: `alien_infantry_grant_contact`, `alien_infantry_revoke_contact`, `alien_infantry_reconcile_contact`, `alien_infantry_spawn_landing_cohort`, and `alien_infantry_can_call_landing`. `d77afae7e` makes the landing registry mutation country-owned through explicit owner and state event targets, while dynamic two-provider transfer acceptance remains open. |
 | Contact, landing, DHR rebellion, and Event 019 | Partial; source ownership correction present | `events\016_brilliant_scientist_dhrondan_contact_events.txt:10-181` defines `.40-.47`. Contact, landing, expedition, cooldown, rebellion threshold, and Event 019 provider-508 source paths are present, but the corrected registry still needs the two-provider DHR capture/release and deferred-landing engine or live acceptance matrix. |
 | DHR country package and 88-focus tree | Partial | `common\national_focus\016_dhrondan_focus_tree.txt` contains exactly 88 unique focuses and 88 `ai_will_do` blocks with the accepted `8/24/10/12/8/8/12/6` family distribution and eight focuses for each regime. The owner-target registry correction is present, while transfer acceptance and route-weight proof remain incomplete. |
@@ -66,7 +66,7 @@ Status: **asset/runtime completion blocker**.
 
 Alien Infantry has an accepted Meshy 7 V13 lineage, protected source, vanilla scale evidence, packed working files, bespoke vanilla-green large and map counters, legally reusable sourced audio with source-page/license/checksum evidence, and seven exact action exports with actual-byte PDX reimports.
 
-The V13 package provides `alien_infantry_idle`, `alien_infantry_move`, `alien_infantry_laser_attack`, `alien_infantry_defend`, `alien_infantry_support_attack`, `alien_infantry_retreat`, and `alien_infantry_death`, and commit `0e724fb8a` promotes the static `alien_infantry_entity` plus GFX, animation, and sound references. The current runtime gate is not action absence: no supported Meshy/Blender-authored muzzle locator is available, so the registered `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` remain unbound; strict audio selection, acknowledgement, impact, and special-role provenance remain incomplete; positional effect/audio playback and live acceptance are unproved.
+The V13 package provides `alien_infantry_idle`, `alien_infantry_move`, `alien_infantry_laser_attack`, `alien_infantry_defend`, `alien_infantry_support_attack`, `alien_infantry_retreat`, and `alien_infantry_death`, and commit `0e724fb8a` promotes the static `alien_infantry_entity` plus GFX, animation, and sound references. The revalidation in commit `18f7c7d67` freshly reimported all seven provider-authored actions and confirms the integrated firearm, genuine discharge/recoil/recovery, and articulated death; it did not change final mesh or animation bytes. The current runtime gate is not action absence: no supported Meshy/Blender-authored muzzle locator is available, so the registered `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` remain unbound; strict audio selection, acknowledgement, impact, and special-role provenance remain incomplete; positional effect/audio playback and live acceptance are unproved.
 
 Use `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/runtime/handoff.md`, and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md` for the current package and promotion evidence. The older V8/V10/Quaternius handoffs remain historical evidence and do not override the V13 status.
 
@@ -158,9 +158,9 @@ The current localisation audit reports zero missing Event 016 keys, zero exact d
 
 Remaining localisation risk is live typography and MCP render evidence, not an identified unresolved key or wording defect.
 
-### E016-07 — Medium: the event-owned Directorate GUI lacks explicit named-worker attestation
+### E016-07 — Medium: event-owned Directorate GUI evidence has renderer limitations
 
-Status: **strict completion-evidence gap**.
+Status: **named-worker evidence resolved; visual/runtime acceptance remains open**.
 
 Event ownership is established by `016_directorate_compact_redesign_2026-08-15.md`: Event 016 decision category to scripted GUI to `kruger_directorate_container`.
 
@@ -168,13 +168,11 @@ The same handoff records pre-inspect/render evidence, a failed `hoi4.gui_rewrite
 
 `016_directorate_gui_audit_2026-08-25.md` adds a later exact-window inspect/render audit.
 
-However, a search of all Event 016 plans and specs finds no `chaosx_event_ui_worker` attestation; the role name appears only in its agent definition.
+The required named-worker handoff is now present at `016_dhrondan_gui_worker_attestation_2026-08-26.md`. It records Event 016 ownership, exact identifiers, files, states, resolutions, assets, click geometry, compact value/action budgets, and the successful exact-window MCP inspect/render routes without redesigning shared interfaces.
 
-This does not prove the current layout is wrong, but the repository’s strict completion contract requires the named event UI worker handoff for a dedicated GUI introduced by a named event.
+The attestation also records the remaining evidence limits: offline glyph substitution, primary-frame approximation for the four-frame presentation controls, truncated workspace-wide diagnostics, and unavailable separate crop/per-state/per-resolution render artifacts. These are renderer and parent/live-consumer limitations, not an identified Event 016 source overlap or click-region defect.
 
-Current GUI inspect now returns `GUI_INSPECTED` with 22 Event 016 elements, but the shared graph retains truncated global diagnostics and a narrow current GUI render returned `INTERNAL_ERROR` with no artifact.
-
-Required next action: route a bounded current audit to `chaosx_event_ui_worker`, naming the Event 016 ownership, exact identifiers, files, states, resolutions, assets, and handoff path, and retain pre/post/current MCP evidence without redesigning the shared Event Log or Event Details framework.
+Required next action: retain the named-worker evidence, obtain complete per-state/current-resolution artifacts when the GUI renderer exposes them, and perform parent-owned live consumer acceptance without reopening the superseded dashboard or shared Event Log/Event Details framework.
 
 ### E016-08 — Resolved: DHR focus markers have live consumers
 
@@ -198,7 +196,7 @@ Required next action: rerun the named focus/decision probability scenarios when 
 | DHR contact, paid landing, 90-day rebellion, `.40-.47`, fixed DHR country, and 88-focus package | Present in source; transfer acceptance and runtime/probability scenarios remain open after the registry correction. |
 | Portal native raids | Source mechanics implemented; active-beachhead lifecycle explicitly remains queued and the Portal Raider runtime model/entity is rejected and unwired. |
 | Two Event 016 terminal world ends and six super-events | Statically implemented and registered; current render/compare and live presentation/fallout proof missing. No DHR super-event is required. |
-| Event 016 visual package and portraits | Report/news/UI/icon/flag and portrait handoffs are substantially complete. DHR’s twelve fictional portraits have native ImageGen, processing, DDS, and wiring evidence. Kruger’s grounded source placeholder/final package has attributed/user-approved source and replacement/wiring evidence. Custom-unit runtime blockers remain separate and explicit. |
+| Event 016 visual package and portraits | Report/news/UI/icon/flag and portrait handoffs are substantially complete. DHR’s twelve fictional portraits have native ImageGen, processing, DDS, and wiring evidence. Kruger’s grounded source placeholder/final package has attributed/user-approved source and replacement/wiring evidence. Alien Infantry V13 has fresh seven-action Meshy reimport evidence; muzzle/effect, strict audio, and live consumer blockers remain separate and explicit. |
 | CXT extension | Static idempotent registration and application contract implemented; live acceptance missing. |
 | DHR support and survival markers | Consumed by current landing, enclave, reclamation, and compact surfaces; weighted MCP proof remains pending. |
 | Broader new route, country, formable, GUI, raid-family, or super-event expansion | Closed/rejected by the improvement-loop disposition; not a missing accepted requirement. |
@@ -243,7 +241,7 @@ The counter packages do not cure the incomplete unit-model consumers described i
 - Current Event Inspector traces, lints, renders, and before/after comparisons for the opening, evolutions, DHR contact/rebellion, Event 019 provider 508, and world-end chains.
 - Same-scenario `hoi4.probability_compare` coverage across all Event 016 weighted surfaces after the registry correction.
 - Two-provider landing/rebellion matrix, duplicate-state registration, state ownership/control changes, DHR capital selection, transfer, and foreign-owner claim acceptance.
-- Current Directorate multi-resolution/state/click-region render and explicit `chaosx_event_ui_worker` handoff.
+- Complete current Directorate per-state/per-resolution render artifacts beyond the packaged named-worker attestation, plus parent-owned live consumer acceptance.
 - Current technology projection, DHR formation/map, Portal raid outcome, achievement, and special-project renderer coverage where applicable routes are absent, partial, or timed out.
 - Complete Alien Infantry and Portal Raider model/entity/action/audio synchronization, export/reimport, parent wiring, and runtime consumer acceptance.
 - Live CXT setup, Event 019 debit/materialization conservation, KRG formation, super-event audio/queue/fallout, Event Log/detail presentation, and campaign acceptance, which remain user-owned live validation surfaces.
@@ -264,14 +262,14 @@ Historical completion claims that must not be used as release evidence are the p
 2. Rerun the two-provider DHR state-flow and Event 019 conservation matrix through current event inspect/render/compare and the named probability auditor.
 3. Complete Alien Infantry locator/effect and strict-audio evidence, parent runtime wiring, and consumer validation, while continuing the separate Portal Raider semantic model/action/audio package.
 4. Promote and implement the bounded Portal beachhead lifecycle owner.
-5. Obtain the explicit `chaosx_event_ui_worker` current Directorate handoff and current GUI visual evidence.
-6. Apply the seven definite localisation repairs and retain the current DHR marker consumers in the authoritative docs.
-7. Reconcile Event Log, Event Details, workbook, specs, package manifest, asset manifests, and completion handoffs only after the corrected runtime and evidence exist.
+5. Complete the supported Alien Infantry muzzle/effect and strict-audio routes, then obtain parent-owned runtime/live acceptance; continue the separate Portal Raider semantic model/action/audio package.
+6. Promote an exact Portal beachhead lifecycle owner and cleanup contract, or retain the queued design gap with an explicit accepted owner.
+7. Obtain complete Directorate per-state/per-resolution artifacts when the renderer is responsive, then reconcile Event Log, Event Details, workbook, specs, package manifest, asset manifests, and completion handoffs.
 
 ## Final completion decision
 
-Event 016 is **not complete** after `d77afae7e`.
+Event 016 is **not complete** after `18f7c7d67`.
 
-The static content breadth is substantial and most enumerated surfaces exist, and the accepted caller-country registry contract is corrected in source, but DHR transfer acceptance remains unproved, Alien Infantry final locator/effect/audio/runtime acceptance and the separate Portal Raider runtime package remain incomplete, the Portal active-beachhead lifecycle is unowned, and mandatory current MCP and probability evidence is incomplete.
+The static content breadth is substantial and most enumerated surfaces exist, the accepted caller-country registry contract is corrected in source, the Alien Infantry provider-authored firearm/death actions are freshly reimported, and the named GUI worker evidence is present. DHR transfer acceptance remains unproved, Alien Infantry final locator/effect/audio/runtime acceptance and the separate Portal Raider runtime package remain incomplete, the Portal active-beachhead lifecycle is unowned, and mandatory current MCP and probability evidence is incomplete.
 
 No source-only or historical artifact should be promoted as proof that those blockers are resolved.

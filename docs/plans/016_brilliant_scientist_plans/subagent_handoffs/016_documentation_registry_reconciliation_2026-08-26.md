@@ -4,6 +4,8 @@ Date: 2026-08-26.
 
 Status: Documentation-only reconciliation after `d77afae7e` and the current shared MCP evidence; Event 016 remains incomplete.
 
+> Later current-evidence correction: `016_current_mcp_audit_2026-08-26.md` supersedes the earlier narrow GUI-render failure recorded below. The current exact-window Directorate render succeeded, while response truncation, global diagnostics, per-state/per-resolution artifact limits, and parent/live acceptance remain open. The route-consumer handoff also supersedes the earlier reserved-hook wording for the five D’Rhondan support markers.
+
 ## Scope
 
 This pass reconciles the country-scoped Alien Infantry landing-registry finding, the current D’Rhondan and Portal residual issues, the current GUI/Event MCP limits, and the active Event 016 completion audits.
@@ -21,8 +23,8 @@ The source-of-truth correction is `d77afae7e` (`fix: preserve alien landing regi
 | Owner-target implementation handoff | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_dhrondan_country_scoped_registry_2026-08-26.md:21-35` | The nested-scope correction and its partial Event MCP evidence are current. |
 | Superseded global registry handoff | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_landing_state_registry_2026-08-26.md:3-18` | Historical global-array evidence only; the top notice points to the country-scoped implementation. |
 | Event `.47` MCP evidence | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_current_mcp_audit_2026-08-26.md:7-13` and the current `hoi4.event_inspect` artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4bb00f3a4ad4419e9e8bfaa344ce6aecadc33e485ade34078e2b979357f24169/6c946983334778a1a37960e11109f73e65d532ee2bc0de1dfe0a4b68e6072e14/event-state_flow-f588a2607444.json` | `EVENT_INSPECTED_PARTIAL`, status `ok`, zero blocking diagnostics, large-workspace helper projection deferred. |
-| Directorate GUI MCP evidence | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_current_mcp_audit_2026-08-26.md:27-31` and current inspect artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ac982a59753151c4e08404fce5807fb7bbae7a1b628eeb6ba8a15b00860b8cbc/126cd885185d595e3aea7f6be9679b4403aef0c8097e94faad34716dfc7c539d/gui-inspect.b4279d9e180ba8bb.json` | Current inspect returns `GUI_INSPECTED` with 22 Event 016 elements, but global graph diagnostics are truncated and a narrow current render returned `INTERNAL_ERROR` with no artifact. |
-| D’Rhondan route consumers | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_dhr_route_consumers_2026-08-26.md:45-53` | Five focus support markers remain reserved hooks without accepted consumers; no duplicate decisions were added. |
+| Directorate GUI MCP evidence | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_current_mcp_audit_2026-08-26.md:27-31` and the inspect/render artifacts recorded there | Current inspect returns `GUI_INSPECTED` with 22 Event 016 elements and the exact-window render returns `GUI_RENDERED` across the named states and resolutions; the response and global graph diagnostics are truncated, and separate per-state/per-resolution artifacts remain unavailable. |
+| D’Rhondan route consumers | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_dhr_route_consumers_2026-08-26.md:45-53` | Five focus support markers now have existing landing, enclave, reclamation, and compact consumers; weighted/runtime proof remains pending and no duplicate decisions were added. |
 | Portal beachhead lifecycle | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_portal_lifecycle_patch_2026-08-26.md:136-152` | Active-beachhead and extraction-marker cleanup remain queued for a named containment/spread owner. |
 | Custom-unit model gate | `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_asset_workspace_cleanup_2026-08-26.md:35-39`, `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, and the current Alien Infantry model handoffs | Alien Infantry V13 model, rig, seven actions, PDX exports, actual-byte reimport evidence, and static entity/GFX/animation/sound registrations are promoted for parent review; the supported effect point, particle/light binding, strict audio-role coverage, positional playback, and live acceptance remain blocked, and Portal Raider remains blocked at the model/entity/action gate. |
 | Asset workspace | Cleanup commit `31a66c4f4` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_asset_workspace_cleanup_2026-08-26.md:5-39` | The cleanup handoff recorded 2,014,398,979 bytes across 4,022 files, while the current working tree measures 3,723,212,401 bytes across 4,073 files; the delta is retained as concurrent workspace evidence, not treated as a cleanup revert. |
@@ -36,8 +38,8 @@ The source-of-truth correction is `d77afae7e` (`fix: preserve alien landing regi
 | `016_alien_dhrondan_post_tranche_ownership_addendum_2026-08-26.md` registry tranche | Implemented; verification queued | The addendum now points to owner-target verification instead of another source patch. |
 | `016_alien_landing_state_registry_2026-08-26.md` global-array design | Superseded | Keep as historical evidence only. |
 | Portal beachhead active/extraction markers | Queued with reason | A future containment/spread owner must define transient versus permanent markers, expiry, controller changes, and cleanup. |
-| Five D’Rhondan support flags | Queued with reason | Keep as reserved hooks or assign accepted consumers; do not invent duplicate decisions. |
-| Directorate GUI inspect/render | Partial and MCP-limited | Inspect is current and successful for the exact window, but global graph diagnostics and current render failure prevent GUI-fidelity closure. |
+| Five D’Rhondan support flags | Source consumers present; weighted proof queued | Preserve the existing landing, enclave, reclamation, and compact readers; do not invent duplicate decisions merely to consume the markers. |
+| Directorate GUI inspect/render | Partial and MCP-limited | Exact-window inspect/render is current and successful, but global graph diagnostics, response truncation, separate render-artifact limits, and live acceptance prevent GUI-fidelity closure. |
 | Event `.47` inspect/render/compare | Partial and MCP-limited | Current state-flow inspect is partial with zero blocking diagnostics; helper projection, render/compare baseline, and live transfer proof remain open. |
 | Alien Infantry V13 model package | Accepted export and static runtime promotion; live integration blocked | Preserve the final manifest and V13 handoff as current source-of-truth evidence, while keeping supported effect-point binding, strict audio-role coverage, positional playback, and live acceptance open. |
 | Portal Raider model package | Blocked | Preserve model, action, sound, entity, and reimport blockers; no runtime completion claim. |
@@ -51,7 +53,7 @@ The source-of-truth correction is `d77afae7e` (`fix: preserve alien landing regi
 
 3. `016_alien_dhrondan_post_tranche_ownership_addendum_2026-08-26.md` previously required replacing the global registry; its current notice and action list now require verification of the owner-target implementation.
 
-4. The final decision audit’s GUI-timeout wording conflicted with the later current MCP audit; the reconciled status is current GUI inspect success with 22 Event 016 elements, truncated global diagnostics, and a narrow current render `INTERNAL_ERROR` with no artifact.
+4. The final decision audit’s GUI-timeout wording conflicted with the later current MCP audit; the reconciled status is current GUI inspect/render success with 22 Event 016 elements, truncated global diagnostics and response, and incomplete separate render artifacts.
 
 5. The asset cleanup handoff’s post-cleanup size is smaller than the current working-tree measurement; both values are retained with explicit provenance and no inference that the cleanup was reverted.
 
@@ -69,7 +71,7 @@ No named Event 016 prompt was found that still instructs the parent to apply the
 
 The stale actionable instructions were in audit and addendum prose rather than a prompt file, and those instructions were corrected in this pass.
 
-The remaining model handoff approval language, GUI worker attestation requirement, probability-auditor route limitation, Portal lifecycle ownership gap, and five support-marker ownership gap remain active instructions or risks and were not silently downgraded.
+The remaining model handoff recovery gate, GUI worker attestation limitations, probability-auditor route limitation, Portal lifecycle ownership gap, and weighted support-marker evidence gap remain active instructions or risks and were not silently downgraded.
 
 ## Markdown hard-wrap audit
 
@@ -91,7 +93,7 @@ Affected paths: none beyond the changed paragraphs in `016_final_decision_audit_
 
 - Ran current read-only `hoi4.gui_inspect` for `kruger_directorate_container` under `event016_directorate_compact_current` and recorded `GUI_INSPECTED`, 22 Event 016 elements, and the linked artifact above.
 
-- Ran a narrow current read-only `hoi4.gui_render` retry for the same window and scenario, which returned `INTERNAL_ERROR` with no artifact and remains recorded as a GUI/MCP limit.
+- Ran a narrow current read-only `hoi4.gui_render` retry for the same window and scenario, which returned `INTERNAL_ERROR` with no artifact at that retry point; the later shared receipt records a successful exact-window render and remains the current status authority.
 
 - Measured the current `docs/assets/016_brilliant_scientist` folder without opening binary contents and found 4,073 files totaling 3,723,212,401 bytes.
 
@@ -109,9 +111,9 @@ No binary asset or spreadsheet was opened or changed, because those surfaces are
 
 2. Keep Portal active-beachhead lifecycle work queued until a named containment/spread owner supplies an accepted lifecycle contract.
 
-3. Keep the five D’Rhondan support flags as reserved hooks or assign explicit owners before adding consumers.
+3. Preserve the five D’Rhondan support-marker consumers and schedule weighted scenario validation before changing their readers or priorities.
 
-4. Treat current GUI inspect success as scoped evidence only and preserve the global-diagnostics and current-render limitations.
+4. Treat current GUI inspect/render success as scoped evidence only and preserve the global-diagnostics, response-truncation, artifact, and live-consumer limitations.
 
 5. Keep Alien Infantry V13 supported effect-point, particle/light, strict audio-role, positional-playback, and live-acceptance blockers and Portal Raider model/entity/action blockers open, and retain the active asset workspace while provenance and acceptance remain incomplete.
 

@@ -4,6 +4,8 @@ Date: 2026-08-26
 
 Mode: bounded localisation audit and patch. No gameplay source, interface source, spreadsheet, or asset was changed. No commit was created.
 
+> Later shared MCP receipt correction: `016_current_mcp_audit_2026-08-26.md` supersedes the timeout-only characterization of the DHR focus and Alien Infantry technology routes in this handoff by recording successful focus inspect/render and partial technology inspect/render. The localisation overflow and live typography limits below remain unresolved because the shared receipt does not provide a complete typography or per-state consumer certification.
+
 ## Scope and authority
 
 The audit used `AGENTS.md`, the `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, and `chaos-redux-subagents` skills, the binding `016_alien_infantry_and_dhronda_addendum.md`, and the current acceptance scenarios.

@@ -9,7 +9,7 @@
 | Consumer | Static status | Runtime boundary |
 | --- | --- | --- |
 | Clone Infantry | Installed and reusable generic model/entity package | Parent-owned live playback and any remaining action review stay separate from Event 016 completion. |
-| Portal Raider | Counter art complete and wired through `interface/portal_raider_system.gfx` | Runtime model/entity, actions, and sounds are rejected and unwired pending user-approved paid recovery after the failed semantic generation task. |
+| Portal Raider | Counter art complete and wired through `interface/portal_raider_system.gfx` | Runtime model/entity, actions, and sounds remain rejected and unwired with no accepted recovery package after the failed semantic generation task. |
 | Alien Infantry | Reusable 2D unit, counter, equipment, technology, tactic, decision, event, focus, flag, portrait, and country-interface assets are installed and wired; sourced entity audio and reusable muzzle-particle/light definitions are installed, with particle/light definitions intentionally unbound | Accepted V13 Meshy 7 geometry, 24-bone rig, seven distinct actions, three packed maps, actual-byte reimport evidence, and static entity/GFX/animation/sound registrations are current. Runtime acceptance remains blocked by the missing supported muzzle/effect locator, strict audio-role provenance, positional playback review, and live acceptance. |
 | Autonomous Robot, Paleogenetic Creature, Xenobiological Organism, Temporal Guard | Queued outside the current scope | Keep their existing presentation until each separately scoped 3D package is produced and wired. |
 

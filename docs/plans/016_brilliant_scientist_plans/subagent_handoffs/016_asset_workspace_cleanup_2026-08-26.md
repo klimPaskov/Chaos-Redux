@@ -22,9 +22,9 @@ All removed files were ignored/untracked workspace artifacts. The pre-existing t
 ## Retained evidence and runtime support
 
 - Accepted source and processed PNG/DDS families, portraits, frames, UI pieces, focus and country art, event/news art, and existing validation/contact sheets remain in place because the event is not complete.
-- The accepted Meshy V8 neutral generation, remesh, R2 rig FBX, packed texture companions, accepted Quaternius Standard archive, actual-byte reimport proofs, animation exports, audio provenance, hashes, manifests, and licences remain under `models_3d/alien_infantry/`.
-- The model manifest and runtime handoff now label former provider paths as formerly staged or pruned so historical provenance is not mistaken for a live dependency.
-- Runtime-facing Alien Infantry 2D assets and their registrations were not touched. The model package remains diagnostic evidence rather than an accepted runtime entity.
+- The accepted Meshy 7 V13 generation, remesh, 24-bone rig, seven action FBXs, packed texture maps, actual-byte reimport proofs, audio provenance, hashes, manifests, and licences remain under `models_3d/alien_infantry/`; earlier V8, V10, V11, and Quaternius material remains historical evidence only.
+- The model manifest and runtime handoff label former provider paths as historical or pruned so provenance is not mistaken for a live dependency, while the V13 static entity/GFX/animation/sound package is the current parent-review package.
+- Runtime-facing Alien Infantry 2D assets and their registrations were not touched. The promoted V13 package still lacks a supported authored muzzle locator/effect binding, strict audio-role coverage, positional playback proof, and live acceptance.
 
 ## Scope and remaining blocker
 
