@@ -40,6 +40,8 @@ The committed 2026-08-26 decision-cost localisation clarity pass is current boun
 
 The committed 2026-08-26 IW-024 Banat force-contract prose follow-up is current bounded documentation evidence under `subagent_handoffs/006_iw024_banat_force_contract_prose_followup_2026-08-26.md` and commit `2005d92c6`; it records the p24 `industrial_security` profile, mask `1095`, and five pathway contract without changing roles, admission, or runtime behavior.
 
+This source-layout reconciliation is recorded in `subagent_handoffs/006_event6_docs_source_layout_reconcile_2026-08-26.md`; it supersedes only the startup-path status in earlier documentation cleanup and leaves dated evidence bodies unchanged.
+
 The 2026-08-21 parent tranche remains implemented as source evidence: synchronous roster checkpoints, committed-only presentation, durable standalone terminal receipts, fixed dormant-carrier anchors for IW-024/IW-027/IW-028, the documented dormant-shell guard, and its then-current 37 byte-preserving supplied portrait installs with 14 intentionally unmapped files; that portrait count is historical and is superseded by the 2026-08-22 consumer tranche below.
 
 Commit `b77f9fd45` additionally repairs dormant-carrier initialization and baseline-law ordering for the AXX, BAX, BBX, AFX, and AGX dormant setup paths without widening admission or changing the 32/161 boundary; its bounded runtime handoff is `subagent_handoffs/006_event6_runtime_baseline_and_roster_fix_2026-08-22.md`.
