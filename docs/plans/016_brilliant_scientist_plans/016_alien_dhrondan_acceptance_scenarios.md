@@ -35,6 +35,7 @@ This checklist is the parent-owned acceptance contract for the alien-infantry AP
 - A revolt in caller country A counts and transfers only A's scoped landing states; caller country B's states receive no DHR core, claim, ownership, controller, capital, or cohort consequence.
 - Repeating registration for one successful transaction is idempotent, and revoking one receipt leaves the committed state in its original caller registry while blocking only future calls through that receipt.
 - Repeat the isolation check with one ordinary source and Event 019 provider 508 to prove deferred commit and provider cleanup preserve caller ownership and revoke only provider 508's receipt.
+- The registry owner is the country that invoked the landing API, and the selected state is recorded only after the transaction commits. A provider callback may not mutate another country's registry, D’Rhondan revolt may capture only its pact host's registry, and saving the country and state scopes before entering the state scope is required for both ordinary and deferred provider paths.
 - `Honor the D’Rhondan Accord` costs exactly 75 political power, removes ten Pact Strain, and observes its 180-day cooldown.
 
 ## Rebellion probability

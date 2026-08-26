@@ -8,7 +8,7 @@ Mode: read-only gameplay audit; this handoff is the only file authored by the au
 
 Overall status: **INCOMPLETE**.
 
-The accepted Alien Infantry and Empire of D’Rhonda implementation is broad and substantially aligned in current source, and the V13 model promotion closes the former missing-action blocker. Completion is still withheld because the muzzle particle and light have no supported locator or runtime binding, the accepted owner-scoped landing-registry scenarios have not been promoted or dynamically proved, five focus reward markers have no consumer or reserved-hook disposition, current MCP comparison coverage is unavailable, weighted surfaces do not yet have complete named-scenario evidence, strict audio-role coverage remains incomplete, and user-owned live acceptance does not exist. Historical pre-promotion records remain retained with superseded notices, while current pointers are reconciled by the documentation handoff for this pass.
+The accepted Alien Infantry and Empire of D’Rhonda implementation is broad and substantially aligned in current source, and the V13 model promotion closes the former missing-action blocker. Completion is still withheld because the muzzle particle and light have no supported locator or runtime binding, the accepted owner-scoped landing-registry scenarios have not been dynamically proved, current MCP comparison coverage is unavailable, weighted surfaces do not yet have complete named-scenario evidence, strict audio-role coverage remains incomplete, and user-owned live acceptance does not exist. Historical pre-promotion records remain retained with superseded notices, while current pointers are reconciled by the documentation handoff for this pass.
 
 This audit distinguishes source and artifact evidence from engine or live proof. `Evidenced` means the current source or immutable artifact matches the accepted requirement. `Incomplete` means a real implementation exists but one required consumer, evidence layer, or disposition is missing. `Missing` means no required implementation or document was found. `Contradictory` means current sources or current-status documents disagree. `Blocked` means the required route was attempted or inspected and cannot presently provide the required proof.
 
@@ -24,8 +24,8 @@ The narrow 2026-08-26 ownership addendum is only partially disposed:
 
 - The severity-one landing-registry ownership defect is repaired in current source. `alien_infantry_register_landing_state` saves the invoking country and selected state as regular event targets before returning to the caller-owned `alien_infantry_landing_state_registry`, and DHR consumes only the pact host's array.
 - `common/scripted_effects/chaosx_dynamic_effects.md:457-463` documents the corrected caller-owned contract.
-- The binding spec and acceptance checklist were not updated with the accepted caller-owned registry rule or the addendum's cross-country, ordinary-versus-provider-508, idempotence, and receipt-revocation scenarios. This is an incomplete promotion, not merely missing test output.
-- The five support-route markers listed below remain queued without a consumer or explicit reserved external owner.
+- The binding spec and acceptance checklist now state the accepted caller-owned registry rule and the addendum's cross-country, ordinary-versus-provider-508, idempotence, and receipt-revocation scenarios. Dynamic execution evidence remains incomplete.
+- The five support-route markers listed below were consumed by the subsequent route-consumer repair. The older audit wording is retained as historical context only; current source consumers are listed in the corrected focus/decision row below.
 - The V13 one-image Meshy package is accepted, exported, actual-byte reimported, and promoted into current runtime files. The particle/light locator and broader audio-role gates remain open.
 
 The older `016_alien_dhrondan_improvement_loop_closure_handoff_2026-08-22.md` is stale where it says the fifteen-cohort cap conflicts with one cohort per enclave and where it says model recovery needs new user approval. The current binding spec resolves the enclave case through separately recorded supplemental costed cohorts, and current policy preauthorizes planned provider recovery while balance and capability permit it.
@@ -53,7 +53,7 @@ The actual files are under `docs/plans/016_brilliant_scientist_plans/`. The plan
 | Fixed DHR country and roster | Evidenced in source and assets | The fixed dormant DHR tag, country history, three regimes, twelve recruited identities, five civilian advisors, one high-command advisor, three commanders, flags, ideas, portraits, and runtime role installers exist. Dynamic annexation/reinitialization remains unproved. |
 | CXT extension contract | Source-evidenced; live harness proof blocked | Event 016 provides the modifier-free hidden carrier `chaosx_cxt_extension_event016_alien_infantry`, matching `_apply` setup effect, bounded additive `on_startup` registration, guarded `on_daily_CXT` repair, Envoy/equipment/sub-unit registrations, and one locked non-recruitable model-overridden CXT template. The processed-token array prevents the core helper from creating a recruitable duplicate. No live CXT invocation proves first-run registration, equipment fill, model/counter display, or idempotent daily repair. |
 | DHR 88-focus tree | Current inspect/render and source structure evidenced; quantitative AI proof incomplete | Current source contains exactly 88 focuses and 88 inline `ai_will_do` blocks in the accepted `8/24/10/12/8/8/12/6` distribution. Three mutually exclusive political routes and three replace-in-slot spirit lifecycles exist. The probability auditor obtained a current focus inspect/render with 88 focuses, 102 connectors, and no layout diagnostics. The all-88 weighted pool was discovered, but no route evaluation can run without prerequisite history, route/bypass state, plan activation/abort state, and complete external factors. |
-| DHR focus and decision consumers | Incomplete | Four world-order markers now have real trigger/decision consumers. Five other reward markers have no downstream consumer or documented external owner. Existing decisions cover reclamation, enclave supply, integration, and compact behavior; there is no ordinary decision MCP inspector/renderer in the installed route set. |
+| DHR focus and decision consumers | Source-complete; current weighted proof incomplete | All five route-support markers now have real consumers: standardized components and the orbital office influence the paid landing AI, perfected predictive warfare gates and weights reclamation, the completed laboratory route gates and weights enclave support, and access-map exchange gates the Covenant compact. The four opening survival markers likewise influence the landing or enclave-support AI. Existing decisions cover reclamation, enclave supply, integration, and compact behavior; there is no ordinary decision MCP inspector/renderer in the installed route set. |
 | Dedicated scripted GUI | Not applicable by accepted design | DHR introduces no dedicated scripted GUI. The normal focus, decision, event, and country surfaces are intentional. No `chaosx_event_ui_worker` handoff is required for DHR, and no new DHR GUI should be invented to close marker gaps. |
 | Event Log, Event Details, and evolutions | Evidenced in source | Event 016 registers exactly four evolution stages and four detail previews. `chaosx.events_log.window.event_details.brilliant_scientist` appends `GetDhrondanEventDetailClause` only after sovereignty. `.40-.52` remain consequence popups, not new log events or evolutions. |
 | Workbook and CSV exports | Evidenced and aligned | Direct read-only workbook inspection found row 16 with four populated evolution fields, a blank fifth field, both Event 016 world ends, `Minor Fire-Once`, chaos level 1, blank cluster, and `Needs Testing`. Every row-16 and row-19 field matches the current CSV export exactly, and the CSV is newer than the workbook. |
@@ -119,7 +119,7 @@ The actual files are under `docs/plans/016_brilliant_scientist_plans/`. The plan
 | At most three focus-created spirits coexist | Evidenced in source | `016_dhrondan_focus_effects.txt:13-119` clears and replaces one homeworld/political, one predictive/military, and one off-world lifecycle slot. |
 | Distinct route identities, rewards, diplomacy, expansion, and AI priorities | Incomplete quantitative acceptance | Distinct routes, focus rewards, decision gates, and four strategy plans exist. Generic support focuses are not fully enumerated in each route plan, and the named focus-probability scenarios remain partial. |
 | Origin reclamation, integration, enclave crises, news, Event Log, Event Details, and existing achievement hook remain reachable | Source-evidenced; runtime reachability blocked | Current decision triggers consume the four world-order markers; country events `.48-.52`, sovereignty news, DHR detail clause, and `Not From Here` alternative path exist. Live route traversal remains pending. |
-| Every reward marker has a consumer or explicit reserved disposition | Missing for five markers | No current consumer exists for `dhrondan_alien_components_standardized`, `dhrondan_laboratory_route_complete`, `dhrondan_predictive_warfare_perfected`, `dhrondan_orbital_office_reassembled`, or `dhrondan_access_map_exchange_ready`. |
+| Every reward marker has a consumer or explicit reserved disposition | Source-complete; weighted proof incomplete | `dhrondan_alien_components_standardized` and `dhrondan_orbital_office_reassembled` feed landing AI; `dhrondan_laboratory_route_complete` gates and weights enclave support; `dhrondan_predictive_warfare_perfected` gates and weights reclamation; and `dhrondan_access_map_exchange_ready` gates the Covenant compact. The four opening survival markers have separate landing/enclave-support AI consumers. |
 
 ### Assets and presentation
 
@@ -148,15 +148,15 @@ The actual files are under `docs/plans/016_brilliant_scientist_plans/`. The plan
 
 ### P1 actionable gaps
 
-1. **Five DHR support flags are unowned.** Remove them if they are merely history-free dead markers, or document an exact external owner/API contract. Do not add five shallow decisions or make optional support lanes mandatory just to consume them.
+1. **DHR marker weighted proof remains open.** The route-support and opening-survival flags now feed existing landing, enclave, reclamation, and compact surfaces; rerun named probability scenarios when the MCP route is responsive rather than adding duplicate decisions.
 
-2. **The registry fix is not promoted into binding design/acceptance.** Add the caller-owned registry contract and the eight exact cross-country cases from `016_alien_dhrondan_post_tranche_ownership_addendum_2026-08-26.md` to the binding spec and acceptance checklist.
+2. **The registry fix still needs dynamic acceptance.** The caller-owned registry contract and cross-country/provider cases are now promoted into the binding spec and acceptance checklist; execute them when the adapter or user-owned live route is available.
 
 3. **The current model runtime documentation required reconciliation.** The canonical Alien Infantry system, asset runtime handoffs, V13 manifest, Event 016 ledgers, and current model handoffs are updated by `alien_infantry_docs_reconcile_current_2026-08-26.md`; retained V8/V10/V11/Quaternius records now carry superseded notices. `016_current_mcp_audit_2026-08-26.md` now records the promoted static action and sound references while retaining its pre-promotion MCP receipt and live-acceptance limitation.
 
 4. **The current `override_model = alien_infantry_entity` source edit lacks matching handoff coverage.** The runtime promotion handoff lists the GFX/entity/model/sound files but not `common/scripted_effects/016_alien_infantry_api_effects.txt`. Update the owner handoff so this player-facing model consumer is not an undocumented source patch.
 
-5. **The ownership addendum's source paths are stale.** Correct the two non-existent `docs/specs/...` pointers or move/promote the real source-of-truth and acceptance files deliberately.
+5. **The ownership addendum retains historical source paths.** The current binding spec and acceptance checklist use their real paths; the addendum's historical source list remains evidence-only and must not be used as a current pointer.
 
 6. **Historical asset status should be visibly superseded.** `docs/assets/016_brilliant_scientist/dhrondan_icon_package/manifest.md:44` says the 88 DHR focus sprites were not included because identifiers were unavailable. The later completion handoff proves all 88; the earlier manifest should link to that superseding package so a reader cannot treat the old paragraph as current.
 
@@ -273,7 +273,7 @@ No source-only review, bracket check, file count, hash match, or retained histor
 
 4. Complete the named probability audit with full scenario inputs before changing any weight. If a weight changes, require the owner patch and same-scenario `hoi4.probability_compare` through the auditor.
 
-5. Remove the five dead support flags or document exact reserved external owners. Do not create filler mechanics to consume them.
+5. Preserve the current marker consumers and document any future extension against those stable readers. Do not create filler mechanics to consume an already-used flag.
 
 6. Reconcile the V13 runtime state across `alien_infantry.md`, the runtime handoff/crosswalk/sound header, the current MCP audit, the API model-override handoff, the early icon manifest, and the source-of-truth pointers.
 
@@ -285,7 +285,7 @@ No source-only review, bracket check, file count, hash match, or retained histor
 
 This read-only audit introduced no fallback, balance change, gameplay simplification, asset substitution, or source patch.
 
-Existing unresolved items are explicit: unbound muzzle particle/light, incomplete strict audio-role breadth, five unowned support markers, unproved registry acceptance scenarios, incomplete probability evidence, unavailable current MCP comparisons, ambiguous portrait-role attribution, and no live acceptance.
+Existing unresolved items are explicit: unbound muzzle particle/light, incomplete strict audio-role breadth, unproved registry acceptance scenarios, incomplete probability evidence, unavailable current MCP comparisons, ambiguous portrait-role attribution, and no live acceptance.
 
 The unused DHR art candidates, absence of a DHR super-event, absence of a dedicated DHR scripted GUI, exactly four evolutions, the fifteen ordinary-cohort cap with separately recorded supplemental enclave cohorts, and reuse of genuine idle/defend animations for non-required training/wounded entity states are intentional dispositions rather than hidden simplifications.
 

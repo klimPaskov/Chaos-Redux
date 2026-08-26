@@ -8,7 +8,8 @@ Mode: final read-only event-completion audit.
 
 > Current-status correction after commit `d77afae7e` (`fix: preserve alien landing registry ownership`): the E016-01 registry-scope finding in this audit was resolved at source after the `fbd5f6703` baseline by saving the invoking COUNTRY and selected STATE as event targets before mutating the country-owned array.
 > The historical E016-01 analysis below remains useful rationale and validation history, but its blocking disposition and repair instructions are superseded.
-> Event 016 remains incomplete because Portal beachhead lifecycle ownership, five D’Rhondan support flags, custom-unit model/entity gates, probability coverage, GUI/MCP limits, and live acceptance remain open.
+> Current-status correction after the 2026-08-26 route-consumer and survival-marker repairs: the five D’Rhondan support flags and four opening survival markers now feed existing landing, enclave, reclamation, and compact decision surfaces. The older unconsumed-marker wording below is historical and superseded.
+> Event 016 remains incomplete because Portal beachhead lifecycle ownership, custom-unit model/entity gates, probability coverage, GUI/MCP limits, and live acceptance remain open.
 
 > Current Alien Infantry correction after commit `0e724fb8a` (`Wire Meshy alien infantry firearm runtime package`): the accepted Meshy V13 package supplies a firearm-bearing 24-bone model, seven exact action exports with actual-byte PDX reimports, and promoted static entity/GFX/animation/sound registrations. The current blockers are the unsupported muzzle locator, unbound particle/light effects, strict audio selection/acknowledgement/impact/special-role provenance, positional/runtime wiring, and user-owned live acceptance; the V13 package is not a live-game completion claim.
 > The E016-02 model-package wording below predates that promotion and is retained as audit history only where it says the Alien Infantry package or actions are absent.
@@ -181,15 +182,15 @@ Current GUI inspect now returns `GUI_INSPECTED` with 22 Event 016 elements, but 
 
 Required next action: route a bounded current audit to `chaosx_event_ui_worker`, naming the Event 016 ownership, exact identifiers, files, states, resolutions, assets, and handoff path, and retain pre/post/current MCP evidence without redesigning the shared Event Log or Event Details framework.
 
-### E016-08 — Low: five DHR focus markers remain reserved but unowned
+### E016-08 — Resolved: DHR focus markers have live consumers
 
-Status: **queued documentation/design cleanup**.
+Status: **resolved in current source by the 2026-08-26 route-consumer and survival-marker repairs**.
 
-The following focus rewards set flags with no downstream consumers: `dhrondan_alien_components_standardized` at `common\national_focus\016_dhrondan_focus_tree.txt:592`, `dhrondan_laboratory_route_complete` at `:641`, `dhrondan_predictive_warfare_perfected` at `:795`, `dhrondan_orbital_office_reassembled` at `:812`, and `dhrondan_access_map_exchange_ready` at `:953`.
+The five route-support flags are read by the landing AI, reclamation/enclave decision surfaces, and the Covenant compact target-root trigger. The four opening survival markers are read by the landing or enclave-support AI. The exact consumers and constants are documented in `016_dhr_route_consumers_patch_2026-08-26.md` and `016_dhrondan_survival_marker_consumption_2026-08-26.md`.
 
-The current route-consumer and improvement-loop handoffs correctly advise against inventing duplicate decisions merely to consume them.
+No duplicate decision or generic spirit was introduced merely to consume a marker. Remaining uncertainty is weighted MCP evidence, not a set-only source flag.
 
-Required next action: either document each as a stable reserved external API hook with an owner or remove it in an owner-approved cleanup.
+Required next action: rerun the named focus/decision probability scenarios when the MCP route is responsive; no duplicate decision is needed merely to consume these already-used markers.
 
 ## Accepted-plan disposition
 
@@ -205,7 +206,7 @@ Required next action: either document each as a stable reserved external API hoo
 | Two Event 016 terminal world ends and six super-events | Statically implemented and registered; current render/compare and live presentation/fallout proof missing. No DHR super-event is required. |
 | Event 016 visual package and portraits | Report/news/UI/icon/flag and portrait handoffs are substantially complete. DHR’s twelve fictional portraits have native ImageGen, processing, DDS, and wiring evidence. Kruger’s grounded source placeholder/final package has attributed/user-approved source and replacement/wiring evidence. Custom-unit runtime blockers remain separate and explicit. |
 | CXT extension | Static idempotent registration and application contract implemented; live acceptance missing. |
-| Five unconsumed DHR support markers | Explicitly queued for reserved-hook documentation or owner-approved removal. |
+| DHR support and survival markers | Consumed by current landing, enclave, reclamation, and compact surfaces; weighted MCP proof remains pending. |
 | Broader new route, country, formable, GUI, raid-family, or super-event expansion | Closed/rejected by the improvement-loop disposition; not a missing accepted requirement. |
 | Optional KRG biological stockpile ledger | Queued behind the native CBRN callback contract and explicitly outside the enumerated native Portal raid completion surface; no fallback is authorized. |
 
@@ -257,7 +258,7 @@ The counter packages do not cure the incomplete unit-model consumers described i
 
 No fallback or simplification was introduced by this read-only audit.
 
-Existing omissions are explicitly retained: Alien Infantry muzzle/effect binding, strict audio-role provenance, positional/runtime and live acceptance, rejected Portal Raider geometry and missing actions/entity, no Portal beachhead cleanup owner, five unowned DHR support markers, incomplete probability coverage, missing current MCP event comparisons, and no live acceptance.
+Existing omissions are explicitly retained: Alien Infantry muzzle/effect binding, strict audio-role provenance, positional/runtime and live acceptance, rejected Portal Raider geometry and missing actions/entity, no Portal beachhead cleanup owner, incomplete probability coverage, missing current MCP event comparisons, and no live acceptance.
 
 The broad older KRG architecture that is absent from the DHR tree is not reopened here because the binding DHR addendum deliberately replaces it with the exact three-regime 88-focus package.
 
@@ -270,13 +271,13 @@ Historical completion claims that must not be used as release evidence are the p
 3. Complete Alien Infantry locator/effect and strict-audio evidence, parent runtime wiring, and consumer validation, while continuing the separate Portal Raider semantic model/action/audio package.
 4. Promote and implement the bounded Portal beachhead lifecycle owner.
 5. Obtain the explicit `chaosx_event_ui_worker` current Directorate handoff and current GUI visual evidence.
-6. Apply the seven definite localisation repairs and document or remove the five reserved DHR support markers.
+6. Apply the seven definite localisation repairs and retain the current DHR marker consumers in the authoritative docs.
 7. Reconcile Event Log, Event Details, workbook, specs, package manifest, asset manifests, and completion handoffs only after the corrected runtime and evidence exist.
 
 ## Final completion decision
 
 Event 016 is **not complete** after `d77afae7e`.
 
-The static content breadth is substantial and most enumerated surfaces exist, and the accepted caller-country registry contract is corrected in source, but DHR transfer acceptance remains unproved, Alien Infantry final locator/effect/audio/runtime acceptance and the separate Portal Raider runtime package remain incomplete, the Portal active-beachhead lifecycle is unowned, five D’Rhondan support markers remain without consumers, and mandatory current MCP and probability evidence is incomplete.
+The static content breadth is substantial and most enumerated surfaces exist, and the accepted caller-country registry contract is corrected in source, but DHR transfer acceptance remains unproved, Alien Infantry final locator/effect/audio/runtime acceptance and the separate Portal Raider runtime package remain incomplete, the Portal active-beachhead lifecycle is unowned, and mandatory current MCP and probability evidence is incomplete.
 
 No source-only or historical artifact should be promoted as proof that those blockers are resolved.

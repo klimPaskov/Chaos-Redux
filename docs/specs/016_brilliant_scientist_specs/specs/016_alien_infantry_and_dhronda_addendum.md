@@ -18,6 +18,8 @@ The source-counted public API consists of `alien_infantry_grant_contact`, `alien
 
 Successful landing history is owned by the country that completed the landing transaction. The API stores each selected state in that caller country's regular `alien_infantry_landing_state_registry` array after ordinary commit or Event 019 deferred-commit proof, and it never uses a shared global landing registry. D’Rhondan revolt capture and transfer iterate only the pact host's scoped registry, while receipt revocation removes future access without erasing committed landing history. Re-registering the same state for the same caller is idempotent, and separate callers or providers cannot contaminate one another's state history.
 
+The caller-owned registry contract is part of the acceptance surface: provider or country A may not append to, count, transfer, or revoke provider or country B's registry; an ordinary source and Event 019 provider 508 must remain isolated even when they select the same state; and a later D’Rhondan revolt must capture only the pact host's registry. The owner and selected-state scopes must be saved before entering the state scope, and receipt revocation must leave already committed history in place.
+
 Event 019 retains provider and family ID 508. Its former training and manpower callbacks are replaced by shared contact and UFO-landing calls. Event 019 cleanup revokes only its own receipt.
 
 ## D’Rhondan contact

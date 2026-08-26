@@ -1,5 +1,7 @@
 # Event 016 current D’Rhondan country and focus-package audit
 
+> Status correction: the earlier five-marker finding in this handoff is superseded by the 2026-08-26 route-consumer and survival-marker repairs. Current source consumers are listed below; the remaining gap is weighted/runtime evidence, not an unconsumed flag.
+
 Date: 2026-08-26.
 
 Owner: `/root/dhr_country_focus_audit_current`.
@@ -55,15 +57,15 @@ The focus tree has the accepted ten lanes, distinct family icon folders, ten sho
 
 The existing world-order decision consumers were updated by the prior route-consumer tranche and are present in `common\scripted_triggers\016_dhrondan_country_triggers.txt:120-146` and `common\decisions\016_dhrondan_country_decisions.txt:15-152`. The four active world-order gates now distinguish the decisions-unlocked, claim-contract, and route-complete markers.
 
-Five focus-owned markers remain reserved hooks without current accepted consumers:
+The current source consumes the five route-support markers through existing decision surfaces:
 
-- `dhrondan_alien_components_standardized`, set by `DHR_standardize_alien_components` at `common\national_focus\016_dhrondan_focus_tree.txt:584-595`.
-- `dhrondan_laboratory_route_complete`, set by `DHR_a_two_world_research_complex` at lines 634-642.
-- `dhrondan_predictive_warfare_perfected`, set by `DHR_perfect_predictive_warfare` at lines 784-797.
-- `dhrondan_orbital_office_reassembled`, set by `DHR_reassemble_the_orbital_office` at lines 805-814.
-- `dhrondan_access_map_exchange_ready`, set by `DHR_exchange_maps_for_access` at lines 946-955.
+- `dhrondan_alien_components_standardized` affects paid landing AI through `dhrondan_focus_has_standardized_components`.
+- `dhrondan_laboratory_route_complete` gates and weights enclave supply through `dhrondan_focus_has_laboratory_route`.
+- `dhrondan_predictive_warfare_perfected` gates and weights reclamation through `dhrondan_focus_has_predictive_warfare`.
+- `dhrondan_orbital_office_reassembled` affects paid landing AI through `dhrondan_focus_has_orbital_office`.
+- `dhrondan_access_map_exchange_ready` gates Covenant compact offers through `dhrondan_focus_has_access_map_exchange`.
 
-These are documented future support-route hooks in prior handoffs. Removing them or adding duplicate decisions would exceed this bounded audit without an accepted owner.
+The four opening survival markers are also consumed by the landing or enclave-support AI. Do not remove these flags or create duplicate decisions merely to consume them.
 
 One low-severity playability risk remains in `common\scripted_effects\016_dhrondan_focus_effects.txt:242-255`, called by `DHR_salvage_the_shuttle_docks` at `common\national_focus\016_dhrondan_focus_tree.txt:841-850`. The helper chooses a random owned, controlled coastal state with a free dockyard slot. A fully landlocked DHR can complete the focus and set `dhrondan_shuttle_docks_salvaged` without receiving a dockyard. No safe fallback is obvious because building a dockyard in an inland state is invalid and the accepted plan does not define a substitute reward, so this remains a design-bound risk rather than a patch.
 
@@ -97,7 +99,7 @@ The prior targeted map artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67
 
 2. Run a bounded cross-provider landing-registry matrix covering provider A and provider B, controller change, ownership loss, DHR revolt for each provider, duplicate-state registration, existing-DHR rejoin, and legacy-save behavior. Source ownership is corrected, but this dynamic proof is not available from the current timed-out map/MCP route.
 
-3. Assign an accepted owner to the five reserved support markers or retain their explicit future-hook status. Do not create duplicate decision consumers in this audit.
+3. Retain the current marker consumers and rerun the named decision/focus probability scenarios when the MCP probability route is responsive. Do not add duplicate decisions for these already-consumed flags.
 
 4. Decide whether stable approved DHR character names satisfy the top-level fictional-portrait random-name requirement. Any runtime randomization would need to preserve the accepted route identities and portrait wiring.
 
@@ -113,6 +115,6 @@ Meaningful checks completed in the current source: exact 88 focus blocks and sec
 
 Skipped meaningful validation: live HOI4 launch and in-game acceptance, which remain user-owned; fresh focus inspect/render/map inspect reruns after MCP timeouts; high-fidelity focus raster because the earlier raster request timed out; the named probability auditor and same-scenario compare because the route is unavailable; the cross-provider registry runtime matrix because no working native map/runtime route exists; and the dedicated Technology Tree Viewer because it is not installed.
 
-No simplification was introduced by this audit. The documented omissions are pre-existing reserved hooks, queued AI/runtime evidence, the landlocked dockyard edge case, the random-name-pool interpretation conflict, and external 3D package blockers.
+No simplification was introduced by this audit. The documented omissions are queued AI/runtime evidence, the landlocked dockyard edge case, the random-name-pool interpretation conflict, and external 3D package blockers.
 
 Handoff path: `docs\plans\016_brilliant_scientist_plans\subagent_handoffs\016_dhrondan_country_focus_audit_current_2026-08-26.md`.
