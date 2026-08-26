@@ -108,6 +108,8 @@ A third narrow normal-state retry covered `cannibalism_revealed_command_window` 
 
 A fourth narrow normal-state retry covered `cannibalism_wendigo_command_window` under scenario `event014_targeted_wendigo_normal_2026_08_26`. It returned `GUI_RENDERED` with no blockers and exposed `cannibalism_wendigo_command_window-full.svg` at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5dca062f0ceea5b6be78543b2af1390a739f0896c5517587b74aaa42190738c7/c1147862a72d029d8758fa6001bf4fb06b1b452fe027cf599528d524fb451000/cannibalism_wendigo_command_window-full.svg`. Its response was wire-truncated and retained no validation checks, so it improves attributable normal-state coverage only.
 
+A fifth narrow normal-state retry covered `cannibalism_early_header_window` under scenario `event014_targeted_early_normal_2026_08_26`. It returned `GUI_RENDERED` with no blockers and exposed `cannibalism_early_header_window-full.svg` at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fcfae968916de2c03f1a02f42bf5dc720fcc83c255414d77af125652efc1ea15/8125dc30b9ff7c09aef73f58932d0b39e5103b80b2f839b2bcb203bb5e0bdf73/cannibalism_early_header_window-full.svg`. Its response was wire-truncated and retained no validation checks; all five Event 014 windows now have attributable normal-state render artifacts, but the full matrix remains unresolved.
+
 For every exact selector, `hoi4.gui_render` was requested with:
 
 - states: normal, hover, selected, active, disabled, warning, completed, empty-list, full-list, minimum-value, maximum-value, long-text, and missing-localisation
