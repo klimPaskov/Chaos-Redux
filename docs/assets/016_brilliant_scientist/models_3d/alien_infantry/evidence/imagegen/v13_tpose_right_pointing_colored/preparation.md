@@ -23,4 +23,3 @@ Exact ImageGen object-edit prompt:
 Exact ImageGen extraction prompt:
 
 > Exact alpha-matte cleanup. Preserve every visible pixel of the colorized alien, clothing, face, T-pose, enlarged ray pistol, right-hand grip, straight horizontal barrel, colors, scale, and framing. Change only the background and alpha. Make all pixels outside the character and weapon fully transparent with alpha 0, including the black vignette, colored halo, glow, shadow, and edge haze; there must be no backdrop of any kind. Keep a clean anti-aliased cutout around the silhouette, with only the alien and complete pistol retained. Do not alter the model, pose, anatomy, clothing, gun size, gun orientation, gun details, or add any object. Do not paint checkerboard squares or any white/black/gray fill. Output a true RGBA transparent PNG suitable as a Meshy reference.
-
