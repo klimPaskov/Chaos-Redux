@@ -155,8 +155,7 @@ flag. Before proclamation, MIX must be unused. After proclamation, access is
 limited to the exact MIX carrier and its recorded autonomous members while a
 live diplomatic connection to that carrier remains.
 
-The reviewed sprites are registered in
-`interface/006_independence_wave_small_assets.gfx` (SOURCE marker: `interface/006_independence_wave_form05.gfx`).
+The reviewed sprites are registered in `interface/006_independence_wave_small_assets.gfx` under the FORM-05 source block; the deleted FORM-05 parser file is historical provenance only.
 
 Decision sprites and expected texture paths:
 
