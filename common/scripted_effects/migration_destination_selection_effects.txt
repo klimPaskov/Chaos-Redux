@@ -1,0 +1,443 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION DESTINATION SELECTION EFFECTS
+# ============================================================================
+# Complete weighted draws over the caller state's adjacent states. Every pool
+# uses the same strict candidate trigger in both passes. Invalid candidates
+# therefore contribute exactly zero; a zero total leaves the destination
+# unbound. General evacuation attempts the internal pool before the foreign
+# pool. The selector binds `migration_destination_selection_actor` from
+# an explicit caller override or from ROOT, and the current scope must be the
+# origin/target state. No effect scans beyond every_neighbor_state.
+# ============================================================================
+
+# STATE scope. Preserve an explicit actor supplied by a registry owner. All
+# existing decision callers omit the override and refresh the chain-local actor
+# from their ROOT country, so a stale regular target cannot affect a later call.
+# An explicit override with no bound target fails closed in the candidate gate.
+migration_destination_selection_bind_actor = {
+	if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = migration_destination_selection_actor_override_proven
+					value = constant:migration_destination_selection_runtime.one
+					compare = equals
+				}
+			}
+		}
+		ROOT = { save_event_target_as = migration_destination_selection_actor }
+	}
+}
+
+# STATE scope. Build a bounded temporary array of exact states already visited
+# by the current hosted cohort. The history IDs and states are an aligned
+# paired ledger, so this effect is the engine-safe bridge for candidate
+# weighting: the trigger surface can test the prepared state-scope array in
+# both selector passes without pretending that a trigger can query two arrays
+# at one index. Missing, stale, or misaligned history fails closed for callers
+# that explicitly request ordinary hosted distribution/transit.
+migration_destination_selection_prepare_history_exclusion = {
+	clear_temp_array = migration_destination_selection_history_states
+	set_temp_variable = { migration_destination_selection_history_contract = constant:migration_destination_selection_runtime.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_destination_selection_history_required
+				value = constant:migration_destination_selection_runtime.one
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				has_variable = migration_current_cohort_id
+				check_variable = { var = migration_current_cohort_id value = constant:migration_destination_selection_runtime.zero compare = greater_than }
+				has_global_flag = migration_cohort_history_initialized
+				has_variable = global.migration_cohort_history_count
+				check_variable = { var = global.migration_cohort_history_count value = constant:migration_destination_selection_runtime.zero compare = greater_than }
+				migration_cohort_history_arrays_are_aligned = yes
+				migration_cohort_history_live_ledger_arrays_are_aligned = yes
+			}
+			set_temp_variable = { migration_destination_selection_history_match_count = constant:migration_destination_selection_runtime.zero }
+			set_temp_variable = { migration_destination_selection_history_invalid_state = constant:migration_destination_selection_runtime.zero }
+			set_temp_variable = { migration_destination_selection_history_index = global.migration_cohort_history_ids^num }
+			while_loop_effect = {
+				limit = { check_variable = { var = migration_destination_selection_history_index value = constant:migration_destination_selection_runtime.zero compare = greater_than } }
+				subtract_from_temp_variable = { migration_destination_selection_history_index = constant:humanitarian_runtime.array_index_increment }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.migration_cohort_history_ids^migration_destination_selection_history_index
+							value = migration_current_cohort_id
+							compare = equals
+						}
+					}
+					add_to_temp_variable = { migration_destination_selection_history_match_count = constant:migration_destination_selection_runtime.one }
+					var:global.migration_cohort_history_states^migration_destination_selection_history_index = {
+						if = {
+							limit = { humanitarian_state_is_valid = yes }
+							add_to_temp_array = { array = migration_destination_selection_history_states value = THIS }
+						}
+						else = { set_temp_variable = { migration_destination_selection_history_invalid_state = constant:migration_destination_selection_runtime.one } }
+					}
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { var = migration_destination_selection_history_match_count value = constant:migration_destination_selection_runtime.zero compare = greater_than }
+					check_variable = { var = migration_destination_selection_history_invalid_state value = constant:migration_destination_selection_runtime.zero compare = equals }
+				}
+				set_temp_variable = { migration_destination_selection_history_contract = constant:migration_destination_selection_runtime.one }
+			}
+		}
+	}
+}
+
+# STATE scope. Calculate one candidate's additive weight for the temporary
+# migration_destination_selection_pool. The candidate has already
+# passed migration_destination_selection_candidate_is_valid.
+migration_destination_selection_calculate_candidate_weight = {
+	set_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_runtime.zero }
+
+	if = {
+		limit = { OWNER = { tag = event_target:migration_destination_selection_actor } }
+		set_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.base_internal }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = migration_destination_selection_pool
+				value = constant:migration_destination_selection_pool.foreign_transit
+				compare = equals
+			}
+		}
+		set_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.base_transit }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = migration_destination_selection_pool
+				value = constant:migration_destination_selection_pool.third_country_resettlement
+				compare = equals
+			}
+		}
+		set_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.base_third_country }
+	}
+	else = {
+		set_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.base_foreign }
+	}
+
+	add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.route_safe }
+	if = {
+		limit = { has_state_flag = civilian_transfer_route_damaged }
+		subtract_from_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.route_damaged_penalty }
+	}
+
+	OWNER = {
+			set_temp_variable = { migration_destination_capacity_headroom = migration_reception_capacity }
+			if = {
+				limit = { has_variable = migration_reception_load }
+				subtract_from_temp_variable = { migration_destination_capacity_headroom = migration_reception_load }
+			}
+	}
+	divide_temp_variable = { migration_destination_capacity_headroom = constant:migration_destination_selection_weight.capacity_headroom_step }
+		clamp_temp_variable = {
+			var = migration_destination_capacity_headroom
+			min = constant:migration_destination_selection_runtime.zero
+			max = constant:migration_destination_selection_weight.capacity_headroom_max
+		}
+		add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.capacity_available }
+		add_to_temp_variable = { migration_destination_candidate_weight = migration_destination_capacity_headroom }
+		if = {
+			limit = { has_variable = migration_state_reception_load }
+			set_temp_variable = { migration_destination_state_load_penalty = migration_state_reception_load }
+			divide_temp_variable = { migration_destination_state_load_penalty = constant:migration_destination_selection_weight.state_reception_load_step }
+			clamp_temp_variable = {
+				var = migration_destination_state_load_penalty
+				min = constant:migration_destination_selection_runtime.zero
+				max = constant:migration_destination_selection_weight.state_reception_load_max_penalty
+			}
+			subtract_from_temp_variable = { migration_destination_candidate_weight = migration_destination_state_load_penalty }
+		}
+	if = {
+		limit = { OWNER = { NOT = { tag = event_target:migration_destination_selection_actor } } }
+		OWNER = {
+			if = {
+				limit = { NOT = { migration_decision_reception_policy_is_valid = yes } }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.border_controlled }
+			}
+			else_if = {
+				limit = { check_variable = { var = migration_reception_policy value = constant:migration_border_policy.humanitarian_open compare = equals } }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.border_open }
+			}
+			else_if = {
+				limit = { check_variable = { var = migration_reception_policy value = constant:migration_border_policy.controlled compare = equals } }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.border_controlled }
+			}
+			else_if = {
+				limit = { check_variable = { var = migration_reception_policy value = constant:migration_border_policy.transit_only compare = equals } }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.border_transit }
+			}
+			else = {
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.border_quarantine }
+			}
+
+			if = {
+				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value > constant:migration_destination_selection_threshold.opinion_friendly } }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_opinion_friendly }
+			}
+			else_if = {
+				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value > constant:migration_destination_selection_threshold.opinion_positive } }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_opinion_positive }
+			}
+			else_if = {
+				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value < constant:migration_destination_selection_threshold.opinion_negative } }
+				subtract_from_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_opinion_negative_penalty }
+			}
+
+			if = {
+				limit = { is_ally_with = event_target:migration_destination_selection_actor }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_ally }
+			}
+			if = {
+				limit = { is_in_faction_with = event_target:migration_destination_selection_actor }
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_faction }
+			}
+			if = {
+				limit = {
+					OR = {
+						is_subject_of = event_target:migration_destination_selection_actor
+						event_target:migration_destination_selection_actor = { is_subject_of = PREV }
+					}
+				}
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_subject }
+			}
+			if = {
+				limit = {
+					OR = {
+						has_military_access_to = event_target:migration_destination_selection_actor
+						gives_military_access_to = event_target:migration_destination_selection_actor
+					}
+				}
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_military_access }
+			}
+			if = {
+				limit = {
+					OR = {
+						has_guaranteed = event_target:migration_destination_selection_actor
+						is_guaranteed_by = event_target:migration_destination_selection_actor
+					}
+				}
+				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_guarantee }
+			}
+		}
+
+		if = {
+			limit = {
+				OR = {
+					AND = { event_target:migration_destination_selection_actor = { has_government = democratic } OWNER = { has_government = democratic } }
+					AND = { event_target:migration_destination_selection_actor = { has_government = communism } OWNER = { has_government = communism } }
+					AND = { event_target:migration_destination_selection_actor = { has_government = fascism } OWNER = { has_government = fascism } }
+					AND = { event_target:migration_destination_selection_actor = { has_government = neutrality } OWNER = { has_government = neutrality } }
+				}
+			}
+			add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.ideology_same }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { var = famine_to_migration_food_pressure value = constant:migration_destination_selection_runtime.zero compare = greater_than } }
+		set_temp_variable = { migration_destination_danger_penalty = famine_to_migration_food_pressure }
+		multiply_temp_variable = { migration_destination_danger_penalty = constant:migration_destination_selection_weight.danger_food_pressure_penalty }
+		subtract_from_temp_variable = { migration_destination_candidate_weight = migration_destination_danger_penalty }
+	}
+	if = {
+		limit = { check_variable = { var = migration_flight_pressure value = constant:migration_destination_selection_runtime.zero compare = greater_than } }
+		set_temp_variable = { migration_destination_danger_penalty = migration_flight_pressure }
+		multiply_temp_variable = { migration_destination_danger_penalty = constant:migration_destination_selection_weight.danger_flight_pressure_penalty }
+		subtract_from_temp_variable = { migration_destination_candidate_weight = migration_destination_danger_penalty }
+	}
+	if = {
+		limit = { has_variable = nuclear_fallout_intensity }
+		set_temp_variable = { migration_destination_danger_penalty = nuclear_fallout_intensity }
+		multiply_temp_variable = { migration_destination_danger_penalty = constant:migration_destination_selection_weight.danger_fallout_pressure_penalty }
+		subtract_from_temp_variable = { migration_destination_candidate_weight = migration_destination_danger_penalty }
+	}
+	if = {
+		limit = { has_variable = air_winter_exposure }
+		set_temp_variable = { migration_destination_danger_penalty = air_winter_exposure }
+		multiply_temp_variable = { migration_destination_danger_penalty = constant:migration_destination_selection_weight.danger_air_exposure_penalty }
+		subtract_from_temp_variable = { migration_destination_candidate_weight = migration_destination_danger_penalty }
+	}
+	clamp_temp_variable = {
+		var = migration_destination_candidate_weight
+		min = constant:migration_destination_selection_weight.minimum_candidate_weight
+		max = constant:migration_destination_selection_weight.maximum_candidate_weight
+	}
+}
+
+# STATE scope. Count only adjacent foreign candidates whose normal safety,
+# route, owner/controller, and capacity gates pass while the destination's
+# authoritative reception policy is the sole blocker. The exact destination
+# and owner targets are saved only when the count is one. This is a proof pass,
+# not a weighted selector and not a world scan.
+migration_destination_selection_preflight_closed_border_rejection = {
+	migration_destination_selection_bind_actor = yes
+	set_temp_variable = { migration_closed_border_candidate_count = constant:migration_destination_selection_runtime.zero }
+	set_temp_variable = { migration_closed_border_preflight_result = constant:migration_destination_selection_runtime.zero }
+	every_neighbor_state = {
+		limit = { migration_destination_selection_foreign_policy_rejection_candidate_is_valid = yes }
+		add_to_temp_variable = { migration_closed_border_candidate_count = constant:migration_destination_selection_runtime.one }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_closed_border_candidate_count
+				value = constant:migration_destination_selection_runtime.one
+				compare = equals
+			}
+		}
+		every_neighbor_state = {
+			limit = { migration_destination_selection_foreign_policy_rejection_candidate_is_valid = yes }
+			save_event_target_as = migration_spontaneous_closed_border_destination
+			OWNER = { save_event_target_as = migration_spontaneous_closed_border_actor }
+		}
+		set_temp_variable = { migration_closed_border_preflight_result = constant:migration_destination_selection_runtime.one }
+	}
+}
+
+# STATE scope. Run one complete weighted pool. Output is the temporary
+# migration_destination_selection_result (0/1). Non-donor pools bind
+# migration_route_destination and write its food/reception proofs;
+# the donor pool binds migration_requisition_donor_state.
+migration_destination_selection_run_weighted_pool = {
+	# Normal route proofs are chain-local. A registered selector pass with no
+	# bound destination must not leave a prior state-local proof reusable by a
+	# later transaction; forced-return proof has its own explicit adapter.
+	if = {
+		limit = { NOT = { has_event_target = migration_route_destination } }
+		clear_variable = migration_destination_food_safe_proven
+		clear_variable = migration_destination_reception_proven
+	}
+	migration_destination_selection_bind_actor = yes
+	set_temp_variable = { migration_destination_selection_result = constant:migration_destination_selection_runtime.zero }
+	set_temp_variable = { migration_destination_selection_total_weight = constant:migration_destination_selection_runtime.zero }
+	set_temp_variable = { migration_destination_selection_bound = constant:migration_destination_selection_runtime.zero }
+	migration_destination_selection_prepare_history_exclusion = yes
+	migration_consume_famine_food_safety = yes
+	every_neighbor_state = { migration_consume_famine_food_safety = yes }
+
+	every_neighbor_state = {
+		limit = { migration_destination_selection_candidate_is_valid = yes }
+		migration_destination_selection_calculate_candidate_weight = yes
+		if = {
+			limit = { check_variable = { var = migration_destination_candidate_weight value = constant:migration_destination_selection_runtime.positive_weight_floor compare = greater_than } }
+			add_to_temp_variable = { migration_destination_selection_total_weight = migration_destination_candidate_weight }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { var = migration_destination_selection_total_weight value = constant:migration_destination_selection_runtime.zero compare = greater_than } }
+		randomize_temp_variable = {
+			var = migration_destination_selection_draw
+			distribution = uniform
+			min = constant:migration_destination_selection_runtime.roll_minimum
+			max = constant:migration_destination_selection_runtime.roll_maximum
+		}
+		multiply_temp_variable = { migration_destination_selection_draw = migration_destination_selection_total_weight }
+
+		every_neighbor_state = {
+			limit = { migration_destination_selection_candidate_is_valid = yes }
+			migration_destination_selection_calculate_candidate_weight = yes
+			if = {
+				limit = {
+					check_variable = { var = migration_destination_selection_bound value = constant:migration_destination_selection_runtime.zero compare = equals }
+					check_variable = { var = migration_destination_candidate_weight value = constant:migration_destination_selection_runtime.positive_weight_floor compare = greater_than }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = migration_destination_selection_draw
+							value = migration_destination_candidate_weight
+							compare = less_than_or_equals
+						}
+					}
+					save_event_target_as = migration_route_destination
+						if = {
+							limit = {
+								check_variable = { var = migration_destination_selection_history_required value = constant:migration_destination_selection_runtime.one compare = equals }
+								has_variable = migration_current_cohort_id
+							}
+							set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
+							migration_decision_preflight_destination_history = yes
+						}
+						if = {
+							limit = {
+								OR = {
+									check_variable = { var = migration_destination_selection_history_required value = constant:migration_destination_selection_runtime.zero compare = equals }
+									check_variable = { var = migration_decision_history_preflight_result value = constant:civilian_transfer_route_result.valid compare = equals }
+								}
+							}
+							set_variable = { migration_destination_food_safe_proven = constant:humanitarian_runtime.one }
+						set_variable = { migration_destination_reception_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { migration_route_border_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { migration_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { migration_route_safety_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { migration_route_actor_proven = constant:humanitarian_runtime.one }
+						}
+						else = {
+							set_temp_variable = { migration_destination_selection_bound = constant:migration_destination_selection_runtime.zero }
+							set_temp_variable = { migration_destination_selection_result = constant:migration_destination_selection_runtime.zero }
+						}
+					if = {
+						limit = {
+							OR = {
+								check_variable = { var = migration_destination_selection_history_required value = constant:migration_destination_selection_runtime.zero compare = equals }
+								check_variable = { var = migration_decision_history_preflight_result value = constant:civilian_transfer_route_result.valid compare = equals }
+							}
+						}
+						set_temp_variable = { migration_destination_selection_bound = constant:migration_destination_selection_runtime.one }
+						set_temp_variable = { migration_destination_selection_result = constant:migration_destination_selection_runtime.one }
+					}
+				}
+				else = {
+					subtract_from_temp_variable = { migration_destination_selection_draw = migration_destination_candidate_weight }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_event_target = migration_route_destination } }
+		clear_variable = migration_destination_food_safe_proven
+		clear_variable = migration_destination_reception_proven
+	}
+	clear_temp_array = migration_destination_selection_history_states
+	set_temp_variable = { migration_destination_selection_history_required = constant:migration_destination_selection_runtime.zero }
+	set_temp_variable = { migration_destination_selection_history_contract = constant:migration_destination_selection_runtime.zero }
+}
+
+# STATE scope. Prefer a safe internal state. Only a zero internal total permits
+# the foreign safe-evacuation pool to run.
+migration_select_general_safe_evacuation_destination = {
+	set_temp_variable = { migration_destination_selection_pool = constant:migration_destination_selection_pool.internal_safe_route }
+	migration_destination_selection_run_weighted_pool = yes
+	if = {
+		limit = { check_variable = { var = migration_destination_selection_result value = constant:migration_destination_selection_runtime.zero compare = equals } }
+		set_temp_variable = { migration_destination_selection_pool = constant:migration_destination_selection_pool.foreign_safe_evacuation }
+		migration_destination_selection_run_weighted_pool = yes
+	}
+}
+
+migration_select_internal_safe_route_destination = {
+	set_temp_variable = { migration_destination_selection_pool = constant:migration_destination_selection_pool.internal_safe_route }
+	migration_destination_selection_run_weighted_pool = yes
+}
+
+migration_select_foreign_transit_destination = {
+	set_temp_variable = { migration_destination_selection_pool = constant:migration_destination_selection_pool.foreign_transit }
+	migration_destination_selection_run_weighted_pool = yes
+}
+
+migration_select_third_country_resettlement_destination = {
+	set_temp_variable = { migration_destination_selection_pool = constant:migration_destination_selection_pool.third_country_resettlement }
+	migration_destination_selection_run_weighted_pool = yes
+}
