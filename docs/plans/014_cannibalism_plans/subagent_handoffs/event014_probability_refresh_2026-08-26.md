@@ -32,6 +32,14 @@ The named scenario set `E014_EVENT_30_PLAYER_SAFETY_CURRENT_2026_08_26` supplied
 
 The adapter reports the intended safety behavior: `.30.a` is the only AI-eligible outcome and is dominant in both scenarios, while `.30.b` is eligible-but-zero only in the human scenario because its source trigger requires `is_ai = no`. The dominance and starvation diagnostics are intentional route-protection warnings, not a balance patch request.
 
+## Current revealed capture-outcome refresh
+
+The complete four-option `chaosx.nr14.81` pool was inspected from the same event source and returned `PROBABILITY_SOURCE_INSPECTED` with zero discovery inputs unresolved. The inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/53be38643ba412a521e72ae6e4482b35fd731a83ba4d94ac62543d0af7ea2d81/d1f7020627da30e6a65550c02ead3831ba145694781a0575e74cae1e5c238b68/probability-inspect-43741ef93efa.json`.
+
+The scenario set `E014_EVENT_81_CAPTURE_OUTCOMES_CURRENT_2026_08_26` evaluated fascist, democratic, and neutrality government states with `PROBABILITY_ANALYZED`, zero unresolved rows, and zero diagnostics under analysis id `probability-e94c3a2b6a55df0b0d2adf88`. The JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/75c6823eee4213d07cf98ef6b1b6c2e0eac3b6ae21702386c25cb740c97bbd9c/4f783b828e926648ca36c3ad635e8e3435f05fbbd7a910259572445f725c26c6/probability-e94c3a2b6a55df0b0d2adf88.json`.
+
+The conditional results are exact and source-intended: fascist weights 60/30/25/30 normalize to 12/29, 6/29, 5/29, and 6/29; democratic weights 150/30/10/30 normalize to 15/22, 3/22, 1/22, and 3/22; neutrality weights 60/30/10/30 normalize to 6/13, 3/13, 1/13, and 3/13. These are conditional outcomes after the reveal and captured-Hannibal target gates, not campaign-wide route frequencies.
+
 ## Disposition
 
 This refresh strengthens current source-revision evidence for the opening-policy weights but does not certify normalized campaign probabilities, route dominance, or dynamic host selection.
