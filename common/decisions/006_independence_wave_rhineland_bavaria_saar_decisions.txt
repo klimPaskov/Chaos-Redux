@@ -21,13 +21,19 @@ independence_wave_rhi_corridor_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_rhi_package = yes }
+				NOT = { has_country_flag = independence_wave_iw_008_setup_complete }
 				has_stable_independence_wave_rhi_corridor = yes
 				capital_scope = { NOT = { is_controlled_by = ROOT } }
 			}
 		}
 		cancel_effect = {
 			if = {
-				limit = { is_independence_wave_rhi_package = yes has_stable_independence_wave_rhi_corridor = yes }
+				limit = {
+					is_independence_wave_rhi_package = yes
+					has_country_flag = independence_wave_iw_008_setup_complete
+					has_stable_independence_wave_rhi_corridor = yes
+					capital_scope = { is_controlled_by = ROOT }
+				}
 				set_country_flag = independence_wave_rhi_corridor_crisis_resolved
 			}
 			else_if = {
@@ -306,9 +312,24 @@ independence_wave_bay_state_category = {
 		}
 		available = { always = no }
 		days_mission_timeout = constant:independence_wave_rhine_bavaria_duration.bay_state_crisis
-		cancel_trigger = { OR = { NOT = { is_independence_wave_bay_package = yes } has_stable_independence_wave_bay_state = yes capital_scope = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_bay_package = yes }
+				NOT = { has_country_flag = independence_wave_iw_009_setup_complete }
+				has_stable_independence_wave_bay_state = yes
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
 		cancel_effect = {
-			if = { limit = { is_independence_wave_bay_package = yes has_stable_independence_wave_bay_state = yes } set_country_flag = independence_wave_bay_state_crisis_resolved }
+			if = {
+				limit = {
+					is_independence_wave_bay_package = yes
+					has_country_flag = independence_wave_iw_009_setup_complete
+					has_stable_independence_wave_bay_state = yes
+					capital_scope = { is_controlled_by = ROOT }
+				}
+				set_country_flag = independence_wave_bay_state_crisis_resolved
+			}
 			else_if = {
 				limit = { is_independence_wave_bay_package = yes }
 				set_country_flag = independence_wave_bay_state_crisis_failed
