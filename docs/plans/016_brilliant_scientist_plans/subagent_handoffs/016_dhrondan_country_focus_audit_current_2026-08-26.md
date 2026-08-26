@@ -2,6 +2,8 @@
 
 > Status correction: the earlier five-marker finding in this handoff is superseded by the 2026-08-26 route-consumer and survival-marker repairs. Current source consumers are listed below; the remaining gap is weighted/runtime evidence, not an unconsumed flag.
 
+> Later shared MCP receipt correction: `016_current_mcp_audit_2026-08-26.md` records successful current DHR focus inspection/rendering and partial Alien Infantry technology inspection/rendering after the timeout-only attempts described in this handoff. The timeout records remain accurate for this audit's calls, while full comparison and live acceptance remain open.
+
 Date: 2026-08-26.
 
 Owner: `/root/dhr_country_focus_audit_current`.

@@ -1,6 +1,6 @@
 # Portal Raider reusable unit and raid API
 
-`portal_raider` is a shared land-unit family, not a Kruger-owned identity. Event 016 unlocks it through Portal Warfare, Event 019 can request it through the generic infantry-spawn provider, and later event packages may reuse the same subunit, equipment, and counter contract without copying Event 016 state. The reusable model/entity contract remains pending because the current Portal Raider model task was rejected at the semantic generation gate.
+`portal_raider` is a shared land-unit family, not a Kruger-owned identity. Event 016 unlocks it through Portal Warfare, Event 019 can request it through the generic infantry-spawn provider, and later event packages may reuse the same subunit, equipment, and counter contract without copying Event 016 state. The reusable model/entity contract remains pending because the current Portal Raider model task was rejected at the semantic generation gate and no accepted recovery package exists.
 
 ## Unit contract
 
@@ -35,7 +35,7 @@ The raid does not require Warren Kruger. His active authority raises AI interest
 
 ## Required visual, sound, and counter assets
 
-The evidence package is rooted at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`, but it is rejected for runtime use because the authorized legacy provider task omitted the mandatory ray rifle and no user-approved paid recovery has been authorized. The package therefore does not hand accepted model, entity, animation, or sound files to runtime consumers. Any recovery generation must use Meshy 7.
+The evidence package is rooted at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`, but it is rejected for runtime use because the legacy provider task omitted the mandatory ray rifle and no accepted recovery package exists. The package therefore does not hand accepted model, entity, animation, or sound files to runtime consumers. Any recovery generation must use Meshy 7 and the current balance and provider-capability gates.
 
 - `gfx/models/units/portal_raider/portal_raider.mesh`, material DDS maps, and real skeletal action files remain future recovery outputs rather than accepted runtime files.
 - `gfx/entities/portal_raider.gfx` and `gfx/entities/portal_raider.asset` remain future recovery outputs; no runtime entity or preview hook is registered until an accepted model package exists.

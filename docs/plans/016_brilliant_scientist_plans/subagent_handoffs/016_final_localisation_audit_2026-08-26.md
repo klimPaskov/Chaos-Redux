@@ -8,6 +8,8 @@ Mode: final read-only localisation audit. No gameplay, localisation, scripted-lo
 
 > Current Alien Infantry correction after commit `0e724fb8a` (`Wire Meshy alien infantry firearm runtime package`): the accepted V13 provider package and promoted static entity/GFX/animation/sound registrations now exist. The remaining model-runtime blockers are the unsupported muzzle locator, unbound particle/light effects, strict audio selection/acknowledgement/impact/special-role provenance, positional/runtime wiring, and user-owned live acceptance; this localisation audit does not certify those gates.
 
+> Later localisation disposition correction: `016_alien_dhrondan_current_localisation_audit_2026-08-26.md` and commit `89f80a2a2` record the DHR revolt-tooltip, dynamic-value, stale-guard wording, and sentence-style repairs named below. The findings and timeout-only MCP evidence in this handoff remain audit history; do not re-open those repairs unless a later source change creates a new mismatch.
+
 ## Scope and evidence
 
 The audit covered every file under `docs/specs/016_brilliant_scientist_specs/`, the Event 016 localisation prompt and acceptance criteria, current Event 016 and DHR event scripts, both Event 016 focus trees, decisions and missions, project and technology definitions, country and character surfaces, achievements, Event Log and Event Details selectors, Alien Infantry and Event 019 provider 508 presentation, Portal Warfare raid text, model-runtime names, linked GFX and sprite definitions, current asset/model handoffs, and prior Event 016 localisation handoffs.

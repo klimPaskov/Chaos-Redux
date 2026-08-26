@@ -341,14 +341,13 @@ The active Portal breach is dynamic province control rather than a static map re
 
 5. Rerun the required probability audit after any weight-bearing implementation and compare the same named scenarios before accepting changed tuning.
 
-6. Do not mark Event 016 complete while severity-one registry isolation, the Portal active-state disposition, model runtime acceptance, and required engine evidence remain unresolved.
+6. Do not mark Event 016 complete while dynamic registry-isolation acceptance, the Portal active-state disposition, model runtime acceptance, and required engine evidence remain unresolved.
 
 ## What is safely queued or blocked
 
 ### Safely queued
 
-- Remove or explicitly reserve the five unconsumed DHR support-route markers.
-- Revisit generic DHR route-support AI priorities only after a complete focus-selection probability audit.
+- Preserve the five DHR support-route marker consumers and revisit their AI priorities only after a complete focus-selection probability audit.
 - Run final localisation, documentation, spreadsheet, and completion-audit reconciliation after the ownership fixes are implemented.
 
 ### Blocked
