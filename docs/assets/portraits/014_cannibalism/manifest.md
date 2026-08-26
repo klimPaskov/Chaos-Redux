@@ -13,6 +13,8 @@ Rights status for every row is `copyrighted_reference_only_user_authorized`: no 
 
 ## Replacement and legal-source gate (2026-08-26 audit)
 
+The dated [license research handoff](../../../plans/014_cannibalism_plans/subagent_handoffs/event014_portrait_license_research_2026-08-26.md) records the candidate source matrix and the exact reason no legally and visually complete 56-slot replacement was installed.
+
 The 56 installed candidates are verified Internet-sourced modern fictional game or concept-art references, not generated-from-scratch images. Each source has a direct image URL, an archived source page, an untouched original hash, a reviewed crop, and a unique 156x210 PNG/DDS pair. The source-reference gate therefore passes for all 56 rows.
 
 The final-redistribution gate is `BLOCKED` for all 56 rows. No source page or direct image URL grants a permissive redistribution license or public-domain status, and the archived HATE page explicitly credits the artwork to Adrian Smith/CMON while the Creative Uncut indexes identify Blizzard Entertainment or FromSoftware/Bandai Namco and their credited artists. These references may remain in the user-authorized source-placeholder branch, but they cannot be relabeled as legally cleared finals.
