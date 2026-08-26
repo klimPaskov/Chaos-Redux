@@ -433,7 +433,7 @@ Frisia tracks two independent values:
 
 Both values must reach their thresholds to replace `agx_exposed_waterline` with `agx_dike_and_coast_authority`. Losing either threshold restores the exposed-waterline spirit.
 
-The timed `Hold the Waterline` crisis gives the country 540 days to secure both systems. The player can commit shared Event 006 material packages to:
+The timed `Hold the Waterline` crisis gives the country 540 days to secure both systems. It is generation-bound: if the IW-007 setup receipt disappears while the mission is active, the mission cancels through the existing project-failure path instead of surviving a failed setup retry. The player can commit shared Event 006 material packages to:
 
 - inspect pump stations,
 - organize a harbor watch,
