@@ -51,3 +51,7 @@ The source-selector result still carries the fixed global graph and validation c
 A bounded render was also requested for the early header under scenario `event014_targeted_early_visual_states_2026_08_26`, covering `normal`, `hover`, `disabled`, and `long-text` states at 1280x720 and 1920x1080. The call returned `GUI_RENDERED` with no blockers and produced `cannibalism_early_header_window-full.svg`: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fcfae968916de2c03f1a02f42bf5dc720fcc83c255414d77af125652efc1ea15/80fa8237f37d08d2735a7cf923b92ee4d6cf4cf29474943c4ffbe15fe3a42dca/cannibalism_early_header_window-full.svg`.
 
 The response was wire-truncated and returned no state-specific validation or click-region metadata, so this improves attributable render coverage without closing the full visual matrix.
+
+An additional single-state render targeted `cannibalism_warlord_command_window` with scenario `event014_targeted_warlord_hover_2026_08_26`, state `hover`, and resolution 1280x720. The call returned `GUI_RENDERED` with no blockers and produced `cannibalism_warlord_command_window-full.svg`: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/356eda9a5565ef7475fbeca05d9002dcef5a8fbdc5f659787da7ef3a485f6ca7/ed5581902a79efbcf5be12715eafe747d0a0853db4469b01095cf41557a6eb32/cannibalism_warlord_command_window-full.svg`.
+
+The response was wire-truncated and retained no hover-specific diagnostics or click-region metadata, so this is bounded hover-render evidence only.
