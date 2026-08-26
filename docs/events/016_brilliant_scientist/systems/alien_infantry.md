@@ -36,7 +36,26 @@ Both tactics are inactive until the predictive-warfare technology unlocks them, 
 
 ## Visual, model, and sound contract
 
-The source declarations use stable final paths. Static binary art is installed, and the dedicated 3D package now contains the accepted Meshy R2 rig plus actual-byte-reimported Quaternius actions for idle, movement, and laser attack.
+The source declarations use stable final paths. Static binary art is installed, and the accepted Alien Infantry V13 package is the current 3D source of truth for parent integration. Its immutable package record is `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, and the parent-facing handoff is `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/alien_infantry_v13_firearm_preset_handoff_2026-08-26.md`. Historical Quaternius, V10, and V11 records remain preserved but do not control the V13 package.
+
+### Accepted V13 Meshy package
+
+- Approved Meshy input: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/refs/original/meshy_input_v13_tpose_right_pointing_colored.png`, SHA-256 `2D72EEB020C8989B463F214D4B5FC1C29C4AB313AEEE9F033B71E6DE1881BF3A`.
+- The accepted Meshy 7 rig task is `01a03dcf-f0ba-7b67-b769-5a2678b03a40`, with 24 bones and a final 59,999-triangle mesh.
+- Final mesh: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry.mesh`.
+- Final textures: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_v13_diffuse.dds`, `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_v13_normal.dds`, and `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_v13_specular.dds`.
+
+| Role | Final export | Meshy action | Provider task |
+| --- | --- | --- | --- |
+| `idle` | `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_idle.anim` | 0 `Idle` | `01a03dd1-23a5-7728-9c09-f09683d64ffe` |
+| `move` | `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_move.anim` | 692 `walking_2_inplace` | `01a03dd1-28ea-7ba5-b6cc-dde26e5b2d01` |
+| `laser_attack` | `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_laser_attack.anim` | 223 `Draw_and_Shoot_from_Back_1` | `01a03dd1-2d74-70b2-a151-e8d98c82e4de` |
+| `defend` | `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_defend.anim` | 89 `Combat_Stance` | `01a03dd1-31cc-7729-9612-26eb8f7d44c3` |
+| `support_attack` | `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_support_attack.anim` | 234 `Walk_Forward_While_Shooting` | `01a03dd1-35e5-7f37-a601-70982bdf5f74` |
+| `retreat` | `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_retreat.anim` | 685 `Walk_Backward_with_Gun_inplace` | `01a03dd1-3a02-7f38-8f3c-0236be3dc57e` |
+| `death` | `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/export/v13_firearm_preset/alien_infantry_death.anim` | 183 `Shot_and_Fall_Backward` | `01a03dd1-3dd9-772c-b0cd-9f7dc4de1fe4` |
+
+Every V13 action is a distinct Meshy preset action exported through io_pdx_mesh and reimported from its actual `.anim` bytes with the final `.mesh`; Blender did not author replacement motion. The detailed hashes, frame counts, reimport request IDs, and proof artifacts are recorded in `final_manifest.md`.
 
 - Large counter: `gfx/interface/counters/divisions_large/unit_alien_infantry_icon.dds`, registered as `GFX_group_alien_infantry_icon` and `GFX_unit_alien_infantry_icon_medium` in `interface/alien_infantry_system.gfx`.
 - Map counter: `gfx/interface/counters/divisions_small/onmap_unit_alien_infantry_icon.dds`, registered as `GFX_unit_alien_infantry_icon_medium_white`.
@@ -45,11 +64,11 @@ The source declarations use stable final paths. Static binary art is installed, 
 - Predictive-warfare technology icon: `gfx/interface/technologies/016_brilliant_scientist/tech_016_brilliant_scientist_alien_predictive_warfare.dds`, registered as `GFX_brilliant_scientist_alien_predictive_warfare_tech_medium`.
 - Tactic icons: `gfx/interface/landcombat/tactics/tactic_alien_predictive_vector_assault.dds` and `gfx/interface/landcombat/tactics/tactic_alien_probability_screen.dds`, registered under matching `GFX_` names.
 - KRG laser-batch decision icon: `gfx/interface/decisions/016_brilliant_scientist/decisions/decision_alien_laser_batch.dds`, registered as `GFX_decision_brilliant_scientist_krg_alien_laser_batch` in `interface/016_brilliant_scientist_kruger_state_decisions.gfx`.
-- The free firearm source is Quaternius Universal Animation Library Standard, CC0 1.0 Universal. Its official pack page is https://quaternius.com/packs/universalanimationlibrary.html. The package's `Pistol_Shoot` clip supplies the promoted laser-attack action; the transfer preserves the integrated pistol and has a verified discharge candidate at frame 6 / 0.1667 seconds.
 - Sourced laser-fire, movement, idle, and death WAV files and their sound definitions are installed under `sound/shared_alien_system/alien_infantry/` and `sound/alien_infantry_sound.asset`.
 - Reusable `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` definitions are installed under `gfx/particles/alien_infantry/` and `gfx/entities/`.
-- The laser-attack action passes hand-contact and actual-byte reimport checks, but the locked adapter exposes no supported muzzle locator and the Meshy rig has no muzzle bone. Therefore the particle, light, and firing-sound definitions remain intentionally unbound. A discharge timestamp alone is evidence, not a runtime socket.
-- Defend, support-attack, retreat, and death still require distinct substantive actions; no semantic alias or transform-only substitute is accepted. Runtime entity/action registration waits for those roles and a verified muzzle locator. The exact evidence and blockers are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_firearm_meshy_rig_and_free_animation_2026-08-25.md`.
+- Runtime entity, GFX, sound, and effect wiring remains parent-owned and unwired. The final files must be copied out of `docs/assets/` before any runtime consumer points to them, and this documentation does not claim in-game integration.
+- The locked adapter exposes no supported muzzle-locator authoring operation, and the Meshy rig has no muzzle bone. The fused cyan muzzle cap is visual evidence only, so the particle, light, effect-point, and firing-sound bindings remain unresolved even though `laser_attack` and `support_attack` contain genuine firearm motion.
+- Sourced audio currently covers laser discharge, movement, idle, and death. Per-subunit selection or acknowledgement remains blocked by tag-wide vanilla consumers, and no defensible sourced candidates were accepted for distinct impact or special-action roles; no synthesized or placeholder audio is accepted. Timing proposals remain handoff data rather than embedded runtime events.
 
 ## Future extensions
 
