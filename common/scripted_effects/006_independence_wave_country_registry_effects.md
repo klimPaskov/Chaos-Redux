@@ -3,8 +3,8 @@
 This file contains only the two lifecycle wrappers needed by the canonical
 Independence Wave origin ledger. The static carrier data lives in
 `common/script_constants/006_independence_wave_country_registry_constants.txt`;
-the exact country-scope predicates live in
-`common/scripted_triggers/006_independence_wave_country_registry_triggers.txt`.
+the exact country-scope predicates live in the country-registry section of
+`common/scripted_triggers/006_independence_wave_package_triggers.txt`.
 
 ## `independence_wave_registry_record_event6_origin`
 
