@@ -6,6 +6,22 @@ The current path authority for the 2026-08-26 small-file merge is `interface/006
 
 The whole-event disposition remains **HOLD / PARTIAL**.
 
+### Latest 2026-08-26 evidence refresh
+
+The startup registry is the committed current source at `history/general/006_independence_wave_character_recruitment_registry.txt`; commit `5895d0b69` records 25 guarded country blocks and 54 `recruit_character` calls, with IW-057 FER intentionally absent while its rights gate remains open.
+
+FSM focus lifecycle hardening is committed in `common/scripted_triggers/006_independence_wave_pacific_package_triggers.txt` and `common/scripted_effects/006_independence_wave_pacific_package_effects.txt` by commit `35ab74212`; FSM remains adapter-only and fail-closed, and its withdrawn portrait is not replaced by a fallback identity.
+
+The bounded focus-overlay audit found no safe source patch without changing the accepted 184-focus geometry or widening package admission; the current focus inspection remains 184 focuses and 195 connectors with zero layout diagnostics and only the unrelated vanilla `continuous_restrict_freedom_desc` warning.
+
+The latest portrait audit accepts NAV Aguirre and GLC Castelao as the only current `styled_final` Event 006 consumers with exact existing runtime matches; GLC Bóveda remains an unmapped supplied styled output, and all eight adapter-only package gates remain closed.
+
+The full-spec gap map and first-footprint improvement addendum remain current: Event 006 is HOLD / PARTIAL at 32 content-attested packages across 29 compatible reservation groups, 40 adapters, and 161 unattested selectable rows, with implementation queued rather than claimed for the empty-footprint follow-up.
+
+The 2026-08-26 decision/mission implementation receipt now records exactly 80 accepted source rows, with visibility, activation, availability, AI, lifecycle, title, description, and cost coverage. The same tranche repairs the eight FORM-03 transport-cost strings so each row names the actual convoy-or-train route without implying both inputs. Direct decision/mission and GUI MCP evidence remains unavailable, so this closes the source receipt and localisation clarity gap only; it does not claim live UI behavior, probability, balance, or runtime completion. Handoff: `subagent_handoffs/006_event6_decision_mission_matrix_implementation_receipt_2026-08-26.md`.
+
+The current read-only MCP refresh inspected `chaosx.nr6.1` as `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics while workspace helper/lifecycle projections remain deferred, and inspected `independence_wave_focus_tree` as `FOCUS_INSPECTED` with validation passed; typed probability evidence remains blocked by the recorded `Transport closed` auditor route, so no quantitative balance claim is made.
+
 The 2026-08-26 focus and Kosovo decision registry continuation folds the 20 Pacific `shared_focus` blocks into `common/national_focus/006_independence_wave_focus.txt` under a source marker and folds the IW-031 Kosovo category plus eleven decisions into `common/decisions/006_independence_wave_balkan_decisions.txt`; the two standalone parser files are removed, file-scoped constants are retained, redundant banners are condensed, and executable source bodies remain equivalent after line-ending normalization. Kosovo trigger, effect, and localisation files remain separate because their package ownership and active lifecycle audits are distinct. This source-layout pass removes two parser files and saves 1,050 normalized UTF-8 source bytes without changing focus reachability, decision costs, package admission, or runtime behavior. Handoff: `subagent_handoffs/006_event6_focus_kosovo_registry_merge_2026-08-26.md`.
 
 The current partial boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime package adapters, and 161 unattested selectable rows out of 193 non-overlay rows.
@@ -30,7 +46,7 @@ The current source uses `history/general/006_independence_wave_character_recruit
 
 A structural parity comparison found 25 guarded country blocks and 54 `recruit_character` calls in both the merged registry and the two former inputs; the registry intentionally contains no FER record because IW-057 remains rights-gated.
 
-The merge is recorded in `006_event6_character_recruitment_registry_merge_2026-08-26.md`; cite the former paths only as historical provenance and the registry as the settled current source authority.
+Commit `5895d0b69` records the merge in `006_event6_character_recruitment_registry_merge_2026-08-26.md`; cite the former paths only as historical provenance and the registry as the settled current source authority.
 
 Current source inspection also confirms that `chaosx.nr6.10` is an empty trigger-only compatibility checkpoint and `chaosx.nr6.350` invokes `independence_wave_apply_roster_checkpoint`; Event 006's event file contains no `recruit_character` calls, so startup recruitment ownership remains in the merged general-history registry.
 
@@ -172,7 +188,7 @@ The same 2026-08-25 formable-registry merge folds the shared FORM-01 through FOR
 
 The 2026-08-25 Western decision continuation folds the Brittany, Catalonia, and Iceland package decision files into `common/decisions/006_independence_wave_western_decisions.txt`. Their three category roots and 34 decision identifiers remain source-equivalent under package source markers, the shared civilian-factory constants are declared once, and three parser files are removed. Kosovo's category and decisions are now in the Balkan decision registry, while its trigger, effect, and localisation files remain separate during their active lifecycle work; Montenegro and Transylvania use package-scoped constant aliases in the Balkan decision registry. This source-layout pass does not change package costs, timers, triggers, effects, cleanup, AI, admission, or runtime behavior. Handoff: `subagent_handoffs/006_event6_western_decision_registry_merge_2026-08-25.md`.
 
-The dated decision/mission audit `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-25.md` is superseded for its two concrete source findings: commit `7b9da6c9f` closes the FORM-48 convoy/train icon mismatch, and commit `9f2ba4de5` adds the FORM-39 civil-service factory reservation. Its GUI, typed-probability, visible-action, category-density, and whole-event HOLD/PARTIAL notes remain current evidence gaps.
+The dated decision/mission audit `subagent_handoffs/006_event6_decision_mission_current_audit_2026-08-25.md` is superseded for its concrete source findings by the later FORM-48, FORM-39, and 2026-08-26 80-row receipt tranches. Its GUI, typed-probability, visible-action, category-density, and whole-event HOLD/PARTIAL notes remain current evidence gaps.
 
 The 2026-08-25 FORM-09 localisation continuation folds the 26 non-root BLX and Balkan Federation keys into `localisation/english/006_independence_wave_formable_registry_l_english.yml`, preserving one UTF-8-BOM `l_english:` root and 225 unique keys. The standalone `006_independence_wave_form09_l_english.yml` parser file is removed; wording, formable identity, decision surfaces, and runtime behavior remain unchanged. Handoff: `subagent_handoffs/006_event6_form09_localisation_registry_merge_2026-08-25.md`.
 
