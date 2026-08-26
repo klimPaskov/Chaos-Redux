@@ -330,35 +330,25 @@ The package must draw equipment from local stockpiles, defecting formations, cap
 
 ## Unit families
 
-These are role directions rather than final names.
+Event 014 uses nine real inactive line sub-units rather than renamed vanilla battalions. The eight foot families use the documented internal `infantry` type and `infantry` group, while Bone Riders use documented `cavalry = yes` with `type = { infantry }` and `group = mobile`; all nine use the shared `category_cannibal_irregular_infantry` and appropriate front-line, light-infantry, cavalry, all-infantry, and army categories. The seven bespoke model families use their sub-unit IDs as active sprite-token contracts, while Bone Riders intentionally reuses vanilla `sprite = cavalry` and Network Cadre intentionally reuses vanilla `sprite = infantry` under the approved visual-reuse decision. They are not ordinarily recruitable. The locked template creation effect raises them only after the existing population, Larder, and equipment gates resolve.
 
-### Scavenger Warband
+| Formation | Sub-unit and sprite token | Effective speed | Combat profile and equipment gate |
+| --- | --- | ---: | --- |
+| Scavenger Warband | `cannibal_scavenger_warband` | 7.4 | Baseline raider with forest, jungle, marsh, and desert attack or movement bonuses; 100 infantry equipment per battalion |
+| Feast Guard | `cannibal_feast_guard` | 7.2 | Defensive command cadre with fort and urban defence, hill and forest defence; 100 infantry equipment per battalion |
+| Feast Cohort | `cannibal_feast_cohort` | 7.8 | Organised assault with plains, forest, urban, river, and hill attack bonuses; 100 infantry equipment per battalion |
+| Bone Guard | `cannibal_bone_guard` | 8.2 | Elite shock guard with fort, urban, hill, and mountain attack bonuses; 100 infantry equipment per battalion |
+| Bone Riders | `cannibal_bone_riders` | 10.4 | Horse-mounted mobile shock formation with high breakthrough and poor defence; 140 infantry equipment per battalion |
+| Island Reavers | `cannibal_island_reavers` | 7.6 | Marine and exfiltration-capable raider with marsh, river, jungle, and amphibious attack or movement bonuses; 150 infantry equipment per battalion |
+| Siege Eaters | `cannibal_siege_eaters` | 7.52 | Fort and urban breacher with hill, river, and forest attack bonuses; 100 infantry equipment per battalion |
+| March Predation Column | `cannibal_march_predation_column` | 26.4 | Fastest truck-borne pursuit host; 100 infantry equipment and 35 motorized equipment per battalion |
+| Network Cadre | `cannibal_network_cadre` | 8.0 | Small mobile seeding and courier formation with forest, jungle, urban, and hill utility; 100 infantry equipment per battalion |
 
-Basic irregular infantry with high attack, low defense, low reliability, and cheap conversion from captured equipment.
+The shared combat tuning is deliberately extreme relative to vanilla infantry and cavalry. Infantry equipment has speed 4 and cavalry has speed 6.4. Every infantry-equipped Event 014 family exceeds 6.4, with Bone Riders at `4 × (1 + 1.6) = 10.4` km/h. March Predation Column uses the retained `transport = motorized_equipment` contract and vanilla 12-speed trucks, making its effective speed `12 × (1 + 1.2) = 26.4` and preserving the existing March truck gate. All nine gameplay families have lower maximum organisation and maximum strength than vanilla infantry and cavalry, while their high soft attack and breakthrough are offset by weak defence, low reliability, and supply pressure.
 
-### Feast Cohort
+The locked templates keep role-appropriate support and artillery. Bone Guard and Siege Eaters retain artillery brigades, Bone Riders and Scavenged Elephant Column retain recon, Feast Guard and Feast Cohort retain engineers, Island Reavers retain engineers, and March Predation Column and Network Cadre retain recon. The seven bespoke model families use a matching plurality so their intended sprite token cannot be displaced, while the approved vanilla sprites for Bone Riders and Network Cadre are explicit rather than accidental fallback resolution. Scavenged Elephant Column is a separate locked Event 014 template with one installed vanilla `elephantry` battalion; Event 014 warlords and unified CBL receive `elephantry = 1`, and its vanilla infantry-equipment plus artillery-equipment requirement remains real.
 
-More organized infantry unlocked through Larder and hierarchy focuses. Strong organization recovery and breakthrough, high manpower and Larder demand.
-
-### Bone Guard
-
-Elite guard for the warlord or later Hannibal. Small cap, strong combat, expensive equipment, high experience.
-
-### Carrion Riders
-
-Mobile cavalry or truck formations available to March Hosts and suitable terrain routes.
-
-### Island Reavers
-
-Marine or raider formation for Island Hosts. Strong landing and coastal combat, convoy and fuel dependent.
-
-### Siege Eaters
-
-Urban assault and engineer-heavy unit for Siege Communes.
-
-### Network Cadre
-
-Small organizer formation that improves foreign seeding, local recruitment, and coordination. Limited in direct combat.
+The bounded CXT test-country extension registers all nine frontline sub-units through the additive Event 014 startup and `on_daily_CXT` contract and registers the existing vanilla equipment dependencies `infantry_equipment_3`, `support_equipment_1`, `artillery_equipment_3`, and `motorized_equipment_1`. The shared CXT helpers unlock each definition, create one test template, spawn the standard test roster once, and replenish the registered equipment through the existing tag-scoped weekly hook.
 
 No Wendigo unit appears in ordinary warlord packages.
 

@@ -394,7 +394,7 @@ Icon direction:
 
 Stable catalog ID: `SCN-010`.
 
-Current catalog status: `Fully Functional`.
+Current catalog status: `Needs Testing` while parent live-consumer and the other documented evidence gates remain open.
 
 Working public direction:
 

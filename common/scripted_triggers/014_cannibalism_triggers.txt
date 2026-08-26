@@ -267,7 +267,6 @@ cannibalism_can_pay_joint_suppression_cost = {
 	command_power > constant:cannibalism_international_response_cost.joint_command_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.joint_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.joint_support } }
-	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_international_response_cost.joint_trucks } }
 }
 
 cannibalism_is_valid_joint_suppression_target = {
@@ -283,7 +282,6 @@ cannibalism_can_pay_convergence_interdiction_cost = {
 	command_power > constant:cannibalism_international_response_cost.convergence_command_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.convergence_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.convergence_support } }
-	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_international_response_cost.convergence_trucks } }
 }
 
 cannibalism_is_likely_convergence_host = {
@@ -309,7 +307,6 @@ cannibalism_is_valid_island_host_target = {
 
 cannibalism_can_pay_island_landing_cost = {
 	has_manpower > constant:cannibalism_international_response_cost.landing_manpower_gate
-	command_power > constant:cannibalism_international_response_cost.landing_command_gate
 	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.landing_infantry } }
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.landing_support } }
 	NOT = { has_equipment = { convoy_1 < constant:cannibalism_international_response_cost.landing_convoys } }
@@ -412,7 +409,6 @@ cannibalism_can_pay_aftermath_institution_cost = {
 	has_manpower > constant:cannibalism_reconstruction.institution_manpower_gate
 	command_power > constant:cannibalism_reconstruction.institution_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.institution_support } }
-	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_reconstruction.institution_trucks } }
 	NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_reconstruction.institution_trains } }
 }
 
@@ -3783,7 +3779,6 @@ cannibalism_can_pay_ration_audit_cost = {
 cannibalism_can_pay_logistics_cost = {
 	cannibalism_has_valid_primary_theater = yes
 	has_manpower > constant:cannibalism_decision_cost.logistics_manpower_gate
-	command_power > constant:cannibalism_decision_cost.logistics_command_gate
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.logistics_support } }
 	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_decision_cost.logistics_trucks } }
 	OR = {
@@ -3999,6 +3994,42 @@ cannibalism_unified_player_mission_slots_available = {
 			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
 			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
 			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			has_country_flag = cannibalism_unified_counterwar_mission_active
+		}
+		AND = {
+			has_country_flag = cannibalism_unified_command_mission_active
+			has_country_flag = cannibalism_unified_larder_mission_active
+			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_counterwar_mission_active }
+		}
+		AND = {
+			has_country_flag = cannibalism_unified_command_mission_active
+			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
+			has_country_flag = cannibalism_unified_war_machine_mission_active
+			NOT = { has_country_flag = cannibalism_unified_counterwar_mission_active }
+		}
+		AND = {
+			has_country_flag = cannibalism_unified_command_mission_active
+			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			has_country_flag = cannibalism_unified_counterwar_mission_active
+		}
+		AND = {
+			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
+			has_country_flag = cannibalism_unified_larder_mission_active
+			has_country_flag = cannibalism_unified_war_machine_mission_active
+			NOT = { has_country_flag = cannibalism_unified_counterwar_mission_active }
+		}
+		AND = {
+			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
+			has_country_flag = cannibalism_unified_larder_mission_active
+			NOT = { has_country_flag = cannibalism_unified_war_machine_mission_active }
+			has_country_flag = cannibalism_unified_counterwar_mission_active
+		}
+		AND = {
+			NOT = { has_country_flag = cannibalism_unified_command_mission_active }
+			NOT = { has_country_flag = cannibalism_unified_larder_mission_active }
+			has_country_flag = cannibalism_unified_war_machine_mission_active
 			has_country_flag = cannibalism_unified_counterwar_mission_active
 		}
 	}

@@ -85,7 +85,8 @@ cannibalism_international_response_cost = {
 	joint_command_gate = 14.99
 	joint_infantry = 600
 	joint_support = 120
-	joint_trucks = 100
+	# Compatibility slot retained for the shared payment helper; this operation does not spend trucks.
+	joint_trucks = 0
 	joint_target_cell_damage = -18
 	joint_target_cult_damage = -12
 	joint_target_integrity_gain = 8
@@ -97,7 +98,8 @@ cannibalism_international_response_cost = {
 	convergence_command_gate = 24.99
 	convergence_infantry = 900
 	convergence_support = 180
-	convergence_trucks = 160
+	# Compatibility slot retained for the shared payment helper; this operation does not spend trucks.
+	convergence_trucks = 0
 	convergence_network_damage = -12
 	convergence_alignment_damage = -15
 	convergence_target_days = 120
@@ -110,8 +112,9 @@ cannibalism_international_response_cost = {
 	blockade_days = 180
 	landing_manpower = 7000
 	landing_manpower_gate = 6999
-	landing_command = 20
-	landing_command_gate = 19.99
+	# Compatibility slots retained for the shared payment helper; landing uses manpower, infantry, support, and convoys.
+	landing_command = 0
+	landing_command_gate = -1
 	landing_infantry = 800
 	landing_support = 150
 	landing_convoys = 30
@@ -149,7 +152,8 @@ cannibalism_reconstruction = {
 	institution_command = 12
 	institution_command_gate = 11.99
 	institution_support = 120
-	institution_trucks = 100
+	# Compatibility slot retained for the shared payment helper; institutional recovery does not spend trucks.
+	institution_trucks = 0
 	institution_trains = 10
 	institution_days = 120
 	memorial_manpower = 2000
@@ -752,8 +756,9 @@ cannibalism_decision_cost = {
 	logistics_trucks = 120
 	logistics_trains = 12
 	logistics_convoys = 30
-	logistics_command = 12
-	logistics_command_gate = 11.99
+	# Compatibility slots retained for the shared payment helper; logistics no longer spends command power.
+	logistics_command = 0
+	logistics_command_gate = -1
 	logistics_truck_reserve = 40
 	logistics_train_reserve = 5
 	logistics_convoy_reserve = 15
@@ -3619,4 +3624,30 @@ cannibalism_wendigo_focus = {
 	ai_low_network_factor = 1.35 # Encodes a 35% AI factor.
 	ai_countdown_factor = 2.00 # Encodes a 100% AI factor.
 	ai_terminal_factor = 4.00 # Encodes a 300% AI factor.
+}
+
+# Event 19 consumes this owner-side package through provider 523. The template
+# deliberately contains one of every Event 14 irregular combat type; all
+# resource totals are exact sums of those nine sub-unit definitions.
+chaos_unit_family_event14_cannibal_irregulars = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	family_id = 523
+	provider_id = 523
+	source_event_id = 14
+	derivative_profile = 0
+	sustainment_profile = 0
+	containment_profile = 0
+	ai_class = 14
+	visual_profile = 999
+	cleanup_profile = 0
+	parent_isolation_profile = 0
+	spawn_weight = 5
+	template_combat_battalions = 9
+	template_manpower = 7350
+	template_infantry_equipment = 990
+	template_motorized_equipment = 35
 }

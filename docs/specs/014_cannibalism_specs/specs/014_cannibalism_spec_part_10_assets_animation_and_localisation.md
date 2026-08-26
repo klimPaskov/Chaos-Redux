@@ -304,20 +304,11 @@ Every achievement in Part 11 receives a distinct completed-icon direction.
 
 ## Unit and technology art
 
-The implemented package adds no custom subunit or equipment identifiers. It retains the existing battalion and equipment surfaces used by the source countries and the existing Wendigo package. No bespoke Event 014 unit counter, subunit icon, equipment icon, or equipment illustration is therefore required. This is a verified scope disposition, not a fallback or omitted asset family.
+The implemented package defines nine inactive custom irregular-infantry/cavalry subunits and stable gameplay identities in `common/units/014_cannibalism_irregular_infantry.txt`. They reuse ordinary infantry, support, artillery, and motorized equipment and do not add an equipment archetype. Their locked Event 014 templates and additive CXT registration are gameplay consumers. The separate Scavenged Elephant Column uses installed vanilla `elephantry` and does not create another custom model token. Seven subunits retain bespoke model/entity packages, while Bone Riders uses vanilla `sprite = cavalry` and Network Cadre uses vanilla `sprite = infantry` with no Event 014 custom model/action/entity package. The parent icon worker owns the nine gameplay counter triplets, and the parent owns runtime GFX or asset registries and sound handoff for the seven bespoke model tokens.
 
-The following formation names are scripted templates built from those retained surfaces rather than new equipment or subunit definitions:
+The nine custom formation consumers are `cannibal_scavenger_warband`, `cannibal_feast_guard`, `cannibal_feast_cohort`, `cannibal_bone_guard`, `cannibal_bone_riders`, `cannibal_island_reavers`, `cannibal_siege_eaters`, `cannibal_march_predation_column`, and `cannibal_network_cadre`. The seven bespoke model IDs are also their sprite tokens; Bone Riders resolves to vanilla `sprite = cavalry`, and Network Cadre resolves to vanilla `sprite = infantry`. The transformed Wendigo package remains separate and does not consume these ordinary Event 014 tokens.
 
-- Scavenger Warband
-- Feast Cohort
-- Bone Guard
-- Island Reavers
-- Siege Eaters
-- March Predation Columns
-- Network Cadres
-- transformed Wendigo variants
-
-Any later change that adds a custom subunit or equipment identifier must reopen this art review and provide its counter, icon, equipment art, registration, and manifest coverage.
+Each gameplay family retains a required counter handoff, while bespoke model assets remain required only for the seven dedicated model tokens. The approved vanilla visual reuse for Bone Riders and Network Cadre requires no new model, action, entity, or provider asset, and the parent wires the stable gameplay identifiers without changing their profiles.
 
 ## Scripted GUI art
 

@@ -18,6 +18,7 @@ cannibalism_containment_category = {
 		visible = {
 			cannibalism_containment_decisions_visible = yes
 			has_country_flag = achievement_cannibalism_exploitation_ever
+			has_country_flag = cannibalism_public_court_martial_held
 			NOT = { has_country_flag = achievement_cannibalism_exploitation_renounced }
 		}
 		available = {
@@ -594,7 +595,18 @@ cannibalism_containment_category = {
 
 	cannibalism_forensic_recovery_teams = {
 		icon = GFX_decision_cannibalism_forensic_recovery
-		visible = { cannibalism_containment_decisions_visible = yes }
+		visible = {
+			cannibalism_containment_decisions_visible = yes
+			NOT = { cannibalism_current_country_has_ritual_response = yes }
+			NOT = {
+				OR = {
+					has_country_flag = cannibalism_policy_concealment
+					has_country_flag = cannibalism_policy_exploitation
+					has_country_flag = cannibalism_ritual_response_appropriation
+					has_country_flag = cannibalism_network_response_exploitation
+				}
+			}
+		}
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = cannibalism_forensics_requirements_tt
@@ -619,7 +631,21 @@ cannibalism_containment_category = {
 		icon = GFX_decision_cannibalism_search_burial_party
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		visible = { cannibalism_containment_decisions_visible = yes }
+		visible = {
+			cannibalism_containment_decisions_visible = yes
+			NOT = { cannibalism_current_country_has_ritual_response = yes }
+			NOT = {
+				OR = {
+					has_country_flag = cannibalism_policy_concealment
+					has_country_flag = cannibalism_policy_exploitation
+					has_country_flag = cannibalism_humane_response_active
+					has_country_flag = cannibalism_network_response_disclosure
+					has_country_flag = cannibalism_network_response_cordon
+					has_country_flag = cannibalism_network_response_exploitation
+					cannibalism_current_country_has_ritual_response = yes
+				}
+			}
+		}
 		target_root_trigger = { cannibalism_containment_decisions_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -653,7 +679,18 @@ cannibalism_containment_category = {
 
 	cannibalism_protect_burial_and_medical_details = {
 		icon = GFX_decision_cannibalism_protect_burial_details
-		visible = { cannibalism_containment_decisions_visible = yes }
+		visible = {
+			cannibalism_containment_decisions_visible = yes
+			NOT = { cannibalism_current_country_has_ritual_response = yes }
+			NOT = {
+				OR = {
+					has_country_flag = cannibalism_policy_concealment
+					has_country_flag = cannibalism_policy_exploitation
+					has_country_flag = cannibalism_ritual_response_appropriation
+					has_country_flag = cannibalism_network_response_exploitation
+				}
+			}
+		}
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = cannibalism_burial_protection_requirements_tt
@@ -679,6 +716,12 @@ cannibalism_containment_category = {
 		visible = {
 			cannibalism_containment_decisions_visible = yes
 			check_variable = { cannibalism_evidence > constant:cannibalism_meter.quiet }
+			OR = {
+				NOT = { has_global_flag = cannibalism_evolution_i_active }
+				has_country_flag = cannibalism_policy_exploitation
+				has_country_flag = cannibalism_ritual_response_appropriation
+				has_country_flag = cannibalism_network_response_exploitation
+			}
 		}
 		available = {
 			custom_trigger_tooltip = {
@@ -706,6 +749,14 @@ cannibalism_containment_category = {
 			cannibalism_containment_decisions_visible = yes
 			has_global_flag = cannibalism_evolution_i_active
 			NOT = { has_country_flag = cannibalism_terror_program_active }
+			NOT = { cannibalism_current_country_has_ritual_response = yes }
+			NOT = {
+				OR = {
+					has_country_flag = cannibalism_policy_exploitation
+					has_country_flag = cannibalism_ritual_response_appropriation
+					has_country_flag = cannibalism_network_response_exploitation
+				}
+			}
 		}
 		available = {
 			custom_trigger_tooltip = {

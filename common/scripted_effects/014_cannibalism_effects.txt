@@ -3376,6 +3376,10 @@ cannibalism_reset_current_country_incarnation_state = {
 	clr_country_flag = cannibalism_wendigo_cannibal_recruitment_open
 	clr_country_flag = cannibalism_warlord_feast_cohort_open
 	clr_country_flag = cannibalism_warlord_bone_guard_open
+	clr_country_flag = cannibalism_warlord_bone_riders_open
+	clr_country_flag = cannibalism_warlord_elephantry_open
+	clr_country_flag = cannibalism_warlord_bone_riders_transaction_active
+	clr_country_flag = cannibalism_warlord_elephantry_transaction_active
 	clr_country_flag = cannibalism_warlord_origin_specialist_open
 	clr_country_flag = cannibalism_warlord_emergency_reinforcement_open
 	clr_country_flag = cannibalism_warlord_state_consumption_open
@@ -4758,10 +4762,10 @@ cannibalism_create_current_warlord_templates = {
 		division_template = {
 			name = "Scavenger Warband"
 			regiments = {
-				infantry = { x = 0 y = 0 }
-				infantry = { x = 0 y = 1 }
-				infantry = { x = 1 y = 0 }
-				infantry = { x = 1 y = 1 }
+				cannibal_scavenger_warband = { x = 0 y = 0 }
+				cannibal_scavenger_warband = { x = 0 y = 1 }
+				cannibal_scavenger_warband = { x = 1 y = 0 }
+				cannibal_scavenger_warband = { x = 1 y = 1 }
 			}
 		}
 	}
@@ -4770,12 +4774,12 @@ cannibalism_create_current_warlord_templates = {
 		division_template = {
 			name = "Feast Guard"
 			regiments = {
-				infantry = { x = 0 y = 0 }
-				infantry = { x = 0 y = 1 }
-				infantry = { x = 0 y = 2 }
-				infantry = { x = 1 y = 0 }
-				infantry = { x = 1 y = 1 }
-				infantry = { x = 1 y = 2 }
+				cannibal_feast_guard = { x = 0 y = 0 }
+				cannibal_feast_guard = { x = 0 y = 1 }
+				cannibal_feast_guard = { x = 0 y = 2 }
+				cannibal_feast_guard = { x = 1 y = 0 }
+				cannibal_feast_guard = { x = 1 y = 1 }
+				cannibal_feast_guard = { x = 1 y = 2 }
 			}
 			support = { engineer = { x = 0 y = 0 } }
 		}
@@ -4785,15 +4789,15 @@ cannibalism_create_current_warlord_templates = {
 		division_template = {
 			name = "Feast Cohort"
 			regiments = {
-				infantry = { x = 0 y = 0 }
-				infantry = { x = 0 y = 1 }
-				infantry = { x = 0 y = 2 }
-				infantry = { x = 1 y = 0 }
-				infantry = { x = 1 y = 1 }
-				infantry = { x = 1 y = 2 }
-				infantry = { x = 2 y = 0 }
-				infantry = { x = 2 y = 1 }
-				infantry = { x = 2 y = 2 }
+				cannibal_feast_cohort = { x = 0 y = 0 }
+				cannibal_feast_cohort = { x = 0 y = 1 }
+				cannibal_feast_cohort = { x = 0 y = 2 }
+				cannibal_feast_cohort = { x = 1 y = 0 }
+				cannibal_feast_cohort = { x = 1 y = 1 }
+				cannibal_feast_cohort = { x = 1 y = 2 }
+				cannibal_feast_cohort = { x = 2 y = 0 }
+				cannibal_feast_cohort = { x = 2 y = 1 }
+				cannibal_feast_cohort = { x = 2 y = 2 }
 			}
 			support = {
 				engineer = { x = 0 y = 0 }
@@ -4806,12 +4810,12 @@ cannibalism_create_current_warlord_templates = {
 		division_template = {
 			name = "Bone Guard"
 			regiments = {
-				infantry = { x = 0 y = 0 }
-				infantry = { x = 0 y = 1 }
-				infantry = { x = 0 y = 2 }
-				infantry = { x = 1 y = 0 }
-				infantry = { x = 1 y = 1 }
-				infantry = { x = 1 y = 2 }
+				cannibal_bone_guard = { x = 0 y = 0 }
+				cannibal_bone_guard = { x = 0 y = 1 }
+				cannibal_bone_guard = { x = 0 y = 2 }
+				cannibal_bone_guard = { x = 1 y = 0 }
+				cannibal_bone_guard = { x = 1 y = 1 }
+				cannibal_bone_guard = { x = 1 y = 2 }
 				artillery_brigade = { x = 2 y = 0 }
 				artillery_brigade = { x = 2 y = 1 }
 			}
@@ -4822,16 +4826,41 @@ cannibalism_create_current_warlord_templates = {
 		}
 	}
 	if = {
+		limit = { NOT = { has_template = "Bone Riders" } }
+		division_template = {
+			name = "Bone Riders"
+			regiments = {
+				cannibal_bone_riders = { x = 0 y = 0 }
+				cannibal_bone_riders = { x = 0 y = 1 }
+				cannibal_bone_riders = { x = 1 y = 0 }
+				cannibal_bone_riders = { x = 1 y = 1 }
+				cannibal_bone_riders = { x = 2 y = 0 }
+				cannibal_bone_riders = { x = 2 y = 1 }
+			}
+			support = { recon = { x = 0 y = 0 } }
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "Scavenged Elephant Column" } }
+		division_template = {
+			name = "Scavenged Elephant Column"
+			regiments = {
+				elephantry = { x = 0 y = 0 }
+			}
+			support = { recon = { x = 0 y = 0 } }
+		}
+	}
+	if = {
 		limit = { NOT = { has_template = "Island Reavers" } }
 		division_template = {
 			name = "Island Reavers"
 			regiments = {
-				marine = { x = 0 y = 0 }
-				marine = { x = 0 y = 1 }
-				marine = { x = 1 y = 0 }
-				marine = { x = 1 y = 1 }
-				infantry = { x = 2 y = 0 }
-				infantry = { x = 2 y = 1 }
+				cannibal_island_reavers = { x = 0 y = 0 }
+				cannibal_island_reavers = { x = 0 y = 1 }
+				cannibal_island_reavers = { x = 1 y = 0 }
+				cannibal_island_reavers = { x = 1 y = 1 }
+				cannibal_island_reavers = { x = 2 y = 0 }
+				cannibal_island_reavers = { x = 2 y = 1 }
 			}
 			support = { engineer = { x = 0 y = 0 } }
 		}
@@ -4841,12 +4870,12 @@ cannibalism_create_current_warlord_templates = {
 		division_template = {
 			name = "Siege Eaters"
 			regiments = {
-				infantry = { x = 0 y = 0 }
-				infantry = { x = 0 y = 1 }
-				infantry = { x = 0 y = 2 }
-				infantry = { x = 1 y = 0 }
-				infantry = { x = 1 y = 1 }
-				infantry = { x = 1 y = 2 }
+				cannibal_siege_eaters = { x = 0 y = 0 }
+				cannibal_siege_eaters = { x = 0 y = 1 }
+				cannibal_siege_eaters = { x = 0 y = 2 }
+				cannibal_siege_eaters = { x = 1 y = 0 }
+				cannibal_siege_eaters = { x = 1 y = 1 }
+				cannibal_siege_eaters = { x = 1 y = 2 }
 				artillery_brigade = { x = 2 y = 0 }
 				artillery_brigade = { x = 2 y = 1 }
 			}
@@ -4858,12 +4887,12 @@ cannibalism_create_current_warlord_templates = {
 		division_template = {
 			name = "March Predation Column"
 			regiments = {
-				motorized = { x = 0 y = 0 }
-				motorized = { x = 0 y = 1 }
-				motorized = { x = 0 y = 2 }
-				cavalry = { x = 1 y = 0 }
-				cavalry = { x = 1 y = 1 }
-				cavalry = { x = 1 y = 2 }
+				cannibal_march_predation_column = { x = 0 y = 0 }
+				cannibal_march_predation_column = { x = 0 y = 1 }
+				cannibal_march_predation_column = { x = 0 y = 2 }
+				cannibal_march_predation_column = { x = 1 y = 0 }
+				cannibal_march_predation_column = { x = 1 y = 1 }
+				cannibal_march_predation_column = { x = 1 y = 2 }
 			}
 			support = { recon = { x = 0 y = 0 } }
 		}
@@ -4873,9 +4902,9 @@ cannibalism_create_current_warlord_templates = {
 		division_template = {
 			name = "Network Cadre"
 			regiments = {
-				infantry = { x = 0 y = 0 }
-				infantry = { x = 0 y = 1 }
-				infantry = { x = 0 y = 2 }
+				cannibal_network_cadre = { x = 0 y = 0 }
+				cannibal_network_cadre = { x = 0 y = 1 }
+				cannibal_network_cadre = { x = 0 y = 2 }
 			}
 			support = { recon = { x = 0 y = 0 } }
 		}
@@ -4885,6 +4914,8 @@ cannibalism_create_current_warlord_templates = {
 	set_division_template_lock = { division_template = "Feast Guard" is_locked = yes }
 	set_division_template_lock = { division_template = "Feast Cohort" is_locked = yes }
 	set_division_template_lock = { division_template = "Bone Guard" is_locked = yes }
+	set_division_template_lock = { division_template = "Bone Riders" is_locked = yes }
+	set_division_template_lock = { division_template = "Scavenged Elephant Column" is_locked = yes }
 	set_division_template_lock = { division_template = "Island Reavers" is_locked = yes }
 	set_division_template_lock = { division_template = "Siege Eaters" is_locked = yes }
 	set_division_template_lock = { division_template = "March Predation Column" is_locked = yes }
@@ -4893,6 +4924,8 @@ cannibalism_create_current_warlord_templates = {
 	set_division_force_allow_recruiting = { division_template = "Feast Guard" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Feast Cohort" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Bone Guard" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Bone Riders" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Scavenged Elephant Column" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Island Reavers" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Siege Eaters" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "March Predation Column" force_allow_recruiting = no }
@@ -4990,6 +5023,7 @@ cannibalism_spawn_current_warlord_starting_units = {
 			var:cannibalism_new_warlord_country = {
 				set_variable = { cannibalism_scavenger_warbands_raised = cannibalism_warlord_scavenger_count }
 				set_variable = { cannibalism_feast_cohorts_raised = 1 }
+				scoped_sound_effect = "cannibal_feast_guard_selection_sfx"
 			}
 			meta_effect = {
 				text = {
@@ -5154,6 +5188,7 @@ cannibalism_setup_current_warlord_country = {
 			marines = 1
 			tech_military_police = 1
 			gw_artillery = 1
+			elephantry = 1
 			popup = no
 		}
 
@@ -5242,6 +5277,8 @@ cannibalism_rollback_current_warlord_creation = {
 	delete_unit_template_and_units = { division_template = "Feast Guard" disband = no }
 	delete_unit_template_and_units = { division_template = "Feast Cohort" disband = no }
 	delete_unit_template_and_units = { division_template = "Bone Guard" disband = no }
+	delete_unit_template_and_units = { division_template = "Bone Riders" disband = no }
+	delete_unit_template_and_units = { division_template = "Scavenged Elephant Column" disband = no }
 	delete_unit_template_and_units = { division_template = "Island Reavers" disband = no }
 	delete_unit_template_and_units = { division_template = "Siege Eaters" disband = no }
 	delete_unit_template_and_units = { division_template = "March Predation Column" disband = no }
@@ -5584,6 +5621,8 @@ cannibalism_begin_current_warlord_slot_release = {
 		delete_unit_template_and_units = { division_template = "Feast Guard" disband = no }
 		delete_unit_template_and_units = { division_template = "Feast Cohort" disband = no }
 		delete_unit_template_and_units = { division_template = "Bone Guard" disband = no }
+		delete_unit_template_and_units = { division_template = "Bone Riders" disband = no }
+		delete_unit_template_and_units = { division_template = "Scavenged Elephant Column" disband = no }
 		delete_unit_template_and_units = { division_template = "Island Reavers" disband = no }
 		delete_unit_template_and_units = { division_template = "Siege Eaters" disband = no }
 		delete_unit_template_and_units = { division_template = "March Predation Column" disband = no }
@@ -12105,7 +12144,6 @@ cannibalism_apply_inherited_host_identity_to_cbl = {
 
 	if = { limit = { check_variable = { cannibalism_inherited_origin_island > 0 } } set_country_flag = cannibalism_unified_origin_island_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_siege > 0 } } set_country_flag = cannibalism_unified_origin_siege_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
-	cannibalism_unlock_event014_unified_origin_specialists = yes
 	if = { limit = { check_variable = { cannibalism_inherited_origin_march > 0 } } set_country_flag = cannibalism_unified_origin_march_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_unification.global_larder_maximum }
 	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
@@ -12131,6 +12169,7 @@ cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = {
 	if = { limit = { check_variable = { cannibalism_inherited_origin_island > 0 } } set_country_flag = cannibalism_unified_origin_island_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_siege > 0 } } set_country_flag = cannibalism_unified_origin_siege_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
 	if = { limit = { check_variable = { cannibalism_inherited_origin_march > 0 } } set_country_flag = cannibalism_unified_origin_march_knowledge set_country_flag = cannibalism_unified_origin_specialists_inherited }
+	cannibalism_unlock_event014_unified_origin_specialists = yes
 }
 
 # Revealed unified and transformed hosts retain the two paid warlord-era unit
@@ -12139,9 +12178,9 @@ cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = {
 # one valid state's population through the canonical Deaths transaction.
 cannibalism_open_inherited_warlord_recruitment = {
 	set_country_flag = cannibalism_inherited_warlord_recruitment_open
-	cannibalism_unlock_event014_inherited_warlord_subunits = yes
 	set_country_flag = cannibalism_warlord_basic_recruitment_open
 	set_country_flag = cannibalism_warlord_network_cadre_open
+	cannibalism_unlock_event014_inherited_warlord_subunits = yes
 	if = {
 		limit = { NOT = { has_variable = cannibalism_scavenger_warbands_raised } }
 		set_variable = { cannibalism_scavenger_warbands_raised = constant:cannibalism_unified_profile.zero }
@@ -12389,6 +12428,7 @@ cannibalism_create_unified_country_from_selected_host = {
 		}
 		CBL = {
 			union_compatible_researched_technologies_from_donor = yes
+			set_technology = { elephantry = 1 popup = no }
 			set_research_slots = constant:cannibalism_unification.starting_research_slots
 			set_capital = { state = event_target:cannibalism_unification_capital_state }
 			set_politics = { ruling_party = neutrality elections_allowed = no }
@@ -12424,9 +12464,13 @@ cannibalism_create_unified_country_from_selected_host = {
 
 		if = {
 			limit = { check_variable = { cannibalism_unification_host_was_human > 0 } }
-			event_target:cannibalism_unification_host = { cannibalism_achievement_capture_current_player_ledger = yes }
+			event_target:cannibalism_unification_host = {
+				cannibalism_achievement_capture_current_player_ledger = yes
+				humanitarian_achievement_record_tag_switch = yes
+			}
 			CBL = {
 				cannibalism_achievement_apply_captured_player_ledger = yes
+				humanitarian_achievement_record_tag_switch = yes
 				set_country_flag = achievement_cannibalism_player_unification_host
 				change_tag_from = event_target:cannibalism_unification_host
 			}
@@ -12605,9 +12649,13 @@ cannibalism_absorb_current_warlord_into_unified_host = {
 			}
 			if = {
 				limit = { check_variable = { cannibalism_absorbed_warlord_was_human > 0 } }
-				event_target:cannibalism_absorbed_warlord = { cannibalism_achievement_capture_current_player_ledger = yes }
+				event_target:cannibalism_absorbed_warlord = {
+					cannibalism_achievement_capture_current_player_ledger = yes
+					humanitarian_achievement_record_tag_switch = yes
+				}
 				event_target:cannibalism_unification_host = {
 					cannibalism_achievement_apply_captured_player_ledger = yes
+					humanitarian_achievement_record_tag_switch = yes
 					change_tag_from = event_target:cannibalism_absorbed_warlord
 				}
 			}
@@ -14735,6 +14783,36 @@ cannibalism_unified_spawn_bone_guard = {
 	}
 }
 
+cannibalism_unified_spawn_bone_riders = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Bone Riders\" division_template = \"Bone Riders\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_unified_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_unified_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_unified_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_unified_unit_start_manpower]"
+	}
+}
+
+cannibalism_unified_spawn_scavenged_elephant = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Scavenged Elephant Column\" division_template = \"Scavenged Elephant Column\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_unified_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_unified_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_unified_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_unified_unit_start_manpower]"
+	}
+}
+
 cannibalism_unified_spawn_origin_specialist = {
 	if = {
 		limit = { check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.island_reavers } }
@@ -14796,7 +14874,22 @@ cannibalism_unified_execute_recruitment = {
 			}
 			else_if = {
 				limit = { check_variable = { cannibalism_unified_recruitment_template = constant:cannibalism_unified_recruitment_template.bone_guard } }
-				event_target:cannibalism_unified_decision_state = { cannibalism_unified_spawn_bone_guard = yes }
+				# Bone Guard's existing paid transaction is the bounded access route for
+				# the two specialist formations as well. Each route flag is consumed in
+				# order, so no unit is granted by the focus itself.
+				if = {
+					limit = { has_country_flag = cannibalism_unified_bone_riders_open }
+					clr_country_flag = cannibalism_unified_bone_riders_open
+					event_target:cannibalism_unified_decision_state = { cannibalism_unified_spawn_bone_riders = yes }
+				}
+				else_if = {
+					limit = { has_country_flag = cannibalism_unified_elephantry_open }
+					clr_country_flag = cannibalism_unified_elephantry_open
+					event_target:cannibalism_unified_decision_state = { cannibalism_unified_spawn_scavenged_elephant = yes }
+				}
+				else = {
+					event_target:cannibalism_unified_decision_state = { cannibalism_unified_spawn_bone_guard = yes }
+				}
 				add_to_variable = { cannibalism_unified_bone_guards_raised = constant:cannibalism_unified_profile.one }
 			}
 			else_if = {
@@ -15822,10 +15915,10 @@ cannibalism_unified_focus_integrate_the_warbands = {
 	set_country_flag = cannibalism_unified_template_conversion_missions_open
 }
 
-	cannibalism_unlock_event014_unified_origin_specialists = yes
 cannibalism_unified_focus_map_the_origin_templates = {
 	set_country_flag = cannibalism_unified_origin_template_mapping_open
 	set_country_flag = cannibalism_unified_origin_specialist_recruitment_open
+	cannibalism_unlock_event014_unified_origin_specialists = yes
 }
 
 cannibalism_unified_focus_standardize_captured_calibers = {
@@ -15833,11 +15926,11 @@ cannibalism_unified_focus_standardize_captured_calibers = {
 	set_country_flag = cannibalism_unified_captured_equipment_conversion_open
 	cannibalism_unified_focus_add_capital_military_workshop = yes
 }
-	cannibalism_unlock_event014_unified_legion = yes
 
 cannibalism_unified_focus_raise_the_cannibal_legions = {
 	set_country_flag = cannibalism_unified_cannibal_legion_recruitment_open
 	set_country_flag = cannibalism_unified_legion_cap_active
+	cannibalism_unlock_event014_unified_legion = yes
 }
 
 cannibalism_unified_focus_legion_reinforcement_tables = {
@@ -15848,12 +15941,14 @@ cannibalism_unified_focus_legion_reinforcement_tables = {
 cannibalism_unified_focus_legions_of_the_continents = {
 	set_country_flag = cannibalism_unified_legion_theaters_open
 	set_country_flag = cannibalism_unified_legion_cap_upgraded
-	cannibalism_unlock_event014_unified_bone_guard = yes
 }
 
 cannibalism_unified_focus_bone_guard_command = {
 	set_country_flag = cannibalism_unified_bone_guard_recruitment_open
 	set_country_flag = cannibalism_unified_bone_guard_cap_active
+	set_country_flag = cannibalism_unified_bone_riders_open
+	set_country_flag = cannibalism_unified_elephantry_open
+	cannibalism_unlock_event014_unified_bone_guard = yes
 }
 
 cannibalism_unified_focus_shield_the_supreme_body = {
@@ -16219,6 +16314,36 @@ cannibalism_spawn_warlord_recruitment_template_4 = {
 	}
 }
 
+cannibalism_spawn_warlord_bone_riders = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Bone Riders\" division_template = \"Bone Riders\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_warlord_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_scavenged_elephant = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Scavenged Elephant Column\" division_template = \"Scavenged Elephant Column\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_warlord_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
 cannibalism_spawn_warlord_recruitment_template_5 = {
 	meta_effect = {
 		text = {
@@ -16384,6 +16509,16 @@ cannibalism_record_current_warlord_recruitment = {
 		add_to_variable = { cannibalism_origin_specialists_raised = 1 }
 	}
 	else_if = {
+		limit = { has_country_flag = cannibalism_warlord_bone_riders_transaction_active }
+		add_to_variable = { cannibalism_bone_guard_raised = 1 }
+		clr_country_flag = cannibalism_warlord_bone_riders_transaction_active
+	}
+	else_if = {
+		limit = { has_country_flag = cannibalism_warlord_elephantry_transaction_active }
+		add_to_variable = { cannibalism_bone_guard_raised = 1 }
+		clr_country_flag = cannibalism_warlord_elephantry_transaction_active
+	}
+	else_if = {
 		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard } }
 		add_to_variable = { cannibalism_bone_guard_raised = 1 }
 	}
@@ -16428,7 +16563,30 @@ cannibalism_execute_warlord_recruitment_transaction = {
 			add_manpower = cannibalism_warlord_recruitment_manpower
 			if = {
 				limit = { check_variable = { cannibalism_warlord_recruitment_template < constant:cannibalism_recruitment_template.emergency_reinforcement } }
-				event_target:cannibalism_warlord_recruitment_state = { cannibalism_spawn_selected_warlord_recruitment_unit = yes }
+				# The existing Bone Guard decision remains the cost and population
+				# gate. Its first two successful contracts route to the specialist
+				# templates, then the ordinary Bone Guard template resumes.
+				if = {
+					limit = {
+						check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
+						has_country_flag = cannibalism_warlord_bone_riders_open
+					}
+					set_country_flag = cannibalism_warlord_bone_riders_transaction_active
+					clr_country_flag = cannibalism_warlord_bone_riders_open
+					event_target:cannibalism_warlord_recruitment_state = { cannibalism_spawn_warlord_bone_riders = yes }
+				}
+				else_if = {
+					limit = {
+						check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
+						has_country_flag = cannibalism_warlord_elephantry_open
+					}
+					set_country_flag = cannibalism_warlord_elephantry_transaction_active
+					clr_country_flag = cannibalism_warlord_elephantry_open
+					event_target:cannibalism_warlord_recruitment_state = { cannibalism_spawn_warlord_scavenged_elephant = yes }
+				}
+				else = {
+					event_target:cannibalism_warlord_recruitment_state = { cannibalism_spawn_selected_warlord_recruitment_unit = yes }
+				}
 				cannibalism_record_current_warlord_recruitment = yes
 			}
 			if = {
@@ -16910,6 +17068,10 @@ cannibalism_warlord_focus_reset_contracts = {
 	clr_country_flag = cannibalism_warlord_basic_recruitment_open
 	clr_country_flag = cannibalism_warlord_feast_cohort_open
 	clr_country_flag = cannibalism_warlord_bone_guard_open
+	clr_country_flag = cannibalism_warlord_bone_riders_open
+	clr_country_flag = cannibalism_warlord_elephantry_open
+	clr_country_flag = cannibalism_warlord_bone_riders_transaction_active
+	clr_country_flag = cannibalism_warlord_elephantry_transaction_active
 	clr_country_flag = cannibalism_warlord_origin_specialist_open
 	clr_country_flag = cannibalism_warlord_emergency_reinforcement_open
 	clr_country_flag = cannibalism_warlord_state_consumption_open
@@ -17009,6 +17171,8 @@ cannibalism_warlord_focus_reset_contracts = {
 	set_division_force_allow_recruiting = { division_template = "Feast Guard" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Feast Cohort" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Bone Guard" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Bone Riders" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Scavenged Elephant Column" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Island Reavers" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "Siege Eaters" force_allow_recruiting = no }
 	set_division_force_allow_recruiting = { division_template = "March Predation Column" force_allow_recruiting = no }
@@ -17239,13 +17403,15 @@ cannibalism_warlord_focus_seize_the_knives = {
 cannibalism_warlord_focus_break_the_captains = {
 	set_country_flag = cannibalism_warlord_personal_guard_doctrine_open
 	add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_decision.frenzy_gain }
-	cannibalism_unlock_event014_warlord_bone_guard = yes
 	cannibalism_warlord_focus_refresh_meters = yes
 }
 
 cannibalism_warlord_focus_bind_the_guard_to_one_mouth = {
 	set_country_flag = cannibalism_warlord_bone_guard_open
+	set_country_flag = cannibalism_warlord_bone_riders_open
+	set_country_flag = cannibalism_warlord_elephantry_open
 	set_country_flag = cannibalism_warlord_leader_protection_open
+	cannibalism_unlock_event014_warlord_bone_guard = yes
 }
 
 cannibalism_warlord_focus_personal_dominion = {
@@ -17387,24 +17553,26 @@ cannibalism_warlord_focus_discipline_the_warbands = {
 	cannibalism_warlord_focus_refresh_meters = yes
 }
 
-	cannibalism_unlock_event014_warlord_feast_cohort = yes
 cannibalism_warlord_focus_captains_as_officers = {
 	set_country_flag = cannibalism_warlord_lieutenant_assignments_open
 	set_country_flag = cannibalism_warlord_officer_training_open
-	cannibalism_unlock_event014_warlord_origin_specialist = yes
 }
 
 cannibalism_warlord_focus_form_the_feast_cohorts = {
-	cannibalism_unlock_event014_warlord_bone_guard = yes
 	set_country_flag = cannibalism_warlord_feast_cohort_open
+	cannibalism_unlock_event014_warlord_feast_cohort = yes
 }
 
 cannibalism_warlord_focus_train_the_origin_specialists = {
 	set_country_flag = cannibalism_warlord_origin_specialist_open
+	cannibalism_unlock_event014_warlord_origin_specialist = yes
 }
 
 cannibalism_warlord_focus_raise_the_bone_guard = {
 	set_country_flag = cannibalism_warlord_bone_guard_open
+	set_country_flag = cannibalism_warlord_bone_riders_open
+	set_country_flag = cannibalism_warlord_elephantry_open
+	cannibalism_unlock_event014_warlord_bone_guard = yes
 }
 
 cannibalism_warlord_focus_battlefield_harvest = {
@@ -17543,7 +17711,6 @@ cannibalism_warlord_focus_seize_prisons_and_depots = {
 cannibalism_warlord_focus_open_the_predatory_corridors = {
 	set_country_flag = cannibalism_warlord_predatory_corridors_open
 	set_country_flag = cannibalism_warlord_mobile_larder_open
-	cannibalism_unlock_event014_warlord_network_cadre = yes
 	cannibalism_warlord_focus_add_capital_infrastructure = yes
 }
 
@@ -17554,6 +17721,7 @@ cannibalism_warlord_focus_shelter_foreign_cells = {
 cannibalism_warlord_focus_train_network_cadres = {
 	set_country_flag = cannibalism_warlord_network_cadre_open
 	set_country_flag = cannibalism_warlord_network_cadre_cap_upgraded
+	cannibalism_unlock_event014_warlord_network_cadre = yes
 }
 
 cannibalism_warlord_focus_corrupt_the_enemy_officers = {
@@ -17576,7 +17744,6 @@ cannibalism_warlord_focus_read_the_common_signs = {
 	set_country_flag = cannibalism_warlord_network_routes_open
 }
 
-	cannibalism_unlock_event014_warlord_network_cadre = yes
 cannibalism_warlord_focus_accept_the_common_symbols = {
 	set_country_flag = cannibalism_network_route_alignment
 	set_variable = { cannibalism_network_route = constant:cannibalism_network_route.alignment }
@@ -17588,6 +17755,7 @@ cannibalism_warlord_focus_open_the_courier_routes = {
 	set_country_flag = cannibalism_warlord_courier_routes_open
 	set_country_flag = cannibalism_warlord_network_cadre_open
 	set_country_flag = cannibalism_warlord_synchronized_attack_open
+	cannibalism_unlock_event014_warlord_network_cadre = yes
 	add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_decision.alignment_gain }
 	cannibalism_warlord_focus_refresh_meters = yes
 }
@@ -18440,7 +18608,6 @@ cannibalism_create_initial_wendigo_anchors = {
 	if = {
 		limit = { has_event_target = cannibalism_wendigo_merge_host }
 		event_target:cannibalism_wendigo_merge_host = { cannibalism_rebuild_wendigo_anchor_runtime = yes }
-	cannibalism_unlock_event014_wendigo_cannibal_subunits = yes
 	}
 }
 
@@ -18453,6 +18620,8 @@ cannibalism_create_initial_wendigo_anchors = {
 # exact-population, Larder-gated scripted recruitment; every template remains
 # locked against normal queue recruitment.
 cannibalism_open_wendigo_inherited_cannibal_recruitment = {
+	set_technology = { elephantry = 1 popup = no }
+	cannibalism_unlock_event014_wendigo_cannibal_subunits = yes
 	set_country_flag = cannibalism_wendigo_cannibal_recruitment_open
 	set_country_flag = cannibalism_unified_warband_integration_open
 	set_country_flag = cannibalism_unified_origin_template_mapping_open
@@ -18463,6 +18632,8 @@ cannibalism_open_wendigo_inherited_cannibal_recruitment = {
 	set_country_flag = cannibalism_unified_legion_deaths_accounting_required
 	set_country_flag = cannibalism_unified_bone_guard_recruitment_open
 	set_country_flag = cannibalism_unified_bone_guard_cap_active
+	set_country_flag = cannibalism_unified_bone_riders_open
+	set_country_flag = cannibalism_unified_elephantry_open
 	if = {
 		limit = { NOT = { has_variable = cannibalism_unified_legions_raised } }
 		set_variable = { cannibalism_unified_legions_raised = constant:cannibalism_unified_profile.zero }
@@ -18705,9 +18876,13 @@ cannibalism_create_wendigo_unification_from_selected_hosts = {
 				check_variable = { cannibalism_primary_warlord_donor_was_human > 0 }
 				check_variable = { cannibalism_wendigo_merge_host_was_human < 1 }
 			}
-			event_target:cannibalism_primary_warlord_donor = { cannibalism_achievement_capture_current_player_ledger = yes }
+			event_target:cannibalism_primary_warlord_donor = {
+				cannibalism_achievement_capture_current_player_ledger = yes
+				humanitarian_achievement_record_tag_switch = yes
+			}
 			event_target:cannibalism_wendigo_merge_host = {
 				cannibalism_achievement_apply_captured_player_ledger = yes
+				humanitarian_achievement_record_tag_switch = yes
 				change_tag_from = event_target:cannibalism_primary_warlord_donor
 			}
 		}
@@ -19442,4 +19617,198 @@ cannibalism_wendigo_focus_the_world_beneath_winter = {
 	add_command_power = constant:cannibalism_wendigo_focus.command_power_large
 	cannibalism_wendigo_focus_prioritize_current_enemies = yes
 	cannibalism_try_start_wendigo_countdown = yes
+}
+
+# ============================================================================
+# EVENT 014 -> EVENT 019 DYNAMIC FAMILY PROVIDER (523)
+# ============================================================================
+# Event 14 remains the sole owner of its irregular unit identities. Event 19
+# receives one opt-in family registration and a complete callback package; no
+# Event 19 family list or additional registry file is required.
+# ============================================================================
+
+cannibalism_register_event19_provider = {
+	chaos_unit_family_provider_523_register = yes
+}
+
+chaos_unit_family_provider_523_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event14_cannibal_irregulars.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event14_cannibal_irregulars.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event14_cannibal_irregulars.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.spawn_only }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event14_cannibal_irregulars.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event14_cannibal_irregulars.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event14_cannibal_irregulars.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event14_cannibal_irregulars.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event14_cannibal_irregulars.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event14_cannibal_irregulars.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event14_cannibal_irregulars.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event14_cannibal_irregulars.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_523_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			has_global_flag = cannibalism_system_active
+			NOT = { has_global_flag = cannibalism_cleanup_complete }
+			OR = {
+				is_cannibalism_country = yes
+				infantry_spawn_has_evolution_iv = yes
+			}
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		if = {
+			limit = { is_cannibalism_country = yes }
+			set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+		}
+	}
+}
+
+chaos_unit_family_provider_523_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Cannibal Irregular Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					cannibal_scavenger_warband = { x = 0 y = 0 }
+					cannibal_feast_guard = { x = 0 y = 1 }
+					cannibal_feast_cohort = { x = 0 y = 2 }
+					cannibal_bone_guard = { x = 0 y = 3 }
+					cannibal_bone_riders = { x = 0 y = 4 }
+					cannibal_island_reavers = { x = 0 y = 5 }
+					cannibal_siege_eaters = { x = 1 y = 0 }
+					cannibal_march_predation_column = { x = 1 y = 1 }
+					cannibal_network_cadre = { x = 1 y = 2 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_current_component_slot_kind = constant:infantry_spawn_component_kind.combat }
+	set_temp_variable = { infantry_spawn_current_component_unit_profile = constant:chaos_unit_family_event14_cannibal_irregulars.family_id }
+	set_temp_variable = { infantry_spawn_current_component_column = 0 }
+	set_temp_variable = { infantry_spawn_current_component_row = 0 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 1 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 2 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 3 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 4 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 5 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_column = 1 }
+	set_temp_variable = { infantry_spawn_current_component_row = 0 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 1 }
+	infantry_spawn_append_current_template_component = yes
+	set_temp_variable = { infantry_spawn_current_component_row = 2 }
+	infantry_spawn_append_current_template_component = yes
+}
+
+chaos_unit_family_provider_523_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_523_event19_reconcile_sustainment = {
+	infantry_spawn_clear_provider_obligation_manifest = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event14_cannibal_irregulars.template_manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_component_count = 1 }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event14_cannibal_irregulars.template_infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.motorized_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event14_cannibal_irregulars.template_motorized_equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
+}
+
+chaos_unit_family_provider_523_event19_get_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	infantry_spawn_provider_get_standard_equipment_token = yes
+}
+
+chaos_unit_family_provider_523_event19_publish_custom_equipment_tokens = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+}
+
+chaos_unit_family_provider_523_event19_get_presentation = {
+	set_temp_variable = { var = infantry_spawn_family_provider_name_loc_token value = token:chaos_unit_family_523_name_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_request_cost_loc_token value = token:chaos_unit_family_523_request_cost_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_sustainment_cost_loc_token value = token:chaos_unit_family_523_sustainment_cost_loc }
+}
+
+chaos_unit_family_provider_523_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			has_global_flag = cannibalism_system_active
+			NOT = { has_global_flag = cannibalism_cleanup_complete }
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			has_global_flag = cannibalism_system_active
+			NOT = { has_global_flag = cannibalism_cleanup_complete }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_523_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_523_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_523_event19_setup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_523_derivative_noop = 0 }
+}
+
+chaos_unit_family_provider_523_event19_remove_public_additions = {
+	set_temp_variable = { chaos_unit_family_provider_523_derivative_noop = 0 }
+}
+
+chaos_unit_family_provider_523_event19_cleanup_derivative = {
+	set_temp_variable = { chaos_unit_family_provider_523_derivative_noop = 0 }
 }

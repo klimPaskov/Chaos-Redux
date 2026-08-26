@@ -1,6 +1,6 @@
 # Event 014 cost texticon generation prompts
 
-All five sources were created as separate native ImageGen generations on 2026-08-25. Each request explicitly required a genuine transparent background in the initial generation, exact small-size legibility, and fictional non-ethnographic imagery without sacred motifs.
+All seven sources were created as separate native ImageGen generations on 2026-08-25. Each request explicitly required a genuine transparent background in the initial generation, exact small-size legibility, and fictional non-ethnographic imagery without sacred motifs.
 
 ## Larder Stores
 
@@ -31,3 +31,19 @@ Prompt: “Use case: stylized-concept. Asset type: Hearts of Iron IV 18x18 trans
 Generated source: `C:/Users/klimp/.codex/generated_images/01a037d1-8d92-7d63-85fb-1c43a1f2681b/exec-925e764c-0f37-45cd-8dc9-c77d1eb21660.png`.
 
 Prompt: “Use case: stylized-concept. Asset type: Hearts of Iron IV 18x18 transparent cost texticon for Event 014 Cannibalism. Primary request: an original compact painted icon for an Enemy-Loss Receipt, a neutral casualty ledger with a dented unmarked military helmet silhouette, crossed-out tally marks, and a small stamped loss seal, communicating recorded enemy losses without depicting a body. Style/medium: gritty HOI4-style hand-painted wartime interface icon, crisp silhouette, strong dark outline and tiny soft shadow, high contrast at very small size. Composition/framing: single centered subject, fills most of a square canvas while leaving a few transparent pixels around the silhouette, no text or readable letters. Lighting/mood: cold muted steel and parchment, somber but restrained administrative mood. Color palette: weathered iron gray, parchment ochre, dark brown, a small desaturated red-brown stamp accent; no neon. Materials/textures: dented plain helmet, worn paper ledger, ink tally marks, painted brush texture. Constraints: genuine transparent background in the initial generation, preserve transparent unused canvas, readable after reduction to 18x18, fictional and non-ethnographic, no cultural or sacred motifs, no logos, no flags, no watermark. Avoid: people, faces, bodies, blood, gore, bones, skulls, religious symbols, tribal or ethnographic motifs, photorealism, checkerboard background, opaque square, halo, white matte, tiny illegible detail.”
+
+## Small airframes
+
+Generated source: `C:/Users/klimp/.codex/generated_images/019f5054-0304-78a1-9bde-779d630ae2cb/exec-6023683d-f68b-4e01-ac47-ee07abcca324.png`.
+
+Prompt: “Create a single compact HOI4-style semantic cost icon on a fully transparent background: a rugged 1930s/1940s single-engine fighter airframe in three-quarter view, thick readable silhouette, muted steel blue and olive paint, slightly distressed hand-painted strategy-game icon finish, centered with generous transparent padding. No text, no letters, no watermark, no border, no scenery, no people, no modern aircraft, no photorealistic background.”
+
+The generated source was inspected for native alpha, cropped to the non-transparent bounds, padded on a square transparent canvas, reduced to 18x18 RGBA, and exported as legacy uncompressed BGRA8 DDS.
+
+## Transport aircraft
+
+Generated source: `C:/Users/klimp/.codex/generated_images/019f5054-0304-78a1-9bde-779d630ae2cb/exec-78e2831a-3e50-4b0e-84d0-b75309fd8ff0.png`.
+
+Prompt: “Single centered HOI4 semantic icon, square composition, a compact rugged 1940s twin-engine transport aircraft seen from a near-front three-quarter angle so the full aircraft fills the square, readable cargo fuselage and two propellers, muted olive and cream hand-painted strategy-game colors with a bright pale edge, isolated on a truly transparent background. No text, no letters, no watermark, no scenery, no gradient backdrop, no modern jet, no people.”
+
+The generated source was inspected for native alpha, cropped to the non-transparent bounds, padded on a square transparent canvas, reduced to 18x18 RGBA, and exported as legacy uncompressed BGRA8 DDS.
