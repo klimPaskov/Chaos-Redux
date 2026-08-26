@@ -10,6 +10,8 @@ Read `documentation_state.md` first, then `docs/specs/014_cannibalism_specs/READ
 
 The accepted current facts are Minor Fire-Once, no cluster, three origins only, a concealed Hannibal Lecter identity until `cannibalism_reveal_complete`, nine Event 014 gameplay formation families, seven dedicated bespoke model packages, approved vanilla `sprite = cavalry` reuse for Bone Riders, approved vanilla `sprite = infantry` reuse for Network Cadre, vanilla `elephantry` for Scavenged Elephant Column, no Event 014 animation toggle or animation preference, and 27 counter textures/registry consumers.
 
+Unit model production is closed for this scope. The seven bespoke packages are installed, and the two amended consumers intentionally use vanilla cavalry and infantry visuals; any remaining parent live-consumer check is verification evidence only, not an open model-generation or 3D-workflow task.
+
 Model inputs must start from actual Internet-sourced or user-supplied modern artwork, with ImageGen limited to faithful resolution, alpha, background, padding, or edge cleanup. ImageGen must not redesign the source, invent missing components, or create a from-scratch descendant for Meshy. Feast Guard is the current approved source at `docs/assets/014_cannibalism/models_3d/cannibal_feast_guard/refs/source/untouched.png` with faithful input SHA-256 `C67AF852A27E1379590BD84C5175C378D449AE226F895A2D326B45099040D8C9`.
 
 ## Already reconciled
@@ -24,7 +26,7 @@ Model inputs must start from actual Internet-sourced or user-supplied modern art
 
 ## Open queues and blockers
 
-1. The seven installed bespoke model/entity/action packages still need parent live consumer validation; source-side re-import and runtime file checks do not substitute for a live session.
+1. The seven installed bespoke model/entity/action packages still need parent live consumer validation; source-side re-import and runtime file checks do not substitute for a live session. This is a verification gate after closed production, not a request to reopen the 3D workflow.
 2. Feast Guard and Feast Cohort retain the documented binary-provenance reconciliation items and must not be described as byte-identical without receipts.
 3. The portrait-worker handoff remains `BLOCKED / needs_user_review` for the missing worker receipt, durable archive or native-ImageGen route, reproducible source commands, rights basis, static Hannibal provenance, and live review.
 4. Fresh Event 014 MCP inspection and overview rendering are partial because the large workspace deferred full validation; zero blocking diagnostics in that partial result is not full runtime proof.
