@@ -542,7 +542,7 @@ After parent acceptance, route production through `chaos-redux-event-assets` und
 | `ASSET-026` founding identity stages | Six charter idea stages | 64x64, `gfx/interface/ideas/006_independence_wave/form03/` | `GFX_idea_independence_wave_form03_*` |
 | `ASSET-038` integration missions | Distinct adapted language, works, member vote, ratification, repair, and withdrawal decisions | 32x32, `gfx/interface/decisions/006_independence_wave/form03/` | `GFX_decision_independence_wave_form03_*` |
 
-Create `interface/006_independence_wave_form03.gfx` for these sprites and register the report image in `interface/006_independence_wave_event_pictures.gfx`.
+Register these sprites in the FORM-03 source block of `interface/006_independence_wave_small_assets.gfx` and register the report image in `interface/006_independence_wave_event_pictures.gfx`.
 
 The report scene should show a multilingual constitutional table joined to engineering and transport plans, with no readable generated text. The six focus icons must distinguish the opening convention, public-service guarantees, the delta works board, appeals and examinations, corridor standards, and ratification. Idea stages must visibly progress from loose papers to a settled charter and works seal. Every decision receives distinct adapted art within coherent language, works, member, ratification, repair, and withdrawal subfamilies. Decision icons must remain readable at 32x32.
 
@@ -566,7 +566,7 @@ No new animated asset is specified. If a later accepted design adds animation, i
 | `events/006_independence_wave.txt` | Event block `.300` through `.308` |
 | `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt` | Value, phase, model, member, and outcome text selectors |
 | `localisation/english/006_independence_wave_form03_l_english.yml` | Final player-facing localisation, UTF-8 BOM |
-| `interface/006_independence_wave_form03.gfx` | New focus, idea, and decision sprites |
+| `interface/006_independence_wave_small_assets.gfx` | FORM-03 source block for focus, idea, and decision sprites |
 | `interface/006_independence_wave_event_pictures.gfx` | FORM-03 report sprite |
 | `common/scripted_effects/006_independence_wave_wallonia_frisia_package_effects.txt` | Preserve package lifecycles and expose the existing AFX or AGX project-value hooks only |
 | `common/scripted_triggers/006_independence_wave_wallonia_frisia_package_triggers.txt` | Reuse stable continuity and waterline checks in project AI |

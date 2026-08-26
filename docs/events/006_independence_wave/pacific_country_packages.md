@@ -425,7 +425,7 @@ from `interface/006_independence_wave.gfx`:
 
 The HBX and HAW focus groups instead use fourteen exact country-specific focus
 sprites registered with matching `_shine` blocks in
-`interface/006_independence_wave_pacific_focus_icons.gfx`. Final DDS files live
+`interface/006_independence_wave_small_assets.gfx` (Pacific source block). Final DDS files live
 under `gfx/interface/goals/006_independence_wave/` and use stable
 `goal_<focus-stem>.dds` filenames. This package defines no adviser focus icon,
 adviser DDS, placeholder, or fallback art.

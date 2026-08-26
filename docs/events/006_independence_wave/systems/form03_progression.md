@@ -102,7 +102,7 @@ FORM-03 has a dedicated static package under
 national-focus icons, six charter-lifecycle idea icons, six decision-family
 icons, one charter-convention report scene, and one inline League Reserve
 ledger texticon. The focus, idea, decision, and ledger sprites are registered in
-`interface/006_independence_wave_form03.gfx`. The technical-mission cost uses
+`interface/006_independence_wave_small_assets.gfx` (FORM-03 source block). The technical-mission cost uses
 `£GFX_independence_wave_form03_league_reserve_texticon` for the pooled reserve
 charge, while its tooltip names the commitment in plain language. The report
 sprite `GFX_report_event_006_form03_charter_convention` is registered in

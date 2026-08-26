@@ -22,7 +22,7 @@ The Event 006 roster checkpoint `chaosx.nr6.350` attaches `MNT_independence_wave
 | Ideas | `common/ideas/006_independence_wave_ideas_registry.txt` | `mnt_divided_mountain_authority`, `mnt_mountain_state_compact`, four route ideas |
 | Package effects | `common/scripted_effects/006_independence_wave_balkan_package_effects.txt` (Montenegro source block) | IW-030 setup, final validation, cleanup, route and ledger effects |
 | Package triggers | `common/scripted_triggers/006_independence_wave_balkan_package_triggers.txt` (Montenegro source block) | identity, roster, route, force, and completion proofs |
-| Decisions | `common/decisions/006_independence_wave_montenegro_decisions.txt` | timed founding mission plus ten costed projects |
+| Decisions | `common/decisions/006_independence_wave_balkan_decisions.txt` (Montenegro source block) | timed founding mission plus ten costed projects |
 | AI | `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` | mountain survival, host restraint, settled frontier, emergency guard |
 | Roster | `history/countries/MNT - Montenegro.txt` (vanilla), `events/006_independence_wave.txt` | vanilla MNT history recruits `MNT_kristo_popovic`, `MNT_blazo_jovanovic`, and `MNT_blazo_dukanovic`. IW-030 checkpoint `chaosx.nr6.350` attaches `MNT_independence_wave_mitar_martinovic` once, and Event 006 uses Martinovic instead of Dukanovic |
 | Portraits | `common/characters/006_independence_wave_characters_registry.txt`, `interface/006_independence_wave_portraits_registry.gfx` | Martinović character plus dedicated Popović, Jovanović, and Martinović large portrait sprites |
