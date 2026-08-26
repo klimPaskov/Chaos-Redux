@@ -100,3 +100,15 @@ No additional action was retargeted or exported. The authoritative runtime state
 ## Local evidence compaction
 
 The historical Quaternius/KayKit export and reimport paths described above are retained as provenance only. Their ignored candidate binaries, old preview frames, reproducible Blender preparation checkpoints, and per-action source blends were removed after the V10 review; the current V10 source-role FBXs, rejection records, hashes, and runtime handoff remain. No runtime entity or asset consumer points to the removed evidence paths.
+
+## V11 firearm recovery closure
+
+Do not promote V10 action 234 or any V11 remesh. V10 support-fire task `01a03d2c-6a68-7c9b-90af-5e79adc4f75c` leaves the weapon fixed across the back and supplies no trigger/support contact, aim, discharge, recoil, recovery, or locator.
+
+The parent-approved V11 two-hand input generated a Meshy 7 raw model with valid right trigger-hand contact, left support-hand contact, continuous weapon body, and unobstructed circular muzzle. Generation task `01a03d3b-927e-72fc-99fc-b260df1dc178` and GLB SHA-256 `4C9349EE589DC5DE5E3BF633946F23E31BADB8572A370BAA7F738895FFB64D3F` are preserved. The raw model is 1,577,348 triangles and cannot enter the documented Meshy rig endpoint.
+
+The 100k triangle, 299k triangle, and 250k quad remeshes are all rejected for severe open/broken topology. Their task IDs are `01a03d40-48d2-735d-b087-a328ecfc2c7c`, `01a03d44-1037-7422-b378-17a3ea098c2e`, and `01a03d48-6562-7571-95f1-5eb38dfa20b0`. No V11 rig or firearm action exists.
+
+The professional-package route also remains blocked: Quaternius `Pistol_Shoot` is genuine CC0 aim/discharge/recoil/recovery motion but has no distinct support-fire action and no model-compatible muzzle locator. A locator or animated weapon from a separate prop pack would require replacing or manually attaching the integrated pistol and is not permitted.
+
+Therefore `alien_infantry_laser_attack`, `alien_infantry_support_attack`, `alien_laser_muzzle_particle`, `alien_laser_muzzle_flash`, and `alien_infantry_laser_fire` remain unbound. No final `.mesh`, complete `.anim` set, packed materials, muzzle/effect/audio synchronization, or current export/reimport proof is promoted. Parent gameplay/entity/GFX/sound wiring remains untouched.

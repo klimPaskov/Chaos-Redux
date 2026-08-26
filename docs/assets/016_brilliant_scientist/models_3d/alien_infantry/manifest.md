@@ -151,3 +151,13 @@ Locked-adapter request `8450b7c3d19a4f298e69c220bda462e9` inspected all 42 subst
 ## 2026-08-26 evidence compaction after V10 review
 
 The parent removed superseded V7/V8 preview frames and provider downloads, reproducible Blender preparation checkpoints and `.blend1` backups, per-action/source review blends, and the rejected candidate export directory. These ignored binaries were not runtime dependencies; hashes, rejection records, adapter logs, current V10 source-role FBXs, and the retained V10 base/remesh/rig sources remain available. The historical export and checkpoint paths in earlier sections are preserved as provenance and are not present locally after compaction.
+
+## 2026-08-26 V11 firearm recovery closure
+
+The V10 support-fire recovery action 234 is rejected. Task `01a03d2c-6a68-7c9b-90af-5e79adc4f75c` consumed 3 credits, but adapter-reviewed frames show both hands empty while the firearm remains fixed across the back; aim, discharge, recoil, recovery, trigger contact, support contact, and a muzzle node are absent.
+
+A separate source-informed two-hand low-ready derivative was parent-approved for provider work: `refs/original/meshy_input_v11_two_hand_firearm.png`, SHA-256 `CFF2E684F0D7D50A01084CEA76F2BA22CC4CF11BEB5D48AD829AD733FA2976D1`. Meshy 7 generation `01a03d3b-927e-72fc-99fc-b260df1dc178` consumed 30 credits and passed identity, trigger-hand, support-hand, weapon-body, and muzzle continuity review. Its raw 1,577,348-triangle geometry exceeds the 300,000-face Meshy rig ceiling.
+
+Three provider remeshes consumed 15 credits and were rejected before rigging: 100k triangle `01a03d40-48d2-735d-b087-a328ecfc2c7c`, 299k triangle `01a03d44-1037-7422-b378-17a3ea098c2e`, and 250k quad `01a03d48-6562-7571-95f1-5eb38dfa20b0`. Their locked-adapter audits found respectively 59,507, 111,943, and 74,264 loose boundary edges; the latter two also exceeded the rig ceiling, and every remesh visibly broke the alien surface. No V11 rig or animation was purchased.
+
+The package remains blocked. Quaternius `Pistol_Shoot` remains valid CC0 character-motion evidence but supplies neither an independent support-fire action nor a locator belonging to the integrated alien pistol. CC0 animated-gun prop packs cannot solve this without forbidden weapon replacement/manual attachment. Exact evidence is in `provider/rejections/firearm_recovery_v11.md` and `evidence/imagegen/v11_firearm_recovery/preparation.md`.
