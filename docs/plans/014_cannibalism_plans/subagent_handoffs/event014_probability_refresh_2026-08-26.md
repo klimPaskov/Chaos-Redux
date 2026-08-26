@@ -24,6 +24,14 @@ Democratic artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifa
 
 A second probe using the scalar `check_variable` fixture was accepted by the adapter and reproduced the same partial result under analysis id `probability-e4bf5293bc757d6d04c79807`; it did not establish numeric variable comparison semantics and is retained only as schema evidence.
 
+## Current player-host safety refresh
+
+`hoi4.probability_inspect` also inspected the complete player-host pool `chaosx.nr14.30.a` and `chaosx.nr14.30.b` in the same Event 014 source. It returned `PROBABILITY_SOURCE_INSPECTED` with `poolComplete = true`, two candidates, zero unresolved discovery inputs, the same source revision and source hash, and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bacc7181b435f9380ad77dedccbf5c5b35c52e86a4788245d267f39df1997de1/46d1e400ea8ceca4b32dfb251efd988aed707027d10e673aa407e6270b4d3429/probability-inspect-43741ef93efa.json`.
+
+The named scenario set `E014_EVENT_30_PLAYER_SAFETY_CURRENT_2026_08_26` supplied `is_ai = true` for `AI_REMAINS` and `is_ai = false` for `PLAYER_COUNTRY`. `hoi4.probability_evaluate` returned `PROBABILITY_ANALYZED` with zero unresolved rows under analysis id `probability-e00ddb0961107eb5dddc9a55`; its JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/22de3ab624e52f4a77acf7d224edd81cb3d47cac9fefd6b941e085a803331e77/d014f2e6ba3eddedf2bd6d67d66284ea30a7094fce4326213015ff23fce741f2/probability-e00ddb0961107eb5dddc9a55.json`.
+
+The adapter reports the intended safety behavior: `.30.a` is the only AI-eligible outcome and is dominant in both scenarios, while `.30.b` is eligible-but-zero only in the human scenario because its source trigger requires `is_ai = no`. The dominance and starvation diagnostics are intentional route-protection warnings, not a balance patch request.
+
 ## Disposition
 
 This refresh strengthens current source-revision evidence for the opening-policy weights but does not certify normalized campaign probabilities, route dominance, or dynamic host selection.
