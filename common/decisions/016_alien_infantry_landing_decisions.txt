@@ -20,7 +20,12 @@ alien_infantry_landing_category = {
 		visible = {
 			FROM = { alien_infantry_landing_state_is_valid = yes }
 		}
-		available = { alien_infantry_can_call_landing = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = alien_infantry_landing_requirements_tt
+				hidden_trigger = { alien_infantry_can_call_landing = yes }
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { alien_infantry_can_call_landing = yes }
 		}
@@ -54,6 +59,14 @@ alien_infantry_landing_category = {
 			modifier = {
 				factor = constant:alien_infantry_landing_ai.near_space_factor
 				has_country_flag = dhrondan_near_space_secured
+			}
+			modifier = {
+				factor = constant:alien_infantry_landing.components_factor
+				dhrondan_focus_has_standardized_components = yes
+			}
+			modifier = {
+				factor = constant:alien_infantry_landing.orbital_office_factor
+				dhrondan_focus_has_orbital_office = yes
 			}
 		}
 	}

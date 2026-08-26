@@ -24,6 +24,10 @@ dhrondan_sovereignty_category = {
 			}
 		}
 		available = {
+			custom_trigger_tooltip = {
+				tooltip = dhrondan_reclamation_route_requirements_tt
+				hidden_trigger = { dhrondan_focus_has_predictive_warfare = yes }
+			}
 			dhrondan_reclamation_decision_can_complete = yes
 		}
 		cost = constant:dhrondan_decision_cost.reclamation
@@ -61,6 +65,7 @@ dhrondan_sovereignty_category = {
 			base = constant:dhrondan_ai.standard
 			modifier = { factor = constant:dhrondan_ai.preferred dhrondan_is_imperial_regime = yes }
 			modifier = { factor = constant:dhrondan_ai.low dhrondan_is_covenant_regime = yes }
+			modifier = { factor = constant:dhrondan_ai.preferred dhrondan_focus_has_predictive_warfare = yes }
 		}
 	}
 
@@ -80,7 +85,13 @@ dhrondan_sovereignty_category = {
 				}
 			}
 		}
-		available = { dhrondan_enclave_decision_can_complete = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = dhrondan_enclave_route_requirements_tt
+				hidden_trigger = { dhrondan_focus_has_laboratory_route = yes }
+			}
+			dhrondan_enclave_decision_can_complete = yes
+		}
 		cost = constant:dhrondan_decision_cost.enclave_supply
 		days_remove = constant:dhrondan_decision_duration.enclave_supply
 		cancel_trigger = { NOT = { dhrondan_enclave_decision_can_complete = yes } }
@@ -104,7 +115,10 @@ dhrondan_sovereignty_category = {
 				}
 			}
 		}
-		ai_will_do = { base = constant:dhrondan_ai.urgent }
+		ai_will_do = {
+			base = constant:dhrondan_ai.urgent
+			modifier = { factor = constant:dhrondan_ai.preferred dhrondan_focus_has_laboratory_route = yes }
+		}
 	}
 
 	dhrondan_integrate_reclaimed_landing_site = {
@@ -150,6 +164,7 @@ dhrondan_sovereignty_category = {
 			dhrondan_is_covenant_regime = yes
 			dhrondan_world_order_decisions_are_unlocked = yes
 			has_country_flag = dhrondan_integration_started
+			dhrondan_focus_has_access_map_exchange = yes
 		}
 		target_trigger = {
 			FROM = {
