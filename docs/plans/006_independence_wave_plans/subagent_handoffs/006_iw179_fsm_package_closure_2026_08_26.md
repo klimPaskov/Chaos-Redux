@@ -50,6 +50,8 @@ The required read-only HOI4 MCP routes were attempted against the current worksp
 
 - `hoi4.map_inspect` was attempted for state IDs `684, 629, 378, 636` with overview/query data.
 - `hoi4.focus_inspect` was attempted for `common/national_focus/006_independence_wave_focus.txt`, tree `independence_wave_focus_tree`, national mode.
+- `hoi4.focus_render` was attempted for the same tree and timed out after 180 seconds.
+- `hoi4.map_render` was retried with valid integer `scale = 1` and state/coast/port/resource/supply/railway/adjacency overlays, then timed out after 180 seconds. An earlier `scale = 0.5` probe was rejected by the tool schema because `scale` requires an integer.
 - `hoi4.event_inspect` and `hoi4.event_render` were attempted for `{ kind = event, eventId = chaosx.nr6.1 }` downstream state/trace views.
 - `hoi4.probability_inspect` was attempted for `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt` with adapter `ai_strategy_factor`.
 - The required callable `chaosx_ai_probability_auditor` was not available in this session, so no source-only weighted result was promoted to engine evidence and no probability compare was claimed.
